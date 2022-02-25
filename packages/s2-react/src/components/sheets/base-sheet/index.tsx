@@ -17,9 +17,10 @@ import './index.less';
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
     const { dataCfg, options, header, showPagination, sheetType } = props;
-    const { s2Ref, loading, containerRef, pagination } = useSpreadSheet(props, {
-      sheetType,
-    });
+    const { s2Ref, loading, containerRef, pagination, wrapRef } =
+      useSpreadSheet(props, {
+        sheetType,
+      });
 
     // 同步实例
     React.useEffect(() => {
@@ -38,19 +39,21 @@ export const BaseSheet = React.forwardRef(
     return (
       <React.StrictMode>
         <Spin spinning={loading}>
-          {header && (
-            <Header
-              {...header}
-              sheet={s2Ref.current}
-              width={options.width}
-              dataCfg={getSafetyDataConfig(dataCfg)}
-              options={getSheetComponentOptions(options)}
-            />
-          )}
-          <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-          {showPagination && (
-            <S2Pagination {...pagination} pagination={options.pagination} />
-          )}
+          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+            {header && (
+              <Header
+                {...header}
+                sheet={s2Ref.current}
+                width={options.width}
+                dataCfg={getSafetyDataConfig(dataCfg)}
+                options={getSheetComponentOptions(options)}
+              />
+            )}
+            <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
+            {showPagination && (
+              <S2Pagination {...pagination} pagination={options.pagination} />
+            )}
+          </div>
         </Spin>
       </React.StrictMode>
     );

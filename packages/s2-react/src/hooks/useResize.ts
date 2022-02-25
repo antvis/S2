@@ -5,7 +5,8 @@ import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: HTMLElement;
+  container: HTMLElement; // 只包含了 sheet 容器
+  wrapper: HTMLElement; // 包含了 sheet + foot(page) + header
   s2: SpreadSheet;
   adaptive: Adaptive;
 }
@@ -25,18 +26,19 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
 }
 
 export const useResize = (params: UseResizeEffectParams) => {
-  const { s2, adaptive } = params;
-  const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
-    params.container,
-    adaptive,
-  );
+  const { s2, adaptive, container } = params;
+  const {
+    container: wrapper,
+    adaptiveWidth,
+    adaptiveHeight,
+  } = analyzeAdaptive(params.wrapper, adaptive);
 
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
   const render = useCallback(
     (width: number, height: number) => {
-      s2.changeSize(width, height);
+      s2.changeSheetSize(width, height);
       s2.render(false);
       isFirstRender.current = false;
     },
@@ -48,14 +50,13 @@ export const useResize = (params: UseResizeEffectParams) => {
   // rerender by option
   React.useEffect(() => {
     if (!adaptive && s2) {
-      s2.changeSize(s2?.options.width, s2?.options.height);
       s2.render(false);
     }
   }, [s2?.options.width, s2?.options.height, adaptive, s2]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
-    if (!container || !adaptive) {
+    if (!wrapper || !adaptive || !container) {
       return;
     }
 
@@ -66,7 +67,7 @@ export const useResize = (params: UseResizeEffectParams) => {
           ? round(size?.inlineSize)
           : s2?.options.width;
         const height = adaptiveHeight
-          ? round(size?.blockSize)
+          ? round(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
           : s2?.options.height;
         if (!adaptiveWidth && !adaptiveHeight) {
           return;
@@ -79,14 +80,15 @@ export const useResize = (params: UseResizeEffectParams) => {
       }
     });
 
-    resizeObserver.observe(container, {
+    resizeObserver.observe(wrapper, {
       box: 'border-box',
     });
 
     return () => {
-      resizeObserver.unobserve(container);
+      resizeObserver.unobserve(wrapper);
     };
   }, [
+    wrapper,
     container,
     adaptiveWidth,
     adaptiveHeight,
