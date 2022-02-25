@@ -352,13 +352,13 @@ export abstract class SpreadSheet extends EE {
 
   public destroy() {
     this.emit(S2Event.LAYOUT_DESTROY);
-    this.facet.destroy();
+    this.facet?.destroy();
     this.hdAdapter?.destroy();
-    this.interaction.destroy();
-    this.store.clear();
+    this.interaction?.destroy();
+    this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
-    this.container.destroy();
+    this.container?.destroy();
   }
 
   /**

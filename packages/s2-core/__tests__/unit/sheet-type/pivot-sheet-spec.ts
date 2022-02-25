@@ -749,11 +749,11 @@ describe('PivotSheet Tests', () => {
   test('should destroy sheet', () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     const hdAdapterDestroySpy = jest
       .spyOn(s2.hdAdapter, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     s2.render(false);
 
