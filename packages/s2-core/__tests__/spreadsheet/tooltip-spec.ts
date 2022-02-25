@@ -19,7 +19,7 @@ describe('Tooltip Tests', () => {
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
   });
 
-  test('should render custom tooltip mount container12', async () => {
+  test('should not render tooltip in default container if disable tooltip', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
       tooltip: {
@@ -35,7 +35,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render default tooltip container', async () => {
+  test('should render tooltip in default container', async () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
       tooltip: {
@@ -53,7 +53,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render custom tooltip mount container', async () => {
+  test('should render tooltip in custom container', async () => {
     const container = document.createElement('div');
     container.id = 'custom-container';
     document.body.appendChild(container);

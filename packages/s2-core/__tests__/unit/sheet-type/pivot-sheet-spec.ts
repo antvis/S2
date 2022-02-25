@@ -181,6 +181,8 @@ describe('PivotSheet Tests', () => {
       sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
       expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+      sheet.destroy();
     });
 
     test.each([
@@ -214,6 +216,8 @@ describe('PivotSheet Tests', () => {
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -279,6 +283,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(defaultTooltipContent),
         ).toBeFalsy();
+
+        sheet.destroy();
       },
     );
 
@@ -314,6 +320,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(methodTooltipContent),
         ).toBeTruthy();
+
+        sheet.destroy();
       },
     );
 
