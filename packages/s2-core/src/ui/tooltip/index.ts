@@ -73,6 +73,9 @@ export class BaseTooltip {
   }
 
   public hide() {
+    if (!this.container) {
+      return;
+    }
     const container = this.getContainer();
     setContainerStyle(container, {
       style: {
@@ -87,7 +90,7 @@ export class BaseTooltip {
     const container = this.getContainer();
     if (container) {
       this.resetPosition();
-      container?.remove();
+      container.remove?.();
     }
   }
 
@@ -145,11 +148,11 @@ export class BaseTooltip {
     if (!this.container) {
       const rootContainer =
         this.spreadsheet.options.tooltip.getContainer?.() || document.body;
-      const container = document.createElement('div');
 
+      const container = document.createElement('div');
       rootContainer.appendChild(container);
+
       this.container = container;
-      return this.container;
     }
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;
