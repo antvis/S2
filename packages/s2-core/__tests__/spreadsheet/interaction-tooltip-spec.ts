@@ -30,15 +30,19 @@ describe('Interaction Tooltip Tests', () => {
   });
 
   test('should display tooltip when data cell clicked', () => {
-    const showTooltipWithInfoSpy = jest
-      .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation(() => {});
+    const isContains = () => {
+      return s2.tooltip.container?.classList?.contains(
+        'antv-s2-tooltip-container-show',
+      );
+    };
+
+    expect(isContains()).toBeFalsy();
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    expect(showTooltipWithInfoSpy).toHaveBeenCalledTimes(1);
+    expect(isContains()).toBeTruthy();
     expect(s2.tooltip.container.style.display).not.toEqual('none');
     expect(s2.tooltip.container.style.visibility).not.toEqual('hidden');
   });

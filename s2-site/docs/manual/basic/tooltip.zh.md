@@ -55,7 +55,7 @@ const s2Options = {
 
 ### 操作配置项
 
-通过配置 `operation` 字段在 `Tooltip` 上增加操作项
+通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/zh/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
 
 ```ts
 const s2Options = {
@@ -270,6 +270,22 @@ const s2Options = {
 ```
 
 <playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
+#### 自定义 Tooltip 挂载节点
+
+默认挂载在 `body` 上，可自定义挂载位置
+
+```html
+<div class="container" />
+```
+
+```ts
+const s2Options = {
+  tooltip: {
+    getContainer: () => document.querySelector('.container')
+  }
+}
+```
 
 #### 自定义 Tooltip 类
 

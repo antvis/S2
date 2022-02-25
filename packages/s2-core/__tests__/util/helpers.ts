@@ -117,6 +117,9 @@ export const createMockCellInfo = (
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
+    update: jest.fn(),
+    getActualText: jest.fn(),
+    getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
   };
 
