@@ -1,5 +1,5 @@
 import { each } from 'lodash';
-import { IGroup, IShape } from '@antv/g-base';
+import type { IGroup, IShape } from '@antv/g-canvas';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroupX } from '@/facet/utils';
 import {

@@ -18,7 +18,7 @@ export function accAdd(arg1: number, arg2: number) {
   const [pre2, next2 = ''] = arg2?.toString()?.split('.');
   const r1 = next1?.length || 0;
   const r2 = next2?.length || 0;
-  const m = Math.pow(10, Math.max(r1, r2));
+  const m = 10 ** Math.max(r1, r2);
   const suffix = Array(Math.abs(r1 - r2))
     .fill('0')
     ?.join('');

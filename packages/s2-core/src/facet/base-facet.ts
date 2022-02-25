@@ -1,8 +1,7 @@
-import type { IGroup } from '@antv/g-canvas';
-import type { GestureEvent } from '@antv/g-gesture';
-import { Wheel } from '@antv/g-gesture';
+import type { IElement, IGroup } from '@antv/g-canvas';
+import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
-import * as d3Timer from 'd3-timer';
+import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import { CornerBBox } from './bbox/cornerBBox';
@@ -43,7 +42,6 @@ import {
   DEBUG_VIEW_RENDER,
 } from '@/common/debug';
 import {
-  Formatter,
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
@@ -84,7 +82,7 @@ export abstract class BaseFacet {
 
   protected mobileWheel: Wheel;
 
-  protected timer: d3Timer.Timer;
+  protected timer: Timer;
 
   public hScrollBar: ScrollBar;
 
@@ -435,7 +433,7 @@ export abstract class BaseFacet {
       adjustedScrollY === undefined ? oldOffset[1] : adjustedScrollY,
     ];
     const interpolate = interpolateArray(oldOffset, newOffset);
-    this.timer = d3Timer.timer((elapsed) => {
+    this.timer = timer((elapsed) => {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
@@ -972,7 +970,7 @@ export abstract class BaseFacet {
         }
       });
       const allCells = getAllChildCells(
-        this.panelGroup.getChildren(),
+        this.panelGroup.getChildren() as IElement[],
         DataCell,
       );
       // remove cell from panelCell

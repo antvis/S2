@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer, sleep } from 'tests/util/helpers';
+import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep } from 'lodash';

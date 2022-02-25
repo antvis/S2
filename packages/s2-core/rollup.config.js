@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';

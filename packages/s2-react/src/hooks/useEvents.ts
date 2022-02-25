@@ -3,8 +3,8 @@ import {
   S2Event,
   SpreadSheet,
   TargetCellInfo,
+  GEvent,
 } from '@antv/s2';
-import { Event as GEvent } from '@antv/g-canvas';
 import React from 'react';
 import { BaseSheetComponentProps } from '@/components';
 

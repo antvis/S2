@@ -53,13 +53,14 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "peerDependencies": {
-    "@antv/s2": "^1.0.0",
+    "@antv/s2": ">=1.0.0",
     "antd": ">=4.16.13",
+    "@ant-design/icons": ">=4.7.0",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "ahooks": "^3.1.5",
+    "ahooks": "^3.1.10",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
     "react-beautiful-dnd": "^13.1.0"
@@ -67,9 +68,14 @@
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
     "antd": "^4.16.13",
+    "@ant-design/icons": "^4.7.0",
     "concurrently": "^7.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/react": "17.0.29",
+    "@types/react-dom": "17.0.9"
   },
   "bundlesize": [
     {
