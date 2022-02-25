@@ -143,8 +143,11 @@ export class BaseTooltip {
    */
   protected getContainer(): HTMLElement {
     if (!this.container) {
+      const rootContainer =
+        this.spreadsheet.options.tooltip.getContainer?.() || document.body;
       const container = document.createElement('div');
-      document.body.appendChild(container);
+
+      rootContainer.appendChild(container);
       this.container = container;
       return this.container;
     }

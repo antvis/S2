@@ -40,7 +40,6 @@ function MainLayout() {
 describe('SheetComponent Tooltip Tests', () => {
   beforeEach(() => {
     s2?.destroy();
-    s2 = null;
   });
 
   beforeEach(() => {
