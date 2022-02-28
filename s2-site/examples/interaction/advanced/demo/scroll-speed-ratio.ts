@@ -64,7 +64,7 @@ fetch('../data/basic.json')
       data,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
       height: 300,
       interaction: {
@@ -75,7 +75,7 @@ fetch('../data/basic.json')
       },
     };
 
-    const s2 = new TableSheet(container, s2DataConfig, s2options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();
 

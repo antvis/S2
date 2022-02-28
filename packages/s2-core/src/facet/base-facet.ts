@@ -197,7 +197,7 @@ export abstract class BaseFacet {
   /**
    * 在每次render, 校验scroll offset是否在合法范围中
    * 比如在滚动条已经滚动到100%的状态的前提下：（ maxAvailableScrollOffsetX = colsHierarchy.width - viewportBBox.width ）
-   *     此时changeSize，sheet从 small width 变为 big width
+   *     此时changeSheetSize，sheet从 small width 变为 big width
    *     导致后者 viewport 区域更大，其结果就是后者的 maxAvailableScrollOffsetX 更小
    *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
    */
@@ -1130,8 +1130,6 @@ export abstract class BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        formatter: (field: string): Formatter =>
-          this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });

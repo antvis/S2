@@ -9,7 +9,7 @@ import * as mockDataConfig from '../data/data-issue-368.json';
 import { PivotSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 
-const s2options = {
+const s2Options = {
   width: 800,
   height: 600,
   totals: {
@@ -31,7 +31,7 @@ const s2options = {
 };
 
 describe('Total Cells Rendering Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
   s2.render();
   test('should get right SubTotals position', () => {
     const layoutResult = s2.facet.layoutResult;

@@ -45,7 +45,7 @@ order: 5
 
 ### 复制
 
-利用 S2 的 `S2Event.GLOBAL_COPIED` 事件，我们在用户复制成功时添加了 message 提示用户。
+监听 S2 的 `S2Event.GLOBAL_COPIED` 或者 `onCopied` 事件，在用户复制成功时进行提示。
 
 ### 列隐藏
 

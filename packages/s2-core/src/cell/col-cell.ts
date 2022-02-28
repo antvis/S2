@@ -14,7 +14,6 @@ import {
 import {
   CellBorderPosition,
   DefaultCellTheme,
-  FormatResult,
   IconTheme,
   TextAlign,
   TextBaseline,
@@ -99,16 +98,6 @@ export class ColCell extends HeaderCell {
       textBaseline = 'middle';
     }
     return { ...textStyle, textAlign, textBaseline };
-  }
-
-  protected getFormattedFieldValue(): FormatResult {
-    const { label, key } = this.meta;
-    const formatter = this.headerConfig.formatter(key);
-    const content = formatter(label);
-    return {
-      formattedValue: content,
-      value: label,
-    };
   }
 
   protected getMaxTextWidth(): number {

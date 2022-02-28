@@ -87,7 +87,11 @@ export const pivotSheetDataCfg: S2DataConfig = {
 export const s2Options: S2Options = {
   debug: true,
   width: 600,
-  height: 600,
+  height: 400,
+  hierarchyCollapse: false,
+  interaction: {
+    enableCopy: true,
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -140,12 +140,14 @@ export class PivotSheet extends SpreadSheet {
     };
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
+      meta: data?.node,
     });
 
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
+      meta: data?.node,
     });
   }
 

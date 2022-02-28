@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer, sleep } from 'tests/util/helpers';
+import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep } from 'lodash';
@@ -181,6 +181,8 @@ describe('PivotSheet Tests', () => {
       sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
       expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+      sheet.destroy();
     });
 
     test.each([
@@ -214,6 +216,8 @@ describe('PivotSheet Tests', () => {
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -247,6 +251,8 @@ describe('PivotSheet Tests', () => {
         });
 
         expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -279,6 +285,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(defaultTooltipContent),
         ).toBeFalsy();
+
+        sheet.destroy();
       },
     );
 
@@ -314,6 +322,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(methodTooltipContent),
         ).toBeTruthy();
+
+        sheet.destroy();
       },
     );
 
@@ -361,6 +371,8 @@ describe('PivotSheet Tests', () => {
       expect(customShow).toHaveBeenCalled();
       expect(customHide).toHaveBeenCalled();
       expect(customDestroy).toHaveBeenCalled();
+
+      sheet.destroy();
     });
 
     test('should show invalid custom tooltip warning', () => {
@@ -388,6 +400,8 @@ describe('PivotSheet Tests', () => {
           sheet.tooltip as unknown
         )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
+
+      sheet.destroy();
     });
   });
 
@@ -480,7 +494,7 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should change sheet size', () => {
-    s2.changeSize(1000, 500);
+    s2.changeSheetSize(1000, 500);
 
     expect(s2.options.width).toEqual(1000);
     expect(s2.options.height).toEqual(500);
@@ -586,19 +600,20 @@ describe('PivotSheet Tests', () => {
         node: null,
       };
 
-      const collapsedRows = {
-        [treeRowType.id]: treeRowType.isCollapsed,
+      const collapsedRowsType = {
+        collapsedRows: {
+          [treeRowType.id]: treeRowType.isCollapsed,
+        },
+        meta: null,
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, treeRowType);
 
-      expect(collapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(afterCollapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(s2.options.style.collapsedRows).toEqual(collapsedRows);
+      expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(s2.options.style.collapsedRows).toEqual(
+        collapsedRowsType.collapsedRows,
+      );
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       renderSpy.mockRestore();
@@ -740,11 +755,11 @@ describe('PivotSheet Tests', () => {
   test('should destroy sheet', () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     const hdAdapterDestroySpy = jest
       .spyOn(s2.hdAdapter, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     s2.render(false);
 

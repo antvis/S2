@@ -1,5 +1,5 @@
 ---
-title: category tree
+title: Customize Category Tree
 order: 2
 ---
 

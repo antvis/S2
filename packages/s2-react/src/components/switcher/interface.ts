@@ -16,6 +16,7 @@ export interface SwitcherState {
 }
 
 export interface SwitcherField {
+  allowEmpty?: boolean;
   expandable?: boolean;
   expandText?: string;
   selectable?: boolean;

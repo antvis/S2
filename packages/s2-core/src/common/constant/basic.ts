@@ -34,6 +34,7 @@ export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
 export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 export const KEY_GROUP_FROZEN_ROW_RESIZE_AREA = 'rowFrozenResizeAreaGroup';
+export const KEY_GROUP_FROZEN_SPLIT_LINE = 'frozenSplitLine';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';

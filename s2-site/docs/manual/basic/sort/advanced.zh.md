@@ -27,7 +27,7 @@ const AdvancedSortDemo = () => {
         sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
-        options={s2options}
+        options={s2Options}
         header={{
           advancedSortCfg: {
             open: true,
