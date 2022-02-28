@@ -15,7 +15,7 @@ order: 0
 | options | 透视表属性配置项                                                                                                  | [S2Options](/zh/docs/api/general/S2Options) | | ✓ |
 | partDrillDown | 维度下钻相关属性                                                                                                  | [PartDrillDown](/zh/docs/api/components/drill-down) | |  |
 | adaptive | 是否根据窗口大小自适应                                                                                               | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
-| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination`  属性才会生效）                                                      | `boolean` | `true` | |
+| showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination`  属性才会生效）                                                      | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` | |
 | themeCfg | 自定义透视表主题样式                                                                                                | [ThemeCfg](/zh/docs/api/general/S2Theme) | |  |
 | loading | 控制表格的加载状态                                                                                                 | `boolean` | | |
 | header | 表头配置项                                                                                                     | [HeaderCfgProps](/zh/docs/api/components/header) | | |
