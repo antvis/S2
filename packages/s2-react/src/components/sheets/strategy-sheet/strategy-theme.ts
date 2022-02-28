@@ -5,18 +5,18 @@ export const StrategyTheme: S2Theme = {
   // 表头
   colCell: {
     text: {
-      textAlign: 'center',
+      textAlign: 'right',
     },
     bolderText: {
-      textAlign: 'center',
+      textAlign: 'right',
     },
   },
   dataCell: {
     text: {
-      textAlign: 'left',
+      textAlign: 'right',
     },
     bolderText: {
-      textAlign: 'left',
+      textAlign: 'right',
     },
   },
 };
