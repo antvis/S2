@@ -39,6 +39,10 @@ export const defaultTheme = {
           backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
         },
       },
+      padding: {
+        left: 4,
+        right: 4,
+      },
     },
   },
   dataCell: {
@@ -126,10 +130,10 @@ export const strategyOptions: S2Options = {
           text: {
             field: 'number',
             mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
+              const { meta } = cellInfo;
               const isNormalValue = isNil(value);
 
-              if (colIndex === 0 || isNormalValue) {
+              if (meta.fieldValue.values[0][0] === value || isNormalValue) {
                 return {
                   fill: '#000',
                 };

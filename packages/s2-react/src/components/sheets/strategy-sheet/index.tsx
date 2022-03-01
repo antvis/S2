@@ -8,11 +8,9 @@ import {
   MultiData,
   S2Options,
   S2DataConfig,
-  ThemeCfg,
 } from '@antv/s2';
 import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
-import { StrategyTheme } from './strategy-theme';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
@@ -30,10 +28,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
-
-    const s2ThemeCfg = React.useMemo<ThemeCfg>(() => {
-      return customMerge({}, themeCfg, { theme: StrategyTheme });
-    }, [themeCfg]);
 
     const getCellWidth = React.useCallback(() => {
       const { data } = dataCfg;
@@ -89,7 +83,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         hierarchyType,
         style: {
           colCfg: {
-            height: 38,
             hideMeasureColumn,
           },
           cellCfg: {
@@ -151,7 +144,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     return (
       <BaseSheet
         options={s2Options}
-        themeCfg={s2ThemeCfg}
+        themeCfg={themeCfg}
         dataCfg={s2DataCfg}
         ref={s2Ref}
         {...restProps}

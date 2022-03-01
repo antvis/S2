@@ -26,6 +26,26 @@
 
 # [@antv/s2-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-v1.9.0...@antv/s2-v1.9.1) (2022-02-17)
 
+
+### Bug Fixes
+
+* 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))
+* 明细表增加排序事件回调 close[#1087](https://github.com/antvis/S2/issues/1087) ([#1099](https://github.com/antvis/S2/issues/1099)) ([bfccdc3](https://github.com/antvis/S2/commit/bfccdc31012c3653af25b07b3e6eede029f9a5bb))
+
+# [@antv/s2-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0...@antv/s2-v1.9.0) (2022-02-16)
+
+
+### Features
+
+* :sparkles: 允许用户自定义行头单元格宽度 ([#1135](https://github.com/antvis/S2/issues/1135)) ([f990bc2](https://github.com/antvis/S2/commit/f990bc2df129cc092f2cbfd00b7c2ee5ba8d2977))
+* :sparkles: 支持覆盖默认icon ([#1130](https://github.com/antvis/S2/issues/1130)) ([9d48bf4](https://github.com/antvis/S2/commit/9d48bf48fad5dec33fee94244a6f0aacf2457162))
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([407b495](https://github.com/antvis/S2/commit/407b495d465ec9ff8d52f5d1c21a100370bd2a7e))
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([bc44978](https://github.com/antvis/S2/commit/bc44978c56321e8e7d14728112edf07e24e2318a))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([259955d](https://github.com/antvis/S2/commit/259955d29ee1ac1395761add9520a78dbe5e6c6f))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([b438554](https://github.com/antvis/S2/commit/b438554a193e7df94edea2334268daa3bb2e0577))
+
+# [@antv/s2-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-v1.9.0...@antv/s2-v1.9.1) (2022-02-17)
+
 ### Bug Fixes
 
 * 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))

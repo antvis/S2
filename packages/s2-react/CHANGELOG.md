@@ -19,6 +19,33 @@
 
 # [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
 
+
+### Bug Fixes
+
+* **header:** header props types ([#1096](https://github.com/antvis/S2/issues/1096)) ([e85c5df](https://github.com/antvis/S2/commit/e85c5df5b2c3354718b8b27cef847c4ccc52115a))
+* 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))
+
+# [@antv/s2-react-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0...@antv/s2-react-v1.9.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([43b469a](https://github.com/antvis/S2/commit/43b469ac88fe712723e4032741a8aabdf5fb02c2))
+* **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([9866de3](https://github.com/antvis/S2/commit/9866de31a72644e19373436f356c4791caee6d1e))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([9a78d71](https://github.com/antvis/S2/commit/9a78d715083686f8d69c358d9a9b95c748cc8af7))
+
+
+### Features
+
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([407b495](https://github.com/antvis/S2/commit/407b495d465ec9ff8d52f5d1c21a100370bd2a7e))
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([bc44978](https://github.com/antvis/S2/commit/bc44978c56321e8e7d14728112edf07e24e2318a))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([259955d](https://github.com/antvis/S2/commit/259955d29ee1ac1395761add9520a78dbe5e6c6f))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([b438554](https://github.com/antvis/S2/commit/b438554a193e7df94edea2334268daa3bb2e0577))
+* 维度切换组件增加allowEmpty配置 close [#533](https://github.com/antvis/S2/issues/533) ([#1136](https://github.com/antvis/S2/issues/1136)) ([1ddc9c0](https://github.com/antvis/S2/commit/1ddc9c0f65d166f63c3ed9c0ecf34a0fae75f4b1))
+
+# [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
+
 ### Bug Fixes
 
 * **header:** header props types ([#1096](https://github.com/antvis/S2/issues/1096)) ([e85c5df](https://github.com/antvis/S2/commit/e85c5df5b2c3354718b8b27cef847c4ccc52115a))
