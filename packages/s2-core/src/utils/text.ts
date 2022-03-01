@@ -9,7 +9,7 @@ import {
   trim,
   values,
 } from 'lodash';
-import { DefaultCellTheme } from '@/common/interface/theme';
+import { DefaultCellTheme, TextAlign } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
 import {
@@ -276,9 +276,21 @@ export const isUpDataValue = (value: number | string): boolean => {
   return !!value && !trim(value).startsWith('-');
 };
 
-const calX = (x: number, paddingRight: number, total?: number) => {
+const calX = (
+  x: number,
+  paddingRight: number,
+  total?: number,
+  textAlign = 'left',
+) => {
   const extra = total || 0;
-  return x + paddingRight / 2 + extra;
+  if (textAlign === 'left') {
+    return x + paddingRight / 2 + extra;
+  }
+  if (textAlign === 'right') {
+    return x - paddingRight / 2 - extra;
+  }
+  // TODO 兼容 textAlign 为居中
+  return x;
 };
 
 const getTextStyle = (
@@ -312,14 +324,15 @@ export const drawObjectText = (
   multiData?: MultiData,
   disabledConditions?: boolean,
 ) => {
-  const { x, y, height, width } = cell.getContentArea();
+  const { x } = cell.getTextAndIconPosition().text;
+  const { y, height, width } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
   const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-
+  const { textAlign } = dataCellStyle.text;
   const padding = dataCellStyle.cell.padding;
   const totalTextWidth = width - padding.left - padding.right;
 
@@ -369,7 +382,7 @@ export const drawObjectText = (
         ? totalTextWidth * (widthPercentCfg[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
-      curX = calX(x, padding.right, totalWidth);
+      curX = calX(x, padding.right, totalWidth, textAlign);
       totalWidth += curWidth;
       renderText(
         cell,
