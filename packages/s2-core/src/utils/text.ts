@@ -1,10 +1,12 @@
 import {
+  clone,
   isArray,
   isEmpty,
   isNil,
   isNumber,
   isString,
   memoize,
+  reverse,
   toString,
   trim,
   values,
@@ -308,6 +310,7 @@ const getTextStyle = (
     fill = textCondition?.mapping(data, {
       rowIndex,
       colIndex,
+      meta,
     }).fill;
   }
   return { ...textStyle, fill };
@@ -368,8 +371,13 @@ export const drawObjectText = (
   for (let i = 0; i < textValues.length; i += 1) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
-    for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j];
+    const measures = clone(textValues[i]);
+    if (textAlign === 'right') {
+      reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
+    }
+
+    for (let j = 0; j < measures.length; j += 1) {
+      curText = measures[j];
       const curStyle = getTextStyle(
         i,
         j,
