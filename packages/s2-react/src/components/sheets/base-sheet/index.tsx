@@ -38,23 +38,28 @@ export const BaseSheet = React.forwardRef(
 
     return (
       <React.StrictMode>
-        <Spin spinning={loading}>
-          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
-            {header && (
-              <Header
-                {...header}
-                sheet={s2Ref.current}
-                width={options.width}
-                dataCfg={getSafetyDataConfig(dataCfg)}
-                options={getSheetComponentOptions(options)}
+        <div className={`${S2_PREFIX_CLS}-spin`}>
+          <Spin spinning={loading}>
+            <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+              {header && (
+                <Header
+                  {...header}
+                  sheet={s2Ref.current}
+                  width={options.width}
+                  dataCfg={getSafetyDataConfig(dataCfg)}
+                  options={getSheetComponentOptions(options)}
+                />
+              )}
+              <div
+                ref={containerRef}
+                className={`${S2_PREFIX_CLS}-container`}
               />
-            )}
-            <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-            {showPagination && (
-              <S2Pagination {...pagination} pagination={options.pagination} />
-            )}
-          </div>
-        </Spin>
+              {showPagination && (
+                <S2Pagination {...pagination} pagination={options.pagination} />
+              )}
+            </div>
+          </Spin>
+        </div>
       </React.StrictMode>
     );
   },
