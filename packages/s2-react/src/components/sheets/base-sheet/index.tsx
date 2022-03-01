@@ -6,6 +6,7 @@ import {
   getSafetyDataConfig,
   SpreadSheet,
 } from '@antv/s2';
+import { get } from 'lodash';
 import { Header } from '@/components/header';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 import { S2Pagination } from '@/components/pagination';
@@ -55,7 +56,12 @@ export const BaseSheet = React.forwardRef(
                 className={`${S2_PREFIX_CLS}-container`}
               />
               {showPagination && (
-                <S2Pagination {...pagination} pagination={options.pagination} />
+                <S2Pagination
+                  {...pagination}
+                  pagination={options.pagination}
+                  onChange={get(showPagination, 'onChange')}
+                  onShowSizeChange={get(showPagination, 'onShowSizeChange')}
+                />
               )}
             </div>
           </Spin>
