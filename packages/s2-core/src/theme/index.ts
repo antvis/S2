@@ -109,17 +109,11 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            borderColor: '#000000',
-            borderOpacity: 1,
-            borderWidth: 1,
             backgroundColor: basicColors[2],
             backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
-            borderColor: '#000000',
-            borderOpacity: 1,
-            borderWidth: 1,
             backgroundColor: basicColors[2],
             backgroundOpacity: 0.6,
           },
