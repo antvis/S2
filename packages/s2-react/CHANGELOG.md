@@ -1,3 +1,26 @@
+# [@antv/s2-react-v1.11.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.10.0...@antv/s2-react-v1.11.0) (2022-03-01)
+
+
+### Bug Fixes
+
+* :bug: 修复s2-react组件污染全局样式问题 close[#1144](https://github.com/antvis/S2/issues/1144) ([#1149](https://github.com/antvis/S2/issues/1149)) ([6bad1ed](https://github.com/antvis/S2/commit/6bad1ed40300d0f3acaeeb787ceb8735c0877e08))
+* :bug: 趋势分析表主题调优 ([#1148](https://github.com/antvis/S2/issues/1148)) ([4335c7c](https://github.com/antvis/S2/commit/4335c7ca2b00ed8c5e495bf5b8883a7a44b3ace6))
+* **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([009449f](https://github.com/antvis/S2/commit/009449f1d7aa3dcb78d93bdc57e337fd7e6c170f))
+* **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([333c3ac](https://github.com/antvis/S2/commit/333c3ac596e90ada8ef7fbfb80082deb99bfd523))
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([62e94af](https://github.com/antvis/S2/commit/62e94af75473f64aea606d831baa112d5e85cc4e))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([300a253](https://github.com/antvis/S2/commit/300a2538446a07ebfcd0c6355966e89c925529a0))
+
+
+### Features
+
+* :sparkles: 多指标支持切换文本水对齐方式 ([#1146](https://github.com/antvis/S2/issues/1146)) ([32cbf38](https://github.com/antvis/S2/commit/32cbf38786b27ededbf32b996e0ddc7e0439a963))
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([988d356](https://github.com/antvis/S2/commit/988d3563ffa23b195fd90fd9ff45cb16dab10a76))
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([d770a99](https://github.com/antvis/S2/commit/d770a997ae88d9d7f2167aab52d07a5b6de82db6))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([c266e02](https://github.com/antvis/S2/commit/c266e02d8c6665dfda2d469dcfdb10ed3cffd81c))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([8aa4778](https://github.com/antvis/S2/commit/8aa4778186e23d695752400c1971e89b39e8978a))
+* 维度切换组件增加allowEmpty配置 close [#533](https://github.com/antvis/S2/issues/533) ([#1136](https://github.com/antvis/S2/issues/1136)) ([7250bac](https://github.com/antvis/S2/commit/7250bac8267171a78f1b38b1a6f99dbbff15d98c))
+* 透出s2自带翻页器change事件 ([#1145](https://github.com/antvis/S2/issues/1145)) ([0dd305e](https://github.com/antvis/S2/commit/0dd305ef4e75a7d61d8ca1b6d97da1763069b0cd))
+
 # [@antv/s2-react-v1.10.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.1...@antv/s2-react-v1.10.0) (2022-02-28)
 
 
