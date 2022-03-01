@@ -39,33 +39,28 @@ export const BaseSheet = React.forwardRef(
 
     return (
       <React.StrictMode>
-        <div className={`${S2_PREFIX_CLS}-spin`}>
-          <Spin spinning={loading}>
-            <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
-              {header && (
-                <Header
-                  {...header}
-                  sheet={s2Ref.current}
-                  width={options.width}
-                  dataCfg={getSafetyDataConfig(dataCfg)}
-                  options={getSheetComponentOptions(options)}
-                />
-              )}
-              <div
-                ref={containerRef}
-                className={`${S2_PREFIX_CLS}-container`}
+        <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
+          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+            {header && (
+              <Header
+                {...header}
+                sheet={s2Ref.current}
+                width={options.width}
+                dataCfg={getSafetyDataConfig(dataCfg)}
+                options={getSheetComponentOptions(options)}
               />
-              {showPagination && (
-                <S2Pagination
-                  {...pagination}
-                  pagination={options.pagination}
-                  onChange={get(showPagination, 'onChange')}
-                  onShowSizeChange={get(showPagination, 'onShowSizeChange')}
-                />
-              )}
-            </div>
-          </Spin>
-        </div>
+            )}
+            <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
+            {showPagination && (
+              <S2Pagination
+                {...pagination}
+                pagination={options.pagination}
+                onChange={get(showPagination, 'onChange')}
+                onShowSizeChange={get(showPagination, 'onShowSizeChange')}
+              />
+            )}
+          </div>
+        </Spin>
       </React.StrictMode>
     );
   },
