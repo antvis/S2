@@ -15,8 +15,6 @@ import {
   CellBorderPosition,
   DefaultCellTheme,
   IconTheme,
-  TextAlign,
-  TextBaseline,
   TextTheme,
 } from '@/common/interface';
 import { AreaRange } from '@/common/interface/scroll';
@@ -24,7 +22,8 @@ import { ColHeaderConfig } from '@/facet/header/col';
 import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
-  getTextAndIconPositionWhenHorizontalScrolling,
+  getTextAndIconAreaRangeWhenHorizontalScrolling,
+  adjustColHeaderScrollingTextPostion,
 } from '@/utils/cell/cell';
 import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
@@ -80,24 +79,26 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  protected getTextStyle(): TextTheme {
+  private getOriginalTextStyle(): TextTheme {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText } = this.getStyle();
-    const textStyle = isLeaf && !isTotals ? text : bolderText;
+    return isLeaf && !isTotals ? text : bolderText;
+  }
+
+  protected getTextStyle(): TextTheme {
+    const { isLeaf } = this.meta;
+    const textStyle = this.getOriginalTextStyle();
     const hideMeasureColumn =
       this.spreadsheet.options.style.colCfg.hideMeasureColumn;
-    let textAlign: TextAlign;
-    let textBaseline: TextBaseline;
 
     if (isLeaf && !hideMeasureColumn) {
       // 最后一个层级的非维值指标单元格，与 dataCell 对齐方式保持一致
-      textAlign = this.theme.dataCell.text.textAlign;
-      textBaseline = this.theme.dataCell.text.textBaseline;
-    } else {
-      textAlign = 'center';
-      textBaseline = 'middle';
+      return textStyle;
     }
-    return { ...textStyle, textAlign, textBaseline };
+
+    // 为方便 getTextAndIconAreaRangeWhenHorizontalScrolling 计算文字位置
+    // textAlign 固定为 center
+    return { ...textStyle, textAlign: 'center', textBaseline: 'middle' };
   }
 
   protected getMaxTextWidth(): number {
@@ -143,21 +144,42 @@ export class ColCell extends HeaderCell {
       ).text;
     }
 
-    // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑
+    /**
+     *  p(x, y)
+     *  +----------------------+            x
+     *  |                    +----------------
+     *  | viewport           | |ColCell  |
+     *  |                    |-|---------+
+     *  +--------------------|-+
+     *                       |
+     *                     y |
+     *
+     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
+     *
+     */
     const viewport: AreaRange = {
       start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
+    const iconCount = this.getActionIconsCount();
     const textAndIconSpace =
       this.actualTextWidth +
       this.getActionIconsWidth() -
-      iconStyle.margin.right;
+      (iconCount ? iconStyle.margin.right : 0);
 
-    const startX = getTextAndIconPositionWhenHorizontalScrolling(
+    const textAreaRange = getTextAndIconAreaRangeWhenHorizontalScrolling(
       viewport,
       { start: contentBox.x, width: contentBox.width },
       textAndIconSpace, // icon position 默认为 right
+    );
+
+    // textAreaRange.start 是以文字样式为 center 计算出的文字绘制点
+    // 此处按实际样式(left or right)调整
+    const startX = adjustColHeaderScrollingTextPostion(
+      textAreaRange.start,
+      textAreaRange.width - textAndIconSpace,
+      this.getOriginalTextStyle().textAlign,
     );
 
     const textY = contentBox.y + contentBox.height / 2;

@@ -8,6 +8,7 @@ import {
   Padding,
   TextAlignCfg,
   TextBaseline,
+  TextAlign,
 } from '@/common/interface';
 
 /**
@@ -178,7 +179,7 @@ export const getTextPosition = (
 ) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
 
 // 获取在列头水平滚动时，text坐标，使其始终在可视区域的格子中处于居中位置
-export const getTextAndIconPositionWhenHorizontalScrolling = (
+export const getTextAndIconAreaRangeWhenHorizontalScrolling = (
   viewport: AreaRange,
   content: AreaRange,
   textWidth: number,
@@ -187,24 +188,59 @@ export const getTextAndIconPositionWhenHorizontalScrolling = (
   const viewportEnd = viewport.start + viewport.width;
 
   let position: number;
+  let availableContentWidth: number;
   if (content.start <= viewport.start && contentEnd >= viewportEnd) {
+    /**
+     *     +----------------------+
+     *     |      viewport        |
+     *  +--|----------------------|--+
+     *  |  |      ColCell         |  |
+     *  +--|----------------------|--+
+     *     +----------------------+
+     */
     position = viewport.start + viewport.width / 2;
+    availableContentWidth = viewport.width;
   } else if (content.start <= viewport.start) {
+    /**
+     *         +-------------------+
+     *  +------|----+              |
+     *  |  ColCell  |   viewport   |
+     *  +------|----+              |
+     *         +-------------------+
+     */
     const restWidth = content.width - (viewport.start - content.start);
     position =
       restWidth < textWidth
         ? contentEnd - textWidth / 2
         : contentEnd - restWidth / 2;
+    availableContentWidth = restWidth;
   } else if (contentEnd >= viewportEnd) {
+    /**
+     *   +-------------------+
+     *   |            +------|----+
+     *   | viewport   |  ColCell  |
+     *   |            +------|----+
+     *   +-------------------+
+     */
     const restWidth = content.width - (contentEnd - viewportEnd);
     position =
       restWidth < textWidth
         ? content.start + textWidth / 2
         : content.start + restWidth / 2;
+    availableContentWidth = restWidth;
   } else {
+    /**
+     *   +--------------------------+
+     *   |  +-----------+           |
+     *   |  |  ColCell  |  viewport |
+     *   |  +-----------+           |
+     *   +--------------------------+
+     */
     position = content.start + content.width / 2;
+    availableContentWidth = content.width;
   }
-  return position;
+
+  return { start: position, width: availableContentWidth } as AreaRange;
 };
 
 export const getBorderPositionAndStyle = (
@@ -281,4 +317,32 @@ export const getBorderPositionAndStyle = (
     },
     style: borderStyle,
   };
+};
+
+/**
+ * 根据文字样式调整绘制的起始点（底层g始终使用 center 样式绘制）
+ * @param startX
+ * @param restWidth
+ * @param textAlign
+ * @returns
+ */
+export const adjustColHeaderScrollingTextPostion = (
+  startX: number,
+  restWidth: number,
+  textAlign: TextAlign,
+) => {
+  if (restWidth <= 0) {
+    // 没有足够的空间用于调整
+    return startX;
+  }
+
+  switch (textAlign) {
+    case 'left':
+      return startX - restWidth / 2;
+    case 'right':
+      return startX + restWidth / 2;
+    case 'center':
+    default:
+      return startX;
+  }
 };
