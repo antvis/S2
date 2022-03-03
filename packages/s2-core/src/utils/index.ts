@@ -13,3 +13,4 @@ export * from './tooltip';
 export * from './get-classnames';
 export * from './cell/cell';
 export * from './cell/data-cell';
+export * from './sort-action';

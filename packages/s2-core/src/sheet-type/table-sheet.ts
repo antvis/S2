@@ -174,14 +174,7 @@ export class TableSheet extends SpreadSheet {
           sortMethod: key as unknown as SortParam['sortMethod'],
         };
         // 触发排序事件
-        this.emit(S2Event.RANGE_SORT, [sortParam]);
-
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevOtherSortParams, sortParam],
-        });
-
-        this.render();
+        this.emit(S2Event.RANGE_SORT, [...prevOtherSortParams, sortParam]);
       },
       menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
     };

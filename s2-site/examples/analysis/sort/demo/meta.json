@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "table-sort.ts",
+      "filename": "table-sort.tsx",
       "title": {
         "zh": "明细表排序",
         "en": "Table Sort"

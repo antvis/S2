@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
-import { Data, DataItem } from '@/common/interface/s2DataConfig';
+import { Data } from '@/common/interface/s2DataConfig';
 import { FilterParam, SortParams, Style } from '@/common/interface/basic';
 import {
   HiddenColumnsInfo,
@@ -10,7 +10,7 @@ import {
   CellScrollPosition,
 } from '@/common/interface';
 
-import { S2Event, SortMethodType } from '@/common/constant';
+import { S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
 
@@ -19,12 +19,6 @@ export type CollapsedRowsType = {
     [x: number]: any;
   };
   meta?: Node;
-};
-
-export type TableSortParams = {
-  sortKey: string;
-  sortMethod: SortMethodType;
-  sortBy?: (data: Data) => DataItem;
 };
 
 export type RowCellCollapseTreeRowsType = {
@@ -62,7 +56,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
 
   /** ================ Sort ================  */
-  [S2Event.RANGE_SORT]: (info: TableSortParams | SortParams) => void;
+  [S2Event.RANGE_SORT]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: SortedHandler | CanvasEventHandler;
 
   /** ================ Filter ================  */
