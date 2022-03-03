@@ -23,6 +23,7 @@ import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
   getTextAndIconAreaRangeWhenHorizontalScrolling,
+  adjustColHeaderScrollingViewport,
   adjustColHeaderScrollingTextPostion,
 } from '@/utils/cell/cell';
 import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
@@ -147,12 +148,13 @@ export class ColCell extends HeaderCell {
     /**
      *  p(x, y)
      *  +----------------------+            x
-     *  |                    +----------------
+     *  |                    +--------------->
      *  | viewport           | |ColCell  |
      *  |                    |-|---------+
      *  +--------------------|-+
      *                       |
      *                     y |
+     *                       v
      *
      * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
      *
@@ -162,6 +164,13 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
+    const { textAlign } = this.getOriginalTextStyle();
+    const adjustedViewport = adjustColHeaderScrollingViewport(
+      viewport,
+      textAlign,
+      this.getStyle().cell?.padding,
+    );
+
     const iconCount = this.getActionIconsCount();
     const textAndIconSpace =
       this.actualTextWidth +
@@ -169,7 +178,7 @@ export class ColCell extends HeaderCell {
       (iconCount ? iconStyle.margin.right : 0);
 
     const textAreaRange = getTextAndIconAreaRangeWhenHorizontalScrolling(
-      viewport,
+      adjustedViewport,
       { start: contentBox.x, width: contentBox.width },
       textAndIconSpace, // icon position 默认为 right
     );
@@ -179,7 +188,7 @@ export class ColCell extends HeaderCell {
     const startX = adjustColHeaderScrollingTextPostion(
       textAreaRange.start,
       textAreaRange.width - textAndIconSpace,
-      this.getOriginalTextStyle().textAlign,
+      textAlign,
     );
 
     const textY = contentBox.y + contentBox.height / 2;
