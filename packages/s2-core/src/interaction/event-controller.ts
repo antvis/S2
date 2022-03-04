@@ -118,6 +118,13 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_MOVE,
+      (event: MouseEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+      },
+    );
   }
 
   private getTargetType() {

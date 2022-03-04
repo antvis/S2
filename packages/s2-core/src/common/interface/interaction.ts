@@ -71,6 +71,8 @@ export interface BrushPoint {
   colIndex: number;
   x: number;
   y: number;
+  scrollX?: number;
+  scrollY?: number;
 }
 
 export interface BrushRange {
@@ -89,6 +91,15 @@ export type Intercept =
   | InterceptType.MULTI_SELECTION
   | InterceptType.RESIZE;
 
+export interface BrushAutoScrollConfigItem {
+  value: number;
+  scroll: boolean;
+}
+
+export interface BrushAutoScrollConfig {
+  x: BrushAutoScrollConfigItem;
+  y: BrushAutoScrollConfigItem;
+}
 export interface ScrollSpeedRatio {
   horizontal?: number;
   vertical?: number;
