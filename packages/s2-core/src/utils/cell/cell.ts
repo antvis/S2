@@ -179,8 +179,17 @@ export const getTextPosition = (
   textCfg: TextAlignCfg,
 ) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
 
-// 获取在列头水平滚动时，text坐标，使其始终在可视区域的格子中处于居中位置
-export const getTextAndIconAreaRangeWhenHorizontalScrolling = (
+/**
+ * 在给定视窗和单元格的情况下，计算单元格文字实际绘制位置
+ * 计算遵循原则：
+ * 1. 若可视范围小，尽可能多展示文字
+ * 2. 若可视范围大，居中展示文字
+ * @param viewport 视窗坐标信息
+ * @param content content 列头单元格 content 区域坐标信息
+ * @param textWidth 文字实际绘制区域宽度（含icon）
+ * @returns 文字绘制位置
+ */
+export const getTextAreaRange = (
   viewport: AreaRange,
   content: AreaRange,
   textWidth: number,

@@ -5,7 +5,7 @@ import {
   getContentArea,
   getMaxTextWidth,
   getTextAndFollowingIconPosition,
-  getTextAndIconAreaRangeWhenHorizontalScrolling,
+  getTextAreaRange,
   getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
 
@@ -415,7 +415,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   const textWidth = 20;
   test('should get center position when content is larger than viewport', () => {
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 20,
           width: 50,
@@ -429,7 +429,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   test('should get center position when content is on the left of viewport', () => {
     // reset width is enough
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 50,
           width: 100,
@@ -441,7 +441,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     // reset width isn't enough
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 90,
           width: 100,
@@ -455,7 +455,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   test('should get center position when content is on the right of viewport', () => {
     // reset width is enough
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -50,
           width: 100,
@@ -467,7 +467,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     // reset width isn't enough
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -90,
           width: 100,
@@ -480,7 +480,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
   test('should get center position when content is inside of viewport', () => {
     expect(
-      getTextAndIconAreaRangeWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -50,
           width: 200,

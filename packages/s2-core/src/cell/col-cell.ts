@@ -22,7 +22,7 @@ import { ColHeaderConfig } from '@/facet/header/col';
 import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
-  getTextAndIconAreaRangeWhenHorizontalScrolling,
+  getTextAreaRange,
   adjustColHeaderScrollingViewport,
   adjustColHeaderScrollingTextPostion,
 } from '@/utils/cell/cell';
@@ -97,7 +97,7 @@ export class ColCell extends HeaderCell {
       return textStyle;
     }
 
-    // 为方便 getTextAndIconAreaRangeWhenHorizontalScrolling 计算文字位置
+    // 为方便 getTextAreaRange 计算文字位置
     // textAlign 固定为 center
     return { ...textStyle, textAlign: 'center', textBaseline: 'middle' };
   }
@@ -177,7 +177,7 @@ export class ColCell extends HeaderCell {
       this.getActionIconsWidth() -
       (iconCount ? iconStyle.margin.right : 0);
 
-    const textAreaRange = getTextAndIconAreaRangeWhenHorizontalScrolling(
+    const textAreaRange = getTextAreaRange(
       adjustedViewport,
       { start: contentBox.x, width: contentBox.width },
       textAndIconSpace, // icon position 默认为 right
