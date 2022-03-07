@@ -184,11 +184,11 @@ const s2DataConfig = {
 
 #### 2. 计算出数据
 
-可以給 `totals` 下的 `row` 、 `col` 分别配置属性 `calcTotals` 、 `calcSubTotals` 来实现计算汇总数据
+可以给 `totals` 下的 `row` 、 `col` 分别配置属性 `calcTotals` 、 `calcSubTotals` 来实现计算汇总数据
 
 ##### 1. 配置聚合方式
 
-通过配置 `aggregation` 来实现，聚合方式目前只支持 `SUM` （求和）
+通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）和 `AVG` （算术平均） 。
 
 ```typescript
 const s2Options = {

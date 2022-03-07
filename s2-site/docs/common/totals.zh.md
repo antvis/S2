@@ -34,5 +34,5 @@ object **可选**,_default：null_ 功能描述： 计算小计总计配置
 
 | 参数        | 说明       | 类型                                                                 | 必选  | 默认值 |
 | ----------- | ---------- | -------------------------------------------------------------------- | :---: | ------ |
-| aggregation | 聚合方式   | `SUM`                                                                |       |        |
+| aggregation | 聚合方式   | `EAggregation.SUM` \| `EAggregation.MIN` \| `EAggregation.MAX` \| `EAggregation.AVG`                                                                |       |        |
 | calcFunc    | 自定义方法 | `(query: Record<string, any>, arr: Record<string, any>[]) => number` |       |        |
