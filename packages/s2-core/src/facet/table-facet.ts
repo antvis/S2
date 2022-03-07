@@ -73,7 +73,7 @@ export class TableFacet extends BaseFacet {
         params.map((item: TableSortParam) => ({
           ...item,
           // 兼容之前 sortKey 的用法
-          sortFieldId: item.sortKey ? item.sortKey : item.sortFieldId,
+          sortFieldId: item.sortKey ??  item.sortFieldId,  
         })),
       );
       s2.setDataCfg(s2.dataCfg);
