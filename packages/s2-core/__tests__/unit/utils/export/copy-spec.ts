@@ -144,10 +144,12 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, {
-      sortKey: 'number',
-      sortMethod: 'DESC' as SortMethodType,
-    });
+    s2.emit(S2Event.RANGE_SORT, [
+      {
+        sortFieldId: 'number',
+        sortMethod: 'DESC' as SortMethodType,
+      },
+    ]);
 
     const cell = s2.interaction
       .getAllCells()

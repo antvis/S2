@@ -14,13 +14,13 @@ import type {
   SpreadSheetFacetCfg,
   ViewMeta,
   ResizeActiveOptions,
+  TableSortParam,
 } from '../common/interface';
 import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_FROZEN_SPLIT_LINE,
   SeriesNumberHeader,
   TableRowCell,
-  TableSortParams,
 } from '..';
 import {
   calculateFrozenCornerCells,
@@ -86,14 +86,20 @@ export class TableFacet extends BaseFacet {
 
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, (sortParams) => {
-      const { sortKey, sortMethod, sortBy } = sortParams as TableSortParams;
-      set(s2.dataCfg, 'sortParams', [
-        {
-          sortFieldId: sortKey,
-          sortMethod,
-          sortBy,
-        },
-      ]);
+      let params = sortParams;
+      // 兼容之前 sortParams 为对象的用法
+      if (!Array.isArray(sortParams)) {
+        params = [sortParams];
+      }
+      set(
+        s2.dataCfg,
+        'sortParams',
+        params.map((item: TableSortParam) => ({
+          ...item,
+          // 兼容之前 sortKey 的用法
+          sortFieldId: item.sortKey ??  item.sortFieldId,  
+        })),
+      );
       s2.setDataCfg(s2.dataCfg);
       s2.render(true);
       s2.emit(

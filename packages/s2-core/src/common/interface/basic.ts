@@ -168,7 +168,7 @@ export interface SortFuncParam extends Sort {
 
 export interface SortParam extends Sort {
   /** 自定义func */
-  sortFunc?: (v: SortFuncParam) => Array<string>;
+  sortFunc?: (v: SortFuncParam) => Array<string | Record<string, any>>;
 }
 
 export interface FilterParam {
@@ -461,4 +461,8 @@ export interface PartDrillDownFieldInLevel {
   drillField: string;
   // 下钻的层级
   drillLevel: number;
+}
+
+export interface TableSortParam extends SortParam {
+  sortKey: string;
 }

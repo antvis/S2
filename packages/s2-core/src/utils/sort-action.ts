@@ -66,7 +66,10 @@ const mergeDataWhenASC = (
 export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam } = params;
   const { sortFunc } = sortParam;
-  return sortFunc({ data: measureValues, ...sortParam }) || originValues;
+  return (
+    (sortFunc({ data: measureValues, ...sortParam }) as string[]) ||
+    originValues
+  );
 };
 
 export const sortByCustom = (params: SortActionParams): string[] => {
