@@ -45,7 +45,6 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
-  EAggregation,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import {
@@ -62,7 +61,7 @@ import {
   deleteMetaById,
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
-import { getDataSumByField } from '@/utils/number-calculate';
+import { calcActionByType } from '@/utils/number-calculate';
 import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
@@ -385,15 +384,19 @@ export class PivotDataSet extends BaseDataSet {
         this.getTotalStatus(query),
         this.spreadsheet.options?.totals,
       ) || {};
+    const calcAction = calcActionByType[aggregation];
+
     // 前端计算汇总值
-    if (aggregation || calcFunc) {
+    if (calcAction || calcFunc) {
       const data = this.getMultiData(query);
       let totalValue: number;
+
       if (calcFunc) {
         totalValue = calcFunc(query, data);
-      } else if (aggregation === EAggregation.SUM) {
-        totalValue = getDataSumByField(data, VALUE_FIELD);
+      } else if (calcAction) {
+        totalValue = calcAction(data, VALUE_FIELD);
       }
+
       return {
         ...query,
         [VALUE_FIELD]: totalValue,

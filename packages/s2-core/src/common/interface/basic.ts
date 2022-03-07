@@ -108,9 +108,12 @@ export interface TotalsStatus {
 
 export enum EAggregation {
   SUM = 'SUM',
+  MIN = 'MIN',
+  MAX = 'MAX',
+  AVG = 'AVG',
 }
 
-export type Aggregation = EAggregation.SUM; // 目前只有求和
+export type Aggregation = EAggregation;
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
