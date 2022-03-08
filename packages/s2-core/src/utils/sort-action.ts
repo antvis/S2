@@ -1,4 +1,4 @@
-import { keys, has, map, toUpper, endsWith, uniq } from 'lodash';
+import { keys, has, map, toUpper, endsWith, uniq, isEmpty } from 'lodash';
 import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
@@ -10,7 +10,7 @@ export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
 /**
- * 执行排序
+ * 执行排序: zc-todo: 排序是在这里执行的。
  * @param list - 待排序数组
  * @param sortMethod - 升、降序
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
@@ -162,23 +162,45 @@ export const processSort = (params: SortActionParams): string[] => {
   return result;
 };
 
-export const handleSortAction = (params: SortActionParams): string[] => {
-  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
+export function getSortByMeasureValues(params: SortActionParams) {
+  const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    // 按指标只排序 - 最内侧的行列不需要汇总后排序
+    return dataSet.getMultiData(query);
+  }
+  // 按小计，总计排序
+  const isRow =
+    fields?.columns?.includes(sortFieldId) &&
+    keys(query)?.length === 1 &&
+    has(query, EXTRA_FIELD);
+  // 1. 首先判断是 前端排序还是后端排序
+  // 2. 对那部分内容进行排序，就返回那部分内容的数据。
+  // 这里主要的问题是： 对前端计算的内容进行排序，没有加入到 indexesData 中，返回了 [].
+  // 这里肯定有问题 todo-zc?
+  // 传入的 data 中包含小计数据
+  const measureValues = dataSet.getMultiData(query, true, isRow); // 感觉 getMultiData 和  measureValues 类型都不同，怎么会赋值给同一个变量
+
+  if (!measureValues || isEmpty(measureValues)) {
+    // 按总计排序
+    return map(originValues, (originValue) => {
+      return dataSet.getTotalValue({
+        ...query,
+        [sortFieldId]: originValue,
+      });
+    });
+  }
+  return measureValues;
+}
+
+export const handleSortAction = (params: SortActionParams): string[] => {
+  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
   let measureValues;
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
-    if (sortByMeasure === TOTAL_VALUE) {
-      // 按小计，总计排序
-      const isRow =
-        fields?.columns?.includes(sortFieldId) &&
-        keys(query)?.length === 1 &&
-        has(query, EXTRA_FIELD);
-      measureValues = dataSet.getMultiData(query, true, isRow);
-    } else {
-      measureValues = dataSet.getMultiData(query);
-    }
+    measureValues = getSortByMeasureValues(params);
   } else {
     // 其他都是维度本身的排序方式
     measureValues = originValues;
