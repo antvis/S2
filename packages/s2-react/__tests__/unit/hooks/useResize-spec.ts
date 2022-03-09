@@ -23,6 +23,41 @@ describe('useResize tests', () => {
     jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
   });
 
+  test('should rerender when option width or height changed and adaptive disable', () => {
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+
+    const { rerender } = renderHook(() =>
+      useResize({
+        container,
+        wrapper,
+        s2,
+        adaptive: false,
+        optionWidth: s2Options.width,
+        optionHeight: s2Options.height,
+      }),
+    );
+
+    expect(s2.options.width).toEqual(s2Options.width);
+    expect(s2.options.height).toEqual(s2Options.height);
+
+    act(() => {
+      s2.setOptions({ width: 300, height: 400 });
+    });
+
+    rerender();
+
+    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    expect(s2.options.width).toEqual(300);
+    expect(s2.options.height).toEqual(400);
+
+    expect(canvas.style.width).toEqual(`200px`);
+    expect(canvas.style.height).toEqual(`200px`);
+
+    expect(renderSpy).toHaveBeenCalled();
+
+    renderSpy.mockRestore();
+  });
+
   test('should cannot change table size when width or height updated and enable adaptive', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
     const changeSizeSpy = jest
@@ -35,6 +70,8 @@ describe('useResize tests', () => {
         wrapper,
         s2,
         adaptive: true,
+        optionWidth: s2Options.width,
+        optionHeight: s2Options.height,
       }),
     );
 
