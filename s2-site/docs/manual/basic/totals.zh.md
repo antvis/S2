@@ -80,22 +80,22 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 
 ```typescript
 const s2Options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-  },
 };
 
 ```
@@ -192,28 +192,34 @@ const s2DataConfig = {
 
 ```typescript
 const s2Options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+            calcTotals: {
+                aggregation: 'SUM',
+            },
+            calcSubTotals: {
+                aggregation: 'SUM',
+            },
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+            calcTotals: {
+                aggregation: 'SUM',
+            },
+            calcSubTotals: {
+                aggregation: 'SUM',
+            },
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-    calcTotals: {
-      aggregation: 'SUM',
-    },
-    calcSubTotals: {
-      aggregation: 'SUM',
-    },
-  },
 };
 
 ```
@@ -224,32 +230,36 @@ const s2Options = {
 
 ```typescript
 const s2Options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+        },
+        calcTotals: {
+            calcFunc: (query, data) => {
+                return
+            ...
+                ;
+            }
+        },
+        calcSubTotals: {
+            calcFunc: (query, data) => {
+                return
+            ...
+                ;
+            }
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-    calcTotals: {
-      calcFunc: (query, data) => {
-        return ...;
-      }
-    },
-    calcSubTotals: {
-      calcFunc: (query, data) => {
-        return ...;
-      }
-    },
-  },
 };
 
 ```

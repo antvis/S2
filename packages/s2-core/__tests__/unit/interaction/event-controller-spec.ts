@@ -1,5 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, BBox } from '@antv/g-canvas';
+import { Canvas, BBox, CanvasCfg } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { EmitterType } from '@/common/interface/emitter';
 import {
@@ -80,7 +80,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-    });
+    } as CanvasCfg);
     spreadsheet.facet = {
       panelBBox: {
         maxX: s2Options.width,
