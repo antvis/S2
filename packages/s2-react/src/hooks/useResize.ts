@@ -5,8 +5,8 @@ import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: HTMLElement; // 只包含了 sheet 容器
-  wrapper: HTMLElement; // 包含了 sheet + foot(page) + header
+  container: HTMLDivElement; // 只包含了 sheet 容器
+  wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
   s2: SpreadSheet;
   adaptive: Adaptive;
 }
