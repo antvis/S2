@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from 'react';
 import { debounce, round } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
@@ -47,14 +46,6 @@ export const useResize = (params: UseResizeEffectParams) => {
 
   const debounceRender = debounce(render, RENDER_DELAY);
 
-  // rerender by option
-  React.useEffect(() => {
-    if (!adaptive && s2) {
-      s2.render(false);
-    }
-  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
-
-  // rerender by container resize or window resize
   React.useLayoutEffect(() => {
     if (!wrapper || !adaptive || !container) {
       return;
@@ -90,6 +81,7 @@ export const useResize = (params: UseResizeEffectParams) => {
   }, [
     wrapper,
     container,
+    adaptive,
     adaptiveWidth,
     adaptiveHeight,
     s2?.options.width,
