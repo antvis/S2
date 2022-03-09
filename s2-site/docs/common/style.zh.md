@@ -11,8 +11,7 @@ object **必选**,_default：null_ 功能描述：样式设置
 | --- | --- | :-:  | --- | --- | --- |
 |layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 canvas 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
 | treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 |
-| collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
-| collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
+| collapsedRows | `Record<string, boolean>` |  |  | 树状模式下行头自定义折叠、收起状态（透视表使用）。<br> key 值的生成需遵守指定的规则：'root[&]行头维度值'。 [demo 查看](/zh/examples/basic/pivot#tree) |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
 | colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
 | rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
