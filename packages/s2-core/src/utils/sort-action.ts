@@ -1,9 +1,22 @@
-import { keys, has, map, toUpper, endsWith, uniq, isEmpty } from 'lodash';
+import {
+  keys,
+  has,
+  map,
+  toUpper,
+  endsWith,
+  uniq,
+  isEmpty,
+  includes,
+  split,
+  indexOf,
+  isArray,
+} from 'lodash';
 import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
 import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
+import { PivotDataSet } from '@/data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -171,24 +184,42 @@ export function getSortByMeasureValues(params: SortActionParams) {
     // 按指标只排序 - 最内侧的行列不需要汇总后排序
     return dataSet.getMultiData(query);
   }
-  // 按小计，总计排序
+
+  const createTotalParams = (originValue) => {
+    const totalParams = {};
+    if (isArray(originValue)) {
+      const keys = fields?.rows?.includes(sortFieldId)
+        ? fields.rows
+        : fields.columns;
+      for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
+        totalParams[keys[i]] = originValue[i];
+      }
+    } else {
+      totalParams[sortFieldId] = originValue;
+    }
+    return totalParams;
+  };
+
   const isRow =
     fields?.columns?.includes(sortFieldId) &&
     keys(query)?.length === 1 &&
     has(query, EXTRA_FIELD);
-  // 1. 首先判断是 前端排序还是后端排序
-  // 2. 对那部分内容进行排序，就返回那部分内容的数据。
-  // 这里主要的问题是： 对前端计算的内容进行排序，没有加入到 indexesData 中，返回了 [].
-  // 这里肯定有问题 todo-zc?
-  // 传入的 data 中包含小计数据
+
+  // 按 data 数据中的小计，总计排序
   const measureValues = dataSet.getMultiData(query, true, isRow); // 感觉 getMultiData 和  measureValues 类型都不同，怎么会赋值给同一个变量
 
+  // 按前端的小计，总计排序
   if (!measureValues || isEmpty(measureValues)) {
-    // 按总计排序
-    return map(originValues, (originValue) => {
-      return dataSet.getTotalValue({
+    const realOriginValues = includes(originValues?.[0], '&')
+      ? map(originValues, (val) => split(val, '[&]'))
+      : originValues;
+
+    return map(realOriginValues, (originValue) => {
+      const totalParams = createTotalParams(originValue);
+
+      return (dataSet as PivotDataSet).getTotalValue({
         ...query,
-        [sortFieldId]: originValue,
+        ...totalParams,
       });
     });
   }
@@ -197,6 +228,7 @@ export function getSortByMeasureValues(params: SortActionParams) {
 
 export const handleSortAction = (params: SortActionParams): string[] => {
   const { dataSet, sortParam, originValues, isSortByMeasure } = params;
+  // console.log(sortParam, 'sortParam', originValues, 'originValues');
   let measureValues;
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
@@ -205,6 +237,8 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     // 其他都是维度本身的排序方式
     measureValues = originValues;
   }
+
+  // console.log(measureValues, 'measure Values 111');
   return processSort({
     sortParam,
     originValues,
