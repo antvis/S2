@@ -67,7 +67,7 @@ export const getDataSumByField = (data: DataItem[], field: string): number => {
  * @param method 最大值(max)或最小值(min)
  * @param data 数据项
  * @param field 值字段
- * @returns 最大值
+ * @returns 最值
  */
 export const getDataExtremumByField = (
   method: 'min' | 'max',
