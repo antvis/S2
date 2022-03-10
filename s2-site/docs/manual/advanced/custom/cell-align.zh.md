@@ -2,18 +2,15 @@
 title: 自定义单元格对齐方式
 order: 4
 ---
-> 在阅读本节内容前，请保持你已经阅读 [主题配置](/zh/docs/manual/basic/theme) 文档
+> 在阅读本节内容前，请确保你已经阅读 [主题配置](/zh/docs/manual/basic/theme) 文档
 
-S2 中单元格排序有两个大的原则：
-
-* 行头和列头滑动居中，保证可见性
-* 列头子节点和数据单元格对齐方式保持一致，保持整体展示的一致性
+为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性
   
 ![img](https://gw.alipayobjects.com/zos/antfincdn/avyf3tcnW/2022-02-23%25252016.38.05.gif)
 
-因此，单元格的对齐方式是有一定限制的。下面分别介绍每个类型单元格可以自定义的对齐行为。
+因此，S2 对单元格的对齐方式有一定限制。下面分别介绍每个类型单元格可以自定义的对齐行为。
 
-## 角头对齐
+## 角头对齐方式
 
 * 行头单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
 * 列头单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
@@ -82,7 +79,7 @@ cornerCell: {
   </tbody>
 </table>
 
-## 行头对齐
+## 行头对齐方式
 
 * 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
 * 叶子节点单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
@@ -153,7 +150,74 @@ rowCell: {
 
 ## 列头对齐方式
 
-由于滑动居中的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `top`，`textAlign` 被内部规定为 `center`；叶子节点单元格对齐方式和数据单元格保持一致，所以无法为其自定义对齐方式。
+为保证滑动下最大可见的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `middle`，`textAlign` 不受限制可按需要自定义。
+
+* 指标单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 其他维度单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+
+<image alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400" />
+
+列头单元格的三种对齐方式效果如下：
+
+<table style="width: 100%; outline: none; border-collapse: collapse;">
+  <colgroup>
+    <col width="20%"/>
+    <col width="80%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">
+        <pre class="language-js">
+colCell: {
+  text: {
+    textAlign: 'left',
+  },
+  bolderText: {
+    textAlign: 'left',
+  }
+}
+        </pre>
+      </td>
+      <td>
+        <img height="180" alt="left" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nioLivnuF/CleanShot%2525202022-03-03%252520at%25252017.53.49.gif">
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+         <pre class="language-js">
+colCell: {
+  text: {
+    textAlign: 'center',
+  },
+  bolderText: {
+    textAlign: 'center',
+  }
+}
+        </pre>
+      </td>
+      <td>
+        <img height="180" alt="center" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/kn9Y4FGAb/CleanShot%2525202022-03-03%252520at%25252018.00.06.gif">
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+               <pre class="language-js">
+colCell: {
+  text: {
+    textAlign: 'right',
+  },
+  bolderText: {
+    textAlign: 'right',
+  }
+}
+        </pre>
+      </td>
+      <td>
+        <img height="180" alt="right" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/LAv2EKaGS/CleanShot%2525202022-03-03%252520at%25252018.01.33.gif">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## 数据单元格对齐方式
 
