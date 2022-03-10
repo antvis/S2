@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { debounce, round } from 'lodash';
+import { debounce } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
@@ -17,7 +17,7 @@ const RENDER_DELAY = 200; // ms
 function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
   let container = paramsContainer;
   let adaptiveWidth = true;
-  let adaptiveHeight = true;
+  let adaptiveHeight = false;
   if (typeof adaptive !== 'boolean') {
     container = adaptive?.getContainer?.() || paramsContainer;
     adaptiveWidth = adaptive?.width ?? true;
@@ -46,30 +46,33 @@ export const useResize = (params: UseResizeEffectParams) => {
     [s2],
   );
 
-  const debounceRender = debounce(render, RENDER_DELAY);
-
   React.useLayoutEffect(() => {
     const isSetResize = wrapper && container && adaptive;
     if (!isSetResize) {
       return;
     }
-    const resizeObserver = new ResizeObserver(([entry] = []) => {
-      if (entry) {
-        const [size] = entry.borderBoxSize || [];
-        const width = adaptiveWidth ? round(size?.inlineSize) : optionHeight;
-        const height = adaptiveHeight
-          ? round(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
-          : optionHeight;
-        if (!adaptiveWidth && !adaptiveHeight) {
-          return;
-        }
-        if (isFirstRender.current) {
+    const resizeObserver = new ResizeObserver(
+      debounce(([entry] = []) => {
+        if (entry) {
+          const [size] = entry.borderBoxSize || [];
+          const width = adaptiveWidth
+            ? Math.floor(size?.inlineSize)
+            : optionWidth;
+          const height = adaptiveHeight
+            ? Math.floor(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
+            : optionHeight;
+          if (!adaptiveWidth && !adaptiveHeight) {
+            return;
+          }
+          if (isFirstRender.current) {
+            render(width, height);
+            return;
+          }
+
           render(width, height);
-          return;
         }
-        debounceRender(width, height);
-      }
-    });
+      }, RENDER_DELAY),
+    );
 
     resizeObserver.observe(wrapper, {
       box: 'border-box',
