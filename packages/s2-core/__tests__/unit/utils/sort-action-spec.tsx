@@ -1,4 +1,13 @@
-import { sortAction, sortByCustom } from '@/utils/sort-action';
+import { getContainer } from 'tests/util/helpers';
+import { sortData } from 'tests/data/sort-advanced';
+import {
+  getSortByMeasureValues,
+  sortAction,
+  sortByCustom,
+} from '@/utils/sort-action';
+import { EXTRA_FIELD, S2Options, SortParam, TOTAL_VALUE } from '@/common';
+import { PivotSheet } from '@/sheet-type';
+import { PivotDataSet, SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -159,5 +168,159 @@ describe('Sort By Custom Test', () => {
         'Wednesday[&]afternoon',
       ]);
     });
+  });
+});
+
+describe('getSortByMeasureValues', () => {
+  let sheet: PivotSheet;
+  let dataSet: PivotDataSet;
+  const s2Options = {
+    totals: {
+      row: {
+        subTotalsDimensions: ['province'],
+        calcSubTotals: {
+          aggregation: 'SUM',
+        },
+        calcTotals: {
+          aggregation: 'SUM',
+        },
+      },
+      col: {
+        showSubTotals: true,
+        showGrandTotals: true,
+        subTotalsDimensions: ['type'],
+        calcTotals: {
+          aggregation: 'SUM',
+        },
+        calcSubTotals: {
+          aggregation: 'SUM',
+        },
+      },
+    },
+  } as S2Options;
+  beforeEach(() => {
+    sheet = new PivotSheet(getContainer(), sortData, s2Options);
+    dataSet = new PivotDataSet(sheet);
+    dataSet.setDataCfg(sortData);
+    sheet.dataSet = dataSet;
+  });
+  test('should sort by col total', () => {
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc', // getSortByMeasureValues 的返回值还没有进行排序
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: 41.5,
+        price: 41.5,
+        type: '纸张',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: 37,
+        price: 37,
+        type: '笔',
+      },
+    ]);
+  });
+  test('should sort by row total', () => {
+    // 根据行（省份）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: ['吉林', '浙江'],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: 33,
+        price: 33,
+        province: '吉林',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: 45.5,
+        price: 45.5,
+        province: '浙江',
+      },
+    ]);
+  });
+
+  test('should sort by  row city price when type is 笔', () => {
+    // 根据列（类别）的子总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: 'price',
+      sortMethod: 'desc',
+      query: {
+        type: '笔',
+        [EXTRA_FIELD]: 'price',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '笔',
+        price: '1',
+        $$extra$$: 'price',
+        $$value$$: '1',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '笔',
+        price: '17',
+        $$extra$$: 'price',
+        $$value$$: '17',
+      },
+      {
+        province: '吉林',
+        city: '丹东',
+        type: '笔',
+        price: '10',
+        $$extra$$: 'price',
+        $$value$$: '10',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '笔',
+        price: '9',
+        $$extra$$: 'price',
+        $$value$$: '9',
+      },
+    ]);
   });
 });
