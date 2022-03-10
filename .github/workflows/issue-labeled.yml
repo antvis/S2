@@ -89,6 +89,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志.
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志。
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted After our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs
+            Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
+        
+      - name: Rejected
+        if: github.event.label.name == '❌ rejected'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment,close-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, 你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}, your feature request is too customized to be directly implemented in S2 after our repeated discussion, you could implement it by yourself through the customization capabilities provided by S2. Thanks so much for your understanding.
