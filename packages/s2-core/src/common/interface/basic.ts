@@ -106,11 +106,12 @@ export interface TotalsStatus {
   isColSubTotal: boolean;
 }
 
-export enum EAggregation {
+export enum Aggregation {
   SUM = 'SUM',
+  MIN = 'MIN',
+  MAX = 'MAX',
+  AVG = 'AVG',
 }
-
-export type Aggregation = EAggregation.SUM; // 目前只有求和
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
