@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import Decimal from 'decimal.js';
-import { EAggregation } from '../common/interface';
+import { Aggregation } from '../common/interface';
 
 type DataItem = Record<string, any>;
 
@@ -104,12 +104,12 @@ export const getDataAvgByField = (data: DataItem[], field: string): number => {
  * totals 计算方法集合
  */
 export const calcActionByType: {
-  [type in EAggregation]: (data: DataItem[], field: string) => number;
+  [type in Aggregation]: (data: DataItem[], field: string) => number;
 } = {
-  [EAggregation.SUM]: getDataSumByField,
-  [EAggregation.MIN]: (data, field) =>
+  [Aggregation.SUM]: getDataSumByField,
+  [Aggregation.MIN]: (data, field) =>
     getDataExtremumByField('min', data, field),
-  [EAggregation.MAX]: (data, field) =>
+  [Aggregation.MAX]: (data, field) =>
     getDataExtremumByField('max', data, field),
-  [EAggregation.AVG]: getDataAvgByField,
+  [Aggregation.AVG]: getDataAvgByField,
 };

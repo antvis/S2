@@ -5,7 +5,7 @@ import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { S2DataConfig, EAggregation } from '@/common/interface';
+import { S2DataConfig, Aggregation } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
@@ -236,19 +236,19 @@ describe('Pivot Dataset Total Test', () => {
             row: {
               ...TOTALS_OPTIONS.row,
               calcTotals: {
-                aggregation: EAggregation.SUM,
+                aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
-                aggregation: EAggregation.SUM,
+                aggregation: Aggregation.SUM,
               },
             },
             col: {
               ...TOTALS_OPTIONS.col,
               calcTotals: {
-                aggregation: EAggregation.SUM,
+                aggregation: Aggregation.SUM,
               },
               calcSubTotals: {
-                aggregation: EAggregation.SUM,
+                aggregation: Aggregation.SUM,
               },
             },
           },
@@ -342,10 +342,10 @@ describe('Pivot Dataset Total Test', () => {
                 showSubTotals: true,
                 subTotalsDimensions: ['city'],
                 calcTotals: {
-                  aggregation: EAggregation.SUM,
+                  aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
-                  aggregation: EAggregation.SUM,
+                  aggregation: Aggregation.SUM,
                 },
               },
               col: {
@@ -353,10 +353,10 @@ describe('Pivot Dataset Total Test', () => {
                 showSubTotals: true,
                 subTotalsDimensions: ['type'],
                 calcTotals: {
-                  aggregation: EAggregation.SUM,
+                  aggregation: Aggregation.SUM,
                 },
                 calcSubTotals: {
-                  aggregation: EAggregation.SUM,
+                  aggregation: Aggregation.SUM,
                 },
               },
             },
