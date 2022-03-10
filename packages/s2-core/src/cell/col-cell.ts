@@ -36,7 +36,8 @@ import {
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
 
-  protected textAndIconPositionWhenHorizontalScrolling: Point;
+  /** 文字区域（含icon）绘制起始坐标 */
+  protected textAreaPosition: Point;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -113,7 +114,7 @@ export class ColCell extends HeaderCell {
     if (isLeaf) {
       return super.getIconPosition(this.getActionIconsCount());
     }
-    const position = this.textAndIconPositionWhenHorizontalScrolling;
+    const position = this.textAreaPosition;
 
     const totalSpace =
       this.actualTextWidth +
@@ -192,7 +193,7 @@ export class ColCell extends HeaderCell {
     );
 
     const textY = contentBox.y + contentBox.height / 2;
-    this.textAndIconPositionWhenHorizontalScrolling = { x: startX, y: textY };
+    this.textAreaPosition = { x: startX, y: textY };
     return {
       x: startX - textAndIconSpace / 2 + this.actualTextWidth / 2,
       y: textY,
