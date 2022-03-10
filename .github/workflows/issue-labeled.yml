@@ -101,6 +101,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求不适合直接在添加到S2中, 你可试着自行通过 [hooks](https://s2.antv.vision/zh/docs/manual/advanced/custom/hook) 定制，感谢你的理解。
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, 你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request isn't suitable for implementing directly in s2 after our repeated discussion, you could try to customize it through [hooks](https://s2.antv.vision/zh/docs/manual/advanced/custom/hook). Thanks so much for your understanding.
+            Hello, @${{ github.event.issue.user.login }}, your feature request is too customized to be directly implemented in S2 after our repeated discussion, you could implement it by yourself through the customization capabilities provided by S2. Thanks so much for your understanding.
