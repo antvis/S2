@@ -234,6 +234,7 @@ describe('getSortByMeasureValues', () => {
       },
     ]);
   });
+
   test('should sort by row total', () => {
     // 根据行（省份）的总和排序
     const sortParam: SortParam = {
@@ -265,8 +266,8 @@ describe('getSortByMeasureValues', () => {
     ]);
   });
 
-  test('should sort by  row city price when type is 笔', () => {
-    // 根据列（类别）的子总和排序
+  test('should group sort by row price when type is 笔', () => {
+    // 对城市依据 笔的价格 进行组内排序
     const sortParam: SortParam = {
       sortFieldId: 'type',
       sortByMeasure: 'price',
@@ -320,6 +321,118 @@ describe('getSortByMeasureValues', () => {
         price: '9',
         $$extra$$: 'price',
         $$value$$: '9',
+      },
+    ]);
+  });
+
+  test('should sort by row sub total', () => {
+    // 行小计进行 组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortMethod: 'desc',
+      sortByMeasure: TOTAL_VALUE,
+      query: {
+        [EXTRA_FIELD]: 'price',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        province: '浙江',
+        city: '杭州',
+        $$value$$: 3,
+        price: 3,
+      },
+      {
+        $$extra$$: 'price',
+        province: '浙江',
+        city: '舟山',
+        $$value$$: 42.5,
+        price: 42.5,
+      },
+      {
+        $$extra$$: 'price',
+        province: '吉林',
+        city: '丹东',
+        $$value$$: 13,
+        price: 13,
+      },
+      {
+        $$extra$$: 'price',
+        province: '吉林',
+        city: '白山',
+        $$value$$: 20,
+        price: 20,
+      },
+    ]);
+  });
+
+  test('should sort by row price when type is 纸', () => {
+    // 对城市依据 纸的价格 进行组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortMethod: 'asc',
+      sortByMeasure: 'price',
+      query: {
+        type: '纸张',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '纸张',
+        price: '2',
+        $$extra$$: 'price',
+        $$value$$: '2',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '纸张',
+        price: '25.5',
+        $$extra$$: 'price',
+        $$value$$: '25.5',
+      },
+      {
+        province: '吉林',
+        city: '丹东',
+        type: '纸张',
+        price: '3',
+        $$extra$$: 'price',
+        $$value$$: '3',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '纸张',
+        price: '11',
+        $$extra$$: 'price',
+        $$value$$: '11',
       },
     ]);
   });
