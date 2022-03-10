@@ -94,7 +94,7 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
         
       - name: Rejected
-        if: github.event.label.name == '🙈 rejected'
+        if: github.event.label.name == '❌ rejected'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,close-issue'
