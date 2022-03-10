@@ -89,6 +89,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志.
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志。
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted After our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs
+            Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
+        
+      - name: Rejected
+        if: github.event.label.name == '🙈 rejected'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment,close-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求不适合直接在添加到S2中, 你可试着自行通过 [hooks](https://s2.antv.vision/zh/docs/manual/advanced/custom/hook) 定制，感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}, your feature request isn't suitable for implementing directly in s2 after our repeated discussion, you could try to customize it through [hooks](https://s2.antv.vision/zh/docs/manual/advanced/custom/hook). Thanks so much for your understanding.
