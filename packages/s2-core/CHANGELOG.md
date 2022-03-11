@@ -1,3 +1,17 @@
+# [@antv/s2-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-v1.11.0...@antv/s2-v1.12.0) (2022-03-11)
+
+
+### Bug Fixes
+
+* 明细表排序 API 和透视表对齐 ([#1154](https://github.com/antvis/S2/issues/1154)) ([ff524ab](https://github.com/antvis/S2/commit/ff524ab49a1782f5b59d8650b5db2eef016a7c5f))
+
+
+### Features
+
+* **interaction:** 框选下拉支持自动滚动 ([#1147](https://github.com/antvis/S2/issues/1147)) ([39a860b](https://github.com/antvis/S2/commit/39a860bf8a5aea6a8f52b8035ece50c8c65ff58b))
+* **totals:** 增加前端totals计算方式 ([#1157](https://github.com/antvis/S2/issues/1157)) ([4dd635d](https://github.com/antvis/S2/commit/4dd635ddda9c4978567300586ef85ba7ad14ebed))
+* 列头滚动场景下非维度文字支持左/右对齐 ([#1152](https://github.com/antvis/S2/issues/1152)) ([b52885c](https://github.com/antvis/S2/commit/b52885c1ced80a1da11c3cac273b8e5639cff63c))
+
 # [@antv/s2-v1.11.0](https://github.com/antvis/S2/compare/@antv/s2-v1.10.0...@antv/s2-v1.11.0) (2022-03-01)
 
 
