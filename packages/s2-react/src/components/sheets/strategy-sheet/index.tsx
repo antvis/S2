@@ -16,6 +16,7 @@ import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
+import { StrategyDataSet } from './custom-data-set';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
 /* *
@@ -79,6 +80,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           spreadsheet: SpreadSheet,
           headerConfig: ColHeaderConfig,
         ) => new CustomColCell(node, spreadsheet, headerConfig),
+        dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
         showDefaultHeaderActionIcon: false,
         hierarchyType,
         style: {
