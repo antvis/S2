@@ -105,6 +105,8 @@ export function useSpreadSheet(
     container: containerRef.current,
     wrapper: wrapRef.current,
     adaptive: props.adaptive,
+    optionWidth: options.width,
+    optionHeight: options.height,
   });
 
   return {
