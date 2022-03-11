@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.11.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.0...@antv/s2-react-v1.11.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* 修复开启 adaptive = true 时，options 更改后, 宽度自适应，高度为options.height  ([6be62ba](https://github.com/antvis/S2/commit/6be62ba149e66aa95d9933ce0bfe7f88d41deb81))
+
+
+### Performance Improvements
+
+* **strategysheet:** :zap: 趋势分析表性能优化 ([#1166](https://github.com/antvis/S2/issues/1166)) ([d02772e](https://github.com/antvis/S2/commit/d02772e771f2cd4c3258f269f714018d53aea4ce))
+* **useResize:** :zap: 减少当 adaptive 为false时宽高改变引发的重复渲染 ([#1162](https://github.com/antvis/S2/issues/1162)) ([575c15c](https://github.com/antvis/S2/commit/575c15cc91e1ee3067b90e22c2df2e2a68ded683))
+
 # [@antv/s2-react-v1.11.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.10.0...@antv/s2-react-v1.11.0) (2022-03-01)
 
 
