@@ -183,25 +183,26 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.10.0.tgz#7940c062176a2252886d1ae064595c102ab81865"
-  integrity sha512-q97SXmzRtqLoWjIOLV4jraZbyKG0SsezOBLXoUXVyDOVcBJ/SucnHQsZ0MKcC9P+jgBKFwB9bLj8amnUvX4TYg==
+"@antv/s2-react@^1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.11.1.tgz#928d9b918aa2b85cf3ba87c9a95c4608dbd60dcb"
+  integrity sha512-1eC9C7K+XczdVKjtRfMHGZDA4BWw9CecrxJL1uN54nCCHNgP5hhDGY39sHUE+Fhu8vqd2XxZyljQDdxF+hpk6Q==
   dependencies:
     ahooks "^3.1.5"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.10.0.tgz#f84516b858a6c8cdeb9c6384f7be573b5675193a"
-  integrity sha512-qnYJaJA5UtlvUQwSHu2JmOvBNNIXcjdyzpipTsJVuFtTNLzkQ/gm3aqTPyg1VSK65vtXRczcVtasjoqUT3YKdg==
+"@antv/s2@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.12.0.tgz#bcaabab6b4c8b8f6f39236f1eb1dc35abf5e4c02"
+  integrity sha512-IOH98q2Bxwf2qlk7Pr2l29exekcNUVhkLRy4wYYOCkOSEXj0n6cxzFDtz/Tn3JGdWKY3ec3PklPhg+XQbT/Xqg==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
     "@antv/g-gesture" "^1.0.1"
     csstype "^3.0.9"
+    decimal.js "^10.3.1"
     lodash "^4.17.21"
 
 "@antv/util@^2.0.9", "@antv/util@~2.0.0":
@@ -4712,6 +4713,11 @@ decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
+
+decimal.js@^10.3.1:
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
+  integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
