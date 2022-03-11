@@ -82,7 +82,23 @@ export enum InterceptType {
   RESIZE = 'resize',
 }
 
+export const BRUSH_AUTO_SCROLL_INITIAL_CONFIG = {
+  x: {
+    value: 0,
+    scroll: false,
+  },
+  y: {
+    value: 0,
+    scroll: false,
+  },
+};
+
 export enum ScrollbarPositionType {
   CONTENT = 'content',
   CANVAS = 'canvas',
+}
+
+export enum ScrollDirection {
+  LEADING = 'leading',
+  TRAILING = 'trailing',
 }

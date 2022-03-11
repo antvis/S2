@@ -548,17 +548,12 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 
   modalCallbackRef.current = () => {
     if (changed.sort) {
-      spreadsheet.emit(S2Event.RANGE_SORT, {
-        sortKey: fieldName,
-        sortMethod: sort,
-        sortBy: (obj) => {
-          return fieldData.every(
-            (v) => typeof v === 'string' && !Number.isNaN(Number(v)),
-          )
-            ? Number(obj[fieldName])
-            : obj[fieldName];
+      spreadsheet.emit(S2Event.RANGE_SORT, [
+        {
+          sortFieldId: fieldName,
+          sortMethod: sort,
         },
-      });
+      ]);
     }
     if (changed.filter) {
       spreadsheet.emit(S2Event.RANGE_FILTER, {
@@ -666,7 +661,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
   );
 };
 
-fetch('../data/basic.json')
+fetch('../data/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
     ReactDOM.render(<App data={res} />, document.getElementById('container'));

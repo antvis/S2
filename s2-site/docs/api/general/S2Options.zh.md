@@ -5,8 +5,8 @@ order: 1
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :--  | :-- | --- |
-| width | `number` | ✓   |  | 表格宽度 |
-| height | `number` | ✓   |  | 表格高度 |
+| width | `number` |    | 600  | 表格宽度 |
+| height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
 | hierarchyType | `grid` \| `tree` \| `customTree` |    | `grid` | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 customTree: 自定义树状结构 |
 | conditions | [Conditions](#conditions) |  |    | 条件模式配置 |

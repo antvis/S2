@@ -1,14 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from 'react';
-import { debounce, round } from 'lodash';
+import { debounce } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: HTMLElement; // 只包含了 sheet 容器
-  wrapper: HTMLElement; // 包含了 sheet + foot(page) + header
+  container: HTMLDivElement; // 只包含了 sheet 容器
+  wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
   s2: SpreadSheet;
   adaptive: Adaptive;
+  optionWidth: number;
+  optionHeight: number;
 }
 
 const RENDER_DELAY = 200; // ms
@@ -16,7 +17,7 @@ const RENDER_DELAY = 200; // ms
 function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
   let container = paramsContainer;
   let adaptiveWidth = true;
-  let adaptiveHeight = true;
+  let adaptiveHeight = false;
   if (typeof adaptive !== 'boolean') {
     container = adaptive?.getContainer?.() || paramsContainer;
     adaptiveWidth = adaptive?.width ?? true;
@@ -26,7 +27,7 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
 }
 
 export const useResize = (params: UseResizeEffectParams) => {
-  const { s2, adaptive, container } = params;
+  const { s2, adaptive, container, optionWidth, optionHeight } = params;
   const {
     container: wrapper,
     adaptiveWidth,
@@ -45,40 +46,33 @@ export const useResize = (params: UseResizeEffectParams) => {
     [s2],
   );
 
-  const debounceRender = debounce(render, RENDER_DELAY);
-
-  // rerender by option
-  React.useEffect(() => {
-    if (!adaptive && s2) {
-      s2.render(false);
-    }
-  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
-
-  // rerender by container resize or window resize
   React.useLayoutEffect(() => {
-    if (!wrapper || !adaptive || !container) {
+    const isSetResize = wrapper && container && adaptive;
+    if (!isSetResize) {
       return;
     }
+    const resizeObserver = new ResizeObserver(
+      debounce(([entry] = []) => {
+        if (entry) {
+          const [size] = entry.borderBoxSize || [];
+          const width = adaptiveWidth
+            ? Math.floor(size?.inlineSize)
+            : optionWidth;
+          const height = adaptiveHeight
+            ? Math.floor(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
+            : optionHeight;
+          if (!adaptiveWidth && !adaptiveHeight) {
+            return;
+          }
+          if (isFirstRender.current) {
+            render(width, height);
+            return;
+          }
 
-    const resizeObserver = new ResizeObserver(([entry] = []) => {
-      if (entry) {
-        const [size] = entry.borderBoxSize || [];
-        const width = adaptiveWidth
-          ? round(size?.inlineSize)
-          : s2?.options.width;
-        const height = adaptiveHeight
-          ? round(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
-          : s2?.options.height;
-        if (!adaptiveWidth && !adaptiveHeight) {
-          return;
-        }
-        if (isFirstRender.current) {
           render(width, height);
-          return;
         }
-        debounceRender(width, height);
-      }
-    });
+      }, RENDER_DELAY),
+    );
 
     resizeObserver.observe(wrapper, {
       box: 'border-box',
@@ -90,10 +84,11 @@ export const useResize = (params: UseResizeEffectParams) => {
   }, [
     wrapper,
     container,
+    adaptive,
     adaptiveWidth,
     adaptiveHeight,
-    s2?.options.width,
-    s2?.options.height,
+    optionWidth,
+    optionHeight,
     render,
   ]);
 };

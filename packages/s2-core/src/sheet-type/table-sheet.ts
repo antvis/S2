@@ -151,38 +151,34 @@ export class TableSheet extends SpreadSheet {
     this.clearFrozenGroups();
   }
 
+  public onSortTooltipClick = ({ key }, meta) => {
+    const { field } = meta;
+
+    const prevOtherSortParams = [];
+    let prevSelectedSortParams: SortParam;
+    this.dataCfg.sortParams.forEach((item) => {
+      if (item?.sortFieldId !== field) {
+        prevOtherSortParams.push(item);
+      } else {
+        prevSelectedSortParams = item;
+      }
+    });
+
+    const sortParam: SortParam = {
+      ...(prevSelectedSortParams || {}),
+      sortFieldId: field,
+      sortMethod: key as unknown as SortParam['sortMethod'],
+    };
+    // 触发排序事件
+    this.emit(S2Event.RANGE_SORT, [...prevOtherSortParams, sortParam]);
+  };
+
   public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { field } = meta;
-
-        const prevOtherSortParams = [];
-        let prevSelectedSortParams: SortParam;
-        this.dataCfg.sortParams.forEach((item) => {
-          if (item?.sortFieldId !== field) {
-            prevOtherSortParams.push(item);
-          } else {
-            prevSelectedSortParams = item;
-          }
-        });
-
-        const sortParam: SortParam = {
-          ...(prevSelectedSortParams || {}),
-          sortFieldId: field,
-          sortMethod: key as unknown as SortParam['sortMethod'],
-        };
-        // 触发排序事件
-        this.emit(S2Event.RANGE_SORT, [sortParam]);
-
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevOtherSortParams, sortParam],
-        });
-
-        this.render();
-      },
+      onClick: (params: { key: string }) =>
+        this.onSortTooltipClick(params, meta),
       menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
     };
 

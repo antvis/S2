@@ -5,7 +5,7 @@ import {
   getContentArea,
   getMaxTextWidth,
   getTextAndFollowingIconPosition,
-  getTextAndIconPositionWhenHorizontalScrolling,
+  getTextAreaRange,
   getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
 
@@ -415,79 +415,79 @@ describe('Horizontal Scrolling Text Position Test', () => {
   const textWidth = 20;
   test('should get center position when content is larger than viewport', () => {
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 20,
           width: 50,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(45);
   });
 
   test('should get center position when content is on the left of viewport', () => {
     // reset width is enough
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 50,
           width: 100,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(75);
 
     // reset width isn't enough
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: 90,
           width: 100,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(90);
   });
 
   test('should get center position when content is on the right of viewport', () => {
     // reset width is enough
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -50,
           width: 100,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(25);
 
     // reset width isn't enough
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -90,
           width: 100,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(10);
   });
 
   test('should get center position when content is inside of viewport', () => {
     expect(
-      getTextAndIconPositionWhenHorizontalScrolling(
+      getTextAreaRange(
         {
           start: -50,
           width: 200,
         },
         content,
         textWidth,
-      ),
+      ).start,
     ).toEqual(50);
   });
 

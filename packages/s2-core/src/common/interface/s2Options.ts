@@ -31,9 +31,9 @@ import { SpreadSheet } from '@/sheet-type';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
-  readonly width: number;
+  readonly width?: number;
   // canvas's height
-  readonly height: number;
+  readonly height?: number;
   // debug info for developer
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
