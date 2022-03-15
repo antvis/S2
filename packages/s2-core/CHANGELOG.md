@@ -1,3 +1,10 @@
+# [@antv/s2-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-v1.12.0...@antv/s2-v1.12.1) (2022-03-15)
+
+
+### Bug Fixes
+
+* 修复draggable事件失效问题 close[#1172](https://github.com/antvis/S2/issues/1172) ([#1173](https://github.com/antvis/S2/issues/1173)) ([0e8373c](https://github.com/antvis/S2/commit/0e8373c140a4afa9602ac623cc40ae67f9dbe02b))
+
 # [@antv/s2-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-v1.11.0...@antv/s2-v1.12.0) (2022-03-11)
 
 
