@@ -1,75 +1,193 @@
-import { inRange } from 'lodash';
+import { Event } from '@antv/g-canvas';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { InteractionStateName, CellTypes, CellMeta } from '@/common';
+import { CellTypes, CellMeta, ViewMeta } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
 import { calculateInViewIndexes } from '@/facet/utils';
+import { selectCells, getRangeIndex } from '@/utils/interaction/select-event';
+
+const SelectedCellMoveMap = [
+  InteractionKeyboardKey.ARROW_LEFT,
+  InteractionKeyboardKey.ARROW_RIGHT,
+  InteractionKeyboardKey.ARROW_UP,
+  InteractionKeyboardKey.ARROW_DOWN,
+];
 
 export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
+  // like range selection
+  startCell: CellMeta | null;
+
+  endCell: CellMeta | null;
+
+  constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
+  }
+
   public bindEvents() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        const SelectedCellMoveMap = [
-          InteractionKeyboardKey.ARROW_LEFT,
-          InteractionKeyboardKey.ARROW_RIGHT,
-          InteractionKeyboardKey.ARROW_UP,
-          InteractionKeyboardKey.ARROW_DOWN,
-        ];
-        if (SelectedCellMoveMap.includes(event.key as InteractionKeyboardKey)) {
-          const cells = this.spreadsheet.interaction.getCells();
-          const cell = cells.length ? cells[cells.length - 1] : null;
-          const rowCol = this.getMoveInfo(event.key, cell);
-          if (rowCol) {
-            this.scrollToActiveCell(this.spreadsheet, rowCol.row, rowCol.col);
-          }
+        const isShift = event.shiftKey;
+        const isMeta = event.metaKey;
+        const hasDirection = SelectedCellMoveMap.includes(
+          event.key as InteractionKeyboardKey,
+        );
+        if (isMeta && isShift && hasDirection) {
+          // META + SHIFT + Direction
+          this.handleMove({
+            event,
+            useStart: false,
+            isJump: true,
+            isSingle: false,
+          });
+        } else if (isMeta && hasDirection) {
+          // META + Direction
+          this.handleMove({
+            event,
+            useStart: true,
+            isJump: true,
+            isSingle: true,
+          });
+        } else if (isShift && hasDirection) {
+          // SHIFT + Direction
+          this.handleMove({
+            event,
+            useStart: false,
+            isJump: false,
+            isSingle: false,
+          });
+        } else if (hasDirection) {
+          // Only Direction
+          this.handleMove({
+            event,
+            useStart: true,
+            isJump: false,
+            isSingle: true,
+          });
         }
       },
     );
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+      const cell = this.spreadsheet.getCell(event.target).getMeta() as ViewMeta;
+      this.startCell = this.getCellMetaFromViewMeta(cell);
+      this.endCell = this.startCell;
+    });
   }
 
-  private getMoveInfo(code: string, cell: CellMeta) {
+  private getCellMetaFromViewMeta(meta: ViewMeta): CellMeta {
+    return {
+      rowIndex: meta.rowIndex,
+      colIndex: meta.colIndex,
+      id: meta.id,
+      type: CellTypes.DATA_CELL,
+    };
+  }
+
+  // core move function
+  private handleMove({ event, useStart, isJump, isSingle }) {
+    const { spreadsheet, startCell, endCell } = this;
+    const cell = useStart ? startCell : endCell;
+    const rowCol = this.getMoveInfo(event.key, cell, isJump);
+    if (!rowCol) {
+      return;
+    }
+    const [rowIndex, colIndex] = [rowCol.row, rowCol.col];
+    this.scrollToActiveCell(spreadsheet, rowIndex, colIndex);
+    const movedCell = this.generateCellMeta(spreadsheet, rowIndex, colIndex);
+    const selectedCells = isSingle
+      ? [movedCell]
+      : this.getRangeCells(spreadsheet, startCell, movedCell);
+    selectCells(spreadsheet, selectedCells);
+    if (useStart) {
+      this.startCell = movedCell;
+    }
+    this.endCell = movedCell;
+  }
+
+  private generateCellMeta(spreadsheet: SpreadSheet, row: number, col: number) {
+    const {
+      isTableMode,
+      facet: {
+        layoutResult: { colLeafNodes, rowLeafNodes },
+      },
+    } = spreadsheet;
+    const rowId = isTableMode() ? String(row) : rowLeafNodes[row].id;
+    const colId = colLeafNodes[col].id;
+
+    return {
+      rowIndex: row,
+      colIndex: col,
+      id: getDataCellId(rowId, colId),
+      type: CellTypes.DATA_CELL,
+    };
+  }
+
+  private getRangeCells(
+    spreadsheet: SpreadSheet,
+    start: CellMeta,
+    end: CellMeta,
+  ): CellMeta[] {
+    const {
+      start: { rowIndex: startRowIndex, colIndex: startColIndex },
+      end: { rowIndex: endRowIndex, colIndex: endColIndex },
+    } = getRangeIndex(start, end);
+    const cells: CellMeta[] = [];
+    for (let row = startRowIndex; row <= endRowIndex; row++) {
+      for (let col = startColIndex; col <= endColIndex; col++) {
+        cells.push(this.generateCellMeta(spreadsheet, row, col));
+      }
+    }
+    return cells;
+  }
+
+  private getMoveInfo(code: string, cell: CellMeta, isJump: boolean) {
+    const { spreadsheet } = this;
+    const {
+      frozenColCount = 0,
+      frozenRowCount = 0,
+      frozenTrailingColCount = 0,
+      frozenTrailingRowCount = 0,
+    } = spreadsheet.options;
+    const { rowLeafNodes, colLeafNodes } = spreadsheet.facet.layoutResult;
+
+    const [minCol, maxCol] = [
+      0 + frozenColCount,
+      colLeafNodes.length - frozenTrailingColCount - 1,
+    ];
+    const [minRow, maxRow] = [
+      0 + frozenRowCount,
+      (spreadsheet.isTableMode()
+        ? spreadsheet.dataSet.getDisplayDataSet().length
+        : rowLeafNodes.length) -
+        frozenTrailingRowCount -
+        1,
+    ];
     if (!cell) return;
     switch (code) {
       case InteractionKeyboardKey.ARROW_RIGHT:
-        return { row: cell.rowIndex, col: cell.colIndex + 1 };
+        return {
+          row: cell.rowIndex,
+          col: isJump ? maxCol : Math.min(cell.colIndex + 1, maxCol),
+        };
       case InteractionKeyboardKey.ARROW_LEFT:
-        return { row: cell.rowIndex, col: cell.colIndex - 1 };
+        return {
+          row: cell.rowIndex,
+          col: isJump ? minCol : Math.max(minCol, cell.colIndex - 1),
+        };
       case InteractionKeyboardKey.ARROW_UP:
-        return { row: cell.rowIndex - 1, col: cell.colIndex };
+        return {
+          row: isJump ? minRow : Math.max(minRow, cell.rowIndex - 1),
+          col: cell.colIndex,
+        };
       case InteractionKeyboardKey.ARROW_DOWN:
-        return { row: cell.rowIndex + 1, col: cell.colIndex };
+        return {
+          row: isJump ? maxRow : Math.min(maxRow, cell.rowIndex + 1),
+          col: cell.colIndex,
+        };
       default:
         break;
     }
-  }
-
-  // 判断是否在可移动范围内
-  private isInRange(
-    spreadsheet: SpreadSheet,
-    rowIndex: number,
-    colIndex: number,
-  ) {
-    const { rowLeafNodes } = spreadsheet.facet.layoutResult;
-    const seriesCount =
-      spreadsheet.isTableMode() && spreadsheet.options.showSeriesNumber ? 1 : 0;
-    const colInRange = inRange(
-      colIndex,
-      0,
-      spreadsheet.dataSet.fields.columns.length + seriesCount,
-    );
-    const rowInRange = inRange(
-      rowIndex,
-      0,
-      spreadsheet.isTableMode()
-        ? spreadsheet.dataSet.getDisplayDataSet().length
-        : rowLeafNodes.length,
-    );
-    if (!(colInRange && rowInRange)) {
-      return false;
-    }
-    return true;
   }
 
   // 计算需要滚动的offset
@@ -152,33 +270,16 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     rowIndex: number,
     colIndex: number,
   ) {
-    if (!this.isInRange(spreadsheet, rowIndex, colIndex)) {
-      return;
-    }
     const { offsetX, offsetY } = this.calculateOffset(
       spreadsheet,
       rowIndex,
       colIndex,
     );
-    const { colLeafNodes, rowLeafNodes } = spreadsheet.facet.layoutResult;
-    const { facet, interaction, isTableMode } = spreadsheet;
-    const { scrollX, scrollY } = facet.getScrollOffset();
+    const { facet } = spreadsheet;
+    const { scrollX, scrollY } = spreadsheet.facet.getScrollOffset();
     facet.scrollWithAnimation({
-      offsetX: { value: offsetX > 0 ? offsetX : scrollX },
-      offsetY: { value: offsetY > 0 ? offsetY : scrollY },
+      offsetX: { value: offsetX > -1 ? offsetX : scrollX },
+      offsetY: { value: offsetY > -1 ? offsetY : scrollY },
     });
-    const rowId = isTableMode() ? String(rowIndex) : rowLeafNodes[rowIndex].id;
-    interaction.changeState({
-      stateName: InteractionStateName.SELECTED,
-      cells: [
-        {
-          colIndex,
-          rowIndex,
-          id: getDataCellId(rowId, colLeafNodes[colIndex].id),
-          type: CellTypes.DATA_CELL,
-        },
-      ],
-    });
-    spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
   }
 }
