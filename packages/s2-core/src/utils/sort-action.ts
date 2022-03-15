@@ -11,7 +11,7 @@ import {
   indexOf,
   isArray,
 } from 'lodash';
-import { SortMethod, SortParam } from '@/common/interface';
+import { Fields, SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
@@ -175,7 +175,39 @@ export const processSort = (params: SortActionParams): string[] => {
   return result;
 };
 
-export function getSortByMeasureValues(params: SortActionParams) {
+/**
+ * 生成 getTotalValue (前端计算）所需的 params
+ * @param originValue
+ * @param fields
+ * @param sortFieldId
+ */
+const createTotalParams = (
+  originValue: string,
+  fields: Fields,
+  sortFieldId: string,
+) => {
+  const totalParams = {};
+  // 获取行/列小计时，需要将所有行/列维度的值作为 params
+  const isSubTotal = includes(originValue, '&');
+
+  if (isSubTotal) {
+    const realOriginValue = split(originValue, '[&]');
+    const keys = fields?.rows?.includes(sortFieldId)
+      ? fields.rows
+      : fields.columns;
+
+    for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
+      totalParams[keys[i]] = realOriginValue[i];
+    }
+  } else {
+    totalParams[sortFieldId] = originValue;
+  }
+  return totalParams;
+};
+
+export const getSortByMeasureValues = (
+  params: SortActionParams,
+): DataType[] => {
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
@@ -184,21 +216,6 @@ export function getSortByMeasureValues(params: SortActionParams) {
     // 按指标只排序 - 最内侧的行列不需要汇总后排序
     return dataSet.getMultiData(query);
   }
-
-  const createTotalParams = (originValue) => {
-    const totalParams = {};
-    if (isArray(originValue)) {
-      const keys = fields?.rows?.includes(sortFieldId)
-        ? fields.rows
-        : fields.columns;
-      for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
-        totalParams[keys[i]] = originValue[i];
-      }
-    } else {
-      totalParams[sortFieldId] = originValue;
-    }
-    return totalParams;
-  };
 
   const isRow =
     fields?.columns?.includes(sortFieldId) &&
@@ -210,12 +227,8 @@ export function getSortByMeasureValues(params: SortActionParams) {
 
   // 按前端的小计，总计排序
   if (!measureValues || isEmpty(measureValues)) {
-    const realOriginValues = includes(originValues?.[0], '&')
-      ? map(originValues, (val) => split(val, '[&]'))
-      : originValues;
-
-    return map(realOriginValues, (originValue) => {
-      const totalParams = createTotalParams(originValue);
+    return map(originValues, (originValue) => {
+      const totalParams = createTotalParams(originValue, fields, sortFieldId);
 
       return (dataSet as PivotDataSet).getTotalValue({
         ...query,
@@ -224,7 +237,7 @@ export function getSortByMeasureValues(params: SortActionParams) {
     });
   }
   return measureValues;
-}
+};
 
 export const handleSortAction = (params: SortActionParams): string[] => {
   const { dataSet, sortParam, originValues, isSortByMeasure } = params;
@@ -238,7 +251,6 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     measureValues = originValues;
   }
 
-  // console.log(measureValues, 'measure Values 111');
   return processSort({
     sortParam,
     originValues,
