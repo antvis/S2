@@ -145,7 +145,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     let newY = this.endBrushPoint.y + y;
     let needScrollForX = true;
     let needScrollForY = true;
-    const vScrollBarWidth = facet.vScrollBar.getBBox().width;
+    const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
     const extraPixel = 2; // 额外加缩进，保证 getShape 在 panelBox 内
 
     if (newX > maxX) {
@@ -458,7 +458,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
-      event?.preventDefault?.();
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -483,7 +482,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseUp() {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
-      event?.preventDefault?.();
       this.clearAutoScroll();
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
