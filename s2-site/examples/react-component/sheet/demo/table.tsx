@@ -4,7 +4,7 @@ import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  '../data/basic-table-mode.json',
 )
   .then((res) => res.json())
   .then((res) => {
