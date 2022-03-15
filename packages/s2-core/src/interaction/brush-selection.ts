@@ -4,7 +4,7 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from 'src/utils/interaction/';
-import _, { isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event, ScrollDirection } from '@/common/constant';
@@ -178,7 +178,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private autoScrollIntervalId = null;
 
-  private autoScrollConfig: BrushAutoScrollConfig = _.cloneDeep(
+  private autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   );
 
@@ -302,7 +302,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const nextIndex = this.validateYIndex(
         rowIndex + (config.y.value > 0 ? 1 : -1),
       );
-      y = _.isNil(nextIndex)
+      y = isNil(nextIndex)
         ? 0
         : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
     }
@@ -317,7 +317,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const nextIndex = this.validateXIndex(
         colIndex + (config.x.value > 0 ? 1 : -1),
       );
-      x = _.isNil(nextIndex)
+      x = isNil(nextIndex)
         ? 0
         : getScrollOffsetForCol(nextIndex, dir, this.spreadsheet) - scrollX;
     }
@@ -387,7 +387,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     );
   };
 
-  private handleScroll = _.throttle((x, y) => {
+  private handleScroll = throttle((x, y) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
     ) {
@@ -541,7 +541,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private resetScrollDelta() {
-    this.autoScrollConfig = _.cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
+    this.autoScrollConfig = cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
