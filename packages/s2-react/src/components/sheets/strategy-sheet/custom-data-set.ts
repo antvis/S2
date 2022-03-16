@@ -21,8 +21,8 @@ export class StrategyDataSet extends CustomTreePivotDataSet {
             [EXTRA_FIELD]: key,
             [VALUE_FIELD]: value,
           });
+          isPushed = true;
         }
-        isPushed = true;
       });
       if (!isPushed) {
         transformedData.push(dataItem);
