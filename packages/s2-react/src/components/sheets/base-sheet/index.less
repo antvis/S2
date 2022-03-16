@@ -1,11 +1,11 @@
 @preCls: antv-s2;
 
-.ant-spin-nested-loading,
-.ant-spin-container {
-  height: 100%;
-}
-
 .@{preCls} {
+  &-spin.ant-spin-nested-loading,
+  &-spin > .ant-spin-container {
+    height: 100%;
+  }
+
   &-wrapper {
     padding: 0;
     margin: 0;

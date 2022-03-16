@@ -217,4 +217,4 @@ yarn site:start
 
 ## 📄 License
 
-MIT@[AntV](https://github.com/antvis).
+MIT@[AntV](https://github.com/antvis)

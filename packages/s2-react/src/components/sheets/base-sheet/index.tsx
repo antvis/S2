@@ -6,6 +6,7 @@ import {
   getSafetyDataConfig,
   SpreadSheet,
 } from '@antv/s2';
+import { get } from 'lodash';
 import { Header } from '@/components/header';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 import { S2Pagination } from '@/components/pagination';
@@ -38,7 +39,7 @@ export const BaseSheet = React.forwardRef(
 
     return (
       <React.StrictMode>
-        <Spin spinning={loading}>
+        <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
           <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
               <Header
@@ -51,7 +52,12 @@ export const BaseSheet = React.forwardRef(
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
             {showPagination && (
-              <S2Pagination {...pagination} pagination={options.pagination} />
+              <S2Pagination
+                {...pagination}
+                pagination={options.pagination}
+                onChange={get(showPagination, 'onChange')}
+                onShowSizeChange={get(showPagination, 'onShowSizeChange')}
+              />
             )}
           </div>
         </Spin>

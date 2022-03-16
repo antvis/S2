@@ -181,6 +181,8 @@ describe('PivotSheet Tests', () => {
       sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
       expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+      sheet.destroy();
     });
 
     test.each([
@@ -214,6 +216,8 @@ describe('PivotSheet Tests', () => {
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -247,6 +251,8 @@ describe('PivotSheet Tests', () => {
         });
 
         expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -279,6 +285,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(defaultTooltipContent),
         ).toBeFalsy();
+
+        sheet.destroy();
       },
     );
 
@@ -314,6 +322,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(methodTooltipContent),
         ).toBeTruthy();
+
+        sheet.destroy();
       },
     );
 
@@ -361,6 +371,8 @@ describe('PivotSheet Tests', () => {
       expect(customShow).toHaveBeenCalled();
       expect(customHide).toHaveBeenCalled();
       expect(customDestroy).toHaveBeenCalled();
+
+      sheet.destroy();
     });
 
     test('should show invalid custom tooltip warning', () => {
@@ -388,6 +400,8 @@ describe('PivotSheet Tests', () => {
           sheet.tooltip as unknown
         )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
+
+      sheet.destroy();
     });
   });
 
@@ -741,11 +755,11 @@ describe('PivotSheet Tests', () => {
   test('should destroy sheet', () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     const hdAdapterDestroySpy = jest
       .spyOn(s2.hdAdapter, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     s2.render(false);
 

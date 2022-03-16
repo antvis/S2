@@ -1,5 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, BBox } from '@antv/g-canvas';
+import { Canvas, BBox, CanvasCfg } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { EmitterType } from '@/common/interface/emitter';
 import {
@@ -80,7 +80,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-    });
+    } as CanvasCfg);
     spreadsheet.facet = {
       panelBBox: {
         maxX: s2Options.width,
@@ -156,6 +156,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.KEY_DOWN,
       OriginEventType.KEY_UP,
       OriginEventType.MOUSE_UP,
+      OriginEventType.MOUSE_MOVE,
     ];
     expect(eventController.domEventListeners).toHaveLength(
       domEventTypes.length,
@@ -373,7 +374,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test.each([
     { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
-    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_DOWN },
+    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
   ])(
     'should not trigger sheet %o if outside the canvas container',
     ({ type, event }) => {
@@ -585,4 +586,43 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
+
+  // https://github.com/antvis/S2/issues/1172
+  test.each([
+    { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
+    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
+    { type: OriginEventType.MOUSE_UP, event: S2Event.GLOBAL_MOUSE_UP },
+    { type: OriginEventType.MOUSE_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
+  ])(
+    'should not prevent default original event if controller emitted global event %o',
+    ({ type, event }) => {
+      jest
+        .spyOn(HTMLElement.prototype, 'contains')
+        .mockImplementation(() => true);
+
+      const handler = jest.fn();
+      const originalEventHandler = jest.fn();
+      const preventDefault = jest.fn();
+
+      spreadsheet.on(event, handler);
+
+      // 外部额外注册一个相同的事件
+      window.addEventListener(type, originalEventHandler);
+
+      window.dispatchEvent(
+        new MouseEvent('click', { preventDefault } as EventInit),
+      );
+      window.dispatchEvent(new Event(type, { preventDefault } as EventInit));
+
+      // 都应该触发
+      expect(handler).toHaveBeenCalled();
+      expect(originalEventHandler).toHaveBeenCalled();
+
+      // 不应该阻止默认事件
+      expect(preventDefault).not.toHaveBeenCalled();
+
+      spreadsheet.off(event, handler);
+      window.removeEventListener(type, originalEventHandler);
+    },
+  );
 });

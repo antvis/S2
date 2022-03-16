@@ -1,15 +1,17 @@
 import {
+  clone,
   isArray,
   isEmpty,
   isNil,
   isNumber,
   isString,
   memoize,
+  reverse,
   toString,
   trim,
   values,
 } from 'lodash';
-import { DefaultCellTheme } from '@/common/interface/theme';
+import { DefaultCellTheme, TextAlign } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
 import {
@@ -276,9 +278,21 @@ export const isUpDataValue = (value: number | string): boolean => {
   return !!value && !trim(value).startsWith('-');
 };
 
-const calX = (x: number, paddingRight: number, total?: number) => {
+const calX = (
+  x: number,
+  paddingRight: number,
+  total?: number,
+  textAlign = 'left',
+) => {
   const extra = total || 0;
-  return x + paddingRight / 2 + extra;
+  if (textAlign === 'left') {
+    return x + paddingRight / 2 + extra;
+  }
+  if (textAlign === 'right') {
+    return x - paddingRight / 2 - extra;
+  }
+  // TODO 兼容 textAlign 为居中
+  return x;
 };
 
 const getTextStyle = (
@@ -296,6 +310,7 @@ const getTextStyle = (
     fill = textCondition?.mapping(data, {
       rowIndex,
       colIndex,
+      meta,
     }).fill;
   }
   return { ...textStyle, fill };
@@ -312,14 +327,15 @@ export const drawObjectText = (
   multiData?: MultiData,
   disabledConditions?: boolean,
 ) => {
-  const { x, y, height, width } = cell.getContentArea();
+  const { x } = cell.getTextAndIconPosition().text;
+  const { y, height, width } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
   const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-
+  const { textAlign } = dataCellStyle.text;
   const padding = dataCellStyle.cell.padding;
   const totalTextWidth = width - padding.left - padding.right;
 
@@ -355,8 +371,13 @@ export const drawObjectText = (
   for (let i = 0; i < textValues.length; i += 1) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
-    for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j];
+    const measures = clone(textValues[i]);
+    if (textAlign === 'right') {
+      reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
+    }
+
+    for (let j = 0; j < measures.length; j += 1) {
+      curText = measures[j];
       const curStyle = getTextStyle(
         i,
         j,
@@ -369,7 +390,7 @@ export const drawObjectText = (
         ? totalTextWidth * (widthPercentCfg[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
-      curX = calX(x, padding.right, totalWidth);
+      curX = calX(x, padding.right, totalWidth, textAlign);
       totalWidth += curWidth;
       renderText(
         cell,

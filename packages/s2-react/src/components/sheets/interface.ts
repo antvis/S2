@@ -79,7 +79,12 @@ export interface BaseSheetComponentProps {
   loading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: Adaptive;
-  showPagination?: boolean;
+  showPagination?:
+    | boolean
+    | {
+        onShowSizeChange?: (pageSize: number) => void;
+        onChange?: (current: number) => void;
+      };
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
