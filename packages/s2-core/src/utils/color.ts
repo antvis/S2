@@ -1,6 +1,7 @@
-import tinycolor from 'tinyColor2';
 import { includes, map } from 'lodash';
 import { Palette } from '@/common';
+
+const tinycolor = require('tinycolor2');
 
 export const generatePalette = (palette: Palette, brandColor: string) => {
   const { basicColors, ...restParams } = palette;
