@@ -1,3 +1,10 @@
+# [@antv/s2-v1.12.2](https://github.com/antvis/S2/compare/@antv/s2-v1.12.1...@antv/s2-v1.12.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* 指标列头对齐样式修复升级 ([f4e4b29](https://github.com/antvis/S2/commit/f4e4b298e556ae96b902e4839f680802ccec19ae))
+
 # [@antv/s2-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-v1.12.0...@antv/s2-v1.12.1) (2022-03-15)
 
 
