@@ -15,6 +15,8 @@ import {
   CellBorderPosition,
   DefaultCellTheme,
   IconTheme,
+  TextAlign,
+  TextBaseline,
   TextTheme,
 } from '@/common/interface';
 import { AreaRange } from '@/common/interface/scroll';
@@ -92,15 +94,18 @@ export class ColCell extends HeaderCell {
     const textStyle = this.getOriginalTextStyle();
     const hideMeasureColumn =
       this.spreadsheet.options.style.colCfg.hideMeasureColumn;
-
+    let textAlign: TextAlign;
+    let textBaseline: TextBaseline;
     if (isLeaf && !hideMeasureColumn) {
-      // 最后一个层级的非维值指标单元格，与 dataCell 对齐方式保持一致
-      return textStyle;
+      textAlign = this.theme.dataCell.text.textAlign;
+      textBaseline = this.theme.dataCell.text.textBaseline;
+    } else {
+      // 为方便 getTextAreaRange 计算文字位置
+      // textAlign 固定为 center
+      textAlign = 'center';
+      textBaseline = 'middle';
     }
-
-    // 为方便 getTextAreaRange 计算文字位置
-    // textAlign 固定为 center
-    return { ...textStyle, textAlign: 'center', textBaseline: 'middle' };
+    return { ...textStyle, textAlign, textBaseline };
   }
 
   protected getMaxTextWidth(): number {
