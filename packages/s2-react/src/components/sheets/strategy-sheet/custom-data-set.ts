@@ -1,4 +1,4 @@
-import { isObject, map, uniq, forIn } from 'lodash';
+import { isObject, uniq, forIn, forEach } from 'lodash';
 import {
   CustomTreePivotDataSet,
   S2DataConfig,
@@ -11,27 +11,23 @@ export class StrategyDataSet extends CustomTreePivotDataSet {
     dataCfg.fields.rows = [EXTRA_FIELD];
     dataCfg.fields.valueInCols = false;
     const { data, ...restCfg } = dataCfg;
-    let transformedData = [];
-
-    transformedData = map(data, (dataItem) => {
-      let extraField: string;
-      let valueField: object;
+    const transformedData = [];
+    forEach(data, (dataItem) => {
+      let isPushed = false;
       forIn(dataItem, (value, key) => {
         if (isObject(value)) {
-          extraField = key;
-          valueField = value;
+          transformedData.push({
+            ...dataItem,
+            [EXTRA_FIELD]: key,
+            [VALUE_FIELD]: value,
+          });
+          isPushed = true;
         }
       });
-      if (extraField || valueField) {
-        return {
-          ...dataItem,
-          [EXTRA_FIELD]: extraField,
-          [VALUE_FIELD]: valueField,
-        };
+      if (!isPushed) {
+        transformedData.push(dataItem);
       }
-      return dataItem;
     });
-
     return {
       data: uniq(transformedData),
       ...restCfg,
