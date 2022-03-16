@@ -8,6 +8,7 @@ export const paletteDefault = {
     '#CCDBFD',
     '#2C60D3',
     '#0000EE',
+    // brand color
     '#326EF4',
     '#FFFFFF',
     '#EBF2FF',
@@ -23,4 +24,9 @@ export const paletteDefault = {
     red: '#FF4D4F',
     green: '#29A294',
   },
+
+  // 用于标记生成色板时固定不变的色值索引
+  fixedColorIndex: [0, 13, 14],
+  // 主题色索引
+  brandColorIndex: 7,
 };

@@ -15,9 +15,13 @@ export interface Palette {
   semanticColors: {
     red?: string;
     green?: string;
-    /* 额外颜色字段 */
     [key: string]: string;
   };
+  /* 用于标记生成色板时固定不变的色值索引 */
+  fixedColorIndex?: number[];
+  /* 主题色索引 */
+  brandColorIndex?: number;
+  /* 额外颜色字段 */
 }
 
 export interface Padding {

@@ -62,6 +62,7 @@
   },
   "devDependencies": {
     "d3-dsv": "^1.1.1",
+    "tinycolor2": "^1.4.2",
     "inquirer": "^8.2.0",
     "inquirer-autocomplete-prompt": "^1.4.0"
   },
