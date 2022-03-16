@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.11.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.1...@antv/s2-react-v1.11.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* 修复趋势分析表多指标丢失问题 ([#1175](https://github.com/antvis/S2/issues/1175)) ([2352dbe](https://github.com/antvis/S2/commit/2352dbe3e7ece8ee758fe7cc7ad672d6416f23a1))
+
 # [@antv/s2-react-v1.11.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.0...@antv/s2-react-v1.11.1) (2022-03-11)
 
 
