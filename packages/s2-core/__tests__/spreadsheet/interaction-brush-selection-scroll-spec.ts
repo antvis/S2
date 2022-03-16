@@ -69,7 +69,7 @@ const options: S2Options = {
   },
 };
 
-describe('Bursh selection scroll spec', () => {
+describe('Brush selection scroll spec', () => {
   test('Should scroll when mouse outside canvas', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
