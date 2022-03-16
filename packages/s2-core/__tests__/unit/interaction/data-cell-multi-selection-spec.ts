@@ -85,6 +85,22 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
   });
 
+  test('should add click intercept when ctrl keydown', () => {
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.CONTROL,
+    } as KeyboardEvent);
+
+    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
+  });
+
+  test('should remove click intercept when ctrl keyup', () => {
+    s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
+      key: InteractionKeyboardKey.CONTROL,
+    } as KeyboardEvent);
+
+    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+  });
+
   test('should select multiple data cell', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.META,
