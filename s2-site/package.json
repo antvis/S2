@@ -36,7 +36,7 @@
     "@antv/g-canvas": "^0.5.12",
     "@antv/gatsby-theme-antv": "^1.1.15",
     "@antv/s2": "^1.12.1",
-    "@antv/s2-react": "^1.11.1",
+    "@antv/s2-react": "^1.11.2",
     "gatsby": "^2.24.2",
     "gh-pages": "^3.1.0",
     "lodash": "^4.17.21",
