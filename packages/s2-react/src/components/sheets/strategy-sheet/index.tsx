@@ -80,7 +80,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           spreadsheet: SpreadSheet,
           headerConfig: ColHeaderConfig,
         ) => new CustomColCell(node, spreadsheet, headerConfig),
-        dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
+        // dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
         showDefaultHeaderActionIcon: false,
         hierarchyType,
         style: {
