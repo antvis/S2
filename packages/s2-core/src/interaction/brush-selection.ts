@@ -4,7 +4,7 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from 'src/utils/interaction/';
-import _, { isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event, ScrollDirection } from '@/common/constant';
@@ -145,7 +145,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     let newY = this.endBrushPoint.y + y;
     let needScrollForX = true;
     let needScrollForY = true;
-    const vScrollBarWidth = facet.vScrollBar.getBBox().width;
+    const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
     const extraPixel = 2; // 额外加缩进，保证 getShape 在 panelBox 内
 
     if (newX > maxX) {
@@ -178,7 +178,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private autoScrollIntervalId = null;
 
-  private autoScrollConfig: BrushAutoScrollConfig = _.cloneDeep(
+  private autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   );
 
@@ -302,7 +302,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const nextIndex = this.validateYIndex(
         rowIndex + (config.y.value > 0 ? 1 : -1),
       );
-      y = _.isNil(nextIndex)
+      y = isNil(nextIndex)
         ? 0
         : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
     }
@@ -317,7 +317,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const nextIndex = this.validateXIndex(
         colIndex + (config.x.value > 0 ? 1 : -1),
       );
-      x = _.isNil(nextIndex)
+      x = isNil(nextIndex)
         ? 0
         : getScrollOffsetForCol(nextIndex, dir, this.spreadsheet) - scrollX;
     }
@@ -387,7 +387,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     );
   };
 
-  private handleScroll = _.throttle((x, y) => {
+  private handleScroll = throttle((x, y) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
     ) {
@@ -458,7 +458,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
-      event?.preventDefault?.();
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -483,7 +482,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseUp() {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
-      event?.preventDefault?.();
       this.clearAutoScroll();
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
@@ -548,7 +546,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private resetScrollDelta() {
-    this.autoScrollConfig = _.cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
+    this.autoScrollConfig = cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
