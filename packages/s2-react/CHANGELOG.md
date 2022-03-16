@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.11.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.2...@antv/s2-react-v1.11.3) (2022-03-16)
+
+
+### Bug Fixes
+
+* 修复趋势分析表空数据不渲染问题 ([#1180](https://github.com/antvis/S2/issues/1180)) ([0b7c54b](https://github.com/antvis/S2/commit/0b7c54be03f43a2c422ea01bf78b326c9b31c0ae))
+
 # [@antv/s2-react-v1.11.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.1...@antv/s2-react-v1.11.2) (2022-03-16)
 
 
