@@ -71,6 +71,9 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell right', () => {
     s2.interaction.changeState = jest.fn((state) => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell00.mockCell;
+    keyboardMove.endCell = mockCell00.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
@@ -92,6 +95,9 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell left', () => {
     s2.interaction.changeState = jest.fn((state) => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell01.mockCell;
+    keyboardMove.endCell = mockCell01.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_LEFT,
@@ -114,6 +120,9 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell up', () => {
     s2.interaction.changeState = jest.fn((state) => {});
     s2.interaction.getCells = () => [mockCell10.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell10.mockCell;
+    keyboardMove.endCell = mockCell10.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_UP,
@@ -136,6 +145,9 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell down', () => {
     s2.interaction.changeState = jest.fn((state) => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell01.mockCell;
+    keyboardMove.endCell = mockCell01.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_DOWN,

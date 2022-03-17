@@ -33,45 +33,47 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         const hasDirection = SelectedCellMoveMap.includes(
           event.key as InteractionKeyboardKey,
         );
-        if (isMeta && isShift && hasDirection) {
-          // META + SHIFT + Direction
+        let changeStartCell = false;
+        let isJumpMode = false;
+        let isSingleSelection = false;
+
+        if (hasDirection) {
+          if (isMeta && isShift) {
+            // META + SHIFT + Direction
+            changeStartCell = false;
+            isJumpMode = true;
+            isSingleSelection = false;
+          } else if (isMeta) {
+            // META + Direction
+            changeStartCell = true;
+            isJumpMode = true;
+            isSingleSelection = true;
+          } else if (isShift) {
+            // SHIFT + Direction
+            changeStartCell = false;
+            isJumpMode = false;
+            isSingleSelection = false;
+          } else {
+            // Only Direction
+            changeStartCell = true;
+            isJumpMode = false;
+            isSingleSelection = true;
+          }
           this.handleMove({
             event,
-            useStart: false,
-            isJump: true,
-            isSingle: false,
-          });
-        } else if (isMeta && hasDirection) {
-          // META + Direction
-          this.handleMove({
-            event,
-            useStart: true,
-            isJump: true,
-            isSingle: true,
-          });
-        } else if (isShift && hasDirection) {
-          // SHIFT + Direction
-          this.handleMove({
-            event,
-            useStart: false,
-            isJump: false,
-            isSingle: false,
-          });
-        } else if (hasDirection) {
-          // Only Direction
-          this.handleMove({
-            event,
-            useStart: true,
-            isJump: false,
-            isSingle: true,
+            changeStartCell,
+            isJumpMode,
+            isSingleSelection,
           });
         }
       },
     );
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       const cell = this.spreadsheet.getCell(event.target).getMeta() as ViewMeta;
-      this.startCell = this.getCellMetaFromViewMeta(cell);
-      this.endCell = this.startCell;
+      if (cell) {
+        this.startCell = this.getCellMetaFromViewMeta(cell);
+        this.endCell = this.startCell;
+      }
     });
   }
 
@@ -85,21 +87,26 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   }
 
   // core move function
-  private handleMove({ event, useStart, isJump, isSingle }) {
+  private handleMove({
+    event,
+    changeStartCell,
+    isJumpMode,
+    isSingleSelection,
+  }) {
     const { spreadsheet, startCell, endCell } = this;
-    const cell = useStart ? startCell : endCell;
-    const rowCol = this.getMoveInfo(event.key, cell, isJump);
+    const cell = changeStartCell ? startCell : endCell;
+    const rowCol = this.getMoveInfo(event.key, cell, isJumpMode);
     if (!rowCol) {
       return;
     }
     const [rowIndex, colIndex] = [rowCol.row, rowCol.col];
     this.scrollToActiveCell(spreadsheet, rowIndex, colIndex);
     const movedCell = this.generateCellMeta(spreadsheet, rowIndex, colIndex);
-    const selectedCells = isSingle
+    const selectedCells = isSingleSelection
       ? [movedCell]
       : this.getRangeCells(spreadsheet, startCell, movedCell);
     selectCells(spreadsheet, selectedCells);
-    if (useStart) {
+    if (changeStartCell) {
       this.startCell = movedCell;
     }
     this.endCell = movedCell;
@@ -166,23 +173,35 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     if (!cell) return;
     switch (code) {
       case InteractionKeyboardKey.ARROW_RIGHT:
+        if (cell.colIndex + 1 > maxCol) {
+          return;
+        }
         return {
           row: cell.rowIndex,
-          col: isJump ? maxCol : Math.min(cell.colIndex + 1, maxCol),
+          col: isJump ? maxCol : cell.colIndex + 1,
         };
       case InteractionKeyboardKey.ARROW_LEFT:
+        if (cell.colIndex - 1 < minCol) {
+          return;
+        }
         return {
           row: cell.rowIndex,
-          col: isJump ? minCol : Math.max(minCol, cell.colIndex - 1),
+          col: isJump ? minCol : cell.colIndex - 1,
         };
       case InteractionKeyboardKey.ARROW_UP:
+        if (cell.rowIndex - 1 < minRow) {
+          return;
+        }
         return {
-          row: isJump ? minRow : Math.max(minRow, cell.rowIndex - 1),
+          row: isJump ? minRow : cell.rowIndex - 1,
           col: cell.colIndex,
         };
       case InteractionKeyboardKey.ARROW_DOWN:
+        if (cell.rowIndex + 1 > maxRow) {
+          return;
+        }
         return {
-          row: isJump ? maxRow : Math.min(maxRow, cell.rowIndex + 1),
+          row: isJump ? maxRow : cell.rowIndex + 1,
           col: cell.colIndex,
         };
       default:
