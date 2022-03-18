@@ -52,15 +52,22 @@ export const useResize = (params: UseResizeEffectParams) => {
       return;
     }
     const resizeObserver = new ResizeObserver(
-      debounce(([entry] = []) => {
+      debounce(([entry]: ResizeObserverEntry[] = []) => {
         if (entry) {
           const [size] = entry.borderBoxSize || [];
+
+          // Safari 不支持 borderBoxSize 属性
           const width = adaptiveWidth
-            ? Math.floor(size?.inlineSize)
+            ? Math.floor(
+                (size?.inlineSize || entry.contentRect?.width) ?? optionWidth,
+              )
             : optionWidth;
           const height = adaptiveHeight
-            ? Math.floor(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
+            ? Math.floor(
+                container?.getBoundingClientRect().height ?? optionHeight,
+              ) // 去除 header 和 page 后才是 sheet 真正的高度
             : optionHeight;
+
           if (!adaptiveWidth && !adaptiveHeight) {
             return;
           }
