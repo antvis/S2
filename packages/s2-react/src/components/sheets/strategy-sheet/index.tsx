@@ -30,24 +30,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, themeCfg, dataCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
 
-    const getCellWidth = React.useCallback(() => {
-      const { data } = dataCfg;
-      const lengths = [];
-      // 采样前50，根据指标个数获取单元格列宽
-      // TODO 动态根据内容来计算列宽
-      const demoData = data.slice(0, 50) || [];
-      forEach(demoData, (value) => {
-        forIn(value, (v: MultiData) => {
-          if (isObject(v) && v?.values) {
-            lengths.push(size(v?.values[0]));
-          }
-        });
-      });
-      const maxLength = max(lengths) || 1;
-      const cellWidth = get(options, 'style.cellCfg.width', 0);
-      return maxLength * cellWidth;
-    }, [dataCfg, options]);
-
     const strategySheetOptions = React.useMemo<
       Partial<S2Options<React.ReactNode>>
     >(() => {
@@ -87,9 +69,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           colCfg: {
             hideMeasureColumn,
           },
-          cellCfg: {
-            width: getCellWidth(),
-          },
         },
         interaction: {
           autoResetSheetStyle: true,
@@ -128,7 +107,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           },
         },
       };
-    }, [dataCfg, getCellWidth, options.hierarchyType]);
+    }, [dataCfg, options.hierarchyType]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields = {
