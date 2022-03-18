@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "1.11.3",
+  "version": "1.12.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
