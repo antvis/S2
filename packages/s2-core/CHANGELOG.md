@@ -1,3 +1,21 @@
+# [@antv/s2-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-v1.12.2...@antv/s2-v1.13.0) (2022-03-18)
+
+
+### Bug Fixes
+
+* invalid input for getIndexRange ([#1196](https://github.com/antvis/S2/issues/1196)) ([e6d47fa](https://github.com/antvis/S2/commit/e6d47fa441ea5f5a5b4d2400041a6a072dc154fa))
+* **react:** 修复宽高改变后未重新渲染表格的问题 close [#1193](https://github.com/antvis/S2/issues/1193) ([#1194](https://github.com/antvis/S2/issues/1194)) ([7a1887f](https://github.com/antvis/S2/commit/7a1887ff8527160b6114b24ff944c987505277fb))
+* 修复linkTextFill不生效的问题, close [#1191](https://github.com/antvis/S2/issues/1191) ([#1192](https://github.com/antvis/S2/issues/1192)) ([0f0f98e](https://github.com/antvis/S2/commit/0f0f98e09de72d5b766e7b52495a809b3720ab52))
+* 修复一些包之间的依赖问题 ([#1140](https://github.com/antvis/S2/issues/1140)) ([1952ecf](https://github.com/antvis/S2/commit/1952ecf070b4b6c1271c3bb6bfc5c37da9f08b6a))
+* 支持 Ctrl 键触发多选 Cell ([#1184](https://github.com/antvis/S2/issues/1184)) ([5a0cb7b](https://github.com/antvis/S2/commit/5a0cb7bcaa414bb707b184f1ff9805fe524db3c7))
+* 明细表 layoutCoordinate 问题、样式取值问题、resize options 读取问题修复 ([#1182](https://github.com/antvis/S2/issues/1182)) ([f32d36a](https://github.com/antvis/S2/commit/f32d36adf45117c7978e1a7e66400d8505c9517e))
+
+
+### Features
+
+* **derection:** 方向键加快捷键操作 ([#1171](https://github.com/antvis/S2/issues/1171)) ([2773900](https://github.com/antvis/S2/commit/2773900de8ee7a29911cde101798c8547bed78ac))
+* 趋势分析表支持列展示不同数量的指标 ([#1185](https://github.com/antvis/S2/issues/1185)) ([5692176](https://github.com/antvis/S2/commit/569217685e92b87e69bab6741422a23ea603cd45))
+
 # [@antv/s2-v1.12.2](https://github.com/antvis/S2/compare/@antv/s2-v1.12.1...@antv/s2-v1.12.2) (2022-03-16)
 
 
