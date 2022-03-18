@@ -342,8 +342,7 @@ describe('Interaction Event Controller Tests', () => {
 
     window.dispatchEvent(
       new KeyboardEvent('keydown', {
-        key: InteractionKeyboardKey.ARROW_UP,
-        metaKey: true,
+        key: InteractionKeyboardKey.ESC,
       }),
     );
     expect(copied).not.toHaveBeenCalled();
