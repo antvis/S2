@@ -31,7 +31,7 @@ import {
   DataType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
-import { forEach, random } from 'lodash';
+import { debounce, forEach, random } from 'lodash';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -188,11 +188,12 @@ function MainLayout() {
     });
   };
 
-  const onSizeChange = (type: 'width' | 'height') => (e) => {
-    updateOptions({
-      [type]: e.target.value,
-    });
-  };
+  const onSizeChange = (type: 'width' | 'height') =>
+    debounce((e) => {
+      updateOptions({
+        [type]: Number(e.target.value),
+      });
+    }, 300);
 
   const onScrollSpeedRatioChange =
     (type: 'horizontal' | 'vertical') => (value: number) => {
@@ -744,7 +745,7 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onAfterRender={logHandler('onLoad')}
+              onAfterRender={logHandler('onAfterRender')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}

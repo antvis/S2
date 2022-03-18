@@ -493,16 +493,16 @@ describe('PivotSheet Tests', () => {
     expect(s2.getColumnNodes()).toHaveLength(3);
   });
 
-  test('should change sheet size', () => {
+  test('should change sheet container size', () => {
     s2.changeSheetSize(1000, 500);
 
-    expect(s2.options.width).toEqual(1000);
-    expect(s2.options.height).toEqual(500);
+    expect(s2.options.width).toStrictEqual(1000);
+    expect(s2.options.height).toStrictEqual(500);
 
     const canvas = s2.container.get('el') as HTMLCanvasElement;
 
-    expect(canvas.style.width).toEqual(`1000px`);
-    expect(canvas.style.height).toEqual(`500px`);
+    expect(canvas.style.width).toStrictEqual(`1000px`);
+    expect(canvas.style.height).toStrictEqual(`500px`);
   });
 
   test('should set display:block style with canvas', () => {
@@ -534,6 +534,46 @@ describe('PivotSheet Tests', () => {
     expect(s2.panelGroup.getChildren()).toHaveLength(1);
     expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
   });
+
+  test.each([
+    {
+      width: s2Options.width + 100,
+      height: s2Options.height + 100,
+    },
+    {
+      width: s2Options.width + 100,
+      height: s2Options.height,
+    },
+    {
+      width: s2Options.width,
+      height: s2Options.height + 100,
+    },
+    {
+      width: s2Options.width,
+      height: s2Options.height,
+    },
+  ])(
+    'should skip change sheet container size if width and height not changed %o',
+    ({ width, height }) => {
+      s2.changeSheetSize(s2Options.width, s2Options.height);
+
+      const isCalled = width !== s2Options.width || height !== s2Options.height;
+
+      const changeSizeSpy = jest
+        .spyOn(s2.container, 'changeSize')
+        .mockImplementationOnce(() => {});
+
+      s2.changeSheetSize(width, height);
+
+      expect(s2.options.width).toStrictEqual(
+        isCalled ? width : s2.options.width,
+      );
+      expect(s2.options.height).toStrictEqual(
+        isCalled ? height : s2.options.height,
+      );
+      expect(changeSizeSpy).toHaveBeenCalledTimes(isCalled ? 1 : 0);
+    },
+  );
 
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]

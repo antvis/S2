@@ -3,6 +3,7 @@ import { PivotSheet, S2Options } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { useSpreadSheet } from '@/hooks';
+import { BaseSheetComponentProps } from '@/components';
 
 const s2Options: S2Options = {
   width: 200,
@@ -12,34 +13,22 @@ const s2Options: S2Options = {
 
 describe('useSpreadSheet tests', () => {
   const container = getContainer();
+  const props: BaseSheetComponentProps = {
+    spreadsheet: () => new PivotSheet(container, mockDataConfig, s2Options),
+    options: s2Options,
+    dataCfg: mockDataConfig,
+  };
 
   test('should build spreadSheet', () => {
     const { result } = renderHook(() =>
-      useSpreadSheet(
-        {
-          spreadsheet: () =>
-            new PivotSheet(container, mockDataConfig, s2Options),
-          options: s2Options,
-          dataCfg: mockDataConfig,
-        },
-        { sheetType: 'pivot' },
-      ),
+      useSpreadSheet(props, { sheetType: 'pivot' }),
     );
     expect(result.current.s2Ref).toBeDefined();
   });
 
   test('should cannot change table size when width or height updated and disable adaptive', () => {
     const { result } = renderHook(() =>
-      useSpreadSheet(
-        {
-          spreadsheet: () =>
-            new PivotSheet(container, mockDataConfig, s2Options),
-          options: s2Options,
-          dataCfg: mockDataConfig,
-          adaptive: false,
-        },
-        { sheetType: 'pivot' },
-      ),
+      useSpreadSheet({ ...props, adaptive: false }, { sheetType: 'pivot' }),
     );
     const s2 = result.current.s2Ref.current;
 
