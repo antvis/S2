@@ -15,8 +15,9 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set('visibleActionIcons', []);
 
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
+  const cellMetas = spreadsheet.interaction.getState().cells;
 
-  if (!isEmpty(allInteractedCells)) {
+  if (!isEmpty(allInteractedCells) && !isEmpty(cellMetas)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });

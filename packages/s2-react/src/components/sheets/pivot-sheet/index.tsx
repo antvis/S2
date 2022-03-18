@@ -1,7 +1,11 @@
-import { Event as GEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import React from 'react';
-import { SpreadSheet, getTooltipOptions, HeaderActionIcon } from '@antv/s2';
+import {
+  SpreadSheet,
+  getTooltipOptions,
+  HeaderActionIcon,
+  GEvent,
+} from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';

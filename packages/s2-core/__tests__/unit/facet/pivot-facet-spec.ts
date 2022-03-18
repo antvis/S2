@@ -78,6 +78,7 @@ jest.mock('src/data-set/pivot-data-set', () => {
           find(meta, (m) => m.field === field),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
         getCellData: actualPivotDataSet.prototype.getCellData,
+        getMultiData: jest.fn(),
         getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
       };
     }),

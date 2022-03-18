@@ -1,5 +1,6 @@
 import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
+import type { IElement } from '@antv/g-canvas';
 import {
   DataCellClick,
   MergedCellClick,
@@ -11,7 +12,7 @@ import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { hideColumnsByThunkGroup, hideColumns } from '@/utils/hide-columns';
+import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { Node } from '@/facet/layout/node';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
@@ -175,7 +176,7 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     return getAllChildCells(
-      this.spreadsheet.panelGroup?.getChildren(),
+      this.spreadsheet.panelGroup?.getChildren() as IElement[],
       DataCell,
     );
   }

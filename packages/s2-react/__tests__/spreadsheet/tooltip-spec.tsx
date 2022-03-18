@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SpreadSheet, S2Options, BaseTooltip, S2Event } from '@antv/s2';
+import { SpreadSheet, S2Options, BaseTooltip, S2Event, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { Event as GEvent } from '@antv/g-canvas';
 import { act } from 'react-dom/test-utils';
 import { SheetComponent } from '@/components/sheets';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';

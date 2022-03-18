@@ -439,3 +439,30 @@ describe('Table Mode Facet Test With Zero Height', () => {
     expect(scrollY).toBe(0);
   });
 });
+
+describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: ss,
+    dataSet: dataSet,
+    ...assembleDataCfg().fields,
+    ...assembleOptions({
+      frozenColCount: 2,
+      frozenRowCount: 2,
+      frozenTrailingColCount: 2,
+      frozenTrailingRowCount: 2,
+    }),
+    ...DEFAULT_STYLE,
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    layoutCoordinate: (cfg, _, currentNode) => {
+      currentNode.width = 200;
+    },
+  });
+
+  test('should get correct width by layoutCoordinate', () => {
+    facet.layoutResult.colLeafNodes.forEach((item) => {
+      expect(item.width).toBe(200);
+    });
+  });
+});

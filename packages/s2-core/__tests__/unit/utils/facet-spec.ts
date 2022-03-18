@@ -34,4 +34,12 @@ describe('Facet util test', () => {
       end: 7,
     });
   });
+
+  test('should get correct index range for invalid input', () => {
+    const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+    expect(getIndexRangeWithOffsets(offsets, 0, -10)).toStrictEqual({
+      start: 0,
+      end: 0,
+    });
+  });
 });

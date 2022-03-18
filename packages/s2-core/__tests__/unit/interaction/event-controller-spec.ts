@@ -342,8 +342,7 @@ describe('Interaction Event Controller Tests', () => {
 
     window.dispatchEvent(
       new KeyboardEvent('keydown', {
-        key: InteractionKeyboardKey.ARROW_UP,
-        metaKey: true,
+        key: InteractionKeyboardKey.ESC,
       }),
     );
     expect(copied).not.toHaveBeenCalled();
@@ -371,23 +370,6 @@ describe('Interaction Event Controller Tests', () => {
     );
     expect(copied).not.toHaveBeenCalled();
   });
-
-  test.each([
-    { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
-    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
-  ])(
-    'should not trigger sheet %o if outside the canvas container',
-    ({ type, event }) => {
-      // 模拟点击的不是表格区域
-      window.dispatchEvent(new Event('click', {}));
-
-      const handler = jest.fn();
-      spreadsheet.on(event, handler);
-
-      window.dispatchEvent(new KeyboardEvent(type, {}));
-      expect(handler).not.toHaveBeenCalled();
-    },
-  );
 
   test('should not reset if current interaction has brush selection', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
