@@ -1,5 +1,4 @@
-import { Point } from '@antv/g-base';
-import { IShape } from '@antv/g-canvas';
+import type { IShape, Point } from '@antv/g-canvas';
 import { clamp, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {

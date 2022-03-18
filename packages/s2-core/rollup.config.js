@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
@@ -6,6 +7,7 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
@@ -29,6 +31,7 @@ const output = {
 };
 
 const plugins = [
+  peerDepsExternal(),
   alias({
     entries: [{ find: 'lodash', replacement: 'lodash-es' }],
   }),
@@ -65,21 +68,10 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-const external = [];
-
 if (isUmdFormat) {
   output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {
-  external.push(
-    'd3-interpolate',
-    'lodash',
-    'lodash-es',
-    '@antv/g-gesture',
-    '@antv/g-canvas',
-    '@antv/event-emitter',
-    'd3-timer',
-  );
   output.dir = outDir;
 }
 
@@ -87,6 +79,5 @@ if (isUmdFormat) {
 export default {
   input: 'src/index.ts',
   output,
-  external,
   plugins,
 };

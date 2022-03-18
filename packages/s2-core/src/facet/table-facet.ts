@@ -1,27 +1,10 @@
-import { IGroup } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
-import { getDataCellId } from 'src/utils/cell/data-cell';
+import type { Group, IElement, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, last, maxBy, set } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
 import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
 import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { getIndexRangeWithOffsets } from 'src/utils/facet';
-import type {
-  LayoutResult,
-  S2CellType,
-  SplitLine,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  ResizeActiveOptions,
-  TableSortParam,
-} from '../common/interface';
-import {
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-  KEY_GROUP_FROZEN_SPLIT_LINE,
-  SeriesNumberHeader,
-  TableRowCell,
-} from '..';
 import {
   calculateFrozenCornerCells,
   calculateInViewIndexes,
@@ -34,12 +17,26 @@ import {
   isFrozenTrailingRow,
 } from './utils';
 import { CornerBBox } from './bbox/cornerBBox';
+import { SeriesNumberHeader } from './header';
+import { TableRowCell } from '@/cell';
+import type {
+  LayoutResult,
+  S2CellType,
+  SplitLine,
+  SpreadSheetFacetCfg,
+  ViewMeta,
+  ResizeActiveOptions,
+  TableSortParam,
+} from '@/common/interface';
+import { getDataCellId } from '@/utils/cell/data-cell';
 import {
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
   S2Event,
   SERIES_NUMBER_FIELD,
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
 } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
@@ -873,7 +870,7 @@ export class TableFacet extends BaseFacet {
       rowResizeFrozenGroup.set('children', []);
     }
     const allCells: TableRowCell[] = getAllChildCells(
-      this.panelGroup.getChildren(),
+      this.panelGroup.getChildren() as IElement[],
       TableRowCell,
     );
 

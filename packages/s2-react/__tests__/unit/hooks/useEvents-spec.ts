@@ -1,8 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Event, S2Options, SpreadSheet, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { Event as GEvent } from '@antv/g-canvas';
 import { BaseSheetComponentProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 

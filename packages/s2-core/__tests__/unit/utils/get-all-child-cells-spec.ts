@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { getAllChildCells } from 'src/utils/get-all-child-cells';
-import { Group } from '@antv/g-canvas';
+import { Group, IElement } from '@antv/g-canvas';
 
 class MockDataCell extends Group {}
 class MockTableRowCell extends Group {}
@@ -27,12 +27,15 @@ describe('getAllChildCells test', () => {
   });
 
   test('should return getAllChildCells of DataCell', () => {
-    expect(getAllChildCells(group.getChildren(), MockDataCell).length).toBe(15);
+    expect(
+      getAllChildCells(group.getChildren() as IElement[], MockDataCell).length,
+    ).toBe(15);
   });
 
   test('should return getAllChildCells of TableRowCell', () => {
-    expect(getAllChildCells(group.getChildren(), MockTableRowCell).length).toBe(
-      5,
-    );
+    expect(
+      getAllChildCells(group.getChildren() as IElement[], MockTableRowCell)
+        .length,
+    ).toBe(5);
   });
 });

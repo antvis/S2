@@ -220,7 +220,7 @@ Object {
 `;
 
 exports[`buildTableHierarchy should generate nodes and hierarchy correctly 2`] = `
-Hierarchy {
+Hierarchy1 {
   "allNodesWithoutRoot": Array [
     Object {
       "belongsCell": undefined,
