@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { debounce } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
@@ -37,7 +37,7 @@ export const useResize = (params: UseResizeEffectParams) => {
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
-  const render = useCallback(
+  const render = React.useCallback(
     (width: number, height: number) => {
       s2.changeSheetSize(width, height);
       s2.render(false);
@@ -52,15 +52,22 @@ export const useResize = (params: UseResizeEffectParams) => {
       return;
     }
     const resizeObserver = new ResizeObserver(
-      debounce(([entry] = []) => {
+      debounce(([entry]: ResizeObserverEntry[] = []) => {
         if (entry) {
           const [size] = entry.borderBoxSize || [];
+
+          // Safari 不支持 borderBoxSize 属性
           const width = adaptiveWidth
-            ? Math.floor(size?.inlineSize)
+            ? Math.floor(
+                (size?.inlineSize || entry.contentRect?.width) ?? optionWidth,
+              )
             : optionWidth;
           const height = adaptiveHeight
-            ? Math.floor(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
+            ? Math.floor(
+                container?.getBoundingClientRect().height ?? optionHeight,
+              ) // 去除 header 和 page 后才是 sheet 真正的高度
             : optionHeight;
+
           if (!adaptiveWidth && !adaptiveHeight) {
             return;
           }

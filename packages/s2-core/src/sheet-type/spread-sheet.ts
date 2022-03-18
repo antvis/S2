@@ -399,7 +399,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * @param width
    * @param height
-   * @deprecated 该方法将会在2.0被移除
+   * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
    */
   public changeSize(
     width: number = this.options.width,
@@ -417,10 +417,13 @@ export abstract class SpreadSheet extends EE {
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
-    const isEqualSize =
-      width === this.options.width && height === this.options.height;
+    const containerWidth = this.container.get('width');
+    const containerHeight = this.container.get('height');
 
-    if (isEqualSize) {
+    const isSizeChanged =
+      width !== containerWidth || height !== containerHeight;
+
+    if (!isSizeChanged) {
       return;
     }
 
