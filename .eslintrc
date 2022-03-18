@@ -50,7 +50,7 @@
     "no-console": 2,
     "no-multi-spaces": 0,
     "consistent-return": 0,
-    "import/no-extraneous-dependencies": ["error"],
+    "import/no-extraneous-dependencies": 2,
     "import/prefer-default-export": 0,
     "no-underscore-dangle": [
       2,
