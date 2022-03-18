@@ -69,143 +69,148 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     expect(dataCellMultiSelection.bindEvents).toBeDefined();
   });
 
-  test('should add click intercept when command keydown', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.META,
-    } as KeyboardEvent);
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should add click intercept when keydown',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+        key,
+      } as KeyboardEvent);
 
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
-  });
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
+    },
+  );
 
-  test('should remove click intercept when command keyup', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
-      key: InteractionKeyboardKey.META,
-    } as KeyboardEvent);
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should remove click intercept when  keyup',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
+        key,
+      } as KeyboardEvent);
 
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
-  });
+      expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
+    },
+  );
 
-  test('should add click intercept when ctrl keydown', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.CONTROL,
-    } as KeyboardEvent);
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should select multiple data cell',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+        key,
+      } as KeyboardEvent);
 
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
-  });
+      s2.interaction.changeState({
+        cells: [],
+        stateName: InteractionStateName.SELECTED,
+      });
+      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
+      s2.interaction.getCells = () => [mockCellA.mockCellMeta as CellMeta];
 
-  test('should remove click intercept when ctrl keyup', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
-      key: InteractionKeyboardKey.CONTROL,
-    } as KeyboardEvent);
+      const mockCellB = createMockCell('testId3', {
+        rowIndex: 1,
+        colIndex: 1,
+      });
 
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
-  });
+      s2.getCell = () => mockCellB.mockCell as any;
 
-  test('should select multiple data cell', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.META,
-    } as KeyboardEvent);
+      s2.interaction.getActiveCells = () =>
+        [mockCellA.mockCell, mockCellB.mockCell] as any;
 
-    s2.interaction.changeState({
-      cells: [],
-      stateName: InteractionStateName.SELECTED,
-    });
-    const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
-    s2.interaction.getCells = () => [mockCellA.mockCellMeta as CellMeta];
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
 
-    const mockCellB = createMockCell('testId3', {
-      rowIndex: 1,
-      colIndex: 1,
-    });
+      s2.emit(S2Event.DATA_CELL_CLICK, {
+        stopPropagation() {},
+      } as unknown as GEvent);
 
-    s2.getCell = () => mockCellB.mockCell as any;
+      expect(selected).toHaveBeenCalledWith([
+        mockCellA.mockCell,
+        mockCellB.mockCell,
+      ]);
 
-    s2.interaction.getActiveCells = () =>
-      [mockCellA.mockCell, mockCellB.mockCell] as any;
+      expect(s2.interaction.getState()).toEqual({
+        cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],
+        stateName: InteractionStateName.SELECTED,
+      });
 
-    const selected = jest.fn();
-    s2.on(S2Event.GLOBAL_SELECTED, selected);
+      expect(
+        s2.interaction.hasIntercepts([
+          InterceptType.CLICK,
+          InterceptType.HOVER,
+        ]),
+      ).toBeTruthy();
+      expect(s2.hideTooltip).toHaveBeenCalled();
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+    },
+  );
 
-    s2.emit(S2Event.DATA_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should unselect multiple data cell',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+        key,
+      } as KeyboardEvent);
 
-    expect(selected).toHaveBeenCalledWith([
-      mockCellA.mockCell,
-      mockCellB.mockCell,
-    ]);
+      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
+      const mockCellB = createMockCell('testId3', {
+        rowIndex: 1,
+        colIndex: 1,
+      });
 
-    expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],
-      stateName: InteractionStateName.SELECTED,
-    });
+      s2.interaction.getCells = () =>
+        [mockCellA.mockCellMeta, mockCellB.mockCellMeta] as CellMeta[];
 
-    expect(
-      s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
-    ).toBeTruthy();
-    expect(s2.hideTooltip).toHaveBeenCalled();
-    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
-  });
+      // unselect cellA
+      s2.getCell = () => mockCellA.mockCell as any;
 
-  test('should unselect multiple data cell', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.META,
-    } as KeyboardEvent);
+      s2.emit(S2Event.DATA_CELL_CLICK, {
+        stopPropagation() {},
+      } as unknown as GEvent);
 
-    const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
-    const mockCellB = createMockCell('testId3', {
-      rowIndex: 1,
-      colIndex: 1,
-    });
+      expect(s2.interaction.getState()).toEqual({
+        cells: [mockCellB.mockCellMeta],
+        stateName: InteractionStateName.SELECTED,
+      });
 
-    s2.interaction.getCells = () =>
-      [mockCellA.mockCellMeta, mockCellB.mockCellMeta] as CellMeta[];
+      expect(
+        s2.interaction.hasIntercepts([
+          InterceptType.CLICK,
+          InterceptType.HOVER,
+        ]),
+      ).toBeTruthy();
+      expect(s2.hideTooltip).toHaveBeenCalled();
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+    },
+  );
 
-    // unselect cellA
-    s2.getCell = () => mockCellA.mockCell as any;
+  test.each([InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL])(
+    'should clear state when unselect all data cell and',
+    (key) => {
+      s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+        key,
+      } as KeyboardEvent);
 
-    s2.emit(S2Event.DATA_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
+      s2.interaction.changeState({
+        cells: [],
+        stateName: InteractionStateName.SELECTED,
+      });
+      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
 
-    expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellB.mockCellMeta],
-      stateName: InteractionStateName.SELECTED,
-    });
+      s2.interaction.getCells = () => [mockCellA.mockCellMeta] as CellMeta[];
 
-    expect(
-      s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
-    ).toBeTruthy();
-    expect(s2.hideTooltip).toHaveBeenCalled();
-    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
-  });
+      // unselect cellA
+      s2.getCell = () => mockCellA.mockCell as any;
 
-  test('should clear state when unselect all data cell and', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.META,
-    } as KeyboardEvent);
+      s2.emit(S2Event.DATA_CELL_CLICK, {
+        stopPropagation() {},
+      } as unknown as GEvent);
 
-    s2.interaction.changeState({
-      cells: [],
-      stateName: InteractionStateName.SELECTED,
-    });
-    const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
-
-    s2.interaction.getCells = () => [mockCellA.mockCellMeta] as CellMeta[];
-
-    // unselect cellA
-    s2.getCell = () => mockCellA.mockCell as any;
-
-    s2.emit(S2Event.DATA_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
-
-    expect(s2.interaction.getState()).toEqual({
-      cells: [],
-      force: false,
-    });
-    expect(s2.hideTooltip).toHaveBeenCalled();
-  });
+      expect(s2.interaction.getState()).toEqual({
+        cells: [],
+        force: false,
+      });
+      expect(s2.hideTooltip).toHaveBeenCalled();
+    },
+  );
 
   test('should set lastClickedCell', () => {
     s2.interaction.changeState({
