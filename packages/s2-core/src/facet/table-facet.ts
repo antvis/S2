@@ -138,8 +138,8 @@ export class TableFacet extends BaseFacet {
     });
   }
 
-  get colCellTheme() {
-    return this.spreadsheet.theme.colCell.cell;
+  get dataCellTheme() {
+    return this.spreadsheet.theme.dataCell.cell;
   }
 
   protected calculateCornerBBox() {
@@ -306,9 +306,8 @@ export class TableFacet extends BaseFacet {
 
       nodes.push(currentNode);
 
-      if (frozenTrailingColCount === 0) {
-        layoutCoordinate(this.cfg, null, currentNode);
-      }
+      layoutCoordinate(this.cfg, null, currentNode);
+
       colsHierarchy.width += currentNode.width;
     }
 
@@ -331,8 +330,6 @@ export class TableFacet extends BaseFacet {
           }
           preLeafNode = currentNode;
         }
-
-        layoutCoordinate(this.cfg, null, currentNode);
       }
     }
   }
@@ -406,14 +403,12 @@ export class TableFacet extends BaseFacet {
 
     return (
       cellCfg.height +
-      this.colCellTheme.padding?.top +
-      this.colCellTheme.padding?.bottom
+      this.dataCellTheme.padding?.top +
+      this.dataCellTheme.padding?.bottom
     );
   }
 
   public getCellHeight(index: number) {
-    const { cellCfg } = this.cfg;
-
     if (this.rowOffsets) {
       const heightByField = get(
         this.spreadsheet,
@@ -426,11 +421,7 @@ export class TableFacet extends BaseFacet {
         return customHeight;
       }
     }
-    return (
-      cellCfg.height +
-      this.colCellTheme.padding?.top +
-      this.colCellTheme.padding?.bottom
-    );
+    return this.getDefaultCellHeight();
   }
 
   protected initRowOffsets() {
@@ -861,10 +852,10 @@ export class TableFacet extends BaseFacet {
     const { foregroundGroup, options } = this.spreadsheet;
     const resize = get(options, 'interaction.resize');
 
-    if (
-      (isBoolean(resize) && !resize) ||
-      !(resize as ResizeActiveOptions)?.rowCellVertical
-    ) {
+    const shouldDrawResize = isBoolean(resize)
+      ? resize
+      : (resize as ResizeActiveOptions)?.rowCellVertical;
+    if (!shouldDrawResize) {
       return;
     }
 

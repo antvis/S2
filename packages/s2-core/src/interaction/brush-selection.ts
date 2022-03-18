@@ -498,6 +498,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
     // 刷选过程中右键弹出系统菜单时, 应该重置刷选, 防止系统菜单关闭后 mouse up 未相应依然是刷选状态
     this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, () => {
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
+        return;
+      }
       this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
       this.resetDrag();
     });

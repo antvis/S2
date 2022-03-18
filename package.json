@@ -16,7 +16,7 @@
     "spreadsheet"
   ],
   "scripts": {
-    "bootstrap": "npx lerna bootstrap",
+    "bootstrap": "yarn",
     "clean": "lerna clean -y && rimraf node_modules",
     "clean:lock-file": "rm -rf yarn.lock",
     "core:start": "yarn workspace @antv/s2 start",
