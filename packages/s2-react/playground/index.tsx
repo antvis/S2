@@ -563,7 +563,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={adaptive}
+                  defaultChecked={Boolean(adaptive)}
                   onChange={setAdaptive}
                 />
                 <Switch
