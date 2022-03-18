@@ -23,7 +23,7 @@ export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
 /**
- * 执行排序: zc-todo: 排序是在这里执行的。
+ * 执行排序
  * @param list - 待排序数组
  * @param sortMethod - 升、降序
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
@@ -131,7 +131,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
   const { rows, columns } = dataSet.fields;
   const isInRows = rows.includes(sortFieldId);
-  let result = originValues;
+  let result;
 
   if (sortByMeasure) {
     const dimensions = sortAction(
@@ -223,8 +223,7 @@ export const getSortByMeasureValues = (
     has(query, EXTRA_FIELD);
 
   // 按 data 数据中的小计，总计排序
-  const measureValues = dataSet.getMultiData(query, true, isRow); // 感觉 getMultiData 和  measureValues 类型都不同，怎么会赋值给同一个变量
-
+  const measureValues = dataSet.getMultiData(query, true, isRow);
   // 按前端的小计，总计排序
   if (!measureValues || isEmpty(measureValues)) {
     return map(originValues, (originValue) => {
@@ -241,7 +240,6 @@ export const getSortByMeasureValues = (
 
 export const handleSortAction = (params: SortActionParams): string[] => {
   const { dataSet, sortParam, originValues, isSortByMeasure } = params;
-  // console.log(sortParam, 'sortParam', originValues, 'originValues');
   let measureValues;
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
