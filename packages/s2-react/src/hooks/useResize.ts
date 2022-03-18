@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { debounce } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
@@ -37,7 +37,7 @@ export const useResize = (params: UseResizeEffectParams) => {
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
-  const render = useCallback(
+  const render = React.useCallback(
     (width: number, height: number) => {
       s2.changeSheetSize(width, height);
       s2.render(false);
