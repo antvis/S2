@@ -84,6 +84,11 @@ export class HdAdapter {
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
 
+    const lastRatio = container.get('pixelRatio');
+    if (lastRatio === ratio) {
+      return;
+    }
+
     // 缩放时, 以向上取整后的缩放比为准
     // 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
     const pixelRatio = Math.max(
