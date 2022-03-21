@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
+
+
+### Bug Fixes
+
+* **adaptive:** 修复开启自适应后 组件在  Safari 上无法渲染的问题 close [#1164](https://github.com/antvis/S2/issues/1164) ([#1195](https://github.com/antvis/S2/issues/1195)) ([c0414ec](https://github.com/antvis/S2/commit/c0414ec69479fe8d11ca8160a8326e1771287a77))
+* **react:** 修复宽高改变后未重新渲染表格的问题 close [#1193](https://github.com/antvis/S2/issues/1193) ([#1194](https://github.com/antvis/S2/issues/1194)) ([7a1887f](https://github.com/antvis/S2/commit/7a1887ff8527160b6114b24ff944c987505277fb))
+* 修复一些包之间的依赖问题 ([#1140](https://github.com/antvis/S2/issues/1140)) ([1952ecf](https://github.com/antvis/S2/commit/1952ecf070b4b6c1271c3bb6bfc5c37da9f08b6a))
+
+
+### Features
+
+* 趋势分析表支持列展示不同数量的指标 ([#1185](https://github.com/antvis/S2/issues/1185)) ([5692176](https://github.com/antvis/S2/commit/569217685e92b87e69bab6741422a23ea603cd45))
+
 # [@antv/s2-react-v1.11.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.2...@antv/s2-react-v1.11.3) (2022-03-16)
 
 
