@@ -96,7 +96,7 @@ describe('Pivot Mode Facet Test', () => {
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,
-    dataSet: dataSet,
+    dataSet,
     dataCell: (fct) => new DataCell(fct, s2),
     ...assembleDataCfg().fields,
     ...assembleOptions(),

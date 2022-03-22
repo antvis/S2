@@ -71,7 +71,7 @@ describe('Table Mode Facet Test', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions(),
     ...DEFAULT_STYLE,
@@ -93,7 +93,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const options = {
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({}),
     ...DEFAULT_STYLE,
@@ -174,7 +174,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     };
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
-      dataSet: dataSet,
+      dataSet,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
@@ -206,7 +206,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     };
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
-      dataSet: dataSet,
+      dataSet,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
@@ -237,7 +237,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
       frozenColCount: 2,
@@ -376,7 +376,7 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
   });
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...merge({}, assembleOptions()),
     ...DEFAULT_STYLE,
@@ -420,7 +420,7 @@ describe('Table Mode Facet Test With Zero Height', () => {
   });
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...merge({}, assembleOptions()),
     ...DEFAULT_STYLE,
@@ -445,7 +445,7 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
       frozenColCount: 2,

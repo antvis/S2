@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请按照 issue 模板填写相关信息, 提供 gif, 截图, d代码片段, 配置信息, 可复现链接等方式, 详细说明复现步骤, 感谢配合, 谢谢! 15 天内未回复issue自动关闭。
+            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请按照 issue 模板填写相关信息, 提供 gif, 截图, 代码片段, 配置信息, 可复现链接等方式, 详细说明复现步骤, 感谢配合, 谢谢! 15 天内未回复issue自动关闭。
 
             Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to troubleshoot the problem. Please complete the issue description, provide gifs, screenshots, etc. And explain the reproduction steps in detail. Thanks so much for your cooperation! The issue will be closed without any replay within 15 days.
 
@@ -92,7 +92,7 @@ jobs:
             你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志。
 
             Hello, @${{ github.event.issue.user.login }}, your feature request have been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
-        
+
       - name: Rejected
         if: github.event.label.name == '❌ rejected'
         uses: actions-cool/issues-helper@main

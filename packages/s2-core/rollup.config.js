@@ -24,7 +24,7 @@ const isEsmFormat = format === 'esm';
 const isUmdFormat = format === 'umd';
 
 const output = {
-  format: format,
+  format,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
@@ -42,7 +42,7 @@ const plugins = [
   commonjs(),
   resolve(),
   typescript({
-    outDir: outDir,
+    outDir,
     abortOnError: true,
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
