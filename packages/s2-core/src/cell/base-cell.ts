@@ -199,41 +199,34 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     showLinkFieldShape: boolean,
     linkFillColor: string,
   ) {
-    const { fill } = this.getTextStyle();
-
-    // handle link nodes
-    if (showLinkFieldShape) {
-      const device = this.spreadsheet.options.style.device;
-      let fillColor: string;
-
-      // 配置了链接跳转
-      if (isMobile(device)) {
-        fillColor = linkFillColor;
-      } else {
-        const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
-        this.linkFieldShape = renderLine(
-          this,
-          {
-            x1: minX,
-            y1: maxY + 1,
-            x2: maxX,
-            y2: maxY + 1,
-          },
-          { stroke: fill, lineWidth: 1 },
-        );
-
-        fillColor = fill;
-      }
-
-      this.textShape.attr({
-        fill: fillColor,
-        cursor: 'pointer',
-        appendInfo: {
-          isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
-          cellData: this.meta,
-        },
-      });
+    if (!showLinkFieldShape) {
+      return;
     }
+
+    const device = this.spreadsheet.options.style.device;
+    // 配置了链接跳转
+    if (!isMobile(device)) {
+      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      this.linkFieldShape = renderLine(
+        this,
+        {
+          x1: minX,
+          y1: maxY + 1,
+          x2: maxX,
+          y2: maxY + 1,
+        },
+        { stroke: linkFillColor, lineWidth: 1 },
+      );
+    }
+
+    this.textShape.attr({
+      fill: linkFillColor,
+      cursor: 'pointer',
+      appendInfo: {
+        isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        cellData: this.meta,
+      },
+    });
   }
 
   // 根据当前state来更新cell的样式

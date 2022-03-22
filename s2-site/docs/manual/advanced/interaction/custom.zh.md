@@ -47,7 +47,7 @@ class HiddenInteraction extends BaseEvent {
 ```ts
 import { TableSheet } from '@antv/s2';
 
-const s2options = {
+const s2Options = {
   width: 600,
   height: 300,
   interaction: {
@@ -60,7 +60,7 @@ const s2options = {
     ],
   }
 };
-const s2 = new TableSheet(container, s2DataConfig, s2options);
+const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
 s2.render();
 ```
@@ -81,7 +81,7 @@ class ContextMenuInteraction extends BaseEvent {
   }
 }
 
-const s2options = {
+const s2Options = {
   width: 600,
   height: 300,
   interaction: {
@@ -98,7 +98,7 @@ const s2options = {
   }
 };
 
-const s2 = new TableSheet(container, s2DataConfig, s2options);
+const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
 s2.render();
 ```

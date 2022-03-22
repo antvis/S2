@@ -34,7 +34,7 @@ import { debounce } from 'lodash'
 const s2 = new PivotSheet(...)
 
 const debounceRender = debounce((width, height) => {
-  s2.changeSize(width, height)
+  s2.changeSheetSize(width, height)
   s2.render(false) // 不重新加载数据
 }, 200)
 
@@ -60,7 +60,7 @@ const s2 = new PivotSheet(...)
 const parent = /* 你的容器节点 */
 
 const debounceRender = debounce((width, height) => {
-  s2.changeSize(width, height)
+  s2.changeSheetSize(width, height)
   s2.render(false) // 不重新加载数据
 }, 200)
 
@@ -81,6 +81,8 @@ resizeObserver.observe(parent);
 
 如果是使用 `@antv/s2-react` 的方式，可以配置 `adaptive` 参数开启自适应。
 
+### Adaptive
+
 ```ts
 // `adaptive` 的类型 `Adaptive`
 type Adaptive =
@@ -92,7 +94,10 @@ type Adaptive =
     }
 ```
 
-配置为 `boolean` 值时，容器默认为内部的 container, 宽高都自适应
+配置为 `boolean` 值时:
+
+true: 容器默认为内部的 container, 只有宽度自适应，高度以 options 设置的为准。
+false: 宽高都以 options 设置的为准。
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';

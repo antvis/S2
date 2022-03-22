@@ -13,9 +13,11 @@ const s2Options: S2Options = {
 describe('useResize tests', () => {
   let s2: SpreadSheet;
   let container: HTMLDivElement;
+  let wrapper: HTMLDivElement;
 
   beforeEach(() => {
     container = getContainer();
+    wrapper = getContainer();
     s2 = new PivotSheet(container, mockDataConfig, s2Options);
     s2.render();
     jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
@@ -23,15 +25,15 @@ describe('useResize tests', () => {
 
   test('should rerender when option width or height changed and adaptive disable', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
-    const changeSizeSpy = jest
-      .spyOn(s2, 'changeSize')
-      .mockImplementation(() => {});
 
     const { rerender } = renderHook(() =>
       useResize({
         container,
+        wrapper,
         s2,
         adaptive: false,
+        optionWidth: s2Options.width,
+        optionHeight: s2Options.height,
       }),
     );
 
@@ -43,7 +45,7 @@ describe('useResize tests', () => {
     });
 
     rerender();
-
+    // adaptive 为 false 时，options.width、 options.height 修改, 不会触发 useResize 中的 render
     const canvas = s2.container.get('el') as HTMLCanvasElement;
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
@@ -51,24 +53,25 @@ describe('useResize tests', () => {
     expect(canvas.style.width).toEqual(`200px`);
     expect(canvas.style.height).toEqual(`200px`);
 
-    expect(renderSpy).toHaveBeenCalled();
-    expect(changeSizeSpy).toHaveBeenCalled();
+    expect(renderSpy).not.toHaveBeenCalled();
 
     renderSpy.mockRestore();
-    changeSizeSpy.mockRestore();
   });
 
   test('should cannot change table size when width or height updated and enable adaptive', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
     const changeSizeSpy = jest
-      .spyOn(s2, 'changeSize')
+      .spyOn(s2, 'changeSheetSize')
       .mockImplementation(() => {});
 
     const { rerender } = renderHook(() =>
       useResize({
         container,
+        wrapper,
         s2,
         adaptive: true,
+        optionWidth: s2Options.width,
+        optionHeight: s2Options.height,
       }),
     );
 

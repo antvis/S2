@@ -5,6 +5,7 @@ import { Switcher } from '@antv/s2-react';
 const switcherFields = {
   rows: {
     items: [{ id: 'province' }, { id: 'city' }],
+    allowEmpty: false,
   },
   columns: {
     items: [{ id: 'type' }],

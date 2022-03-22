@@ -27,12 +27,11 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  ViewMeta,
   S2Theme,
   DataType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
-import { forEach, random } from 'lodash';
+import { debounce, forEach, random } from 'lodash';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -57,6 +56,7 @@ import {
   SheetType,
   PartDrillDown,
   PartDrillDownInfo,
+  Adaptive,
 } from '@/components';
 
 import './index.less';
@@ -149,7 +149,7 @@ function MainLayout() {
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [adaptive, setAdaptive] = React.useState(false);
+  const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
@@ -189,11 +189,12 @@ function MainLayout() {
     });
   };
 
-  const onSizeChange = (type: 'width' | 'height') => (e) => {
-    updateOptions({
-      [type]: e.target.value,
-    });
-  };
+  const onSizeChange = (type: 'width' | 'height') =>
+    debounce((e) => {
+      updateOptions({
+        [type]: Number(e.target.value),
+      });
+    }, 300);
 
   const onScrollSpeedRatioChange =
     (type: 'horizontal' | 'vertical') => (value: number) => {
@@ -223,10 +224,9 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) => (cellInfo?: TargetCellInfo | ViewMeta) => {
-      if (options.debug) {
-        console.debug(name, cellInfo);
-      }
+    (name: string) =>
+    (...args: unknown[]) => {
+      console.log(name, ...args);
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -253,14 +253,6 @@ function MainLayout() {
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
     });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_EXPANDED, (data) => {
-      console.log('列头展开', data);
-    });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_HIDDEN, (data) => {
-      console.log('列头隐藏', data);
-    });
   }, [sheetType]);
 
   React.useEffect(() => {
@@ -283,9 +275,6 @@ function MainLayout() {
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
     {},
     {
-      width: 600,
-      height: 400,
-      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -370,7 +359,7 @@ function MainLayout() {
   );
 
   const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
-    let newDataCfg;
+    let newDataCfg: S2DataConfig;
     switch (e.target.value) {
       case 'multiMeasure':
         newDataCfg = multiMeasure;
@@ -575,7 +564,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={adaptive}
+                  defaultChecked={Boolean(adaptive)}
                   onChange={setAdaptive}
                 />
                 <Switch
@@ -632,42 +621,48 @@ function MainLayout() {
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
               <Space>
-                <Switch
-                  checkedChildren="选中聚光灯开"
-                  unCheckedChildren="选中聚光灯关"
-                  checked={mergedOptions.interaction.selectedCellsSpotlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        selectedCellsSpotlight: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="hover十字器开"
-                  unCheckedChildren="hover十字器关"
-                  checked={mergedOptions.interaction.hoverHighlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        hoverHighlight: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="hover聚焦开"
-                  unCheckedChildren="hover聚焦关"
-                  checked={mergedOptions.interaction.hoverFocus}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        hoverFocus: checked,
-                      },
-                    });
-                  }}
-                />
+                <Tooltip title="高亮选中单元格">
+                  <Switch
+                    checkedChildren="选中聚光灯开"
+                    unCheckedChildren="选中聚光灯关"
+                    checked={mergedOptions.interaction.selectedCellsSpotlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          selectedCellsSpotlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="高亮当前行列单元格">
+                  <Switch
+                    checkedChildren="hover十字器开"
+                    unCheckedChildren="hover十字器关"
+                    checked={mergedOptions.interaction.hoverHighlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverHighlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="在数值单元格悬停800ms,显示tooltip">
+                  <Switch
+                    checkedChildren="hover聚焦开"
+                    unCheckedChildren="hover聚焦关"
+                    checked={mergedOptions.interaction.hoverFocus}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverFocus: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
                 <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
                   <Switch
                     checkedChildren="自动重置交互样式开"
@@ -723,7 +718,6 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              key="basic"
               dataCfg={dataCfg as S2DataConfig}
               options={mergedOptions as S2Options}
               sheetType={sheetType}
@@ -752,15 +746,17 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onAfterRender={logHandler('onLoad')}
+              onAfterRender={logHandler('onAfterRender')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={logHandler('onCornerCellClick')}
               onDataCellClick={logHandler('onDataCellClick')}
-              onLayoutResizeMouseDown={(data) => {
-                console.log(data);
-              }}
+              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onCopied={logHandler('onCopied')}
+              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              onSelected={logHandler('onSelected')}
             />
           )}
         </TabPane>

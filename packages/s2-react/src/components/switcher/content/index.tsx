@@ -2,7 +2,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { isEqual, isNil } from 'lodash';
 import cx from 'classnames';
-import React, { FC, forwardRef, useImperativeHandle, useState } from 'react';
+import React from 'react';
 import {
   BeforeCapture,
   DragDropContext,
@@ -37,7 +37,7 @@ export interface SwitcherContentProps extends SwitcherFields {
   onSubmit?: (result: SwitcherResult) => void;
 }
 
-export const SwitcherContent: FC<SwitcherContentProps> = ({
+export const SwitcherContent: React.FC<SwitcherContentProps> = ({
   innerContentClassName,
   contentTitleText,
   resetText,
@@ -47,8 +47,8 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
 }) => {
   const defaultState = getSwitcherState(defaultFields);
 
-  const [state, setState] = useState<SwitcherState>(defaultState);
-  const [draggingItemId, setDraggingItemId] = useState<string>(null);
+  const [state, setState] = React.useState<SwitcherState>(defaultState);
+  const [draggingItemId, setDraggingItemId] = React.useState<string>(null);
 
   const nonEmptyCount = getNonEmptyFieldCount(defaultFields);
 

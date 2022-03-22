@@ -1,9 +1,8 @@
-import { IElement } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
+import { Group, IElement } from '@antv/g-canvas';
 
 export const getAllChildCells = <T extends IElement>(
   children: IElement[] = [],
-  cellType,
+  cellType: any,
 ): T[] => {
   const cells: T[] = [];
   children.forEach((child) => {

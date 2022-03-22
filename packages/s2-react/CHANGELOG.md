@@ -1,22 +1,85 @@
-# [@antv/s2-react-v1.10.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.10.0-alpha.1...@antv/s2-react-v1.10.0-alpha.2) (2022-02-22)
+# [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
 
 
 ### Bug Fixes
 
-* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([300a253](https://github.com/antvis/S2/commit/300a2538446a07ebfcd0c6355966e89c925529a0))
-
-# [@antv/s2-react-v1.10.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.1...@antv/s2-react-v1.10.0-alpha.1) (2022-02-18)
-
-
-### Bug Fixes
-
-* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([62e94af](https://github.com/antvis/S2/commit/62e94af75473f64aea606d831baa112d5e85cc4e))
+* **adaptive:** 修复开启自适应后 组件在  Safari 上无法渲染的问题 close [#1164](https://github.com/antvis/S2/issues/1164) ([#1195](https://github.com/antvis/S2/issues/1195)) ([c0414ec](https://github.com/antvis/S2/commit/c0414ec69479fe8d11ca8160a8326e1771287a77))
+* **react:** 修复宽高改变后未重新渲染表格的问题 close [#1193](https://github.com/antvis/S2/issues/1193) ([#1194](https://github.com/antvis/S2/issues/1194)) ([7a1887f](https://github.com/antvis/S2/commit/7a1887ff8527160b6114b24ff944c987505277fb))
+* 修复一些包之间的依赖问题 ([#1140](https://github.com/antvis/S2/issues/1140)) ([1952ecf](https://github.com/antvis/S2/commit/1952ecf070b4b6c1271c3bb6bfc5c37da9f08b6a))
 
 
 ### Features
 
+* 趋势分析表支持列展示不同数量的指标 ([#1185](https://github.com/antvis/S2/issues/1185)) ([5692176](https://github.com/antvis/S2/commit/569217685e92b87e69bab6741422a23ea603cd45))
+
+# [@antv/s2-react-v1.11.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.2...@antv/s2-react-v1.11.3) (2022-03-16)
+
+
+### Bug Fixes
+
+* 修复趋势分析表空数据不渲染问题 ([#1180](https://github.com/antvis/S2/issues/1180)) ([0b7c54b](https://github.com/antvis/S2/commit/0b7c54be03f43a2c422ea01bf78b326c9b31c0ae))
+
+# [@antv/s2-react-v1.11.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.1...@antv/s2-react-v1.11.2) (2022-03-16)
+
+
+### Bug Fixes
+
+* 修复趋势分析表多指标丢失问题 ([#1175](https://github.com/antvis/S2/issues/1175)) ([2352dbe](https://github.com/antvis/S2/commit/2352dbe3e7ece8ee758fe7cc7ad672d6416f23a1))
+
+# [@antv/s2-react-v1.11.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.0...@antv/s2-react-v1.11.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* 修复开启 adaptive = true 时，options 更改后, 宽度自适应，高度为options.height  ([6be62ba](https://github.com/antvis/S2/commit/6be62ba149e66aa95d9933ce0bfe7f88d41deb81))
+
+
+### Performance Improvements
+
+* **strategysheet:** :zap: 趋势分析表性能优化 ([#1166](https://github.com/antvis/S2/issues/1166)) ([d02772e](https://github.com/antvis/S2/commit/d02772e771f2cd4c3258f269f714018d53aea4ce))
+* **useResize:** :zap: 减少当 adaptive 为false时宽高改变引发的重复渲染 ([#1162](https://github.com/antvis/S2/issues/1162)) ([575c15c](https://github.com/antvis/S2/commit/575c15cc91e1ee3067b90e22c2df2e2a68ded683))
+
+# [@antv/s2-react-v1.11.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.10.0...@antv/s2-react-v1.11.0) (2022-03-01)
+
+
+### Bug Fixes
+
+* :bug: 修复s2-react组件污染全局样式问题 close[#1144](https://github.com/antvis/S2/issues/1144) ([#1149](https://github.com/antvis/S2/issues/1149)) ([6bad1ed](https://github.com/antvis/S2/commit/6bad1ed40300d0f3acaeeb787ceb8735c0877e08))
+* :bug: 趋势分析表主题调优 ([#1148](https://github.com/antvis/S2/issues/1148)) ([4335c7c](https://github.com/antvis/S2/commit/4335c7ca2b00ed8c5e495bf5b8883a7a44b3ace6))
+* **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([009449f](https://github.com/antvis/S2/commit/009449f1d7aa3dcb78d93bdc57e337fd7e6c170f))
+* **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([333c3ac](https://github.com/antvis/S2/commit/333c3ac596e90ada8ef7fbfb80082deb99bfd523))
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([62e94af](https://github.com/antvis/S2/commit/62e94af75473f64aea606d831baa112d5e85cc4e))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([300a253](https://github.com/antvis/S2/commit/300a2538446a07ebfcd0c6355966e89c925529a0))
+
+
+### Features
+
+* :sparkles: 多指标支持切换文本水对齐方式 ([#1146](https://github.com/antvis/S2/issues/1146)) ([32cbf38](https://github.com/antvis/S2/commit/32cbf38786b27ededbf32b996e0ddc7e0439a963))
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([988d356](https://github.com/antvis/S2/commit/988d3563ffa23b195fd90fd9ff45cb16dab10a76))
 * **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([d770a99](https://github.com/antvis/S2/commit/d770a997ae88d9d7f2167aab52d07a5b6de82db6))
 * **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([c266e02](https://github.com/antvis/S2/commit/c266e02d8c6665dfda2d469dcfdb10ed3cffd81c))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([8aa4778](https://github.com/antvis/S2/commit/8aa4778186e23d695752400c1971e89b39e8978a))
+* 维度切换组件增加allowEmpty配置 close [#533](https://github.com/antvis/S2/issues/533) ([#1136](https://github.com/antvis/S2/issues/1136)) ([7250bac](https://github.com/antvis/S2/commit/7250bac8267171a78f1b38b1a6f99dbbff15d98c))
+* 透出s2自带翻页器change事件 ([#1145](https://github.com/antvis/S2/issues/1145)) ([0dd305e](https://github.com/antvis/S2/commit/0dd305ef4e75a7d61d8ca1b6d97da1763069b0cd))
+
+# [@antv/s2-react-v1.10.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.1...@antv/s2-react-v1.10.0) (2022-02-28)
+
+
+### Bug Fixes
+
+* **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([43b469a](https://github.com/antvis/S2/commit/43b469ac88fe712723e4032741a8aabdf5fb02c2))
+* **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([9866de3](https://github.com/antvis/S2/commit/9866de31a72644e19373436f356c4791caee6d1e))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([9a78d71](https://github.com/antvis/S2/commit/9a78d715083686f8d69c358d9a9b95c748cc8af7))
+
+
+### Features
+
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([407b495](https://github.com/antvis/S2/commit/407b495d465ec9ff8d52f5d1c21a100370bd2a7e))
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([bc44978](https://github.com/antvis/S2/commit/bc44978c56321e8e7d14728112edf07e24e2318a))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([259955d](https://github.com/antvis/S2/commit/259955d29ee1ac1395761add9520a78dbe5e6c6f))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([b438554](https://github.com/antvis/S2/commit/b438554a193e7df94edea2334268daa3bb2e0577))
+* 维度切换组件增加allowEmpty配置 close [#533](https://github.com/antvis/S2/issues/533) ([#1136](https://github.com/antvis/S2/issues/1136)) ([1ddc9c0](https://github.com/antvis/S2/commit/1ddc9c0f65d166f63c3ed9c0ecf34a0fae75f4b1))
 
 # [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
 
@@ -31,9 +94,33 @@
 
 ### Bug Fixes
 
-* s2-react 事件在 react hooks 使用中事件改变后未及时更新 ([#1091](https://github.com/antvis/S2/issues/1091)) ([304c03b](https://github.com/antvis/S2/commit/304c03b8b1dde57fbd2948954d8bd481051da205))
-* 初始化后更新dataCfg不触发分页total变化 ([#1090](https://github.com/antvis/S2/issues/1090)) ([1244df6](https://github.com/antvis/S2/commit/1244df675090c05c6f7ac2208fc6a9b0917eb1db))
+* **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([43b469a](https://github.com/antvis/S2/commit/43b469ac88fe712723e4032741a8aabdf5fb02c2))
+* **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([9866de3](https://github.com/antvis/S2/commit/9866de31a72644e19373436f356c4791caee6d1e))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([9a78d71](https://github.com/antvis/S2/commit/9a78d715083686f8d69c358d9a9b95c748cc8af7))
 
+
+### Features
+
+* adaptive 的 container 自适应包含 header 和 page ([#1133](https://github.com/antvis/S2/issues/1133)) ([407b495](https://github.com/antvis/S2/commit/407b495d465ec9ff8d52f5d1c21a100370bd2a7e))
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([bc44978](https://github.com/antvis/S2/commit/bc44978c56321e8e7d14728112edf07e24e2318a))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([259955d](https://github.com/antvis/S2/commit/259955d29ee1ac1395761add9520a78dbe5e6c6f))
+* **tooltip:** 支持自定义挂载节点 ([#1139](https://github.com/antvis/S2/issues/1139)) ([b438554](https://github.com/antvis/S2/commit/b438554a193e7df94edea2334268daa3bb2e0577))
+* 维度切换组件增加allowEmpty配置 close [#533](https://github.com/antvis/S2/issues/533) ([#1136](https://github.com/antvis/S2/issues/1136)) ([1ddc9c0](https://github.com/antvis/S2/commit/1ddc9c0f65d166f63c3ed9c0ecf34a0fae75f4b1))
+
+# [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
+
+### Bug Fixes
+
+* **header:** header props types ([#1096](https://github.com/antvis/S2/issues/1096)) ([e85c5df](https://github.com/antvis/S2/commit/e85c5df5b2c3354718b8b27cef847c4ccc52115a))
+* 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))
+
+# [@antv/s2-react-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0...@antv/s2-react-v1.9.0) (2022-02-16)
+
+### Bug Fixes
+
+* s2-react 事件在 react hooks 使用中事件改变后未及时更新 ([#1091](https://github.com/antvis/S2/issues/1091)) ([304c03b](https://github.com/antvis/S2/commit/304c03b8b1dde57fbd2948954d8bd481051da205))
+* 初始化后更新 dataCfg 不触发分页 total 变化 ([#1090](https://github.com/antvis/S2/issues/1090)) ([1244df6](https://github.com/antvis/S2/commit/1244df675090c05c6f7ac2208fc6a9b0917eb1db))
 
 ### Features
 
@@ -41,12 +128,10 @@
 
 # [@antv/s2-react-v1.8.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0...@antv/s2-react-v1.8.0) (2022-02-11)
 
-
 ### Bug Fixes
 
 * 修复子节点收起后角头全部展开收起不生效 close [#1072](https://github.com/antvis/S2/issues/1072) ([#1074](https://github.com/antvis/S2/issues/1074)) ([6f70f38](https://github.com/antvis/S2/commit/6f70f389fe8a0825dfc80cac871e25adc45280ad))
 * 当不同父节点下存在相同子节点时高级排序出错 close [#1065](https://github.com/antvis/S2/issues/1065) ([#1066](https://github.com/antvis/S2/issues/1066)) ([b561ac4](https://github.com/antvis/S2/commit/b561ac48f2e06a0f252e62edcfdc67839fe2689c))
-
 
 ### Features
 
@@ -55,13 +140,11 @@
 
 # [@antv/s2-react-v1.8.0-alpha.7](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.6...@antv/s2-react-v1.8.0-alpha.7) (2022-02-10)
 
-
 ### Bug Fixes
 
 * 修复子节点收起后角头全部展开收起不生效 close [#1072](https://github.com/antvis/S2/issues/1072) ([#1074](https://github.com/antvis/S2/issues/1074)) ([6f70f38](https://github.com/antvis/S2/commit/6f70f389fe8a0825dfc80cac871e25adc45280ad))
 
 # [@antv/s2-react-v1.8.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.5...@antv/s2-react-v1.8.0-alpha.6) (2022-02-10)
-
 
 ### Features
 
@@ -69,12 +152,10 @@
 
 # [@antv/s2-react-v1.8.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.4...@antv/s2-react-v1.8.0-alpha.5) (2022-02-09)
 
-
 ### Bug Fixes
 
-* **interaction:** 修复刷选不显示预选框, 行列多选功能异常等交互问题 ([#1063](https://github.com/antvis/S2/issues/1063)) ([f0b988d](https://github.com/antvis/S2/commit/f0b988d5c0842f8a747237a3a89da8d74410f713))
+* **interaction:** 修复刷选不显示预选框，行列多选功能异常等交互问题 ([#1063](https://github.com/antvis/S2/issues/1063)) ([f0b988d](https://github.com/antvis/S2/commit/f0b988d5c0842f8a747237a3a89da8d74410f713))
 * 修复自定义列头名称不显示问题 ([447e7e5](https://github.com/antvis/S2/commit/447e7e5a82bbd266e08792c35e59c2a29581d738))
-
 
 ### Features
 
@@ -83,7 +164,6 @@
 
 # [@antv/s2-react-v1.8.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.3...@antv/s2-react-v1.8.0-alpha.4) (2022-02-08)
 
-
 ### Features
 
 * **tooltip:** 支持自定义 tooltip 操作项 ([#1058](https://github.com/antvis/S2/issues/1058)) ([fc9cc66](https://github.com/antvis/S2/commit/fc9cc6621eb0d3794020375929460de94afcab79))
@@ -91,13 +171,11 @@
 
 # [@antv/s2-react-v1.8.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.2...@antv/s2-react-v1.8.0-alpha.3) (2022-01-28)
 
-
 ### Bug Fixes
 
-* **strategy-sheet:** 修复自定义树布局模式下, 获取不到字段描述 ([#1052](https://github.com/antvis/S2/issues/1052)) ([21cc6aa](https://github.com/antvis/S2/commit/21cc6aac7577477dea1d82dc3ddfc315970f03e1))
+* **strategy-sheet:** 修复自定义树布局模式下，获取不到字段描述 ([#1052](https://github.com/antvis/S2/issues/1052)) ([21cc6aa](https://github.com/antvis/S2/commit/21cc6aac7577477dea1d82dc3ddfc315970f03e1))
 
 # [@antv/s2-react-v1.8.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.1...@antv/s2-react-v1.8.0-alpha.2) (2022-01-27)
-
 
 ### Bug Fixes
 
@@ -105,26 +183,24 @@
 
 # [@antv/s2-react-v1.8.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0...@antv/s2-react-v1.8.0-alpha.1) (2022-01-26)
 
-
 ### Bug Fixes
 
 * 🐛 修复趋势分析表和网格分析表无法自定义主题 ([#927](https://github.com/antvis/S2/issues/927)) ([59dc814](https://github.com/antvis/S2/commit/59dc814e9e3b63229a76009a803dfac1dbe9c9c0))
 * bug: 修复趋势分析表自定义目录树渲染出错的问题 ([12a652a](https://github.com/antvis/S2/commit/12a652a47ea5b1188b894fc30b2e8cab06b02e77))
-* **drilldown:** 修复clearDrillDown下钻清除错误及重渲逻辑 ([#1023](https://github.com/antvis/S2/issues/1023)) ([63c94c3](https://github.com/antvis/S2/commit/63c94c3bb061cd1c7619c2d19ee710cecc0ad10e))
+* **drilldown:** 修复 clearDrillDown 下钻清除错误及重渲逻辑 ([#1023](https://github.com/antvis/S2/issues/1023)) ([63c94c3](https://github.com/antvis/S2/commit/63c94c3bb061cd1c7619c2d19ee710cecc0ad10e))
 * **s2-react:** 修复 hierarchyType 切换导致的渲染问题 ([#984](https://github.com/antvis/S2/issues/984)) ([34f6dd4](https://github.com/antvis/S2/commit/34f6dd4373991aed23a6f5340fc4dcc5e27ef91e))
 * **startegysheet:** 趋势分析表列头文字根据数值坐标动态计算 ([#929](https://github.com/antvis/S2/issues/929)) ([38af37e](https://github.com/antvis/S2/commit/38af37ecc1dc5b27493d41aab195f894c7b542e2))
-* **strategy-sheet:** 修复衍生指标颜色,图标显示不正确 & tooltip 不显示指标名 ([#1024](https://github.com/antvis/S2/issues/1024)) ([1f67fc0](https://github.com/antvis/S2/commit/1f67fc0ac6dcf7525c9b8080f74896c1df55ce03))
+* **strategy-sheet:** 修复衍生指标颜色，图标显示不正确 & tooltip 不显示指标名 ([#1024](https://github.com/antvis/S2/issues/1024)) ([1f67fc0](https://github.com/antvis/S2/commit/1f67fc0ac6dcf7525c9b8080f74896c1df55ce03))
 * **stratgysheet:** 逻辑兜底 ([ca8ea28](https://github.com/antvis/S2/commit/ca8ea28d13d51decff6a975ca517cc769db652ba))
 * **useResize:** :bug: 修复自适应模式下重复渲染问题 ([#991](https://github.com/antvis/S2/issues/991)) ([1b8ab5c](https://github.com/antvis/S2/commit/1b8ab5cb931e67e5bd2db5297c7a1e813e8c96aa))
 * 下钻参数变更后未正确重置 ([#1015](https://github.com/antvis/S2/issues/1015)) ([c922cd2](https://github.com/antvis/S2/commit/c922cd26e9dc64a4d196679a44707c7c85ed4027))
 * 修复多指标情况下自定义树展示不全的问题 ([#986](https://github.com/antvis/S2/issues/986)) ([087e8e2](https://github.com/antvis/S2/commit/087e8e2ab1958ef708f4731185caf5f34583b831))
-* 修复未配置 label时, hover 数值单元格报错, 并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
+* 修复未配置 label 时，hover 数值单元格报错，并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
 * 修复错误版本号 ([0a79d09](https://github.com/antvis/S2/commit/0a79d099721256b3d3295601d1b2a5e9850ea858))
 * 修复高度自适应死循环问题 ([#1007](https://github.com/antvis/S2/issues/1007)) ([6fff9a0](https://github.com/antvis/S2/commit/6fff9a0511f042ee17eed7abb8af7e53233a0b66))
 * 列宽计算适配多指标情况 ([#996](https://github.com/antvis/S2/issues/996)) ([e1d9c0f](https://github.com/antvis/S2/commit/e1d9c0f305ee6c2bc3d1f9235afffc8b87840bd8))
-* 加载下钻数据引起render死循环 ([#1010](https://github.com/antvis/S2/issues/1010)) ([b784268](https://github.com/antvis/S2/commit/b78426857882fb255e5621606dd52dd50c4d21c9))
+* 加载下钻数据引起 render 死循环 ([#1010](https://github.com/antvis/S2/issues/1010)) ([b784268](https://github.com/antvis/S2/commit/b78426857882fb255e5621606dd52dd50c4d21c9))
 * 自定义目录树切换优化 ([#964](https://github.com/antvis/S2/issues/964)) ([6957795](https://github.com/antvis/S2/commit/695779573dbca5f8481accdc996b61968959b36e))
-
 
 ### Features
 
@@ -136,18 +212,16 @@
 * **strategy-sheet:** 自定义趋势分析表 tooltip ([#905](https://github.com/antvis/S2/issues/905)) ([eb02845](https://github.com/antvis/S2/commit/eb0284559bb3fb179e5e1a89e5b27cb8b080fcb8))
 * **strategy-sheet:** 趋势分析表禁用多选和快捷多选 ([#919](https://github.com/antvis/S2/issues/919)) ([9b840ad](https://github.com/antvis/S2/commit/9b840ada180e75ab8413f435416e6ced1636bfd6))
 * 新增字段描述功能 ([#925](https://github.com/antvis/S2/issues/925)) ([e37d561](https://github.com/antvis/S2/commit/e37d561e9effe78e5ac1cebba21fa2ecee246fb1))
-* 新增趋势分析表hover列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
+* 新增趋势分析表 hover 列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
 * 趋势分析表列头支持多文本展示 ([#1049](https://github.com/antvis/S2/issues/1049)) ([7df40f7](https://github.com/antvis/S2/commit/7df40f76cf00ef3736b7cc67634eb682de6a93e2))
 
 # [@antv/s2-react-v1.7.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0-alpha.4...@antv/s2-react-v1.7.0-alpha.5) (2022-01-26)
-
 
 ### Bug Fixes
 
 * **facet:** scroll speed options & pagination totals ([#1031](https://github.com/antvis/S2/issues/1031)) ([2082c22](https://github.com/antvis/S2/commit/2082c22950a0bfb043cfdf8ed37c28328b1e3b93))
 * **tooltip:** 修复单元格文字过长时 tooltip 显示被截断 close [#1028](https://github.com/antvis/S2/issues/1028) ([#1034](https://github.com/antvis/S2/issues/1034)) ([4e654e7](https://github.com/antvis/S2/commit/4e654e78d34fdcddb2176fb88c802ffd679cf9c0))
 * **tooltip:** 修复明细表列头的 tooltip 内容被错误的格式化 close [#998](https://github.com/antvis/S2/issues/998) ([#1036](https://github.com/antvis/S2/issues/1036)) ([279458d](https://github.com/antvis/S2/commit/279458de7167068194010473f6994ae5e19024c0))
-
 
 ### Features
 
@@ -156,13 +230,11 @@
 
 # [@antv/s2-react-v1.7.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0...@antv/s2-react-v1.7.0) (2022-01-24)
 
-
 ### Bug Fixes
 
 * **facet:** scroll speed options & pagination totals ([#1031](https://github.com/antvis/S2/issues/1031)) ([2082c22](https://github.com/antvis/S2/commit/2082c22950a0bfb043cfdf8ed37c28328b1e3b93))
 * **tooltip:** 修复单元格文字过长时 tooltip 显示被截断 close [#1028](https://github.com/antvis/S2/issues/1028) ([#1034](https://github.com/antvis/S2/issues/1034)) ([4e654e7](https://github.com/antvis/S2/commit/4e654e78d34fdcddb2176fb88c802ffd679cf9c0))
 * **tooltip:** 修复明细表列头的 tooltip 内容被错误的格式化 close [#998](https://github.com/antvis/S2/issues/998) ([#1036](https://github.com/antvis/S2/issues/1036)) ([279458d](https://github.com/antvis/S2/commit/279458de7167068194010473f6994ae5e19024c0))
-
 
 ### Features
 
@@ -170,27 +242,23 @@
 
 # [@antv/s2-react-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0...@antv/s2-react-v1.6.0) (2022-01-14)
 
-
 ### Bug Fixes
 
 * **react:** 修复 s2-react 无法安装到 alpha 版本 s2 的问题 ([#983](https://github.com/antvis/S2/issues/983)) ([98ab427](https://github.com/antvis/S2/commit/98ab427d9e06cdcf83994cd418a3153fa1e0c4cc))
 
-
 ### Features
 
 * **facet:** add scrollBarPosition option  ([#997](https://github.com/antvis/S2/issues/997)) ([8937dc8](https://github.com/antvis/S2/commit/8937dc84255c68b9d5b75255263866b8c1c359aa))
-* 增加supportCSSTransform设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
+* 增加 supportCSSTransform 设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
 
 # [@antv/s2-react-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0...@antv/s2-react-v1.5.0) (2022-01-07)
-
 
 ### Bug Fixes
 
 * bug: 修复交叉表手动设置滚动不生效问题 ([#955](https://github.com/antvis/S2/issues/955)) ([64eeee8](https://github.com/antvis/S2/commit/64eeee8454c90116c7fcfba891606c836317b49e))
-* **components:** adaptive getContainer 类型修改为可选, 并优化相关文档 ([#952](https://github.com/antvis/S2/issues/952)) ([1b1863d](https://github.com/antvis/S2/commit/1b1863df5414ad553f3ff38e0092549fba3442de))
+* **components:** adaptive getContainer 类型修改为可选，并优化相关文档 ([#952](https://github.com/antvis/S2/issues/952)) ([1b1863d](https://github.com/antvis/S2/commit/1b1863df5414ad553f3ff38e0092549fba3442de))
 * **export:** 优化复制数据到剪贴板的逻辑 ([#976](https://github.com/antvis/S2/issues/976)) ([a841c77](https://github.com/antvis/S2/commit/a841c77c57bb4c9b8aa39f2224dc3adb860b7337))
 * 修改 s2-react 错误的 peerDependencies close [#963](https://github.com/antvis/S2/issues/963) ([#966](https://github.com/antvis/S2/issues/966)) ([f852704](https://github.com/antvis/S2/commit/f85270457d1045eccd2a453ba513d58e4d1652a7))
-
 
 ### Features
 
@@ -198,21 +266,18 @@
 
 # [@antv/s2-react-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0) (2021-12-24)
 
-
 ### Bug Fixes
 
 * **components:** 修复配置的宽度超过浏览器可视窗口宽度无法滚动的问题 close [#889](https://github.com/antvis/S2/issues/889) ([#931](https://github.com/antvis/S2/issues/931)) ([bf03b37](https://github.com/antvis/S2/commit/bf03b37d816258d465ffd4ede9bb759b1adaee12))
 * **table:** 修复明细表 onDataCellHover 无法触发 ([#896](https://github.com/antvis/S2/issues/896)) ([794406a](https://github.com/antvis/S2/commit/794406a25fbc0f0be9f434aa8cde8cf324e278ab))
-* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
-
+* 修复错误修改 DefaultOptions 问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
 
 ### Features
 
 * **facet:** 明细表增加行高 resize 调整 && 行高 resize 增加选项 ([#909](https://github.com/antvis/S2/issues/909)) ([cee6bdc](https://github.com/antvis/S2/commit/cee6bdced0cf3749e683ce157478ea2557da3a53))
-* 自适应机制优化: 开启 adaptive 读取容器宽高, 关闭情况下再读取配置项 ([#940](https://github.com/antvis/S2/issues/940)) ([62c1bd0](https://github.com/antvis/S2/commit/62c1bd02de2e5538ccf9bd035068ae28d2cd0370))
+* 自适应机制优化：开启 adaptive 读取容器宽高，关闭情况下再读取配置项 ([#940](https://github.com/antvis/S2/issues/940)) ([62c1bd0](https://github.com/antvis/S2/commit/62c1bd02de2e5538ccf9bd035068ae28d2cd0370))
 
 # [@antv/s2-react-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0) (2021-12-13)
-
 
 ### Bug Fixes
 
@@ -220,18 +285,15 @@
 * **components:** add empty fragment close [#873](https://github.com/antvis/S2/issues/873) ([#878](https://github.com/antvis/S2/issues/878)) ([db98788](https://github.com/antvis/S2/commit/db98788954b74b2781f98568013135c8843725f2))
 * export link problem ([#877](https://github.com/antvis/S2/issues/877)) ([aa8f428](https://github.com/antvis/S2/commit/aa8f428824ce90aa5b6c7177cc5ef4d371a1d847))
 
-
 ### Features
 
 * ✨ show the sortIcon when the hideMeasureColumn is set ([#884](https://github.com/antvis/S2/issues/884)) ([de1c46a](https://github.com/antvis/S2/commit/de1c46acb12b257e32aa4cc568312abca873775a))
 
 # [@antv/s2-react-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.1...@antv/s2-react-v1.2.0) (2021-12-06)
 
-
 ### Bug Fixes
 
 * **cell:**  border width issue ([#859](https://github.com/antvis/S2/issues/859)) ([114e7fc](https://github.com/antvis/S2/commit/114e7fc9b7d37f2512dc17a812d280858b571f61))
-
 
 ### Features
 
@@ -241,26 +303,22 @@
 
 # [@antv/s2-react-v1.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.0...@antv/s2-react-v1.1.1) (2021-11-30)
 
-
 ### Bug Fixes
 
 * invalid react tooltip config ([#835](https://github.com/antvis/S2/issues/835)) ([10b44e7](https://github.com/antvis/S2/commit/10b44e7ef3b87fb042a4c515123e86ff94cb053e))
 
 # [@antv/s2-react-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.3...@antv/s2-react-v1.1.0) (2021-11-29)
 
-
 ### Bug Fixes
 
 * **facet:** fix render crash if value fields is empty ([#822](https://github.com/antvis/S2/issues/822)) ([c91522a](https://github.com/antvis/S2/commit/c91522a7ae3d6c181f271772ee3d2b47f40d3a20))
 * **facet:** remove extra row node if row fields is empty ([#824](https://github.com/antvis/S2/issues/824)) ([ab044c1](https://github.com/antvis/S2/commit/ab044c16466bdfe0d17cb9bf0365deb97a8fd38f))
-
 
 ### Features
 
 * refactor react tooltip ([#831](https://github.com/antvis/S2/issues/831)) ([3e57279](https://github.com/antvis/S2/commit/3e572792398d3aec446a56ee70405702be2ced65))
 
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
-
 
 ### Bug Fixes
 
@@ -278,13 +336,13 @@
 * :bug: solve the wrong numbers of headerActionIcons config in drill-down mode ([#445](https://github.com/antvis/S2/issues/445)) ([7ca0a70](https://github.com/antvis/S2/commit/7ca0a70a8f822146c9a672fa420e22ea5f2f617a))
 * 🐛  solve the wrong position of the grandTotal cell in multi-value mode and close [#372](https://github.com/antvis/S2/issues/372) ([#437](https://github.com/antvis/S2/issues/437)) ([b24657c](https://github.com/antvis/S2/commit/b24657c65d027f3447cbbc07d089022f3edfbe27))
 * 🐛  tweak the corner cell icon position and close [#464](https://github.com/antvis/S2/issues/464) ([#504](https://github.com/antvis/S2/issues/504)) ([5ea90a6](https://github.com/antvis/S2/commit/5ea90a63d953f3e79a02bf3352e02e09a53efa71))
-* 🐛 修复1px边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
+* 🐛 修复 1px 边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
 * 🐛 add the `spreadsheet` for the meta of the corner cell in tree mode and tweak the style of cell borders  ([#342](https://github.com/antvis/S2/issues/342)) ([f322519](https://github.com/antvis/S2/commit/f322519fe42659286c0d4306eef0fa2922ad69aa)), closes [#339](https://github.com/antvis/S2/issues/339)
 * 🐛 clear the drill-down cache after setting the dataConfig and close [#496](https://github.com/antvis/S2/issues/496) ([#510](https://github.com/antvis/S2/issues/510)) ([c39a07b](https://github.com/antvis/S2/commit/c39a07bfa0c1caeae66d428278c29012b8e3e4ea))
 * 🐛 err when hierarchyType is tree and data is empty ([#527](https://github.com/antvis/S2/issues/527)) ([1bbca96](https://github.com/antvis/S2/commit/1bbca962e26572ac94ec7501e5268795f57f22b1))
 * 🐛 event disposal on facet destroy ([#493](https://github.com/antvis/S2/issues/493)) ([e48a20d](https://github.com/antvis/S2/commit/e48a20dfac17c6364909c157dd7ad6c4a7d0f51b))
 * 🐛 getEndRows return all items when theres no frozen row ([#503](https://github.com/antvis/S2/issues/503)) ([6952526](https://github.com/antvis/S2/commit/6952526bd265638986ebbefa27b4b4d3922fa8cc))
-* 🐛 interactorBorder宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
+* 🐛 interactorBorder 宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
 * 🐛 optimize the logic of toggleActionIcon and close [#552](https://github.com/antvis/S2/issues/552) ([#560](https://github.com/antvis/S2/issues/560)) ([2d08950](https://github.com/antvis/S2/commit/2d0895068fb1ea84cb722defa2b4774742b9f0bc))
 * 🐛 solve the wrong order of the row meta and close [#511](https://github.com/antvis/S2/issues/511) ([#542](https://github.com/antvis/S2/issues/542)) ([6da8d42](https://github.com/antvis/S2/commit/6da8d427f1bad67747decc2ee784056397c8c224))
 * 🐛 solve the wrong render state when updating the dataCfg and close [#285](https://github.com/antvis/S2/issues/285) ([#299](https://github.com/antvis/S2/issues/299)) ([b69cf24](https://github.com/antvis/S2/commit/b69cf2405584483cc1639adc2d44af1b728f8d05))
@@ -373,7 +431,6 @@
 * update d.ts path ([#319](https://github.com/antvis/S2/issues/319)) ([4117fa5](https://github.com/antvis/S2/commit/4117fa5bc3a23956f6e61cf0284cdd11356f7e39))
 * update external using regex ([#304](https://github.com/antvis/S2/issues/304)) ([c40d3cc](https://github.com/antvis/S2/commit/c40d3cc6d37395b9c45d6ee2720126a2a1c8a87d))
 
-
 ### Features
 
 * :art: only show the header cell tooltip when the text is omitted ([#633](https://github.com/antvis/S2/issues/633)) ([ad785db](https://github.com/antvis/S2/commit/ad785dbbaba3547f47d0d6390d5f1f3958165d86))
@@ -386,7 +443,7 @@
 * ✨ add custom header action icons ([#331](https://github.com/antvis/S2/issues/331)) ([4dcb1a2](https://github.com/antvis/S2/commit/4dcb1a2344783c8df283071bee1f8b07988b9b01))
 * ✨ enable users to set the page size of the pagination configuration and close [#302](https://github.com/antvis/S2/issues/302) ([#309](https://github.com/antvis/S2/issues/309)) ([e5e961e](https://github.com/antvis/S2/commit/e5e961e306092c7ebabefa782a7ea54324656018))
 * ✨ part drill down based on the new data process ([#399](https://github.com/antvis/S2/issues/399)) ([6a8889b](https://github.com/antvis/S2/commit/6a8889be5c47c49f335528548b3289577e0bd175))
-* 🎸 修复interactionState的borderWidth和borderColor不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
+* 🎸 修复 interactionState 的 borderWidth 和 borderColor 不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
 * 🎸 added ability to filter field values ([#356](https://github.com/antvis/S2/issues/356)) ([92d9698](https://github.com/antvis/S2/commit/92d9698cf40de4fb3a5f099fd6a44821cb2a1bab))
 * 🔖 publish v0.1.3 ([#257](https://github.com/antvis/S2/issues/257)) ([92e452a](https://github.com/antvis/S2/commit/92e452ab6fef1bd4b3a3ed0e424e405e362ce425)), closes [#238](https://github.com/antvis/S2/issues/238) [#237](https://github.com/antvis/S2/issues/237) [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65) [#69](https://github.com/antvis/S2/issues/69) [#70](https://github.com/antvis/S2/issues/70) [#71](https://github.com/antvis/S2/issues/71) [#70](https://github.com/antvis/S2/issues/70) [#70](https://github.com/antvis/S2/issues/70) [#72](https://github.com/antvis/S2/issues/72) [#73](https://github.com/antvis/S2/issues/73) [#74](https://github.com/antvis/S2/issues/74) [#75](https://github.com/antvis/S2/issues/75) [#76](https://github.com/antvis/S2/issues/76) [#82](https://github.com/antvis/S2/issues/82) [#85](https://github.com/antvis/S2/issues/85) [#91](https://github.com/antvis/S2/issues/91) [#81](https://github.com/antvis/S2/issues/81) [#94](https://github.com/antvis/S2/issues/94) [#95](https://github.com/antvis/S2/issues/95) [#100](https://github.com/antvis/S2/issues/100) [#99](https://github.com/antvis/S2/issues/99) [#101](https://github.com/antvis/S2/issues/101) [#107](https://github.com/antvis/S2/issues/107) [#108](https://github.com/antvis/S2/issues/108) [#109](https://github.com/antvis/S2/issues/109) [#112](https://github.com/antvis/S2/issues/112) [#114](https://github.com/antvis/S2/issues/114) [#115](https://github.com/antvis/S2/issues/115) [#116](https://github.com/antvis/S2/issues/116) [#117](https://github.com/antvis/S2/issues/117) [#119](https://github.com/antvis/S2/issues/119) [#121](https://github.com/antvis/S2/issues/121) [#122](https://github.com/antvis/S2/issues/122) [#124](https://github.com/antvis/S2/issues/124) [#125](https://github.com/antvis/S2/issues/125) [#123](https://github.com/antvis/S2/issues/123) [#120](https://github.com/antvis/S2/issues/120) [#126](https://github.com/antvis/S2/issues/126) [#128](https://github.com/antvis/S2/issues/128) [#130](https://github.com/antvis/S2/issues/130) [#129](https://github.com/antvis/S2/issues/129) [#113](https://github.com/antvis/S2/issues/113) [#132](https://github.com/antvis/S2/issues/132) [#135](https://github.com/antvis/S2/issues/135) [#138](https://github.com/antvis/S2/issues/138) [#118](https://github.com/antvis/S2/issues/118) [#139](https://github.com/antvis/S2/issues/139) [#118](https://github.com/antvis/S2/issues/118) [#142](https://github.com/antvis/S2/issues/142) [#143](https://github.com/antvis/S2/issues/143) [#137](https://github.com/antvis/S2/issues/137) [#136](https://github.com/antvis/S2/issues/136) [#148](https://github.com/antvis/S2/issues/148) [#146](https://github.com/antvis/S2/issues/146) [#149](https://github.com/antvis/S2/issues/149) [#152](https://github.com/antvis/S2/issues/152) [#153](https://github.com/antvis/S2/issues/153) [#155](https://github.com/antvis/S2/issues/155) [#156](https://github.com/antvis/S2/issues/156) [#151](https://github.com/antvis/S2/issues/151) [#157](https://github.com/antvis/S2/issues/157) [#154](https://github.com/antvis/S2/issues/154) [#160](https://github.com/antvis/S2/issues/160) [#162](https://github.com/antvis/S2/issues/162) [#164](https://github.com/antvis/S2/issues/164) [#158](https://github.com/antvis/S2/issues/158) [#167](https://github.com/antvis/S2/issues/167) [#170](https://github.com/antvis/S2/issues/170) [#165](https://github.com/antvis/S2/issues/165) [#171](https://github.com/antvis/S2/issues/171) [#163](https://github.com/antvis/S2/issues/163) [#174](https://github.com/antvis/S2/issues/174) [#172](https://github.com/antvis/S2/issues/172) [#175](https://github.com/antvis/S2/issues/175) [#173](https://github.com/antvis/S2/issues/173) [#179](https://github.com/antvis/S2/issues/179) [#183](https://github.com/antvis/S2/issues/183) [#182](https://github.com/antvis/S2/issues/182) [#180](https://github.com/antvis/S2/issues/180) [#184](https://github.com/antvis/S2/issues/184) [#185](https://github.com/antvis/S2/issues/185) [#181](https://github.com/antvis/S2/issues/181) [#178](https://github.com/antvis/S2/issues/178) [#192](https://github.com/antvis/S2/issues/192) [#189](https://github.com/antvis/S2/issues/189) [#190](https://github.com/antvis/S2/issues/190) [#194](https://github.com/antvis/S2/issues/194) [#197](https://github.com/antvis/S2/issues/197) [#196](https://github.com/antvis/S2/issues/196) [#203](https://github.com/antvis/S2/issues/203) [#207](https://github.com/antvis/S2/issues/207) [#204](https://github.com/antvis/S2/issues/204) [#206](https://github.com/antvis/S2/issues/206) [#208](https://github.com/antvis/S2/issues/208) [#202](https://github.com/antvis/S2/issues/202) [#201](https://github.com/antvis/S2/issues/201) [#209](https://github.com/antvis/S2/issues/209) [#200](https://github.com/antvis/S2/issues/200) [#210](https://github.com/antvis/S2/issues/210) [#211](https://github.com/antvis/S2/issues/211) [#214](https://github.com/antvis/S2/issues/214) [#213](https://github.com/antvis/S2/issues/213) [#212](https://github.com/antvis/S2/issues/212) [#216](https://github.com/antvis/S2/issues/216) [#217](https://github.com/antvis/S2/issues/217) [#218](https://github.com/antvis/S2/issues/218) [#219](https://github.com/antvis/S2/issues/219) [#221](https://github.com/antvis/S2/issues/221) [#222](https://github.com/antvis/S2/issues/222) [#240](https://github.com/antvis/S2/issues/240) [#241](https://github.com/antvis/S2/issues/241) [#242](https://github.com/antvis/S2/issues/242) [#248](https://github.com/antvis/S2/issues/248) [#245](https://github.com/antvis/S2/issues/245) [#252](https://github.com/antvis/S2/issues/252) [#249](https://github.com/antvis/S2/issues/249)
 * add advanced sort component ([#428](https://github.com/antvis/S2/issues/428)) ([c3a3fb5](https://github.com/antvis/S2/commit/c3a3fb5ba16dc4ef65f301b054a78095c36f5524))
@@ -415,16 +472,12 @@
 * tooltip support config auto adjust boundary ([#538](https://github.com/antvis/S2/issues/538)) ([2a14873](https://github.com/antvis/S2/commit/2a14873507c1480b3b209ffd5cb46421aca4096e))
 * **util:** add generateId export function ([#488](https://github.com/antvis/S2/issues/488)) ([0e6025e](https://github.com/antvis/S2/commit/0e6025e20e5b2eeca0692dbb90fabcaffd66d3c1))
 
-
 ### Performance Improvements
 
 * **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
-
-
 
 ## [1.0.1](https://github.com/antvis/S2/compare/v0.1.0-alpha.15...v1.0.1) (2021-11-21)
 
-
 ### Bug Fixes
 
 *  correct corner node width align with  total cell,  close [#522](https://github.com/antvis/S2/issues/522) ([#541](https://github.com/antvis/S2/issues/541)) ([49303e4](https://github.com/antvis/S2/commit/49303e40e70a316970c2ceade9494098d3eed391))
@@ -447,12 +500,12 @@
 * 🐛 event disposal on facet destroy ([#493](https://github.com/antvis/S2/issues/493)) ([e48a20d](https://github.com/antvis/S2/commit/e48a20dfac17c6364909c157dd7ad6c4a7d0f51b))
 * 🐛 fix the wrong params of export function ([#159](https://github.com/antvis/S2/issues/159)) ([ce66363](https://github.com/antvis/S2/commit/ce663637c63ef173019d8233237ed8ee7d98eaa9))
 * 🐛 getEndRows return all items when theres no frozen row ([#503](https://github.com/antvis/S2/issues/503)) ([6952526](https://github.com/antvis/S2/commit/6952526bd265638986ebbefa27b4b4d3922fa8cc))
-* 🐛 interactorBorder宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
+* 🐛 interactorBorder 宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
 * 🐛 optimize the logic of toggleActionIcon and close [#552](https://github.com/antvis/S2/issues/552) ([#560](https://github.com/antvis/S2/issues/560)) ([2d08950](https://github.com/antvis/S2/commit/2d0895068fb1ea84cb722defa2b4774742b9f0bc))
 * 🐛 solve the wrong order of the row meta and close [#511](https://github.com/antvis/S2/issues/511) ([#542](https://github.com/antvis/S2/issues/542)) ([6da8d42](https://github.com/antvis/S2/commit/6da8d427f1bad67747decc2ee784056397c8c224))
 * 🐛 solve the wrong render state when updating the dataCfg and close [#285](https://github.com/antvis/S2/issues/285) ([#299](https://github.com/antvis/S2/issues/299)) ([b69cf24](https://github.com/antvis/S2/commit/b69cf2405584483cc1639adc2d44af1b728f8d05))
 * 🐛 totals caculate width's err when data is empty but options have totals ([#517](https://github.com/antvis/S2/issues/517)) ([96c35f7](https://github.com/antvis/S2/commit/96c35f7151011322d8163440e9b8140a714356ec))
-* 🐛 修复1px边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
+* 🐛 修复 1px 边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
 * add v scrollbar ([#685](https://github.com/antvis/S2/issues/685)) ([b5a1137](https://github.com/antvis/S2/commit/b5a113734b8138c5c0c680ca7245ad4ac2982a7d))
 * cannot hidden columns ([#491](https://github.com/antvis/S2/issues/491)) ([dc78a4f](https://github.com/antvis/S2/commit/dc78a4f57b802b1ed2854b32a77abd7d0ecf7afd))
 * **cell:** cell padding issue ([#595](https://github.com/antvis/S2/issues/595)) ([4a3a82b](https://github.com/antvis/S2/commit/4a3a82be3f43172992a612c21f3cea8e1dde0a61))
@@ -530,7 +583,6 @@
 * update d.ts path ([#319](https://github.com/antvis/S2/issues/319)) ([4117fa5](https://github.com/antvis/S2/commit/4117fa5bc3a23956f6e61cf0284cdd11356f7e39))
 * update external using regex ([#304](https://github.com/antvis/S2/issues/304)) ([c40d3cc](https://github.com/antvis/S2/commit/c40d3cc6d37395b9c45d6ee2720126a2a1c8a87d))
 
-
 ### Features
 
 * :art: only show the header cell tooltip when the text is omitted ([#633](https://github.com/antvis/S2/issues/633)) ([ad785db](https://github.com/antvis/S2/commit/ad785dbbaba3547f47d0d6390d5f1f3958165d86))
@@ -545,7 +597,7 @@
 * ✨ part drill down based on the new data process ([#399](https://github.com/antvis/S2/issues/399)) ([6a8889b](https://github.com/antvis/S2/commit/6a8889be5c47c49f335528548b3289577e0bd175))
 * ✨ refactor the s2 based on new data-process ([#235](https://github.com/antvis/S2/issues/235)) ([31dd6a0](https://github.com/antvis/S2/commit/31dd6a0b9c96065b0f2bebb71fdb645b1d75db54)), closes [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65) [#69](https://github.com/antvis/S2/issues/69) [#70](https://github.com/antvis/S2/issues/70) [#71](https://github.com/antvis/S2/issues/71) [#70](https://github.com/antvis/S2/issues/70) [#70](https://github.com/antvis/S2/issues/70) [#72](https://github.com/antvis/S2/issues/72) [#73](https://github.com/antvis/S2/issues/73) [#74](https://github.com/antvis/S2/issues/74) [#75](https://github.com/antvis/S2/issues/75) [#76](https://github.com/antvis/S2/issues/76) [#82](https://github.com/antvis/S2/issues/82) [#85](https://github.com/antvis/S2/issues/85) [#91](https://github.com/antvis/S2/issues/91) [#81](https://github.com/antvis/S2/issues/81) [#94](https://github.com/antvis/S2/issues/94) [#95](https://github.com/antvis/S2/issues/95) [#100](https://github.com/antvis/S2/issues/100) [#99](https://github.com/antvis/S2/issues/99) [#101](https://github.com/antvis/S2/issues/101) [#107](https://github.com/antvis/S2/issues/107) [#108](https://github.com/antvis/S2/issues/108) [#109](https://github.com/antvis/S2/issues/109) [#112](https://github.com/antvis/S2/issues/112) [#114](https://github.com/antvis/S2/issues/114) [#115](https://github.com/antvis/S2/issues/115) [#116](https://github.com/antvis/S2/issues/116) [#117](https://github.com/antvis/S2/issues/117) [#119](https://github.com/antvis/S2/issues/119) [#121](https://github.com/antvis/S2/issues/121) [#122](https://github.com/antvis/S2/issues/122) [#124](https://github.com/antvis/S2/issues/124) [#125](https://github.com/antvis/S2/issues/125) [#123](https://github.com/antvis/S2/issues/123) [#120](https://github.com/antvis/S2/issues/120) [#126](https://github.com/antvis/S2/issues/126) [#128](https://github.com/antvis/S2/issues/128) [#130](https://github.com/antvis/S2/issues/130) [#129](https://github.com/antvis/S2/issues/129) [#113](https://github.com/antvis/S2/issues/113) [#132](https://github.com/antvis/S2/issues/132) [#135](https://github.com/antvis/S2/issues/135) [#138](https://github.com/antvis/S2/issues/138) [#118](https://github.com/antvis/S2/issues/118) [#139](https://github.com/antvis/S2/issues/139) [#118](https://github.com/antvis/S2/issues/118) [#142](https://github.com/antvis/S2/issues/142) [#143](https://github.com/antvis/S2/issues/143) [#137](https://github.com/antvis/S2/issues/137) [#136](https://github.com/antvis/S2/issues/136) [#148](https://github.com/antvis/S2/issues/148) [#146](https://github.com/antvis/S2/issues/146) [#149](https://github.com/antvis/S2/issues/149) [#152](https://github.com/antvis/S2/issues/152) [#153](https://github.com/antvis/S2/issues/153) [#155](https://github.com/antvis/S2/issues/155) [#156](https://github.com/antvis/S2/issues/156) [#151](https://github.com/antvis/S2/issues/151) [#157](https://github.com/antvis/S2/issues/157) [#154](https://github.com/antvis/S2/issues/154) [#160](https://github.com/antvis/S2/issues/160) [#162](https://github.com/antvis/S2/issues/162) [#164](https://github.com/antvis/S2/issues/164) [#158](https://github.com/antvis/S2/issues/158) [#167](https://github.com/antvis/S2/issues/167) [#170](https://github.com/antvis/S2/issues/170) [#165](https://github.com/antvis/S2/issues/165) [#171](https://github.com/antvis/S2/issues/171) [#163](https://github.com/antvis/S2/issues/163) [#174](https://github.com/antvis/S2/issues/174) [#172](https://github.com/antvis/S2/issues/172) [#175](https://github.com/antvis/S2/issues/175) [#173](https://github.com/antvis/S2/issues/173) [#179](https://github.com/antvis/S2/issues/179) [#183](https://github.com/antvis/S2/issues/183) [#182](https://github.com/antvis/S2/issues/182) [#180](https://github.com/antvis/S2/issues/180) [#184](https://github.com/antvis/S2/issues/184) [#185](https://github.com/antvis/S2/issues/185) [#181](https://github.com/antvis/S2/issues/181) [#178](https://github.com/antvis/S2/issues/178) [#192](https://github.com/antvis/S2/issues/192) [#189](https://github.com/antvis/S2/issues/189) [#190](https://github.com/antvis/S2/issues/190) [#194](https://github.com/antvis/S2/issues/194) [#197](https://github.com/antvis/S2/issues/197) [#196](https://github.com/antvis/S2/issues/196) [#203](https://github.com/antvis/S2/issues/203) [#207](https://github.com/antvis/S2/issues/207) [#204](https://github.com/antvis/S2/issues/204) [#206](https://github.com/antvis/S2/issues/206) [#208](https://github.com/antvis/S2/issues/208) [#202](https://github.com/antvis/S2/issues/202) [#201](https://github.com/antvis/S2/issues/201) [#209](https://github.com/antvis/S2/issues/209) [#200](https://github.com/antvis/S2/issues/200) [#210](https://github.com/antvis/S2/issues/210) [#211](https://github.com/antvis/S2/issues/211) [#214](https://github.com/antvis/S2/issues/214) [#213](https://github.com/antvis/S2/issues/213) [#212](https://github.com/antvis/S2/issues/212) [#216](https://github.com/antvis/S2/issues/216) [#217](https://github.com/antvis/S2/issues/217) [#218](https://github.com/antvis/S2/issues/218) [#219](https://github.com/antvis/S2/issues/219) [#221](https://github.com/antvis/S2/issues/221) [#222](https://github.com/antvis/S2/issues/222) [#223](https://github.com/antvis/S2/issues/223) [#227](https://github.com/antvis/S2/issues/227) [#228](https://github.com/antvis/S2/issues/228) [#231](https://github.com/antvis/S2/issues/231) [#234](https://github.com/antvis/S2/issues/234) [#230](https://github.com/antvis/S2/issues/230) [#233](https://github.com/antvis/S2/issues/233) [#230](https://github.com/antvis/S2/issues/230) [#236](https://github.com/antvis/S2/issues/236)
 * 🎸 added ability to filter field values ([#356](https://github.com/antvis/S2/issues/356)) ([92d9698](https://github.com/antvis/S2/commit/92d9698cf40de4fb3a5f099fd6a44821cb2a1bab))
-* 🎸 修复interactionState的borderWidth和borderColor不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
+* 🎸 修复 interactionState 的 borderWidth 和 borderColor 不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
 * 🔖 publish v0.1.3 ([#257](https://github.com/antvis/S2/issues/257)) ([92e452a](https://github.com/antvis/S2/commit/92e452ab6fef1bd4b3a3ed0e424e405e362ce425)), closes [#238](https://github.com/antvis/S2/issues/238) [#237](https://github.com/antvis/S2/issues/237) [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65) [#69](https://github.com/antvis/S2/issues/69) [#70](https://github.com/antvis/S2/issues/70) [#71](https://github.com/antvis/S2/issues/71) [#70](https://github.com/antvis/S2/issues/70) [#70](https://github.com/antvis/S2/issues/70) [#72](https://github.com/antvis/S2/issues/72) [#73](https://github.com/antvis/S2/issues/73) [#74](https://github.com/antvis/S2/issues/74) [#75](https://github.com/antvis/S2/issues/75) [#76](https://github.com/antvis/S2/issues/76) [#82](https://github.com/antvis/S2/issues/82) [#85](https://github.com/antvis/S2/issues/85) [#91](https://github.com/antvis/S2/issues/91) [#81](https://github.com/antvis/S2/issues/81) [#94](https://github.com/antvis/S2/issues/94) [#95](https://github.com/antvis/S2/issues/95) [#100](https://github.com/antvis/S2/issues/100) [#99](https://github.com/antvis/S2/issues/99) [#101](https://github.com/antvis/S2/issues/101) [#107](https://github.com/antvis/S2/issues/107) [#108](https://github.com/antvis/S2/issues/108) [#109](https://github.com/antvis/S2/issues/109) [#112](https://github.com/antvis/S2/issues/112) [#114](https://github.com/antvis/S2/issues/114) [#115](https://github.com/antvis/S2/issues/115) [#116](https://github.com/antvis/S2/issues/116) [#117](https://github.com/antvis/S2/issues/117) [#119](https://github.com/antvis/S2/issues/119) [#121](https://github.com/antvis/S2/issues/121) [#122](https://github.com/antvis/S2/issues/122) [#124](https://github.com/antvis/S2/issues/124) [#125](https://github.com/antvis/S2/issues/125) [#123](https://github.com/antvis/S2/issues/123) [#120](https://github.com/antvis/S2/issues/120) [#126](https://github.com/antvis/S2/issues/126) [#128](https://github.com/antvis/S2/issues/128) [#130](https://github.com/antvis/S2/issues/130) [#129](https://github.com/antvis/S2/issues/129) [#113](https://github.com/antvis/S2/issues/113) [#132](https://github.com/antvis/S2/issues/132) [#135](https://github.com/antvis/S2/issues/135) [#138](https://github.com/antvis/S2/issues/138) [#118](https://github.com/antvis/S2/issues/118) [#139](https://github.com/antvis/S2/issues/139) [#118](https://github.com/antvis/S2/issues/118) [#142](https://github.com/antvis/S2/issues/142) [#143](https://github.com/antvis/S2/issues/143) [#137](https://github.com/antvis/S2/issues/137) [#136](https://github.com/antvis/S2/issues/136) [#148](https://github.com/antvis/S2/issues/148) [#146](https://github.com/antvis/S2/issues/146) [#149](https://github.com/antvis/S2/issues/149) [#152](https://github.com/antvis/S2/issues/152) [#153](https://github.com/antvis/S2/issues/153) [#155](https://github.com/antvis/S2/issues/155) [#156](https://github.com/antvis/S2/issues/156) [#151](https://github.com/antvis/S2/issues/151) [#157](https://github.com/antvis/S2/issues/157) [#154](https://github.com/antvis/S2/issues/154) [#160](https://github.com/antvis/S2/issues/160) [#162](https://github.com/antvis/S2/issues/162) [#164](https://github.com/antvis/S2/issues/164) [#158](https://github.com/antvis/S2/issues/158) [#167](https://github.com/antvis/S2/issues/167) [#170](https://github.com/antvis/S2/issues/170) [#165](https://github.com/antvis/S2/issues/165) [#171](https://github.com/antvis/S2/issues/171) [#163](https://github.com/antvis/S2/issues/163) [#174](https://github.com/antvis/S2/issues/174) [#172](https://github.com/antvis/S2/issues/172) [#175](https://github.com/antvis/S2/issues/175) [#173](https://github.com/antvis/S2/issues/173) [#179](https://github.com/antvis/S2/issues/179) [#183](https://github.com/antvis/S2/issues/183) [#182](https://github.com/antvis/S2/issues/182) [#180](https://github.com/antvis/S2/issues/180) [#184](https://github.com/antvis/S2/issues/184) [#185](https://github.com/antvis/S2/issues/185) [#181](https://github.com/antvis/S2/issues/181) [#178](https://github.com/antvis/S2/issues/178) [#192](https://github.com/antvis/S2/issues/192) [#189](https://github.com/antvis/S2/issues/189) [#190](https://github.com/antvis/S2/issues/190) [#194](https://github.com/antvis/S2/issues/194) [#197](https://github.com/antvis/S2/issues/197) [#196](https://github.com/antvis/S2/issues/196) [#203](https://github.com/antvis/S2/issues/203) [#207](https://github.com/antvis/S2/issues/207) [#204](https://github.com/antvis/S2/issues/204) [#206](https://github.com/antvis/S2/issues/206) [#208](https://github.com/antvis/S2/issues/208) [#202](https://github.com/antvis/S2/issues/202) [#201](https://github.com/antvis/S2/issues/201) [#209](https://github.com/antvis/S2/issues/209) [#200](https://github.com/antvis/S2/issues/200) [#210](https://github.com/antvis/S2/issues/210) [#211](https://github.com/antvis/S2/issues/211) [#214](https://github.com/antvis/S2/issues/214) [#213](https://github.com/antvis/S2/issues/213) [#212](https://github.com/antvis/S2/issues/212) [#216](https://github.com/antvis/S2/issues/216) [#217](https://github.com/antvis/S2/issues/217) [#218](https://github.com/antvis/S2/issues/218) [#219](https://github.com/antvis/S2/issues/219) [#221](https://github.com/antvis/S2/issues/221) [#222](https://github.com/antvis/S2/issues/222) [#240](https://github.com/antvis/S2/issues/240) [#241](https://github.com/antvis/S2/issues/241) [#242](https://github.com/antvis/S2/issues/242) [#248](https://github.com/antvis/S2/issues/248) [#245](https://github.com/antvis/S2/issues/245) [#252](https://github.com/antvis/S2/issues/252) [#249](https://github.com/antvis/S2/issues/249)
 * add advanced sort component ([#428](https://github.com/antvis/S2/issues/428)) ([c3a3fb5](https://github.com/antvis/S2/commit/c3a3fb5ba16dc4ef65f301b054a78095c36f5524))
 * add confirm and cancel button for switcher ([#495](https://github.com/antvis/S2/issues/495)) ([d31ce63](https://github.com/antvis/S2/commit/d31ce63a87d87878f033f51ac2a0e7f4d90c2b31))
@@ -571,16 +623,12 @@
 * select all ([#348](https://github.com/antvis/S2/issues/348)) ([334aac4](https://github.com/antvis/S2/commit/334aac41ac9511c3b417a7006591fdbf138ab618)), closes [#342](https://github.com/antvis/S2/issues/342) [#339](https://github.com/antvis/S2/issues/339)
 * tooltip support config auto adjust boundary ([#538](https://github.com/antvis/S2/issues/538)) ([2a14873](https://github.com/antvis/S2/commit/2a14873507c1480b3b209ffd5cb46421aca4096e))
 * **util:** add generateId export function ([#488](https://github.com/antvis/S2/issues/488)) ([0e6025e](https://github.com/antvis/S2/commit/0e6025e20e5b2eeca0692dbb90fabcaffd66d3c1))
-
 
 ### Performance Improvements
 
 * **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
 
-
-
 # [1.0.0](https://github.com/antvis/S2/compare/v0.1.0-alpha.15...v1.0.0) (2021-11-21)
-
 
 ### Bug Fixes
 
@@ -604,12 +652,12 @@
 * 🐛 event disposal on facet destroy ([#493](https://github.com/antvis/S2/issues/493)) ([e48a20d](https://github.com/antvis/S2/commit/e48a20dfac17c6364909c157dd7ad6c4a7d0f51b))
 * 🐛 fix the wrong params of export function ([#159](https://github.com/antvis/S2/issues/159)) ([ce66363](https://github.com/antvis/S2/commit/ce663637c63ef173019d8233237ed8ee7d98eaa9))
 * 🐛 getEndRows return all items when theres no frozen row ([#503](https://github.com/antvis/S2/issues/503)) ([6952526](https://github.com/antvis/S2/commit/6952526bd265638986ebbefa27b4b4d3922fa8cc))
-* 🐛 interactorBorder宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
+* 🐛 interactorBorder 宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
 * 🐛 optimize the logic of toggleActionIcon and close [#552](https://github.com/antvis/S2/issues/552) ([#560](https://github.com/antvis/S2/issues/560)) ([2d08950](https://github.com/antvis/S2/commit/2d0895068fb1ea84cb722defa2b4774742b9f0bc))
 * 🐛 solve the wrong order of the row meta and close [#511](https://github.com/antvis/S2/issues/511) ([#542](https://github.com/antvis/S2/issues/542)) ([6da8d42](https://github.com/antvis/S2/commit/6da8d427f1bad67747decc2ee784056397c8c224))
 * 🐛 solve the wrong render state when updating the dataCfg and close [#285](https://github.com/antvis/S2/issues/285) ([#299](https://github.com/antvis/S2/issues/299)) ([b69cf24](https://github.com/antvis/S2/commit/b69cf2405584483cc1639adc2d44af1b728f8d05))
 * 🐛 totals caculate width's err when data is empty but options have totals ([#517](https://github.com/antvis/S2/issues/517)) ([96c35f7](https://github.com/antvis/S2/commit/96c35f7151011322d8163440e9b8140a714356ec))
-* 🐛 修复1px边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
+* 🐛 修复 1px 边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
 * add v scrollbar ([#685](https://github.com/antvis/S2/issues/685)) ([b5a1137](https://github.com/antvis/S2/commit/b5a113734b8138c5c0c680ca7245ad4ac2982a7d))
 * cannot hidden columns ([#491](https://github.com/antvis/S2/issues/491)) ([dc78a4f](https://github.com/antvis/S2/commit/dc78a4f57b802b1ed2854b32a77abd7d0ecf7afd))
 * **cell:** cell padding issue ([#595](https://github.com/antvis/S2/issues/595)) ([4a3a82b](https://github.com/antvis/S2/commit/4a3a82be3f43172992a612c21f3cea8e1dde0a61))
@@ -687,7 +735,6 @@
 * update d.ts path ([#319](https://github.com/antvis/S2/issues/319)) ([4117fa5](https://github.com/antvis/S2/commit/4117fa5bc3a23956f6e61cf0284cdd11356f7e39))
 * update external using regex ([#304](https://github.com/antvis/S2/issues/304)) ([c40d3cc](https://github.com/antvis/S2/commit/c40d3cc6d37395b9c45d6ee2720126a2a1c8a87d))
 
-
 ### Features
 
 * :art: only show the header cell tooltip when the text is omitted ([#633](https://github.com/antvis/S2/issues/633)) ([ad785db](https://github.com/antvis/S2/commit/ad785dbbaba3547f47d0d6390d5f1f3958165d86))
@@ -702,7 +749,7 @@
 * ✨ part drill down based on the new data process ([#399](https://github.com/antvis/S2/issues/399)) ([6a8889b](https://github.com/antvis/S2/commit/6a8889be5c47c49f335528548b3289577e0bd175))
 * ✨ refactor the s2 based on new data-process ([#235](https://github.com/antvis/S2/issues/235)) ([31dd6a0](https://github.com/antvis/S2/commit/31dd6a0b9c96065b0f2bebb71fdb645b1d75db54)), closes [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65) [#69](https://github.com/antvis/S2/issues/69) [#70](https://github.com/antvis/S2/issues/70) [#71](https://github.com/antvis/S2/issues/71) [#70](https://github.com/antvis/S2/issues/70) [#70](https://github.com/antvis/S2/issues/70) [#72](https://github.com/antvis/S2/issues/72) [#73](https://github.com/antvis/S2/issues/73) [#74](https://github.com/antvis/S2/issues/74) [#75](https://github.com/antvis/S2/issues/75) [#76](https://github.com/antvis/S2/issues/76) [#82](https://github.com/antvis/S2/issues/82) [#85](https://github.com/antvis/S2/issues/85) [#91](https://github.com/antvis/S2/issues/91) [#81](https://github.com/antvis/S2/issues/81) [#94](https://github.com/antvis/S2/issues/94) [#95](https://github.com/antvis/S2/issues/95) [#100](https://github.com/antvis/S2/issues/100) [#99](https://github.com/antvis/S2/issues/99) [#101](https://github.com/antvis/S2/issues/101) [#107](https://github.com/antvis/S2/issues/107) [#108](https://github.com/antvis/S2/issues/108) [#109](https://github.com/antvis/S2/issues/109) [#112](https://github.com/antvis/S2/issues/112) [#114](https://github.com/antvis/S2/issues/114) [#115](https://github.com/antvis/S2/issues/115) [#116](https://github.com/antvis/S2/issues/116) [#117](https://github.com/antvis/S2/issues/117) [#119](https://github.com/antvis/S2/issues/119) [#121](https://github.com/antvis/S2/issues/121) [#122](https://github.com/antvis/S2/issues/122) [#124](https://github.com/antvis/S2/issues/124) [#125](https://github.com/antvis/S2/issues/125) [#123](https://github.com/antvis/S2/issues/123) [#120](https://github.com/antvis/S2/issues/120) [#126](https://github.com/antvis/S2/issues/126) [#128](https://github.com/antvis/S2/issues/128) [#130](https://github.com/antvis/S2/issues/130) [#129](https://github.com/antvis/S2/issues/129) [#113](https://github.com/antvis/S2/issues/113) [#132](https://github.com/antvis/S2/issues/132) [#135](https://github.com/antvis/S2/issues/135) [#138](https://github.com/antvis/S2/issues/138) [#118](https://github.com/antvis/S2/issues/118) [#139](https://github.com/antvis/S2/issues/139) [#118](https://github.com/antvis/S2/issues/118) [#142](https://github.com/antvis/S2/issues/142) [#143](https://github.com/antvis/S2/issues/143) [#137](https://github.com/antvis/S2/issues/137) [#136](https://github.com/antvis/S2/issues/136) [#148](https://github.com/antvis/S2/issues/148) [#146](https://github.com/antvis/S2/issues/146) [#149](https://github.com/antvis/S2/issues/149) [#152](https://github.com/antvis/S2/issues/152) [#153](https://github.com/antvis/S2/issues/153) [#155](https://github.com/antvis/S2/issues/155) [#156](https://github.com/antvis/S2/issues/156) [#151](https://github.com/antvis/S2/issues/151) [#157](https://github.com/antvis/S2/issues/157) [#154](https://github.com/antvis/S2/issues/154) [#160](https://github.com/antvis/S2/issues/160) [#162](https://github.com/antvis/S2/issues/162) [#164](https://github.com/antvis/S2/issues/164) [#158](https://github.com/antvis/S2/issues/158) [#167](https://github.com/antvis/S2/issues/167) [#170](https://github.com/antvis/S2/issues/170) [#165](https://github.com/antvis/S2/issues/165) [#171](https://github.com/antvis/S2/issues/171) [#163](https://github.com/antvis/S2/issues/163) [#174](https://github.com/antvis/S2/issues/174) [#172](https://github.com/antvis/S2/issues/172) [#175](https://github.com/antvis/S2/issues/175) [#173](https://github.com/antvis/S2/issues/173) [#179](https://github.com/antvis/S2/issues/179) [#183](https://github.com/antvis/S2/issues/183) [#182](https://github.com/antvis/S2/issues/182) [#180](https://github.com/antvis/S2/issues/180) [#184](https://github.com/antvis/S2/issues/184) [#185](https://github.com/antvis/S2/issues/185) [#181](https://github.com/antvis/S2/issues/181) [#178](https://github.com/antvis/S2/issues/178) [#192](https://github.com/antvis/S2/issues/192) [#189](https://github.com/antvis/S2/issues/189) [#190](https://github.com/antvis/S2/issues/190) [#194](https://github.com/antvis/S2/issues/194) [#197](https://github.com/antvis/S2/issues/197) [#196](https://github.com/antvis/S2/issues/196) [#203](https://github.com/antvis/S2/issues/203) [#207](https://github.com/antvis/S2/issues/207) [#204](https://github.com/antvis/S2/issues/204) [#206](https://github.com/antvis/S2/issues/206) [#208](https://github.com/antvis/S2/issues/208) [#202](https://github.com/antvis/S2/issues/202) [#201](https://github.com/antvis/S2/issues/201) [#209](https://github.com/antvis/S2/issues/209) [#200](https://github.com/antvis/S2/issues/200) [#210](https://github.com/antvis/S2/issues/210) [#211](https://github.com/antvis/S2/issues/211) [#214](https://github.com/antvis/S2/issues/214) [#213](https://github.com/antvis/S2/issues/213) [#212](https://github.com/antvis/S2/issues/212) [#216](https://github.com/antvis/S2/issues/216) [#217](https://github.com/antvis/S2/issues/217) [#218](https://github.com/antvis/S2/issues/218) [#219](https://github.com/antvis/S2/issues/219) [#221](https://github.com/antvis/S2/issues/221) [#222](https://github.com/antvis/S2/issues/222) [#223](https://github.com/antvis/S2/issues/223) [#227](https://github.com/antvis/S2/issues/227) [#228](https://github.com/antvis/S2/issues/228) [#231](https://github.com/antvis/S2/issues/231) [#234](https://github.com/antvis/S2/issues/234) [#230](https://github.com/antvis/S2/issues/230) [#233](https://github.com/antvis/S2/issues/233) [#230](https://github.com/antvis/S2/issues/230) [#236](https://github.com/antvis/S2/issues/236)
 * 🎸 added ability to filter field values ([#356](https://github.com/antvis/S2/issues/356)) ([92d9698](https://github.com/antvis/S2/commit/92d9698cf40de4fb3a5f099fd6a44821cb2a1bab))
-* 🎸 修复interactionState的borderWidth和borderColor不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
+* 🎸 修复 interactionState 的 borderWidth 和 borderColor 不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
 * 🔖 publish v0.1.3 ([#257](https://github.com/antvis/S2/issues/257)) ([92e452a](https://github.com/antvis/S2/commit/92e452ab6fef1bd4b3a3ed0e424e405e362ce425)), closes [#238](https://github.com/antvis/S2/issues/238) [#237](https://github.com/antvis/S2/issues/237) [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65) [#69](https://github.com/antvis/S2/issues/69) [#70](https://github.com/antvis/S2/issues/70) [#71](https://github.com/antvis/S2/issues/71) [#70](https://github.com/antvis/S2/issues/70) [#70](https://github.com/antvis/S2/issues/70) [#72](https://github.com/antvis/S2/issues/72) [#73](https://github.com/antvis/S2/issues/73) [#74](https://github.com/antvis/S2/issues/74) [#75](https://github.com/antvis/S2/issues/75) [#76](https://github.com/antvis/S2/issues/76) [#82](https://github.com/antvis/S2/issues/82) [#85](https://github.com/antvis/S2/issues/85) [#91](https://github.com/antvis/S2/issues/91) [#81](https://github.com/antvis/S2/issues/81) [#94](https://github.com/antvis/S2/issues/94) [#95](https://github.com/antvis/S2/issues/95) [#100](https://github.com/antvis/S2/issues/100) [#99](https://github.com/antvis/S2/issues/99) [#101](https://github.com/antvis/S2/issues/101) [#107](https://github.com/antvis/S2/issues/107) [#108](https://github.com/antvis/S2/issues/108) [#109](https://github.com/antvis/S2/issues/109) [#112](https://github.com/antvis/S2/issues/112) [#114](https://github.com/antvis/S2/issues/114) [#115](https://github.com/antvis/S2/issues/115) [#116](https://github.com/antvis/S2/issues/116) [#117](https://github.com/antvis/S2/issues/117) [#119](https://github.com/antvis/S2/issues/119) [#121](https://github.com/antvis/S2/issues/121) [#122](https://github.com/antvis/S2/issues/122) [#124](https://github.com/antvis/S2/issues/124) [#125](https://github.com/antvis/S2/issues/125) [#123](https://github.com/antvis/S2/issues/123) [#120](https://github.com/antvis/S2/issues/120) [#126](https://github.com/antvis/S2/issues/126) [#128](https://github.com/antvis/S2/issues/128) [#130](https://github.com/antvis/S2/issues/130) [#129](https://github.com/antvis/S2/issues/129) [#113](https://github.com/antvis/S2/issues/113) [#132](https://github.com/antvis/S2/issues/132) [#135](https://github.com/antvis/S2/issues/135) [#138](https://github.com/antvis/S2/issues/138) [#118](https://github.com/antvis/S2/issues/118) [#139](https://github.com/antvis/S2/issues/139) [#118](https://github.com/antvis/S2/issues/118) [#142](https://github.com/antvis/S2/issues/142) [#143](https://github.com/antvis/S2/issues/143) [#137](https://github.com/antvis/S2/issues/137) [#136](https://github.com/antvis/S2/issues/136) [#148](https://github.com/antvis/S2/issues/148) [#146](https://github.com/antvis/S2/issues/146) [#149](https://github.com/antvis/S2/issues/149) [#152](https://github.com/antvis/S2/issues/152) [#153](https://github.com/antvis/S2/issues/153) [#155](https://github.com/antvis/S2/issues/155) [#156](https://github.com/antvis/S2/issues/156) [#151](https://github.com/antvis/S2/issues/151) [#157](https://github.com/antvis/S2/issues/157) [#154](https://github.com/antvis/S2/issues/154) [#160](https://github.com/antvis/S2/issues/160) [#162](https://github.com/antvis/S2/issues/162) [#164](https://github.com/antvis/S2/issues/164) [#158](https://github.com/antvis/S2/issues/158) [#167](https://github.com/antvis/S2/issues/167) [#170](https://github.com/antvis/S2/issues/170) [#165](https://github.com/antvis/S2/issues/165) [#171](https://github.com/antvis/S2/issues/171) [#163](https://github.com/antvis/S2/issues/163) [#174](https://github.com/antvis/S2/issues/174) [#172](https://github.com/antvis/S2/issues/172) [#175](https://github.com/antvis/S2/issues/175) [#173](https://github.com/antvis/S2/issues/173) [#179](https://github.com/antvis/S2/issues/179) [#183](https://github.com/antvis/S2/issues/183) [#182](https://github.com/antvis/S2/issues/182) [#180](https://github.com/antvis/S2/issues/180) [#184](https://github.com/antvis/S2/issues/184) [#185](https://github.com/antvis/S2/issues/185) [#181](https://github.com/antvis/S2/issues/181) [#178](https://github.com/antvis/S2/issues/178) [#192](https://github.com/antvis/S2/issues/192) [#189](https://github.com/antvis/S2/issues/189) [#190](https://github.com/antvis/S2/issues/190) [#194](https://github.com/antvis/S2/issues/194) [#197](https://github.com/antvis/S2/issues/197) [#196](https://github.com/antvis/S2/issues/196) [#203](https://github.com/antvis/S2/issues/203) [#207](https://github.com/antvis/S2/issues/207) [#204](https://github.com/antvis/S2/issues/204) [#206](https://github.com/antvis/S2/issues/206) [#208](https://github.com/antvis/S2/issues/208) [#202](https://github.com/antvis/S2/issues/202) [#201](https://github.com/antvis/S2/issues/201) [#209](https://github.com/antvis/S2/issues/209) [#200](https://github.com/antvis/S2/issues/200) [#210](https://github.com/antvis/S2/issues/210) [#211](https://github.com/antvis/S2/issues/211) [#214](https://github.com/antvis/S2/issues/214) [#213](https://github.com/antvis/S2/issues/213) [#212](https://github.com/antvis/S2/issues/212) [#216](https://github.com/antvis/S2/issues/216) [#217](https://github.com/antvis/S2/issues/217) [#218](https://github.com/antvis/S2/issues/218) [#219](https://github.com/antvis/S2/issues/219) [#221](https://github.com/antvis/S2/issues/221) [#222](https://github.com/antvis/S2/issues/222) [#240](https://github.com/antvis/S2/issues/240) [#241](https://github.com/antvis/S2/issues/241) [#242](https://github.com/antvis/S2/issues/242) [#248](https://github.com/antvis/S2/issues/248) [#245](https://github.com/antvis/S2/issues/245) [#252](https://github.com/antvis/S2/issues/252) [#249](https://github.com/antvis/S2/issues/249)
 * add advanced sort component ([#428](https://github.com/antvis/S2/issues/428)) ([c3a3fb5](https://github.com/antvis/S2/commit/c3a3fb5ba16dc4ef65f301b054a78095c36f5524))
 * add confirm and cancel button for switcher ([#495](https://github.com/antvis/S2/issues/495)) ([d31ce63](https://github.com/antvis/S2/commit/d31ce63a87d87878f033f51ac2a0e7f4d90c2b31))
@@ -728,7 +775,6 @@
 * select all ([#348](https://github.com/antvis/S2/issues/348)) ([334aac4](https://github.com/antvis/S2/commit/334aac41ac9511c3b417a7006591fdbf138ab618)), closes [#342](https://github.com/antvis/S2/issues/342) [#339](https://github.com/antvis/S2/issues/339)
 * tooltip support config auto adjust boundary ([#538](https://github.com/antvis/S2/issues/538)) ([2a14873](https://github.com/antvis/S2/commit/2a14873507c1480b3b209ffd5cb46421aca4096e))
 * **util:** add generateId export function ([#488](https://github.com/antvis/S2/issues/488)) ([0e6025e](https://github.com/antvis/S2/commit/0e6025e20e5b2eeca0692dbb90fabcaffd66d3c1))
-
 
 ### Performance Improvements
 

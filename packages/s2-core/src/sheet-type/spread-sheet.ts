@@ -312,9 +312,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      if (isEmpty(getIcon(customSVGIcon.name))) {
-        registerIcon(customSVGIcon.name, customSVGIcon.svg);
-      }
+      registerIcon(customSVGIcon.name, customSVGIcon.svg);
     });
   }
 
@@ -354,13 +352,13 @@ export abstract class SpreadSheet extends EE {
 
   public destroy() {
     this.emit(S2Event.LAYOUT_DESTROY);
-    this.facet.destroy();
+    this.facet?.destroy();
     this.hdAdapter?.destroy();
-    this.interaction.destroy();
-    this.store.clear();
+    this.interaction?.destroy();
+    this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
-    this.container.destroy();
+    this.container?.destroy();
   }
 
   /**
@@ -399,18 +397,33 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 修改表格画布大小，不用重新加载数据
    * @param width
    * @param height
+   * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
    */
   public changeSize(
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
-    const isEqualSize =
-      width === this.options.width && height === this.options.height;
+    this.changeSheetSize(width, height);
+  }
 
-    if (isEqualSize) {
+  /**
+   * 修改表格画布大小，不用重新加载数据
+   * @param width
+   * @param height
+   */
+  public changeSheetSize(
+    width: number = this.options.width,
+    height: number = this.options.height,
+  ) {
+    const containerWidth = this.container.get('width');
+    const containerHeight = this.container.get('height');
+
+    const isSizeChanged =
+      width !== containerWidth || height !== containerHeight;
+
+    if (!isSizeChanged) {
       return;
     }
 

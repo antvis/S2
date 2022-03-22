@@ -1,5 +1,5 @@
 ---
-title: Custom Icon
+title: Customize Icon
 order: 3
 ---
 

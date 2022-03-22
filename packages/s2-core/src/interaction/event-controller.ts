@@ -48,6 +48,8 @@ export class EventController {
 
   public domEventListeners: EventListener[] = [];
 
+  private isCanvasEffect = false;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
@@ -80,10 +82,11 @@ export class EventController {
 
     // dom events
     this.addDomEventListener(
-      document,
+      window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
         this.resetSheetStyle(event);
+        this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
     this.addDomEventListener(
@@ -109,6 +112,13 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_MOVE,
+      (event: MouseEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+      },
+    );
   }
 
   private getTargetType() {
@@ -118,6 +128,7 @@ export class EventController {
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
     if (
+      this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
@@ -130,7 +141,10 @@ export class EventController {
   }
 
   private onKeyboardEsc(event: KeyboardEvent) {
-    if (keyEqualTo(event.key, InteractionKeyboardKey.ESC)) {
+    if (
+      this.isCanvasEffect &&
+      keyEqualTo(event.key, InteractionKeyboardKey.ESC)
+    ) {
       this.resetSheetStyle(event);
     }
   }
@@ -429,11 +443,8 @@ export class EventController {
       return;
     }
     const { interaction } = this.spreadsheet;
-    // 两种情况不能重置 1. 选中单元格 2. 有交互功能的tooltip打开时
-    if (
-      !interaction.isSelectedState() &&
-      !interaction.hasIntercepts([InterceptType.HOVER])
-    ) {
+    // 两种情况不能重置 1. 选中单元格 2. 有 intercepts 时（重置会清空 intercepts）
+    if (!interaction.isSelectedState() && !(interaction.intercepts.size > 0)) {
       interaction.reset();
     }
   };

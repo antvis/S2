@@ -78,11 +78,13 @@ describe('State Controller Utils Tests', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
       interactedCells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       interactedCells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     clearState(mockInstance);

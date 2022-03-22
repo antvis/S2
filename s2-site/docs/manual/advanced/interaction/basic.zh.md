@@ -130,7 +130,7 @@ order: 0
 
 ```ts
 import { PivotSheet, S2Event } from '@antv/s2';
-const s2 = new PivotSheet(container, s2DataConfig, s2options);
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.DATE_CELL_BRUSH_SELECTION, (cells) => {
   console.log('刷选的单元格：', cells)
@@ -169,7 +169,7 @@ const s2Options = {
 在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，默认关闭，可配置 `selectedCellsSpotlight` 开启：
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     selectedCellsSpotlight: true, // 默认 false
   }
@@ -183,7 +183,7 @@ const s2options = {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*f1f1TqoWNdMAAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     hoverHighlight: false // 默认 true
   }
@@ -197,7 +197,7 @@ const s2options = {
 <img src="https://gw.alipayobjects.com/zos/antfincdn/1OIXucjGb/9c0b42b5-259e-4693-83b3-8cf6a034be93.png" alt="preview" width="600" />
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     hoverFocus: false // 默认 true
   }
@@ -211,7 +211,7 @@ const s2options = {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*N3-cSrfpGc4AAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     brushSelection: false // 默认 true
   }
@@ -229,7 +229,7 @@ Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeSe
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     multiSelection: false // 默认 true
     rangeSelection: false // 默认 true
@@ -244,7 +244,7 @@ const s2options = {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     selectedCellMove: false // 默认 true
   }
@@ -262,7 +262,7 @@ const dataCfg = {
   }
 }
 
-const s2options = {
+const s2Options = {
   interaction: {
     // 默认隐藏
     hiddenColumns: ['fieldA']
@@ -297,7 +297,7 @@ s2.on(S2Event.GLOBAL_RESET, () => {
 可配置 `autoResetSheetStyle` 关闭重置交互。[查看具体例子](/zh/examples/interaction/advanced#auto-reset-sheet-style)
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     autoResetSheetStyle: false
   }
@@ -309,7 +309,7 @@ const s2options = {
 可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，默认为 1。 [查看具体例子](/zh/examples/interaction/advanced#scroll-speed-ratio)
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     scrollSpeedRatio: {
       vertical: 0.3, // 垂直
@@ -324,13 +324,13 @@ const s2options = {
 可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 resize 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/zh/examples/interaction/advanced#resize)
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     resize: true
   },
 };
 // 等价于
-// const s2options = {
+// const s2Options = {
 //    interaction: {
 //     resize: {
 //       rowCellVertical:true,

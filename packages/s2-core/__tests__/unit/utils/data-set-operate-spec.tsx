@@ -5,7 +5,7 @@ import {
   getListBySorted,
   getAggregationAndCalcFuncByQuery,
 } from '@/utils/data-set-operate';
-import { EAggregation } from '@/common/interface';
+import { Aggregation } from '@/common/interface';
 
 describe('Data Set Operate Test', () => {
   const data = [];
@@ -84,7 +84,7 @@ describe('Data Set Operate Test', () => {
       totalsOptions = {
         row: {
           calcTotals: {
-            aggregation: EAggregation.SUM,
+            aggregation: Aggregation.SUM,
           },
           calcSubTotals: {
             calcFunc: () => 'rowSubTotals',
@@ -113,7 +113,7 @@ describe('Data Set Operate Test', () => {
           },
           totalsOptions,
         ),
-      ).toEqual({ aggregation: EAggregation.SUM, calcFunc: undefined });
+      ).toEqual({ aggregation: Aggregation.SUM, calcFunc: undefined });
       // 行总计 & 列总计
       expect(
         getAggregationAndCalcFuncByQuery(

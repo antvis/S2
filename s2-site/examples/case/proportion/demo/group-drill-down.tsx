@@ -11,7 +11,7 @@ fetch(
     const GridSheet = () => {
       const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = useState('');
-      const s2options = {
+      const s2Options = {
         width: 800,
         height: 600,
         tooltip: {
@@ -110,7 +110,7 @@ fetch(
       return (
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2options}
+          options={s2Options}
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',

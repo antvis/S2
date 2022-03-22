@@ -11,7 +11,7 @@ import {
   ScrollbarPositionType,
 } from '@/common/constant';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 200,
   height: 200,
   hierarchyType: 'grid',
@@ -36,7 +36,7 @@ describe('Scroll By Group Tests', () => {
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
 
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
     canvas = s2.container.get('el') as HTMLCanvasElement;
   });
@@ -193,7 +193,7 @@ describe('Scroll By Group Tests', () => {
     'should disable scroll if no scroll bar and scroll over the panel viewport by %o',
     async ({ offset }) => {
       // hide scroll bar
-      s2.changeSize(1000, 300);
+      s2.changeSheetSize(1000, 300);
       s2.render(false);
 
       const showHorizontalScrollBarSpy = jest
@@ -298,12 +298,12 @@ describe('Scroll By Group Tests', () => {
         layoutWidthType: 'compact',
       },
     });
-    s2.changeSize(100, 1000); // 横向滚动条
+    s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
     expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
     expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
 
-    s2.changeSize(1000, 150); // 纵向滚动条
+    s2.changeSheetSize(1000, 150); // 纵向滚动条
     s2.render(false);
     expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(189);
 
@@ -312,12 +312,12 @@ describe('Scroll By Group Tests', () => {
         scrollbarPosition: ScrollbarPositionType.CANVAS,
       },
     });
-    s2.changeSize(100, 1000); // 横向滚动条
+    s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
     expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
     expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
 
-    s2.changeSize(1000, 200); // 纵向滚动条
+    s2.changeSheetSize(1000, 200); // 纵向滚动条
     s2.render(false);
     expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
   });

@@ -79,7 +79,7 @@ export class TableRowCell extends DataCell {
           width,
           height,
         }),
-        x: x,
+        x,
         y: yOffset + height - resizeStyle.size / 2,
         width,
       },

@@ -8,8 +8,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
-import * as mockDataConfig from '../data/simple-data.json';
-import { getContainer } from '../util/helpers';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 import type {
   SheetType,
   SheetComponentsProps,

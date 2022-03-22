@@ -1,5 +1,4 @@
 import { clone, filter, get, isEmpty, set } from 'lodash';
-import { Event } from '@antv/g-canvas';
 import {
   S2Options,
   HeaderActionIconProps,
@@ -9,6 +8,7 @@ import {
   PivotDataSet,
   HeaderActionIcon,
   PartDrillDownDataCache,
+  GEvent,
 } from '@antv/s2';
 import React from 'react';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
@@ -32,14 +32,14 @@ export interface ActionIconParams {
   // 点击icon类型
   iconName: string;
   // 点击事件event
-  event?: Event;
+  event?: GEvent;
   spreadsheet: SpreadSheet;
   // 下钻维度的列表组件展示
   callback: (
     spreadsheet: SpreadSheet,
     cacheDrillFields: string[],
     disabledFields: string[],
-    event?: Event,
+    event?: GEvent,
   ) => void;
 }
 
@@ -55,7 +55,7 @@ export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
   ) as PartDrillDownDataCache[];
   const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
   return {
-    drillDownDataCache: drillDownDataCache,
+    drillDownDataCache,
     drillDownCurrentCache: cache,
   };
 };
@@ -95,7 +95,7 @@ export const handleDrillDownIcon = (
     spreadsheet: SpreadSheet,
     cacheDownDrillFields: string[],
     disabledFields: string[],
-    event?: Event,
+    event?: GEvent,
   ) => void,
   drillDownIconRef: React.MutableRefObject<HeaderActionIcon>,
 ): S2Options => {

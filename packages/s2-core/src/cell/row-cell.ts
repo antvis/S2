@@ -271,15 +271,15 @@ export class RowCell extends HeaderCell {
     const iconWidth = icon.size + icon.margin.right;
 
     let parent = this.meta.parent;
-    let multiplier = 0;
+    let sum = 0;
     while (parent) {
       if (parent.height !== 0) {
-        multiplier += iconWidth;
+        sum += iconWidth;
       }
       parent = parent.parent;
     }
 
-    return multiplier;
+    return sum;
   }
 
   protected getTextIndent() {
@@ -294,27 +294,9 @@ export class RowCell extends HeaderCell {
     const { text, bolderText } = this.getStyle();
     const style = isLeaf && !isTotals ? text : bolderText;
 
-    const textAlign = text.textAlign;
-
     return {
       ...style,
-      textAlign,
       textBaseline: 'top',
-    };
-  }
-
-  protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
-    let content = label;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-    if (formatter) {
-      content = formatter(label);
-    }
-    return {
-      formattedValue: content,
-      value: label,
     };
   }
 
@@ -328,7 +310,7 @@ export class RowCell extends HeaderCell {
           ? this.actualTextWidth / 2
           : this.actualTextWidth) +
         this.getStyle().icon.margin.left,
-      y: y,
+      y,
     };
   }
 
@@ -337,22 +319,29 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
+  private getTextArea() {
+    const content = this.getContentArea();
+    const textIndent = this.getTextIndent();
+    return {
+      ...content,
+      x: content.x + textIndent,
+      width: content.width - textIndent,
+    };
+  }
+
   protected getTextPosition(): Point {
-    const { y, height: contentHeight } = this.getContentArea();
+    const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
-    const textIndent = this.getTextIndent();
     const textY = getAdjustPosition(
-      y,
-      contentHeight,
+      textArea.y,
+      textArea.height,
       scrollY,
       height,
       fontSize,
     );
-    const textX =
-      getTextPosition(this.getContentArea(), this.getTextStyle()).x +
-      textIndent;
+    const textX = getTextPosition(textArea, this.getTextStyle()).x;
     return { x: textX, y: textY };
   }
 

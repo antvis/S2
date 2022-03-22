@@ -13,13 +13,13 @@ import {
   SortParams,
   DataCell,
   Data,
+  GEvent,
+  HiddenColumnsInfo,
+  CollapsedRowsType,
+  DataType,
+  ResizeInfo,
 } from '@antv/s2';
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import React from 'react';
-import { DataType } from '@antv/s2';
-import { HiddenColumnsInfo } from '@antv/s2';
-import { ResizeInfo } from '@antv/s2';
-import { CollapsedRowsType } from '@antv/s2';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
@@ -79,7 +79,12 @@ export interface BaseSheetComponentProps {
   loading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: Adaptive;
-  showPagination?: boolean;
+  showPagination?:
+    | boolean
+    | {
+        onShowSizeChange?: (pageSize: number) => void;
+        onChange?: (current: number) => void;
+      };
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
@@ -133,7 +138,7 @@ export interface BaseSheetComponentProps {
 
   // ============== Sort ====================
   onRangeSort?: (params: SortParams) => void;
-  onRangeSorted?: (event: CanvasEvent) => void;
+  onRangeSorted?: (event: GEvent) => void;
 
   // ============== Filter ====================
   onRangeFilter?: (data: {
@@ -187,10 +192,10 @@ export interface BaseSheetComponentProps {
   onKeyBoardDown?: (event: KeyboardEvent) => void;
   onKeyBoardUp?: (event: KeyboardEvent) => void;
   onCopied?: (copyData: string) => void;
-  onActionIconHover?: (event: CanvasEvent) => void;
-  onActionIconClick?: (event: CanvasEvent) => void;
-  onContextMenu?: (event: CanvasEvent) => void;
-  onMouseHover?: (event: CanvasEvent) => void;
+  onActionIconHover?: (event: GEvent) => void;
+  onActionIconClick?: (event: GEvent) => void;
+  onContextMenu?: (event: GEvent) => void;
+  onMouseHover?: (event: GEvent) => void;
   onMouseUp?: (event: MouseEvent) => void;
   onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;

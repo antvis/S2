@@ -46,8 +46,8 @@ describe('PivotDataSet util test', () => {
       totalData: [],
       indexesData: [],
       sortedDimensionValues,
-      rowPivotMeta: rowPivotMeta,
-      colPivotMeta: colPivotMeta,
+      rowPivotMeta,
+      colPivotMeta,
     });
     expect(result.indexesData).toHaveLength(2);
     expect(result.paths).toHaveLength(32);

@@ -19,7 +19,7 @@ order: 2
 生成目录树结构的配置如下：
 
 ```ts
-const s2options = {
+const s2Options = {
   width: 660,
   height: 600,
   hierarchyType: 'customTree', // 目录树
