@@ -660,8 +660,8 @@ export class TableFacet extends BaseFacet {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
-            y: y,
-            width: width,
+            y,
+            width,
             height: style.shadowWidth,
             fill: this.getShadowFill(90),
           },

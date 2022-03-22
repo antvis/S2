@@ -18,7 +18,7 @@ describe('Tooltip Tests', () => {
     });
   };
 
-  test('should not render tooltip in default container if disable tooltip', async () => {
+  test('should not render tooltip in default container if disable tooltip', () => {
     const s2 = createS2({ showTooltip: false });
     s2.render();
 
@@ -29,7 +29,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should not render tooltip in default container when hide tooltip if disable tooltip', async () => {
+  test('should not render tooltip in default container when hide tooltip if disable tooltip', () => {
     const s2 = createS2({ showTooltip: false });
     s2.render();
 
@@ -42,7 +42,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render tooltip in default container', async () => {
+  test('should render tooltip in default container', () => {
     const s2 = createS2({ showTooltip: true });
     s2.render();
 
@@ -55,7 +55,7 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
-  test('should render tooltip in custom container', async () => {
+  test('should render tooltip in custom container', () => {
     const container = document.createElement('div');
     container.id = 'custom-container';
     document.body.appendChild(container);

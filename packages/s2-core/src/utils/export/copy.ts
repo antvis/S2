@@ -58,7 +58,7 @@ const getValueFromMeta = (
         ...rowNode.query,
         ...colNode.query,
       },
-      rowNode: rowNode,
+      rowNode,
     });
     return cell[VALUE_FIELD];
   }

@@ -259,7 +259,7 @@ export class ColCell extends HeaderCell {
           offsetX: 0,
           offsetY: y,
           width: resizeAreaWidth,
-          height: height,
+          height,
         }),
         name: resizeAreaName,
         x: 0,

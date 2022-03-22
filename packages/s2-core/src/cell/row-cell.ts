@@ -310,7 +310,7 @@ export class RowCell extends HeaderCell {
           ? this.actualTextWidth / 2
           : this.actualTextWidth) +
         this.getStyle().icon.margin.left,
-      y: y,
+      y,
     };
   }
 

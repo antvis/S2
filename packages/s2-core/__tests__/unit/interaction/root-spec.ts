@@ -350,7 +350,7 @@ describe('RootInteraction Tests', () => {
     `('should get correctly %o state', ({ stateName, handler }) => {
       rootInteraction.changeState({
         cells: [getCellMeta(mockCell)],
-        stateName: stateName,
+        stateName,
       });
       expect(rootInteraction[handler]()).toBeTruthy();
       rootInteraction.resetState();
