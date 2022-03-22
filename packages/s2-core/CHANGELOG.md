@@ -1,3 +1,17 @@
+# [@antv/s2-v1.14.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.14.0-alpha.1) (2022-03-22)
+
+
+### Bug Fixes
+
+* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+
+
+### Features
+
+* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
 # [@antv/s2-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-v1.12.2...@antv/s2-v1.13.0) (2022-03-18)
 
 
