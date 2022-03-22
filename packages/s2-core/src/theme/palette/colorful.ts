@@ -4,6 +4,7 @@ export const paletteColorful = {
     '#FFFFFF',
     '#F4F7FE',
     '#DDE7FD',
+    // brand color
     '#3471F9',
     '#2C60D3',
     '#2C60D3',
@@ -23,4 +24,9 @@ export const paletteColorful = {
     red: '#FF4D4F',
     green: '#29A294',
   },
+
+  // 用于标记生成色板时固定不变的色值索引
+  fixedColorIndex: [0, 8, 13, 14],
+  // 主题色索引
+  brandColorIndex: 3,
 };

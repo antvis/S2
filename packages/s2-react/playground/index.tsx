@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ChromePicker } from 'react-color';
 import {
   HeaderActionIconProps,
   S2Options,
@@ -29,6 +30,8 @@ import {
   ThemeCfg,
   S2Theme,
   DataType,
+  generatePalette,
+  getPalette,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
@@ -148,6 +151,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
+  const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
@@ -212,11 +216,9 @@ function MainLayout() {
   };
 
   const onThemeChange = (e: RadioChangeEvent) => {
-    setThemeCfg(
-      customMerge({}, themeCfg, {
-        name: e.target.value,
-      }),
-    );
+    setThemeCfg({
+      name: e.target.value,
+    });
   };
 
   const onSheetTypeChange = (e: RadioChangeEvent) => {
@@ -416,6 +418,33 @@ function MainLayout() {
                     <Radio.Button value="colorful">多彩蓝</Radio.Button>
                   </Radio.Group>
                 </Tooltip>
+              </Space>
+              <Space>
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <ChromePicker
+                        color={themeColor}
+                        onChangeComplete={(color) => {
+                          setThemeColor(color.hex);
+                          const palette = getPalette(themeCfg.name);
+                          const newPalette = generatePalette(
+                            palette,
+                            color.hex,
+                          );
+                          setThemeCfg({
+                            palette: newPalette,
+                          });
+                        }}
+                      />
+                    </>
+                  }
+                >
+                  <Button size="small" style={{ marginLeft: 20 }}>
+                    主题色调整
+                  </Button>
+                </Popover>
               </Space>
               <Space style={{ margin: '20px 0', display: 'flex' }}>
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">

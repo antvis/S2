@@ -8,6 +8,7 @@ export const paletteGray = {
     '#E7E8EA',
     '#CECFD1',
     '#A9AAAB',
+    // brand color
     '#616162',
     '#FFFFFF',
     '#F2F2F2',
@@ -22,4 +23,9 @@ export const paletteGray = {
     red: '#FF4D4F',
     green: '#29A294',
   },
+
+  // 用于标记生成色板时固定不变的色值索引
+  fixedColorIndex: [0, 8, 13, 14],
+  // 主题色索引
+  brandColorIndex: 7,
 };
