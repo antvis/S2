@@ -1012,9 +1012,11 @@ export class TableFacet extends BaseFacet {
 
     if (frozenTrailingRowCount > 0 || frozenRowCount > 0) {
       const { row, trailingRow } = this.frozenGroupInfo;
-
-      finalViewport.height -= row.height + trailingRow.height;
-      finalViewport.y += row.height;
+      // canvas 高度小于row height和trailingRow height的时候 以canvas高度为准
+      if (finalViewport.height > row.height + trailingRow.height) {
+        finalViewport.height -= row.height + trailingRow.height;
+        finalViewport.y += row.height;
+      }
     }
 
     const indexes = calculateInViewIndexes(
