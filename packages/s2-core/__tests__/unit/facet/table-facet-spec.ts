@@ -359,6 +359,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct indexes with row height lt canvas height', () => {
+    const originHeight = facet.panelBBox.viewportHeight;
     facet.panelBBox.viewportHeight = 10;
     expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
       center: [2, 2, 2, 0],
@@ -368,7 +369,7 @@ describe('Table Mode Facet With Frozen Test', () => {
       frozenTrailingRow: [2, 2, 30, 31],
     });
     // reset
-    facet.panelBBox.viewportHeight = 564;
+    facet.panelBBox.viewportHeight = originHeight;
   });
 });
 
