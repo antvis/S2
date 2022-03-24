@@ -1015,10 +1015,11 @@ export class TableFacet extends BaseFacet {
       // canvas 高度小于row height和trailingRow height的时候 height 为 0
       if (finalViewport.height < row.height + trailingRow.height) {
         finalViewport.height = 0;
+        finalViewport.y = 0;
       } else {
         finalViewport.height -= row.height + trailingRow.height;
+        finalViewport.y += row.height;
       }
-      finalViewport.y += row.height;
     }
 
     const indexes = calculateInViewIndexes(
