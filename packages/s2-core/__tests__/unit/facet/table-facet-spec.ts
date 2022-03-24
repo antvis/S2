@@ -357,6 +357,19 @@ describe('Table Mode Facet With Frozen Test', () => {
     expect(viewCellHeights.getCellOffsetY(0)).toBe(0);
     expect(viewCellHeights.getCellOffsetY(7)).toBe(210);
   });
+
+  test('should get correct indexes with row height lt canvas height', () => {
+    facet.panelBBox.viewportHeight = 10;
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 0],
+      frozenCol: [0, 1, 2, 0],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 0],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+    // reset
+    facet.panelBBox.viewportHeight = 564;
+  });
 });
 
 describe('Table Mode Facet Test With Custom Row Height', () => {
