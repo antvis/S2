@@ -1,5 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
+import { isMultiSelectionKey } from 'src/utils/interaction/select-event';
 import {
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
@@ -7,7 +8,6 @@ import {
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
-  InteractionKeyboardKey,
   InterceptType,
   CellTypes,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
@@ -39,7 +39,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (event.key === InteractionKeyboardKey.META) {
+        if (isMultiSelectionKey(event)) {
           this.isMultiSelection = true;
         }
       },
@@ -48,7 +48,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (event.key === InteractionKeyboardKey.META) {
+      if (isMultiSelectionKey(event)) {
         this.isMultiSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
