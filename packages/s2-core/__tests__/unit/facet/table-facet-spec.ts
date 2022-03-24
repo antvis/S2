@@ -358,7 +358,7 @@ describe('Table Mode Facet With Frozen Test', () => {
     expect(viewCellHeights.getCellOffsetY(7)).toBe(210);
   });
 
-  test('should get correct indexes with row height lt canvas height', () => {
+  test('should get correct indexes with row height gt canvas height', () => {
     const originHeight = facet.panelBBox.viewportHeight;
     facet.panelBBox.viewportHeight = 10;
     expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
