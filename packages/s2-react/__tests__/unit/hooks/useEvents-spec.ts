@@ -323,46 +323,43 @@ describe('useEvents tests', () => {
       name: keyof BaseSheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;
     }>,
-  )(
-    'eventHook should be called with %s',
-    async ({ event, name, eventHook }) => {
-      const props: BaseSheetComponentProps = {
-        dataCfg: mockDataConfig,
-        options: s2Options,
-        [name]: jest.fn(),
-      };
+  )('eventHook should be called with %s', ({ event, name, eventHook }) => {
+    const props: BaseSheetComponentProps = {
+      dataCfg: mockDataConfig,
+      options: s2Options,
+      [name]: jest.fn(),
+    };
 
-      const { rerender, unmount } = renderHook(
-        ({ props }) => eventHook(event, props[name] as any, s2),
-        {
-          initialProps: { props },
+    const { rerender, unmount } = renderHook(
+      ({ props }) => eventHook(event, props[name] as any, s2),
+      {
+        initialProps: { props },
+      },
+    );
+
+    const MockEmitFn = () => {
+      s2.emit(event, {
+        target: {
+          get: () => {},
         },
-      );
+        stopPropagation: () => {},
+      } as unknown as GEvent);
+    };
+    // emit
+    act(MockEmitFn);
+    expect(props[name]).toBeCalledTimes(1);
 
-      const MockEmitFn = () => {
-        s2.emit(event, {
-          target: {
-            get: () => {},
-          },
-          stopPropagation: () => {},
-        } as unknown as GEvent);
-      };
-      // emit
-      act(MockEmitFn);
-      expect(props[name]).toBeCalledTimes(1);
+    // cleanup effects for useEffect hooks
+    unmount();
+    // emit
+    act(MockEmitFn);
+    expect(props[name]).toBeCalledTimes(1);
 
-      // cleanup effects for useEffect hooks
-      unmount();
-      // emit
-      act(MockEmitFn);
-      expect(props[name]).toBeCalledTimes(1);
-
-      const newProps = {
-        ...props,
-        [name]: jest.fn(),
-      };
-      rerender({ props: newProps });
-      expect(newProps[name]).toBeCalledTimes(0);
-    },
-  );
+    const newProps = {
+      ...props,
+      [name]: jest.fn(),
+    };
+    rerender({ props: newProps });
+    expect(newProps[name]).toBeCalledTimes(0);
+  });
 });

@@ -84,7 +84,7 @@ describe('Interaction Hover Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
-  test('should trigger row cell hover', async () => {
+  test('should trigger row cell hover', () => {
     s2.emit(S2Event.ROW_CELL_HOVER, { target: {} } as GEvent);
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
@@ -94,7 +94,7 @@ describe('Interaction Hover Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
-  test('should trigger col cell hover', async () => {
+  test('should trigger col cell hover', () => {
     s2.emit(S2Event.COL_CELL_HOVER, { target: {} } as GEvent);
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],

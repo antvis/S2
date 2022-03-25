@@ -12,6 +12,16 @@ import { convertString, getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
 
+const newLineTest = `"### 问题摘要
+- **会话地址**："`;
+
+const testData = originalData.map((item, i) => {
+  if (i === 0) {
+    return { ...item, sub_type: newLineTest };
+  }
+  return { ...item };
+});
+
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
   beforeEach(() => {
@@ -22,6 +32,7 @@ describe('List Table Core Data Process', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
+        data: testData,
       }),
       assembleOptions({
         showSeriesNumber: true,
@@ -83,8 +94,8 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(32);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(5);
+    expect(getSelectedData(s2).split('\n').length).toBe(33);
+    expect(getSelectedData(s2).split('\n')[2].split('\t').length).toBe(5);
   });
 
   it('should copy format data', () => {
@@ -153,18 +164,18 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[0];
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[1];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
-    expect(data).toBe('7789\t浙江省\t杭州市\t家具\t桌子');
+    expect(data).toBe('7234\t浙江省\t宁波市\t家具\t沙发');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(32);
+    expect(getSelectedData(s2).split('\n').length).toEqual(33);
   });
 
   it('should copy correct data with \n data', () => {

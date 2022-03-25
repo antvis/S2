@@ -168,9 +168,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action({
-        iconName: iconName,
+        iconName,
         meta: this.meta,
-        event: event,
+        event,
       });
     });
 

@@ -72,7 +72,7 @@ export default defineConfig({
       entry: './src/index.ts',
       formats: [format],
     },
-    outDir: outDir,
+    outDir,
 
     rollupOptions: {
       output: {

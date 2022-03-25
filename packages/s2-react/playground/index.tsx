@@ -149,7 +149,7 @@ function MainLayout() {
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [adaptive, setAdaptive] = React.useState<Adaptive>(true);
+  const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =

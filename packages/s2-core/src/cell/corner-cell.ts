@@ -81,7 +81,7 @@ export class CornerCell extends HeaderCell {
     const maxWidth = this.getMaxTextWidth();
     const text = getEllipsisText({
       text: cornerText,
-      maxWidth: maxWidth,
+      maxWidth,
       fontParam: textStyle,
       placeholder: this.spreadsheet.options.placeholder,
     });
@@ -100,7 +100,7 @@ export class CornerCell extends HeaderCell {
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText({
         text: secondLine,
-        maxWidth: maxWidth,
+        maxWidth,
         fontParam: textStyle,
       });
     }
@@ -108,9 +108,9 @@ export class CornerCell extends HeaderCell {
     const { x: textX } = getTextPosition(
       {
         x: x + this.getTreeIconWidth(),
-        y: y,
+        y,
         width: maxWidth,
-        height: height,
+        height,
       },
       textStyle,
     );
