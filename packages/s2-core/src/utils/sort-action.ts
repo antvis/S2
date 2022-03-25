@@ -187,11 +187,11 @@ const createTotalParams = (
   sortFieldId: string,
 ) => {
   const totalParams = {};
-  // 获取行/列小计时，需要将所有行/列维度的值作为 params
-  const isSubTotal = includes(originValue, '&');
+  const isMultipleDimensionValue = includes(originValue, ID_SEPARATOR);
 
-  if (isSubTotal) {
-    const realOriginValue = split(originValue, '[&]');
+  if (isMultipleDimensionValue) {
+    // 获取行/列小计时，需要将所有行/列维度的值作为 params
+    const realOriginValue = split(originValue, ID_SEPARATOR);
     const keys = fields?.rows?.includes(sortFieldId)
       ? fields.rows
       : fields.columns;
@@ -224,18 +224,18 @@ export const getSortByMeasureValues = (
 
   // 按 data 数据中的小计，总计排序
   const measureValues = dataSet.getMultiData(query, true, isRow);
-  // 按前端的小计，总计排序
-  if (!measureValues || isEmpty(measureValues)) {
-    return map(originValues, (originValue) => {
-      const totalParams = createTotalParams(originValue, fields, sortFieldId);
-
-      return (dataSet as PivotDataSet).getTotalValue({
-        ...query,
-        ...totalParams,
-      });
-    });
+  if (measureValues && !isEmpty(measureValues)) {
+    return measureValues;
   }
-  return measureValues;
+  // 按前端的小计，总计排序
+  return map(originValues, (originValue) => {
+    const totalParams = createTotalParams(originValue, fields, sortFieldId);
+
+    return (dataSet as PivotDataSet).getTotalValue({
+      ...query,
+      ...totalParams,
+    });
+  });
 };
 
 export const handleSortAction = (params: SortActionParams): string[] => {
