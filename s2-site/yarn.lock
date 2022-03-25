@@ -188,20 +188,20 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^1.12.0":
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.12.0.tgz#6631bb25fc8d685d353c6da829f281b17b825fe9"
-  integrity sha512-w7S3nk5KQ1E8shkEnULL+GWhd6BEA4BtoLFNdFC4lmP4X7GIxsiXidYjno4YeAvqiCKDxSz1Icn5ikZmymblcw==
+"@antv/s2-react@^1.12.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.12.1.tgz#7ebfca267ae76eac9437ed4b57481a578f378876"
+  integrity sha512-N2iD6t3/x7LZni3F7fGuUSNrkeTXjZ6SYv3L844XFflYyk/NaNifBnIbiVFl/yiaQOHgTiA2wrVcDz8VEROd/w==
   dependencies:
-    ahooks "^3.1.10"
+    ahooks "^3.1.13"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@^1.13.0":
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.13.0.tgz#d149bc79190e618934fbe2e6bbf8dccff3d2b1fa"
-  integrity sha512-bYF4UptTVjHXvyK+a4awNeCtTVrFrac+34kO0U/vBdYP0aG1qgsk4fF4OuvlcMBmgFBio97QbOfWTxYGdR4lMQ==
+"@antv/s2@^1.13.1":
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.13.1.tgz#01d66725e98277268447c9d4c3e47995a4e26099"
+  integrity sha512-Lf8fnw9tmIXawoX22EaMv7erPluUUT/TnD9YPMyRsma9G0nFUye4lG37EQqP2dN2yRaWyhPBXc/LD/TC+iRxZQ==
   dependencies:
     "@antv/event-emitter" "^0.1.3"
     "@antv/g-canvas" "^0.5.12"
@@ -2291,10 +2291,10 @@ ahooks-v3-count@^1.0.0:
   resolved "https://registry.yarnpkg.com/ahooks-v3-count/-/ahooks-v3-count-1.0.0.tgz#ddeb392e009ad6e748905b3cbf63a9fd8262ca80"
   integrity sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==
 
-ahooks@^3.1.10:
-  version "3.1.13"
-  resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.1.13.tgz#23492e2a24f9d7951a52d9359b877e010a0a56e0"
-  integrity sha512-ZWwWRhikXCWuR+X+LxXK8sWu2KPU7nh7UfaTTB93NhmoeytzN8VODRfVjq8LbT2ow5Q7PuG13143OcW9nN1vBg==
+ahooks@^3.1.13:
+  version "3.1.14"
+  resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.1.14.tgz#b72dffb21272b7001112f90552d37209cea6502f"
+  integrity sha512-Pk9BmfN+nUs7Zh5aniDY2J6K+JGQDBojjwURG2kd/w4+7FQV9qRAs0MQWM6s/FB8GlvdpNtiH++NDXSpxcBqvA==
   dependencies:
     "@types/js-cookie" "^2.x.x"
     ahooks-v3-count "^1.0.0"
