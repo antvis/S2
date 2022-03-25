@@ -4,10 +4,10 @@ import { get } from 'lodash';
 
 // 自定义角头单元格，实现特有功能
 class CustomCornerHeader extends Group {
-  protected node;
-  protected backgroundShape;
-  protected textShape;
-  public constructor(node) {
+  node;
+  backgroundShape;
+  textShape;
+  constructor(node) {
     super({});
     this.node = node;
     this.initCornerHeader();
