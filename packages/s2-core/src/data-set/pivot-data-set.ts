@@ -281,7 +281,14 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
+    const {
+      data,
+      meta = [],
+      fields,
+      sortParams = [],
+      totalData,
+      metaExtraFieldName,
+    } = dataCfg;
     const { columns, rows, values, valueInCols, customValueOrder } = fields;
     let newColumns = columns;
     let newRows = rows;
@@ -305,7 +312,7 @@ export class PivotDataSet extends BaseDataSet {
       // 虚拟列字段，为文本分类字段
       {
         field: EXTRA_FIELD,
-        name: i18n('数值'),
+        name: metaExtraFieldName || i18n('数值'),
         formatter: (value: string) => valueFormatter(value),
       } as Meta,
     ];

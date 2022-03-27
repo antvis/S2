@@ -13,6 +13,7 @@ redirect_from:
 | fields         | 维度指标配置项       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计数据       | [Data[]](#data) |    |      |
 | meta    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [Meta[]](#meta)  |  |       |
+| metaExtraFieldName    | 虚拟列字段名称，为文本分类字段 | `string`  | 数值 |       |
 | sortParams    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [SortParams](#sortparams)  |  |       |
 
 ### Data

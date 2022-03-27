@@ -48,6 +48,7 @@ export interface S2DataConfig {
   fields: Fields;
   // data keys meta info
   meta?: Meta[];
+  metaExtraFieldName?: string;
   // field sort info
   sortParams?: SortParams;
   // field filer params
