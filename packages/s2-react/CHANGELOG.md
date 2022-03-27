@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.0...@antv/s2-react-v1.12.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+
 # [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
 
 
