@@ -10,13 +10,12 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import {
-  CellBorderPosition,
-  FormatResult,
-  TextTheme,
-} from '@/common/interface';
+import { CellBorderPosition, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { getTextPosition, getBorderPositionAndStyle } from '@/utils/cell/cell';
+import {
+  getTextAndFollowingIconPosition,
+  getBorderPositionAndStyle,
+} from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -301,15 +300,49 @@ export class RowCell extends HeaderCell {
   }
 
   protected getIconPosition() {
+    // 不同 textAlign 下，对应的文字绘制点 x 不同
     const { x, y, textAlign } = this.textShape.cfg.attrs;
+    const iconMarginLeft = this.getStyle().icon.margin.left;
 
+    if (textAlign === 'left') {
+      /**
+       * attrs.x
+       *   |
+       *   v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: x + this.actualTextWidth + iconMarginLeft,
+        y,
+      };
+    }
+    if (textAlign === 'right') {
+      /**
+       *           attrs.x
+       *             |
+       *             v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: x + iconMarginLeft,
+        y,
+      };
+    }
+
+    /**
+     *      attrs.x
+     *        |
+     *        v
+     *   +---------+  +----+
+     *   |  text   |--|icon|
+     *   +---------+  +----+
+     */
     return {
-      x:
-        x +
-        (textAlign === 'center'
-          ? this.actualTextWidth / 2
-          : this.actualTextWidth) +
-        this.getStyle().icon.margin.left,
+      x: x + this.actualTextWidth / 2 + iconMarginLeft,
       y,
     };
   }
@@ -341,7 +374,14 @@ export class RowCell extends HeaderCell {
       height,
       fontSize,
     );
-    const textX = getTextPosition(textArea, this.getTextStyle()).x;
+    const textX = getTextAndFollowingIconPosition(
+      textArea,
+      this.getTextStyle(),
+      0,
+      this.getIconStyle(),
+      this.getActionIconsCount(),
+    ).text.x;
+
     return { x: textX, y: textY };
   }
 
