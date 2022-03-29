@@ -185,7 +185,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [52, 52, 64, 40, 72];
+      const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
@@ -218,7 +218,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 72];
+      const COMPACT_WIDTH = [80, 53, 53, 65, 41, 73];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
@@ -356,6 +356,20 @@ describe('Table Mode Facet With Frozen Test', () => {
     expect(viewCellHeights.getTotalLength()).toBe(32);
     expect(viewCellHeights.getCellOffsetY(0)).toBe(0);
     expect(viewCellHeights.getCellOffsetY(7)).toBe(210);
+  });
+
+  test('should get correct indexes with row height gt canvas height', () => {
+    const originHeight = facet.panelBBox.viewportHeight;
+    facet.panelBBox.viewportHeight = 10;
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 0],
+      frozenCol: [0, 1, 2, 0],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 0],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+    // reset
+    facet.panelBBox.viewportHeight = originHeight;
   });
 });
 

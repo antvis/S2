@@ -88,15 +88,36 @@ export class TableFacet extends BaseFacet {
       if (!Array.isArray(sortParams)) {
         params = [sortParams];
       }
-      set(
-        s2.dataCfg,
-        'sortParams',
-        params.map((item: TableSortParam) => ({
+
+      const currentParams = s2.dataCfg.sortParams || [];
+
+      params = params.map((item: TableSortParam) => {
+        const newItem = {
           ...item,
           // 兼容之前 sortKey 的用法
           sortFieldId: item.sortKey ?? item.sortFieldId,
-        })),
-      );
+        };
+
+        const oldItem =
+          currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ??
+          {};
+        return {
+          ...oldItem,
+          ...newItem,
+        };
+      });
+
+      const oldConfigs = currentParams.filter((config) => {
+        const newItem = params.find(
+          (p) => p.sortFieldId === config.sortFieldId,
+        );
+        if (newItem) {
+          return false;
+        }
+        return true;
+      });
+
+      set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
       s2.setDataCfg(s2.dataCfg);
       s2.render(true);
       s2.emit(
@@ -381,10 +402,13 @@ export class TableFacet extends BaseFacet {
               spreadsheet.theme.colCell,
             );
         } else {
+          // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
+          const EXTRA_PIXEL = 1;
           colWidth =
             measureTextWidth(maxLabel, dataCellTextStyle) +
             cellStyle.padding.left +
-            cellStyle.padding.right;
+            cellStyle.padding.right +
+            EXTRA_PIXEL;
         }
       } else {
         colWidth = adaptiveColWitdth;
@@ -1012,9 +1036,14 @@ export class TableFacet extends BaseFacet {
 
     if (frozenTrailingRowCount > 0 || frozenRowCount > 0) {
       const { row, trailingRow } = this.frozenGroupInfo;
-
-      finalViewport.height -= row.height + trailingRow.height;
-      finalViewport.y += row.height;
+      // canvas 高度小于row height和trailingRow height的时候 height 为 0
+      if (finalViewport.height < row.height + trailingRow.height) {
+        finalViewport.height = 0;
+        finalViewport.y = 0;
+      } else {
+        finalViewport.height -= row.height + trailingRow.height;
+        finalViewport.y += row.height;
+      }
     }
 
     const indexes = calculateInViewIndexes(

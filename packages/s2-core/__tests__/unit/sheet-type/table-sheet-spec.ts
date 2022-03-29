@@ -32,7 +32,7 @@ describe('TableSheet Tests', () => {
     s2?.destroy();
   });
 
-  describe('PivotSheet Sort Tests', () => {
+  describe('TableSheet Sort Tests', () => {
     test('should trigger sort', () => {
       const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
@@ -64,6 +64,78 @@ describe('TableSheet Tests', () => {
         },
       ]);
       expect(renderSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should update sort params', () => {
+      s2.onSortTooltipClick(
+        { key: 'desc' },
+        {
+          field: 'cost',
+        },
+      );
+
+      expect(s2.dataCfg.sortParams).toEqual([
+        {
+          sortFieldId: 'city',
+          sortMethod: 'asc',
+        },
+        {
+          sortFieldId: 'cost',
+          sortMethod: 'desc',
+        },
+      ]);
+
+      s2.onSortTooltipClick(
+        { key: 'desc' },
+        {
+          field: 'city',
+        },
+      );
+
+      expect(s2.dataCfg.sortParams).toEqual([
+        {
+          sortFieldId: 'cost',
+          sortMethod: 'desc',
+        },
+        {
+          sortFieldId: 'city',
+          sortMethod: 'desc',
+        },
+      ]);
+
+      s2.setDataCfg({
+        ...s2.dataCfg,
+        sortParams: [
+          {
+            sortFieldId: 'cost',
+            sortMethod: 'desc',
+            sortBy: ['1', '2'],
+          },
+          {
+            sortFieldId: 'city',
+            sortMethod: 'desc',
+          },
+        ],
+      });
+
+      s2.onSortTooltipClick(
+        { key: 'asc' },
+        {
+          field: 'cost',
+        },
+      );
+
+      expect(s2.dataCfg.sortParams).toEqual([
+        {
+          sortFieldId: 'city',
+          sortMethod: 'desc',
+        },
+        {
+          sortFieldId: 'cost',
+          sortMethod: 'asc',
+          sortBy: ['1', '2'],
+        },
+      ]);
     });
   });
 });

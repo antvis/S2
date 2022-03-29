@@ -327,7 +327,7 @@ export const drawObjectText = (
   multiData?: MultiData,
   disabledConditions?: boolean,
 ) => {
-  const { x } = cell.getTextAndIconPosition().text;
+  const { x } = cell.getTextAndIconPosition(0).text;
   const {
     y,
     height: totalTextHeight,
@@ -370,7 +370,7 @@ export const drawObjectText = (
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
-  for (let i = 0; i < textValues.length; i += 1) {
+  for (let i = 0; i < textValues.length; i++) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     const measures = clone(textValues[i]);
@@ -378,7 +378,7 @@ export const drawObjectText = (
       reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
     }
 
-    for (let j = 0; j < measures.length; j += 1) {
+    for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
       const curStyle = getTextStyle(
         i,

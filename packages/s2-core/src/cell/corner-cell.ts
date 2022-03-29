@@ -24,7 +24,11 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { CellBorderPosition, TextTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   getTextPosition,
@@ -352,6 +356,25 @@ export class CornerCell extends HeaderCell {
     return {
       x: 0,
       y: 0,
+    };
+  }
+
+  // corner cell 不需要使用formatter进行格式化
+  protected getFormattedFieldValue(): FormatResult {
+    const { label, field } = this.meta;
+
+    if (!isEqual(field, EXTRA_FIELD)) {
+      return {
+        formattedValue: label,
+        value: label,
+      };
+    }
+
+    const fieldName = this.spreadsheet.dataSet.getFieldName(label);
+
+    return {
+      formattedValue: fieldName || label,
+      value: label,
     };
   }
 
