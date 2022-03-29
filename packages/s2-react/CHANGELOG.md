@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.13.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.1...@antv/s2-react-v1.13.0-alpha.2) (2022-03-29)
+
+
+### Bug Fixes
+
+* pagination从null变为非空时未触发total更新 ([#1216](https://github.com/antvis/S2/issues/1216)) ([2baae0c](https://github.com/antvis/S2/commit/2baae0c84af894c9e1c4b180d91db942488f1511))
+
 # [@antv/s2-react-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.0...@antv/s2-react-v1.12.1) (2022-03-25)
 
 
