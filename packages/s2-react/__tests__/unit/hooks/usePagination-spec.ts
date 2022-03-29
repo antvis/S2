@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { omit } from 'lodash';
+import { cloneDeep, omit } from 'lodash';
 import { usePagination } from '@/hooks';
 import { BaseSheetComponentProps } from '@/components/sheets/interface';
 
@@ -71,8 +71,20 @@ describe('usePagination tests', () => {
   });
 
   test('should update total after render with new data', () => {
-    const { result } = renderHook(() => usePagination(s2, props));
+    let paginationProps = { ...props };
+    const { result, rerender } = renderHook(() =>
+      usePagination(s2, paginationProps),
+    );
 
+    expect(result.current.total).toBe(2); // 浙江-杭州、浙江-义乌
+
+    act(() => {
+      result.current.setTotal(0);
+
+      // 触发内部更新
+      paginationProps = cloneDeep(props);
+      rerender();
+    });
     expect(result.current.total).toBe(2); // 浙江-杭州、浙江-义乌
 
     act(() => {
