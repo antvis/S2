@@ -42,4 +42,12 @@ describe('Facet util test', () => {
       end: 0,
     });
   });
+
+  test('should get correct index range with equal min and max height', () => {
+    const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+    expect(getIndexRangeWithOffsets(offsets, 60, 60)).toStrictEqual({
+      start: 2,
+      end: 2,
+    });
+  });
 });
