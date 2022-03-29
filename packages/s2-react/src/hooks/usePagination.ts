@@ -12,7 +12,6 @@ export const usePagination = (
   props: BaseSheetComponentProps,
 ) => {
   const { options } = props;
-  const s2Ref = useLatest(s2);
   const [total, setTotal] = React.useState<number>(0);
   const paginationRef = useLatest(options.pagination);
   const [current, setCurrent] = React.useState<number>(
@@ -42,9 +41,8 @@ export const usePagination = (
   React.useEffect(() => {
     setCurrent(options?.pagination?.current || DEFAULT_PAGE_NUMBER);
     setPageSize(options?.pagination?.pageSize || DEFAULT_PAGE_SIZE);
-    setTotal(s2Ref.current?.facet?.viewCellHeights.getTotalLength() ?? 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options.pagination]);
+    setTotal(s2?.facet?.viewCellHeights.getTotalLength() ?? 0);
+  }, [options.pagination, s2]);
 
   // sync layout result total -> state.total
   React.useEffect(() => {
