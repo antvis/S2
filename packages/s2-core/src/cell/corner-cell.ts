@@ -359,7 +359,7 @@ export class CornerCell extends HeaderCell {
     };
   }
 
-  // 头部cell不需要使用formatter进行格式化，formatter只针对于data cell
+  // corner cell 不需要使用formatter进行格式化
   protected getFormattedFieldValue(): FormatResult {
     const { label, field } = this.meta;
 
