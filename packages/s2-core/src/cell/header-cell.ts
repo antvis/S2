@@ -52,19 +52,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   // 头部cell不需要使用formatter进行格式化，formatter只针对于data cell
   protected getFormattedFieldValue(): FormatResult {
-    const { label, field } = this.meta;
-
-    if (!isEqual(field, EXTRA_FIELD)) {
-      return {
-        formattedValue: label,
-        value: label,
-      };
+    const { label } = this.meta;
+    let content = label;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+    if (formatter) {
+      content = formatter(label);
     }
-
-    const fieldName = this.spreadsheet.dataSet.getFieldName(label);
-
     return {
-      formattedValue: fieldName || label,
+      formattedValue: content,
       value: label,
     };
   }
