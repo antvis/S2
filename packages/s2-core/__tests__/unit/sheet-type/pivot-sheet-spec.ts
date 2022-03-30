@@ -54,8 +54,8 @@ describe('PivotSheet Tests', () => {
   });
 
   afterAll(() => {
-    // container?.remove();
-    // s2?.destroy();
+    container?.remove();
+    s2?.destroy();
   });
 
   describe('PivotSheet Tooltip Tests', () => {
