@@ -120,6 +120,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       partDrillDown?.displayCondition,
       partDrillDown?.drillItemsNum,
       options.hierarchyType,
+      options.headerActionIcons,
     ]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
