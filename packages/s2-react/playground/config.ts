@@ -96,6 +96,7 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
+  cornerExtraFieldText: '11',
 };
 
 export const sliderOptions: SliderSingleProps = {

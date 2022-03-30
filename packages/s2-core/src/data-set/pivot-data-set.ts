@@ -74,9 +74,6 @@ export class PivotDataSet extends BaseDataSet {
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
 
-  // each path items max index
-  protected pathIndexMax = [];
-
   /**
    * When data related config changed, we need
    * 1、re-process config
@@ -281,6 +278,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
+    const { cornerExtraFieldText } = this.spreadsheet.options;
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols, customValueOrder } = fields;
     let newColumns = columns;
@@ -300,20 +298,17 @@ export class PivotDataSet extends BaseDataSet {
       return get(findOne, 'name', value);
     };
 
-    const newMeta = [
-      ...meta,
-      // 虚拟列字段，为文本分类字段
-      {
-        field: EXTRA_FIELD,
-        name: i18n('数值'),
-        formatter: (value: string) => valueFormatter(value),
-      } as Meta,
-    ];
+    // 虚拟列字段，为文本分类字段
+    const extraFieldMeta: Meta = {
+      field: EXTRA_FIELD,
+      name: cornerExtraFieldText || i18n('数值'),
+      formatter: (value: string) => valueFormatter(value),
+    };
+    const newMeta: Meta[] = [...meta, extraFieldMeta];
 
     const newData = this.standardTransform(data, values);
     const newTotalData = this.standardTransform(totalData, values);
 
-    // 返回新的结构
     return {
       data: newData,
       meta: newMeta,
