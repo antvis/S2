@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.13.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.2...@antv/s2-react-v1.13.0-alpha.3) (2022-03-30)
+
+
+### Bug Fixes
+
+* headerActionIcons更新覆盖了下钻icon展示 ([#1222](https://github.com/antvis/S2/issues/1222)) ([514f4db](https://github.com/antvis/S2/commit/514f4db087bc5d3e1c5d7faa0960c2d0ea773821))
+
 # [@antv/s2-react-v1.13.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.1...@antv/s2-react-v1.13.0-alpha.2) (2022-03-29)
 
 
