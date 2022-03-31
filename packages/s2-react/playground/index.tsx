@@ -432,6 +432,7 @@ function MainLayout() {
                             color.hex,
                           );
                           setThemeCfg({
+                            name: themeCfg.name,
                             palette: newPalette,
                           });
                         }}

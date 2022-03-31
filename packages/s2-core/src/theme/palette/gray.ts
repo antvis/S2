@@ -28,4 +28,9 @@ export const paletteGray = {
   fixedColorIndex: [0, 8, 13, 14],
   // 主题色索引
   brandColorIndex: 7,
+  fontColorBgIndexRelations: {
+    0: 3,
+    13: 8,
+    14: 1,
+  },
 };

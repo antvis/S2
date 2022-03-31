@@ -21,7 +21,10 @@ export interface Palette {
   fixedColorIndex?: number[];
   /* 主题色索引 */
   brandColorIndex?: number;
-  /* 额外颜色字段 */
+  /** 字体与背景的索引关系 */
+  fontColorBgIndexRelations?: {
+    [key: number]: number;
+  };
 }
 
 export interface Padding {

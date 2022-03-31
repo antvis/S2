@@ -26,7 +26,12 @@ export const paletteColorful = {
   },
 
   // 用于标记生成色板时固定不变的色值索引
-  fixedColorIndex: [0, 8, 13, 14],
+  fixedColorIndex: [8],
   // 主题色索引
   brandColorIndex: 3,
+  fontColorBgIndexRelations: {
+    0: 3,
+    13: 8,
+    14: 1,
+  },
 };
