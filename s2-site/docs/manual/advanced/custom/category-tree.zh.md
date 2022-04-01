@@ -90,6 +90,18 @@ const s2DataConfig = {
 
 ```
 
+## 自定义角头文本
+
+对于 `自定义目录`, 还可以配置 `cornerText` 自定义角头的文本
+
+```ts
+const s2Options = {
+  cornerText: '自定义角头标题'
+}
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/fyUwaEw2S/3e38caa2-31eb-4272-9158-a1392b5e6f9e.png)
+
 ## 自定义树结构说明
 
 `markdown:docs/common/custom/customTreeItem.zh.md`
