@@ -50,7 +50,7 @@ export const createFakeSpreadSheet = () => {
     }
   }
 
-  const s2 = new FakeSpreadSheet() as SpreadSheet;
+  const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.store = new Store();
