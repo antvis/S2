@@ -299,7 +299,7 @@ export class PivotDataSet extends BaseDataSet {
 
     // 虚拟列字段，为文本分类字段
     const extraFieldName =
-      this.spreadsheet?.options?.cornerExtraFieldText ?? i18n('数值');
+      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
 
     const extraFieldMeta: Meta = {
       field: EXTRA_FIELD,

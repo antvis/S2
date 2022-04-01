@@ -623,16 +623,20 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get extra field text', () => {
-    s2.setDataCfg(
+    const pivotSheet = new PivotSheet(
+      container,
       customMerge(originalDataCfg, {
         fields: {
           valueInCols: false,
         },
       }),
+      s2Options,
     );
-    s2.render();
+    pivotSheet.render();
 
-    const extraField = last(s2.facet.cornerHeader.getChildren()) as CornerCell;
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
     expect(get(extraField, 'actualText')).toEqual('数值');
   });
 
@@ -640,19 +644,23 @@ describe('PivotSheet Tests', () => {
   test('should get custom extra field text', () => {
     const cornerExtraFieldText = 'custom';
 
-    s2.setDataCfg(
+    const pivotSheet = new PivotSheet(
+      container,
       customMerge(originalDataCfg, {
         fields: {
           valueInCols: false,
         },
       }),
+      {
+        ...s2Options,
+        cornerExtraFieldText,
+      },
     );
-    s2.setOptions({
-      cornerExtraFieldText,
-    });
-    s2.render();
+    pivotSheet.render();
 
-    const extraField = last(s2.facet.cornerHeader.getChildren()) as CornerCell;
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
     expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
   });
 
