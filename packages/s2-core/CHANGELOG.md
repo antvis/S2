@@ -1,3 +1,10 @@
+# [@antv/s2-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.2...@antv/s2-v1.14.0-alpha.3) (2022-04-01)
+
+
+### Features
+
+* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+
 # [@antv/s2-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.1...@antv/s2-v1.14.0-alpha.2) (2022-03-29)
 
 
