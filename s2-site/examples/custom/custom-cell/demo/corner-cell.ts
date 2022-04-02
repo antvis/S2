@@ -33,6 +33,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       cornerCell: (node, s2, headConfig) => {
         return new CustomCornelCell(node, s2, headConfig);
       },

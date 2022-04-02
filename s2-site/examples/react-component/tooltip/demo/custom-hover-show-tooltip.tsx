@@ -14,6 +14,10 @@ fetch(
       tooltip: {
         showTooltip: true,
       },
+      interaction: {
+        // 禁用默认的悬停聚焦效果, 防止出现默认的 tooltip (hover 在数值单元格 800ms 后, 会显示 tooltip)
+        hoverFocus: false,
+      },
     };
 
     const CustomColCellTooltip = () => <div>col cell tooltip</div>;
