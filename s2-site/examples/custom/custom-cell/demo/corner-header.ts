@@ -65,6 +65,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       cornerHeader: (node, s2, headConfig) => {
         return new CustomCornerHeader(node);
       },

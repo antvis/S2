@@ -87,7 +87,7 @@ order: 0
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void | | |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void | | |
-| onSelected | 单元格选中事件 | (cells: DataCell[]) => void | | |
+| onSelected | 单元格选中事件 | (cells: S2Cell[]) => void | | |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void | | |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void | | |
 
