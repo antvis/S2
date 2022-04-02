@@ -5,7 +5,6 @@ import { SheetComponent } from '@antv/s2-react';
 import { ChromePicker } from 'react-color';
 import { Button, Popover, Space } from 'antd';
 
-import 'antd/dist/antd.min.css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(

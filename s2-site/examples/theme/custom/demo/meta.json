@@ -21,6 +21,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/YxskohI92J/c17971dd-6dd9-4a62-85f8-c69dff908aec.png"
     },
     {
+      "filename": "custom-manual-palette.tsx",
+      "title": {
+        "zh": "自助色板调色",
+        "en": "Manual palette"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/o2XSQLjiC/CleanShot%2525202022-04-02%252520at%25252015.35.37.gif"
+    },
+    {
       "filename": "custom-schema.ts",
       "title": {
         "zh": "自定义 schema",
