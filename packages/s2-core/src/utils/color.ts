@@ -28,6 +28,12 @@ const HSL_META = [
   },
 ];
 
+/**
+ * 根据主题色生成色板
+ * @param palette 参考色板
+ * @param brandColor 主题色值（hex）
+ * @returns 新色板
+ */
 export const generatePalette = (palette: Palette, brandColor: string) => {
   const { basicColors, ...restParams } = palette;
   const preBrandColor = tinycolor(
