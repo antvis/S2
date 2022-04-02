@@ -1,6 +1,7 @@
 window.react = require('react');
 window.reactDom = require('react-dom');
 window.lodash = require('lodash');
+window.reactColor = require('react-color');
 
 window.antd = require('antd');
 window.antdIcons = require('@ant-design/icons');

@@ -5,6 +5,14 @@
   },
   "demos": [
     {
+      "filename": "custom-generate-palette.tsx",
+      "title": {
+        "zh": "主题色自动生成色板",
+        "en": "Generate palette"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/571bdIS6Q/CleanShot%2525202022-04-02%252520at%25252011.10.20.gif"
+    },
+    {
       "filename": "custom-palette.ts",
       "title": {
         "zh": "自定义色板",
