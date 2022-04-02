@@ -59,7 +59,7 @@ S2 内置 3 套主题效果：
 
 ## 自定义 schema
 
-如果内置的主题不满意你的要求，那么你可以通过自定义 schema 的方式重写特定的配置。
+如果内置的主题不满足你的要求，那么你可以通过自定义 schema 的方式重写特定的配置。
 
 此时你需要为`setThemeCfg`配置`theme`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)：
 
@@ -82,27 +82,35 @@ s2.render();
 
 自定义 schema 虽然和灵活，但是心智负担比较重，需要对 schema 的结构有比较详细了解。因此我们还提供了自定义色板功能，此时你需要为`setThemeCfg`配置`palette`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#palette)：
 
+### 自选色板颜色
+
+你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
+
+另外为方便大家调配专属色板，S2 官方提供了[自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
+
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 const s2Palette = {
+  // 基础配色色板
   basicColors: [
-    "#FFFFFF",
-    "#F8F5FE",
-    "#EDE1FD",
-    "#873BF4",
-    "#7232CF",
-    "#AB76F7",
-    "#FFFFFF",
-    "#DDC7FC",
-    "#9858F5",
-    "#B98EF8",
-    "#873BF4",
-    "#282B33",
-    "#121826",
+    '#FFFFFF',
+    '#F8F5FE',
+    '#EDE1FD',
+    '#873BF4',
+    '#7232CF',
+    '#7232CF',
+    '#7232CF',
+    '#AB76F7',
+    '#FFFFFF',
+    '#DDC7FC',
+    '#9858F5',
+    '#B98EF8',
+    '#873BF4',
+    '#282B33',
+    '#121826',
   ],
-
-  // ---------- semantic colors ----------
+  // 语义化色板
   semanticColors: {
     red: "#FF4D4F",
     green: "#29A294",
@@ -112,9 +120,38 @@ s2.setThemeCfg({ palette: s2Palette });
 s2.render();
 ```
 
-<playground path="theme/custom/demo/custom-palette.ts" rid='custom-palette'></playground>
+<playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
 
-色板对照表：
+### 按主题色自动生成
+
+[自选色板颜色](#自选色板颜色) 的调配自由度大，但每个颜色都需要单独确定，整体过程较为复杂。为满足用户的一般主题诉求，S2 还提供了根据主题色生成色板的功能。
+
+```js
+import { getPalette, generatePalette, PivotSheet } from '@antv/s2';
+
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+// 主题色
+const themeColor = '#EA1720';
+// 使用内置的 colorful 色板作为参考色板
+// 根据风格差异，你也可以选择 default、gray 作为参考色板
+const palette = getPalette('colorful');
+// 使用参考色板 & 主题色值生成新色板
+const newPalette = generatePalette(palette, themeColor);
+
+// 使用新色板设置主题
+s2.setThemeCfg({
+  palette: newPalette,
+});
+
+s2.setThemeCfg({ palette: s2Palette });
+s2.render();
+
+```
+
+<playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
+
+## 色板对照表
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
  <colgroup>

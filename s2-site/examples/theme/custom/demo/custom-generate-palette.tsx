@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { getPalette, generatePalette, ThemeCfg } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
@@ -18,15 +18,32 @@ fetch(
     };
 
     function App() {
-      const [themeColor, setThemeColor] = useState();
+      const [themeColor, setThemeColor] = useState('#EA1720');
       const [themeCfg, setThemeCfg] = useState<ThemeCfg>({
         name: 'colorful',
       });
 
+      const updatePalette = (newThemeColor) => {
+        // 使用内置的 colorful 色板作为参考色板
+        const palette = getPalette(themeCfg.name);
+        // 使用参考色板 & 主题色值生成新色板
+        const newPalette = generatePalette(palette, newThemeColor);
+
+        // 使用新色板设置主题
+        setThemeCfg({
+          name: themeCfg.name,
+          palette: newPalette,
+        });
+      };
+
+      useEffect(() => {
+        updatePalette(themeColor);
+      }, []);
+
       return (
         <Space direction="vertical">
           <Space>
-            <span>当前主题色: {themeColor || '-'}</span>
+            <span>当前主题色: {themeColor}</span>
             <Popover
               placement="bottomRight"
               content={
@@ -35,17 +52,7 @@ fetch(
                   color={themeColor}
                   onChangeComplete={(color) => {
                     setThemeColor(color.hex);
-
-                    // 使用内置的 colorful 色板作为参考色板
-                    const palette = getPalette(themeCfg.name);
-                    // 使用参考色板 & 主题色值生成新色板
-                    const newPalette = generatePalette(palette, color.hex);
-
-                    // 使用新色板设置主题
-                    setThemeCfg({
-                      name: themeCfg.name,
-                      palette: newPalette,
-                    });
+                    updatePalette(color.hex);
                   }}
                 />
               }

@@ -87,7 +87,7 @@ function ColorTable({ palette, onChange }) {
       dataIndex: 'color',
     },
     {
-      title: '调整颜色',
+      title: '点击调整',
       dataIndex: 'color',
       render(val, _, idx) {
         return (
