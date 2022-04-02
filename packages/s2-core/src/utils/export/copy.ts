@@ -30,10 +30,10 @@ const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
 };
 
 const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
-  const [rowId, colId] = meta.id.split('-');
+  const { rowIndex, colIndex } = meta;
   return [
-    spreadsheet.getRowNodes().find((row) => row.id === rowId),
-    spreadsheet.getColumnNodes().find((col) => col.id === colId),
+    spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
+    spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
   ];
 };
 
