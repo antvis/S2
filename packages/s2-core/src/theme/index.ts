@@ -126,12 +126,12 @@ export const getTheme = (
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: themePalette?.others?.results ?? basicColors[2],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
           // -------------- highlight -------------------
           highlight: {
             backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
         },
       },
@@ -204,12 +204,12 @@ export const getTheme = (
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: themePalette?.others?.results ?? basicColors[2],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
           // -------------- highlight -------------------
           highlight: {
             backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
         },
       },
@@ -293,12 +293,12 @@ export const getTheme = (
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: themePalette?.others?.results ?? basicColors[2],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
           // -------------- highlight -------------------
           highlight: {
             backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
-            backgroundOpacity: 0.6,
+            backgroundOpacity: 1,
           },
           // -------------- prepare select --------------
           prepareSelect: {
