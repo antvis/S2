@@ -31,6 +31,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       colCell: (node, s2, headConfig) => {
         return new CustomColCell(node, s2, headConfig);
       },

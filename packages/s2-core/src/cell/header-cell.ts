@@ -50,21 +50,21 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
-  // 头部cell不需要使用formatter进行格式化，formatter只针对于data cell
+  // 这个的 getFormattedFieldValue 主要是 row 和 col header 的格式化，这里不需要传递 data info
   protected getFormattedFieldValue(): FormatResult {
-    const { label, field } = this.meta;
+    const { label } = this.meta;
+    let content = label;
 
-    if (!isEqual(field, EXTRA_FIELD)) {
-      return {
-        formattedValue: label,
-        value: label,
-      };
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+
+    if (formatter) {
+      content = formatter(label);
     }
 
-    const fieldName = this.spreadsheet.dataSet.getFieldName(label);
-
     return {
-      formattedValue: fieldName || label,
+      formattedValue: content,
       value: label,
     };
   }
@@ -168,9 +168,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action({
-        iconName: iconName,
+        iconName,
         meta: this.meta,
-        event: event,
+        event,
       });
     });
 

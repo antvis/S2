@@ -47,7 +47,7 @@ export const getIndexRangeWithOffsets = (
     heights,
     (height: number, idx: number) => {
       const y = maxHeight;
-      return y > height && y <= heights[idx + 1];
+      return y >= height && y < heights[idx + 1];
     },
     yMin,
   );

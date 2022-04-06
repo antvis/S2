@@ -123,7 +123,7 @@ describe('SpreadSheet Tests', () => {
   describe('Destroy Sheet Tests', () => {
     test.each([PivotSheet, TableSheet])(
       'should destroy sheet correctly',
-      async (Sheet) => {
+      (Sheet) => {
         const container = getContainer();
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         s2.render();

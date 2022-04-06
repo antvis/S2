@@ -44,7 +44,7 @@ export interface SortActionParams {
   dataSet?: BaseDataSet;
   sortParam?: SortParam;
   originValues?: string[];
-  measureValues?: string[];
+  measureValues?: string[] | DataType[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }

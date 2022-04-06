@@ -2,7 +2,7 @@
 import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -20,6 +20,7 @@ import {
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
+import { CornerCell } from '@/cell/corner-cell';
 
 const originalDataCfg = cloneDeep(dataCfg);
 
@@ -619,6 +620,48 @@ describe('PivotSheet Tests', () => {
     ).toBeFalsy();
 
     renderSpy.mockRestore();
+  });
+
+  test('should get extra field text', () => {
+    const pivotSheet = new PivotSheet(
+      container,
+      customMerge(originalDataCfg, {
+        fields: {
+          valueInCols: false,
+        },
+      }),
+      s2Options,
+    );
+    pivotSheet.render();
+
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
+    expect(get(extraField, 'actualText')).toEqual('数值');
+  });
+
+  // https://github.com/antvis/S2/issues/1212
+  test('should get custom extra field text', () => {
+    const cornerExtraFieldText = 'custom';
+
+    const pivotSheet = new PivotSheet(
+      container,
+      customMerge(originalDataCfg, {
+        fields: {
+          valueInCols: false,
+        },
+      }),
+      {
+        ...s2Options,
+        cornerExtraFieldText,
+      },
+    );
+    pivotSheet.render();
+
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
+    expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
   });
 
   describe('Tree Collapse Tests', () => {

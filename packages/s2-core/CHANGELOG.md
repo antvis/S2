@@ -1,3 +1,15 @@
+# [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* **table-facet:** 修复row高度大于canvas高度后导致的index计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+* 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
+* 修复趋势分析表label文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
+* 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
+* 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+* 行列头多选支持 Ctrl 键 ([#1207](https://github.com/antvis/S2/issues/1207)) ([bf9c11b](https://github.com/antvis/S2/commit/bf9c11b0863153fd86d07a72fc5c96d0408d216b))
+
 # [@antv/s2-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-v1.12.2...@antv/s2-v1.13.0) (2022-03-18)
 
 

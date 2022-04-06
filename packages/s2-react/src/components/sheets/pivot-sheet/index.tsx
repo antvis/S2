@@ -91,7 +91,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       } else {
         handleDrillDown({
           rows: rowFieldsRef.current,
-          drillFields: drillFields,
+          drillFields,
           fetchData: fetchDataRef.current,
           drillItemsNum: drillItemsNumRef.current,
           spreadsheet: s2Ref.current,
@@ -120,6 +120,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       partDrillDown?.displayCondition,
       partDrillDown?.drillItemsNum,
       options.hierarchyType,
+      options.headerActionIcons,
     ]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
