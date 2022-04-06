@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.13.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.3...@antv/s2-react-v1.13.0-alpha.4) (2022-04-06)
+
+
+### Features
+
+* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+
 # [@antv/s2-react-v1.13.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.2...@antv/s2-react-v1.13.0-alpha.3) (2022-03-30)
 
 
