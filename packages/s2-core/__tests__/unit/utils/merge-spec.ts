@@ -103,6 +103,7 @@ describe('merge test', () => {
       hierarchyType: 'grid',
       conditions: {},
       cornerText: '',
+      cornerExtraFieldText: '',
       totals: {},
       tooltip: {
         showTooltip: false,

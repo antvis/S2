@@ -86,6 +86,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingColCount: 0,
   hdAdapter: true,
   cornerText: '',
+  cornerExtraFieldText: '',
   placeholder: EMPTY_PLACEHOLDER,
   supportCSSTransform: false,
   devicePixelRatio: window.devicePixelRatio,
