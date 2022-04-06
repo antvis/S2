@@ -24,6 +24,11 @@ export const paletteGray = {
     green: '#29A294',
   },
 
+  others: {
+    // ---------- searchResults colors ----------
+    highlight: '#87B5FF',
+    results: '#F0F7FF',
+  },
   // 用于标记生成色板时固定不变的色值索引
   fixedColorIndex: [0, 8, 13, 14],
   // 主题色索引

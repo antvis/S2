@@ -17,6 +17,8 @@ export enum InteractionStateName {
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
+  HIGHLIGHT = 'highlight',
+  SEARCH_RESULT = 'searchResult',
   PREPARE_SELECT = 'prepareSelect',
 }
 

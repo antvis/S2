@@ -71,7 +71,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
-        linkTextFill: basicColors[14],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
@@ -123,11 +123,21 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: themePalette?.others?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
         fill: basicColors[0],
-        size: 10,
+        size: 15,
         margin: {
           right: 4,
           left: 4,
@@ -190,6 +200,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: themePalette?.others?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
         },
       },
@@ -269,6 +289,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: themePalette?.others?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: themePalette?.others?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
           // -------------- prepare select --------------
           prepareSelect: {

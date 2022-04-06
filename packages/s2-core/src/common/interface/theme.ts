@@ -17,6 +17,10 @@ export interface Palette {
     green?: string;
     [key: string]: string;
   };
+  /* 补充色值 */
+  others?: {
+    [key: string]: string;
+  };
   /* 用于标记生成色板时固定不变的色值索引 */
   fixedColorIndex?: number[];
   /* 主题色索引 */

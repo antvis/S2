@@ -25,6 +25,11 @@ export const paletteColorful = {
     green: '#29A294',
   },
 
+  others: {
+    // ---------- searchResults colors ----------
+    highlight: '#87B5FF',
+    results: '#F0F7FF',
+  },
   // 用于标记生成色板时固定不变的色值索引
   fixedColorIndex: [8],
   // 主题色索引
