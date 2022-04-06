@@ -1,3 +1,17 @@
+# [@antv/s2-v1.14.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.3...@antv/s2-v1.14.0-alpha.4) (2022-04-06)
+
+
+### Bug Fixes
+
+* **copy:** 修复因为header的key内带有‘-’字符串导致的row和col id识别错误 ([#1234](https://github.com/antvis/S2/issues/1234)) ([b685c95](https://github.com/antvis/S2/commit/b685c95adaa190a0491e32a902bc5aa2f3463704))
+
+
+### Features
+
+* update brush interactiontest case ([#1239](https://github.com/antvis/S2/issues/1239)) ([604abba](https://github.com/antvis/S2/commit/604abba188a04f90b4eb12f9b4fc46a90b46a75a))
+* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+
 # [@antv/s2-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.2...@antv/s2-v1.14.0-alpha.3) (2022-04-01)
 
 
