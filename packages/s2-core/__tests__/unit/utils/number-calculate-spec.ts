@@ -22,7 +22,7 @@ describe('Number Calculate Test', () => {
       expect(isNotNumber('')).toBe(true);
       expect(isNotNumber(Object.create(null))).toBe(true);
       expect(isNotNumber([])).toBe(true);
-      expect(isNotNumber(function foo() {})).toBe(true);
+      expect(isNotNumber(() => {})).toBe(true);
     });
   });
 

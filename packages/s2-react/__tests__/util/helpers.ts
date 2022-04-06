@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
@@ -12,8 +13,8 @@ import {
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
+  ViewMeta,
 } from '@antv/s2';
-import { ViewMeta } from '@antv/s2';
 import { omit } from 'lodash';
 
 export const parseCSV = (csv: string, header?: string[]) => {

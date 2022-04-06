@@ -1,12 +1,13 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
+import { getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { S2Options } from '@/common';
+import { S2Event, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
   height: 200,
   hierarchyType: 'grid',
+  hdAdapter: true,
 };
 
 describe('SpreadSheet Tests', () => {
@@ -100,12 +101,29 @@ describe('SpreadSheet Tests', () => {
       });
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
     });
+
+    // https://github.com/antvis/S2/issues/1197
+    test('should not rerender when window or visual viewport resize', async () => {
+      const render = jest.fn();
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
+      s2.on(S2Event.LAYOUT_BEFORE_RENDER, render);
+      s2.render();
+
+      window.dispatchEvent(new Event('resize'));
+      visualViewport.dispatchEvent(new Event('resize'));
+
+      // await debounce
+      await sleep(1000);
+
+      expect(render).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('Destroy Sheet Tests', () => {
     test.each([PivotSheet, TableSheet])(
-      'should destroy %s correctly',
-      async (Sheet) => {
+      'should destroy sheet correctly',
+      (Sheet) => {
         const container = getContainer();
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         s2.render();
@@ -123,7 +141,7 @@ describe('SpreadSheet Tests', () => {
 
     // https://github.com/antvis/S2/issues/1011
     test.each([PivotSheet, TableSheet])(
-      'should delay destroy %s correctly',
+      'should delay destroy sheet correctly',
       async (Sheet) => {
         const container = getContainer();
         const s2 = new Sheet(container, mockDataConfig, s2Options);

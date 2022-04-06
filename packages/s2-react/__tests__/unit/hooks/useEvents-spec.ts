@@ -1,8 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Event, S2Options, SpreadSheet, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { Event as GEvent } from '@antv/g-canvas';
 import { BaseSheetComponentProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 
@@ -324,46 +323,43 @@ describe('useEvents tests', () => {
       name: keyof BaseSheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;
     }>,
-  )(
-    'eventHook should be called with %s',
-    async ({ event, name, eventHook }) => {
-      const props: BaseSheetComponentProps = {
-        dataCfg: mockDataConfig,
-        options: s2Options,
-        [name]: jest.fn(),
-      };
+  )('eventHook should be called with %s', ({ event, name, eventHook }) => {
+    const props: BaseSheetComponentProps = {
+      dataCfg: mockDataConfig,
+      options: s2Options,
+      [name]: jest.fn(),
+    };
 
-      const { rerender, unmount } = renderHook(
-        ({ props }) => eventHook(event, props[name] as any, s2),
-        {
-          initialProps: { props },
+    const { rerender, unmount } = renderHook(
+      ({ props }) => eventHook(event, props[name] as any, s2),
+      {
+        initialProps: { props },
+      },
+    );
+
+    const MockEmitFn = () => {
+      s2.emit(event, {
+        target: {
+          get: () => {},
         },
-      );
+        stopPropagation: () => {},
+      } as unknown as GEvent);
+    };
+    // emit
+    act(MockEmitFn);
+    expect(props[name]).toBeCalledTimes(1);
 
-      const MockEmitFn = () => {
-        s2.emit(event, {
-          target: {
-            get: () => {},
-          },
-          stopPropagation: () => {},
-        } as unknown as GEvent);
-      };
-      // emit
-      act(MockEmitFn);
-      expect(props[name]).toBeCalledTimes(1);
+    // cleanup effects for useEffect hooks
+    unmount();
+    // emit
+    act(MockEmitFn);
+    expect(props[name]).toBeCalledTimes(1);
 
-      // cleanup effects for useEffect hooks
-      unmount();
-      // emit
-      act(MockEmitFn);
-      expect(props[name]).toBeCalledTimes(1);
-
-      const newProps = {
-        ...props,
-        [name]: jest.fn(),
-      };
-      rerender({ props: newProps });
-      expect(newProps[name]).toBeCalledTimes(0);
-    },
-  );
+    const newProps = {
+      ...props,
+      [name]: jest.fn(),
+    };
+    rerender({ props: newProps });
+    expect(newProps[name]).toBeCalledTimes(0);
+  });
 });

@@ -1,6 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
 import { defineConfig, LibraryFormats } from 'vite';
-import viteImp from 'vite-plugin-imp';
 import react from '@vitejs/plugin-react';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -72,7 +72,7 @@ export default defineConfig({
       entry: './src/index.ts',
       formats: [format],
     },
-    outDir: outDir,
+    outDir,
 
     rollupOptions: {
       output: {

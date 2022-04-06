@@ -154,23 +154,12 @@ export class TableSheet extends SpreadSheet {
   public onSortTooltipClick = ({ key }, meta) => {
     const { field } = meta;
 
-    const prevOtherSortParams = [];
-    let prevSelectedSortParams: SortParam;
-    this.dataCfg.sortParams.forEach((item) => {
-      if (item?.sortFieldId !== field) {
-        prevOtherSortParams.push(item);
-      } else {
-        prevSelectedSortParams = item;
-      }
-    });
-
     const sortParam: SortParam = {
-      ...(prevSelectedSortParams || {}),
       sortFieldId: field,
       sortMethod: key as unknown as SortParam['sortMethod'],
     };
     // 触发排序事件
-    this.emit(S2Event.RANGE_SORT, [...prevOtherSortParams, sortParam]);
+    this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
 
   public handleGroupSort(event: CanvasEvent, meta: Node) {

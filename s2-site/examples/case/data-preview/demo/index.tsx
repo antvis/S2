@@ -174,7 +174,9 @@ const getSearchResult = (searchKey, data, columns) => {
   const results = [];
   data.forEach((row, rowId) => {
     columns.forEach((col, colId) => {
-      if ((row[col] || '').toLowerCase().includes(searchKey.toLowerCase())) {
+      if (
+        (`${row[col]}` || '').toLowerCase().includes(searchKey.toLowerCase())
+      ) {
         results.push({
           col: colId,
           row: rowId,

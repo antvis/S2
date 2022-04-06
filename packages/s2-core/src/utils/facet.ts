@@ -25,6 +25,13 @@ export const getIndexRangeWithOffsets = (
   minHeight: number,
   maxHeight: number,
 ) => {
+  if (maxHeight <= 0) {
+    return {
+      start: 0,
+      end: 0,
+    };
+  }
+
   let yMin = findIndex(
     heights,
     (height: number, idx: number) => {
@@ -40,7 +47,7 @@ export const getIndexRangeWithOffsets = (
     heights,
     (height: number, idx: number) => {
       const y = maxHeight;
-      return y > height && y <= heights[idx + 1];
+      return y >= height && y < heights[idx + 1];
     },
     yMin,
   );

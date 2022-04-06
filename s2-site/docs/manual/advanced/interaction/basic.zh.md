@@ -146,6 +146,16 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
+如果使用的是 `@antv/s2-react`, 可以拿到 [S2 表格实例](/zh/docs/manual/advanced/get-instance/) 后对所需事件进行监听，和 `@antv/s2` 使用方式完全一致，同时 `react` 版本提供了事件的隐射，也可以使用更符合使用习惯的 `onXX` 的方式 ([查看所有 API](/zh/docs/api/components/sheet-component))
+
+```ts
+import { SheetComponent } from '@antv/s2-react';
+
+const onDataCellClick = () => {}
+
+<SheetComponent onDataCellClick={onDataCellClick} />
+```
+
 ## 交互相关配置
 
 ```ts

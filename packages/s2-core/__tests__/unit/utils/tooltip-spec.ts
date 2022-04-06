@@ -182,7 +182,7 @@ describe('Tooltip Utils Tests', () => {
       };
 
       s2.facet = {
-        panelBBox: panelBBox,
+        panelBBox,
       } as BaseFacet;
 
       // x, y

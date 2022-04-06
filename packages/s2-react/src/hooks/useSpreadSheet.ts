@@ -93,6 +93,7 @@ export function useSpreadSheet(
         s2Ref.current?.setDataCfg(dataCfg);
       }
       s2Ref.current?.setOptions(options);
+      s2Ref.current?.changeSheetSize(options.width, options.height);
     }
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);

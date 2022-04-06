@@ -327,8 +327,12 @@ export const drawObjectText = (
   multiData?: MultiData,
   disabledConditions?: boolean,
 ) => {
-  const { x } = cell.getTextAndIconPosition().text;
-  const { y, height, width } = cell.getContentArea();
+  const { x } = cell.getTextAndIconPosition(0).text;
+  const {
+    y,
+    height: totalTextHeight,
+    width: totalTextWidth,
+  } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
@@ -337,9 +341,7 @@ export const drawObjectText = (
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const { textAlign } = dataCellStyle.text;
   const padding = dataCellStyle.cell.padding;
-  const totalTextWidth = width - padding.left - padding.right;
 
-  const totalTextHeight = height - padding.top - padding.top;
   const realHeight = totalTextHeight / (text.values.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
@@ -354,7 +356,7 @@ export const drawObjectText = (
       y + labelHeight,
       getEllipsisText({
         text: text.label,
-        maxWidth: width - padding.left,
+        maxWidth: totalTextWidth,
         fontParam: labelStyle,
       }),
       labelStyle,
@@ -368,7 +370,7 @@ export const drawObjectText = (
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
-  for (let i = 0; i < textValues.length; i += 1) {
+  for (let i = 0; i < textValues.length; i++) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     const measures = clone(textValues[i]);
@@ -376,7 +378,7 @@ export const drawObjectText = (
       reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
     }
 
-    for (let j = 0; j < measures.length; j += 1) {
+    for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
       const curStyle = getTextStyle(
         i,
@@ -412,11 +414,10 @@ export const drawObjectText = (
 /**
  * 根据 cellCfg 配置获取当前单元格宽度
  */
-export const getCellWidth = (cellCfg: CellCfg) => {
+export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
   const { width } = cellCfg;
   const cellWidth = width;
-  // TODO 根据当前列的指标个数返回列宽
-  return cellWidth;
+  return cellWidth * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {

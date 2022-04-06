@@ -34,7 +34,7 @@ import {
   getPalette,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
-import { forEach, random } from 'lodash';
+import { debounce, forEach, random } from 'lodash';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -59,6 +59,7 @@ import {
   SheetType,
   PartDrillDown,
   PartDrillDownInfo,
+  Adaptive,
 } from '@/components';
 
 import './index.less';
@@ -152,7 +153,7 @@ function MainLayout() {
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [adaptive, setAdaptive] = React.useState(false);
+  const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
@@ -192,11 +193,12 @@ function MainLayout() {
     });
   };
 
-  const onSizeChange = (type: 'width' | 'height') => (e) => {
-    updateOptions({
-      [type]: e.target.value,
-    });
-  };
+  const onSizeChange = (type: 'width' | 'height') =>
+    debounce((e) => {
+      updateOptions({
+        [type]: Number(e.target.value),
+      });
+    }, 300);
 
   const onScrollSpeedRatioChange =
     (type: 'horizontal' | 'vertical') => (value: number) => {
@@ -592,7 +594,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={adaptive}
+                  defaultChecked={Boolean(adaptive)}
                   onChange={setAdaptive}
                 />
                 <Switch
@@ -774,7 +776,7 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onAfterRender={logHandler('onLoad')}
+              onAfterRender={logHandler('onAfterRender')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}

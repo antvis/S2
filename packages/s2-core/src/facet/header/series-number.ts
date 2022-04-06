@@ -55,7 +55,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       width: cornerWidth,
       height,
       viewportWidth: cornerWidth,
-      viewportHeight: viewportHeight,
+      viewportHeight,
       position: { x: 0, y: viewportBBox.y },
       data: seriesNodes,
       spreadsheet,
