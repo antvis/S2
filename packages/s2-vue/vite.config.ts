@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
 import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -20,9 +21,11 @@ const isAnalysisMode = process.env.ANALYSIS;
 const isDevMode = process.env.PLAYGROUND;
 const root = path.join(__dirname, isDevMode ? 'playground' : '');
 
+// eslint-disable-next-line import/no-default-export
 export default defineConfig({
   // 开发配置
   root,
+
   server: {
     port: 5050,
     hmr: true,
@@ -57,7 +60,7 @@ export default defineConfig({
       entry: './src/index.ts',
       formats: [format],
     },
-    outDir: outDir,
+    outDir,
 
     rollupOptions: {
       output: {
@@ -68,6 +71,14 @@ export default defineConfig({
           '@antv/s2': 'S2',
         },
       },
+    },
+  },
+  // unit test config
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    coverage: {
+      reporter: ['text-summary', 'html', 'clover'],
     },
   },
 });
