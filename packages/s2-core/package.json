@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.12.4",
+  "version": "1.14.0-alpha.4",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -66,6 +66,7 @@
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-timer": "^3.0.0",
     "d3-dsv": "^1.1.1",
+    "tinycolor2": "^1.4.2",
     "inquirer": "^8.2.0",
     "inquirer-autocomplete-prompt": "^2.0.0"
   },

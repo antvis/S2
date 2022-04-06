@@ -55,6 +55,7 @@ describe('Options Tests', () => {
       frozenTrailingColCount: 0,
       hdAdapter: true,
       cornerText: '',
+      cornerExtraFieldText: '',
       placeholder: '-',
       supportCSSTransform: false,
       devicePixelRatio: window.devicePixelRatio,

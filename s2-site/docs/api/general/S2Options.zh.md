@@ -28,7 +28,8 @@ order: 1
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder | string |    |  | 空单元格的填充内容 |
-| cornerText | string |    |  | 自定义角头显示文本 |
+| cornerText | string |    |  | 自定义角头文本 （自定义树 `hierarchyType: customTree` 时有效） |
+| cornerExtraFieldText | string |    |  | 自定义角头虚拟数值字段文本 （数值挂行头时有效，替换 "数值" 这两个字） |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |

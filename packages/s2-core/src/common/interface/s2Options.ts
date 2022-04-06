@@ -68,6 +68,8 @@ export interface S2BasicOptions<T = Element | string> {
   readonly placeholder?: string;
   // custom corner text
   readonly cornerText?: string;
+  // custom virtual extra field text
+  readonly cornerExtraFieldText?: string;
   readonly supportCSSTransform?: boolean;
   // custom device pixel ratio, default "window.devicePixelRatio"
   readonly devicePixelRatio?: number;
