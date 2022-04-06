@@ -18,6 +18,10 @@ export interface Palette {
     /* 额外颜色字段 */
     [key: string]: string;
   };
+  /* 补充色值 */
+  others?: {
+    [key: string]: string;
+  };
 }
 
 export interface Padding {
