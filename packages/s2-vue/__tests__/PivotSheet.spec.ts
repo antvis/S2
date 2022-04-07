@@ -174,7 +174,9 @@ describe('pivot sheet test for scratch', () => {
       height: 400,
       hierarchyCollapse: false,
     };
-    const { container } = render(PivotSheet, { props: { dataCfg, options } });
+    const { container } = render(PivotSheet, {
+      props: { dataCfg, options },
+    });
     expect(container.querySelector('.container')).toBeDefined();
   });
 });

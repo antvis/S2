@@ -73,12 +73,4 @@ export default defineConfig({
       },
     },
   },
-  // unit test config
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    coverage: {
-      reporter: ['text-summary', 'html', 'clover'],
-    },
-  },
 });
