@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
-  "types": ["node","jest"]
+  "types": ["node","jest","jest-extended"]
   }
 }

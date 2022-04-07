@@ -17,7 +17,8 @@
         "transform": "@zerollup/ts-transform-paths",
         "exclude": ["*"]
       }
-    ]
+    ],
+    "types": ["jest-extended"]
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist"]
 }

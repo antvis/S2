@@ -1,1 +1,1 @@
-/// <reference types="vite/client" />
+import '../../env.base.d.ts';
