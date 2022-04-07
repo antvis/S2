@@ -49,6 +49,7 @@ const plugins = [
       exclude: ['__tests__'],
       compilerOptions: {
         declaration: isEsmFormat,
+        declarationMap: isEsmFormat,
       },
     },
     typescript: ttypescript,

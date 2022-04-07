@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
-import { defineConfig, LibraryFormats, PluginOption } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -13,7 +14,7 @@ const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
 };
 
 const format = process.env.FORMAT as LibraryFormats;
-const outDir = OUT_DIR_NAME_MAP[format];
+const outDir = OUT_DIR_NAME_MAP[format] as string;
 const isUmdFormat = format === 'umd';
 
 const isAnalysisMode = process.env.ANALYSIS;
@@ -24,15 +25,15 @@ const root = path.join(__dirname, isDevMode ? 'playground' : '');
 export default defineConfig({
   // 开发配置
   root,
+
   server: {
-    port: 3000,
+    port: 5050,
     hmr: true,
   },
 
   // 打包配置
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
       lodash: 'lodash-es',
     },
   },
@@ -45,30 +46,17 @@ export default defineConfig({
   plugins: [
     peerDepsExternal(),
     viteCommonjs(),
-    react({
-      jsxRuntime: 'classic',
-    }),
+    vue(),
+    vueJsx(),
     isAnalysisMode && visualizer({ gzipSize: true }),
   ].filter(Boolean) as PluginOption[],
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-      },
-    },
-    modules: {
-      // 样式小驼峰转化
-      // css: goods-list => tsx: goodsList
-      localsConvention: 'camelCase',
-    },
-  },
 
   build: {
     minify: isUmdFormat ? 'esbuild' : false,
     sourcemap: true,
 
     lib: {
-      name: 'S2-React',
+      name: 'S2-Vue',
       entry: './src/index.ts',
       formats: [format],
     },
@@ -79,8 +67,7 @@ export default defineConfig({
         entryFileNames: `[name]${isUmdFormat ? '.min' : ''}.js`,
         assetFileNames: `[name]${isUmdFormat ? '.min' : ''}.[ext]`,
         globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
+          vue: 'Vue',
           '@antv/s2': 'S2',
         },
       },
