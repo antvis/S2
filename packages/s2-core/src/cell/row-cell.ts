@@ -64,8 +64,7 @@ export class RowCell extends HeaderCell {
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
-      stroke: 'transparent',
-      opacity: backgroundColorOpacity,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 
