@@ -76,7 +76,7 @@
       "markdownlint --fix",
       "prettier --write"
     ],
-    "*.{js,jsx,tsx,ts}": [
+    "*.{js,jsx,tsx,ts,vue}": [
       "eslint --fix"
     ],
     "*.less": [

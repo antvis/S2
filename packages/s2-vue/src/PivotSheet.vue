@@ -17,14 +17,13 @@ onMounted(() => {
 </script>
 
 <template>
-<div>
-  <div class="container" ref="container" />
-</div>
-  
+  <div>
+    <div class="container" ref="container" />
+  </div>
 </template>
 
 <style lang="less">
 .container {
-  border: 1px solid;
+  border: 1px solid gray;
 }
 </style>
