@@ -2,16 +2,10 @@ import { PivotSheet, CornerCell } from '@antv/s2';
 
 // 自定义角头单元格，实现特有功能
 class CustomCornelCell extends CornerCell {
-  protected initCell() {
-    this.renderExtraImg();
-
-    super.initCell();
-  }
-
   /**
-   * 绘制其他信息，自定义用户需要的画布元素
+   * 复写背景绘制方法，自定义用户需要的画布元素
    */
-  renderExtraImg() {
+  drawBackgroundShape() {
     this.addShape('image', {
       attrs: {
         ...this.getCellArea(),
@@ -39,6 +33,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       cornerCell: (node, s2, headConfig) => {
         return new CustomCornelCell(node, s2, headConfig);
       },
