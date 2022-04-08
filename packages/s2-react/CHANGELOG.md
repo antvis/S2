@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.1...@antv/s2-react-v1.13.0) (2022-04-08)
+
+
+### Bug Fixes
+
+* headerActionIcons更新覆盖了下钻icon展示 ([#1222](https://github.com/antvis/S2/issues/1222)) ([514f4db](https://github.com/antvis/S2/commit/514f4db087bc5d3e1c5d7faa0960c2d0ea773821))
+* pagination从null变为非空时未触发total更新 ([#1216](https://github.com/antvis/S2/issues/1216)) ([2baae0c](https://github.com/antvis/S2/commit/2baae0c84af894c9e1c4b180d91db942488f1511))
+
+
+### Features
+
+* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+
 # [@antv/s2-react-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.0...@antv/s2-react-v1.12.1) (2022-03-25)
 
 
