@@ -1,3 +1,21 @@
+# [@antv/s2-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-v1.13.1...@antv/s2-v1.14.0) (2022-04-08)
+
+
+### Bug Fixes
+
+* **copy:** 修复因为header的key内带有‘-’字符串导致的row和col id识别错误 ([#1234](https://github.com/antvis/S2/issues/1234)) ([b685c95](https://github.com/antvis/S2/commit/b685c95adaa190a0491e32a902bc5aa2f3463704))
+* **facet:** getIndexRangeWithOffsets return correct value with equal min and max height ([#1218](https://github.com/antvis/S2/issues/1218)) ([f99d104](https://github.com/antvis/S2/commit/f99d1041e5ec7a66dd3a3b6d12fa8baa0c13f27b))
+* 修复 backgroundColorOpacity 不生效问题，close [#1201](https://github.com/antvis/S2/issues/1201) ([#1244](https://github.com/antvis/S2/issues/1244)) ([e7ff60d](https://github.com/antvis/S2/commit/e7ff60d266c4cefee38c88e30cc21e75d5283572))
+* 更改remapping字段顺序 ([#1246](https://github.com/antvis/S2/issues/1246)) ([f0ffe28](https://github.com/antvis/S2/commit/f0ffe28f0d731e2cb45527a598fc461d5a13395f))
+* 行头文字右对齐未展示icon ([#1215](https://github.com/antvis/S2/issues/1215)) ([f37ee0e](https://github.com/antvis/S2/commit/f37ee0ef3665aa7edfd2dec10083397af815a91d))
+
+
+### Features
+
+* update brush interactiontest case ([#1239](https://github.com/antvis/S2/issues/1239)) ([604abba](https://github.com/antvis/S2/commit/604abba188a04f90b4eb12f9b4fc46a90b46a75a))
+* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+* 添加行头和列头的格式化功能 ([#1219](https://github.com/antvis/S2/issues/1219)) ([f375f58](https://github.com/antvis/S2/commit/f375f58d37aa2901df0ceed31ec919ad0ae09a4f))
+
 # [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
 
 
