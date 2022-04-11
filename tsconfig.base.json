@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "module": "esnext",
     "declaration": false,
     "sourceMap": true,
@@ -12,13 +11,14 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
     "plugins": [
       {
         "transform": "@zerollup/ts-transform-paths",
         "exclude": ["*"]
       }
     ],
-    "skipLibCheck": true
+    "types": ["node", "jest", "jest-extended"]
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist"]
 }

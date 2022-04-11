@@ -64,10 +64,11 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor } = this.getStyle().cell;
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 

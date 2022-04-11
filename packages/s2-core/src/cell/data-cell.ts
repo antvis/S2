@@ -330,10 +330,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
-    const strokeColor = 'transparent';
+
     if (
       this.spreadsheet.isPivotMode() &&
       crossBackgroundColor &&
@@ -352,20 +353,20 @@ export class DataCell extends BaseCell<ViewMeta> {
         backgroundColor = attrs.fill;
       }
     }
-    return { backgroundColor, strokeColor };
+    return { backgroundColor, backgroundColorOpacity };
   }
 
   /**
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const { backgroundColor: fill, strokeColor: stroke } =
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill,
-      stroke,
+      fillOpacity,
     });
   }
 

@@ -228,7 +228,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowHeader.cfg.visible).toBeTrue();
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.cfg.children).toHaveLength(3);
+      expect(cornerHeader.cfg.children).toHaveLength(2);
       expect(cornerHeader.cfg.visible).toBeTrue();
 
       expect(columnHeader instanceof ColHeader).toBeTrue();
