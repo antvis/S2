@@ -1,52 +1,63 @@
-# [@antv/s2-v1.14.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.3...@antv/s2-v1.14.0-alpha.4) (2022-04-06)
-
-
-### Bug Fixes
-
-* **copy:** 修复因为header的key内带有‘-’字符串导致的row和col id识别错误 ([#1234](https://github.com/antvis/S2/issues/1234)) ([b685c95](https://github.com/antvis/S2/commit/b685c95adaa190a0491e32a902bc5aa2f3463704))
-
-
-### Features
-
-* update brush interactiontest case ([#1239](https://github.com/antvis/S2/issues/1239)) ([604abba](https://github.com/antvis/S2/commit/604abba188a04f90b4eb12f9b4fc46a90b46a75a))
-* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
-* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
-
-# [@antv/s2-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.2...@antv/s2-v1.14.0-alpha.3) (2022-04-01)
-
-
-### Features
-
-* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
-
-# [@antv/s2-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.1...@antv/s2-v1.14.0-alpha.2) (2022-03-29)
-
+# [@antv/s2-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-v1.13.1...@antv/s2-v1.14.0) (2022-04-08)
 
 ### Bug Fixes
 
-* **facet:** getIndexRangeWithOffsets return correct value with equal min and max height ([#1218](https://github.com/antvis/S2/issues/1218)) ([f99d104](https://github.com/antvis/S2/commit/f99d1041e5ec7a66dd3a3b6d12fa8baa0c13f27b))
-* **table-facet:** 修复row高度大于canvas高度后导致的index计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
-* 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
-* 修复趋势分析表label文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
-* 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
-* 行列头多选支持 Ctrl 键 ([#1207](https://github.com/antvis/S2/issues/1207)) ([bf9c11b](https://github.com/antvis/S2/commit/bf9c11b0863153fd86d07a72fc5c96d0408d216b))
-* 行头文字右对齐未展示icon ([#1215](https://github.com/antvis/S2/issues/1215)) ([f37ee0e](https://github.com/antvis/S2/commit/f37ee0ef3665aa7edfd2dec10083397af815a91d))
-
+- **copy:** 修复因为 header 的 key 内带有‘-’字符串导致的 row 和 col id 识别错误 ([#1234](https://github.com/antvis/S2/issues/1234)) ([b685c95](https://github.com/antvis/S2/commit/b685c95adaa190a0491e32a902bc5aa2f3463704))
+- **facet:** getIndexRangeWithOffsets return correct value with equal min and max height ([#1218](https://github.com/antvis/S2/issues/1218)) ([f99d104](https://github.com/antvis/S2/commit/f99d1041e5ec7a66dd3a3b6d12fa8baa0c13f27b))
+- 修复 backgroundColorOpacity 不生效问题，close [#1201](https://github.com/antvis/S2/issues/1201) ([#1244](https://github.com/antvis/S2/issues/1244)) ([e7ff60d](https://github.com/antvis/S2/commit/e7ff60d266c4cefee38c88e30cc21e75d5283572))
+- 更改 remapping 字段顺序 ([#1246](https://github.com/antvis/S2/issues/1246)) ([f0ffe28](https://github.com/antvis/S2/commit/f0ffe28f0d731e2cb45527a598fc461d5a13395f))
+- 行头文字右对齐未展示 icon ([#1215](https://github.com/antvis/S2/issues/1215)) ([f37ee0e](https://github.com/antvis/S2/commit/f37ee0ef3665aa7edfd2dec10083397af815a91d))
 
 ### Features
 
-* 添加行头和列头的格式化功能 ([#1219](https://github.com/antvis/S2/issues/1219)) ([f375f58](https://github.com/antvis/S2/commit/f375f58d37aa2901df0ceed31ec919ad0ae09a4f))
+- update brush interactiontest case ([#1239](https://github.com/antvis/S2/issues/1239)) ([604abba](https://github.com/antvis/S2/commit/604abba188a04f90b4eb12f9b4fc46a90b46a75a))
+- 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+- 添加行头和列头的格式化功能 ([#1219](https://github.com/antvis/S2/issues/1219)) ([f375f58](https://github.com/antvis/S2/commit/f375f58d37aa2901df0ceed31ec919ad0ae09a4f))
 
 # [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
 
 ### Bug Fixes
 
-* **table-facet:** 修复row高度大于canvas高度后导致的index计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
-* 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
-* 修复趋势分析表label文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
-* 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
-* 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
-* 行列头多选支持 Ctrl 键 ([#1207](https://github.com/antvis/S2/issues/1207)) ([bf9c11b](https://github.com/antvis/S2/commit/bf9c11b0863153fd86d07a72fc5c96d0408d216b))
+- **copy:** 修复因为 header 的 key 内带有‘-’字符串导致的 row 和 col id 识别错误 ([#1234](https://github.com/antvis/S2/issues/1234)) ([b685c95](https://github.com/antvis/S2/commit/b685c95adaa190a0491e32a902bc5aa2f3463704))
+
+### Features
+
+- update brush interactiontest case ([#1239](https://github.com/antvis/S2/issues/1239)) ([604abba](https://github.com/antvis/S2/commit/604abba188a04f90b4eb12f9b4fc46a90b46a75a))
+- 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+- 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+
+# [@antv/s2-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.2...@antv/s2-v1.14.0-alpha.3) (2022-04-01)
+
+### Features
+
+- hsl 分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+
+# [@antv/s2-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0-alpha.1...@antv/s2-v1.14.0-alpha.2) (2022-03-29)
+
+### Bug Fixes
+
+- **facet:** getIndexRangeWithOffsets return correct value with equal min and max height ([#1218](https://github.com/antvis/S2/issues/1218)) ([f99d104](https://github.com/antvis/S2/commit/f99d1041e5ec7a66dd3a3b6d12fa8baa0c13f27b))
+- **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+- 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
+- 修复趋势分析表 label 文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
+- 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
+- 行列头多选支持 Ctrl 键 ([#1207](https://github.com/antvis/S2/issues/1207)) ([bf9c11b](https://github.com/antvis/S2/commit/bf9c11b0863153fd86d07a72fc5c96d0408d216b))
+- 行头文字右对齐未展示 icon ([#1215](https://github.com/antvis/S2/issues/1215)) ([f37ee0e](https://github.com/antvis/S2/commit/f37ee0ef3665aa7edfd2dec10083397af815a91d))
+
+### Features
+
+- 添加行头和列头的格式化功能 ([#1219](https://github.com/antvis/S2/issues/1219)) ([f375f58](https://github.com/antvis/S2/commit/f375f58d37aa2901df0ceed31ec919ad0ae09a4f))
+
+# [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
+
+### Bug Fixes
+
+- **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+- 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
+- 修复趋势分析表 label 文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
+- 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
+- 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+- 行列头多选支持 Ctrl 键 ([#1207](https://github.com/antvis/S2/issues/1207)) ([bf9c11b](https://github.com/antvis/S2/commit/bf9c11b0863153fd86d07a72fc5c96d0408d216b))
 
 # [@antv/s2-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-v1.12.2...@antv/s2-v1.13.0) (2022-03-18)
 

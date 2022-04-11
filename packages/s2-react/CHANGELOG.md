@@ -1,30 +1,19 @@
-# [@antv/s2-react-v1.13.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.3...@antv/s2-react-v1.13.0-alpha.4) (2022-04-06)
+# [@antv/s2-react-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.1...@antv/s2-react-v1.13.0) (2022-04-08)
 
+### Bug Fixes
+
+- headerActionIcons 更新覆盖了下钻 icon 展示 ([#1222](https://github.com/antvis/S2/issues/1222)) ([514f4db](https://github.com/antvis/S2/commit/514f4db087bc5d3e1c5d7faa0960c2d0ea773821))
+- pagination 从 null 变为非空时未触发 total 更新 ([#1216](https://github.com/antvis/S2/issues/1216)) ([2baae0c](https://github.com/antvis/S2/commit/2baae0c84af894c9e1c4b180d91db942488f1511))
 
 ### Features
 
-* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
-
-# [@antv/s2-react-v1.13.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.2...@antv/s2-react-v1.13.0-alpha.3) (2022-03-30)
-
-
-### Bug Fixes
-
-* headerActionIcons更新覆盖了下钻icon展示 ([#1222](https://github.com/antvis/S2/issues/1222)) ([514f4db](https://github.com/antvis/S2/commit/514f4db087bc5d3e1c5d7faa0960c2d0ea773821))
-
-# [@antv/s2-react-v1.13.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0-alpha.1...@antv/s2-react-v1.13.0-alpha.2) (2022-03-29)
-
-
-### Bug Fixes
-
-* pagination从null变为非空时未触发total更新 ([#1216](https://github.com/antvis/S2/issues/1216)) ([2baae0c](https://github.com/antvis/S2/commit/2baae0c84af894c9e1c4b180d91db942488f1511))
+- 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
 
 # [@antv/s2-react-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.0...@antv/s2-react-v1.12.1) (2022-03-25)
 
-
 ### Bug Fixes
 
-* 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+- 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
 
 # [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
 
