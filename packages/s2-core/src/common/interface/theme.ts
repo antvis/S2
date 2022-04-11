@@ -101,7 +101,7 @@ export interface CellTheme {
   /* 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
   /* 单元格内边距 */
-  padding: Padding;
+  padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */

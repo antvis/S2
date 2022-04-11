@@ -27,6 +27,7 @@ jobs:
       - name: Build
         run: |
           yarn react:build
+          yarn vue:build
 
       - name: Lint scripts, type, style and docs
         run: yarn lint

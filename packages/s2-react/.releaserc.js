@@ -1,3 +1,1 @@
-const base = require('../../.releaserc.js');
-
-module.exports = base;
+module.exports = require('../../.releaserc.base.js');
