@@ -18,6 +18,7 @@ import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
+import { TableColCell } from '@/cell/table-col-cell';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -59,7 +60,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.meta.field,
     );
 
-    if (formatter) {
+    const isTableMode = this.spreadsheet.isTableMode();
+    // 如果是 table mode，列头不需要被格式化
+    if (formatter && !isTableMode) {
       content = formatter(label);
     }
 
