@@ -1,3 +1,11 @@
+# [@antv/s2-v1.15.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.1...@antv/s2-v1.15.0-alpha.2) (2022-04-13)
+
+
+### Bug Fixes
+
+* **row-column-resize:** 修复虚线宽度设置不生效问题 ([#1250](https://github.com/antvis/S2/issues/1250)) ([a1810b9](https://github.com/antvis/S2/commit/a1810b94e48792ae4399c155e33573fa72ec0e0e))
+* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+
 # [@antv/s2-v1.15.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0-alpha.1) (2022-04-11)
 
 
