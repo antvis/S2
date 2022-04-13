@@ -8,7 +8,12 @@ import {
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import { convertString, getSelectedData } from '@/utils/export/copy';
+import {
+  convertString,
+  CopyType,
+  getCopyData,
+  getSelectedData,
+} from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
 
@@ -430,5 +435,51 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getSelectedData(s2New);
     expect(data).toBe(convertString(`7789\n元`));
+  });
+});
+
+describe('List Table getCopyData', () => {
+  let s2: TableSheet;
+  beforeEach(() => {
+    s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: testData,
+      }),
+      assembleOptions({
+        showSeriesNumber: true,
+      }),
+    );
+    s2.render();
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+  });
+
+  it('should get correct data in CopyType.ALL', () => {
+    const data = getCopyData(s2, CopyType.ALL);
+    expect(data.split('\n').length).toBe(33);
+    expect(data.split('\n')[2].split('\t').length).toBe(5);
+  });
+
+  it('should get correct data in CopyType.COL', () => {
+    const data = getCopyData(s2, CopyType.COL);
+    expect(data.split('\n').length).toBe(32);
+    expect(data.split('\n')[2].split('\t').length).toBe(1);
+  });
+
+  it('should get correct data in CopyType.ROW', () => {
+    const data = getCopyData(s2, CopyType.ROW);
+    expect(data.split('\n').length).toBe(2);
+    expect(data.split('\t').length).toBe(5);
   });
 });
