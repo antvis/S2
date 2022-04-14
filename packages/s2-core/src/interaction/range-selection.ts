@@ -1,6 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { inRange, isNil, range } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
+import { getActiveCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
   InterceptType,
@@ -99,11 +100,14 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       });
 
       interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
-      this.spreadsheet.hideTooltip();
       interaction.changeState({
         cells,
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.showTooltipWithInfo(
+        event,
+        getActiveCellsTooltipData(this.spreadsheet),
+      );
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,
         interaction.getActiveCells(),

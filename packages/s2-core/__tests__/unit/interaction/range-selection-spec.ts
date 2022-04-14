@@ -10,6 +10,7 @@ import {
 } from '@/common/constant';
 import { RangeSelection } from '@/interaction/range-selection';
 
+jest.mock('@/utils/tooltip');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 
@@ -95,6 +96,8 @@ describe('Interaction Range Selection Tests', () => {
   });
 
   test('should select range data', () => {
+    jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
+
     s2.interaction.changeState({
       cells: [],
       stateName: InteractionStateName.SELECTED,
@@ -157,6 +160,6 @@ describe('Interaction Range Selection Tests', () => {
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();
-    expect(s2.hideTooltip).toHaveBeenCalled();
+    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 });

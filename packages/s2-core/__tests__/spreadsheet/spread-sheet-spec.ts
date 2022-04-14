@@ -4,8 +4,8 @@ import { PivotSheet, TableSheet } from '@/sheet-type';
 import { S2Event, S2Options } from '@/common';
 
 const s2Options: S2Options = {
-  width: 200,
-  height: 200,
+  width: 800,
+  height: 600,
   hierarchyType: 'grid',
   hdAdapter: true,
 };

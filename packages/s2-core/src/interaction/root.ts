@@ -132,11 +132,11 @@ export class RootInteraction {
     return this.isStateOf(InteractionStateName.HOVER);
   }
 
-  public isActiveCell(cell: S2CellType) {
-    return this.getCells().find((meta) => cell.getMeta().id === meta.id);
+  public isActiveCell(cell: S2CellType): boolean {
+    return !!this.getCells().find((meta) => cell.getMeta().id === meta.id);
   }
 
-  public isSelectedCell(cell: S2CellType) {
+  public isSelectedCell(cell: S2CellType): boolean {
     return this.isSelectedState() && this.isActiveCell(cell);
   }
 
@@ -242,47 +242,69 @@ export class RootInteraction {
     });
   };
 
-  public selectHeaderCell = (selectHeaderCellInfo: SelectHeaderCellInfo) => {
-    const { cell } = selectHeaderCellInfo || {};
+  public getCellLeafNodes = (cell: Node): Node[] => {
+    const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
+
+    // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
+    return isHierarchyTree
+      ? Node.getAllLeavesOfNodes(cell).filter(
+          (node) => node.rowIndex === cell.rowIndex,
+        )
+      : Node.getAllChildrenNodes(cell);
+  };
+
+  public selectHeaderCell = (
+    selectHeaderCellInfo: SelectHeaderCellInfo = {} as SelectHeaderCellInfo,
+  ) => {
+    const { cell } = selectHeaderCellInfo;
     if (isEmpty(cell)) {
       return;
     }
-    const lastState = this.getState();
-    const meta = cell?.getMeta() as Node;
-    if (isNil(meta.x)) {
+
+    const currentCellMeta = cell?.getMeta() as Node;
+    if (isNil(currentCellMeta.x)) {
       return;
     }
-    this.addIntercepts([InterceptType.HOVER]);
-    // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
-    let leafNodes = selectHeaderCellInfo?.isTreeRowClick
-      ? Node.getAllLeavesOfNode(meta).filter(
-          (node) => node.rowIndex === meta.rowIndex,
-        )
-      : Node.getAllChildrenNode(meta);
-    let selectedCells = [getCellMeta(cell)];
 
-    if (selectHeaderCellInfo?.isMultiSelection && this.isSelectedState()) {
-      selectedCells = isEmpty(lastState?.cells)
-        ? selectedCells
-        : concat(lastState?.cells, selectedCells);
-      leafNodes = isEmpty(lastState?.nodes)
-        ? leafNodes
-        : concat(lastState?.nodes, leafNodes);
+    this.addIntercepts([InterceptType.HOVER]);
+
+    const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
+    const lastState = this.getState();
+    const isSelectedCell = this.isSelectedCell(cell);
+    const isMultiSelected =
+      selectHeaderCellInfo?.isMultiSelection && this.isSelectedState();
+
+    // 如果是已选中的单元格, 则取消选中, 兼容行列多选 (含叶子节点)
+    let leafNodes = isSelectedCell
+      ? []
+      : this.getCellLeafNodes(currentCellMeta);
+    let selectedCells = isSelectedCell ? [] : [getCellMeta(cell)];
+
+    if (isMultiSelected) {
+      selectedCells = concat(lastState?.cells, selectedCells);
+      leafNodes = concat(lastState?.nodes, leafNodes);
+
+      if (isSelectedCell) {
+        selectedCells = selectedCells.filter(
+          ({ id }) => id !== currentCellMeta.id,
+        );
+        leafNodes = leafNodes.filter((node) => node.id !== currentCellMeta.id);
+      }
     }
 
-    // 兼容行列多选
-    // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
+    // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
       nodes: leafNodes,
       stateName: InteractionStateName.SELECTED,
+      force: isEmpty(selectedCells),
     });
 
     const selectedCellIds = selectedCells.map(({ id }) => id);
-    // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
     this.updateCells(this.getRowColActiveCells(selectedCellIds));
 
-    if (!selectHeaderCellInfo?.isTreeRowClick) {
+    // 平铺模式下选中子节点
+    if (!isHierarchyTree) {
       leafNodes.forEach((node) => {
         node?.belongsCell?.updateByState(
           InteractionStateName.SELECTED,

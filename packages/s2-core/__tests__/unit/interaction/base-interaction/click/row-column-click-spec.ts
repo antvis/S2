@@ -1,6 +1,6 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
 import {
   HiddenColumnsInfo,
@@ -76,31 +76,72 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.isTableMode = jest.fn(() => true);
   });
 
+  afterEach(() => {
+    s2.off(S2Event.ROW_CELL_CLICK);
+    s2.off(S2Event.COL_CELL_CLICK);
+  });
+
   test('should bind events', () => {
     expect(rowColumnClick.bindEvents).toBeDefined();
   });
 
-  test('should trigger data cell click', () => {
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
-    expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellMeta],
-      nodes: [],
-      stateName: InteractionStateName.SELECTED,
-    });
-    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
-  });
+  // https://github.com/antvis/S2/issues/1243
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should selected cell when %s cell clicked',
+    (event) => {
+      const isSelectedCellSpy = jest
+        .spyOn(s2.interaction, 'isSelectedCell')
+        .mockImplementation(() => false);
 
-  test('should emit cell selected event when cell clicked', () => {
-    const selected = jest.fn();
-    s2.on(S2Event.GLOBAL_SELECTED, selected);
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
 
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
-    expect(selected).toHaveBeenCalledWith([mockCell]);
-  });
+      expect(s2.interaction.getState()).toEqual({
+        cells: [mockCellMeta],
+        nodes: [],
+        stateName: InteractionStateName.SELECTED,
+        force: false,
+      });
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+
+      isSelectedCellSpy.mockRestore();
+    },
+  );
+
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should unselected current cell when toggle %s cell click',
+    (event) => {
+      // 选中
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+
+      // 取消选中
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+
+      expect(s2.interaction.getState()).toEqual({
+        cells: [],
+        stateName: InteractionStateName.UNSELECTED,
+      });
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+    },
+  );
+
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should emit cell selected event when %s clicked',
+    (event) => {
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+      expect(selected).toHaveBeenCalledWith([mockCell]);
+    },
+  );
 
   test('should expand columns correctly', () => {
     const columnsExpand = jest.fn();
