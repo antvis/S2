@@ -13,6 +13,9 @@ const s2Options: S2Options = {
   hierarchyType: 'tree',
 };
 
+/** 下钻展示数量 */
+const EXPECT_DRILL_ITEMS_NUM = 3;
+
 const partDrillDownParams: BaseSheetComponentProps['partDrillDown'] = {
   drillConfig: {
     dataSet: [
@@ -72,6 +75,10 @@ describe('Spread Sheet Drill Down Tests', () => {
     });
     expect(findDrillDownIcon(s2Instance)).toBeDefined();
 
+    // mock drill down
+    s2Instance.store.set('drillDownIdPathMap', new Map());
+    s2Instance.store.set('drillItemsNum', EXPECT_DRILL_ITEMS_NUM);
+
     // update options.headerActionIcons
     act(() => {
       ReactDOM.render(
@@ -99,5 +106,10 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
     expect(findDrillDownIcon(s2Instance)).toBeDefined();
+
+    // render new headerActionIcons should not clear data
+    expect(s2Instance.store.get('drillItemsNum')).toEqual(
+      EXPECT_DRILL_ITEMS_NUM,
+    );
   });
 });
