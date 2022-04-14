@@ -1,7 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
-import { EXTRA_FIELD } from '@/common/constant/basic';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
@@ -18,7 +17,6 @@ import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
-import { TableColCell } from '@/cell/table-col-cell';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -60,9 +58,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.meta.field,
     );
 
-    const isTableMode = this.spreadsheet.isTableMode();
-    // 如果是 table mode，列头不需要被格式化
-    if (formatter && !isTableMode) {
+    if (formatter) {
       content = formatter(label);
     }
 
