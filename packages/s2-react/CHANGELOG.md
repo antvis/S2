@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.1...@antv/s2-react-v1.14.0-alpha.2) (2022-04-14)
+
+
+### Bug Fixes
+
+* headerActionIcons更新不应清除上一次下钻数据 ([#1254](https://github.com/antvis/S2/issues/1254)) ([92837fa](https://github.com/antvis/S2/commit/92837faadb532b42be164327ca510c47cf2ae336))
+
 # [@antv/s2-react-v1.14.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0-alpha.1) (2022-04-11)
 
 
