@@ -109,7 +109,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     }, [partDrillDown?.clearDrillDown]);
 
     /**
-     * 表格重渲染 effect
+     * 表格完全渲染（清空下钻）
      */
     React.useEffect(() => {
       updateDrillDownOptions();
@@ -120,8 +120,16 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       partDrillDown?.displayCondition,
       partDrillDown?.drillItemsNum,
       options.hierarchyType,
-      options.headerActionIcons,
     ]);
+
+    /**
+     * 表格仅重渲染视图（不清空数据）
+     */
+    React.useEffect(() => {
+      updateDrillDownOptions();
+      s2Ref.current.render(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [options.headerActionIcons]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
   },
