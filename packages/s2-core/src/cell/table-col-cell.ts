@@ -46,7 +46,7 @@ export class TableColCell extends ColCell {
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
-      this.spreadsheet.dataSet.getFieldName,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
     );
   }
 

@@ -362,7 +362,7 @@ export class CornerCell extends HeaderCell {
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
-      this.spreadsheet.dataSet.getFieldName,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
     );
   }
 

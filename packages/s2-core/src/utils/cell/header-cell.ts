@@ -29,11 +29,11 @@ export const shouldShowActionIcons = (
 /**
  * 格式化行列头维度名称
  * @param meta
- * @param getFieldName
+ * @param fieldName
  */
 export const formattedFieldValue = (
   meta: Node,
-  getFieldName: (label: string) => string,
+  fieldName: string,
 ): FormatResult => {
   const { label, field } = meta;
 
@@ -43,8 +43,6 @@ export const formattedFieldValue = (
       value: label,
     };
   }
-
-  const fieldName = getFieldName(label);
 
   return {
     formattedValue: fieldName || label,
