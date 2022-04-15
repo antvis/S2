@@ -157,15 +157,13 @@ export class RootInteraction {
   }
 
   public clearStyleIndependent() {
-    const currentState = this.getState();
-    if (
-      currentState?.stateName === InteractionStateName.SELECTED ||
-      currentState?.stateName === InteractionStateName.HOVER
-    ) {
-      this.getPanelGroupAllDataCells().forEach((cell) => {
-        cell.hideInteractionShape();
-      });
+    if (!this.isSelectedState() && !this.isHoverState()) {
+      return;
     }
+
+    this.getPanelGroupAllDataCells().forEach((cell) => {
+      cell.hideInteractionShape();
+    });
   }
 
   public getPanelGroupAllUnSelectedDataCells() {
@@ -292,12 +290,17 @@ export class RootInteraction {
       }
     }
 
+    if (isEmpty(selectedCells)) {
+      this.reset();
+      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+      return;
+    }
+
     // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
       nodes: leafNodes,
       stateName: InteractionStateName.SELECTED,
-      force: isEmpty(selectedCells),
     });
 
     const selectedCellIds = selectedCells.map(({ id }) => id);
