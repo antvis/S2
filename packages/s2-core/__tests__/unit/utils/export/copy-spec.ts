@@ -10,12 +10,11 @@ import {
 } from '@/common/constant/interaction';
 import {
   convertString,
-  CopyType,
   getCopyData,
   getSelectedData,
 } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import { S2Event } from '@/common/constant';
+import { CopyType, S2Event } from '@/common/constant';
 
 const newLineTest = `"### 问题摘要
 - **会话地址**："`;

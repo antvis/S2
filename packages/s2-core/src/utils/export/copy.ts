@@ -5,6 +5,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
 import { Node } from '@/facet/layout/node';
+import { CopyType } from '@/common';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -240,12 +241,6 @@ const processRowSelected = (
   return processTableRowSelected(displayData, selectedRows);
 };
 
-export enum CopyType {
-  ALL,
-  COL,
-  ROW,
-}
-
 export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const cells = spreadsheet.interaction.getState().cells || [];
@@ -276,11 +271,11 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
       }
       return pre;
     }, []);
-    const rowNodes = rowIndexes.map((item) => {
+    const rowNodes = rowIndexes.map((index) => {
       return {
-        id: '0-' + spreadsheet.facet.layoutResult.colLeafNodes[0].id,
+        id: index + '-' + spreadsheet.facet.layoutResult.colLeafNodes[0].id,
         colIndex: 0,
-        rowIndex: item,
+        rowIndex: index,
         type: CellTypes.ROW_CELL,
       };
     });
