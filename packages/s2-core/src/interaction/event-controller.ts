@@ -24,6 +24,7 @@ interface EventListener {
   target: EventTarget;
   type: string;
   handler: EventListenerOrEventListenerObject;
+  options?: AddEventListenerOptions | boolean;
 }
 
 interface S2EventHandler {
@@ -491,8 +492,14 @@ export class EventController {
     handler: EventListenerOrEventListenerObject,
   ) {
     if (target.addEventListener) {
-      target.addEventListener(type, handler);
-      this.domEventListeners.push({ target, type, handler });
+      const { eventListenerOptions } = this.spreadsheet.options.interaction;
+      target.addEventListener(type, handler, eventListenerOptions);
+      this.domEventListeners.push({
+        target,
+        type,
+        handler,
+        options: eventListenerOptions,
+      });
     } else {
       // eslint-disable-next-line no-console
       console.error(`Please make sure ${target} has addEventListener function`);
@@ -506,8 +513,12 @@ export class EventController {
     each(this.s2EventHandlers, ({ type, handler }) => {
       this.spreadsheet.off(type, handler);
     });
-    each(this.domEventListeners, (event) => {
-      event.target.removeEventListener(event.type, event.handler);
+    each(this.domEventListeners, (listener) => {
+      listener.target.removeEventListener(
+        listener.type,
+        listener.handler,
+        listener.options,
+      );
     });
     this.canvasEventHandlers = [];
     this.s2EventHandlers = [];

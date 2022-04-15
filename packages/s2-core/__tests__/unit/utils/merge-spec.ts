@@ -137,6 +137,7 @@ describe('merge test', () => {
           rowResizeType: 'all',
         },
         scrollbarPosition: 'content',
+        eventListenerOptions: false,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

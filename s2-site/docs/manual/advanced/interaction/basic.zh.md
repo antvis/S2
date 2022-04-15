@@ -156,6 +156,27 @@ const onDataCellClick = () => {}
 <SheetComponent onDataCellClick={onDataCellClick} />
 ```
 
+对于全局图表事件，底层通过浏览器的 [EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener) API 实现，如需配置其第三个可选参数，可通过 `eventListenerOptions` 进行透传，从而控制事件从 `冒泡阶段` 还是 `捕获阶段` 触发，或者只触发一次等配置。
+
+```ts
+const s2Options = {
+  interaction: {
+    eventListenerOptions: {
+      capture: true,
+      once: true,
+      passive: false,
+    }
+  }
+}
+
+// 内部实现
+window.addEventListener('mouseup', () => {}, {
+  capture: true,
+  once: true,
+  passive: false,
+})
+```
+
 ## 交互相关配置
 
 ```ts
@@ -353,6 +374,8 @@ const s2Options = {
 //   },
 // };
 ```
+
+## 事件触发方式
 
 ## 调用交互方法
 
