@@ -375,8 +375,6 @@ const s2Options = {
 // };
 ```
 
-## 事件触发方式
-
 ## 调用交互方法
 
 `S2` 内置了一些交互相关的方法，统一挂载在 `interaction` 命名空间下，你可以在拿到 `SpreadSheet` 实例后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
