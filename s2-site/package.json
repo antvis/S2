@@ -3,12 +3,7 @@
   "private": true,
   "description": "S2 sites deployed on gh-pages",
   "version": "0.1.0",
-  "keywords": [
-    "antv",
-    "s2",
-    "spreadsheet",
-    "site"
-  ],
+  "keywords": ["antv", "s2", "spreadsheet", "site"],
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
   "repository": {
@@ -35,7 +30,7 @@
   },
   "dependencies": {
     "@antv/g-canvas": "^0.5.12",
-    "@antv/gatsby-theme-antv": "^1.1.15",
+    "@antv/gatsby-theme-antv": "1.1.18-beta.0",
     "@antv/s2": "^1.14.0-alpha.1",
     "@antv/s2-react": "^1.13.0-alpha.1",
     "copy-to-clipboard": "^3.3.1",
