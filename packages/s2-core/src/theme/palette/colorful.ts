@@ -31,7 +31,7 @@ const paletteColorfulMeta: PaletteMeta = {
     },
     {
       basicColorIndex: 6,
-      standardColorIndex: 5,
+      standardColorIndex: 6,
     },
     {
       basicColorIndex: 7,

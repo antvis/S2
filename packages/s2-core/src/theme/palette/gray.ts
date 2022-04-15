@@ -31,7 +31,7 @@ const paletteGrayMeta: PaletteMeta = {
     },
     {
       basicColorIndex: 6,
-      standardColorIndex: 5,
+      standardColorIndex: 8,
     },
     {
       basicColorIndex: 7,
