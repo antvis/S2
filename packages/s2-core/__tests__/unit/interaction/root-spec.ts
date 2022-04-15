@@ -1,6 +1,6 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { sleep } from 'tests/util/helpers';
+import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { RootInteraction } from '@/interaction/root';
 import {
   CellTypes,
@@ -24,6 +24,8 @@ import {
   SelectedCellMove,
   BaseEvent,
   GuiIcon,
+  S2CellType,
+  S2Event,
 } from '@/index';
 import { Store } from '@/common/store';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -81,6 +83,7 @@ describe('RootInteraction Tests', () => {
     } as unknown as Canvas;
     mockSpreadSheetInstance.panelGroup = new Group('');
     mockSpreadSheetInstance.isTableMode = jest.fn();
+    mockSpreadSheetInstance.isHierarchyTreeType = () => false;
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
     rootInteraction.getPanelGroupAllDataCells = () => panelGroupAllDataCells;
     rootInteraction.getAllColHeaderCells = () => [];
@@ -150,11 +153,59 @@ describe('RootInteraction Tests', () => {
     });
   });
 
-  test('should set headerCell selected interaction state correct', () => {
+  test('should set header cell selected interaction state correct', () => {
     rootInteraction.selectHeaderCell({ cell: mockCell });
     const state = rootInteraction.getState();
     expect(state.stateName).toEqual(InteractionStateName.SELECTED);
     expect(state.cells).toEqual([getCellMeta(mockCell)]);
+    expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+  });
+
+  // https://github.com/antvis/S2/issues/1243
+  test('should multi selected header cells', () => {
+    const isEqualStateNameSpy = jest
+      .spyOn(rootInteraction, 'isEqualStateName')
+      .mockImplementation(() => false);
+
+    const mockCellA = createMockCellInfo('test-A').mockCell;
+    const mockCellB = createMockCellInfo('test-B').mockCell;
+
+    // 选中 cellA
+    rootInteraction.selectHeaderCell({
+      cell: mockCellA,
+      isMultiSelection: true,
+    });
+
+    expect(rootInteraction.getState().cells).toEqual([
+      getCellMeta(mockCell),
+      getCellMeta(mockCellA),
+    ]);
+
+    // 选中 cellB
+    rootInteraction.selectHeaderCell({
+      cell: mockCellB,
+      isMultiSelection: true,
+    });
+
+    expect(rootInteraction.getState().cells).toEqual([
+      getCellMeta(mockCell),
+      getCellMeta(mockCellA),
+      getCellMeta(mockCellB),
+    ]);
+
+    // 再次选中 cellB
+    rootInteraction.selectHeaderCell({
+      cell: mockCellB,
+      isMultiSelection: true,
+    });
+
+    // 取消选中
+    expect(rootInteraction.getState().cells).toEqual([
+      getCellMeta(mockCell),
+      getCellMeta(mockCellA),
+    ]);
+
+    isEqualStateNameSpy.mockRestore();
   });
 
   test('should call merge cells', () => {
@@ -344,10 +395,11 @@ describe('RootInteraction Tests', () => {
     });
 
     test.each`
-      stateName                        | handler
-      ${InteractionStateName.SELECTED} | ${'isSelectedState'}
-      ${InteractionStateName.HOVER}    | ${'isHoverState'}
-    `('should get correctly %o state', ({ stateName, handler }) => {
+      stateName                           | handler
+      ${InteractionStateName.SELECTED}    | ${'isSelectedState'}
+      ${InteractionStateName.HOVER}       | ${'isHoverState'}
+      ${InteractionStateName.HOVER_FOCUS} | ${'isHoverFocusState'}
+    `('should get correctly %s state', ({ stateName, handler }) => {
       rootInteraction.changeState({
         cells: [getCellMeta(mockCell)],
         stateName,
@@ -358,6 +410,8 @@ describe('RootInteraction Tests', () => {
     });
 
     test('should get current cell status is equal', () => {
+      rootInteraction.changeState({ stateName: InteractionStateName.SELECTED });
+
       expect(
         rootInteraction.isEqualStateName('' as InteractionStateName),
       ).toBeFalsy();
@@ -369,20 +423,16 @@ describe('RootInteraction Tests', () => {
       ).toBeTruthy();
     });
 
-    test('should get target cell is selected status', () => {
-      const mockRowCell = {
-        type: CellTypes.ROW_CELL,
-        cellType: CellTypes.ROW_CELL,
-        getMeta: () => {
-          return {
-            colIndex: 0,
-            rowIndex: 1,
-            id: '0-1',
-          };
-        },
-      } as unknown as RowCell;
+    test('should get selected cell status', () => {
+      const mockCellA = createMockCellInfo('cellA');
       expect(rootInteraction.isSelectedCell(mockCell)).toBeTruthy();
-      expect(rootInteraction.isSelectedCell(mockRowCell)).toBeFalsy();
+      expect(rootInteraction.isSelectedCell(mockCellA.mockCell)).toBeFalsy();
+    });
+
+    test('should get active cell status', () => {
+      const mockCellA = createMockCellInfo('cellA');
+      expect(rootInteraction.isActiveCell(mockCell)).toBeTruthy();
+      expect(rootInteraction.isActiveCell(mockCellA.mockCell)).toBeFalsy();
     });
   });
 
