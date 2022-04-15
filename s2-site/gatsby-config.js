@@ -233,8 +233,10 @@ module.exports = {
       splitPaneMainSize: '75%',
     },
     docsearchOptions: {
-      apiKey: 'b374aeb00854d3e88723968d90b21e4d',
-      indexName: 'antv_s2',
+      versionV3: true,
+      apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
+      indexName: 's2-antv-vision',
+      appId: 'D73DOU8RXD',
     },
     // 编辑器配置
     playground: {
