@@ -1,3 +1,16 @@
+# [@antv/s2-v1.15.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.2...@antv/s2-v1.15.0-alpha.3) (2022-04-15)
+
+
+### Bug Fixes
+
+* 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
+
+
+### Features
+
+* **copy:** 添加复制全部 复制行 复制列功能 ([#1253](https://github.com/antvis/S2/issues/1253)) ([6fa2144](https://github.com/antvis/S2/commit/6fa21443cb81d43379955a28c7afac7a2ed4d809))
+* **interaction:** 支持行列头反选 ([#1256](https://github.com/antvis/S2/issues/1256)) ([9544706](https://github.com/antvis/S2/commit/9544706bbf017d425506016fbd23af89e76c5824))
+
 # [@antv/s2-v1.15.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.1...@antv/s2-v1.15.0-alpha.2) (2022-04-13)
 
 
