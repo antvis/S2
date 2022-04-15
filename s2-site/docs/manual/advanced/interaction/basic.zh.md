@@ -362,3 +362,5 @@ const s2Options = {
 const s2 = new PivotSheet()
 s2.interaction.selectAll()
 ```
+
+对背后的交互实现原理感兴趣？欢迎阅读文章 [《你不知道的 Canvas 表格交互》](https://www.yuque.com/antv/vo4vyz/bvzbaz)
