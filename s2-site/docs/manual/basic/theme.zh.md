@@ -137,7 +137,7 @@ const themeColor = '#EA1720';
 // 根据风格差异，你也可以选择 default、gray 作为参考色板
 const palette = getPalette('colorful');
 // 使用参考色板 & 主题色值生成新色板
-const newPalette = generatePalette(palette, themeColor);
+const newPalette = generatePalette({ ...palette, brandColor: themeColor });
 
 // 使用新色板设置主题
 s2.setThemeCfg({

@@ -1,7 +1,5 @@
-import { entries, forEach, fromPairs, has, includes, map } from 'lodash';
-import { Palette } from '@/common';
-
-const tinycolor = require('tinycolor2');
+import tinycolor from 'tinycolor2';
+import { Palette, PaletteMeta } from '@/common/interface/theme';
 
 /**
  * 亮度范围 0~255
@@ -9,103 +7,88 @@ const tinycolor = require('tinycolor2');
  */
 const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
 
-/** HSL 色彩空间 meta 信息 */
-const HSL_META = [
+/** S2 标准色板 mix 规则 */
+const STANDRAD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
+
+/**
+ * basic color 数量
+ * @see Palette.basicColors
+ */
+const BASIC_COLOR_COUNT = 15;
+
+const FONT_COLOR_RELATIONS: Array<{
+  fontColorIndex: number;
+  bgColorIndex: number;
+}> = [
   {
-    /** 色相，范围 0~360 */
-    name: 'h',
-    max: 360,
+    fontColorIndex: 0,
+    bgColorIndex: 3,
   },
   {
-    /** 饱和度，范围 0~1 */
-    name: 's',
-    max: 1,
+    fontColorIndex: 13,
+    bgColorIndex: 8,
   },
   {
-    /** 亮度，范围 0~1 */
-    name: 'l',
-    max: 1,
+    fontColorIndex: 14,
+    bgColorIndex: 1,
   },
 ];
 
 /**
- * 根据主题色生成色板
+ * 生成 s2 设计规范下的标准色（共 11 个）
+ *
+ * - 第 1~5 为主题色加白
+ * - 第 6 为主题色
+ * - 第 7~11 为主题色加黑
+ *
+ * @param brandColor 主题色
+ * @returns 标准色卡
+ */
+export const generateStandardColors = (brandColor: string) => {
+  const standardColors = [];
+
+  for (let index = 0; index < 11; index++) {
+    const mixPercent = STANDRAD_COLOR_MIX_PERCENT[index];
+    standardColors.push(
+      mixPercent === 0
+        ? brandColor
+        : tinycolor
+            .mix(brandColor, index < 5 ? '#FFFFFF' : '#000000', mixPercent)
+            .toHexString()
+            .toUpperCase(),
+    );
+  }
+
+  return standardColors;
+};
+
+/**
+ * 根据 S2 内置色板及自选主题色生成新色板
  * @param palette 参考色板
- * @param brandColor 主题色值（hex）
  * @returns 新色板
  */
-export const generatePalette = (palette: Palette, brandColor: string) => {
-  const { basicColors, ...restParams } = palette;
-  const preBrandColor = tinycolor(
-    basicColors[restParams?.brandColorIndex],
-  ).toHsl();
-  const newBrandColor = tinycolor(brandColor).toHsl();
+export const generatePalette = (paletteMeta: PaletteMeta) => {
+  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill('#FFFFFF');
+  const { basicColorRelations } = paletteMeta;
+  const standardColors = generateStandardColors(paletteMeta.brandColor);
 
-  const newColors = map(basicColors, (color: string, key) => {
-    if (
-      includes(restParams?.fixedColorIndex, key) ||
-      has(restParams.fontColorBgIndexRelations, key)
-    ) {
-      // 固定色和字体不变更颜色
-      return color;
-    }
-
-    const preColor = tinycolor(color).toHsl();
-
-    /**
-     * 在 HSL 颜色空间下，分别计算新颜色下的各个分量
-     */
-    const newColorPairs = HSL_META.map(
-      ({ name: propertyName, max: maxValue }) => {
-        const oldColorValue = preColor[propertyName];
-        const oldBrandColorValue = preBrandColor[propertyName];
-        const newBrandColorValue = newBrandColor[propertyName];
-
-        // 原颜色与原主题色的单个分量差值
-        const oldValueDiff = oldColorValue - oldBrandColorValue;
-
-        if (oldValueDiff === 0) {
-          return [propertyName, newBrandColorValue];
-        }
-
-        // 计算差值与区间的变化百分比
-        const percentage =
-          oldValueDiff /
-          (oldValueDiff > 0
-            ? maxValue - oldBrandColorValue
-            : oldBrandColorValue);
-
-        // 将变化百分比作用到新主题色的可变区间内
-        const newColorValue =
-          newBrandColorValue +
-          (oldValueDiff > 0
-            ? maxValue - newBrandColorValue
-            : newBrandColorValue) *
-            percentage;
-
-        return [propertyName, newColorValue];
-      },
-    );
-
-    const newColor = tinycolor(fromPairs(newColorPairs));
-
-    return `#${newColor.toHex().toUpperCase()}`;
+  // 使用标准色填充 basicColors
+  basicColorRelations.forEach((relation) => {
+    basicColors[relation.basicColorIndex] =
+      standardColors[relation.standardColorIndex];
   });
 
   // 根据背景明暗设置字体颜色
-  forEach(
-    entries(restParams?.fontColorBgIndexRelations),
-    ([fontColorIdx, bgColorIndx]) => {
-      newColors[Number(fontColorIdx)] =
-        tinycolor(newColors[bgColorIndx]).getBrightness() >
-        FONT_COLOR_BRIGHTNESS_THRESHOLD
-          ? '#000000'
-          : '#FFFFFF';
-    },
-  );
+  FONT_COLOR_RELATIONS.forEach(({ fontColorIndex, bgColorIndex }) => {
+    basicColors[fontColorIndex] =
+      tinycolor(basicColors[bgColorIndex]).getBrightness() >
+      FONT_COLOR_BRIGHTNESS_THRESHOLD
+        ? '#000000'
+        : '#FFFFFF';
+  });
 
   return {
-    basicColors: newColors,
-    ...restParams,
-  };
+    ...paletteMeta,
+    basicColors,
+  } as Palette;
 };

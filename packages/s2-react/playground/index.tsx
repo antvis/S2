@@ -429,10 +429,10 @@ function MainLayout() {
                         onChangeComplete={(color) => {
                           setThemeColor(color.hex);
                           const palette = getPalette(themeCfg.name);
-                          const newPalette = generatePalette(
-                            palette,
-                            color.hex,
-                          );
+                          const newPalette = generatePalette({
+                            ...palette,
+                            brandColor: color.hex,
+                          });
                           setThemeCfg({
                             name: themeCfg.name,
                             palette: newPalette,

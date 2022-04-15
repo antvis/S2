@@ -8,23 +8,44 @@ export type TextAlign = 'left' | 'center' | 'right';
 // 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
 export type TextBaseline = 'top' | 'middle' | 'bottom';
 
-export interface Palette {
-  /* 基础色值 */
-  basicColors: string[];
+export interface PaletteMeta {
+  /** 主题色 */
+  brandColor: string;
+  /** basicColors 与 standardColors 的取用关系 */
+  basicColorRelations: Array<{
+    basicColorIndex: number;
+    standardColorIndex: number;
+  }>;
   /* 语义色值 */
   semanticColors: {
     red?: string;
     green?: string;
     [key: string]: string;
   };
-  /* 用于标记生成色板时固定不变的色值索引 */
-  fixedColorIndex?: number[];
-  /* 主题色索引 */
-  brandColorIndex?: number;
-  /** 字体与背景的索引关系 */
-  fontColorBgIndexRelations?: {
-    [key: number]: number;
-  };
+}
+
+export interface Palette extends PaletteMeta {
+  /*
+   * 基础色值（共15个）
+   *
+   * 1. 角头字体、列头字体
+   * 2. 行头背景、数据格背景(斑马纹)
+   * 3. 行头&数据格交互(hover、选中、十字)
+   * 4. 角头背景、列头背景
+   * 5. 列头交互(hover、选中)
+   * 6. 刷选遮罩
+   * 7. 行头 link
+   * 8. mini bar、resize 交互(参考线等)
+   * 9. 数据格背景(非斑马纹)、整体表底色(建议白色)
+   * 10. 行头边框、数据格边框
+   * 11. 角头边框、列头边框
+   * 12. 竖向大分割线
+   * 13. 横向大分割线
+   * 14. 数据格字体
+   * 15. 行头字体、数据格交互色(hover)
+   *
+   */
+  basicColors: string[];
 }
 
 export interface Padding {
