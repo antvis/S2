@@ -6,7 +6,7 @@ import { Canvas } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { S2Options, ViewMeta } from '@/common/interface';
+import { S2CellType, S2Options, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
@@ -112,8 +112,10 @@ export const createMockCellInfo = (
     colIndex,
     rowIndex,
     type: undefined,
+    x: 0,
+    y: 0,
   };
-  const mockCellMeta = omit(mockCellViewMeta, 'update');
+  const mockCellMeta = omit(mockCellViewMeta, ['x', 'y', 'update']);
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
@@ -121,7 +123,7 @@ export const createMockCellInfo = (
     getActualText: jest.fn(),
     getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
-  };
+  } as unknown as S2CellType;
 
   return {
     mockCell,
