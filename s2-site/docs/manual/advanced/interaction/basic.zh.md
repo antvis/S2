@@ -204,6 +204,8 @@ const s2Options = {
 
 鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 所对应的行列头取消高亮，聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭：
 
+> 如果你实现了自定义交互，如 hover 后显示 tooltip, 推荐关闭此功能，以免出现 hover 悬停后 tooltip 被意外关闭
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/1OIXucjGb/9c0b42b5-259e-4693-83b3-8cf6a034be93.png" alt="preview" width="600" />
 
 ```ts
@@ -230,9 +232,9 @@ const s2Options = {
 
 ### 快捷键多选
 
-(Command/Ctrl) + click: 单个多选叠加，默认开启，可配置 `multiSelection` 关闭：
+(Command/Ctrl) + click: 单个多选叠加，再次点击选中的单元格或行列可取消选中，默认开启，可配置 `multiSelection` 关闭：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/XYZaL1w%24M/Kapture%2525202022-04-15%252520at%25252011.45.55.gif" width="600" alt="preview" />
 
 Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeSelection` 关闭：
 
