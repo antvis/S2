@@ -49,7 +49,6 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
     s2.interaction.getRowColActiveCells = () =>
       [mockCell] as unknown as S2CellType[];
-    // s2.interaction.reset = jest.fn();
     rowColumnClick = new RowColumnClick(s2 as unknown as SpreadSheet);
     s2.isHierarchyTreeType = () => false;
     s2.dataCfg = {
@@ -218,5 +217,7 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(resetSpy).toHaveBeenCalledTimes(1);
     // rerender table
     expect(s2.render).toHaveBeenCalledTimes(1);
+
+    resetSpy.mockRestore();
   });
 });

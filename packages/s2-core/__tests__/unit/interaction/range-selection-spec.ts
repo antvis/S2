@@ -1,5 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
+import { S2CellType } from './../../../src/common/interface/interaction';
 import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -95,7 +96,7 @@ describe('Interaction Range Selection Tests', () => {
     });
   });
 
-  test('should select range data', () => {
+  test('should select range cells', () => {
     jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
 
     s2.interaction.changeState({
@@ -116,20 +117,21 @@ describe('Interaction Range Selection Tests', () => {
     const mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
     const mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
 
-    s2.store.set('lastClickedCell', mockCell00.mockCell as any);
+    const activeCells: S2CellType[] = [
+      mockCell00.mockCell,
+      mockCell10.mockCell,
+      mockCell01.mockCell,
+      mockCell11.mockCell,
+    ];
+
+    s2.store.set('lastClickedCell', mockCell00.mockCell);
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.SHIFT,
     } as KeyboardEvent);
 
     s2.getCell = () => mockCell11.mockCell as any;
 
-    s2.interaction.getActiveCells = () =>
-      [
-        mockCell00.mockCell,
-        mockCell10.mockCell,
-        mockCell01.mockCell,
-        mockCell11.mockCell,
-      ] as any;
+    s2.interaction.getActiveCells = () => activeCells;
 
     const selected = jest.fn();
     s2.on(S2Event.GLOBAL_SELECTED, selected);
@@ -151,12 +153,7 @@ describe('Interaction Range Selection Tests', () => {
       ],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(selected).toHaveBeenCalledWith([
-      mockCell00.mockCell,
-      mockCell10.mockCell,
-      mockCell01.mockCell,
-      mockCell11.mockCell,
-    ]);
+    expect(selected).toHaveBeenCalledWith(activeCells);
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();

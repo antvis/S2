@@ -115,7 +115,7 @@ export const createMockCellInfo = (
     x: 0,
     y: 0,
   };
-  const mockCellMeta = omit(mockCellViewMeta, 'update');
+  const mockCellMeta = omit(mockCellViewMeta, ['x', 'y', 'update']);
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
