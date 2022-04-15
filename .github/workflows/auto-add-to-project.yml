@@ -18,8 +18,8 @@ jobs:
           column: Pending Issues
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: add
-
-   add-pr-to-project:
+ 
+  add-pr-to-project:
     runs-on: ubuntu-latest
     if: "github.event_name == pull_request"
     steps:
