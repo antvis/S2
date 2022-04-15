@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.2...@antv/s2-react-v1.14.0-alpha.3) (2022-04-15)
+
+
+### Bug Fixes
+
+* 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
+
 # [@antv/s2-react-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.1...@antv/s2-react-v1.14.0-alpha.2) (2022-04-14)
 
 
