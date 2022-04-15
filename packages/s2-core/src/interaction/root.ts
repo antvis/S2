@@ -245,7 +245,7 @@ export class RootInteraction {
 
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     return isHierarchyTree
-      ? Node.getAllLeavesOfNodes(cell).filter(
+      ? Node.getAllLeaveNodes(cell).filter(
           (node) => node.rowIndex === cell.rowIndex,
         )
       : Node.getAllChildrenNodes(cell);

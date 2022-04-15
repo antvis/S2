@@ -238,7 +238,7 @@ const s2Options = {
 
 Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeSelection` 关闭：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/RcIcQc7O2/Kapture%2525202022-04-15%252520at%25252011.52.52.gif" width="600" alt="preview" />
 
 ```ts
 const s2Options = {

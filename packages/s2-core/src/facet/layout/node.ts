@@ -141,7 +141,7 @@ export class Node {
    * get a branch's all leaves(c1~c4)
    * @param node
    */
-  public static getAllLeavesOfNodes(node: Node): Node[] {
+  public static getAllLeaveNodes(node: Node): Node[] {
     const leaves: Node[] = [];
     if (node.isLeaf) {
       return [node];
@@ -202,7 +202,7 @@ export class Node {
    */
   public static getAllBranch(parent: Node): Node[][] {
     const all: Node[][] = [];
-    const leaves = this.getAllLeavesOfNodes(parent);
+    const leaves = this.getAllLeaveNodes(parent);
     let current = leaves.shift();
     let tempBranch = [];
     while (current) {
