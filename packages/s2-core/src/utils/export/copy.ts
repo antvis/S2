@@ -5,6 +5,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
 import { Node } from '@/facet/layout/node';
+import { CopyType } from '@/common';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -238,6 +239,48 @@ const processRowSelected = (
     return processPivotRowSelected(spreadsheet, selectedRows);
   }
   return processTableRowSelected(displayData, selectedRows);
+};
+
+export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
+  const cells = spreadsheet.interaction.getState().cells || [];
+  if (copyType === CopyType.ALL) {
+    return processColSelected(displayData, spreadsheet, []);
+  }
+  if (copyType === CopyType.COL) {
+    const colIndexes = cells.reduce<number[]>((pre, cur) => {
+      if (!pre.find((item) => item === cur.colIndex)) {
+        pre.push(cur.colIndex);
+      }
+      return pre;
+    }, []);
+    const colNodes = spreadsheet.facet.layoutResult.colLeafNodes
+      .filter((node) => colIndexes.includes(node.colIndex))
+      .map((node) => ({
+        id: node.id,
+        colIndex: node.colIndex,
+        rowIndex: node.rowIndex,
+        type: CellTypes.COL_CELL,
+      }));
+    return processColSelected(displayData, spreadsheet, colNodes);
+  }
+  if (copyType === CopyType.ROW) {
+    const rowIndexes = cells.reduce<number[]>((pre, cur) => {
+      if (!pre.find((item) => item === cur.rowIndex)) {
+        pre.push(cur.rowIndex);
+      }
+      return pre;
+    }, []);
+    const rowNodes = rowIndexes.map((index) => {
+      return {
+        id: index + '-' + spreadsheet.facet.layoutResult.colLeafNodes[0].id,
+        colIndex: 0,
+        rowIndex: index,
+        type: CellTypes.ROW_CELL,
+      };
+    });
+    return processRowSelected(displayData, spreadsheet, rowNodes);
+  }
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {

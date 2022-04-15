@@ -43,14 +43,17 @@ export const getIndexRangeWithOffsets = (
 
   yMin = Math.max(yMin, 0);
 
-  let yMax = findIndex(
-    heights,
-    (height: number, idx: number) => {
-      const y = maxHeight;
-      return y >= height && y < heights[idx + 1];
-    },
-    yMin,
-  );
+  let yMax =
+    maxHeight === minHeight
+      ? yMin
+      : findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = maxHeight;
+            return y > height && y <= heights[idx + 1];
+          },
+          yMin,
+        );
   yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
 
   return {

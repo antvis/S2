@@ -31,6 +31,8 @@ describe('SpreadSheet Tests', () => {
       expect(s2.container).toBeDefined();
       expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
       expect(container.querySelector('canvas')).toBeDefined();
+
+      s2.destroy();
     });
 
     test('should init sheet by selector container', () => {
@@ -74,6 +76,8 @@ describe('SpreadSheet Tests', () => {
       expect(canvas.height).toEqual(s2Options.height * devicePixelRatio);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
       expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+
+      s2.destroy();
     });
 
     test('should render sheet if custom DPR less than zero', () => {
@@ -88,6 +92,8 @@ describe('SpreadSheet Tests', () => {
       expect(canvas.height).toEqual(s2Options.height);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
       expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+
+      s2.destroy();
     });
 
     test('should update scroll offset immediately', () => {
@@ -117,6 +123,8 @@ describe('SpreadSheet Tests', () => {
       await sleep(1000);
 
       expect(render).toHaveBeenCalledTimes(1);
+
+      s2.destroy();
     });
   });
 
@@ -159,19 +167,21 @@ describe('SpreadSheet Tests', () => {
 
         expect(s2.container.get('el')).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
+
+        s2.destroy();
       },
     );
 
     // https://github.com/antvis/S2/issues/1011
     test('should toggle sheet type', () => {
       const container = getContainer();
-      const pivotSheet = new PivotSheet(container, mockDataConfig, s2Options);
-      pivotSheet.render();
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
 
-      expect(pivotSheet).toBeInstanceOf(PivotSheet);
+      expect(s2).toBeInstanceOf(PivotSheet);
       expect(container.querySelectorAll('canvas')).toHaveLength(1);
 
-      pivotSheet.destroy();
+      s2.destroy();
       const tableSheet = new TableSheet(container, mockDataConfig, s2Options);
       tableSheet.render();
 

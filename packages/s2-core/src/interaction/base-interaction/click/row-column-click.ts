@@ -11,6 +11,7 @@ import {
   InterceptType,
   CellTypes,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
+  InteractionStateName,
 } from '@/common/constant';
 import {
   TooltipOperation,
@@ -57,7 +58,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
-      this.handleRowColClick(event, this.spreadsheet.isHierarchyTreeType());
+      this.handleRowColClick(event);
     });
   }
 
@@ -67,23 +68,17 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private handleRowColClick = (event: CanvasEvent, isTreeRowClick = false) => {
+  private handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
     const { interaction } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
 
-    if (interaction.isSelectedCell(cell)) {
-      interaction.reset();
-      return;
-    }
+    const success = interaction.selectHeaderCell({
+      cell,
+      isMultiSelection: this.isMultiSelection,
+    });
 
-    if (
-      interaction.selectHeaderCell({
-        cell,
-        isTreeRowClick,
-        isMultiSelection: this.isMultiSelection,
-      })
-    ) {
+    if (success) {
       this.showTooltip(event);
     }
   };

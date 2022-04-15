@@ -33,6 +33,16 @@ describe('Facet util test', () => {
       start: 3,
       end: 7,
     });
+
+    expect(getIndexRangeWithOffsets(offsets, 0, 90)).toStrictEqual({
+      start: 0,
+      end: 2,
+    });
+
+    expect(getIndexRangeWithOffsets(offsets, 60, 120)).toStrictEqual({
+      start: 2,
+      end: 3,
+    });
   });
 
   test('should get correct index range for invalid input', () => {

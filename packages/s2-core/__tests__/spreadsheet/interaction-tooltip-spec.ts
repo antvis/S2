@@ -19,7 +19,7 @@ describe('Interaction Tooltip Tests', () => {
   beforeEach(() => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
-      .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
+      .mockImplementation(() => createMockCellInfo('testId').mockCell);
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
