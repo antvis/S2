@@ -51,7 +51,7 @@ export const generateStandardColors = (brandColor: string) => {
     const mixPercent = STANDRAD_COLOR_MIX_PERCENT[index];
     standardColors.push(
       mixPercent === 0
-        ? brandColor
+        ? brandColor.toUpperCase()
         : tinycolor
             .mix(brandColor, index < 5 ? '#FFFFFF' : '#000000', mixPercent)
             .toHexString()

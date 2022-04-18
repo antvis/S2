@@ -9,7 +9,7 @@ const expectThemePalette = [
   '#F1535F',
   '#CD4751',
   '#CD4751',
-  '#F1535F',
+  '#CD4751',
   '#F1535F',
   '#FFFFFF',
   '#FDE5E7',
