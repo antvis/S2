@@ -134,6 +134,9 @@ export interface InteractionOptions {
   readonly selectedCellMove?: boolean;
   // controls scrollbar's position type
   readonly scrollbarPosition?: ScrollbarPositionType;
+  // An object that specifies characteristics about the event listener
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+  readonly eventListenerOptions?: AddEventListenerOptions | boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
