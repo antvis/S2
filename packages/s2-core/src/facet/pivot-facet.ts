@@ -391,7 +391,6 @@ export class PivotFacet extends BaseFacet {
           colLeafNodes,
         );
         rowsHierarchy.width += levelSample.width;
-        // debugger;
         const preLevelSample = sampleNodeByLevel[levelSample.level - 1] ?? {
           x: 0,
           width: 0,
