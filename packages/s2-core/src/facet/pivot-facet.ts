@@ -378,8 +378,8 @@ export class PivotFacet extends BaseFacet {
       'options.style.rowCfg.heightByField',
       {},
     );
-    const sampleNodeByLevel = new Map();
-    // const sampleNodeByLevel=rowsHierarchy.sampleNodesForAllLevels;
+
+    const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels ?? [];
 
     // 1、calculate first node's width in every level
     if (isTree) {
@@ -392,12 +392,11 @@ export class PivotFacet extends BaseFacet {
         );
         rowsHierarchy.width += levelSample.width;
         // debugger;
-        const preLevelSample = sampleNodeByLevel.get(levelSample.level - 1) ?? {
+        const preLevelSample = sampleNodeByLevel[levelSample.level - 1] ?? {
           x: 0,
           width: 0,
         };
         levelSample.x = preLevelSample?.x + preLevelSample?.width;
-        sampleNodeByLevel.set(levelSample.level, levelSample);
       }
     }
 
@@ -427,7 +426,7 @@ export class PivotFacet extends BaseFacet {
       if (isTree || currentNode.level === 0) {
         currentNode.x = 0;
       } else {
-        const preLevelSample = sampleNodeByLevel.get(currentNode.level - 1);
+        const preLevelSample = sampleNodeByLevel[currentNode.level - 1];
         currentNode.x = preLevelSample?.x + preLevelSample?.width;
       }
 
@@ -436,7 +435,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.width = this.getTreeRowHeaderWidth();
       } else {
         // same level -> same width
-        const levelSampleNode = sampleNodeByLevel.get(currentNode.level);
+        const levelSampleNode = sampleNodeByLevel[currentNode.level];
         currentNode.width = levelSampleNode?.width;
       }
 
