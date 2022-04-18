@@ -1,8 +1,10 @@
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { PivotDataSet, TableDataSet } from '@/data-set';
 import { Formatter } from '@/common';
-import { ColCell, CornerCell, RowCell } from '@/cell';
+
+import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
+import { TableFacet } from '@/facet';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -77,6 +79,18 @@ describe('header cell formatter test', () => {
 
       s2 = new MockTableSheet(container);
       s2.dataSet = new MockTableDataSet(s2);
+      s2.dataSet.getDisplayDataSet = jest.fn().mockReturnValue([]);
+      s2.facet = new TableFacet({
+        spreadsheet: s2,
+        dataSet: s2.dataSet,
+        colCfg: {
+          heightByField: {},
+        },
+        cellCfg: {
+          width: 0,
+        },
+        columns: ['province', 'city'],
+      });
     });
 
     test('table col cell not formatter', () => {
@@ -85,7 +99,7 @@ describe('header cell formatter test', () => {
       };
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
-      const colCell = new ColCell(colNode, s2);
+      const colCell = new TableColCell(colNode, s2);
 
       expect(colCell.getFieldValue()).toBe('浙江');
     });
