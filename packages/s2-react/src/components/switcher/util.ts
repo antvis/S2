@@ -27,8 +27,8 @@ export const shouldCrossRows = (sheetType: SheetType, type: FieldType) =>
   sheetType === 'table' || type === FieldType.Values;
 
 export const moveItem = (
-  source: SwitcherItem[],
-  destination: SwitcherItem[],
+  source: SwitcherItem[] = [],
+  destination: SwitcherItem[] = [],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
 ): SwitcherState => {
@@ -55,7 +55,7 @@ export const moveItem = (
 };
 
 export const checkItem = (
-  source: SwitcherItem[],
+  source: SwitcherItem[] = [],
   checked: boolean,
   id: string,
   parentId?: string,
