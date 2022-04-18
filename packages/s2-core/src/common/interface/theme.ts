@@ -247,7 +247,7 @@ export interface ThemeCfg {
   /* 主题 */
   theme?: S2Theme;
   /* 色板 */
-  palette?: Palette;
+  palette?: Pick<Palette, 'basicColors' | 'semanticColors'>;
   /* 主题名 */
   name?: ThemeName;
 }
