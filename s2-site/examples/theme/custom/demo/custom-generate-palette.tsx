@@ -27,7 +27,10 @@ fetch(
         // 使用内置的 colorful 色板作为参考色板
         const palette = getPalette(themeCfg.name);
         // 使用参考色板 & 主题色值生成新色板
-        const newPalette = generatePalette( ...palette, brandColor: newThemeColor );
+        const newPalette = generatePalette({
+          ...palette,
+          brandColor: newThemeColor,
+        });
 
         // 使用新色板设置主题
         setThemeCfg({
