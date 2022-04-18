@@ -379,6 +379,7 @@ export class PivotFacet extends BaseFacet {
       {},
     );
     const sampleNodeByLevel = new Map();
+    // const sampleNodeByLevel=rowsHierarchy.sampleNodesForAllLevels;
 
     // 1、calculate first node's width in every level
     if (isTree) {
@@ -390,6 +391,12 @@ export class PivotFacet extends BaseFacet {
           colLeafNodes,
         );
         rowsHierarchy.width += levelSample.width;
+        // debugger;
+        const preLevelSample = sampleNodeByLevel.get(levelSample.level - 1) ?? {
+          x: 0,
+          width: 0,
+        };
+        levelSample.x = preLevelSample?.x + preLevelSample?.width;
         sampleNodeByLevel.set(levelSample.level, levelSample);
       }
     }
