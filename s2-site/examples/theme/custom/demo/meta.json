@@ -5,12 +5,28 @@
   },
   "demos": [
     {
+      "filename": "custom-generate-palette.tsx",
+      "title": {
+        "zh": "主题色自动生成色板",
+        "en": "Generate palette"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/571bdIS6Q/CleanShot%2525202022-04-02%252520at%25252011.10.20.gif"
+    },
+    {
       "filename": "custom-palette.ts",
       "title": {
         "zh": "自定义色板",
         "en": "Custom palette"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/YxskohI92J/c17971dd-6dd9-4a62-85f8-c69dff908aec.png"
+    },
+    {
+      "filename": "custom-manual-palette.tsx",
+      "title": {
+        "zh": "自助色板调色",
+        "en": "Manual palette"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/o2XSQLjiC/CleanShot%2525202022-04-02%252520at%25252015.35.37.gif"
     },
     {
       "filename": "custom-schema.ts",
