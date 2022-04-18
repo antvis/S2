@@ -1,7 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
-import { EXTRA_FIELD } from '@/common/constant/basic';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
