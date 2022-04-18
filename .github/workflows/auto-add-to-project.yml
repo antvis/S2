@@ -10,7 +10,7 @@ on:
 jobs:
   add-issue-to-project:
     runs-on: ubuntu-latest
-    if: "github.event_name == issues"
+    if: "github.event_name == 'issues'"
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.1
         with:
@@ -21,7 +21,7 @@ jobs:
  
   add-pr-to-project:
     runs-on: ubuntu-latest
-    if: "github.event_name == pull_request"
+    if: "github.event_name == 'pull_request'"
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.1
         with:
@@ -29,9 +29,3 @@ jobs:
           column: Pending PR
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: add
-
-
-
-
-
-   
