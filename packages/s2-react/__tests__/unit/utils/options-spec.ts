@@ -42,6 +42,7 @@ describe('Options Tests', () => {
           colCellVertical: true,
           rowResizeType: 'all',
         },
+        eventListenerOptions: false,
       },
       showSeriesNumber: false,
       customSVGIcons: [],

@@ -73,6 +73,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       colCellVertical: true,
       rowResizeType: ResizeType.ALL,
     },
+    eventListenerOptions: false,
   },
   showSeriesNumber: false,
   customSVGIcons: [],

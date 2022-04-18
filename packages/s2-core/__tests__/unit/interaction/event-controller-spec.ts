@@ -607,4 +607,52 @@ describe('Interaction Event Controller Tests', () => {
       window.removeEventListener(type, originalEventHandler);
     },
   );
+
+  test.each([
+    { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
+    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
+    { type: OriginEventType.MOUSE_UP, event: S2Event.GLOBAL_MOUSE_UP },
+    { type: OriginEventType.MOUSE_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
+  ])(
+    'should first trigger capture event listener event %o',
+    ({ type, event }) => {
+      eventController.clear();
+      spreadsheet.options = {
+        ...s2Options,
+        interaction: {
+          // 捕获阶段
+          eventListenerOptions: {
+            capture: true,
+          },
+        },
+      };
+      eventController = new EventController(spreadsheet);
+
+      jest
+        .spyOn(HTMLElement.prototype, 'contains')
+        .mockImplementation(() => true);
+
+      const captureEventHandler = jest.fn();
+      const bubbleEventHandler = jest.fn();
+      const preventDefault = jest.fn();
+
+      // 通过 event controller 注册 [捕获阶段] 的事件
+      spreadsheet.on(event, captureEventHandler);
+
+      // 额外注册一个相同的 [冒泡阶段] 的事件
+      window.addEventListener(type, bubbleEventHandler);
+
+      window.dispatchEvent(
+        new MouseEvent('click', { preventDefault } as EventInit),
+      );
+      window.dispatchEvent(new Event(type, { preventDefault } as EventInit));
+
+      // 捕获 比冒泡先触发, 且应该都触发
+      expect(captureEventHandler).toHaveBeenCalledBefore(bubbleEventHandler);
+      expect(bubbleEventHandler).toHaveBeenCalledAfter(captureEventHandler);
+
+      spreadsheet.off(event, captureEventHandler);
+      window.removeEventListener(type, bubbleEventHandler);
+    },
+  );
 });

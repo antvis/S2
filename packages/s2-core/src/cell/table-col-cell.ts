@@ -12,6 +12,7 @@ import { getExtraPaddingForExpandIcon } from '@/utils/cell/table-col-cell';
 import { renderRect } from '@/utils/g-renders';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
 import { getSortTypeIcon } from '@/utils/sort-action';
+import { formattedFieldValue } from '@/utils/cell/header-cell';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -39,6 +40,13 @@ export class TableColCell extends ColCell {
     return (
       isFrozenCol(colIndex, frozenColCount) ||
       isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
+    );
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
+    return formattedFieldValue(
+      this.meta,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
     );
   }
 
