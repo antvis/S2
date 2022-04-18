@@ -1,5 +1,7 @@
 import { ShapeAttrs } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { generateStandardColors } from '../../utils/color';
 import { CellTypes } from '@/common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -11,7 +13,10 @@ export type TextBaseline = 'top' | 'middle' | 'bottom';
 export interface PaletteMeta {
   /** 主题色 */
   brandColor: string;
-  /** basicColors 与 standardColors 的取用关系 */
+  /**
+   * basicColors 与标准色卡 standardColors 数组下标的对应关系
+   * @see generateStandardColors
+   */
   basicColorRelations: Array<{
     basicColorIndex: number;
     standardColorIndex: number;
