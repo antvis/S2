@@ -45,7 +45,7 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
-  defaultTheme,
+  strategyTheme,
   strategyOptions as mockStrategyOptions,
   mockGridAnalysisOptions,
   defaultOptions,
@@ -310,9 +310,8 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id !== 'root[&]家具[&]桌子[&]number',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="Filter colCell" />,
             });
@@ -323,9 +322,8 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id === 'root[&]家具[&]桌子[&]number',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="SortDown colCell" />,
             });
@@ -334,9 +332,8 @@ function MainLayout() {
         {
           iconNames: ['FilterAsc'],
           belongsCell: 'cornerCell',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="FilterAsc cornerCell" />,
             });
@@ -345,9 +342,8 @@ function MainLayout() {
         {
           iconNames: ['SortDown', 'Filter'],
           belongsCell: 'rowCell',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="SortDown & Filter rowCell" />,
             });
@@ -784,7 +780,7 @@ function MainLayout() {
             onRowCellClick={(v) => console.log(v)}
             header={{ exportCfg: { open: true } }}
             themeCfg={{
-              theme: defaultTheme as unknown as S2Theme,
+              theme: strategyTheme,
               name: 'gray',
             }}
           />

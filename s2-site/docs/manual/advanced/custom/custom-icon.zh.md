@@ -7,7 +7,7 @@ order: 3
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*kV8gR555SxgAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-但在很多情况下，会需要展示其他的操作 `icon`，例如：筛选、下钻等，`S2` 提供了 `headerActionIcons` 参数可以通过简单的配置项快速实现行头、列头、角头的操作 icon 自定义。
+但在很多情况下，会需要展示其他的操作 `icon`，例如：筛选、下钻等，`S2` 提供了 `headerActionIcons` 参数让你可以通过简单的配置项快速实现行头、列头、角头的操作 `icon` 自定义。
 
 ```ts
 const s2Options = {
@@ -20,7 +20,7 @@ const s2Options = {
 }
 ```
 
-1、如果内置 icon 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`。
+1、如果内置 `icon` 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/zh/docs/manual/basic/theme) 章节。
 
 ```ts
 const s2Options = {
@@ -33,7 +33,7 @@ const s2Options = {
 }
 ```
 
-或者覆盖默认 icon, 例如自定义树状表格收起展开 icon
+或者覆盖默认 `icon`, 例如自定义树状表格收起展开 `icon`
 
 ``` ts
 const s2Options = {

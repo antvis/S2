@@ -59,9 +59,9 @@ S2 内置 3 套主题效果：
 
 ## 自定义 schema
 
-如果内置的主题不满意你的要求，那么你可以通过自定义 schema 的方式重写特定的配置。
+如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你需要为`setThemeCfg`配置`theme`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)：
+此时你需要为 `setThemeCfg` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -80,7 +80,7 @@ s2.render();
 
 ## 自定义色板
 
-自定义 schema 虽然和灵活，但是心智负担比较重，需要对 schema 的结构有比较详细了解。因此我们还提供了自定义色板功能，此时你需要为`setThemeCfg`配置`palette`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#palette)：
+自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/zh/docs/api/general/S2Theme#palette)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
