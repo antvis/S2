@@ -1,3 +1,4 @@
+import { SheetType } from '@/components';
 import { FieldType } from '@/components/switcher/constant';
 import {
   SwitcherItem,
@@ -5,7 +6,6 @@ import {
   SwitcherFields,
 } from '@/components/switcher/interface';
 import {
-  getNonEmptyFieldCount,
   getSwitcherState,
   getSwitcherClassName,
   getMainLayoutClassName,
@@ -21,42 +21,28 @@ describe('switcher util test', () => {
       'antv-s2-switcher-content-text',
     );
   });
-  test('should return correct non empty count', () => {
-    const fields: SwitcherFields = {};
-    expect(getNonEmptyFieldCount(fields)).toBe(0);
-
-    fields[FieldType.Rows] = { items: [{ id: 'id' }] };
-    expect(getNonEmptyFieldCount(fields)).toBe(1);
-
-    fields[FieldType.Cols] = { items: [{ id: 'id' }] };
-    expect(getNonEmptyFieldCount(fields)).toBe(2);
-
-    fields[FieldType.Values] = { items: [{ id: 'id' }] };
-    expect(getNonEmptyFieldCount(fields)).toBe(3);
-  });
 
   test.each([
-    { nonEmpty: 1, expected: 'antv-s2-switcher-content-one-dimension' },
-    { nonEmpty: 2, expected: 'antv-s2-switcher-content-two-dimensions' },
-    { nonEmpty: 3, expected: 'antv-s2-switcher-content-three-dimensions' },
+    { sheetType: 'table', expected: 'antv-s2-switcher-content-one-dimension' },
+    {
+      sheetType: 'pivot',
+      expected: 'antv-s2-switcher-content-three-dimensions',
+    },
   ])(
-    'should return $expected when give nonempty number is $nonEmpty',
-    ({ nonEmpty, expected }) => {
-      expect(getMainLayoutClassName(nonEmpty)).toBe(expected);
+    'should return $expected when give sheet type is $sheetType',
+    ({ sheetType, expected }) => {
+      expect(getMainLayoutClassName(sheetType as SheetType)).toBe(expected);
     },
   );
 
-  test('should return true if nonempty count is less than max count', () => {
-    expect(shouldCrossRows(2, FieldType.Rows)).toBeTrue();
+  test('should return true  only if field type is values for pivot sheet', () => {
+    expect(shouldCrossRows('pivot', FieldType.Rows)).toBeFalse();
+    expect(shouldCrossRows('pivot', FieldType.Cols)).toBeFalse();
+    expect(shouldCrossRows('pivot', FieldType.Values)).toBeTrue();
   });
 
-  test('should return true if nonempty count is greater than max count', () => {
-    expect(shouldCrossRows(3, FieldType.Rows)).toBeFalse();
-    expect(shouldCrossRows(4, FieldType.Rows)).toBeFalse();
-  });
-
-  test('should return true if field type is value', () => {
-    expect(shouldCrossRows(1, FieldType.Values)).toBeTrue();
+  test('should return true if field type is cols for table sheet', () => {
+    expect(shouldCrossRows('table', FieldType.Cols)).toBeTrue();
   });
 
   describe('move item test', () => {
