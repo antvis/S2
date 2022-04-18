@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.14.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.3...@antv/s2-react-v1.14.0-alpha.4) (2022-04-18)
+
+
+### Features
+
+* **interaction:** 支持透传 addEventListener 的可选参数 ([#1262](https://github.com/antvis/S2/issues/1262)) ([d6bc064](https://github.com/antvis/S2/commit/d6bc064e971f8e0a18e8590931f6bff8fadabe44))
+
 # [@antv/s2-react-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.2...@antv/s2-react-v1.14.0-alpha.3) (2022-04-15)
 
 
