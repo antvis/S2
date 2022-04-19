@@ -189,13 +189,13 @@ const s2Options = {
 
 [查看具体 API 配置详情](/zh/docs/api/basic-class/interaction#interaction)
 
-## 交互默认样式和行为
+## 内置交互
 
-> 如何修改默认样式？请查看 [主题配置](/zh/docs/manual/basic/theme)
+> 如何修改交互默认样式？请查看 [主题配置](/zh/docs/manual/basic/theme)
 
-### 选中聚光灯
+### 单选高亮
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif" width="600" alt="preview" />
 
 在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，默认关闭，可配置 `selectedCellsSpotlight` 开启：
 
@@ -207,11 +207,11 @@ const s2Options = {
 };
 ```
 
-### 十字高亮
+### 行列联动高亮
 
 在鼠标悬停时，高亮当前单元格和对应的行列头单元格，形成一个"十字高亮"的效果，更直观的查看数据，默认开启，可配置 `hoverHighlight` 关闭：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*f1f1TqoWNdMAAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/l23NpRrPmF/hover.gif" alt="preview" width="600" />
 
 ```ts
 const s2Options = {
@@ -237,11 +237,11 @@ const s2Options = {
 };
 ```
 
-### 刷选
+### 圈选高亮
 
-刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，默认开启，可配置 `brushSelection` 关闭：
+圈选高亮又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，默认开启，可配置 `brushSelection` 关闭：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*N3-cSrfpGc4AAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif" alt="preview" width="700" />
 
 ```ts
 const s2Options = {
@@ -286,6 +286,8 @@ const s2Options = {
 
 ### 隐藏列头
 
+<img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600" />
+
 同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/zh/docs/manual/advanced/interaction/hide-columns/) 或 [具体例子](zh/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
@@ -309,9 +311,48 @@ const s2Options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7NasR7RUHG4AAAAAAAAAAAAAARQnAQ" alt="preview" width="500" />
+### 行列宽高调整
 
-## 重置交互
+<img src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600" />
+
+S2 默认提供 `列等宽布局` `行列等宽布局`和 `紧凑布局` 三种布局方式 ([预览](https://s2.antv.vision/zh/examples/layout/basic#compact)), 也可以拖拽行/列头进行动态调整
+
+可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 `resize` 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/zh/examples/interaction/advanced#resize)
+
+```ts
+const s2Options = {
+  interaction: {
+    resize: true
+  },
+};
+// 等价于
+// const s2Options = {
+//    interaction: {
+//     resize: {
+//       rowCellVertical:true,
+//       cornerCellHorizontal:true,
+//       colCellHorizontal:true,
+//       colCellVertical:true
+//     }
+//   },
+// };
+```
+
+### 合并单元格
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600" />
+
+查看 [详情](/zh/docs/manual/advanced/interaction/merge-cell) 或 [具体例子](/zh/examples/interaction/advanced#merge-cell)
+
+### 链接跳转
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600" />
+
+查看 [详情](/zh/docs/manual/advanced/interaction/link-jump) 或 [具体例子](/zh/examples/interaction/advanced#pivot-link-jump)
+
+### 重置交互
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/pTs1QZPz4/Kapture%2525202022-04-19%252520at%25252019.24.56.gif" alt="preview" width="600" />
 
 支持重置交互的情况：
 
@@ -350,29 +391,6 @@ const s2Options = {
     },
   },
 };
-```
-
-## 自定义 resize 开启范围
-
-可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 resize 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/zh/examples/interaction/advanced#resize)
-
-```ts
-const s2Options = {
-  interaction: {
-    resize: true
-  },
-};
-// 等价于
-// const s2Options = {
-//    interaction: {
-//     resize: {
-//       rowCellVertical:true,
-//       cornerCellHorizontal:true,
-//       colCellHorizontal:true,
-//       colCellVertical:true
-//     }
-//   },
-// };
 ```
 
 ## 调用交互方法

@@ -11,7 +11,7 @@ order: 8
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |
-| key | 当前节点位移的 id | `string` |    | ✓ |
+| key | 当前节点唯一标识 | `string` |    | ✓ |
 | title | 当前节点展示名 | `string` |    | ✓ |
 | collapsed | 节点是否收起（只会在自身代表非叶子节点生效） | `boolean` |  `false`  |  |
 | description | 节点的额外描述信息 | `string` |    |  |
