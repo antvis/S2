@@ -7,8 +7,13 @@ import {
   Meta,
 } from '@antv/s2';
 import { filter, find, isEmpty, map, reduce } from 'lodash';
+import { SheetType } from './../sheets/interface';
 import { FieldType, SWITCHER_FIELDS } from './constant';
 import { SwitcherField, SwitcherFields, SwitcherResult } from './interface';
+
+export const getSheetType = (sheet: SpreadSheet): SheetType => {
+  return sheet instanceof TableSheet ? 'table' : 'pivot';
+};
 
 const getSwitcherFieldCfg = (
   sheet: SpreadSheet,

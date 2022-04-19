@@ -4,6 +4,7 @@ import {
   generateSheetConfig,
   generateSwitcherFields,
   generateSwitcherFieldsCfgFromResult,
+  getSheetType,
 } from './headerUtil';
 import { SwitcherResult } from './interface';
 import { Switcher, SwitcherProps } from '.';
@@ -60,7 +61,6 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
 
   const onSubmit = (result: SwitcherResult) => {
     const { fields, hiddenColumnFields } = generateSheetConfig(sheet, result);
-
     sheet.setDataCfg({
       fields: { ...sheet.dataCfg.fields, ...fields },
     } as S2DataConfig);
@@ -78,5 +78,12 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
     );
   };
 
-  return <Switcher {...fields} onSubmit={onSubmit} {...props} />;
+  return (
+    <Switcher
+      sheetType={getSheetType(sheet)}
+      onSubmit={onSubmit}
+      {...props}
+      {...fields}
+    />
+  );
 };

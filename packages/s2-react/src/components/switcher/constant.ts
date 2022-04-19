@@ -37,5 +37,3 @@ export const SWITCHER_CONFIG = {
     droppableType: DroppableType.Measure,
   },
 } as const;
-
-export const MAX_DIMENSION_COUNT = 3;
