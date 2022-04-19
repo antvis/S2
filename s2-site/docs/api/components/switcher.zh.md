@@ -10,6 +10,7 @@ order: 3
 | rows                  | 行头配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
 | columns               | 列头配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
 | values                | 指标配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
+| disabled              | 是否禁用               | `boolean`  | `false`  |         |
 | title                 | 打开切换弹窗的触发节点                    | `ReactNode`                                                   |          |      |
 | contentTitleText      | 弹窗默认标题文字                          | `string`                                                      | 行列切换 |      |
 | resetText             | 重置按钮文字                              | `string`                                                      | 恢复默认 |      |
@@ -70,3 +71,4 @@ order: 3
 | resetText             | 重置按钮文字                              | `string`                                                      | 恢复默认 |      |
 | innerContentClassName | 弹出框内容样式名                          | `string`                                                      |          |      |
 | popover               | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |
+| disabled              | 是否禁用 | `boolean` | `false` |     |

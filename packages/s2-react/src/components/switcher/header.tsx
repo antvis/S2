@@ -16,6 +16,7 @@ type SwitcherBasicCfg = Pick<
   | 'innerContentClassName'
   | 'contentTitleText'
   | 'popover'
+  | 'disabled'
 >;
 
 export interface SwitcherCfgProps extends SwitcherBasicCfg {
