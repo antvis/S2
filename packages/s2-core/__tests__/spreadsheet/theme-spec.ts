@@ -3,7 +3,7 @@ import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { get } from 'lodash';
 import { ShapeAttrs } from '@antv/g-canvas';
 import { PivotSheet } from '@/sheet-type';
-import { TextAlign } from '@/common';
+import { CellTypes, TextAlign } from '@/common';
 import { RowCell } from '@/cell';
 
 describe('SpreadSheet Theme Tests', () => {
@@ -29,6 +29,29 @@ describe('SpreadSheet Theme Tests', () => {
 
   afterAll(() => {
     s2.destroy();
+  });
+
+  describe('Theme Default Value Tests', () => {
+    const CELL_TYPES: CellTypes[] = [
+      CellTypes.DATA_CELL,
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.CORNER_CELL,
+    ];
+
+    test.each(CELL_TYPES)(
+      "should assign the same color for %s's text and icon",
+      (cellType: CellTypes) => {
+        s2.setThemeCfg({
+          name: 'colorful',
+        });
+        s2.render();
+        const cellTheme = s2.theme[cellType];
+
+        expect(cellTheme.bolderText.fill).toEqual(cellTheme.icon.fill);
+        expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
+      },
+    );
   });
 
   describe('Custom SVG Icon Tests', () => {
