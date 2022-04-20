@@ -7,7 +7,6 @@ import { dataCustomTrees } from 'tests/data/data-custom-trees';
 import { S2DataConfig } from '@/common/interface';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { PivotSheet } from '@/sheet-type';
-import { transformCustomTreeItems } from '@/index';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 
 jest.mock('@/sheet-type');
@@ -33,7 +32,7 @@ describe('Custom Tree Dataset Test', () => {
       rows: [],
       columns: ['type', 'sub_type'],
       values,
-      customTreeItems: transformCustomTreeItems(customTreeItems),
+      customTreeItems,
       valueInCols: false,
     },
   };
