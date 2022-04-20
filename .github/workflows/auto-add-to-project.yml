@@ -16,7 +16,7 @@ jobs:
         with:
           project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
           column: Pending Issues
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
           action: add
  
   add-pr-to-project:
@@ -27,5 +27,5 @@ jobs:
         with:
           project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
           column: Pending PR
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
           action: add
