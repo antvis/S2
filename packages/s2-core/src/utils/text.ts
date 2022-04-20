@@ -1,15 +1,17 @@
 import {
+  clone,
   isArray,
   isEmpty,
   isNil,
   isNumber,
   isString,
   memoize,
+  reverse,
   toString,
   trim,
   values,
 } from 'lodash';
-import { DefaultCellTheme } from '@/common/interface/theme';
+import { DefaultCellTheme, TextAlign } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
 import {
@@ -276,9 +278,21 @@ export const isUpDataValue = (value: number | string): boolean => {
   return !!value && !trim(value).startsWith('-');
 };
 
-const calX = (x: number, paddingRight: number, total?: number) => {
+const calX = (
+  x: number,
+  paddingRight: number,
+  total?: number,
+  textAlign = 'left',
+) => {
   const extra = total || 0;
-  return x + paddingRight / 2 + extra;
+  if (textAlign === 'left') {
+    return x + paddingRight / 2 + extra;
+  }
+  if (textAlign === 'right') {
+    return x - paddingRight / 2 - extra;
+  }
+  // TODO 兼容 textAlign 为居中
+  return x;
 };
 
 const getTextStyle = (
@@ -296,6 +310,7 @@ const getTextStyle = (
     fill = textCondition?.mapping(data, {
       rowIndex,
       colIndex,
+      meta,
     }).fill;
   }
   return { ...textStyle, fill };
@@ -312,18 +327,21 @@ export const drawObjectText = (
   multiData?: MultiData,
   disabledConditions?: boolean,
 ) => {
-  const { x, y, height, width } = cell.getContentArea();
+  const { x } = cell.getTextAndIconPosition(0).text;
+  const {
+    y,
+    height: totalTextHeight,
+    width: totalTextWidth,
+  } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
   const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-
+  const { textAlign } = dataCellStyle.text;
   const padding = dataCellStyle.cell.padding;
-  const totalTextWidth = width - padding.left - padding.right;
 
-  const totalTextHeight = height - padding.top - padding.top;
   const realHeight = totalTextHeight / (text.values.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
@@ -338,7 +356,7 @@ export const drawObjectText = (
       y + labelHeight,
       getEllipsisText({
         text: text.label,
-        maxWidth: width - padding.left,
+        maxWidth: totalTextWidth,
         fontParam: labelStyle,
       }),
       labelStyle,
@@ -352,11 +370,16 @@ export const drawObjectText = (
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
-  for (let i = 0; i < textValues.length; i += 1) {
+  for (let i = 0; i < textValues.length; i++) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
-    for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j];
+    const measures = clone(textValues[i]);
+    if (textAlign === 'right') {
+      reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
+    }
+
+    for (let j = 0; j < measures.length; j++) {
+      curText = measures[j];
       const curStyle = getTextStyle(
         i,
         j,
@@ -369,7 +392,7 @@ export const drawObjectText = (
         ? totalTextWidth * (widthPercentCfg[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
-      curX = calX(x, padding.right, totalWidth);
+      curX = calX(x, padding.right, totalWidth, textAlign);
       totalWidth += curWidth;
       renderText(
         cell,
@@ -391,17 +414,16 @@ export const drawObjectText = (
 /**
  * 根据 cellCfg 配置获取当前单元格宽度
  */
-export const getCellWidth = (cellCfg: CellCfg) => {
+export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
   const { width } = cellCfg;
   const cellWidth = width;
-  // TODO 根据当前列的指标个数返回列宽
-  return cellWidth;
+  return cellWidth * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {
   try {
     return JSON.parse(val);
   } catch (err) {
-    return false;
+    return null;
   }
 };

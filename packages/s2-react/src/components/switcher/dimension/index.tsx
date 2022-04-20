@@ -22,6 +22,7 @@ export const Dimension: FC<DimensionProps> = ({
   crossRows,
   expandable,
   expandText,
+  allowEmpty,
   items,
   droppableType,
   ...rest
@@ -31,6 +32,9 @@ export const Dimension: FC<DimensionProps> = ({
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);
   };
+
+  // 开启不允许为空后，如果当前有且仅有一个item时，需要禁用拖动
+  const isDragDisabled = !allowEmpty && items.length === 1;
 
   const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
@@ -71,6 +75,7 @@ export const Dimension: FC<DimensionProps> = ({
                 item={item}
                 expandable={expandable}
                 expandChildren={expandChildren}
+                isDragDisabled={isDragDisabled}
                 {...rest}
               />
             ))}
@@ -83,6 +88,7 @@ export const Dimension: FC<DimensionProps> = ({
 };
 
 Dimension.defaultProps = {
+  allowEmpty: true,
   crossRows: false,
   expandable: false,
   expandText: i18n('展开子项'),

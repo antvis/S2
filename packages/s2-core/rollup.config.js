@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
@@ -6,6 +7,7 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
@@ -22,13 +24,14 @@ const isEsmFormat = format === 'esm';
 const isUmdFormat = format === 'umd';
 
 const output = {
-  format: format,
+  format,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
 };
 
 const plugins = [
+  peerDepsExternal(),
   alias({
     entries: [{ find: 'lodash', replacement: 'lodash-es' }],
   }),
@@ -39,13 +42,14 @@ const plugins = [
   commonjs(),
   resolve(),
   typescript({
-    outDir: outDir,
+    outDir,
     abortOnError: true,
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
       exclude: ['__tests__'],
       compilerOptions: {
         declaration: isEsmFormat,
+        declarationMap: isEsmFormat,
       },
     },
     typescript: ttypescript,
@@ -65,21 +69,10 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-const external = [];
-
 if (isUmdFormat) {
   output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {
-  external.push(
-    'd3-interpolate',
-    'lodash',
-    'lodash-es',
-    '@antv/g-gesture',
-    '@antv/g-canvas',
-    '@antv/event-emitter',
-    'd3-timer',
-  );
   output.dir = outDir;
 }
 
@@ -87,6 +80,5 @@ if (isUmdFormat) {
 export default {
   input: 'src/index.ts',
   output,
-  external,
   plugins,
 };

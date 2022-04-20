@@ -8,9 +8,23 @@ import {
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import { convertString, getSelectedData } from '@/utils/export/copy';
+import {
+  convertString,
+  getCopyData,
+  getSelectedData,
+} from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import { S2Event } from '@/common/constant';
+import { CopyType, S2Event } from '@/common/constant';
+
+const newLineTest = `"### 问题摘要
+- **会话地址**："`;
+
+const testData = originalData.map((item, i) => {
+  if (i === 0) {
+    return { ...item, sub_type: newLineTest };
+  }
+  return { ...item };
+});
 
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
@@ -22,6 +36,7 @@ describe('List Table Core Data Process', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
+        data: testData,
       }),
       assembleOptions({
         showSeriesNumber: true,
@@ -83,8 +98,8 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(32);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(5);
+    expect(getSelectedData(s2).split('\n').length).toBe(33);
+    expect(getSelectedData(s2).split('\n')[2].split('\t').length).toBe(5);
   });
 
   it('should copy format data', () => {
@@ -144,25 +159,27 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, {
-      sortKey: 'number',
-      sortMethod: 'DESC' as SortMethodType,
-    });
+    s2.emit(S2Event.RANGE_SORT, [
+      {
+        sortFieldId: 'number',
+        sortMethod: 'DESC' as SortMethodType,
+      },
+    ]);
 
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[0];
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[1];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
-    expect(data).toBe('7789\t浙江省\t杭州市\t家具\t桌子');
+    expect(data).toBe('7234\t浙江省\t宁波市\t家具\t沙发');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(32);
+    expect(getSelectedData(s2).split('\n').length).toEqual(33);
   });
 
   it('should copy correct data with \n data', () => {
@@ -379,5 +396,89 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getSelectedData(sss);
     expect(data).toBe(convertString(`7789\n元`));
+  });
+
+  it('should get correct data with - string in header', () => {
+    const s2New = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'number', formatter: (v) => v + '\n元' }],
+        fields: {
+          columns: ['type', 'sub_type'],
+          rows: ['province', 'city'],
+          values: ['number'],
+        },
+        data: originalData.map((item) => {
+          return {
+            ...item,
+            province: item.province + '-1',
+          };
+        }),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+        showSeriesNumber: false,
+      }),
+    );
+    s2New.render();
+    const cell = s2New.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2New.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2New);
+    expect(data).toBe(convertString(`7789\n元`));
+  });
+});
+
+describe('List Table getCopyData', () => {
+  let s2: TableSheet;
+  beforeEach(() => {
+    s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: testData,
+      }),
+      assembleOptions({
+        showSeriesNumber: true,
+      }),
+    );
+    s2.render();
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+  });
+
+  it('should get correct data in CopyType.ALL', () => {
+    const data = getCopyData(s2, CopyType.ALL);
+    expect(data.split('\n').length).toBe(33);
+    expect(data.split('\n')[2].split('\t').length).toBe(5);
+  });
+
+  it('should get correct data in CopyType.COL', () => {
+    const data = getCopyData(s2, CopyType.COL);
+    expect(data.split('\n').length).toBe(32);
+    expect(data.split('\n')[2].split('\t').length).toBe(1);
+  });
+
+  it('should get correct data in CopyType.ROW', () => {
+    const data = getCopyData(s2, CopyType.ROW);
+    expect(data.split('\n').length).toBe(2);
+    expect(data.split('\t').length).toBe(5);
   });
 });

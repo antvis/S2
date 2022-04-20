@@ -8,16 +8,15 @@ import {
   MultiData,
   S2Options,
   S2DataConfig,
-  ThemeCfg,
 } from '@antv/s2';
 import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
-import { StrategyTheme } from './strategy-theme';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
+import { StrategyDataSet } from './custom-data-set';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
 /* *
@@ -30,28 +29,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
-
-    const s2ThemeCfg = React.useMemo<ThemeCfg>(() => {
-      return customMerge({}, themeCfg, { theme: StrategyTheme });
-    }, [themeCfg]);
-
-    const getCellWidth = React.useCallback(() => {
-      const { data } = dataCfg;
-      const lengths = [];
-      // 采样前50，根据指标个数获取单元格列宽
-      // TODO 动态根据内容来计算列宽
-      const demoData = data.slice(0, 50) || [];
-      forEach(demoData, (value) => {
-        forIn(value, (v: MultiData) => {
-          if (isObject(v) && v?.values) {
-            lengths.push(size(v?.values[0]));
-          }
-        });
-      });
-      const maxLength = max(lengths) || 1;
-      const cellWidth = get(options, 'style.cellCfg.width', 0);
-      return maxLength * cellWidth;
-    }, [dataCfg, options]);
 
     const strategySheetOptions = React.useMemo<
       Partial<S2Options<React.ReactNode>>
@@ -85,15 +62,12 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           spreadsheet: SpreadSheet,
           headerConfig: ColHeaderConfig,
         ) => new CustomColCell(node, spreadsheet, headerConfig),
+        dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
         showDefaultHeaderActionIcon: false,
         hierarchyType,
         style: {
           colCfg: {
-            height: 38,
             hideMeasureColumn,
-          },
-          cellCfg: {
-            width: getCellWidth(),
           },
         },
         interaction: {
@@ -133,7 +107,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           },
         },
       };
-    }, [dataCfg, getCellWidth, options.hierarchyType]);
+    }, [dataCfg, options.hierarchyType]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields = {
@@ -151,7 +125,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     return (
       <BaseSheet
         options={s2Options}
-        themeCfg={s2ThemeCfg}
+        themeCfg={themeCfg}
         dataCfg={s2DataCfg}
         ref={s2Ref}
         {...restProps}

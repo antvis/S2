@@ -1,9 +1,10 @@
+import { i18n } from '../i18n';
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
-// export const COLUMN_FIELD_KEY = '$$column_key$$';
+export const DEFAULT_CORNER_TEXT = i18n('指标');
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
@@ -33,6 +34,7 @@ export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
 export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 export const KEY_GROUP_FROZEN_ROW_RESIZE_AREA = 'rowFrozenResizeAreaGroup';
+export const KEY_GROUP_FROZEN_SPLIT_LINE = 'frozenSplitLine';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';

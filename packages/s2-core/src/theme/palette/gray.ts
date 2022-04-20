@@ -1,25 +1,59 @@
-export const paletteGray = {
-  // --------- basic colors -----------
-  basicColors: [
-    '#000000',
-    '#FcFcFd',
-    '#F4F5F7',
-    '#F3F4F6',
-    '#E7E8EA',
-    '#CECFD1',
-    '#A9AAAB',
-    '#616162',
-    '#FFFFFF',
-    '#F2F2F2',
-    '#E8E6E6',
-    '#D1D4DC',
-    '#BEC2CB',
-    '#282B33',
-    '#121826',
-  ],
+import { Palette, PaletteMeta } from '@/common';
+import { generatePalette } from '@/utils/color';
+
+const paletteGrayMeta: PaletteMeta = {
+  brandColor: '#9DA7B6',
   // ---------- semantic colors ----------
   semanticColors: {
     red: '#FF4D4F',
     green: '#29A294',
   },
+  basicColorRelations: [
+    {
+      basicColorIndex: 1,
+      standardColorIndex: 0,
+    },
+    {
+      basicColorIndex: 2,
+      standardColorIndex: 1,
+    },
+    {
+      basicColorIndex: 3,
+      standardColorIndex: 1,
+    },
+    {
+      basicColorIndex: 4,
+      standardColorIndex: 2,
+    },
+    {
+      basicColorIndex: 5,
+      standardColorIndex: 7,
+    },
+    {
+      basicColorIndex: 6,
+      standardColorIndex: 8,
+    },
+    {
+      basicColorIndex: 7,
+      standardColorIndex: 5,
+    },
+    {
+      basicColorIndex: 9,
+      standardColorIndex: 1,
+    },
+    {
+      basicColorIndex: 10,
+      standardColorIndex: 2,
+    },
+    {
+      basicColorIndex: 11,
+      standardColorIndex: 3,
+    },
+    {
+      basicColorIndex: 12,
+      standardColorIndex: 3,
+    },
+  ],
 };
+
+export const paletteGray: Palette = generatePalette(paletteGrayMeta);

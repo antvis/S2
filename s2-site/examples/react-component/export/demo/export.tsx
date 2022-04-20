@@ -30,7 +30,11 @@ fetch(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
-        header={{ exportCfg: { open: true } }}
+        header={{
+          exportCfg: {
+            open: true,
+          },
+        }}
         adaptive={false}
       />,
       document.getElementById('container'),

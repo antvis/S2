@@ -41,7 +41,8 @@ this.spreadsheet.interaction.xx()
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
-| hideColumns | 隐藏列 （明细表有效） | `(hiddenColumnFields: string[]) => void` |
+| getCellLeafNodes | 获取当前单元格的叶子节点 | `(cell: S2CellType[]) => Node[]` |
+| hideColumns | 隐藏列 | `(hiddenColumnFields: string[]) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
 | unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |
@@ -105,7 +106,6 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
 ```ts
 interface SelectHeaderCellInfo {
   cell: S2CellType<ViewMeta>; // 目标单元格
-  isTreeRowClick?: boolean; // 是否是树形结构下的行头点击（该情况下只会高亮整行，而不会高亮所有叶子节点）
   isMultiSelection?: boolean; // 是否是多选
 }
 ```

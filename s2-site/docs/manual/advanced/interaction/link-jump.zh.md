@@ -18,7 +18,7 @@ const s2DataConfig = {
   },
 };
 
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
   interaction: {
@@ -49,7 +49,7 @@ const s2DataConfig = {
   },
 };
 
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
   interaction: {
@@ -57,7 +57,7 @@ const s2options = {
   }
 };
 
-const s2 = new PivotSheet(container, s2DataConfig, s2options);
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
@@ -83,7 +83,7 @@ const s2DataConfig = {
   },
 };
 
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
   interaction: {
@@ -91,7 +91,7 @@ const s2options = {
   }
 };
 
-const s2 = new TableSheet(container, s2DataConfig, s2options);
+const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;

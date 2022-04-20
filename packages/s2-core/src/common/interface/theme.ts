@@ -1,5 +1,7 @@
 import { ShapeAttrs } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { generateStandardColors } from '../../utils/color';
 import { CellTypes } from '@/common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -8,16 +10,47 @@ export type TextAlign = 'left' | 'center' | 'right';
 // 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
 export type TextBaseline = 'top' | 'middle' | 'bottom';
 
-export interface Palette {
-  /* 基础色值 */
-  basicColors: string[];
+export interface PaletteMeta {
+  /** 主题色 */
+  brandColor: string;
+  /**
+   * basicColors 与标准色卡 standardColors 数组下标的对应关系
+   * @see generateStandardColors
+   */
+  basicColorRelations: Array<{
+    basicColorIndex: number;
+    standardColorIndex: number;
+  }>;
   /* 语义色值 */
   semanticColors: {
     red?: string;
     green?: string;
-    /* 额外颜色字段 */
     [key: string]: string;
   };
+}
+
+export interface Palette extends PaletteMeta {
+  /*
+   * 基础色值（共15个）
+   *
+   * 1. 角头字体、列头字体
+   * 2. 行头背景、数据格背景(斑马纹)
+   * 3. 行头&数据格交互(hover、选中、十字)
+   * 4. 角头背景、列头背景
+   * 5. 列头交互(hover、选中)
+   * 6. 刷选遮罩
+   * 7. 行头 link
+   * 8. mini bar、resize 交互(参考线等)
+   * 9. 数据格背景(非斑马纹)、整体表底色(建议白色)
+   * 10. 行头边框、数据格边框
+   * 11. 角头边框、列头边框
+   * 12. 竖向大分割线
+   * 13. 横向大分割线
+   * 14. 数据格字体
+   * 15. 行头字体、数据格交互色(hover)
+   *
+   */
+  basicColors: string[];
 }
 
 export interface Padding {
@@ -94,7 +127,7 @@ export interface CellTheme {
   /* 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
   /* 单元格内边距 */
-  padding: Padding;
+  padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
@@ -219,7 +252,7 @@ export interface ThemeCfg {
   /* 主题 */
   theme?: S2Theme;
   /* 色板 */
-  palette?: Palette;
+  palette?: Pick<Palette, 'basicColors' | 'semanticColors'>;
   /* 主题名 */
   name?: ThemeName;
 }

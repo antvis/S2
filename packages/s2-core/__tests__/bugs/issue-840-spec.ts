@@ -9,7 +9,7 @@ import * as mockDataConfig from 'tests/data/simple-data.json';
 import { TableSheet, SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   // 让被测试的单元格在首屏显示出来
   width: 300,
   height: 200,
@@ -48,7 +48,7 @@ describe('Column Formatter Tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {
-    s2 = new TableSheet(getContainer(), dataCfg, s2options);
+    s2 = new TableSheet(getContainer(), dataCfg, s2Options);
     s2.render();
   });
 

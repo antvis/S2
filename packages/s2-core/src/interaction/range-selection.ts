@@ -1,6 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { inRange, isNil, range } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
+import { getActiveCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
   InterceptType,
@@ -12,6 +13,7 @@ import {
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
+import { getRangeIndex } from '@/utils/interaction/select-event';
 
 export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private isRangeSelection = false;
@@ -56,23 +58,6 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getShiftSelectRange(start: ViewMeta, end: ViewMeta) {
-    const minRowIndex = Math.min(start.rowIndex, end.rowIndex);
-    const maxRowIndex = Math.max(start.rowIndex, end.rowIndex);
-    const minColIndex = Math.min(start.colIndex, end.colIndex);
-    const maxColIndex = Math.max(start.colIndex, end.colIndex);
-    return {
-      start: {
-        rowIndex: minRowIndex,
-        colIndex: minColIndex,
-      },
-      end: {
-        rowIndex: maxRowIndex,
-        colIndex: maxColIndex,
-      },
-    };
-  }
-
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
@@ -93,7 +78,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const { start, end } = this.getShiftSelectRange(
+      const { start, end } = getRangeIndex(
         lastClickedCell.getMeta() as ViewMeta,
         cell.getMeta(),
       );
@@ -115,11 +100,14 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       });
 
       interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
-      this.spreadsheet.hideTooltip();
       interaction.changeState({
         cells,
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.showTooltipWithInfo(
+        event,
+        getActiveCellsTooltipData(this.spreadsheet),
+      );
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,
         interaction.getActiveCells(),
@@ -148,7 +136,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
           this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
         ];
-        const { start, end } = this.getShiftSelectRange(
+        const { start, end } = getRangeIndex(
           lastCell.getMeta() as ViewMeta,
           cell.getMeta() as ViewMeta,
         );

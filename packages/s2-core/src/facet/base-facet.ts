@@ -1,8 +1,7 @@
-import type { IGroup } from '@antv/g-canvas';
-import type { GestureEvent } from '@antv/g-gesture';
-import { Wheel } from '@antv/g-gesture';
+import type { IElement, IGroup } from '@antv/g-canvas';
+import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
-import * as d3Timer from 'd3-timer';
+import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import { CornerBBox } from './bbox/cornerBBox';
@@ -43,7 +42,6 @@ import {
   DEBUG_VIEW_RENDER,
 } from '@/common/debug';
 import {
-  Formatter,
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
@@ -84,7 +82,7 @@ export abstract class BaseFacet {
 
   protected mobileWheel: Wheel;
 
-  protected timer: d3Timer.Timer;
+  protected timer: Timer;
 
   public hScrollBar: ScrollBar;
 
@@ -104,7 +102,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-  protected abstract getViewCellHeights(
+  public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
 
@@ -197,7 +195,7 @@ export abstract class BaseFacet {
   /**
    * 在每次render, 校验scroll offset是否在合法范围中
    * 比如在滚动条已经滚动到100%的状态的前提下：（ maxAvailableScrollOffsetX = colsHierarchy.width - viewportBBox.width ）
-   *     此时changeSize，sheet从 small width 变为 big width
+   *     此时changeSheetSize，sheet从 small width 变为 big width
    *     导致后者 viewport 区域更大，其结果就是后者的 maxAvailableScrollOffsetX 更小
    *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
    */
@@ -419,7 +417,11 @@ export abstract class BaseFacet {
     this.backgroundGroup.set('children', []);
   };
 
-  scrollWithAnimation = (offsetConfig: OffsetConfig) => {
+  scrollWithAnimation = (
+    offsetConfig: OffsetConfig,
+    duration = 200,
+    cb?: () => void,
+  ) => {
     const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
       this.getAdjustedScrollOffset({
         scrollX: offsetConfig.offsetX.value || 0,
@@ -428,20 +430,20 @@ export abstract class BaseFacet {
     if (this.timer) {
       this.timer.stop();
     }
-    const duration = 200;
     const oldOffset = Object.values(this.getScrollOffset());
     const newOffset: number[] = [
       adjustedScrollX === undefined ? oldOffset[0] : adjustedScrollX,
       adjustedScrollY === undefined ? oldOffset[1] : adjustedScrollY,
     ];
     const interpolate = interpolateArray(oldOffset, newOffset);
-    this.timer = d3Timer.timer((elapsed) => {
+    this.timer = timer((elapsed) => {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
       this.startScroll(adjustedScrollX, adjustedScrollY);
       if (elapsed > duration) {
         this.timer.stop();
+        cb?.();
       }
     });
   };
@@ -854,7 +856,7 @@ export abstract class BaseFacet {
       return;
     }
 
-    event.preventDefault?.();
+    event?.preventDefault?.();
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     if (!this.cancelScrollFrame()) {
@@ -972,7 +974,7 @@ export abstract class BaseFacet {
         }
       });
       const allCells = getAllChildCells(
-        this.panelGroup.getChildren(),
+        this.panelGroup.getChildren() as IElement[],
         DataCell,
       );
       // remove cell from panelCell
@@ -1000,10 +1002,11 @@ export abstract class BaseFacet {
     this.realCellRender(scrollX, scrollY);
   };
 
-  protected init(): void {
+  protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
+      this.saveInitColumnLeafNodes(this.layoutResult.colLeafNodes);
       this.spreadsheet.emit(
         S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
         this.layoutResult,
@@ -1125,8 +1128,6 @@ export abstract class BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        formatter: (field: string): Formatter =>
-          this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
@@ -1225,11 +1226,17 @@ export abstract class BaseFacet {
     }
   }, 300);
 
-  protected saveInitColumnNodes(columnNodes: Node[] = []) {
-    const { store } = this.spreadsheet;
-    const initColumnNodes = store.get('initColumnNodes', []);
-    if (initColumnNodes.length !== columnNodes.length) {
-      store.set('initColumnNodes', columnNodes);
+  protected saveInitColumnLeafNodes(columnNodes: Node[] = []) {
+    const { store, options } = this.spreadsheet;
+    const { hiddenColumnFields } = options.interaction;
+
+    // 当前显示的 + 被隐藏的
+    const originalColumnsLength =
+      columnNodes.length + hiddenColumnFields.length;
+    const initColumnLeafNodes = store.get('initColumnLeafNodes', []);
+
+    if (originalColumnsLength !== initColumnLeafNodes.length) {
+      store.set('initColumnLeafNodes', columnNodes);
     }
   }
 }

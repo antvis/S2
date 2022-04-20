@@ -1,0 +1,77 @@
+{
+  "name": "@antv/s2-vue",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "unpkg": "dist/index.min.js",
+  "types": "esm/index.d.ts",
+  "description": "use S2 with vue",
+  "license": "MIT",
+  "homepage": "https://s2.antv.vision",
+  "author": "https://github.com/orgs/antvis/people",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
+  "files": [
+    "esm",
+    "lib",
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "antv",
+    "s2",
+    "s2-vue",
+    "spreadsheet",
+    "pivot table",
+    "table"
+  ],
+  "scripts": {
+    "start": "cross-env PLAYGROUND=true vite",
+    "clean": "rimraf lib esm dist",
+    "build": "run-s clean build:esm build:cjs build:umd build:declaration",
+    "build:esm": "cross-env FORMAT=es vite build",
+    "build:cjs": "cross-env FORMAT=cjs vite build",
+    "build:umd": "cross-env FORMAT=umd vite build",
+    "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
+    "build:declaration": "vue-tsc -p tsconfig.declaration.json",
+    "bundle:size": "bundlesize",
+    "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
+    "test:watch": "yarn test --watch",
+    "tsc": "vue-tsc --noEmit",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+  },
+  "peerDependencies": {
+    "@antv/s2": ">=1.0.0",
+    "vue": "^3.2.31"
+  },
+  "dependencies": {
+    "@vueuse/core": "^8.2.4"
+  },
+  "devDependencies": {
+    "@testing-library/vue": "^6.5.1",
+    "@vue/tsconfig": "^0.1.3",
+    "vue": "^3.2.31",
+    "vue-tsc": "^0.31.4"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/index.min.js",
+      "maxSize": "650 kB"
+    },
+    {
+      "path": "./dist/style.min.css",
+      "maxSize": "205 kB"
+    }
+  ]
+}

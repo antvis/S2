@@ -51,7 +51,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       path: '',
       lineDash: guideLineDash,
       stroke: guideLineColor,
-      strokeWidth: size,
+      lineWidth: size,
     };
     // 起始参考线
     this.resizeReferenceGroup.addShape('path', {
@@ -329,7 +329,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (!this.resizeReferenceGroup?.get('visible')) {
       return;
     }
-    event.preventDefault();
+    event?.preventDefault?.();
 
     const originalEvent = event.originalEvent as MouseEvent;
     const resizeInfo = this.getResizeInfo();

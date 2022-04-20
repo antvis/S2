@@ -5,8 +5,8 @@ order: 1
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :--  | :-- | --- |
-| width | `number` | ✓   |  | 表格宽度 |
-| height | `number` | ✓   |  | 表格高度 |
+| width | `number` |    | 600  | 表格宽度 |
+| height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
 | hierarchyType | `grid` \| `tree` \| `customTree` |    | `grid` | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 customTree: 自定义树状结构 |
 | conditions | [Conditions](#conditions) |  |    | 条件模式配置 |
@@ -28,7 +28,8 @@ order: 1
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder | string |    |  | 空单元格的填充内容 |
-| cornerText | string |    |  | 自定义角头显示文本 |
+| cornerText | string |    |  | 自定义角头文本 （自定义树 `hierarchyType: customTree` 时有效） |
+| cornerExtraFieldText | string |    |  | 自定义角头虚拟数值字段文本 （数值挂行头时有效，替换 "数值" 这两个字） |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |

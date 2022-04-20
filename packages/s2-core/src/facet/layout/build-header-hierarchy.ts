@@ -59,7 +59,7 @@ const handleCustomTreeRowHierarchy = (params: HeaderParams) => {
   const customTreeItems = facetCfg.dataSet.fields.customTreeItems;
   // row custom tree header
   buildRowCustomTreeHierarchy({
-    customTreeItems: customTreeItems,
+    customTreeItems,
     facetCfg,
     level: 0,
     parentNode: rootNode,

@@ -2,61 +2,106 @@
 title: 自定义目录树
 order: 2
 ---
-`S2` 行头提供了三种模式， `grid` 网状平铺、`tree` 树状结构，还有 `customTree` 自定义目录树。
 
-自定义目录树模式适用于数值挂在行头，需要开发者自定义目录结构的场景。
+`S2` 默认提供 [平铺模式 (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) 和 [树状模式 (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) 两种行头布局方式
+
+如果都不满足的话，可以使用自定义目录树，来定制你的目录结构
+
+```ts
+const s2Options = {
+  hierarchyType: 'customTree', // grid 平铺模式，tree 树状模式
+};
+```
+
+<playground path='custom/custom-tree/demo/custom-tree.ts' rid='container' height='400'></playground>
 
 ## 前提
 
-这种模式需要一些前提：
+1、数值需要置于行头，即 `valueInCols: false` （无论配置与否都会强制置于行头，修改无效）
 
-1、数值必须置于行头（`dataCfg.fields.valueInCols = false`，无论配置与否都会被强制改为 `false`）
+```ts
+const s2DataConfig = {
+  fields: {
+    valueInCols: false
+  }
+}
+```
 
-2、`rows` 配置应该为空 (`dataCfg.fields.rows = []` 无论配置与否都会被强制改为 []）
+2、行头需要为空，即 `rows: []` （无论配置与否行头都会强制清空，修改无效）
+
+```ts
+const s2DataConfig = {
+  fields: {
+    rows: [],
+  }
+}
+```
 
 ## 配置
 
 生成目录树结构的配置如下：
 
 ```ts
-const s2options = {
-  width: 660,
-  height: 600,
-  hierarchyType: 'customTree', // 目录树
+const s2Options = {
+  hierarchyType: 'customTree',
 };
+
+const customTreeItems = [
+  {
+    title: '自定义节点 A',
+    key: 'custom-node-1',
+    children: [
+      {
+        title: '指标 A',
+        key: 'measure-a',
+      },
+      {
+        title: '指标 B',
+        key: 'measure-b',
+      },
+    ],
+  },
+  {
+    title: '自定义节点 B',
+    key: 'custom-node-2',
+    children: [
+      {
+        title: '自定义节点 D',
+        key: 'custom-node-2-1',
+        collapsed: true,
+        children: [{ title: '指标 F', key: 'measure-f' }],
+      },
+    ],
+  },
+];
 
 const s2DataConfig = {
   fields: {
-    rows: [], // 空
+    rows: [],
+    valueInCols: false,
     columns: ['type', 'sub_type'],
     values: [
       'measure-a',
     ],
-    customTreeItems, // 行自定义树结构
-    valueInCols: false,
+    customTreeItems
   },
   data,
 };
 
 ```
 
-## 结构描述
+## 自定义角头文本
 
-`dataCfg.fields.customTreeItems` 结构完全兼容 [antd Tree](https://ant.design/components/tree-cn/) 树形的配置方式，并且在其基础上增加额外的功能元信息。
+对于 `自定义目录`, 还可以配置 `cornerText` 自定义角头的文本
 
 ```ts
-export interface CustomTreeItem {
-  // 节点唯一标识
-  key: string;
-  // 节点显示名称
-  title: string;
-  // 是否收起（默认都展开）
-  collapsed?: boolean;
-  // 节点描述信息
-  description?: string;
-  // 子节点描述
-  children?: CustomTreeItem[];
+const s2Options = {
+  cornerText: '自定义角头标题'
 }
 ```
 
-此结构也可以通过内部的一个方法 `transformCustomTreeItems` 进行转换，参考 [例子](/zh/examples/custom/custom-tree#custom-tree)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/fyUwaEw2S/3e38caa2-31eb-4272-9158-a1392b5e6f9e.png)
+
+## 自定义树结构说明
+
+`markdown:docs/common/custom/customTreeItem.zh.md`

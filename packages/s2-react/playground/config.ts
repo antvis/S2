@@ -1,13 +1,19 @@
-import { customMerge, isUpDataValue, S2DataConfig, S2Options } from '@antv/s2';
+import {
+  customMerge,
+  isUpDataValue,
+  S2DataConfig,
+  S2Options,
+  S2Theme,
+} from '@antv/s2';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';
-import { getSheetComponentOptions } from '../src/utils';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
+import { getSheetComponentOptions } from '@/utils';
 
 const BASIC_BACKGROUND_COLOR = '#FFFFFF';
 const INTERACTIVE_BACKGROUND_COLOR = '#E1EAFE';
 
-export const defaultTheme = {
+export const strategyTheme: S2Theme = {
   cornerCell: {
     icon: {
       size: 12,
@@ -38,6 +44,10 @@ export const defaultTheme = {
         selected: {
           backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
         },
+      },
+      padding: {
+        left: 4,
+        right: 4,
       },
     },
   },
@@ -87,7 +97,11 @@ export const pivotSheetDataCfg: S2DataConfig = {
 export const s2Options: S2Options = {
   debug: true,
   width: 600,
-  height: 600,
+  height: 400,
+  hierarchyCollapse: false,
+  interaction: {
+    enableCopy: true,
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {
@@ -105,7 +119,7 @@ export const sliderOptions: SliderSingleProps = {
 export const strategyOptions: S2Options = {
   width: 1000,
   height: 400,
-  cornerText: '时间',
+  cornerText: '指标',
   headerActionIcons: [
     {
       iconNames: ['Trend'],
@@ -122,10 +136,10 @@ export const strategyOptions: S2Options = {
           text: {
             field: 'number',
             mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
+              const { meta } = cellInfo;
               const isNormalValue = isNil(value);
 
-              if (colIndex === 0 || isNormalValue) {
+              if (meta.fieldValue.values[0][0] === value || isNormalValue) {
                 return {
                   fill: '#000',
                 };

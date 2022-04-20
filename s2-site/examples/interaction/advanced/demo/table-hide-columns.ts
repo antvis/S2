@@ -1,7 +1,7 @@
 import { TableSheet, S2Event } from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  '../data/basic-table-mode.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -39,22 +39,24 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
+        // 默认隐藏 [省份] 和 [价格]
         hiddenColumnFields: ['province', 'price'],
       },
       tooltip: {
         showTooltip: true,
         operation: {
+          // 开启手动隐藏
           hiddenColumns: true,
         },
       },
     };
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (cell) => {
+    s2.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
       console.log('列头展开', cell);
     });
     s2.on(
-      S2Event.LAYOUT_TABLE_COL_HIDDEN,
+      S2Event.LAYOUT_COLS_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },

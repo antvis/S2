@@ -1,6 +1,7 @@
 /**
  * table mode data-set test.
  */
+import { orderBy, uniq } from 'lodash';
 import { assembleDataCfg } from '../../util';
 import { S2DataConfig } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
@@ -174,6 +175,110 @@ describe('Table Mode Dataset Test', () => {
           },
         }),
       ).toEqual(245);
+    });
+
+    it('should get correct sorted data with sortFunc', () => {
+      const sortFieldId = 'number';
+      const sortMethod = 'desc';
+      const sorted = orderBy(
+        dataSet.getDisplayDataSet(),
+        [sortFieldId],
+        [sortMethod.toLocaleLowerCase() as 'asc' | 'desc'],
+      );
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod,
+          sortFunc: ({ data, sortMethod, sortFieldId }) => {
+            return orderBy(
+              data,
+              [sortFieldId],
+              [sortMethod.toLocaleLowerCase() as 'asc' | 'desc'],
+            );
+          },
+        },
+      ];
+      dataSet.handleDimensionValuesSort();
+
+      expect(dataSet.getDisplayDataSet()).toStrictEqual(sorted);
+    });
+
+    it('should get correct sorted data with sortBy', () => {
+      const sortFieldId = 'city';
+      const sortBy = [
+        '杭州市',
+        '成都市',
+        '绍兴市',
+        '舟山市',
+        '宁波市',
+        '绵阳市',
+        '乐山市',
+        '南充市',
+      ];
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortBy,
+          sortFunc: null,
+        },
+      ];
+      dataSet.handleDimensionValuesSort();
+      expect(
+        uniq(dataSet.getDisplayDataSet().map((item) => item.city)),
+      ).toStrictEqual(sortBy);
+    });
+
+    it('should get correct sorted data with sortMethod', () => {
+      const sortFieldId = 'number';
+
+      let result = orderBy(dataSet.getDisplayDataSet(), [sortFieldId], 'asc');
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'asc',
+        },
+      ];
+      dataSet.handleDimensionValuesSort();
+      expect(result).toStrictEqual(dataSet.getDisplayDataSet());
+
+      result = orderBy(dataSet.getDisplayDataSet(), [sortFieldId], 'desc');
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'desc',
+        },
+      ];
+      dataSet.handleDimensionValuesSort();
+      expect(result).toStrictEqual(dataSet.getDisplayDataSet());
+    });
+
+    it('should get scoped sort result', () => {
+      const sortFieldId = 'number';
+      const query = {
+        city: '杭州市',
+      };
+
+      const rest = dataSet
+        .getDisplayDataSet()
+        .filter((record) => record.city !== '杭州市');
+
+      const result = orderBy(
+        dataSet
+          .getDisplayDataSet()
+          .filter((record) => record.city === '杭州市'),
+        [sortFieldId],
+        'asc',
+      );
+
+      dataSet.sortParams = [
+        {
+          sortFieldId,
+          sortMethod: 'asc',
+          query,
+        },
+      ];
+      dataSet.handleDimensionValuesSort();
+      expect([...result, ...rest]).toStrictEqual(dataSet.getDisplayDataSet());
     });
   });
 });

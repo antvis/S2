@@ -1,7 +1,11 @@
-import { Event as GEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import React from 'react';
-import { SpreadSheet, getTooltipOptions, HeaderActionIcon } from '@antv/s2';
+import {
+  SpreadSheet,
+  getTooltipOptions,
+  HeaderActionIcon,
+  GEvent,
+} from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
@@ -87,7 +91,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       } else {
         handleDrillDown({
           rows: rowFieldsRef.current,
-          drillFields: drillFields,
+          drillFields,
           fetchData: fetchDataRef.current,
           drillItemsNum: drillItemsNumRef.current,
           spreadsheet: s2Ref.current,
@@ -105,7 +109,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     }, [partDrillDown?.clearDrillDown]);
 
     /**
-     * 表格重渲染 effect
+     * 表格完全渲染（清空下钻）
      */
     React.useEffect(() => {
       updateDrillDownOptions();
@@ -117,6 +121,15 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       partDrillDown?.drillItemsNum,
       options.hierarchyType,
     ]);
+
+    /**
+     * 表格仅重渲染视图（不清空数据）
+     */
+    React.useEffect(() => {
+      updateDrillDownOptions();
+      s2Ref.current.render(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [options.headerActionIcons]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
   },

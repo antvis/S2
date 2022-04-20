@@ -52,8 +52,6 @@ export interface InteractionStateInfo {
 export interface SelectHeaderCellInfo {
   // target header cell
   cell: S2CellType<ViewMeta>;
-  // whether the target header cell is in tree mode
-  isTreeRowClick?: boolean;
   isMultiSelection?: boolean;
 }
 
@@ -71,6 +69,8 @@ export interface BrushPoint {
   colIndex: number;
   x: number;
   y: number;
+  scrollX?: number;
+  scrollY?: number;
 }
 
 export interface BrushRange {
@@ -89,6 +89,15 @@ export type Intercept =
   | InterceptType.MULTI_SELECTION
   | InterceptType.RESIZE;
 
+export interface BrushAutoScrollConfigItem {
+  value: number;
+  scroll: boolean;
+}
+
+export interface BrushAutoScrollConfig {
+  x: BrushAutoScrollConfigItem;
+  y: BrushAutoScrollConfigItem;
+}
 export interface ScrollSpeedRatio {
   horizontal?: number;
   vertical?: number;
@@ -124,6 +133,9 @@ export interface InteractionOptions {
   readonly selectedCellMove?: boolean;
   // controls scrollbar's position type
   readonly scrollbarPosition?: ScrollbarPositionType;
+  // An object that specifies characteristics about the event listener
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+  readonly eventListenerOptions?: AddEventListenerOptions | boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

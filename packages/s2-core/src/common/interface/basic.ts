@@ -2,7 +2,12 @@ import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { BaseHeaderConfig } from '@/facet/header/base';
-import { Condition, CustomTreeItem, ResizeInfo } from '@/common/interface';
+import {
+  Condition,
+  CustomTreeItem,
+  Data,
+  ResizeInfo,
+} from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet, DataType } from '@/data-set';
 import { Frame } from '@/facet/header';
@@ -13,7 +18,11 @@ import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
 
-export type Formatter = (v: unknown) => string;
+// 第二个参数在以下情况会传入：
+// 1. data cell 格式化
+// 2. copy/export
+// 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
+export type Formatter = (v: unknown, data?: Data | Data[]) => string;
 
 export interface FormatResult {
   formattedValue: string;
@@ -97,11 +106,12 @@ export interface TotalsStatus {
   isColSubTotal: boolean;
 }
 
-export enum EAggregation {
+export enum Aggregation {
   SUM = 'SUM',
+  MIN = 'MIN',
+  MAX = 'MAX',
+  AVG = 'AVG',
 }
-
-export type Aggregation = EAggregation.SUM; // 目前只有求和
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
@@ -159,7 +169,7 @@ export interface SortFuncParam extends Sort {
 
 export interface SortParam extends Sort {
   /** 自定义func */
-  sortFunc?: (v: SortFuncParam) => Array<string>;
+  sortFunc?: (v: SortFuncParam) => Array<string | Record<string, any>>;
 }
 
 export interface FilterParam {
@@ -208,20 +218,25 @@ export interface HeaderActionIconProps {
   event?: Event;
 }
 
+export interface HeaderActionIconOptions {
+  iconName: string;
+  x: number;
+  y: number;
+  action: (props: HeaderActionIconProps) => void;
+  defaultHide?: boolean;
+}
+
 export interface HeaderActionIcon {
   // 已注册的 icon 类型或自定义的 icon 类型名
   iconNames: string[];
-
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
   defaultHide?: boolean;
-
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
   displayCondition?: (mete: Node) => boolean;
-
   // 点击后的执行函数
-  action: (headerActionIconProps: HeaderActionIconProps) => void;
+  action?: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
@@ -452,4 +467,8 @@ export interface PartDrillDownFieldInLevel {
   drillField: string;
   // 下钻的层级
   drillLevel: number;
+}
+
+export interface TableSortParam extends SortParam {
+  sortKey: string;
 }

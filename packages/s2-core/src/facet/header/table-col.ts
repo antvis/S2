@@ -1,4 +1,4 @@
-import { IGroup } from '@antv/g-base';
+import { IGroup } from '@antv/g-canvas';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { ColHeader, ColHeaderConfig } from './col';

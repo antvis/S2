@@ -1,5 +1,4 @@
-import { Point } from '@antv/g-base';
-import { IShape } from '@antv/g-canvas';
+import type { IShape, Point } from '@antv/g-canvas';
 import { clamp, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {
@@ -194,21 +193,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const rowField = this.meta.rowId;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
+    const { rowId, valueField, fieldValue, data } = this.meta;
+    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     let formatter: Formatter;
     if (rowMeta) {
       // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowId);
     } else {
       // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        this.meta.valueField,
-      );
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(valueField);
     }
-    const formattedValue = formatter(this.meta.fieldValue);
+    const formattedValue = formatter(fieldValue, data);
     return {
-      value: this.meta.fieldValue,
+      value: fieldValue,
       formattedValue,
     };
   }
@@ -314,10 +311,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
-    const strokeColor = 'transparent';
+
     if (
       this.spreadsheet.isPivotMode() &&
       crossBackgroundColor &&
@@ -336,20 +334,20 @@ export class DataCell extends BaseCell<ViewMeta> {
         backgroundColor = attrs.fill;
       }
     }
-    return { backgroundColor, strokeColor };
+    return { backgroundColor, backgroundColorOpacity };
   }
 
   /**
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const { backgroundColor: fill, strokeColor: stroke } =
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill,
-      stroke,
+      fillOpacity,
     });
   }
 

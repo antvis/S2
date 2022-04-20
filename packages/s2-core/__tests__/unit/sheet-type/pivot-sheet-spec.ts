@@ -1,8 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer, sleep } from 'tests/util/helpers';
-import * as dataCfg from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
+import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -20,6 +20,7 @@ import {
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
+import { CornerCell } from '@/cell/corner-cell';
 
 const originalDataCfg = cloneDeep(dataCfg);
 
@@ -181,6 +182,8 @@ describe('PivotSheet Tests', () => {
       sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
       expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+      sheet.destroy();
     });
 
     test.each([
@@ -214,6 +217,8 @@ describe('PivotSheet Tests', () => {
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
         expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -247,6 +252,8 @@ describe('PivotSheet Tests', () => {
         });
 
         expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -279,6 +286,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(defaultTooltipContent),
         ).toBeFalsy();
+
+        sheet.destroy();
       },
     );
 
@@ -314,6 +323,8 @@ describe('PivotSheet Tests', () => {
         expect(
           sheet.tooltip.container.contains(methodTooltipContent),
         ).toBeTruthy();
+
+        sheet.destroy();
       },
     );
 
@@ -361,6 +372,8 @@ describe('PivotSheet Tests', () => {
       expect(customShow).toHaveBeenCalled();
       expect(customHide).toHaveBeenCalled();
       expect(customDestroy).toHaveBeenCalled();
+
+      sheet.destroy();
     });
 
     test('should show invalid custom tooltip warning', () => {
@@ -388,6 +401,8 @@ describe('PivotSheet Tests', () => {
           sheet.tooltip as unknown
         )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
+
+      sheet.destroy();
     });
   });
 
@@ -409,7 +424,9 @@ describe('PivotSheet Tests', () => {
     // save original data cfg
     expect(s2.store.get('originalDataCfg')).toEqual(newDataCfg);
     // update data cfg
-    expect(s2.dataCfg).toEqual(getSafetyDataConfig(newDataCfg));
+    expect(s2.dataCfg).toEqual(
+      getSafetyDataConfig(originalDataCfg, newDataCfg),
+    );
   });
 
   test('should set options', () => {
@@ -479,16 +496,16 @@ describe('PivotSheet Tests', () => {
     expect(s2.getColumnNodes()).toHaveLength(3);
   });
 
-  test('should change sheet size', () => {
-    s2.changeSize(1000, 500);
+  test('should change sheet container size', () => {
+    s2.changeSheetSize(1000, 500);
 
-    expect(s2.options.width).toEqual(1000);
-    expect(s2.options.height).toEqual(500);
+    expect(s2.options.width).toStrictEqual(1000);
+    expect(s2.options.height).toStrictEqual(500);
 
     const canvas = s2.container.get('el') as HTMLCanvasElement;
 
-    expect(canvas.style.width).toEqual(`1000px`);
-    expect(canvas.style.height).toEqual(`500px`);
+    expect(canvas.style.width).toStrictEqual(`1000px`);
+    expect(canvas.style.height).toStrictEqual(`500px`);
   });
 
   test('should set display:block style with canvas', () => {
@@ -521,9 +538,49 @@ describe('PivotSheet Tests', () => {
     expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
   });
 
+  test.each([
+    {
+      width: s2Options.width + 100,
+      height: s2Options.height + 100,
+    },
+    {
+      width: s2Options.width + 100,
+      height: s2Options.height,
+    },
+    {
+      width: s2Options.width,
+      height: s2Options.height + 100,
+    },
+    {
+      width: s2Options.width,
+      height: s2Options.height,
+    },
+  ])(
+    'should skip change sheet container size if width and height not changed %o',
+    ({ width, height }) => {
+      s2.changeSheetSize(s2Options.width, s2Options.height);
+
+      const isCalled = width !== s2Options.width || height !== s2Options.height;
+
+      const changeSizeSpy = jest
+        .spyOn(s2.container, 'changeSize')
+        .mockImplementationOnce(() => {});
+
+      s2.changeSheetSize(width, height);
+
+      expect(s2.options.width).toStrictEqual(
+        isCalled ? width : s2.options.width,
+      );
+      expect(s2.options.height).toStrictEqual(
+        isCalled ? height : s2.options.height,
+      );
+      expect(changeSizeSpy).toHaveBeenCalledTimes(isCalled ? 1 : 0);
+    },
+  );
+
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
-    expect(s2.getInitColumnNodes()).toHaveLength(2);
+    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
   });
 
   test('should get pivot mode', () => {
@@ -567,6 +624,48 @@ describe('PivotSheet Tests', () => {
     renderSpy.mockRestore();
   });
 
+  test('should get extra field text', () => {
+    const pivotSheet = new PivotSheet(
+      container,
+      customMerge(originalDataCfg, {
+        fields: {
+          valueInCols: false,
+        },
+      }),
+      s2Options,
+    );
+    pivotSheet.render();
+
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
+    expect(get(extraField, 'actualText')).toEqual('数值');
+  });
+
+  // https://github.com/antvis/S2/issues/1212
+  test('should get custom extra field text', () => {
+    const cornerExtraFieldText = 'custom';
+
+    const pivotSheet = new PivotSheet(
+      container,
+      customMerge(originalDataCfg, {
+        fields: {
+          valueInCols: false,
+        },
+      }),
+      {
+        ...s2Options,
+        cornerExtraFieldText,
+      },
+    );
+    pivotSheet.render();
+
+    const extraField = last(
+      pivotSheet.facet.cornerHeader.getChildren(),
+    ) as CornerCell;
+    expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
+  });
+
   describe('Tree Collapse Tests', () => {
     test('should collapse rows with tree mode', () => {
       s2.setOptions({
@@ -586,19 +685,20 @@ describe('PivotSheet Tests', () => {
         node: null,
       };
 
-      const collapsedRows = {
-        [treeRowType.id]: treeRowType.isCollapsed,
+      const collapsedRowsType = {
+        collapsedRows: {
+          [treeRowType.id]: treeRowType.isCollapsed,
+        },
+        meta: null,
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, treeRowType);
 
-      expect(collapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(afterCollapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(s2.options.style.collapsedRows).toEqual(collapsedRows);
+      expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(s2.options.style.collapsedRows).toEqual(
+        collapsedRowsType.collapsedRows,
+      );
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       renderSpy.mockRestore();
@@ -740,11 +840,11 @@ describe('PivotSheet Tests', () => {
   test('should destroy sheet', () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     const hdAdapterDestroySpy = jest
       .spyOn(s2.hdAdapter, 'destroy')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     s2.render(false);
 

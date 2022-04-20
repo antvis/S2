@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ChromePicker } from 'react-color';
 import {
   HeaderActionIconProps,
   S2Options,
@@ -27,12 +28,13 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  ViewMeta,
   S2Theme,
   DataType,
+  generatePalette,
+  getPalette,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
-import { forEach, random } from 'lodash';
+import { debounce, forEach, random } from 'lodash';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -46,7 +48,7 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
-  defaultTheme,
+  strategyTheme,
   strategyOptions as mockStrategyOptions,
   mockGridAnalysisOptions,
   defaultOptions,
@@ -57,6 +59,7 @@ import {
   SheetType,
   PartDrillDown,
   PartDrillDownInfo,
+  Adaptive,
 } from '@/components';
 
 import './index.less';
@@ -64,6 +67,7 @@ import 'antd/dist/antd.min.css';
 import '@antv/s2/esm/style.css';
 
 const { TabPane } = Tabs;
+
 const fieldMap = {
   channel: ['物美', '华联'],
   sex: ['男', '女'],
@@ -83,6 +87,7 @@ const partDrillDown: PartDrillDown = {
         type: 'text',
       },
     ],
+    extra: <div>test</div>,
   },
   // drillItemsNum: 1,
   fetchData: (meta, drillFields) =>
@@ -146,8 +151,9 @@ function MainLayout() {
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
+  const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [adaptive, setAdaptive] = React.useState(false);
+  const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
@@ -157,6 +163,7 @@ function MainLayout() {
   const [strategyOptions, setStrategyOptions] =
     React.useState<S2Options>(mockStrategyOptions);
   const s2Ref = React.useRef<SpreadSheet>();
+  const [columnOptions, setColumnOptions] = React.useState([]);
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
@@ -186,11 +193,12 @@ function MainLayout() {
     });
   };
 
-  const onSizeChange = (type: 'width' | 'height') => (e) => {
-    updateOptions({
-      [type]: e.target.value,
-    });
-  };
+  const onSizeChange = (type: 'width' | 'height') =>
+    debounce((e) => {
+      updateOptions({
+        [type]: Number(e.target.value),
+      });
+    }, 300);
 
   const onScrollSpeedRatioChange =
     (type: 'horizontal' | 'vertical') => (value: number) => {
@@ -208,11 +216,9 @@ function MainLayout() {
   };
 
   const onThemeChange = (e: RadioChangeEvent) => {
-    setThemeCfg(
-      customMerge({}, themeCfg, {
-        name: e.target.value,
-      }),
-    );
+    setThemeCfg({
+      name: e.target.value,
+    });
   };
 
   const onSheetTypeChange = (e: RadioChangeEvent) => {
@@ -220,10 +226,9 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) => (cellInfo?: TargetCellInfo | ViewMeta) => {
-      if (options.debug) {
-        console.debug(name, cellInfo);
-      }
+    (name: string) =>
+    (...args: unknown[]) => {
+      console.log(name, ...args);
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -235,6 +240,13 @@ function MainLayout() {
         content: <CustomColTooltip />,
       });
     }
+  };
+
+  const getColumnOptions = (sheetType: SheetType) => {
+    if (sheetType === 'table') {
+      return dataCfg.fields.columns;
+    }
+    return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
   };
 
   //  ================== Hooks ========================
@@ -256,6 +268,7 @@ function MainLayout() {
         updateOptions(defaultOptions);
         break;
     }
+    setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
@@ -264,9 +277,6 @@ function MainLayout() {
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
     {},
     {
-      width: 600,
-      height: 400,
-      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -302,9 +312,8 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id !== 'root[&]家具[&]桌子[&]number',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="Filter colCell" />,
             });
@@ -315,9 +324,8 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id === 'root[&]家具[&]桌子[&]number',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="SortDown colCell" />,
             });
@@ -326,9 +334,8 @@ function MainLayout() {
         {
           iconNames: ['FilterAsc'],
           belongsCell: 'cornerCell',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="FilterAsc cornerCell" />,
             });
@@ -337,9 +344,8 @@ function MainLayout() {
         {
           iconNames: ['SortDown', 'Filter'],
           belongsCell: 'rowCell',
-          action: (props: HeaderActionIconProps) => {
-            const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
+          action: ({ event }: HeaderActionIconProps) => {
+            s2Ref.current?.showTooltip({
               position: { x: event.clientX, y: event.clientY },
               content: <ActionIconTooltip name="SortDown & Filter rowCell" />,
             });
@@ -351,7 +357,7 @@ function MainLayout() {
   );
 
   const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
-    let newDataCfg;
+    let newDataCfg: S2DataConfig;
     switch (e.target.value) {
       case 'multiMeasure':
         newDataCfg = multiMeasure;
@@ -377,9 +383,9 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="strategy" type="card">
+      <Tabs defaultActiveKey="basic" type="card" destroyInactiveTabPane>
         <TabPane tab="基础表" key="basic">
-          <Collapse defaultActiveKey="filter">
+          <Collapse defaultActiveKey={['filter', 'interaction']}>
             <Collapse.Panel header="筛选器" key="filter">
               <Space>
                 <Tooltip title="表格类型">
@@ -408,6 +414,34 @@ function MainLayout() {
                     <Radio.Button value="colorful">多彩蓝</Radio.Button>
                   </Radio.Group>
                 </Tooltip>
+              </Space>
+              <Space>
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <ChromePicker
+                        color={themeColor}
+                        onChangeComplete={(color) => {
+                          setThemeColor(color.hex);
+                          const palette = getPalette(themeCfg.name);
+                          const newPalette = generatePalette({
+                            ...palette,
+                            brandColor: color.hex,
+                          });
+                          setThemeCfg({
+                            name: themeCfg.name,
+                            palette: newPalette,
+                          });
+                        }}
+                      />
+                    </>
+                  }
+                >
+                  <Button size="small" style={{ marginLeft: 20 }}>
+                    主题色调整
+                  </Button>
+                </Popover>
               </Space>
               <Space style={{ margin: '20px 0', display: 'flex' }}>
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
@@ -556,7 +590,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={adaptive}
+                  defaultChecked={Boolean(adaptive)}
                   onChange={setAdaptive}
                 />
                 <Switch
@@ -613,42 +647,48 @@ function MainLayout() {
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
               <Space>
-                <Switch
-                  checkedChildren="选中聚光灯开"
-                  unCheckedChildren="选中聚光灯关"
-                  checked={mergedOptions.interaction.selectedCellsSpotlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        selectedCellsSpotlight: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="hover十字器开"
-                  unCheckedChildren="hover十字器关"
-                  checked={mergedOptions.interaction.hoverHighlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        hoverHighlight: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="hover聚焦开"
-                  unCheckedChildren="hover聚焦关"
-                  checked={mergedOptions.interaction.hoverFocus}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        hoverFocus: checked,
-                      },
-                    });
-                  }}
-                />
+                <Tooltip title="高亮选中单元格">
+                  <Switch
+                    checkedChildren="选中聚光灯开"
+                    unCheckedChildren="选中聚光灯关"
+                    checked={mergedOptions.interaction.selectedCellsSpotlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          selectedCellsSpotlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="高亮当前行列单元格">
+                  <Switch
+                    checkedChildren="hover十字器开"
+                    unCheckedChildren="hover十字器关"
+                    checked={mergedOptions.interaction.hoverHighlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverHighlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="在数值单元格悬停800ms,显示tooltip">
+                  <Switch
+                    checkedChildren="hover聚焦开"
+                    unCheckedChildren="hover聚焦关"
+                    checked={mergedOptions.interaction.hoverFocus}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          hoverFocus: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
                 <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
                   <Switch
                     checkedChildren="自动重置交互样式开"
@@ -665,6 +705,37 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
+                <Tooltip
+                  title={
+                    <>
+                      <p>默认隐藏列 </p>
+                      <p>明细表: 列头指定 field: number</p>
+                      <p>透视表: 列头指定id: root[&]家具[&]沙发[&]number</p>
+                    </>
+                  }
+                >
+                  <Select
+                    style={{ width: 300 }}
+                    defaultValue={mergedOptions.interaction.hiddenColumnFields}
+                    mode="multiple"
+                    placeholder="默认隐藏列"
+                    onChange={(fields) => {
+                      updateOptions({
+                        interaction: {
+                          hiddenColumnFields: fields,
+                        },
+                      });
+                    }}
+                  >
+                    {columnOptions.map((column) => {
+                      return (
+                        <Select.Option value={column} key={column}>
+                          {column}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Tooltip>
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="宽高调整热区配置" key="resize">
@@ -673,7 +744,6 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              key="basic"
               dataCfg={dataCfg as S2DataConfig}
               options={mergedOptions as S2Options}
               sheetType={sheetType}
@@ -702,12 +772,17 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onLoad={logHandler('onLoad')}
+              onAfterRender={logHandler('onAfterRender')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={logHandler('onCornerCellClick')}
               onDataCellClick={logHandler('onDataCellClick')}
+              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onCopied={logHandler('onCopied')}
+              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              onSelected={logHandler('onSelected')}
             />
           )}
         </TabPane>
@@ -735,7 +810,7 @@ function MainLayout() {
             onRowCellClick={(v) => console.log(v)}
             header={{ exportCfg: { open: true } }}
             themeCfg={{
-              theme: defaultTheme as unknown as S2Theme,
+              theme: strategyTheme,
               name: 'gray',
             }}
           />

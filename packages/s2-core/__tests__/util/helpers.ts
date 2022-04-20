@@ -6,7 +6,7 @@ import { Canvas } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { S2Options, ViewMeta } from '@/common/interface';
+import { S2CellType, S2Options, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
@@ -50,7 +50,7 @@ export const createFakeSpreadSheet = () => {
     }
   }
 
-  const s2 = new FakeSpreadSheet() as SpreadSheet;
+  const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,
@@ -112,13 +112,18 @@ export const createMockCellInfo = (
     colIndex,
     rowIndex,
     type: undefined,
+    x: 0,
+    y: 0,
   };
-  const mockCellMeta = omit(mockCellViewMeta, 'update');
+  const mockCellMeta = omit(mockCellViewMeta, ['x', 'y', 'update']);
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
+    update: jest.fn(),
+    getActualText: jest.fn(),
+    getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
-  };
+  } as unknown as S2CellType;
 
   return {
     mockCell,

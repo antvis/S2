@@ -10,13 +10,12 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import {
-  CellBorderPosition,
-  FormatResult,
-  TextTheme,
-} from '@/common/interface';
+import { CellBorderPosition, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { getTextPosition, getBorderPositionAndStyle } from '@/utils/cell/cell';
+import {
+  getTextAndFollowingIconPosition,
+  getBorderPositionAndStyle,
+} from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -65,8 +64,7 @@ export class RowCell extends HeaderCell {
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
-      stroke: 'transparent',
-      opacity: backgroundColorOpacity,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 
@@ -155,17 +153,6 @@ export class RowCell extends HeaderCell {
         });
       });
     }
-  }
-
-  protected getFormattedValue(value: string): string {
-    let content = value;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-    if (formatter) {
-      content = formatter(value);
-    }
-    return content;
   }
 
   // draw text
@@ -282,15 +269,15 @@ export class RowCell extends HeaderCell {
     const iconWidth = icon.size + icon.margin.right;
 
     let parent = this.meta.parent;
-    let multiplier = 0;
+    let sum = 0;
     while (parent) {
       if (parent.height !== 0) {
-        multiplier += iconWidth;
+        sum += iconWidth;
       }
       parent = parent.parent;
     }
 
-    return multiplier;
+    return sum;
   }
 
   protected getTextIndent() {
@@ -305,41 +292,57 @@ export class RowCell extends HeaderCell {
     const { text, bolderText } = this.getStyle();
     const style = isLeaf && !isTotals ? text : bolderText;
 
-    const textAlign = text.textAlign;
-
     return {
       ...style,
-      textAlign,
       textBaseline: 'top',
     };
   }
 
-  protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
-    let content = label;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-    if (formatter) {
-      content = formatter(label);
-    }
-    return {
-      formattedValue: content,
-      value: label,
-    };
-  }
-
   protected getIconPosition() {
+    // 不同 textAlign 下，对应的文字绘制点 x 不同
     const { x, y, textAlign } = this.textShape.cfg.attrs;
+    const iconMarginLeft = this.getStyle().icon.margin.left;
 
+    if (textAlign === 'left') {
+      /**
+       * attrs.x
+       *   |
+       *   v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: x + this.actualTextWidth + iconMarginLeft,
+        y,
+      };
+    }
+    if (textAlign === 'right') {
+      /**
+       *           attrs.x
+       *             |
+       *             v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: x + iconMarginLeft,
+        y,
+      };
+    }
+
+    /**
+     *      attrs.x
+     *        |
+     *        v
+     *   +---------+  +----+
+     *   |  text   |--|icon|
+     *   +---------+  +----+
+     */
     return {
-      x:
-        x +
-        (textAlign === 'center'
-          ? this.actualTextWidth / 2
-          : this.actualTextWidth) +
-        this.getStyle().icon.margin.left,
-      y: y,
+      x: x + this.actualTextWidth / 2 + iconMarginLeft,
+      y,
     };
   }
 
@@ -348,22 +351,36 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
+  private getTextArea() {
+    const content = this.getContentArea();
+    const textIndent = this.getTextIndent();
+    return {
+      ...content,
+      x: content.x + textIndent,
+      width: content.width - textIndent,
+    };
+  }
+
   protected getTextPosition(): Point {
-    const { y, height: contentHeight } = this.getContentArea();
+    const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
-    const textIndent = this.getTextIndent();
     const textY = getAdjustPosition(
-      y,
-      contentHeight,
+      textArea.y,
+      textArea.height,
       scrollY,
       height,
       fontSize,
     );
-    const textX =
-      getTextPosition(this.getContentArea(), this.getTextStyle()).x +
-      textIndent;
+    const textX = getTextAndFollowingIconPosition(
+      textArea,
+      this.getTextStyle(),
+      0,
+      this.getIconStyle(),
+      this.getActionIconsCount(),
+    ).text.x;
+
     return { x: textX, y: textY };
   }
 

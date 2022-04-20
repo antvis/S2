@@ -59,16 +59,16 @@ S2 内置 3 套主题效果：
 
 ## 自定义 schema
 
-如果内置的主题不满意你的要求，那么你可以通过自定义 schema 的方式重写特定的配置。
+如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你需要为`setThemeCfg`配置`theme`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)：
+此时你需要为 `setThemeCfg` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 const customTheme = {
     background: {
-    color: HEADER_BACK_COLOR,
+        color: '#353c59',
     }
 };
 
@@ -80,29 +80,37 @@ s2.render();
 
 ## 自定义色板
 
-自定义 schema 虽然和灵活，但是心智负担比较重，需要对 schema 的结构有比较详细了解。因此我们还提供了自定义色板功能，此时你需要为`setThemeCfg`配置`palette`对象，它的类型为 [S2Theme](/zh/docs/api/general/S2Theme#palette)：
+自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/zh/docs/api/general/S2Theme#palette)：
+
+### 自选色板颜色
+
+你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
+
+另外为方便大家调配专属色板，S2 官方提供了[自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 const s2Palette = {
+  // 基础配色色板
   basicColors: [
-    "#FFFFFF",
-    "#F8F5FE",
-    "#EDE1FD",
-    "#873BF4",
-    "#7232CF",
-    "#AB76F7",
-    "#FFFFFF",
-    "#DDC7FC",
-    "#9858F5",
-    "#B98EF8",
-    "#873BF4",
-    "#282B33",
-    "#121826",
+    '#FFFFFF',
+    '#F8F5FE',
+    '#EDE1FD',
+    '#873BF4',
+    '#7232CF',
+    '#7232CF',
+    '#7232CF',
+    '#AB76F7',
+    '#FFFFFF',
+    '#DDC7FC',
+    '#9858F5',
+    '#B98EF8',
+    '#873BF4',
+    '#282B33',
+    '#121826',
   ],
-
-  // ---------- semantic colors ----------
+  // 语义化色板
   semanticColors: {
     red: "#FF4D4F",
     green: "#29A294",
@@ -112,9 +120,38 @@ s2.setThemeCfg({ palette: s2Palette });
 s2.render();
 ```
 
-<playground path="theme/custom/demo/custom-palette.ts" rid='custom-palette'></playground>
+<playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
 
-色板对照表：
+### 按主题色自动生成
+
+[自选色板颜色](#自选色板颜色) 的调配自由度大，但每个颜色都需要单独确定，整体过程较为复杂。为满足用户的一般主题诉求，S2 还提供了根据主题色生成色板的功能。
+
+```js
+import { getPalette, generatePalette, PivotSheet } from '@antv/s2';
+
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+// 主题色
+const themeColor = '#EA1720';
+// 使用内置的 colorful 色板作为参考色板
+// 根据风格差异，你也可以选择 default、gray 作为参考色板
+const palette = getPalette('colorful');
+// 使用参考色板 & 主题色值生成新色板
+const newPalette = generatePalette({ ...palette, brandColor: themeColor });
+
+// 使用新色板设置主题
+s2.setThemeCfg({
+  palette: newPalette,
+});
+
+s2.setThemeCfg({ palette: s2Palette });
+s2.render();
+
+```
+
+<playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
+
+## 色板对照表
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
  <colgroup>
@@ -212,9 +249,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=2 style="text-align: center; background: #f7faff; "> #f7faff</td>
-        <td rowspan=2 style="text-align: center; background: #FcFcFd;"> #FcFcFd</td>
-        <td rowspan=2 style="text-align: center;  background: #F4F7FE;"> #F4F7FE</td>
+        <td rowspan=2 style="text-align: center; background: #F5F8FE; "> #F5F8FE</td>
+        <td rowspan=2 style="text-align: center; background: #FAFBFB;"> #FAFBFB</td>
+        <td rowspan=2 style="text-align: center;  background: #F5F8FF;"> #F5F8FF</td>
         <td style="text-align: left;">
             行头单元格背景填充色 </br>
         </td>
@@ -231,9 +268,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=5 style="text-align: center; background: #E1EAFE; "> #E1EAFE</td>
-        <td rowspan=5 style="text-align: center; background: #F4F5F7;"> #F4F5F7</td>
-        <td rowspan=5 style="text-align: center;  background: #DDE7FD;"> #DDE7FD</td>
+        <td rowspan=5 style="text-align: center; background: #E0E9FD; "> #E0E9FD</td>
+        <td rowspan=5 style="text-align: center; background: #F0F2F4;"> #F0F2F4</td>
+        <td rowspan=5 style="text-align: center;  background: #E1EAFE;"> #E1EAFE</td>
         <td style="text-align: left;">
             行头单元格鼠标悬停态背景填充色 </br>
         </td>
@@ -274,8 +311,8 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=2 style="text-align: center; background: #E1EAFE; "> #E1EAFE</td>
-        <td rowspan=2 style="text-align: center; background: #E7E8EA;"> #E7E8EA</td>
+        <td rowspan=2 style="text-align: center; background: #E0E9FD; "> #E0E9FD</td>
+        <td rowspan=2 style="text-align: center; background: #F0F2F4;"> #F0F2F4</td>
         <td rowspan=2 style="text-align: center;  background: #3471F9;"> #3471F9</td>
         <td style="text-align: left;">
             角头单元格背景填充色 </br>
@@ -293,9 +330,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=2 style="text-align: center; background: #CCDBFD; "> #CCDBFD</td>
-        <td rowspan=2 style="text-align: center; background: #E7E8EA;"> #E7E8EA</td>
-        <td rowspan=2 style="text-align: center;  background: #2C60D3;"> #2C60D3</td>
+        <td rowspan=2 style="text-align: center; background: #CCDBFC; "> #CCDBFC</td>
+        <td rowspan=2 style="text-align: center; background: #E7E9ED;"> #E7E9ED</td>
+        <td rowspan=2 style="text-align: center;  background: #2C60D4;"> #2C60D4</td>
         <td style="text-align: left;">
             列头单元格鼠标鼠标悬停态背景填充色 </br>
         </td>
@@ -312,9 +349,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #2C60D3; color:white;"> #2C60D3</td>
-        <td style="text-align: center; background: #CECFD1;color:white; "> #CECFD1</td>
-        <td style="text-align: center;  background: #2C60D3;color:white;"> #2C60D3</td>
+        <td style="text-align: center; background: #234DAB; color:white;"> #234DAB</td>
+        <td style="text-align: center; background: #6E757F;color:white; "> #6E757F</td>
+        <td style="text-align: center;  background: #2C60D4;color:white;"> #2C60D4</td>
         <td style="text-align: left;">
             刷选预选中状态蒙板背景填充色 </br>
         </td>
@@ -323,9 +360,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #0000EE; color:white;"> #0000EE</td>
-        <td style="text-align: center; background: #A9AAAB; color:white; "> #A9AAAB</td>
-        <td style="text-align: center;  background: #0000EE; color:white;"> #0000EE</td>
+        <td style="text-align: center; background: #326EF4; color:white;"> #326EF4</td>
+        <td style="text-align: center; background: #565C64; color:white; "> #565C64</td>
+        <td style="text-align: center;  background: #2C60D4; color:white;"> #2C60D4</td>
         <td style="text-align: left;">
             行头单元格链接文本颜色 </br>
         </td>
@@ -335,8 +372,8 @@ s2.render();
     </tr>
     <tr>
         <td rowspan=4 style="text-align: center; background: #326EF4; "> #326EF4</td>
-        <td rowspan=4 style="text-align: center; background: #616162;"> #616162</td>
-        <td rowspan=4 style="text-align: center;  background: #326EF4;"> #326EF4</td>
+        <td rowspan=4 style="text-align: center; background: #9DA7B6;"> #9DA7B6</td>
+        <td rowspan=4 style="text-align: center;  background: #3471F9;"> #3471F9</td>
         <td style="text-align: left;">
             数据单元格柱状图填充色 </br>
         </td>
@@ -388,9 +425,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #EBF2FF; "> #EBF2FF</td>
-        <td rowspan=4 style="text-align: center; background: #F2F2F2;"> #F2F2F2</td>
-        <td rowspan=4 style="text-align: center;  background: #E0E9FE;"> #E0E9FE</td>
+        <td rowspan=4 style="text-align: center; background: #E0E9FD; "> #E0E9FD</td>
+        <td rowspan=4 style="text-align: center; background: #F0F2F4;"> #F0F2F4</td>
+        <td rowspan=4 style="text-align: center;  background: #E1EAFE;"> #E1EAFE</td>
         <td style="text-align: left;">
             行头单元格水平边框颜色 </br>
         </td>
@@ -423,9 +460,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #D6E3FE; "> #D6E3FE</td>
-        <td rowspan=4 style="text-align: center; background: #E8E6E6;"> #E8E6E6</td>
-        <td rowspan=4 style="text-align: center;  background: #5286F9;"> #5286F9</td>
+        <td rowspan=4 style="text-align: center; background: #CCDBFC; "> #CCDBFC</td>
+        <td rowspan=4 style="text-align: center; background: #E7E9ED;"> #E7E9ED</td>
+        <td rowspan=4 style="text-align: center;  background: #5286FA;"> #5286FA</td>
         <td style="text-align: left;">
             角头单元格水平边框颜色 </br>
         </td>
@@ -458,9 +495,9 @@ s2.render();
         </td>
     </tr>
      <tr>
-        <td style="text-align: center; background: #3471F9; "> #3471F9</td>
-        <td style="text-align: center; background: #D1D4DC;"> #D1D4DC</td>
-        <td style="text-align: center;  background: #5286F9;"> #5286F9</td>
+        <td style="text-align: center; background: #326EF4; "> #326EF4</td>
+        <td style="text-align: center; background: #BAC1CC;"> #BAC1CC</td>
+        <td style="text-align: center;  background: #5286FA;"> #5286FA</td>
         <td style="text-align: left;">
             表体水平边框颜色（一级横向分割线） </br>
         </td>
@@ -469,8 +506,8 @@ s2.render();
         </td>
     </tr>
   <tr>
-        <td style="text-align: center; background: #3471F9; "> #3471F9</td>
-        <td style="text-align: center; background: #BEC2CB;"> #BEC2CB</td>
+        <td style="text-align: center; background: #326EF4; "> #326EF4</td>
+        <td style="text-align: center; background: #BAC1CC;"> #BAC1CC</td>
         <td style="text-align: center;  background: #3471F9;"> #3471F9</td>
         <td style="text-align: left;">
            表体垂直边框颜色（一级纵向分割线） </br>
@@ -480,9 +517,9 @@ s2.render();
         </td>
     </tr>
       <tr>
-        <td rowspan=2 style="text-align: center; background: #282B33; color: white; "> #282B33</td>
-        <td rowspan=2 style="text-align: center; background: #282B33; color: white;"> #282B33</td>
-        <td rowspan=2 style="text-align: center;  background: #282B33; color: white;"> #282B33</td>
+        <td rowspan=2 style="text-align: center; background: #000000; color: white; "> #000000</td>
+        <td rowspan=2 style="text-align: center; background: #000000; color: white;"> #000000</td>
+        <td rowspan=2 style="text-align: center;  background: #000000; color: white;"> #000000</td>
         <td style="text-align: left;">
            数据单元格粗体文本颜色 </br>
         </td>
@@ -499,9 +536,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=5 style="text-align: center; background: #121826; color: white; "> #121826</td>
-        <td rowspan=5 style="text-align: center; background: #121826; color: white;"> #121826</td>
-        <td rowspan=5 style="text-align: center;  background: #121826; color: white;"> #121826</td>
+        <td rowspan=5 style="text-align: center; background: #000000; color: white; "> #000000</td>
+        <td rowspan=5 style="text-align: center; background: #000000; color: white;"> #000000</td>
+        <td rowspan=5 style="text-align: center;  background: #000000; color: white;"> #000000</td>
         <td style="text-align: left;">
            行头单元格粗体文本颜色 </br>
         </td>

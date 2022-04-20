@@ -1,17 +1,17 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
+import { isMultiSelectionKey } from 'src/utils/interaction/select-event';
 import {
-  hideColumns,
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
 } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
-  InteractionKeyboardKey,
   InterceptType,
   CellTypes,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
+  InteractionStateName,
 } from '@/common/constant';
 import {
   TooltipOperation,
@@ -40,7 +40,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (event.key === InteractionKeyboardKey.META) {
+        if (isMultiSelectionKey(event)) {
           this.isMultiSelection = true;
         }
       },
@@ -49,7 +49,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (event.key === InteractionKeyboardKey.META) {
+      if (isMultiSelectionKey(event)) {
         this.isMultiSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
@@ -58,7 +58,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
-      this.handleRowColClick(event, this.spreadsheet.isHierarchyTreeType());
+      this.handleRowColClick(event);
     });
   }
 
@@ -68,23 +68,17 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private handleRowColClick = (event: CanvasEvent, isTreeRowClick = false) => {
+  private handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
     const { interaction } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
 
-    if (interaction.isSelectedCell(cell)) {
-      interaction.reset();
-      return;
-    }
+    const success = interaction.selectHeaderCell({
+      cell,
+      isMultiSelection: this.isMultiSelection,
+    });
 
-    if (
-      interaction.selectHeaderCell({
-        cell,
-        isTreeRowClick,
-        isMultiSelection: this.isMultiSelection,
-      })
-    ) {
+    if (success) {
       this.showTooltip(event);
     }
   };
@@ -114,12 +108,18 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     operation: TooltipOperation,
   ): TooltipOperatorOptions {
     const cell = this.spreadsheet.getCell(event.target);
-    const cellMeta = cell.getMeta?.();
+    const cellMeta = cell.getMeta();
     const isColCell = cell.cellType === CellTypes.COL_CELL;
-    // 是叶子节点, 并且是列头单元格, 且大于一个时, 显示隐藏按钮
-    const isMultiColumns = this.spreadsheet.getColumnNodes().length > 1;
+
+    // 只有一个叶子节点时, 不显示隐藏按钮
+    const isOnlyOneLeafColumn =
+      this.spreadsheet.getColumnLeafNodes().length === 1;
+
     const enableHiddenColumnOperator =
-      isColCell && isMultiColumns && cellMeta.isLeaf && operation.hiddenColumns;
+      isColCell &&
+      !isOnlyOneLeafColumn &&
+      cellMeta.isLeaf &&
+      operation.hiddenColumns;
 
     const hiddenColumnsMenu: TooltipOperatorMenu =
       enableHiddenColumnOperator && {
@@ -136,10 +136,14 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindTableColExpand() {
-    this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (node) => {
+    this.spreadsheet.on(S2Event.LAYOUT_COLS_EXPANDED, (node) => {
       this.handleExpandIconClick(node);
     });
   }
+
+  private getHideColumnField = (node: Node) => {
+    return this.spreadsheet.isTableMode() ? node.field : node.id;
+  };
 
   /**
    * 隐藏选中的列
@@ -158,16 +162,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       .getActiveCells()
       .map((cell) => cell.getMeta());
 
-    if (this.spreadsheet.isTableMode()) {
-      const selectedColumnFields = selectedColumnNodes.map(
-        ({ field }) => field,
-      );
-      // 兼容多选
-      hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
-    } else {
-      const selectedColumnFields = selectedColumnNodes.map(({ id }) => id);
-      hideColumns(this.spreadsheet, selectedColumnFields, true);
-    }
+    const selectedColumnFields = selectedColumnNodes.map(
+      this.getHideColumnField,
+    );
+    // 兼容多选
+    hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
   private handleExpandIconClick(node: Node) {
@@ -183,8 +182,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const { hiddenColumnFields: lastHideColumnFields } =
       this.spreadsheet.options.interaction;
 
-    const willDisplayColumnFields = hideColumnNodes.map((hideColumnNode) =>
-      this.spreadsheet.isTableMode() ? hideColumnNode.field : hideColumnNode.id,
+    const willDisplayColumnFields = hideColumnNodes.map(
+      this.getHideColumnField,
     );
     const hiddenColumnFields = difference(
       lastHideColumnFields,

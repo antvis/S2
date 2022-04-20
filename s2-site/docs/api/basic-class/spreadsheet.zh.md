@@ -28,8 +28,8 @@ order: 1
 | frozenBottomGroup | 底部冻结区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | interaction | 交互 |  [Interaction](/zh/docs/api/basic-class/interaction) |
 | hdAdapter | 高清适配 | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |
-| on | 事件订阅 | (event: [S2Event](zh/docs/manual/advanced/interaction/basic#交互事件）, listener: () => void) => void |
-| emit | 事件发布 | (event: [S2Event](zh/docs/manual/advanced/interaction/basic#交互事件）, ...args: any[]) => void |
+| on | 事件订阅 | (event: [S2Event](/zh/docs/manual/advanced/interaction/basic), listener: () => void) => void |
+| emit | 事件发布 | (event: [S2Event](/zh/docs/manual/advanced/interaction/basic), ...args: any[]) => void |
 | getDataSet | 获取数据集 | (options: [S2Options](/zh/docs/api/general/S2Options)) => [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |
 | isPivotMode | 是否是透视表 | `() => boolean` |
 | isHierarchyTreeType | 是否是树状结构 | `() => boolean` |
@@ -50,15 +50,15 @@ order: 1
 | setThemeCfg | 更新主题配置 | (themeCfg: [ThemeCfg](/zh/docs/api/general/S2Theme)) => void |
 | updatePagination | 更新分页 | (pagination: [Pagination](/zh/docs/api/general/S2Options#pagination)) => void |
 | getContentHeight | 获取当前表格实际内容高度 | `() => number` |
-| changeSize | 修改表格画布大小，不用重新加载数据 | `(width?: number, height?: number) => void` |
+| changeSheetSize （别名：changeSize) | 修改表格画布大小，不用重新加载数据 | `(width?: number, height?: number) => void` |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|
 | getRowNodes | 获取行头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
-| getColumnNodes | 获取列节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getColumnNodes | 获取列头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
 | updateScrollOffset | 更新滚动偏移 | (config: [OffsetConfig](#offsetconfig)) => void |
 | getCell | 根据 event.target 获取当前 单元格 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/zh/docs/api/basic-class/base-cell#s2celltype) |
 | getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |
 | getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
-| getInitColumnNodes | 获取初次渲染的列头信息 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
+| getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
 
 ### S2MountContainer
 

@@ -52,6 +52,7 @@ jest.mock('src/sheet-type', () => {
         getTotalsConfig: jest.fn().mockReturnValue({}),
         getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
+        getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
         facet: {
@@ -77,6 +78,7 @@ jest.mock('src/data-set/pivot-data-set', () => {
           find(meta, (m) => m.field === field),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
         getCellData: actualPivotDataSet.prototype.getCellData,
+        getMultiData: jest.fn(),
         getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
       };
     }),
@@ -94,7 +96,7 @@ describe('Pivot Mode Facet Test', () => {
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,
-    dataSet: dataSet,
+    dataSet,
     dataCell: (fct) => new DataCell(fct, s2),
     ...assembleDataCfg().fields,
     ...assembleOptions(),
@@ -226,7 +228,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowHeader.cfg.visible).toBeTrue();
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.cfg.children).toHaveLength(3);
+      expect(cornerHeader.cfg.children).toHaveLength(2);
       expect(cornerHeader.cfg.visible).toBeTrue();
 
       expect(columnHeader instanceof ColHeader).toBeTrue();

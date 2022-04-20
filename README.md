@@ -140,7 +140,7 @@ const s2DataConfig = {
 ### 2. 配置项准备
 
 ```ts
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
 }
@@ -157,7 +157,7 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2options)
+const s2 = new PivotSheet(container, s2DataConfig, s2Options)
 
 s2.render()
 ```
@@ -217,4 +217,4 @@ yarn site:start
 
 ## 📄 License
 
-MIT@[AntV](https://github.com/antvis).
+MIT@[AntV](https://github.com/antvis)

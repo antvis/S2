@@ -16,6 +16,7 @@ S2 提供开箱即用的维度切换组件 `Switcher` 。借助它，你可以�
 const switcherFields = {
   rows: {
     items: [{ id: "province" }, { id: "city" }],
+    allowEmpty: false,
   },
   columns: {
     items: [{ id: "type" }],
@@ -55,36 +56,28 @@ Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns` 和
 
 > 其中 `rows` 和 `columns` 两个维度可以相互拖拽到彼此的配置框中，而 `values` 只能在自己的配置框中更改字段顺序。
 
-通过传入不同维度配置，Switcher 的展示形态也会有所不同：
+通过传入`sheetType`以及维度配置，Switcher 的展示形态也会有所不同：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
-    <col width="20%"/>
-    <col width="80%" />
+    <col width="50%"/>
+    <col width="50%" />
   </colgroup>
   <tbody>
     <tr>
       <td style="text-align: center;">
-      一种维度
+      一种维度（主要用于明细表）
       </td>
-      <td>
-        <img height="200" alt="one-dimension" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ">
+      <td style="text-align: center;">
+        三种维度（主要用于透视表）
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
-      两种维度
+       <img height="400" alt="one-dimension" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ">
       </td>
-      <td>
-        <img height="200" alt="two-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*dlP1T7hcGiIAAAAAAAAAAAAAARQnAQ">
-      </td>
-    </tr>
-    <tr>
       <td style="text-align: center;">
-      三种维度
-      </td>
-      <td>
-        <img height="300" alt="three-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*FTYGTLw7e5wAAAAAAAAAAAAAARQnAQ">
+        <img height="400" alt="three-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*FTYGTLw7e5wAAAAAAAAAAAAAARQnAQ">
       </td>
     </tr>
   </tbody>
@@ -112,6 +105,19 @@ const field = {
   ],
 };
 ```
+
+* 如果当前维度在移动交互中需要至少保留一个子项不能被拖拽出去，可以设置 `allowEmpty:false`, 该属性用于控制维度是否可以将全部子项拖出到其他维度：
+
+```js
+const field = {
+  allowEmpty: false, // 默认：true
+  items: [
+    /*...*/
+  ],
+};
+```
+
+![allowEmpty](https://gw.alipayobjects.com/zos/antfincdn/rUmA%26o3J%26/2022-02-24%25252017.31.46.gif)
 
 ### 提交修改
 

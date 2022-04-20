@@ -145,8 +145,8 @@ function MainLayout({ callback }) {
     s2Ref.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
-    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
-    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, logData);
+    s2Ref.current.on(S2Event.LAYOUT_COLS_EXPANDED, logData);
+    s2Ref.current.on(S2Event.LAYOUT_COLS_HIDDEN, logData);
     s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
       if (e.key === 'a' && e.metaKey) {
         e.preventDefault();
@@ -158,8 +158,8 @@ function MainLayout({ callback }) {
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
       s2Ref.current.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
-      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
-      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDDEN);
+      s2Ref.current.off(S2Event.LAYOUT_COLS_EXPANDED);
+      s2Ref.current.off(S2Event.LAYOUT_COLS_HIDDEN);
     };
   }, []);
 

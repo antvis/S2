@@ -1,9 +1,22 @@
-import { keys, has, map, toUpper, endsWith, uniq } from 'lodash';
-import { SortMethod, SortParam } from '@/common/interface';
+import {
+  keys,
+  has,
+  map,
+  toUpper,
+  endsWith,
+  uniq,
+  isEmpty,
+  includes,
+  split,
+  indexOf,
+  isArray,
+} from 'lodash';
+import { Fields, SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
 import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
+import { PivotDataSet } from '@/data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -66,7 +79,10 @@ const mergeDataWhenASC = (
 export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam } = params;
   const { sortFunc } = sortParam;
-  return sortFunc({ data: measureValues, ...sortParam }) || originValues;
+  return (
+    (sortFunc({ data: measureValues, ...sortParam }) as string[]) ||
+    originValues
+  );
 };
 
 export const sortByCustom = (params: SortActionParams): string[] => {
@@ -115,7 +131,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
   const { rows, columns } = dataSet.fields;
   const isInRows = rows.includes(sortFieldId);
-  let result = originValues;
+  let result;
 
   if (sortByMeasure) {
     const dimensions = sortAction(
@@ -159,27 +175,80 @@ export const processSort = (params: SortActionParams): string[] => {
   return result;
 };
 
-export const handleSortAction = (params: SortActionParams): string[] => {
-  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
+/**
+ * 生成 getTotalValue (前端计算）所需的 params
+ * @param originValue
+ * @param fields
+ * @param sortFieldId
+ */
+const createTotalParams = (
+  originValue: string,
+  fields: Fields,
+  sortFieldId: string,
+) => {
+  const totalParams = {};
+  const isMultipleDimensionValue = includes(originValue, ID_SEPARATOR);
+
+  if (isMultipleDimensionValue) {
+    // 获取行/列小计时，需要将所有行/列维度的值作为 params
+    const realOriginValue = split(originValue, ID_SEPARATOR);
+    const keys = fields?.rows?.includes(sortFieldId)
+      ? fields.rows
+      : fields.columns;
+
+    for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
+      totalParams[keys[i]] = realOriginValue[i];
+    }
+  } else {
+    totalParams[sortFieldId] = originValue;
+  }
+  return totalParams;
+};
+
+export const getSortByMeasureValues = (
+  params: SortActionParams,
+): DataType[] => {
+  const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    // 按指标只排序 - 最内侧的行列不需要汇总后排序
+    return dataSet.getMultiData(query);
+  }
+
+  const isRow =
+    fields?.columns?.includes(sortFieldId) &&
+    keys(query)?.length === 1 &&
+    has(query, EXTRA_FIELD);
+
+  // 按 data 数据中的小计，总计排序
+  const measureValues = dataSet.getMultiData(query, true, isRow);
+  if (measureValues && !isEmpty(measureValues)) {
+    return measureValues;
+  }
+  // 按前端的小计，总计排序
+  return map(originValues, (originValue) => {
+    const totalParams = createTotalParams(originValue, fields, sortFieldId);
+
+    return (dataSet as PivotDataSet).getTotalValue({
+      ...query,
+      ...totalParams,
+    });
+  });
+};
+
+export const handleSortAction = (params: SortActionParams): string[] => {
+  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
   let measureValues;
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
-    if (sortByMeasure === TOTAL_VALUE) {
-      // 按小计，总计排序
-      const isRow =
-        fields?.columns?.includes(sortFieldId) &&
-        keys(query)?.length === 1 &&
-        has(query, EXTRA_FIELD);
-      measureValues = dataSet.getMultiData(query, true, isRow);
-    } else {
-      measureValues = dataSet.getMultiData(query);
-    }
+    measureValues = getSortByMeasureValues(params);
   } else {
     // 其他都是维度本身的排序方式
     measureValues = originValues;
   }
+
   return processSort({
     sortParam,
     originValues,

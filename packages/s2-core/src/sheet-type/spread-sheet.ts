@@ -312,9 +312,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      if (isEmpty(getIcon(customSVGIcon.name))) {
-        registerIcon(customSVGIcon.name, customSVGIcon.svg);
-      }
+      registerIcon(customSVGIcon.name, customSVGIcon.svg);
     });
   }
 
@@ -326,8 +324,7 @@ export abstract class SpreadSheet extends EE {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     this.store.set('originalDataCfg', dataCfg);
-    const newDataCfg = clone(dataCfg);
-    this.dataCfg = getSafetyDataConfig(newDataCfg);
+    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
@@ -354,13 +351,13 @@ export abstract class SpreadSheet extends EE {
 
   public destroy() {
     this.emit(S2Event.LAYOUT_DESTROY);
-    this.facet.destroy();
+    this.facet?.destroy();
     this.hdAdapter?.destroy();
-    this.interaction.destroy();
-    this.store.clear();
+    this.interaction?.destroy();
+    this.store?.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
-    this.container.destroy();
+    this.container?.destroy();
   }
 
   /**
@@ -399,18 +396,33 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 修改表格画布大小，不用重新加载数据
    * @param width
    * @param height
+   * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
    */
   public changeSize(
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
-    const isEqualSize =
-      width === this.options.width && height === this.options.height;
+    this.changeSheetSize(width, height);
+  }
 
-    if (isEqualSize) {
+  /**
+   * 修改表格画布大小，不用重新加载数据
+   * @param width
+   * @param height
+   */
+  public changeSheetSize(
+    width: number = this.options.width,
+    height: number = this.options.height,
+  ) {
+    const containerWidth = this.container.get('width');
+    const containerHeight = this.container.get('height');
+
+    const isSizeChanged =
+      width !== containerWidth || height !== containerHeight;
+
+    if (!isSizeChanged) {
       return;
     }
 
@@ -428,7 +440,7 @@ export abstract class SpreadSheet extends EE {
       return this.facet.layoutResult.rowNodes;
     }
     return this.facet.layoutResult.rowNodes.filter(
-      (value) => value.level === level,
+      (node) => node.level === level,
     );
   }
 
@@ -437,12 +449,15 @@ export abstract class SpreadSheet extends EE {
    * @param level -1 = get all
    */
   public getColumnNodes(level = -1): Node[] {
+    const colNodes = this.facet?.layoutResult.colNodes || [];
     if (level === -1) {
-      return this.facet?.layoutResult.colNodes;
+      return colNodes;
     }
-    return this.facet?.layoutResult.colNodes.filter(
-      (value) => value.level === level,
-    );
+    return colNodes.filter((node) => node.level === level);
+  }
+
+  public getColumnLeafNodes(): Node[] {
+    return this.getColumnNodes().filter((node) => node.isLeaf);
   }
 
   /**
@@ -573,8 +588,8 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
-  public getInitColumnNodes(): Node[] {
-    return this.store.get('initColumnNodes', []);
+  public getInitColumnLeafNodes(): Node[] {
+    return this.store.get('initColumnLeafNodes', []);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

@@ -94,6 +94,34 @@ describe('merge test', () => {
     });
   });
 
+  test('should merge old datacfg', () => {
+    const oldDataCfg: Partial<S2DataConfig> = {
+      data: [{ value: 1 }, { value: 2 }],
+    };
+    const fields: Partial<S2DataConfig['fields']> = {
+      values: [],
+      valueInCols: true,
+    };
+    expect(
+      getSafetyDataConfig(oldDataCfg, {
+        fields,
+      }),
+    ).toStrictEqual({
+      data: [{ value: 1 }, { value: 2 }],
+      totalData: [],
+      fields: {
+        ...fields,
+        rows: [],
+        columns: [],
+        customTreeItems: [],
+        valueInCols: false,
+      },
+      meta: [],
+      sortParams: [],
+      filterParams: [],
+    });
+  });
+
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑demo 修改了默认配置 直接提交
     expect(getSafetyOptions(null)).toStrictEqual({
@@ -103,6 +131,7 @@ describe('merge test', () => {
       hierarchyType: 'grid',
       conditions: {},
       cornerText: '',
+      cornerExtraFieldText: '',
       totals: {},
       tooltip: {
         showTooltip: false,
@@ -136,6 +165,7 @@ describe('merge test', () => {
           rowResizeType: 'all',
         },
         scrollbarPosition: 'content',
+        eventListenerOptions: false,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

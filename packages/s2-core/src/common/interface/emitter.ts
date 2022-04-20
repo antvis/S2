@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
-import { Data, DataItem } from '@/common/interface/s2DataConfig';
+import { Data } from '@/common/interface/s2DataConfig';
 import { FilterParam, SortParams, Style } from '@/common/interface/basic';
 import {
   HiddenColumnsInfo,
@@ -10,20 +10,15 @@ import {
   CellScrollPosition,
 } from '@/common/interface';
 
-import { S2Event, SortMethodType } from '@/common/constant';
+import { S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
 
-type CollapsedRowsType = {
+export type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
     [x: number]: any;
   };
-};
-
-export type TableSortParams = {
-  sortKey: string;
-  sortMethod: SortMethodType;
-  sortBy?: (data: Data) => DataItem;
+  meta?: Node;
 };
 
 export type RowCellCollapseTreeRowsType = {
@@ -52,6 +47,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
+  [S2Event.GLOBAL_MOUSE_MOVE]: MouseEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
@@ -61,7 +57,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
 
   /** ================ Sort ================  */
-  [S2Event.RANGE_SORT]: (info: TableSortParams | SortParams) => void;
+  [S2Event.RANGE_SORT]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: SortedHandler | CanvasEventHandler;
 
   /** ================ Filter ================  */
@@ -111,7 +107,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
 
-  /** ================ Merged Cell ================  */
+  /** ================ Merged Cells ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
@@ -131,8 +127,8 @@ export interface EmitterType {
   }) => void;
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
   [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
-  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (expandedNode: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_HIDDEN]: (
+  [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;

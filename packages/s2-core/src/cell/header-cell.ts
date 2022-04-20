@@ -6,8 +6,9 @@ import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
   HeaderActionIcon,
-  HeaderActionIconProps,
   CellMeta,
+  FormatResult,
+  HeaderActionIconOptions,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -48,6 +49,25 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
+  // 这个的 getFormattedFieldValue 主要是 row 和 col header 的格式化，这里不需要传递 data info
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    let content = label;
+
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+
+    if (formatter) {
+      content = formatter(label);
+    }
+
+    return {
+      formattedValue: content,
+      value: label,
+    };
+  }
+
   protected showActionIcons(actionIconCfg: HeaderActionIcon) {
     return shouldShowActionIcons(actionIconCfg, this.meta, this.cellType);
   }
@@ -67,9 +87,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
       // sortParam的query，和type本身可能会 undefined
       return (
         query &&
-        isEqual(get(sortParam, 'query'), query) &&
-        get(sortParam, 'type') &&
-        get(sortParam, 'type') !== 'none'
+        isEqual(sortParam?.query, query) &&
+        sortParam?.type &&
+        sortParam?.type !== 'none'
       );
     }
     return false;
@@ -122,23 +142,21 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return actionIconCfg?.defaultHide;
   }
 
-  protected addActionIcon(
-    iconName: string,
-    x: number,
-    y: number,
-    size: number,
-    action: (prop: HeaderActionIconProps) => void,
-    defaultHide?: boolean,
-  ) {
-    const { text } = this.getStyle();
+  protected addActionIcon(options: HeaderActionIconOptions) {
+    const { x, y, iconName, defaultHide, action } = options;
+    const { icon: iconTheme, text: textTheme } = this.getStyle();
+    // 未配置 icon 颜色, 默认使用文字颜色
+    const actionIconColor = iconTheme?.fill || textTheme?.fill;
+
     const icon = new GuiIcon({
       name: iconName,
       x,
       y,
-      width: size,
-      height: size,
-      fill: text.fill,
+      width: iconTheme?.size,
+      height: iconTheme?.size,
+      fill: actionIconColor,
     });
+
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
     icon.on('mouseover', (event: CanvasEvent) => {
@@ -146,10 +164,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      action({
-        iconName: iconName,
+      action?.({
+        iconName,
         meta: this.meta,
-        event: event,
+        event,
       });
     });
 
@@ -164,15 +182,19 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
 
     const actionIconCfg = this.getActionIconCfg();
-    if (!actionIconCfg) return;
+    if (!actionIconCfg) {
+      return;
+    }
+
     const { iconNames, action, defaultHide } = actionIconCfg;
 
     const position = this.getIconPosition(iconNames.length);
 
     const { size, margin } = this.getStyle().icon;
-    forEach(iconNames, (iconName, key) => {
-      const x = position.x + key * size + key * margin.left;
-      this.addActionIcon(iconName, x, position.y, size, action, defaultHide);
+    forEach(iconNames, (iconName, i) => {
+      const x = position.x + i * size + i * margin.left;
+      const y = position.y;
+      this.addActionIcon({ iconName, x, y, defaultHide, action });
     });
   }
 

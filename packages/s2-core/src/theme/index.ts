@@ -1,5 +1,5 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { Palette, S2Theme, ThemeCfg } from '../common/interface';
+import { S2Theme, ThemeCfg } from '../common/interface';
 import { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -11,8 +11,9 @@ import { getPalette } from '../utils/theme';
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): S2Theme => {
-  const themePalette: Palette = themeCfg?.palette || getPalette(themeCfg?.name);
-  const { basicColors, semanticColors } = themePalette;
+  const { basicColors, semanticColors } =
+    themeCfg?.palette || getPalette(themeCfg?.name);
+
   const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
@@ -30,10 +31,10 @@ export const getTheme = (
       text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: 'normal',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: isTable ? 'center' : 'left',
+        textAlign: 'right',
         textBaseline: 'middle',
       },
       cell: {

@@ -45,7 +45,6 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
-  EAggregation,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import {
@@ -62,7 +61,7 @@ import {
   deleteMetaById,
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
-import { getDataSumByField } from '@/utils/number-calculate';
+import { calcActionByType } from '@/utils/number-calculate';
 import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
@@ -74,9 +73,6 @@ export class PivotDataSet extends BaseDataSet {
 
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
-
-  // each path items max index
-  protected pathIndexMax = [];
 
   /**
    * When data related config changed, we need
@@ -297,24 +293,24 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     const valueFormatter = (value: string) => {
-      const findOne = find(meta, (mt: Meta) => mt.field === value);
-      return get(findOne, 'name', value);
+      const currentMeta = find(meta, ({ field }: Meta) => field === value);
+      return get(currentMeta, 'name', value);
     };
 
-    const newMeta = [
-      ...meta,
-      // 虚拟列字段，为文本分类字段
-      {
-        field: EXTRA_FIELD,
-        name: i18n('数值'),
-        formatter: (value: string) => valueFormatter(value),
-      } as Meta,
-    ];
+    // 虚拟列字段，为文本分类字段
+    const extraFieldName =
+      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
+
+    const extraFieldMeta: Meta = {
+      field: EXTRA_FIELD,
+      name: extraFieldName,
+      formatter: (value: string) => valueFormatter(value),
+    };
+    const newMeta: Meta[] = [...meta, extraFieldMeta];
 
     const newData = this.standardTransform(data, values);
     const newTotalData = this.standardTransform(totalData, values);
 
-    // 返回新的结构
     return {
       data: newData,
       meta: newMeta,
@@ -385,15 +381,19 @@ export class PivotDataSet extends BaseDataSet {
         this.getTotalStatus(query),
         this.spreadsheet.options?.totals,
       ) || {};
+    const calcAction = calcActionByType[aggregation];
+
     // 前端计算汇总值
-    if (aggregation || calcFunc) {
+    if (calcAction || calcFunc) {
       const data = this.getMultiData(query);
       let totalValue: number;
+
       if (calcFunc) {
         totalValue = calcFunc(query, data);
-      } else if (aggregation === EAggregation.SUM) {
-        totalValue = getDataSumByField(data, VALUE_FIELD);
+      } else if (calcAction) {
+        totalValue = calcAction(data, VALUE_FIELD);
       }
+
       return {
         ...query,
         [VALUE_FIELD]: totalValue,

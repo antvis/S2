@@ -17,23 +17,23 @@ order: 2
 | sortFieldId   | 度量 Id，即要被排序的 Id                    | `string`                              | -      | ✓   |
 | sortMethod    | 排序方式                                    | `ASC` \| `DESC` \| `asc` \| `desc`  | -      |      |
 | sortBy        | 自定义排序列表                              | `string[]`                            | -      |      |
-| sortByMeasure | 按照度量值（数值）排序                      | `string`                              | -      |      |
+| sortByMeasure | 按照度量值（数值）排序（透视表适用）        | `string`                              | -      |      |
 | query         | 筛选条件，缩小排序范围 如 ：`{ city: '成都' }` | `object`                              | -      |      |
-| type          | 组内排序用来显示icon                        | `string`                              | -      |      |
+| type          | 组内排序用来显示icon（透视表适用）      | `string`                              | -      |      |
 | sortFunc      | 自定义排序的function                        | `(v: SortFuncParam) => Array<string>` | -      |      |
 
 ```ts
 import { EXTRA_FIELD } from "@antv/s2";
 
 const s2DataConfig = {
-  sortParams: [
-    {
-      sortFieldId: 'type', sortMethod: 'DESC',
-      // EXTRA_FIELD 是 dataCfg.fields.values 字段的虚拟 fieldId
-      query: { city: '成都', [EXTRA_FIELD]: 'price' }
-    }
-  ],
-  ...
+    sortParams: [
+        {
+            sortFieldId: 'type', sortMethod: 'DESC',
+            // EXTRA_FIELD 是 dataCfg.fields.values 字段的虚拟 fieldId
+            query: { city: '成都', [EXTRA_FIELD]: 'price' }
+        }
+    ],
+    ...
 };
 ```
 
@@ -45,8 +45,8 @@ const s2DataConfig = {
 
 ```ts
 sortParams: [
-  { sortFieldId: 'province', sortMethod: 'DESC' },
-  { sortFieldId: 'type', sortMethod: 'ASC' },
+    { sortFieldId: 'province', sortMethod: 'DESC' },
+    { sortFieldId: 'type', sortMethod: 'ASC' },
 ]
 ```
 
@@ -58,9 +58,9 @@ sortParams: [
 
 ```ts
 sortParams: [
-  { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
-  { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '丹东' ] },
-  { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
+    { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
+    { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '丹东' ] },
+    { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
 ];
 ```
 
@@ -76,17 +76,17 @@ sortParams: [
 
 ```ts
 sortParams: [
-  {
-    // type 依据 浙江-舟山-price 升序 排序
-    sortFieldId: 'type',
-    sortMethod: 'ASC',
-    sortByMeasure: 'price',
-    query: {
-      province: '浙江',
-      city: '舟山',
-      [EXTRA_FIELD]: 'price',
+    {
+        // type 依据 浙江-舟山-price 升序 排序
+        sortFieldId: 'type',
+        sortMethod: 'ASC',
+        sortByMeasure: 'price',
+        query: {
+            province: '浙江',
+            city: '舟山',
+            [EXTRA_FIELD]: 'price',
+        },
     },
-  },
 ];
 ```
 
@@ -98,17 +98,17 @@ sortParams: [
 
 ```ts
 sortParams: [
-  {
-    // type 依据（ 浙江 - 舟山 ）&（ price ） 升序 排序
-    sortFieldId: 'type',
-    sortMethod: 'ASC',
-    sortByMeasure: 'price',
-    query: {
-      province: '浙江',
-      city: '舟山',
-      [EXTRA_FIELD]: 'price',
+    {
+        // type 依据（ 浙江 - 舟山 ）&（ price ） 升序 排序
+        sortFieldId: 'type',
+        sortMethod: 'ASC',
+        sortByMeasure: 'price',
+        query: {
+            province: '浙江',
+            city: '舟山',
+            [EXTRA_FIELD]: 'price',
+        },
     },
-  },
 ];
 ```
 
@@ -118,18 +118,24 @@ sortParams: [
 
 `行/列头` 的非叶子节点，此时 `sortByMeasure` 为汇总虚拟字段 TOTAL_VALUE，值为 `$$total$$`。
 
+#### 配置数据聚合方式
+
+1. 使用 data 数据中的聚合数据。
+2. 使用 S2 总提供的聚合计算。​📊 查看文档 [小计总计配置](/zh/docs/api/general/S2Options#totals)
+
 #### 行总计/行小计
 
 通过 `行总计/行小计` 对列头进行排序， 举例如下：
 
 **行小计** ：
 
-```ts
+```js
 import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
 
 ...
 
-sortParams: [
+// 在 S2DataConfig 中配置
+sortParams = [
   {
     // type 依据 （ 浙江 - 小计 ）&（ price ）& 降序 排序
     sortFieldId: 'type',
@@ -141,20 +147,63 @@ sortParams: [
     },
   },
 ];
+
+// 在 s2Options 中配置，使用前端总计的聚合方法进行排序。如果 data 数据中存在聚合数据则使用
+totals = {
+  row: {
+    subTotalsDimensions: [ 'province' ],
+    calcSubTotals: {
+      aggregation: 'SUM'
+    }
+  }
+}
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RfN8Q5IauP8AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-#### 列总计/列小计
-
-通过 `列总计/列小计` 对行头进行排序，举例如下：
+行总计:
 
 ```ts
 import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
 
 ...
+sortParams = [
+    {
+        // 对 type 中笔和纸的总计进行 降序 排序
+        sortFieldId: 'type',
+        sortMethod: 'DESC',
+        sortByMeasure: TOTAL_VALUE,
+        query: {
+            [EXTRA_FIELD]: 'price',
+        },
+    },
+]
 
-sortParams: [
+// data 中带有排序使用的数据时，S2 会优先使用 data 返回的数据进行排序
+data = [
+    {
+        "type": "笔",
+        "price": "38"
+    },
+    {
+        "type": "纸张",
+        "price": "36"
+    }
+]
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/%26pwbU6StZ/img.png" width = "600"  alt="rowTotal" />
+
+#### 列总计/列小计
+
+通过 `列总计/列小计` 对行头进行排序，举例如下：
+
+```js
+import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
+
+...
+
+sortParams = [
   {
     // province 依据（ province - 小计 ）&（ 总计 - price ）& 升序 排序
     sortFieldId: 'province',
@@ -165,6 +214,16 @@ sortParams: [
     },
   }
 ];
+
+totals = {
+  row: {
+    subTotalsDimensions: ['province'],
+    calcSubTotals: {
+      aggregation: 'SUM',
+    },
+  }
+}
+
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZXBjR6fZFpQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
@@ -191,14 +250,14 @@ sortParams: [
 
 ```ts
 sortParams: [
-  {
-    // sortFieldId 为维度值时，params.data 为维度值列表
-    sortFieldId: 'province',
-    sortFunc: (params) => {
-      const { data } = params;
-      return (data as string[])?.sort((a, b) => a?.localeCompare(b));
+    {
+        // sortFieldId 为维度值时，params.data 为维度值列表
+        sortFieldId: 'province',
+        sortFunc: (params) => {
+            const { data } = params;
+            return (data as string[])?.sort((a, b) => a?.localeCompare(b));
+        },
     },
-  },
 ];
 ```
 
@@ -210,18 +269,18 @@ sortParams: [
 
 ```ts
 sortParams: [
-  {
-    // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
-    sortFieldId: 'price',
-    sortByMeasure: 'city',
-    sortFunc: function(params) {
-      const { data, sortByMeasure, sortFieldId } = params || {};
-      return data
-        ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
-        ?.map((item) => item[sortFieldId]);
+    {
+        // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
+        sortFieldId: 'price',
+        sortByMeasure: 'city',
+        sortFunc: function (params) {
+            const { data, sortByMeasure, sortFieldId } = params || {};
+            return data
+                ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
+                ?.map((item) => item[sortFieldId]);
+        },
+        query: { type: '纸张', [EXTRA_FIELD]: 'price' },
     },
-    query: { type: '纸张', [EXTRA_FIELD]: 'price' },
-  },
 ];
 ```
 

@@ -79,23 +79,23 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
 ```typescript
-const s2options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+const s2Options = {
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-  },
 };
 
 ```
@@ -184,36 +184,42 @@ const s2DataConfig = {
 
 #### 2. 计算出数据
 
-可以給 `totals` 下的 `row` 、 `col` 分别配置属性 `calcTotals` 、 `calcSubTotals` 来实现计算汇总数据
+可以给 `totals` 下的 `row` 、 `col` 分别配置属性 `calcTotals` 、 `calcSubTotals` 来实现计算汇总数据
 
 ##### 1. 配置聚合方式
 
-通过配置 `aggregation` 来实现, 聚合方式目前只支持 `SUM` (求和)
+通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）和 `AVG` （算术平均） 。
 
 ```typescript
-const s2options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+const s2Options = {
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+            calcTotals: {
+                aggregation: 'SUM',
+            },
+            calcSubTotals: {
+                aggregation: 'SUM',
+            },
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+            calcTotals: {
+                aggregation: 'SUM',
+            },
+            calcSubTotals: {
+                aggregation: 'SUM',
+            },
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-    calcTotals: {
-      aggregation: 'SUM',
-    },
-    calcSubTotals: {
-      aggregation: 'SUM',
-    },
-  },
 };
 
 ```
@@ -223,33 +229,37 @@ const s2options = {
 通过配置 `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number` 来实现
 
 ```typescript
-const s2options = {
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province'],
+const s2Options = {
+    totals: {
+        row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'province' ],
+        },
+        col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: [ 'type' ],
+        },
+        calcTotals: {
+            calcFunc: (query, data) => {
+                return
+            ...
+                ;
+            }
+        },
+        calcSubTotals: {
+            calcFunc: (query, data) => {
+                return
+            ...
+                ;
+            }
+        },
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['type'],
-    },
-    calcTotals: {
-      calcFunc: (query, data) => {
-        return ...;
-      }
-    },
-    calcSubTotals: {
-      calcFunc: (query, data) => {
-        return ...;
-      }
-    },
-  },
 };
 
 ```
@@ -258,6 +268,6 @@ const s2options = {
 
 1. 数据传入优先级高于计算数据
 
-2. 配置自定义方法优先级大于配置聚合方式, 即配置 `calcFunc > aggregation`
+2. 配置自定义方法优先级大于配置聚合方式，即配置 `calcFunc > aggregation`
 
-3. 当同一个单元格为 `行+列` 汇总值时, **优先级**为: `列总计/列小计 > 行总计/行小计`
+3. 当同一个单元格为 `行+列` 汇总值时，**优先级**为：`列总计/列小计 > 行总计/行小计`

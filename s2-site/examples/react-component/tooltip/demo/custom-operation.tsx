@@ -18,8 +18,8 @@ fetch(
               key: 'custom-a',
               text: '操作1',
               icon: 'Trend',
-              onClick: () => {
-                console.log('操作1点击');
+              onClick: (cell) => {
+                console.log('操作1点击', cell);
               },
               children: [
                 {

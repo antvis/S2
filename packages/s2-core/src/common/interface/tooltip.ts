@@ -9,7 +9,7 @@ export interface TooltipOperatorMenu {
   key: string;
   icon?: Element | string;
   text?: string;
-  onClick?: () => void;
+  onClick?: (cell: S2CellType) => void;
   visible?: boolean | ((cell: S2CellType) => boolean);
   children?: TooltipOperatorMenu[];
 }
@@ -154,6 +154,8 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
   readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
+  // Custom tooltip mount container
+  readonly getContainer?: () => HTMLElement;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {

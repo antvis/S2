@@ -33,5 +33,31 @@ describe('Facet util test', () => {
       start: 3,
       end: 7,
     });
+
+    expect(getIndexRangeWithOffsets(offsets, 0, 90)).toStrictEqual({
+      start: 0,
+      end: 2,
+    });
+
+    expect(getIndexRangeWithOffsets(offsets, 60, 120)).toStrictEqual({
+      start: 2,
+      end: 3,
+    });
+  });
+
+  test('should get correct index range for invalid input', () => {
+    const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+    expect(getIndexRangeWithOffsets(offsets, 0, -10)).toStrictEqual({
+      start: 0,
+      end: 0,
+    });
+  });
+
+  test('should get correct index range with equal min and max height', () => {
+    const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+    expect(getIndexRangeWithOffsets(offsets, 60, 60)).toStrictEqual({
+      start: 2,
+      end: 2,
+    });
   });
 });

@@ -1,10 +1,11 @@
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
+import { difference } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import { S2Options } from '@/common';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 400,
   height: 120,
   tooltip: {
@@ -20,18 +21,22 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       tableSheet = new TableSheet(
         getContainer(),
         mockTableDataConfig,
-        s2options,
+        s2Options,
       );
       tableSheet.render();
+    });
+
+    afterEach(() => {
+      tableSheet.destroy();
     });
 
     test('should get init column node', () => {
       expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
         mockTableDataConfig.fields.columns,
       );
-      expect(tableSheet.getInitColumnNodes().map((node) => node.field)).toEqual(
-        mockTableDataConfig.fields.columns,
-      );
+      expect(
+        tableSheet.getInitColumnLeafNodes().map((node) => node.field),
+      ).toEqual(mockTableDataConfig.fields.columns);
     });
 
     test('should hidden column correctly', () => {
@@ -44,10 +49,11 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         [],
       );
       const [costDetail] = hiddenColumnsDetail;
+      expect(tableSheet.options.interaction.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
       expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
-        mockTableDataConfig.fields.columns.filter(
-          (column) => !hiddenColumns.includes(column),
-        ),
+        difference(mockTableDataConfig.fields.columns, hiddenColumns),
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(costDetail.displaySiblingNode.prev.field).toEqual('price');
@@ -118,23 +124,140 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(groupDetail.hideColumnNodes[0].field).toEqual('cost');
       expect(groupDetail.hideColumnNodes[1].field).toEqual('province');
     });
+
+    test('should default hidden columns by interaction hiddenColumnFields config', () => {
+      const hiddenColumns = ['cost'];
+      const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+      sheet.render();
+
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+      const [costDetail] = hiddenColumnsDetail;
+
+      expect(sheet.options.interaction.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(sheet.getColumnNodes().map((node) => node.field)).toEqual(
+        difference(mockTableDataConfig.fields.columns, hiddenColumns),
+      );
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(costDetail.displaySiblingNode.prev.field).toEqual('price');
+      expect(costDetail.displaySiblingNode.next.field).toEqual('province');
+      expect(costDetail.hideColumnNodes).toHaveLength(1);
+      expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
+    });
   });
 
   describe('PivotSheet', () => {
+    const typePriceColumnId = 'root[&]笔[&]义乌[&]price';
+    const cityPriceColumnId = 'root[&]笔[&]杭州[&]price';
+
     let pivotSheet: PivotSheet;
 
+    const pivotDataCfg = {
+      ...mockPivotDataConfig,
+      fields: {
+        rows: ['province'],
+        columns: ['type', 'city'],
+        values: ['price'],
+        valueInCols: true,
+      },
+    };
+
     beforeEach(() => {
-      pivotSheet = new PivotSheet(
-        getContainer(),
-        mockPivotDataConfig,
-        s2options,
-      );
+      pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2Options);
       pivotSheet.render();
     });
 
+    afterEach(() => {
+      pivotSheet.destroy();
+    });
+
     test('should get init column node', () => {
-      // 默认数值置于列头, 数值对应的列头字段 ["price", "cost"] => ['$extra','$extra']
-      expect(pivotSheet.getColumnNodes()).toHaveLength(3);
+      expect(pivotSheet.getColumnNodes()).toHaveLength(5);
+      expect(
+        pivotSheet.getInitColumnLeafNodes().map((node) => node.id),
+      ).toEqual([typePriceColumnId, cityPriceColumnId]);
+    });
+
+    test('should hidden column correctly', () => {
+      const hiddenColumns = [typePriceColumnId];
+
+      pivotSheet.interaction.hideColumns(hiddenColumns);
+
+      const hiddenColumnsDetail = pivotSheet.store.get(
+        'hiddenColumnsDetail',
+        [],
+      );
+      const [priceDetail] = hiddenColumnsDetail;
+      expect(pivotSheet.options.interaction.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(pivotSheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
+        cityPriceColumnId,
+      ]);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(priceDetail.displaySiblingNode.prev).toEqual(null);
+      expect(priceDetail.displaySiblingNode.next.id).toEqual(cityPriceColumnId);
+      expect(priceDetail.hideColumnNodes).toHaveLength(1);
+      expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
+    });
+
+    test('should hidden multiple columns correctly', () => {
+      const hiddenColumns = [typePriceColumnId, cityPriceColumnId];
+
+      pivotSheet.interaction.hideColumns(hiddenColumns);
+
+      const hiddenColumnsDetail = pivotSheet.store.get(
+        'hiddenColumnsDetail',
+        [],
+      );
+      const [multipleColumnDetail] = hiddenColumnsDetail;
+
+      expect(pivotSheet.getColumnLeafNodes()).toEqual([]);
+      expect(pivotSheet.options.interaction.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(hiddenColumnsDetail).toHaveLength(1);
+
+      expect(multipleColumnDetail.displaySiblingNode.prev).toBeNull();
+      expect(multipleColumnDetail.displaySiblingNode.next).toBeNull();
+      expect(multipleColumnDetail.hideColumnNodes).toHaveLength(2);
+
+      expect(multipleColumnDetail.hideColumnNodes[0].id).toEqual(
+        typePriceColumnId,
+      );
+      expect(multipleColumnDetail.hideColumnNodes[1].id).toEqual(
+        cityPriceColumnId,
+      );
+    });
+
+    test('should default hidden columns by interaction hiddenColumnFields config', () => {
+      const hiddenColumns = [typePriceColumnId];
+      const sheet = new PivotSheet(getContainer(), pivotDataCfg, {
+        ...s2Options,
+        interaction: {
+          hiddenColumnFields: hiddenColumns,
+        },
+      });
+      sheet.render();
+      const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
+      const [priceDetail] = hiddenColumnsDetail;
+      expect(sheet.options.interaction.hiddenColumnFields).toEqual(
+        hiddenColumns,
+      );
+      expect(sheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
+        cityPriceColumnId,
+      ]);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(priceDetail.displaySiblingNode.prev).toEqual(null);
+      expect(priceDetail.displaySiblingNode.next.id).toEqual(cityPriceColumnId);
+      expect(priceDetail.hideColumnNodes).toHaveLength(1);
+      expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
     });
   });
 });

@@ -22,7 +22,7 @@ import { TooltipRenderProps } from './interface';
 import './index.less';
 
 export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
-  const { data, options, content } = props;
+  const { data, options, content, cell } = props;
 
   const renderDivider = () => {
     return <Divider />;
@@ -38,6 +38,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
           onClick={operator.onClick}
           menus={operator.menus}
           onlyMenu={onlyMenu}
+          cell={cell}
         />
       )
     );

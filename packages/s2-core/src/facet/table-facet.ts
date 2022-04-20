@@ -1,26 +1,10 @@
-import { IGroup } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
-import { getDataCellId } from 'src/utils/cell/data-cell';
+import type { Group, IElement, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, last, maxBy, set } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
 import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
 import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { getIndexRangeWithOffsets } from 'src/utils/facet';
-import type {
-  LayoutResult,
-  S2CellType,
-  SplitLine,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  ResizeActiveOptions,
-} from '../common/interface';
-import {
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-  SeriesNumberHeader,
-  TableRowCell,
-  TableSortParams,
-} from '..';
 import {
   calculateFrozenCornerCells,
   calculateInViewIndexes,
@@ -33,12 +17,26 @@ import {
   isFrozenTrailingRow,
 } from './utils';
 import { CornerBBox } from './bbox/cornerBBox';
+import { SeriesNumberHeader } from './header';
+import { TableRowCell } from '@/cell';
+import type {
+  LayoutResult,
+  S2CellType,
+  SplitLine,
+  SpreadSheetFacetCfg,
+  ViewMeta,
+  ResizeActiveOptions,
+  TableSortParam,
+} from '@/common/interface';
+import { getDataCellId } from '@/utils/cell/data-cell';
 import {
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
   S2Event,
   SERIES_NUMBER_FIELD,
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
 } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
@@ -56,19 +54,70 @@ import { getAllChildCells } from '@/utils/get-all-child-cells';
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
 
+  public frozenGroupInfo: Record<
+    string,
+    {
+      width?: number;
+      height?: number;
+      range?: number[];
+    }
+  > = {
+    col: {
+      width: 0,
+    },
+    row: {
+      height: 0,
+    },
+    trailingRow: {
+      height: 0,
+    },
+    trailingCol: {
+      width: 0,
+    },
+  };
+
+  public panelScrollGroupIndexes = [];
+
   public constructor(cfg: SpreadSheetFacetCfg) {
     super(cfg);
 
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, (sortParams) => {
-      const { sortKey, sortMethod, sortBy } = sortParams as TableSortParams;
-      set(s2.dataCfg, 'sortParams', [
-        {
-          sortFieldId: sortKey,
-          sortMethod,
-          sortBy,
-        },
-      ]);
+      let params = sortParams;
+      // 兼容之前 sortParams 为对象的用法
+      if (!Array.isArray(sortParams)) {
+        params = [sortParams];
+      }
+
+      const currentParams = s2.dataCfg.sortParams || [];
+
+      params = params.map((item: TableSortParam) => {
+        const newItem = {
+          ...item,
+          // 兼容之前 sortKey 的用法
+          sortFieldId: item.sortKey ?? item.sortFieldId,
+        };
+
+        const oldItem =
+          currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ??
+          {};
+        return {
+          ...oldItem,
+          ...newItem,
+        };
+      });
+
+      const oldConfigs = currentParams.filter((config) => {
+        const newItem = params.find(
+          (p) => p.sortFieldId === config.sortFieldId,
+        );
+        if (newItem) {
+          return false;
+        }
+        return true;
+      });
+
+      set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
       s2.setDataCfg(s2.dataCfg);
       s2.render(true);
       s2.emit(
@@ -110,8 +159,8 @@ export class TableFacet extends BaseFacet {
     });
   }
 
-  get colCellTheme() {
-    return this.spreadsheet.theme.colCell.cell;
+  get dataCellTheme() {
+    return this.spreadsheet.theme.dataCell.cell;
   }
 
   protected calculateCornerBBox() {
@@ -139,7 +188,6 @@ export class TableFacet extends BaseFacet {
         isRowHeader: false,
         facetCfg: this.cfg,
       });
-    this.saveInitColumnNodes(colLeafNodes);
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
@@ -279,9 +327,8 @@ export class TableFacet extends BaseFacet {
 
       nodes.push(currentNode);
 
-      if (frozenTrailingColCount === 0) {
-        layoutCoordinate(this.cfg, null, currentNode);
-      }
+      layoutCoordinate(this.cfg, null, currentNode);
+
       colsHierarchy.width += currentNode.width;
     }
 
@@ -304,8 +351,6 @@ export class TableFacet extends BaseFacet {
           }
           preLeafNode = currentNode;
         }
-
-        layoutCoordinate(this.cfg, null, currentNode);
       }
     }
   }
@@ -357,10 +402,13 @@ export class TableFacet extends BaseFacet {
               spreadsheet.theme.colCell,
             );
         } else {
+          // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
+          const EXTRA_PIXEL = 1;
           colWidth =
             measureTextWidth(maxLabel, dataCellTextStyle) +
             cellStyle.padding.left +
-            cellStyle.padding.right;
+            cellStyle.padding.right +
+            EXTRA_PIXEL;
         }
       } else {
         colWidth = adaptiveColWitdth;
@@ -379,14 +427,12 @@ export class TableFacet extends BaseFacet {
 
     return (
       cellCfg.height +
-      this.colCellTheme.padding?.top +
-      this.colCellTheme.padding?.bottom
+      this.dataCellTheme.padding?.top +
+      this.dataCellTheme.padding?.bottom
     );
   }
 
   public getCellHeight(index: number) {
-    const { cellCfg } = this.cfg;
-
     if (this.rowOffsets) {
       const heightByField = get(
         this.spreadsheet,
@@ -399,11 +445,7 @@ export class TableFacet extends BaseFacet {
         return customHeight;
       }
     }
-    return (
-      cellCfg.height +
-      this.colCellTheme.padding?.top +
-      this.colCellTheme.padding?.bottom
-    );
+    return this.getDefaultCellHeight();
   }
 
   protected initRowOffsets() {
@@ -526,7 +568,7 @@ export class TableFacet extends BaseFacet {
     return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
   };
 
-  protected renderFrozenGroupSplitLine = () => {
+  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
     const {
       width: panelWidth,
       height: panelHeight,
@@ -548,9 +590,24 @@ export class TableFacet extends BaseFacet {
       dataLength,
     );
 
+    // 在分页条件下需要额外处理 Y 轴滚动值
+    const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
+
+    // scroll boundary
+    const maxScrollX = Math.max(0, last(this.viewCellWidths) - viewportWidth);
+    const maxScrollY = Math.max(
+      0,
+      this.viewCellHeights.getCellOffsetY(cellRange.end + 1) -
+        this.viewCellHeights.getCellOffsetY(cellRange.start) -
+        viewportHeight,
+    );
+
+    // remove previous splitline group
+    this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
+
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
     const splitLineGroup = this.foregroundGroup.addGroup({
-      id: 'frozenSplitLine',
+      id: KEY_GROUP_FROZEN_SPLIT_LINE,
       zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
     });
 
@@ -589,7 +646,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && scrollX > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x,
@@ -623,12 +680,12 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && relativeScrollY > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
-            y: y,
-            width: width,
+            y,
+            width,
             height: style.shadowWidth,
             fill: this.getShadowFill(90),
           },
@@ -659,7 +716,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && Math.floor(scrollX) < Math.floor(maxScrollX)) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: x - style.shadowWidth,
@@ -693,7 +750,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
@@ -808,9 +865,6 @@ export class TableFacet extends BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        formatter: (field) => {
-          return this.cfg.dataSet.getFieldFormatter(field);
-        },
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
@@ -822,10 +876,10 @@ export class TableFacet extends BaseFacet {
     const { foregroundGroup, options } = this.spreadsheet;
     const resize = get(options, 'interaction.resize');
 
-    if (
-      (isBoolean(resize) && !resize) ||
-      !(resize as ResizeActiveOptions)?.rowCellVertical
-    ) {
+    const shouldDrawResize = isBoolean(resize)
+      ? resize
+      : (resize as ResizeActiveOptions)?.rowCellVertical;
+    if (!shouldDrawResize) {
       return;
     }
 
@@ -840,7 +894,7 @@ export class TableFacet extends BaseFacet {
       rowResizeFrozenGroup.set('children', []);
     }
     const allCells: TableRowCell[] = getAllChildCells(
-      this.panelGroup.getChildren(),
+      this.panelGroup.getChildren() as IElement[],
       TableRowCell,
     );
 
@@ -850,10 +904,73 @@ export class TableFacet extends BaseFacet {
   }
 
   public render() {
+    this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
     this.initFrozenGroupPosition();
-    this.renderFrozenGroupSplitLine();
+  }
+
+  private getFrozenOptions = () => {
+    const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
+
+    return getValidFrozenOptions(
+      this.cfg,
+      colLength,
+      cellRange.end - cellRange.start + 1,
+    );
+  };
+
+  public calculateFrozenGroupInfo() {
+    const {
+      frozenColCount,
+      frozenRowCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.getFrozenOptions();
+
+    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const viewCellHeights = this.viewCellHeights;
+    const cellRange = this.getCellRange();
+    const { col, row, trailingCol, trailingRow } = this.frozenGroupInfo;
+
+    if (frozenColCount > 0) {
+      col.width =
+        colLeafNodes[frozenColCount - 1].x +
+        colLeafNodes[frozenColCount - 1].width -
+        0;
+      col.range = [0, frozenColCount - 1];
+    }
+
+    if (frozenRowCount > 0) {
+      row.height =
+        viewCellHeights.getCellOffsetY(cellRange.start + frozenRowCount) -
+        viewCellHeights.getCellOffsetY(cellRange.start);
+      row.range = [cellRange.start, cellRange.start + frozenRowCount];
+    }
+
+    if (frozenTrailingColCount > 0) {
+      trailingCol.width =
+        colLeafNodes[colLeafNodes.length - 1].x -
+        colLeafNodes[colLeafNodes.length - frozenTrailingColCount].x +
+        colLeafNodes[colLeafNodes.length - 1].width;
+      trailingCol.range = [
+        colLeafNodes.length - frozenTrailingColCount,
+        colLeafNodes.length - 1,
+      ];
+    }
+
+    if (frozenTrailingRowCount > 0) {
+      trailingRow.height =
+        viewCellHeights.getCellOffsetY(cellRange.end + 1) -
+        viewCellHeights.getCellOffsetY(
+          cellRange.end + 1 - frozenTrailingRowCount,
+        );
+      trailingRow.range = [
+        cellRange.end - frozenTrailingRowCount,
+        cellRange.end,
+      ];
+    }
   }
 
   protected getRowHeader() {
@@ -888,6 +1005,7 @@ export class TableFacet extends BaseFacet {
 
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
     this.updateRowResizeArea();
+    this.renderFrozenGroupSplitLine(scrollX, scrollY);
   }
 
   public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
@@ -901,25 +1019,43 @@ export class TableFacet extends BaseFacet {
       frozenRowCount,
       frozenTrailingColCount,
       frozenTrailingRowCount,
-    } = getValidFrozenOptions(
-      this.spreadsheet.options,
-      colLength,
-      cellRange.end - cellRange.start + 1,
-    );
+    } = this.getFrozenOptions();
+
+    const finalViewport = {
+      width,
+      height,
+      x: 0,
+      y: 0,
+    };
+
+    if (frozenTrailingColCount > 0 || frozenColCount > 0) {
+      const { trailingCol, col } = this.frozenGroupInfo;
+      finalViewport.width -= trailingCol.width + col.width;
+      finalViewport.x += col.width;
+    }
+
+    if (frozenTrailingRowCount > 0 || frozenRowCount > 0) {
+      const { row, trailingRow } = this.frozenGroupInfo;
+      // canvas 高度小于row height和trailingRow height的时候 height 为 0
+      if (finalViewport.height < row.height + trailingRow.height) {
+        finalViewport.height = 0;
+        finalViewport.y = 0;
+      } else {
+        finalViewport.height -= row.height + trailingRow.height;
+        finalViewport.y += row.height;
+      }
+    }
 
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
-      {
-        width,
-        height,
-        x: 0,
-        y: 0,
-      },
+      finalViewport,
       this.getRealScrollX(this.cornerBBox.width),
     );
+
+    this.panelScrollGroupIndexes = indexes;
 
     return splitInViewIndexesWithFrozen(
       indexes,

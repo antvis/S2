@@ -11,10 +11,10 @@ order: 7
 
 ## 使用
 
-在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
+在 `s2Options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {}
 };
 ```
@@ -27,7 +27,7 @@ const s2options = {
 - `data`: 数值
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     corner: {},
     row: {},
@@ -42,7 +42,7 @@ const s2options = {
 通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     showTooltip: true,
     row: {
@@ -55,14 +55,14 @@ const s2options = {
 
 ### 操作配置项
 
-通过配置 `operation` 字段在 `Tooltip` 上增加操作项
+通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/zh/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 （叶子节点有效）
+      hiddenColumns: true, //开启隐藏列（叶子节点有效）
     },
   }
 };
@@ -82,7 +82,7 @@ const s2options = {
 - `null` : 关闭自动调整
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     autoAdjustBoundary: "container" // 默认 "body"
   }
@@ -99,7 +99,7 @@ const s2options = {
 ```ts
 const content = document.createElement('div')
 
-const s2options = {
+const s2Options = {
   tooltip: {
     content,
     // content: '我是字符串'
@@ -116,7 +116,7 @@ const content = (
   </div>
 )
 
-const s2options = {
+const s2Options = {
   tooltip: {
     content,
   },
@@ -128,7 +128,7 @@ const s2options = {
 ```ts
 const TooltipContent = (props) => <div>...</div>
 
-const s2options = {
+const s2Options = {
   tooltip: {
     content: (cell, defaultTooltipShowOptions) => {
       console.log('当前单元格：', cell)
@@ -160,7 +160,7 @@ const DataTooltipContent = (
   <div>dataTooltip</div>
 );
 
-const s2options = {
+const s2Options = {
   tooltip: {
     content: TooltipContent,
     row: {
@@ -202,26 +202,26 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 操作项
 
-除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的点击事件
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip` 对应的 [单元格信息](/zh/docs/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
   tooltip: {
     operation: {
-      trend: true,
       menus: [
         {
           key: 'custom-a',
           text: '操作 1',
           icon: 'Trend',
-          onClick: () => {
+          onClick: (cell) => {
             console.log('操作 1 点击');
+            console.log('tooltip 对应的单元格：', cell)
           },
           children: [{
             key: 'custom-a-a',
             text: '操作 1-1',
             icon: 'Trend',
-            onClick: () => {
+            onClick: (cell) => {
               console.log('操作 1-1 点击');
             },
           }]
@@ -230,7 +230,7 @@ const s2Options = {
           key: 'custom-b',
           text: '操作 2',
           icon: 'EyeOutlined',
-          onClick: () => {
+          onClick: (cell) => {
             console.log('操作 2 点击');
           },
         },
@@ -270,6 +270,22 @@ const s2Options = {
 ```
 
 <playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
+#### 自定义 Tooltip 挂载节点
+
+默认挂载在 `body` 上，可自定义挂载位置
+
+```html
+<div class="container" />
+```
+
+```ts
+const s2Options = {
+  tooltip: {
+    getContainer: () => document.querySelector('.container')
+  }
+}
+```
 
 #### 自定义 Tooltip 类
 
@@ -333,7 +349,7 @@ class RowHoverInteraction extends BaseEvent {
   }
 }
 
-const s2options = {
+const s2Options = {
   tooltip: {
     showTooltip: true,
   }
