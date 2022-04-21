@@ -1,6 +1,6 @@
 import { S2Options } from '../interface/s2Options';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
 } from '../constant/interaction';
 import { EMPTY_PLACEHOLDER } from './basic';
@@ -60,7 +60,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     selectedCellsSpotlight: false,
     hoverHighlight: true,
     hoverFocus: true,
-    hoverFocusTime: HOVER_FOCUS_TIME,
+    hoverFocusDuration: HOVER_FOCUS_DURATION,
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,

@@ -5,7 +5,7 @@ import { S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import { SpreadSheet } from '@/sheet-type';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
   InteractionStateName,
   OriginEventType,
   S2Event,
@@ -86,7 +86,7 @@ describe('Interaction Hover Tests', () => {
 
   test('should trigger data cell hover immediately hover focus time equals 0', async () => {
     s2.setOptions({
-      interaction: { hoverFocusTime: 0 },
+      interaction: { hoverFocusDuration: 0 },
     });
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
     await sleep(200);
@@ -121,7 +121,7 @@ describe('Interaction Hover Tests', () => {
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
 
     // click date cell before will trigger hover focus
-    await sleep(HOVER_FOCUS_TIME - 200);
+    await sleep(HOVER_FOCUS_DURATION - 200);
 
     const mockEvent = {
       preventDefault: () => {},
@@ -149,7 +149,7 @@ describe('Interaction Hover Tests', () => {
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
     s2.emit(S2Event.ROW_CELL_HOVER, rowCellEvent as unknown as GEvent);
 
-    await sleep(HOVER_FOCUS_TIME + 200);
+    await sleep(HOVER_FOCUS_DURATION + 200);
 
     expect(s2.showTooltipWithInfo).toHaveBeenLastCalledWith(
       rowCellEvent,
@@ -172,7 +172,7 @@ describe('Interaction Hover Tests', () => {
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
     s2.emit(S2Event.COL_CELL_HOVER, colCellEvent as unknown as GEvent);
 
-    await sleep(HOVER_FOCUS_TIME + 200);
+    await sleep(HOVER_FOCUS_DURATION + 200);
 
     expect(s2.showTooltipWithInfo).toHaveBeenLastCalledWith(
       colCellEvent,
@@ -188,7 +188,7 @@ describe('Interaction Hover Tests', () => {
     };
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
 
-    await sleep(HOVER_FOCUS_TIME + 200);
+    await sleep(HOVER_FOCUS_DURATION + 200);
 
     expect(s2.interaction.isHoverFocusState()).toBeTruthy();
   });
@@ -208,7 +208,7 @@ describe('Interaction Hover Tests', () => {
     };
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
 
-    await sleep(HOVER_FOCUS_TIME + 200);
+    await sleep(HOVER_FOCUS_DURATION + 200);
 
     expect(s2.interaction.isHoverFocusState()).toBeFalsy();
     expect(s2.interaction.getHoverTimer()).toBeFalsy();

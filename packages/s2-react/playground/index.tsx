@@ -683,6 +683,7 @@ function MainLayout() {
                       updateOptions({
                         interaction: {
                           hoverFocus: checked,
+                          hoverFocusDuration: 0,
                         },
                       });
                     }}

@@ -5,7 +5,7 @@ import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
   InteractionStateName,
   InterceptType,
 } from '@/common/constant/interaction';
@@ -63,10 +63,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
     interaction.clearHoverTimer();
-    const hoverFocusTime =
-      this.spreadsheet.options.interaction.hoverFocusTime ?? HOVER_FOCUS_TIME;
 
-    const hoverTimer = setTimeout(() => {
+    const handleHoverFocus = () => {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {
         return;
       }
@@ -87,9 +85,21 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       }
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
-    }, hoverFocusTime);
+    };
 
-    interaction.setHoverTimer(hoverTimer);
+    let hoverFocusDuration =
+      this.spreadsheet.options.interaction.hoverFocusDuration;
+
+    if (hoverFocusDuration === 0) {
+      handleHoverFocus();
+    } else {
+      hoverFocusDuration = hoverFocusDuration ?? HOVER_FOCUS_DURATION;
+      const hoverTimer = setTimeout(
+        () => handleHoverFocus(),
+        hoverFocusDuration,
+      );
+      interaction.setHoverTimer(hoverTimer);
+    }
   }
 
   /**
