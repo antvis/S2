@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.14.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.4...@antv/s2-react-v1.14.0-alpha.5) (2022-04-21)
+
+
+### Bug Fixes
+
+* **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
+
+
+### Features
+
+* 增加根据主题色生成对应主题风格色板功能 ([#1190](https://github.com/antvis/S2/issues/1190)) ([4c81fa3](https://github.com/antvis/S2/commit/4c81fa3d0ac2c9563f022560cae75335c453b218))
+
 # [@antv/s2-react-v1.14.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.3...@antv/s2-react-v1.14.0-alpha.4) (2022-04-18)
 
 
