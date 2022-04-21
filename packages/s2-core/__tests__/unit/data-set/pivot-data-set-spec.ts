@@ -187,6 +187,30 @@ describe('Pivot Dataset Test', () => {
         }),
       ).toContainEntries([[VALUE_FIELD, 352]]);
     });
+    test('getMultiData function should not make any side effect on rowPivotMeta', () => {
+      const specialQuery = {
+        province: '浙江省',
+        city: '杭州市',
+        type: '家具',
+        sub_type: '桌子',
+        [EXTRA_FIELD]: 'number',
+      };
+      dataSet.getMultiData(specialQuery);
+      expect(
+        dataSet.rowPivotMeta.get(specialQuery.province).childField,
+      ).toEqual('city');
+    });
+    test('getMultiData function should not make any side effect on colPivotMeta', () => {
+      const specialQuery = {
+        type: '家具',
+        sub_type: '桌子',
+        [EXTRA_FIELD]: 'number',
+      };
+      dataSet.getMultiData(specialQuery);
+      expect(dataSet.colPivotMeta.get(specialQuery.type).childField).toEqual(
+        'sub_type',
+      );
+    });
     test('getMultiData function', () => {
       const specialQuery = {
         province: '浙江省',
