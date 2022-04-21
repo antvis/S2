@@ -174,6 +174,7 @@ export function getDataPath(params: DataPathParams) {
       if (meta) {
         if (isFirstCreate) {
           // mark the child field
+          // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
           meta.childField = fields?.[i + 1];
         }
         currentMeta = meta?.children;
