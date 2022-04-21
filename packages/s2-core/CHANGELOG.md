@@ -1,3 +1,10 @@
+# [@antv/s2-v1.15.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.5...@antv/s2-v1.15.0-alpha.6) (2022-04-21)
+
+
+### Bug Fixes
+
+* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
+
 # [@antv/s2-v1.15.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.4...@antv/s2-v1.15.0-alpha.5) (2022-04-18)
 
 
