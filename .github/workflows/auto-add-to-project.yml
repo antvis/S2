@@ -3,7 +3,7 @@ on:
   issues:
     types:
       - opened
-  pull_request:
+  pull_request_target:
     types:
       - opened
 
@@ -21,7 +21,7 @@ jobs:
  
   add-pr-to-project:
     runs-on: ubuntu-latest
-    if: "github.event_name == 'pull_request'"
+    if: "github.event_name == 'pull_request_target'"
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.1
         with:
