@@ -84,6 +84,19 @@ describe('Interaction Hover Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
+  test('should trigger data cell hover immediately hover focus time equals 0', async () => {
+    s2.setOptions({
+      interaction: { hoverFocusTime: 0 },
+    });
+    s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
+    await sleep(200);
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellMeta],
+      stateName: InteractionStateName.HOVER_FOCUS,
+    });
+    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+  });
+
   test('should trigger row cell hover', () => {
     s2.emit(S2Event.ROW_CELL_HOVER, { target: {} } as GEvent);
     expect(s2.interaction.getState()).toEqual({

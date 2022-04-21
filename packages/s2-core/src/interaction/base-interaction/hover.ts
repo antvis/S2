@@ -61,8 +61,10 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta,
   ) {
     const { interaction } = this.spreadsheet;
-
+    const { interaction: interactionOptions } = this.spreadsheet.options;
     interaction.clearHoverTimer();
+    const hoverFocusTime =
+      this.spreadsheet.options.interaction.hoverFocusTime ?? HOVER_FOCUS_TIME;
 
     const hoverTimer = setTimeout(() => {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {
@@ -79,9 +81,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         showSingleTips,
       };
+      if (interactionOptions.hoverHighlight) {
+        // highlight all the row and column cells which the cell belongs to
+        this.updateRowColCells(meta);
+      }
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
-    }, HOVER_FOCUS_TIME);
+    }, hoverFocusTime);
 
     interaction.setHoverTimer(hoverTimer);
   }

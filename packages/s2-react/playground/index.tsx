@@ -28,7 +28,6 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  S2Theme,
   DataType,
   generatePalette,
   getPalette,
