@@ -102,9 +102,9 @@ export const getTheme = (
         // -------------- layout -----------------
         padding: {
           top: 0,
-          right: 10,
+          right: 8,
           bottom: 0,
-          left: 10,
+          left: 8,
         },
         /* ---------- interaction state ----------- */
         interactionState: {

@@ -111,7 +111,6 @@ export class CornerCell extends HeaderCell {
       {
         x: x + this.getTreeIconWidth(),
         y,
-
         width: maxWidth,
         height,
       },
@@ -158,19 +157,17 @@ export class CornerCell extends HeaderCell {
     if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
-    const { x } = this.meta;
     const { hierarchyCollapse } = this.headerConfig;
-    const area = this.getContentArea();
+
     const { size } = this.getStyle().icon;
     const { textBaseline, fill } = this.getTextStyle();
+    const area = this.getContentArea();
 
-    const iconX = x + size;
-    const iconY = getVerticalPosition(area, textBaseline, size);
     this.treeIcon = renderTreeIcon(
       this,
       {
-        x: iconX,
-        y: iconY,
+        x: area.x,
+        y: getVerticalPosition(area, textBaseline, size),
         width: size,
         height: size,
       },
