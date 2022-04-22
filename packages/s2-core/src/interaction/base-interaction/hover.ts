@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach, isEqual } from 'lodash';
+import { isEmpty, forEach, isEqual, isBoolean } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
@@ -63,6 +63,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
     interaction.clearHoverTimer();
+    const { hoverFocus } = interactionOptions;
 
     const handleHoverFocus = () => {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {
@@ -86,14 +87,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     };
-
-    let hoverFocusDuration =
-      this.spreadsheet.options.interaction.hoverFocusDuration;
+    let hoverFocusDuration = HOVER_FOCUS_DURATION;
+    if (!isBoolean(hoverFocus)) {
+      hoverFocusDuration = hoverFocus?.duration ?? HOVER_FOCUS_DURATION;
+    }
 
     if (hoverFocusDuration === 0) {
       handleHoverFocus();
     } else {
-      hoverFocusDuration = hoverFocusDuration ?? HOVER_FOCUS_DURATION;
       const hoverTimer = setTimeout(
         () => handleHoverFocus(),
         hoverFocusDuration,

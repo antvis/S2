@@ -678,12 +678,11 @@ function MainLayout() {
                   <Switch
                     checkedChildren="hover聚焦开"
                     unCheckedChildren="hover聚焦关"
-                    checked={mergedOptions.interaction.hoverFocus}
+                    checked={mergedOptions.interaction.hoverFocus as boolean}
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {
                           hoverFocus: checked,
-                          hoverFocusDuration: 0,
                         },
                       });
                     }}

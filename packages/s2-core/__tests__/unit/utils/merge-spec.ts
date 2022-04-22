@@ -148,8 +148,7 @@ describe('merge test', () => {
         hiddenColumnFields: [],
         selectedCellsSpotlight: false,
         hoverHighlight: true,
-        hoverFocus: true,
-        hoverFocusDuration: HOVER_FOCUS_DURATION,
+        hoverFocus: { duration: HOVER_FOCUS_DURATION },
         scrollSpeedRatio: {
           horizontal: 1,
           vertical: 1,

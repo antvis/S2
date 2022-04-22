@@ -86,7 +86,7 @@ describe('Interaction Hover Tests', () => {
 
   test('should trigger data cell hover immediately hover focus time equals 0', async () => {
     s2.setOptions({
-      interaction: { hoverFocusDuration: 0 },
+      interaction: { hoverFocus: { duration: 0 } },
     });
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
     await sleep(200);

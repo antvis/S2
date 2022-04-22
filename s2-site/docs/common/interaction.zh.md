@@ -10,8 +10,7 @@ order: 5
 | linkFields             | 标记字段为链接样式，用于外链跳转                      | `string[]`                                                                               |         |       |
 | selectedCellsSpotlight | 是否开启选中高亮聚光灯效果                            | `boolean`                                                                                | `false` |       |
 | hoverHighlight         | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头      | `boolean`                                                                                | `true`  |       |
-| hoverFocus             | 鼠标悬停在当前单元格超过 `hoverFocusDuration` (默认800ms) 后，保持当前高亮，显示 tooltip      | `boolean`                                                                                | `true`  |       |
-| hoverFocusDuration         | 鼠标悬停在当前单元格后显示 tooltip 的间隔时间     | `number`                                                                                | `800`  |       |
+| hoverFocus             | 鼠标悬停在当前单元格超过默认800ms后，保持当前高亮，显示 tooltip，悬停时间通过设置 `duration` 来控制     | `boolean | {duration: number}`                                                                                | `true`  |       |
 | hiddenColumnFields     | 用于配置默认隐藏的列，透视表需要配置列头唯一 id, 明细表配置列头 field 字段即可                                | `string[]`                                                                               |         |       |
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
