@@ -305,7 +305,7 @@ describe('Scroll By Group Tests', () => {
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     s2.render(false);
-    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(189);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(185);
 
     s2.setOptions({
       interaction: {
