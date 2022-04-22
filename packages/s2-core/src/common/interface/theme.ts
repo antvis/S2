@@ -27,6 +27,10 @@ export interface PaletteMeta {
     green?: string;
     [key: string]: string;
   };
+  /* 补充色值 */
+  others?: {
+    [key: string]: string;
+  };
 }
 
 export interface Palette extends PaletteMeta {
@@ -252,7 +256,7 @@ export interface ThemeCfg {
   /* 主题 */
   theme?: S2Theme;
   /* 色板 */
-  palette?: Pick<Palette, 'basicColors' | 'semanticColors'>;
+  palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
   /* 主题名 */
   name?: ThemeName;
 }

@@ -264,7 +264,7 @@ Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeSe
 ```ts
 const s2Options = {
   interaction: {
-    multiSelection: false // 默认 true
+    multiSelection: false, // 默认 true
     rangeSelection: false // 默认 true
   }
 };

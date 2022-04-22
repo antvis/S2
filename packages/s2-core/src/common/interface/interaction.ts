@@ -34,6 +34,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  [key: string]: unknown;
 }
 
 export interface InteractionStateInfo {

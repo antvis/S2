@@ -11,8 +11,11 @@ import { getPalette } from '../utils/theme';
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): S2Theme => {
-  const { basicColors, semanticColors } =
-    themeCfg?.palette || getPalette(themeCfg?.name);
+  const {
+    basicColors,
+    semanticColors,
+    others: otherColors,
+  } = themeCfg?.palette || getPalette(themeCfg?.name);
 
   const isTable = themeCfg?.spreadsheet?.isTableMode();
 
@@ -72,7 +75,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
-        linkTextFill: basicColors[14],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
@@ -123,6 +126,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
         },
       },
@@ -191,6 +204,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
         },
       },
@@ -270,6 +293,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
           // -------------- prepare select --------------
           prepareSelect: {

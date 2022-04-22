@@ -1,9 +1,10 @@
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { PivotDataSet, TableDataSet } from '@/data-set';
 import { Formatter } from '@/common';
+
 import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
-import { BaseFacet, TableFacet } from '@/facet';
+import { TableFacet } from '@/facet';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;

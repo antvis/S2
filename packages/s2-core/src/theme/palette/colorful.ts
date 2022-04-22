@@ -8,6 +8,11 @@ const paletteColorfulMeta: PaletteMeta = {
     red: '#FF4D4F',
     green: '#29A294',
   },
+  others: {
+    // ---------- searchResults colors ----------
+    highlight: '#87B5FF',
+    results: '#F0F7FF',
+  },
   basicColorRelations: [
     {
       basicColorIndex: 1,
