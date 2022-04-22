@@ -1,4 +1,4 @@
-import { DEFAULT_STYLE } from '@antv/s2';
+import { DEFAULT_STYLE, HOVER_FOCUS_DURATION } from '@antv/s2';
 import { getSheetComponentOptions } from '@/utils/options';
 
 describe('Options Tests', () => {
@@ -25,7 +25,7 @@ describe('Options Tests', () => {
         hiddenColumnFields: [],
         selectedCellsSpotlight: false,
         hoverHighlight: true,
-        hoverFocus: true,
+        hoverFocus: { duration: HOVER_FOCUS_DURATION },
         brushSelection: true,
         multiSelection: true,
         rangeSelection: true,

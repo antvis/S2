@@ -223,7 +223,7 @@ const s2Options = {
 
 ### 悬停聚焦
 
-鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 所对应的行列头取消高亮，聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭：
+鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭, 也可配置 `hoverFocus.duration` 更改出现 `tooltip` 的时间间隔。如果希望 hover 后立刻出现 tooltip，可以设置 `duration` 为 0;
 
 > 如果你实现了自定义交互，如 hover 后显示 tooltip, 推荐关闭此功能，以免出现 hover 悬停后 tooltip 被意外关闭
 

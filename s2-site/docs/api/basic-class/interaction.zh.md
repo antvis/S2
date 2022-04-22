@@ -27,7 +27,7 @@ this.spreadsheet.interaction.xx()
 | isEqualStateName | 是否是相同的状态名 | `(name: InteractionStateName) => void` |
 | isSelectedState | 是否是选中状态 | `() => void` |
 | isHoverState | 是否是悬停状态 | `() => void` |
-| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 800ms 后） | `() => void` |
+| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认800ms 后） | `() => void` |
 | isSelectedCell | 是否是选中的单元格 | `(cell: S2CellType) => void` |
 | isActiveCell | 是否是激活的单元格 | `(cell: S2CellType) => void` |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子 | `() => Partial<ViewMeta>[]` |
