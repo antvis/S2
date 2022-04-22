@@ -510,6 +510,8 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       careUndefined: true,
       isFirstCreate: true,
+      rowFields: rows,
+      colFields: columns,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });

@@ -3,7 +3,7 @@ on:
   issues:
     types:
       - opened
-  pull_request:
+  pull_request_target:
     types:
       - opened
 
@@ -16,16 +16,16 @@ jobs:
         with:
           project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
           column: Pending Issues
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
           action: add
  
   add-pr-to-project:
     runs-on: ubuntu-latest
-    if: "github.event_name == 'pull_request'"
+    if: "github.event_name == 'pull_request_target'"
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.1
         with:
           project: 👨‍💻👩‍💻  Issues & PRs 进度跟踪
-          column: Pending PR
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          column: Pending PRs
+          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
           action: add

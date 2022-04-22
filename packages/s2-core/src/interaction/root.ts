@@ -124,6 +124,10 @@ export class RootInteraction {
     return this.isStateOf(InteractionStateName.SELECTED);
   }
 
+  public isAllSelectedState() {
+    return this.isStateOf(InteractionStateName.ALL_SELECTED);
+  }
+
   public isHoverFocusState() {
     return this.isStateOf(InteractionStateName.HOVER_FOCUS);
   }
@@ -157,7 +161,11 @@ export class RootInteraction {
   }
 
   public clearStyleIndependent() {
-    if (!this.isSelectedState() && !this.isHoverState()) {
+    if (
+      !this.isSelectedState() &&
+      !this.isHoverState() &&
+      !this.isAllSelectedState()
+    ) {
       return;
     }
 
@@ -439,6 +447,11 @@ export class RootInteraction {
         });
       }
       return;
+    }
+
+    // 之前是全选状态，需要清除格子的样式
+    if (this.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
+      this.clearStyleIndependent();
     }
 
     this.clearState();

@@ -140,8 +140,8 @@ export const getTheme = (
         },
       },
       icon: {
-        fill: basicColors[0],
-        size: 15,
+        fill: basicColors[14],
+        size: 10,
         margin: {
           right: 4,
           left: 4,
@@ -317,7 +317,7 @@ export const getTheme = (
         miniBarChartFillColor: basicColors[7],
       },
       icon: {
-        fill: basicColors[0],
+        fill: basicColors[13],
         downIconColor: semanticColors.red,
         upIconColor: semanticColors.green,
         size: 10,
