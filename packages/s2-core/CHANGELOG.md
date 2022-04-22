@@ -1,3 +1,28 @@
+# [@antv/s2-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0) (2022-04-22)
+
+
+### Bug Fixes
+
+* all selected ([#1275](https://github.com/antvis/S2/issues/1275)) ([cf002e8](https://github.com/antvis/S2/commit/cf002e80d1ed111e470edee5d7c70ea2d50daf16))
+* **corner-cell:** 微调角头icon位置保持和行头对齐 ([#1287](https://github.com/antvis/S2/issues/1287)) ([5235afc](https://github.com/antvis/S2/commit/5235afca9bf0ddc774695741b8aa4fff469e8fa5))
+* **row-column-resize:** 修复虚线宽度设置不生效问题 ([#1250](https://github.com/antvis/S2/issues/1250)) ([a1810b9](https://github.com/antvis/S2/commit/a1810b94e48792ae4399c155e33573fa72ec0e0e))
+* scrollY 越界问题修复 & 重构 ([#1274](https://github.com/antvis/S2/issues/1274)) ([0bac1c1](https://github.com/antvis/S2/commit/0bac1c1f929f7389bb58dafd7e1fdec8a5b7fce3))
+* **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
+* 修复switcher组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
+* 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
+* 修复树形状态下收起展开后汇总数据错误问题, close issue [#1153](https://github.com/antvis/S2/issues/1153) ([#1282](https://github.com/antvis/S2/issues/1282)) ([6a7260c](https://github.com/antvis/S2/commit/6a7260c5492973f4caba9a2ef537200c551857b2))
+* 行头/单元格icon颜色应默认与字体色一致 ([#1276](https://github.com/antvis/S2/issues/1276)) ([5a0dcd8](https://github.com/antvis/S2/commit/5a0dcd8d6c9cbd83ae405eaceaf10db8d0d86a95))
+* 解决明细表表头被格式化的问题 ([#1257](https://github.com/antvis/S2/issues/1257)) ([aca54aa](https://github.com/antvis/S2/commit/aca54aa8b5455f195c52b034cce80de2c5ced5d3))
+
+
+### Features
+
+* **copy:** 添加复制全部 复制行 复制列功能 ([#1253](https://github.com/antvis/S2/issues/1253)) ([6fa2144](https://github.com/antvis/S2/commit/6fa21443cb81d43379955a28c7afac7a2ed4d809))
+* **interaction:** 支持行列头反选 ([#1256](https://github.com/antvis/S2/issues/1256)) ([9544706](https://github.com/antvis/S2/commit/9544706bbf017d425506016fbd23af89e76c5824))
+* **interaction:** 支持透传 addEventListener 的可选参数 ([#1262](https://github.com/antvis/S2/issues/1262)) ([d6bc064](https://github.com/antvis/S2/commit/d6bc064e971f8e0a18e8590931f6bff8fadabe44))
+* 去除自定义树无用的 transformCustomTreeItems 方法 ([#1271](https://github.com/antvis/S2/issues/1271)) ([5923c25](https://github.com/antvis/S2/commit/5923c2530f049dd7b9904831d4f482074dc58ef1))
+* 增加根据主题色生成对应主题风格色板功能 ([#1190](https://github.com/antvis/S2/issues/1190)) ([4c81fa3](https://github.com/antvis/S2/commit/4c81fa3d0ac2c9563f022560cae75335c453b218))
+* 新增 hoverFocusTime 配置项 ([#1281](https://github.com/antvis/S2/issues/1281)) ([b7636cb](https://github.com/antvis/S2/commit/b7636cb038a9a74bbce1dd81781db9128047693d))
 
 # [@antv/s2-v1.15.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0-alpha.5...@antv/s2-v1.15.0-alpha.6) (2022-04-21)
 
