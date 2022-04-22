@@ -1,3 +1,21 @@
+# [@antv/s2-react-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0) (2022-04-22)
+
+
+### Bug Fixes
+
+* headerActionIcons更新不应清除上一次下钻数据 ([#1254](https://github.com/antvis/S2/issues/1254)) ([92837fa](https://github.com/antvis/S2/commit/92837faadb532b42be164327ca510c47cf2ae336))
+* **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
+* 修复switcher组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
+* 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
+
+
+### Features
+
+* **interaction:** 支持透传 addEventListener 的可选参数 ([#1262](https://github.com/antvis/S2/issues/1262)) ([d6bc064](https://github.com/antvis/S2/commit/d6bc064e971f8e0a18e8590931f6bff8fadabe44))
+* **switcher:** add disabled property ([#1217](https://github.com/antvis/S2/issues/1217)) ([5c0f8fb](https://github.com/antvis/S2/commit/5c0f8fb741f4f4f5a2b726c52d796f8a7fa835f3))
+* 增加根据主题色生成对应主题风格色板功能 ([#1190](https://github.com/antvis/S2/issues/1190)) ([4c81fa3](https://github.com/antvis/S2/commit/4c81fa3d0ac2c9563f022560cae75335c453b218))
+* 新增 hoverFocusTime 配置项 ([#1281](https://github.com/antvis/S2/issues/1281)) ([b7636cb](https://github.com/antvis/S2/commit/b7636cb038a9a74bbce1dd81781db9128047693d))
+
 # [@antv/s2-react-v1.14.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.4...@antv/s2-react-v1.14.0-alpha.5) (2022-04-21)
 
 # [@antv/s2-react-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.1...@antv/s2-react-v1.13.0) (2022-04-08)
