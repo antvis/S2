@@ -17,9 +17,9 @@ S2 中内置了 3 套开箱即用的主题配置，也提供了强大的主题�
 
 以下是使用 **#0A78F4**、**#FF5500** 不同主题色，生成标准色板的例子：
 
-<image src="https://gw.alipayobjects.com/zos/antfincdn/8BOmvrgF6/65409159-09d0-4780-a431-3bb3e61cf429.png" width="600" />
+<image alt="#0A78F4 standard palette" src="https://gw.alipayobjects.com/zos/antfincdn/8BOmvrgF6/65409159-09d0-4780-a431-3bb3e61cf429.png" width="600" />
 
-<image src="https://gw.alipayobjects.com/zos/antfincdn/%24oA4V2Sby/6a224ba4-c191-476c-9b15-4394c2961492.png" width="600" />
+<image alt="#FF5500 standard palette" src="https://gw.alipayobjects.com/zos/antfincdn/%24oA4V2Sby/6a224ba4-c191-476c-9b15-4394c2961492.png" width="600" />
 
 ### 色板 Palette
 
