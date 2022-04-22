@@ -248,6 +248,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
 
+        // if (!shape.get('visible')) {
+        //   shape.set('visible', true);
+        // }
+
         // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
         if (
           shapeName === 'interactiveBorderShape' &&
@@ -272,6 +276,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public hideInteractionShape() {
     this.stateShapes.forEach((shape: IShape) => {
+      // shape.set('visible', false);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);

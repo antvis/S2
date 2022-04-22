@@ -392,6 +392,7 @@ export interface ViewMeta {
   rowId?: string;
   colId?: string;
   field?: string;
+  isFrozenCorner?: boolean;
   [key: string]: any;
 }
 
@@ -466,4 +467,9 @@ export interface PartDrillDownFieldInLevel {
 
 export interface TableSortParam extends SortParam {
   sortKey: string;
+}
+
+export interface GridInfo {
+  cols: number[];
+  rows: number[];
 }

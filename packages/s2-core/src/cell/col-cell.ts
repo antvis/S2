@@ -75,11 +75,15 @@ export class ColCell extends HeaderCell {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, {
-        ...this.getCellArea(),
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          ...this.getCellArea(),
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 
