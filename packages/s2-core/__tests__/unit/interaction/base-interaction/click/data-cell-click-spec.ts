@@ -8,7 +8,7 @@ import { DataCellClick } from '@/interaction/base-interaction/click';
 import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
@@ -106,7 +106,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, event);
 
     // wait hover focus time trigger
-    await sleep(HOVER_FOCUS_TIME + 500);
+    await sleep(HOVER_FOCUS_DURATION + 500);
 
     expect(s2.interaction.isHoverFocusState()).toBeFalsy();
 

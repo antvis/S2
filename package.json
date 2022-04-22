@@ -51,14 +51,16 @@
     "site:preview": "cd ./s2-site && yarn preview",
     "site:clear": "cd ./s2-site && yarn rimraf node_modules",
     "site:sync-s2-lock": "cd ./s2-site && yarn sync:s2-lock",
-    "lint": "yarn tsc && yarn lint:script && yarn lint:style && yarn lint:docs",
+    "lint": "yarn tsc && yarn lint:script && yarn lint:style && yarn lint:docs && yarn lint:word",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx,.vue'",
     "lint:style": "stylelint packages/**/*.less --syntax less",
     "lint:docs": "markdownlint '**/*.md'",
-    "lint:fix": "yarn lint:fix-script && yarn lint:fix-style && yarn lint:fix-docs",
+    "lint:word": "case-police '**/*.md'",
+    "lint:fix-word": "yarn lint:words --fix",
+    "lint:fix": "yarn lint:fix-script && yarn lint:fix-style && yarn lint:fix-docs && yarn lint:fix-word",
     "lint:fix-script": "yarn lint:script --fix",
     "lint:fix-style": "yarn lint:style --fix",
-    "lint:fix-docs": "yarn lint:docs --fix",
+    "lint:fix-docs": "yarn lint:docs --fix && yarn lint:fix-word",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && lerna run changelog --stream",
     "update:deps": "yarn upgrade-interactive",
     "prepare": "husky install && yarn core:build"
@@ -74,6 +76,7 @@
     ],
     "*.md": [
       "markdownlint --fix",
+      "case-police --fix",
       "prettier --write"
     ],
     "*.{js,jsx,tsx,ts,vue}": [
@@ -114,6 +117,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^26.6.3",
     "bundlesize": "^0.18.1",
+    "case-police": "^0.5.3",
     "concurrently": "^7.1.0",
     "conventional-changelog-cli": "^2.1.1",
     "cpx": "^1.5.0",

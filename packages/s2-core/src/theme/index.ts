@@ -1,5 +1,5 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { Palette, S2Theme, ThemeCfg } from '../common/interface';
+import { S2Theme, ThemeCfg } from '../common/interface';
 import { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -11,8 +11,12 @@ import { getPalette } from '../utils/theme';
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): S2Theme => {
-  const themePalette: Palette = themeCfg?.palette || getPalette(themeCfg?.name);
-  const { basicColors, semanticColors } = themePalette;
+  const {
+    basicColors,
+    semanticColors,
+    others: otherColors,
+  } = themeCfg?.palette || getPalette(themeCfg?.name);
+
   const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
@@ -71,7 +75,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
-        linkTextFill: basicColors[14],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
@@ -101,9 +105,9 @@ export const getTheme = (
         // -------------- layout -----------------
         padding: {
           top: 0,
-          right: 10,
+          right: 8,
           bottom: 0,
-          left: 10,
+          left: 8,
         },
         /* ---------- interaction state ----------- */
         interactionState: {
@@ -123,10 +127,20 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
-        fill: basicColors[0],
+        fill: basicColors[14],
         size: 10,
         margin: {
           right: 4,
@@ -190,6 +204,16 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
           },
         },
       },
@@ -270,6 +294,16 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
+          },
           // -------------- prepare select --------------
           prepareSelect: {
             borderColor: basicColors[14],
@@ -283,7 +317,7 @@ export const getTheme = (
         miniBarChartFillColor: basicColors[7],
       },
       icon: {
-        fill: basicColors[0],
+        fill: basicColors[13],
         downIconColor: semanticColors.red,
         upIconColor: semanticColors.green,
         size: 10,

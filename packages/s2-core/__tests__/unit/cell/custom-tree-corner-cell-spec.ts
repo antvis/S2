@@ -5,10 +5,8 @@ import { get } from 'lodash';
 import { customTreeItems } from 'tests/data/custom-tree-items';
 import { dataCustomTrees } from 'tests/data/data-custom-trees';
 import { S2DataConfig } from '@/common/interface';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { PivotSheet } from '@/sheet-type';
-import { CornerCell, S2Options, transformCustomTreeItems } from '@/index';
-import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
+import { CornerCell, S2Options } from '@/index';
 
 describe('test for corner text', () => {
   const values = [
@@ -27,7 +25,7 @@ describe('test for corner text', () => {
       rows: [],
       columns: ['type', 'sub_type'],
       values,
-      customTreeItems: transformCustomTreeItems(customTreeItems),
+      customTreeItems,
       valueInCols: false,
     },
   };

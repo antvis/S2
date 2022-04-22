@@ -1,11 +1,11 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach, isEqual } from 'lodash';
+import { isEmpty, forEach, isEqual, isBoolean } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
   InteractionStateName,
   InterceptType,
 } from '@/common/constant/interaction';
@@ -61,10 +61,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta,
   ) {
     const { interaction } = this.spreadsheet;
-
+    const { interaction: interactionOptions } = this.spreadsheet.options;
     interaction.clearHoverTimer();
+    const { hoverFocus } = interactionOptions;
 
-    const hoverTimer = setTimeout(() => {
+    const handleHoverFocus = () => {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {
         return;
       }
@@ -79,11 +80,27 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         showSingleTips,
       };
+      if (interactionOptions.hoverHighlight) {
+        // highlight all the row and column cells which the cell belongs to
+        this.updateRowColCells(meta);
+      }
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
-    }, HOVER_FOCUS_TIME);
+    };
+    let hoverFocusDuration = HOVER_FOCUS_DURATION;
+    if (!isBoolean(hoverFocus)) {
+      hoverFocusDuration = hoverFocus?.duration ?? HOVER_FOCUS_DURATION;
+    }
 
-    interaction.setHoverTimer(hoverTimer);
+    if (hoverFocusDuration === 0) {
+      handleHoverFocus();
+    } else {
+      const hoverTimer = setTimeout(
+        () => handleHoverFocus(),
+        hoverFocusDuration,
+      );
+      interaction.setHoverTimer(hoverTimer);
+    }
   }
 
   /**

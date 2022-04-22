@@ -1,12 +1,8 @@
-import { filter, flatten, isNil, map, mapValues } from 'lodash';
+import { filter, flatten, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import { getClassNameWithPrefix } from '@antv/s2';
-import {
-  FieldType,
-  MAX_DIMENSION_COUNT,
-  SWITCHER_FIELDS,
-  SWITCHER_PREFIX_CLS,
-} from './constant';
+import { SheetType } from '../sheets/interface';
+import { FieldType, SWITCHER_PREFIX_CLS } from './constant';
 import {
   SwitcherItem,
   SwitcherResult,
@@ -18,30 +14,21 @@ import {
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
-export const getNonEmptyFieldCount = (fields: SwitcherFields) => {
-  return SWITCHER_FIELDS.reduce(
-    (sum, field) => sum + (isNil(fields[field]) ? 0 : 1),
-    0,
-  );
-};
-
-export const getMainLayoutClassName = (nonEmptyCount: number) => {
-  switch (nonEmptyCount) {
-    case 1:
+export const getMainLayoutClassName = (sheetType: SheetType) => {
+  switch (sheetType) {
+    case 'table':
       return getSwitcherClassName('content', 'one-dimension');
-    case 2:
-      return getSwitcherClassName('content', 'two-dimensions');
     default:
       return getSwitcherClassName('content', 'three-dimensions');
   }
 };
 
-export const shouldCrossRows = (nonEmptyCount: number, type: FieldType) =>
-  nonEmptyCount < MAX_DIMENSION_COUNT || type === FieldType.Values;
+export const shouldCrossRows = (sheetType: SheetType, type: FieldType) =>
+  sheetType === 'table' || type === FieldType.Values;
 
 export const moveItem = (
-  source: SwitcherItem[],
-  destination: SwitcherItem[],
+  source: SwitcherItem[] = [],
+  destination: SwitcherItem[] = [],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
 ): SwitcherState => {
@@ -68,7 +55,7 @@ export const moveItem = (
 };
 
 export const checkItem = (
-  source: SwitcherItem[],
+  source: SwitcherItem[] = [],
   checked: boolean,
   id: string,
   parentId?: string,

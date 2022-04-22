@@ -1,13 +1,19 @@
-import { customMerge, isUpDataValue, S2DataConfig, S2Options } from '@antv/s2';
+import {
+  customMerge,
+  isUpDataValue,
+  S2DataConfig,
+  S2Options,
+  S2Theme,
+} from '@antv/s2';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';
-import { getSheetComponentOptions } from '../src/utils';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
+import { getSheetComponentOptions } from '@/utils';
 
 const BASIC_BACKGROUND_COLOR = '#FFFFFF';
 const INTERACTIVE_BACKGROUND_COLOR = '#E1EAFE';
 
-export const defaultTheme = {
+export const strategyTheme: S2Theme = {
   cornerCell: {
     icon: {
       size: 12,

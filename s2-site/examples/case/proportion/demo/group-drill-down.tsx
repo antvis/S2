@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
+import { isUpDataValue } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -20,8 +21,29 @@ fetch(
         style: {
           layoutWidthType: 'colAdaptive',
           cellCfg: {
-            width: 250,
-            height: 130,
+            width: 400,
+            height: 100,
+            valuesCfg: {
+              widthPercentCfg: [40, 20, 20, 20],
+              conditions: {
+                text: {
+                  field: 'number',
+                  mapping: (value, cellInfo) => {
+                    // 添加文本颜色映射逻辑
+                    const { colIndex } = cellInfo;
+                    if (colIndex <= 1) {
+                      // 主指标为黑色
+                      return {
+                        fill: '#000',
+                      };
+                    }
+                    return {
+                      fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
+                    };
+                  },
+                },
+              },
+            },
           },
         },
       };

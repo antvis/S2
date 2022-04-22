@@ -43,18 +43,50 @@ export const getIndexRangeWithOffsets = (
 
   yMin = Math.max(yMin, 0);
 
-  let yMax = findIndex(
-    heights,
-    (height: number, idx: number) => {
-      const y = maxHeight;
-      return y >= height && y < heights[idx + 1];
-    },
-    yMin,
-  );
+  let yMax =
+    maxHeight === minHeight
+      ? yMin
+      : findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = maxHeight;
+            return y > height && y <= heights[idx + 1];
+          },
+          yMin,
+        );
   yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
 
   return {
     start: yMin,
     end: yMax,
   };
+};
+
+export const getAdjustedRowScrollX = (
+  hRowScrollX: number,
+  cornerBBox: {
+    width: number;
+    originalWidth: number;
+  },
+): number => {
+  const { width, originalWidth } = cornerBBox;
+
+  const scrollX = Math.min(originalWidth - width, hRowScrollX);
+
+  if (scrollX < 0) {
+    return 0;
+  }
+  return scrollX;
+};
+
+export const getAdjustedScrollOffset = (
+  scrollY: number,
+  contentLength: number,
+  containerLength: number,
+): number => {
+  const offset = Math.min(contentLength - containerLength, scrollY);
+  if (offset < 0) {
+    return 0;
+  }
+  return offset;
 };
