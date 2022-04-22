@@ -98,9 +98,9 @@ export class PivotSheet extends SpreadSheet {
     const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
 
     return {
+      ...this.options,
       ...fields,
       ...style,
-      ...this.options,
       meta,
       spreadsheet: this,
       dataSet: this.dataSet,

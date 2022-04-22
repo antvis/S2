@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { getContainer } from 'tests/util/helpers';
-import * as dataCfg from 'tests/data/simple-data.json';
+import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -424,7 +424,9 @@ describe('PivotSheet Tests', () => {
     // save original data cfg
     expect(s2.store.get('originalDataCfg')).toEqual(newDataCfg);
     // update data cfg
-    expect(s2.dataCfg).toEqual(getSafetyDataConfig(newDataCfg));
+    expect(s2.dataCfg).toEqual(
+      getSafetyDataConfig(originalDataCfg, newDataCfg),
+    );
   });
 
   test('should set options', () => {

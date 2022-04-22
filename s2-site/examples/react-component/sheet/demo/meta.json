@@ -19,6 +19,14 @@
         "en": "TableSheet component"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png"
+    },
+    {
+      "filename": "strategy.tsx",
+      "title": {
+        "zh": "趋势分析表组件",
+        "en": "StrategySheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png"
     }
   ]
 }

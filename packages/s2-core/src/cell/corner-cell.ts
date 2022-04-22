@@ -44,6 +44,7 @@ import {
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
 import { CornerNodeType } from '@/common/interface/node';
+import { formattedFieldValue } from '@/utils/cell/header-cell';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -183,11 +184,12 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawBackgroundShape() {
-    const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
+
     const attrs: ShapeAttrs = {
       ...this.getCellArea(),
       fill: backgroundColor,
-      opacity: backgroundColorOpacity,
+      fillOpacity: backgroundColorOpacity,
     };
 
     this.backgroundShape = renderRect(this, attrs);
@@ -358,21 +360,10 @@ export class CornerCell extends HeaderCell {
 
   // corner cell 不需要使用formatter进行格式化
   protected getFormattedFieldValue(): FormatResult {
-    const { label, field } = this.meta;
-
-    if (!isEqual(field, EXTRA_FIELD)) {
-      return {
-        formattedValue: label,
-        value: label,
-      };
-    }
-
-    const fieldName = this.spreadsheet.dataSet.getFieldName(label);
-
-    return {
-      formattedValue: fieldName || label,
-      value: label,
-    };
+    return formattedFieldValue(
+      this.meta,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
+    );
   }
 
   protected getCornerText(): string {

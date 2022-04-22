@@ -1,5 +1,5 @@
 import type { IShape, Point } from '@antv/g-canvas';
-import { clamp, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -55,9 +55,27 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: CellMeta[]) {
+  protected handleByStateName(
+    cells: CellMeta[],
+    stateName: InteractionStateName,
+  ) {
     if (includeCell(cells, this)) {
-      this.updateByState(InteractionStateName.PREPARE_SELECT);
+      this.updateByState(stateName);
+    }
+  }
+
+  protected handleSearchResult(cells: CellMeta[]) {
+    if (!includeCell(cells, this)) {
+      return;
+    }
+    const targetCell = find(
+      cells,
+      (cell: CellMeta) => cell?.isTarget,
+    ) as CellMeta;
+    if (targetCell.id === this.getMeta().id) {
+      this.updateByState(InteractionStateName.HIGHLIGHT);
+    } else {
+      this.updateByState(InteractionStateName.SEARCH_RESULT);
     }
   }
 
@@ -129,9 +147,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     switch (stateName) {
-      case InteractionStateName.PREPARE_SELECT:
-        this.handlePrepareSelect(cells);
-        break;
       case InteractionStateName.SELECTED:
         this.handleSelect(cells);
         break;
@@ -139,7 +154,11 @@ export class DataCell extends BaseCell<ViewMeta> {
       case InteractionStateName.HOVER:
         this.handleHover(cells);
         break;
+      case InteractionStateName.SEARCH_RESULT:
+        this.handleSearchResult(cells);
+        break;
       default:
+        this.handleByStateName(cells, stateName);
         break;
     }
   }
@@ -313,10 +332,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
-    const strokeColor = 'transparent';
+
     if (
       this.spreadsheet.isPivotMode() &&
       crossBackgroundColor &&
@@ -335,20 +355,20 @@ export class DataCell extends BaseCell<ViewMeta> {
         backgroundColor = attrs.fill;
       }
     }
-    return { backgroundColor, strokeColor };
+    return { backgroundColor, backgroundColorOpacity };
   }
 
   /**
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const { backgroundColor: fill, strokeColor: stroke } =
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill,
-      stroke,
+      fillOpacity,
     });
   }
 

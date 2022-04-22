@@ -9,6 +9,10 @@ import {
   getRowsForGrid,
 } from 'src/utils/grid';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
+import {
+  getAdjustedRowScrollX,
+  getAdjustedScrollOffset,
+} from 'src/utils/facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -488,50 +492,23 @@ export abstract class BaseFacet {
     );
   };
 
-  private getAdjustedRowScrollX = (hRowScrollX: number): number => {
-    if (hRowScrollX + this.cornerBBox.width >= this.cornerBBox.originalWidth) {
-      return this.cornerBBox.originalWidth - this.cornerBBox.width;
-    }
-    return hRowScrollX;
-  };
-
-  private getAdjustedScrollX = (scrollX: number): number => {
-    const colsHierarchyWidth = this.layoutResult.colsHierarchy.width;
-    const panelWidth = this.panelBBox.width;
-    if (
-      scrollX + panelWidth >= colsHierarchyWidth &&
-      colsHierarchyWidth > panelWidth
-    ) {
-      return colsHierarchyWidth - panelWidth;
-    }
-    return Math.max(0, scrollX);
-  };
-
-  private getAdjustedScrollY = (scrollY: number): number => {
-    const rendererHeight = this.getRendererHeight();
-    const panelHeight = this.panelBBox.height;
-    if (
-      scrollY + panelHeight >= rendererHeight &&
-      rendererHeight > panelHeight
-    ) {
-      return rendererHeight - panelHeight;
-    }
-    // 当数据为空时，rendererHeight 可能为 0，此时 scrollY 为负值，需要调整为 0。
-    if (scrollY < 0) {
-      return 0;
-    }
-    return Math.max(0, scrollY);
-  };
-
   private getAdjustedScrollOffset = ({
     scrollX,
     scrollY,
     hRowScrollX,
   }: ScrollOffset): ScrollOffset => {
     return {
-      scrollX: this.getAdjustedScrollX(scrollX),
-      scrollY: this.getAdjustedScrollY(scrollY),
-      hRowScrollX: this.getAdjustedRowScrollX(hRowScrollX),
+      scrollX: getAdjustedScrollOffset(
+        scrollX,
+        this.layoutResult.colsHierarchy.width,
+        this.panelBBox.width,
+      ),
+      scrollY: getAdjustedScrollOffset(
+        scrollY,
+        this.getRendererHeight(),
+        this.panelBBox.height,
+      ),
+      hRowScrollX: getAdjustedRowScrollX(hRowScrollX, this.cornerBBox),
     };
   };
 
@@ -1223,14 +1200,11 @@ export abstract class BaseFacet {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
 
-    const maxScrollY = Math.max(
-      0,
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.viewportHeight,
+    scrollY = getAdjustedScrollOffset(
+      scrollY,
+      this.viewCellHeights.getTotalHeight(),
+      this.panelBBox.viewportHeight,
     );
-
-    if (scrollY > maxScrollY) {
-      scrollY = maxScrollY;
-    }
 
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);

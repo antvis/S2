@@ -36,7 +36,7 @@ export const ResizeConfig: FC<{
     setThemeCfg((prev) => customMerge({}, prev, { theme }));
   };
 
-  const onSwitchRowReisizeType = (enable: boolean) => {
+  const onSwitchRowResizeType = (enable: boolean) => {
     const opts = {
       interaction: {
         resize: {
@@ -81,7 +81,7 @@ export const ResizeConfig: FC<{
         checkedChildren="行高单行调整开"
         unCheckedChildren="行高单行调整关"
         defaultChecked={rowResizeAffectCurrent}
-        onChange={onSwitchRowReisizeType}
+        onChange={onSwitchRowResizeType}
       />
     </>
   );

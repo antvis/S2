@@ -34,6 +34,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  [key: string]: unknown;
 }
 
 export interface InteractionStateInfo {
@@ -52,8 +53,6 @@ export interface InteractionStateInfo {
 export interface SelectHeaderCellInfo {
   // target header cell
   cell: S2CellType<ViewMeta>;
-  // whether the target header cell is in tree mode
-  isTreeRowClick?: boolean;
   isMultiSelection?: boolean;
 }
 
@@ -105,6 +104,10 @@ export interface ScrollSpeedRatio {
   vertical?: number;
 }
 
+export interface HoverFocusOptions {
+  duration?: number;
+}
+
 export interface InteractionOptions {
   // record which row/col field need extra link info
   readonly linkFields?: string[];
@@ -113,7 +116,7 @@ export interface InteractionOptions {
   // highlight all row header cells and column header cells to which the hovered cell belongs
   readonly hoverHighlight?: boolean;
   // keep cell hovered after 800ms duration
-  readonly hoverFocus?: boolean;
+  readonly hoverFocus?: boolean | HoverFocusOptions;
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
   // copy with filed format
@@ -135,6 +138,9 @@ export interface InteractionOptions {
   readonly selectedCellMove?: boolean;
   // controls scrollbar's position type
   readonly scrollbarPosition?: ScrollbarPositionType;
+  // An object that specifies characteristics about the event listener
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+  readonly eventListenerOptions?: boolean | AddEventListenerOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

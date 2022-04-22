@@ -34,7 +34,7 @@ order: 7
 
 ## Pull Request
 
-1. fork 项目 并 clone 下来 （或者使用 Github 的 Codespace 功能，非常方便）
+1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
 4. 如果你的改动是修复 bug, 还可以在提交信息后面加上 `close #issue 号`, 这样可以在 pr 合并后，可以自动关闭对应的 issue, 比如 `fix: render bug close #123`

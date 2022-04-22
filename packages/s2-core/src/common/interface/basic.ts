@@ -218,20 +218,25 @@ export interface HeaderActionIconProps {
   event?: Event;
 }
 
+export interface HeaderActionIconOptions {
+  iconName: string;
+  x: number;
+  y: number;
+  action: (props: HeaderActionIconProps) => void;
+  defaultHide?: boolean;
+}
+
 export interface HeaderActionIcon {
   // 已注册的 icon 类型或自定义的 icon 类型名
   iconNames: string[];
-
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
   defaultHide?: boolean;
-
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
   displayCondition?: (mete: Node) => boolean;
-
   // 点击后的执行函数
-  action: (headerActionIconProps: HeaderActionIconProps) => void;
+  action?: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义

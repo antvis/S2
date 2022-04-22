@@ -27,11 +27,9 @@ export const usePagination = (
       return;
     }
 
-    s2.setOptions({
-      pagination: {
-        current,
-        pageSize,
-      },
+    s2.updatePagination({
+      current,
+      pageSize,
     });
     s2.render(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

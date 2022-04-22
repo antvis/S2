@@ -17,6 +17,8 @@ export enum InteractionStateName {
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
+  HIGHLIGHT = 'highlight',
+  SEARCH_RESULT = 'searchResult',
   PREPARE_SELECT = 'prepareSelect',
 }
 
@@ -29,7 +31,7 @@ export enum CellTypes {
   MERGED_CELL = 'mergedCell',
 }
 
-export const HOVER_FOCUS_TIME = 800;
+export const HOVER_FOCUS_DURATION = 800;
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {

@@ -326,8 +326,7 @@ export abstract class SpreadSheet extends EE {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     this.store.set('originalDataCfg', dataCfg);
-    const newDataCfg = clone(dataCfg);
-    this.dataCfg = getSafetyDataConfig(newDataCfg);
+    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
