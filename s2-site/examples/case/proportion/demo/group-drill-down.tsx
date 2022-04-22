@@ -29,14 +29,16 @@ fetch(
                 text: {
                   field: 'number',
                   mapping: (value, cellInfo) => {
+                    // 添加文本颜色映射逻辑
                     const { colIndex } = cellInfo;
                     if (colIndex <= 1) {
+                      // 主指标为黑色
                       return {
                         fill: '#000',
                       };
                     }
                     return {
-                      fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+                      fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
                     };
                   },
                 },
