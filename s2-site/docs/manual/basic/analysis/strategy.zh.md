@@ -5,7 +5,7 @@ order: 9
 
 为了满足更多的分析场景，S2 提供开箱即用的场景表组件 —— 趋势分析表。借助它，你可以非常方便的实现单元格内展示多指标的场景表格。
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png"  alt="preview" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600"  alt="preview" />
 
 如图所示，该类表格的表形态特点在于可以在同一个数据单元格和列头单元格内展示多个指标数据，用于需要关注时间趋势下的数据指标，查看同环比等场景。行头可以自定义层级结构。因此有此类分析需求时，可以直接使用该组件。
 
@@ -58,12 +58,12 @@ import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
 ReactDOM.render(
- <SheetComponent
-     dataCfg={dataCfg}
-       options={s2Options}
-       sheetType="strategy"
-    />,
-    document.getElementById('container'),
+  <SheetComponent
+    dataCfg={dataCfg}
+    options={s2Options}
+    sheetType="strategy"
+  />,
+  document.getElementById('container'),
 );
 
 ```
