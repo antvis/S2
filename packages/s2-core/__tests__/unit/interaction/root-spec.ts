@@ -362,6 +362,19 @@ describe('RootInteraction Tests', () => {
       });
       expect(rootInteraction.getActiveCells()).toHaveLength(2);
     });
+
+    test('should update state when changeState for same stateName', () => {
+      rootInteraction.resetState();
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell), getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      expect(rootInteraction.getActiveCells()).toHaveLength(2);
+    });
   });
 
   describe('RootInteraction Calc Utils Tests', () => {

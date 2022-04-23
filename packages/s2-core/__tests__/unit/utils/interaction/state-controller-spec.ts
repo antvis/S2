@@ -52,7 +52,7 @@ describe('State Controller Utils Tests', () => {
     });
   });
 
-  test('should do nothing when state name is the same', () => {
+  test('should replace state when state name is the same', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
       cells: [getCellMeta(mockRowCell)],
@@ -70,7 +70,7 @@ describe('State Controller Utils Tests', () => {
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [getCellMeta(mockRowCell)],
+      cells: [],
     });
   });
 

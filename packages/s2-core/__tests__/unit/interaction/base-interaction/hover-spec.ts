@@ -19,7 +19,7 @@ describe('Interaction Hover Tests', () => {
     id: '1',
     colIndex: 0,
     rowIndex: 0,
-    type: undefined,
+    type: 'dataCell',
   };
 
   const mockCellMeta = omit(mockCell, 'update');
@@ -34,15 +34,26 @@ describe('Interaction Hover Tests', () => {
     },
   ];
 
+  const getCell = (target) =>
+    ({
+      update: mockCellUpdate,
+      getMeta: () => {
+        if (target) {
+          return {
+            ...mockCell,
+            ...target,
+          };
+        }
+        return mockCell;
+      },
+      getActualText: () => '...',
+      getFieldValue: () => '',
+      cellType: 'dataCell',
+    } as any);
+
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
-    s2.getCell = () =>
-      ({
-        update: mockCellUpdate,
-        getMeta: () => mockCell,
-        getActualText: () => '...',
-        getFieldValue: () => '',
-      } as any);
+    s2.getCell = getCell;
     s2.options = {
       interaction: {
         hoverHighlight: true,
@@ -84,6 +95,19 @@ describe('Interaction Hover Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
+  test('should not trigger data cell hover when hover cell not change', () => {
+    s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellMeta],
+      stateName: InteractionStateName.HOVER,
+    });
+
+    s2.emit(S2Event.DATA_CELL_HOVER, {
+      target: { cellType: 'mockCell' } as any,
+    } as GEvent);
+    expect((s2.interaction.getState().cells[0] as any).type).toBe('dataCell');
+  });
+
   test('should trigger data cell hover immediately hover focus time equals 0', async () => {
     s2.setOptions({
       interaction: { hoverFocus: { duration: 0 } },
@@ -115,6 +139,21 @@ describe('Interaction Hover Tests', () => {
     });
     expect(mockCellUpdate).toHaveBeenCalled();
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+  });
+
+  test('should not trigger header cell hover when hover cell not change', () => {
+    s2.emit(S2Event.ROW_CELL_HOVER, { target: {} } as GEvent);
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellMeta],
+      stateName: InteractionStateName.HOVER,
+    });
+
+    s2.emit(S2Event.ROW_CELL_HOVER, {
+      target: {
+        cellType: 'rowCell',
+      } as any,
+    } as GEvent);
+    expect((s2.interaction.getState().cells[0] as any).type).toBe('dataCell');
   });
 
   test('should clear data cell hover focus timer when cell clicked', async () => {
