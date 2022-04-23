@@ -52,7 +52,7 @@ describe('State Controller Utils Tests', () => {
     });
   });
 
-  test('should replace state when state name is the same', () => {
+  test('should do nothing when state name is the same', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
       cells: [getCellMeta(mockRowCell)],
@@ -70,7 +70,7 @@ describe('State Controller Utils Tests', () => {
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [],
+      cells: [getCellMeta(mockRowCell)],
     });
   });
 
@@ -92,6 +92,22 @@ describe('State Controller Utils Tests', () => {
     expect(mockInstance.interaction.getState()).toEqual({
       cells: [],
       force: false,
+    });
+  });
+
+  test('should only reset state for empty interactedCells or cells  when call clearState function', () => {
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      interactedCells: [],
+      cells: [],
+    });
+
+    clearState(mockInstance);
+
+    expect(mockInstance.interaction.getState()).toEqual({
+      cells: [],
+      interactedCells: [],
+      stateName: InteractionStateName.SELECTED,
     });
   });
 });

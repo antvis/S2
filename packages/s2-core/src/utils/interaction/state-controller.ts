@@ -17,7 +17,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
   const cellMetas = spreadsheet.interaction.getState().cells;
 
-  if (!isEmpty(allInteractedCells) && !isEmpty(cellMetas)) {
+  if (!isEmpty(allInteractedCells) || !isEmpty(cellMetas)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
@@ -48,6 +48,6 @@ export const setState = (
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
+    spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
   }
-  spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
 };
