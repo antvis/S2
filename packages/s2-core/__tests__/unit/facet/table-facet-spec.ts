@@ -259,7 +259,7 @@ describe('Table Mode Facet With Frozen Test', () => {
       },
       [FrozenGroup.FROZEN_ROW]: {
         height: 60,
-        range: [0, 2],
+        range: [0, 1],
       },
       [FrozenGroup.FROZEN_TRAILING_COL]: {
         range: [3, 4],
@@ -267,7 +267,7 @@ describe('Table Mode Facet With Frozen Test', () => {
       },
       [FrozenGroup.FROZEN_TRAILING_ROW]: {
         height: 60,
-        range: [29, 31],
+        range: [30, 31],
       },
     });
   });
