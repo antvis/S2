@@ -276,7 +276,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public hideInteractionShape() {
     this.stateShapes.forEach((shape: IShape) => {
-      // shape.set('visible', false);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);

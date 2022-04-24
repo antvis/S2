@@ -7,15 +7,10 @@ import { forEach, isEmpty, set, isFunction } from 'lodash';
 import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
 
-export function renderRect(
-  group: Group,
-  attrs: ShapeAttrs,
-  other?: any,
-): IShape {
+export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('rect', {
     zIndex: 1,
     attrs,
-    ...(other || {}),
   });
 }
 

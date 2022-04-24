@@ -490,7 +490,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
       this.clearAutoScroll();
 
-      if (!this.isValidBrushSelection()) {
+      if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
           InterceptType.BRUSH_SELECTION,
         ]);

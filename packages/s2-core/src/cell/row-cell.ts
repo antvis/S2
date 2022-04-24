@@ -72,15 +72,9 @@ export class RowCell extends HeaderCell {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-        },
-        {
-          visible: false,
-        },
-      ),
+      renderRect(this, {
+        ...this.getCellArea(),
+      }),
     );
   }
 

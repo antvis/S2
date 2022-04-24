@@ -404,17 +404,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-          fill: 'transparent',
-          stroke: 'transparent',
-        },
-        {
-          // visible: false,
-        },
-      ),
+      renderRect(this, {
+        ...this.getCellArea(),
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
     );
   }
 

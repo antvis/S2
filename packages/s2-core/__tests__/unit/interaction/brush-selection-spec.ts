@@ -1,6 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import { range } from 'lodash';
 import { DataCell } from 'src/cell/data-cell';
+import { FrozenGroup } from 'src/common/constant';
 import { RootInteraction } from '@/interaction/root';
 import {
   ScrollDirection,
@@ -469,11 +470,17 @@ describe('Interaction Brush Selection Tests', () => {
     ).toBe(200);
 
     (facet as TableFacet).frozenGroupInfo = {
-      col: {
+      [FrozenGroup.FROZEN_COL]: {
         width: 100,
       },
-      trailingCol: {
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
         width: 100,
+      },
+      [FrozenGroup.FROZEN_ROW]: {
+        height: 0,
+      },
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+        height: 0,
       },
     };
 
@@ -514,10 +521,16 @@ describe('Interaction Brush Selection Tests', () => {
     ).toBe(320);
 
     (facet as TableFacet).frozenGroupInfo = {
-      row: {
+      [FrozenGroup.FROZEN_COL]: {
+        width: 0,
+      },
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
+        width: 0,
+      },
+      [FrozenGroup.FROZEN_ROW]: {
         height: 100,
       },
-      trailingRow: {
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
         height: 100,
       },
     };
@@ -550,16 +563,16 @@ describe('Interaction Brush Selection Tests', () => {
     expect(validateYIndex(9)).toBe(9);
 
     (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
-      col: {
+      [FrozenGroup.FROZEN_COL]: {
         range: [0, 1],
       },
-      trailingCol: {
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
         range: [8, 9],
       },
-      row: {
+      [FrozenGroup.FROZEN_ROW]: {
         range: [0, 1],
       },
-      trailingRow: {
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
         range: [8, 9],
       },
     };
