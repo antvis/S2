@@ -184,17 +184,18 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public validateYIndex = (yIndex: number) => {
     const { facet } = this.spreadsheet;
-    const { frozenRow, frozenTrailingRow } = (facet as TableFacet)
-      .frozenGroupInfo;
+    const frozenInfo = (facet as TableFacet).frozenGroupInfo;
     let min = 0;
-    if (frozenRow && frozenRow.range) {
-      min = frozenRow.range[1] + 1;
+    const frozenRowRange = frozenInfo?.frozenRow?.range;
+    if (frozenRowRange) {
+      min = frozenRowRange[1] + 1;
     }
     if (yIndex < min) return null;
 
     let max = facet.getCellRange().end;
-    if (frozenTrailingRow && frozenTrailingRow.range) {
-      max = frozenTrailingRow.range[0] - 1;
+    const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
+    if (frozenTrailingRowRange) {
+      max = frozenTrailingRowRange[0] - 1;
     }
     if (yIndex > max) {
       return null;
@@ -205,18 +206,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public validateXIndex = (xIndex: number) => {
     const { facet } = this.spreadsheet;
-    const { frozenCol, frozenTrailingCol } = (facet as TableFacet)
-      .frozenGroupInfo;
+    const frozenInfo = (facet as TableFacet).frozenGroupInfo;
 
     let min = 0;
-    if (frozenCol && frozenCol.range) {
-      min = frozenCol.range[1] + 1;
+    const frozenColRange = frozenInfo?.frozenCol?.range;
+    if (frozenColRange) {
+      min = frozenColRange[1] + 1;
     }
     if (xIndex < min) return null;
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
-    if (frozenTrailingCol && frozenTrailingCol.range) {
-      max = frozenTrailingCol.range[0] - 1;
+    const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
+    if (frozenTrailingColRange) {
+      max = frozenTrailingColRange[0] - 1;
     }
     if (xIndex > max) {
       return null;

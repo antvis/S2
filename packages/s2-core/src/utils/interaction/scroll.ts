@@ -10,10 +10,9 @@ export const getScrollOffsetForCol = (
 ) => {
   const { facet } = spreadsheet;
   const { width } = facet.panelBBox;
-  const frozenColWidth =
-    (facet as TableFacet)?.frozenGroupInfo.frozenCol.width ?? 0;
-  const frozenTrailingColWidth =
-    (facet as TableFacet)?.frozenGroupInfo.frozenTrailingCol.width ?? 0;
+  const info = (facet as TableFacet)?.frozenGroupInfo;
+  const frozenColWidth = info?.frozenCol.width ?? 0;
+  const frozenTrailingColWidth = info?.frozenTrailingCol.width ?? 0;
 
   const colNode = facet.layoutResult.colLeafNodes[colIndex];
   if (direction === ScrollDirection.LEADING) {
@@ -34,10 +33,9 @@ export const getScrollOffsetForRow = (
 
   const { height } = facet.panelBBox;
 
-  const frozenRowHeight =
-    (facet as TableFacet)?.frozenGroupInfo.frozenRow.height ?? 0;
-  const frozenTrailingRowHeight =
-    (facet as TableFacet)?.frozenGroupInfo.frozenTrailingRow.height ?? 0;
+  const info = (facet as TableFacet)?.frozenGroupInfo;
+  const frozenRowHeight = info?.frozenRow.height ?? 0;
+  const frozenTrailingRowHeight = info?.frozenTrailingRow.height ?? 0;
 
   if (direction === ScrollDirection.LEADING) {
     return getCellOffsetY(rowIndex) - frozenRowHeight;
