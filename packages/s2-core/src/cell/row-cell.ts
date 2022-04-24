@@ -74,6 +74,8 @@ export class RowCell extends HeaderCell {
       'interactiveBgShape',
       renderRect(this, {
         ...this.getCellArea(),
+        fill: 'transparent',
+        stroke: 'transparent',
       }),
     );
   }

@@ -381,20 +381,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { x, y, height, width } = this.getCellArea();
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(
-        this,
-        {
-          x: x + margin,
-          y: y + margin,
-          width: width - margin * 2,
-          height: height - margin * 2,
-          fill: 'transparent',
-          stroke: 'transparent',
-        },
-        {
-          // visible: false,
-        },
-      ),
+      renderRect(this, {
+        x: x + margin,
+        y: y + margin,
+        width: width - margin * 2,
+        height: height - margin * 2,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
     );
   }
 
