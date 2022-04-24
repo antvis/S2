@@ -3,6 +3,7 @@ import type { IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { renderLine } from 'src/utils/g-renders';
 import { GridInfo } from 'src/common/interface';
+import { KEY_GROUP_GRID_GROUP } from 'src/common/constant';
 
 export class GridGroup extends Group {
   private ss: SpreadSheet;
@@ -19,7 +20,7 @@ export class GridGroup extends Group {
     rows: [],
   };
 
-  public updateGrid = (gridInfo: GridInfo, id = 'foobar') => {
+  public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
     const bbox = this.getBBox();
     const style = this.ss.theme.dataCell.cell;
 
@@ -33,11 +34,12 @@ export class GridGroup extends Group {
 
     this.gridInfo = gridInfo;
     this.gridInfo.cols.forEach((item) => {
+      const x = item - style.verticalBorderWidth / 2;
       renderLine(
         this.gridGroup as Group,
         {
-          x1: item - style.verticalBorderWidth / 2,
-          x2: item - style.verticalBorderWidth / 2,
+          x1: x,
+          x2: x,
           y1: Math.ceil(bbox.minY),
           y2: Math.floor(bbox.maxY),
         },
@@ -50,13 +52,14 @@ export class GridGroup extends Group {
     });
 
     this.gridInfo.rows.forEach((item) => {
+      const y = item - style.horizontalBorderWidth / 2;
       renderLine(
         this.gridGroup as Group,
         {
           x1: Math.ceil(bbox.minX),
           x2: Math.floor(bbox.maxX),
-          y1: item - style.verticalBorderWidth / 2,
-          y2: item - style.verticalBorderWidth / 2,
+          y1: y,
+          y2: y,
         },
         {
           stroke: style.horizontalBorderColor,
