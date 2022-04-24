@@ -48,6 +48,6 @@ export const setState = (
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
+    spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
   }
-  spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
 };
