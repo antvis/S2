@@ -45,7 +45,7 @@ export default defineConfig({
   },
   plugins: [
     peerDepsExternal(),
-    viteCommonjs(),
+    !isDevMode && viteCommonjs(),
     vue(),
     vueJsx(),
     isAnalysisMode && visualizer({ gzipSize: true }),
