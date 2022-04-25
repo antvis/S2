@@ -16,7 +16,6 @@ import { usePrevious } from './usePrevious';
 import { useResize } from './useResize';
 
 export interface UseSpreadSheetConfig {
-  s2Options?: S2Options;
   sheetType: SheetType;
 }
 
@@ -40,7 +39,7 @@ export function useSpreadSheet(
 
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
-      const s2Options = config.s2Options || getSheetComponentOptions(options);
+      const s2Options = getSheetComponentOptions(options);
       const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
       if (customSpreadSheet) {
         return customSpreadSheet(...s2Constructor);
@@ -50,7 +49,7 @@ export function useSpreadSheet(
       }
       return new PivotSheet(container, dataCfg, s2Options);
     },
-    [config.s2Options, config.sheetType, options, dataCfg, customSpreadSheet],
+    [config.sheetType, options, dataCfg, customSpreadSheet],
   );
 
   const buildSpreadSheet = React.useCallback(() => {
