@@ -439,8 +439,8 @@ export class EventController {
     }
   };
 
-  private onCanvasMouseout = (args) => {
-    if (!this.isAutoResetSheetStyle || args?.shape) {
+  private onCanvasMouseout = (event: CanvasEvent) => {
+    if (!this.isAutoResetSheetStyle || event?.shape) {
       return;
     }
     const { interaction } = this.spreadsheet;
