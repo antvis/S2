@@ -142,18 +142,21 @@ describe('Interaction Hover Tests', () => {
   });
 
   test('should not trigger header cell hover when hover cell not change', () => {
-    s2.emit(S2Event.ROW_CELL_HOVER, { target: {} } as GEvent);
-    expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellMeta],
-      stateName: InteractionStateName.HOVER,
-    });
+    s2.emit(S2Event.ROW_CELL_HOVER, {
+      target: {
+        id: 'rowCellOne',
+        rowIndex: 0,
+      } as any,
+    } as GEvent);
 
     s2.emit(S2Event.ROW_CELL_HOVER, {
       target: {
-        cellType: 'rowCell',
+        id: 'rowCellOne',
+        rowIndex: 1,
       } as any,
     } as GEvent);
-    expect((s2.interaction.getState().cells[0] as any).type).toBe('dataCell');
+
+    expect((s2.interaction.getState().cells[0] as any).rowIndex).toBe(0);
   });
 
   test('should clear data cell hover focus timer when cell clicked', async () => {
