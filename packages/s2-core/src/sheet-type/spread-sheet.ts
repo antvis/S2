@@ -587,7 +587,7 @@ export abstract class SpreadSheet extends EE {
     this.panelScrollGroup = new PanelScrollGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-      ss: this,
+      s2: this,
     });
     this.panelGroup.add(this.panelScrollGroup);
   }

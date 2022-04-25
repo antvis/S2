@@ -1172,12 +1172,9 @@ export abstract class BaseFacet {
   }
 
   protected getGridInfo = () => {
-    let cols: number[] = [];
-    let rows: number[] = [];
     const [colMin, colMax, rowMin, rowMax] = this.preCellIndexes.center;
-
-    cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
-    rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+    const cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
+    const rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
 
     return {
       cols,

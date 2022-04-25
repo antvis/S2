@@ -6,11 +6,11 @@ import { GridInfo } from 'src/common/interface';
 import { KEY_GROUP_GRID_GROUP } from 'src/common/constant';
 
 export class GridGroup extends Group {
-  private ss: SpreadSheet;
+  private s2: SpreadSheet;
 
   constructor(cfg) {
     super(cfg);
-    this.ss = cfg.ss;
+    this.s2 = cfg.s2;
   }
 
   private gridGroup: IGroup;
@@ -22,7 +22,7 @@ export class GridGroup extends Group {
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
     const bbox = this.getBBox();
-    const style = this.ss.theme.dataCell.cell;
+    const style = this.s2.theme.dataCell.cell;
 
     if (!this.gridGroup || !this.findById(id)) {
       this.gridGroup = this.addGroup({

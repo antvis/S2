@@ -86,7 +86,7 @@ export class TableSheet extends SpreadSheet {
     super.initPanelGroupChildren();
     const commonParams = {
       zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-      ss: this,
+      s2: this,
     };
     [
       this.frozenRowGroup,
