@@ -113,12 +113,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       return;
     }
     const { interaction } = this.spreadsheet;
-    const activeCells = interaction.getCells();
     interaction.clearHoverTimer();
 
     const meta = cell.getMeta() as ViewMeta;
     // 避免在统一单元格内鼠标移动造成的多次渲染
-    if (isEqual(activeCells?.[0]?.id, meta.id)) {
+    if (interaction.isActiveCell(cell)) {
       return;
     }
 
@@ -180,9 +179,9 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       const { interaction, options } = this.spreadsheet;
       const { interaction: interactionOptions } = options;
       const meta = cell?.getMeta() as ViewMeta;
-      const activeCells = interaction.getCells();
+
       // 避免在统一单元格内鼠标移动造成的多次渲染
-      if (isEqual(activeCells?.[0]?.id, meta.id)) {
+      if (interaction.isActiveCell(cell)) {
         return;
       }
       interaction.changeState({
