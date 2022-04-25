@@ -1,7 +1,6 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
-  clone,
   forEach,
   forIn,
   get,
@@ -57,7 +56,7 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
-import { registerIcon, getIcon } from '@/common/icons/factory';
+import { registerIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
