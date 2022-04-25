@@ -1,5 +1,6 @@
 import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
+import { find, get, isEmpty } from 'lodash';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import { isMobile } from '@/utils/is-mobile';
@@ -10,13 +11,18 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { CellBorderPosition, TextTheme } from '@/common/interface';
+import { CellBorderPosition, TextTheme, ViewMeta } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import {
   getTextAndFollowingIconPosition,
   getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
-import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
+import {
+  renderLine,
+  renderRect,
+  renderCircle,
+  renderTreeIcon,
+} from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import {
@@ -40,20 +46,21 @@ export class RowCell extends HeaderCell {
 
   protected initCell() {
     super.initCell();
-    // 1、draw rect background
+    // 绘制单元格背景
     this.drawBackgroundShape();
+    // 绘制交互背景
     this.drawInteractiveBgShape();
-
-    // draw icon
-    this.drawTreeIcon();
-    // draw text
+    // 绘制单元格文本
     this.drawTextShape();
-
-    // draw bottom border
+    // 绘制树状模式收起展开的 icon
+    this.drawTreeIcon();
+    // 绘制树状模式下子节点层级占位圆点
+    this.drawTreeLeafNodeAlignDot();
+    // 绘制单元格边框
     this.drawRectBorder();
-    // draw hot-spot rect
+    // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
-    // draw action icon shapes: trend icon, drill-down icon ...
+    // 绘制 action icons
     this.drawActionIcons();
     this.update();
   }
@@ -82,6 +89,18 @@ export class RowCell extends HeaderCell {
 
   private showTreeIcon() {
     return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
+  }
+
+  // 获取树状模式下叶子节点的父节点收起展开 icon 图形属性
+  private getParentTreeIconCfg() {
+    if (
+      !this.spreadsheet.isHierarchyTreeType() ||
+      !this.meta.isLeaf ||
+      this.isTreeLevel()
+    ) {
+      return;
+    }
+    return get(this.meta, 'parent.belongsCell.treeIcon.cfg');
   }
 
   // draw tree icon
@@ -153,6 +172,26 @@ export class RowCell extends HeaderCell {
         });
       });
     }
+  }
+
+  protected drawTreeLeafNodeAlignDot() {
+    const parentTreeIconCfg = this.getParentTreeIconCfg();
+    if (!parentTreeIconCfg) {
+      return;
+    }
+    const { x } = parentTreeIconCfg;
+    const textY = this.getTextPosition().y;
+    const { size } = this.getStyle().icon;
+    const { fill, fontSize } = this.getTextStyle();
+    const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    this.treeLeafNodeAlignDot = renderCircle(this, {
+      x: x + size / 2, // 和父节点的收起展开 icon 保持居中对齐
+      y: textY + (fontSize - r) / 2,
+      r,
+      fill,
+
+      fillOpacity: 0.4, // 暂时先写死，后面看是否有这个点点的定制需求
+    });
   }
 
   // draw text
@@ -283,14 +322,28 @@ export class RowCell extends HeaderCell {
   protected getTextIndent() {
     const { size, margin } = this.getStyle().icon;
     const contentIndent = this.getContentIndent();
-    const treeIconWidth = this.showTreeIcon() ? size + margin.right : 0;
+    const treeIconWidth =
+      this.showTreeIcon() || this.isTreeLevel() ? size + margin.right : 0;
     return contentIndent + treeIconWidth;
   }
 
-  protected getTextStyle(): TextTheme {
+  // 判断当前节点的兄弟节点是否叶子节点
+  protected isTreeLevel() {
+    return find(
+      get(this.meta, 'parent.children'),
+      (cell: ViewMeta) => !cell.isLeaf,
+    );
+  }
+
+  protected isBolderText() {
+    // 非叶子节点、小计总计、兄弟节点为非叶子节点，均为粗体
     const { isLeaf, isTotals } = this.meta;
+    return !isLeaf || this.isTreeLevel() || isTotals;
+  }
+
+  protected getTextStyle(): TextTheme {
     const { text, bolderText } = this.getStyle();
-    const style = isLeaf && !isTotals ? text : bolderText;
+    const style = this.isBolderText() ? bolderText : text;
 
     return {
       ...style,
@@ -380,7 +433,6 @@ export class RowCell extends HeaderCell {
       this.getIconStyle(),
       this.getActionIconsCount(),
     ).text.x;
-
     return { x: textX, y: textY };
   }
 
