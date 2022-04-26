@@ -1,4 +1,4 @@
-import { customMerge, DEFAULT_OPTIONS, S2Options } from '@antv/s2';
+import { customMerge, DEFAULT_OPTIONS, type S2Options } from '@antv/s2';
 import { SHEET_COMPONENT_DEFAULT_OPTIONS } from '../constants';
 
 export const getBaseSheetComponentOptions = (

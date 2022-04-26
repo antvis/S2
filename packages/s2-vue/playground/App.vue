@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { BaseSheet } from '../src';
 
 const dataCfg = {
