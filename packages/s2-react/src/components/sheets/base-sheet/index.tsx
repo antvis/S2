@@ -17,11 +17,9 @@ import './index.less';
 
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { dataCfg, options, header, showPagination, sheetType } = props;
+    const { dataCfg, options, header, showPagination } = props;
     const { s2Ref, loading, containerRef, pagination, wrapRef } =
-      useSpreadSheet(props, {
-        sheetType,
-      });
+      useSpreadSheet(props);
 
     // 同步实例
     React.useEffect(() => {

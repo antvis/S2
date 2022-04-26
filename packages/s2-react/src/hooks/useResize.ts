@@ -1,7 +1,7 @@
 import React from 'react';
 import { debounce } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
-import { Adaptive } from '@/components';
+import { Adaptive } from '@antv/s2-shared';
 
 export interface UseResizeEffectParams {
   container: HTMLDivElement; // 只包含了 sheet 容器

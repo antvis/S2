@@ -1,13 +1,7 @@
-import {
-  PivotSheet,
-  S2Constructor,
-  S2Options,
-  SpreadSheet,
-  TableSheet,
-} from '@antv/s2';
+import { PivotSheet, S2Constructor, SpreadSheet, TableSheet } from '@antv/s2';
 import { useUpdate } from 'ahooks';
 import React from 'react';
-import type { BaseSheetComponentProps, SheetType } from '../components';
+import type { SheetComponentsProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
@@ -15,20 +9,19 @@ import { usePagination } from './usePagination';
 import { usePrevious } from './usePrevious';
 import { useResize } from './useResize';
 
-export interface UseSpreadSheetConfig {
-  sheetType: SheetType;
-}
-
-export function useSpreadSheet(
-  props: BaseSheetComponentProps,
-  config: UseSpreadSheetConfig,
-) {
+export function useSpreadSheet(props: SheetComponentsProps) {
   const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
   const wrapRef = React.useRef<HTMLDivElement>();
 
-  const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
+  const {
+    spreadsheet: customSpreadSheet,
+    dataCfg,
+    options,
+    themeCfg,
+    sheetType,
+  } = props;
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
   const pagination = usePagination(s2Ref.current, props);
   const prevDataCfg = usePrevious(dataCfg);
@@ -44,12 +37,12 @@ export function useSpreadSheet(
       if (customSpreadSheet) {
         return customSpreadSheet(...s2Constructor);
       }
-      if (config.sheetType === 'table') {
+      if (sheetType === 'table') {
         return new TableSheet(container, dataCfg, s2Options);
       }
       return new PivotSheet(container, dataCfg, s2Options);
     },
-    [config.sheetType, options, dataCfg, customSpreadSheet],
+    [sheetType, options, dataCfg, customSpreadSheet],
   );
 
   const buildSpreadSheet = React.useCallback(() => {
