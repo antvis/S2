@@ -1,6 +1,5 @@
 <script setup>
-import { Spin } from 'ant-design-vue';
-import { PivotSheet } from '../src';
+import { BaseSheet } from '../src';
 
 const dataCfg = {
   fields: {
@@ -267,9 +266,7 @@ const options = {
 </script>
 
 <template>
-  <Spin :spinning="false">
-    <PivotSheet :dataCfg="dataCfg" :options="options" />
-  </Spin>
+  <BaseSheet :dataCfg="dataCfg" :options="options" />
 </template>
 
 <style lang="less">

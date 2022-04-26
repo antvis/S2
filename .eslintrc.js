@@ -33,8 +33,6 @@ module.exports = {
     },
   },
   rules: {
-    'react-hooks/exhaustive-deps': 'warn',
-    'react-hooks/rules-of-hooks': 'error',
     'prettier/prettier': [
       1,
       {
@@ -73,6 +71,8 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     'import/no-named-default': 0,
+    'react-hooks/exhaustive-deps': 0,
+    'react-hooks/rules-of-hooks': 0,
     'react/jsx-filename-extension': [
       1,
       {
@@ -127,6 +127,13 @@ module.exports = {
     {
       files: ['*.vue'],
       parser: 'vue-eslint-parser',
+    },
+    {
+      files: ['s2-react/**/*.tsx'],
+      rules: {
+        'react-hooks/exhaustive-deps': 'warn',
+        'react-hooks/rules-of-hooks': 'error',
+      },
     },
   ],
 };

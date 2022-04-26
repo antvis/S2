@@ -1,1 +1,1 @@
-export { default as PivotSheet } from './PivotSheet.vue';
+export { default as BaseSheet } from './sheets/base-sheet.vue';
