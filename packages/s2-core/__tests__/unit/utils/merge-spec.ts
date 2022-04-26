@@ -4,7 +4,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import type { S2DataConfig } from '@/common';
+import { HOVER_FOCUS_DURATION, S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -148,7 +148,7 @@ describe('merge test', () => {
         hiddenColumnFields: [],
         selectedCellsSpotlight: false,
         hoverHighlight: true,
-        hoverFocus: true,
+        hoverFocus: { duration: HOVER_FOCUS_DURATION },
         scrollSpeedRatio: {
           horizontal: 1,
           vertical: 1,

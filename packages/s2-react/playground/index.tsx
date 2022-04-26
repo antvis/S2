@@ -28,7 +28,6 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  S2Theme,
   DataType,
   generatePalette,
   getPalette,
@@ -679,7 +678,7 @@ function MainLayout() {
                   <Switch
                     checkedChildren="hover聚焦开"
                     unCheckedChildren="hover聚焦关"
-                    checked={mergedOptions.interaction.hoverFocus}
+                    checked={mergedOptions.interaction.hoverFocus as boolean}
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {

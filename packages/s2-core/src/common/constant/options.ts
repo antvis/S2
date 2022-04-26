@@ -1,5 +1,8 @@
 import { S2Options } from '../interface/s2Options';
-import { ScrollbarPositionType } from '../constant/interaction';
+import {
+  HOVER_FOCUS_DURATION,
+  ScrollbarPositionType,
+} from '../constant/interaction';
 import { EMPTY_PLACEHOLDER } from './basic';
 import { Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
@@ -56,7 +59,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     hiddenColumnFields: [],
     selectedCellsSpotlight: false,
     hoverHighlight: true,
-    hoverFocus: true,
+    hoverFocus: { duration: HOVER_FOCUS_DURATION },
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,
