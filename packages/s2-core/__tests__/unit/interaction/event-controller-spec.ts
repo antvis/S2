@@ -529,43 +529,63 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
-  test('should hide tooltip and clear hover highlight cell if current mouse outside the cell', () => {
+  test('should hide tooltip and clear hover highlight cell if current mouse outside the canvas', () => {
     spreadsheet.interaction.changeState({
       cells: [{} as CellMeta],
       stateName: InteractionStateName.HOVER,
     });
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
+      shape: null,
+    });
 
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
     expect(spreadsheet.hideTooltip).toHaveBeenCalled();
     expect(spreadsheet.interaction.getActiveCells()).toHaveLength(0);
   });
 
-  test('should not hide tooltip if mouse outside the cell and has selected cells', () => {
+  test('should not hide tooltip if mouse move inside the canvas', () => {
     spreadsheet.interaction.changeState({
       cells: [{} as CellMeta],
       stateName: InteractionStateName.SELECTED,
     });
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
+      shape: 'mock',
+    });
 
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
-  test('should disable reset if mouse outside the cell and autoResetSheetStyle set to false', () => {
+  test('should not hide tooltip if mouse outside the canvas and has selected cells', () => {
+    spreadsheet.interaction.changeState({
+      cells: [{} as CellMeta],
+      stateName: InteractionStateName.SELECTED,
+    });
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
+      shape: null,
+    });
+
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  test('should disable reset if mouse outside the canvas and autoResetSheetStyle set to false', () => {
     spreadsheet.setOptions({
       interaction: {
         autoResetSheetStyle: false,
       },
     });
 
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
+      shape: null,
+    });
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
-  test('should disable reset if mouse outside the cell and action tooltip is active', () => {
+  test('should disable reset if mouse outside the canvas and action tooltip is active', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT, {
+      shape: null,
+    });
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
