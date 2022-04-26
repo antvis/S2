@@ -20,6 +20,12 @@ export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
   });
 }
 
+export function renderCircle(group: Group, attrs: ShapeAttrs): IShape {
+  return group?.addShape?.('circle', {
+    attrs,
+  });
+}
+
 export function renderText(
   group: Group,
   shapes: IShape[],

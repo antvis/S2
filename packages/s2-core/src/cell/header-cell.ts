@@ -1,4 +1,4 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import { Event as CanvasEvent, IShape } from '@antv/g-canvas';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
 import { BaseCell } from '@/cell/base-cell';
@@ -23,6 +23,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
 
   protected treeIcon: GuiIcon | undefined;
+
+  protected treeLeafNodeAlignDot: IShape | undefined;
 
   protected actionIcons: GuiIcon[];
 
