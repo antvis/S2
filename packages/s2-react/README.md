@@ -2,7 +2,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格 (React 版本)。
+数据驱动的多维分析表格 (React 版本)
 
 <p>
  <a href="https://www.npmjs.com/package/@antv/s2-react" title="npm">
