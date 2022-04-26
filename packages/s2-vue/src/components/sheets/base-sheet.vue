@@ -3,13 +3,19 @@ import { S2_PREFIX_CLS } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import { Spin } from 'ant-design-vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
-import { initBaseSheetPropKeys } from '../../utils/initProps';
+import {
+  initBaseSheetEmitKeys,
+  initBaseSheetPropKeys,
+} from '../../utils/initProps';
 
 const props = defineProps(initBaseSheetPropKeys());
+const emits = defineEmits(initBaseSheetEmitKeys());
 
 const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
   props as Readonly<BaseSheetComponentProps>,
 );
+
+// console.log("props & emit:",props,emits)
 
 defineExpose(s2Ref);
 </script>
