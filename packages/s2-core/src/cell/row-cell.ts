@@ -93,7 +93,7 @@ export class RowCell extends HeaderCell {
 
   private showTreeLeafNodeAlignDot() {
     return (
-      get(this.meta, 'spreadsheet.options.style.showTreeLeafNodeAlignDot') &&
+      get(this.spreadsheet, 'options.style.showTreeLeafNodeAlignDot') &&
       this.spreadsheet.isHierarchyTreeType()
     );
   }
