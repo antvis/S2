@@ -1,6 +1,6 @@
 import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { find, get, isEmpty } from 'lodash';
+import { find, get } from 'lodash';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import { isMobile } from '@/utils/is-mobile';
@@ -91,12 +91,19 @@ export class RowCell extends HeaderCell {
     return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
   }
 
+  private showTreeLeafNodeAlignDot() {
+    return (
+      get(this.meta, 'spreadsheet.options.style.showTreeLeafNodeAlignDot') &&
+      this.spreadsheet.isHierarchyTreeType()
+    );
+  }
+
   // 获取树状模式下叶子节点的父节点收起展开 icon 图形属性
   private getParentTreeIconCfg() {
     if (
+      !this.showTreeLeafNodeAlignDot() ||
       !this.spreadsheet.isHierarchyTreeType() ||
-      !this.meta.isLeaf ||
-      this.isTreeLevel()
+      !this.meta.isLeaf
     ) {
       return;
     }
@@ -179,18 +186,18 @@ export class RowCell extends HeaderCell {
     if (!parentTreeIconCfg) {
       return;
     }
-    const { x } = parentTreeIconCfg;
+    const { size, margin } = this.getStyle().icon;
+    const x = parentTreeIconCfg.x + size + margin.right;
     const textY = this.getTextPosition().y;
-    const { size } = this.getStyle().icon;
+
     const { fill, fontSize } = this.getTextStyle();
     const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      x: x + size / 2, // 和父节点的收起展开 icon 保持居中对齐
+      x: x + size / 2, // 和收起展开 icon 保持居中对齐
       y: textY + (fontSize - r) / 2,
       r,
       fill,
-
-      fillOpacity: 0.4, // 暂时先写死，后面看是否有这个点点的定制需求
+      fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
     });
   }
 
@@ -304,7 +311,7 @@ export class RowCell extends HeaderCell {
     if (!this.spreadsheet.isHierarchyTreeType()) {
       return 0;
     }
-    const { icon } = this.getStyle();
+    const { icon, cell } = this.getStyle();
     const iconWidth = icon.size + icon.margin.right;
 
     let parent = this.meta.parent;
@@ -315,6 +322,9 @@ export class RowCell extends HeaderCell {
       }
       parent = parent.parent;
     }
+    if (this.showTreeLeafNodeAlignDot()) {
+      sum += this.isTreeLevel() ? 0 : cell.padding.right + icon.margin.right;
+    }
 
     return sum;
   }
@@ -323,7 +333,10 @@ export class RowCell extends HeaderCell {
     const { size, margin } = this.getStyle().icon;
     const contentIndent = this.getContentIndent();
     const treeIconWidth =
-      this.showTreeIcon() || this.isTreeLevel() ? size + margin.right : 0;
+      this.showTreeIcon() ||
+      (this.isTreeLevel() && this.showTreeLeafNodeAlignDot())
+        ? size + margin.right
+        : 0;
     return contentIndent + treeIconWidth;
   }
 
@@ -336,9 +349,9 @@ export class RowCell extends HeaderCell {
   }
 
   protected isBolderText() {
-    // 非叶子节点、小计总计、兄弟节点为非叶子节点，均为粗体
-    const { isLeaf, isTotals } = this.meta;
-    return !isLeaf || this.isTreeLevel() || isTotals;
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals, level } = this.meta;
+    return (!isLeaf && level === 0) || isTotals;
   }
 
   protected getTextStyle(): TextTheme {
