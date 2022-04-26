@@ -4,7 +4,6 @@ import type {
 } from './../interface';
 export const initBaseSheetPropKeys = (): BaseSheetInitPropKeys => [
   'sheetType',
-  'spreadsheet',
   'dataCfg',
   'options',
   'loading',
@@ -13,11 +12,12 @@ export const initBaseSheetPropKeys = (): BaseSheetInitPropKeys => [
   'showPagination',
   'themeCfg',
   'header',
-  'getSpreadSheet',
 ];
 
 export const initBaseSheetEmitKeys = (): BaseSheetInitEmitKeys => [
-  // row cell
+  'spreadsheet',
+  'getSpreadSheet',
+  // ============== Row Cell ====================
   'rowCellHover',
   'rowCellClick',
   'rowCellDoubleClick',

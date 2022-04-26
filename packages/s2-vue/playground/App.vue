@@ -263,14 +263,14 @@ const options = {
   height: 400,
   hierarchyCollapse: false,
 };
-const onRowCellClick = () => {};
+const onSpreadsheet = () => {};
 </script>
 
 <template>
   <BaseSheet
     :dataCfg="dataCfg"
     :options="options"
-    @rowCellClick="onRowCellClick"
+    @spreadsheet="onSpreadsheet"
   />
 </template>
 
