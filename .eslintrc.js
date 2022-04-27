@@ -47,7 +47,7 @@ module.exports = {
       },
     ],
     'import/order': 2,
-    'import/no-default-export': 2,
+    'import/no-default-export': 0,
     'no-restricted-syntax': 0,
     semi: 0,
     'no-console': 2,
@@ -129,10 +129,10 @@ module.exports = {
       parser: 'vue-eslint-parser',
     },
     {
-      files: ['s2-react/**/*.tsx'],
+      files: ['*.tsx'],
       rules: {
-        'react-hooks/exhaustive-deps': 'warn',
-        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 1,
+        'react-hooks/rules-of-hooks': 2,
       },
     },
   ],

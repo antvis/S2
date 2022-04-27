@@ -2,6 +2,7 @@ import {
   PivotSheet,
   TableSheet,
   type S2Constructor,
+  type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
 import {
@@ -28,7 +29,7 @@ export function useSpreadSheet(props: BaseSheetComponentProps) {
   const { loading, setLoading } = useLoading(s2Ref.value!, loadingProps);
 
   const renderSpreadSheet = (container: HTMLDivElement) => {
-    const s2Options = getBaseSheetComponentOptions(options);
+    const s2Options = getBaseSheetComponentOptions(options as S2Options);
     const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
     if (customSpreadSheet) {
       return customSpreadSheet(...s2Constructor);
@@ -42,7 +43,6 @@ export function useSpreadSheet(props: BaseSheetComponentProps) {
   const buildSpreadSheet = () => {
     setLoading(true);
     s2Ref.value = renderSpreadSheet(containerRef.value!);
-
     s2Ref.value.setThemeCfg(themeCfg);
     s2Ref.value.render();
     setLoading(false);

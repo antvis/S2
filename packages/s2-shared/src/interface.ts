@@ -38,7 +38,7 @@ export interface BaseSheetComponentProps<
   sheetType?: SheetType;
   spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;
-  options: S2Options;
+  options?: S2Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;

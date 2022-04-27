@@ -1,7 +1,11 @@
 <script lang="ts" setup>
+import type { S2DataConfig, S2Options } from '@antv/s2';
+import { onMounted, ref } from 'vue';
 import { BaseSheet } from '../src';
 
-const dataCfg = {
+const s2 = ref();
+
+const dataCfg: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
@@ -257,21 +261,19 @@ const dataCfg = {
     },
   ],
 };
-const options = {
+const options: S2Options = {
   debug: true,
   width: 600,
   height: 400,
   hierarchyCollapse: false,
 };
-const onSpreadsheet = () => {};
+onMounted(() => {
+  // console.log("sheet instance:",s2)
+});
 </script>
 
 <template>
-  <BaseSheet
-    :dataCfg="dataCfg"
-    :options="options"
-    @spreadsheet="onSpreadsheet"
-  />
+  <BaseSheet ref="s2" :dataCfg="dataCfg" :options="options" />
 </template>
 
 <style lang="less">

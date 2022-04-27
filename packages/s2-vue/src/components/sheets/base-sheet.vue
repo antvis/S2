@@ -1,23 +1,30 @@
-<script lang="ts" setup>
+<script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
-import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import { Spin } from 'ant-design-vue';
+import type { BaseSheetComponentProps } from '@antv/s2-shared';
+import { defineComponent } from 'vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
-  initBaseSheetEmitKeys,
-  initBaseSheetPropKeys,
-} from '../../utils/initProps';
+  initBaseSheetEmits,
+  initBaseSheetProps,
+} from '../../utils/initPropAndEmits';
 
-const props = defineProps(initBaseSheetPropKeys());
-const emits = defineEmits(initBaseSheetEmitKeys());
+export default defineComponent({
+  name: 'BaseSheet',
+  props: initBaseSheetProps(),
+  emits: initBaseSheetEmits(),
+  setup(props, ctx) {
+    const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
+      props as BaseSheetComponentProps,
+    );
 
-const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
-  props as Readonly<BaseSheetComponentProps>,
-);
-
-// console.log("props & emit:",props,emits)
-
-defineExpose(s2Ref);
+    ctx.expose({ instance: s2Ref });
+    return { S2_PREFIX_CLS, wrapRef, containerRef, s2Ref, loading };
+  },
+  components: {
+    Spin,
+  },
+});
 </script>
 
 <template>
