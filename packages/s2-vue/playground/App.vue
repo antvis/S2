@@ -1,9 +1,7 @@
-<script lang="ts" setup>
+<script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { BaseSheet } from '../src';
-
-const s2 = ref();
 
 const dataCfg: S2DataConfig = {
   fields: {
@@ -267,8 +265,19 @@ const options: S2Options = {
   height: 400,
   hierarchyCollapse: false,
 };
-onMounted(() => {
-  // console.log("sheet instance:",s2)
+
+export default defineComponent({
+  setup(props) {
+    const s2 = ref();
+
+    onMounted(() => {
+      // console.log("sheet instance:",s2)
+    });
+    return { s2, dataCfg, options };
+  },
+  components: {
+    BaseSheet,
+  },
 });
 </script>
 
