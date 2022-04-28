@@ -244,9 +244,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
-        const shape = this.stateShapes.has(shapeName)
+        const isStateShape = this.stateShapes.has(shapeName);
+        const shape = isStateShape
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // stateShape 默认 visible 为 false
+        if (isStateShape && !shape.get('visible')) {
+          shape.set('visible', true);
+        }
 
         // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
         if (

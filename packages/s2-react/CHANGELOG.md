@@ -1,10 +1,39 @@
-# [@antv/s2-react-v1.14.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.4...@antv/s2-react-v1.14.0-alpha.5) (2022-04-21)
+# [@antv/s2-react-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0) (2022-04-22)
 
 
 ### Bug Fixes
 
+* headerActionIcons更新不应清除上一次下钻数据 ([#1254](https://github.com/antvis/S2/issues/1254)) ([92837fa](https://github.com/antvis/S2/commit/92837faadb532b42be164327ca510c47cf2ae336))
 * **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
+* 修复switcher组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
+* 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
 
+
+### Features
+
+* **interaction:** 支持透传 addEventListener 的可选参数 ([#1262](https://github.com/antvis/S2/issues/1262)) ([d6bc064](https://github.com/antvis/S2/commit/d6bc064e971f8e0a18e8590931f6bff8fadabe44))
+* **switcher:** add disabled property ([#1217](https://github.com/antvis/S2/issues/1217)) ([5c0f8fb](https://github.com/antvis/S2/commit/5c0f8fb741f4f4f5a2b726c52d796f8a7fa835f3))
+* 增加根据主题色生成对应主题风格色板功能 ([#1190](https://github.com/antvis/S2/issues/1190)) ([4c81fa3](https://github.com/antvis/S2/commit/4c81fa3d0ac2c9563f022560cae75335c453b218))
+* 新增 hoverFocusTime 配置项 ([#1281](https://github.com/antvis/S2/issues/1281)) ([b7636cb](https://github.com/antvis/S2/commit/b7636cb038a9a74bbce1dd81781db9128047693d))
+
+# [@antv/s2-react-v1.14.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.4...@antv/s2-react-v1.14.0-alpha.5) (2022-04-21)
+
+# [@antv/s2-react-v1.13.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.1...@antv/s2-react-v1.13.0) (2022-04-08)
+
+### Bug Fixes
+
+* headerActionIcons 更新覆盖了下钻 icon 展示 ([#1222](https://github.com/antvis/S2/issues/1222)) ([514f4db](https://github.com/antvis/S2/commit/514f4db087bc5d3e1c5d7faa0960c2d0ea773821))
+* pagination 从 null 变为非空时未触发 total 更新 ([#1216](https://github.com/antvis/S2/issues/1216)) ([2baae0c](https://github.com/antvis/S2/commit/2baae0c84af894c9e1c4b180d91db942488f1511))
+
+### Features
+
+* 支持自定义角头的虚拟数值字段文本 close [#1212](https://github.com/antvis/S2/issues/1212) ([#1223](https://github.com/antvis/S2/issues/1223)) ([84bc978](https://github.com/antvis/S2/commit/84bc9786bf1391a9e7afd21888618403e7f786d3))
+
+# [@antv/s2-react-v1.12.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.12.0...@antv/s2-react-v1.12.1) (2022-03-25)
+
+### Bug Fixes
+
+* **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
 
 ### Features
 
@@ -12,13 +41,11 @@
 
 # [@antv/s2-react-v1.14.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.3...@antv/s2-react-v1.14.0-alpha.4) (2022-04-18)
 
-
 ### Features
 
 * **interaction:** 支持透传 addEventListener 的可选参数 ([#1262](https://github.com/antvis/S2/issues/1262)) ([d6bc064](https://github.com/antvis/S2/commit/d6bc064e971f8e0a18e8590931f6bff8fadabe44))
 
 # [@antv/s2-react-v1.14.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.2...@antv/s2-react-v1.14.0-alpha.3) (2022-04-15)
-
 
 ### Bug Fixes
 
@@ -26,13 +53,11 @@
 
 # [@antv/s2-react-v1.14.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0-alpha.1...@antv/s2-react-v1.14.0-alpha.2) (2022-04-14)
 
-
 ### Bug Fixes
 
-* headerActionIcons更新不应清除上一次下钻数据 ([#1254](https://github.com/antvis/S2/issues/1254)) ([92837fa](https://github.com/antvis/S2/commit/92837faadb532b42be164327ca510c47cf2ae336))
+* headerActionIcons 更新不应清除上一次下钻数据 ([#1254](https://github.com/antvis/S2/issues/1254)) ([92837fa](https://github.com/antvis/S2/commit/92837faadb532b42be164327ca510c47cf2ae336))
 
 # [@antv/s2-react-v1.14.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0-alpha.1) (2022-04-11)
-
 
 ### Features
 
@@ -53,7 +78,7 @@
 
 ### Bug Fixes
 
-- 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+- 未开启自适应，改变浏览器窗口大小，会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
 
 # [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
 
@@ -63,7 +88,7 @@
 
 ### Bug Fixes
 
-- 未开启自适应, 改变浏览器窗口大小, 会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
+- 未开启自适应，改变浏览器窗口大小，会导致表格重新渲染 close [#1197](https://github.com/antvis/S2/issues/1197) ([#1200](https://github.com/antvis/S2/issues/1200)) ([cfb8eaa](https://github.com/antvis/S2/commit/cfb8eaa5e07490a4935959f714efa33252ddc19a))
 
 # [@antv/s2-react-v1.12.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.11.3...@antv/s2-react-v1.12.0) (2022-03-18)
 
@@ -93,7 +118,7 @@
 
 ### Bug Fixes
 
-- 修复开启 adaptive = true 时，options 更改后, 宽度自适应，高度为 options.height ([6be62ba](https://github.com/antvis/S2/commit/6be62ba149e66aa95d9933ce0bfe7f88d41deb81))
+- 修复开启 adaptive = true 时，options 更改后，宽度自适应，高度为 options.height ([6be62ba](https://github.com/antvis/S2/commit/6be62ba149e66aa95d9933ce0bfe7f88d41deb81))
 
 ### Performance Improvements
 
@@ -107,7 +132,7 @@
 - :bug: 修复 s2-react 组件污染全局样式问题 close[#1144](https://github.com/antvis/S2/issues/1144) ([#1149](https://github.com/antvis/S2/issues/1149)) ([6bad1ed](https://github.com/antvis/S2/commit/6bad1ed40300d0f3acaeeb787ceb8735c0877e08))
 - :bug: 趋势分析表主题调优 ([#1148](https://github.com/antvis/S2/issues/1148)) ([4335c7c](https://github.com/antvis/S2/commit/4335c7ca2b00ed8c5e495bf5b8883a7a44b3ace6))
 - **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([009449f](https://github.com/antvis/S2/commit/009449f1d7aa3dcb78d93bdc57e337fd7e6c170f))
-- **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([333c3ac](https://github.com/antvis/S2/commit/333c3ac596e90ada8ef7fbfb80082deb99bfd523))
+- **interaction:** 修复开启复制后，无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([333c3ac](https://github.com/antvis/S2/commit/333c3ac596e90ada8ef7fbfb80082deb99bfd523))
 - 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([62e94af](https://github.com/antvis/S2/commit/62e94af75473f64aea606d831baa112d5e85cc4e))
 - 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([300a253](https://github.com/antvis/S2/commit/300a2538446a07ebfcd0c6355966e89c925529a0))
 
@@ -126,7 +151,7 @@
 ### Bug Fixes
 
 - **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([43b469a](https://github.com/antvis/S2/commit/43b469ac88fe712723e4032741a8aabdf5fb02c2))
-- **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
+- **interaction:** 修复开启复制后，无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
 - 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([9866de3](https://github.com/antvis/S2/commit/9866de31a72644e19373436f356c4791caee6d1e))
 - 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([9a78d71](https://github.com/antvis/S2/commit/9a78d715083686f8d69c358d9a9b95c748cc8af7))
 
@@ -150,7 +175,7 @@
 ### Bug Fixes
 
 - **copy:** 当异步复制失败时降级为同步复制 ([#1125](https://github.com/antvis/S2/issues/1125)) ([43b469a](https://github.com/antvis/S2/commit/43b469ac88fe712723e4032741a8aabdf5fb02c2))
-- **interaction:** 修复开启复制后, 无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
+- **interaction:** 修复开启复制后，无法复制表格外的文字 ([#1134](https://github.com/antvis/S2/issues/1134)) ([75460ab](https://github.com/antvis/S2/commit/75460ab10267b80ee52dea63e02d9f5f28fc796f))
 - 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([9866de3](https://github.com/antvis/S2/commit/9866de31a72644e19373436f356c4791caee6d1e))
 - 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([9a78d71](https://github.com/antvis/S2/commit/9a78d715083686f8d69c358d9a9b95c748cc8af7))
 

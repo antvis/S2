@@ -42,14 +42,16 @@ export default defineConfig({
       isDevMode ? 'development' : 'production',
     ),
   },
+
   plugins: [
     peerDepsExternal(),
-    viteCommonjs(),
+    !isDevMode && viteCommonjs(),
     react({
       jsxRuntime: 'classic',
     }),
     isAnalysisMode && visualizer({ gzipSize: true }),
   ].filter(Boolean) as PluginOption[],
+
   css: {
     preprocessorOptions: {
       less: {

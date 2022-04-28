@@ -94,4 +94,20 @@ describe('State Controller Utils Tests', () => {
       force: false,
     });
   });
+
+  test('should only reset state for empty interactedCells or cells  when call clearState function', () => {
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      interactedCells: [],
+      cells: [],
+    });
+
+    clearState(mockInstance);
+
+    expect(mockInstance.interaction.getState()).toEqual({
+      cells: [],
+      interactedCells: [],
+      stateName: InteractionStateName.SELECTED,
+    });
+  });
 });

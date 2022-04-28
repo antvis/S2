@@ -17,6 +17,7 @@ export enum LayoutWidthTypes {
 
 export const DEFAULT_STYLE: Readonly<Style> = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
+  showTreeLeafNodeAlignDot: false,
   treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
