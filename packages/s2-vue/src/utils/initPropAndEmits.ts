@@ -65,8 +65,8 @@ export const initBaseSheetEmits = (): BaseSheetInitEmits => {
     'cornerCellMouseMove',
 
     // ============== Merged Cells ====================
-    'mergedCellsHoverer',
-    'mergedCellClick',
+    'mergedCellsHover',
+    'mergedCellsClick',
     'mergedCellsDoubleClick',
     'mergedCellsMouseDown',
     'mergedCellsMouseUp',

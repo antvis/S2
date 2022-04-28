@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { BaseSheet } from '../src';
 
 const dataCfg: S2DataConfig = {
@@ -266,14 +266,16 @@ const options: S2Options = {
   hierarchyCollapse: false,
 };
 
+const onRowCellClick = (params: any) => {
+  // eslint-disable-next-line no-console
+  console.log('row cell click: ', params);
+};
+
 export default defineComponent({
-  setup(props) {
+  setup() {
     const s2 = ref();
 
-    onMounted(() => {
-      // console.log("sheet instance:",s2)
-    });
-    return { s2, dataCfg, options };
+    return { s2, dataCfg, options, onRowCellClick };
   },
   components: {
     BaseSheet,
@@ -282,7 +284,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <BaseSheet ref="s2" :dataCfg="dataCfg" :options="options" />
+  <BaseSheet
+    ref="s2"
+    :dataCfg="dataCfg"
+    :options="options"
+    @rowCellClick="onRowCellClick"
+  />
 </template>
 
 <style lang="less">
