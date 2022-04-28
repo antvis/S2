@@ -116,7 +116,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     interaction.clearHoverTimer();
 
     const meta = cell.getMeta() as ViewMeta;
-    // 避免在统一单元格内鼠标移动造成的多次渲染
+    // 避免在同一单元格内鼠标移动造成的多次渲染
     if (interaction.isActiveCell(cell)) {
       return;
     }
@@ -180,7 +180,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       const { interaction: interactionOptions } = options;
       const meta = cell?.getMeta() as ViewMeta;
 
-      // 避免在统一单元格内鼠标移动造成的多次渲染
+      // 避免在同一单元格内鼠标移动造成的多次渲染
       if (interaction.isActiveCell(cell)) {
         return;
       }
