@@ -1,4 +1,5 @@
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
+import type { UnionToIntersection } from '@vue/shared';
 import type { ComponentObjectPropsOptions, PropType } from 'vue';
 
 // 这个是vue中的类型，但是vue没有export
@@ -9,6 +10,21 @@ interface PropOptions<T = any> {
   default?: T;
   validator?(value: unknown): boolean;
 }
+// reference: @vue/runtime-core/dist/runtime-core.d.ts L820
+export type EmitFn<
+  Options = Record<string, (...args: any[]) => any>,
+  Event extends keyof Options = keyof Options,
+> = Options extends Array<infer V>
+  ? (event: V, ...args: any[]) => void
+  : Record<string, any> extends Options
+  ? (event: string, ...args: any[]) => void
+  : UnionToIntersection<
+      {
+        [key in Event]: Options[key] extends (...args: infer Args) => any
+          ? (event: key, ...args: Args) => void
+          : (event: key, ...args: any[]) => void;
+      }[Event]
+    >;
 
 /* -------------------------------------------------------------------------- */
 /*                                   一些工具类型                                   */

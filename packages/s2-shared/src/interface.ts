@@ -92,8 +92,8 @@ export interface BaseSheetComponentProps<
   onCornerCellMouseMove?: (data: TargetCellInfo) => void;
 
   // ============== Merged Cells ====================
-  onMergedCellsHoverer?: (data: TargetCellInfo) => void;
-  onMergedCellClick?: (data: TargetCellInfo) => void;
+  onMergedCellsHover?: (data: TargetCellInfo) => void;
+  onMergedCellsClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onMergedCellsMouseDown?: (data: TargetCellInfo) => void;
   onMergedCellsMouseUp?: (data: TargetCellInfo) => void;

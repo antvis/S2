@@ -95,8 +95,8 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.CORNER_CELL_MOUSE_MOVE, props.onCornerCellMouseMove, s2);
 
   // ============== Merged Cells ====================
-  useCellEvent(S2Event.MERGED_CELLS_HOVER, props.onMergedCellsHoverer, s2);
-  useCellEvent(S2Event.MERGED_CELLS_CLICK, props.onMergedCellClick, s2);
+  useCellEvent(S2Event.MERGED_CELLS_HOVER, props.onMergedCellsHover, s2);
+  useCellEvent(S2Event.MERGED_CELLS_CLICK, props.onMergedCellsClick, s2);
   useCellEvent(
     S2Event.MERGED_CELLS_DOUBLE_CLICK,
     props.onMergedCellsDoubleClick,

@@ -267,11 +267,11 @@ const cellEventCases = [
   },
   {
     event: S2Event.MERGED_CELLS_HOVER,
-    name: 'onMergedCellsHoverer',
+    name: 'onMergedCellsHover',
   },
   {
     event: S2Event.MERGED_CELLS_CLICK,
-    name: 'onMergedCellClick',
+    name: 'onMergedCellsClick',
   },
   {
     event: S2Event.MERGED_CELLS_DOUBLE_CLICK,

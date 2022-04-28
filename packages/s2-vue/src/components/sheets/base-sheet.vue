@@ -16,6 +16,7 @@ export default defineComponent({
   setup(props, ctx) {
     const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
       props as BaseSheetComponentProps,
+      ctx.emit,
     );
 
     ctx.expose({ instance: s2Ref });

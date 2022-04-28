@@ -10,9 +10,14 @@ import {
   getBaseSheetComponentOptions,
 } from '@antv/s2-shared';
 import { onMounted, ref } from 'vue';
+import type { BaseSheetInitEmits, EmitFn } from '../interface';
+import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 
-export function useSpreadSheet(props: BaseSheetComponentProps) {
+export function useSpreadSheet(
+  props: BaseSheetComponentProps,
+  emit: EmitFn<BaseSheetInitEmits>,
+) {
   const {
     spreadsheet: customSpreadSheet,
     dataCfg,
@@ -50,6 +55,13 @@ export function useSpreadSheet(props: BaseSheetComponentProps) {
   };
 
   onMounted(buildSpreadSheet);
+  onMounted(() => {
+    useEvents(s2Ref, emit);
+  });
+
+  onMounted(() => {
+    s2Ref.value?.destroy();
+  });
 
   return {
     wrapRef,
