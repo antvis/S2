@@ -1,6 +1,6 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
-import { isMultiSelectionKey } from 'src/utils/interaction/select-event';
+import { isMultiSelectionKey } from '@/utils/interaction/select-event';
 import {
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
@@ -11,7 +11,6 @@ import {
   InterceptType,
   CellTypes,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
-  InteractionStateName,
 } from '@/common/constant';
 import {
   TooltipOperation,
