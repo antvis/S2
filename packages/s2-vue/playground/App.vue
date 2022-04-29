@@ -271,11 +271,16 @@ const onRowCellClick = (params: any) => {
   console.log('row cell click: ', params);
 };
 
+const onGetSpreadsheet = (params: any) => {
+  // eslint-disable-next-line no-console
+  console.log('getSpreadsheet: ', params);
+};
+
 export default defineComponent({
   setup() {
     const s2 = ref();
 
-    return { s2, dataCfg, options, onRowCellClick };
+    return { s2, dataCfg, options, onRowCellClick, onGetSpreadsheet };
   },
   components: {
     BaseSheet,
@@ -289,6 +294,7 @@ export default defineComponent({
     :dataCfg="dataCfg"
     :options="options"
     @rowCellClick="onRowCellClick"
+    @getSpreadSheet="onGetSpreadsheet"
   />
 </template>
 

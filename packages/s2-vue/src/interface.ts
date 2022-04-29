@@ -44,12 +44,14 @@ type GetEmitKeys<T> = keyof {
     : never]: K;
 };
 
+// 用于在defineComponent中进行props类型推断的工具方法
 type GetInitProps<T> = {
   [K in keyof T as IsEmitKey<T[K]> extends true ? never : K]-?: PropOptions<
     NonNullable<T[K]>
   >;
 };
 
+// 用于在defineComponent中进行emits类型推断的工具方法
 type GetInitEmits<T> = {
   [K in keyof T as IsEmitKey<T[K]> extends true
     ? TransformEmitKey<K>

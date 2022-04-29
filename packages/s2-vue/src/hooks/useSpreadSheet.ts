@@ -5,27 +5,25 @@ import {
   type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
-import {
-  type BaseSheetComponentProps,
-  getBaseSheetComponentOptions,
-} from '@antv/s2-shared';
+import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
+import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 
 export function useSpreadSheet(
-  props: BaseSheetComponentProps,
+  props: BaseSheetProps,
   emit: EmitFn<BaseSheetInitEmits>,
 ) {
   const {
-    spreadsheet: customSpreadSheet,
     dataCfg,
     options,
     themeCfg,
     loading: loadingProps,
-    getSpreadSheet,
     sheetType,
+    onSpreadsheet,
+    onGetSpreadSheet,
   } = props;
   const wrapRef = ref<HTMLDivElement>();
   const containerRef = ref<HTMLDivElement>();
@@ -33,16 +31,17 @@ export function useSpreadSheet(
 
   const { loading, setLoading } = useLoading(s2Ref.value!, loadingProps);
 
+  // TODO: 如果onSpreadsheet属性变更了怎么办？？？
   const renderSpreadSheet = (container: HTMLDivElement) => {
     const s2Options = getBaseSheetComponentOptions(options as S2Options);
-    const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
-    if (customSpreadSheet) {
-      return customSpreadSheet(...s2Constructor);
+    const s2Constructor: S2Constructor = [container, dataCfg!, s2Options];
+    if (onSpreadsheet) {
+      return onSpreadsheet(...s2Constructor);
     }
     if (sheetType === 'table') {
-      return new TableSheet(container, dataCfg, s2Options);
+      return new TableSheet(container, dataCfg!, s2Options);
     }
-    return new PivotSheet(container, dataCfg, s2Options);
+    return new PivotSheet(container, dataCfg!, s2Options);
   };
 
   const buildSpreadSheet = () => {
@@ -51,7 +50,7 @@ export function useSpreadSheet(
     s2Ref.value.setThemeCfg(themeCfg);
     s2Ref.value.render();
     setLoading(false);
-    getSpreadSheet?.(s2Ref.value);
+    onGetSpreadSheet?.(s2Ref.value);
   };
 
   onMounted(buildSpreadSheet);

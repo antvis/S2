@@ -1,7 +1,6 @@
 <script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
-import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import { defineComponent } from 'vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
@@ -15,7 +14,7 @@ export default defineComponent({
   emits: initBaseSheetEmits(),
   setup(props, ctx) {
     const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
-      props as BaseSheetComponentProps,
+      props,
       ctx.emit,
     );
 

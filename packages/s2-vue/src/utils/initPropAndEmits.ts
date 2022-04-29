@@ -1,6 +1,6 @@
 import type { S2Options, S2DataConfig, ThemeCfg } from '@antv/s2';
-import type { SheetType } from '@antv/s2-shared';
-import type { PropType } from 'vue';
+import type { BaseSheetComponentProps, SheetType } from '@antv/s2-shared';
+import type { ExtractPropTypes, PropType } from 'vue';
 import type { BaseSheetInitEmitKeys, BaseSheetInitEmits } from './../interface';
 
 export const initBaseSheetProps = () => ({
@@ -24,7 +24,15 @@ export const initBaseSheetProps = () => ({
     type: Boolean,
     default: false,
   },
+  onSpreadsheet: Function as PropType<BaseSheetComponentProps['spreadsheet']>,
+  onGetSpreadSheet: Function as PropType<
+    BaseSheetComponentProps['getSpreadSheet']
+  >,
 });
+
+export type BaseSheetProps = ExtractPropTypes<
+  ReturnType<typeof initBaseSheetProps>
+>;
 
 export const initBaseSheetEmits = (): BaseSheetInitEmits => {
   const keys: BaseSheetInitEmitKeys[] = [
