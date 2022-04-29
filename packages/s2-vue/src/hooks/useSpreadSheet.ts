@@ -9,7 +9,7 @@ import {
   type BaseSheetComponentProps,
   getBaseSheetComponentOptions,
 } from '@antv/s2-shared';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
@@ -59,7 +59,7 @@ export function useSpreadSheet(
     useEvents(s2Ref, emit);
   });
 
-  onBeforeMount(() => {
+  onBeforeUnmount(() => {
     s2Ref.value?.destroy();
   });
 
