@@ -5,7 +5,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { BaseSheet } from '../src';
 import type { Mutable } from '../src/interface';
 
-const dataCfg: S2DataConfig = {
+const dataCfg1: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
@@ -261,29 +261,276 @@ const dataCfg: S2DataConfig = {
     },
   ],
 };
-
-const onRowCellClick = (params: any) => {
-  console.log('row cell click: ', params);
-};
-
-const onGetSpreadsheet = (params: any) => {
-  console.log('getSpreadsheet: ', params);
+const dataCfg2: S2DataConfig = {
+  fields: {
+    rows: ['province', 'city', 'type'],
+    columns: ['sub_type'],
+    values: ['number'],
+    valueInCols: true,
+  },
+  meta: [
+    {
+      field: 'number',
+      name: '数量',
+    },
+    {
+      field: 'province',
+      name: '省份',
+    },
+    {
+      field: 'city',
+      name: '城市',
+    },
+    {
+      field: 'type',
+      name: '类别',
+    },
+    {
+      field: 'sub_type',
+      name: '子类别',
+    },
+  ],
+  data: [
+    {
+      number: 3877,
+      province: '浙江省',
+      city: '宁波市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 4342,
+      province: '浙江省',
+      city: '舟山市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 5343,
+      province: '浙江省',
+      city: '杭州市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 632,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 7234,
+      province: '浙江省',
+      city: '宁波市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 834,
+      province: '浙江省',
+      city: '舟山市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 945,
+      province: '浙江省',
+      city: '杭州市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 1304,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 1145,
+      province: '浙江省',
+      city: '宁波市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 1432,
+      province: '浙江省',
+      city: '舟山市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 1343,
+      province: '浙江省',
+      city: '杭州市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 1354,
+      province: '浙江省',
+      city: '绍兴市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 1523,
+      province: '浙江省',
+      city: '宁波市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 1634,
+      province: '浙江省',
+      city: '舟山市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 1723,
+      province: '四川省',
+      city: '成都市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 1822,
+      province: '四川省',
+      city: '绵阳市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 1943,
+      province: '四川省',
+      city: '南充市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 2330,
+      province: '四川省',
+      city: '乐山市',
+      type: '家具',
+      sub_type: '桌子',
+    },
+    {
+      number: 2451,
+      province: '四川省',
+      city: '成都市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 2244,
+      province: '四川省',
+      city: '绵阳市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 2333,
+      province: '四川省',
+      city: '南充市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 2445,
+      province: '四川省',
+      city: '乐山市',
+      type: '家具',
+      sub_type: '沙发',
+    },
+    {
+      number: 2335,
+      province: '四川省',
+      city: '成都市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 245,
+      province: '四川省',
+      city: '绵阳市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 2457,
+      province: '四川省',
+      city: '南充市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 2458,
+      province: '四川省',
+      city: '乐山市',
+      type: '办公用品',
+      sub_type: '笔',
+    },
+    {
+      number: 4004,
+      province: '四川省',
+      city: '成都市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 3077,
+      province: '四川省',
+      city: '绵阳市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 3551,
+      province: '四川省',
+      city: '南充市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+    {
+      number: 352,
+      province: '四川省',
+      city: '乐山市',
+      type: '办公用品',
+      sub_type: '纸张',
+    },
+  ],
 };
 
 export default defineComponent({
   setup() {
     const s2 = ref();
+    const dataCfgFlag = ref(1);
+
     const options = reactive<Omit<Mutable<S2Options>, 'tooltip'>>({
       debug: true,
       width: 600,
       height: 400,
       hierarchyCollapse: false,
     });
+    const themeCfg = reactive({
+      theme: {
+        cornerCell: {
+          text: {
+            fill: 'red',
+          },
+        },
+      },
+    });
 
-    const togglePagination = () => {
-      options.pagination = options.pagination
-        ? undefined
-        : { current: 1, pageSize: 4 };
+    const onRowCellClick = (params: any) => {
+      console.log('row cell click: ', params);
+    };
+
+    const onGetSpreadsheet = (params: any) => {
+      console.log('getSpreadsheet: ', params);
     };
 
     const handlePageChange = (current: number) =>
@@ -291,15 +538,24 @@ export default defineComponent({
     const handlePageSizeChange = (pageSize: number) =>
       console.log('pageSize changed:', pageSize);
 
+    const togglePagination = () => {
+      options.pagination = options.pagination
+        ? undefined
+        : { current: 1, pageSize: 4 };
+    };
+
     return {
       s2,
-      dataCfg,
+      dataCfgFlag,
+      dataCfg1,
+      dataCfg2,
       options,
+      themeCfg,
+      onRowCellClick,
+      onGetSpreadsheet,
       togglePagination,
       handlePageChange,
       handlePageSizeChange,
-      onRowCellClick,
-      onGetSpreadsheet,
     };
   },
   components: {
@@ -309,13 +565,34 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div style="margin-bottom: 10px">
     <button @click="togglePagination">toggle pagination</button>
+    <button @click="dataCfgFlag = dataCfgFlag === 1 ? 2 : 1">
+      更新dataCfg
+    </button>
+    <button
+      @click="
+        options.hierarchyType =
+          options.hierarchyType === 'tree' ? 'grid' : 'tree'
+      "
+    >
+      更新options
+    </button>
+
+    <button
+      @click="
+        themeCfg.theme.cornerCell.text.fill =
+          themeCfg.theme.cornerCell.text.fill === 'blue' ? 'red' : 'blue'
+      "
+    >
+      更新到themeCfg
+    </button>
   </div>
   <BaseSheet
     ref="s2"
-    :dataCfg="dataCfg"
+    :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"
     :options="options"
+    :themeCfg="themeCfg"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
     :showPagination="true"

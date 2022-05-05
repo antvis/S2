@@ -122,6 +122,7 @@ module.exports = {
       },
     ],
     curly: [2, 'multi-line', 'consistent'],
+    'guard-for-in': 0,
   },
   overrides: [
     {

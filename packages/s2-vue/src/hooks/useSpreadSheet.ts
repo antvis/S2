@@ -11,6 +11,7 @@ import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { usePagination } from './usePagination';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
+import { useSheetUpdate } from './useSheetUpdate';
 
 export function useSpreadSheet(
   props: BaseSheetProps,
@@ -58,6 +59,7 @@ export function useSpreadSheet(
     onGetSpreadSheet?.(s2Ref.value);
   };
 
+  useSheetUpdate(s2Ref, props);
   onMounted(buildSpreadSheet);
   onMounted(() => {
     useEvents(s2Ref, emit);
