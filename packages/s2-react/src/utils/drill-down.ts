@@ -11,8 +11,8 @@ import {
   GEvent,
 } from '@antv/s2';
 import React from 'react';
+import { i18n } from '@antv/s2-shared';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
-import { i18n } from '@/common/i18n';
 
 export interface DrillDownParams {
   // 行维度id

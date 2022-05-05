@@ -1,10 +1,9 @@
-import { get } from 'lodash';
 import { ZH_CN } from './zh_CN';
 import { EN_US } from './en_US';
 
 export let Lang = 'zh_CN';
 
-let Locale = ZH_CN;
+let Locale: Record<string, string> = ZH_CN;
 
 const isEnUS = (l: string) => l.indexOf('en') === 0;
 
@@ -23,5 +22,5 @@ export const setEVALocale = (lang: string) => {
  *
  */
 export const i18n = (key: string, defaultValue = key) => {
-  return get(Locale, key, defaultValue);
+  return Locale?.[key] ?? defaultValue;
 };

@@ -14,9 +14,9 @@ import {
 } from 'lodash';
 import cx from 'classnames';
 import { SpreadSheet, SortParam, SortMethod, TOTAL_VALUE } from '@antv/s2';
+import { i18n } from '@antv/s2-shared';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
-import { i18n } from '@/common/i18n';
 import { SORT_METHOD, RULE_OPTIONS, ADVANCED_PRE_CLS } from '@/common/constant';
 import './index.less';
 

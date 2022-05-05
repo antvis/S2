@@ -2,7 +2,7 @@
 import { computed, defineComponent } from 'vue';
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Pagination as AntDPagination } from 'ant-design-vue';
-import { i18n } from '../../common/i18n';
+import { i18n } from '@antv/s2-shared';
 import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_PAGE_SIZE,
