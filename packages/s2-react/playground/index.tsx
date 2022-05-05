@@ -351,31 +351,6 @@ function MainLayout() {
     options,
   );
 
-  const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
-    let newDataCfg: S2DataConfig;
-    switch (e.target.value) {
-      case 'multiMeasure':
-        newDataCfg = multiMeasure;
-        setStrategyOptions(
-          customMerge({}, strategyOptions, { hierarchyType: 'tree' }),
-        );
-        break;
-      case 'customTree':
-        newDataCfg = customTree;
-        setStrategyOptions(
-          customMerge({}, strategyOptions, { hierarchyType: 'customTree' }),
-        );
-        break;
-      default:
-        newDataCfg = singleMeasure;
-        setStrategyOptions(
-          customMerge({}, strategyOptions, { hierarchyType: 'tree' }),
-        );
-        break;
-    }
-    setStrategyDataCfg(newDataCfg);
-  };
-
   return (
     <div className="playground">
       <Tabs defaultActiveKey="basic" type="card" destroyInactiveTabPane>
