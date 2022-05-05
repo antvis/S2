@@ -37,11 +37,7 @@ import { debounce, forEach, random } from 'lodash';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import {
-  singleMeasure,
-  multiMeasure,
-  customTree,
-} from '../__tests__/data/strategy-data';
+import { customTree } from '../__tests__/data/strategy-data';
 import reactPkg from '../package.json';
 import {
   pivotSheetDataCfg,
@@ -792,16 +788,6 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <Space size="middle" style={{ marginBottom: 20, display: 'flex' }}>
-            <Radio.Group
-              onChange={onStrategyDataTypeChange}
-              defaultValue="customTree"
-            >
-              <Radio.Button value="singleMeasure">单指标</Radio.Button>
-              <Radio.Button value="multiMeasure">多指标</Radio.Button>
-              <Radio.Button value="customTree">自定义目录树</Radio.Button>
-            </Radio.Group>
-          </Space>
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}

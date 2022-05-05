@@ -2,6 +2,7 @@ import {
   clone,
   isArray,
   isEmpty,
+  isFunction,
   isNil,
   isNumber,
   isString,
@@ -394,6 +395,10 @@ export const drawObjectText = (
 
       curX = calX(x, padding.right, totalWidth, textAlign);
       totalWidth += curWidth;
+      const { placeholder } = cell?.getMeta().spreadsheet.options;
+      const emptyPlaceholder = isFunction(placeholder)
+        ? placeholder?.(cell?.getMeta())
+        : placeholder;
       renderText(
         cell,
         [],
@@ -403,7 +408,7 @@ export const drawObjectText = (
           text: curText,
           maxWidth: curWidth,
           fontParam: curStyle,
-          placeholder: cell?.getMeta().spreadsheet.options.placeholder,
+          placeholder: emptyPlaceholder,
         }),
         curStyle,
       );
@@ -426,4 +431,14 @@ export const safeJsonParse = (val: string) => {
   } catch (err) {
     return null;
   }
+};
+
+/**
+ * 获取自定义空值占位符
+ */
+export const getEmptyPlaceholder = (
+  meta: Record<string, any>,
+  placeHolder: ((meta: Record<string, any>) => string) | string,
+) => {
+  return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
 };
