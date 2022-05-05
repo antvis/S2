@@ -1,3 +1,4 @@
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import type { UnionToIntersection } from '@vue/shared';
 import type { PropType } from 'vue';
@@ -58,12 +59,20 @@ type GetInitEmits<T> = {
     : never]-?: T[K];
 };
 
-export type Mutable<T> = {
-  -readonly [key in keyof T]: T[key];
-};
+export type Mutable<T> = T extends (...args: any) => any
+  ? T
+  : T extends Record<string, any>
+  ? {
+      -readonly [key in keyof T]: Mutable<T[key]>;
+    }
+  : T;
 /* -------------------------------------------------------------------------- */
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
+
+export type WritableS2DataCfg = Mutable<S2DataConfig>;
+export type WritableS2Options = Mutable<S2Options>;
+export type WritableS2ThemeCfg = Mutable<ThemeCfg>;
 
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;

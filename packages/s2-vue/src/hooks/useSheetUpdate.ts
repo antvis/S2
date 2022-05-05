@@ -1,4 +1,4 @@
-import type { SpreadSheet } from '@antv/s2';
+import type { S2Options, SpreadSheet } from '@antv/s2';
 import { reactive, watch, type ShallowRef } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { traverse } from '../utils/traverse';
@@ -27,7 +27,7 @@ export const useSheetUpdate = (
         updateFlag.reloadData = true;
         updateFlag.rebuildDataset = true;
       }
-      s2Ref.value?.setOptions(options);
+      s2Ref.value?.setOptions(options as S2Options);
       s2Ref.value?.changeSheetSize(options.width, options.height);
     },
     { deep: true },

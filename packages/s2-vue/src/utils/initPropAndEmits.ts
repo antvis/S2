@@ -1,12 +1,17 @@
-import type { S2Options, S2DataConfig, ThemeCfg } from '@antv/s2';
 import type { BaseSheetComponentProps, SheetType } from '@antv/s2-shared';
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { BaseSheetInitEmitKeys, BaseSheetInitEmits } from './../interface';
+import type {
+  BaseSheetInitEmitKeys,
+  BaseSheetInitEmits,
+  WritableS2DataCfg,
+  WritableS2Options,
+  WritableS2ThemeCfg,
+} from './../interface';
 
 export const initBaseSheetProps = () => ({
   sheetType: String as PropType<SheetType>,
-  dataCfg: Object as PropType<S2DataConfig>,
-  themeCfg: Object as PropType<ThemeCfg>,
+  dataCfg: Object as PropType<WritableS2DataCfg>,
+  themeCfg: Object as PropType<WritableS2ThemeCfg>,
   showPagination: {
     type: [Boolean, Object] as PropType<
       BaseSheetComponentProps['showPagination']
@@ -19,8 +24,8 @@ export const initBaseSheetProps = () => ({
   header: Object,
 
   options: {
-    type: Object as PropType<S2Options>,
-    default: {} as S2Options,
+    type: Object as PropType<WritableS2Options>,
+    default: {} as WritableS2Options,
   },
   adaptive: {
     type: Boolean,

@@ -1,9 +1,9 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { S2DataConfig, S2Options } from '@antv/s2';
+import type { S2DataConfig } from '@antv/s2';
 import { defineComponent, reactive, ref } from 'vue';
 import { BaseSheet } from '../src';
-import type { Mutable } from '../src/interface';
+import type { WritableS2Options } from '../src/interface';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -509,12 +509,13 @@ export default defineComponent({
     const s2 = ref();
     const dataCfgFlag = ref(1);
 
-    const options = reactive<Omit<Mutable<S2Options>, 'tooltip'>>({
+    const options = reactive<WritableS2Options>({
       debug: true,
       width: 600,
       height: 400,
       hierarchyCollapse: false,
     });
+
     const themeCfg = reactive({
       theme: {
         cornerCell: {
