@@ -38,6 +38,7 @@ describe('Interaction Multi Selection Tests', () => {
 
     const colRootCell = s2.interaction.getAllColHeaderCells()[0];
 
+    // 选中
     s2.interaction.selectHeaderCell({
       cell: colRootCell,
     });
@@ -55,5 +56,12 @@ describe('Interaction Multi Selection Tests', () => {
           backgroundColorOpacity: 1,
         });
       });
+
+    // 取消选中
+    s2.interaction.selectHeaderCell({
+      cell: colRootCell,
+    });
+
+    expect(s2.interaction.getActiveCells()).toHaveLength(0);
   });
 });
