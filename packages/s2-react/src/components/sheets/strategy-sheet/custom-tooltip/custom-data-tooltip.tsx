@@ -56,7 +56,9 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
         <span>{value ?? emptyPlaceholder}</span>
       </div>
       <div className={styles.originalValue}>
-        {originalValue?.[0]?.[0] || emptyPlaceholder}
+        {isNil(originalValue?.[0]?.[0])
+          ? emptyPlaceholder
+          : originalValue?.[0]?.[0]}
       </div>
       {!isEmpty(derivedValues) && (
         <>
