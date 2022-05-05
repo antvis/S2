@@ -200,3 +200,23 @@ export interface TooltipOperatorProps
   onlyMenu: boolean;
   cell: S2CellType;
 }
+
+// 下钻相关类型
+export interface BaseDataSet {
+  name: string;
+  value: string;
+  type?: 'text' | 'location' | 'date';
+  disabled?: boolean;
+}
+
+export interface BaseDrillDownProps<DataSet = BaseDataSet> {
+  className?: string;
+  titleText?: string;
+  searchText?: string;
+  clearButtonText?: string;
+  dataSet: DataSet[];
+  drillFields?: string[];
+  disabledFields?: string[];
+  getDrillFields?: (drillFields: string[]) => void;
+  setDrillFields?: (drillFields: string[]) => void;
+}

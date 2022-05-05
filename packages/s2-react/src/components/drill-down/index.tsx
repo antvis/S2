@@ -2,6 +2,7 @@ import React, { type ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
+import { BaseDataSet, BaseDrillDownProps } from '@antv/s2-shared';
 import { i18n } from '@antv/s2';
 import {
   CalendarIcon,
@@ -12,7 +13,7 @@ import {
 
 import './index.less';
 
-export interface DataSet {
+export interface DataSet extends BaseDataSet {
   icon?: React.ReactNode;
   name: string;
   value: string;
@@ -20,17 +21,8 @@ export interface DataSet {
   disabled?: boolean;
 }
 
-export interface DrillDownProps {
-  className?: string;
-  titleText?: string;
-  searchText?: string;
-  clearButtonText?: string;
+export interface DrillDownProps extends BaseDrillDownProps<DataSet> {
   extra?: ReactNode;
-  dataSet: DataSet[];
-  drillFields?: string[];
-  disabledFields?: string[];
-  getDrillFields?: (drillFields: string[]) => void;
-  setDrillFields?: (drillFields: string[]) => void;
 }
 
 export const DrillDown: React.FC<DrillDownProps> = ({
