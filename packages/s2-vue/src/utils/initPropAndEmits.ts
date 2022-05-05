@@ -7,6 +7,16 @@ export const initBaseSheetProps = () => ({
   sheetType: String as PropType<SheetType>,
   dataCfg: Object as PropType<S2DataConfig>,
   themeCfg: Object as PropType<ThemeCfg>,
+  showPagination: {
+    type: [Boolean, Object] as PropType<
+      | boolean
+      | {
+          onChange: (current: number) => void;
+          onPageSizeChange: (pageSize: number) => void;
+        }
+    >,
+    default: false,
+  },
   loading: Boolean,
 
   partDrillDown: Object,
@@ -17,10 +27,6 @@ export const initBaseSheetProps = () => ({
     default: {} as S2Options,
   },
   adaptive: {
-    type: Boolean,
-    default: false,
-  },
-  showPagination: {
     type: Boolean,
     default: false,
   },
@@ -35,19 +41,10 @@ export type BaseSheetProps = ExtractPropTypes<
 >;
 
 export const initBaseSheetEmits = () => {
-  /** base sheet extra emits */
-  type ExtraEmits = {
-    pageChange: (current: number) => void;
-    pageShowSizeChange: (pageSize: number) => void;
-  };
-  type ExtraEmitKeys = keyof ExtraEmits;
-
   /** base sheet all emits */
-  const keys: Array<BaseSheetInitEmitKeys | ExtraEmitKeys[number]> = [
+  const keys: Array<BaseSheetInitEmitKeys> = [
     'spreadsheet',
     'getSpreadSheet',
-    'pageChange',
-    'pageShowSizeChange',
     // ============== Row Cell ====================
     'rowCellHover',
     'rowCellClick',
@@ -135,5 +132,5 @@ export const initBaseSheetEmits = () => {
     'reset',
     'linkFieldJump',
   ];
-  return keys as unknown as BaseSheetInitEmits & ExtraEmits;
+  return keys as unknown as BaseSheetInitEmits;
 };

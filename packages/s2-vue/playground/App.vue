@@ -554,8 +554,10 @@ export default defineComponent({
       onRowCellClick,
       onGetSpreadsheet,
       togglePagination,
-      handlePageChange,
-      handlePageSizeChange,
+      showPagination: {
+        onChange: handlePageChange,
+        onPageSizeChange: handlePageSizeChange,
+      },
     };
   },
   components: {
@@ -595,9 +597,7 @@ export default defineComponent({
     :themeCfg="themeCfg"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
-    :showPagination="true"
-    @pageChange="handlePageChange"
-    @pageShowSizeChange="handlePageSizeChange"
+    :showPagination="showPagination"
   />
 </template>
 

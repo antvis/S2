@@ -21,12 +21,16 @@ export default defineComponent({
     ctx.expose({ instance: s2Ref });
 
     const handlePageChange = (nextCurrent: number) => {
-      ctx.emit('pageChange', nextCurrent);
+      if (typeof props.showPagination !== 'boolean') {
+        props.showPagination.onChange?.(nextCurrent);
+      }
       pagination.change(nextCurrent);
     };
 
     const handlePageSizeChange = (nextSize: number) => {
-      ctx.emit('pageShowSizeChange', nextSize);
+      if (typeof props.showPagination !== 'boolean') {
+        props.showPagination.onPageSizeChange?.(nextSize);
+      }
       pagination.showSizeChange(nextSize);
     };
 
