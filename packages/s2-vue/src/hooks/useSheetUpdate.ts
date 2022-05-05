@@ -44,9 +44,7 @@ export const useSheetUpdate = (
   );
 
   watch(
-    () => {
-      return traverse(props.themeCfg!);
-    },
+    () => traverse(props.themeCfg!),
     (themeCfg) => {
       updateFlag.rerender = true;
       s2Ref.value?.setThemeCfg(themeCfg);
