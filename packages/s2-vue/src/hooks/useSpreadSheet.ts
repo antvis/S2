@@ -8,6 +8,7 @@ import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
+import { usePagination } from './usePagination';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 
@@ -30,6 +31,7 @@ export function useSpreadSheet(
   const s2Ref = shallowRef<SpreadSheet>();
 
   const { loading, setLoading } = useLoading(s2Ref.value!, loadingProps);
+  const pagination = usePagination(s2Ref, props);
 
   // TODO: 如果onSpreadsheet属性变更了怎么办？？？
   const renderSpreadSheet = (container: HTMLDivElement) => {
@@ -71,5 +73,6 @@ export function useSpreadSheet(
     s2Ref,
     loading,
     setLoading,
+    pagination,
   };
 }

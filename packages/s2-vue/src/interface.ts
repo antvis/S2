@@ -1,6 +1,6 @@
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import type { UnionToIntersection } from '@vue/shared';
-import type { ComponentObjectPropsOptions, PropType } from 'vue';
+import type { PropType } from 'vue';
 
 // 这个是vue中的类型，但是vue没有export
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
@@ -56,6 +56,10 @@ type GetInitEmits<T> = {
   [K in keyof T as IsEmitKey<T[K]> extends true
     ? TransformEmitKey<K>
     : never]-?: T[K];
+};
+
+export type Mutable<T> = {
+  -readonly [key in keyof T]: T[key];
 };
 /* -------------------------------------------------------------------------- */
 /*                                    组件类型                                    */

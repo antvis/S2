@@ -2,6 +2,8 @@
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
 import { defineComponent } from 'vue';
+
+import S2Pagination from '../pagination/index.vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
   initBaseSheetEmits,
@@ -13,16 +15,35 @@ export default defineComponent({
   props: initBaseSheetProps(),
   emits: initBaseSheetEmits(),
   setup(props, ctx) {
-    const { wrapRef, containerRef, s2Ref, loading } = useSpreadSheet(
-      props,
-      ctx.emit,
-    );
+    const { wrapRef, containerRef, s2Ref, loading, pagination } =
+      useSpreadSheet(props, ctx.emit);
 
     ctx.expose({ instance: s2Ref });
-    return { S2_PREFIX_CLS, wrapRef, containerRef, s2Ref, loading };
+
+    const handlePageChange = (nextCurrent: number) => {
+      ctx.emit('pageChange', nextCurrent);
+      pagination.change(nextCurrent);
+    };
+
+    const handlePageSizeChange = (nextSize: number) => {
+      ctx.emit('pageShowSizeChange', nextSize);
+      pagination.showSizeChange(nextSize);
+    };
+
+    return {
+      S2_PREFIX_CLS,
+      wrapRef,
+      containerRef,
+      s2Ref,
+      loading,
+      pagination,
+      handlePageChange,
+      handlePageSizeChange,
+    };
   },
   components: {
     Spin,
+    S2Pagination,
   },
 });
 </script>
@@ -31,6 +52,14 @@ export default defineComponent({
   <Spin :wrapperClassName="S2_PREFIX_CLS + '-spin'" :spinning="loading">
     <div ref="wrapRef" :class="S2_PREFIX_CLS + '-wrapper'">
       <div ref="containerRef" :class="S2_PREFIX_CLS + '-container'" />
+      <S2Pagination
+        v-if="pagination.visible.value"
+        :current="pagination.current.value"
+        :pageSize="pagination.pageSize.value"
+        :total="pagination.total.value"
+        @change="handlePageChange"
+        @showSizeChange="handlePageSizeChange"
+      />
     </div>
   </Spin>
 </template>
@@ -58,6 +87,19 @@ export default defineComponent({
 
     canvas {
       display: block;
+    }
+  }
+
+  &-pagination {
+    display: flex;
+    align-items: center;
+    z-index: 1024;
+
+    &-count {
+      margin-left: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 64px;
     }
   }
 }

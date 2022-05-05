@@ -1,7 +1,9 @@
 <script lang="ts">
+/* eslint-disable no-console */
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { BaseSheet } from '../src';
+import type { Mutable } from '../src/interface';
 
 const dataCfg: S2DataConfig = {
   fields: {
@@ -259,28 +261,46 @@ const dataCfg: S2DataConfig = {
     },
   ],
 };
-const options: S2Options = {
-  debug: true,
-  width: 600,
-  height: 400,
-  hierarchyCollapse: false,
-};
 
 const onRowCellClick = (params: any) => {
-  // eslint-disable-next-line no-console
   console.log('row cell click: ', params);
 };
 
 const onGetSpreadsheet = (params: any) => {
-  // eslint-disable-next-line no-console
   console.log('getSpreadsheet: ', params);
 };
 
 export default defineComponent({
   setup() {
     const s2 = ref();
+    const options = reactive<Omit<Mutable<S2Options>, 'tooltip'>>({
+      debug: true,
+      width: 600,
+      height: 400,
+      hierarchyCollapse: false,
+    });
 
-    return { s2, dataCfg, options, onRowCellClick, onGetSpreadsheet };
+    const togglePagination = () => {
+      options.pagination = options.pagination
+        ? undefined
+        : { current: 1, pageSize: 4 };
+    };
+
+    const handlePageChange = (current: number) =>
+      console.log('page changed:', current);
+    const handlePageSizeChange = (pageSize: number) =>
+      console.log('pageSize changed:', pageSize);
+
+    return {
+      s2,
+      dataCfg,
+      options,
+      togglePagination,
+      handlePageChange,
+      handlePageSizeChange,
+      onRowCellClick,
+      onGetSpreadsheet,
+    };
   },
   components: {
     BaseSheet,
@@ -289,15 +309,21 @@ export default defineComponent({
 </script>
 
 <template>
+  <div>
+    <button @click="togglePagination">toggle pagination</button>
+  </div>
   <BaseSheet
     ref="s2"
     :dataCfg="dataCfg"
     :options="options"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
+    :showPagination="true"
+    @pageChange="handlePageChange"
+    @pageShowSizeChange="handlePageSizeChange"
   />
 </template>
 
 <style lang="less">
-@import 'ant-design-vue/dist/antd.compact.less';
+@import 'ant-design-vue/dist/antd.less';
 </style>

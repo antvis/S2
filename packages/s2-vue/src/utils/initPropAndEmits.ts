@@ -34,10 +34,20 @@ export type BaseSheetProps = ExtractPropTypes<
   ReturnType<typeof initBaseSheetProps>
 >;
 
-export const initBaseSheetEmits = (): BaseSheetInitEmits => {
-  const keys: BaseSheetInitEmitKeys[] = [
+export const initBaseSheetEmits = () => {
+  /** base sheet extra emits */
+  type ExtraEmits = {
+    pageChange: (current: number) => void;
+    pageShowSizeChange: (pageSize: number) => void;
+  };
+  type ExtraEmitKeys = keyof ExtraEmits;
+
+  /** base sheet all emits */
+  const keys: Array<BaseSheetInitEmitKeys | ExtraEmitKeys[number]> = [
     'spreadsheet',
     'getSpreadSheet',
+    'pageChange',
+    'pageShowSizeChange',
     // ============== Row Cell ====================
     'rowCellHover',
     'rowCellClick',
@@ -125,5 +135,5 @@ export const initBaseSheetEmits = (): BaseSheetInitEmits => {
     'reset',
     'linkFieldJump',
   ];
-  return keys as unknown as BaseSheetInitEmits;
+  return keys as unknown as BaseSheetInitEmits & ExtraEmits;
 };
