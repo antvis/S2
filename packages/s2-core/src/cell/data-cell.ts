@@ -379,14 +379,18 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { x, y, height, width } = this.getCellArea();
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, {
-        x: x + margin,
-        y: y + margin,
-        width: width - margin * 2,
-        height: height - margin * 2,
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          x: x + margin,
+          y: y + margin,
+          width: width - margin * 2,
+          height: height - margin * 2,
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 
@@ -396,11 +400,15 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, {
-        ...this.getCellArea(),
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          ...this.getCellArea(),
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 
