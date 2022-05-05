@@ -556,7 +556,7 @@ export default defineComponent({
       togglePagination,
       showPagination: {
         onChange: handlePageChange,
-        onPageSizeChange: handlePageSizeChange,
+        onShowSizeChange: handlePageSizeChange,
       },
     };
   },

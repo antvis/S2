@@ -9,11 +9,7 @@ export const initBaseSheetProps = () => ({
   themeCfg: Object as PropType<ThemeCfg>,
   showPagination: {
     type: [Boolean, Object] as PropType<
-      | boolean
-      | {
-          onChange: (current: number) => void;
-          onPageSizeChange: (pageSize: number) => void;
-        }
+      BaseSheetComponentProps['showPagination']
     >,
     default: false,
   },

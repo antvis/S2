@@ -21,15 +21,15 @@ export default defineComponent({
     ctx.expose({ instance: s2Ref });
 
     const handlePageChange = (nextCurrent: number) => {
-      if (typeof props.showPagination !== 'boolean') {
+      if (props.showPagination && typeof props.showPagination !== 'boolean') {
         props.showPagination.onChange?.(nextCurrent);
       }
       pagination.change(nextCurrent);
     };
 
     const handlePageSizeChange = (nextSize: number) => {
-      if (typeof props.showPagination !== 'boolean') {
-        props.showPagination.onPageSizeChange?.(nextSize);
+      if (props.showPagination && typeof props.showPagination !== 'boolean') {
+        props.showPagination.onShowSizeChange?.(nextSize);
       }
       pagination.showSizeChange(nextSize);
     };
