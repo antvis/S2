@@ -6,7 +6,6 @@ import {
   CellTypes,
   InteractionStateName,
   InterceptType,
-  RowCell,
   DataCell,
   S2Options,
   SpreadSheet,
@@ -24,9 +23,8 @@ import {
   SelectedCellMove,
   BaseEvent,
   GuiIcon,
-  S2CellType,
-  S2Event,
 } from '@/index';
+import { Node } from '@/facet/layout/node';
 import { Store } from '@/common/store';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 

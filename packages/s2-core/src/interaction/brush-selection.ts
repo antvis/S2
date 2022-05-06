@@ -553,8 +553,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
-      x: originalEvent?.layerX,
-      y: originalEvent?.layerY,
+      x: event?.x ?? originalEvent?.layerX,
+      y: event?.y ?? originalEvent?.layerY,
     };
     const cell = this.spreadsheet.getCell(event.target);
     const { colIndex, rowIndex } = cell.getMeta();

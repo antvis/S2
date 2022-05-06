@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
+import {
+  each,
+  get,
+  includes,
+  isBoolean,
+  isFunction,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -23,7 +32,11 @@ import {
 } from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  getEmptyPlaceholder,
+  measureTextWidth,
+} from '@/utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -176,11 +189,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
+    const { placeholder } = this.spreadsheet.options;
+    const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
     const ellipsisText = getEllipsisText({
       text: formattedValue,
       maxWidth: maxTextWidth,
       fontParam: textStyle,
-      placeholder: this.spreadsheet.options.placeholder,
+      placeholder: emptyPlaceholder,
     });
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
@@ -244,9 +259,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
-        const shape = this.stateShapes.has(shapeName)
+        const isStateShape = this.stateShapes.has(shapeName);
+        const shape = isStateShape
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // stateShape 默认 visible 为 false
+        if (isStateShape && !shape.get('visible')) {
+          shape.set('visible', true);
+        }
 
         // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
         if (

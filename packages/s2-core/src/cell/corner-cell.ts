@@ -42,7 +42,11 @@ import {
   renderTreeIcon,
 } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  getEmptyPlaceholder,
+  measureTextWidth,
+} from '@/utils/text';
 import { CornerNodeType } from '@/common/interface/node';
 import { formattedFieldValue } from '@/utils/cell/header-cell';
 
@@ -81,11 +85,15 @@ export class CornerCell extends HeaderCell {
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
+    const emptyPlaceholder = getEmptyPlaceholder(
+      this.meta,
+      this.spreadsheet.options.placeholder,
+    );
     const text = getEllipsisText({
       text: cornerText,
       maxWidth,
       fontParam: textStyle,
-      placeholder: this.spreadsheet.options.placeholder,
+      placeholder: emptyPlaceholder,
     });
     this.actualText = text;
     const ellipseIndex = text.indexOf('...');

@@ -1,7 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
 import { find, first, get, isEmpty, isNil } from 'lodash';
-import { isUpDataValue, MultiData } from '@antv/s2';
+import { isUpDataValue, MultiData, getEmptyPlaceholder } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -45,6 +45,7 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   ) || [meta.fieldValue];
 
   const { placeholder, style } = meta.spreadsheet.options;
+  const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
   const valuesCfg = style.cellCfg?.valuesCfg;
   const originalValue = get(meta.fieldValue, valuesCfg?.originalValueField);
 
@@ -52,10 +53,12 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
     <div className={cls(styles.strategySheetTooltip, styles.data)}>
       <div className={styles.header}>
         <span className={styles.label}>{rowName}</span>
-        <span>{value ?? placeholder}</span>
+        <span>{value ?? emptyPlaceholder}</span>
       </div>
       <div className={styles.originalValue}>
-        {originalValue?.[0]?.[0] || placeholder}
+        {isNil(originalValue?.[0]?.[0])
+          ? emptyPlaceholder
+          : originalValue?.[0]?.[0]}
       </div>
       {!isEmpty(derivedValues) && (
         <>
@@ -79,7 +82,7 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
                   >
                     {!isNormal && <span className={styles.icon}></span>}
                     <span className={styles.value}>
-                      {derivedValue ?? placeholder}
+                      {derivedValue ?? emptyPlaceholder}
                     </span>
                   </span>
                 </li>

@@ -79,6 +79,7 @@ describe('Brush selection scroll spec', () => {
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
       originalEvent: { layerX: 1, layerY: 1 },
+      event: { x: 1, y: 1 },
       preventDefault() {},
     } as any);
     await sleep(40);
@@ -127,7 +128,7 @@ describe('Brush selection scroll spec', () => {
 
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
-      originalEvent: { layerX: 128, layerY: 49 },
+      event: { x: 128, y: 49 },
       preventDefault() {},
     } as any);
 
