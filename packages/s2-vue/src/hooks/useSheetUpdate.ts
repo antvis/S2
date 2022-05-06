@@ -1,7 +1,6 @@
 import type { S2Options, SpreadSheet } from '@antv/s2';
 import { reactive, watch, type ShallowRef } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
-import { traverse } from '../utils/traverse';
 
 // props会将所有属性用shallowReactive包裹起来：
 // 1. 如果是对dataCfg或者options直接替换， 那么只需要简单的通过 ()=>props.dataCfg 这种getter就能监听到
@@ -18,7 +17,7 @@ export const useSheetUpdate = (
   });
 
   watch(
-    () => traverse(props.options),
+    () => props.options,
     (options, prevOptions) => {
       updateFlag.rerender = true;
 
@@ -34,7 +33,7 @@ export const useSheetUpdate = (
   );
 
   watch(
-    () => traverse(props.dataCfg!),
+    () => props.dataCfg!,
     (dataCfg) => {
       updateFlag.rerender = true;
       updateFlag.reloadData = true;
@@ -44,7 +43,7 @@ export const useSheetUpdate = (
   );
 
   watch(
-    () => traverse(props.themeCfg!),
+    () => props.themeCfg!,
     (themeCfg) => {
       updateFlag.rerender = true;
       s2Ref.value?.setThemeCfg(themeCfg);

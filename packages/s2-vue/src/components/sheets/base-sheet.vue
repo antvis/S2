@@ -2,7 +2,6 @@
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
 import { defineComponent } from 'vue';
-
 import S2Pagination from '../pagination/index.vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
@@ -15,7 +14,7 @@ export default defineComponent({
   props: initBaseSheetProps(),
   emits: initBaseSheetEmits(),
   setup(props, ctx) {
-    const { wrapRef, containerRef, s2Ref, loading, pagination } =
+    const { wrapperRef, containerRef, s2Ref, loading, pagination } =
       useSpreadSheet(props, ctx.emit);
 
     ctx.expose({ instance: s2Ref });
@@ -36,7 +35,7 @@ export default defineComponent({
 
     return {
       S2_PREFIX_CLS,
-      wrapRef,
+      wrapperRef,
       containerRef,
       s2Ref,
       loading,
@@ -54,7 +53,7 @@ export default defineComponent({
 
 <template>
   <Spin :wrapperClassName="S2_PREFIX_CLS + '-spin'" :spinning="loading">
-    <div ref="wrapRef" :class="S2_PREFIX_CLS + '-wrapper'">
+    <div ref="wrapperRef" :class="S2_PREFIX_CLS + '-wrapper'">
       <div ref="containerRef" :class="S2_PREFIX_CLS + '-container'" />
       <S2Pagination
         v-if="pagination.visible.value"

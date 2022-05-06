@@ -1,4 +1,8 @@
-import type { BaseSheetComponentProps, SheetType } from '@antv/s2-shared';
+import type {
+  Adaptive,
+  BaseSheetComponentProps,
+  SheetType,
+} from '@antv/s2-shared';
 import type { ExtractPropTypes, PropType } from 'vue';
 import type {
   BaseSheetInitEmitKeys,
@@ -28,7 +32,7 @@ export const initBaseSheetProps = () => ({
     default: {} as WritableS2Options,
   },
   adaptive: {
-    type: Boolean,
+    type: [Boolean, Object as PropType<Adaptive>],
     default: false,
   },
   onSpreadsheet: Function as PropType<BaseSheetComponentProps['spreadsheet']>,

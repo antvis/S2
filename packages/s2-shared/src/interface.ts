@@ -167,10 +167,9 @@ export interface BaseSheetComponentProps<
 
 // useResize 参数
 export interface ResizeEffectParams {
+  s2: SpreadSheet;
   container: HTMLDivElement; // 只包含了 sheet 容器
   wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
-  s2: SpreadSheet;
   adaptive: Adaptive;
-  optionWidth: number;
-  optionHeight: number;
+  render?: (width: number, height: number) => void;
 }

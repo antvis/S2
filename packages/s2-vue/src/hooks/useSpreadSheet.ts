@@ -13,6 +13,7 @@ import { usePagination } from './usePagination';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { useSheetUpdate } from './useSheetUpdate';
+import { useResize } from './useResize';
 
 export function useSpreadSheet(
   props: BaseSheetProps,
@@ -27,7 +28,7 @@ export function useSpreadSheet(
     onSpreadsheet,
     onGetSpreadSheet,
   } = props;
-  const wrapRef = ref<HTMLDivElement>();
+  const wrapperRef = ref<HTMLDivElement>();
   const containerRef = ref<HTMLDivElement>();
 
   const s2Ref = shallowRef<SpreadSheet>();
@@ -63,13 +64,14 @@ export function useSpreadSheet(
   onMounted(buildSpreadSheet);
   useEvents(s2Ref, emit);
   useSheetUpdate(s2Ref, props);
+  useResize(s2Ref, props, { wrapperRef, containerRef });
 
   onBeforeUnmount(() => {
     s2Ref.value?.destroy();
   });
 
   return {
-    wrapRef,
+    wrapperRef,
     containerRef,
     s2Ref,
     loading,
