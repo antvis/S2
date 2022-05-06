@@ -34,7 +34,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
     const sortParam: SortParam = find(
-      sortParams.reverse(),
+      [...sortParams].reverse(),
       (item) =>
         isSortCell &&
         item?.sortByMeasure === value &&
