@@ -13,10 +13,6 @@ export const useResize = (
 ) => {
   const unobserve = ref<() => void>();
 
-  const render = (width: number, height: number) => {
-    s2Ref.value?.changeSheetSize(width, height);
-    s2Ref.value?.render(false);
-  };
   watch(
     [s2Ref, () => props.adaptive],
     ([s2, adaptive], _, onCleanup) => {
@@ -28,13 +24,12 @@ export const useResize = (
         adaptive,
         wrapper: dom.wrapperRef.value!,
         container: dom.containerRef.value!,
-        render,
       });
 
       onCleanup(() => {
         unobserve.value?.();
       });
     },
-    { deep: true, immediate: true },
+    { deep: true },
   );
 };

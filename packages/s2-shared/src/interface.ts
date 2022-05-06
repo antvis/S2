@@ -171,5 +171,4 @@ export interface ResizeEffectParams {
   container: HTMLDivElement; // 只包含了 sheet 容器
   wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
   adaptive: Adaptive;
-  render?: (width: number, height: number) => void;
 }

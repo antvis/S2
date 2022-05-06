@@ -596,6 +596,7 @@ export default defineComponent({
     :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"
     :options="options"
     :themeCfg="themeCfg"
+    :adaptive="true"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
     :showPagination="showPagination"

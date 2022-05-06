@@ -13,7 +13,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
-  const wrapRef = React.useRef<HTMLDivElement>();
+  const wrapperRef = React.useRef<HTMLDivElement>();
 
   const {
     spreadsheet: customSpreadSheet,
@@ -96,16 +96,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   useResize({
     s2: s2Ref.current,
     container: containerRef.current,
-    wrapper: wrapRef.current,
+    wrapper: wrapperRef.current,
     adaptive: props.adaptive,
-    optionWidth: options.width,
-    optionHeight: options.height,
   });
 
   return {
     s2Ref,
     containerRef,
-    wrapRef,
+    wrapperRef,
     loading,
     setLoading,
     pagination,

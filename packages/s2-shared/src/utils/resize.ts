@@ -18,33 +18,55 @@ export const analyzeAdaptive = (
 };
 
 export const createResizeObserver = (params: ResizeEffectParams) => {
-  const { s2, adaptive, container, wrapper, render } = params;
+  let isFirstRender = true;
+  const { s2, adaptive, container, wrapper } = params;
   const {
     container: actualWrapper,
     adaptiveWidth,
     adaptiveHeight,
   } = analyzeAdaptive(wrapper, adaptive);
 
+  if (!actualWrapper || !container || !adaptive || !s2) {
+    return;
+  }
+
+  const render = (width: number, height: number) => {
+    s2?.changeSheetSize(width, height);
+    s2?.render(false);
+  };
+
+  const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
+
+  const onResize = () => {
+    const { width: nodeWidth, height: nodeHeight } =
+      container?.getBoundingClientRect();
+
+    const width = adaptiveWidth
+      ? Math.floor(nodeWidth ?? s2.options.width)
+      : s2.options.width;
+    const height = adaptiveHeight
+      ? // 去除 header 和 page 后才是 sheet 真正的高度
+        Math.floor(nodeHeight ?? s2.options.height)
+      : s2.options.height;
+
+    if (!adaptiveWidth && !adaptiveHeight) {
+      return;
+    }
+
+    if (isFirstRender) {
+      render(width, height);
+      isFirstRender = false;
+      return;
+    }
+    debounceRender(width, height);
+  };
+
   const resizeObserver = new ResizeObserver(
-    debounce(([entry]: ResizeObserverEntry[] = []) => {
+    ([entry]: ResizeObserverEntry[] = []) => {
       if (entry) {
-        const { width: nodeWidth, height: nodeHeight } =
-          container?.getBoundingClientRect();
-
-        const width = adaptiveWidth
-          ? Math.floor(nodeWidth ?? s2.options.width)
-          : s2.options.width;
-        const height = adaptiveHeight
-          ? // 去除 header 和 page 后才是 sheet 真正的高度
-            Math.floor(nodeHeight ?? s2.options.height)
-          : s2.options.height;
-
-        if (!adaptiveWidth && !adaptiveHeight) {
-          return;
-        }
-        render?.(width, height);
+        onResize();
       }
-    }, RESIZE_RENDER_DELAY),
+    },
   );
 
   resizeObserver.observe(actualWrapper, {
