@@ -1,3 +1,21 @@
+# [@antv/s2-v1.16.0](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0...@antv/s2-v1.16.0) (2022-05-06)
+
+
+### Bug Fixes
+
+* **interaction:** 树状模式列头非叶子节点选中无法高亮当前列 ([#1307](https://github.com/antvis/S2/issues/1307)) ([bba5f72](https://github.com/antvis/S2/commit/bba5f72ab8d8fe2fa98eac57bc282405b55e1e3d))
+* **interaction:** 设置 stateShape 的 visible 默认为 false 来减少绘制调用 ([#1295](https://github.com/antvis/S2/issues/1295)) ([10f4391](https://github.com/antvis/S2/commit/10f43916e884bdebdc35c05734091dff9d8b2ca0))
+* **interaction:** 连续 Hover 失效问题修复 ([#1292](https://github.com/antvis/S2/issues/1292)) ([162b5f2](https://github.com/antvis/S2/commit/162b5f22d3b67b321c83bdee234528d247105bd0))
+* **strategySheet:** 隐藏列兼容趋势分析表衍生指标场景 ([#1299](https://github.com/antvis/S2/issues/1299)) ([f67731e](https://github.com/antvis/S2/commit/f67731ee2d39a806d0f886658d8332646108865c))
+* 修复容器设置transform样式后框选背景框错位问题 ([#1311](https://github.com/antvis/S2/issues/1311)) ([0582bb5](https://github.com/antvis/S2/commit/0582bb5a5fb652523b21ca91f8f09af6103b18f2))
+* 修正auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
+
+
+### Features
+
+* 允许条件设置数据单元格为空的占位符 ([#1309](https://github.com/antvis/S2/issues/1309)) ([397caf1](https://github.com/antvis/S2/commit/397caf18e3eec7c82bd4f4bb7a6987839474a425))
+* 树状层级样式优化 ([#1302](https://github.com/antvis/S2/issues/1302)) ([ef907db](https://github.com/antvis/S2/commit/ef907db2e870638115e5b905ccf6963de4c4ddd1))
+
 # [@antv/s2-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0) (2022-04-22)
 
 
