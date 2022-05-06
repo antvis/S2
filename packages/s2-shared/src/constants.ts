@@ -12,3 +12,5 @@ export const SHEET_COMPONENT_DEFAULT_OPTIONS: Readonly<Partial<S2Options>> = {
   },
   showDefaultHeaderActionIcon: true,
 } as const;
+
+export const RESIZE_RENDER_DELAY = 200; // ms

@@ -32,7 +32,7 @@ export function useSpreadSheet(
 
   const s2Ref = shallowRef<SpreadSheet>();
 
-  const { loading, setLoading } = useLoading(s2Ref.value!, loadingProps);
+  const { loading, setLoading } = useLoading(loadingProps);
   const pagination = usePagination(s2Ref, props);
 
   // TODO: 如果onSpreadsheet属性变更了怎么办？？？
@@ -60,11 +60,9 @@ export function useSpreadSheet(
     onGetSpreadSheet?.(s2Ref.value);
   };
 
-  useSheetUpdate(s2Ref, props);
   onMounted(buildSpreadSheet);
-  onMounted(() => {
-    useEvents(s2Ref, emit);
-  });
+  useEvents(s2Ref, emit);
+  useSheetUpdate(s2Ref, props);
 
   onBeforeUnmount(() => {
     s2Ref.value?.destroy();

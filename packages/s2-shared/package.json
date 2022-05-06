@@ -11,7 +11,8 @@
     "test":"jest"
   },
   "devDependencies": {
-    "@antv/s2":"*"
+    "@antv/s2":"*",
+    "lodash": "^4.17.21"
   }
 }
   
