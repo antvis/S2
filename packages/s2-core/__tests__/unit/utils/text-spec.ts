@@ -4,6 +4,7 @@ import {
   isUpDataValue,
   measureTextWidth,
   getCellWidth,
+  getEmptyPlaceholder,
 } from '@/utils/text';
 
 describe('Text Utils Tests', () => {
@@ -118,5 +119,30 @@ describe('Text Utils Tests', () => {
     const width = getCellWidth(cellCfg);
 
     expect(width).toEqual(90);
+  });
+
+  test('should get correct emptyPlaceholder when the type of placeholder is string', () => {
+    const meta = {
+      id: 'root',
+      value: '',
+      key: '',
+    };
+
+    const placeholder = getEmptyPlaceholder(meta, '*');
+
+    expect(placeholder).toEqual('*');
+  });
+
+  test('should get correct emptyPlaceholder when the type of placeholder is function', () => {
+    const meta = {
+      id: 'root',
+      value: 'test',
+    };
+
+    const placeholder = getEmptyPlaceholder(meta, (meta) => {
+      return meta.value;
+    });
+
+    expect(placeholder).toEqual('test');
   });
 });

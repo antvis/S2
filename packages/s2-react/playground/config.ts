@@ -117,9 +117,13 @@ export const sliderOptions: SliderSingleProps = {
 };
 
 export const strategyOptions: S2Options = {
-  width: 1000,
+  width: 800,
   height: 400,
   cornerText: '指标',
+  placeholder: (v) => {
+    const placeholder = v?.fieldValue ? '-' : '';
+    return placeholder;
+  },
   headerActionIcons: [
     {
       iconNames: ['Trend'],
