@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0...@antv/s2-react-v1.15.0) (2022-05-06)
+
+
+### Features
+
+* 允许条件设置数据单元格为空的占位符 ([#1309](https://github.com/antvis/S2/issues/1309)) ([397caf1](https://github.com/antvis/S2/commit/397caf18e3eec7c82bd4f4bb7a6987839474a425))
+
 # [@antv/s2-react-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0) (2022-04-22)
 
 
