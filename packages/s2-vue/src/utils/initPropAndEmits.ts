@@ -17,9 +17,7 @@ export const initBaseSheetProps = () => ({
   dataCfg: Object as PropType<WritableS2DataCfg>,
   themeCfg: Object as PropType<WritableS2ThemeCfg>,
   showPagination: {
-    type: [Boolean, Object] as PropType<
-      BaseSheetComponentProps['showPagination']
-    >,
+    type: Object as PropType<BaseSheetComponentProps['showPagination']>,
     default: false,
   },
   loading: Boolean,
@@ -32,7 +30,7 @@ export const initBaseSheetProps = () => ({
     default: {} as WritableS2Options,
   },
   adaptive: {
-    type: [Boolean, Object as PropType<Adaptive>],
+    type: Object as PropType<Adaptive>,
     default: false,
   },
   onSpreadsheet: Function as PropType<BaseSheetComponentProps['spreadsheet']>,

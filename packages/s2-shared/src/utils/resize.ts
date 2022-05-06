@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import { RESIZE_RENDER_DELAY } from '../constants';
-import { Adaptive, ResizeEffectParams } from '../interface';
+import type { Adaptive, ResizeEffectParams } from '../interface';
 
 export const analyzeAdaptive = (
   paramsContainer: HTMLElement,
@@ -30,7 +30,7 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     return;
   }
 
-  const render = (width: number, height: number) => {
+  const render = (width?: number, height?: number) => {
     s2?.changeSheetSize(width, height);
     s2?.render(false);
   };

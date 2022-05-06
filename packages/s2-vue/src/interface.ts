@@ -59,20 +59,23 @@ type GetInitEmits<T> = {
     : never]-?: T[K];
 };
 
-export type Mutable<T> = T extends (...args: any) => any
+export type DeepMutable<T> = T extends (...args: any) => any
   ? T
+  : T extends (infer A)[]
+  ? DeepMutable<A>[]
   : T extends Record<string, any>
   ? {
-      -readonly [key in keyof T]: Mutable<T[key]>;
+      -readonly [key in keyof T]: DeepMutable<T[key]>;
     }
   : T;
+
 /* -------------------------------------------------------------------------- */
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
 
-export type WritableS2DataCfg = Mutable<S2DataConfig>;
-export type WritableS2Options = Mutable<S2Options>;
-export type WritableS2ThemeCfg = Mutable<ThemeCfg>;
+export type WritableS2DataCfg = DeepMutable<S2DataConfig>;
+export type WritableS2Options = DeepMutable<S2Options>;
+export type WritableS2ThemeCfg = DeepMutable<ThemeCfg>;
 
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
