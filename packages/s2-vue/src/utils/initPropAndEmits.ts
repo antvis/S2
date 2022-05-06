@@ -1,11 +1,17 @@
-import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg,i18n } from '@antv/s2';
 import type {
   Adaptive,
   BaseSheetComponentProps,
+  BaseDataSet,
   SheetType,
 } from '@antv/s2-shared';
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { BaseSheetInitEmitKeys, BaseSheetInitEmits } from './../interface';
+import type {
+  BaseDrillDownEmitKeys,
+  BaseDrillDownEmits,
+  BaseSheetInitEmitKeys,
+  BaseSheetInitEmits,
+} from '../interface';
 
 export const initBaseSheetProps = () => ({
   sheetType: String as PropType<SheetType>,
@@ -33,6 +39,36 @@ export const initBaseSheetProps = () => ({
     BaseSheetComponentProps['getSpreadSheet']
   >,
 });
+
+export const initDrillDownProps = () => ({
+  className: String,
+  titleText: {
+    type: String,
+    default: '选择下钻维度',
+  },
+  searchText: {
+    type: String,
+    default: '搜索字段',
+  },
+  clearButtonText: {
+    type: String,
+    default: '恢复默认',
+  },
+  extra: Node,
+  dataSet: {
+    type: Array as PropType<BaseDataSet[]>,
+    required: true,
+  },
+  drillFields: Array as PropType<string[]>,
+  disabledFields: Array as PropType<string[]>,
+  getDrillFields: Function as PropType<(drillFields: string[]) => void>,
+  setDrillFields: Function as PropType<(drillFields: string[]) => void>,
+});
+
+export const initDrillDownEmits = (): BaseDrillDownEmits => {
+  const keys: BaseDrillDownEmitKeys[] = ['getDrillFields', 'setDrillFields'];
+  return keys as unknown as BaseDrillDownEmits;
+}
 
 export type BaseSheetProps = ExtractPropTypes<
   ReturnType<typeof initBaseSheetProps>

@@ -209,7 +209,7 @@ export interface BaseDataSet {
   disabled?: boolean;
 }
 
-export interface BaseDrillDownProps<DataSet = BaseDataSet> {
+export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
   className?: string;
   titleText?: string;
   searchText?: string;
