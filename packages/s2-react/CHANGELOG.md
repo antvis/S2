@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.15.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0...@antv/s2-react-v1.15.0-alpha.1) (2022-04-26)
+
+
+### Features
+
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
 # [@antv/s2-react-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0) (2022-04-22)
 
 

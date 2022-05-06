@@ -1,3 +1,24 @@
+# [@antv/s2-v1.16.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0...@antv/s2-v1.16.0-alpha.1) (2022-04-26)
+
+
+### Bug Fixes
+
+* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+* **strategySheet:** 隐藏列兼容趋势分析表衍生指标场景 ([#1299](https://github.com/antvis/S2/issues/1299)) ([f67731e](https://github.com/antvis/S2/commit/f67731ee2d39a806d0f886658d8332646108865c))
+* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
+* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 修正auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
+* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
+
+
+### Features
+
+* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 树状层级样式优化 ([#1302](https://github.com/antvis/S2/issues/1302)) ([ef907db](https://github.com/antvis/S2/commit/ef907db2e870638115e5b905ccf6963de4c4ddd1))
+
 # [@antv/s2-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0) (2022-04-22)
 
 
