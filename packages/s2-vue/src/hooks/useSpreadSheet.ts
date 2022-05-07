@@ -33,7 +33,7 @@ export function useSpreadSheet(
 
   const s2Ref = shallowRef<SpreadSheet>();
 
-  const { loading, setLoading } = useLoading(loadingProps);
+  const { loading, setLoading } = useLoading(s2Ref, loadingProps);
   const pagination = usePagination(s2Ref, props);
 
   // TODO: 如果onSpreadsheet属性变更了怎么办？？？
