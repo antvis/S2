@@ -1,5 +1,5 @@
 import type { S2Options, SpreadSheet } from '@antv/s2';
-import { reactive, watch, type ShallowRef } from 'vue';
+import { reactive, watch, type ShallowRef, isProxy } from 'vue';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
 // props会将所有属性用shallowReactive包裹起来：
@@ -29,7 +29,7 @@ export const useSheetUpdate = (
       s2Ref.value?.setOptions(options as S2Options);
       s2Ref.value?.changeSheetSize(options.width, options.height);
     },
-    { deep: true },
+    { deep: isProxy(props.options) },
   );
 
   watch(
@@ -39,7 +39,7 @@ export const useSheetUpdate = (
       updateFlag.reloadData = true;
       s2Ref.value?.setDataCfg(dataCfg);
     },
-    { deep: true },
+    { deep: isProxy(props.dataCfg) },
   );
 
   watch(
@@ -49,7 +49,7 @@ export const useSheetUpdate = (
       s2Ref.value?.setThemeCfg(themeCfg);
     },
     {
-      deep: true,
+      deep: isProxy(props.themeCfg),
     },
   );
 
