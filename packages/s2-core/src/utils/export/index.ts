@@ -16,6 +16,8 @@ import { CornerNodeType, ViewMeta } from '@/common/interface';
 import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 import { safeJsonParse } from '@/utils/text';
+import { RowCell } from '@/cell';
+import { Node } from '@/facet/layout/node';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -177,6 +179,7 @@ const processValueInRow = (
 /* Get the label name for the header. */
 const getHeaderLabel = (val: string) => {
   const label = safeJsonParse(val);
+  // console.log(label, 'label');
   if (isArray(label)) {
     return label;
   }
@@ -194,6 +197,25 @@ const processColHeaders = (headers: any[][], arrayLength: number) => {
     ),
   );
   return result;
+};
+
+/**
+ * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
+ * @param rowLeafNode
+ */
+const getRowNodeFormatData = (rowLeafNode: Node) => {
+  const line = [];
+  const getRowNodeFormatterLabel = (node: Node) => {
+    if (node.belongsCell instanceof RowCell) {
+      const actualText = node.belongsCell?.getActualText() ?? '';
+      line.unshift(actualText);
+    }
+    if (node?.parent) {
+      return getRowNodeFormatterLabel(node.parent);
+    }
+  };
+  getRowNodeFormatterLabel(rowLeafNode);
+  return line;
 };
 
 /**
@@ -231,11 +253,17 @@ export const copyData = (
   } else {
     // Filter out the related row head leaf nodes.
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
+
     for (const rowNode of caredRowLeafNodes) {
-      // Removing the space at the beginning of the line of the label.
-      rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-      let tempLine = id.split(ID_SEPARATOR);
+      let tempLine = [];
+      if (isFormat) {
+        tempLine = getRowNodeFormatData(rowNode);
+      } else {
+        // Removing the space at the beginning of the line of the label.
+        rowNode.label = trim(rowNode?.label);
+        const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
+        tempLine = id.split(ID_SEPARATOR);
+      }
       // TODO 兼容下钻，需要获取下钻最大层级
       const totalLevel = maxLevel + 1;
       const emptyLength = totalLevel - tempLine.length;
