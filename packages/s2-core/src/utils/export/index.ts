@@ -315,7 +315,12 @@ export const copyData = (
 
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        const label = getHeaderLabel(curColItem.label);
+        const label = isFormat
+          ? getHeaderLabel(
+              curColItem?.belongsCell.getActualText() ?? curColItem.label,
+            )
+          : getHeaderLabel(curColItem.label);
+        // todo-zc: 这是什么场景？
         if (isArray(label)) {
           arrayLength = max([arrayLength, size(label)]);
         }
