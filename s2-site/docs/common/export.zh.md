@@ -11,7 +11,7 @@ order: 8
 import { copyData, copyToClipboard, download } from '@antv/s2'
 
 // 拿到复制数据
-const data = copyData(spreadsheet, '\t', false, false)
+const data = copyData(spreadsheet, '\t', false)
 
 // 复制数据到剪贴板
 // 同步复制：copyToClipboard(data, false)
@@ -33,7 +33,7 @@ download(data, 'filename')
 |:------------|:---------------------------------------------|:-------------------------------------------------------------|:---------------------------| :--- |
 | spreadsheet | s2 实例                                        | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)          |                            | ✓    |
 | split       | 分隔符                                          | `string`                                                     |                            | ✓    |
-| isFormat    | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 |  <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code>    | `false` |      |
+| formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 |  <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code>    | `false` |      |
 
 ### copyToClipboard
 

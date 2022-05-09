@@ -178,7 +178,6 @@ const processValueInRow = (
 /* Get the label name for the header. */
 const getHeaderLabel = (val: string) => {
   const label = safeJsonParse(val);
-  // console.log(label, 'label');
   if (isArray(label)) {
     return label;
   }
@@ -199,12 +198,8 @@ const processColHeaders = (headers: any[][], arrayLength: number) => {
 };
 
 const getNodeFormatLabel = (node: Node) => {
-  let formatterLabel: string;
-  if (node.spreadsheet?.dataSet) {
-    const formatter = node.spreadsheet.dataSet.getFieldFormatter(node.field);
-    formatterLabel = formatter(node.label);
-  }
-  return formatterLabel ?? node.label;
+  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+  return formatter?.(node.label) ?? node.label;
 };
 
 /**
@@ -224,20 +219,20 @@ const getRowNodeFormatData = (rowLeafNode: Node) => {
   return line;
 };
 
-const getFormatParams = (isFormat: FormatParams) => {
-  let isFormatHeader;
-  let isFormatData;
+const getFormatOptions = (isFormat: FormatOptions) => {
   if (typeof isFormat === 'object') {
-    isFormatHeader = isFormat.isFormatHeader ?? false;
-    isFormatData = isFormat.isFormatData ?? false;
-  } else {
-    isFormatHeader = isFormat ?? false;
-    isFormatData = isFormat ?? false;
+    return {
+      isFormatHeader: isFormat.isFormatHeader ?? false,
+      isFormatData: isFormat.isFormatData ?? false,
+    };
   }
-  return { isFormatHeader, isFormatData };
+  return {
+    isFormatHeader: isFormat ?? false,
+    isFormatData: isFormat ?? false,
+  };
 };
 
-type FormatParams =
+type FormatOptions =
   | boolean
   | {
       isFormatHeader?: boolean;
@@ -246,15 +241,15 @@ type FormatParams =
 /**
  * Copy data
  * @param sheetInstance
- * @param isFormat 是否格式化数据
+ * @param formatOptions 是否格式化数据
  * @param split
  */
 export const copyData = (
   sheetInstance: SpreadSheet,
   split: string,
-  isFormat?: FormatParams,
+  formatOptions?: FormatOptions,
 ): string => {
-  const { isFormatHeader, isFormatData } = getFormatParams(isFormat);
+  const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
   const { maxLevel } = rowsHierarchy;
