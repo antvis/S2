@@ -1,9 +1,8 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { S2DataConfig } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import { defineComponent, reactive, ref } from 'vue';
 import { BaseSheet } from '../src';
-import type { WritableS2Options } from '../src/interface';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -509,7 +508,9 @@ export default defineComponent({
     const s2 = ref();
     const dataCfgFlag = ref(1);
 
-    const options = reactive<WritableS2Options>({
+    //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
+    //  reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
+    const options: S2Options = reactive({
       debug: true,
       width: 600,
       height: 400,
@@ -597,9 +598,9 @@ export default defineComponent({
     :options="options"
     :themeCfg="themeCfg"
     :adaptive="true"
+    :showPagination="showPagination"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
-    :showPagination="showPagination"
   />
 </template>
 

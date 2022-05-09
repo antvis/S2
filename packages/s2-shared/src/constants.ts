@@ -1,6 +1,6 @@
 import type { S2Options } from '@antv/s2';
 
-export const SHEET_COMPONENT_DEFAULT_OPTIONS: Readonly<Partial<S2Options>> = {
+export const SHEET_COMPONENT_DEFAULT_OPTIONS: S2Options = {
   tooltip: {
     showTooltip: true,
     autoAdjustBoundary: 'body',
