@@ -1,4 +1,5 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
 import { S2DataConfig, S2Options } from '@/common';
 
@@ -12,9 +13,7 @@ const s2Options: S2Options = {
 describe('SpreadSheet Tree Mode Tests', () => {
   let container: HTMLElement;
   beforeAll(() => {
-    container = document.createElement('div');
-    container.id = 'container';
-    document.body.appendChild(container);
+    container = getContainer();
   });
 
   afterAll(() => {
@@ -23,8 +22,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
 
   describe('Facet Tests', () => {
     test('should re-calc row header width', () => {
-      const mountContainer = document.querySelector('#container');
-      const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
       s2.render();
 
       const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;
