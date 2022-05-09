@@ -96,7 +96,7 @@ type Adaptive =
 
 配置为 `boolean` 值时:
 
-true: 容器默认为内部的 container, 只有宽度自适应，高度以 options 设置的为准。
+true: 容器默认为内部的 `<div class=antv-s2-wrapper>`, 只有宽度自适应，高度以 options 设置的为准。
 false: 宽高都以 options 设置的为准。
 
 ```tsx
