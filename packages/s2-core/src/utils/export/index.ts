@@ -199,6 +199,15 @@ const processColHeaders = (headers: any[][], arrayLength: number) => {
   return result;
 };
 
+const getNodeFormatLabel = (node: Node) => {
+  let formatterLabel: string;
+  if (node.spreadsheet?.dataSet) {
+    const formatter = node.spreadsheet.dataSet.getFieldFormatter(node.field);
+    formatterLabel = formatter(node.label);
+  }
+  return formatterLabel ?? node.label;
+};
+
 /**
  * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
  * @param rowLeafNode
@@ -206,10 +215,8 @@ const processColHeaders = (headers: any[][], arrayLength: number) => {
 const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line = [];
   const getRowNodeFormatterLabel = (node: Node) => {
-    if (node.belongsCell instanceof RowCell) {
-      const actualText = node.belongsCell?.getActualText() ?? '';
-      line.unshift(actualText);
-    }
+    const formatterLabel = getNodeFormatLabel(node);
+    line.unshift(formatterLabel);
     if (node?.parent) {
       return getRowNodeFormatterLabel(node.parent);
     }
@@ -218,17 +225,37 @@ const getRowNodeFormatData = (rowLeafNode: Node) => {
   return line;
 };
 
+const getFormatParams = (isFormat: FormatParams) => {
+  let isFormatHeader;
+  let isFormatData;
+  if (typeof isFormat === 'object') {
+    isFormatHeader = isFormat.isFormatHeader ?? false;
+    isFormatData = isFormat.isFormatData ?? false;
+  } else {
+    isFormatHeader = isFormat ?? false;
+    isFormatData = isFormat ?? false;
+  }
+  return { isFormatHeader, isFormatData };
+};
+
+type FormatParams =
+  | boolean
+  | {
+      isFormatHeader?: boolean;
+      isFormatData?: boolean;
+    };
 /**
  * Copy data
  * @param sheetInstance
- * @param isFormat
+ * @param isFormat 是否格式化数据
  * @param split
  */
 export const copyData = (
   sheetInstance: SpreadSheet,
   split: string,
-  isFormat?: boolean,
+  isFormat?: FormatParams,
 ): string => {
+  const { isFormatHeader, isFormatData } = getFormatParams(isFormat);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
   const { maxLevel } = rowsHierarchy;
@@ -249,14 +276,14 @@ export const copyData = (
   let maxRowLength = 0;
 
   if (!sheetInstance.isPivotMode()) {
-    detailRows = processValueInDetail(sheetInstance, split, isFormat);
+    detailRows = processValueInDetail(sheetInstance, split, isFormatData);
   } else {
     // Filter out the related row head leaf nodes.
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
 
     for (const rowNode of caredRowLeafNodes) {
       let tempLine = [];
-      if (isFormat) {
+      if (isFormatHeader) {
         tempLine = getRowNodeFormatData(rowNode);
       } else {
         // Removing the space at the beginning of the line of the label.
@@ -278,10 +305,16 @@ export const copyData = (
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
+          tempLine.push(
+            processValueInCol(viewMeta, sheetInstance, isFormatData),
+          );
         } else {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          const lintItem = processValueInRow(viewMeta, sheetInstance, isFormat);
+          const lintItem = processValueInRow(
+            viewMeta,
+            sheetInstance,
+            isFormatData,
+          );
           if (isArray(lintItem)) {
             tempLine = tempLine.concat(...lintItem);
           } else {
@@ -315,14 +348,12 @@ export const copyData = (
 
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        const label = isFormat
-          ? getHeaderLabel(
-              curColItem?.belongsCell.getActualText() ?? curColItem.label,
-            )
-          : getHeaderLabel(curColItem.label);
-        // todo-zc: 这是什么场景？
+        let label = getHeaderLabel(curColItem.label);
         if (isArray(label)) {
           arrayLength = max([arrayLength, size(label)]);
+        } else {
+          // label 为数组时不进行格式化
+          label = isFormatHeader ? getNodeFormatLabel(curColItem) : label;
         }
         tempCol.push(label);
         curColItem = curColItem.parent;
