@@ -147,22 +147,22 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 export type TooltipContentType = Element | string;
 
 export interface BaseTooltipConfig<T = TooltipContentType> {
-  readonly showTooltip?: boolean;
+  showTooltip?: boolean;
   // Custom content
-  readonly content?: TooltipShowOptions<T>['content'];
+  content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
-  readonly operation?: TooltipOperation;
-  readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
-  readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
+  operation?: TooltipOperation;
+  autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip mount container
-  readonly getContainer?: () => HTMLElement;
+  getContainer?: () => HTMLElement;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
-  readonly row?: BaseTooltipConfig<T>;
-  readonly col?: BaseTooltipConfig<T>;
-  readonly corner?: BaseTooltipConfig<T>;
-  readonly data?: BaseTooltipConfig<T>;
+  row?: BaseTooltipConfig<T>;
+  col?: BaseTooltipConfig<T>;
+  corner?: BaseTooltipConfig<T>;
+  data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation extends TooltipOperatorOptions {

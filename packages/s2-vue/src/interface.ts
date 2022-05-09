@@ -1,4 +1,3 @@
-import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import type { UnionToIntersection } from '@vue/shared';
 import type { PropType } from 'vue';
@@ -59,23 +58,9 @@ type GetInitEmits<T> = {
     : never]-?: T[K];
 };
 
-export type DeepMutable<T> = T extends (...args: any) => any
-  ? T
-  : T extends (infer A)[]
-  ? DeepMutable<A>[]
-  : T extends Record<string, any>
-  ? {
-      -readonly [key in keyof T]: DeepMutable<T[key]>;
-    }
-  : T;
-
 /* -------------------------------------------------------------------------- */
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
-
-export type WritableS2DataCfg = DeepMutable<S2DataConfig>;
-export type WritableS2Options = DeepMutable<S2Options>;
-export type WritableS2ThemeCfg = DeepMutable<ThemeCfg>;
 
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;

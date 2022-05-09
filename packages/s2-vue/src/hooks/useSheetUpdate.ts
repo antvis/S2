@@ -27,7 +27,7 @@ export const useSheetUpdate = (
         updateFlag.rebuildDataset = true;
       }
       s2Ref.value?.setOptions(options as S2Options);
-      s2Ref.value?.changeSheetSize(options.width, options.height);
+      s2Ref.value?.changeSheetSize(options?.width, options?.height);
     },
     { deep: isProxy(props.options) },
   );

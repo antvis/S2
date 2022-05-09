@@ -4,7 +4,7 @@ import type { Adaptive, ResizeEffectParams } from '../interface';
 
 export const analyzeAdaptive = (
   paramsContainer: HTMLElement,
-  adaptive: Adaptive,
+  adaptive?: Adaptive,
 ) => {
   let container = paramsContainer;
   let adaptiveWidth = true;
