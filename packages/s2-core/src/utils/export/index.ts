@@ -16,7 +16,6 @@ import { CornerNodeType, ViewMeta } from '@/common/interface';
 import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 import { safeJsonParse } from '@/utils/text';
-import { RowCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
