@@ -182,6 +182,8 @@ export type SortParams = SortParam[];
 
 export interface Style {
   layoutWidthType?: LayoutWidthType;
+  // 是否展示树状分层下的层级占位点
+  showTreeLeafNodeAlignDot?: boolean;
   // row cell's height in tree mode
   treeRowsWidth?: number;
   // row header in tree mode collapse some nodes

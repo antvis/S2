@@ -248,15 +248,20 @@ export class RootInteraction {
     });
   };
 
-  public getCellLeafNodes = (cell: Node): Node[] => {
+  public getCellLeafNodes = (cell: S2CellType): Node[] => {
+    const meta = cell?.getMeta?.() as Node;
+    const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
 
-    // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
-    return isHierarchyTree
-      ? Node.getAllLeaveNodes(cell).filter(
-          (node) => node.rowIndex === cell.rowIndex,
-        )
-      : Node.getAllChildrenNodes(cell);
+    // 树状模式的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
+    if (isHierarchyTree && isRowCell) {
+      return Node.getAllLeaveNodes(meta).filter(
+        (node) => node.rowIndex === meta.rowIndex,
+      );
+    }
+
+    // 平铺模式 或 树状模式的列头点击遍历所有子节点
+    return Node.getAllChildrenNodes(meta);
   };
 
   public selectHeaderCell = (
@@ -275,15 +280,14 @@ export class RootInteraction {
     this.addIntercepts([InterceptType.HOVER]);
 
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
+    const isColCell = cell?.cellType === CellTypes.COL_CELL;
     const lastState = this.getState();
     const isSelectedCell = this.isSelectedCell(cell);
     const isMultiSelected =
       selectHeaderCellInfo?.isMultiSelection && this.isSelectedState();
 
     // 如果是已选中的单元格, 则取消选中, 兼容行列多选 (含叶子节点)
-    let leafNodes = isSelectedCell
-      ? []
-      : this.getCellLeafNodes(currentCellMeta);
+    let leafNodes = isSelectedCell ? [] : this.getCellLeafNodes(cell);
     let selectedCells = isSelectedCell ? [] : [getCellMeta(cell)];
 
     if (isMultiSelected) {
@@ -294,7 +298,9 @@ export class RootInteraction {
         selectedCells = selectedCells.filter(
           ({ id }) => id !== currentCellMeta.id,
         );
-        leafNodes = leafNodes.filter((node) => node.id !== currentCellMeta.id);
+        leafNodes = leafNodes.filter(
+          (node) => !node?.id.includes(currentCellMeta.id),
+        );
       }
     }
 
@@ -314,8 +320,8 @@ export class RootInteraction {
     const selectedCellIds = selectedCells.map(({ id }) => id);
     this.updateCells(this.getRowColActiveCells(selectedCellIds));
 
-    // 平铺模式下选中子节点
-    if (!isHierarchyTree) {
+    // 平铺模式或者是树状模式下的列头单元格, 选中子节点
+    if (!isHierarchyTree || isColCell) {
       leafNodes.forEach((node) => {
         node?.belongsCell?.updateByState(
           InteractionStateName.SELECTED,

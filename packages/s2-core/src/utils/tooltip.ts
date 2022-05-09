@@ -29,6 +29,7 @@ import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
+import { getEmptyPlaceholder } from './text';
 import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
@@ -415,8 +416,10 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     if (isTableMode) {
       value = '';
     } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
-      // 如果选中的单元格都无数据，则显示"-"
-      value = spreadsheet.options.placeholder;
+      const { placeholder } = spreadsheet.options;
+      const emptyPlaceholder = getEmptyPlaceholder(summary, placeholder);
+      // 如果选中的单元格都无数据，则显示"-" 或 options 里配置的占位符
+      value = emptyPlaceholder;
     } else {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems

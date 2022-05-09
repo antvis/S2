@@ -1,4 +1,4 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import { Event as CanvasEvent, IShape } from '@antv/g-canvas';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
 import { BaseCell } from '@/cell/base-cell';
@@ -24,6 +24,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected treeIcon: GuiIcon | undefined;
 
+  protected treeLeafNodeAlignDot: IShape | undefined;
+
   protected actionIcons: GuiIcon[];
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
@@ -32,7 +34,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
     const sortParam: SortParam = find(
-      sortParams.reverse(),
+      [...sortParams].reverse(),
       (item) =>
         isSortCell &&
         item?.sortByMeasure === value &&

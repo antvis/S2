@@ -3,12 +3,14 @@ import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
+  ViewMeta,
 } from './basic';
 import { Tooltip } from './tooltip';
 import { InteractionOptions } from './interaction';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { CornerHeaderConfig } from '@/facet/header/corner';
+import { Node } from '@/facet/layout/node';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -65,7 +67,7 @@ export interface S2BasicOptions<T = Element | string> {
   // the collection of row id and column id of cells which to be merged
   mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
-  placeholder?: string;
+  placeholder?: ((meta: Record<string, any>) => string) | string;
   // custom corner text
   cornerText?: string;
   // custom virtual extra field text

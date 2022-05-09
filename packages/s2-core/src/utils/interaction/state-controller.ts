@@ -17,7 +17,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
   const cellMetas = spreadsheet.interaction.getState().cells;
 
-  if (!isEmpty(allInteractedCells) && !isEmpty(cellMetas)) {
+  if (!isEmpty(allInteractedCells) || !isEmpty(cellMetas)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
