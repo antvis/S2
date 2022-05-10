@@ -334,7 +334,7 @@ const s2Options = {
 
 继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法, 渲染你封装的任意组件
 
-- [查看 BaseTooltip 基类](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/tooltip/index.ts#L23)
+- [查看 BaseTooltip 基类](/zh/docs/api/basic-class/base-tooltip)
 - [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 

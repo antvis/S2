@@ -31,6 +31,7 @@ import {
   DataType,
   generatePalette,
   getPalette,
+  InterceptType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
@@ -746,7 +747,24 @@ function MainLayout() {
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
-              onCornerCellClick={logHandler('onCornerCellClick')}
+              onCornerCellClick={(cellInfo) => {
+                s2Ref.current.showTooltip({
+                  position: {
+                    x: cellInfo.event.clientX,
+                    y: cellInfo.event.clientY,
+                  },
+                  content: 'click',
+                });
+              }}
+              onCornerCellHover={(cellInfo) => {
+                s2Ref.current.showTooltip({
+                  position: {
+                    x: cellInfo.event.clientX,
+                    y: cellInfo.event.clientY,
+                  },
+                  content: 'hover',
+                });
+              }}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
               onCopied={logHandler('onCopied')}

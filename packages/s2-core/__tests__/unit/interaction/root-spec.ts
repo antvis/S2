@@ -23,8 +23,8 @@ import {
   SelectedCellMove,
   BaseEvent,
   GuiIcon,
+  CornerCellClick,
 } from '@/index';
-import { Node } from '@/facet/layout/node';
 import { Store } from '@/common/store';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 
@@ -513,6 +513,7 @@ describe('RootInteraction Tests', () => {
 
   test.each`
     key                                          | expected
+    ${InteractionName.CORNER_CELL_CLICK}         | ${CornerCellClick}
     ${InteractionName.DATA_CELL_CLICK}           | ${DataCellClick}
     ${InteractionName.ROW_COLUMN_CLICK}          | ${RowColumnClick}
     ${InteractionName.ROW_TEXT_CLICK}            | ${RowTextClick}
