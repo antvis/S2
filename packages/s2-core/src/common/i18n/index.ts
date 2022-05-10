@@ -1,7 +1,6 @@
-import { get } from 'lodash';
+import { get, merge } from 'lodash';
 import { ZH_CN as BASE_ZH_CN } from './zh_CN';
 import { EN_US as BASE_EN_US } from './en_US';
-import { customMerge } from '@/utils/merge';
 
 export type LangType = 'zh_CN' | 'en_US';
 
@@ -30,10 +29,9 @@ export const setLang = (l: LangType) => {
 
 /**
  * 拓展locale配置
- * @param extendedLocale
  */
 export const extendLocale = (extend: LocaleType) => {
-  locale = customMerge(locale, extend);
+  locale = merge({}, locale, extend);
 };
 
 /**
