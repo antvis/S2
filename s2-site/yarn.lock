@@ -312,10 +312,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.npmmirror.com/@antv/s2-react/-/s2-react-1.14.0.tgz#3e6f06fb364c4980df3c690119d03e705c1f7d6c"
-  integrity sha512-AjxR4QMqTzBVW2I0luJWfDD4dNNOlV/oBnQ1REHFQCYERekNBbrEzje9t+u/nu7w7UHXJLZ1qWTe5u9peXs8pQ==
+"@antv/s2-react@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.15.0.tgz#983691527b96006da0329426775a7910b8a4be89"
+  integrity sha512-h2ypMpMlVZEuhZHyCMmz/t+jrSzKZ2VxA0WNAY6G1iPISp07Y9EMHzCvpn86HOnUyfP4tLP6EpE1vyPRKmwpAw==
   dependencies:
     ahooks "^3.1.13"
     classnames "^2.3.1"
