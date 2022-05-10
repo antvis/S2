@@ -498,7 +498,7 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should get correctly default interaction size', () => {
-    expect(defaultInteractionSize).toEqual(10);
+    expect(defaultInteractionSize).toEqual(11);
   });
 
   test('should register default interaction', () => {
