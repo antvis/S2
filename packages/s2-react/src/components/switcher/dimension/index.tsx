@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { Checkbox } from 'antd';
-import { i18n } from '@antv/s2-shared';
+import { i18n } from '@antv/s2';
 import { DroppableType, SWITCHER_CONFIG } from '../constant';
 import { SwitcherField, SwitcherItem } from '../interface';
 import { DimensionCommonProps, DimensionItem } from '../item';

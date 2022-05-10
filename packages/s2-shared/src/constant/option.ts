@@ -12,5 +12,3 @@ export const SHEET_COMPONENT_DEFAULT_OPTIONS: S2Options = {
   },
   showDefaultHeaderActionIcon: true,
 } as const;
-
-export const RESIZE_RENDER_DELAY = 200; // ms

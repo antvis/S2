@@ -1,5 +1,6 @@
 import { clone, filter, get, isEmpty, set } from 'lodash';
 import {
+  i18n,
   S2Options,
   HeaderActionIconProps,
   S2Event,
@@ -11,7 +12,6 @@ import {
   GEvent,
 } from '@antv/s2';
 import React from 'react';
-import { i18n } from '@antv/s2-shared';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
 
 export interface DrillDownParams {

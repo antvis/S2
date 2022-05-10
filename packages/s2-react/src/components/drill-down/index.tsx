@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import { i18n } from '@antv/s2-shared';
+import { i18n } from '@antv/s2';
 import {
   CalendarIcon,
   LocationIcon,

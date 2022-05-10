@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames';
-import { i18n } from '@antv/s2-shared';
+import { i18n } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

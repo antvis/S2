@@ -8,8 +8,8 @@ import {
   DragDropContext,
   DropResult,
 } from 'react-beautiful-dnd';
+import { i18n } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
-import { i18n } from '@antv/s2-shared';
 import { FieldType, SWITCHER_CONFIG, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
 import { SwitcherFields, SwitcherResult, SwitcherState } from '../interface';

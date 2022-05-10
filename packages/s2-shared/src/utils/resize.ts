@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import { RESIZE_RENDER_DELAY } from '../constants';
+import { RESIZE_RENDER_DELAY } from '../constant/resize';
 import type { Adaptive, ResizeEffectParams } from '../interface';
 
 export const analyzeAdaptive = (

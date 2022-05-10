@@ -1,4 +1,4 @@
-import { i18n } from '@antv/s2-shared';
+import { i18n } from '@antv/s2';
 import { ColIcon, RowIcon, ValueIcon } from '../icons/index';
 
 export const SWITCHER_PREFIX_CLS = 'switcher';

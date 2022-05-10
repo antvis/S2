@@ -50,7 +50,7 @@ import {
   defaultOptions,
 } from './config';
 import { ResizeConfig } from './resize';
-import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/components';
+import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
