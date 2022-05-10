@@ -20,7 +20,6 @@ s2.tooltip.xx()
 | `hide` | 隐藏 tooltip | `() => void` |
 | `destroy` | 销毁 tooltip, 并移除挂载容器 | `() => void` |
 | `clearContent` | 清空 tooltip 内容 | `() => void` |
-| `destroy` | 清空 tooltip 内容 | `() => void` |
 | `disablePointerEvent` | 禁用 tooltip 鼠标响应 | `() => void` |
 
 `markdown:docs/common/custom-tooltip.zh.md`
