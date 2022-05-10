@@ -36,6 +36,11 @@ jobs:
         run: |
           git checkout -b chore-sync
 
+      - name: Sleep 5m
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 5m
+
       - name: Install dependencies
         run: yarn
 
