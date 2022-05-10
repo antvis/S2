@@ -1,3 +1,10 @@
+# [@antv/s2-v1.16.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.16.0-alpha.2...@antv/s2-v1.16.0-alpha.3) (2022-05-10)
+
+
+### Bug Fixes
+
+* 在复制或者表格数据时，可对行列头进行格式化导出 ([#1319](https://github.com/antvis/S2/issues/1319)) ([6e5fc0a](https://github.com/antvis/S2/commit/6e5fc0a34e5b1bcee23b5e634e3dba517f370485))
+
 # [@antv/s2-v1.16.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.16.0-alpha.1...@antv/s2-v1.16.0-alpha.2) (2022-05-10)
 
 
