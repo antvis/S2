@@ -48,4 +48,18 @@ describe('Copy Tests', () => {
     expect(textareaValue).toEqual(result);
     expect(textareaValue).toEqual(text);
   });
+
+  // https://github.com/antvis/S2/issues/1317
+  test('should prevent page scroll scroll after sync copy text', async () => {
+    // 让页面显示滚动条
+    document.body.style.height = '9999px';
+
+    const scrollY = 100;
+    window.scrollTo(0, scrollY);
+
+    const text = '222';
+    await copyToClipboard(text, true);
+
+    expect(window.scrollY).toEqual(scrollY);
+  });
 });
