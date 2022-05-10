@@ -670,6 +670,7 @@ export class PivotFacet extends BaseFacet {
     if (rowCfg?.treeRowsWidth) {
       return rowCfg?.treeRowsWidth;
     }
+
     // + province/city/level
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
@@ -685,10 +686,7 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme.padding?.left +
       this.rowCellTheme.padding?.right;
 
-    const width = Math.max(treeRowsWidth, maxLabelWidth);
-    // NOTE: mark as user drag to calculate only one time
-    rowCfg.treeRowsWidth = width;
-    return width;
+    return Math.max(treeRowsWidth, maxLabelWidth);
   }
 
   /**

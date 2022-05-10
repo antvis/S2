@@ -14,9 +14,7 @@ describe('SpreadSheet Tests', () => {
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
     beforeAll(() => {
-      container = document.createElement('div');
-      container.id = 'container';
-      document.body.appendChild(container);
+      container = getContainer();
     });
 
     afterAll(() => {
@@ -24,8 +22,7 @@ describe('SpreadSheet Tests', () => {
     });
 
     test('should init sheet by dom container', () => {
-      const mountContainer = document.querySelector('#container');
-      const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
       s2.render();
 
       expect(s2.container).toBeDefined();
@@ -36,7 +33,10 @@ describe('SpreadSheet Tests', () => {
     });
 
     test('should init sheet by selector container', () => {
-      const containerSelector = '#container';
+      const CONTAINER_ID = 'container';
+      container.id = CONTAINER_ID;
+
+      const containerSelector = `#${CONTAINER_ID}`;
       const s2 = new PivotSheet(containerSelector, mockDataConfig, s2Options);
       s2.render();
 

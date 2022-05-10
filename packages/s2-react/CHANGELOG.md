@@ -1,9 +1,9 @@
-# [@antv/s2-react-v1.15.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0...@antv/s2-react-v1.15.0-alpha.1) (2022-04-26)
+# [@antv/s2-react-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0...@antv/s2-react-v1.15.0) (2022-05-06)
 
 
 ### Features
 
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 允许条件设置数据单元格为空的占位符 ([#1309](https://github.com/antvis/S2/issues/1309)) ([397caf1](https://github.com/antvis/S2/commit/397caf18e3eec7c82bd4f4bb7a6987839474a425))
 
 # [@antv/s2-react-v1.14.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.13.0...@antv/s2-react-v1.14.0) (2022-04-22)
 
