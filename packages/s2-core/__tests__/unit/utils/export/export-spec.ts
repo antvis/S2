@@ -239,9 +239,9 @@ describe('PivotSheet Export Test', () => {
     const data = copyData(s2, '\t', { isFormatHeader: true });
     const rows = data.split('\n');
     expect(rows).toHaveLength(7);
-    expect(rows[0].split('\t')[2]).toEqual('"province"');
-    expect(rows[0].split('\t')[3]).toEqual('"浙江省-province"');
-    expect(rows[1].split('\t')[2]).toEqual('"city"');
-    expect(rows[3].split('\t')[1]).toEqual('"家具-type"');
+    expect(rows[0].split('\t')[1]).toEqual('"province"');
+    expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');
+    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[3].split('\t')[0]).toEqual('"家具-type"');
   });
 });

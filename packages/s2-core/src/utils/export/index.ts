@@ -13,7 +13,7 @@ import {
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
-import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
+import { ID_SEPARATOR, ROOT_BEGINNING_REGEX, ROOT_ID } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 import { safeJsonParse } from '@/utils/text';
 import { Node } from '@/facet/layout/node';
@@ -209,6 +209,8 @@ const getNodeFormatLabel = (node: Node) => {
 const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line = [];
   const getRowNodeFormatterLabel = (node: Node) => {
+    // node.id === ROOT_ID 时，为S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_ID) return;
     const formatterLabel = getNodeFormatLabel(node);
     line.unshift(formatterLabel);
     if (node?.parent) {
