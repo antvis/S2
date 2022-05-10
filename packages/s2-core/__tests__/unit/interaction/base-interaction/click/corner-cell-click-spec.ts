@@ -42,7 +42,8 @@ describe('Interaction Corner Cell Click Tests', () => {
     expect(s2.interaction.reset).toHaveBeenCalled();
   });
 
-  test('should remove hover intercepts after corner cell click', async () => {
+  test('should remove hover intercepts after corner cell click if tooltip is hidden', async () => {
+    s2.tooltip.visible = false;
     s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
 
     await sleep(500);
