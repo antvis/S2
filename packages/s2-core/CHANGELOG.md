@@ -1,3 +1,20 @@
+# [@antv/s2-v1.16.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.16.0-alpha.1...@antv/s2-v1.16.0-alpha.2) (2022-05-10)
+
+
+### Bug Fixes
+
+* dataCfg变化时未重新计算treeRow宽度 ([#1316](https://github.com/antvis/S2/issues/1316)) ([f5e53b0](https://github.com/antvis/S2/commit/f5e53b0313ef7bcf23fd63438f1059ef91c0afa1))
+* **interaction:** 树状模式列头非叶子节点选中无法高亮当前列 ([#1307](https://github.com/antvis/S2/issues/1307)) ([bba5f72](https://github.com/antvis/S2/commit/bba5f72ab8d8fe2fa98eac57bc282405b55e1e3d))
+* **interaction:** 设置 stateShape 的 visible 默认为 false 来减少绘制调用 ([#1295](https://github.com/antvis/S2/issues/1295)) ([10f4391](https://github.com/antvis/S2/commit/10f43916e884bdebdc35c05734091dff9d8b2ca0))
+* **interaction:** 连续 Hover 失效问题修复 ([#1292](https://github.com/antvis/S2/issues/1292)) ([162b5f2](https://github.com/antvis/S2/commit/162b5f22d3b67b321c83bdee234528d247105bd0))
+* 修复容器设置transform样式后框选背景框错位问题 ([#1311](https://github.com/antvis/S2/issues/1311)) ([0582bb5](https://github.com/antvis/S2/commit/0582bb5a5fb652523b21ca91f8f09af6103b18f2))
+* 去除 header cell 中对 sortParams 的原地反转操作 ([#1313](https://github.com/antvis/S2/issues/1313)) ([843757c](https://github.com/antvis/S2/commit/843757cf2cd88b500db19e47e35727edf585ddcc))
+
+
+### Features
+
+* 允许条件设置数据单元格为空的占位符 ([#1309](https://github.com/antvis/S2/issues/1309)) ([397caf1](https://github.com/antvis/S2/commit/397caf18e3eec7c82bd4f4bb7a6987839474a425))
+
 # [@antv/s2-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0) (2022-04-22)
 
 
