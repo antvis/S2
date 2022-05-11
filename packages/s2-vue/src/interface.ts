@@ -4,12 +4,15 @@ import type { PropType } from 'vue';
 
 // 这个是vue中的类型，但是vue没有export
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
-interface PropOptions<T = any> {
+interface PropOption<T = any> {
   type?: PropType<T>;
-  required?: boolean;
-  default?: T;
-  validator?(value: unknown): boolean;
 }
+
+interface RequiredPropOption<T = any> {
+  type?: PropType<T>;
+  required: true;
+}
+
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L820
 export type EmitFn<
   Options = Record<string, (...args: any[]) => any>,
@@ -29,6 +32,11 @@ export type EmitFn<
 /* -------------------------------------------------------------------------- */
 /*                                   一些工具类型                                   */
 /* -------------------------------------------------------------------------- */
+
+type GetOptionalKeys<T> = keyof {
+  [K in keyof T as Pick<T, K> extends Required<Pick<T, K>> ? never : K]: K;
+};
+
 type IsEmitKey<Type> = Exclude<Type, undefined> extends (...args: any) => any
   ? true
   : false;
@@ -45,10 +53,12 @@ type GetEmitKeys<T> = keyof {
 };
 
 // 用于在defineComponent中进行props类型推断的工具方法
-type GetInitProps<T> = {
-  [K in keyof T as IsEmitKey<T[K]> extends true ? never : K]-?: PropOptions<
-    NonNullable<T[K]>
-  >;
+type GetInitProps<T, OptionalKeys = GetOptionalKeys<T>> = {
+  [K in keyof T as IsEmitKey<T[K]> extends true
+    ? never
+    : K]-?: K extends OptionalKeys
+    ? PropOption<NonNullable<T[K]>>
+    : RequiredPropOption<NonNullable<T[K]>>;
 };
 
 // 用于在defineComponent中进行emits类型推断的工具方法
