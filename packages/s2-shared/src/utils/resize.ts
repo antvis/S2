@@ -35,7 +35,9 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     s2?.render(false);
   };
 
-  const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
+  const debounceRender = debounce(render, RESIZE_RENDER_DELAY, {
+    trailing: false,
+  });
 
   const onResize = () => {
     const { width: nodeWidth, height: nodeHeight } =
