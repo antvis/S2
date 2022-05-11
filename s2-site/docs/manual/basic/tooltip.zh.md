@@ -9,6 +9,18 @@ order: 7
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zRquQpJqBzUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
+## 注意事项
+
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据, **不渲染内容**, `@antv/s2-react` 中通过[组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)的方式渲染 `tooltip` 的内容, 包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等.
+
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react`, 免去你二次封装
+- 如果您不希望依赖框架, 或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
+- 别忘了引入样式
+
+```ts
+import "@antv/s2/dist/style.min.css";
+```
+
 ## 使用
 
 在 `s2Options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
@@ -194,11 +206,40 @@ s2.showTooltip({
 
 <playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
 
-##### 3. 内容显示优先级
+##### 3. 在 Vue3 中自定义
+
+在 `Vue3` 中可以通过 `defineCustomElement` 自定义内容. [例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
+
+```ts
+import { defineCustomElement } from "vue";
+
+const VueTooltipContent = defineCustomElement({
+  props: ["meta"],
+  template: `
+    <div>我是自定义 Tooltip 内容</div>
+    <p>当前值: {{ meta?.label ?? meta?.fieldValue }}</p>
+  `
+});
+
+customElements.define("vue-tooltip-content", VueTooltipContent);
+
+const s2Options = {
+  tooltip: {
+    content: (cell, defaultTooltipShowOptions) => {
+      const meta = cell.getMeta();
+      return new VueTooltipContent({ meta });
+    },
+  },
+};
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
+
+##### 4. 内容显示优先级
 
 `方法调用` > `单元格配置` > `基本配置`
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
 
 #### 自定义 Tooltip 操作项
 
@@ -289,10 +330,18 @@ const s2Options = {
 
 #### 自定义 Tooltip 类
 
-继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`
+除了上面讲到的 `自定义 Tooltip 内容` 外, 你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合
+
+继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法, 渲染你封装的任意组件
+
+- [查看 BaseTooltip 基类](/zh/docs/api/basic-class/base-tooltip)
+- [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+- [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
+// 引入 `tooltip` 样式文件
+import "@antv/s2/dist/style.min.css";
 
 export class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet: SpreadSheet) {

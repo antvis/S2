@@ -13,16 +13,18 @@ import {
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
-import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
+import { ID_SEPARATOR, ROOT_BEGINNING_REGEX, ROOT_ID } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 import { safeJsonParse } from '@/utils/text';
+import { Node } from '@/facet/layout/node';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     const textarea = document.createElement('textarea');
     textarea.value = str;
     document.body.appendChild(textarea);
-    textarea.focus();
+    // 开启 preventScroll, 防止页面有滚动条时触发滚动
+    textarea.focus({ preventScroll: true });
     textarea.select();
 
     const success = document.execCommand('copy');
@@ -196,17 +198,61 @@ const processColHeaders = (headers: any[][], arrayLength: number) => {
   return result;
 };
 
+const getNodeFormatLabel = (node: Node) => {
+  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+  return formatter?.(node.label) ?? node.label;
+};
+
+/**
+ * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
+ * @param rowLeafNode
+ */
+const getRowNodeFormatData = (rowLeafNode: Node) => {
+  const line = [];
+  const getRowNodeFormatterLabel = (node: Node) => {
+    // node.id === ROOT_ID 时，为S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_ID) return;
+    const formatterLabel = getNodeFormatLabel(node);
+    line.unshift(formatterLabel);
+    if (node?.parent) {
+      return getRowNodeFormatterLabel(node.parent);
+    }
+  };
+  getRowNodeFormatterLabel(rowLeafNode);
+  return line;
+};
+
+const getFormatOptions = (isFormat: FormatOptions) => {
+  if (typeof isFormat === 'object') {
+    return {
+      isFormatHeader: isFormat.isFormatHeader ?? false,
+      isFormatData: isFormat.isFormatData ?? false,
+    };
+  }
+  return {
+    isFormatHeader: isFormat ?? false,
+    isFormatData: isFormat ?? false,
+  };
+};
+
+type FormatOptions =
+  | boolean
+  | {
+      isFormatHeader?: boolean;
+      isFormatData?: boolean;
+    };
 /**
  * Copy data
  * @param sheetInstance
- * @param isFormat
+ * @param formatOptions 是否格式化数据
  * @param split
  */
 export const copyData = (
   sheetInstance: SpreadSheet,
   split: string,
-  isFormat?: boolean,
+  formatOptions?: FormatOptions,
 ): string => {
+  const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
   const { maxLevel } = rowsHierarchy;
@@ -227,15 +273,21 @@ export const copyData = (
   let maxRowLength = 0;
 
   if (!sheetInstance.isPivotMode()) {
-    detailRows = processValueInDetail(sheetInstance, split, isFormat);
+    detailRows = processValueInDetail(sheetInstance, split, isFormatData);
   } else {
     // Filter out the related row head leaf nodes.
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
+
     for (const rowNode of caredRowLeafNodes) {
-      // Removing the space at the beginning of the line of the label.
-      rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-      let tempLine = id.split(ID_SEPARATOR);
+      let tempLine = [];
+      if (isFormatHeader) {
+        tempLine = getRowNodeFormatData(rowNode);
+      } else {
+        // Removing the space at the beginning of the line of the label.
+        rowNode.label = trim(rowNode?.label);
+        const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
+        tempLine = id.split(ID_SEPARATOR);
+      }
       // TODO 兼容下钻，需要获取下钻最大层级
       const totalLevel = maxLevel + 1;
       const emptyLength = totalLevel - tempLine.length;
@@ -250,10 +302,16 @@ export const copyData = (
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
+          tempLine.push(
+            processValueInCol(viewMeta, sheetInstance, isFormatData),
+          );
         } else {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          const lintItem = processValueInRow(viewMeta, sheetInstance, isFormat);
+          const lintItem = processValueInRow(
+            viewMeta,
+            sheetInstance,
+            isFormatData,
+          );
           if (isArray(lintItem)) {
             tempLine = tempLine.concat(...lintItem);
           } else {
@@ -287,9 +345,12 @@ export const copyData = (
 
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        const label = getHeaderLabel(curColItem.label);
+        let label = getHeaderLabel(curColItem.label);
         if (isArray(label)) {
           arrayLength = max([arrayLength, size(label)]);
+        } else {
+          // label 为数组时不进行格式化
+          label = isFormatHeader ? getNodeFormatLabel(curColItem) : label;
         }
         tempCol.push(label);
         curColItem = curColItem.parent;

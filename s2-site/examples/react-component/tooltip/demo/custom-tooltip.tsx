@@ -5,8 +5,8 @@ import { SheetComponent } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
-const MyCustomTooltip = () => (
-  <div className="tooltip-custom-component">custom tooltip</div>
+const MyCustomTooltipContent = () => (
+  <div className="tooltip-custom-component">我是自定义 tooltip 内容</div>
 );
 
 class CustomTooltip extends BaseTooltip {
@@ -15,7 +15,7 @@ class CustomTooltip extends BaseTooltip {
   }
 
   renderContent() {
-    ReactDOM.render(<MyCustomTooltip />, this.container);
+    ReactDOM.render(<MyCustomTooltipContent />, this.container);
   }
 
   show(options) {
@@ -23,16 +23,13 @@ class CustomTooltip extends BaseTooltip {
     console.log('options: ', options);
   }
 
-  hide() {
-    super.hide();
-    ReactDOM.unmountComponentAtNode(this.container);
-    console.log('hide tooltip');
-  }
-
   destroy() {
+    console.log('tooltip destroy');
+
     super.destroy();
-    ReactDOM.unmountComponentAtNode(this.container);
-    console.log('destroy tooltip');
+    if (this.container) {
+      ReactDOM.unmountComponentAtNode(this.container);
+    }
   }
 }
 
