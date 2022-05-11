@@ -7,14 +7,14 @@ order: 7
 
 通过表格交互透出表格信息以及部分分析功能
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zRquQpJqBzUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/tnuTdq%24b2/1a076d70-e836-41be-bd1b-ab0ec0916ea7.png" width = "600"  alt="preview" />
 
 ## 注意事项
 
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据, **不渲染内容**, `@antv/s2-react` 中通过[组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)的方式渲染 `tooltip` 的内容, 包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等.
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**, `@antv/s2-react` 中通过 [组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
 
 - 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react`, 免去你二次封装
-- 如果您不希望依赖框架, 或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
+- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
 - 别忘了引入样式
 
 ```ts
@@ -206,36 +206,7 @@ s2.showTooltip({
 
 <playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
 
-##### 3. 在 Vue3 中自定义
-
-在 `Vue3` 中可以通过 `defineCustomElement` 自定义内容. [例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
-
-```ts
-import { defineCustomElement } from "vue";
-
-const VueTooltipContent = defineCustomElement({
-  props: ["meta"],
-  template: `
-    <div>我是自定义 Tooltip 内容</div>
-    <p>当前值: {{ meta?.label ?? meta?.fieldValue }}</p>
-  `
-});
-
-customElements.define("vue-tooltip-content", VueTooltipContent);
-
-const s2Options = {
-  tooltip: {
-    content: (cell, defaultTooltipShowOptions) => {
-      const meta = cell.getMeta();
-      return new VueTooltipContent({ meta });
-    },
-  },
-};
-```
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
-
-##### 4. 内容显示优先级
+##### 3. 内容显示优先级
 
 `方法调用` > `单元格配置` > `基本配置`
 
@@ -330,9 +301,9 @@ const s2Options = {
 
 #### 自定义 Tooltip 类
 
-除了上面讲到的 `自定义 Tooltip 内容` 外, 你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合
+除了上面讲到的 `自定义 Tooltip 内容` 外，你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合
 
-继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法, 渲染你封装的任意组件
+继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法，渲染你封装的任意组件
 
 - [查看 BaseTooltip 基类](/zh/docs/api/basic-class/base-tooltip)
 - [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
@@ -431,6 +402,84 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 <SheetComponent onRowCellHover={onRowCellHover} />
 ```
+
+#### 在 Vue3 中自定义
+
+在 `Vue3` 中可以通过两种方式自定义内容。[例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
+
+- 1. `createVNode` 自定义类的方式 （推荐）
+
+```ts
+// TooltipContent.vue
+
+<template>
+  <div>我是自定义 Tooltip 内容</div>
+  <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
+</template>
+
+<script lang="ts" setup>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'TooltipContent',
+  props: ['meta']
+});
+</script>
+
+```
+
+```ts
+import { defineCustomElement, render, createVNode } from "vue";
+import { BaseTooltip, PivotSheet } from "@antv/s2";
+import TooltipContent from "./TooltipContent.vue";
+import "@antv/s2/dist/style.min.css";
+
+class CustomTooltip extends BaseTooltip {
+  constructor(spreadsheet) {
+    super(spreadsheet);
+  }
+
+  renderContent() {
+    const cell = this.spreadsheet.getCell(this.options.event?.target);
+    const meta = cell?.getMeta();
+
+    // 使用 Vue 提供的 `createVNode` 方法将组件渲染成虚拟 DOM
+    const tooltipVNode = createVNode(TooltipContent, { meta });
+    // 使用  `render` 函数将其挂载在 tooltip 容器上
+    render(tooltipVNode, this.container);
+  }
+}
+```
+
+- 2. `defineCustomElement` 自定义内容的方式
+
+```ts
+import { defineCustomElement } from "vue";
+
+// 将 Vue 组件解析成 Web Component
+const VueTooltipContent = defineCustomElement({
+  props: ["meta"],
+  template: `
+    <div>我是自定义 Tooltip 内容</div>
+    <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
+  `
+});
+
+// 注册一个 Web Component
+customElements.define("vue-tooltip-content", VueTooltipContent);
+
+const s2Options = {
+  tooltip: {
+    content: (cell, defaultTooltipShowOptions) => {
+      const meta = cell.getMeta();
+      // 替换 Tooltip 内容
+      return new VueTooltipContent({ meta });
+    },
+  },
+};
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
 
 #### 重写展示方法
 
