@@ -6,8 +6,8 @@ order: 3
 功能描述：存储一些信息。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/store/index.ts)
 
 ```ts
-this.spreadsheet.store.get('key') // 获取
-this.spreadsheet.store.set('key', value) // 存储
+s2.store.get('key') // 获取
+s2.store.set('key', value) // 存储
 ```
 
 | 参数 | 说明                                   | 类型 |

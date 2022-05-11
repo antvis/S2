@@ -5,9 +5,13 @@ order: 5
 
 功能描述：表格数据集。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/data-set/pivot-data-set.ts)
 
+```ts
+s2.dataSet.xx()
+```
+
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| fields | 字段信息 | () => [Fields](#/zh/docs/api/general/S2DataConfig#fields) |
+| fields | 字段信息 | () => [Fields](/zh/docs/api/general/S2DataConfig#fields) |
 | meta | 字段元信息，包含有字段名、格式化等 | () => [Meta[]](#/zh/docs/api/general/S2DataConfig#meta) |
 | originData | 原始数据 | () => [DataType[]](#datatype) |
 | totalData | 汇总数据 | () => [DataType[]](#datatype)  |

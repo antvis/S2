@@ -53,6 +53,8 @@ order: 1
 
 `markdown:docs/common/tooltip.zh.md`
 
+`markdown:docs/common/custom-tooltip.zh.md`
+
 ## Pagination
 
 boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
