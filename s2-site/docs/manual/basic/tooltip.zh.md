@@ -365,7 +365,7 @@ const s2Options = {
 
 ```
 
-如果使用的是 `React` 组件，也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;
@@ -385,7 +385,7 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 #### 重写展示方法
 
-除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例]([`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](zh/docs/manual/advanced/get-instance)
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/zh/docs/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/zh/docs/manual/advanced/get-instance)
 
 ```ts
 // options 配置 tooltip 显示
@@ -409,7 +409,7 @@ tooltip: {
 
 ##### 可自定义显示内容
 
-以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/api/common/custom-tooltip)
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/common/custom-tooltip)
 
 - 显示位置 (position)
 
@@ -448,7 +448,7 @@ tooltip: {
 
   - 所选项统计列表（ summaries ）
 
-    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/zh/docs/api/common/custom-tooltip#TooltipSummaryOptions)
+    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/zh/docs/common/custom-tooltip#tooltipsummaryoptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -462,7 +462,7 @@ tooltip: {
 
   - 轴列表（ headInfo ）
 
-    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/zh/docs/api/common/custom-tooltip#TooltipHeadInfo)
+    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/zh/docs/common/custom-tooltip#tooltipheadinfo)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -483,7 +483,7 @@ tooltip: {
 
   - 数据点明细信息（ details ）
 
-    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/zh/docs/api/common/custom-tooltip#ListItem)
+    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/zh/docs/common/custom-tooltip#listitem)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -511,11 +511,11 @@ tooltip: {
 
 - 部分配置 ( options )
 
-  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/zh/docs/api/common/custom-tooltip#TooltipOptions)
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/zh/docs/common/custom-tooltip#tooltipoptions)
 
   - 操作栏（ operator ）
 
-    可操作配置，具体细节参考 [TooltipOperatorOptions](/zh/docs/api/common/custom-tooltip#TooltipOperatorOptions)
+    可操作配置，具体细节参考 [TooltipOperatorOptions](/zh/docs/common/custom-tooltip#tooltipoperatoroptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
