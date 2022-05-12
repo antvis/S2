@@ -4,93 +4,111 @@
  */
 import {
   Group,
-  IShape,
-  ShapeAttrs,
-  ShapeCfg,
-  SimpleBBox,
-} from '@antv/g-canvas';
+  DisplayObject,
+  Text,
+  TextStyleProps,
+  Rect,
+  RectStyleProps,
+  Polygon,
+  PolygonStyleProps,
+  Circle,
+  CircleStyleProps,
+  Line,
+  LineStyleProps,
+  BaseStyleProps,
+} from '@antv/g';
 import { forEach, isEmpty, set, isFunction } from 'lodash';
 import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
+import { SimpleBBox } from '@/common/interface';
 
 export function renderRect(
   group: Group,
-  attrs: ShapeAttrs,
-  extraParams?: Omit<ShapeCfg, 'attrs'>,
-): IShape {
-  return group?.addShape?.('rect', {
+  style: RectStyleProps,
+  extraParams?: Omit<BaseStyleProps, 'style'>,
+): DisplayObject {
+  const rect = new Rect({
     zIndex: 1,
-    attrs,
+    style,
     ...(extraParams || {}),
   });
+  return group?.appendChild(new Rect(rect));
 }
 
-export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
-  return group?.addShape?.('polygon', {
-    attrs,
-  });
+export function renderPolygon(
+  group: Group,
+  style: PolygonStyleProps,
+): DisplayObject {
+  const polygon = new Polygon({ style });
+  return group?.appendChild?.(polygon);
 }
 
-export function renderCircle(group: Group, attrs: ShapeAttrs): IShape {
-  return group?.addShape?.('circle', {
-    attrs,
-  });
+export function renderCircle(
+  group: Group,
+  style: CircleStyleProps,
+): DisplayObject {
+  const circle = new Circle({ style });
+  return group?.appendChild?.(circle);
 }
 
 export function renderText(
   group: Group,
-  shapes: IShape[],
+  shapes: DisplayObject[],
   x: number,
   y: number,
-  text: string,
+  textString: string,
   textStyle: TextTheme,
-  extraStyle?: ShapeAttrs,
-): IShape {
+  extraStyle?: TextStyleProps,
+): DisplayObject {
   if (!isEmpty(shapes) && group) {
-    forEach(shapes, (shape: IShape) => {
+    forEach(shapes, (shape: DisplayObject) => {
       if (group.contain(shape)) group.removeChild(shape, true);
     });
   }
-  return group?.addShape?.('text', {
-    attrs: {
+
+  const text = new Text({
+    style: {
       x,
       y,
-      text,
+      text: textString,
       ...textStyle,
       ...extraStyle,
     },
   });
+
+  return group?.appendChild?.(text);
 }
 
 export function renderLine(
   group: Group,
   coordinate: { x1: number; y1: number; x2: number; y2: number },
-  lineStyle: ShapeAttrs,
-): IShape {
-  return group?.addShape?.('line', {
+  lineStyle: LineStyleProps,
+): DisplayObject {
+  const line = new Line({
     zIndex: 100,
-    attrs: {
+    style: {
       ...coordinate,
       ...lineStyle,
     },
   });
+  return group?.appendChild?.(line);
 }
 
-export function updateShapeAttr<K extends keyof ShapeAttrs>(
-  shape: IShape,
+export function updateShapeAttr<K extends keyof BaseStyleProps>(
+  shape: DisplayObject,
   attribute: K,
-  value: ShapeAttrs[K],
+  value: BaseStyleProps[K],
 ) {
   if (shape) {
     set(shape, `attrs.${attribute}`, value);
   }
 }
 
-export function updateFillOpacity(shape: IShape, opacity: number) {
+export function updateFillOpacity(shape: DisplayObject, opacity: number) {
   updateShapeAttr(shape, 'fillOpacity', opacity);
 }
 
-export function updateStrokeOpacity(shape: IShape, opacity: number) {
+export function updateStrokeOpacity(shape: DisplayObject, opacity: number) {
   updateShapeAttr(shape, 'strokeOpacity', opacity);
 }
 

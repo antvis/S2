@@ -1,8 +1,9 @@
-import { Event, ShapeAttrs } from '@antv/g-canvas';
+import { BaseStyleProps } from '@antv/g';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import {
+  CanvasEvent,
   Condition,
   CustomTreeItem,
   Data,
@@ -217,7 +218,7 @@ export interface CustomSVGIcon {
 export interface HeaderActionIconProps {
   iconName: string;
   meta: Node;
-  event?: Event;
+  event?: CanvasEvent;
 }
 
 export interface HeaderActionIconOptions {
@@ -434,7 +435,7 @@ export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
 }
 
 export interface CellAttrs<T extends Record<string, unknown> = Node>
-  extends ShapeAttrs {
+  extends BaseStyleProps {
   text?: string;
   appendInfo?: CellAppendInfo<T>;
 }
@@ -474,3 +475,15 @@ export interface PartDrillDownFieldInLevel {
 export interface TableSortParam extends SortParam {
   sortKey: string;
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export declare type SimpleBBox = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};

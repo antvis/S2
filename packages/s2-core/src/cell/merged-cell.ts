@@ -1,7 +1,7 @@
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
-import { ViewMeta } from '../common/interface';
 import { DataCell } from './data-cell';
+import { Node } from '@/facet/layout/node';
 import { getPolygonPoints } from '@/utils/interaction/merge-cell';
 import { SpreadSheet } from '@/sheet-type';
 import { S2CellType } from '@/common/interface/interaction';
@@ -19,7 +19,7 @@ export class MergedCell extends DataCell {
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
-    meta?: ViewMeta,
+    meta?: Node,
     isPartiallyVisible = true, // 合并的单元格只有部分可见。为了方便 Diff 操作，故新增此属性
   ) {
     super(meta, spreadsheet, cells);

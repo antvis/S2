@@ -1,4 +1,4 @@
-import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { DisplayObject, BaseStyleProps } from '@antv/g';
 import {
   cond,
   constant,
@@ -27,6 +27,7 @@ import {
 import {
   CellBorderPosition,
   FormatResult,
+  Point,
   TextTheme,
 } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
@@ -53,7 +54,7 @@ import { formattedFieldValue } from '@/utils/cell/header-cell';
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
-  protected textShapes: IShape[] = [];
+  protected textShapes: DisplayObject[] = [];
 
   /* 角头 label 类型 */
   public cornerType: CornerNodeType;
@@ -68,9 +69,9 @@ export class CornerCell extends HeaderCell {
     super.initCell();
     this.textShapes = [];
     this.drawBackgroundShape();
-    this.drawTreeIcon();
+    // this.drawTreeIcon();
     this.drawCellText();
-    this.drawActionIcons();
+    // this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
   }
@@ -194,7 +195,7 @@ export class CornerCell extends HeaderCell {
   private drawBackgroundShape() {
     const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
 
-    const attrs: ShapeAttrs = {
+    const attrs: BaseStyleProps = {
       ...this.getCellArea(),
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,

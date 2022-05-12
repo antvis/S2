@@ -1,5 +1,5 @@
 import { find, get } from 'lodash';
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { ColCell } from '@/cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,

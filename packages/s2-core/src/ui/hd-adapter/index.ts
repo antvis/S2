@@ -84,7 +84,7 @@ export class HdAdapter {
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
 
-    const lastRatio = container.get('pixelRatio');
+    const lastRatio = container.getConfig()?.devicePixelRatio;
     if (lastRatio === ratio) {
       return;
     }
@@ -97,8 +97,8 @@ export class HdAdapter {
       MIN_DEVICE_PIXEL_RATIO,
     );
 
-    container.set('pixelRatio', pixelRatio);
-    container.changeSize(width, height);
+    container.devicePixelRatio = pixelRatio;
+    container.resize(width, height);
 
     this.spreadsheet.render(false);
   };

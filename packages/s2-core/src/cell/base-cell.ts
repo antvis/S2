@@ -1,14 +1,5 @@
-import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import {
-  each,
-  get,
-  includes,
-  isBoolean,
-  isFunction,
-  isNumber,
-  keys,
-  pickBy,
-} from 'lodash';
+import { Group, DisplayObject } from '@antv/g';
+import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -18,10 +9,12 @@ import {
 import {
   CellThemes,
   FormatResult,
+  Point,
   ResizeActiveOptions,
   ResizeArea,
   S2CellType,
   S2Theme,
+  SimpleBBox,
   StateShapeLayer,
   TextTheme,
 } from '@/common/interface';
@@ -49,13 +42,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected theme: S2Theme;
 
   // background control shape
-  protected backgroundShape: IShape;
+  protected backgroundShape: DisplayObject;
 
   // text control shape
-  protected textShape: IShape;
+  protected textShape: DisplayObject;
 
   // link text underline shape
-  protected linkFieldShape: IShape;
+  protected linkFieldShape: DisplayObject;
 
   // actualText
   protected actualText: string;
@@ -64,7 +57,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected actualTextWidth = 0;
 
   // interactive control shapes, unify read and manipulate operations
-  protected stateShapes = new Map<StateShapeLayer, IShape>();
+  protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
 
   public constructor(
     meta: T,
@@ -221,14 +214,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const device = this.spreadsheet.options.style.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
-      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      const { left, right, bottom }: DOMRect = this.textShape.getBBox();
       this.linkFieldShape = renderLine(
         this,
         {
-          x1: minX,
-          y1: maxY + 1,
-          x2: maxX,
-          y2: maxY + 1,
+          x1: left,
+          y1: bottom + 1,
+          x2: right,
+          y2: bottom + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
       );
@@ -292,7 +285,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public hideInteractionShape() {
-    this.stateShapes.forEach((shape: IShape) => {
+    this.stateShapes.forEach((shape: DisplayObject) => {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);

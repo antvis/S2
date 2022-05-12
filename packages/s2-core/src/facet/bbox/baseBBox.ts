@@ -1,10 +1,9 @@
-import { BBox } from '@antv/g-canvas';
 import { BaseFacet } from '@/facet/base-facet';
-import { LayoutResult } from '@/common/interface';
+import { LayoutResult, SimpleBBox } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 
 // BBox相同数据结构，便于已有逻辑的直接复用
-export abstract class BaseBBox implements BBox {
+export abstract class BaseBBox implements SimpleBBox {
   protected spreadsheet: SpreadSheet;
 
   protected facet: BaseFacet;
@@ -45,6 +44,18 @@ export abstract class BaseBBox implements BBox {
     if (autoCalculateBBoxWhenCreated) {
       this.calculateBBox();
     }
+  }
+
+  bottom: number;
+
+  left: number;
+
+  right: number;
+
+  top: number;
+
+  toJSON() {
+    throw new Error('Method not implemented.');
   }
 
   abstract calculateBBox(): void;

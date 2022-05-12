@@ -1,4 +1,3 @@
-import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
@@ -53,7 +52,7 @@ export class RowCell extends HeaderCell {
     // 绘制单元格文本
     this.drawTextShape();
     // 绘制树状模式收起展开的 icon
-    this.drawTreeIcon();
+    // this.drawTreeIcon();
     // 绘制树状模式下子节点层级占位圆点
     this.drawTreeLeafNodeAlignDot();
     // 绘制单元格边框
@@ -61,7 +60,7 @@ export class RowCell extends HeaderCell {
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     // 绘制 action icons
-    this.drawActionIcons();
+    // this.drawActionIcons();
     this.update();
   }
 

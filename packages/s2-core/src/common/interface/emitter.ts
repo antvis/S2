@@ -1,4 +1,3 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
 import { Data } from '@/common/interface/s2DataConfig';
 import { FilterParam, SortParams, Style } from '@/common/interface/basic';
@@ -8,6 +7,7 @@ import {
   ViewMeta,
   LayoutResult,
   CellScrollPosition,
+  CanvasEvent,
 } from '@/common/interface';
 
 import { S2Event } from '@/common/constant';

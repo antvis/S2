@@ -1,5 +1,6 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import { Canvas, Group, EventTarget } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -27,6 +28,7 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  CanvasEvent,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -42,6 +44,7 @@ import {
   TooltipShowOptions,
   Total,
   Totals,
+  ViewMeta,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
@@ -58,6 +61,8 @@ import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
+
+const canvasRenderer = new Renderer();
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -89,27 +94,27 @@ export abstract class SpreadSheet extends EE {
   public container: Canvas;
 
   // the background group, render bgColor...
-  public backgroundGroup: IGroup;
+  public backgroundGroup: Group;
 
   // facet cell area group, it contains all cross-tab's cell
-  public panelGroup: IGroup;
+  public panelGroup: Group;
 
-  public panelScrollGroup: IGroup;
+  public panelScrollGroup: Group;
 
-  public frozenRowGroup: IGroup;
+  public frozenRowGroup: Group;
 
-  public frozenColGroup: IGroup;
+  public frozenColGroup: Group;
 
-  public frozenTrailingRowGroup: IGroup;
+  public frozenTrailingRowGroup: Group;
 
-  public frozenTrailingColGroup: IGroup;
+  public frozenTrailingColGroup: Group;
 
-  public frozenTopGroup: IGroup;
+  public frozenTopGroup: Group;
 
-  public frozenBottomGroup: IGroup;
+  public frozenBottomGroup: Group;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
-  public foregroundGroup: IGroup;
+  public foregroundGroup: Group;
 
   public interaction: RootInteraction;
 
@@ -245,7 +250,7 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
+  public abstract handleGroupSort(event: CanvasEvent, meta: ViewMeta): void;
 
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,
@@ -263,7 +268,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: CanvasEvent | MouseEvent,
+    event: PointerEvent | MouseEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
@@ -415,8 +420,8 @@ export abstract class SpreadSheet extends EE {
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
-    const containerWidth = this.container.get('width');
-    const containerHeight = this.container.get('height');
+    const containerWidth = this.container.getConfig()?.width;
+    const containerHeight = this.container.getConfig()?.height;
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
@@ -489,23 +494,21 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 获取当前cell实例
-  public getCell<T extends S2CellType = S2CellType>(
-    target: CanvasEvent['target'],
-  ): T {
+  public getCell<T extends S2CellType = S2CellType>(target: EventTarget): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
       if (parent instanceof BaseCell) {
         // 在单元格中，返回true
-        return parent as T;
+        return parent as unknown as T;
       }
-      parent = parent.get?.('parent');
+      parent = parent.get?.('parent'); // TODO
     }
     return null;
   }
 
   // 获取当前cell类型
-  public getCellType(target: CanvasEvent['target']) {
+  public getCellType(target: EventTarget) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }
@@ -554,22 +557,29 @@ export abstract class SpreadSheet extends EE {
       height,
       localRefresh: false,
       supportCSSTransform,
-      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      renderer: canvasRenderer,
     });
 
     // the main three layer groups
-    this.backgroundGroup = this.container.addGroup({
-      name: KEY_GROUP_BACK_GROUND,
-      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.panelGroup = this.container.addGroup({
-      name: KEY_GROUP_PANEL_GROUND,
-      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.foregroundGroup = this.container.addGroup({
-      name: KEY_GROUP_FORE_GROUND,
-      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
+    this.backgroundGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_BACK_GROUND,
+        zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+      }),
+    );
+    this.panelGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_GROUND,
+        zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
+      }),
+    );
+    this.foregroundGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_FORE_GROUND,
+        zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
+      }),
+    );
     this.initPanelGroupChildren();
     this.updateContainerStyle();
   }

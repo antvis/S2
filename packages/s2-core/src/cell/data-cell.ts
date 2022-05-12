@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { DisplayObject } from '@antv/g';
 import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {
@@ -20,6 +20,7 @@ import {
   ViewMeta,
   ViewMetaIndexType,
   CellBorderPosition,
+  Point,
 } from '@/common/interface';
 import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -30,6 +31,7 @@ import {
   renderRect,
   updateShapeAttr,
 } from '@/utils/g-renders';
+import { Node } from '@/facet/layout/node';
 import { parseNumberWithPrecision } from '@/utils/formatter';
 
 /**
@@ -44,10 +46,10 @@ import { parseNumberWithPrecision } from '@/utils/formatter';
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
-export class DataCell extends BaseCell<ViewMeta> {
+export class DataCell extends BaseCell<Node> {
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: IShape;
+  protected conditionIntervalShape: DisplayObject;
 
   protected conditionIconShape: GuiIcon;
 
@@ -163,7 +165,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  public setMeta(viewMeta: ViewMeta) {
+  public setMeta(viewMeta: T) {
     super.setMeta(viewMeta);
     this.initCell();
   }
@@ -175,7 +177,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawConditionIntervalShape();
     this.drawInteractiveBorderShape();
     this.drawTextShape();
-    this.drawConditionIconShapes();
+    // this.drawConditionIconShapes();
     this.drawBorderShape();
     this.update();
   }
@@ -238,26 +240,26 @@ export class DataCell extends BaseCell<ViewMeta> {
     return this.getTextAndIconPosition().text;
   }
 
-  protected drawConditionIconShapes() {
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
-    if (iconCondition && iconCondition.mapping) {
-      const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
-      const { formattedValue } = this.getFormattedFieldValue();
-      const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon) && formattedValue) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs.icon,
-          width: size,
-          height: size,
-          fill: attrs.fill,
-        });
-      }
-    }
-  }
+  // protected drawConditionIconShapes() {
+  //   const iconCondition: IconCondition = this.findFieldCondition(
+  //     this.conditions?.icon,
+  //   );
+  //   if (iconCondition && iconCondition.mapping) {
+  //     const attrs = this.mappingValue(iconCondition);
+  //     const position = this.getIconPosition();
+  //     const { formattedValue } = this.getFormattedFieldValue();
+  //     const { size } = this.theme.dataCell.icon;
+  //     if (!isEmpty(attrs?.icon) && formattedValue) {
+  //       this.conditionIconShape = renderIcon(this, {
+  //         ...position,
+  //         name: attrs.icon,
+  //         width: size,
+  //         height: size,
+  //         fill: attrs.fill,
+  //       });
+  //     }
+  //   }
+  // }
 
   /**
    * 计算柱图的 scale 函数（两种情况）
@@ -482,7 +484,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         );
 
         updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
+          this.conditionIconShape as unknown as DisplayObject,
           SHAPE_STYLE_MAP.opacity,
           stateStyles.opacity,
         );
@@ -500,7 +502,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
+      this.conditionIconShape as unknown as DisplayObject,
       SHAPE_STYLE_MAP.opacity,
       1,
     );

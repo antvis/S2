@@ -1,4 +1,4 @@
-import { Point, SimpleBBox } from '@antv/g-canvas';
+import { Rect } from '@antv/g';
 import { isEmpty } from 'lodash';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
@@ -15,6 +15,7 @@ import {
   CellBorderPosition,
   DefaultCellTheme,
   IconTheme,
+  Point,
   TextAlign,
   TextBaseline,
   TextTheme,
@@ -54,7 +55,7 @@ export class ColCell extends HeaderCell {
     // draw text
     this.drawTextShape();
     // draw action icons
-    this.drawActionIcons();
+    // this.drawActionIcons();
     // draw borders
     this.drawBorders();
     // draw resize ares
@@ -254,7 +255,7 @@ export class ColCell extends HeaderCell {
 
     const resizeAreaWidth = cornerWidth + headerWidth;
     // 列高调整热区
-    resizeArea.addShape('rect', {
+    const react = new Rect({
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
@@ -272,6 +273,7 @@ export class ColCell extends HeaderCell {
         width: resizeAreaWidth,
       },
     });
+    resizeArea.appendChild(react);
   }
 
   protected shouldAddVerticalResizeArea() {
@@ -365,7 +367,7 @@ export class ColCell extends HeaderCell {
   protected drawHorizontalBorder() {
     const { position, style } = getBorderPositionAndStyle(
       CellBorderPosition.TOP,
-      this.meta as SimpleBBox,
+      this.meta,
       this.theme.colCell.cell,
     );
 
@@ -375,7 +377,7 @@ export class ColCell extends HeaderCell {
   protected drawVerticalBorder() {
     const { position, style } = getBorderPositionAndStyle(
       CellBorderPosition.RIGHT,
-      this.meta as SimpleBBox,
+      this.meta,
       this.theme.colCell.cell,
     );
     renderLine(this, position, style);

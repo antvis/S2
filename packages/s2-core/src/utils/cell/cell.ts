@@ -1,4 +1,3 @@
-import { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import { AreaRange } from './../../common/interface/scroll';
 import {
@@ -9,6 +8,7 @@ import {
   TextAlignCfg,
   TextBaseline,
   TextAlign,
+  SimpleBBox,
 } from '@/common/interface';
 
 /**

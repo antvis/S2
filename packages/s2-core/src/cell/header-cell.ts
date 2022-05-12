@@ -1,4 +1,4 @@
-import { Event as CanvasEvent, IShape } from '@antv/g-canvas';
+import { DisplayObject } from '@antv/g';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
 import { BaseCell } from '@/cell/base-cell';
@@ -9,6 +9,8 @@ import {
   CellMeta,
   FormatResult,
   HeaderActionIconOptions,
+  ViewMeta,
+  CanvasEvent,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -17,14 +19,13 @@ import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
-import { TableColCell } from '@/cell/table-col-cell';
 
-export abstract class HeaderCell extends BaseCell<Node> {
+export abstract class HeaderCell extends BaseCell<ViewMeta> {
   protected headerConfig: BaseHeaderConfig;
 
   protected treeIcon: GuiIcon | undefined;
 
-  protected treeLeafNodeAlignDot: IShape | undefined;
+  protected treeLeafNodeAlignDot: DisplayObject | undefined;
 
   protected actionIcons: GuiIcon[];
 
