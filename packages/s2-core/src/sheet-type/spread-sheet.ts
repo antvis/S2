@@ -522,9 +522,11 @@ export abstract class SpreadSheet extends EE {
       includes(rows, dimension) ? 'row' : 'col',
       {},
     ) as Total;
-    const showSubTotals = totalConfig.showSubTotals
-      ? includes(totalConfig.subTotalsDimensions, dimension)
-      : false;
+    const showSubTotals =
+      totalConfig.showSubTotals &&
+      includes(totalConfig.subTotalsDimensions, dimension)
+        ? totalConfig.showSubTotals
+        : false;
     return {
       showSubTotals,
       showGrandTotals: totalConfig.showGrandTotals,
