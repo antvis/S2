@@ -131,13 +131,13 @@ s2.render(false)
 
 请查看 [这篇文章](/zh/docs/manual/advanced/get-cell-data)
 
-### 为什么 tooltip 在 `@antv/s2` 中不显示, 在 `@antv/s2-react` 中可以正常显示?
+### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` 中可以正常显示？
 
 请查看 [Tooltip 注意事项](/zh/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
-### 如果在 Vue, Angular 中自定义 Tooltip
+### 如何在 Vue 中自定义 Tooltip
 
-请查看 [Tooltip 自定义](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89)
+请查看 [在 Vue3 中自定义](/zh/docs/manual/basic/tooltip/#在-vue3-中自定义)
 
 ### 表格支持导出 `Excel` 吗？
 
