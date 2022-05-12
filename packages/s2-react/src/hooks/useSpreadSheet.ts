@@ -6,6 +6,7 @@ import {
   TableSheet,
 } from '@antv/s2';
 import { useUpdate } from 'ahooks';
+import { identity } from 'lodash';
 import React from 'react';
 import type { BaseSheetComponentProps, SheetType } from '../components';
 import { getSheetComponentOptions } from '../utils';
@@ -20,6 +21,14 @@ export interface UseSpreadSheetConfig {
   sheetType: SheetType;
 }
 
+type RenderOptions = {
+  reBuildDataSet: boolean;
+  reloadData: boolean;
+};
+
+/** render callback */
+export type SheetUpdateCallback = (params: RenderOptions) => RenderOptions;
+
 export function useSpreadSheet(
   props: BaseSheetComponentProps,
   config: UseSpreadSheetConfig,
@@ -29,7 +38,13 @@ export function useSpreadSheet(
   const containerRef = React.useRef<HTMLDivElement>();
   const wrapRef = React.useRef<HTMLDivElement>();
 
-  const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
+  const {
+    spreadsheet: customSpreadSheet,
+    dataCfg,
+    options,
+    themeCfg,
+    onSheetUpdate = identity,
+  } = props;
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
   const pagination = usePagination(s2Ref.current, props);
   const prevDataCfg = usePrevious(dataCfg);
@@ -98,8 +113,29 @@ export function useSpreadSheet(
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);
     }
-    s2Ref.current?.render(reloadData, reBuildDataSet);
-  }, [dataCfg, options, prevDataCfg, prevOptions, prevThemeCfg, themeCfg]);
+
+    /**
+     * onSheetUpdate 交出控制权
+     * 由传入方决定最终的 render 模式
+     */
+    const renderOptions = onSheetUpdate({
+      reloadData,
+      reBuildDataSet,
+    });
+
+    s2Ref.current?.render(
+      renderOptions.reloadData,
+      renderOptions.reBuildDataSet,
+    );
+  }, [
+    dataCfg,
+    options,
+    prevDataCfg,
+    prevOptions,
+    prevThemeCfg,
+    themeCfg,
+    onSheetUpdate,
+  ]);
 
   useResize({
     s2: s2Ref.current,
