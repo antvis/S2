@@ -14,7 +14,7 @@ order: 5
 | hiddenColumnFields     | 用于配置默认隐藏的列，透视表需要配置列头唯一 id, 明细表配置列头 field 字段即可                                | `string[]`                                                                               |         |       |
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
-| customInteractions     | 自定义交互 [详情](zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |
+| customInteractions     | 自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |
 | scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollSpeedRatio](/zh/docs/api/general/S2Options#scrollspeedratio)                                |         |       |
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
@@ -31,7 +31,7 @@ order: 5
 | 参数        | 说明           | 类型                                              | 默认值 | 必选  |
 | ----------- | -------------- | ------------------------------------------------- | ------ | :---: |
 | key         | 交互的唯一标识 | `string`                                          |        |   ✓   |
-| interaction |                | [InteractionConstructor](#InteractionConstructor) |        |   ✓   |
+| interaction |                | [InteractionConstructor](/zh/docs/api/basic-class/interaction#interactionconstructor) |        |   ✓   |
 
 ### ScrollSpeedRatio
 

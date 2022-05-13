@@ -179,10 +179,6 @@ s2.render()
 
 <playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
 
-#### tooltip 注意事项
-
-`@antv/s2` 中只保留了 tooltip 的核心显隐逻辑，我们将所有 tooltip 定制化交互都迁移到了`@antv/s2-react` 中，因此如果您有 tooltip 的需求，我们强烈建议您使用`@antv/s2-react`，细节参见 [tooltip 组件使用文档](https://s2.antv.vision/zh/examples/gallery#category-Tooltip%E7%BB%84%E4%BB%B6)。
-
 ### `React` 版本
 
 `S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。

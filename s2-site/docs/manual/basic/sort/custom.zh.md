@@ -9,8 +9,8 @@ order: 2
 
 ## 使用
 
-通过在 [dataConfig](`https://g.antv.vision/zh/docs/api/general/S2DataConfig.zh.md`)
-中传入 [sortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
+通过在 [dataConfig](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
+中传入 [sortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
 
 | 参数          | 说明                                        | 类型                                  | 默认值 | 必选 |
 | ------------- | ------------------------------------------- | ------------------------------------- | ------ | ---- |

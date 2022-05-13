@@ -162,4 +162,4 @@ const field = {
 
 <playground path='react-component/switcher/demo/table.tsx' rid='table'></playground>
 
-​📊 查看更多 [维度切换示例](/zh/examples/analysis/switcher#pure-switcher)。
+​📊 查看更多 [维度切换示例](/zh/examples/react-component/switcher#pure-switcher)。

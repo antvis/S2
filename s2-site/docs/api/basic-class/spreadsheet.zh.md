@@ -5,6 +5,12 @@ order: 1
 
 功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
 
+```ts
+const s2 = new PivotSheet()
+
+s2.xx()
+```
+
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
 | dom | 挂载的容器节点 | `string` \| `HTMLElement` |

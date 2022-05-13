@@ -59,7 +59,7 @@ order: 0
 | onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表）                                                                                      | (event: CanvasEvent ) => void; | |  |
 | onRangeFilter | 筛选时触发回调事件                                                                                  | (data: { filterKey: string; filteredValues: string[] } ) => void; | | |
 | onRangeFiltered | 筛选结束触发回调事件                                                                                    | (data: DataType[] ) => void; | | |
-| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件                                                                            | (layoutResult: [LayoutResult](#/zh/docs/api/general/S2Options#layoutresult) ) => void; | | |
+| onLayoutAfterHeaderLayout | 表头布局结构准备完成事件                                                                            | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; | | |
 | onLayoutPagination | 分页事件                                                                            | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; | | |
 | onLayoutCellScroll | 单元格滚动事件                                                                            | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调                                                                           | ({collapsedRows: Record<string, boolean>, meta: [Node](/zh/docs/api/basic-class/node) ) => void; | | |
