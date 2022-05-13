@@ -1,4 +1,4 @@
-import { Rect } from '@antv/g';
+import { DisplayObject, Rect } from '@antv/g';
 import { isEmpty } from 'lodash';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
@@ -83,7 +83,7 @@ export class ColCell extends HeaderCell {
           ...this.getCellArea(),
         },
         {
-          visible: false,
+          visibility: 'hidden',
         },
       ),
     );
@@ -245,7 +245,7 @@ export class ColCell extends HeaderCell {
     const resizeAreaName = this.getHorizontalResizeAreaName();
 
     const existedHorizontalResizeArea = resizeArea.find(
-      (element) => element.attrs.name === resizeAreaName,
+      (element: DisplayObject) => element.name === resizeAreaName,
     );
 
     // 如果已经绘制当前列高调整热区热区，则不再绘制
@@ -339,8 +339,8 @@ export class ColCell extends HeaderCell {
 
     // 列宽调整热区
     // 基准线是根据container坐标来的，因此把热区画在container
-    resizeArea.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
           type: ResizeDirectionType.Horizontal,
@@ -354,8 +354,10 @@ export class ColCell extends HeaderCell {
         x: offsetX + width - resizeStyle.size / 2,
         y: offsetY,
         height,
+        width,
       },
     });
+    resizeArea.appendChild(rect);
   }
 
   // 绘制热区
@@ -437,6 +439,10 @@ export class ColCell extends HeaderCell {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
         strokeOpacity: horizontalBorderColorOpacity,
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
       },
     );
   }

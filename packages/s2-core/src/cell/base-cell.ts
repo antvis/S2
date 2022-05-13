@@ -223,7 +223,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           x2: right,
           y2: bottom + 1,
         },
-        { stroke: linkFillColor, lineWidth: 1 },
+        {
+          stroke: linkFillColor,
+          lineWidth: 1,
+          x1: 0,
+          y1: 0,
+          x2: 0,
+          y2: 0,
+        },
       );
     }
 

@@ -25,12 +25,16 @@ import {
   compact,
 } from 'lodash';
 import * as CSS from 'csstype';
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
 import { getEmptyPlaceholder } from './text';
-import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
+import {
+  AutoAdjustPositionOptions,
+  CanvasEvent,
+  Data,
+  ListItem,
+} from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
   SummaryParam,
@@ -91,10 +95,9 @@ export const getAutoAdjustPosition = ({
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
   const { maxX, maxY } = spreadsheet.facet.panelBBox;
   const { width, height } = spreadsheet.options;
-  const canvas = spreadsheet.container.get('el') as HTMLCanvasElement;
+  const canvas = spreadsheet.container;
 
-  const { top: canvasOffsetTop, left: canvasOffsetLeft } =
-    canvas.getBoundingClientRect();
+  const { top: canvasOffsetTop, left: canvasOffsetLeft } = canvas.getConfig();
   const { width: tooltipWidth, height: tooltipHeight } =
     tooltipContainer.getBoundingClientRect();
   const { width: viewportWidth, height: viewportHeight } =
@@ -542,7 +545,7 @@ export const getTooltipOptionsByCellType = (
 
 export const getTooltipOptions = (
   spreadsheet: SpreadSheet,
-  event: CanvasEvent | MouseEvent | Event,
+  event: CanvasEvent | Event,
 ): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);

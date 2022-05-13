@@ -1,4 +1,3 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { clone, last } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
 import { Node } from '@/facet/layout/node';
@@ -10,6 +9,7 @@ import {
   TOOLTIP_OPERATOR_SORT_MENUS,
 } from '@/common/constant';
 import {
+  CanvasEvent,
   S2Options,
   SortMethod,
   SortParam,

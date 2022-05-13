@@ -269,7 +269,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: PointerEvent | MouseEvent,
+    event: CanvasEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
