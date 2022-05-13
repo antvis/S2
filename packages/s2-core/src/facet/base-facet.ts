@@ -1,13 +1,13 @@
-import type { IElement, IGroup } from '@antv/g-canvas';
+import { IElement, Group, DisplayObject } from '@antv/g';
 import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, Timer } from 'd3-timer';
-import { Group } from '@antv/g-canvas';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import {
   getAdjustedRowScrollX,
   getAdjustedScrollOffset,
 } from 'src/utils/facet';
+import { Rect } from '@antv/g';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -68,13 +68,13 @@ export abstract class BaseFacet {
   public panelBBox: PanelBBox;
 
   // background (useless now)
-  public backgroundGroup: IGroup;
+  public backgroundGroup: Group;
 
   // render viewport cell
-  public panelGroup: IGroup;
+  public panelGroup: Group;
 
   // render header/corner/scrollbar/resize
-  public foregroundGroup: IGroup;
+  public foregroundGroup: Group;
 
   public cfg: SpreadSheetFacetCfg;
 
@@ -157,7 +157,7 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    const canvas = this.spreadsheet.container;
     canvas?.addEventListener('wheel', this.onWheel);
   };
 
@@ -306,7 +306,7 @@ export abstract class BaseFacet {
   };
 
   private unbindEvents = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLElement;
+    const canvas = this.spreadsheet.container;
     canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
   };
@@ -317,9 +317,8 @@ export abstract class BaseFacet {
     this.panelGroup = this.spreadsheet.panelGroup;
     const { width, height } = this.panelBBox;
 
-    this.spreadsheet.panelScrollGroup?.setClip({
-      type: 'rect',
-      attrs: {
+    this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
+      style: {
         x: 0,
         y: this.cornerBBox.height,
         width,
@@ -408,17 +407,17 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup = () => {
-    const children = this.panelGroup.getChildren() || [];
+    const children = this.panelGroup.children || [];
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
-      if (child instanceof Group) {
-        child.set('children', []);
+      if (child instanceof DisplayObject) {
+        child.remove();
       } else {
         children[i].remove();
       }
     }
-    this.foregroundGroup.set('children', []);
-    this.backgroundGroup.set('children', []);
+    this.foregroundGroup.removeChildren();
+    this.backgroundGroup.removeChildren();
   };
 
   scrollWithAnimation = (
@@ -873,9 +872,8 @@ export abstract class BaseFacet {
 
   protected clip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.cfg.spreadsheet.isFrozenRowHeader();
-    this.spreadsheet.panelScrollGroup?.setClip({
-      type: 'rect',
-      attrs: {
+    this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
+      style: {
         x: isFrozenRowHeader ? scrollX : 0,
         y: scrollY,
         width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
@@ -950,10 +948,7 @@ export abstract class BaseFacet {
           this.addCell(cell);
         }
       });
-      const allCells = getAllChildCells(
-        this.panelGroup.getChildren() as IElement[],
-        DataCell,
-      );
+      const allCells = getAllChildCells(this.panelGroup.children, DataCell);
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -1006,9 +1001,8 @@ export abstract class BaseFacet {
       this.cfg,
       'spreadsheet.theme.background.opacity',
     ) as number;
-
-    this.backgroundGroup.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         fill: color,
         opacity,
         x: 0,
@@ -1017,6 +1011,7 @@ export abstract class BaseFacet {
         height,
       },
     });
+    this.backgroundGroup.appendChild(rect);
   }
 
   /**

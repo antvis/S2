@@ -1,12 +1,12 @@
-import { Group, Point } from '@antv/g-canvas';
-import { SortParam } from '@/common/interface';
+import { Group, BaseStyleProps, IElement } from '@antv/g';
+import { Point, SortParam } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
 
 /**
  * Base header config interface
  */
-export interface BaseHeaderConfig {
+export interface BaseHeaderConfig extends BaseStyleProps {
   // group's scroll x value
   scrollX?: number;
   // group's scroll y value
@@ -52,9 +52,11 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type 当前重绘的header类型
    */
   protected clearResizeAreaGroup(type: string) {
-    const foregroundGroup = this.get('parent');
-    const resizerGroup = foregroundGroup?.findById(type);
-    resizerGroup?.clear();
+    const foregroundGroup = this.parentNode;
+    const resizerGroup = foregroundGroup?.find(
+      (node: IElement) => node.id === type,
+    );
+    resizerGroup?.remove();
   }
 
   // start render header
@@ -103,7 +105,8 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected abstract clip();
 
   public clear() {
-    super.clear();
+    // TODO 不确定
+    super.remove();
   }
 
   /**
@@ -114,10 +117,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param viewportSize
    */
   protected isHeaderCellInViewport = (
-    gridPos,
-    gridSize,
-    viewportPos,
-    viewportSize,
+    gridPos: number,
+    gridSize: any,
+    viewportPos: number,
+    viewportSize: number,
   ) => {
     return (
       gridPos + gridSize >= viewportPos && viewportPos + viewportSize >= gridPos

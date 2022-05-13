@@ -1,5 +1,6 @@
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
+import { Rect } from '@antv/g';
 import { RowCell } from '../../cell';
 import { translateGroup } from '../utils';
 import { S2CellType, S2Options } from '../../common/interface';
@@ -86,9 +87,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   protected clip(): void {
     const { width, viewportHeight, scrollX, scrollY, seriesNumberWidth } =
       this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
         x: scrollX - seriesNumberWidth,
         y: scrollY,

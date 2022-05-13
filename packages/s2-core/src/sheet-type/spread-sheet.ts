@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import EE from '@antv/event-emitter';
 import { Canvas, Group, EventTarget } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
@@ -256,7 +257,7 @@ export abstract class SpreadSheet extends EE {
     showOptions: TooltipShowOptions<T>,
   ) {
     const { content, event } = showOptions;
-    const cell = this.getCell(event?.target);
+    const cell = this.getCell(event?.currentTarget);
     const displayContent = isFunction(content)
       ? content(cell, showOptions)
       : content;
@@ -502,7 +503,8 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as unknown as T;
       }
-      parent = parent.get?.('parent'); // TODO
+      // @ts-ignore
+      parent = parent?.parentNode;
     }
     return null;
   }
@@ -581,20 +583,23 @@ export abstract class SpreadSheet extends EE {
       }),
     );
     this.initPanelGroupChildren();
-    this.updateContainerStyle();
+    // this.updateContainerStyle();
   }
 
   // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
   protected updateContainerStyle() {
-    const canvas = this.container.get('el') as HTMLCanvasElement;
-    canvas.style.display = 'block';
+    const canvas = this.container;
+
+    // canvas.style.display = 'block';
   }
 
   protected initPanelGroupChildren() {
-    this.panelScrollGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_SCROLL,
-      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-    });
+    this.panelScrollGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_SCROLL,
+        zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+      }),
+    );
   }
 
   public getInitColumnLeafNodes(): Node[] {

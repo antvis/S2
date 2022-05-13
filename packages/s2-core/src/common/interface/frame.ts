@@ -1,5 +1,6 @@
+import { BaseStyleProps } from '@antv/g';
 import { SpreadSheet } from '@/sheet-type';
-export interface FrameConfig {
+export interface FrameConfig extends BaseStyleProps {
   position: {
     x: number;
     y: number;

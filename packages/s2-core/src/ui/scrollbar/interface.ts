@@ -1,6 +1,7 @@
+import { BaseStyleProps } from '@antv/g';
 import { ScrollBarTheme } from '@/common/interface/theme';
 
-export interface ScrollBarCfg {
+export interface ScrollBarCfg extends BaseStyleProps {
   // 布局 横向(horizontal) | 纵向(vertical)
   readonly isHorizontal?: boolean;
   // 滑道长度

@@ -1,4 +1,4 @@
-import { Group, IGroup, IShape } from '@antv/g-canvas';
+import { Group, DisplayObject, Rect, Text } from '@antv/g';
 import { each } from 'lodash';
 import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
 import { translateGroup } from '../utils';
@@ -12,9 +12,9 @@ import { getAdjustPosition } from '@/utils/text-absorption';
 import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  private backgroundShape: IShape;
+  private backgroundShape: DisplayObject;
 
-  private leftBorderShape: IShape;
+  private leftBorderShape: DisplayObject;
 
   /**
    * Get seriesNumber header by config
@@ -68,9 +68,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   public clip(): void {
     const { width, viewportHeight, scrollY } = this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         x: 0,
         y: scrollY,
         width,
@@ -86,7 +85,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       this.addBackGround();
     }
 
-    const borderGroup = this.addGroup();
+    const borderGroup = this.appendChild(new Group());
     each(data, (item: any) => {
       const { y, height: cellHeight, isLeaf } = item;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
@@ -97,7 +96,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       );
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
-        const group = this.addGroup();
+        const group = this.appendChild(new Group());
 
         // 添加文本
         this.addText(group, item);
@@ -152,7 +151,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
   }
 
-  private addBorder(group: IGroup, cellData) {
+  private addBorder(group: Group, cellData) {
     const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
@@ -161,7 +160,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
-  private addText(group: IGroup, cellData: ViewMeta) {
+  private addText(group: Group, cellData: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
@@ -183,9 +182,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       height,
       textStyle.fontSize,
     );
-
-    group.addShape('text', {
-      attrs: {
+    const textShape = new Text({
+      style: {
         x: x + padding.left,
         y: textY + textStyle.fontSize / 2,
         text: label,
@@ -193,6 +191,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         cursor: 'pointer',
       },
     });
+    group.appendChild(textShape);
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {

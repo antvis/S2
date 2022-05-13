@@ -1,5 +1,11 @@
-import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import {
+  Group,
+  BaseStyleProps,
+  DisplayObject,
+  IEventTarget,
+  Line,
+} from '@antv/g';
 import { each, get } from 'lodash';
 import type { PointObject, ScrollBarCfg } from './interface';
 import { ScrollBarTheme } from '@/common/interface/theme';
@@ -15,7 +21,7 @@ export interface EventListenerReturn {
 }
 
 export interface EventHandler {
-  target: IElement;
+  target: IEventTarget;
   type: keyof HTMLElementEventMap;
   handler: (e: MouseEvent | TouchEvent) => void;
 }
@@ -45,11 +51,11 @@ export class ScrollBar extends Group {
   // 滚动条样式，非必传
   public theme: ScrollBarTheme;
 
-  public scrollBarGroup: IGroup;
+  public scrollBarGroup: Group;
 
-  public trackShape: IShape;
+  public trackShape: DisplayObject;
 
-  public thumbShape: IShape;
+  public thumbShape: DisplayObject;
 
   // 鼠标 drag 过程中的开始位置
   private startPos: number;
@@ -188,7 +194,8 @@ export class ScrollBar extends Group {
    */
   public onlyUpdateThumbOffset = (offset: number) => {
     this.updateThumbOffset(offset, false);
-    this.get('canvas')?.draw();
+    // @ts-ignore
+    this.getRootNode().defaultView.render();
   };
 
   public emitScrollChange = (offset: number, updateThumbOffset = true) => {
@@ -202,7 +209,7 @@ export class ScrollBar extends Group {
     });
   };
 
-  protected addEventListener = (
+  protected addScrollBallEventListener = (
     target: EventTarget,
     eventType: keyof HTMLElementEventMap,
     callback: EventListenerOrEventListenerObject,
@@ -232,10 +239,12 @@ export class ScrollBar extends Group {
   };
 
   // 创建 scrollBar 的 group
-  private createScrollBarGroup = (): IGroup => {
-    const group = this.addGroup({
-      className: this.isHorizontal ? 'horizontalBar' : 'verticalBar',
-    });
+  private createScrollBarGroup = (): Group => {
+    const group = this.appendChild(
+      new Group({
+        className: this.isHorizontal ? 'horizontalBar' : 'verticalBar',
+      }),
+    );
 
     this.trackShape = this.createTrackShape(group);
     this.thumbShape = this.createThumbShape(group);
@@ -244,80 +253,78 @@ export class ScrollBar extends Group {
   };
 
   // 创建滑道的 shape
-  private createTrackShape = (group: IGroup): IShape => {
+  private createTrackShape = (group: Group): DisplayObject => {
     const { lineCap = 'round', trackColor, size } = this.theme;
 
-    const baseAttrs: ShapeAttrs = {
+    const baseAttrs: BaseStyleProps = {
       lineWidth: size,
       stroke: trackColor,
       lineCap,
     };
+    let style = {
+      ...baseAttrs,
+      x1: size / 2,
+      y1: 0,
+      x2: size / 2,
+      y2: this.trackLen,
+    };
 
     if (this.isHorizontal) {
-      return group.addShape('line', {
-        attrs: {
-          ...baseAttrs,
-          x1: 0,
-          y1: size / 2,
-          x2: this.trackLen,
-          y2: size / 2,
-        },
-      });
-    }
-    return group.addShape('line', {
-      attrs: {
+      style = {
         ...baseAttrs,
-        x1: size / 2,
-        y1: 0,
-        x2: size / 2,
-        y2: this.trackLen,
-      },
-    });
+        x1: 0,
+        y1: size / 2,
+        x2: this.trackLen,
+        y2: size / 2,
+      };
+    }
+
+    const line = new Line(style);
+    return group.appendChild(line);
   };
 
   // 创建滑块的 shape
-  private createThumbShape = (group: IGroup): IShape => {
+  private createThumbShape = (group: Group): DisplayObject => {
     const { size, lineCap = 'round', thumbColor } = this.theme;
-    const baseAttrs: ShapeAttrs = {
+    const baseAttrs: BaseStyleProps = {
       lineWidth: size,
       stroke: thumbColor,
       lineCap,
       cursor: 'default',
     };
 
+    let style = {
+      ...baseAttrs,
+      x1: size / 2,
+      y1: this.thumbOffset,
+      x2: size / 2,
+      y2: this.thumbOffset + this.thumbLen,
+    };
+
     if (this.isHorizontal) {
-      return group.addShape('line', {
-        attrs: {
-          ...baseAttrs,
-          x1: this.thumbOffset,
-          y1: size / 2,
-          x2: this.thumbOffset + this.thumbLen,
-          y2: size / 2,
-        },
-      });
-    }
-    return group.addShape('line', {
-      attrs: {
+      style = {
         ...baseAttrs,
-        x1: size / 2,
-        y1: this.thumbOffset,
-        x2: size / 2,
-        y2: this.thumbOffset + this.thumbLen,
-      },
-    });
+        x1: this.thumbOffset,
+        y1: size / 2,
+        x2: this.thumbOffset + this.thumbLen,
+        y2: size / 2,
+      };
+    }
+    const line = new Line(style);
+    return group.appendChild(line);
   };
 
   private bindEvents = () => {
-    this.on('mousedown', this.onStartEvent(false));
+    this.addEventListener('mousedown', this.onStartEvent(false));
     // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
     // 整个拖拽过程没有 cancel 掉。
-    this.on('mouseup', this.onMouseUp);
-    this.on('touchstart', this.onStartEvent(true));
-    this.on('touchend', this.onMouseUp);
+    this.addEventListener('mouseup', this.onMouseUp);
+    this.addEventListener('touchstart', this.onStartEvent(true));
+    this.addEventListener('touchend', this.onMouseUp);
 
-    this.trackShape.on('click', this.onTrackClick);
-    this.thumbShape.on('mouseover', this.onTrackMouseOver);
-    this.thumbShape.on('mouseout', this.onTrackMouseOut);
+    this.trackShape.addEventListener('click', this.onTrackClick);
+    this.thumbShape.addEventListener('mouseover', this.onTrackMouseOver);
+    this.thumbShape.addEventListener('mouseout', this.onTrackMouseOut);
   };
 
   private onStartEvent =
@@ -336,24 +343,49 @@ export class ScrollBar extends Group {
     };
 
   private bindLaterEvent = () => {
-    const canvas = this.get('canvas');
+    // @ts-ignore
+    const canvas = this.getRootNode().defaultView;
     const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
     if (this.isMobile) {
       events = [
-        this.addEventListener(containerDOM, 'touchmove', this.onMouseMove),
-        this.addEventListener(containerDOM, 'touchend', this.onMouseUp),
-        this.addEventListener(containerDOM, 'touchcancel', this.onMouseUp),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'touchmove',
+          this.onMouseMove,
+        ),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'touchend',
+          this.onMouseUp,
+        ),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'touchcancel',
+          this.onMouseUp,
+        ),
       ];
       this.addEvent(canvas, 'touchend', this.onMouseUp);
       this.addEvent(canvas, 'touchcancel', this.onMouseUp);
     } else {
       events = [
-        this.addEventListener(containerDOM, 'mousemove', this.onMouseMove),
-        this.addEventListener(containerDOM, 'mouseup', this.onMouseUp),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'mousemove',
+          this.onMouseMove,
+        ),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'mouseup',
+          this.onMouseUp,
+        ),
         // 为了保证划出 canvas containerDom 时还没触发 mouseup
-        this.addEventListener(containerDOM, 'mouseleave', this.onMouseUp),
+        this.addScrollBallEventListener(
+          containerDOM,
+          'mouseleave',
+          this.onMouseUp,
+        ),
       ];
       this.addEvent(canvas, 'mouseup', this.onMouseUp);
     }

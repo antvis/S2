@@ -1,5 +1,5 @@
 import { each } from 'lodash';
-import type { IGroup, IShape } from '@antv/g-canvas';
+import { Group, DisplayObject, Rect } from '@antv/g';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroupX } from '@/facet/utils';
 import {
@@ -21,16 +21,18 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
-  protected scrollGroup: IGroup;
+  protected scrollGroup: Group;
 
-  protected background: IShape;
+  protected background: DisplayObject;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    this.scrollGroup = this.addGroup({
-      name: KEY_GROUP_COL_SCROLL,
-      zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-    });
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_COL_SCROLL,
+        zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+      }),
+    );
   }
 
   /**
@@ -50,9 +52,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
-    this.scrollGroup.setClip({
-      type: 'rect',
-      attrs: {
+    this.scrollGroup.style.clipPath = new Rect({
+      style: {
         x: isFrozenRowHeader ? scrollX : 0,
         y: 0,
         width: isFrozenRowHeader ? width : width + scrollX,
@@ -62,7 +63,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
-    this.scrollGroup?.clear();
+    this.scrollGroup?.remove();
     this.background?.remove(true);
   }
 

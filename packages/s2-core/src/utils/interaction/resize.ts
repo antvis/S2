@@ -1,12 +1,13 @@
 import { FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX } from 'src/common/constant';
-import { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
+import { Group, BaseStyleProps } from '@antv/g';
 import { ResizeInfo } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { ResizeDirectionType } from '@/common/constant/resize';
+import { SimpleBBox } from '@/common';
 
 export const getResizeAreaAttrs = (
   options: Omit<ResizeInfo, 'size'>,
-): ShapeAttrs => {
+): BaseStyleProps => {
   const {
     type,
     id,
@@ -39,12 +40,12 @@ export const getResizeAreaAttrs = (
 export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
-): IGroup => {
+): Group => {
   if (!spreadsheet.foregroundGroup) {
     return;
   }
 
-  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
+  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as Group;
 
   return (
     existedResizeArea ||

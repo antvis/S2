@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group, Line, Rect } from '@antv/g';
 import { translateGroup } from '@/facet/utils';
 import { FrameConfig } from '@/common/interface';
 
@@ -7,6 +7,7 @@ export class Frame extends Group {
 
   constructor(cfg: FrameConfig) {
     super(cfg);
+    this.cfg = cfg;
     this.render();
   }
 
@@ -23,7 +24,7 @@ export class Frame extends Group {
    * 渲染
    */
   public render(): void {
-    this.clear();
+    this.remove();
     this.layout();
   }
 
@@ -56,8 +57,8 @@ export class Frame extends Group {
     const x = position.x + width;
     const y1 = position.y;
     const y2 = position.y + height + viewportHeight;
-    this.addShape('line', {
-      attrs: {
+    const line = new Line({
+      style: {
         x1: x,
         y1,
         x2: x,
@@ -67,6 +68,7 @@ export class Frame extends Group {
         opacity: splitLine.verticalBorderColorOpacity,
       },
     });
+    this.appendChild(line);
   }
 
   private addCornerBottomBorder() {
@@ -85,8 +87,8 @@ export class Frame extends Group {
     const x2 =
       x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
     const y = position.y + height - 1;
-    this.addShape('line', {
-      attrs: {
+    const line = new Line({
+      style: {
         x1,
         y1: y,
         x2,
@@ -96,6 +98,7 @@ export class Frame extends Group {
         opacity: splitLine.horizontalBorderColorOpacity,
       },
     });
+    this.appendChild(line);
   }
 
   private addSplitLineShadow() {
@@ -125,8 +128,8 @@ export class Frame extends Group {
     const splitLine = spreadsheet.theme?.splitLine;
     const x = position.x + width;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         x,
         y,
         width: splitLine.shadowWidth,
@@ -134,6 +137,7 @@ export class Frame extends Group {
         fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
       },
     });
+    this.appendChild(rect);
   }
 
   private addSplitLineRightShadow() {
@@ -152,8 +156,8 @@ export class Frame extends Group {
     const splitLine = spreadsheet.theme?.splitLine;
     const x = position.x + width + viewportWidth - splitLine.shadowWidth;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         x,
         y,
         width: splitLine.shadowWidth,
@@ -161,5 +165,6 @@ export class Frame extends Group {
         fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
       },
     });
+    this.appendChild(rect);
   }
 }

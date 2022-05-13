@@ -1,5 +1,5 @@
-import { Group, Point } from '@antv/g-canvas';
-import { get, includes, isEmpty } from 'lodash';
+import { Group, Rect } from '@antv/g';
+import { includes, isEmpty } from 'lodash';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { PanelBBox } from '@/facet/bbox/panelBBox';
 import { CornerBBox } from '@/facet/bbox/cornerBBox';
@@ -9,6 +9,7 @@ import { KEY_SERIES_NUMBER_NODE } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import {
   LayoutResult,
+  Point,
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
@@ -256,9 +257,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected clip(): void {
     const { width, height, scrollX } = this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         x: scrollX,
         y: 0,
         width,

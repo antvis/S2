@@ -52,12 +52,7 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
         options?.interaction?.hiddenColumnFields,
       ),
     );
-  }, [
-    sheet,
-    JSON.stringify(dataCfg?.fields),
-    JSON.stringify(dataCfg?.meta),
-    JSON.stringify(options?.interaction?.hiddenColumnFields),
-  ]);
+  }, [dataCfg, options?.interaction?.hiddenColumnFields, sheet]);
 
   const onSubmit = (result: SwitcherResult) => {
     const { fields, hiddenColumnFields } = generateSheetConfig(sheet, result);
