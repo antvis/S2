@@ -96,6 +96,29 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
+  tooltip: {
+    operation: {
+      trend: true,
+      hiddenColumns: true,
+      sort: true,
+      menus: [
+        {
+          key: '1',
+          text: '菜单1',
+          children: [
+            {
+              key: '1-1',
+              text: '菜单1-1',
+            },
+          ],
+        },
+        {
+          key: '2',
+          text: '菜单2',
+        },
+      ],
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

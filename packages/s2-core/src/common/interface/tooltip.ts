@@ -119,7 +119,7 @@ export type DataParam = {
   ) => string | number; // 自定义value
 };
 
-export type IconProps = {
+export type TooltipIconProps = {
   icon: Element | string;
   [key: string]: unknown;
 };

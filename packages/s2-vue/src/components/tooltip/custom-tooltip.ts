@@ -1,8 +1,7 @@
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { TooltipComponent } from '@/components/tooltip';
-import { TooltipRenderProps } from '@/components/tooltip/interface';
+import { createVNode, render, type VNodeProps } from 'vue';
+import TooltipComponent from './index.vue';
+import type { TooltipRenderProps } from './interface';
 
 export class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet: SpreadSheet) {
@@ -24,16 +23,10 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
-    ReactDOM.render(
-      <TooltipComponent {...tooltipProps} content={content} />,
-      this.container,
+    const tooltipVNode = createVNode(
+      TooltipComponent,
+      tooltipProps as VNodeProps,
     );
-  }
-
-  destroy() {
-    super.destroy();
-    if (this.container) {
-      ReactDOM.unmountComponentAtNode(this.container);
-    }
+    render(tooltipVNode, this.container);
   }
 }

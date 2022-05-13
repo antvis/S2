@@ -18,6 +18,8 @@ import type {
   CollapsedRowsType,
   DataType,
   ResizeInfo,
+  S2CellType,
+  TooltipOperatorOptions,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -171,4 +173,10 @@ export interface ResizeEffectParams {
   container: HTMLDivElement; // 只包含了 sheet 容器
   wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
   adaptive: Adaptive | undefined;
+}
+
+// Tooltip 操作项
+export interface TooltipOperatorProps extends TooltipOperatorOptions {
+  onlyMenu: boolean;
+  cell: S2CellType;
 }

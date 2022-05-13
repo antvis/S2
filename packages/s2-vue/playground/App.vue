@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+import type { S2DataConfig, S2Options } from '@antv/s2';
 import { defineComponent, reactive, ref } from 'vue';
 import { BaseSheet } from '../src';
 
@@ -515,6 +515,44 @@ export default defineComponent({
       width: 600,
       height: 400,
       hierarchyCollapse: false,
+      tooltip: {
+        operation: {
+          trend: true,
+          hiddenColumns: true,
+          sort: true,
+          onClick: (...args) => {
+            console.log('menuClick', ...args);
+          },
+          menus: [
+            {
+              key: '1',
+              icon: 'Trend',
+              text: '菜单1',
+              onClick(cell) {
+                console.log('cell-1: ', cell);
+              },
+              children: [
+                {
+                  key: '1-1',
+                  icon: 'Trend',
+                  text: '菜单1-1',
+                  onClick(cell) {
+                    console.log('cell-1-1: ', cell);
+                  },
+                },
+              ],
+            },
+            {
+              key: '2',
+              icon: 'Trend',
+              text: '菜单2',
+              onClick(cell) {
+                console.log('cell-2: ', cell);
+              },
+            },
+          ],
+        },
+      },
     });
 
     const themeCfg = reactive({
@@ -537,6 +575,7 @@ export default defineComponent({
 
     const handlePageChange = (current: number) =>
       console.log('page changed:', current);
+
     const handlePageSizeChange = (pageSize: number) =>
       console.log('pageSize changed:', pageSize);
 

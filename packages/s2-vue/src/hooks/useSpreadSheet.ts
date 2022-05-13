@@ -5,10 +5,10 @@ import {
   type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
+import { getSheetComponentOptions } from '../utils/options';
 import { usePagination } from './usePagination';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
@@ -41,7 +41,7 @@ export function useSpreadSheet(
     const rawDataCfg = toRaw(dataCfg!);
     const rawOptions = toRaw(options);
 
-    const s2Options = getBaseSheetComponentOptions(rawOptions as S2Options);
+    const s2Options = getSheetComponentOptions(rawOptions as S2Options);
     const s2Constructor: S2Constructor = [container, rawDataCfg, s2Options];
     if (onSpreadsheet) {
       return onSpreadsheet(...s2Constructor);

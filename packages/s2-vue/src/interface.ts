@@ -53,7 +53,7 @@ type GetEmitKeys<T> = keyof {
 };
 
 // 用于在defineComponent中进行props类型推断的工具方法
-type GetInitProps<T, OptionalKeys = GetOptionalKeys<T>> = {
+export type GetInitProps<T, OptionalKeys = GetOptionalKeys<T>> = {
   [K in keyof T as IsEmitKey<T[K]> extends true
     ? never
     : K]-?: K extends OptionalKeys
