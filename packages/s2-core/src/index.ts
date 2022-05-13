@@ -1,4 +1,4 @@
-export { Event as GEvent } from '@antv/g-canvas';
+export { CanvasEvent as GEvent } from './common/interface/events';
 export { getTheme } from './theme';
 export { Node } from './facet/layout/node';
 export { Hierarchy } from './facet/layout/hierarchy';
