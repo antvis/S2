@@ -65,19 +65,6 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     };
 
     /**
-     * 执行下钻
-     */
-    const doDrillDown = useLatest(() => {
-      handleDrillDown({
-        rows: dataCfg.fields.rows,
-        drillFields,
-        fetchData: partDrillDown?.fetchData,
-        drillItemsNum: partDrillDown?.drillItemsNum,
-        spreadsheet: s2Ref.current,
-      });
-    });
-
-    /**
      * 加载或清除下钻数据
      * 仅由 drillFields 驱动
      */
@@ -86,9 +73,17 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       if (isEmpty(drillFields)) {
         clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
       } else {
-        doDrillDown.current();
+        // 执行下钻
+        handleDrillDown({
+          rows: dataCfg.fields.rows,
+          drillFields,
+          fetchData: partDrillDown?.fetchData,
+          drillItemsNum: partDrillDown?.drillItemsNum,
+          spreadsheet: s2Ref.current,
+        });
       }
-    }, [drillFields, doDrillDown]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [drillFields]);
 
     React.useEffect(() => {
       if (isEmpty(partDrillDown?.clearDrillDown)) {
