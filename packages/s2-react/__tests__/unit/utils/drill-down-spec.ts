@@ -88,6 +88,9 @@ describe('Drill Down Test', () => {
     mockInstance.dataSet.setDataCfg(mockDataCfg);
     mockInstance.interaction = new RootInteraction(mockInstance);
     mockInstance.setOptions(mockOptions);
+
+    // 挂载 instance
+    cityNode.spreadsheet = mockInstance;
   });
 
   test('for handleDrillDown function', async () => {
