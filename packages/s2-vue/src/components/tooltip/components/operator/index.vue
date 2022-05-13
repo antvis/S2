@@ -3,12 +3,12 @@ import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
-import type { GetInitProps } from '../../../interface';
+import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 import TooltipOperatorMenu from './menu.vue';
 
 interface TooltipOperatorProps extends BaseTooltipOperatorProps {
-  onClick?: () => MenuProps['onClick'];
+  onClick?: MenuProps['onClick'];
 }
 
 export default defineComponent({
@@ -45,11 +45,7 @@ export default defineComponent({
     <template v-else>
       <template v-for="menu in menus" :key="menu.key">
         <Dropdown :class="`${TOOLTIP_PREFIX_CLS}-operator-dropdown`">
-          <TooltipOperatorTitle
-            :menu="menu"
-            :cell="cell"
-            @click="menu.onClick?.(cell)"
-          />
+          <TooltipOperatorTitle :menu="menu" @click="menu.onClick?.(cell)" />
           <template #overlay>
             <Menu
               :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"

@@ -17,6 +17,8 @@ export default defineComponent({
     'data',
     'options',
     'cell',
+    'position',
+    'event',
   ] as unknown as GetInitProps<TooltipRenderProps>,
   setup(props) {
     const { operator, onlyMenu } = getTooltipDefaultOptions(props.options);
@@ -38,38 +40,36 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <template v-if="onlyMenu">
-      <TooltipOperator
-        :menus="operator?.menus || []"
-        :onlyMenu="true"
-        :cell="cell"
-        @click="operator?.onClick"
-      />
-    </template>
+  <template v-if="onlyMenu">
+    <TooltipOperator
+      :menus="operator?.menus || []"
+      :onlyMenu="true"
+      :cell="cell"
+      @click="operator?.onClick"
+    />
+  </template>
+  <template v-else>
+    <TooltipOperator
+      :menus="operator?.menus || []"
+      :onlyMenu="false"
+      :cell="cell"
+      @click="operator?.onClick"
+    />
+    <template v-if="content">{{ content }}</template>
     <template v-else>
-      <TooltipOperator
-        :menus="operator?.menus || []"
-        :onlyMenu="false"
-        :cell="cell"
-        @click="operator?.onClick"
+      <TooltipSimpleTips :name="data?.name" :tips="data?.tips" />
+      <TooltipSummary
+        v-if="data?.summaries?.length"
+        :summaries="data?.summaries"
       />
-      <template v-if="content">{{ content }}</template>
-      <template v-else>
-        <TooltipSimpleTips :name="data?.name" :tips="data?.tips" />
-        <TooltipSummary
-          v-if="data?.summaries?.length"
-          :summaries="data?.summaries"
-        />
-        <TooltipHeadInfo
-          :rows="data?.headInfo?.rows || []"
-          :cols="data?.headInfo?.cols || []"
-        />
-        <TooltipDetail :list="data?.details || []" />
-        <TooltipInfos v-if="data?.infos" :infos="data?.infos" />
-      </template>
+      <TooltipHeadInfo
+        :rows="data?.headInfo?.rows || []"
+        :cols="data?.headInfo?.cols || []"
+      />
+      <TooltipDetail :list="data?.details || []" />
+      <TooltipInfos v-if="data?.infos" :infos="data?.infos" />
     </template>
-  </div>
+  </template>
 </template>
 
 <style lang="less">

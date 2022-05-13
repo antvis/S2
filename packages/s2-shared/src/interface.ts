@@ -176,7 +176,8 @@ export interface ResizeEffectParams {
 }
 
 // Tooltip 操作项
-export interface TooltipOperatorProps extends TooltipOperatorOptions {
+export interface TooltipOperatorProps
+  extends Omit<TooltipOperatorOptions, 'onClick'> {
   onlyMenu: boolean;
   cell: S2CellType;
 }
