@@ -96,11 +96,11 @@ export function renderLine(
 
 export function updateShapeAttr<K extends keyof BaseStyleProps>(
   shape: DisplayObject,
-  attribute: K,
+  style: K,
   value: BaseStyleProps[K],
 ) {
   if (shape) {
-    set(shape, `attrs.${attribute}`, value);
+    set(shape, `style.${style}`, value);
   }
 }
 
@@ -114,7 +114,7 @@ export function updateStrokeOpacity(shape: DisplayObject, opacity: number) {
 
 export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   const iconShape = new GuiIcon(iconCfg);
-  group?.add(iconShape);
+  group?.appendChild(iconShape);
   return iconShape;
 }
 
@@ -131,8 +131,8 @@ export function renderTreeIcon(
     fill,
   });
   if (isFunction(onClick)) {
-    icon.on('click', onClick);
+    icon.addEventListener('click', onClick);
   }
-  group?.add(icon);
+  group?.appendChild(icon);
   return icon;
 }

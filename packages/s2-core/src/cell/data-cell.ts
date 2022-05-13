@@ -17,10 +17,10 @@ import {
   MappingResult,
   CellMeta,
   TextTheme,
-  ViewMeta,
   ViewMetaIndexType,
   CellBorderPosition,
   Point,
+  ViewMeta,
 } from '@/common/interface';
 import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -240,26 +240,26 @@ export class DataCell extends BaseCell<Node> {
     return this.getTextAndIconPosition().text;
   }
 
-  // protected drawConditionIconShapes() {
-  //   const iconCondition: IconCondition = this.findFieldCondition(
-  //     this.conditions?.icon,
-  //   );
-  //   if (iconCondition && iconCondition.mapping) {
-  //     const attrs = this.mappingValue(iconCondition);
-  //     const position = this.getIconPosition();
-  //     const { formattedValue } = this.getFormattedFieldValue();
-  //     const { size } = this.theme.dataCell.icon;
-  //     if (!isEmpty(attrs?.icon) && formattedValue) {
-  //       this.conditionIconShape = renderIcon(this, {
-  //         ...position,
-  //         name: attrs.icon,
-  //         width: size,
-  //         height: size,
-  //         fill: attrs.fill,
-  //       });
-  //     }
-  //   }
-  // }
+  protected drawConditionIconShapes() {
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+    if (iconCondition && iconCondition.mapping) {
+      const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
+      const { formattedValue } = this.getFormattedFieldValue();
+      const { size } = this.theme.dataCell.icon;
+      if (!isEmpty(attrs?.icon) && formattedValue) {
+        this.conditionIconShape = renderIcon(this, {
+          ...position,
+          name: attrs.icon,
+          width: size,
+          height: size,
+          fill: attrs.fill,
+        });
+      }
+    }
+  }
 
   /**
    * 计算柱图的 scale 函数（两种情况）
@@ -390,7 +390,7 @@ export class DataCell extends BaseCell<Node> {
           height: height - margin * 2,
         },
         {
-          visible: false,
+          visibility: 'hidden',
         },
       ),
     );
@@ -408,7 +408,7 @@ export class DataCell extends BaseCell<Node> {
           ...this.getCellArea(),
         },
         {
-          visible: false,
+          visibility: 'hidden',
         },
       ),
     );

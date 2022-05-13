@@ -1,4 +1,4 @@
-import { BBox, Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import {
   InteractionStateInfo,
   S2CellType,
@@ -64,7 +64,7 @@ export interface StoreKey {
 
   originalDataCfg: S2DataConfig;
 
-  panelBBox: BBox;
+  panelBBox: DOMRect;
   // resize area group
   activeResizeArea: Group;
   // interval condition

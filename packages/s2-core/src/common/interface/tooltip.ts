@@ -1,6 +1,5 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type { SpreadSheet } from '@/sheet-type';
-import type { S2CellType, SortParam } from '@/common/interface';
+import type { CanvasEvent, S2CellType, SortParam } from '@/common/interface';
 import type { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
@@ -89,7 +88,7 @@ export type TooltipShowOptions<T = TooltipContentType> = {
         defaultTooltipShowOptions: TooltipShowOptions<T>,
       ) => T)
     | T;
-  event?: CanvasEvent | MouseEvent;
+  event?: CanvasEvent;
 };
 
 export type TooltipData = {
