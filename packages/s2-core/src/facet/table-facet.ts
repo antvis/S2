@@ -1163,37 +1163,39 @@ export class TableFacet extends BaseFacet {
       FrozenGroup.FROZEN_TRAILING_COL,
       FrozenGroup.FROZEN_TRAILING_ROW,
     ].forEach((key) => {
-      if (this.frozenGroupInfo[key].range) {
-        let cols = [];
-        let rows = [];
-
-        if (key.toLowerCase().includes('row')) {
-          const [rowMin, rowMax] = this.frozenGroupInfo[key].range;
-          cols = this.gridInfo.cols;
-          rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
-          if (key === FrozenGroup.FROZEN_TRAILING_ROW) {
-            const { minY } = this.spreadsheet.frozenTrailingRowGroup.getBBox();
-            rows = getFrozenRowsForGrid(
-              rowMin,
-              rowMax,
-              Math.ceil(minY),
-              this.viewCellHeights,
-            );
-          }
-        } else {
-          const [colMin, colMax] = this.frozenGroupInfo[key].range;
-          cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
-          rows = this.gridInfo.rows;
-        }
-
-        this.spreadsheet[`${key}Group`].updateGrid(
-          {
-            cols,
-            rows,
-          },
-          `${key}Group`,
-        );
+      if (!this.frozenGroupInfo[key].range) {
+        return;
       }
+
+      let cols = [];
+      let rows = [];
+
+      if (key.toLowerCase().includes('row')) {
+        const [rowMin, rowMax] = this.frozenGroupInfo[key].range;
+        cols = this.gridInfo.cols;
+        rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+        if (key === FrozenGroup.FROZEN_TRAILING_ROW) {
+          const { minY } = this.spreadsheet.frozenTrailingRowGroup.getBBox();
+          rows = getFrozenRowsForGrid(
+            rowMin,
+            rowMax,
+            Math.ceil(minY),
+            this.viewCellHeights,
+          );
+        }
+      } else {
+        const [colMin, colMax] = this.frozenGroupInfo[key].range;
+        cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
+        rows = this.gridInfo.rows;
+      }
+
+      this.spreadsheet[`${key}Group`].updateGrid(
+        {
+          cols,
+          rows,
+        },
+        `${key}Group`,
+      );
     });
   }
 }
