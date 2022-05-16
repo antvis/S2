@@ -130,6 +130,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.MOUSE_OUT,
       OriginEventType.CONTEXT_MENU,
       OriginEventType.DOUBLE_CLICK,
+      OriginEventType.CLICK,
     ];
     expect(eventController.canvasEventHandlers).toHaveLength(
       canvasEventTypes.length,
@@ -199,7 +200,10 @@ describe('Interaction Event Controller Tests', () => {
       type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_DOWN],
     },
-  ])('should emit mouse down for %o', expectEvents(OriginEventType.MOUSE_DOWN));
+  ])(
+    'should emit mouse down event for %o',
+    expectEvents(OriginEventType.MOUSE_DOWN),
+  );
 
   test.each([
     {
@@ -243,7 +247,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
   ])(
-    'should emit mouse move and hover for %s',
+    'should emit mouse move and hover event for %s',
     expectEvents(OriginEventType.MOUSE_MOVE),
   );
 
@@ -269,7 +273,7 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.MERGED_CELLS_MOUSE_UP],
     },
   ])(
-    'should emit mouse up and hover for %s',
+    'should emit mouse up and click event for %s',
     expectEvents(OriginEventType.MOUSE_UP),
   );
 
@@ -295,8 +299,40 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.MERGED_CELLS_DOUBLE_CLICK],
     },
   ])(
-    'should emit double click for %s',
+    'should emit double click event for %s',
     expectEvents(OriginEventType.DOUBLE_CLICK),
+  );
+
+  test.each([
+    {
+      type: CellTypes.DATA_CELL,
+      eventNames: [S2Event.DATA_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.ROW_CELL,
+      eventNames: [S2Event.ROW_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.COL_CELL,
+      eventNames: [S2Event.COL_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.CORNER_CELL,
+      eventNames: [
+        S2Event.CORNER_CELL_CONTEXT_MENU,
+        S2Event.GLOBAL_CONTEXT_MENU,
+      ],
+    },
+    {
+      type: CellTypes.MERGED_CELL,
+      eventNames: [
+        S2Event.MERGED_CELLS_CONTEXT_MENU,
+        S2Event.GLOBAL_CONTEXT_MENU,
+      ],
+    },
+  ])(
+    'should emit context menu event for %s',
+    expectEvents(OriginEventType.CONTEXT_MENU),
   );
 
   test('should emit global context menu event', () => {
