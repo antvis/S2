@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { SpreadSheet } from '@antv/s2';
-import { defineComponent, shallowRef } from 'vue';
+import { defineComponent } from 'vue';
+import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import BaseSheet from './base-sheet.vue';
 
@@ -9,14 +9,7 @@ export default defineComponent({
   props: [] as unknown as BaseSheetInitProps,
   emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
-    const s2Ref = shallowRef<{ instance: SpreadSheet }>();
-
-    ctx.expose({
-      get instance() {
-        return s2Ref.value?.instance;
-      },
-    });
-
+    const s2Ref = useExpose(ctx.expose);
     return { s2Ref };
   },
   components: {

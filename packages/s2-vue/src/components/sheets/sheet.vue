@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { SpreadSheet } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
-import { computed, defineComponent, shallowRef } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useExpose } from '../../hooks/useExpose';
 import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import PivotSheet from './pivot-sheet.vue';
 import TableSheet from './table-sheet.vue';
@@ -11,13 +11,7 @@ export default defineComponent({
   props: [] as unknown as BaseSheetInitProps,
   emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
-    const s2Ref = shallowRef<{ instance: SpreadSheet }>();
-
-    ctx.expose({
-      get instance() {
-        return s2Ref.value?.instance;
-      },
-    });
+    const s2Ref = useExpose(ctx.expose);
 
     const sheetType = computed(() => {
       const type = ctx.attrs.sheetType as SheetType;
