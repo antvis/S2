@@ -28,8 +28,16 @@ name: '${name}',
 };
 
 const ReactSvgTemplate = ({ name, content }: SvgIconInfo) => {
-  const reactContent = content.replace(/class/g, 'className');
-  return `export const ${name}: FC = () =>  ( ${reactContent} )`;
+  const reactContent = content
+    .replace(/class/g, 'className')
+    .replace(/fill-rule/g, 'fillRule')
+    .replace(/stroke-width/g, 'strokeWidth');
+  // 将短横线链接的文件名替换为驼峰式命名
+  const reactName = name
+    .split('-')
+    .map((it) => it.charAt(0).toUpperCase() + it.slice(1))
+    .join('');
+  return `export const ${reactName}: FC = () =>  ( ${reactContent} )`;
 };
 
 const writeVueComponents = (outputDir: string, icons: SvgIconInfo[]) => {
@@ -45,10 +53,16 @@ import './index.less';
 
 `;
   fileContent += icons.map((it) => ReactSvgTemplate(it)).join('\n\n');
-  writeFileSync(resolve(outputDir, 'svg.tsx'), fileContent);
+  writeFileSync(resolve(outputDir, 'index.tsx'), fileContent);
 };
 
-const files = listSvgFiles(resolve(__dirname, '../src/svg'));
+const files = listSvgFiles(resolve(__dirname, '../src/icons'));
 
-writeVueComponents(resolve(__dirname, '../src/svg/vue'), files);
-writeReactComponents(resolve(__dirname, '../src/svg/react'), files);
+writeVueComponents(
+  resolve(__dirname, '../../s2-vue/src/components/icons'),
+  files,
+);
+writeReactComponents(
+  resolve(__dirname, '../../s2-react/src/components/icons'),
+  files,
+);
