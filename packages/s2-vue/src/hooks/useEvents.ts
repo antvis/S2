@@ -45,6 +45,12 @@ export const useEvents = (
       S2Event.ROW_CELL_DOUBLE_CLICK,
       'rowCellDoubleClick',
     );
+    useCellEvent(
+      s2Ref,
+      emit,
+      S2Event.ROW_CELL_CONTEXT_MENU,
+      'rowCellContextMenu',
+    );
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_DOWN, 'rowCellMouseDown');
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_UP, 'rowCellMouseUp');
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_MOVE, 'rowCellMouseMove');
@@ -64,6 +70,12 @@ export const useEvents = (
       S2Event.COL_CELL_DOUBLE_CLICK,
       'colCellDoubleClick',
     );
+    useCellEvent(
+      s2Ref,
+      emit,
+      S2Event.COL_CELL_CONTEXT_MENU,
+      'colCellContextMenu',
+    );
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_DOWN, 'colCellMouseDown');
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_UP, 'colCellMouseUp');
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_MOVE, 'colCellMouseMove');
@@ -76,6 +88,12 @@ export const useEvents = (
       emit,
       S2Event.DATA_CELL_DOUBLE_CLICK,
       'dataCellDoubleClick',
+    );
+    useCellEvent(
+      s2Ref,
+      emit,
+      S2Event.DATA_CELL_CONTEXT_MENU,
+      'dataCellContextMenu',
     );
     useCellEvent(
       s2Ref,
@@ -115,6 +133,12 @@ export const useEvents = (
     useCellEvent(
       s2Ref,
       emit,
+      S2Event.CORNER_CELL_CONTEXT_MENU,
+      'cornerCellContextMenu',
+    );
+    useCellEvent(
+      s2Ref,
+      emit,
       S2Event.CORNER_CELL_MOUSE_DOWN,
       'cornerCellMouseDown',
     );
@@ -139,6 +163,12 @@ export const useEvents = (
       emit,
       S2Event.MERGED_CELLS_DOUBLE_CLICK,
       'mergedCellsDoubleClick',
+    );
+    useCellEvent(
+      s2Ref,
+      emit,
+      S2Event.MERGED_CELLS_CONTEXT_MENU,
+      'mergedCellsContextMenu',
     );
     useCellEvent(
       s2Ref,
@@ -269,6 +299,8 @@ export const useEvents = (
     );
     useS2Event(s2Ref, emit, S2Event.GLOBAL_CONTEXT_MENU, 'contextMenu');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_HOVER, 'mouseHover');
+    useS2Event(s2Ref, emit, S2Event.GLOBAL_CLICK, 'click');
+    useS2Event(s2Ref, emit, S2Event.GLOBAL_DOUBLE_CLICK, 'doubleClick');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_SELECTED, 'selected');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_MOUSE_UP, 'mouseUp');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_RESET, 'reset');

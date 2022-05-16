@@ -58,6 +58,7 @@ export interface BaseSheetComponentProps<
   onRowCellHover?: (data: TargetCellInfo) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
   onRowCellDoubleClick?: (data: TargetCellInfo) => void;
+  onRowCellContextMenu?: (data: TargetCellInfo) => void;
   onRowCellMouseDown?: (data: TargetCellInfo) => void;
   onRowCellMouseUp?: (data: TargetCellInfo) => void;
   onRowCellMouseMove?: (data: TargetCellInfo) => void;
@@ -71,6 +72,7 @@ export interface BaseSheetComponentProps<
   onColCellHover?: (data: TargetCellInfo) => void;
   onColCellClick?: (data: TargetCellInfo) => void;
   onColCellDoubleClick?: (data: TargetCellInfo) => void;
+  onColCellContextMenu?: (data: TargetCellInfo) => void;
   onColCellMouseDown?: (data: TargetCellInfo) => void;
   onColCellMouseUp?: (data: TargetCellInfo) => void;
   onColCellMouseMove?: (data: TargetCellInfo) => void;
@@ -79,6 +81,7 @@ export interface BaseSheetComponentProps<
   onDataCellHover?: (data: TargetCellInfo) => void;
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
+  onDataCellContextMenu?: (data: TargetCellInfo) => void;
   onDataCellMouseDown?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
@@ -89,6 +92,7 @@ export interface BaseSheetComponentProps<
   onCornerCellHover?: (data: TargetCellInfo) => void;
   onCornerCellClick?: (data: TargetCellInfo) => void;
   onCornerCellDoubleClick?: (data: TargetCellInfo) => void;
+  onCornerCellContextMenu?: (data: TargetCellInfo) => void;
   onCornerCellMouseDown?: (data: TargetCellInfo) => void;
   onCornerCellMouseUp?: (data: TargetCellInfo) => void;
   onCornerCellMouseMove?: (data: TargetCellInfo) => void;
@@ -97,6 +101,7 @@ export interface BaseSheetComponentProps<
   onMergedCellsHover?: (data: TargetCellInfo) => void;
   onMergedCellsClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
+  onMergedCellsContextMenu?: (data: TargetCellInfo) => void;
   onMergedCellsMouseDown?: (data: TargetCellInfo) => void;
   onMergedCellsMouseUp?: (data: TargetCellInfo) => void;
   onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
@@ -160,6 +165,8 @@ export interface BaseSheetComponentProps<
   onActionIconHover?: (event: GEvent) => void;
   onActionIconClick?: (event: GEvent) => void;
   onContextMenu?: (event: GEvent) => void;
+  onClick?: (event: GEvent) => void;
+  onDoubleClick?: (event: GEvent) => void;
   onMouseHover?: (event: GEvent) => void;
   onMouseUp?: (event: MouseEvent) => void;
   onSelected?: (cells: DataCell[]) => void;
