@@ -36,7 +36,10 @@ export default defineComponent({
 <template>
   <div :class="`${TOOLTIP_PREFIX_CLS}-operator`">
     <template v-if="onlyMenu">
-      <Menu :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`" @click="onClick">
+      <Menu
+        :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"
+        @click="$.emit('click')"
+      >
         <template v-for="menu in menus" :key="menu.key">
           <TooltipOperatorMenu :menu="menu" :cell="cell" />
         </template>
@@ -49,7 +52,7 @@ export default defineComponent({
           <template #overlay>
             <Menu
               :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"
-              @click="onClick"
+              @click="$.emit('click')"
               v-if="menu?.children?.length"
             >
               <template v-for="menu in menus" :key="menu.key">

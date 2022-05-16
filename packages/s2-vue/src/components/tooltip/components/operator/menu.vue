@@ -41,11 +41,7 @@ export default defineComponent({
     @titleClick="onMenuTitleClick"
   >
     <template #title>
-      <TooltipOperatorTitle
-        :menu="menu"
-        :cell="cell"
-        @click="onMenuTitleClick"
-      />
+      <TooltipOperatorTitle :menu="menu" @click="onMenuTitleClick" />
     </template>
     <template v-for="subMenu in menu.children" :key="subMenu.key">
       <template v-if="subMenu?.children?.length">
@@ -53,11 +49,7 @@ export default defineComponent({
       </template>
       <template v-else>
         <MenuItem :title="subMenu.text" :key="subMenu.key">
-          <TooltipOperatorTitle
-            :menu="subMenu"
-            :cell="cell"
-            @click="onMenuTitleClick"
-          />
+          <TooltipOperatorTitle :menu="subMenu" @click="onMenuTitleClick" />
         </MenuItem>
       </template>
     </template>
