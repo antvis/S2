@@ -1,8 +1,9 @@
 <script lang="ts">
 /* eslint-disable no-console */
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { defineComponent, reactive, ref } from 'vue';
-import { PivotSheet } from '../src';
+import type { SheetType } from '@antv/s2-shared';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { Sheet } from '../src';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -505,9 +506,9 @@ const dataCfg2: S2DataConfig = {
 
 export default defineComponent({
   setup() {
+    const sheetType = ref<SheetType>('pivot');
     const s2 = ref();
     const dataCfgFlag = ref(1);
-
     //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
     //  reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
     const options: S2Options = reactive({
@@ -585,7 +586,11 @@ export default defineComponent({
         : { current: 1, pageSize: 4 };
     };
 
+    onMounted(() => {
+      console.log('s2 instance:', s2.value?.instance);
+    });
     return {
+      sheetType,
       s2,
       dataCfgFlag,
       dataCfg1,
@@ -602,7 +607,7 @@ export default defineComponent({
     };
   },
   components: {
-    PivotSheet,
+    Sheet,
   },
 });
 </script>
@@ -630,9 +635,20 @@ export default defineComponent({
     >
       更新到themeCfg
     </button>
+    <div>
+      <label>
+        <input type="radio" id="pivot" value="pivot" v-model="sheetType" />
+        透视表
+      </label>
+      <label>
+        <input type="radio" id="table" value="table" v-model="sheetType" />
+        明细表
+      </label>
+    </div>
   </div>
-  <PivotSheet
+  <Sheet
     ref="s2"
+    :sheetType="sheetType"
     :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"
     :options="options"
     :themeCfg="themeCfg"

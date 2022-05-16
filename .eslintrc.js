@@ -123,6 +123,7 @@ module.exports = {
     ],
     curly: [2, 'multi-line', 'consistent'],
     'guard-for-in': 0,
+    'vue/multi-word-component-names': 0,
   },
   overrides: [
     {

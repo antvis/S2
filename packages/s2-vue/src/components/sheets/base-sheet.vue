@@ -1,7 +1,7 @@
 <script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import S2Pagination from '../pagination/index.vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {

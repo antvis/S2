@@ -5,7 +5,7 @@ import type { BaseSheetInitEmits, BaseSheetInitProps } from '../../interface';
 import BaseSheet from './base-sheet.vue';
 
 export default defineComponent({
-  name: 'PivotSheet',
+  name: 'TableSheet',
   props: [] as unknown as BaseSheetInitProps,
   emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
