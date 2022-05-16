@@ -1,12 +1,12 @@
 import { S2Event, type SpreadSheet, getBaseCellData, GEvent } from '@antv/s2';
 import { onMounted, type Ref } from 'vue';
-import type { BaseSheetInitEmits, EmitFn } from './../interface';
+import type { BaseSheetEmits, EmitFn } from './../interface';
 
 const useCellEvent = (
   s2Ref: Ref<SpreadSheet | undefined>,
-  emit: EmitFn<BaseSheetInitEmits>,
+  emit: EmitFn<BaseSheetEmits>,
   eventName: S2Event,
-  emitName: keyof BaseSheetInitEmits,
+  emitName: keyof BaseSheetEmits,
 ) => {
   const handler = (event: GEvent) => {
     const param = getBaseCellData(event);
@@ -17,9 +17,9 @@ const useCellEvent = (
 
 const useS2Event = (
   s2Ref: Ref<SpreadSheet | undefined>,
-  emit: EmitFn<BaseSheetInitEmits>,
+  emit: EmitFn<BaseSheetEmits>,
   eventName: S2Event,
-  emitName: keyof BaseSheetInitEmits,
+  emitName: keyof BaseSheetEmits,
 ) => {
   const handler = (params: any) => {
     emit(emitName as any, params);
@@ -29,7 +29,7 @@ const useS2Event = (
 
 export const useEvents = (
   s2Ref: Ref<SpreadSheet | undefined>,
-  emit: EmitFn<BaseSheetInitEmits>,
+  emit: EmitFn<BaseSheetEmits>,
 ) => {
   onMounted(() => {
     if (!s2Ref.value) {

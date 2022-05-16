@@ -5,7 +5,7 @@ import type {
   SheetType,
 } from '@antv/s2-shared';
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { BaseSheetInitEmitKeys, BaseSheetInitEmits } from './../interface';
+import type { BaseSheetEmitKeys, BaseSheetEmits } from './../interface';
 
 export const initBaseSheetProps = () => ({
   sheetType: String as PropType<SheetType>,
@@ -40,7 +40,7 @@ export type BaseSheetProps = ExtractPropTypes<
 
 export const initBaseSheetEmits = () => {
   /** base sheet all emits */
-  const keys: Array<BaseSheetInitEmitKeys> = [
+  const keys: Array<BaseSheetEmitKeys> = [
     'spreadsheet',
     'getSpreadSheet',
     // ============== Row Cell ====================
@@ -130,5 +130,5 @@ export const initBaseSheetEmits = () => {
     'reset',
     'linkFieldJump',
   ];
-  return keys as unknown as BaseSheetInitEmits;
+  return keys as unknown as BaseSheetEmits;
 };
