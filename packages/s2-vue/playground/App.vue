@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { defineComponent, reactive, ref } from 'vue';
-import { BaseSheet } from '../src';
+import { PivotSheet } from '../src';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -602,7 +602,7 @@ export default defineComponent({
     };
   },
   components: {
-    BaseSheet,
+    PivotSheet,
   },
 });
 </script>
@@ -631,7 +631,7 @@ export default defineComponent({
       更新到themeCfg
     </button>
   </div>
-  <BaseSheet
+  <PivotSheet
     ref="s2"
     :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"
     :options="options"

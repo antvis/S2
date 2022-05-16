@@ -1,7 +1,7 @@
 <script lang="ts">
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import S2Pagination from '../pagination/index.vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
@@ -17,7 +17,11 @@ export default defineComponent({
     const { wrapperRef, containerRef, s2Ref, loading, pagination } =
       useSpreadSheet(props, ctx.emit);
 
-    ctx.expose({ instance: s2Ref });
+    ctx.expose({
+      get instance() {
+        return s2Ref.value;
+      },
+    });
 
     const handlePageChange = (nextCurrent: number) => {
       if (props.showPagination && typeof props.showPagination !== 'boolean') {
