@@ -55,7 +55,7 @@ export class ColCell extends HeaderCell {
     // draw text
     this.drawTextShape();
     // draw action icons
-    // this.drawActionIcons();
+    this.drawActionIcons();
     // draw borders
     this.drawBorders();
     // draw resize ares

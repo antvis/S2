@@ -1,5 +1,6 @@
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
+import { Rect } from '@antv/g';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import { isMobile } from '@/utils/is-mobile';
@@ -10,7 +11,12 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { CellBorderPosition, TextTheme, ViewMeta } from '@/common/interface';
+import {
+  CellBorderPosition,
+  Point,
+  TextTheme,
+  ViewMeta,
+} from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import {
   getTextAndFollowingIconPosition,
@@ -60,7 +66,7 @@ export class RowCell extends HeaderCell {
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     // 绘制 action icons
-    // this.drawActionIcons();
+    this.drawActionIcons();
     this.update();
   }
 
@@ -84,7 +90,7 @@ export class RowCell extends HeaderCell {
           ...this.getCellArea(),
         },
         {
-          visible: false,
+          visibility: 'hidden',
         },
       ),
     );
@@ -290,9 +296,8 @@ export class RowCell extends HeaderCell {
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - seriesNumberWidth - (x - scrollX)
       : width;
-
-    resizeArea.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         ...getResizeAreaAttrs({
           id: this.meta.id,
           theme: resizeStyle,
@@ -306,8 +311,10 @@ export class RowCell extends HeaderCell {
         x: offsetX,
         y: offsetY + height - resizeStyle.size / 2,
         width: resizeAreaWidth,
+        height,
       },
     });
+    resizeArea.appendChild(rect);
   }
 
   protected getContentIndent() {
@@ -369,7 +376,7 @@ export class RowCell extends HeaderCell {
 
   protected getIconPosition() {
     // 不同 textAlign 下，对应的文字绘制点 x 不同
-    const { x, y, textAlign } = this.textShape.cfg.attrs;
+    const { x, y, textAlign } = this.textShape.style;
     const iconMarginLeft = this.getStyle().icon.margin.left;
 
     if (textAlign === 'left') {

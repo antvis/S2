@@ -1,4 +1,4 @@
-import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { DisplayObject, Rect } from '@antv/g';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import {
   getScrollOffsetForCol,
@@ -19,6 +19,8 @@ import {
   OriginalEvent,
   ViewMeta,
   BrushAutoScrollConfig,
+  CanvasEvent,
+  Point,
 } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
@@ -38,7 +40,7 @@ import { TableFacet } from '@/facet';
 export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public displayedDataCells: DataCell[] = [];
 
-  public prepareSelectMaskShape: IShape;
+  public prepareSelectMaskShape: DisplayObject;
 
   public startBrushPoint: BrushPoint;
 
@@ -71,9 +73,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
     foregroundGroup.removeChild(this.prepareSelectMaskShape);
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
-    this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
+    const rect = new Rect({
       visible: false,
-      attrs: {
+      style: {
         width: 0,
         height: 0,
         x: 0,
@@ -84,6 +86,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       },
       capture: false,
     });
+    this.prepareSelectMaskShape = foregroundGroup.appendChild(rect);
   }
 
   private setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
@@ -433,7 +436,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private renderPrepareSelected = (point: Point) => {
     const { x, y } = point;
-    const target = this.spreadsheet.container.getShape(x, y);
+    const target = this.spreadsheet.container?.getShape(x, y);
 
     const cell = this.spreadsheet.getCell(target);
 

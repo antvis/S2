@@ -177,7 +177,7 @@ export class DataCell extends BaseCell<Node> {
     this.drawConditionIntervalShape();
     this.drawInteractiveBorderShape();
     this.drawTextShape();
-    // this.drawConditionIconShapes();
+    this.drawConditionIconShapes();
     this.drawBorderShape();
     this.update();
   }

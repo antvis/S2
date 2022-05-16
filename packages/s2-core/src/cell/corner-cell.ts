@@ -1,4 +1,4 @@
-import { DisplayObject, BaseStyleProps } from '@antv/g';
+import { DisplayObject, BaseStyleProps, Rect, RectStyleProps } from '@antv/g';
 import {
   cond,
   constant,
@@ -71,7 +71,7 @@ export class CornerCell extends HeaderCell {
     this.drawBackgroundShape();
     // this.drawTreeIcon();
     this.drawCellText();
-    // this.drawActionIcons();
+    this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
   }
@@ -195,13 +195,13 @@ export class CornerCell extends HeaderCell {
   private drawBackgroundShape() {
     const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
 
-    const attrs: BaseStyleProps = {
+    const style: RectStyleProps = {
       ...this.getCellArea(),
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
     };
 
-    this.backgroundShape = renderRect(this, attrs);
+    this.backgroundShape = renderRect(this, style);
   }
 
   /**
@@ -288,9 +288,8 @@ export class CornerCell extends HeaderCell {
     // 最后一个维度需要撑满角头高度
     const offsetX = position.x + x - scrollX;
     const offsetY = position.y + (this.isLastRowCornerCell() ? 0 : y);
-
-    resizeArea.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
           id: field,
@@ -304,8 +303,10 @@ export class CornerCell extends HeaderCell {
         x: offsetX + width - resizeStyle.size / 2,
         y: offsetY,
         height: this.isLastRowCornerCell() ? headerHeight : height,
+        width,
       },
     });
+    resizeArea.appendChild(rect);
   }
 
   private showTreeIcon() {

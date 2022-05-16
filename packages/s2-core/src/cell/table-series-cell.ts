@@ -2,6 +2,7 @@ import {
   isFrozenRow as isFrozenRowUtil,
   isFrozenTrailingRow as isFrozenTrailingRowUtil,
 } from 'src/facet/utils';
+import { Rect } from '@antv/g';
 import { DataCell } from '@/cell/data-cell';
 import {
   CellTypes,
@@ -66,9 +67,8 @@ export class TableRowCell extends DataCell {
     if (!isFrozenTrailingRow) {
       yOffset -= isFrozenRow ? paginationSy : scrollY;
     }
-
-    resizeArea.addShape('rect', {
-      attrs: {
+    const rect = new Rect({
+      style: {
         ...getResizeAreaAttrs({
           id: String(this.meta.rowIndex),
           theme: resizeStyle,
@@ -82,7 +82,9 @@ export class TableRowCell extends DataCell {
         x,
         y: yOffset + height - resizeStyle.size / 2,
         width,
+        height,
       },
     });
+    resizeArea.appendChild(rect);
   }
 }
