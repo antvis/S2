@@ -9,17 +9,17 @@ order: 4
 
 | 参数          | 说明                         | 类型                                                         | 必选 | 默认值 |
 | :------------ | :--------------------------- | :----------------------------------------------------------- | :--- | :----- |
-| sheet         | 当前表实例                   | [SpreadSheet](https://g.antv.vision/zh/docs/api/basic-class/spreadsheet) | ✓    |        |
+| sheet         | 当前表实例                   | [SpreadSheet](https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet) | ✓    |        |
 | open          | 是否展示                     | `boolean`                                                    | ✓    |        |
 | className     | class类名称                  | `string`                                                     |      |        |
 | icon          | 排序按钮图标                 | `React.ReactNode`                                            |      |        |
 | text          | 排序按钮名称                 | `string`                                                     |      |        |
 | ruleText      | 规则描述                     | `string`                                                     |      |        |
-| dimensions    | 可选字段列表                 | [Dimension](#Dimension)[]                                    |      |        |
-| ruleOptions   | 规则配置列表                 | [RuleOption](#RuleOption)[]                                  |      |        |
-| sortParams    | 默认已有 sort 规则           | [SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) |      |        |
+| dimensions    | 可选字段列表                 | [Dimension](#dimension)[]                                    |      |        |
+| ruleOptions   | 规则配置列表                 | [RuleOption](#ruleoption)[]                                  |      |        |
+| sortParams    | 默认已有 sort 规则           | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) |      |        |
 | onSortOpen    | 打开排序弹窗的回调           | `() => void`                                                 |      |        |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#RuleValue)[]`, sortParams:`[SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams)`) => void` |      |        |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)`) => void` |      |        |
 
 ## AdvancedSortCfgProps
 
@@ -32,11 +32,11 @@ order: 4
 | icon          | 排序按钮图标                 | `React.ReactNode`                                            |      |        |
 | text          | 排序按钮名称                 | `ReactNode`                                                  |      |        |
 | ruleText      | 规则描述                     | `string`                                                     |      |        |
-| dimensions    | 可选字段列表                 | [Dimension](#Dimension)[]                                    |      |        |
-| ruleOptions   | 规则配置列表                 | [RuleOption](#RuleOption)[]                                  |      |        |
-| sortParams    | 默认已有 sort 规则           | [SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) |      |        |
+| dimensions    | 可选字段列表                 | [Dimension](#dimension)[]                                    |      |        |
+| ruleOptions   | 规则配置列表                 | [RuleOption](#ruleoption)[]                                  |      |        |
+| sortParams    | 默认已有 sort 规则           | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) |      |        |
 | onSortOpen    | 打开排序弹窗的回调           | `() => void`                                                 |      |        |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#RuleValue)[]`, sortParams:`[SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams)`) => void` |      |        |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)`) => void` |      |        |
 
 ## Dimension
 

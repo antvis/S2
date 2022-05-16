@@ -122,7 +122,12 @@ export interface Total {
   /** 是否显示总计 */
   showGrandTotals: boolean;
   /** 是否显示小计 */
-  showSubTotals: boolean;
+  showSubTotals:
+    | boolean
+    | {
+        /** 当子维度个数 <=1 时，仍然展示小计：默认 true */
+        always: boolean;
+      };
   // 前端计算总计
   calcTotals?: CalcTotals;
   // 前端计算小计

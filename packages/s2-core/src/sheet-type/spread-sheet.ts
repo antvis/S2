@@ -516,15 +516,18 @@ export abstract class SpreadSheet extends EE {
    */
   public getTotalsConfig(dimension: string): Partial<Totals['row']> {
     const { totals } = this.options;
-    const { rows } = this.dataCfg.fields;
+    const { rows } = this.dataSet.fields;
+
     const totalConfig = get(
       totals,
       includes(rows, dimension) ? 'row' : 'col',
       {},
     ) as Total;
-    const showSubTotals = totalConfig.showSubTotals
-      ? includes(totalConfig.subTotalsDimensions, dimension)
-      : false;
+    const showSubTotals =
+      totalConfig.showSubTotals &&
+      includes(totalConfig.subTotalsDimensions, dimension)
+        ? totalConfig.showSubTotals
+        : false;
     return {
       showSubTotals,
       showGrandTotals: totalConfig.showGrandTotals,

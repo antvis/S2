@@ -131,13 +131,13 @@ s2.render(false)
 
 请查看 [这篇文章](/zh/docs/manual/advanced/get-cell-data)
 
-### 为什么 tooltip 在 `@antv/s2` 中不显示, 在 `@antv/s2-react` 中可以正常显示?
+### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` 中可以正常显示？
 
 请查看 [Tooltip 注意事项](/zh/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
-### 如果在 Vue, Angular 中自定义 Tooltip
+### 如何在 Vue 中自定义 Tooltip
 
-请查看 [Tooltip 自定义](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89)
+请查看 [在 Vue3 中自定义](/zh/docs/manual/basic/tooltip/#在-vue3-中自定义)
 
 ### 表格支持导出 `Excel` 吗？
 
@@ -158,7 +158,7 @@ s2.render(false)
 
 也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
 
-配套的 [分析组件](/zh/examples/react-component), 目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/zh/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
 ### 怎样贡献代码？
 
