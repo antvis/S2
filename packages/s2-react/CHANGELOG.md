@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.15.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.0...@antv/s2-react-v1.15.1) (2022-05-13)
+
+
+### Bug Fixes
+
+* **interaction:** 角头单元格增加对自定义tooltip的适配 ([#1322](https://github.com/antvis/S2/issues/1322)) ([11c8e48](https://github.com/antvis/S2/commit/11c8e48d37e4e08742ba2d0dbeccfc99a694beff))
+
 # [@antv/s2-react-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.14.0...@antv/s2-react-v1.15.0) (2022-05-06)
 
 
