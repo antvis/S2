@@ -13,12 +13,12 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 16.x # semantic-release 需要 >= 16 的 Node.js 环境
+          node-version: 16 # semantic-release 需要 >= 16 的 Node.js 环境
           cache: 'yarn'
 
       - name: Install dependencies
