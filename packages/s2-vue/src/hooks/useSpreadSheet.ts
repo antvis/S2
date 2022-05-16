@@ -6,7 +6,7 @@ import {
   type SpreadSheet,
 } from '@antv/s2';
 import { onBeforeUnmount, onMounted, ref, shallowRef, toRaw } from 'vue';
-import type { BaseSheetEmits, EmitFn } from '../interface';
+import type { BaseSheetInitEmits, EmitFn } from '../interface';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 import { getSheetComponentOptions } from '../utils/options';
 import { usePagination } from './usePagination';
@@ -17,7 +17,7 @@ import { useResize } from './useResize';
 
 export function useSpreadSheet(
   props: BaseSheetProps,
-  emit: EmitFn<BaseSheetEmits>,
+  emit: EmitFn<BaseSheetInitEmits>,
 ) {
   const {
     dataCfg,

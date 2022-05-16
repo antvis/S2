@@ -72,7 +72,7 @@ type GetInitEmits<T> = {
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
 
-export type BaseSheetPropKeys = GetPropKeys<BaseSheetComponentProps>;
-export type BaseSheetEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
-
-export type BaseSheetEmits = GetInitEmits<BaseSheetComponentProps>;
+export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
+export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
+export type BaseSheetInitProps = GetInitProps<BaseSheetComponentProps>;
+export type BaseSheetInitEmits = GetInitEmits<BaseSheetComponentProps>;
