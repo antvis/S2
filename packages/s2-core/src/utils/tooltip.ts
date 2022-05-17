@@ -383,20 +383,31 @@ export const getSelectedCellsData = (
    */
   const isBelongTotalCell = (cellMeta: ViewMeta) => {
     const targetCellMeta = targetCell?.getMeta();
-    const isTotalTargetCell = targetCellMeta?.isTotals;
-    const isColTargetCell = targetCell?.cellType === CellTypes.COL_CELL;
+    // target: 当前点击的单元格类型
+    const isTargetTotalCell = targetCellMeta?.isTotals;
+    const isTargetColCell = targetCell?.cellType === CellTypes.COL_CELL;
+    const isTargetRowCell = targetCell?.cellType === CellTypes.ROW_CELL;
 
-    if (!isColTargetCell) {
+    if (!isTargetColCell && !isTargetRowCell) {
       return false;
     }
+
+    const currentColCellNode = layoutResult.colNodes.find(
+      (node) => node.colIndex === cellMeta.colIndex,
+    );
 
     const currentRowCellNode = layoutResult.rowNodes.find(
       (node) => node.rowIndex === cellMeta.rowIndex,
     );
 
+    // 行头点击, 去除列头对应的小计/总计, 列头相反
+    const isTotalCell = isTargetColCell
+      ? currentRowCellNode?.isTotals
+      : currentColCellNode?.isTotals;
+
     return (
-      (!isTotalTargetCell && cellMeta?.isTotals) ||
-      (isTotalTargetCell && currentRowCellNode?.isTotals)
+      (!isTargetTotalCell && cellMeta?.isTotals) ||
+      (isTargetTotalCell && isTotalCell)
     );
   };
 
