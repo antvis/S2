@@ -68,6 +68,7 @@ export class EventController {
     this.clearAllEvents();
 
     // canvas events
+    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
@@ -406,12 +407,18 @@ export class EventController {
     }
   };
 
+  private onCanvasClick = (event: CanvasEvent) => {
+    this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
+  };
+
   private onCanvasDoubleClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
+    spreadsheet.emit(S2Event.GLOBAL_DOUBLE_CLICK, event);
     const cell = spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
@@ -456,7 +463,29 @@ export class EventController {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
     spreadsheet.emit(S2Event.GLOBAL_CONTEXT_MENU, event);
+
+    const cellType = this.spreadsheet.getCellType(event.target);
+    switch (cellType) {
+      case CellTypes.DATA_CELL:
+        this.spreadsheet.emit(S2Event.DATA_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.ROW_CELL:
+        this.spreadsheet.emit(S2Event.ROW_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.COL_CELL:
+        this.spreadsheet.emit(S2Event.COL_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.CORNER_CELL:
+        this.spreadsheet.emit(S2Event.CORNER_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.MERGED_CELL:
+        this.spreadsheet.emit(S2Event.MERGED_CELLS_CONTEXT_MENU, event);
+        break;
+      default:
+        break;
+    }
   };
 
   public clear() {
