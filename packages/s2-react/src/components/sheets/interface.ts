@@ -22,6 +22,7 @@ import {
 import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
+import { SheetUpdateCallback } from '@/hooks';
 
 export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
 
@@ -88,6 +89,8 @@ export interface BaseSheetComponentProps {
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
+  /** 底表 render callback */
+  onSheetUpdate?: SheetUpdateCallback;
 
   // ============== Row Cell ====================
   onRowCellHover?: (data: TargetCellInfo) => void;
