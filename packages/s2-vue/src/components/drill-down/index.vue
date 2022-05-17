@@ -10,6 +10,8 @@ import {
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import _ from 'lodash';
+import ColIcon from '@antv/s2-shared/src/icons/col-icon.svg?component';
+import RowIcon from '@antv/s2-shared/src/icons/row-icon.svg';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -19,7 +21,7 @@ export default defineComponent({
   name: 'DrillDown',
   props: initDrillDownProps(),
   emits: initDrillDownEmits(),
-  components: { Button, Input, Empty, Menu, MenuItem },
+  components: { Button, Input, Empty, Menu, MenuItem, ColIcon, RowIcon },
   methods: {
     // _() {
     //   return _;
@@ -34,7 +36,11 @@ export default defineComponent({
       className,
     } = props as BaseDrillDownComponentProps;
     const PRE_CLASS = 's2-drill-down';
-
+    // const DRILL_DOWN_ICON_MAP = {
+    //   text: <ColIcon />,
+    //   location: <ColIcon />,
+    //   date: <ColIcon />,
+    // };
     const getOptions = () => {
       return dataSet.map((val: BaseDataSet) => {
         const item = val;
@@ -109,16 +115,8 @@ export default defineComponent({
     <Input
       :class="`${PRE_CLASS}-search`"
       :placeholder="searchText"
-      @change="
-        {
-          handleSearch;
-        }
-      "
-      @pressEnter="
-        {
-          handleSearch;
-        }
-      "
+      @change="handleSearch"
+      @pressEnter="handleSearch"
       :allowClear="true"
     />
     <Empty
@@ -140,7 +138,8 @@ export default defineComponent({
       >
         <template #icon>
           <!--          option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type]-->
-          {icon}
+          <col-icon />
+          <row-icon />
         </template>
         {{ option?.name }}
       </MenuItem>
