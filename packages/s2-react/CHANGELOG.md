@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.16.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.1...@antv/s2-react-v1.16.0-alpha.1) (2022-05-17)
+
+
+### Bug Fixes
+
+* 不应以mutable的方式修改headerActionIcons ([#1331](https://github.com/antvis/S2/issues/1331)) ([518456e](https://github.com/antvis/S2/commit/518456e7ec7ce7e9e5d91237f8092250b9a585d3))
+
+
+### Features
+
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
 # [@antv/s2-react-v1.15.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.0...@antv/s2-react-v1.15.1) (2022-05-13)
 
 
