@@ -92,9 +92,9 @@ jobs:
             你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志。
 
             Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
-       
-       - name: Pending
-        if: github.event.label.name == 'pending'
+
+      - name: Pending
+        if: github.event.label.name == '💤 pending'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
