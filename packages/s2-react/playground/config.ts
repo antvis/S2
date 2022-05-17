@@ -102,6 +102,22 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: false,
+      reverseSubLayout: false,
+      subTotalsDimensions: ['province'],
+    },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {
