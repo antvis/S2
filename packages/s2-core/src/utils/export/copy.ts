@@ -60,6 +60,11 @@ const getValueFromMeta = (
         ...colNode.query,
       },
       rowNode,
+      isTotals:
+        rowNode.isTotals ||
+        rowNode.isTotalMeasure ||
+        colNode.isTotals ||
+        colNode.isTotalMeasure,
     });
     return cell[VALUE_FIELD];
   }
@@ -160,6 +165,11 @@ const getPivotCopyData = (
               ...colNode.query,
             },
             rowNode,
+            isTotals:
+              rowNode.isTotals ||
+              rowNode.isTotalMeasure ||
+              colNode.isTotals ||
+              colNode.isTotalMeasure,
           });
           return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
         })

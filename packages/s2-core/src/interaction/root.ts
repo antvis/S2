@@ -1,6 +1,7 @@
 import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import type { IElement } from '@antv/g-canvas';
+import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import {
   DataCellClick,
   MergedCellClick,
@@ -356,6 +357,10 @@ export class RootInteraction {
     } = this.spreadsheet.options.interaction;
 
     return [
+      {
+        key: InteractionName.CORNER_CELL_CLICK,
+        interaction: CornerCellClick,
+      },
       {
         key: InteractionName.DATA_CELL_CLICK,
         interaction: DataCellClick,

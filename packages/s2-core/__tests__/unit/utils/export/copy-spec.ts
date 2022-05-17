@@ -1,6 +1,6 @@
-import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
-import { data as originalData } from 'tests/data/mock-dataset.json';
+import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 
 import {
@@ -217,6 +217,11 @@ describe('List Table Core Data Process', () => {
 });
 
 describe('Pivot Table Core Data Process', () => {
+  // 7 = 4(维度节点) + 2(小计) + 1(总计)
+  const ROW_COUNT = 7;
+  // 11 = 8(维度节点) + 2(小计) + 1(总计)
+  const COL_COUNT = 11;
+
   const s2 = new PivotSheet(
     getContainer(),
     assembleDataCfg({
@@ -232,6 +237,7 @@ describe('Pivot Table Core Data Process', () => {
       interaction: {
         enableCopy: true,
       },
+      totals: TOTALS_OPTIONS,
     }),
   );
   s2.render();
@@ -246,15 +252,32 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   it('should copy normal data in grid mode', () => {
-    const cell = s2.interaction
+    const allDataCells = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
+    const hangzhouDeskCell = allDataCells[0];
+    const zhejiangCityDeskSubTotalCell = allDataCells[4];
+
+    // 普通数据节点
     s2.interaction.changeState({
-      cells: [getCellMeta(cell)],
+      cells: [getCellMeta(hangzhouDeskCell)],
       stateName: InteractionStateName.SELECTED,
     });
     expect(getSelectedData(s2)).toEqual(`${originalData[0].number}`);
+
+    // 小计节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(getSelectedData(s2)).toEqual(
+      `${
+        totalData.find(
+          (data) => data.province === '浙江省' && data.sub_type === '桌子',
+        ).number
+      }`,
+    );
   });
 
   it('should copy col data in grid mode', () => {
@@ -266,7 +289,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(8);
+    expect(getSelectedData(s2).split('\n').length).toBe(COL_COUNT);
   });
 
   it('should copy row data in grid mode', () => {
@@ -301,14 +324,13 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   it('should copy all data in grid mode', () => {
-    const cell = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(8);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(4);
+    expect(getSelectedData(s2).split('\n').length).toBe(COL_COUNT);
+    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(
+      ROW_COUNT,
+    );
   });
 
   it('should copy format data in grid mode', () => {
@@ -356,11 +378,11 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
-    expect(data).toBe('2367\t632\t1304\t1354');
+    expect(data).toBe('2367\t632\t2999\t1304\t1354\t2658\t5657');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(8);
+    expect(getSelectedData(s2).split('\n').length).toEqual(COL_COUNT);
   });
 
   it('should copy correct data with \n data in grid mode', () => {

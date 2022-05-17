@@ -23,7 +23,8 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
     const textarea = document.createElement('textarea');
     textarea.value = str;
     document.body.appendChild(textarea);
-    textarea.focus();
+    // 开启 preventScroll, 防止页面有滚动条时触发滚动
+    textarea.focus({ preventScroll: true });
     textarea.select();
 
     const success = document.execCommand('copy');

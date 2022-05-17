@@ -7,25 +7,6 @@ order: 8
 
 ## 1. 使用问题
 
-### 性能问题
-
-使用 [`S2`](https://github.com/antvis/S2) 过程中，如果出现性能问题，比如渲染时间长，浏览器无响应等，可能原因如下：
-
-- 数据量大。正常 `1w` 数据渲染时间是 `150ms`，`100w` 数据渲染时间是 `4s`，数据超过 `100w` 感受会比较明显，详见 [性能介绍](/zh/docs/manual/advanced/performance)。
-- 属性频繁变化。比如 `<SheetComponent />` 组件中，`options`、`dataCfg`等属性的引用频繁变化，每一次变化都会重新计算布局和渲染，因此属性改变时建议使用新的数据对象，避免重复渲染，[更多了解](https://zh-hans.reactjs.org/docs/optimizing-performance.html#the-power-of-not-mutating-data)。
-
-   举个例子：
-
-   ```ts
-   // bad
-   options.hierarchyType = 'tree';
-
-   // good
-   const newOptions = Object.assign({}, options, { hierarchyType: 'tree' });
-   ```
-
-   此外，当处理深层嵌套对象时，以 immutable （不可变）的方式更新它们，帮助你编写高可读性、高性能的代码。
-
 ### 浏览器兼容性
 
 如果出现兼容性问题请结合 `babel` 和 `@babel/polyfill` 使用，更多问题欢迎进群交流
@@ -150,6 +131,14 @@ s2.render(false)
 
 请查看 [这篇文章](/zh/docs/manual/advanced/get-cell-data)
 
+### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` 中可以正常显示？
+
+请查看 [Tooltip 注意事项](/zh/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+
+### 如何在 Vue 中自定义 Tooltip
+
+请查看 [在 Vue3 中自定义](/zh/docs/manual/basic/tooltip/#在-vue3-中自定义)
+
 ### 表格支持导出 `Excel` 吗？
 
 支持，请查看 [这篇文章](/zh/docs/manual/basic/analysis/export), 或者 [示例](/zh/examples/react-component/export#export)
@@ -169,7 +158,7 @@ s2.render(false)
 
 也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
 
-配套的 [分析组件](/zh/examples/react-component), 目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/zh/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
 ### 怎样贡献代码？
 
@@ -193,7 +182,7 @@ s2.render(false)
 
 - 你的**复现步骤**, 和可复现链接
 
-> 推荐使用 官方 [codesandbox 模板](https://codesandbox.io/s/29zle) 大家一些最小的可复现 demo
+> 推荐使用 官方 [codesandbox 模板](https://codesandbox.io/s/29zle) 搭建一些最小的可复现 demo
 
 - 你的**配置信息**, 并且使用 markdown 的 `code` 标签
 

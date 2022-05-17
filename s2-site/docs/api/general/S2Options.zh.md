@@ -53,6 +53,8 @@ order: 1
 
 `markdown:docs/common/tooltip.zh.md`
 
+`markdown:docs/common/custom-tooltip.zh.md`
+
 ## Pagination
 
 boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
@@ -85,8 +87,8 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |
-| node | 当前渲染的 node 节点 | [Node](#node) | - | ✓ |
-| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | - | ✓ |
+| node | 当前渲染的 node 节点 | [Node](/zh/docs/api/basic-class/node) | - | ✓ |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓ |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 ## CornerHeaderCallback
@@ -100,7 +102,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |
 | parent |   父级单元格 | [S2CellType](#s2celltype) | - | ✓ |
-| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | - | ✓   |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓   |
 | restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 `markdown:docs/common/custom/layoutHierarchy.zh.md`
@@ -170,14 +172,14 @@ export type DataItem = SimpleDataItem | MultiData;
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-: |
-| colNodes |   列的所有节点 | [Node[]](#node) |  |  |
+| colNodes |   列的所有节点 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
 | colsHierarchy |   列的结构信息 | [Hierarchy](#hierarchy) |  |  |
 | rowNodes |   行的所有节点 | [Node[]](#node) |  |  |
 | rowsHierarchy |   行的结构信息 | [Hierarchy](#hierarchy) |  | ✓ |
-| rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](#node) |  |  |
-| colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](#node) |  |  |
+| rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
+| colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
 | getViewMeta |  获取交叉出 [x,y] 对应坐标的信息 | `(rowIndex: number, colIndex: number) => ViewMeta` | | |
-| spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | |  |
+| spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | |  |
 
 ## DataSet
 
