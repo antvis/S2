@@ -1,3 +1,16 @@
+# [@antv/s2-v1.18.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0-alpha.1...@antv/s2-v1.18.0-alpha.2) (2022-05-18)
+
+
+### Bug Fixes
+
+* **facet:** DataCell 边框改为统一绘制的 Grid ([#1297](https://github.com/antvis/S2/issues/1297)) ([daaf989](https://github.com/antvis/S2/commit/daaf989fbb2be537d30675c661aff08a74d6b7f6))
+* **tooltip:** 修复存在小计/总计时汇总数据计算错误 close [#1137](https://github.com/antvis/S2/issues/1137) ([#1346](https://github.com/antvis/S2/issues/1346)) ([f6e5e8c](https://github.com/antvis/S2/commit/f6e5e8c1b05563dee29e926887aa08ef92bd4302))
+
+
+### Features
+
+* 支持回调函数调整 Tooltip 位置 ([#1350](https://github.com/antvis/S2/issues/1350)) ([898f3df](https://github.com/antvis/S2/commit/898f3df590227ef0f0d2afd17892a9514bb7c2a3))
+
 # [@antv/s2-v1.18.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.17.0...@antv/s2-v1.18.0-alpha.1) (2022-05-17)
 
 
