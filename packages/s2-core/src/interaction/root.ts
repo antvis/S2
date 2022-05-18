@@ -274,7 +274,7 @@ export class RootInteraction {
     }
 
     const currentCellMeta = cell?.getMeta?.() as Node;
-    if (isNil(currentCellMeta?.x)) {
+    if (!currentCellMeta || isNil(currentCellMeta?.x)) {
       return;
     }
 
@@ -297,10 +297,10 @@ export class RootInteraction {
 
       if (isSelectedCell) {
         selectedCells = selectedCells.filter(
-          ({ id }) => id !== currentCellMeta?.id,
+          ({ id }) => id !== currentCellMeta.id,
         );
         leafNodes = leafNodes.filter(
-          (node) => !node?.id.includes(currentCellMeta?.id),
+          (node) => !node?.id.includes(currentCellMeta.id),
         );
       }
     }
