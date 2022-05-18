@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.16.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.1...@antv/s2-react-v1.16.0-alpha.2) (2022-05-18)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复存在小计/总计时汇总数据计算错误 close [#1137](https://github.com/antvis/S2/issues/1137) ([#1346](https://github.com/antvis/S2/issues/1346)) ([f6e5e8c](https://github.com/antvis/S2/commit/f6e5e8c1b05563dee29e926887aa08ef92bd4302))
+
 # [@antv/s2-react-v1.16.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.1...@antv/s2-react-v1.16.0-alpha.1) (2022-05-17)
 
 
