@@ -65,8 +65,8 @@ export class BaseTooltip {
     };
     setContainerStyle(container, {
       style: {
-        left: `${this.position.x}px`,
-        top: `${this.position.y}px`,
+        left: `${this.position?.x}px`,
+        top: `${this.position?.y}px`,
         pointerEvents: enterable ? 'all' : 'none',
       },
       className: `${TOOLTIP_CONTAINER_CLS}-show`,
