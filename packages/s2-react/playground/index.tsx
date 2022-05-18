@@ -13,6 +13,7 @@ import {
   Collapse,
   Tag,
   Tabs,
+  DatePicker,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -134,6 +135,7 @@ const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
     <div>2</div>
+    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
   </div>
 );
 
@@ -148,7 +150,7 @@ function MainLayout() {
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
-  const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
+  const [showCustomTooltip, setShowCustomTooltip] = React.useState(true);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);

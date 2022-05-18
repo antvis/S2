@@ -575,3 +575,19 @@ export const getTooltipVisibleOperator = (
     menus: compact([...defaultMenus, ...displayMenus]),
   };
 };
+
+export const verifyTheElementInTooltip = (
+  parent: HTMLElement,
+  child: Node,
+): boolean => {
+  let result = false;
+  let currentNode: Node = child;
+  while (currentNode !== document.body) {
+    if (parent === currentNode) {
+      result = true;
+      break;
+    }
+    currentNode = currentNode.parentElement;
+  }
+  return result;
+};
