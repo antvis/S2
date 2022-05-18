@@ -59,16 +59,6 @@ import {
 import { Tooltip, ViewMeta } from '@/common/interface';
 import { isNotNumber, getDataSumByField } from '@/utils/number-calculate';
 
-/** whether the data of hover is selected */
-export const isHoverDataInSelectedData = (
-  selectedData: TooltipDataItem[],
-  activeData: TooltipDataItem,
-): boolean => {
-  return some(selectedData, (dataItem: TooltipDataItem): boolean =>
-    isEqual(dataItem, activeData),
-  );
-};
-
 /**
  * calculate tooltip show position
  */
@@ -317,13 +307,6 @@ export const getSummaryName = (
   return name && name !== 'undefined' ? name : '';
 };
 
-export const getSelectedValueFields = (
-  selectedData: TooltipDataItem[],
-  field: string,
-): string[] => {
-  return uniq(selectedData.map((d) => get(d, field)));
-};
-
 const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
   const selectedIndexes = [];
   forEach(leafNodes, (leaf, index) => {
@@ -344,8 +327,7 @@ export const getSelectedCellIndexes = (
   layoutResult: LayoutResult,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { nodes = [] } = spreadsheet.interaction.getState();
-  const cells = spreadsheet.interaction.getCells();
+  const { nodes = [], cells = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.type;
 
   if (cellType === CellTypes.COL_CELL) {
@@ -496,7 +478,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   return summaries;
 };
 
-export const getTooltipData = (params: TooltipDataParam) => {
+export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const {
     spreadsheet,
     cellInfos = [],
