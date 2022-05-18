@@ -3,6 +3,11 @@ import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
+import {
+  getColsForGrid,
+  getFrozenRowsForGrid,
+  getRowsForGrid,
+} from 'src/utils/grid';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import {
   getAdjustedRowScrollX,
@@ -52,6 +57,7 @@ import {
   ViewMeta,
   S2CellType,
   FrameConfig,
+  GridInfo,
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
@@ -103,6 +109,8 @@ export abstract class BaseFacet {
   public rowIndexHeader: SeriesNumberHeader;
 
   public centerFrame: Frame;
+
+  public gridInfo: GridInfo;
 
   protected abstract doLayout(): LayoutResult;
 
@@ -1163,6 +1171,22 @@ export abstract class BaseFacet {
     return this.centerFrame;
   }
 
+  protected getGridInfo = () => {
+    const [colMin, colMax, rowMin, rowMax] = this.preCellIndexes.center;
+    const cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
+    const rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+
+    return {
+      cols,
+      rows,
+    };
+  };
+
+  public drawGrid() {
+    this.gridInfo = this.getGridInfo();
+    this.spreadsheet.panelScrollGroup.updateGrid(this.gridInfo);
+  }
+
   /**
    * When scroll behavior happened, only render one time in a period,
    * but render immediately in initiate
@@ -1185,6 +1209,7 @@ export abstract class BaseFacet {
       this.realCellRender(scrollX, scrollY);
     }
 
+    this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
 

@@ -176,7 +176,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawConditionIconShapes();
-    this.drawBorderShape();
+    if (this.meta.isFrozenCorner) {
+      this.drawBorderShape();
+    }
     this.update();
   }
 

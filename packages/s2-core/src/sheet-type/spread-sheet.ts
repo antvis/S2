@@ -58,6 +58,8 @@ import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
+import { PanelScrollGroup } from '@/group/panel-scroll-group';
+import { FrozenGroup } from '@/group/frozen-group';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -94,19 +96,19 @@ export abstract class SpreadSheet extends EE {
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
 
-  public panelScrollGroup: IGroup;
+  public panelScrollGroup: PanelScrollGroup;
 
-  public frozenRowGroup: IGroup;
+  public frozenRowGroup: FrozenGroup;
 
-  public frozenColGroup: IGroup;
+  public frozenColGroup: FrozenGroup;
 
-  public frozenTrailingRowGroup: IGroup;
+  public frozenTrailingRowGroup: FrozenGroup;
 
-  public frozenTrailingColGroup: IGroup;
+  public frozenTrailingColGroup: FrozenGroup;
 
-  public frozenTopGroup: IGroup;
+  public frozenTopGroup: FrozenGroup;
 
-  public frozenBottomGroup: IGroup;
+  public frozenBottomGroup: FrozenGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
@@ -584,10 +586,12 @@ export abstract class SpreadSheet extends EE {
   }
 
   protected initPanelGroupChildren() {
-    this.panelScrollGroup = this.panelGroup.addGroup({
+    this.panelScrollGroup = new PanelScrollGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+      s2: this,
     });
+    this.panelGroup.add(this.panelScrollGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {
