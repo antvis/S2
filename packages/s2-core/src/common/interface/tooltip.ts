@@ -109,10 +109,10 @@ export type TooltipHeadInfo = {
   cols: ListItem[];
 };
 
-export type DataParam = {
+export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
-  isHeader?: boolean; // 是否是行头/列头
+  targetCell: S2CellType;
   getShowValue?: (
     selectedData: TooltipDataItem[],
     valueField: string,
@@ -128,11 +128,11 @@ export interface SummaryProps {
   summaries: TooltipSummaryOptions[];
 }
 
-export interface SummaryParam extends DataParam {
+export interface SummaryParam extends TooltipDataParams {
   cellInfos?: TooltipDataItem[];
 }
 
-export interface TooltipDataParam extends DataParam {
+export interface TooltipDataParam extends TooltipDataParams {
   cellInfos: TooltipDataItem[];
 }
 
@@ -153,6 +153,9 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  // Custom tooltip position
+  readonly adjustPosition?: (position: TooltipPosition) => TooltipPosition;
+  // Custom tooltip content
   readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip mount container
   readonly getContainer?: () => HTMLElement;

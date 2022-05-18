@@ -548,6 +548,48 @@ function MainLayout() {
                   disabled={sheetType === 'table'}
                 />
                 <Switch
+                  checkedChildren="显示行小计/总计"
+                  unCheckedChildren="隐藏行小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.row?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        row: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['province'],
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="显示列小计/总计"
+                  unCheckedChildren="隐藏列小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.col?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        col: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['type'],
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
                   checkedChildren="冻结行头开"
                   unCheckedChildren="冻结行头关"
                   defaultChecked={mergedOptions.frozenRowHeader}
