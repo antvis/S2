@@ -274,9 +274,11 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
+    const targetCell = this.getCell(event?.target);
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
+      targetCell,
       options: {
         enableFormat: true,
         ...options,

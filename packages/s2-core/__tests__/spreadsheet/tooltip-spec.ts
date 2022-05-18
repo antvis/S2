@@ -1,6 +1,4 @@
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '@/sheet-type';
+import { createPivotSheet } from 'tests/util/helpers';
 import { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
@@ -12,7 +10,7 @@ const CONTAINER_CLASS_NAME = 'antv-s2-tooltip-container';
 
 describe('Tooltip Tests', () => {
   const createS2 = (tooltipOptions: S2Options['tooltip']) => {
-    return new PivotSheet(getContainer(), mockDataConfig, {
+    return createPivotSheet({
       ...s2Options,
       tooltip: tooltipOptions,
     });

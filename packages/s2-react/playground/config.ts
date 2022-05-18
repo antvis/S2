@@ -7,7 +7,12 @@ import {
 } from '@antv/s2';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';
-import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
+import {
+  data,
+  totalData,
+  meta,
+  fields,
+} from '../__tests__/data/mock-dataset.json';
 import { getSheetComponentOptions } from '@/utils';
 
 const BASIC_BACKGROUND_COLOR = '#FFFFFF';
@@ -86,12 +91,7 @@ export const pivotSheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type', 'sub_type'],
-    values: ['number'],
-    valueInCols: true,
-  },
+  fields,
 };
 
 export const s2Options: S2Options = {
