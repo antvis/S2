@@ -153,6 +153,9 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  // Custom tooltip position
+  readonly adjustPosition?: (position: TooltipPosition) => TooltipPosition;
+  // Custom tooltip content
   readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip mount container
   readonly getContainer?: () => HTMLElement;

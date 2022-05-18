@@ -46,8 +46,8 @@ export class BaseTooltip {
     const { position, options, content } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
     const container = this.getContainer();
-    const { autoAdjustBoundary } = this.spreadsheet.options.tooltip || {};
-
+    const { autoAdjustBoundary, adjustPosition } =
+      this.spreadsheet.options.tooltip || {};
     this.visible = true;
     this.options = showOptions as unknown as TooltipShowOptions;
 
@@ -59,16 +59,14 @@ export class BaseTooltip {
       tooltipContainer: container,
       autoAdjustBoundary,
     });
-
-    this.position = {
+    this.position = adjustPosition?.({ x, y }) ?? {
       x,
       y,
     };
-
     setContainerStyle(container, {
       style: {
-        left: `${x}px`,
-        top: `${y}px`,
+        left: `${this.position.x}px`,
+        top: `${this.position.y}px`,
         pointerEvents: enterable ? 'all' : 'none',
       },
       className: `${TOOLTIP_CONTAINER_CLS}-show`,

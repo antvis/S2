@@ -544,7 +544,10 @@ export const getTooltipOptions = (
   spreadsheet: SpreadSheet,
   event: CanvasEvent | MouseEvent | Event,
 ): Tooltip => {
-  const cellType = spreadsheet.getCellType?.(event.target);
+  if (!event || !spreadsheet) {
+    return;
+  }
+  const cellType = spreadsheet.getCellType?.(event?.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
 };
 

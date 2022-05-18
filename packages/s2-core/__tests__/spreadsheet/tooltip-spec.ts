@@ -55,6 +55,27 @@ describe('Tooltip Tests', () => {
     s2.destroy();
   });
 
+  test('should render tooltip in custom position', () => {
+    const container = document.createElement('div');
+    container.id = 'custom-container';
+    document.body.appendChild(container);
+
+    const s2 = createS2({
+      showTooltip: true,
+      adjustPosition: (position) => {
+        return { x: position.x + 100, y: position.y + 100 };
+      },
+    });
+
+    s2.render();
+
+    s2.showTooltip({ position: { x: 0, y: 0 } });
+
+    expect(s2.tooltip.position).toEqual({ x: 115, y: 110 });
+
+    s2.destroy();
+  });
+
   test('should render tooltip in custom container', () => {
     const container = document.createElement('div');
     container.id = 'custom-container';
