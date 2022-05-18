@@ -2,7 +2,6 @@ import { isEmpty } from 'lodash';
 import React from 'react';
 import { SpreadSheet, getTooltipOptions } from '@antv/s2';
 import { useLatest } from 'ahooks';
-import { useMemo } from 'react';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
 import { SheetComponentsProps } from '@/components/sheets/interface';
@@ -50,7 +49,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     );
 
     /** 基于 props.options 来构造新的 options 传递给 base-sheet */
-    const options = useMemo(() => {
+    const options = React.useMemo(() => {
       return buildDrillDownOptions(pivotOptions, partDrillDown, (params) =>
         onDrillDownIconClick.current(params),
       );

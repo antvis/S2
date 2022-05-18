@@ -201,6 +201,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
     this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     this.spreadsheet.interaction.reset();
-    this.spreadsheet.render(false);
+    this.spreadsheet.render(false, false, false);
   }
 }

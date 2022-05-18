@@ -31,10 +31,10 @@ import {
   DataType,
   generatePalette,
   getPalette,
-  InterceptType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
+import { useUpdateEffect } from 'ahooks';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -253,7 +253,7 @@ function MainLayout() {
     });
   }, [sheetType]);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     switch (sheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);

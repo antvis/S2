@@ -8,7 +8,6 @@ import {
   isEmpty,
   isFunction,
   isString,
-  once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
@@ -336,7 +335,11 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, reBuildDataSet = false) {
+  public render(
+    reloadData = true,
+    reBuildDataSet = false,
+    reBuildHiddenColumnsDetail = true,
+  ) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet(this.options);
@@ -346,7 +349,9 @@ export abstract class SpreadSheet extends EE {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    this.initHiddenColumnsDetail();
+    if (reBuildHiddenColumnsDetail) {
+      this.initHiddenColumnsDetail();
+    }
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
@@ -599,13 +604,15 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
-  private initHiddenColumnsDetail = once(() => {
+  private initHiddenColumnsDetail = () => {
     const { hiddenColumnFields } = this.options.interaction;
-    if (isEmpty(hiddenColumnFields)) {
+    const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
+    // 隐藏列为空, 并且没有操作的情况下, 不需要再往下走
+    if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
       return;
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
-  });
+  };
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();
