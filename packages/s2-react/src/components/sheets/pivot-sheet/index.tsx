@@ -86,7 +86,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     }, [drillFields]);
 
     React.useEffect(() => {
-      if (isEmpty(partDrillDown?.clearDrillDown)) {
+      if (typeof partDrillDown?.clearDrillDown !== 'object') {
         return;
       }
       clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);

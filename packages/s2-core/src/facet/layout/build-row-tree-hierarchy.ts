@@ -40,12 +40,15 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
+
+  // 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value
   const dimensions =
     ROOT_ID === id
       ? sortedDimensionValues
       : sortedDimensionValues?.filter((item) =>
           item?.includes(id?.split(`${ROOT_ID}${ID_SEPARATOR}`)[1]),
         );
+
   const dimValues = filterUndefined(
     getListBySorted(
       [...(pivotMeta.keys() || [])],
