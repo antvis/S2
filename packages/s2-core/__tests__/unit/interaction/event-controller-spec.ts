@@ -532,7 +532,9 @@ describe('Interaction Event Controller Tests', () => {
     );
     cTooltipChild.innerHTML = '我是”弹出层“元素';
     cTooltipParent.appendChild(cTooltipChild);
+    document.body.appendChild(cTooltipParent);
 
+    spreadsheet.tooltip.visible = true;
     spreadsheet.tooltip.container = cTooltipParent;
     spreadsheet.tooltip.container.getBoundingClientRect = () =>
       ({
@@ -546,6 +548,7 @@ describe('Interaction Event Controller Tests', () => {
       new MouseEvent('click', {
         clientX: 233,
         clientY: 233,
+        bubbles: true,
       } as MouseEventInit),
     );
 
