@@ -33,6 +33,7 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
+  S2RenderOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -335,11 +336,9 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(
-    reloadData = true,
-    reBuildDataSet = false,
-    reBuildHiddenColumnsDetail = true,
-  ) {
+  public render(reloadData = true, options: S2RenderOptions = {}) {
+    const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
+      options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet(this.options);
@@ -607,7 +606,7 @@ export abstract class SpreadSheet extends EE {
   private initHiddenColumnsDetail = () => {
     const { hiddenColumnFields } = this.options.interaction;
     const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
-    // 隐藏列为空, 并且没有操作的情况下, 不需要再往下走
+    // 隐藏列为空, 并且没有操作的情况下, 则无需生成
     if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
       return;
     }

@@ -131,10 +131,9 @@ export function useSpreadSheet(
       reBuildDataSet,
     });
 
-    s2Ref.current?.render(
-      renderOptions.reloadData,
-      renderOptions.reBuildDataSet,
-    );
+    s2Ref.current?.render(renderOptions.reloadData, {
+      reBuildDataSet: renderOptions.reBuildDataSet,
+    });
   }, [dataCfg, options, themeCfg, onSheetUpdate]);
 
   useResize({

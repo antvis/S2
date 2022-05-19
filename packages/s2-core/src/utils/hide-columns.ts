@@ -116,7 +116,7 @@ export const hideColumns = (
     });
     spreadsheet.interaction.reset();
     spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
-    spreadsheet.render(false, false, false);
+    spreadsheet.render(false, { reBuildHiddenColumnsDetail: false });
   };
 
   if (isEmpty(selectedColumnFields) && forceRender) {
