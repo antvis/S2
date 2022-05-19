@@ -1,3 +1,10 @@
+# [@antv/s2-v1.18.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0-alpha.2...@antv/s2-v1.18.0-alpha.3) (2022-05-19)
+
+
+### Bug Fixes
+
+* **interaction:** 修复默认隐藏列的配置更新为空数组时, 未触发表格更新 ([#1351](https://github.com/antvis/S2/issues/1351)) ([7ed1011](https://github.com/antvis/S2/commit/7ed101152caa180cc7090861f4fbf7f774148a23))
+
 # [@antv/s2-v1.18.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0-alpha.1...@antv/s2-v1.18.0-alpha.2) (2022-05-18)
 
 
