@@ -30,13 +30,6 @@ export const BaseSheet = React.forwardRef(
       }
     }, [ref, s2Ref]);
 
-    // 默认隐藏列
-    React.useEffect(() => {
-      s2Ref.current?.interaction.hideColumns(
-        options.interaction?.hiddenColumnFields,
-      );
-    }, [options.interaction?.hiddenColumnFields, s2Ref]);
-
     return (
       <React.StrictMode>
         <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
