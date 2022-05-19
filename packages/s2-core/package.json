@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.18.0-alpha.2",
+  "version": "1.18.0-alpha.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
