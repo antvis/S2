@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import EE from '@antv/event-emitter';
-import { Canvas, Group, EventTarget } from '@antv/g';
+import { Canvas, Group } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
   forEach,
