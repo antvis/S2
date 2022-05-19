@@ -22,7 +22,6 @@ export default defineComponent({
   ] as unknown as GetInitProps<TooltipRenderProps>,
   setup(props) {
     const { operator, onlyMenu } = getTooltipDefaultOptions(props.options);
-
     return {
       operator,
       onlyMenu,

@@ -29,6 +29,16 @@ export class CustomTooltip extends BaseTooltip {
       TooltipComponent,
       tooltipProps as VNodeProps,
     );
+
+    // render(null) 确保每一次的 tooltip 内容是最新的
+    render(null, this.container);
     render(tooltipVNode, this.container);
+  }
+
+  destroy() {
+    super.destroy();
+    if (this.container) {
+      render(null, this.container);
+    }
   }
 }
