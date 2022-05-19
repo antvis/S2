@@ -31,11 +31,11 @@ import {
   DataType,
   generatePalette,
   getPalette,
-  InterceptType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
 import { Adaptive, SheetType } from '@antv/s2-shared';
+import { useUpdateEffect } from 'ahooks';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -248,7 +248,7 @@ function MainLayout() {
     });
   }, [sheetType]);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     switch (sheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);
@@ -536,6 +536,48 @@ function MainLayout() {
                       style: {
                         colCfg: {
                           hideMeasureColumn: checked,
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="显示行小计/总计"
+                  unCheckedChildren="隐藏行小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.row?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        row: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['province'],
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="显示列小计/总计"
+                  unCheckedChildren="隐藏列小计/总计"
+                  defaultChecked={
+                    mergedOptions.totals?.col?.showSubTotals as boolean
+                  }
+                  onChange={(checked) => {
+                    updateOptions({
+                      totals: {
+                        col: {
+                          showGrandTotals: checked,
+                          showSubTotals: checked,
+                          reverseLayout: true,
+                          reverseSubLayout: true,
+                          subTotalsDimensions: ['type'],
                         },
                       },
                     });

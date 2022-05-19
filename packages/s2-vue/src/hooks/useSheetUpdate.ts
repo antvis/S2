@@ -57,7 +57,9 @@ export const useSheetUpdate = (
     if (!flag.rerender) {
       return;
     }
-    s2Ref.value?.render(flag.reloadData, flag.rebuildDataset);
+    s2Ref.value?.render(flag.reloadData, {
+      reBuildDataSet: flag.rebuildDataset,
+    });
     flag.rerender = false;
     flag.reloadData = false;
     flag.rebuildDataset = false;

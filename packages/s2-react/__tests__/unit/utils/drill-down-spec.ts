@@ -13,7 +13,7 @@ import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import {
   handleActionIconClick,
   handleDrillDown,
-  handleDrillDownIcon,
+  buildDrillDownOptions,
   getDrillDownCache,
 } from '@/utils';
 import { PartDrillDown, PartDrillDownInfo } from '@/components';
@@ -88,6 +88,9 @@ describe('Drill Down Test', () => {
     mockInstance.dataSet.setDataCfg(mockDataCfg);
     mockInstance.interaction = new RootInteraction(mockInstance);
     mockInstance.setOptions(mockOptions);
+
+    // 挂载 instance
+    cityNode.spreadsheet = mockInstance;
   });
 
   test('for handleDrillDown function', async () => {
@@ -104,18 +107,11 @@ describe('Drill Down Test', () => {
     expect(mockInstance.store.get('drillDownIdPathMap')).not.toBeEmpty();
   });
 
-  test('for handleDrillDownIcon function', () => {
-    const mergedOptions = handleDrillDownIcon(
-      {
-        options: mockInstance.options,
-        dataCfg: mockInstance.dataCfg,
-        partDrillDown: mockPartDrillDown,
-      },
-      mockInstance,
+  test('for buildDrillDownOptions function', () => {
+    const mergedOptions = buildDrillDownOptions(
+      mockInstance.options,
+      mockPartDrillDown,
       iconClickCallback,
-      {
-        current: null,
-      },
     );
     expect(mergedOptions.headerActionIcons).not.toBeEmpty();
   });
@@ -123,9 +119,7 @@ describe('Drill Down Test', () => {
   test('for handleActionIconClick function', async () => {
     handleActionIconClick({
       meta: cityNode,
-      spreadsheet: mockInstance,
       callback: iconClickCallback,
-      iconName: 'DrillDownIcon',
     });
     await sleep(1000);
     expect(mockInstance.store.get('drillDownNode')?.id).toEqual(

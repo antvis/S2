@@ -188,7 +188,7 @@ export class RootInteraction {
     );
   }
 
-  public getAllRowHeaderCells() {
+  public getAllRowHeaderCells(): RowCell[] {
     const children = this.spreadsheet.foregroundGroup?.getChildren();
     const rowHeader = filter(
       children,
@@ -205,10 +205,10 @@ export class RootInteraction {
     const rowCells = currentNode || [];
     return rowCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
-    ) as RowCell[];
+    );
   }
 
-  public getAllColHeaderCells() {
+  public getAllColHeaderCells(): ColCell[] {
     const children = this.spreadsheet?.foregroundGroup?.getChildren();
     const colHeader = filter(
       children,
@@ -221,11 +221,11 @@ export class RootInteraction {
       return [];
     }
 
-    const colCells = getAllChildCells(headerChildren, ColCell);
+    const colCells = getAllChildCells(headerChildren, ColCell) as ColCell[];
 
     return colCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
-    ) as ColCell[];
+    );
   }
 
   public getRowColActiveCells(ids: string[]) {
@@ -273,8 +273,8 @@ export class RootInteraction {
       return;
     }
 
-    const currentCellMeta = cell?.getMeta() as Node;
-    if (isNil(currentCellMeta.x)) {
+    const currentCellMeta = cell?.getMeta?.() as Node;
+    if (!currentCellMeta || isNil(currentCellMeta?.x)) {
       return;
     }
 
@@ -343,8 +343,8 @@ export class RootInteraction {
     unmergeCell(this.spreadsheet, removedCells);
   };
 
-  public hideColumns(hiddenColumnFields: string[] = []) {
-    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
+  public hideColumns(hiddenColumnFields: string[] = [], forceRender = true) {
+    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
   private getDefaultInteractions() {

@@ -20,6 +20,7 @@ import type {
   ResizeInfo,
   S2CellType,
   TooltipOperatorOptions,
+  S2RenderOptions,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -32,6 +33,9 @@ export type Adaptive =
     };
 
 export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
+
+/** render callback */
+export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
 export interface BaseSheetComponentProps<
   PartialDrillDown = unknown,
@@ -53,6 +57,8 @@ export interface BaseSheetComponentProps<
   themeCfg?: ThemeCfg;
   header?: Header;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
+  /** 底表 render callback */
+  onSheetUpdate?: SheetUpdateCallback;
 
   // ============== Row Cell ====================
   onRowCellHover?: (data: TargetCellInfo) => void;

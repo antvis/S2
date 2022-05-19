@@ -1,12 +1,20 @@
-import { PivotSheet, S2Constructor, SpreadSheet, TableSheet } from '@antv/s2';
-import { useUpdate } from 'ahooks';
+import {
+  PivotSheet,
+  S2Constructor,
+  S2DataConfig,
+  S2Options,
+  ThemeCfg,
+  SpreadSheet,
+  TableSheet,
+} from '@antv/s2';
+import { useUpdate, useUpdateEffect } from 'ahooks';
+import { identity } from 'lodash';
 import React from 'react';
-import type { SheetComponentsProps } from '../components';
+import { SheetComponentsProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
-import { usePrevious } from './usePrevious';
 import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentsProps) {
@@ -21,12 +29,17 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     options,
     themeCfg,
     sheetType,
+    onSheetUpdate = identity,
   } = props;
+  /** 保存重渲 effect 的 deps */
+  const updatePrevDepsRef = React.useRef<[S2DataConfig, S2Options, ThemeCfg]>([
+    dataCfg,
+    options,
+    themeCfg,
+  ]);
+
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
   const pagination = usePagination(s2Ref.current, props);
-  const prevDataCfg = usePrevious(dataCfg);
-  const prevOptions = usePrevious(options);
-  const prevThemeCfg = usePrevious(themeCfg);
 
   useEvents(props, s2Ref.current);
 
@@ -68,8 +81,11 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // dataCfg, options or theme changed
-  React.useEffect(() => {
+  // 重渲 effect：dataCfg, options or theme changed
+  useUpdateEffect(() => {
+    const [prevDataCfg, prevOptions, prevThemeCfg] = updatePrevDepsRef.current;
+    updatePrevDepsRef.current = [dataCfg, options, themeCfg];
+
     let reloadData = false;
     let reBuildDataSet = false;
     if (!Object.is(prevDataCfg, dataCfg)) {
@@ -90,8 +106,20 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);
     }
-    s2Ref.current?.render(reloadData, reBuildDataSet);
-  }, [dataCfg, options, prevDataCfg, prevOptions, prevThemeCfg, themeCfg]);
+
+    /**
+     * onSheetUpdate 交出控制权
+     * 由传入方决定最终的 render 模式
+     */
+    const renderOptions = onSheetUpdate({
+      reloadData,
+      reBuildDataSet,
+    });
+
+    s2Ref.current?.render(renderOptions.reloadData, {
+      reBuildDataSet: renderOptions.reBuildDataSet,
+    });
+  }, [dataCfg, options, themeCfg, onSheetUpdate]);
 
   useResize({
     s2: s2Ref.current,
