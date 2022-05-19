@@ -129,3 +129,8 @@ export interface S2Options<T = Element | string>
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 }
+
+export interface S2RenderOptions {
+  reBuildDataSet?: boolean;
+  reBuildHiddenColumnsDetail?: boolean;
+}

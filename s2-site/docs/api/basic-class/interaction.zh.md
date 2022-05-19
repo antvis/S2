@@ -27,7 +27,7 @@ s2.interaction.xx()
 | isEqualStateName | 是否是相同的状态名 | `(name: InteractionStateName) => void` |
 | isSelectedState | 是否是选中状态 | `() => void` |
 | isHoverState | 是否是悬停状态 | `() => void` |
-| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认800ms 后） | `() => void` |
+| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认 800ms 后） | `() => void` |
 | isSelectedCell | 是否是选中的单元格 | `(cell: S2CellType) => void` |
 | isActiveCell | 是否是激活的单元格 | `(cell: S2CellType) => void` |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子 | `() => Partial<ViewMeta>[]` |
@@ -42,7 +42,7 @@ s2.interaction.xx()
 | selectAll | 选中所有单元格 | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
 | getCellLeafNodes | 获取当前单元格的叶子节点 | `(cell: S2CellType[]) => Node[]` |
-| hideColumns | 隐藏列 | `(hiddenColumnFields: string[]) => void` |
+| hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
 | unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |

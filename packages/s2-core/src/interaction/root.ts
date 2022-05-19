@@ -343,8 +343,8 @@ export class RootInteraction {
     unmergeCell(this.spreadsheet, removedCells);
   };
 
-  public hideColumns(hiddenColumnFields: string[] = []) {
-    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
+  public hideColumns(hiddenColumnFields: string[] = [], forceRender = true) {
+    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
   private getDefaultInteractions() {

@@ -105,6 +105,25 @@ export const hideColumns = (
   selectedColumnFields: string[] = [],
   forceRender = false,
 ) => {
+  const renderByHiddenColumns = (
+    hiddenColumnFields: string[] = [],
+    hiddenColumnsDetail: HiddenColumnsInfo[] = [],
+  ) => {
+    spreadsheet.setOptions({
+      interaction: {
+        hiddenColumnFields,
+      },
+    });
+    spreadsheet.interaction.reset();
+    spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
+    spreadsheet.render(false, { reBuildHiddenColumnsDetail: false });
+  };
+
+  if (isEmpty(selectedColumnFields) && forceRender) {
+    renderByHiddenColumns();
+    return;
+  }
+
   const lastHiddenColumnDetail = spreadsheet.store.get(
     'hiddenColumnsDetail',
     [],
@@ -120,11 +139,6 @@ export const hideColumns = (
     ...selectedColumnFields,
     ...lastHiddenColumnFields,
   ]);
-  spreadsheet.setOptions({
-    interaction: {
-      hiddenColumnFields,
-    },
-  });
 
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
@@ -146,9 +160,8 @@ export const hideColumns = (
     currentHiddenColumnsInfo,
     hiddenColumnsDetail,
   );
-  spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
-  spreadsheet.interaction.reset();
-  spreadsheet.render(false);
+
+  renderByHiddenColumns(hiddenColumnFields, hiddenColumnsDetail);
 };
 
 /**
@@ -168,12 +181,20 @@ export const getColumns = (spreadsheet: SpreadSheet) => {
 /**
  * @name 根据分组隐藏指定列
  * @description 根据配置的隐藏列自动分组, 批量隐藏
+ * @param spreadsheet
+ * @param hiddenColumnFields 隐藏的列头字段
+ * @param forceRender 隐藏的列头字段为空时, 是否强制更新
  */
 export const hideColumnsByThunkGroup = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
+  // 隐藏列为空时, 有可能是隐藏后又展开 ( [] => ['A'] => []), 所以需要更新一次, 将渲染的展开icon, 隐藏列信息等清空
+  if (isEmpty(hiddenColumnFields) && forceRender) {
+    hideColumns(spreadsheet, hiddenColumnFields, true);
+  }
+
   const columns = getColumns(spreadsheet);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
     columns,
