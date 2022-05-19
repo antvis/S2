@@ -436,27 +436,28 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private renderPrepareSelected = (point: Point) => {
     const { x, y } = point;
-    const target = this.spreadsheet.container?.getShape(x, y);
+    // TODO 交互适配
+    // const target = this.spreadsheet.container?.getShape(x, y);
 
-    const cell = this.spreadsheet.getCell(target);
+    // const cell = this.spreadsheet.getCell(target);
 
-    if (!cell || !(cell instanceof DataCell)) {
-      return;
-    }
-    const { rowIndex, colIndex } = cell.getMeta();
+    // if (!cell || !(cell instanceof DataCell)) {
+    //   return;
+    // }
+    // const { rowIndex, colIndex } = cell.getMeta();
 
-    this.endBrushPoint = {
-      x,
-      y,
-      rowIndex,
-      colIndex,
-    };
+    // this.endBrushPoint = {
+    //   x,
+    //   y,
+    //   rowIndex,
+    //   colIndex,
+    // };
 
-    const { interaction } = this.spreadsheet;
-    interaction.addIntercepts([InterceptType.HOVER]);
-    interaction.clearStyleIndependent();
-    this.updatePrepareSelectMask();
-    this.showPrepareSelectedCells();
+    // const { interaction } = this.spreadsheet;
+    // interaction.addIntercepts([InterceptType.HOVER]);
+    // interaction.clearStyleIndependent();
+    // this.updatePrepareSelectMask();
+    // this.showPrepareSelectedCells();
   };
 
   private bindMouseMove() {
@@ -468,7 +469,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
+      const pointInCanvas = this.spreadsheet.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
@@ -554,10 +558,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
-    const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
-      x: event?.x ?? originalEvent?.layerX,
-      y: event?.y ?? originalEvent?.layerY,
+      x: event?.x,
+      y: event?.y,
     };
     const cell = this.spreadsheet.getCell(event.target);
     const { colIndex, rowIndex } = cell.getMeta();

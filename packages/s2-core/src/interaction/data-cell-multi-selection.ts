@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   getCellMeta,
@@ -11,7 +10,12 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
+import {
+  CanvasEvent,
+  CellMeta,
+  S2CellType,
+  ViewMeta,
+} from '@/common/interface';
 import { DataCell } from '@/cell';
 
 export class DataCellMultiSelection
@@ -65,7 +69,7 @@ export class DataCellMultiSelection
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();

@@ -1,9 +1,4 @@
-import {
-  Event as CanvasEvent,
-  IGroup,
-  ShapeAttrs,
-  IShape,
-} from '@antv/g-canvas';
+import { Group, PathStyleProps, Path, Rect } from '@antv/g';
 import { clone, isEmpty, throttle, get } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
@@ -25,11 +20,12 @@ import {
   ResizeAreaEffect,
   ResizeType,
 } from '@/common/constant';
+import { CanvasEvent } from '@/common/interface';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
-  private resizeTarget: IGroup;
+  private resizeTarget: Group;
 
-  public resizeReferenceGroup: IGroup;
+  public resizeReferenceGroup: Group;
 
   public resizeStartPosition: ResizePosition = {};
 
@@ -43,47 +39,56 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (this.resizeReferenceGroup) {
       return;
     }
-    this.resizeReferenceGroup = this.spreadsheet.foregroundGroup.addGroup();
+    this.resizeReferenceGroup = this.spreadsheet.foregroundGroup.appendChild(
+      new Group(),
+    );
 
     const { width, height } = this.spreadsheet.options;
     const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();
-    const attrs: ShapeAttrs = {
+    const style: PathStyleProps = {
       path: '',
       lineDash: guideLineDash,
       stroke: guideLineColor,
       lineWidth: size,
     };
     // 起始参考线
-    this.resizeReferenceGroup.addShape('path', {
-      id: RESIZE_START_GUIDE_LINE_ID,
-      attrs,
-    });
+    this.resizeReferenceGroup.appendChild(
+      new Path({
+        id: RESIZE_START_GUIDE_LINE_ID,
+        style,
+      }),
+    );
     // 结束参考线
-    this.resizeReferenceGroup.addShape('path', {
-      id: RESIZE_END_GUIDE_LINE_ID,
-      attrs,
-    });
+    this.resizeReferenceGroup.appendChild(
+      new Path({
+        id: RESIZE_END_GUIDE_LINE_ID,
+        style,
+      }),
+    );
     // Resize 蒙层
-    this.resizeReferenceGroup.addShape('rect', {
-      id: RESIZE_MASK_ID,
-      attrs: {
-        appendInfo: {
-          isResizeArea: true,
+    this.resizeReferenceGroup.appendChild(
+      new Rect({
+        id: RESIZE_MASK_ID,
+        style: {
+          // TODO 兼容 Resize
+          // appendInfo: {
+          //   isResizeArea: true,
+          // },
+          x: 0,
+          y: 0,
+          width,
+          height,
+          fill: 'transparent',
         },
-        x: 0,
-        y: 0,
-        width,
-        height,
-        fill: 'transparent',
-      },
-    });
+      }),
+    );
   }
 
   private getResizeAreaTheme() {
     return this.spreadsheet.theme.resizeArea;
   }
 
-  private setResizeTarget(target: IGroup) {
+  private setResizeTarget(target: Group) {
     this.resizeTarget = target;
   }
 
@@ -104,7 +109,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     event: MouseEvent,
     resizeInfo: ResizeInfo,
   ) {
-    const resizeShapes: IShape[] = this.resizeReferenceGroup.get('children');
+    const resizeShapes = this.resizeReferenceGroup.children;
     if (isEmpty(resizeShapes)) {
       return;
     }
@@ -114,14 +119,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const { width: guideLineMaxWidth, height: guideLineMaxHeight } =
       this.getGuideLineWidthAndHeight();
 
-    resizeMask.attr('cursor', `${type}-resize`);
+    resizeMask.setAttribute('cursor', `${type}-resize`);
 
     if (type === ResizeDirectionType.Horizontal) {
-      startResizeGuideLineShape.attr('path', [
+      startResizeGuideLineShape.setAttribute('path', [
         ['M', offsetX, offsetY],
         ['L', offsetX, guideLineMaxHeight],
       ]);
-      endResizeGuideLineShape.attr('path', [
+      endResizeGuideLineShape.setAttribute('path', [
         ['M', offsetX + width, offsetY],
         ['L', offsetX + width, guideLineMaxHeight],
       ]);
@@ -129,11 +134,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    startResizeGuideLineShape.attr('path', [
+    startResizeGuideLineShape.setAttribute('path', [
       ['M', offsetX, offsetY],
       ['L', guideLineMaxWidth, offsetY],
     ]);
-    endResizeGuideLineShape.attr('path', [
+    endResizeGuideLineShape.setAttribute('path', [
       ['M', offsetX, offsetY + height],
       ['L', guideLineMaxWidth, offsetY + height],
     ]);
@@ -142,9 +147,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
-      const shape = event.target as IGroup;
+      const shape = event.target as Group;
       const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
-      const originalEvent = event.originalEvent as MouseEvent;
+      const originalEvent = event as MouseEvent;
       this.spreadsheet.store.set('resized', false);
 
       if (!resizeInfo?.isResizeArea) {
@@ -326,14 +331,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private resizeMouseMove = (event: CanvasEvent) => {
-    if (!this.resizeReferenceGroup?.get('visible')) {
+    if (this.resizeReferenceGroup?.style.visibility === 'hidden') {
       return;
     }
     event?.preventDefault?.();
-
-    const originalEvent = event.originalEvent as MouseEvent;
     const resizeInfo = this.getResizeInfo();
-    const resizeShapes = this.resizeReferenceGroup.get('children') as IShape[];
+    const resizeShapes = this.resizeReferenceGroup.children;
 
     if (isEmpty(resizeShapes)) {
       return;
@@ -341,25 +344,25 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const [, endGuideLineShape] = resizeShapes;
     const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
-      endGuideLineShape.attr('path'),
+      endGuideLineShape.getAttribute('path'),
     );
 
     if (resizeInfo.type === ResizeDirectionType.Horizontal) {
       this.updateHorizontalResizingEndGuideLinePosition(
-        originalEvent,
+        event,
         resizeInfo,
         guideLineStart,
         guideLineEnd,
       );
     } else {
       this.updateVerticalResizingEndGuideLinePosition(
-        originalEvent,
+        event,
         resizeInfo,
         guideLineStart,
         guideLineEnd,
       );
     }
-    endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
+    endGuideLineShape.setAttribute('path', [guideLineStart, guideLineEnd]);
   };
 
   private updateHorizontalResizingEndGuideLinePosition(

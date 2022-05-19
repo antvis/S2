@@ -177,6 +177,9 @@ export class RowCell extends HeaderCell {
 
     // in mobile, we use this cell
     if (isMobile()) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // TODO 移动端适配
       this.gm = new GM(this, {
         gestures: ['Tap'],
       });
@@ -202,8 +205,8 @@ export class RowCell extends HeaderCell {
     const { fill, fontSize } = this.getTextStyle();
     const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      x: x + size / 2, // 和收起展开 icon 保持居中对齐
-      y: textY + (fontSize - r) / 2,
+      cx: x + size / 2, // 和收起展开 icon 保持居中对齐
+      cy: textY + (fontSize - r) / 2,
       r,
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求

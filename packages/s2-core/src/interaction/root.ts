@@ -1,6 +1,6 @@
 import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import type { IElement } from '@antv/g-canvas';
+import type { IElement } from '@antv/g';
 import { CornerCellClick } from './base-interaction/click/corner-cell-click';
 import {
   DataCellClick,
@@ -183,7 +183,7 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     return getAllChildCells(
-      this.spreadsheet.panelGroup?.getChildren() as IElement[],
+      this.spreadsheet.panelGroup?.children as IElement[],
       DataCell,
     );
   }
@@ -194,12 +194,15 @@ export class RootInteraction {
       children,
       (group) => group instanceof RowHeader,
     )?.[0];
-    let currentNode = rowHeader?.cfg?.children;
+    let currentNode = rowHeader?.children;
     if (isEmpty(currentNode)) {
       return [];
     }
+    // TODO
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     while (!currentNode?.[0]?.cellType) {
-      currentNode = currentNode?.[0]?.cfg?.children;
+      currentNode = currentNode?.[0]?.children;
     }
 
     const rowCells = currentNode || [];
@@ -215,7 +218,7 @@ export class RootInteraction {
       (group) => group instanceof ColHeader,
     )[0];
 
-    const headerChildren = colHeader?.cfg?.children;
+    const headerChildren = colHeader?.children;
 
     if (isEmpty(headerChildren)) {
       return [];
@@ -438,7 +441,7 @@ export class RootInteraction {
   }
 
   public draw() {
-    this.spreadsheet.container.draw();
+    this.spreadsheet.container.render();
   }
 
   public clearState() {

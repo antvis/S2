@@ -1,13 +1,13 @@
 import { FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX } from 'src/common/constant';
-import { Group, BaseStyleProps } from '@antv/g';
-import { ResizeInfo } from '@/common/interface/resize';
+import { DisplayObject, Group } from '@antv/g';
+import { ResizeInfo, ResizeStyleProps } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { ResizeDirectionType } from '@/common/constant/resize';
 import { SimpleBBox } from '@/common';
 
 export const getResizeAreaAttrs = (
   options: Omit<ResizeInfo, 'size'>,
-): BaseStyleProps => {
+): ResizeStyleProps => {
   const {
     type,
     id,
@@ -45,14 +45,18 @@ export const getOrCreateResizeAreaGroupById = (
     return;
   }
 
-  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as Group;
+  const existedResizeArea = spreadsheet.foregroundGroup.find(
+    (node: DisplayObject) => node.id === id,
+  ) as Group;
 
   return (
     existedResizeArea ||
-    spreadsheet.foregroundGroup.addGroup({
-      id,
-      zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
-    })
+    spreadsheet.foregroundGroup.appendChild(
+      new Group({
+        id,
+        zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
+      }),
+    )
   );
 };
 

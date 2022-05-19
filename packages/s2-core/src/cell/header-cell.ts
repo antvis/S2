@@ -9,7 +9,6 @@ import {
   CellMeta,
   FormatResult,
   HeaderActionIconOptions,
-  ViewMeta,
   CanvasEvent,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
@@ -20,7 +19,7 @@ import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
 
-export abstract class HeaderCell extends BaseCell<ViewMeta> {
+export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
 
   protected treeIcon: GuiIcon | undefined;
@@ -138,7 +137,7 @@ export abstract class HeaderCell extends BaseCell<ViewMeta> {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       this.spreadsheet.handleGroupSort(event, this.meta);
     });
-    this.add(sortIcon);
+    this.appendChild(sortIcon);
     this.actionIcons.push(sortIcon);
   }
 
@@ -165,10 +164,10 @@ export abstract class HeaderCell extends BaseCell<ViewMeta> {
 
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
-    icon.on('mouseover', (event: CanvasEvent) => {
+    icon.addEventListener('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
     });
-    icon.on('click', (event: CanvasEvent) => {
+    icon.addEventListener('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action?.({
         iconName,
@@ -178,7 +177,7 @@ export abstract class HeaderCell extends BaseCell<ViewMeta> {
     });
 
     this.actionIcons.push(icon);
-    this.add(icon);
+    this.appendChild(icon);
   }
 
   protected drawActionIcons() {

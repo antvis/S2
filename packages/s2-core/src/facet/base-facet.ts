@@ -1,4 +1,4 @@
-import { IElement, Group, DisplayObject } from '@antv/g';
+import { Group, DisplayObject } from '@antv/g';
 import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, Timer } from 'd3-timer';
@@ -153,7 +153,8 @@ export abstract class BaseFacet {
 
   onContainerWheel = () => {
     this.onContainerWheelForPc();
-    this.onContainerWheelForMobile();
+    // TODO 移动端适配
+    // this.onContainerWheelForMobile();
   };
 
   onContainerWheelForPc = () => {
@@ -163,7 +164,7 @@ export abstract class BaseFacet {
 
   onContainerWheelForMobile = () => {
     // mock wheel event fo mobile
-    this.mobileWheel = new Wheel(this.spreadsheet.container);
+    // this.mobileWheel = new Wheel(this.spreadsheet.container);
 
     this.mobileWheel.on('wheel', (ev: GestureEvent) => {
       this.spreadsheet.hideTooltip();
@@ -953,9 +954,9 @@ export abstract class BaseFacet {
       each(remove, ([i, j]) => {
         const findOne = find(
           allCells,
-          (cell) => cell.get('name') === `${i}-${j}`,
+          (cell) => cell.getAttribute('name') === `${i}-${j}`,
         );
-        findOne?.remove(true);
+        findOne?.remove();
       });
       updateMergedCells(this.spreadsheet);
       DebuggerUtil.getInstance().logger(

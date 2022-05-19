@@ -1,4 +1,3 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
 import { isMultiSelectionKey } from '@/utils/interaction/select-event';
 import {
@@ -13,6 +12,7 @@ import {
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
 } from '@/common/constant';
 import {
+  CanvasEvent,
   TooltipOperation,
   TooltipOperatorMenu,
   TooltipOperatorOptions,

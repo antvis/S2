@@ -1,5 +1,5 @@
 import { Node } from 'src/facet/layout/node';
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { SpreadSheet } from './spread-sheet';
 import { TableDataCell, TableRowCell } from '@/cell';
 import {
@@ -15,6 +15,7 @@ import {
   TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
 } from '@/common/constant';
 import {
+  CanvasEvent,
   S2Options,
   SortParam,
   SpreadSheetFacetCfg,
@@ -83,30 +84,42 @@ export class TableSheet extends SpreadSheet {
 
   protected initPanelGroupChildren(): void {
     super.initPanelGroupChildren();
-    this.frozenRowGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_ROW,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
-    this.frozenColGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_COL,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
-    this.frozenTrailingRowGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
-    this.frozenTrailingColGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
-    this.frozenTopGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_TOP,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
-    this.frozenBottomGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-    });
+    this.frozenRowGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_ROW,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
+    this.frozenColGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_COL,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
+    this.frozenTrailingRowGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
+    this.frozenTrailingColGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
+    this.frozenTopGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_TOP,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
+    this.frozenBottomGroup = this.panelGroup.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
+        zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      }),
+    );
   }
 
   protected getFacetCfgFromDataSetAndOptions(): SpreadSheetFacetCfg {
@@ -138,12 +151,12 @@ export class TableSheet extends SpreadSheet {
   }
 
   protected clearFrozenGroups() {
-    this.frozenRowGroup.set('children', []);
-    this.frozenColGroup.set('children', []);
-    this.frozenTrailingRowGroup.set('children', []);
-    this.frozenTrailingColGroup.set('children', []);
-    this.frozenTopGroup.set('children', []);
-    this.frozenBottomGroup.set('children', []);
+    this.frozenRowGroup.removeChildren();
+    this.frozenColGroup.removeChildren();
+    this.frozenTrailingRowGroup.removeChildren();
+    this.frozenTrailingColGroup.removeChildren();
+    this.frozenTopGroup.removeChildren();
+    this.frozenBottomGroup.removeChildren();
   }
 
   public destroy() {

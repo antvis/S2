@@ -1,3 +1,4 @@
+import { RectStyleProps } from '@antv/g';
 import { Style } from './basic';
 import { ResizeArea } from './theme';
 import { S2Event } from '@/common/constant/events/basic';
@@ -58,6 +59,10 @@ export interface ResizeInfo {
   isResizeArea?: boolean;
   /** 字段id */
   id?: string;
+}
+
+export interface ResizeStyleProps extends RectStyleProps {
+  appendInfo: ResizeInfo;
 }
 
 export interface ResizeActiveOptions {

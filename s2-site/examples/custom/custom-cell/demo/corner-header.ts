@@ -1,5 +1,5 @@
 import { PivotSheet } from '@antv/s2';
-import { Group, IShape } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { get } from 'lodash';
 
 // 自定义角头单元格，实现特有功能

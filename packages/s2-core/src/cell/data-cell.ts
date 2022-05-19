@@ -31,7 +31,6 @@ import {
   renderRect,
   updateShapeAttr,
 } from '@/utils/g-renders';
-import { Node } from '@/facet/layout/node';
 import { parseNumberWithPrecision } from '@/utils/formatter';
 
 /**
@@ -41,12 +40,12 @@ import { parseNumberWithPrecision } from '@/utils/formatter';
  * |interval      text| icon  |
  * |                  |       |
  * ----------------------------
- * There are four conditions(]{@see BaseCell.conditions}) to determine how to render
+ * There are four conditions({@see BaseCell.conditions}) to determine how to render
  * 1、background color
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
-export class DataCell extends BaseCell<Node> {
+export class DataCell extends BaseCell<ViewMeta> {
   protected conditions: Conditions;
 
   protected conditionIntervalShape: DisplayObject;
@@ -165,7 +164,7 @@ export class DataCell extends BaseCell<Node> {
     }
   }
 
-  public setMeta(viewMeta: T) {
+  public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);
     this.initCell();
   }

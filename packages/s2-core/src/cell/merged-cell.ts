@@ -1,12 +1,12 @@
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
 import { DataCell } from './data-cell';
-import { Node } from '@/facet/layout/node';
 import { getPolygonPoints } from '@/utils/interaction/merge-cell';
 import { SpreadSheet } from '@/sheet-type';
 import { S2CellType } from '@/common/interface/interaction';
 import { renderPolygon } from '@/utils/g-renders';
 import { drawObjectText } from '@/utils/text';
+import { ViewMeta } from '@/common/interface';
 
 /**
  * Cell for panelGroup area
@@ -19,7 +19,7 @@ export class MergedCell extends DataCell {
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
-    meta?: Node,
+    meta?: ViewMeta,
     isPartiallyVisible = true, // 合并的单元格只有部分可见。为了方便 Diff 操作，故新增此属性
   ) {
     super(meta, spreadsheet, cells);
@@ -49,6 +49,9 @@ export class MergedCell extends DataCell {
     const allPoints = getPolygonPoints(this.cells);
     const cellTheme = this.theme.dataCell.cell;
     this.backgroundShape = renderPolygon(this, {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // TODO points 类型
       points: allPoints,
       stroke: cellTheme.horizontalBorderColor,
       fill: cellTheme.backgroundColor,

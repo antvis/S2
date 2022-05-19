@@ -45,7 +45,6 @@ import {
   TooltipShowOptions,
   Total,
   Totals,
-  ViewMeta,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
@@ -251,7 +250,7 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  public abstract handleGroupSort(event: CanvasEvent, meta: ViewMeta): void;
+  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
 
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,

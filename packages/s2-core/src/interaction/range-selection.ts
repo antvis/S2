@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { inRange, isNil, range } from 'lodash';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
@@ -10,7 +9,7 @@ import {
   S2Event,
   CellTypes,
 } from '@/common/constant';
-import { S2CellType, ViewMeta } from '@/common/interface';
+import { CanvasEvent, S2CellType, ViewMeta } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 import { getRangeIndex } from '@/utils/interaction/select-event';
@@ -49,17 +48,17 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindColCellClick() {
     if (this.spreadsheet.isTableMode()) {
       // series-number click
-      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
         this.handleColClick(event);
       });
     }
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: CanvasEvent) => {
       this.handleColClick(event);
     });
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
@@ -115,7 +114,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private handleColClick = (event: Event) => {
+  private handleColClick = (event: CanvasEvent) => {
     event.stopPropagation();
     const { interaction } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);

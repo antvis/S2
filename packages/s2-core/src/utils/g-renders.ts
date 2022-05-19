@@ -96,7 +96,7 @@ export function renderLine(
 
 export function updateShapeAttr<K extends keyof BaseStyleProps>(
   shape: DisplayObject,
-  style: K,
+  style: K | string,
   value: BaseStyleProps[K],
 ) {
   if (shape) {

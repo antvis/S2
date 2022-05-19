@@ -1,7 +1,6 @@
-import { Event } from '@antv/g-canvas';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { CellTypes, CellMeta, ViewMeta } from '@/common';
+import { CellTypes, CellMeta, ViewMeta, CanvasEvent } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
 import { calculateInViewIndexes } from '@/facet/utils';
@@ -68,7 +67,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         }
       },
     );
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target).getMeta() as ViewMeta;
       if (cell) {
         this.startCell = this.getCellMetaFromViewMeta(cell);

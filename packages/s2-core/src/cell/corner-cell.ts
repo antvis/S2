@@ -1,4 +1,4 @@
-import { DisplayObject, BaseStyleProps, Rect, RectStyleProps } from '@antv/g';
+import { DisplayObject, Rect, RectStyleProps } from '@antv/g';
 import {
   cond,
   constant,
@@ -317,7 +317,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getIconPosition(): Point {
-    const textCfg = this.textShapes?.[0]?.cfg.attrs;
+    const textCfg = this.textShapes?.[0]?.style;
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle().icon;
 

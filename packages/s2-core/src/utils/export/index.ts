@@ -384,7 +384,7 @@ export const copyData = (
     // Generate the table header.
     headers = colHeader.map((item, index) => {
       if (sheetInstance.isPivotMode()) {
-        const { columns, rows, data } = sheetInstance.facet.cornerHeader.cfg;
+        const { columns, rows, data } = sheetInstance.facet.cornerHeader.style;
         const colNodes = data.filter(
           ({ cornerType }) => cornerType === CornerNodeType.Col,
         );

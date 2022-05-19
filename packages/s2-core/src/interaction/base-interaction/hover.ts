@@ -1,6 +1,5 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach, isEqual, isBoolean } from 'lodash';
+import { isEmpty, forEach, isBoolean } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
@@ -9,7 +8,12 @@ import {
   InteractionStateName,
   InterceptType,
 } from '@/common/constant/interaction';
-import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
+import {
+  S2CellType,
+  ViewMeta,
+  TooltipOptions,
+  CanvasEvent,
+} from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 
 /**

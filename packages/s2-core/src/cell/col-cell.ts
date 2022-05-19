@@ -256,7 +256,8 @@ export class ColCell extends HeaderCell {
     const resizeAreaWidth = cornerWidth + headerWidth;
     // 列高调整热区
     const react = new Rect({
-      attrs: {
+      name: resizeAreaName,
+      style: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
           type: ResizeDirectionType.Vertical,
@@ -267,7 +268,7 @@ export class ColCell extends HeaderCell {
           width: resizeAreaWidth,
           height,
         }),
-        name: resizeAreaName,
+        height,
         x: 0,
         y: y + height - resizeStyle.size / 2,
         width: resizeAreaWidth,

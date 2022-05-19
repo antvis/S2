@@ -1,4 +1,3 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { getTooltipOptions, getTooltipVisibleOperator } from '@/utils/tooltip';
 import { getCellMeta } from '@/utils/interaction/select-event';
@@ -10,6 +9,7 @@ import {
   TOOLTIP_OPERATOR_TREND_MENU,
 } from '@/common/constant';
 import {
+  CanvasEvent,
   CellAppendInfo,
   TooltipData,
   TooltipOperatorOptions,

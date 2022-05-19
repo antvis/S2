@@ -1,6 +1,5 @@
-import { SimpleBBox, IGroup } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
-
+import { Group } from '@antv/g';
 import { Indexes } from '../utils/indexes';
 import { ViewCellHeights } from './layout/interface';
 import {
@@ -8,7 +7,7 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
-import { Pagination, ScrollSpeedRatio } from '@/common/interface';
+import { Pagination, ScrollSpeedRatio, SimpleBBox } from '@/common/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -115,7 +114,7 @@ export const optimizeScrollXY = (
 };
 
 export const translateGroup = (
-  group: IGroup,
+  group: Group,
   scrollX: number,
   scrollY: number,
 ) => {
@@ -125,13 +124,13 @@ export const translateGroup = (
   group?.translate(scrollX - preX, scrollY - preY);
 };
 
-export const translateGroupX = (group: IGroup, scrollX: number) => {
+export const translateGroupX = (group: Group, scrollX: number) => {
   const matrix = group?.getMatrix();
   const preX = matrix?.[6] ?? 0;
   group?.translate(scrollX - preX, 0);
 };
 
-export const translateGroupY = (group: IGroup, scrollY: number) => {
+export const translateGroupY = (group: Group, scrollY: number) => {
   const matrix = group?.getMatrix();
   const preY = matrix?.[7] ?? 0;
   group?.translate(0, scrollY - preY);

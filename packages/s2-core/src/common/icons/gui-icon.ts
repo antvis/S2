@@ -13,6 +13,8 @@ export interface GuiIconCfg extends BaseStyleProps {
   readonly name: string;
   width?: number | string;
   height?: number | string;
+  x?: number;
+  y?: number;
 }
 
 /**

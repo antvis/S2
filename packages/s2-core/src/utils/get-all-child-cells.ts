@@ -1,4 +1,4 @@
-import { Group, IElement } from '@antv/g-canvas';
+import { Group, IElement } from '@antv/g';
 
 export const getAllChildCells = <T extends IElement>(
   children: IElement[] = [],
@@ -11,7 +11,7 @@ export const getAllChildCells = <T extends IElement>(
     }
     // panel group has child group
     if (child instanceof Group) {
-      const groupChildren = child.getChildren() as T[];
+      const groupChildren = child.children as T[];
       groupChildren.forEach((item) => {
         if (item instanceof cellType) {
           cells.push(item);

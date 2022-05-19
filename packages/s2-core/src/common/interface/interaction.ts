@@ -1,11 +1,10 @@
-import type { SimpleBBox } from '@antv/g-canvas';
 import type {
   InteractionStateName,
   CellTypes,
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
-import type { ViewMeta } from './basic';
+import type { SimpleBBox, ViewMeta } from './basic';
 import type { ResizeActiveOptions } from './resize';
 import type {
   BaseCell,

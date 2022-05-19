@@ -22,4 +22,4 @@ export interface TargetCellInfo {
   viewMeta: Node;
 }
 
-export type CanvasEvent = PointerEvent | MouseEvent | TouchEvent;
+export type CanvasEvent = PointerEvent | MouseEvent;

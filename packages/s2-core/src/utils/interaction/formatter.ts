@@ -1,11 +1,14 @@
-import { Event } from '@antv/g-canvas';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Node } from '@/facet/layout/node';
-import { S2CellType, TargetCellInfo } from '@/common/interface';
+import { CanvasEvent, S2CellType, TargetCellInfo } from '@/common/interface';
 
-/* formate the base Event data */
-export const getBaseCellData = (ev: Event): TargetCellInfo => {
-  const currentCellData: Node = ev.target?.attrs?.appendInfo?.cellData;
-  const target = ev.target.get?.('parent') as S2CellType;
+/* formate the base CanvasEvent data */
+export const getBaseCellData = (ev: CanvasEvent): TargetCellInfo => {
+  // @ts-ignore
+  const currentCellData: Node =
+    ev.target?.getAttribute?.('appendInfo')?.cellData;
+  // @ts-ignore
+  const target = ev.target?.parent as S2CellType;
   const meta = (target?.getMeta?.() as Node) || currentCellData;
 
   return {

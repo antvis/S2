@@ -403,7 +403,10 @@ export class ScrollBar extends Group {
 
   // 点击滑道的事件回调,移动滑块位置
   private onTrackClick = (e: MouseEvent) => {
-    const containerDOM = this.get('canvas').get('container');
+    // TODO 滚动条适配
+    const containerDOM = this.getElementsByTagName(
+      'canvas',
+    ) as unknown as HTMLElement;
     const rect = containerDOM.getBoundingClientRect();
     const { clientX, clientY } = e;
     const offset = this.isHorizontal
