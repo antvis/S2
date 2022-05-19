@@ -260,7 +260,6 @@ export abstract class SpreadSheet extends EE {
 
     this.tooltip.show?.({
       ...showOptions,
-      event,
       content: displayContent,
     });
   }
