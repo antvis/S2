@@ -154,11 +154,18 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
   // Custom tooltip position
-  readonly adjustPosition?: (position: TooltipPosition) => TooltipPosition;
+  readonly adjustPosition?: (
+    positionInfo: TooltipPositionInfo,
+  ) => TooltipPosition;
   // Custom tooltip content
   readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip mount container
   readonly getContainer?: () => HTMLElement;
+}
+
+export interface TooltipPositionInfo {
+  position: TooltipPosition;
+  event: CanvasEvent | MouseEvent;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {

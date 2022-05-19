@@ -18,7 +18,7 @@ object **必选**,_default：null_ 功能描述： tooltip 配置
 | renderTooltip      | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法    | [RenderTooltip](#rendertooltip)         | -      |      |
 | content   | 自定义 tooltip 内容                                      | `React.ReactNode | Element | string |` 或者 `(cell, defaultTooltipShowOptions) => React.ReactNode | Element | string`                         | -      |      |
 | autoAdjustBoundary | 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能 | `container` \| `body`                   | `body` |      |
-| adjustPosition | 自定义 tooltip 位置，| `({x: number, y: number}) => {x: number, y: number}`                   |  |      |
+| adjustPosition | 自定义 tooltip 位置，| (positionInfo: [TooltipPositionInfo](#tooltippositioninfo) ) => {x: number, y: number}                  |  |      |
 | getContainer | 自定义 tooltip 挂载容器，| `() => HTMLElement`                   | `document.body` |      |
 
 ### BaseTooltipConfig
@@ -28,6 +28,13 @@ object **必选**,_default：null_ 功能描述： tooltip 配置
 | showTooltip      | 是否展示 tooltip        | `boolean`                             | `false` |      |
 | operation        | tooltip 操作配置项      | [TooltipOperation](#tooltipoperation) | -      |      |
 | content | 自定义 tooltip 内容 | `React.ReactNode | Element | string |` 或者 `(cell, defaultTooltipShowOptions) => React.ReactNode | Element | string`                       | -      |      |
+
+### TooltipPositionInfo
+
+| 参数             | 说明                    | 类型                                  | 默认值 | 必选 |
+| ---------------- | ----------------------- | ------------------------------------- | ------ | :--: |
+| position      | 默认经过计算（默认偏移量 + autoAdjustBoundary）后的 Tooltip 位置坐标  |  [TooltipPosition](#tooltipposition)  |  | ✓|
+| event      | 当前点击事件信息 | Event | | ✓|
 
 ### TooltipOperation
 
