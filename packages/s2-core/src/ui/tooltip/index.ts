@@ -43,7 +43,7 @@ export class BaseTooltip {
    * @param content
    */
   public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
-    const { position, options, content } = showOptions;
+    const { position, options, content, event } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
     const container = this.getContainer();
     const { autoAdjustBoundary, adjustPosition } =
@@ -59,7 +59,7 @@ export class BaseTooltip {
       tooltipContainer: container,
       autoAdjustBoundary,
     });
-    this.position = adjustPosition?.({ x, y }) ?? {
+    this.position = adjustPosition?.({ position: { x, y }, event }) ?? {
       x,
       y,
     };
