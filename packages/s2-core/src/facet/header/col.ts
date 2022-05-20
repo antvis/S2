@@ -105,7 +105,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);
-        group.add(cell);
+        group.appendChild(cell);
       }
     });
   }

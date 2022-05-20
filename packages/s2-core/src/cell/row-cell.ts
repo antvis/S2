@@ -205,8 +205,8 @@ export class RowCell extends HeaderCell {
     const { fill, fontSize } = this.getTextStyle();
     const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      cx: x + size / 2, // 和收起展开 icon 保持居中对齐
-      cy: textY + (fontSize - r) / 2,
+      x: x + size / 2, // 和收起展开 icon 保持居中对齐
+      y: textY + (fontSize - r) / 2,
       r,
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求

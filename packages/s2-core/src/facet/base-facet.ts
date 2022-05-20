@@ -129,9 +129,9 @@ export abstract class BaseFacet {
   }
 
   hideScrollBar = () => {
-    this.hRowScrollBar?.hide();
-    this.hScrollBar?.hide();
-    this.vScrollBar?.hide();
+    this.hRowScrollBar?.setAttribute('visibility', 'hidden');
+    this.hScrollBar?.setAttribute('visibility', 'hidden');
+    this.vScrollBar?.setAttribute('visibility', 'hidden');
   };
 
   delayHideScrollBar = debounce(this.hideScrollBar, 1000);
@@ -528,25 +528,28 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
-        const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-        const hRowScrollX = newOffset;
-        this.setScrollOffset({ hRowScrollX });
-        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
-        this.rowIndexHeader?.onRowScrollX(
-          hRowScrollX,
-          KEY_GROUP_ROW_INDEX_RESIZE_AREA,
-        );
-        this.cornerHeader.onRowScrollX(
-          hRowScrollX,
-          KEY_GROUP_CORNER_RESIZE_AREA,
-        );
-        this.hRowScrollBar.updateThumbOffset(
-          this.getScrollBarOffset(newOffset, this.hRowScrollBar),
-          false,
-        );
-      });
-      this.foregroundGroup.add(this.hRowScrollBar);
+      this.hRowScrollBar.addEventListener(
+        ScrollType.ScrollChange,
+        ({ offset }) => {
+          const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
+          const hRowScrollX = newOffset;
+          this.setScrollOffset({ hRowScrollX });
+          this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+          this.rowIndexHeader?.onRowScrollX(
+            hRowScrollX,
+            KEY_GROUP_ROW_INDEX_RESIZE_AREA,
+          );
+          this.cornerHeader.onRowScrollX(
+            hRowScrollX,
+            KEY_GROUP_CORNER_RESIZE_AREA,
+          );
+          this.hRowScrollBar.updateThumbOffset(
+            this.getScrollBarOffset(newOffset, this.hRowScrollBar),
+            false,
+          );
+        },
+      );
+      this.foregroundGroup.appendChild(this.hRowScrollBar);
     }
   };
 
@@ -598,7 +601,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hScrollBar.on(
+      this.hScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset, updateThumbOffset }) => {
           const newScrollX = this.getValidScrollBarOffset(offset, maxOffset);
@@ -616,7 +619,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.hScrollBar);
+      this.foregroundGroup.appendChild(this.hScrollBar);
     }
   };
 
@@ -655,7 +658,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.vScrollBar.on(
+      this.vScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset, updateThumbOffset }) => {
           const newScrollY = this.getValidScrollBarOffset(offset, maxOffset);
@@ -671,7 +674,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.vScrollBar);
+      this.foregroundGroup.appendChild(this.vScrollBar);
     }
   };
 
@@ -925,8 +928,7 @@ export abstract class BaseFacet {
 
   addCell = (cell: S2CellType<ViewMeta>) => {
     const { panelScrollGroup } = this.spreadsheet;
-
-    panelScrollGroup?.add(cell);
+    panelScrollGroup?.appendChild(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
@@ -945,7 +947,7 @@ export abstract class BaseFacet {
         if (viewMeta) {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
-          cell.set('name', `${i}-${j}`);
+          cell.setAttribute('name', `${i}-${j}`);
           this.addCell(cell);
         }
       });
@@ -1058,14 +1060,14 @@ export abstract class BaseFacet {
     this.centerFrame = this.getCenterFrame();
 
     if (this.rowIndexHeader) {
-      this.foregroundGroup.add(this.rowIndexHeader);
+      this.foregroundGroup.appendChild(this.rowIndexHeader);
     }
     if (this.rowHeader) {
-      this.foregroundGroup.add(this.rowHeader);
+      this.foregroundGroup.appendChild(this.rowHeader);
     }
-    this.foregroundGroup.add(this.columnHeader);
-    this.foregroundGroup.add(this.cornerHeader);
-    this.foregroundGroup.add(this.centerFrame);
+    this.foregroundGroup.appendChild(this.columnHeader);
+    this.foregroundGroup.appendChild(this.cornerHeader);
+    this.foregroundGroup.appendChild(this.centerFrame);
   }
 
   protected getRowHeader(): RowHeader {

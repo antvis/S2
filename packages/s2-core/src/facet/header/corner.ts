@@ -246,7 +246,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           this.headerConfig,
         );
       }
-      this.add(cell);
+      this.appendChild(cell);
     });
   }
 

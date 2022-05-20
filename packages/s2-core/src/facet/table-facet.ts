@@ -829,7 +829,7 @@ export class TableFacet extends BaseFacet {
     const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
     if (viewMeta) {
       const cell = this.cfg.dataCell(viewMeta);
-      group.add(cell);
+      group.appendChild(cell);
     }
   };
 
@@ -857,7 +857,7 @@ export class TableFacet extends BaseFacet {
 
     const group = FrozenCellGroupMap[frozenCellType];
     if (group) {
-      (this.spreadsheet[group] as Group).add(cell);
+      (this.spreadsheet[group] as Group).appendChild(cell);
     }
   };
 

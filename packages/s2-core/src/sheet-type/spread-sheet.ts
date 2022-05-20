@@ -588,17 +588,15 @@ export abstract class SpreadSheet extends EE {
   // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
   protected updateContainerStyle() {
     const canvas = this.container;
-
-    // canvas.style.display = 'block';
+    // @ts-ignores
+    canvas.style.display = 'block';
   }
 
   protected initPanelGroupChildren() {
-    this.panelScrollGroup = this.panelGroup.appendChild(
-      new Group({
-        name: KEY_GROUP_PANEL_SCROLL,
-        zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-      }),
-    );
+    this.panelScrollGroup = new Group({
+      name: KEY_GROUP_PANEL_SCROLL,
+      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+    });
   }
 
   public getInitColumnLeafNodes(): Node[] {

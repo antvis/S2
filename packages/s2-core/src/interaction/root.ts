@@ -189,7 +189,7 @@ export class RootInteraction {
   }
 
   public getAllRowHeaderCells() {
-    const children = this.spreadsheet.foregroundGroup?.getChildren();
+    const children = this.spreadsheet.foregroundGroup?.children;
     const rowHeader = filter(
       children,
       (group) => group instanceof RowHeader,
@@ -212,7 +212,7 @@ export class RootInteraction {
   }
 
   public getAllColHeaderCells() {
-    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const children = this.spreadsheet?.foregroundGroup?.children;
     const colHeader = filter(
       children,
       (group) => group instanceof ColHeader,

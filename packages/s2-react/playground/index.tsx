@@ -31,7 +31,6 @@ import {
   DataType,
   generatePalette,
   getPalette,
-  InterceptType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';

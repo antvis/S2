@@ -32,7 +32,8 @@ export function renderRect(
     style,
     ...(extraParams || {}),
   });
-  return group?.appendChild(new Rect(rect));
+  group?.appendChild(rect);
+  return rect;
 }
 
 export function renderPolygon(
@@ -40,7 +41,8 @@ export function renderPolygon(
   style: PolygonStyleProps,
 ): DisplayObject {
   const polygon = new Polygon({ style });
-  return group?.appendChild?.(polygon);
+  group?.appendChild?.(polygon);
+  return polygon;
 }
 
 export function renderCircle(
@@ -48,7 +50,8 @@ export function renderCircle(
   style: CircleStyleProps,
 ): DisplayObject {
   const circle = new Circle({ style });
-  return group?.appendChild?.(circle);
+  group?.appendChild?.(circle);
+  return circle;
 }
 
 export function renderText(
@@ -75,8 +78,8 @@ export function renderText(
       ...extraStyle,
     },
   });
-
-  return group?.appendChild?.(text);
+  group?.appendChild?.(text);
+  return text;
 }
 
 export function renderLine(
@@ -91,7 +94,8 @@ export function renderLine(
       ...lineStyle,
     },
   });
-  return group?.appendChild?.(line);
+  group?.appendChild?.(line);
+  return line;
 }
 
 export function updateShapeAttr<K extends keyof BaseStyleProps>(

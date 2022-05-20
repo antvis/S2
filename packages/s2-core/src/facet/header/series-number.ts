@@ -101,7 +101,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         // 添加文本
         this.addText(group, item);
 
-        this.add(group);
+        this.appendChild(group);
 
         // 添加边框
         if (!isLeaf) {

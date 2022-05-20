@@ -256,7 +256,7 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.add(
+    sheet.panelScrollGroup.appendChild(
       new MergedCell(sheet, cells, meta, isPartiallyVisible),
     );
   }
@@ -420,7 +420,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta, isPartiallyVisible }) => {
-    sheet.panelScrollGroup.add(
+    sheet.panelScrollGroup.appendChild(
       new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
     );
   });
