@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.16.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.3...@antv/s2-react-v1.16.0-alpha.4) (2022-05-20)
+
+
+### Bug Fixes
+
+* 下钻数据没有按照用户数据展示 ([#1353](https://github.com/antvis/S2/issues/1353)) ([065c3bd](https://github.com/antvis/S2/commit/065c3bdea3625232de7d98797ef7266eea74f67c))
+
+
+### Features
+
+* 丰富tooltip关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
+
 # [@antv/s2-react-v1.16.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.2...@antv/s2-react-v1.16.0-alpha.3) (2022-05-19)
 
 
