@@ -13,6 +13,7 @@ import {
   Collapse,
   Tag,
   Tabs,
+  DatePicker,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -134,6 +135,7 @@ const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
     <div>2</div>
+    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
   </div>
 );
 
