@@ -1,6 +1,6 @@
 import { PivotSheet, RowCell } from '@antv/s2';
 
-// 自定义角头单元格，实现特有功能
+// 自定义行头单元格，实现特有功能
 class CustomRowCell extends RowCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
   drawBackgroundShape() {

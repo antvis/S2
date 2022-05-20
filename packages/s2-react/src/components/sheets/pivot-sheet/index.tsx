@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 import React from 'react';
 import { SpreadSheet, getTooltipOptions } from '@antv/s2';
 import { useLatest } from 'ahooks';
@@ -85,7 +85,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     }, [drillFields]);
 
     React.useEffect(() => {
-      if (isEmpty(partDrillDown?.clearDrillDown)) {
+      if (!isObject(partDrillDown?.clearDrillDown)) {
         return;
       }
       clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);

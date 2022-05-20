@@ -18,7 +18,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions } from '@/utils/tooltip';
+import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -210,6 +210,12 @@ export class EventController {
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
+    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+      return verifyTheElementInTooltip(
+        this.spreadsheet.tooltip?.container,
+        event.target,
+      );
+    }
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&

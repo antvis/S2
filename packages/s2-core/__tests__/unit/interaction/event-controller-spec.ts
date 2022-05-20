@@ -514,6 +514,48 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 
+  test('should not reset if current mouse not on the tooltip container but on the tooltip children container', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    // https://github.com/antvis/S2/pull/1352
+    const cTooltipParent = document.createElement('div');
+    const cTooltipChild = document.createElement('div');
+    cTooltipParent.setAttribute(
+      'style',
+      'position: relative; width: 200px; height: 200px;',
+    );
+    cTooltipParent.innerHTML = '创建一个div 模拟tooltip装载了一个”弹出层“元素';
+    cTooltipChild.setAttribute(
+      'style',
+      'position: absolute; top: 0; left: 0; width: 300px; height: 300px;',
+    );
+    cTooltipChild.innerHTML = '我是”弹出层“元素';
+    cTooltipParent.appendChild(cTooltipChild);
+    document.body.appendChild(cTooltipParent);
+
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container = cTooltipParent;
+    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+      ({
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    cTooltipChild.dispatchEvent(
+      new MouseEvent('click', {
+        clientX: 233,
+        clientY: 233,
+        bubbles: true,
+      } as MouseEventInit),
+    );
+
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
   // https://github.com/antvis/S2/issues/363
   test('should reset if current mouse outside the canvas container and disable tooltip', () => {
     const reset = jest.fn();
