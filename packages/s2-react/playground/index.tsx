@@ -150,19 +150,6 @@ function MainLayout() {
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
     name: 'default',
-    theme: {
-      colCell: {
-        // bolderText: {
-        //   textAlign: 'right',
-        // },
-        // text: {
-        //   textAlign: 'center',
-        // },
-        measureText: {
-          textAlign: 'right',
-        },
-      },
-    },
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
