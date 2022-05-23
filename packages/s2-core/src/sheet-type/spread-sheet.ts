@@ -451,6 +451,10 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
+  public getRowLeafNodes(): Node[] {
+    return this.getRowNodes().filter((node) => node.isLeaf);
+  }
+
   /**
    * get columnNode in levels,
    * @param level -1 = get all

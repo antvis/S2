@@ -362,7 +362,7 @@ export class RowCell extends HeaderCell {
     const { text, bolderText, measureText } = this.getStyle();
 
     if (this.isMeasureField()) {
-      return measureText || bolderText;
+      return measureText || text;
     }
 
     if (this.isBolderText()) {

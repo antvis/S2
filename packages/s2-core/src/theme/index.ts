@@ -163,7 +163,7 @@ export const getTheme = (
       measureText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
         // 默认数值字段和 dataCell 数值对齐
