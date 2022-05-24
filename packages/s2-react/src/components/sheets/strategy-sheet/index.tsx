@@ -5,11 +5,10 @@ import {
   ViewMeta,
   ColHeaderConfig,
   Node,
-  MultiData,
   S2Options,
   S2DataConfig,
 } from '@antv/s2';
-import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
+import { isEmpty, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';

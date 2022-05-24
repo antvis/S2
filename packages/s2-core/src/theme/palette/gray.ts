@@ -7,6 +7,7 @@ const paletteGrayMeta: PaletteMeta = {
   semanticColors: {
     red: '#FF4D4F',
     green: '#29A294',
+    yellow: '#FAAD14',
   },
   others: {
     // ---------- searchResults colors ----------

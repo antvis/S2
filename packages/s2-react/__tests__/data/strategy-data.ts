@@ -32,6 +32,70 @@ export const customTree: S2DataConfig = {
     },
     {
       'measure-a': {
+        originalValues: {
+          measure: 0.75,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.75',
+          target: '0.8',
+        },
+      },
+      'measure-b': {
+        originalValues: {
+          measure: 0.25,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.25',
+          target: '0.8',
+        },
+      },
+      'measure-c': {
+        originalValues: {
+          measure: 1,
+          target: 0.3,
+        },
+        values: {
+          measure: '1',
+          target: '0.3',
+        },
+      },
+      'measure-d': {
+        originalValues: {
+          measure: 0.5,
+          target: 0.3,
+        },
+        values: {
+          measure: '0.5',
+          target: '0.3',
+        },
+      },
+      'measure-e': {
+        originalValues: {
+          measure: 0.68,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.68',
+          target: '0.8',
+        },
+      },
+      'measure-f': {
+        originalValues: {
+          measure: 0.25,
+          target: 0.9,
+        },
+        values: {
+          measure: '0.25',
+          target: '0.9',
+        },
+      },
+      date: '2021年',
+      sub_type: '净增完成度',
+    },
+    {
+      'measure-a': {
         originalValues: [[377, '', 0.02]],
         values: [[377, '', '0.02']],
       },

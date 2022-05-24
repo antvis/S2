@@ -77,7 +77,7 @@ export const download = (str: string, fileName: string) => {
  */
 const processObjectValueInCol = (data: MultiData) => {
   const tempCells = data?.label ? [data?.label] : [];
-  const values = data?.values;
+  const values = data?.values as (string | number)[][];
   if (!isEmpty(values)) {
     forEach(values, (value) => {
       tempCells.push(value.join(' '));

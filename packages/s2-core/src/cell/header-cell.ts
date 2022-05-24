@@ -17,7 +17,6 @@ import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
-import { TableColCell } from '@/cell/table-col-cell';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
