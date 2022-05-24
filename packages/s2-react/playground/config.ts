@@ -102,6 +102,14 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
+  // totals: {
+  //   col: {
+  //     showGrandTotals: true,
+  //     showSubTotals: true,
+  //     reverseLayout: true,
+  //     reverseSubLayout: false,
+  //   },
+  // },
 };
 
 export const sliderOptions: SliderSingleProps = {

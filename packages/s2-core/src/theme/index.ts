@@ -70,6 +70,16 @@ export const getTheme = (
       },
     },
     rowCell: {
+      measureText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[14],
+        linkTextFill: basicColors[6],
+        opacity: 1,
+        textAlign: isTable ? 'center' : 'left',
+        textBaseline: 'top',
+      },
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
@@ -78,7 +88,7 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
-        textBaseline: 'middle',
+        textBaseline: 'top',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -87,7 +97,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: 'middle',
+        textBaseline: 'top',
         textAlign: isTable ? 'center' : 'left', // default align center for row cell in table mode
       },
       cell: {
@@ -150,6 +160,16 @@ export const getTheme = (
       seriesNumberWidth: 80,
     },
     colCell: {
+      measureText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[0],
+        opacity: 1,
+        // 默认数值字段和 dataCell 数值对齐
+        textAlign: 'right',
+        textBaseline: 'middle',
+      },
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
