@@ -452,7 +452,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getRowLeafNodes(): Node[] {
-    return this.facet.layoutResult.rowLeafNodes;
+    return this.facet?.layoutResult.rowLeafNodes || [];
   }
 
   /**
@@ -468,7 +468,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getColumnLeafNodes(): Node[] {
-    return this.facet.layoutResult.colLeafNodes;
+    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
