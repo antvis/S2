@@ -416,6 +416,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     {
       stroke: comparativeMeasure.color,
       lineWidth: comparativeMeasure.width,
+      opacity: comparativeMeasure?.opacity,
     },
   );
 
