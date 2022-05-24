@@ -1,6 +1,7 @@
 import {
   customMerge,
   isUpDataValue,
+  RowCell,
   S2DataConfig,
   S2Options,
   S2Theme,
@@ -94,6 +95,18 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
+class CustomRowCell extends RowCell {
+  // 覆盖背景绘制，可覆盖或者增加绘制方法
+  drawBackgroundShape() {
+    this.backgroundShape = this.addShape('image', {
+      attrs: {
+        ...this.getCellArea(),
+        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+      },
+    });
+  }
+}
+
 export const s2Options: S2Options = {
   debug: true,
   width: 600,
@@ -101,6 +114,9 @@ export const s2Options: S2Options = {
   hierarchyCollapse: false,
   interaction: {
     enableCopy: true,
+  },
+  rowCell: (node, s2, headConfig) => {
+    return new CustomRowCell(node, s2, headConfig);
   },
 };
 
