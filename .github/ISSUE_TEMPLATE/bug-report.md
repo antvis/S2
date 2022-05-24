@@ -11,10 +11,13 @@ title: '🐛'
 
 | Package      | Version |
 | -------------- | --------- |
-| @antv/s2       | -         |
-| @antv/s2-react | -         |
+| @antv/s2       |          |
+| @antv/s2-react |          |
+| @antv/s2-vue   |          |
 
 ### Sheet Type
+
+<!-- Required! -->
 
 - [ ] PivotSheet
 - [ ] TableSheet
@@ -44,4 +47,4 @@ title: '🐛'
 
 ### 💻 System information
 
-<!-- eg: chrome: v91.0, window -->
+<!-- eg: chrome: v91.0, window 🙅🏻‍♀️🚫 `latest`, `1.x` -->
