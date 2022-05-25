@@ -25,5 +25,6 @@ order: 5
 | successText          | 操作成功文案       | `string`    |        |      |
 | errorText            | 操作失败文案       | `string`    |        |      |
 | fileName             | 自定义下载文件名   | `string`    | `sheet`  |      |
+| syncCopy             | 同步复制数据 （默认异步）   | `boolean`    | `false`  |      |
 
 `markdown:docs/common/export.zh.md`

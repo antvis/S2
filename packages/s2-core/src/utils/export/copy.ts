@@ -1,8 +1,11 @@
+import { VALUE_FIELD } from '@/common/constant/basic';
 import { copyToClipboard } from '@/utils/export';
 import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
+import { Node } from '@/facet/layout/node';
+import { CopyType } from '@/common';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -14,16 +17,29 @@ export function keyEqualTo(key: string, compareKey: string) {
 const newLine = '\r\n';
 const newTab = '\t';
 
-const getColNodeField = (spreadsheet: SpreadSheet, id: string) =>
-  spreadsheet.getColumnNodes().find((col) => col.id === id)?.field;
+const getColNodeField = (spreadsheet: SpreadSheet, id: string) => {
+  const colNode = spreadsheet.getColumnNodes().find((col) => col.id === id);
+  if (spreadsheet.isPivotMode()) {
+    return colNode?.value;
+  }
+  return colNode?.field;
+};
 
 const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   const ids = meta.id.split('-');
   return getColNodeField(spreadsheet, ids[ids.length - 1]);
 };
 
-const getFormat = (meta: CellMeta, spreadsheet: SpreadSheet) => {
-  const ids = meta.id.split('-');
+const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const { rowIndex, colIndex } = meta;
+  return [
+    spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
+    spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
+  ];
+};
+
+const getFormat = (cellId: string, spreadsheet: SpreadSheet) => {
+  const ids = cellId.split('-');
   const fieldId = getColNodeField(spreadsheet, ids[ids.length - 1]);
   if (spreadsheet.options.interaction.copyWithFormat) {
     return spreadsheet.dataSet.getFieldFormatter(fieldId);
@@ -36,6 +52,22 @@ const getValueFromMeta = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
+  if (spreadsheet.isPivotMode()) {
+    const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const cell = spreadsheet.dataSet.getCellData({
+      query: {
+        ...rowNode.query,
+        ...colNode.query,
+      },
+      rowNode,
+      isTotals:
+        rowNode.isTotals ||
+        rowNode.isTotalMeasure ||
+        colNode.isTotals ||
+        colNode.isTotalMeasure,
+    });
+    return cell[VALUE_FIELD];
+  }
   const fieldId = getFiledIdFromMeta(meta, spreadsheet);
   return displayData[meta.rowIndex][fieldId];
 };
@@ -45,14 +77,14 @@ const format = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const formatter = getFormat(meta, spreadsheet);
+  const formatter = getFormat(meta.id, spreadsheet);
   return formatter(getValueFromMeta(meta, displayData, spreadsheet));
 };
 
 export const convertString = (v: string) => {
   if (/\n/.test(v)) {
-    // 单元格内换行
-    return '"' + v.replace(/\r\n?/g, '\n') + '"';
+    // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
+    return '"' + v.replace(/\r\n?/g, '\n').replace(/"/g, "'") + '"';
   }
   return v;
 };
@@ -101,7 +133,7 @@ export const getTwoDimData = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
-const processColSelected = (
+const processTableColSelected = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
@@ -118,7 +150,65 @@ const processColSelected = (
     .join(newLine);
 };
 
-const processRowSelected = (
+const getPivotCopyData = (
+  spreadsheet: SpreadSheet,
+  leafRows: Node[],
+  leafCols: Node[],
+) => {
+  return leafRows
+    .map((rowNode) =>
+      leafCols
+        .map((colNode) => {
+          const cellData = spreadsheet.dataSet.getCellData({
+            query: {
+              ...rowNode.query,
+              ...colNode.query,
+            },
+            rowNode,
+            isTotals:
+              rowNode.isTotals ||
+              rowNode.isTotalMeasure ||
+              colNode.isTotals ||
+              colNode.isTotalMeasure,
+          });
+          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+        })
+        .join(newTab),
+    )
+    .join(newLine);
+};
+
+const processPivotColSelected = (
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
+) => {
+  const allRowLeafNodes = spreadsheet
+    .getRowNodes()
+    .filter((node) => node.isLeaf);
+  const allColLeafNodes = spreadsheet
+    .getColumnNodes()
+    .filter((node) => node.isLeaf);
+
+  const colNodes = selectedCols.length
+    ? selectedCols.reduce((arr, e) => {
+        arr.push(...allColLeafNodes.filter((node) => node.id.startsWith(e.id)));
+        return arr;
+      }, [])
+    : allColLeafNodes;
+  return getPivotCopyData(spreadsheet, allRowLeafNodes, colNodes);
+};
+const processColSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
+) => {
+  if (spreadsheet.isPivotMode()) {
+    return processPivotColSelected(spreadsheet, selectedCols);
+  }
+  return processTableColSelected(displayData, spreadsheet, selectedCols);
+};
+
+const processTableRowSelected = (
   displayData: DataType[],
   selectedRows: CellMeta[],
 ) => {
@@ -133,6 +223,76 @@ const processRowSelected = (
     .join(newLine);
 };
 
+const processPivotRowSelected = (
+  spreadsheet: SpreadSheet,
+  selectedRows: CellMeta[],
+) => {
+  const allRowLeafNodes = spreadsheet
+    .getRowNodes()
+    .filter((node) => node.isLeaf);
+  const allColLeafNodes = spreadsheet
+    .getColumnNodes()
+    .filter((node) => node.isLeaf);
+  const rowNodes = selectedRows.reduce((arr, e) => {
+    arr.push(...allRowLeafNodes.filter((node) => node.id.startsWith(e.id)));
+    return arr;
+  }, []);
+  return getPivotCopyData(spreadsheet, rowNodes, allColLeafNodes);
+};
+
+const processRowSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+  selectedRows: CellMeta[],
+) => {
+  if (spreadsheet.isPivotMode()) {
+    return processPivotRowSelected(spreadsheet, selectedRows);
+  }
+  return processTableRowSelected(displayData, selectedRows);
+};
+
+export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
+  const cells = spreadsheet.interaction.getState().cells || [];
+  if (copyType === CopyType.ALL) {
+    return processColSelected(displayData, spreadsheet, []);
+  }
+  if (copyType === CopyType.COL) {
+    const colIndexes = cells.reduce<number[]>((pre, cur) => {
+      if (!pre.find((item) => item === cur.colIndex)) {
+        pre.push(cur.colIndex);
+      }
+      return pre;
+    }, []);
+    const colNodes = spreadsheet.facet.layoutResult.colLeafNodes
+      .filter((node) => colIndexes.includes(node.colIndex))
+      .map((node) => ({
+        id: node.id,
+        colIndex: node.colIndex,
+        rowIndex: node.rowIndex,
+        type: CellTypes.COL_CELL,
+      }));
+    return processColSelected(displayData, spreadsheet, colNodes);
+  }
+  if (copyType === CopyType.ROW) {
+    const rowIndexes = cells.reduce<number[]>((pre, cur) => {
+      if (!pre.find((item) => item === cur.rowIndex)) {
+        pre.push(cur.rowIndex);
+      }
+      return pre;
+    }, []);
+    const rowNodes = rowIndexes.map((index) => {
+      return {
+        id: index + '-' + spreadsheet.facet.layoutResult.colLeafNodes[0].id,
+        colIndex: 0,
+        rowIndex: index,
+        type: CellTypes.ROW_CELL,
+      };
+    });
+    return processRowSelected(displayData, spreadsheet, rowNodes);
+  }
+};
+
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
   const cells = interaction.getState().cells || [];
@@ -142,8 +302,8 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode()) {
-    // 透视表之后实现
+  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
+    // 树状模式透视表之后实现
     return;
   }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
@@ -151,7 +311,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
   } else if (selectedCols.length) {
     data = processColSelected(displayData, spreadsheet, selectedCols);
   } else if (selectedRows.length) {
-    data = processRowSelected(displayData, selectedRows);
+    data = processRowSelected(displayData, spreadsheet, selectedRows);
   } else {
     if (!cells.length) {
       return;

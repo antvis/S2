@@ -1,5 +1,5 @@
-import { each, isEmpty } from 'lodash';
-import { IGroup, IShape } from '@antv/g-base';
+import { each } from 'lodash';
+import type { IGroup, IShape } from '@antv/g-canvas';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroupX } from '@/facet/utils';
 import {
@@ -7,14 +7,11 @@ import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
-  // format field value
-  formatter: (field: string) => Formatter;
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
   scrollContainsRowHeader?: boolean;
@@ -65,7 +62,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
-    this.scrollGroup.clear();
+    this.scrollGroup?.clear();
     this.background?.remove(true);
   }
 
@@ -94,20 +91,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-    const colCell = spreadsheet?.facet?.cfg?.colCell;
+    const { colCell } = spreadsheet.options;
 
     each(data, (node: Node) => {
       const item = node;
 
       if (this.isColCellInRect(item)) {
-        let cell: S2CellType;
-        if (colCell) {
-          cell = colCell(item, spreadsheet, this.headerConfig);
-        }
+        const cell =
+          colCell?.(item, spreadsheet, this.headerConfig) ||
+          this.getCellInstance(item, spreadsheet, this.headerConfig);
 
-        if (isEmpty(cell)) {
-          cell = this.getCellInstance(item, spreadsheet, this.headerConfig);
-        }
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);

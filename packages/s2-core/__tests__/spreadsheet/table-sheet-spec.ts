@@ -1,4 +1,4 @@
-import { getContainer, getMockData } from 'tests/util/helpers';
+import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import { TableSheet, S2Options, S2DataConfig, ResizeType } from '@/index';
 
 const data = getMockData(
@@ -74,7 +74,9 @@ const options: S2Options = {
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
     hiddenColumnFields: ['order_date'],
-    resize: true,
+    resize: {
+      rowResizeType: ResizeType.CURRENT,
+    },
   },
   frozenRowCount: 2,
   frozenColCount: 2,
@@ -89,10 +91,32 @@ const options: S2Options = {
 };
 
 describe('TableSheet normal spec', () => {
-  test('demo', () => {
+  test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
 
-    expect(1).toBe(1);
+    const onScrollFinish = jest.fn();
+    s2.facet.scrollWithAnimation(
+      {
+        offsetX: {
+          value: 10,
+          animate: true,
+        },
+        offsetY: {
+          value: 10,
+          animate: true,
+        },
+      },
+      10,
+      onScrollFinish,
+    );
+    await sleep(30);
+
+    expect(s2.facet.getScrollOffset()).toStrictEqual({
+      scrollY: 10,
+      scrollX: 10,
+      hRowScrollX: 0,
+    });
+    expect(onScrollFinish).toBeCalled();
   });
 });

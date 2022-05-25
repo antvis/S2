@@ -41,6 +41,7 @@ jest.mock('src/sheet-type', () => {
         getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
+        getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
       };
     }),
@@ -70,7 +71,7 @@ describe('Table Mode Facet Test', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions(),
     ...DEFAULT_STYLE,
@@ -92,7 +93,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const options = {
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({}),
     ...DEFAULT_STYLE,
@@ -127,17 +128,17 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const ss: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    const s2: SpreadSheet = new MockSpreadSheet();
+    const s2DataSet: TableDataSet = new MockTableDataSet(s2);
     const facet = new TableFacet({
       ...options,
-      spreadsheet: ss,
-      dataSet,
+      spreadsheet: s2,
+      dataSet: s2DataSet,
       showSeriesNumber: true,
     });
     const { colCfg, cellCfg } = facet.cfg;
 
-    test('col hierarchy coordinate with adaptive layout', () => {
+    test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
@@ -153,6 +154,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
       expect(seriesNumberNode.height).toBe(colCfg.height);
+
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
@@ -172,7 +174,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     };
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
-      dataSet: dataSet,
+      dataSet,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
@@ -183,13 +185,13 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [52, 52, 64, 40, 73];
+      const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(Math.round(node.width)).toBe(Math.round(COMPACT_WIDTH[index]));
+        expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
         expect(node.height).toBe(colCfg.height);
         lastX += COMPACT_WIDTH[index];
       });
@@ -204,7 +206,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     };
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
-      dataSet: dataSet,
+      dataSet,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
@@ -213,16 +215,16 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     });
     const { colCfg } = facet.cfg;
 
-    test('col hierarchy coordinate with compact layout', () => {
+    test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 73];
+      const COMPACT_WIDTH = [80, 53, 53, 65, 41, 73];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(Math.round(node.width)).toBe(Math.round(COMPACT_WIDTH[index]));
+        expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
         expect(node.height).toBe(colCfg.height);
         lastX += COMPACT_WIDTH[index];
       });
@@ -235,14 +237,56 @@ describe('Table Mode Facet With Frozen Test', () => {
   const dataSet: TableDataSet = new MockTableDataSet(ss);
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
+      frozenColCount: 2,
+      frozenRowCount: 2,
       frozenTrailingColCount: 2,
       frozenTrailingRowCount: 2,
     }),
     ...DEFAULT_STYLE,
     columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  });
+
+  test('should get correct frozenInfo', () => {
+    facet.calculateFrozenGroupInfo();
+    expect(facet.frozenGroupInfo).toStrictEqual({
+      col: {
+        range: [0, 1],
+        width: 240,
+      },
+      row: {
+        height: 60,
+        range: [0, 2],
+      },
+      trailingCol: {
+        range: [3, 4],
+        width: 240,
+      },
+      trailingRow: {
+        height: 60,
+        range: [29, 31],
+      },
+    });
+  });
+
+  test('should get correct xy indexes with frozen', () => {
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 16],
+      frozenCol: [0, 1, 2, 16],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 16],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+
+    expect(facet.calculateXYIndexes(100, 200)).toStrictEqual({
+      center: [2, 2, 8, 23],
+      frozenCol: [0, 1, 8, 23],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 8, 23],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
   });
 
   test('should get correct col layout with frozen col', () => {
@@ -313,6 +357,20 @@ describe('Table Mode Facet With Frozen Test', () => {
     expect(viewCellHeights.getCellOffsetY(0)).toBe(0);
     expect(viewCellHeights.getCellOffsetY(7)).toBe(210);
   });
+
+  test('should get correct indexes with row height gt canvas height', () => {
+    const originHeight = facet.panelBBox.viewportHeight;
+    facet.panelBBox.viewportHeight = 10;
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 0],
+      frozenCol: [0, 1, 2, 0],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 0],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+    // reset
+    facet.panelBBox.viewportHeight = originHeight;
+  });
 });
 
 describe('Table Mode Facet Test With Custom Row Height', () => {
@@ -332,7 +390,7 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
   });
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...merge({}, assembleOptions()),
     ...DEFAULT_STYLE,
@@ -376,7 +434,7 @@ describe('Table Mode Facet Test With Zero Height', () => {
   });
   const facet: TableFacet = new TableFacet({
     spreadsheet: ss,
-    dataSet: dataSet,
+    dataSet,
     ...assembleDataCfg().fields,
     ...merge({}, assembleOptions()),
     ...DEFAULT_STYLE,
@@ -393,5 +451,32 @@ describe('Table Mode Facet Test With Zero Height', () => {
     const { scrollX, scrollY } = facet.getScrollOffset();
     expect(scrollX).toBe(0);
     expect(scrollY).toBe(0);
+  });
+});
+
+describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: ss,
+    dataSet,
+    ...assembleDataCfg().fields,
+    ...assembleOptions({
+      frozenColCount: 2,
+      frozenRowCount: 2,
+      frozenTrailingColCount: 2,
+      frozenTrailingRowCount: 2,
+    }),
+    ...DEFAULT_STYLE,
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    layoutCoordinate: (cfg, _, currentNode) => {
+      currentNode.width = 200;
+    },
+  });
+
+  test('should get correct width by layoutCoordinate', () => {
+    facet.layoutResult.colLeafNodes.forEach((item) => {
+      expect(item.width).toBe(200);
+    });
   });
 });

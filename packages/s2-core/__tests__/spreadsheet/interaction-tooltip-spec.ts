@@ -5,7 +5,7 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 import { S2Event } from '@/common/constant';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 600,
   height: 400,
   tooltip: {
@@ -19,9 +19,9 @@ describe('Interaction Tooltip Tests', () => {
   beforeEach(() => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
-      .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
+      .mockImplementation(() => createMockCellInfo('testId').mockCell);
 
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });
 
@@ -30,15 +30,19 @@ describe('Interaction Tooltip Tests', () => {
   });
 
   test('should display tooltip when data cell clicked', () => {
-    const showTooltipWithInfoSpy = jest
-      .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation(() => {});
+    const isContains = () => {
+      return s2.tooltip.container?.classList?.contains(
+        'antv-s2-tooltip-container-show',
+      );
+    };
+
+    expect(isContains()).toBeFalsy();
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    expect(showTooltipWithInfoSpy).toHaveBeenCalledTimes(1);
+    expect(isContains()).toBeTruthy();
     expect(s2.tooltip.container.style.display).not.toEqual('none');
     expect(s2.tooltip.container.style.visibility).not.toEqual('hidden');
   });

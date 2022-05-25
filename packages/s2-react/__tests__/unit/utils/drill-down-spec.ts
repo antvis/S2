@@ -87,7 +87,7 @@ describe('Drill Down Test', () => {
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);
     mockInstance.interaction = new RootInteraction(mockInstance);
-    mockInstance.options = mockOptions;
+    mockInstance.setOptions(mockOptions);
   });
 
   test('for handleDrillDown function', async () => {
@@ -104,7 +104,7 @@ describe('Drill Down Test', () => {
     expect(mockInstance.store.get('drillDownIdPathMap')).not.toBeEmpty();
   });
 
-  test('for handleDrillDownIcon function', async () => {
+  test('for handleDrillDownIcon function', () => {
     const mergedOptions = handleDrillDownIcon(
       {
         options: mockInstance.options,
@@ -113,6 +113,9 @@ describe('Drill Down Test', () => {
       },
       mockInstance,
       iconClickCallback,
+      {
+        current: null,
+      },
     );
     expect(mergedOptions.headerActionIcons).not.toBeEmpty();
   });
@@ -130,7 +133,7 @@ describe('Drill Down Test', () => {
     );
   });
 
-  test('for getDrillDownCache function', async () => {
+  test('for getDrillDownCache function', () => {
     const mockDrillDownDataCache = {
       rowId: 'root[&]浙江省[&]杭州市',
       drillLevel: 0,

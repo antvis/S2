@@ -32,5 +32,13 @@
       "type": "办公用品",
       "sub_type": "纸张"
     }
+  ],
+  "totalData": [
+    {
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "number": 110
+    }
   ]
 }

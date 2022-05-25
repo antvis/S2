@@ -1,4 +1,13 @@
-import { sortAction } from '@/utils/sort-action';
+import { getContainer } from 'tests/util/helpers';
+import { sortData } from 'tests/data/sort-advanced';
+import {
+  getSortByMeasureValues,
+  sortAction,
+  sortByCustom,
+} from '@/utils/sort-action';
+import { EXTRA_FIELD, S2Options, SortParam, TOTAL_VALUE } from '@/common';
+import { PivotSheet } from '@/sheet-type';
+import { PivotDataSet, SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -87,5 +96,344 @@ describe('Sort Action Test', () => {
         [{ a: '' }, { a: 2 }, { a: '3' }],
       );
     });
+  });
+});
+
+describe('Sort By Custom Test', () => {
+  describe('Sort By Custom', () => {
+    test('sort by custom with equal sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Monday[&]morning',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]morning',
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with repeated sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+          'Wednesday[&]afternoon',
+          'Wednesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with unordered node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Wednesday[&]afternoon',
+          'Monday[&]noon',
+          'Tuesday[&]noon',
+          'Wednesday[&]morning',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
+    });
+  });
+});
+
+describe('getSortByMeasureValues', () => {
+  let sheet: PivotSheet;
+  let dataSet: PivotDataSet;
+  const s2Options = {
+    totals: {
+      row: {
+        subTotalsDimensions: ['province'],
+        calcSubTotals: {
+          aggregation: 'SUM',
+        },
+        calcTotals: {
+          aggregation: 'SUM',
+        },
+      },
+      col: {
+        showSubTotals: true,
+        showGrandTotals: true,
+        subTotalsDimensions: ['type'],
+        calcTotals: {
+          aggregation: 'SUM',
+        },
+        calcSubTotals: {
+          aggregation: 'SUM',
+        },
+      },
+    },
+  } as S2Options;
+  beforeEach(() => {
+    sheet = new PivotSheet(getContainer(), sortData, s2Options);
+    dataSet = new PivotDataSet(sheet);
+    dataSet.setDataCfg(sortData);
+    sheet.dataSet = dataSet;
+  });
+  test('should sort by col total', () => {
+    // 根据列（类别）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc', // getSortByMeasureValues 的返回值还没有进行排序
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: 41.5,
+        price: 41.5,
+        type: '纸张',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: 37,
+        price: 37,
+        type: '笔',
+      },
+    ]);
+  });
+
+  test('should sort by row total', () => {
+    // 根据行（省份）的总和排序
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: ['吉林', '浙江'],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        $$value$$: 33,
+        price: 33,
+        province: '吉林',
+      },
+      {
+        $$extra$$: 'price',
+        $$value$$: 45.5,
+        price: 45.5,
+        province: '浙江',
+      },
+    ]);
+  });
+
+  test('should group sort by row price when type is 笔', () => {
+    // 对城市依据 笔的价格 进行组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'type',
+      sortByMeasure: 'price',
+      sortMethod: 'desc',
+      query: {
+        type: '笔',
+        [EXTRA_FIELD]: 'price',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '笔',
+        price: '1',
+        $$extra$$: 'price',
+        $$value$$: '1',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '笔',
+        price: '17',
+        $$extra$$: 'price',
+        $$value$$: '17',
+      },
+      {
+        province: '吉林',
+        city: '丹东',
+        type: '笔',
+        price: '10',
+        $$extra$$: 'price',
+        $$value$$: '10',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '笔',
+        price: '9',
+        $$extra$$: 'price',
+        $$value$$: '9',
+      },
+    ]);
+  });
+
+  test('should sort by row sub total', () => {
+    // 行小计进行 组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortMethod: 'desc',
+      sortByMeasure: TOTAL_VALUE,
+      query: {
+        [EXTRA_FIELD]: 'price',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        $$extra$$: 'price',
+        province: '浙江',
+        city: '杭州',
+        $$value$$: 3,
+        price: 3,
+      },
+      {
+        $$extra$$: 'price',
+        province: '浙江',
+        city: '舟山',
+        $$value$$: 42.5,
+        price: 42.5,
+      },
+      {
+        $$extra$$: 'price',
+        province: '吉林',
+        city: '丹东',
+        $$value$$: 13,
+        price: 13,
+      },
+      {
+        $$extra$$: 'price',
+        province: '吉林',
+        city: '白山',
+        $$value$$: 20,
+        price: 20,
+      },
+    ]);
+  });
+
+  test('should sort by row price when type is 纸', () => {
+    // 对城市依据 纸的价格 进行组内排序
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortMethod: 'asc',
+      sortByMeasure: 'price',
+      query: {
+        type: '纸张',
+      },
+    };
+
+    const params: SortActionParams = {
+      dataSet,
+      sortParam,
+      originValues: [
+        '浙江[&]杭州',
+        '浙江[&]舟山',
+        '吉林[&]丹东',
+        '吉林[&]白山',
+      ],
+    };
+    const measureValues = getSortByMeasureValues(params);
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        city: '杭州',
+        type: '纸张',
+        price: '2',
+        $$extra$$: 'price',
+        $$value$$: '2',
+      },
+      {
+        province: '浙江',
+        city: '舟山',
+        type: '纸张',
+        price: '25.5',
+        $$extra$$: 'price',
+        $$value$$: '25.5',
+      },
+      {
+        province: '吉林',
+        city: '丹东',
+        type: '纸张',
+        price: '3',
+        $$extra$$: 'price',
+        $$value$$: '3',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '纸张',
+        price: '11',
+        $$extra$$: 'price',
+        $$value$$: '11',
+      },
+    ]);
   });
 });

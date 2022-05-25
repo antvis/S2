@@ -11,11 +11,13 @@ export interface SwitcherProps
   title?: ReactNode;
   // ref: https://ant.design/components/popover-cn/#API
   popover?: PopoverProps;
+  disabled?: boolean;
 }
 
 export const Switcher: FC<SwitcherProps> = ({
   title,
   popover,
+  disabled,
   ...otherProps
 }) => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +28,7 @@ export const Switcher: FC<SwitcherProps> = ({
 
   return (
     <Popover
-      visible={visible}
+      visible={!disabled && visible}
       content={
         <SwitcherContent {...otherProps} onToggleVisible={onToggleVisible} />
       }
@@ -40,6 +42,7 @@ export const Switcher: FC<SwitcherProps> = ({
         <Button
           className={getSwitcherClassName('entry-button')}
           size="small"
+          disabled={disabled}
           icon={<SwitcherIcon />}
         >
           {i18n('行列切换')}

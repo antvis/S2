@@ -6,7 +6,7 @@ order: 2
 功能描述：交互类相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/interaction/root.ts)
 
 ```ts
-this.spreadsheet.interaction.xx()
+s2.interaction.xx()
 ```
 
 | 参数 | 说明 | 类型 |
@@ -26,6 +26,8 @@ this.spreadsheet.interaction.xx()
 | getCurrentStateName | 获取当前状态名 | `() => void` |
 | isEqualStateName | 是否是相同的状态名 | `(name: InteractionStateName) => void` |
 | isSelectedState | 是否是选中状态 | `() => void` |
+| isHoverState | 是否是悬停状态 | `() => void` |
+| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 `focusTime`: 默认800ms 后） | `() => void` |
 | isSelectedCell | 是否是选中的单元格 | `(cell: S2CellType) => void` |
 | isActiveCell | 是否是激活的单元格 | `(cell: S2CellType) => void` |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子 | `() => Partial<ViewMeta>[]` |
@@ -38,7 +40,9 @@ this.spreadsheet.interaction.xx()
 | getRowColActiveCells | 获取行头和列头激活的单元格 | `() => RowCell[] | ColCell[]` |
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
-| hideColumns | 隐藏列 (明细表有效) | `(hiddenColumnFields: string[]) => void` |
+| selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
+| getCellLeafNodes | 获取当前单元格的叶子节点 | `(cell: S2CellType[]) => Node[]` |
+| hideColumns | 隐藏列 | `(hiddenColumnFields: string[]) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
 | unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |
@@ -95,6 +99,15 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | MergedCell
   | BaseCell<T>;
+```
+
+### SelectHeaderCellInfo
+
+```ts
+interface SelectHeaderCellInfo {
+  cell: S2CellType<ViewMeta>; // 目标单元格
+  isMultiSelection?: boolean; // 是否是多选
+}
 ```
 
 ### MergedCellInfo

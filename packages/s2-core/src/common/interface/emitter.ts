@@ -1,7 +1,7 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
-import { Data, DataItem } from '@/common/interface/s2DataConfig';
-import { FilterParam, Style } from '@/common/interface/basic';
+import { Data } from '@/common/interface/s2DataConfig';
+import { FilterParam, SortParams, Style } from '@/common/interface/basic';
 import {
   HiddenColumnsInfo,
   S2CellType,
@@ -10,20 +10,15 @@ import {
   CellScrollPosition,
 } from '@/common/interface';
 
-import { S2Event, SortMethodType } from '@/common/constant';
+import { S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
 
-type CollapsedRowsType = {
+export type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
     [x: number]: any;
   };
-};
-
-type SortParams = {
-  sortKey: string;
-  sortMethod: SortMethodType;
-  sortBy?: (data: Data) => DataItem;
+  meta?: Node;
 };
 
 export type RowCellCollapseTreeRowsType = {
@@ -42,6 +37,7 @@ type ResizeHandler = (data: {
   seriesNumberWidth?: number;
 }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
+type SortedHandler = (rangeData: Data[]) => any;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -51,6 +47,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
+  [S2Event.GLOBAL_MOUSE_MOVE]: MouseEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
@@ -61,7 +58,7 @@ export interface EmitterType {
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
-  [S2Event.RANGE_SORTED]: (rangeData: Data[]) => any;
+  [S2Event.RANGE_SORTED]: SortedHandler | CanvasEventHandler;
 
   /** ================ Filter ================  */
   [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
@@ -110,7 +107,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
 
-  /** ================ Merged Cell ================  */
+  /** ================ Merged Cells ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
@@ -130,15 +127,14 @@ export interface EmitterType {
   }) => void;
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
   [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
-  [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (data: Node) => void;
-  [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (expandedNode: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_HIDDEN]: (
+  [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
+  [S2Event.LAYOUT_DESTROY]: () => void;
 
   /** ================ Layout Resize ================  */
   [S2Event.LAYOUT_RESIZE]: ResizeHandler;

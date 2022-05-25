@@ -25,6 +25,7 @@ describe('Tooltip Tests', () => {
       x: 0,
       y: 0,
     });
+    expect(tooltip.visible).toBeFalsy();
   });
 
   test('should show tooltip', () => {
@@ -48,6 +49,8 @@ describe('Tooltip Tests', () => {
     expect(tooltip.container.className).toEqual(
       `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_CLS}-show`,
     );
+    // visible status
+    expect(tooltip.visible).toBeTruthy();
     // set style
     expect(style.left).toEqual(`${left}px`);
     expect(style.top).toEqual(`${top}px`);
@@ -71,6 +74,8 @@ describe('Tooltip Tests', () => {
       x: 0,
       y: 0,
     });
+    // visible status
+    expect(tooltip.visible).toBeFalsy();
     // add class
     expect(tooltip.container.className).toEqual(
       `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_CLS}-hide`,
@@ -96,6 +101,8 @@ describe('Tooltip Tests', () => {
       x: 0,
       y: 0,
     });
+    // visible status
+    expect(tooltip.visible).toBeFalsy();
     // remove container
     expect(document.getElementById(containerId)).toBeFalsy();
   });

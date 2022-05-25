@@ -6,35 +6,48 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { S2Options } from '@antv/s2';
-import * as mockDataConfig from '../data/simple-data.json';
+import type { S2Options } from '@antv/s2';
+import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';
-import { SheetType } from '@/components/sheets/interface';
+import { SheetComponentsProps, SheetType } from '@/components/sheets/interface';
 
-function MainLayout({ sheetType }: { sheetType: SheetType }) {
-  const [s2Options] = React.useState<S2Options>();
+const s2Options: S2Options = {
+  width: 400,
+  height: 400,
+};
+
+function MainLayout({ sheetType, adaptive }: Partial<SheetComponentsProps>) {
   return (
     <SheetComponent
       sheetType={sheetType}
       dataCfg={mockDataConfig}
       options={s2Options}
       themeCfg={{ name: 'default' }}
+      adaptive={adaptive}
     />
   );
 }
 
 describe('SheetComponent Correct Render Tests', () => {
-  test.each(['pivot', 'table', 'gridAnalysis'] as unknown as Array<
-    keyof SheetType
-  >)('should correct render %o with empty options', (type) => {
-    function render() {
-      ReactDOM.render(
-        <MainLayout sheetType={type as SheetType} />,
-        getContainer(),
-      );
-    }
+  test.each([
+    { sheetType: 'pivot', adaptive: false },
+    { sheetType: 'table', adaptive: false },
+    { sheetType: 'gridAnalysis', adaptive: false },
+    { sheetType: 'pivot', adaptive: true },
+    { sheetType: 'table', adaptive: true },
+    { sheetType: 'gridAnalysis', adaptive: true },
+  ] as Array<{ sheetType: SheetType; adaptive: boolean }>)(
+    'should correct render %o with empty options',
+    ({ sheetType, adaptive }) => {
+      function render() {
+        ReactDOM.render(
+          <MainLayout sheetType={sheetType} adaptive={adaptive} />,
+          getContainer(),
+        );
+      }
 
-    expect(render).not.toThrowError();
-  });
+      expect(render).not.toThrowError();
+    },
+  );
 });

@@ -7,22 +7,27 @@ import {
   Meta,
 } from '@antv/s2';
 import { filter, find, isEmpty, map, reduce } from 'lodash';
+import { SheetType } from './../sheets/interface';
 import { FieldType, SWITCHER_FIELDS } from './constant';
 import { SwitcherField, SwitcherFields, SwitcherResult } from './interface';
 
+export const getSheetType = (sheet: SpreadSheet): SheetType => {
+  return sheet instanceof TableSheet ? 'table' : 'pivot';
+};
+
 const getSwitcherFieldCfg = (
   sheet: SpreadSheet,
-  fieldKey,
+  fieldType: FieldType,
 ): Pick<SwitcherField, 'expandable' | 'selectable'> => {
   // 内置 header 只对交叉表和明细表做处理：
   // 交叉表只有 values 可被隐藏和展开（因为它包含可衍生值）
   // 明细表只有 cols 数据，且可被隐藏
   const selectable =
-    (sheet instanceof PivotSheet && fieldKey === FieldType.Values) ||
-    (sheet instanceof TableSheet && fieldKey === FieldType.Cols);
+    (sheet instanceof PivotSheet && fieldType === FieldType.Values) ||
+    (sheet instanceof TableSheet && fieldType === FieldType.Cols);
 
   const expandable =
-    sheet instanceof PivotSheet && fieldKey === FieldType.Values;
+    sheet instanceof PivotSheet && fieldType === FieldType.Values;
   return { selectable, expandable };
 };
 

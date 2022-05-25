@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last, set } from 'lodash';
+import { clone, last } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
@@ -7,7 +7,7 @@ import {
   EXTRA_FIELD,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_MENUS,
+  TOOLTIP_OPERATOR_SORT_MENUS,
 } from '@/common/constant';
 import {
   S2Options,
@@ -28,7 +28,6 @@ export class PivotSheet extends SpreadSheet {
     if (dataSet) {
       return dataSet(this);
     }
-
     const realDataSet =
       hierarchyType === 'customTree'
         ? new CustomTreePivotDataSet(this)
@@ -99,9 +98,9 @@ export class PivotSheet extends SpreadSheet {
     const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
 
     return {
+      ...this.options,
       ...fields,
       ...style,
-      ...this.options,
       meta,
       spreadsheet: this,
       dataSet: this.dataSet,
@@ -119,7 +118,6 @@ export class PivotSheet extends SpreadSheet {
   protected bindEvents() {
     this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
     this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
-    // collapse rows in tree mode of SpreadSheet
     this.on(
       S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
       this.handleRowCellCollapseTreeRows,
@@ -140,14 +138,16 @@ export class PivotSheet extends SpreadSheet {
         },
       },
     };
-    // post to x-report to store state
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
+      meta: data?.node,
     });
+
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
+      meta: data?.node,
     });
   }
 
@@ -155,7 +155,7 @@ export class PivotSheet extends SpreadSheet {
     const options: Partial<S2Options> = {
       hierarchyCollapse: !isCollapsed,
       style: {
-        collapsedRows: {}, // 清空用户操作的缓存
+        collapsedRows: null,
       },
     };
     this.setOptions(options);
@@ -184,6 +184,8 @@ export class PivotSheet extends SpreadSheet {
     const prevSortParams = this.dataCfg.sortParams.filter(
       (item) => item?.sortFieldId !== sortFieldId,
     );
+    // 触发排序事件
+    this.emit(S2Event.RANGE_SORT, [...prevSortParams, sortParam]);
     this.setDataCfg({
       ...this.dataCfg,
       sortParams: [...prevSortParams, sortParam],
@@ -196,9 +198,11 @@ export class PivotSheet extends SpreadSheet {
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
-        this.groupSortByMethod(key, meta);
+        this.groupSortByMethod(key as unknown as SortMethod, meta);
+        // 排序事件完成触发
+        this.emit(S2Event.RANGE_SORTED, event);
       },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
+      menus: TOOLTIP_OPERATOR_SORT_MENUS,
     };
 
     this.showTooltipWithInfo(event, [], {

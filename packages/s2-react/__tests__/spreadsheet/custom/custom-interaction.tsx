@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   SpreadSheet,
@@ -7,6 +6,7 @@ import {
   BaseEvent,
   InteractionStateName,
   getCellMeta,
+  GEvent,
 } from '@antv/s2';
 
 export class CustomHover extends BaseEvent {
@@ -15,7 +15,7 @@ export class CustomHover extends BaseEvent {
   }
 
   private bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: GEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) return;
       this.spreadsheet.interaction.changeState({

@@ -64,7 +64,7 @@ fetch(
 
       return (
         <div>
-          <Switcher {...switcherFields} onSubmit={onSubmit} />
+          <Switcher sheetType="table" {...switcherFields} onSubmit={onSubmit} />
           <SheetComponent
             sheetType="table"
             adaptive={false}

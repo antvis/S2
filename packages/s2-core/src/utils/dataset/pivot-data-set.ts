@@ -5,7 +5,7 @@ import {
   PivotMeta,
   SortedDimensionValues,
 } from '@/data-set/interface';
-import { ID_SEPARATOR } from '@/common/constant';
+import { ROOT_ID, ID_SEPARATOR } from '@/common/constant';
 
 interface Param {
   rows: string[];
@@ -174,6 +174,7 @@ export function getDataPath(params: DataPathParams) {
       if (meta) {
         if (isFirstCreate) {
           // mark the child field
+          // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
           meta.childField = fields?.[i + 1];
         }
         currentMeta = meta?.children;
@@ -276,7 +277,7 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   const paths = nodeId.split(ID_SEPARATOR);
   const deletePath = last(paths);
   let currentMeta = meta;
-  forEach(paths, (path) => {
+  forEach(paths, (path, idx) => {
     const pathMeta = currentMeta.get(path);
     if (pathMeta) {
       if (path === deletePath) {
@@ -285,6 +286,10 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
       } else {
         currentMeta = pathMeta.children;
       }
+      return true;
     }
+
+    // exit iteration early when pathMeta not exists
+    return idx === 0 && path === ROOT_ID;
   });
 }

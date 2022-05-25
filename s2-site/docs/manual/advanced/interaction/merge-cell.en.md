@@ -1,6 +1,6 @@
 ---
 title: Merge Cell
-order: 5
+order: 4
 ---
 
 `markdown:docs/manual/advanced/interaction/merge-cell.zh.md`

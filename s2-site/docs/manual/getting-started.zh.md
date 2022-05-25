@@ -153,7 +153,7 @@ const s2DataConfig = {
 #### 2. 配置项准备
 
 ```ts
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600
 }
@@ -170,7 +170,7 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2options)
+const s2 = new PivotSheet(container, s2DataConfig, s2Options)
 
 s2.render()
 ```
@@ -178,10 +178,6 @@ s2.render()
 #### 4. 结果
 
 <playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
-
-#### tooltip 注意事项
-
-`@antv/s2` 中只保留了 tooltip 的核心显隐逻辑，我们将所有 tooltip 定制化交互都迁移到了`@antv/s2-react` 中，因此如果您有 tooltip 的需求，我们强烈建议您使用`@antv/s2-react`，细节参见 [tooltip 组件使用文档](https://s2.antv.vision/zh/examples/gallery#category-Tooltip%E7%BB%84%E4%BB%B6)。
 
 ### `React` 版本
 
@@ -200,7 +196,7 @@ const container = document.getElementById('container');
 ReactDOM.render(
   <SheetComponent
     dataCfg={s2DataConfig}
-    options={s2options}
+    options={s2Options}
   />,
   document.getElementById('container'),
 );

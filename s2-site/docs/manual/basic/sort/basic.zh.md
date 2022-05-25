@@ -18,7 +18,7 @@ order: 0
 使用 `s2-react` 的组件 `SheetComponent` 默认在数值头显示 `icon` ，点击后选择，有 `升序、降序、不排序` 三种方式，可在 `options` 中配置显示，如下：
 
 ```ts
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
   showDefaultHeaderActionIcon: true, // 默认为打开，可设置为false关闭

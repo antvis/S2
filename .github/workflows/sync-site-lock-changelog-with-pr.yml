@@ -26,15 +26,20 @@ jobs:
 
       - name: Git bootstrap
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'Jinke Li'
+          git config --global user.email 'a1231236677287@163.com'
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
 
       - name: Checkout branch
         run: |
           git checkout -b chore-sync
+
+      - name: Sleep 2m
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 2m
 
       - name: Install dependencies
         run: yarn
@@ -53,4 +58,4 @@ jobs:
         run: |
           gh pr create --title "chore: 🤖 更新 lock 和 changelog 文件" --body "🤖 由 [[Sync Site S2 Lock And Changelog With PR](https://github.com/antvis/S2/blob/master/.github/workflows/sync-site-lock-changelog-with-pr.yml)] action 自动创建."
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}

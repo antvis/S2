@@ -1,6 +1,7 @@
 # Dependency directories
 *node_modules/
 .vscode
+.idea
 .history
 .changelog
 *.log
@@ -9,7 +10,6 @@ coverage
 
 # Mac files
 .DS_Store
-.idea/
 
 # site
 s2-site/dist
@@ -28,6 +28,4 @@ packages/s2-*/dist/
 packages/s2-*/coverage/
 packages/s2-*/stats.html
 
-
-
-
+.swc

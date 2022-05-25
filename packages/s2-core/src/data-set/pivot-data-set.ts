@@ -14,6 +14,7 @@ import {
   forEach,
   unset,
   isNumber,
+  difference,
   every,
   first,
 } from 'lodash';
@@ -44,7 +45,6 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
-  EAggregation,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import {
@@ -61,7 +61,7 @@ import {
   deleteMetaById,
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
-import { getDataSumByField } from '@/utils/number-calculate';
+import { calcActionByType } from '@/utils/number-calculate';
 import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
@@ -73,9 +73,6 @@ export class PivotDataSet extends BaseDataSet {
 
   // sorted dimension values
   public sortedDimensionValues: SortedDimensionValues;
-
-  // each path items max index
-  protected pathIndexMax = [];
 
   /**
    * When data related config changed, we need
@@ -123,11 +120,18 @@ export class PivotDataSet extends BaseDataSet {
     rowNode: Node,
   ) {
     const { columns, values: dataValues } = this.fields;
-    const rows = Node.getFieldPath(rowNode, true);
+    const currentRowFields = Node.getFieldPath(rowNode, true);
+    const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
 
-    // 1、通过values在data中注入额外的维度信息
-    drillDownData = this.standardTransform(drillDownData, dataValues);
+    // 1、通过values在data中注入额外的维度信息，并分离`明细数据`&`汇总数据`
+    const transformedData = this.standardTransform(drillDownData, dataValues);
+
+    const totalData = splitTotal(transformedData, {
+      columns: this.fields.columns,
+      rows: nextRowFields,
+    });
+    const originData = difference(transformedData, totalData);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
@@ -148,9 +152,10 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta,
       sortedDimensionValues,
     } = transformIndexesData({
-      rows: [...rows, extraRowField],
+      rows: nextRowFields,
       columns,
-      originData: drillDownData,
+      originData,
+      totalData,
       indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
@@ -288,24 +293,24 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     const valueFormatter = (value: string) => {
-      const findOne = find(meta, (mt: Meta) => mt.field === value);
-      return get(findOne, 'name', value);
+      const currentMeta = find(meta, ({ field }: Meta) => field === value);
+      return get(currentMeta, 'name', value);
     };
 
-    const newMeta = [
-      ...meta,
-      // 虚拟列字段，为文本分类字段
-      {
-        field: EXTRA_FIELD,
-        name: i18n('数值'),
-        formatter: (value: string) => valueFormatter(value),
-      } as Meta,
-    ];
+    // 虚拟列字段，为文本分类字段
+    const extraFieldName =
+      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
+
+    const extraFieldMeta: Meta = {
+      field: EXTRA_FIELD,
+      name: extraFieldName,
+      formatter: (value: string) => valueFormatter(value),
+    };
+    const newMeta: Meta[] = [...meta, extraFieldMeta];
 
     const newData = this.standardTransform(data, values);
     const newTotalData = this.standardTransform(totalData, values);
 
-    // 返回新的结构
     return {
       data: newData,
       meta: newMeta,
@@ -374,17 +379,21 @@ export class PivotDataSet extends BaseDataSet {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         this.getTotalStatus(query),
-        this.spreadsheet.options.totals,
+        this.spreadsheet.options?.totals,
       ) || {};
+    const calcAction = calcActionByType[aggregation];
+
     // 前端计算汇总值
-    if (aggregation || calcFunc) {
+    if (calcAction || calcFunc) {
       const data = this.getMultiData(query);
       let totalValue: number;
+
       if (calcFunc) {
         totalValue = calcFunc(query, data);
-      } else if (aggregation === EAggregation.SUM) {
-        totalValue = getDataSumByField(data, VALUE_FIELD);
+      } else if (calcAction) {
+        totalValue = calcAction(data, VALUE_FIELD);
       }
+
       return {
         ...query,
         [VALUE_FIELD]: totalValue,
@@ -400,8 +409,12 @@ export class PivotDataSet extends BaseDataSet {
     let rows = originRows;
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
+
     // 判断当前是否为下钻节点
-    const isDrillDown = drillDownIdPathMap?.has(rowNode.id);
+    // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
+    const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
+      (parentPath) => rowNode.id.startsWith(parentPath),
+    );
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
     if (!isTotals || isDrillDown) {
@@ -497,6 +510,8 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       careUndefined: true,
       isFirstCreate: true,
+      rowFields: rows,
+      colFields: columns,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });

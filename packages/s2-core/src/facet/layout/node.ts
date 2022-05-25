@@ -34,6 +34,8 @@ export interface BaseNodeConfig {
   height?: number;
   padding?: number;
   children?: Node[];
+  // 额外的节点信息
+  extra?: Record<string, any>;
 }
 
 /**
@@ -68,6 +70,7 @@ export class Node {
       inCollapseNode,
       isTotalMeasure,
       isLeaf,
+      extra,
     } = cfg;
     this.id = id;
     this.key = key;
@@ -103,6 +106,7 @@ export class Node {
       value: '',
       label: '',
     };
+    this.extra = extra;
   }
 
   /**
@@ -137,7 +141,7 @@ export class Node {
    * get a branch's all leaves(c1~c4)
    * @param node
    */
-  public static getAllLeavesOfNode(node: Node): Node[] {
+  public static getAllLeaveNodes(node: Node): Node[] {
     const leaves: Node[] = [];
     if (node.isLeaf) {
       return [node];
@@ -168,7 +172,7 @@ export class Node {
    * get a branch's all nodes(c1~c4, b1, b2)
    * @param node
    */
-  public static getAllChildrenNode(node: Node): Node[] {
+  public static getAllChildrenNodes(node: Node): Node[] {
     const all: Node[] = [];
     if (node.isLeaf) {
       return [node];
@@ -198,7 +202,7 @@ export class Node {
    */
   public static getAllBranch(parent: Node): Node[][] {
     const all: Node[][] = [];
-    const leaves = this.getAllLeavesOfNode(parent);
+    const leaves = this.getAllLeaveNodes(parent);
     let current = leaves.shift();
     let tempBranch = [];
     while (current) {
@@ -261,6 +265,8 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
+  public colId: string;
+
   public static blankNode(): Node {
     return new Node({
       id: '',
@@ -301,6 +307,10 @@ export class Node {
   public inCollapseNode?: boolean;
 
   public cornerType?: CornerNodeType;
+
+  public isGrandTotals?: boolean;
+
+  public isSubTotals?: boolean;
 
   [key: string]: any;
 

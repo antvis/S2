@@ -7,6 +7,5 @@ import { PALETTE_MAP } from '../common/constant';
  */
 export const getPalette = (type?: ThemeName): Palette => {
   const themeName = type || 'default';
-  const platte = PALETTE_MAP[themeName.toLowerCase()];
-  return platte;
+  return PALETTE_MAP[themeName.toLowerCase()];
 };

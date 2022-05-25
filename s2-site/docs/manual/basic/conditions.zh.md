@@ -20,10 +20,10 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 ```js
 // 构建 options
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
-  // 通过配置 conditions 实现字段标记   
+  // 通过配置 conditions 实现字段标记
   conditions: {
     text: [
       {
@@ -128,7 +128,7 @@ const s2options = {
 
 ### 渐变柱状图
 
-`S2` 的底层图形绘制采用 [Antv/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)等。
+`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)等。
 
 `price` 字段使用渐变色：
 <playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>

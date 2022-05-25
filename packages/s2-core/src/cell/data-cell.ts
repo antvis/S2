@@ -1,6 +1,5 @@
-import { Point } from '@antv/g-base';
-import { IShape } from '@antv/g-canvas';
-import { clamp, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import type { IShape, Point } from '@antv/g-canvas';
+import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -56,9 +55,27 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: CellMeta[]) {
+  protected handleByStateName(
+    cells: CellMeta[],
+    stateName: InteractionStateName,
+  ) {
     if (includeCell(cells, this)) {
-      this.updateByState(InteractionStateName.PREPARE_SELECT);
+      this.updateByState(stateName);
+    }
+  }
+
+  protected handleSearchResult(cells: CellMeta[]) {
+    if (!includeCell(cells, this)) {
+      return;
+    }
+    const targetCell = find(
+      cells,
+      (cell: CellMeta) => cell?.isTarget,
+    ) as CellMeta;
+    if (targetCell.id === this.getMeta().id) {
+      this.updateByState(InteractionStateName.HIGHLIGHT);
+    } else {
+      this.updateByState(InteractionStateName.SEARCH_RESULT);
     }
   }
 
@@ -117,20 +134,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const stateName = this.spreadsheet.interaction?.getCurrentStateName();
-    const cells = this.spreadsheet.interaction?.getCells();
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getCells();
+
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);
       return;
     }
+
     if (isEmpty(cells) || !stateName) {
       return;
     }
 
     switch (stateName) {
-      case InteractionStateName.PREPARE_SELECT:
-        this.handlePrepareSelect(cells);
-        break;
       case InteractionStateName.SELECTED:
         this.handleSelect(cells);
         break;
@@ -138,7 +154,11 @@ export class DataCell extends BaseCell<ViewMeta> {
       case InteractionStateName.HOVER:
         this.handleHover(cells);
         break;
+      case InteractionStateName.SEARCH_RESULT:
+        this.handleSearchResult(cells);
+        break;
       default:
+        this.handleByStateName(cells, stateName);
         break;
     }
   }
@@ -170,7 +190,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     let fill = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+      fill = this.mappingValue(textCondition)?.fill;
     }
 
     return { ...textStyle, fill };
@@ -192,21 +212,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const rowField = this.meta.rowId;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
+    const { rowId, valueField, fieldValue, data } = this.meta;
+    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     let formatter: Formatter;
     if (rowMeta) {
       // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowId);
     } else {
       // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        this.meta.valueField,
-      );
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(valueField);
     }
-    const formattedValue = formatter(this.meta.fieldValue);
+    const formattedValue = formatter(fieldValue, data);
     return {
-      value: this.meta.fieldValue,
+      value: fieldValue,
       formattedValue,
     };
   }
@@ -312,10 +330,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
+    const { crossBackgroundColor, backgroundColorOpacity } =
+      this.getStyle().cell;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
-    const strokeColor = 'transparent';
+
     if (
       this.spreadsheet.isPivotMode() &&
       crossBackgroundColor &&
@@ -334,20 +353,20 @@ export class DataCell extends BaseCell<ViewMeta> {
         backgroundColor = attrs.fill;
       }
     }
-    return { backgroundColor, strokeColor };
+    return { backgroundColor, backgroundColorOpacity };
   }
 
   /**
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const { backgroundColor: fill, strokeColor: stroke } =
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill,
-      stroke,
+      fillOpacity,
     });
   }
 
@@ -360,14 +379,18 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { x, y, height, width } = this.getCellArea();
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, {
-        x: x + margin,
-        y: y + margin,
-        width: width - margin * 2,
-        height: height - margin * 2,
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          x: x + margin,
+          y: y + margin,
+          width: width - margin * 2,
+          height: height - margin * 2,
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 
@@ -377,11 +400,15 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, {
-        ...this.getCellArea(),
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          ...this.getCellArea(),
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 

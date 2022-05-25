@@ -14,8 +14,11 @@ export const customMerge = (...objects: unknown[]) => {
   return mergeWith({}, ...args);
 };
 
-export const getSafetyDataConfig = (dataConfig: Partial<S2DataConfig>) => {
-  const result = customMerge(DEFAULT_DATA_CONFIG, dataConfig) as S2DataConfig;
+export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
+  const result = customMerge(
+    DEFAULT_DATA_CONFIG,
+    ...dataConfig,
+  ) as S2DataConfig;
 
   // 自定义树和数值为空的场景, 关闭 数值置于列头
   if (

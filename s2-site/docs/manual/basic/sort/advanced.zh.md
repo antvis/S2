@@ -9,7 +9,7 @@ order: 1
 
 ## 快速上手
 
-使用 `s2-react` 的组件 `SheetComponent` ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://g.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `s2-react` 的组件 `SheetComponent` ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
@@ -27,7 +27,7 @@ const AdvancedSortDemo = () => {
         sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
-        options={s2options}
+        options={s2Options}
         header={{
           advancedSortCfg: {
             open: true,

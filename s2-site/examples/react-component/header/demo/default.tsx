@@ -13,7 +13,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      enableCopy: true,
+      interaction: {
+        enableCopy: true,
+      },
     };
 
     const s2DataConfig = {

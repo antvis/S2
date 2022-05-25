@@ -15,7 +15,9 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set('visibleActionIcons', []);
 
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
-  if (!isEmpty(allInteractedCells)) {
+  const cellMetas = spreadsheet.interaction.getState().cells;
+
+  if (!isEmpty(allInteractedCells) || !isEmpty(cellMetas)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
@@ -24,6 +26,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
     if (spreadsheet.options.interaction.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+
       forEach(unSelectedCells, (cell) => {
         cell.clearUnselectedState();
       });

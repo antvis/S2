@@ -1,7 +1,13 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
-import { CustomTreeItem, ResizeInfo } from '@/common/interface';
+import { BaseHeaderConfig } from '@/facet/header/base';
+import {
+  Condition,
+  CustomTreeItem,
+  Data,
+  ResizeInfo,
+} from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet, DataType } from '@/data-set';
 import { Frame } from '@/facet/header';
@@ -12,7 +18,11 @@ import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
 
-export type Formatter = (v: unknown) => string;
+// 第二个参数在以下情况会传入：
+// 1. data cell 格式化
+// 2. copy/export
+// 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
+export type Formatter = (v: unknown, data?: Data | Data[]) => string;
 
 export interface FormatResult {
   formattedValue: string;
@@ -37,8 +47,9 @@ export enum CellBorderPosition {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  readonly field: string; // 字段 id
+  readonly field?: string; // 字段 id
   readonly name?: string; // 字段名称
+  readonly description?: string; // 字段描述
   // 格式化
   // 数值字段：一般用于格式化数字单位
   // 文本字段：一般用于做字段枚举值的别名
@@ -95,11 +106,12 @@ export interface TotalsStatus {
   isColSubTotal: boolean;
 }
 
-export enum EAggregation {
+export enum Aggregation {
   SUM = 'SUM',
+  MIN = 'MIN',
+  MAX = 'MAX',
+  AVG = 'AVG',
 }
-
-export type Aggregation = EAggregation.SUM; // 目前只有求和
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
@@ -110,7 +122,12 @@ export interface Total {
   /** 是否显示总计 */
   showGrandTotals: boolean;
   /** 是否显示小计 */
-  showSubTotals: boolean;
+  showSubTotals:
+    | boolean
+    | {
+        /** 当子维度个数 <=1 时，仍然展示小计：默认 true */
+        always: boolean;
+      };
   // 前端计算总计
   calcTotals?: CalcTotals;
   // 前端计算小计
@@ -157,7 +174,7 @@ export interface SortFuncParam extends Sort {
 
 export interface SortParam extends Sort {
   /** 自定义func */
-  sortFunc?: (v: SortFuncParam) => Array<string>;
+  sortFunc?: (v: SortFuncParam) => Array<string | Record<string, any>>;
 }
 
 export interface FilterParam {
@@ -170,6 +187,8 @@ export type SortParams = SortParam[];
 
 export interface Style {
   readonly layoutWidthType?: LayoutWidthType;
+  // 是否展示树状分层下的层级占位点
+  readonly showTreeLeafNodeAlignDot?: boolean;
   // row cell's height in tree mode
   readonly treeRowsWidth?: number;
   // row header in tree mode collapse some nodes
@@ -191,13 +210,6 @@ export type Pagination = {
   total?: number;
 };
 
-export interface NodeField {
-  // 行头中需要监听滚动吸顶的度量id
-  rowField?: string[];
-  // 列头中需要监听滚动吸「左」的度量id
-  colField?: string[];
-}
-
 export interface CustomSVGIcon {
   // icon 类型名
   name: string;
@@ -213,20 +225,25 @@ export interface HeaderActionIconProps {
   event?: Event;
 }
 
+export interface HeaderActionIconOptions {
+  iconName: string;
+  x: number;
+  y: number;
+  action: (props: HeaderActionIconProps) => void;
+  defaultHide?: boolean;
+}
+
 export interface HeaderActionIcon {
   // 已注册的 icon 类型或自定义的 icon 类型名
   iconNames: string[];
-
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
   defaultHide?: boolean;
-
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
   displayCondition?: (mete: Node) => boolean;
-
   // 点击后的执行函数
-  action: (headerActionIconProps: HeaderActionIconProps) => void;
+  action?: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
@@ -243,10 +260,10 @@ export type LayoutCallback = (
   colNode: Node,
 ) => void;
 
-export type CellCallback = (
+export type CellCallback<T extends BaseHeaderConfig> = (
   node: Node,
   spreadsheet: SpreadSheet,
-  ...restOptions: unknown[]
+  headerConfig: T,
 ) => S2CellType;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
@@ -270,8 +287,15 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  firstDerivedMeasureRowIndex?: number;
-  minorMeasureRowIndex?: number;
+  // valueCfg of MultiData
+  valuesCfg?: {
+    // 原始值字段
+    originalValueField?: string;
+    // 每一列数值占单元格宽度百分比 Map
+    widthPercentCfg?: number[];
+    // 条件格式
+    conditions?: { text: Condition };
+  };
 }
 
 export interface RowCfg {
@@ -293,11 +317,6 @@ export interface ColCfg {
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value
   hideMeasureColumn?: boolean;
-  // 列宽计算小计，明细数据采样的个数
-  totalSample?: number;
-  detailSample?: number;
-  // 列宽取计算的第几个最大值
-  maxSampleIndex?: number;
 }
 
 /**
@@ -384,6 +403,7 @@ export interface ViewMeta {
   // rowId of cell
   rowId?: string;
   colId?: string;
+  field?: string;
   [key: string]: any;
 }
 
@@ -426,16 +446,15 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
 
 export type S2MountContainer = string | Element;
 
-export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
+export type S2Constructor<T = Element | string> = [
+  S2MountContainer,
+  S2DataConfig,
+  S2Options<T>,
+];
 
 export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;
-}
-
-export interface ScrollRatio {
-  horizontal?: number;
-  vertical?: number;
 }
 
 // 用于和下钻组件进行交互联动
@@ -455,4 +474,8 @@ export interface PartDrillDownFieldInLevel {
   drillField: string;
   // 下钻的层级
   drillLevel: number;
+}
+
+export interface TableSortParam extends SortParam {
+  sortKey: string;
 }

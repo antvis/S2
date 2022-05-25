@@ -1,4 +1,4 @@
-import { IGroup } from '@antv/g-base';
+import { IGroup } from '@antv/g-canvas';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { ColHeader, ColHeaderConfig } from './col';
@@ -69,13 +69,9 @@ export class TableColHeader extends ColHeader {
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
   ) {
-    let cell;
-    if (item.field === SERIES_NUMBER_FIELD) {
-      cell = new TableCornerCell(item, spreadsheet, headerConfig);
-    } else {
-      cell = new TableColCell(item, spreadsheet, headerConfig);
-    }
-    return cell;
+    return item.field === SERIES_NUMBER_FIELD
+      ? new TableCornerCell(item, spreadsheet, headerConfig)
+      : new TableColCell(item, spreadsheet, headerConfig);
   }
 
   protected getCellGroup(node: Node) {

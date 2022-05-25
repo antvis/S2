@@ -82,8 +82,8 @@ const CustomLayoutHierarchy = (
     const preValue = '前序节点A';
     const nextValue = '后序节点A';
     const parentNode = node.parent;
-    const preUniqueId = generateId(parentNode.id, preValue, spreadsheet);
-    const nextUniqueId = generateId(parentNode.id, nextValue, spreadsheet);
+    const preUniqueId = generateId(parentNode.id, preValue);
+    const nextUniqueId = generateId(parentNode.id, nextValue);
     const preNode = new Node({
       ...node.config,
       id: preUniqueId,

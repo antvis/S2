@@ -11,6 +11,11 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Sleep 10s
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 10s
+
       - name: Pre Release Notify
         uses: visiky/dingtalk-release-notify@main
         with:

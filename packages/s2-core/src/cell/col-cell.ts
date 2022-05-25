@@ -1,37 +1,45 @@
 import { Point, SimpleBBox } from '@antv/g-canvas';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { isEmpty } from 'lodash';
+import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
-import {
-  getResizeAreaAttrs,
-  getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+import { shouldAddResizeArea } from '@/utils/interaction/resize';
 import {
   CellTypes,
-  KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  ResizeDirectionType,
+  KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
+  ResizeDirectionType,
+  S2Event,
 } from '@/common/constant';
 import {
   CellBorderPosition,
-  FormatResult,
+  DefaultCellTheme,
+  IconTheme,
   TextAlign,
   TextBaseline,
   TextTheme,
 } from '@/common/interface';
-import { ColHeaderConfig } from '@/facet/header/col';
-import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
+import { ColHeaderConfig } from '@/facet/header/col';
 import {
-  getTextAndIconPositionWhenHorizontalScrolling,
-  getTextAndFollowingIconPosition,
   getBorderPositionAndStyle,
+  getTextAndFollowingIconPosition,
+  getTextAreaRange,
+  adjustColHeaderScrollingViewport,
+  adjustColHeaderScrollingTextPostion,
 } from '@/utils/cell/cell';
+import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
+import { isLastColumnAfterHidden } from '@/utils/hide-columns';
+import {
+  getOrCreateResizeAreaGroupById,
+  getResizeAreaAttrs,
+} from '@/utils/interaction/resize';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
 
-  protected textAndIconPositionWhenHorizontalScrolling: Point;
+  /** 文字区域（含icon）绘制起始坐标 */
+  protected textAreaPosition: Point;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -51,14 +59,16 @@ export class ColCell extends HeaderCell {
     this.drawBorders();
     // draw resize ares
     this.drawResizeArea();
+    this.addExpandColumnIconShapes();
     this.update();
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor } = this.getStyle().cell;
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
     });
   }
 
@@ -66,41 +76,41 @@ export class ColCell extends HeaderCell {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, {
-        ...this.getCellArea(),
-        fill: 'transparent',
-        stroke: 'transparent',
-      }),
+      renderRect(
+        this,
+        {
+          ...this.getCellArea(),
+        },
+        {
+          visible: false,
+        },
+      ),
     );
   }
 
-  protected getTextStyle(): TextTheme {
+  private getOriginalTextStyle(): TextTheme {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText } = this.getStyle();
-    const textStyle = isLeaf && !isTotals ? text : bolderText;
+    return isLeaf && !isTotals ? text : bolderText;
+  }
 
+  protected getTextStyle(): TextTheme {
+    const { isLeaf } = this.meta;
+    const textStyle = this.getOriginalTextStyle();
+    const hideMeasureColumn =
+      this.spreadsheet.options.style.colCfg.hideMeasureColumn;
     let textAlign: TextAlign;
     let textBaseline: TextBaseline;
-
-    if (isLeaf) {
-      // 最后一个层级的维值，与 dataCell 对齐方式保持一致
+    if (isLeaf && !hideMeasureColumn) {
       textAlign = this.theme.dataCell.text.textAlign;
       textBaseline = this.theme.dataCell.text.textBaseline;
     } else {
+      // 为方便 getTextAreaRange 计算文字位置
+      // textAlign 固定为 center
       textAlign = 'center';
       textBaseline = 'middle';
     }
     return { ...textStyle, textAlign, textBaseline };
-  }
-
-  protected getFormattedFieldValue(): FormatResult {
-    const { label, key } = this.meta;
-    const formatter = this.headerConfig.formatter(key);
-    const content = formatter(label);
-    return {
-      formattedValue: content,
-      value: label,
-    };
   }
 
   protected getMaxTextWidth(): number {
@@ -114,7 +124,7 @@ export class ColCell extends HeaderCell {
     if (isLeaf) {
       return super.getIconPosition(this.getActionIconsCount());
     }
-    const position = this.textAndIconPositionWhenHorizontalScrolling;
+    const position = this.textAreaPosition;
 
     const totalSpace =
       this.actualTextWidth +
@@ -146,25 +156,54 @@ export class ColCell extends HeaderCell {
       ).text;
     }
 
-    // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑
+    /**
+     *  p(x, y)
+     *  +----------------------+            x
+     *  |                    +--------------->
+     *  | viewport           | |ColCell  |
+     *  |                    |-|---------+
+     *  +--------------------|-+
+     *                       |
+     *                     y |
+     *                       v
+     *
+     * 将 viewport 坐标(p)映射到 col header 的坐标体系中，简化计算逻辑
+     *
+     */
     const viewport: AreaRange = {
       start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
+    const { textAlign } = this.getOriginalTextStyle();
+    const adjustedViewport = adjustColHeaderScrollingViewport(
+      viewport,
+      textAlign,
+      this.getStyle().cell?.padding,
+    );
+
+    const iconCount = this.getActionIconsCount();
     const textAndIconSpace =
       this.actualTextWidth +
       this.getActionIconsWidth() -
-      iconStyle.margin.right;
+      (iconCount ? iconStyle.margin.right : 0);
 
-    const startX = getTextAndIconPositionWhenHorizontalScrolling(
-      viewport,
+    const textAreaRange = getTextAreaRange(
+      adjustedViewport,
       { start: contentBox.x, width: contentBox.width },
       textAndIconSpace, // icon position 默认为 right
     );
 
+    // textAreaRange.start 是以文字样式为 center 计算出的文字绘制点
+    // 此处按实际样式(left or right)调整
+    const startX = adjustColHeaderScrollingTextPostion(
+      textAreaRange.start,
+      textAreaRange.width - textAndIconSpace,
+      textAlign,
+    );
+
     const textY = contentBox.y + contentBox.height / 2;
-    this.textAndIconPositionWhenHorizontalScrolling = { x: startX, y: textY };
+    this.textAreaPosition = { x: startX, y: textY };
     return {
       x: startX - textAndIconSpace / 2 + this.actualTextWidth / 2,
       y: textY,
@@ -225,7 +264,7 @@ export class ColCell extends HeaderCell {
           offsetX: 0,
           offsetY: y,
           width: resizeAreaWidth,
-          height: height,
+          height,
         }),
         name: resizeAreaName,
         x: 0,
@@ -345,5 +384,99 @@ export class ColCell extends HeaderCell {
   protected drawBorders() {
     this.drawHorizontalBorder();
     this.drawVerticalBorder();
+  }
+
+  protected hasHiddenColumnCell() {
+    const {
+      interaction: { hiddenColumnFields = [] },
+      tooltip: { operation },
+    } = this.spreadsheet.options;
+
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    if (
+      isEmpty(hiddenColumnsDetail) ||
+      isEmpty(hiddenColumnFields) ||
+      !operation.hiddenColumns
+    ) {
+      return false;
+    }
+    return !!hiddenColumnsDetail.find((column) =>
+      isEqualDisplaySiblingNodeId(column?.displaySiblingNode, this.meta.id),
+    );
+  }
+
+  private getExpandIconTheme(): IconTheme {
+    const themeCfg = this.getStyle() as DefaultCellTheme;
+    return themeCfg.icon;
+  }
+
+  private addExpandColumnSplitLine() {
+    const { x, y, width, height } = this.meta;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+    } = this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
+
+    renderLine(
+      this,
+      {
+        x1: lineX,
+        y1: y,
+        x2: lineX,
+        y2: y + height,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    );
+  }
+
+  private addExpandColumnIconShapes() {
+    if (!this.hasHiddenColumnCell()) {
+      return;
+    }
+    this.addExpandColumnSplitLine();
+    this.addExpandColumnIcon();
+  }
+
+  private addExpandColumnIcon() {
+    const iconConfig = this.getExpandColumnIconConfig();
+    const icon = renderIcon(this, {
+      ...iconConfig,
+      name: 'ExpandColIcon',
+      cursor: 'pointer',
+    });
+    icon.on('click', () => {
+      this.spreadsheet.emit(S2Event.LAYOUT_COLS_EXPANDED, this.meta);
+    });
+  }
+
+  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
+  private getExpandColumnIconConfig() {
+    const { size } = this.getExpandIconTheme();
+    const { x, y, width, height } = this.getCellArea();
+
+    const baseIconX = x - size;
+    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconY = y + height / 2 - size / 2;
+
+    return {
+      x: iconX,
+      y: iconY,
+      width: size * 2,
+      height: size,
+    };
+  }
+
+  private isLastColumn() {
+    return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 }

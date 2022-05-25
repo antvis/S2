@@ -21,6 +21,8 @@ import './index.less';
  * Base tooltips component
  */
 export class BaseTooltip {
+  public visible = false;
+
   public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
   public container: HTMLElement; // the base container element
@@ -46,6 +48,7 @@ export class BaseTooltip {
     const container = this.getContainer();
     const { autoAdjustBoundary } = this.spreadsheet.options.tooltip || {};
 
+    this.visible = true;
     this.options = showOptions as unknown as TooltipShowOptions;
 
     this.renderContent<T>(content as T);
@@ -73,6 +76,11 @@ export class BaseTooltip {
   }
 
   public hide() {
+    this.visible = false;
+
+    if (!this.container) {
+      return;
+    }
     const container = this.getContainer();
     setContainerStyle(container, {
       style: {
@@ -84,10 +92,11 @@ export class BaseTooltip {
   }
 
   public destroy() {
+    this.visible = false;
     const container = this.getContainer();
     if (container) {
       this.resetPosition();
-      container?.remove();
+      container.remove?.();
     }
   }
 
@@ -143,10 +152,13 @@ export class BaseTooltip {
    */
   protected getContainer(): HTMLElement {
     if (!this.container) {
+      const rootContainer =
+        this.spreadsheet.options.tooltip.getContainer?.() || document.body;
+
       const container = document.createElement('div');
-      document.body.appendChild(container);
+      rootContainer.appendChild(container);
+
       this.container = container;
-      return this.container;
     }
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;

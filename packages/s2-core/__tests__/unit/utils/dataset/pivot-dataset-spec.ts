@@ -46,8 +46,8 @@ describe('PivotDataSet util test', () => {
       totalData: [],
       indexesData: [],
       sortedDimensionValues,
-      rowPivotMeta: rowPivotMeta,
-      colPivotMeta: colPivotMeta,
+      rowPivotMeta,
+      colPivotMeta,
     });
     expect(result.indexesData).toHaveLength(2);
     expect(result.paths).toHaveLength(32);
@@ -112,6 +112,66 @@ describe('PivotDataSet util test', () => {
       colFields: columns,
     });
     expect(result).toEqual([0, 0, 0, 0]);
+  });
+
+  test('for getDataPath function when not isFirstCreate and without rowFields or colFields', () => {
+    const rowDimensionValues = ['浙江省', '杭州市'];
+    const colDimensionValues = ['家具', '桌子'];
+    const rowPivotMeta = new Map();
+    const colPivotMeta = new Map();
+
+    getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      rowPivotMeta,
+      colPivotMeta,
+      isFirstCreate: false,
+      careUndefined: false,
+    });
+    expect(rowPivotMeta.size).toEqual(0);
+    expect(colPivotMeta.size).toEqual(0);
+  });
+
+  test('for getDataPath function when isFirstCreate and without rowFields or colFields', () => {
+    const rowDimensionValues = ['浙江省', '杭州市'];
+    const colDimensionValues = ['家具', '桌子'];
+    const rowPivotMeta = new Map();
+    const colPivotMeta = new Map();
+
+    getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      rowPivotMeta,
+      colPivotMeta,
+      isFirstCreate: true,
+      careUndefined: false,
+    });
+    expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
+    expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
+  });
+
+  test('for getDataPath function when isFirstCreate and with rowFields or colFields', () => {
+    const rowDimensionValues = ['浙江省', '杭州市'];
+    const colDimensionValues = ['家具', '桌子'];
+    const rows = ['province', 'city'];
+    const columns = ['type', 'sub_type'];
+    const rowPivotMeta = new Map();
+    const colPivotMeta = new Map();
+
+    getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      rowPivotMeta,
+      colPivotMeta,
+      isFirstCreate: true,
+      careUndefined: false,
+      rowFields: rows,
+      colFields: columns,
+    });
+    expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toEqual('city');
+    expect(colPivotMeta.get(colDimensionValues[0]).childField).toEqual(
+      'sub_type',
+    );
   });
 
   test('for getDimensionsWithoutPathPre function', () => {

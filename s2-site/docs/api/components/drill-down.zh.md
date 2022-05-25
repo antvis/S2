@@ -17,6 +17,8 @@ order: 2
 | clearDrillDown | 清除下钻信息，当有指定的rowId 传递时清除对应rowId的下钻信息；如果参数是 空对象 {}，则清空所有的下钻信息 | `{rowId: string;}` | - | |
 | displayCondition | 配置下钻  `icon` 的展示条件， 同 HeaderActionIcon | `(meta: Node) => boolean` | - | |
 
+注意：PartDrillDown 中 `drillConfig`、`displayCondition` 字段会影响下钻模式的重渲，请注意使用 memo 或 state 控制其可变性。
+
 ### FetchCallBack
 
 ```js
@@ -50,6 +52,7 @@ order: 2
 | titleText | 标题  | `string` |  | |
 | searchText | 搜索框文案 | `string` |  | |
 | clearButtonText | 重置按钮文案  | `string` | |  |
+| extra | 自定义插入的节点（插入在搜索框和下钻菜单中间）  | `ReactNode` | |  |
 | drillFields | 允许下钻的维度 | `string[]` |  | |
 | disabledFields | 不允许下钻的维度| `string[]` | |  |
 | getDrillFields | 内部获取当前下钻维度的回调 | `Function` | |  |

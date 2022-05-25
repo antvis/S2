@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SpreadSheet, S2Options, BaseTooltip, S2Event } from '@antv/s2';
+import { SpreadSheet, S2Options, BaseTooltip, S2Event, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { Event as GEvent } from '@antv/g-canvas';
+import { act } from 'react-dom/test-utils';
 import { SheetComponent } from '@/components/sheets';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 
@@ -39,7 +39,6 @@ function MainLayout() {
 describe('SheetComponent Tooltip Tests', () => {
   beforeEach(() => {
     s2?.destroy();
-    s2 = null;
   });
 
   beforeEach(() => {
@@ -57,13 +56,16 @@ describe('SheetComponent Tooltip Tests', () => {
       s2.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
     };
 
-    Array.from({ length: 10 }).forEach(() => {
-      expect(showTooltip).not.toThrowError();
+    act(() => {
+      Array.from({ length: 10 }).forEach(() => {
+        expect(showTooltip).not.toThrowError();
+      });
     });
-
     showTooltip();
 
-    expect(errorSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      `Uncaught DOMException: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.`,
+    );
 
     errorSpy.mockRestore();
   });
@@ -139,13 +141,15 @@ describe('SheetComponent Tooltip Tests', () => {
       </div>
     );
 
-    Array.from({ length: 3 }).forEach(() => {
-      s2.showTooltip({
-        position: {
-          x: 10,
-          y: 10,
-        },
-        content,
+    act(() => {
+      Array.from({ length: 3 }).forEach(() => {
+        s2.showTooltip({
+          position: {
+            x: 10,
+            y: 10,
+          },
+          content,
+        });
       });
     });
 

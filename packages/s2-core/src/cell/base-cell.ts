@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
+import {
+  each,
+  get,
+  includes,
+  isBoolean,
+  isFunction,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -23,7 +32,11 @@ import {
 } from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  getEmptyPlaceholder,
+  measureTextWidth,
+} from '@/utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -176,11 +189,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
+    const { placeholder } = this.spreadsheet.options;
+    const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
     const ellipsisText = getEllipsisText({
       text: formattedValue,
       maxWidth: maxTextWidth,
       fontParam: textStyle,
-      placeholder: this.spreadsheet.options.placeholder,
+      placeholder: emptyPlaceholder,
     });
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
@@ -199,41 +214,34 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     showLinkFieldShape: boolean,
     linkFillColor: string,
   ) {
-    const { fill } = this.getTextStyle();
-
-    // handle link nodes
-    if (showLinkFieldShape) {
-      const device = this.spreadsheet.options.style.device;
-      let fillColor;
-
-      // 配置了链接跳转
-      if (isMobile(device)) {
-        fillColor = linkFillColor;
-      } else {
-        const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
-        this.linkFieldShape = renderLine(
-          this,
-          {
-            x1: minX,
-            y1: maxY + 1,
-            x2: maxX,
-            y2: maxY + 1,
-          },
-          { stroke: fill, lineWidth: 1 },
-        );
-
-        fillColor = fill;
-      }
-
-      this.textShape.attr({
-        fill: fillColor,
-        cursor: 'pointer',
-        appendInfo: {
-          isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
-          cellData: this.meta,
-        },
-      });
+    if (!showLinkFieldShape) {
+      return;
     }
+
+    const device = this.spreadsheet.options.style.device;
+    // 配置了链接跳转
+    if (!isMobile(device)) {
+      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      this.linkFieldShape = renderLine(
+        this,
+        {
+          x1: minX,
+          y1: maxY + 1,
+          x2: maxX,
+          y2: maxY + 1,
+        },
+        { stroke: linkFillColor, lineWidth: 1 },
+      );
+    }
+
+    this.textShape.attr({
+      fill: linkFillColor,
+      cursor: 'pointer',
+      appendInfo: {
+        isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        cellData: this.meta,
+      },
+    });
   }
 
   // 根据当前state来更新cell的样式
@@ -251,24 +259,30 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
-        const shape = this.stateShapes.has(shapeName)
+        const isStateShape = this.stateShapes.has(shapeName);
+        const shape = isStateShape
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
 
-        // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
+        // stateShape 默认 visible 为 false
+        if (isStateShape && !shape.get('visible')) {
+          shape.set('visible', true);
+        }
+
+        // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
         if (
           shapeName === 'interactiveBorderShape' &&
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
             const marginStyle = {
-              x: x + style / 2, // TODO: 边框整体重构后需revisit
+              x: x + style / 2,
               y: y + style / 2,
               width: width - style - 1,
               height: height - style - 1,
             };
-            each(marginStyle, (style, styleKey) => {
-              updateShapeAttr(shape, styleKey, style);
+            each(marginStyle, (currentStyle, currentStyleKey) => {
+              updateShapeAttr(shape, currentStyleKey, currentStyle);
             });
           }
         }

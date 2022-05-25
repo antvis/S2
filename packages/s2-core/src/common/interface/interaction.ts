@@ -1,7 +1,13 @@
 import type { SimpleBBox } from '@antv/g-canvas';
-import { InteractionStateName, CellTypes, InterceptType } from '../constant';
-import { ViewMeta } from './basic';
-import {
+import type {
+  InteractionStateName,
+  CellTypes,
+  InterceptType,
+  ScrollbarPositionType,
+} from '../constant';
+import type { ViewMeta } from './basic';
+import type { ResizeActiveOptions } from './resize';
+import type {
   BaseCell,
   ColCell,
   CornerCell,
@@ -9,10 +15,10 @@ import {
   MergedCell,
   RowCell,
 } from '@/cell';
-import { HeaderCell } from '@/cell/header-cell';
-import { Node } from '@/facet/layout/node';
-import { BaseEvent } from '@/interaction/base-event';
-import { SpreadSheet } from '@/sheet-type';
+import type { HeaderCell } from '@/cell/header-cell';
+import type { Node } from '@/facet/layout/node';
+import type { BaseEvent } from '@/interaction/base-event';
+import type { SpreadSheet } from '@/sheet-type';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -28,6 +34,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  [key: string]: unknown;
 }
 
 export interface InteractionStateInfo {
@@ -41,6 +48,12 @@ export interface InteractionStateInfo {
   nodes?: Node[];
   // for empty cells, updates are ignored, use `force` to skip ignore
   force?: boolean;
+}
+
+export interface SelectHeaderCellInfo {
+  // target header cell
+  cell: S2CellType<ViewMeta>;
+  isMultiSelection?: boolean;
 }
 
 export type InteractionConstructor = new (
@@ -57,6 +70,8 @@ export interface BrushPoint {
   colIndex: number;
   x: number;
   y: number;
+  scrollX?: number;
+  scrollY?: number;
 }
 
 export interface BrushRange {
@@ -74,3 +89,59 @@ export type Intercept =
   | InterceptType.BRUSH_SELECTION
   | InterceptType.MULTI_SELECTION
   | InterceptType.RESIZE;
+
+export interface BrushAutoScrollConfigItem {
+  value: number;
+  scroll: boolean;
+}
+
+export interface BrushAutoScrollConfig {
+  x: BrushAutoScrollConfigItem;
+  y: BrushAutoScrollConfigItem;
+}
+export interface ScrollSpeedRatio {
+  horizontal?: number;
+  vertical?: number;
+}
+
+export interface HoverFocusOptions {
+  duration?: number;
+}
+
+export interface InteractionOptions {
+  // record which row/col field need extra link info
+  readonly linkFields?: string[];
+  // focus selected cell, like the spotlight
+  readonly selectedCellsSpotlight?: boolean;
+  // highlight all row header cells and column header cells to which the hovered cell belongs
+  readonly hoverHighlight?: boolean;
+  // keep cell hovered after 800ms duration
+  readonly hoverFocus?: boolean | HoverFocusOptions;
+  // enable Command + C to copy spread data
+  readonly enableCopy?: boolean;
+  // copy with filed format
+  readonly copyWithFormat?: boolean;
+  // auto reset sheet style when click outside or press ecs key, default true
+  readonly autoResetSheetStyle?: boolean;
+  readonly hiddenColumnFields?: string[];
+  // the ratio to control scroll speed, default set to 1
+  readonly scrollSpeedRatio?: ScrollSpeedRatio;
+  // enable resize area, default set to all enable
+  readonly resize?: boolean | ResizeActiveOptions;
+  // enable mouse drag brush selection
+  readonly brushSelection?: boolean;
+  // enable Command / Ctrl + click multi selection
+  readonly multiSelection?: boolean;
+  // enable Shift + click multi selection
+  readonly rangeSelection?: boolean;
+  // use arrow keyboard to move selected cell
+  readonly selectedCellMove?: boolean;
+  // controls scrollbar's position type
+  readonly scrollbarPosition?: ScrollbarPositionType;
+  // An object that specifies characteristics about the event listener
+  // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+  readonly eventListenerOptions?: boolean | AddEventListenerOptions;
+  /** ***********CUSTOM INTERACTION HOOKS**************** */
+  // register custom interactions
+  customInteractions?: CustomInteraction[];
+}

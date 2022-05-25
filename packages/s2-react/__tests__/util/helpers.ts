@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
@@ -12,8 +13,8 @@ import {
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
+  ViewMeta,
 } from '@antv/s2';
-import { ViewMeta } from '@antv/s2';
 import { omit } from 'lodash';
 
 export const parseCSV = (csv: string, header?: string[]) => {
@@ -50,7 +51,7 @@ export const createFakeSpreadSheet = () => {
     }
   }
 
-  const s2 = new FakeSpreadSheet() as SpreadSheet;
+  const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.store = new Store();
@@ -99,12 +100,15 @@ export const createMockCellInfo = (
     colIndex,
     rowIndex,
     type: undefined,
+    update: jest.fn(),
   };
   const mockCellMeta = omit(mockCellViewMeta, 'update');
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
+    getFieldValue: jest.fn(),
     hideInteractionShape: jest.fn(),
+    getActualText: jest.fn(),
   } as any;
 
   return {

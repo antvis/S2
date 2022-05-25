@@ -11,7 +11,11 @@ export interface S2PaginationProps {
   pageSize?: number;
   setCurrent?: (current: number) => void;
   setPageSize?: (pageSize: number) => void;
+  onShowSizeChange?: (pageSize: number) => void;
+  onChange?: (current: number) => void;
 }
+
+const PRE_CLASS = `${S2_PREFIX_CLS}-pagination`;
 
 export const S2Pagination: React.FC<S2PaginationProps> = ({
   pagination,
@@ -19,7 +23,9 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
   total,
   pageSize,
   setCurrent,
-  setPageSize,
+  setPageSize = () => {},
+  onShowSizeChange = () => {},
+  onChange = () => {},
 }) => {
   // not show the pagination
   if (isEmpty(pagination)) {
@@ -28,7 +34,6 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
 
   // only show the pagination when the pageSize > 5
   const showQuickJumper = total / pageSize > 5;
-  const PRE_CLASS = `${S2_PREFIX_CLS}-pagination`;
 
   return (
     <div className={PRE_CLASS}>
@@ -39,11 +44,15 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
         pageSize={pageSize}
         showSizeChanger
         onShowSizeChange={(current, size) => {
+          onShowSizeChange(size);
           setPageSize(size);
         }}
         size={'small'}
         showQuickJumper={showQuickJumper}
-        onChange={(page) => setCurrent(page)}
+        onChange={(page) => {
+          onChange(page);
+          setCurrent(page);
+        }}
       />
       <span
         className={`${PRE_CLASS}-count`}

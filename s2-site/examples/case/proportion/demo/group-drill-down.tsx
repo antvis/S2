@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
+import { isUpDataValue } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -11,7 +12,7 @@ fetch(
     const GridSheet = () => {
       const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = useState('');
-      const s2options = {
+      const s2Options = {
         width: 800,
         height: 600,
         tooltip: {
@@ -20,10 +21,29 @@ fetch(
         style: {
           layoutWidthType: 'colAdaptive',
           cellCfg: {
-            width: 250,
-            height: 130,
-            minorMeasureRowIndex: 3,
-            firstDerivedMeasureRowIndex: 2,
+            width: 400,
+            height: 100,
+            valuesCfg: {
+              widthPercentCfg: [40, 20, 20, 20],
+              conditions: {
+                text: {
+                  field: 'number',
+                  mapping: (value, cellInfo) => {
+                    // 添加文本颜色映射逻辑
+                    const { colIndex } = cellInfo;
+                    if (colIndex <= 1) {
+                      // 主指标为黑色
+                      return {
+                        fill: '#000',
+                      };
+                    }
+                    return {
+                      fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294', // 同环比红张绿跌
+                    };
+                  },
+                },
+              },
+            },
           },
         },
       };
@@ -112,7 +132,7 @@ fetch(
       return (
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2options}
+          options={s2Options}
           sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',

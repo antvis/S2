@@ -1,11 +1,11 @@
 ---
 title: 合并单元格
-order: 5
+order: 4
 ---
 
 在表格中将两个或多个连续的单元格合并为一个单元格。用户可根据业务要求，在看数或展示时实现分类分析。
 
-![mergeCellGif](https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif)
+![mergeCellGif](https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif)
 
 ## 快速上手
 
@@ -278,7 +278,7 @@ const s2DataConfig = {
   meta: res.meta
 };
 
-const s2options = {
+const s2Options = {
     width: 600,
     height: 400,
     showSeriesNumber: true,
@@ -296,7 +296,7 @@ const s2options = {
     ]
   }
 ;
-const s2 = new PivotSheet(container, s2DataConfig, s2options);
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // 将单元格合并操作集成到未合并单元格的 tooltip 操作中
 const dataCellTooltip = () => {
@@ -304,7 +304,7 @@ const dataCellTooltip = () => {
   button.className = 'merge-cells-button';
   button.onclick = () => s2.interaction.mergeCells(); // 不传入 cellsInfo 时，默认使用当前选中所有的单元格信息
   return button;
-}; // (按住 Cmd/ Ctrl 多选)
+}; // （按住 Cmd/ Ctrl 多选）
 
 // 将取消单元格合并操作集成到合并单元格的 tooltip 操作中
 const mergedCellsTooltip = (mergedCell) => {

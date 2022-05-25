@@ -24,6 +24,7 @@ interface EventListener {
   target: EventTarget;
   type: string;
   handler: EventListenerOrEventListenerObject;
+  options?: AddEventListenerOptions | boolean;
 }
 
 interface S2EventHandler {
@@ -47,6 +48,8 @@ export class EventController {
   public s2EventHandlers: S2EventHandler[] = [];
 
   public domEventListeners: EventListener[] = [];
+
+  private isCanvasEffect = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -80,10 +83,11 @@ export class EventController {
 
     // dom events
     this.addDomEventListener(
-      document,
+      window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
         this.resetSheetStyle(event);
+        this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
     this.addDomEventListener(
@@ -109,6 +113,13 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_MOVE,
+      (event: MouseEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+      },
+    );
   }
 
   private getTargetType() {
@@ -118,6 +129,7 @@ export class EventController {
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
     if (
+      this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
@@ -130,13 +142,16 @@ export class EventController {
   }
 
   private onKeyboardEsc(event: KeyboardEvent) {
-    if (keyEqualTo(event.key, InteractionKeyboardKey.ESC)) {
+    if (
+      this.isCanvasEffect &&
+      keyEqualTo(event.key, InteractionKeyboardKey.ESC)
+    ) {
       this.resetSheetStyle(event);
     }
   }
 
   private resetSheetStyle(event: Event) {
-    if (!this.isAutoResetSheetStyle) {
+    if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
       return;
     }
 
@@ -178,7 +193,7 @@ export class EventController {
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet.panelBBox;
+    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
     const { width, height } = this.spreadsheet.options;
     return {
       width: Math.min(width, maxX),
@@ -424,16 +439,13 @@ export class EventController {
     }
   };
 
-  private onCanvasMouseout = () => {
-    if (!this.isAutoResetSheetStyle) {
+  private onCanvasMouseout = (event: CanvasEvent) => {
+    if (!this.isAutoResetSheetStyle || event?.shape) {
       return;
     }
     const { interaction } = this.spreadsheet;
-    // 两种情况不能重置 1. 选中单元格 2. 有交互功能的tooltip打开时
-    if (
-      !interaction.isSelectedState() &&
-      !interaction.hasIntercepts([InterceptType.HOVER])
-    ) {
+    // 两种情况不能重置 1. 选中单元格 2. 有 intercepts 时（重置会清空 intercepts）
+    if (!interaction.isSelectedState() && !(interaction.intercepts.size > 0)) {
       interaction.reset();
     }
   };
@@ -480,8 +492,14 @@ export class EventController {
     handler: EventListenerOrEventListenerObject,
   ) {
     if (target.addEventListener) {
-      target.addEventListener(type, handler);
-      this.domEventListeners.push({ target, type, handler });
+      const { eventListenerOptions } = this.spreadsheet.options.interaction;
+      target.addEventListener(type, handler, eventListenerOptions);
+      this.domEventListeners.push({
+        target,
+        type,
+        handler,
+        options: eventListenerOptions,
+      });
     } else {
       // eslint-disable-next-line no-console
       console.error(`Please make sure ${target} has addEventListener function`);
@@ -495,8 +513,12 @@ export class EventController {
     each(this.s2EventHandlers, ({ type, handler }) => {
       this.spreadsheet.off(type, handler);
     });
-    each(this.domEventListeners, (event) => {
-      event.target.removeEventListener(event.type, event.handler);
+    each(this.domEventListeners, (listener) => {
+      listener.target.removeEventListener(
+        listener.type,
+        listener.handler,
+        listener.options,
+      );
     });
     this.canvasEventHandlers = [];
     this.s2EventHandlers = [];

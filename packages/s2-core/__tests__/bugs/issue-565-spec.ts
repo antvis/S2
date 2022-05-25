@@ -9,7 +9,7 @@ import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 
-const s2options = {
+const s2Options = {
   width: 800,
   height: 600,
   hierarchyType: 'tree' as const,
@@ -17,7 +17,7 @@ const s2options = {
 
 describe('Export data in pivot tree mode', () => {
   test('should export correct col header in pivot tree mode', () => {
-    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');

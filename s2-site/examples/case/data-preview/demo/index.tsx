@@ -174,7 +174,9 @@ const getSearchResult = (searchKey, data, columns) => {
   const results = [];
   data.forEach((row, rowId) => {
     columns.forEach((col, colId) => {
-      if ((row[col] || '').toLowerCase().includes(searchKey.toLowerCase())) {
+      if (
+        (`${row[col]}` || '').toLowerCase().includes(searchKey.toLowerCase())
+      ) {
         results.push({
           col: colId,
           row: rowId,
@@ -231,13 +233,13 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
 
 const App = ({ data }) => {
   const onIconClick = ({ meta }) => {
-    setinteractedCol(meta.value);
+    setInteractedCol(meta.value);
     setColModalVisible(!colModalVisible);
   };
   const s2Ref = useRef(null);
   const [columns, setColumns] = React.useState(initColumns);
 
-  const [interactedCol, setinteractedCol] = useState('');
+  const [interactedCol, setInteractedCol] = useState('');
   const modalCallbackRef = useRef((e) => {});
 
   const [options, setOptions] = useState({
@@ -247,20 +249,18 @@ const App = ({ data }) => {
     interaction: {
       enableCopy: true,
       autoResetSheetStyle: false,
+      hoverFocus: false,
     },
     colCell: (item, spreadsheet, headerConfig) => {
-      let cell;
       if (item.colIndex === 0) {
-        cell = new CustomCornerCell(item, spreadsheet, headerConfig);
-      } else {
-        cell = new CustomTableColCell(
-          item,
-          spreadsheet,
-          headerConfig,
-          onIconClick,
-        );
+        return new CustomCornerCell(item, spreadsheet, headerConfig);
       }
-      return cell;
+      return new CustomTableColCell(
+        item,
+        spreadsheet,
+        headerConfig,
+        onIconClick,
+      );
     },
     customSVGIcons: [
       {
@@ -299,13 +299,6 @@ const App = ({ data }) => {
     }));
     s2Ref.current.render(true);
   }, [columns.length]);
-
-  useEffect(() => {
-    s2Ref.current.on(S2Event.GLOBAL_COPIED, (data) => {
-      message.success('复制成功');
-    });
-    return () => s2Ref.current.off(S2Event.GLOBAL_COPIED);
-  }, []);
 
   const [searchKey, setSearchKey] = useState('');
   const [searchResult, setSearchResult] = useState([]);
@@ -419,10 +412,11 @@ const App = ({ data }) => {
         onColCellClick={(e) => {
           // 最左侧列的格子点击后全选
           if (e.viewMeta.colIndex === 0) {
-            s2Ref.current?.interaction.changeState({
-              stateName: InteractionStateName.ALL_SELECTED,
-            });
+            s2Ref.current?.interaction.selectAll();
           }
+        }}
+        onCopied={() => {
+          message.success('复制成功');
         }}
       />
       <Modal
@@ -556,17 +550,12 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 
   modalCallbackRef.current = () => {
     if (changed.sort) {
-      spreadsheet.emit(S2Event.RANGE_SORT, {
-        sortKey: fieldName,
-        sortMethod: sort,
-        sortBy: (obj) => {
-          return fieldData.every(
-            (v) => typeof v === 'string' && !Number.isNaN(Number(v)),
-          )
-            ? Number(obj[fieldName])
-            : obj[fieldName];
+      spreadsheet.emit(S2Event.RANGE_SORT, [
+        {
+          sortFieldId: fieldName,
+          sortMethod: sort,
         },
-      });
+      ]);
     }
     if (changed.filter) {
       spreadsheet.emit(S2Event.RANGE_FILTER, {
@@ -674,7 +663,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
   );
 };
 
-fetch('../data/basic.json')
+fetch('../data/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
     ReactDOM.render(<App data={res} />, document.getElementById('container'));

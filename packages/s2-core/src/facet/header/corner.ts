@@ -227,7 +227,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       );
       return;
     }
-    this.addBgRect();
 
     data.forEach((item: Node) => {
       let cell: Group;
@@ -264,23 +263,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         y: 0,
         width,
         height,
-      },
-    });
-  }
-
-  protected addBgRect() {
-    const cfg = this.headerConfig;
-    const { originalWidth, originalHeight, position } = cfg;
-    this.addShape('rect', {
-      attrs: {
-        x: position.x,
-        y: position.y,
-        width: originalWidth,
-        height: originalHeight,
-        fill: get(
-          this.headerConfig,
-          'spreadsheet.theme.cornerCell.cell.backgroundColor',
-        ),
       },
     });
   }

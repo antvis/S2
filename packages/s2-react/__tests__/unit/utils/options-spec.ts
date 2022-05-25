@@ -1,4 +1,4 @@
-import { DEFAULT_STYLE } from '@antv/s2';
+import { DEFAULT_STYLE, HOVER_FOCUS_DURATION } from '@antv/s2';
 import { getSheetComponentOptions } from '@/utils/options';
 
 describe('Options Tests', () => {
@@ -8,7 +8,6 @@ describe('Options Tests', () => {
     expect(options.tooltip.renderTooltip).toBeFunction();
 
     Reflect.deleteProperty(options.tooltip, 'renderTooltip');
-
     expect(options).toStrictEqual({
       width: 600,
       height: 480,
@@ -19,17 +18,17 @@ describe('Options Tests', () => {
       tooltip: {
         showTooltip: true,
         autoAdjustBoundary: 'body',
-        operation: {
-          hiddenColumns: true,
-          trend: false,
-          sort: true,
-        },
+        operation: { hiddenColumns: true, trend: false, sort: true, menus: [] },
       },
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
         selectedCellsSpotlight: false,
         hoverHighlight: true,
+        hoverFocus: { duration: HOVER_FOCUS_DURATION },
+        brushSelection: true,
+        multiSelection: true,
+        rangeSelection: true,
         scrollSpeedRatio: {
           horizontal: 1,
           vertical: 1,
@@ -37,27 +36,30 @@ describe('Options Tests', () => {
         scrollbarPosition: 'content',
         autoResetSheetStyle: true,
         resize: {
+          rowCellVertical: true,
+          cornerCellHorizontal: true,
           colCellHorizontal: true,
           colCellVertical: true,
-          cornerCellHorizontal: true,
-          rowCellVertical: true,
           rowResizeType: 'all',
         },
+        eventListenerOptions: false,
       },
-      frozenRowHeader: true,
       showSeriesNumber: false,
-      scrollReachNodeField: {},
       customSVGIcons: [],
-      customHeaderCells: null,
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
+      frozenRowHeader: true,
       frozenRowCount: 0,
       frozenColCount: 0,
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
+      cornerText: '',
+      cornerExtraFieldText: '',
+      placeholder: '-',
       supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 
@@ -67,6 +69,12 @@ describe('Options Tests', () => {
         showTooltip: false,
         operation: {
           sort: false,
+          menus: [
+            {
+              key: 'custom',
+              text: 'custom',
+            },
+          ],
         },
       },
     });
@@ -82,6 +90,12 @@ describe('Options Tests', () => {
         hiddenColumns: true,
         trend: false,
         sort: false,
+        menus: [
+          {
+            key: 'custom',
+            text: 'custom',
+          },
+        ],
       },
     });
   });

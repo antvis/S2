@@ -9,7 +9,7 @@ import * as mockDataConfig from '../data/data-issue-446.json';
 import { TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 
-const s2options = {
+const s2Options = {
   width: 800,
   height: 600,
   showSeriesNumber: true,
@@ -17,7 +17,7 @@ const s2options = {
 
 describe('export', () => {
   test('should export correct data with showSeriesNumber', () => {
-    const s2 = new TableSheet(getContainer(), mockDataConfig, s2options);
+    const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
     const data = copyData(s2, '\t');
 
@@ -29,7 +29,7 @@ describe('export', () => {
 
   test('should export correct data without showSeriesNumber', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, {
-      ...s2options,
+      ...s2Options,
       showSeriesNumber: false,
     });
     s2.render();

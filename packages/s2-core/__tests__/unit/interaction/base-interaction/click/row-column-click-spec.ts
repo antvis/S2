@@ -1,6 +1,6 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
 import {
   HiddenColumnsInfo,
@@ -49,7 +49,6 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
     s2.interaction.getRowColActiveCells = () =>
       [mockCell] as unknown as S2CellType[];
-    s2.interaction.reset = jest.fn();
     rowColumnClick = new RowColumnClick(s2 as unknown as SpreadSheet);
     s2.isHierarchyTreeType = () => false;
     s2.dataCfg = {
@@ -58,7 +57,9 @@ describe('Interaction Data Cell Click Tests', () => {
       },
       data: [],
     };
-    s2.getInitColumnNodes = () => initColumnNodes as Node[];
+    s2.getInitColumnLeafNodes = () => initColumnNodes as Node[];
+    s2.getColumnNodes = () => initColumnNodes as Node[];
+    s2.getColumnLeafNodes = () => initColumnNodes as Node[];
     s2.options = {
       interaction: {
         hiddenColumnFields: ['a'],
@@ -74,35 +75,84 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.isTableMode = jest.fn(() => true);
   });
 
+  afterEach(() => {
+    s2.off(S2Event.ROW_CELL_CLICK);
+    s2.off(S2Event.COL_CELL_CLICK);
+  });
+
   test('should bind events', () => {
     expect(rowColumnClick.bindEvents).toBeDefined();
   });
 
-  test('should trigger data cell click', () => {
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
-    expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellMeta],
-      nodes: [],
-      stateName: InteractionStateName.SELECTED,
-    });
-    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
-  });
+  // https://github.com/antvis/S2/issues/1243
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should selected cell when %s cell clicked',
+    (event) => {
+      const isSelectedCellSpy = jest
+        .spyOn(s2.interaction, 'isSelectedCell')
+        .mockImplementation(() => false);
 
-  test('should emit cell selected event when cell clicked', () => {
-    const selected = jest.fn();
-    s2.on(S2Event.GLOBAL_SELECTED, selected);
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
 
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      stopPropagation() {},
-    } as unknown as GEvent);
-    expect(selected).toHaveBeenCalledWith([mockCell]);
-  });
+      expect(s2.interaction.getState()).toEqual({
+        cells: [mockCellMeta],
+        nodes: [],
+        stateName: InteractionStateName.SELECTED,
+      });
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+
+      isSelectedCellSpy.mockRestore();
+    },
+  );
+
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should unselected current cell when toggle %s clicked',
+    (event) => {
+      const mockCellA = createMockCellInfo('cellA');
+      const getInteractedCellsSpy = jest
+        .spyOn(s2.interaction, 'getInteractedCells')
+        .mockImplementation(() => [mockCellA.mockCell]);
+
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+      // 选中
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+      expect(selected).toHaveBeenCalledWith([mockCell]);
+
+      // 取消选中
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+
+      expect(s2.interaction.getState().cells).toEqual([]);
+      expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+      expect(selected).toHaveBeenCalled();
+
+      getInteractedCellsSpy.mockRestore();
+    },
+  );
+
+  test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
+    'should emit cell selected event when %s clicked',
+    (event) => {
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+      expect(selected).toHaveBeenCalledWith([mockCell]);
+    },
+  );
 
   test('should expand columns correctly', () => {
     const columnsExpand = jest.fn();
-    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, columnsExpand);
+    s2.on(S2Event.LAYOUT_COLS_EXPANDED, columnsExpand);
 
     const mockNode: Partial<Node> = {
       field: 'a',
@@ -116,7 +166,7 @@ describe('Interaction Data Cell Click Tests', () => {
     ];
     s2.store.set('hiddenColumnsDetail', defaultColumnsDetail);
 
-    s2.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, mockNode as Node);
+    s2.emit(S2Event.LAYOUT_COLS_EXPANDED, mockNode as Node);
 
     // emit hook
     expect(columnsExpand).toHaveBeenCalled();
@@ -138,8 +188,12 @@ describe('Interaction Data Cell Click Tests', () => {
   });
 
   test('should hidden columns correctly', () => {
+    const resetSpy = jest
+      .spyOn(s2.interaction, 'reset')
+      .mockImplementationOnce(() => {});
+
     const columnsHidden = jest.fn();
-    s2.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, columnsHidden);
+    s2.on(S2Event.LAYOUT_COLS_HIDDEN, columnsHidden);
 
     // trigger hidden icon click
     rowColumnClick.hideSelectedColumns();
@@ -160,8 +214,10 @@ describe('Interaction Data Cell Click Tests', () => {
       ],
     );
     // reset interaction
-    expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
+    expect(resetSpy).toHaveBeenCalledTimes(1);
     // rerender table
     expect(s2.render).toHaveBeenCalledTimes(1);
+
+    resetSpy.mockRestore();
   });
 });

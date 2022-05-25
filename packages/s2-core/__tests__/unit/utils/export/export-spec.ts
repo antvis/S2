@@ -207,4 +207,41 @@ describe('PivotSheet Export Test', () => {
       expect(e.split('\t')).toHaveLength(54);
     });
   });
+
+  it('should export correct data when isFormat: {isFormatHeader: true}', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'province',
+            formatter: (value) => {
+              return `${value}-province`;
+            },
+          },
+          {
+            field: 'type',
+            formatter: (value) => {
+              return `${value}-type`;
+            },
+          },
+        ],
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city'],
+          rows: ['type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      assembleOptions({}),
+    );
+    s2.render();
+    const data = copyData(s2, '\t', { isFormatHeader: true });
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(7);
+    expect(rows[0].split('\t')[1]).toEqual('"province"');
+    expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');
+    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[3].split('\t')[0]).toEqual('"家具-type"');
+  });
 });

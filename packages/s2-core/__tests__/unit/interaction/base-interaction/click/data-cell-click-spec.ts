@@ -4,11 +4,11 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
-import { DataCellClick } from '@/interaction/base-interaction/click';
 import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
-  HOVER_FOCUS_TIME,
+  HOVER_FOCUS_DURATION,
+  InteractionName,
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
@@ -16,14 +16,12 @@ import {
 jest.mock('@/interaction/event-controller');
 
 describe('Interaction Data Cell Click Tests', () => {
-  let dataCellClick: DataCellClick;
   let s2: SpreadSheet;
   const mockCellInfo = createMockCellInfo('testId');
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCellInfo.mockCell as any;
-    dataCellClick = new DataCellClick(s2 as unknown as SpreadSheet);
     s2.options = {
       tooltip: {
         operation: {
@@ -38,7 +36,10 @@ describe('Interaction Data Cell Click Tests', () => {
   });
 
   test('should bind events', () => {
-    expect(dataCellClick.bindEvents).toBeDefined();
+    expect(
+      s2.interaction.interactions.get(InteractionName.DATA_CELL_CLICK)
+        .bindEvents,
+    ).toBeDefined();
   });
 
   test('should trigger data cell click', () => {
@@ -106,11 +107,9 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, event);
 
     // wait hover focus time trigger
-    await sleep(HOVER_FOCUS_TIME + 500);
+    await sleep(HOVER_FOCUS_DURATION + 500);
 
-    expect(s2.interaction.getCurrentStateName()).not.toEqual(
-      InteractionStateName.HOVER_FOCUS,
-    );
+    expect(s2.interaction.isHoverFocusState()).toBeFalsy();
 
     // only call show tooltip once for cell clicked
     expect(showTooltipWithInfoSpy).toHaveReturnedTimes(1);

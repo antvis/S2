@@ -1,12 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
-import { defineConfig, LibraryFormats } from 'vite';
-import viteImp from 'vite-plugin-imp';
+import { defineConfig, LibraryFormats, PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-const OUT_DIR_NAME_MAP = {
+const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',
   cjs: 'lib',
   umd: 'dist',
@@ -42,14 +42,16 @@ export default defineConfig({
       isDevMode ? 'development' : 'production',
     ),
   },
+
   plugins: [
     peerDepsExternal(),
-    viteCommonjs(),
+    !isDevMode && viteCommonjs(),
     react({
       jsxRuntime: 'classic',
     }),
     isAnalysisMode && visualizer({ gzipSize: true }),
-  ].filter(Boolean),
+  ].filter(Boolean) as PluginOption[],
+
   css: {
     preprocessorOptions: {
       less: {
@@ -72,7 +74,7 @@ export default defineConfig({
       entry: './src/index.ts',
       formats: [format],
     },
-    outDir: outDir,
+    outDir,
 
     rollupOptions: {
       output: {

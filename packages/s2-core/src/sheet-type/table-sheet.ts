@@ -11,7 +11,8 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-  TOOLTIP_OPERATOR_MENUS,
+  S2Event,
+  TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
 } from '@/common/constant';
 import {
   S2Options,
@@ -119,9 +120,9 @@ export class TableSheet extends SpreadSheet {
       return new TableDataCell(facet, this);
     };
     return {
+      ...this.options,
       ...fields,
       ...style,
-      ...this.options,
       meta,
       spreadsheet: this,
       dataSet: this.dataSet,
@@ -150,35 +151,24 @@ export class TableSheet extends SpreadSheet {
     this.clearFrozenGroups();
   }
 
+  public onSortTooltipClick = ({ key }, meta) => {
+    const { field } = meta;
+
+    const sortParam: SortParam = {
+      sortFieldId: field,
+      sortMethod: key as unknown as SortParam['sortMethod'],
+    };
+    // 触发排序事件
+    this.emit(S2Event.RANGE_SORT, [sortParam]);
+  };
+
   public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { field } = meta;
-
-        const prevOtherSortParams = [];
-        let prevSelectedSortParams: SortParam;
-        this.dataCfg.sortParams.forEach((item) => {
-          if (item?.sortFieldId !== field) {
-            prevOtherSortParams.push(item);
-          } else {
-            prevSelectedSortParams = item;
-          }
-        });
-
-        const sortParam: SortParam = {
-          ...(prevSelectedSortParams || {}),
-          sortFieldId: field,
-          sortMethod: key as SortParam['sortMethod'],
-        };
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevOtherSortParams, sortParam],
-        });
-        this.render();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.TableSort,
+      onClick: (params: { key: string }) =>
+        this.onSortTooltipClick(params, meta),
+      menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
     };
 
     this.showTooltipWithInfo(event, [], {

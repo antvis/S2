@@ -1,8 +1,8 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { isEqual, isNil } from 'lodash';
+import { isEqual } from 'lodash';
 import cx from 'classnames';
-import React, { FC, forwardRef, useImperativeHandle, useState } from 'react';
+import React from 'react';
 import {
   BeforeCapture,
   DragDropContext,
@@ -15,7 +15,6 @@ import {
   checkItem,
   generateSwitchResult,
   getMainLayoutClassName,
-  getNonEmptyFieldCount,
   getSwitcherClassName,
   getSwitcherState,
   moveItem,
@@ -23,6 +22,7 @@ import {
 } from '../util';
 import { i18n } from '@/common/i18n';
 import './index.less';
+import { SheetType } from '@/components/sheets/interface';
 
 const CLASS_NAME_PREFIX = 'content';
 export interface SwitcherContentRef {
@@ -30,6 +30,7 @@ export interface SwitcherContentRef {
 }
 
 export interface SwitcherContentProps extends SwitcherFields {
+  sheetType?: SheetType;
   contentTitleText?: string;
   resetText?: string;
   innerContentClassName?: string;
@@ -37,20 +38,19 @@ export interface SwitcherContentProps extends SwitcherFields {
   onSubmit?: (result: SwitcherResult) => void;
 }
 
-export const SwitcherContent: FC<SwitcherContentProps> = ({
+export const SwitcherContent: React.FC<SwitcherContentProps> = ({
   innerContentClassName,
   contentTitleText,
   resetText,
   onToggleVisible,
   onSubmit,
+  sheetType,
   ...defaultFields
 }) => {
   const defaultState = getSwitcherState(defaultFields);
 
-  const [state, setState] = useState<SwitcherState>(defaultState);
-  const [draggingItemId, setDraggingItemId] = useState<string>(null);
-
-  const nonEmptyCount = getNonEmptyFieldCount(defaultFields);
+  const [state, setState] = React.useState<SwitcherState>(defaultState);
+  const [draggingItemId, setDraggingItemId] = React.useState<string>(null);
 
   const onBeforeDragStart = (initial: BeforeCapture) => {
     setDraggingItemId(initial.draggableId);
@@ -104,6 +104,10 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
   };
 
   const isNothingChanged = isEqual(defaultState, state);
+
+  const displayFieldItems = SWITCHER_FIELDS.filter(
+    (filed) => sheetType !== 'table' || filed === FieldType.Cols,
+  );
   return (
     <DragDropContext onBeforeCapture={onBeforeDragStart} onDragEnd={onDragEnd}>
       <div
@@ -118,24 +122,21 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
         <main
           className={cx(
             getSwitcherClassName(CLASS_NAME_PREFIX, 'main'),
-            getMainLayoutClassName(nonEmptyCount),
+            getMainLayoutClassName(sheetType),
           )}
         >
-          {SWITCHER_FIELDS.map(
-            (type) =>
-              isNil(defaultFields[type]) || (
-                <Dimension
-                  {...defaultFields[type]}
-                  key={type}
-                  fieldType={type}
-                  items={state[type]}
-                  crossRows={shouldCrossRows(nonEmptyCount, type)}
-                  droppableType={SWITCHER_CONFIG[type].droppableType}
-                  draggingItemId={draggingItemId}
-                  onVisibleItemChange={onVisibleItemChange}
-                />
-              ),
-          )}
+          {displayFieldItems.map((type) => (
+            <Dimension
+              {...defaultFields[type]}
+              key={type}
+              fieldType={type}
+              items={state[type]}
+              crossRows={shouldCrossRows(sheetType, type)}
+              droppableType={SWITCHER_CONFIG[type].droppableType}
+              draggingItemId={draggingItemId}
+              onVisibleItemChange={onVisibleItemChange}
+            />
+          ))}
         </main>
         <footer className={getSwitcherClassName(CLASS_NAME_PREFIX, 'footer')}>
           <Button
@@ -179,6 +180,7 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
 SwitcherContent.displayName = 'SwitcherContent';
 
 SwitcherContent.defaultProps = {
+  sheetType: 'pivot',
   contentTitleText: i18n('行列切换'),
   resetText: i18n('恢复默认'),
 };

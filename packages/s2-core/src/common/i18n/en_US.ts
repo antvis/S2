@@ -28,6 +28,7 @@ export const EN_US = {
   选择下钻维度: 'Select drill down dimension',
   恢复默认: 'Restore default',
   搜索字段: 'Search field',
+  指标: 'Measure',
   // switcher
   行列切换: 'Switch Dimensions',
   行头: 'Rows',

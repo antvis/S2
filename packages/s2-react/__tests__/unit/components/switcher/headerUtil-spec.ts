@@ -1,12 +1,20 @@
 import { PivotSheet, TableSheet } from '@antv/s2';
 import { getMockSheetInstance } from 'tests/util/helpers';
-import { generateSwitcherFieldsCfgFromResult } from '../../../../src/components/switcher/headerUtil';
+import {
+  generateSwitcherFieldsCfgFromResult,
+  getSheetType,
+} from '@/components/switcher/headerUtil';
 import {
   generateSheetConfig,
   generateSwitcherFields,
 } from '@/components/switcher/headerUtil';
 
 describe('headerUtil test', () => {
+  test('should return correct sheetType', () => {
+    const sheet = getMockSheetInstance(PivotSheet);
+    expect(getSheetType(sheet)).toEqual('pivot');
+  });
+
   test('should generate correct switcher fields config for pivot sheet', () => {
     const sheet = getMockSheetInstance(PivotSheet);
     const dataCfg = {

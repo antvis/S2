@@ -78,11 +78,13 @@ describe('State Controller Utils Tests', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
       interactedCells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       interactedCells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     clearState(mockInstance);
@@ -90,6 +92,22 @@ describe('State Controller Utils Tests', () => {
     expect(mockInstance.interaction.getState()).toEqual({
       cells: [],
       force: false,
+    });
+  });
+
+  test('should only reset state for empty interactedCells or cells  when call clearState function', () => {
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      interactedCells: [],
+      cells: [],
+    });
+
+    clearState(mockInstance);
+
+    expect(mockInstance.interaction.getState()).toEqual({
+      cells: [],
+      interactedCells: [],
+      stateName: InteractionStateName.SELECTED,
     });
   });
 });

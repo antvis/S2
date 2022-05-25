@@ -1,4 +1,5 @@
 export enum InteractionName {
+  CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
   ROW_COLUMN_CLICK = 'rowColumnClick',
@@ -7,7 +8,7 @@ export enum InteractionName {
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
-  COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
+  RANGE_SELECTION = 'rangeSelection',
   SELECTED_CELL_MOVE = 'selectedCellMove',
 }
 
@@ -17,6 +18,8 @@ export enum InteractionStateName {
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
+  HIGHLIGHT = 'highlight',
+  SEARCH_RESULT = 'searchResult',
   PREPARE_SELECT = 'prepareSelect',
 }
 
@@ -29,7 +32,7 @@ export enum CellTypes {
   MERGED_CELL = 'mergedCell',
 }
 
-export const HOVER_FOCUS_TIME = 800;
+export const HOVER_FOCUS_DURATION = 800;
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
@@ -63,6 +66,7 @@ export enum InteractionKeyboardKey {
   COPY = 'c',
   ESC = 'Escape',
   META = 'Meta',
+  CONTROL = 'Control',
   ARROW_UP = 'ArrowUp',
   ARROW_DOWN = 'ArrowDown',
   ARROW_LEFT = 'ArrowLeft',
@@ -82,7 +86,23 @@ export enum InterceptType {
   RESIZE = 'resize',
 }
 
+export const BRUSH_AUTO_SCROLL_INITIAL_CONFIG = {
+  x: {
+    value: 0,
+    scroll: false,
+  },
+  y: {
+    value: 0,
+    scroll: false,
+  },
+};
+
 export enum ScrollbarPositionType {
   CONTENT = 'content',
   CANVAS = 'canvas',
+}
+
+export enum ScrollDirection {
+  LEADING = 'leading',
+  TRAILING = 'trailing',
 }

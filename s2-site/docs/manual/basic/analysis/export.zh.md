@@ -12,7 +12,7 @@ order: 11
 `@antv/s2` 核心层提供了基础的复制功能，可配置 `enableCopy` 开启
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     enableCopy: true
   }
@@ -28,6 +28,8 @@ const s2options = {
 `@antv/s2-react` 组件层提供了导出功能
 
 ```ts
+import { SheetComponent } from '@antv/s2-react'
+
 <SheetComponent
   dataCfg={dataCfg}
   options={options}

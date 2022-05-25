@@ -1,5 +1,6 @@
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { BBox } from '@antv/g-canvas';
+import { omit } from 'lodash';
 import {
   getAutoAdjustPosition,
   setContainerStyle,
@@ -7,11 +8,15 @@ import {
 } from '@/utils/tooltip';
 import {
   CellTypes,
+  getTooltipVisibleOperator,
+  S2CellType,
   SpreadSheet,
   Tooltip,
   TOOLTIP_POSITION_OFFSET,
 } from '@/index';
 import { BaseFacet } from '@/facet/base-facet';
+
+jest.mock('@/interaction/event-controller');
 
 describe('Tooltip Utils Tests', () => {
   let s2: SpreadSheet;
@@ -177,7 +182,7 @@ describe('Tooltip Utils Tests', () => {
       };
 
       s2.facet = {
-        panelBBox: panelBBox,
+        panelBBox,
       } as BaseFacet;
 
       // x, y
@@ -204,6 +209,7 @@ describe('Tooltip Utils Tests', () => {
         [CellTypes.CORNER_CELL]: 'corner',
       }[cellType];
     };
+
     test.each([
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
@@ -238,6 +244,137 @@ describe('Tooltip Utils Tests', () => {
         });
       },
     );
+
+    test.each([
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.DATA_CELL,
+      CellTypes.CORNER_CELL,
+    ])(
+      'should use %o tooltip options and merge base tooltip config',
+      (cellType) => {
+        const type = getCellNameByType(cellType);
+
+        const tooltip: Tooltip = {
+          showTooltip: false,
+          content: '',
+          operation: {
+            hiddenColumns: true,
+            trend: true,
+            sort: true,
+            tableSort: true,
+            menus: [{ key: 'menu-a', text: 'menu-a' }],
+          },
+          [type]: {
+            showTooltip: true,
+            operation: {
+              hiddenColumns: false,
+              menus: [{ key: 'menu-b', text: 'menu-b' }],
+            },
+          },
+        };
+
+        const spreadsheet = {
+          getCellType: () => cellType,
+          options: {
+            tooltip,
+          },
+        } as unknown as SpreadSheet;
+
+        const tooltipOptions = omit(
+          getTooltipOptions(spreadsheet, {} as Event),
+          [type],
+        );
+        expect(tooltipOptions).toEqual({
+          showTooltip: true,
+          content: '',
+          operation: {
+            hiddenColumns: false,
+            trend: true,
+            sort: true,
+            tableSort: true,
+            menus: [{ key: 'menu-b', text: 'menu-b' }],
+          },
+        });
+      },
+    );
+
+    test('should filter not displayed tooltip operation menus', () => {
+      const mockCell = {
+        cellType: CellTypes.DATA_CELL,
+      } as unknown as S2CellType;
+      const onClick = jest.fn();
+
+      const defaultMenus = [
+        {
+          key: 'default-menu',
+          text: 'default-menu',
+        },
+      ];
+
+      const operation: Tooltip['operation'] = {
+        onClick,
+        menus: [
+          { key: 'menu-0', text: '默认显示(未声明visible属性)' },
+          { key: 'menu-1', text: '默认显示', visible: true },
+          { key: 'menu-2', text: '默认隐藏', visible: false },
+          { key: 'menu-3', text: '动态始终显示', visible: () => true },
+          { key: 'menu-4', text: '动态始终显示', visible: () => false },
+          {
+            key: 'menu-5',
+            text: '动态显示',
+            visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          },
+          {
+            key: 'menu-6',
+            text: '动态隐藏',
+            visible: (cell) => cell.cellType !== CellTypes.DATA_CELL,
+          },
+          {
+            key: 'menu-7',
+            text: '父节点显示, 子节点隐藏',
+            visible: true,
+            children: [
+              {
+                key: 'menu-7-1',
+                text: '父节点显示, 子节点隐藏',
+                visible: false,
+              },
+            ],
+          },
+          {
+            key: 'menu-8',
+            text: '父节点隐藏, 子节点显示 (应该父,子都不显示)',
+            visible: false,
+            children: [
+              {
+                key: 'menu-8-1',
+                text: '父节点隐藏, 子节点显示',
+                visible: true,
+              },
+            ],
+          },
+        ],
+      };
+      const operator = getTooltipVisibleOperator(operation, {
+        cell: mockCell,
+        defaultMenus,
+      });
+      const visibleSubMenus = operator.menus.find(
+        ({ key }) => key === 'menu-7',
+      );
+
+      expect(operator.onClick).toEqual(onClick);
+      expect(operator.menus.map(({ key }) => key)).toEqual([
+        'default-menu',
+        'menu-0',
+        'menu-1',
+        'menu-3',
+        'menu-5',
+        'menu-7',
+      ]);
+      expect(visibleSubMenus.children).toHaveLength(0);
+    });
   });
 
   test('should set container style', () => {

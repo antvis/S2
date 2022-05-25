@@ -40,19 +40,24 @@ export interface ResizeDetail {
   seriesNumberWidth?: number;
 }
 
+export interface ResizeParams {
+  resizeInfo?: ResizeInfo;
+  style?: Style;
+}
+
 export interface ResizeInfo {
   theme: ResizeArea;
-  isResizeArea?: boolean;
   type: ResizeDirectionType;
-  /** 改动影响区域 */
-  effect: ResizeAreaEffect;
-  /** 字段id */
-  id?: string;
   offsetX: number;
   offsetY: number;
   width: number;
   height: number;
   size: number;
+  /** 改动影响区域 */
+  effect: ResizeAreaEffect;
+  isResizeArea?: boolean;
+  /** 字段id */
+  id?: string;
 }
 
 export interface ResizeActiveOptions {

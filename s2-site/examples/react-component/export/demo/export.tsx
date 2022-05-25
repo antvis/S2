@@ -11,7 +11,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      enableCopy: true,
+      interaction: {
+        enableCopy: true,
+      },
     };
 
     const s2DataConfig = {
@@ -28,7 +30,11 @@ fetch(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2Options}
-        header={{ exportCfg: { open: true } }}
+        header={{
+          exportCfg: {
+            open: true,
+          },
+        }}
         adaptive={false}
       />,
       document.getElementById('container'),
