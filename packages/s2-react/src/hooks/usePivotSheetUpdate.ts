@@ -1,7 +1,6 @@
-import { useRef } from 'react';
-import { useCallback } from 'react';
-import { PartDrillDown } from '../';
-import { SheetUpdateCallback } from './useSpreadSheet';
+import type { SheetUpdateCallback } from '@antv/s2-shared';
+import React from 'react';
+import type { PartDrillDown } from '../components';
 
 /**
  * 触发 render 的下钻属性
@@ -18,14 +17,14 @@ const DRILL_DOWN_ATTR_TO_DIFF = [
  * @returns update callback
  */
 export const usePivotSheetUpdate = (partDrillDown: PartDrillDown) => {
-  const prePartDrillDownRef = useRef(partDrillDown);
+  const prePartDrillDownRef = React.useRef(partDrillDown);
 
   /** 属性值发生变化时，才更新 callback，触发底表 render */
   const callbackDeps = DRILL_DOWN_ATTR_TO_DIFF.map(
     (attr) => partDrillDown?.[attr],
   );
 
-  return useCallback<SheetUpdateCallback>((renderOptions) => {
+  return React.useCallback<SheetUpdateCallback>((renderOptions) => {
     const prePartDrillDown = prePartDrillDownRef.current;
 
     /** 对应属性的新老值有改变，则以 reload 方式 render */

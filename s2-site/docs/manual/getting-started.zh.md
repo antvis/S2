@@ -28,10 +28,11 @@ $ yarn add @antv/s2
 
 ## 🔨 使用
 
-创建 `S2` 表格有两种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 版本
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue` 版本
 
 - core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
 - react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- vue 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
 
 ### 基础类
 
@@ -181,7 +182,7 @@ s2.render()
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 使用 `React` 版本 `S2`，只有渲染这一步有所不同：
 
@@ -203,7 +204,59 @@ ReactDOM.render(
 
 ```
 
-​📊 查看 demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
+### `Vue` 版本
+
+`S2` 同时也提供了开箱即用的 `Vue` 版本 [表格组件](###), 帮助开发者快速满足业务看数分析需求。
+
+使用 `Vue` 版本 `S2`：
+
+#### 表格组件使用
+
+```ts
+// App.vue
+<script lang="ts">
+import type { S2DataConfig, S2Options } from '@antv/s2';
+import { Sheet } from '@antv/s2-vue';
+import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+
+export default defineComponent({
+  setup() {   
+    // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
+    const dataCfg = shallowRef(s2DataConfig);
+    const options: S2Options = reactive(s2Options);
+
+    return {
+      dataCfg,
+      options,
+    };
+  },
+
+  components: {
+    Sheet,
+  },
+});
+</script>
+
+<template>
+  <Sheet :dataCfg="dataCfg" :options="options" />
+</template>
+
+<style lang="less">
+@import 'ant-design-vue/dist/antd.less';
+</style>
+```
+
+#### 渲染组件
+
+```ts
+import { createApp } from 'vue';
+import App from './App.vue';
+
+createApp(App).mount('#app');
+
+```
+
+​📊 查看 demo [Vue 版本透视表](###)。
 
 ## ⌨️ 本地开发
 

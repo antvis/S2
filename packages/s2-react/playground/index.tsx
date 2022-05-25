@@ -35,6 +35,7 @@ import {
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
+import { Adaptive, SheetType } from '@antv/s2-shared';
 import { useUpdateEffect } from 'ahooks';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
@@ -51,13 +52,7 @@ import {
   defaultOptions,
 } from './config';
 import { ResizeConfig } from './resize';
-import {
-  SheetComponent,
-  SheetType,
-  PartDrillDown,
-  PartDrillDownInfo,
-  Adaptive,
-} from '@/components';
+import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
 
 import './index.less';
 import 'antd/dist/antd.min.css';

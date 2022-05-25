@@ -32,8 +32,6 @@ describe('useResize tests', () => {
         wrapper,
         s2,
         adaptive: false,
-        optionWidth: s2Options.width,
-        optionHeight: s2Options.height,
       }),
     );
 
@@ -70,8 +68,6 @@ describe('useResize tests', () => {
         wrapper,
         s2,
         adaptive: true,
-        optionWidth: s2Options.width,
-        optionHeight: s2Options.height,
       }),
     );
 

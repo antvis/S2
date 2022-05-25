@@ -4,8 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { SpreadSheet, S2Options } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
+import { Adaptive } from '@antv/s2-shared';
 import { SheetComponent } from '@/components/sheets';
-import { Adaptive } from '@/components';
 
 interface Props {
   containerWidth?: number;

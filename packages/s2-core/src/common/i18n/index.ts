@@ -1,20 +1,37 @@
-import { get } from 'lodash';
-import { ZH_CN } from './zh_CN';
-import { EN_US } from './en_US';
+import { get, merge } from 'lodash';
+import { ZH_CN as BASE_ZH_CN } from './zh_CN';
+import { EN_US as BASE_EN_US } from './en_US';
 
-export let Lang = 'zh_CN';
+export type LangType = 'zh_CN' | 'en_US';
 
-let Locale = ZH_CN;
+export type LocaleType = {
+  [K in LangType]: Record<string, string>;
+};
 
-const isEnUS = (l: string) => l.indexOf('en') === 0;
+let lang: LangType = 'zh_CN';
+
+let locale: LocaleType = {
+  zh_CN: BASE_ZH_CN,
+  en_US: BASE_EN_US,
+};
+
+export const getLang = () => lang;
+
+const isEnUS = (l: LangType) => l.indexOf('en') === 0;
 
 /**
  * 设置语言
  * @param lang
  */
-export const setEVALocale = (lang: string) => {
-  Lang = isEnUS(lang) ? 'en_US' : 'zh_CN';
-  Locale = isEnUS(lang) ? EN_US : ZH_CN;
+export const setLang = (l: LangType) => {
+  lang = isEnUS(l) ? 'en_US' : 'zh_CN';
+};
+
+/**
+ * 拓展locale配置
+ */
+export const extendLocale = (extend: LocaleType) => {
+  locale = merge({}, locale, extend);
 };
 
 /**
@@ -23,5 +40,5 @@ export const setEVALocale = (lang: string) => {
  *
  */
 export const i18n = (key: string, defaultValue = key) => {
-  return get(Locale, key, defaultValue);
+  return get(locale, [lang, key], defaultValue);
 };

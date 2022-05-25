@@ -1,13 +1,10 @@
 import { DEFAULT_STYLE, HOVER_FOCUS_DURATION } from '@antv/s2';
-import { getSheetComponentOptions } from '@/utils/options';
+import { getBaseSheetComponentOptions } from '../../src';
 
 describe('Options Tests', () => {
   test('should get safety options', () => {
-    const options = getSheetComponentOptions();
+    const options = getBaseSheetComponentOptions();
 
-    expect(options.tooltip.renderTooltip).toBeFunction();
-
-    Reflect.deleteProperty(options.tooltip, 'renderTooltip');
     expect(options).toStrictEqual({
       width: 600,
       height: 480,
@@ -64,7 +61,7 @@ describe('Options Tests', () => {
   });
 
   test('should get custom options', () => {
-    const options = getSheetComponentOptions({
+    const options = getBaseSheetComponentOptions({
       tooltip: {
         showTooltip: false,
         operation: {
@@ -78,10 +75,6 @@ describe('Options Tests', () => {
         },
       },
     });
-
-    expect(options.tooltip.renderTooltip).toBeFunction();
-
-    Reflect.deleteProperty(options.tooltip, 'renderTooltip');
 
     expect(options.tooltip).toStrictEqual({
       showTooltip: false,

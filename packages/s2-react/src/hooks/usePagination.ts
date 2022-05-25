@@ -2,15 +2,12 @@ import React from 'react';
 import { S2Event, SpreadSheet } from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { isEmpty } from 'lodash';
-import { BaseSheetComponentProps } from '../components';
+import { SheetComponentsProps } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
-export const usePagination = (
-  s2: SpreadSheet,
-  props: BaseSheetComponentProps,
-) => {
+export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
   const { options } = props;
   const [total, setTotal] = React.useState<number>(0);
   const paginationRef = useLatest(options.pagination);
