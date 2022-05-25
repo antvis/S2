@@ -5,7 +5,7 @@ import {
   type SpreadSheet,
 } from '@antv/s2';
 import { computed, ref, watch, type Ref } from 'vue';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import type { BaseSheetProps } from '../utils/initPropAndEmits';
 
 export const DEFAULT_PAGE_NUMBER = 1;
@@ -32,7 +32,7 @@ export const usePagination = (
   };
 
   const visible = computed(() => {
-    return props.showPagination && !_.isEmpty(props.options?.pagination);
+    return props.showPagination && !isEmpty(props.options?.pagination);
   });
 
   // sync state.pagination -> s2.pagination
@@ -41,7 +41,7 @@ export const usePagination = (
       return;
     }
 
-    const nextPagination = _.isEmpty(props.options?.pagination)
+    const nextPagination = isEmpty(props.options?.pagination)
       ? (null as unknown as Pagination)
       : {
           current: current.value,
@@ -71,7 +71,7 @@ export const usePagination = (
     }
 
     const totalUpdateCallback: EmitterType['layout:pagination'] = (data) => {
-      if (_.isEmpty(props.options?.pagination)) {
+      if (isEmpty(props.options?.pagination)) {
         return;
       }
       total.value = data.total;

@@ -2,6 +2,7 @@
 import { S2_PREFIX_CLS } from '@antv/s2';
 import { Spin } from 'ant-design-vue';
 import { defineComponent } from 'vue';
+import { isBoolean } from 'lodash';
 import S2Pagination from '../pagination/index.vue';
 import { useSpreadSheet } from '../../hooks/useSpreadSheet';
 import {
@@ -24,14 +25,14 @@ export default defineComponent({
     });
 
     const handlePageChange = (nextCurrent: number) => {
-      if (props.showPagination && typeof props.showPagination !== 'boolean') {
+      if (props.showPagination && !isBoolean(props.showPagination)) {
         props.showPagination.onChange?.(nextCurrent);
       }
       pagination.change(nextCurrent);
     };
 
     const handlePageSizeChange = (nextSize: number) => {
-      if (props.showPagination && typeof props.showPagination !== 'boolean') {
+      if (props.showPagination && !isBoolean(props.showPagination)) {
         props.showPagination.onShowSizeChange?.(nextSize);
       }
       pagination.showSizeChange(nextSize);

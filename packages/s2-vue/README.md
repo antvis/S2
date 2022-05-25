@@ -5,6 +5,7 @@
 数据驱动的多维分析表格 (Vue 版本）。
 
 </div>
+
 ## 📦 安装
 
 ```bash
@@ -14,14 +15,12 @@ $ npm install @antv/s2-vue
 
 ## 🔨 使用
 
-### 1. 组件配置
+### 1. 数据准备
 
+<details>
+  <summary> s2DataConfig</summary>
+  
 ```ts
-<script lang="ts">
-import type { S2DataConfig, S2Options } from '@antv/s2';
-import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import { Sheet } from '../src';
-
 const rawDataCfg: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
@@ -278,57 +277,76 @@ const rawDataCfg: S2DataConfig = {
     },
   ],
 };
+```
+
+</details>
+
+<details>
+  <summary> S2Options</summary>
+  
+```ts
+const rawOptions: S2Options = {
+  debug: true,
+  width: 600,
+  height: 400,
+  hierarchyCollapse: false,
+  tooltip: {
+    operation: {
+      trend: true,
+      hiddenColumns: true,
+      sort: true,
+      onClick: (...args) => {
+        console.log('menuClick', ...args);
+      },
+      menus: [
+        {
+          key: '1',
+          icon: 'Trend',
+          text: '菜单 1',
+          onClick(cell) {
+            console.log('cell-1: ', cell);
+          },
+          children: [
+            {
+              key: '1-1',
+              icon: 'Trend',
+              text: '菜单 1-1',
+              onClick(cell) {
+                console.log('cell-1-1: ', cell);
+              },
+            },
+          ],
+        },
+        {
+          key: '2',
+          icon: 'Trend',
+          text: '菜单 2',
+          onClick(cell) {
+            console.log('cell-2: ', cell);
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+</details>
+
+### 2. 组件配置
+
+```ts
+<script lang="ts">
+import type { S2DataConfig, S2Options } from '@antv/s2';
+import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import { Sheet } from '../src';
 
 export default defineComponent({
   setup() {
     const s2 = ref();
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
     const dataCfg = shallowRef(rawDataCfg);
-
-    const options: S2Options = reactive({
-      debug: true,
-      width: 600,
-      height: 400,
-      hierarchyCollapse: false,
-      tooltip: {
-        operation: {
-          trend: true,
-          hiddenColumns: true,
-          sort: true,
-          onClick: (...args) => {
-            console.log('menuClick', ...args);
-          },
-          menus: [
-            {
-              key: '1',
-              icon: 'Trend',
-              text: '菜单 1',
-              onClick(cell) {
-                console.log('cell-1: ', cell);
-              },
-              children: [
-                {
-                  key: '1-1',
-                  icon: 'Trend',
-                  text: '菜单 1-1',
-                  onClick(cell) {
-                    console.log('cell-1-1: ', cell);
-                  },
-                },
-              ],
-            },
-            {
-              key: '2',
-              icon: 'Trend',
-              text: '菜单 2',
-              onClick(cell) {
-                console.log('cell-2: ', cell);
-              },
-            },
-          ],
-        },
-      },
-    });
+    const options: S2Options = reactive(rawOptions);
 
     onMounted(() => {
       console.log('s2 instance:', s2.value?.instance);
@@ -353,10 +371,9 @@ export default defineComponent({
 <style lang="less">
 @import 'ant-design-vue/dist/antd.less';
 </style>
-
 ```
 
-### 2. 渲染
+### 3. 渲染
 
 ```ts
 import { createApp } from 'vue';
@@ -366,6 +383,6 @@ createApp(App).mount('#app');
 
 ```
 
-### 3. 结果
+### 4. 结果
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/rf1gPzsFQ/2e3f09f1-6f94-4981-91d4-8c7a770574be.png)

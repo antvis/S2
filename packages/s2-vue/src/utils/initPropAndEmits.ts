@@ -16,7 +16,7 @@ export const initBaseSheetProps = () => ({
     default: false,
   },
   loading: Boolean,
-
+  // TODO: 待后续完善
   partDrillDown: Object,
   header: Object,
 
