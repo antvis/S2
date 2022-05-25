@@ -336,10 +336,11 @@ const rawOptions: S2Options = {
 ### 2. 组件配置
 
 ```ts
+// App.vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
+import { Sheet } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import { Sheet } from '../src';
 
 export default defineComponent({
   setup() {
