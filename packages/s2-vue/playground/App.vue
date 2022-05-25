@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
 import { Sheet } from '../src';
 
 const dataCfg1: S2DataConfig = {
@@ -507,7 +507,7 @@ const dataCfg2: S2DataConfig = {
 export default defineComponent({
   setup() {
     const sheetType = ref<SheetType>('pivot');
-    const s2 = ref();
+    const s2 = shallowRef();
     const dataCfgFlag = ref(1);
     //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
     //  reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321

@@ -28,10 +28,11 @@ $ yarn add @antv/s2
 
 ## 🔨 使用
 
-创建 `S2` 表格有两种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 版本
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue` 版本
 
 - core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
 - react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- vue 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
 
 ### 基础类
 

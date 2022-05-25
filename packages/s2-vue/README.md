@@ -340,11 +340,11 @@ const rawOptions: S2Options = {
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { Sheet } from '@antv/s2-vue';
-import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
 
 export default defineComponent({
   setup() {
-    const s2 = ref();
+    const s2 = shallowRef();
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
     const dataCfg = shallowRef(rawDataCfg);
     const options: S2Options = reactive(rawOptions);
