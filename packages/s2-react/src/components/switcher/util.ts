@@ -1,7 +1,7 @@
 import { filter, flatten, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import { getClassNameWithPrefix } from '@antv/s2';
-import { SheetType } from '../sheets/interface';
+import { SheetType } from '@antv/s2-shared';
 import { FieldType, SWITCHER_PREFIX_CLS } from './constant';
 import {
   SwitcherItem,

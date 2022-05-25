@@ -1,11 +1,5 @@
-import {
-  customMerge,
-  isUpDataValue,
-  RowCell,
-  S2DataConfig,
-  S2Options,
-  S2Theme,
-} from '@antv/s2';
+import { isUpDataValue, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
+import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';
 import {
@@ -14,7 +8,6 @@ import {
   meta,
   fields,
 } from '../__tests__/data/mock-dataset.json';
-import { getSheetComponentOptions } from '@/utils';
 
 const BASIC_BACKGROUND_COLOR = '#FFFFFF';
 const INTERACTIVE_BACKGROUND_COLOR = '#E1EAFE';
@@ -199,16 +192,5 @@ export const mockGridAnalysisOptions: S2Options = {
   },
 };
 
-export const defaultOptions: S2Options = customMerge(
-  s2Options,
-  getSheetComponentOptions({
-    tooltip: {
-      operation: {
-        sort: true,
-        tableSort: true,
-        trend: true,
-        hiddenColumns: true,
-      },
-    },
-  }),
-);
+export const defaultOptions: S2Options =
+  getBaseSheetComponentOptions(s2Options);

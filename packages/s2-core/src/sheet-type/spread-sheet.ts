@@ -373,7 +373,7 @@ export abstract class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setThemeCfg(themeCfg: ThemeCfg) {
+  public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
     this.theme = customMerge(
       getTheme({ ...themeCfg, spreadsheet: this }),

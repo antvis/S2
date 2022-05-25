@@ -1,7 +1,7 @@
 import React from 'react';
 import { TooltipNameTipsOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
-export const SimpleTips = (props: TooltipNameTipsOptions) => {
+export const TooltipSimpleTips: React.FC<TooltipNameTipsOptions> = (props) => {
   const { tips = '', name = '' } = props;
 
   return (

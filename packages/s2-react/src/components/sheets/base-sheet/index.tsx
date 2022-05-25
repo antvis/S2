@@ -17,11 +17,9 @@ import './index.less';
 
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { dataCfg, options, header, showPagination, sheetType } = props;
-    const { s2Ref, loading, containerRef, pagination, wrapRef } =
-      useSpreadSheet(props, {
-        sheetType,
-      });
+    const { dataCfg, options, header, showPagination } = props;
+    const { s2Ref, loading, containerRef, pagination, wrapperRef } =
+      useSpreadSheet(props);
 
     // 同步实例
     React.useEffect(() => {
@@ -33,7 +31,7 @@ export const BaseSheet = React.forwardRef(
     return (
       <React.StrictMode>
         <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
-          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+          <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
               <Header
                 {...header}
