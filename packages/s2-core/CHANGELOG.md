@@ -1,3 +1,15 @@
+# [@antv/s2-v1.18.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0-alpha.4...@antv/s2-v1.18.0-alpha.5) (2022-05-25)
+
+
+### Bug Fixes
+
+* **interaction:** 修复自定义单元格有自定义图片时无法触发点击 close [#1360](https://github.com/antvis/S2/issues/1360) ([#1365](https://github.com/antvis/S2/issues/1365)) ([685cd04](https://github.com/antvis/S2/commit/685cd0458e33d189ced36eb708c8ed697f3d024c))
+
+
+### Features
+
+* **theme:** 新增度量值的主题配置, 修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
+
 # [@antv/s2-v1.18.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0-alpha.3...@antv/s2-v1.18.0-alpha.4) (2022-05-20)
 
 
