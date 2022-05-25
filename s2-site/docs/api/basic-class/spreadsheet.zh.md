@@ -59,7 +59,9 @@ s2.xx()
 | changeSheetSize （别名：changeSize) | 修改表格画布大小，不用重新加载数据 | `(width?: number, height?: number) => void` |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|
 | getRowNodes | 获取行头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getRowLeafNodes | 获取行头叶子节点 | () => [Node[]](/zh/docs/api/basic-class/node/) |
 | getColumnNodes | 获取列头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getColumnLeafNodes | 获取列头叶子节点 | () => [Node[]](/zh/docs/api/basic-class/node/) |
 | updateScrollOffset | 更新滚动偏移 | (config: [OffsetConfig](#offsetconfig)) => void |
 | getCell | 根据 event.target 获取当前 单元格 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/zh/docs/api/basic-class/base-cell#s2celltype) |
 | getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |

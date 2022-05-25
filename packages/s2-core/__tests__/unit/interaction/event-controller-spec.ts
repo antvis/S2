@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, BBox, CanvasCfg } from '@antv/g-canvas';
+import { Canvas, BBox, CanvasCfg, Shape } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { GuiIcon } from '@/common';
 import { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
@@ -47,16 +48,17 @@ describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
   let spreadsheet: SpreadSheet;
 
+  const mockEvent = {
+    target: undefined,
+    preventDefault: () => {},
+    originalEvent: {},
+    stopPropagation: () => {},
+  };
+
   const expectEvents =
     (eventType: OriginEventType, callback?: () => void) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
-      const mockEvent = {
-        target: undefined,
-        preventDefault: () => {},
-        originalEvent: {},
-        stopPropagation: () => {},
-      };
       spreadsheet.getCellType = () => type;
       spreadsheet.getCell = () =>
         ({
@@ -66,7 +68,7 @@ describe('Interaction Event Controller Tests', () => {
 
       eventNames.forEach((eventName) => {
         const eventHandler = jest.fn();
-        spreadsheet.on(eventName, eventHandler);
+        spreadsheet.once(eventName, eventHandler);
         spreadsheet.container.emit(eventType, mockEvent);
         expect(eventHandler).toHaveBeenCalledWith(mockEvent);
       });
@@ -751,6 +753,86 @@ describe('Interaction Event Controller Tests', () => {
 
       spreadsheet.off(event, captureEventHandler);
       window.removeEventListener(type, bubbleEventHandler);
+    },
+  );
+
+  test.each([
+    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+  ])(
+    'should not trigger click event if event target is gui icon image shape for event %o',
+    ({ cellType, event }) => {
+      spreadsheet.getCell = () =>
+        ({
+          cellType,
+          getMeta: () => {},
+        } as any);
+
+      const handler = jest.fn();
+      const { iconImageShape } = new GuiIcon({
+        name: 'test',
+        width: 10,
+        height: 10,
+      });
+
+      spreadsheet.once(event, handler);
+
+      Object.defineProperty(eventController, 'target', {
+        value: iconImageShape,
+        writable: true,
+      });
+
+      // 内部的 GuiIcon
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
+        ...mockEvent,
+        target: iconImageShape,
+      });
+
+      expect(handler).not.toHaveBeenCalled();
+
+      // 普通 Target
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, mockEvent);
+
+      expect(handler).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  // https://github.com/antvis/S2/issues/1360
+  test.each([
+    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+  ])(
+    'should trigger click event if event target is custom image shape for event %o',
+    ({ cellType, event }) => {
+      spreadsheet.getCell = () =>
+        ({
+          cellType,
+          getMeta: () => {},
+        } as any);
+
+      const handler = jest.fn();
+
+      const image = new Shape.Image({
+        name: 'test',
+        attrs: {
+          img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+        },
+      });
+
+      Object.defineProperty(eventController, 'target', {
+        value: image,
+        writable: true,
+      });
+
+      spreadsheet.on(event, handler);
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
+        ...mockEvent,
+        target: image,
+      });
+
+      expect(handler).toHaveBeenCalledTimes(1);
     },
   );
 });
