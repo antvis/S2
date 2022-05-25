@@ -451,6 +451,10 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
+  public getRowLeafNodes(): Node[] {
+    return this.facet?.layoutResult.rowLeafNodes || [];
+  }
+
   /**
    * get columnNode in levels,
    * @param level -1 = get all
@@ -464,7 +468,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getColumnLeafNodes(): Node[] {
-    return this.getColumnNodes().filter((node) => node.isLeaf);
+    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
