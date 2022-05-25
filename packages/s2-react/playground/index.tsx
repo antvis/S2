@@ -813,6 +813,7 @@ function MainLayout() {
               }}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onLayoutResizeMouseUp={logHandler('onLayoutResizeMouseUp')}
               onCopied={logHandler('onCopied')}
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}

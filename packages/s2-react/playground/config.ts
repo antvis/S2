@@ -1,6 +1,7 @@
 import {
   customMerge,
   isUpDataValue,
+  RowCell,
   S2DataConfig,
   S2Options,
   S2Theme,
