@@ -1,8 +1,8 @@
 import React from 'react';
 import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { TooltipInfosProps } from '../interface';
+import type { TooltipInfosProps } from '../interface';
 
-export const TooltipInfos = (props: TooltipInfosProps) => {
+export const TooltipInfos: React.FC<TooltipInfosProps> = (props) => {
   const { infos = '' } = props;
 
   return <div className={`${TOOLTIP_PREFIX_CLS}-infos`}>{infos}</div>;

@@ -19,20 +19,20 @@ order: 0
 
 ## 内置交互
 
-| 名称                | 事件名                                                                | 描述                                                                                                                              |
-| :------------------ | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| 单选                | `S2Event.GLOBAL_SELECTED`                                             | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                  |
-| 多选                | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                           |
-| 行/列头快捷多选     | `S2Event.GLOBAL_SELECTED`                                             | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                   |
-| 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                               | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                         |
-| 刷选                | `S2Event.DATE_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`            | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                |
-| 区间快捷多选            | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                     |
-| 悬停                | `S2Event.GLOBAL_HOVER`                                                | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/zh/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
-| 复制                | `S2Event.GLOBAL_COPIED`                                               | 复制选中的单元格数据                                                                                                              |
-| 隐藏列头            | `S2Event.LAYOUT_COLS_EXPANDED` `S2Event.LAYOUT_COLS_HIDDEN` | 隐藏/展开 列头                                                                                                     |
-| 链接跳转            | `S2Event.GLOBAL_LINK_FIELD_JUMP`                                      | 行头/列头 链接跳转                                                                                                                |
-| 重置                | `S2Event.GLOBAL_RESET`                                                | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                               |
-| 移动高亮单元格                | `S2Event.GLOBAL_SELECTED`                                                | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                        |
+| 名称                | 事件名                                                        | 描述                                                                                                                                                              |
+| :------------------ | :------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 单选                | `S2Event.GLOBAL_SELECTED`                                     | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                                                  |
+| 多选                | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                                                  |
+| 行/列头快捷多选     | `S2Event.GLOBAL_SELECTED`                                     | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                                                   |
+| 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                       | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                                                         |
+| 刷选                | `S2Event.DATE_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                                                |
+| 区间快捷多选        | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                       |
+| 悬停                | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/zh/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
+| 复制                | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                                                              |
+| 隐藏列头            | `S2Event.LAYOUT_COLS_EXPANDED` `S2Event.LAYOUT_COLS_HIDDEN`   | 隐藏/展开 列头                                                                                                                                                    |
+| 链接跳转            | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | 行头/列头 链接跳转                                                                                                                                                |
+| 重置                | `S2Event.GLOBAL_RESET`                                        | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                                                               |
+| 移动高亮单元格      | `S2Event.GLOBAL_SELECTED`                                     | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                                                            |
 
 ## 交互事件
 
@@ -52,6 +52,7 @@ order: 0
 | 展开树状结构 | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | 树状结构下，行头单元格展开 |
 | 点击         | `S2Event.ROW_CELL_CLICK`              | 行头单元格点击             |
 | 双击         | `S2Event.ROW_CELL_DOUBLE_CLICK`       | 行头单元格双击             |
+| 右键         | `S2Event.ROW_CELL_CONTEXT_MENU`       | 行头单元格右键             |
 | 悬停         | `S2Event.ROW_CELL_HOVER`              | 行头单元格悬停             |
 | 鼠标按下     | `S2Event.ROW_CELL_MOUSE_DOWN`         | 行头单元格鼠标按下         |
 | 鼠标移动     | `S2Event.ROW_CELL_MOUSE_MOVE`         | 行头单元格鼠标移动         |
@@ -63,6 +64,7 @@ order: 0
 | :------- | :------------------------------ | :----------------- |
 | 点击     | `S2Event.COL_CELL_CLICK`        | 列头单元格点击     |
 | 双击     | `S2Event.COL_CELL_DOUBLE_CLICK` | 列头单元格双击     |
+| 右键     | `S2Event.COL_CELL_CONTEXT_MENU` | 列头单元格右键     |
 | 悬停     | `S2Event.COL_CELL_HOVER`        | 列头单元格悬停     |
 | 鼠标按下 | `S2Event.COL_CELL_MOUSE_DOWN`   | 列头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
@@ -74,6 +76,7 @@ order: 0
 | :------------- | :----------------------------------- | :-------------------------------------- |
 | 点击           | `S2Event.DATA_CELL_CLICK`            | 数值单元格点击                          |
 | 双击           | `S2Event.DATA_CELL_DOUBLE_CLICK`     | 数值单元格双击                          |
+| 右键           | `S2Event.DATA_CELL_CONTEXT_MENU`      | 数值单元格右键                          |
 | 悬停           | `S2Event.DATA_CELL_HOVER`            | 数值单元格悬停                          |
 | 鼠标按下       | `S2Event.DATA_CELL_MOUSE_DOWN`       | 数值单元格鼠标按下                      |
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
@@ -87,6 +90,7 @@ order: 0
 | :------- | :--------------------------------- | :----------------- |
 | 点击     | `S2Event.CORNER_CELL_CLICK`        | 角头单元格点击     |
 | 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 角头单元格双击     |
+| 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 角头单元格右键     |
 | 悬停     | `S2Event.CORNER_CELL_HOVER`        | 角头单元格悬停     |
 | 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 角头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 角头单元格鼠标移动 |
@@ -94,19 +98,19 @@ order: 0
 
 ### 布局
 
-| 名称                     | 事件名                              | 描述                                        |
-| :----------------------- | :---------------------------------- | :------------------------------------------ |
-| 单元格调整               | `S2Event.LAYOUT_RESIZE`             | 单元格宽高发生改变                          |
-| 调整单元格大小时鼠标按下 | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN`  | 调整单元格大小鼠标按下，目前仅 行/列 头有效 |
-| 调整单元格大小时鼠标移动 | `S2Event.LAYOUT_RESIZE_MOUSE_MOVE`  | 调整单元格大小鼠标移动，目前仅 行/列 头有效 |
-| 调整单元格大小时鼠标松开 | `S2Event.LAYOUT_RESIZE_MOUSE_UP`    | 调整单元格大小鼠标松开，目前仅 行/列 头有效 |
-| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_ROW_WIDTH`   |                                             |
-| 行头高度改变             | `S2Event.LAYOUT_RESIZE_ROW_HEIGHT`  |                                             |
-| 列头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_WIDTH`   |                                             |
-| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_HEIGHT`  |                                             |
-| 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH`  | 树状模式下，单元格宽度发生改变时触发        |
-| 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED` | 列头展开时触发，明细表有效                  |
-| 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`   | 列头隐藏时触发，明细表有效                  |
+| 名称                     | 事件名                             | 描述                                        |
+| :----------------------- | :--------------------------------- | :------------------------------------------ |
+| 单元格调整               | `S2Event.LAYOUT_RESIZE`            | 单元格宽高发生改变                          |
+| 调整单元格大小时鼠标按下 | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN` | 调整单元格大小鼠标按下，目前仅 行/列 头有效 |
+| 调整单元格大小时鼠标移动 | `S2Event.LAYOUT_RESIZE_MOUSE_MOVE` | 调整单元格大小鼠标移动，目前仅 行/列 头有效 |
+| 调整单元格大小时鼠标松开 | `S2Event.LAYOUT_RESIZE_MOUSE_UP`   | 调整单元格大小鼠标松开，目前仅 行/列 头有效 |
+| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_ROW_WIDTH`  |                                             |
+| 行头高度改变             | `S2Event.LAYOUT_RESIZE_ROW_HEIGHT` |                                             |
+| 列头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_WIDTH`  |                                             |
+| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |                                             |
+| 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` | 树状模式下，单元格宽度发生改变时触发        |
+| 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发，明细表有效                  |
+| 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发，明细表有效                  |
 
 ### 全局
 
@@ -115,11 +119,12 @@ order: 0
 | 键盘按下  | `S2Event.GLOBAL_KEYBOARD_DOWN`     | 键盘按下                                     |
 | 键盘松开  | `S2Event.GLOBAL_KEYBOARD_UP`       | 键盘松开                                     |
 | 复制      | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                           |
-| 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 鼠标松开                                     |
+| 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                             |
+| 点击      | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                 |
 | 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键                             |
 | 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
 | 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
-| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时     |
+| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |
 | 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击行列头被编辑为链接字段的文本时           |
 | icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
 | icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
@@ -163,18 +168,16 @@ const s2Options = {
   interaction: {
     eventListenerOptions: {
       capture: true,
-      once: true,
-      passive: false,
     }
   }
 }
 
-// 内部实现
+// 等价于
 window.addEventListener('mouseup', () => {}, {
   capture: true,
-  once: true,
-  passive: false,
 })
+
+window.addEventListener('mouseup', () => {}, true)
 ```
 
 ## 交互相关配置
@@ -223,11 +226,11 @@ const s2Options = {
 
 ### 悬停聚焦
 
-鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭, 也可配置 `hoverFocus.duration` 更改出现 `tooltip` 的时间间隔。如果希望 hover 后立刻出现 tooltip，可以设置 `duration` 为 0;
+鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭，也可配置 `hoverFocus.duration` 更改出现 `tooltip` 的时间间隔。如果希望 hover 后立刻出现 tooltip，可以设置 `duration` 为 0;
 
 > 如果你实现了自定义交互，如 hover 后显示 tooltip, 推荐关闭此功能，以免出现 hover 悬停后 tooltip 被意外关闭
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/1OIXucjGb/9c0b42b5-259e-4693-83b3-8cf6a034be93.png" alt="preview" width="600" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/46WvUNsfP/Kapture%2525202022-05-17%252520at%25252018.18.12.gif" alt="preview" width="600" />
 
 ```ts
 const s2Options = {

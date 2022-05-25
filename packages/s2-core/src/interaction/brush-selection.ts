@@ -186,14 +186,16 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const { facet } = this.spreadsheet;
     const frozenInfo = (facet as TableFacet).frozenGroupInfo;
     let min = 0;
-    if (frozenInfo && frozenInfo.row.range) {
-      min = frozenInfo.row.range[1] + 1;
+    const frozenRowRange = frozenInfo?.frozenRow?.range;
+    if (frozenRowRange) {
+      min = frozenRowRange[1] + 1;
     }
     if (yIndex < min) return null;
 
     let max = facet.getCellRange().end;
-    if (frozenInfo && frozenInfo.trailingRow.range) {
-      max = frozenInfo.trailingRow.range[0] - 1;
+    const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
+    if (frozenTrailingRowRange) {
+      max = frozenTrailingRowRange[0] - 1;
     }
     if (yIndex > max) {
       return null;
@@ -207,14 +209,16 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const frozenInfo = (facet as TableFacet).frozenGroupInfo;
 
     let min = 0;
-    if (frozenInfo && frozenInfo.col.range) {
-      min = frozenInfo.col.range[1] + 1;
+    const frozenColRange = frozenInfo?.frozenCol?.range;
+    if (frozenColRange) {
+      min = frozenColRange[1] + 1;
     }
     if (xIndex < min) return null;
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
-    if (frozenInfo && frozenInfo.trailingCol.range) {
-      max = frozenInfo.trailingCol.range[0] - 1;
+    const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
+    if (frozenTrailingColRange) {
+      max = frozenTrailingColRange[0] - 1;
     }
     if (xIndex > max) {
       return null;
@@ -482,7 +486,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseUp() {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
+      if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
+        this.resetDrag();
+        return;
+      }
       this.clearAutoScroll();
+
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
           InterceptType.BRUSH_SELECTION,
@@ -493,6 +502,13 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
+      if (
+        this.spreadsheet.interaction.getCurrentStateName() ===
+        InteractionStateName.PREPARE_SELECT
+      ) {
+        this.spreadsheet.interaction.reset();
+      }
+
       this.resetDrag();
     });
 
@@ -514,9 +530,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private isValidBrushSelection() {
-    if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
-      return false;
-    }
     const { start, end } = this.getBrushRange();
     const isMovedEnoughDistance =
       end.x - start.x > this.brushSelectionMinimumMoveDistance ||

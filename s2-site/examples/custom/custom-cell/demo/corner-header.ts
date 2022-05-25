@@ -1,8 +1,11 @@
 import { PivotSheet } from '@antv/s2';
-import { Group, IShape } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { get } from 'lodash';
 
-// 自定义角头单元格，实现特有功能
+/**
+ * 自定义整个角头, 添加文字和背景色
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/header/corner.ts
+ */
 class CustomCornerHeader extends Group {
   node;
   backgroundShape;

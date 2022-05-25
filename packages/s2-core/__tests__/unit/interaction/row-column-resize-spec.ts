@@ -125,6 +125,7 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.render = jest.fn();
     s2.tooltip.container = document.createElement('div');
     s2.hideTooltip = jest.fn();
+    s2.interaction.reset = jest.fn();
   });
 
   test('should register events', () => {
@@ -457,7 +458,7 @@ describe('Interaction Row Column Resize Tests', () => {
     });
   });
 
-  test('should hidden tooltip when resize start', () => {
+  test('should reset interaction and hidden tooltip when resize start', () => {
     const resizeInfo = {
       theme: {},
       type: ResizeDirectionType.Vertical,
@@ -478,6 +479,6 @@ describe('Interaction Row Column Resize Tests', () => {
       },
       resizeInfo,
     );
-    expect(s2.hideTooltip).toHaveBeenCalledTimes(1);
+    expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
   });
 });
