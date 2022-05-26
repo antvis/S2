@@ -57,6 +57,7 @@ export const BaseSheet = React.forwardRef(
   },
 );
 
+BaseSheet.displayName = 'BaseSheet';
 BaseSheet.defaultProps = {
   options: {} as S2Options,
   adaptive: false,
