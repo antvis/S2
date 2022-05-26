@@ -823,11 +823,28 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
+          <Switch
+            checkedChildren="单列头"
+            unCheckedChildren="多列头"
+            checked={strategyDataCfg.fields.columns.length === 1}
+            onChange={(checked) => {
+              setStrategyDataCfg(
+                customMerge(customTree, {
+                  fields: {
+                    columns: customTree.fields.columns.slice(
+                      0,
+                      checked ? 1 : 2,
+                    ),
+                  },
+                }),
+              );
+            }}
+          />
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
-            onRowCellClick={(v) => console.log(v)}
+            onRowCellClick={logHandler('onRowCellClick')}
             header={{ exportCfg: { open: true } }}
             themeCfg={{
               theme: strategyTheme,
