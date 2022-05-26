@@ -2,13 +2,13 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
 import { ShapeAttrs } from '@antv/g-canvas';
-import { S2DataConfig } from './../../esm/common/interface/s2DataConfig.d';
 import { TextTheme } from '@/common/interface/theme';
 import { PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
+  S2DataConfig,
   TextAlign,
 } from '@/common';
 import { RowCell } from '@/cell';
