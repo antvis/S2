@@ -195,9 +195,9 @@ const adaptive = {
     style="width:600px;height:400px"
   >
     <Sheet
-    :dataCfg="your-dataCfg"
-    :options="your-options"
-    :adaptive="adaptive"
+      :dataCfg="your-dataCfg"
+      :options="your-options"
+      :adaptive="adaptive"
     />
   </div>
 </template>
