@@ -11,7 +11,7 @@ order: 9
 - 监听鼠标 `click` `hover` 事件 获取当前对应单元格数据
 - 自定义 `tooltip` 内容，需要根据当前单元格信息来渲染不同的操作项，或者显示不同的提示信息
 
-`S2` 的表格由 `canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组数据结构，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/zh/docs/api/basic-class/base-cell)
+`S2` 的表格由 `Canvas` 绘制，所以只会有一个 `dom` 元素，所有单元格对应的一组数据结构，里面存储了每个单元格的坐标，文本信息，交互状态等 [信息](/zh/docs/api/basic-class/base-cell)
 
 `S2` 提供了一系列获取数据的 [API](/zh/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景
 
@@ -124,9 +124,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
 
