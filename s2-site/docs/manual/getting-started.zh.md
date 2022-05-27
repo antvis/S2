@@ -14,25 +14,29 @@ $ npm install @antv/s2
 $ yarn add @antv/s2
 ```
 
-### 浏览器引入
+### 使用 React 或 Vue3 版本
 
-```html
-<!-- 引入在线资源 -->
-<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest/dist/index.min.js"></script>
+```bash
+# React
+$ yarn add @antv/s2 @antv/s2-react
 
-<!-- 下载到本地 引入本地脚本 -->
-<script src="./dist/index.min.js"></script>
+# Vue3
+$ yarn add @antv/s2 @antv/s2-vue
 ```
+
+### 浏览器引入（不推荐）
+
+`markdown:docs/common/browser.zh.md`
 
 如需兼容`IE`，需要自行引入 `polyfill` 兼容。
 
 ## 🔨 使用
 
-创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue` 版本
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
 
 - core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
-- react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
-- vue 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
+- React 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- Vue3 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
 
 ### 基础类
 
@@ -156,7 +160,7 @@ const s2DataConfig = {
 ```ts
 const s2Options = {
   width: 600,
-  height: 600
+  height: 480
 }
 ```
 
@@ -204,11 +208,11 @@ ReactDOM.render(
 
 ```
 
-### `Vue` 版本
+​📊 查看 [React 版本透视表 demo](/zh/examples/react-component/sheet#pivot)。
 
-`S2` 同时也提供了开箱即用的 `Vue` 版本 [表格组件](###), 帮助开发者快速满足业务看数分析需求。
+### `Vue3` 版本
 
-使用 `Vue` 版本 `S2`：
+`S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -220,7 +224,7 @@ import { Sheet } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
 
 export default defineComponent({
-  setup() {   
+  setup() {
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
     const dataCfg = shallowRef(s2DataConfig);
     const options: S2Options = reactive(s2Options);
@@ -256,7 +260,7 @@ createApp(App).mount('#app');
 
 ```
 
-​📊 查看 demo [Vue 版本透视表](###)。
+​📊 查看 [Vue3 版本透视表 demo](#)。
 
 ## ⌨️ 本地开发
 
@@ -267,7 +271,10 @@ cd S2
 # 本地启动开发
 yarn
 yarn core:watch
+# 调试 s2-react
 yarn react:playground
+# 调试 s2-vue
+yarn vue:playground
 
 # 本地启动官网
 yarn site:bootstrap
