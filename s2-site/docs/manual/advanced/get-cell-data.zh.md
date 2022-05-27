@@ -20,6 +20,8 @@ order: 9
 以点击行头单元格为例
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   // 根据 event.target 拿到表格内部当前坐标对应的单元格
   const cell = s2.getCell(event.target)
@@ -47,8 +49,9 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 也可以调用 [交互方法](/zh/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95), 手动的获取
 
 ```ts
-s2.interaction.getAllCells() // 获取所有单元格
-s2.interaction.getActiveCells() // 获取所有激活的单元格
+s2.interaction.getAllCells() // 获取行/列/数值区域所有单元格
+s2.interaction.getCells() // 获取所有激活的单元格 （包含不在可视范围内的）
+s2.interaction.getActiveCells() // 获取所有激活的单元格 （不含不在可视范围内的）
 s2.interaction.isSelectedState() // 是否是选中状态
 ```
 
@@ -89,3 +92,59 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/5KTuqpLdy/cf26a185-2a1d-41f3-9caf-aa9343529cd5.png" width="600" alt="preview"/>
+
+### 获取数值单元格数据
+
+```ts
+s2.on(S2Event.DATA_CELL_CLICK, (event) => {
+  // 首先拿到单元格当前信息
+  const cell = s2.getCell(event.target)
+  const meta = cell.getMeta()
+
+  console.log(meta.data)
+  /**
+    {
+    "number": 834,
+    "province": "浙江省",
+    "city": "舟山市",
+    "type": "家具",
+    "sub_type": "沙发",
+    "$$extra$$": "number",
+    "$$value$$": 834
+  }
+  */
+})
+```
+
+### 获取行列对应数值单元格数据
+
+如图，比如我们想获取舟山市下的办公用品纸张的数量
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/jHILwaZ50/d9af2488-add9-46ec-b0da-81fc4da2b7a1.png" width="600" alt="preview"/>
+
+```ts
+// 找到 "舟山市" 对应的行头单元格节点
+const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
+// 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
+const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
+
+const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
+
+  /**
+  [
+    {
+      "number": 1634,
+      "province": "浙江省",
+      "city": "舟山市",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "$$extra$$": "number",
+      "$$value$$": 1634
+    }
+  ]
+  */
+```
+
+### 获取隐藏列数据
+
+[查看隐藏列头章节](/zh/docs/manual/advanced/interaction/hide-columns/#%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%88%97%E5%A4%B4%E6%95%B0%E6%8D%AE)
