@@ -46,8 +46,10 @@
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
     "test": "jest",
+    "test:coverage": "yarn test --passWithNoTests --coverage",
+    "test:ci": "yarn test --maxWorkers=3",
+    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
     "test:live": "node ./scripts/test-live.mjs",
-    "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
