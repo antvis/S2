@@ -240,7 +240,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     });
   };
 
-  const renderSider = () => {
+  const renderSide = () => {
     return (
       <Sider width={120} className={`${ADVANCED_PRE_CLS}-sider-layout`}>
         <div className={`${ADVANCED_PRE_CLS}-title`}>{i18n('可选字段')}</div>
@@ -392,7 +392,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         className={`${ADVANCED_PRE_CLS}-modal`}
       >
         <Layout>
-          {renderSider()}
+          {renderSide()}
           {renderContent()}
         </Layout>
       </Modal>
