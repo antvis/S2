@@ -1,25 +1,37 @@
-import { get, isEmpty } from 'lodash';
-import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
+import { find, get } from 'lodash';
 import { Group } from '@antv/g-canvas';
-import { isLastColumnAfterHidden } from '@/utils/hide-columns';
-import {
-  S2Event,
-  TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
-  KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
-} from '@/common/constant';
-import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
-import { getEllipsisText, getTextPosition } from '@/utils/text';
-import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import {
-  CellBoxCfg,
-  DefaultCellTheme,
-  IconTheme,
-  ResizeInfo,
-} from '@/common/interface';
-import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
+  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+} from '@/common/constant';
+import { FormatResult, SortParam } from '@/common/interface';
+import { isFrozenCol, isFrozenTrailingCol } from '@/facet/utils';
+import { getContentArea } from '@/utils/cell/cell';
+import { getExtraPaddingForExpandIcon } from '@/utils/cell/table-col-cell';
+import { renderRect } from '@/utils/g-renders';
+import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
+import { getSortTypeIcon } from '@/utils/sort-action';
+import { formattedFieldValue } from '@/utils/cell/header-cell';
 
 export class TableColCell extends ColCell {
+  protected handleRestOptions(...[headerConfig]) {
+    this.headerConfig = { ...headerConfig };
+    const { field } = this.meta;
+    const sortParams = this.spreadsheet.dataCfg.sortParams;
+    const sortParam: SortParam = find(
+      sortParams,
+      (item) => item?.sortFieldId === field,
+    );
+
+    const type = getSortTypeIcon(sortParam, true);
+    this.headerConfig.sortParam = {
+      ...this.headerConfig.sortParam,
+      ...(sortParam || {}),
+      type,
+    };
+  }
+
   protected isFrozenCell() {
     const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
     const { colIndex } = this.meta;
@@ -31,247 +43,66 @@ export class TableColCell extends ColCell {
     );
   }
 
+  protected getFormattedFieldValue(): FormatResult {
+    return formattedFieldValue(
+      this.meta,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
+    );
+  }
+
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
 
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    return getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-      })) as Group;
+    ) as Group;
   }
 
-  protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
-    const { x, y } = this.meta;
-
-    let finalOffset = offset;
-    // 如果当前列被冻结，不对 resizer 做 offset 处理
-    if (this.isFrozenCell()) {
-      finalOffset = 0;
-    }
-
-    return {
-      x: position.x - finalOffset + x,
-      y: position.y + y,
-    };
+  protected isSortCell() {
+    return true;
   }
 
-  protected drawTextShape() {
-    const { spreadsheet } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      key,
-    } = this.meta;
+  protected showSortIcon() {
+    return this.spreadsheet.options.showDefaultHeaderActionIcon;
+  }
 
+  protected getTextStyle() {
     const style = this.getStyle();
-    const textStyle = get(style, 'bolderText');
-    const padding = get(style, 'cell.padding');
-    const iconSize = get(style, 'icon.size');
-    const iconMargin = get(style, 'icon.margin');
-    const rightPadding = padding?.right + iconSize;
-    const leftPadding = padding?.left;
+    return get(style, 'bolderText');
+  }
 
-    const textAlign = get(textStyle, 'textAlign');
-    const textBaseline = get(textStyle, 'textBaseline');
-
-    const cellBoxCfg: CellBoxCfg = {
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      textAlign,
-      textBaseline,
-      padding: {
-        left: leftPadding,
-        right: rightPadding,
-      },
-    };
-    const position = getTextPosition(cellBoxCfg);
-
-    const textX = position.x;
-    const textY = position.y;
-
-    const text = getEllipsisText(
-      label,
-      cellWidth - leftPadding - rightPadding,
-      textStyle,
+  public getContentArea() {
+    const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
+    const newPadding = { ...padding };
+    const extraPadding = getExtraPaddingForExpandIcon(
+      this.spreadsheet,
+      this.meta.field,
+      this.getStyle(),
     );
 
-    this.textShape = renderText(
-      this,
-      [this.textShape],
-      textX,
-      textY,
-      text,
-      {
-        textAlign,
-        ...textStyle,
-      },
-      { cursor: 'pointer' },
-    );
-
-    if (spreadsheet.options.showDefaultHeaderActionIcon) {
-      renderDetailTypeSortIcon(
-        this,
-        spreadsheet,
-        x + cellWidth - iconSize - iconMargin?.right,
-        textY,
-        iconMargin?.top,
-        key,
-      );
+    if (extraPadding.left) {
+      newPadding.left = (newPadding.left || 0) + extraPadding.left;
     }
-  }
-
-  protected initCell() {
-    super.initCell();
-    this.addExpandColumnIconShapes();
-  }
-
-  private hasHiddenColumnCell() {
-    const {
-      interaction: { hiddenColumnFields = [] },
-      tooltip: { operation },
-    } = this.spreadsheet.options;
-
-    if (isEmpty(hiddenColumnFields) || !operation.hiddenColumns) {
-      return false;
+    if (extraPadding.right) {
+      newPadding.right = (newPadding.right || 0) + extraPadding.right;
     }
-    const hiddenColumnsDetail = this.spreadsheet.store.get(
-      'hiddenColumnsDetail',
-      [],
-    );
-    return !!hiddenColumnsDetail.find(
-      (column) => column?.displaySiblingNode?.field === this.meta?.field,
-    );
+
+    return getContentArea(this.getCellArea(), newPadding);
   }
 
-  private getExpandIconTheme(): IconTheme {
-    const themeCfg = this.getStyle() as DefaultCellTheme;
-    return themeCfg.icon;
+  protected getHorizontalResizeAreaName() {
+    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
   }
 
-  private addExpandColumnSplitLine() {
-    const { x, y, width, height } = this.meta;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-    } = this.theme.splitLine;
-    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
-
-    renderLine(
-      this,
-      {
-        x1: lineX,
-        y1: y,
-        x2: lineX,
-        y2: y + height,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        strokeOpacity: horizontalBorderColorOpacity,
-      },
-    );
-  }
-
-  private addExpandColumnIconShapes() {
-    if (!this.hasHiddenColumnCell()) {
-      return;
-    }
-    this.addExpandColumnSplitLine();
-    this.addExpandColumnIcon();
-  }
-
-  private addExpandColumnIcon() {
-    const iconConfig = this.getExpandColumnIconConfig();
-    const icon = renderIcon(this, {
-      ...iconConfig,
-      name: 'ExpandColIcon',
-      cursor: 'pointer',
+  protected drawBackgroundShape() {
+    const { backgroundColor } = this.getStyle().cell;
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
     });
-    icon.on('click', () => {
-      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
-    });
-  }
-
-  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  private getExpandColumnIconConfig() {
-    const { size } = this.getExpandIconTheme();
-    const { x, y, width, height } = this.getCellArea();
-
-    const baseIconX = x - size;
-    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
-    const iconY = y + height / 2 - size / 2;
-
-    return {
-      x: iconX,
-      y: iconY,
-      width: size * 2,
-      height: size,
-    };
-  }
-
-  private isLastColumn() {
-    return isLastColumnAfterHidden(this.spreadsheet, this.meta.field);
-  }
-
-  private getHorizontalResizeArea() {
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
-      })) as Group;
-  }
-
-  protected drawHorizontalResizeArea() {
-    const { viewportWidth } = this.headerConfig;
-    const { height: cellHeight } = this.meta;
-    const resizeStyle = this.getStyle('resizeArea');
-    const resizeArea = this.getHorizontalResizeArea();
-
-    const prevHorizontalResizeArea = resizeArea.find(
-      (element) => element.attrs.name === TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
-    );
-
-    // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizeArea) {
-      // 列高调整热区
-      resizeArea.addShape('rect', {
-        attrs: {
-          name: TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
-          x: 0,
-          y: cellHeight - resizeStyle.size,
-          width: viewportWidth,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
-            id: this.getColResizeAreaKey(),
-            affect: 'field',
-            offsetX: 0,
-            offsetY: 0,
-            width: viewportWidth,
-            height: cellHeight,
-          } as ResizeInfo,
-        },
-      });
-    }
   }
 }

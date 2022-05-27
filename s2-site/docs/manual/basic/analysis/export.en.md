@@ -3,4 +3,4 @@ title: Export
 order: 11
 ---
 
-`markdown:docs/manual/export.zh.md`
+`markdown:docs/manual/basic/analysis/export.zh.md`

@@ -5,74 +5,96 @@ order: 7
 
 ## 简介
 
-用于透出表格信息以及部分分析功能
+通过表格交互透出表格信息以及部分分析功能
 
-> `Tooltip` 暂时依赖 `Antd`
+<img src="https://gw.alipayobjects.com/zos/antfincdn/tnuTdq%24b2/1a076d70-e836-41be-bd1b-ab0ec0916ea7.png" width = "600"  alt="preview" />
 
-## 形式
+## 注意事项
 
-待补充...
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**, `@antv/s2-react` 中通过 [组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
+
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react`, 免去你二次封装
+- 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
+- 别忘了引入样式
+
+```ts
+import "@antv/s2/dist/style.min.css";
+```
 
 ## 使用
 
-在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，还可通过 `row`、`col`、`cell` 分别配置行头、列头、数据单元格
+在 `s2Options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
 
 ```ts
-const s2options = {
+const s2Options = {
+  tooltip: {}
+};
+```
+
+还可以对不同类型的单元格单独配置：
+
+- `corner`: 角头
+- `row`: 行头
+- `col`: 列头
+- `data`: 数值
+
+```ts
+const s2Options = {
   tooltip: {
-    ...
+    corner: {},
+    row: {},
+    col: {},
+    data: {},
   }
 };
 ```
 
-### 显示 配置项
+### 显示配置项
 
-通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `true`
+通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
-      showTooltip: true,
-      row: {
-        // 行头设置不显示
-        showTooltip: false,
-      }
+    showTooltip: true,
+    row: {
+      // 单独设置行头不显示
+      showTooltip: false,
+    }
   }
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4SNvSbjIE60AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+### 操作配置项
 
-### 操作 配置项
-
-通过配置 `operation` 字段在 `Tooltip` 上增加操作项
+通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/zh/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 (明细表有效)
+      hiddenColumns: true, //开启隐藏列（叶子节点有效）
     },
   }
 };
 
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V6OdQJvABJQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9MaTR51tXi0AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*bllyR4r_6qMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*mcvMTr1Sa8MAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 超出指定区域自动调整位置
 
-通过配置 `autoAdjustBoundary` 字段开启:
+通过配置 `autoAdjustBoundary` 字段开启：
 
-- `container` : tooltip 超出表格容器范围时, 自动调整位置, 始终在表格内显示
-- `body` : tooltip 超出浏览器窗口可视范围时, 自动调整位置, 始终在可视范围内显示
+- `container` : tooltip 超出**表格容器**范围时，自动调整位置，始终在表格内显示
+- `body` : tooltip 超出**浏览器窗口**可视范围时，自动调整位置，始终在可视范围内显示
 - `null` : 关闭自动调整
 
 ```ts
-const s2options = {
+const s2Options = {
   tooltip: {
     autoAdjustBoundary: "container" // 默认 "body"
   }
@@ -82,168 +104,537 @@ const s2options = {
 
 ### 自定义
 
-#### 组件（ tooltipComponent ）
+#### 自定义 Tooltip 内容
 
-自定义 `Tooltip` 弹框，直接在 `tooltip` 配置则所有单元格的 `Tooltip` 显示都为该组件，也可以分别給行、列、数据单元格配置相应的组件
+对于 `@antv/s2` 类的使用方式：tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
 
-```tsx
-const TooltipComponent = (
-  <div className="tooltip-custom-component">tooltipComponent</div>
-);
-const RowTooltip = (
-  <div className="tooltip-custom-component">rowTooltip</div>
-);
+```ts
+const content = document.createElement('div')
 
-const s2options = {
+const s2Options = {
   tooltip: {
-    tooltipComponent: TooltipComponent,
-    row: {
-      tooltipComponent: RowTooltip,
+    content,
+    // content: '我是字符串'
+  },
+};
+```
+
+对于 `@antv/s2-react` 组件的使用方式：tooltip 内容 可以是任意的 `jsx` 元素
+
+```ts
+const content = (
+  <div>
+    <span>我是自定义内容</span>
+  </div>
+)
+
+const s2Options = {
+  tooltip: {
+    content,
+  },
+};
+```
+
+同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/zh/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
+
+```ts
+const TooltipContent = (props) => <div>...</div>
+
+const s2Options = {
+  tooltip: {
+    content: (cell, defaultTooltipShowOptions) => {
+      console.log('当前单元格：', cell)
+      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
+      return <TooltipContent cell={cell} detail={detail} />
     },
   },
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1IgsQISgpHAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+##### 1. 配置级
 
-#### 重写基类（ renderTooltip ）
+对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
 
-使用 `renderTooltip` 配置，并自定义类组件继承 `BaseTooltip` 来重写方法
+```tsx
+const TooltipContent = (
+  <div>content</div>
+);
+
+const RowTooltipContent = (
+  <div>rowTooltip</div>
+);
+
+const ColTooltipContent = (
+  <div>colTooltip</div>
+);
+
+const DataTooltipContent = (
+  <div>dataTooltip</div>
+);
+
+const s2Options = {
+  tooltip: {
+    content: TooltipContent,
+    row: {
+      content: RowTooltipContent,
+    },
+    col: {
+      content: ColTooltipContent
+    }
+    data: {
+      content: DataTooltipContent
+    }
+  },
+};
+```
+
+##### 2. 方法级
+
+通过表格实例 可以手动显示 `tooltip`
 
 ```ts
-tooltip: {
-  renderTooltip: (spreadsheet) => {
-    return new CustomTooltip(spreadsheet);
-  },
-}
+const TooltipContent = (
+  <div>content</div>
+);
+
+s2.showTooltip({
+  content: TooltipContent
+})
+
+// 或者 s2.tooltip.show({ content: TooltipContent })
 ```
 
-```tsx
-class CustomTooltip extends BaseTooltip {
-  protected renderInfos() {
-    return <div>测试</div>
+<playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
+
+##### 3. 内容显示优先级
+
+`方法调用` > `单元格配置` > `基本配置`
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width="600"  alt="row" />
+
+#### 自定义 Tooltip 操作项
+
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip` 对应的 [单元格信息](/zh/docs/api/basic-class/base-cell)
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          onClick: (cell) => {
+            console.log('操作 1 点击');
+            console.log('tooltip 对应的单元格：', cell)
+          },
+          children: [{
+            key: 'custom-a-a',
+            text: '操作 1-1',
+            icon: 'Trend',
+            onClick: (cell) => {
+              console.log('操作 1-1 点击');
+            },
+          }]
+        },
+        {
+          key: 'custom-b',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          onClick: (cell) => {
+            console.log('操作 2 点击');
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/zh/docs/api/basic-class/base-cell) 动态显示
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          visible: false,
+        },
+        {
+          key: 'custom-b',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          visible: (cell) => {
+            // 叶子节点不显示
+            const meta = cell.getMeta()
+            return meta.isLeaf
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+<playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
+#### 自定义 Tooltip 挂载节点
+
+默认挂载在 `body` 上，可自定义挂载位置
+
+```html
+<div class="container" />
+```
+
+```ts
+const s2Options = {
+  tooltip: {
+    getContainer: () => document.querySelector('.container')
   }
 }
 ```
 
-##### 可重写方法
+#### 自定义 Tooltip 类
 
-以下所有方法都可覆盖所有单元格和事件
+除了上面讲到的 `自定义 Tooltip 内容` 外，你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合
 
-- 操作栏（ renderOperation ）
+继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法，渲染你封装的任意组件
 
-```tsx
-protected renderOperation(
-  operator: TooltipOperatorOptions,
-  onlyMenu?: boolean,
-) {
-  const customOperator = {
-    onClick: () => {
-      console.log('测试');
-    },
-    menus: [
+- [查看 BaseTooltip 基类](/zh/docs/api/basic-class/base-tooltip)
+- [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
+- [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
+
+```ts
+import { BaseTooltip, SpreadSheet } from '@antv/s2';
+// 引入 `tooltip` 样式文件
+import "@antv/s2/dist/style.min.css";
+
+export class CustomTooltip extends BaseTooltip {
+  constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
+  }
+
+  renderContent() {}
+
+  clearContent() {}
+
+  show(showOptions) {
+    console.log(this.spreadsheet)
+  }
+
+  hide() {}
+
+  destroy() {}
+}
+```
+
+覆盖默认，使用你自定义的 `Tooltip`
+
+```ts
+const s2Options = {
+  tooltip: {
+    showTooltip: true,
+    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+  },
+}
+```
+
+<playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></playground>
+
+#### 自定义 Tooltip 显示时机
+
+在 `tooltip` 开启前提下的默认情况：
+
+- 行列头**点击**时显示 `tooltip`, 单元格文字**被省略**时悬停显示 `tooltip`
+- 数值单元格悬停超过 **800ms** 显示 `tooltip`
+
+比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom), 监听行头单元格的 [交互事件](/zh/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`. [例子](/zh/examples/interaction/custom#row-col-hover-tooltip)
+
+```ts
+import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
+
+class RowHoverInteraction extends BaseEvent {
+  bindEvents() {
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event) => {
+      this.spreadsheet.tooltip.show({
+        position: { x:0, y:0 },
+        content: "..."
+      })
+    })
+  }
+}
+
+const s2Options = {
+  tooltip: {
+    showTooltip: true,
+  }
+  interaction: {
+    customInteractions: [
       {
-        id: 'trend',
-        icon: 'trend',
-        text: '趋势',
+        key: 'RowHoverInteraction',
+        interaction: RowHoverInteraction,
       },
     ],
-  };
-
-  return <TooltipOperator {...customOperator} />;
-}
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*fw6TSrt6nGEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
-- 名称 + 提示（ renderNameTips ）
-
-  当前单元格名称和提示信息
-
-```tsx
-const extra = [
-  {
-    field: 'type',
-    value: '笔',
-    tips: '说明：这是笔的说明',
-  },
-];
-
-protected renderNameTips(nameTip: { name: string; tips: string }) {
-  const { tips } = extra.find((item) => item.value === nameTip.name) || {};
-  if (tips) {
-    return <SimpleTips tips={tips} name={`${nameTip.name} - 测试`} />;
   }
-  return super.renderNameTips(nameTip);
-}
+};
+
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NhxIS7VU87YAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
-- 所选项统计列表（ renderSummary ）
-
-  所选项统计列表，主要按度量值区分
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
-protected renderSummary(summaries) {
-  const customSummaries = (summaries || []).map((item) => {
-    return { ...item, name: `${item.name} - 测试` };
+const CustomColCellTooltip = () => <div>col cell tooltip</div>;
+
+const onRowCellHover = ({ event, viewMeta }) => {
+  viewMeta.spreadsheet.tooltip.show({
+    position: {
+      x: event.clientX,
+      y: event.clientY,
+    },
+    content: <CustomRowCellTooltip />,
   });
-  return (
-    customSummaries.length > 0 && (
-      <TooltipSummary summaries={customSummaries} />
-    )
-  );
+};
+
+<SheetComponent onRowCellHover={onRowCellHover} />
+```
+
+#### 在 Vue3 中自定义
+
+在 `Vue3` 中可以通过两种方式自定义内容。[例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
+
+- 1. `createVNode` 自定义类的方式 （推荐）
+
+```ts
+// TooltipContent.vue
+
+<template>
+  <div>我是自定义 Tooltip 内容</div>
+  <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
+</template>
+
+<script lang="ts" setup>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'TooltipContent',
+  props: ['meta']
+});
+</script>
+
+```
+
+```ts
+import { defineCustomElement, render, createVNode } from "vue";
+import { BaseTooltip, PivotSheet } from "@antv/s2";
+import TooltipContent from "./TooltipContent.vue";
+import "@antv/s2/dist/style.min.css";
+
+class CustomTooltip extends BaseTooltip {
+  constructor(spreadsheet) {
+    super(spreadsheet);
+  }
+
+  renderContent() {
+    const cell = this.spreadsheet.getCell(this.options.event?.target);
+    const meta = cell?.getMeta();
+
+    // 使用 Vue 提供的 `createVNode` 方法将组件渲染成虚拟 DOM
+    const tooltipVNode = createVNode(TooltipContent, { meta });
+    // 使用  `render` 函数将其挂载在 tooltip 容器上
+    render(tooltipVNode, this.container);
+  }
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w4svRqPJmG4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+- 2. `defineCustomElement` 自定义内容的方式
 
-- 轴列表（ renderHeadInfo ）
+```ts
+import { defineCustomElement } from "vue";
 
-  轴列表，在数据单元格中显示 `行/列头` 名称
+// 将 Vue 组件解析成 Web Component
+const VueTooltipContent = defineCustomElement({
+  props: ["meta"],
+  template: `
+    <div>我是自定义 Tooltip 内容</div>
+    <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
+  `
+});
+
+// 注册一个 Web Component
+customElements.define("vue-tooltip-content", VueTooltipContent);
+
+const s2Options = {
+  tooltip: {
+    content: (cell, defaultTooltipShowOptions) => {
+      const meta = cell.getMeta();
+      // 替换 Tooltip 内容
+      return new VueTooltipContent({ meta });
+    },
+  },
+};
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
+
+#### 重写展示方法
+
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/zh/docs/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/zh/docs/manual/advanced/get-instance)
+
+```ts
+// options 配置 tooltip 显示
+tooltip: {
+  showTooltip: true,
+}
+```
 
 ```tsx
-protected renderHeadInfo(headInfo) {
-  const { cols = [], rows = [] } = headInfo || {};
-  const customCols = cols.map(item=> {
-      return {...item, value: `${item.value} - 测试`}
-  });
-  return (
-    (cols.length > 0 || rows.length > 0) && (
-      <>
-        <TooltipHead cols={customCols} rows={rows} />
-      </>
-    )
-  );
-}
+<SheetComponent
+  getSpreadSheet={(instance) => {
+    instance.showTooltip = (tooltipOptions) => {
+      // 可自定义这里的 tooltipOptions
+      instance.tooltip.show(tooltipOptions);
+    };
+  }}
+  ...
+/>;
+
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VkbzTY0wcrwAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+##### 可自定义显示内容
 
-- 数据点明细信息（ renderDetail ）
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/common/custom-tooltip)
 
-  数据点明细信息，即当前单元格的数据信息
+- 显示位置 (position)
 
-```tsx
-protected renderDetail(details: ListItem[]) {
-  const customDetails = (details || []).map((item) => {
-    return { name: `${item.name} - 测试`, value: `${item.value} - w` };
-  });
-  return <TooltipDetail list={customDetails} />;
-}
-```
+  ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { position } = tooltipOptions;
+      instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
+    };
+  ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*O6H6SKQDViUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+- 展示层数据 (data)
 
-- 底部提示信息（ renderInfos ）
+  - 名称
 
-底部提示信息，一般可用于快捷键操作提示
+    当前单元格名称，一般只有单元格中文案被省略才会显示
 
-```tsx
-protected renderInfos(infos) {
-  return <Infos infos={`按住Cmd/Ctrl或框选，查看多个数据点`} />;
-}
-```
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const name = `${data.name} - 测试`;
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, name: data.name ? name : '' } });
+    };
+    ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lp3tQL5-8YIAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+  - 提示
+
+    当前单元格提示信息
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const tips = '说明：这是个说明';
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, tips } });
+    };
+    ```
+
+  - 所选项统计列表（ summaries ）
+
+    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/zh/docs/common/custom-tooltip#tooltipsummaryoptions)
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const customSummaries = (data.summaries || []).map((item) => {
+        return { ...item, name: `${item.name} - 测试` };
+      });
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, summaries: customSummaries } });
+    };
+    ```
+
+  - 轴列表（ headInfo ）
+
+    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/zh/docs/common/custom-tooltip#tooltipheadinfo)
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const { cols = [], rows = [] } = data.headInfo || {};
+      const customCols = cols.map(item=> {
+        return {...item, value: `${item.value} - 测试`}
+      });
+      instance.tooltip.show({
+        ...tooltipOptions,
+        data: {
+          ...data,
+          headInfo: { rows, cols: customCols }
+        }
+      });
+    };
+    ```
+
+  - 数据点明细信息（ details ）
+
+    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/zh/docs/common/custom-tooltip#listitem)
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const customDetails = (data.details || []).map((item) => {
+        return { name: `${item.name} - 测试`, value: `${item.value} - w` };
+      });
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, details: customDetails } });
+    };
+    ```
+
+  - 底部提示信息（ infos ）
+
+    底部提示信息，一般可用于快捷键操作提示
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const infos = '按住 Cmd/Ctrl 或框选，查看多个数据点';
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, infos } });
+    };
+    ```
+
+  <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+- 部分配置 ( options )
+
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/zh/docs/common/custom-tooltip#tooltipoptions)
+
+  - 操作栏（ operator ）
+
+    可操作配置，具体细节参考 [TooltipOperatorOptions](/zh/docs/common/custom-tooltip#tooltipoperatoroptions)
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { options } = tooltipOptions;
+      const customOperator = {
+        onClick: ({ key }) => {
+          console.log('任意菜单项点击', key);
+        },
+        menus: [
+          {
+            key: 'trend',
+            icon: 'trend',
+            text: '趋势',
+            onClick: () => {
+              console.log('当前菜单项点击')
+            }
+          },
+        ],
+      };
+      instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
+    };
+    ```
+
+<playground path='react-component/tooltip/demo/custom-show-tooltip.tsx' rid='container-3' height='300'></playground>

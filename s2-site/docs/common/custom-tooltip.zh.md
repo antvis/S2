@@ -1,20 +1,20 @@
 ---
-title: 自定义Tooltip
+title: 自定义 Tooltip
 order: 5
 ---
-
 
 ## TooltipShowOptions
 
 object **必选**,_default：null_ 功能描述： tooltip 显示配置
 
-| 参数      | 类型                                | 必选  | 默认值 | 功能描述                |
-| --------- | ----------------------------------- | :---: | ------ | ----------------------- |
-| position  | [TooltipPosition](#TooltipPosition) |   ✓   |        | tooltip 显示位置        |
-| data      | [TooltipData](#TooltipData)         |       |        | tooltip 展示层数据      |
-| cellInfos | `Record<string, any>`               |       |        | 当前事件单元格信息      |
-| options   | [TooltipOptions](#TooltipOptions)   |       |        | tooltip 部分配置        |
-| element   | `React.ReactElement`                |       |        | 自定义 tooltip 弹框组件 |
+| 参数      | 类型                                                                        | 必选  | 默认值 | 功能描述            |
+| --------- | --------------------------------------------------------------------------- | :---: | ------ | ------------------- |
+| position  | [TooltipPosition](#tooltipposition)                                         |   ✓   |        | tooltip 显示位置    |
+| data      | [TooltipData](#tooltipdata)                                                 |       |        | tooltip 数据        |
+| cellInfos | `Record<string, any>`                                                       |       |        | 单元格信息          |
+| options   | [TooltipOptions](#tooltipoptions)                                           |       |        | tooltip 部分配置    |
+| content   | `React.ReactNode | string` \| `(cell, defaultTooltipShowOptions: TooltipShowOptions) => React.ReactNode | string` |       |        | 自定义 tooltip 内容 |
+| event     | `Event`                                                                     |       |        | 当前事件 Event      |
 
 ### TooltipPosition
 
@@ -27,13 +27,13 @@ object **必选**,_default：null_ 功能描述： tooltip 显示位置
 
 ### TooltipData
 
-object **可选**,_default：null_ 功能描述： tooltip 展示层数据
+object **可选**,_default：null_ 功能描述： tooltip 数据
 
 | 参数      | 类型                                            | 必选  | 默认值 | 功能描述                             |
 | --------- | ----------------------------------------------- | :---: | ------ | ------------------------------------ |
-| summaries | [TooltipSummaryOptions](#TooltipSummaryOptions) |       |        | 所选项统计（按度量值区分）列表       |
-| details   | [ListItem](#ListItem)                           |       |        | 数据点明细信息                       |
-| headInfo  | [TooltipHeadInfo](#TooltipHeadInfo)             |       |        | 轴（行/列头）列表                    |
+| summaries | [TooltipSummaryOptions](#tooltipsummaryoptions) |       |        | 所选项统计（按度量值区分）列表       |
+| details   | [ListItem](#listitem)                           |       |        | 数据点明细信息                       |
+| headInfo  | [TooltipHeadInfo](#tooltipheadinfo)             |       |        | 轴（行/列头）列表                    |
 | name      | `string`                                        |       |        | 当前单元格名称                       |
 | tips      | `string`                                        |       |        | 提示/说明信息                        |
 | infos     | `string`                                        |       |        | 底部提示信息（可用于快捷键操作提示） |
@@ -54,8 +54,8 @@ object **可选**,_default：null_ 功能描述： tooltip 轴（行/列头）�
 
 | 参数 | 类型                  | 必选  | 默认值 | 功能描述 |
 | ---- | --------------------- | :---: | ------ | -------- |
-| rows | [ListItem](#ListItem) |   ✓   |        | 行头列表 |
-| cols | [ListItem](#ListItem) |   ✓   |        | 列头列表 |
+| rows | [ListItem](#listitem) |   ✓   |        | 行头列表 |
+| cols | [ListItem](#listitem) |   ✓   |        | 列头列表 |
 
 #### ListItem
 
@@ -74,7 +74,7 @@ object **必选**,_default：null_ 功能描述： tooltip 部分配置
 | 参数           | 类型                                              | 必选  | 默认值 | 功能描述                     |
 | -------------- | ------------------------------------------------- | :---: | ------ | ---------------------------- |
 | hideSummary    | `boolean`                                         |       |        | 是否隐藏所选项统计信息       |
-| operator       | [TooltipOperatorOptions](#TooltipOperatorOptions) |       |        | 操作栏配置                   |
+| operator       | [TooltipOperatorOptions](#tooltipoperatoroptions) |       |        | 操作栏配置                   |
 | onlyMenu       | `boolean`                                         |       |        | tooltip 是否只展示操作菜单项 |
 | enterable      | `boolean`                                         |       |        | 是否可进入 tooltip 组件      |
 | isTotals       | `boolean`                                         |       |        | 是否是 总计/小计 单元格      |
@@ -84,11 +84,10 @@ object **必选**,_default：null_ 功能描述： tooltip 部分配置
 
 object **可选**,_default：null_ 功能描述： tooltip 操作栏配置
 
-| 参数          | 类型                                        | 必选  | 默认值 | 功能描述   |
-| ------------- | ------------------------------------------- | :---: | ------ | ---------- |
-| menus         | [TooltipOperatorMenu](#TooltipOperatorMenu) |   ✓   |        | 操作项列表 |
-| onClick       | `() => void`                                |   ✓   |        | 点击事件   |
-| [key: string] | `boolean`                                   |       |        | 其他       |
+| 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
+| ------- | -------------------------------------------- | :---: | ------ | ------------------------------------------------------------------------------------------ |
+| menus   | [TooltipOperatorMenu[]](#tooltipoperatormenu)  |     |        | 操作项列表  |
+| onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
 
 ##### TooltipOperatorMenu
 
@@ -96,7 +95,9 @@ object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 
 | 参数     | 类型                                        | 必选  | 默认值 | 功能描述       |
 | -------- | ------------------------------------------- | :---: | ------ | -------------- |
-| id       | `string`                                    |   ✓   |        | 值             |
-| text     | `boolean`                                   |       |        | 名称           |
-| icon     | `React.ReactNode`                           |       |        | 自定义图标组件 |
-| children | [TooltipOperatorMenu](#TooltipOperatorMenu) |       |        | 子菜单列表     |
+| key      | `string`                                    |   ✓   |        | 唯一标识       |
+| text     | `string`   |       |        | 名称           |
+| icon     | `React.ReactNode \| string`   |       |        | 自定义图标     |
+| visible  | `boolean \| (cell) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
+| onClick  | (`cell`: [S2CellType](/zh/docs/api/basic-class/base-cell): ) => void                           |       |        | 点击事件回调  (cell 为当前 tooltip 对应的单元格）   |
+| children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |

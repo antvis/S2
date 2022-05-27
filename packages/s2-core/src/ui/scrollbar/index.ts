@@ -1,8 +1,9 @@
 import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import { clamp, each, get } from 'lodash';
+import { each, get } from 'lodash';
 import type { PointObject, ScrollBarCfg } from './interface';
 import { ScrollBarTheme } from '@/common/interface/theme';
+import { MIN_SCROLL_BAR_HEIGHT } from '@/common/constant/scroll';
 
 export enum ScrollType {
   ScrollChange = 'scroll-change',
@@ -38,6 +39,9 @@ export class ScrollBar extends Group {
   // 滑块相对滑道的偏移, 非必传，默认值为 0
   public thumbOffset: number;
 
+  // 滚动对象的长度
+  public scrollTargetMaxOffset: number;
+
   // 滚动条样式，非必传
   public theme: ScrollBarTheme;
 
@@ -68,9 +72,10 @@ export class ScrollBar extends Group {
       trackLen,
       thumbLen,
       position,
-      minThumbLen = 20,
+      minThumbLen = MIN_SCROLL_BAR_HEIGHT,
       thumbOffset = 0,
       theme,
+      scrollTargetMaxOffset,
     } = scrollBarCfg;
 
     this.isHorizontal = isHorizontal;
@@ -80,6 +85,7 @@ export class ScrollBar extends Group {
     this.position = position;
     this.minThumbLen = minThumbLen;
     this.theme = theme;
+    this.scrollTargetMaxOffset = scrollTargetMaxOffset;
 
     this.initScrollBar();
   }
@@ -114,6 +120,8 @@ export class ScrollBar extends Group {
     const offsetRate = this.thumbOffset / this.trackLen;
     const newThumbLen = newTrackLen * thumbRate;
     const newOffset = newTrackLen * offsetRate;
+    this.scrollTargetMaxOffset =
+      this.scrollTargetMaxOffset + this.trackLen - newTrackLen;
     this.trackLen = newTrackLen;
 
     const coordinate = this.getCoordinates();
@@ -121,7 +129,10 @@ export class ScrollBar extends Group {
 
     this.updateThumbLen(newThumbLen);
     this.updateThumbOffset(newOffset);
-    this.emitScrollChange();
+    this.emitScrollChange(
+      (newOffset / (newTrackLen - newThumbLen)) * this.scrollTargetMaxOffset,
+      false,
+    );
   };
 
   /**
@@ -136,7 +147,11 @@ export class ScrollBar extends Group {
     this.thumbLen = newThumbLen;
     const coordinate = this.getCoordinates();
     this.thumbShape.attr(coordinate.to, this.thumbOffset + newThumbLen);
-    this.emitScrollChange();
+    this.emitScrollChange(
+      (this.thumbOffset / (this.trackLen - this.thumbLen)) *
+        this.scrollTargetMaxOffset,
+      false,
+    );
   };
 
   /**
@@ -159,7 +174,11 @@ export class ScrollBar extends Group {
     });
 
     if (emitScrollChange) {
-      this.emitScrollChange();
+      this.emitScrollChange(
+        (newOffset / (this.trackLen - this.thumbLen)) *
+          this.scrollTargetMaxOffset,
+        false,
+      );
     }
   };
 
@@ -172,13 +191,13 @@ export class ScrollBar extends Group {
     this.get('canvas')?.draw();
   };
 
-  public emitScrollChange = () => {
+  public emitScrollChange = (offset: number, updateThumbOffset = true) => {
     cancelAnimationFrame(this.scrollFrameId);
 
     this.scrollFrameId = requestAnimationFrame(() => {
       this.emit(ScrollType.ScrollChange, {
-        thumbOffset: this.thumbOffset,
-        ratio: clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
+        offset,
+        updateThumbOffset,
       });
     });
   };
@@ -290,7 +309,7 @@ export class ScrollBar extends Group {
 
   private bindEvents = () => {
     this.on('mousedown', this.onStartEvent(false));
-    // 因为上层交叉表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
+    // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
     // 整个拖拽过程没有 cancel 掉。
     this.on('mouseup', this.onMouseUp);
     this.on('touchstart', this.onStartEvent(true));
@@ -318,7 +337,7 @@ export class ScrollBar extends Group {
 
   private bindLaterEvent = () => {
     const canvas = this.get('canvas');
-    const containerDOM: EventTarget = canvas.get('container');
+    const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
     if (this.isMobile) {
@@ -389,13 +408,15 @@ export class ScrollBar extends Group {
   };
 
   private onTrackMouseOver = () => {
-    const { thumbHoverColor } = this.theme;
+    const { thumbHoverColor, hoverSize } = this.theme;
     this.thumbShape.attr('stroke', thumbHoverColor);
+    this.thumbShape.attr('lineWidth', hoverSize);
   };
 
   private onTrackMouseOut = () => {
-    const { thumbColor } = this.theme;
+    const { thumbColor, size } = this.theme;
     this.thumbShape.attr('stroke', thumbColor);
+    this.thumbShape.attr('lineWidth', size);
   };
 
   // 判断滑块位置是否超出滑道区域

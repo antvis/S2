@@ -8,7 +8,7 @@
         "*.md",
         "**/_tests_/**"
       ],
-      "message": "chore(release): :bookmark: publish the new version [ci skip]"
+      "message": "chore(release): :bookmark: publish the new version [skip ci]"
     },
     "bootstrap": {
       "npmClientArgs": [
@@ -33,6 +33,6 @@
     "cacheDir": ".changelog"
   },
   "packages": [
-    "packages/s2-core"
+    "packages/*"
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "自定义交互",
+    "en": "Custom Interaction"
+  },
+  "demos": [
+    {
+      "filename": "double-click-hide-columns.ts",
+      "title": {
+        "zh": "双击列头隐藏",
+        "en": "Double click hide columns"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ukpGbSUqFz/double-click.gif"
+    },
+    {
+      "filename": "row-col-hover-tooltip.ts",
+      "title": {
+        "zh": "行列头悬停显示 tooltip",
+        "en": "Show tooltip when hover row or column"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/c%24ICO1qvb/Kapture%2525202021-12-03%252520at%25252016.30.11.gif"
+    }
+  ]
+}

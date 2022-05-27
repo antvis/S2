@@ -35,7 +35,7 @@ We are sorry to push bugs. And we would appreciate that if you could report them
 
 ## Pull Request
 
-1. Fork the project and clone it (or use Github's Codespace function, which is very convenient).
+1. Fork the project and clone it (or use GitHub's Codespace function, which is very convenient).
 2. Installation dependency: `yarn bootstrap` or `yarn`.
 3. Commit your changes, and please follow [AngularJS Git Commit Message Conventions] (<https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w>).
 4. If your change is a bug fix, you can add `close #issue number` after the submission information so that after the pr merge, the related issue could be closed automatically. eg: `fix: render bug close #123`.

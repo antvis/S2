@@ -1,45 +1,23 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+    'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
-  .then((res) => res.json())
-  .then((data) => {
-    const container = document.getElementById('container');
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price'],
-      },
-      meta: [
-        {
-          field: 'province',
-          name: '省份',
-        },
-        {
-          field: 'city',
-          name: '城市',
-        },
-        {
-          field: 'type',
-          name: '商品类别',
-        },
-        {
-          field: 'price',
-          name: '价格',
-        },
-      ],
-      data,
-    };
+    .then((res) => res.json())
+    .then((dataCfg) => {
+        const container = document.getElementById('container');
 
-    const s2options = {
-      width: 600,
-      height: 300,
-      hierarchyType: 'tree',
-    };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+        const s2Options = {
+            width: 600,
+            height: 480,
+            hierarchyType: 'tree',
+            style: {
+                collapsedRows: {
+                    'root[&]浙江省': true, // 折叠浙江省下面所有的城市
+                }
+            }
+        };
+        const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
-  });
+        s2.render();
+    });

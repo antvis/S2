@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "esm",
+    "declarationMap": true,
+    "emitDeclarationOnly": true
+  }
+}

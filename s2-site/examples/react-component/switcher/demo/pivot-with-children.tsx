@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2';
+import { SheetComponent, Switcher } from '@antv/s2-react';
 import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
-import { update } from 'lodash';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/a2e9799d-f03a-4847-8756-2976a032b485.json',
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
     };
 
     const defaultFields = {
@@ -94,7 +93,7 @@ fetch(
             sheetType={'pivot'}
             adaptive={false}
             dataCfg={{ data, fields }}
-            options={s2options}
+            options={s2Options}
           />
         </div>
       );

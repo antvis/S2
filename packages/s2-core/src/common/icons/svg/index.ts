@@ -1,11 +1,14 @@
 // 不本地直接引用svg，避免下游无依赖
 export {
+  ArrowDown,
+  ArrowUp,
   CellDown,
   CellUp,
   GlobalAsc,
   GlobalDesc,
   GroupAsc,
   GroupDesc,
+  GroupNone,
   Minus,
   Plus,
   SortDown,
@@ -16,4 +19,5 @@ export {
   ExpandColIcon,
   Trend,
   DrillDownIcon,
+  EyeOutlined,
 } from './svgs';

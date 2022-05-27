@@ -1,0 +1,597 @@
+{
+  "data": [
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "当前值",
+      "value": 3000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "财年目标",
+      "value": 4000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "财年目标完成度",
+      "value": 0.75,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "2021-01-01",
+      "value": 33,
+      "compare": "-10%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "2020-01-01",
+      "value": 77,
+      "compare": "30%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "2019-01-01",
+      "value": 1123,
+      "compare": "-10%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "低活",
+      "name": "2018-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "当前值",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "财年目标",
+      "value": 4000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "财年目标完成度",
+      "value": 0.25,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "2021-01-01",
+      "value": 9999,
+      "compare": "220%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "2020-01-01",
+      "value": 22,
+      "compare": "-30%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "2019-01-01",
+      "value": 3333,
+      "compare": "-12.5%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "高活",
+      "name": "2018-01-01",
+      "value": 12.5,
+      "compare": "30%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "当前值",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "财年目标",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "财年目标完成度",
+      "value": 1,
+      "expectedValue": 0.3,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "2021-01-01",
+      "value": 9,
+      "compare": "-40%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "2020-01-01",
+      "value": 66,
+      "compare": "30%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "2019-01-01",
+      "value": 888,
+      "compare": "-22.5%"
+    },
+    {
+      "type": "合格投资者",
+      "subType": "流失",
+      "name": "2018-01-01",
+      "value": 1111,
+      "compare": "30%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "当前值",
+      "value": 500,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "财年目标",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "财年目标完成度",
+      "value": 0.5,
+      "expectedValue": 0.3,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "2021-01-01",
+      "value": 222,
+      "compare": "-34.3%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "2020-01-01",
+      "value": 99,
+      "compare": "30%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "2019-01-01",
+      "value": 26,
+      "compare": "-21%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "低活",
+      "name": "2018-01-01",
+      "value": 47,
+      "compare": "32.1%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "当前值",
+      "value": 900,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "财年目标",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "财年目标完成度",
+      "value": 0.9,
+      "expectedValue": 0.85,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "2021-01-01",
+      "value": 666,
+      "compare": "-22%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "2020-01-01",
+      "value": 12.5,
+      "compare": "57%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "2019-01-01",
+      "value": 36.3,
+      "compare": "-20%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "高活",
+      "name": "2018-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "当前值",
+      "value": 900,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "财年目标",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "财年目标完成度",
+      "value": 0.9,
+      "expectedValue": 0.85,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "2021-01-01",
+      "value": 556,
+      "compare": "-20%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "2020-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "2019-01-01",
+      "value": 12,
+      "compare": "-20%"
+    },
+    {
+      "type": "交易用户数",
+      "subType": "流失",
+      "name": "2018-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "当前值",
+      "value": 2200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "财年目标",
+      "value": 3200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "财年目标完成度",
+      "value": 0.68,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "2021-01-01",
+      "value": 59.2,
+      "compare": "-20%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "2020-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "2019-01-01",
+      "value": 33,
+      "compare": "-20%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "低活",
+      "name": "2018-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "当前值",
+      "value": 2200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "财年目标",
+      "value": 3200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "财年目标完成度",
+      "value": 0.68,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "2021-01-01",
+      "value": 66.2,
+      "compare": "-20%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "2020-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "2019-01-01",
+      "value": 1234,
+      "compare": "-20%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "高活",
+      "name": "2018-01-01",
+      "value": 345,
+      "compare": "30%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "当前值",
+      "value": 100,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "财年目标",
+      "value": 200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "财年目标完成度",
+      "value": 0.5,
+      "expectedValue": 0.2,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "2021-01-01",
+      "value": 124,
+      "compare": "20%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "2020-01-01",
+      "value": 23.5,
+      "compare": "28%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "2019-01-01",
+      "value": 11,
+      "compare": "-12.3%"
+    },
+    {
+      "type": "存量用户数",
+      "subType": "流失",
+      "name": "2018-01-01",
+      "value": 222,
+      "compare": "30%"
+    }
+  ],
+  "totalData": [
+    {
+      "type": "合格投资者",
+      "name": "当前值",
+      "value": 3000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "name": "财年目标",
+      "value": 4000,
+      "isExtra": true
+    },
+    {
+      "type": "合格投资者",
+      "name": "财年目标完成度",
+      "value": 0.75,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "合格投资者",
+      "name": "2021-01-01",
+      "value": 10041,
+      "compare": "-10%"
+    },
+    {
+      "type": "合格投资者",
+      "name": "2020-01-01",
+      "value": 165,
+      "compare": "-10%"
+    },
+    {
+      "type": "合格投资者",
+      "name": "2019-01-01",
+      "value": 5344,
+      "compare": "-10%"
+    },
+    {
+      "type": "合格投资者",
+      "name": "2018-01-01",
+      "value": 1468.5,
+      "compare": "-10%"
+    },
+    {
+      "type": "交易用户数",
+      "name": "当前值",
+      "value": 500,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "name": "财年目标",
+      "value": 1000,
+      "isExtra": true
+    },
+    {
+      "type": "交易用户数",
+      "name": "财年目标完成度",
+      "value": 0.75,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "交易用户数",
+      "name": "2021-01-01",
+      "value": 1444,
+      "compare": "-10%"
+    },
+    {
+      "type": "交易用户数",
+      "name": "2020-01-01",
+      "value": 456.5,
+      "compare": "-10%"
+    },
+    {
+      "type": "交易用户数",
+      "name": "2019-01-01",
+      "value": 74.3,
+      "compare": "-10%"
+    },
+    {
+      "type": "交易用户数",
+      "name": "2018-01-01",
+      "value": 737,
+      "compare": "-10%"
+    },
+    {
+      "type": "存量用户数",
+      "name": "2021-01-01",
+      "value": 249.4,
+      "compare": "-10%"
+    },
+    {
+      "type": "存量用户数",
+      "name": "当前值",
+      "value": 100,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "name": "财年目标",
+      "value": 200,
+      "isExtra": true
+    },
+    {
+      "type": "存量用户数",
+      "name": "财年目标完成度",
+      "value": 0.75,
+      "expectedValue": 0.8,
+      "isExtra": true,
+      "isProgress": true
+    },
+    {
+      "type": "存量用户数",
+      "name": "2020-01-01",
+      "value": 713.6,
+      "compare": "-10%"
+    },
+    {
+      "type": "存量用户数",
+      "name": "2019-01-01",
+      "value": 1278,
+      "compare": "-10%"
+    },
+    {
+      "type": "存量用户数",
+      "name": "2018-01-01",
+      "value": 912,
+      "compare": "-10%"
+    }
+  ]
+}

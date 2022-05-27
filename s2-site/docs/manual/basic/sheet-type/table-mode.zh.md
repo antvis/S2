@@ -3,29 +3,29 @@ title: 明细表
 order: 2
 ---
 
-# 明细表简介
+## 明细表简介
 
 明细表是 `S2` 的基础形态之一。明细表就是普通的表格，在列头下把每行数据直接展示出来。主要用于大数据场景下明细数据的展示。
 
-![tablmode](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ)
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
 
-明细表和交叉表共享基础交互、主题、复制、自定义 Cell 等能力。除此之外，明细表还支持行列冻结等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 DOM 的表格组件，来提升性能和用户体验。
+明细表和透视表共享基础交互、主题、复制、自定义 `Cell` 等能力。除此之外，明细表还支持行列冻结等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
 
 ## 使用
+
+```html
+<div id="container"></div>
+```
 
 ### React 组件方式
 
 ```typescript
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  TableSheet,
-  SheetComponent,
-  DataCfg,
-  SpreadsheetOptions,
-} from "@antv/s2";
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
-// 1. 准备明细数据
+// 1. 准备数据
 const data = [
   {
     province: "浙江",
@@ -42,7 +42,7 @@ const data = [
 ];
 
 // 2. 配置数据
-const dataCfg = {
+const s2DataCfg = {
   fields: {
     columns: ["province", "city", "type", "price"], // 要展示的列头字段 id 列表
   },
@@ -68,71 +68,58 @@ const dataCfg = {
   data,
 };
 
-// 3. S2 相关配置
-const options = {
+// 3. 添加配置
+const s2Options = {
   width: 400,
   height: 200,
-  showSeriesNumber: true,
-  style: {
-    cellCfg: {
-      height: 32,
-    },
-    device: "pc",
-  },
 };
 
-// 4. 准备表实例
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: DataCfg,
-  options: SpreadsheetOptions
-) => {
-  return new TableSheet(dom, dataCfg, options);
-};
-
-// 5, 渲染 React 组件
+// 4, 渲染
 ReactDOM.render(
   <SheetComponent
-    dataCfg={dataCfg}
-    options={options}
-    spreadsheet={getSpreadSheet}
-    sheetType={"table"}
+    sheetType="table"
+    dataCfg={s2DataCfg}
+    options={s2Options}
   />,
-  "#container"
+  document.getElementById('container')
 );
-
 ```
 
 ### TableSheet 类方式
 
 如果不打算依赖 React，可以在上面第三步之后直接调用：
 
-```typescript
-const sheet = new TableSheet("#container", dataCfg, options);
-sheet.render();
+```ts
+import { TableSheet } from "@antv/s2";
+
+const container = document.getElementById('container');
+const tableSheet = new TableSheet(container, dataCfg, options);
+tableSheet.render();
 ```
 
 ## 特性
 
 ### 序号
 
-在 S2 Options 中传入 `showSeriesNumber` 即可展示内置的序号。
+在 `s2Options` 中传入 `showSeriesNumber` 即可展示内置的序号。[查看 demo](https://s2.antv.vision/zh/examples/basic/table#table)
 
 ### 行列冻结
 
-行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。
+行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。[查看 demo](https://s2.antv.vision/zh/examples/interaction/basic#frozen)
 
-行列冻结通过在 S2 Options 中传入这些属性控制：
+行列冻结通过在 `s2Options` 中传入这些属性控制：
 
-```typescript
+```ts
 {
-    frozenRowCount: number; // 冻结行的数量，从顶部开始计数
-    frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
-    frozenColCount: number; // 冻结列的数量，从左侧开始计数
-    frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
+  frozenRowCount: number; // 冻结行的数量，从顶部开始计数
+  frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
+  frozenColCount: number; // 冻结列的数量，从左侧开始计数
+  frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
 }
 ```
 
 效果如图：
 
-![frozen](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*UZwHR7MHGJYAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+<playground path='interaction/basic/demo/frozen.ts' rid='container' height='300'></playground>

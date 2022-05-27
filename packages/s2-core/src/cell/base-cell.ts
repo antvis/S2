@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
+import {
+  each,
+  get,
+  includes,
+  isBoolean,
+  isFunction,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -7,7 +16,10 @@ import {
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import {
+  CellThemes,
   FormatResult,
+  ResizeActiveOptions,
+  ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
@@ -20,7 +32,11 @@ import {
 } from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  getEmptyPlaceholder,
+  measureTextWidth,
+} from '@/utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -40,6 +56,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // link text underline shape
   protected linkFieldShape: IShape;
+
+  // actualText
+  protected actualText: string;
 
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
@@ -72,7 +91,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType].icon;
   }
 
-  public getTextAndIconPosition() {
+  public getTextAndIconPosition(iconCount = 1) {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
@@ -80,7 +99,16 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textStyle,
       this.actualTextWidth,
       iconCfg,
+      iconCount,
     );
+  }
+
+  public getActualText() {
+    return this.actualText;
+  }
+
+  public getFieldValue() {
+    return this.getFormattedFieldValue().formattedValue;
   }
 
   /**
@@ -123,8 +151,23 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: string) {
+  public getStyle<K extends keyof S2Theme = keyof CellThemes>(
+    name?: K,
+  ): S2Theme[K] {
     return this.theme[name || this.cellType];
+  }
+
+  protected getResizeAreaStyle(): ResizeArea {
+    return this.getStyle('resizeArea');
+  }
+
+  protected shouldDrawResizeAreaByType(type: keyof ResizeActiveOptions) {
+    const resize = this.spreadsheet.options?.interaction?.resize;
+    if (isBoolean(resize)) {
+      return resize;
+    }
+
+    return resize[type];
   }
 
   protected getCellArea() {
@@ -133,25 +176,28 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
+  public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
+  protected getIconPosition(iconCount = 1) {
+    return this.getTextAndIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const ellipsisText = getEllipsisText(
-      formattedValue,
-      maxTextWidth,
-      textStyle,
-    );
-
+    const { placeholder } = this.spreadsheet.options;
+    const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
+    const ellipsisText = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxTextWidth,
+      fontParam: textStyle,
+      placeholder: emptyPlaceholder,
+    });
+    this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
     this.textShape = renderText(
@@ -168,41 +214,34 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     showLinkFieldShape: boolean,
     linkFillColor: string,
   ) {
-    const { fill } = this.getTextStyle();
-
-    // handle link nodes
-    if (showLinkFieldShape) {
-      const device = this.spreadsheet.options.style.device;
-      let fillColor;
-
-      // 配置了链接跳转
-      if (isMobile(device)) {
-        fillColor = linkFillColor;
-      } else {
-        const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
-        this.linkFieldShape = renderLine(
-          this,
-          {
-            x1: minX,
-            y1: maxY + 1,
-            x2: maxX,
-            y2: maxY + 1,
-          },
-          { stroke: fill, lineWidth: 1 },
-        );
-
-        fillColor = fill;
-      }
-
-      this.textShape.attr({
-        fill: fillColor,
-        cursor: 'pointer',
-        appendInfo: {
-          isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
-          cellData: this.meta,
-        },
-      });
+    if (!showLinkFieldShape) {
+      return;
     }
+
+    const device = this.spreadsheet.options.style.device;
+    // 配置了链接跳转
+    if (!isMobile(device)) {
+      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      this.linkFieldShape = renderLine(
+        this,
+        {
+          x1: minX,
+          y1: maxY + 1,
+          x2: maxX,
+          y2: maxY + 1,
+        },
+        { stroke: linkFillColor, lineWidth: 1 },
+      );
+    }
+
+    this.textShape.attr({
+      fill: linkFillColor,
+      cursor: 'pointer',
+      appendInfo: {
+        isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        cellData: this.meta,
+      },
+    });
   }
 
   // 根据当前state来更新cell的样式
@@ -212,17 +251,41 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
+
+    const { x, y, height, width } = this.getCellArea();
+
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
-      if (isEmpty(targetShapeNames)) {
-        return;
-      }
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
-        const shape = this.stateShapes.has(shapeName)
+        const isStateShape = this.stateShapes.has(shapeName);
+        const shape = isStateShape
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // stateShape 默认 visible 为 false
+        if (isStateShape && !shape.get('visible')) {
+          shape.set('visible', true);
+        }
+
+        // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
+        if (
+          shapeName === 'interactiveBorderShape' &&
+          styleKey === 'borderWidth'
+        ) {
+          if (isNumber(style)) {
+            const marginStyle = {
+              x: x + style / 2,
+              y: y + style / 2,
+              width: width - style - 1,
+              height: height - style - 1,
+            };
+            each(marginStyle, (currentStyle, currentStyleKey) => {
+              updateShapeAttr(shape, currentStyleKey, currentStyle);
+            });
+          }
+        }
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
@@ -233,6 +296,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 1);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }
@@ -241,5 +305,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
     updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
+  }
+
+  public getTextShape() {
+    return this.textShape;
   }
 }

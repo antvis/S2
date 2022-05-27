@@ -1,0 +1,232 @@
+{
+  "data": [
+    {
+      "number": 11,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 22,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 33,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 44,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    }
+  ],
+  "HZDrillDownData": [
+    {
+      "number": 11,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 22,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 33,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 44,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    },
+    {
+      "number": 111,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "下沙区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 222,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "下沙区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 333,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "下沙区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 444,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "下沙区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    },
+    {
+      "number": 100,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "余杭区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 200,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "余杭区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 300,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "余杭区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 400,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "余杭区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    }
+  ],
+  "SXDrillDownData": [
+    {
+      "number": 111,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "下沙区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 222,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "下沙区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 333,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "下沙区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 444,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "下沙区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    },
+    {
+      "number": 100,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "余杭区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 200,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "余杭区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 300,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "余杭区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 400,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "余杭区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    },
+    {
+      "number": 11,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "number": 22,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "number": 33,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "number": 44,
+      "province": "浙江省",
+      "city": "绍兴市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    }
+  ]
+}

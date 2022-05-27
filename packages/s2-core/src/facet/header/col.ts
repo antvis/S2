@@ -1,20 +1,17 @@
-import { each, isEmpty } from 'lodash';
-import { IGroup, IShape } from '@antv/g-base';
-import { translateGroup } from '../utils';
+import { each } from 'lodash';
+import type { IGroup, IShape } from '@antv/g-canvas';
 import { BaseHeader, BaseHeaderConfig } from './base';
+import { translateGroupX } from '@/facet/utils';
 import {
   KEY_GROUP_COL_SCROLL,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
-  // format field value
-  formatter: (field: string) => Formatter;
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
   scrollContainsRowHeader?: boolean;
@@ -30,7 +27,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
       zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
@@ -43,32 +39,30 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, cornerWidth: number, type: string) {
-    // this is works in scroll-keep-text-center feature
+  public onColScroll(scrollX: number, type: string) {
     if (this.headerConfig.scrollX !== scrollX) {
-      this.headerConfig.offset = scrollX;
       this.headerConfig.scrollX = scrollX;
-      this.headerConfig.cornerWidth = cornerWidth || 0;
       this.render(type);
     }
   }
 
   protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
+    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
+
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: scrollXOffset,
+        x: isFrozenRowHeader ? scrollX : 0,
         y: 0,
-        width: width + scrollXOffset,
+        width: isFrozenRowHeader ? width : width + scrollX,
         height,
       },
     });
   }
 
   public clear() {
-    this.scrollGroup.clear();
+    this.scrollGroup?.clear();
     this.background?.remove(true);
   }
 
@@ -90,28 +84,23 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return (
       // don't care about scrollY, because there is only freeze col-header exist
       width + scrollX > item.x &&
-      scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
+      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
         item.x + item.width
     );
   }
 
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-
-    const colCell = spreadsheet?.facet?.cfg?.colCell;
+    const { colCell } = spreadsheet.options;
 
     each(data, (node: Node) => {
       const item = node;
 
       if (this.isColCellInRect(item)) {
-        let cell: S2CellType;
-        if (colCell) {
-          cell = colCell(item, spreadsheet, this.headerConfig);
-        }
+        const cell =
+          colCell?.(item, spreadsheet, this.headerConfig) ||
+          this.getCellInstance(item, spreadsheet, this.headerConfig);
 
-        if (isEmpty(cell)) {
-          cell = this.getCellInstance(item, spreadsheet, this.headerConfig);
-        }
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);
@@ -123,6 +112,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
-    translateGroup(this.scrollGroup, position.x - scrollX, 0);
+    translateGroupX(this.scrollGroup, position.x - scrollX);
   }
 }

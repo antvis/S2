@@ -5,36 +5,68 @@
   },
   "demos": [
     {
-      "filename": "basic.ts",
+      "filename": "basic.tsx",
       "title": {
-        "zh": "显示",
+        "zh": "基本展示",
         "en": "Basic Show"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/UuEx0wndW7/efa70cc6-5106-4d81-9957-25c99b4fad32.png"
     },
     {
-      "filename": "operation.ts",
+      "filename": "operation.tsx",
       "title": {
         "zh": "操作项",
         "en": "Operation"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2rmoKjpB1%26/7973e74e-9644-4302-a20c-3959c8b5beeb.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HRIacdrQje/4455252e-bed7-4265-8fee-90ed85a6ae11.png"
     },
     {
-      "filename": "component.tsx",
+      "filename": "custom-operation.tsx",
       "title": {
-        "zh": "组件",
-        "en": "Custom Component"
+        "zh": "自定义操作项",
+        "en": "Custom Operation"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/bkwOEFF14e/718e8b35-1660-4b06-8df0-4114da911179.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/le1o4zCn9/d5fd21d4-95bb-448e-9c10-92a1dd4495ae.png"
     },
     {
-      "filename": "render-tooltip.tsx",
+      "filename": "custom-content.tsx",
       "title": {
-        "zh": "重写基类",
-        "en": "Custom Render"
+        "zh": "自定义 Tooltip 内容",
+        "en": "Custom Tooltip Content"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/j1fkyyIDdh/939fb3ed-b1c7-48a4-a329-bd1d64ddcb9c.png"
+    },
+    {
+      "filename": "custom-tooltip.tsx",
+      "title": {
+        "zh": "自定义 Tooltip",
+        "en": "Custom Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/j1fkyyIDdh/939fb3ed-b1c7-48a4-a329-bd1d64ddcb9c.png"
+    },
+    {
+      "filename": "custom-show-tooltip.tsx",
+      "title": {
+        "zh": "重写展示方法",
+        "en": "Custom Show Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/sSx1H%24pJOs/6305fe29-5640-4d4d-b1ef-577cc6a32eb3.png"
+    },
+    {
+      "filename": "custom-click-show-tooltip.tsx",
+      "title": {
+        "zh": "自定义点击显示 Tooltip",
+        "en": "Custom Click Show Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/kpvnavJgo0/tooltip.gif"
+    },
+    {
+      "filename": "custom-hover-show-tooltip.tsx",
+      "title": {
+        "zh": "自定义悬停显示 Tooltip",
+        "en": "Custom Hover Show Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/c%24ICO1qvb/Kapture%2525202021-12-03%252520at%25252016.30.11.gif"
     }
   ]
 }

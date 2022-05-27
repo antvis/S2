@@ -1,4 +1,4 @@
-import { isEmpty, merge, isBoolean } from 'lodash';
+import { isEmpty, get } from 'lodash';
 import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
 import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { TotalClass } from '@/facet/layout/total-class';
@@ -6,8 +6,10 @@ import { i18n } from '@/common/i18n';
 import { Node } from '@/facet/layout/node';
 import { generateId } from '@/utils/layout/generate-id';
 import { SpreadSheet } from '@/sheet-type';
-import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
+import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { PivotDataSet } from '@/data-set';
+import { ID_SEPARATOR, ROOT_ID } from '@/common';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -34,13 +36,24 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
     params;
   const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
-  const query = parentNode.query;
+  const { query, id } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const sortedDimensionValues =
-    (dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField) || [];
+    (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
+
+  // 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value
+  const dimensions =
+    ROOT_ID === id
+      ? sortedDimensionValues
+      : sortedDimensionValues?.filter((item) =>
+          item?.includes(id?.split(`${ROOT_ID}${ID_SEPARATOR}`)[1]),
+        );
 
   const dimValues = filterUndefined(
-    getIntersections([...sortedDimensionValues], [...(pivotMeta.keys() || [])]),
+    getListBySorted(
+      [...(pivotMeta.keys() || [])],
+      [...getDimensionsWithoutPathPre([...dimensions])],
+    ),
   );
 
   let fieldValues: FieldValue[] = layoutArrange(
@@ -77,14 +90,15 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = query;
     } else {
       value = fieldValue;
-      nodeQuery = merge({}, query, { [currentField]: value });
+      nodeQuery = {
+        ...query,
+        [currentField]: value,
+      };
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
-    const collapsedRow = collapsedRows[uniqueId];
-    const isCollapse =
-      isBoolean(collapsedRow) && collapsedRow
-        ? collapsedRow
-        : hierarchyCollapse;
+    const uniqueId = generateId(parentNode.id, value);
+    const isCollapsedRow = get(collapsedRows, uniqueId);
+    const isCollapse = isCollapsedRow ?? hierarchyCollapse;
+
     const node = new Node({
       id: uniqueId,
       key: currentField,
@@ -101,6 +115,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       query: nodeQuery,
       spreadsheet,
     });
+
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
 
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {

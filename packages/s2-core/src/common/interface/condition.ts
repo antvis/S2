@@ -17,7 +17,7 @@ export interface MappingResult extends ValueRange {
 }
 
 export type MappingFunction = (
-  fieldValue: number,
+  fieldValue: number | string,
   data: Record<string, any>,
 ) => MappingResult;
 
@@ -25,21 +25,21 @@ export type MappingFunction = (
  * One field can hold a condition
  */
 export interface Condition {
-  readonly field: string;
-  readonly mapping: MappingFunction;
+  field: string | RegExp;
+  mapping: MappingFunction;
 }
 
-type IconPosition = 'left' | 'right';
+export type IconPosition = 'left' | 'right';
 
 export interface IconCondition extends Condition {
-  readonly position?: IconPosition; // right by default
+  position?: IconPosition; // right by default
 }
 
 export interface Conditions {
-  readonly text?: Condition[];
-  readonly background?: Condition[];
-  readonly interval?: Condition[];
-  readonly icon?: IconCondition[];
+  text?: Condition[];
+  background?: Condition[];
+  interval?: Condition[];
+  icon?: IconCondition[];
 }
 
 export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &

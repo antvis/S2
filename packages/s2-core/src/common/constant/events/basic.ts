@@ -1,17 +1,19 @@
 export enum S2Event {
   /** ================ Row Cell ================  */
-  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
+  ROW_CELL_HOVER = 'row-cell:hover',
   ROW_CELL_CLICK = 'row-cell:click',
   ROW_CELL_DOUBLE_CLICK = 'row-cell:double-click',
-  ROW_CELL_HOVER = 'row-cell:hover',
+  ROW_CELL_CONTEXT_MENU = 'row-cell:context-menu',
   ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
+  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
   COL_CELL_CLICK = 'col-cell:click',
   COL_CELL_DOUBLE_CLICK = 'col-cell:double-click',
+  COL_CELL_CONTEXT_MENU = 'col-cell:context-menu',
   COL_CELL_MOUSE_DOWN = 'col-cell:mouse-down',
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
@@ -20,6 +22,7 @@ export enum S2Event {
   DATA_CELL_HOVER = 'data-cell:hover',
   DATA_CELL_CLICK = 'data-cell:click',
   DATA_CELL_DOUBLE_CLICK = 'data-cell:double-click',
+  DATA_CELL_CONTEXT_MENU = 'data-cell:context-menu',
   DATA_CELL_MOUSE_UP = 'data-cell:mouse-up',
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
@@ -27,22 +30,24 @@ export enum S2Event {
   DATE_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
 
   /** ================ Corner Cell ================  */
+  CORNER_CELL_HOVER = 'corner-cell:hover',
   CORNER_CELL_CLICK = 'corner-cell:click',
   CORNER_CELL_DOUBLE_CLICK = 'corner-cell:double-click',
+  CORNER_CELL_CONTEXT_MENU = 'corner-cell:context-menu',
+  CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
   CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
-  CORNER_CELL_HOVER = 'corner-cell:hover',
-  CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
 
-  /** ================ Merged Cell ================  */
-  MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
-  MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
+  /** ================ Merged Cells ================  */
   MERGED_CELLS_HOVER = 'merged-cells:hover',
   MERGED_CELLS_CLICK = 'merged-cells:click',
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
+  MERGED_CELLS_CONTEXT_MENU = 'merged-cell:context-menu',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
+  MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
+  MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
-  /** ================ Table Sort ================  */
+  /** ================ Sort ================  */
   RANGE_SORT = 'sort:range-sort',
   RANGE_SORTED = 'sort:range-sorted',
 
@@ -52,20 +57,20 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
-  LAYOUT_COL_NODE_BORDER_REACHED = 'layout:col-node-border-reached',
-  LAYOUT_ROW_NODE_BORDER_REACHED = 'layout:row-node-border-reached',
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
   LAYOUT_AFTER_COLLAPSE_ROWS = 'layout:after-collapsed-rows',
   LAYOUT_TREE_ROWS_COLLAPSE_ALL = 'layout:toggle-collapse-all',
-  LAYOUT_TABLE_COL_EXPANDED = 'layout:table-col-expanded',
-  LAYOUT_TABLE_COL_HIDDEN = 'layout:table-col-hidden',
+  LAYOUT_COLS_EXPANDED = 'layout:table-col-expanded',
+  LAYOUT_COLS_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
+  LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */
   LAYOUT_RESIZE = 'layout:resize',
+  LAYOUT_RESIZE_SERIES_WIDTH = 'layout:resize-series-width',
   LAYOUT_RESIZE_ROW_WIDTH = 'layout:resize-row-width',
   LAYOUT_RESIZE_ROW_HEIGHT = 'layout:resize-row-height',
   LAYOUT_RESIZE_COL_WIDTH = 'layout:resize-column-width',
@@ -80,9 +85,12 @@ export enum S2Event {
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
   GLOBAL_COPIED = 'global:copied',
   GLOBAL_MOUSE_UP = 'global:mouse-up',
+  GLOBAL_MOUSE_MOVE = 'global:mouse-move',
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
+  GLOBAL_CLICK = 'global:click',
+  GLOBAL_DOUBLE_CLICK = 'global:double-click',
   GLOBAL_SELECTED = 'global:selected',
   GLOBAL_HOVER = 'global:hover',
   GLOBAL_RESET = 'global:reset',

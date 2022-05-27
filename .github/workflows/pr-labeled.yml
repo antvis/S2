@@ -16,9 +16,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，感谢你的贡献, 为了让代码更健壮, 请补充相应单元测试, 如果有API改动, 请修改 [相应的文档](https://github.com/antvis/S2/tree/master/s2-site)
+            你好 @${{ github.event.pull_request.user.login }}，感谢你的贡献, 为了让代码更健壮, 请补充相应单元测试, 如果有 API 改动, 请修改 [相应的文档](https://github.com/antvis/S2/tree/master/s2-site)
 
-            Hello, @${{ github.event.issue.user.login }}, Thank you for your contribution. In order to make the code more robust, please supplement the corresponding unit tests, if there are API changes, please edit the [docs](https://github.com/antvis/S2/tree/master/s2-site).
+            Hello, @${{ github.event.pull_request.user.login }}, Thanks for your contribution. In order to make the code more robust, please add the corresponding unit tests, and update the [docs](https://github.com/antvis/S2/tree/master/s2-site) if there are API changes.
 
       - name: Need more info
         if: github.event.label.name == '👀 need more info'
@@ -28,6 +28,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，感谢你的贡献, 请根据模板完善 PR 描述, 说明其改动目的和类型, 以便于我们可以更好的进行 Code Review
+            你好 @${{ github.event.pull_request.user.login }}，感谢你的贡献, 请根据模板完善 PR 描述, 并站在用户的角度说明其改动目的和解决了什么问题 (而非你的解决方式), 以便于我们可以更好的进行 Code Review, 同时请确保已关联相应 issue (如有), 检查你的 commit 是否有描述清楚你这个 PR 所做的事情。
 
-            Hello, @${{ github.event.issue.user.login }}, Thank you for your contribution. Please improve the PR description according to the template, and explain the purpose and type of change, so that we can conduct a better Code Review.
+            Hello, @${{ github.event.pull_request.user.login }}, Thanks for your contribution. Please improve the PR description based on the template, and explain the purpose of the change and the problems solved from the perspective of users (not your solution), so that we can conduct a better Code Review. At the same time, please make sure corresponding issue is associated (if any) Meanwhile, please check whether your commit clearly describes what you do as a PR.

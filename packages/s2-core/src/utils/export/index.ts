@@ -1,38 +1,54 @@
 import {
-  head,
   last,
   isEmpty,
-  get,
   clone,
   trim,
   max,
   isObject,
   forEach,
+  isArray,
+  flatten,
+  size,
 } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/index';
-import {
-  ID_SEPARATOR,
-  EMPTY_PLACEHOLDER,
-  ROOT_BEGINNING_REGEX,
-} from '@/common/constant';
+import { CornerNodeType, ViewMeta } from '@/common/interface';
+import { ID_SEPARATOR, ROOT_BEGINNING_REGEX, ROOT_ID } from '@/common/constant';
 import { MultiData } from '@/common/interface';
+import { safeJsonParse } from '@/utils/text';
+import { Node } from '@/facet/layout/node';
 
-export const copyToClipboard = (str: string) => {
-  try {
-    const el = document.createElement('textarea');
-    el.value = str;
-    document.body.appendChild(el);
-    el.select();
+export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = str;
+    document.body.appendChild(textarea);
+    // 开启 preventScroll, 防止页面有滚动条时触发滚动
+    textarea.focus({ preventScroll: true });
+    textarea.select();
+
     const success = document.execCommand('copy');
-    document.body.removeChild(el);
-    return success;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    return false;
+    document.body.removeChild(textarea);
+
+    if (success) {
+      resolve();
+    } else {
+      reject();
+    }
+  });
+};
+
+export const copyToClipboardByClipboard = (str: string): Promise<void> => {
+  return navigator.clipboard.writeText(str).catch(() => {
+    return copyToClipboardByExecCommand(str);
+  });
+};
+
+export const copyToClipboard = (str: string, sync = false): Promise<void> => {
+  if (!navigator.clipboard || sync) {
+    return copyToClipboardByExecCommand(str);
   }
+  return copyToClipboardByClipboard(str);
 };
 
 export const download = (str: string, fileName: string) => {
@@ -54,20 +70,31 @@ export const download = (str: string, fileName: string) => {
 };
 
 /*
- * Process the multi-measure
+ * Process the multi-measure with multi-lines
+ * For Grid-analysis-sheet
  * use the ' ' to divide different measures in the same line
  * use the '$' to divide different lines
  */
-const processObjectValue = (data: MultiData) => {
-  // TODO 如何去业务化
-  const tempCell = data?.label ? [data?.label] : [];
+const processObjectValueInCol = (data: MultiData) => {
+  const tempCells = data?.label ? [data?.label] : [];
   const values = data?.values;
   if (!isEmpty(values)) {
     forEach(values, (value) => {
-      tempCell.push(value.join(' '));
+      tempCells.push(value.join(' '));
     });
   }
-  return tempCell.join('$');
+  return tempCells.join('$');
+};
+
+/*
+ * Process the multi-measure with single-lines
+ * For StrategySheet
+ */
+const processObjectValueInRow = (data: MultiData, isFormat: boolean) => {
+  if (!isFormat) {
+    return data?.originalValues?.[0] ?? data?.values?.[0];
+  }
+  return data?.values?.[0];
 };
 
 /* Process the data in detail mode. */
@@ -86,7 +113,7 @@ const processValueInDetail = (
     } else {
       tempRows = columns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
-        return getCsvString(mainFormatter(record[v]));
+        return getCsvString(mainFormatter(record[v], record));
       });
     }
     if (sheetInstance.options.showSeriesNumber) {
@@ -108,17 +135,17 @@ const processValueInCol = (
     // If the meta equals null, replacing it with blank line.
     return '';
   }
-  const { fieldValue, valueField } = viewMeta;
+  const { fieldValue, valueField, data } = viewMeta;
 
   if (isObject(fieldValue)) {
-    return processObjectValue(fieldValue);
+    return processObjectValueInCol(fieldValue);
   }
 
   if (!isFormat) {
     return `${fieldValue}`;
   }
   const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-  return mainFormatter(fieldValue);
+  return mainFormatter(fieldValue, data);
 };
 
 /* Process the data when the value position is on the rows. */
@@ -126,63 +153,111 @@ const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: SpreadSheet,
   isFormat?: boolean,
-): string => {
-  const tempCell = [];
-  // TODO: 处理derivedValues
-  const derivedValues = [];
-  const derivedValue = head(derivedValues);
+) => {
+  let tempCells = [];
+
   if (viewMeta) {
-    const { data, fieldValue, valueField } = viewMeta;
+    const { fieldValue, valueField, data } = viewMeta;
+    if (isObject(fieldValue)) {
+      tempCells = processObjectValueInRow(fieldValue, isFormat);
+      return tempCells;
+    }
     // The main measure.
     if (!isFormat) {
-      tempCell.push(fieldValue);
+      tempCells.push(fieldValue);
     } else {
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-      tempCell.push(mainFormatter(fieldValue));
-    }
-
-    const currentDV = { derivedValueField: [] };
-    if (currentDV && !isEmpty(currentDV.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of currentDV.derivedValueField) {
-        const derivedData = get(data, [0, dv]);
-        if (!isFormat) {
-          tempCell.push(derivedData);
-        } else {
-          const formatter = sheetInstance.dataSet.getFieldFormatter(dv);
-          tempCell.push(formatter(derivedData));
-        }
-      }
+      tempCells.push(mainFormatter(fieldValue, data));
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCell.push(EMPTY_PLACEHOLDER);
-    if (!isEmpty(derivedValue?.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of derivedValue.derivedValueField) {
-        tempCell.push(dv);
-      }
-    }
+    tempCells.push(sheetInstance.options.placeholder);
   }
-  return tempCell.join('    ');
+  return tempCells.join('    ');
+};
+
+/* Get the label name for the header. */
+const getHeaderLabel = (val: string) => {
+  const label = safeJsonParse(val);
+  if (isArray(label)) {
+    return label;
+  }
+  return val;
 };
 
 /**
+ * 当列头label存在数组情况，需要将其他层级补齐空格
+ * eg [ ['数值', '环比'], '2021'] => [ ['数值', '环比'], ['2021', '']
+ */
+const processColHeaders = (headers: any[][], arrayLength: number) => {
+  const result = headers.map((header) =>
+    header.map((item) =>
+      isArray(item) ? item : [item, ...new Array(arrayLength - 1)],
+    ),
+  );
+  return result;
+};
+
+const getNodeFormatLabel = (node: Node) => {
+  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+  return formatter?.(node.label) ?? node.label;
+};
+
+/**
+ * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
+ * @param rowLeafNode
+ */
+const getRowNodeFormatData = (rowLeafNode: Node) => {
+  const line = [];
+  const getRowNodeFormatterLabel = (node: Node) => {
+    // node.id === ROOT_ID 时，为S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_ID) return;
+    const formatterLabel = getNodeFormatLabel(node);
+    line.unshift(formatterLabel);
+    if (node?.parent) {
+      return getRowNodeFormatterLabel(node.parent);
+    }
+  };
+  getRowNodeFormatterLabel(rowLeafNode);
+  return line;
+};
+
+const getFormatOptions = (isFormat: FormatOptions) => {
+  if (typeof isFormat === 'object') {
+    return {
+      isFormatHeader: isFormat.isFormatHeader ?? false,
+      isFormatData: isFormat.isFormatData ?? false,
+    };
+  }
+  return {
+    isFormatHeader: isFormat ?? false,
+    isFormatData: isFormat ?? false,
+  };
+};
+
+type FormatOptions =
+  | boolean
+  | {
+      isFormatHeader?: boolean;
+      isFormatData?: boolean;
+    };
+/**
  * Copy data
  * @param sheetInstance
- * @param isFormat
+ * @param formatOptions 是否格式化数据
  * @param split
  */
 export const copyData = (
   sheetInstance: SpreadSheet,
   split: string,
-  isFormat?: boolean,
+  formatOptions?: FormatOptions,
 ): string => {
+  const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
+  const { maxLevel } = rowsHierarchy;
   const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
-
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
     sheetInstance.dataSet.getFieldName(item.key),
   );
@@ -193,23 +268,99 @@ export const copyData = (
     return length > pre ? length : pre;
   }, 0);
 
+  // Generate the table body.
+  let detailRows = [];
+  let maxRowLength = 0;
+
+  if (!sheetInstance.isPivotMode()) {
+    detailRows = processValueInDetail(sheetInstance, split, isFormatData);
+  } else {
+    // Filter out the related row head leaf nodes.
+    const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
+
+    for (const rowNode of caredRowLeafNodes) {
+      let tempLine = [];
+      if (isFormatHeader) {
+        tempLine = getRowNodeFormatData(rowNode);
+      } else {
+        // Removing the space at the beginning of the line of the label.
+        rowNode.label = trim(rowNode?.label);
+        const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
+        tempLine = id.split(ID_SEPARATOR);
+      }
+      // TODO 兼容下钻，需要获取下钻最大层级
+      const totalLevel = maxLevel + 1;
+      const emptyLength = totalLevel - tempLine.length;
+      if (emptyLength > 0) {
+        tempLine.push(...new Array(emptyLength));
+      }
+
+      // 指标挂行头且为平铺模式下，获取指标名称
+      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
+      tempLine[tempLine.length - 1] = lastLabel;
+
+      for (const colNode of colLeafNodes) {
+        if (valueInCols) {
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          tempLine.push(
+            processValueInCol(viewMeta, sheetInstance, isFormatData),
+          );
+        } else {
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          const lintItem = processValueInRow(
+            viewMeta,
+            sheetInstance,
+            isFormatData,
+          );
+          if (isArray(lintItem)) {
+            tempLine = tempLine.concat(...lintItem);
+          } else {
+            tempLine.push(lintItem);
+          }
+        }
+      }
+      maxRowLength = max([tempLine.length, maxRowLength]);
+      const lineString = tempLine
+        .map((value) => getCsvString(value))
+        .join(split);
+
+      detailRows.push(lineString);
+    }
+  }
+
+  // Generate the table header.
   let headers: string[][] = [];
 
   if (isEmpty(colLeafNodes) && !sheetInstance.isPivotMode()) {
     // when there is no column in detail mode
     headers = [rowsHeader];
   } else {
+    // 当列头label为array时用于补全其他层级的label
+    let arrayLength = 0;
     // Get the table header of Columns.
-    const tempColHeader = clone(colLeafNodes).map((colItem) => {
+    let tempColHeader = clone(colLeafNodes).map((colItem) => {
       let curColItem = colItem;
+
       const tempCol = [];
+
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        tempCol.push(curColItem.label);
+        let label = getHeaderLabel(curColItem.label);
+        if (isArray(label)) {
+          arrayLength = max([arrayLength, size(label)]);
+        } else {
+          // label 为数组时不进行格式化
+          label = isFormatHeader ? getNodeFormatLabel(curColItem) : label;
+        }
+        tempCol.push(label);
         curColItem = curColItem.parent;
       }
       return tempCol;
     });
+
+    if (arrayLength > 1) {
+      tempColHeader = processColHeaders(tempColHeader, arrayLength);
+    }
 
     const colLevels = tempColHeader.map((colHeader) => colHeader.length);
     const colLevel = max(colLevels);
@@ -219,13 +370,47 @@ export const copyData = (
     for (let i = colLevel - 1; i >= 0; i -= 1) {
       // The map of data set: key-name
       const colHeaderItem = tempColHeader
+        // total col completion
+        .map((item) =>
+          item.length < colLevel
+            ? [...new Array(colLevel - item.length), ...item]
+            : item,
+        )
         .map((item) => item[i])
         .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
-      colHeader.push(colHeaderItem);
+      colHeader.push(flatten(colHeaderItem));
     }
 
     // Generate the table header.
     headers = colHeader.map((item, index) => {
+      if (sheetInstance.isPivotMode()) {
+        const { columns, rows, data } = sheetInstance.facet.cornerHeader.cfg;
+        const colNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Col,
+        );
+        const rowNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Row,
+        );
+
+        if (index < colHeader.length - 1) {
+          return [
+            ...Array(rowLength - 1).fill(''),
+            colNodes.find(({ field }) => field === columns[index])?.label || '',
+            ...item,
+          ];
+        }
+        if (index < colHeader.length) {
+          return [
+            ...rows.map(
+              (row) => rowNodes.find(({ field }) => field === row)?.label || '',
+            ),
+            ...item,
+          ];
+        }
+
+        return rowsHeader.concat(...item);
+      }
+
       return index < colHeader.length
         ? Array(rowLength)
             .fill('')
@@ -236,50 +421,13 @@ export const copyData = (
 
   const headerRow = headers
     .map((header) => {
+      const emptyLength = maxRowLength - header.length;
+      if (emptyLength > 0) {
+        header.unshift(...new Array(emptyLength));
+      }
       return header.map((h) => getCsvString(h)).join(split);
     })
     .join('\r\n');
-
-  // Generate the table body.
-  let detailRows = [];
-
-  if (!sheetInstance.isPivotMode()) {
-    detailRows = processValueInDetail(sheetInstance, split, isFormat);
-  } else {
-    // Filter out the related row head leaf nodes.
-    const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
-    for (const rowNode of caredRowLeafNodes) {
-      // Removing the space at the beginning of the line of the label.
-      rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-      const tempLine = id.split(ID_SEPARATOR);
-      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
-      tempLine[tempLine.length - 1] = lastLabel;
-      const { rows: tempRows } = sheetInstance?.dataCfg?.fields;
-
-      // Adapt to drill down mode.
-      const emptyLength = tempRows.length - tempLine.length;
-      for (let i = 0; i < emptyLength; i++) {
-        tempLine.push('');
-      }
-
-      for (const colNode of colLeafNodes) {
-        if (valueInCols) {
-          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
-        } else {
-          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
-        }
-      }
-
-      const lineString = tempLine
-        .map((value) => getCsvString(value))
-        .join(split);
-
-      detailRows.push(lineString);
-    }
-  }
 
   const data = [headerRow].concat(detailRows);
   const result = data.join('\r\n');

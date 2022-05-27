@@ -11,5 +11,5 @@ jobs:
       - name: Ding Talk PR Notify
         uses: lijinke666/ding-talk-pr-notify@main
         with:
-          ding_talk_token: ${{ secrets.DING_TALK_ACCESS_TOKEN}}
+          ding_talk_token: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
           at_all: false

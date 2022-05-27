@@ -1,26 +1,20 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import {
-  first,
-  map,
-  includes,
-  find,
-  isEqual,
-  get,
-  isEmpty,
-  forEach,
-} from 'lodash';
+import { Event as CanvasEvent, IShape } from '@antv/g-canvas';
+import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
+import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
   HeaderActionIcon,
-  HeaderActionIconProps,
   CellMeta,
+  FormatResult,
+  HeaderActionIconOptions,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
+import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
 
@@ -29,20 +23,23 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected treeIcon: GuiIcon | undefined;
 
+  protected treeLeafNodeAlignDot: IShape | undefined;
+
   protected actionIcons: GuiIcon[];
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
-    const isValueCell = this.isValueCell(); // 是否是数值节点
-    const sortParam: SortParam = find(sortParams.reverse(), (item) =>
-      isValueCell
-        ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
-        : isEqual(get(item, 'query'), query),
+    const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
+    const sortParam: SortParam = find(
+      [...sortParams].reverse(),
+      (item) =>
+        isSortCell &&
+        item?.sortByMeasure === value &&
+        isEqual(get(item, 'query'), query),
     );
-
-    const type = getSortTypeIcon(sortParam, isValueCell);
+    const type = getSortTypeIcon(sortParam, isSortCell);
     this.headerConfig.sortParam = {
       ...this.headerConfig.sortParam,
       ...(sortParam || { query }),
@@ -54,22 +51,29 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
+  // 这个的 getFormattedFieldValue 主要是 row 和 col header 的格式化，这里不需要传递 data info
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    let content = label;
+
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+
+    const isTableMode = this.spreadsheet.isTableMode();
+    // 如果是 table mode，列头不需要被格式化
+    if (formatter && !isTableMode) {
+      content = formatter(label);
+    }
+
+    return {
+      formattedValue: content,
+      value: label,
+    };
+  }
+
   protected showActionIcons(actionIconCfg: HeaderActionIcon) {
-    if (!actionIconCfg) {
-      return false;
-    }
-    const { iconNames, displayCondition, belongsCell } = actionIconCfg;
-    if (isEmpty(iconNames)) {
-      return false;
-    }
-    if (belongsCell !== this.cellType) {
-      return false;
-    }
-    if (!displayCondition) {
-      // 没有展示条件参数默认全展示
-      return true;
-    }
-    return displayCondition(this.meta);
+    return shouldShowActionIcons(actionIconCfg, this.meta, this.cellType);
   }
 
   protected getActionIconCfg() {
@@ -80,32 +84,36 @@ export abstract class HeaderCell extends BaseCell<Node> {
     );
   }
 
-  private showSortIcon() {
+  protected showSortIcon() {
     if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
       // sortParam的query，和type本身可能会 undefined
       return (
-        isEqual(get(sortParam, 'query'), query) &&
-        get(sortParam, 'type') &&
-        get(sortParam, 'type') !== 'none'
+        query &&
+        isEqual(sortParam?.query, query) &&
+        sortParam?.type &&
+        sortParam?.type !== 'none'
       );
     }
     return false;
   }
 
-  protected getActionIconsWidth() {
+  protected getActionIconsCount() {
     if (this.showSortIcon()) {
-      const { icon } = this.getStyle();
-      return icon.size + icon.margin.left;
+      return 1;
     }
     const actionIconCfg = this.getActionIconCfg();
     if (actionIconCfg) {
       const iconNames = actionIconCfg.iconNames;
-      const { size, margin } = this.getStyle().icon;
-      return size * iconNames.length + margin.left * iconNames.length;
+      return iconNames.length;
     }
     return 0;
+  }
+
+  protected getActionIconsWidth() {
+    const { size, margin } = this.getStyle().icon;
+    return (size + margin.left) * this.getActionIconsCount();
   }
 
   // 绘制排序icon
@@ -133,28 +141,26 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
-  protected defaultHideActionIcons() {
+  protected hasDefaultHideActionIcon() {
     const actionIconCfg = this.getActionIconCfg();
     return actionIconCfg?.defaultHide;
   }
 
-  protected addActionIcon(
-    iconName: string,
-    x: number,
-    y: number,
-    size: number,
-    action: (prop: HeaderActionIconProps) => void,
-    defaultHide?: boolean,
-  ) {
-    const { text } = this.getStyle();
+  protected addActionIcon(options: HeaderActionIconOptions) {
+    const { x, y, iconName, defaultHide, action } = options;
+    const { icon: iconTheme, text: textTheme } = this.getStyle();
+    // 未配置 icon 颜色, 默认使用文字颜色
+    const actionIconColor = iconTheme?.fill || textTheme?.fill;
+
     const icon = new GuiIcon({
       name: iconName,
       x,
       y,
-      width: size,
-      height: size,
-      fill: text.fill,
+      width: iconTheme?.size,
+      height: iconTheme?.size,
+      fill: actionIconColor,
     });
+
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
     icon.on('mouseover', (event: CanvasEvent) => {
@@ -162,10 +168,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      action({
-        iconName: iconName,
+      action?.({
+        iconName,
         meta: this.meta,
-        event: event,
+        event,
       });
     });
 
@@ -180,33 +186,67 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
 
     const actionIconCfg = this.getActionIconCfg();
-    if (!actionIconCfg) return;
+    if (!actionIconCfg) {
+      return;
+    }
+
     const { iconNames, action, defaultHide } = actionIconCfg;
 
-    const position = this.getIconPosition();
+    const position = this.getIconPosition(iconNames.length);
 
     const { size, margin } = this.getStyle().icon;
-    forEach(iconNames, (iconName, key) => {
-      const x = position.x + key * size + key * margin.left;
-      this.addActionIcon(iconName, x, position.y, size, action, defaultHide);
+    forEach(iconNames, (iconName, i) => {
+      const x = position.x + i * size + i * margin.left;
+      const y = position.y;
+      this.addActionIcon({ iconName, x, y, defaultHide, action });
     });
   }
 
-  protected isValueCell() {
-    return this.meta.key === EXTRA_FIELD;
+  protected isSortCell() {
+    // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
+    const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
+    const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
+    if (isValueInCols) {
+      return isMaxLevel && this.cellType === CellTypes.COL_CELL;
+    }
+    return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
   }
 
-  private handleHover(cells: CellMeta[]) {
+  protected handleByStateName(
+    cells: CellMeta[],
+    stateName: InteractionStateName,
+  ) {
+    if (includeCell(cells, this)) {
+      this.updateByState(stateName);
+    }
+  }
+
+  protected handleSearchResult(cells: CellMeta[]) {
+    if (!includeCell(cells, this)) {
+      return;
+    }
+    const targetCell = find(
+      cells,
+      (cell: CellMeta) => cell?.isTarget,
+    ) as CellMeta;
+    if (targetCell.id === this.getMeta().id) {
+      this.updateByState(InteractionStateName.HIGHLIGHT);
+    } else {
+      this.updateByState(InteractionStateName.SEARCH_RESULT);
+    }
+  }
+
+  protected handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      if (this.defaultHideActionIcons()) {
+      if (this.hasDefaultHideActionIcon()) {
         // hover 只会有一个 cell
-        this.toggleActionIcon(cells?.[0].id);
+        this.toggleActionIcon(cells?.[0]?.id);
       }
     }
   }
 
-  private handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
@@ -243,7 +283,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
       case InteractionStateName.HOVER:
         this.handleHover(cells);
         break;
+      case InteractionStateName.SEARCH_RESULT:
+        this.handleSearchResult(cells);
+        break;
       default:
+        this.handleByStateName(cells, stateInfo?.stateName);
         break;
     }
   }
@@ -254,5 +298,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public hideInteractionShape() {
     super.hideInteractionShape();
+  }
+
+  public isMeasureField() {
+    return this.meta.field === EXTRA_FIELD;
   }
 }

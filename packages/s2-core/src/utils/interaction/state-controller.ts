@@ -15,7 +15,9 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set('visibleActionIcons', []);
 
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
-  if (!isEmpty(allInteractedCells)) {
+  const cellMetas = spreadsheet.interaction.getState().cells;
+
+  if (!isEmpty(allInteractedCells) || !isEmpty(cellMetas)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
@@ -24,6 +26,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
     if (spreadsheet.options.interaction.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+
       forEach(unSelectedCells, (cell) => {
         cell.clearUnselectedState();
       });
@@ -33,8 +36,8 @@ export const clearState = (spreadsheet: SpreadSheet) => {
 
 /**
  * @desc set the interaction state information
- * @param stateName the name of interaction state
  * @param spreadsheet sheet instance
+ * @param interactionStateInfo
  */
 export const setState = (
   spreadsheet: SpreadSheet,

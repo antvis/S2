@@ -1,7 +1,11 @@
 import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
-import { DataPathParams, PivotMeta } from '@/data-set/interface';
-import { ID_SEPARATOR } from '@/common/constant';
+import {
+  DataPathParams,
+  PivotMeta,
+  SortedDimensionValues,
+} from '@/data-set/interface';
+import { ROOT_ID, ID_SEPARATOR } from '@/common/constant';
 
 interface Param {
   rows: string[];
@@ -9,7 +13,7 @@ interface Param {
   originData: DataType[];
   indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
-  sortedDimensionValues: Map<string, Set<string>>;
+  sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 }
@@ -31,18 +35,73 @@ interface Param {
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
-  sortedDimensionValues: Map<string, Set<string>>,
+  sortedDimensionValues: SortedDimensionValues,
 ): string[] {
+  const dimensionValuePath: string[] = [];
   return map(dimensions, (dimension) => {
     const dimensionValue = record[dimension];
-    if (!sortedDimensionValues.has(dimension)) {
-      sortedDimensionValues.set(dimension, new Set());
-    }
-    const values = sortedDimensionValues.get(dimension);
-    values.add(record[dimension]);
+    dimensionValuePath.push(`${dimensionValue}`);
+    const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
 
-    return dimensionValue;
+    if (!sortedDimensionValues[dimension]) {
+      sortedDimensionValues[dimension] = [cacheKey];
+    } else if (!sortedDimensionValues[dimension]?.includes(cacheKey)) {
+      sortedDimensionValues[dimension].push(cacheKey);
+    }
+
+    // 保证 undefined 之外的数据都为 string 类型
+    if (dimensionValue === undefined) {
+      return dimensionValue;
+    }
+    return `${dimensionValue}`;
   });
+}
+
+/**
+ * Get dimensions without path pre
+ * dimensions: ['辽宁省[&]芜湖市[&]家具[&]椅子']
+ * return ['椅子']
+ *
+ * @param dimensions
+ */
+export function getDimensionsWithoutPathPre(dimensions: string[]) {
+  return dimensions.map((item) => {
+    const splitArr = item?.split(ID_SEPARATOR);
+    return splitArr[splitArr?.length - 1] || item;
+  });
+}
+
+/**
+ * Get dimensions with parent path
+ * field: 'category'
+ * defaultDimensions: ['province', 'city', 'category', 'subCategory']
+ * dimensions: [
+ *  {
+ *   province: '辽宁省',
+ *   city: '芜湖市',
+ *   category: '家具',
+ *   subCategory: '椅子',
+ *   price: ''
+ *  },
+ * ]
+ * return ['辽宁省[&]芜湖市[&]家具']
+ *
+ * @param field
+ * @param defaultDimensions
+ * @param dimensions
+ */
+export function getDimensionsWithParentPath(
+  field: string,
+  defaultDimensions: string[],
+  dimensions: DataType[],
+) {
+  const measure = defaultDimensions.slice(
+    0,
+    defaultDimensions.indexOf(field) + 1,
+  );
+  return dimensions
+    .map((item) => measure.map((i) => item[i]).join(`${ID_SEPARATOR}`))
+    ?.filter((item) => item);
 }
 
 /**
@@ -115,6 +174,7 @@ export function getDataPath(params: DataPathParams) {
       if (meta) {
         if (isFirstCreate) {
           // mark the child field
+          // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
           meta.childField = fields?.[i + 1];
         }
         currentMeta = meta?.children;
@@ -217,7 +277,7 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   const paths = nodeId.split(ID_SEPARATOR);
   const deletePath = last(paths);
   let currentMeta = meta;
-  forEach(paths, (path) => {
+  forEach(paths, (path, idx) => {
     const pathMeta = currentMeta.get(path);
     if (pathMeta) {
       if (path === deletePath) {
@@ -226,6 +286,10 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
       } else {
         currentMeta = pathMeta.children;
       }
+      return true;
     }
+
+    // exit iteration early when pathMeta not exists
+    return idx === 0 && path === ROOT_ID;
   });
 }

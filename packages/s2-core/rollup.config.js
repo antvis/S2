@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
@@ -6,6 +7,7 @@ import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
@@ -19,55 +21,47 @@ const OUT_DIR_NAME_MAP = {
 
 const outDir = OUT_DIR_NAME_MAP[format];
 const isEsmFormat = format === 'esm';
+const isUmdFormat = format === 'umd';
 
 const output = {
-  format: format,
-  preserveModules: isEsmFormat,
+  format,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
-  preserveModulesRoot: 'src',
 };
 
 const plugins = [
+  peerDepsExternal(),
   alias({
-    entries: [
-      { find: 'lodash', replacement: 'lodash-es' },
-      {
-        find: 'react-is',
-        replacement: 'react-is/cjs/react-is.production.min.js',
-      },
-    ],
+    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
   }),
   replace({
     'process.env.NODE_ENV': JSON.stringify('production'),
     preventAssignment: true,
   }),
-  commonjs({
-    ignore: ['react-is'],
-  }),
+  commonjs(),
   resolve(),
   typescript({
-    outDir: outDir,
+    outDir,
     abortOnError: true,
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
       exclude: ['__tests__'],
       compilerOptions: {
         declaration: isEsmFormat,
+        declarationMap: isEsmFormat,
       },
     },
     typescript: ttypescript,
   }),
   postcss({
-    minimize: true,
+    minimize: isUmdFormat,
     use: {
       sass: null,
       stylus: null,
       less: { javascriptEnabled: true },
     },
-    extract: true,
-    output: outDir + '/s2.min.css',
+    extract: `style${isUmdFormat ? '.min' : ''}.css`,
   }),
 ];
 
@@ -75,28 +69,10 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
-
-if (format === 'umd') {
-  output.file = 'dist/s2.min.js';
+if (isUmdFormat) {
+  output.file = 'dist/index.min.js';
   plugins.push(terser());
-  output.globals = {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-    antd: 'antd',
-    '@ant-design/icons': 'icons',
-  };
 } else {
-  external.push(
-    'd3-interpolate',
-    'lodash',
-    'lodash-es',
-    '@antv/g-gesture',
-    '@antv/g-canvas',
-    '@antv/event-emitter',
-    'd3-timer',
-    'classnames',
-  );
   output.dir = outDir;
 }
 
@@ -104,6 +80,5 @@ if (format === 'umd') {
 export default {
   input: 'src/index.ts',
   output,
-  external,
   plugins,
 };

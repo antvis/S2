@@ -6,7 +6,7 @@
  */
 import { get } from 'lodash';
 import { TableSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 
 describe('List Table Core Data Process', () => {
@@ -47,38 +47,7 @@ describe('List Table Core Data Process', () => {
     });
   });
 
-  describe('2、Calculate Col Coordinates', () => {
-    const { width, style } = s2.options;
-    const { colLeafNodes, colsHierarchy } = s2.facet.layoutResult;
-    const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
-
-    test('should calc correct cell width', () => {
-      expect(cellCfg.width).toEqual(
-        Math.max(style.cellCfg.width, width / colLeafNodes.length),
-      );
-      expect(rowCfg.width).toEqual(
-        Math.max(style.cellCfg.width, width / colLeafNodes.length),
-      );
-    });
-
-    test('should calc correct col node size and coordinate', () => {
-      // sample height
-      expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(
-        colCfg.height,
-      );
-
-      const nodes = colsHierarchy.getNodes();
-      // node width
-      nodes.forEach((node, index) => {
-        expect(node.x).toEqual(node.width * index);
-        expect(node.width).toEqual(cellCfg.width);
-        expect(node.y).toEqual(0);
-        expect(node.height).toEqual(colCfg.height);
-      });
-    });
-  });
-
-  describe('3、Calculate overlapped data cell info', () => {
+  describe('2、Calculate overlapped data cell info', () => {
     const { getCellMeta } = s2.facet.layoutResult;
     test('should get correct data value', () => {
       // 第一行

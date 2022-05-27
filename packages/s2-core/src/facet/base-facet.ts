@@ -1,19 +1,20 @@
-import type { BBox, IGroup, Point } from '@antv/g-canvas';
-import type { GestureEvent } from '@antv/g-gesture';
-import { Wheel } from '@antv/g-gesture';
+import type { IElement, IGroup } from '@antv/g-canvas';
+import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
-import * as d3Timer from 'd3-timer';
+import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
 import {
-  debounce,
-  each,
-  find,
-  get,
-  isNil,
-  isUndefined,
-  last,
-  reduce,
-} from 'lodash';
+  getColsForGrid,
+  getFrozenRowsForGrid,
+  getRowsForGrid,
+} from 'src/utils/grid';
+import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
+import {
+  getAdjustedRowScrollX,
+  getAdjustedScrollOffset,
+} from 'src/utils/facet';
+import { CornerBBox } from './bbox/cornerBBox';
+import { PanelBBox } from './bbox/panelBBox';
 import {
   calculateInViewIndexes,
   getCellRange,
@@ -28,10 +29,10 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
   InterceptType,
-  CORNER_MAX_WIDTH_RATIO,
+  ScrollbarPositionType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 import {
   ColHeader,
   CornerHeader,
@@ -39,7 +40,6 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from '@/facet/header';
-import { Hierarchy } from '@/facet/layout/hierarchy';
 import { ViewCellHeights } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
@@ -50,27 +50,28 @@ import {
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
 } from '@/common/debug';
-import type {
-  Formatter,
+import {
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
   ViewMeta,
   S2CellType,
   FrameConfig,
+  GridInfo,
 } from '@/common/interface';
-import { updateMergedCells } from '@/utils/interaction/merge-cells';
+import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
+import { DataCell } from '@/cell';
 
 export abstract class BaseFacet {
   // spreadsheet instance
   public spreadsheet: SpreadSheet;
 
   // corner box
-  public cornerBBox: BBox;
+  public cornerBBox: CornerBBox;
 
   // viewport cells box
-  public panelBBox: BBox;
+  public panelBBox: PanelBBox;
 
   // background (useless now)
   public backgroundGroup: IGroup;
@@ -78,7 +79,7 @@ export abstract class BaseFacet {
   // render viewport cell
   public panelGroup: IGroup;
 
-  // render header/corner/scrollbar...
+  // render header/corner/scrollbar/resize
   public foregroundGroup: IGroup;
 
   public cfg: SpreadSheetFacetCfg;
@@ -89,17 +90,15 @@ export abstract class BaseFacet {
 
   public viewCellHeights: ViewCellHeights;
 
-  public cornerWidth: number;
-
   protected mobileWheel: Wheel;
 
-  protected timer: d3Timer.Timer;
+  protected timer: Timer;
 
-  protected hScrollBar: ScrollBar;
+  public hScrollBar: ScrollBar;
 
-  protected hRowScrollBar: ScrollBar;
+  public hRowScrollBar: ScrollBar;
 
-  protected vScrollBar: ScrollBar;
+  public vScrollBar: ScrollBar;
 
   public rowHeader: RowHeader;
 
@@ -110,6 +109,14 @@ export abstract class BaseFacet {
   public rowIndexHeader: SeriesNumberHeader;
 
   public centerFrame: Frame;
+
+  public gridInfo: GridInfo;
+
+  protected abstract doLayout(): LayoutResult;
+
+  public abstract getViewCellHeights(
+    layoutResult: LayoutResult,
+  ): ViewCellHeights;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
@@ -143,11 +150,11 @@ export abstract class BaseFacet {
     }
   };
 
-  showVScrollBar = () => {
+  showVerticalScrollBar = () => {
     this.vScrollBar?.show();
   };
 
-  showHScrollBar = () => {
+  showHorizontalScrollBar = () => {
     this.hRowScrollBar?.show();
     this.hScrollBar?.show();
   };
@@ -158,9 +165,8 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    canvas?.addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -176,8 +182,8 @@ export abstract class BaseFacet {
         ...originEvent,
         deltaX,
         deltaY,
-        layerX: x / 3,
-        layerY: y / 3,
+        layerX: x,
+        layerY: y,
       } as unknown as S2WheelEvent);
     });
   };
@@ -201,24 +207,25 @@ export abstract class BaseFacet {
   /**
    * 在每次render, 校验scroll offset是否在合法范围中
    * 比如在滚动条已经滚动到100%的状态的前提下：（ maxAvailableScrollOffsetX = colsHierarchy.width - viewportBBox.width ）
-   *     此时changeSize，sheet从 small width 变为 big width
+   *     此时changeSheetSize，sheet从 small width 变为 big width
    *     导致后者 viewport 区域更大，其结果就是后者的 maxAvailableScrollOffsetX 更小
    *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
    */
   protected adjustScrollOffset() {
-    const { scrollX, scrollY } = this.getScrollOffset();
-    const { x: newX, y: newY } = this.adjustXAndY(scrollX, scrollY);
-    this.setScrollOffset({ scrollX: newX, scrollY: newY });
+    const { scrollX, scrollY, hRowScrollX } = this.getAdjustedScrollOffset(
+      this.getScrollOffset(),
+    );
+    this.setScrollOffset({
+      scrollX,
+      scrollY,
+      hRowScrollX,
+    });
   }
 
   public getSeriesNumberWidth(): number {
-    const showSeriesNumber = get(
-      this.cfg.spreadsheet,
-      'options.showSeriesNumber',
-      false,
-    );
+    const { showSeriesNumber } = this.cfg;
     return showSeriesNumber
-      ? (get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth') as number)
+      ? this.spreadsheet.theme.rowCell.seriesNumberWidth
       : 0;
   }
 
@@ -268,6 +275,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    cancelAnimationFrame(this.scrollFrameId);
   }
 
   setScrollOffset = (scrollOffset: ScrollOffset) => {
@@ -305,13 +313,10 @@ export abstract class BaseFacet {
     }
   };
 
-  unbindEvents = () => {
-    (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
-      'wheel',
-      this.onWheel,
-    );
+  private unbindEvents = () => {
+    const canvas = this.spreadsheet.container.get('el') as HTMLElement;
+    canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
-    this.setScrollOffset({ hRowScrollX: 0 });
   };
 
   clipPanelGroup = () => {
@@ -351,15 +356,22 @@ export abstract class BaseFacet {
    the panel viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @protected
+   * @public
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
+
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
-      this.panelBBox,
+      {
+        width,
+        height,
+        x: 0,
+        y: 0,
+      },
       this.getRealScrollX(this.cornerBBox.width),
     );
 
@@ -375,127 +387,11 @@ export abstract class BaseFacet {
   };
 
   protected calculateCornerBBox() {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-
-    const originalCornerWidth = Math.floor(
-      rowsHierarchy.width + this.getSeriesNumberWidth(),
-    );
-    const height = Math.floor(colsHierarchy.height);
-    const width = this.getCornerBBoxWidth(originalCornerWidth);
-
-    this.cornerBBox = {
-      x: 0,
-      y: 0,
-      width,
-      height,
-      maxX: width,
-      maxY: height,
-      minX: 0,
-      minY: 0,
-    };
-    this.cornerWidth = originalCornerWidth;
+    this.cornerBBox = new CornerBBox(this, true);
   }
 
-  getCornerBBoxWidth = (cornerWidth: number): number => {
-    const { colsHierarchy } = this.layoutResult;
-    if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
-      return this.getCornerWidth(cornerWidth, colsHierarchy);
-    }
-    return cornerWidth;
-  };
-
-  private getAdaptiveCornerWidth = (
-    cornerWidth: number,
-    colsHierarchy: Hierarchy,
-  ): number => {
-    const { width: canvasWidth } = this.spreadsheet.options;
-    const panelWidth = canvasWidth - cornerWidth;
-    // 拖拽时需要忽略自适应, 避免出现角头空白的情况, (拖拽宽度权重 > 自适应宽度权重)
-    const isResized = this.spreadsheet.store.get('resized');
-
-    if (
-      panelWidth > colsHierarchy.width &&
-      this.spreadsheet.isColAdaptive() &&
-      !isResized
-    ) {
-      const adaptiveCornerWidthDiff = panelWidth - colsHierarchy.width;
-      return cornerWidth + adaptiveCornerWidthDiff;
-    }
-
-    return cornerWidth;
-  };
-
-  private getDefaultCornerWidth = (
-    originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
-  ): number => {
-    const { width: canvasWidth } = this.spreadsheet.options;
-    const maxPanelWidth = Math.floor(
-      canvasWidth * (1 - CORNER_MAX_WIDTH_RATIO),
-    );
-    const panelWidth = Math.floor(canvasWidth - originalCornerWidth);
-
-    if (
-      colsHierarchy.width > panelWidth &&
-      colsHierarchy.width <= maxPanelWidth
-    ) {
-      return originalCornerWidth - (maxPanelWidth - colsHierarchy.width);
-    }
-
-    if (colsHierarchy.width <= panelWidth) {
-      return originalCornerWidth;
-    }
-
-    return Math.min(originalCornerWidth, canvasWidth * CORNER_MAX_WIDTH_RATIO);
-  };
-
-  private getCornerWidth = (
-    originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
-  ): number => {
-    if (this.spreadsheet.isHierarchyTreeType()) {
-      return originalCornerWidth;
-    }
-    const defaultCornerWidth = this.getDefaultCornerWidth(
-      originalCornerWidth,
-      colsHierarchy,
-    );
-    const cornerWidth = this.getAdaptiveCornerWidth(
-      defaultCornerWidth,
-      colsHierarchy,
-    );
-    return Math.floor(cornerWidth);
-  };
-
-  calculatePanelBBox = () => {
-    const corner = this.cornerBBox;
-    const br = {
-      x: Math.floor(corner.maxX),
-      y: Math.floor(corner.maxY),
-    };
-    const box = this.getCanvasHW();
-    let width = box.width - br.x;
-    let height =
-      box.height -
-      br.y -
-      (get(this.cfg, 'spreadsheet.theme.scrollBar.size') as number);
-
-    const realWidth = this.getRealWidth();
-    const realHeight = this.getRealHeight();
-
-    width = Math.ceil(Math.min(width, realWidth));
-    height = Math.ceil(Math.min(height, realHeight));
-
-    this.panelBBox = {
-      x: br.x,
-      y: br.y,
-      width,
-      height,
-      maxX: br.x + width,
-      maxY: br.y + height,
-      minX: br.x,
-      minY: br.y,
-    } as BBox;
+  protected calculatePanelBBox = () => {
+    this.panelBBox = new PanelBBox(this, true);
   };
 
   getRealWidth = (): number => {
@@ -520,7 +416,7 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup = () => {
-    const children = this.panelGroup.cfg.children;
+    const children = this.panelGroup.getChildren() || [];
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
       if (child instanceof Group) {
@@ -533,123 +429,150 @@ export abstract class BaseFacet {
     this.backgroundGroup.set('children', []);
   };
 
-  scrollWithAnimation = (offsetConfig: OffsetConfig) => {
-    const { x: newX, y: newY } = this.adjustXAndY(
-      offsetConfig.offsetX.value,
-      offsetConfig.offsetY.value,
-    );
+  scrollWithAnimation = (
+    offsetConfig: OffsetConfig,
+    duration = 200,
+    cb?: () => void,
+  ) => {
+    const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
+      this.getAdjustedScrollOffset({
+        scrollX: offsetConfig.offsetX.value || 0,
+        scrollY: offsetConfig.offsetY.value || 0,
+      });
     if (this.timer) {
       this.timer.stop();
     }
-    const duration = 200;
     const oldOffset = Object.values(this.getScrollOffset());
     const newOffset: number[] = [
-      newX === undefined ? oldOffset[0] : newX,
-      newY === undefined ? oldOffset[1] : newY,
+      adjustedScrollX === undefined ? oldOffset[0] : adjustedScrollX,
+      adjustedScrollY === undefined ? oldOffset[1] : adjustedScrollY,
     ];
     const interpolate = interpolateArray(oldOffset, newOffset);
-    this.timer = d3Timer.timer((elapsed) => {
+    this.timer = timer((elapsed) => {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
-      this.startScroll(newX, newY);
+      this.startScroll(adjustedScrollX, adjustedScrollY);
       if (elapsed > duration) {
         this.timer.stop();
+        cb?.();
       }
     });
   };
 
   scrollImmediately = (offsetConfig: OffsetConfig) => {
-    const { x: newX, y: newY } = this.adjustXAndY(
-      offsetConfig.offsetX.value,
-      offsetConfig.offsetY.value,
-    );
-    this.setScrollOffset({ scrollX: newX, scrollY: newY });
-    this.startScroll(newX, newY);
+    const { scrollX, scrollY } = this.getAdjustedScrollOffset({
+      scrollX: offsetConfig.offsetX.value || 0,
+      scrollY: offsetConfig.offsetY.value || 0,
+    });
+    this.setScrollOffset({ scrollX, scrollY });
+    this.startScroll(scrollX, scrollY);
   };
 
   startScroll = (newX: number, newY: number) => {
     const { scrollX, scrollY } = this.getScrollOffset();
     if (newX !== undefined) {
       this.hScrollBar?.onlyUpdateThumbOffset(
-        (scrollX / this.layoutResult.colsHierarchy.width) *
-          this.hScrollBar.trackLen,
+        this.getScrollBarOffset(scrollX, this.hScrollBar),
       );
     }
     if (newY !== undefined) {
       this.vScrollBar?.onlyUpdateThumbOffset(
-        (scrollY / this.viewCellHeights.getTotalHeight()) *
-          this.vScrollBar.trackLen,
+        this.getScrollBarOffset(scrollY, this.vScrollBar),
       );
     }
     this.dynamicRenderCell();
   };
 
-  adjustXAndY = (x: number, y: number): Point => {
-    let newX = x;
-    let newY = y;
-    if (x !== undefined) {
-      if (x + this.panelBBox.width >= this.layoutResult.colsHierarchy.width) {
-        newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
-      }
-    }
+  getRendererHeight = () => {
+    const { start, end } = this.getCellRange();
+    return (
+      this.viewCellHeights.getCellOffsetY(end + 1) -
+      this.viewCellHeights.getCellOffsetY(start)
+    );
+  };
 
-    const totalHeight = this.viewCellHeights.getTotalHeight();
-    if (y !== undefined) {
-      if (y + this.panelBBox.height >= totalHeight) {
-        newY = totalHeight - this.panelBBox.height;
-      }
-    }
+  private getAdjustedScrollOffset = ({
+    scrollX,
+    scrollY,
+    hRowScrollX,
+  }: ScrollOffset): ScrollOffset => {
     return {
-      x: newX,
-      y: newY,
+      scrollX: getAdjustedScrollOffset(
+        scrollX,
+        this.layoutResult.colsHierarchy.width,
+        this.panelBBox.width,
+      ),
+      scrollY: getAdjustedScrollOffset(
+        scrollY,
+        this.getRendererHeight(),
+        this.panelBBox.height,
+      ),
+      hRowScrollX: getAdjustedRowScrollX(hRowScrollX, this.cornerBBox),
     };
   };
 
   renderRowScrollBar = (rowScrollX: number) => {
     if (
       !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
-      this.cornerBBox.width < this.cornerWidth
+      this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
+      const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
+      const { maxY } = this.getScrollbarPosition();
+      const thumbLen =
+        (this.cornerBBox.width * this.cornerBBox.width) /
+        this.cornerBBox.originalWidth;
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
-        trackLen: this.cornerBBox.width - this.scrollBarSize / 2,
-        thumbLen:
-          (this.cornerBBox.width * this.cornerBBox.width) / this.cornerWidth,
+        trackLen: this.cornerBBox.width,
+        thumbLen,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
-          y: this.panelBBox.maxY - this.scrollBarSize / 2,
+          y: maxY,
         },
-        thumbOffset: (rowScrollX * this.cornerBBox.width) / this.cornerWidth,
+        thumbOffset:
+          (rowScrollX * (this.cornerBBox.width - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        const hRowScrollX =
-          (thumbOffset / this.hRowScrollBar.trackLen) * this.cornerWidth;
+      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
+        const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
+        const hRowScrollX = newOffset;
         this.setScrollOffset({ hRowScrollX });
-        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
         );
-        this.centerFrame.onChangeShadowVisibility(
-          hRowScrollX,
-          this.cornerWidth - this.cornerBBox.width - this.scrollBarSize * 2,
-          true,
-        );
         this.cornerHeader.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
+        );
+        this.hRowScrollBar.updateThumbOffset(
+          this.getScrollBarOffset(newOffset, this.hRowScrollBar),
+          false,
         );
       });
       this.foregroundGroup.add(this.hRowScrollBar);
     }
   };
 
+  getValidScrollBarOffset = (offset: number, maxOffset: number) => {
+    if (offset > maxOffset) {
+      return maxOffset;
+    }
+    if (offset < 0) {
+      return 0;
+    }
+    return offset;
+  };
+
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
+
+      const { maxY } = this.getScrollbarPosition();
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -661,36 +584,61 @@ export abstract class BaseFacet {
           (this.cfg.spreadsheet.isScrollContainsRowHeader()
             ? -this.cornerBBox.width + halfScrollSize
             : halfScrollSize),
-        y: this.panelBBox.maxY,
+        y: maxY,
       };
       const finaleRealWidth =
         realWidth +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
           ? this.cornerBBox.width
           : 0);
+      const maxOffset = finaleRealWidth - finalWidth;
+      const thumbLen = (finalWidth / finaleRealWidth) * finalWidth;
 
       // TODO abstract
       this.hScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: finalWidth,
-        thumbLen: (finalWidth / finaleRealWidth) * finalWidth,
+        thumbLen,
         // position: this.viewport.bl,
         position: finalPosition,
-        thumbOffset: (scrollX * finalWidth) / finaleRealWidth,
+        thumbOffset: (scrollX * (finalWidth - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        const offsetLeft =
-          (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth;
-        this.setScrollOffset({
-          scrollX: offsetLeft,
-        });
-        this.dynamicRenderCell();
-      });
+      this.hScrollBar.on(
+        ScrollType.ScrollChange,
+        ({ offset, updateThumbOffset }) => {
+          const newScrollX = this.getValidScrollBarOffset(offset, maxOffset);
+          if (updateThumbOffset) {
+            this.hScrollBar.updateThumbOffset(
+              this.getScrollBarOffset(newScrollX, this.hScrollBar),
+              false,
+            );
+          }
+
+          this.setScrollOffset({
+            scrollX: newScrollX,
+          });
+          this.dynamicRenderCell();
+        },
+      );
 
       this.foregroundGroup.add(this.hScrollBar);
     }
+  };
+
+  private getScrollbarPosition = () => {
+    const { maxX, maxY } = this.panelBBox;
+    const { width, height } = this.getCanvasHW();
+    const isContentMode =
+      this.spreadsheet.options.interaction.scrollbarPosition ===
+      ScrollbarPositionType.CONTENT;
+
+    return {
+      maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
+      maxY: isContentMode ? maxY : height - this.scrollBarSize,
+    };
   };
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
@@ -699,29 +647,46 @@ export abstract class BaseFacet {
         (height / realHeight) * height,
         MIN_SCROLL_BAR_HEIGHT,
       );
-      const getOffsetTop = (scrollTop: number) =>
-        (scrollTop / (height - thumbHeight)) *
-        (realHeight - this.panelBBox.height);
+      const maxOffset = realHeight - height;
+      const { maxX } = this.getScrollbarPosition();
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
         trackLen: height,
         thumbLen: thumbHeight,
-        thumbOffset: (scrollY * this.panelBBox.height) / realHeight,
+        thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
         position: {
-          x: this.panelBBox.maxX - this.scrollBarSize,
+          x: maxX,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        this.setScrollOffset({ scrollY: getOffsetTop(thumbOffset) });
-        this.dynamicRenderCell();
-      });
+      this.vScrollBar.on(
+        ScrollType.ScrollChange,
+        ({ offset, updateThumbOffset }) => {
+          const newScrollY = this.getValidScrollBarOffset(offset, maxOffset);
+          if (updateThumbOffset) {
+            this.vScrollBar.updateThumbOffset(
+              this.getScrollBarOffset(newScrollY, this.vScrollBar),
+              false,
+            );
+          }
+
+          this.setScrollOffset({ scrollY: newScrollY });
+          this.dynamicRenderCell();
+        },
+      );
 
       this.foregroundGroup.add(this.vScrollBar);
     }
+  };
+
+  // (滑动 offset / 最大 offset（滚动对象真正长度 - 轨道长）) = (滑块 offset / 最大滑动距离（轨道长 - 滑块长）)
+  getScrollBarOffset = (offset: number, scrollbar: ScrollBar) => {
+    const { trackLen, thumbLen, scrollTargetMaxOffset } = scrollbar;
+    return (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
   };
 
   isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
@@ -742,56 +707,54 @@ export abstract class BaseFacet {
     );
   };
 
-  updateHScrollBarThumbOffsetWhenOverThePanel = (
-    wheelEvent: Partial<S2WheelEvent>,
-  ) => {
-    if (this.isScrollOverThePanelArea(wheelEvent)) {
-      this.updateHScrollBarThumbOffset(wheelEvent.deltaX);
+  updateHorizontalRowScrollOffset = ({ offset, layerX, layerY }) => {
+    // 在行头区域滚动时 才更新行头水平滚动条
+    if (this.isScrollOverTheCornerArea({ layerX, layerY })) {
+      this.hRowScrollBar?.emitScrollChange(offset);
     }
   };
 
-  updateHRowScrollBarThumbOffsetWhenOverTheCorner = (
-    wheelEvent: Partial<S2WheelEvent>,
-  ) => {
-    if (this.isScrollOverTheCornerArea(wheelEvent)) {
-      this.updateHRowScrollBarThumbOffset(wheelEvent.deltaX);
+  updateHorizontalScrollOffset = ({ offset, layerX, layerY }) => {
+    // 1.行头没有滚动条 2.在数值区域滚动时 才更新数值区域水平滚动条
+    if (
+      !this.hRowScrollBar ||
+      this.isScrollOverThePanelArea({ layerX, layerY })
+    ) {
+      this.hScrollBar?.emitScrollChange(offset);
     }
-  };
-
-  updateHScrollBarThumbOffset = (deltaX: number) => {
-    this.hScrollBar?.updateThumbOffset(
-      this.hScrollBar.thumbOffset + deltaX / 8,
-    );
-  };
-
-  updateHRowScrollBarThumbOffset = (deltaX: number) => {
-    this.hRowScrollBar.updateThumbOffset(
-      this.hRowScrollBar.thumbOffset + deltaX / 8,
-    );
-  };
-
-  updateVScrollBarThumbOffset = (deltaY: number) => {
-    const offsetTop = this.vScrollBar?.thumbOffset + deltaY / 8;
-
-    this.vScrollBar?.updateThumbOffset(offsetTop);
   };
 
   isScrollToLeft = (deltaX: number) => {
     if (!this.hScrollBar) {
       return true;
     }
-    return deltaX <= 0 && this.hScrollBar?.thumbOffset <= 0;
+
+    const isScrollRowHeaderToLeft =
+      !this.hRowScrollBar || this.hRowScrollBar.thumbOffset <= 0;
+
+    const isScrollPanelToLeft = deltaX <= 0 && this.hScrollBar.thumbOffset <= 0;
+
+    return isScrollPanelToLeft && isScrollRowHeaderToLeft;
   };
 
   isScrollToRight = (deltaX: number) => {
     if (!this.hScrollBar) {
       return true;
     }
-    return (
-      deltaX >= 0 &&
-      this.hScrollBar?.thumbOffset + this.hScrollBar?.thumbLen >=
-        this.panelBBox?.width
-    );
+
+    const viewportWidth = this.spreadsheet.isFrozenRowHeader()
+      ? this.panelBBox?.width
+      : this.panelBBox?.maxX;
+
+    const isScrollRowHeaderToRight =
+      !this.hRowScrollBar ||
+      this.hRowScrollBar.thumbOffset + this.hRowScrollBar.thumbLen >=
+        this.cornerBBox.width;
+
+    const isScrollPanelToRight =
+      this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >= viewportWidth;
+
+    return deltaX >= 0 && isScrollPanelToRight && isScrollRowHeaderToRight;
   };
 
   isScrollToTop = (deltaY: number) => {
@@ -812,11 +775,11 @@ export abstract class BaseFacet {
     );
   };
 
-  isVerticalScrollInTheViewport = (deltaY: number) => {
+  isVerticalScrollOverTheViewport = (deltaY: number) => {
     return !this.isScrollToTop(deltaY) && !this.isScrollToBottom(deltaY);
   };
 
-  isHorizontalScrollInTheViewport = (deltaX: number) => {
+  isHorizontalScrollOverTheViewport = (deltaX: number) => {
     return !this.isScrollToLeft(deltaX) && !this.isScrollToRight(deltaX);
   };
 
@@ -827,18 +790,41 @@ export abstract class BaseFacet {
       - 未滚动到顶部或底部: 当前表格滚动, 阻止外部容器滚动
       - 滚动到顶部或底部: 恢复外部容器滚动
   */
-  isScrollInTheViewport = (deltaX: number, deltaY: number) => {
+  isScrollOverTheViewport = (
+    deltaX: number,
+    deltaY: number,
+    layerY: number,
+  ) => {
+    const isScrollOverTheHeader = layerY <= this.cornerBBox.maxY;
+    // 光标在角头或列头时, 不触发表格自身滚动
+    if (isScrollOverTheHeader) {
+      return false;
+    }
     if (deltaY !== 0) {
-      return this.isVerticalScrollInTheViewport(deltaY);
+      return this.isVerticalScrollOverTheViewport(deltaY);
     }
     if (deltaX !== 0) {
-      return this.isHorizontalScrollInTheViewport(deltaX);
+      return this.isHorizontalScrollOverTheViewport(deltaX);
     }
     return false;
   };
 
+  cancelScrollFrame = () => {
+    if (isMobile() && this.scrollFrameId) {
+      return false;
+    }
+    cancelAnimationFrame(this.scrollFrameId);
+    return true;
+  };
+
+  clearScrollFrameIdOnMobile = () => {
+    if (isMobile()) {
+      this.scrollFrameId = null;
+    }
+  };
+
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.interaction.scrollSpeedRatio;
+    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
@@ -849,57 +835,58 @@ export abstract class BaseFacet {
     this.spreadsheet.hideTooltip();
     this.spreadsheet.interaction.clearHoverTimer();
 
-    if (!this.isScrollInTheViewport(optimizedDeltaX, optimizedDeltaY)) {
+    if (
+      !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
+    ) {
       return;
     }
 
-    event.preventDefault?.();
+    event?.preventDefault?.();
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
-    cancelAnimationFrame(this.scrollFrameId);
+    if (!this.cancelScrollFrame()) {
+      return;
+    }
 
     this.scrollFrameId = requestAnimationFrame(() => {
-      if (optimizedDeltaX > 0) {
-        this.showHScrollBar();
-      }
+      const {
+        scrollX: currentScrollX,
+        scrollY: currentScrollY,
+        hRowScrollX,
+      } = this.getScrollOffset();
 
-      if (optimizedDeltaY > 0) {
-        this.showVScrollBar();
-      }
-
-      if (this.hRowScrollBar) {
-        // When rowScrollBar is exists, scrolling is only valid at the corresponding render range
-        this.updateHScrollBarThumbOffsetWhenOverThePanel({
+      if (optimizedDeltaX !== 0) {
+        this.showHorizontalScrollBar();
+        this.updateHorizontalRowScrollOffset({
           layerX,
           layerY,
-          deltaX,
-          deltaY: optimizedDeltaX,
+          offset: optimizedDeltaX + hRowScrollX,
         });
-
-        this.updateHRowScrollBarThumbOffsetWhenOverTheCorner({
+        this.updateHorizontalScrollOffset({
           layerX,
           layerY,
-          deltaX,
-          deltaY: optimizedDeltaX,
+          offset: optimizedDeltaX + currentScrollX,
         });
-      } else if (this.hScrollBar) {
-        this.updateHScrollBarThumbOffset(optimizedDeltaX);
       }
 
-      this.updateVScrollBarThumbOffset(optimizedDeltaY);
+      if (optimizedDeltaY !== 0) {
+        this.showVerticalScrollBar();
+        this.vScrollBar?.emitScrollChange(optimizedDeltaY + currentScrollY);
+      }
+
       this.delayHideScrollbarOnMobile();
+      this.clearScrollFrameIdOnMobile();
     });
   };
 
   protected clip(scrollX: number, scrollY: number) {
+    const isFrozenRowHeader = this.cfg.spreadsheet.isFrozenRowHeader();
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
-        x: this.cfg.spreadsheet.isFreezeRowHeader() ? scrollX : 0,
+        x: isFrozenRowHeader ? scrollX : 0,
         y: scrollY,
-        width:
-          this.panelBBox.width +
-          (this.cfg.spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
+        width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
         height: this.panelBBox.height,
       },
     });
@@ -923,7 +910,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
-    this.rowHeader.onScrollXY(
+    this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_RESIZE_AREA,
@@ -940,16 +927,9 @@ export abstract class BaseFacet {
     this.centerFrame.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
-      false,
     );
     this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(
-      scrollX,
-      this.cfg.spreadsheet.isScrollContainsRowHeader()
-        ? this.cornerBBox.width
-        : undefined,
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
+    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -960,12 +940,11 @@ export abstract class BaseFacet {
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    // DebuggerUtil.getInstance().logger(
-    //   'renderIndex:',
-    //   this.preCellIndexes,
-    //   indexes,
-    // );
-
+    DebuggerUtil.getInstance().logger(
+      'renderIndex:',
+      this.preCellIndexes,
+      indexes,
+    );
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -979,7 +958,10 @@ export abstract class BaseFacet {
           this.addCell(cell);
         }
       });
-      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+      const allCells = getAllChildCells(
+        this.panelGroup.getChildren() as IElement[],
+        DataCell,
+      );
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -989,9 +971,9 @@ export abstract class BaseFacet {
         findOne?.remove(true);
       });
       updateMergedCells(this.spreadsheet);
-      // DebuggerUtil.getInstance().logger(
-      //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
-      // );
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+      );
     });
     this.preCellIndexes = indexes;
   };
@@ -1005,10 +987,11 @@ export abstract class BaseFacet {
     this.realCellRender(scrollX, scrollY);
   };
 
-  protected init(): void {
+  protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
+      this.saveInitColumnLeafNodes(this.layoutResult.colLeafNodes);
       this.spreadsheet.emit(
         S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
         this.layoutResult,
@@ -1022,7 +1005,6 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
-    // this.removeResizeIntercept();
   }
 
   protected renderBackground() {
@@ -1081,14 +1063,18 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0) {
+    if (seriesNumberWidth > 0 && !this.rowIndexHeader) {
       this.rowIndexHeader = this.getSeriesNumberHeader();
-      this.foregroundGroup.add(this.rowIndexHeader);
     }
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    this.foregroundGroup.add(this.rowHeader);
+    if (this.rowIndexHeader) {
+      this.foregroundGroup.add(this.rowIndexHeader);
+    }
+    if (this.rowHeader) {
+      this.foregroundGroup.add(this.rowHeader);
+    }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
     this.foregroundGroup.add(this.centerFrame);
@@ -1096,18 +1082,17 @@ export abstract class BaseFacet {
 
   protected getRowHeader(): RowHeader {
     if (!this.rowHeader) {
-      const { y, width, height } = this.panelBBox;
+      const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
       const seriesNumberWidth = this.getSeriesNumberWidth();
       return new RowHeader({
         width: this.cornerBBox.width,
         height,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         position: { x: 0, y },
         data: this.layoutResult.rowNodes,
-        offset: 0,
         hierarchyType: this.cfg.hierarchyType,
-        linkFields: get(this.cfg.spreadsheet, 'options.linkFields'),
+        linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
         seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
@@ -1117,19 +1102,17 @@ export abstract class BaseFacet {
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
-      const { x, width, height } = this.panelBBox;
+      const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
       return new ColHeader({
         width,
+        cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        offset: 0,
-        formatter: (field: string): Formatter =>
-          this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
@@ -1163,7 +1146,7 @@ export abstract class BaseFacet {
 
   protected getCenterFrame(): Frame {
     if (!this.centerFrame) {
-      const { width, height } = this.panelBBox;
+      const { viewportWidth, viewportHeight } = this.panelBBox;
       const cornerWidth = this.cornerBBox.width;
       const cornerHeight = this.cornerBBox.height;
       const frame = this.cfg?.frame;
@@ -1174,12 +1157,10 @@ export abstract class BaseFacet {
         },
         width: cornerWidth,
         height: cornerHeight,
-        viewportWidth: width,
-        viewportHeight: height,
-        showCornerRightShadow: !isNil(this.hRowScrollBar),
-        // When both a row header and a panel scroll bar exist, show viewport shadow
-        showViewPortRightShadow:
-          !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
+        viewportWidth,
+        viewportHeight,
+        showViewportLeftShadow: false,
+        showViewportRightShadow: false,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
@@ -1188,6 +1169,22 @@ export abstract class BaseFacet {
       return frame ? frame(frameCfg) : new Frame(frameCfg);
     }
     return this.centerFrame;
+  }
+
+  protected getGridInfo = () => {
+    const [colMin, colMax, rowMin, rowMax] = this.preCellIndexes.center;
+    const cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
+    const rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
+
+    return {
+      cols,
+      rows,
+    };
+  };
+
+  public drawGrid() {
+    this.gridInfo = this.getGridInfo();
+    this.spreadsheet.panelScrollGroup.updateGrid(this.gridInfo);
   }
 
   /**
@@ -1199,12 +1196,12 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
-    const maxScrollY =
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
 
-    if (scrollY > maxScrollY) {
-      scrollY = maxScrollY;
-    }
+    scrollY = getAdjustedScrollOffset(
+      scrollY,
+      this.viewCellHeights.getTotalHeight(),
+      this.panelBBox.viewportHeight,
+    );
 
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);
@@ -1212,6 +1209,7 @@ export abstract class BaseFacet {
       this.realCellRender(scrollX, scrollY);
     }
 
+    this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
 
@@ -1220,12 +1218,24 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-    this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    const { interaction } = this.spreadsheet;
+    // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
+    if (!interaction.isSelectedState()) {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
   }, 300);
 
-  protected abstract doLayout(): LayoutResult;
+  protected saveInitColumnLeafNodes(columnNodes: Node[] = []) {
+    const { store, options } = this.spreadsheet;
+    const { hiddenColumnFields } = options.interaction;
 
-  protected abstract getViewCellHeights(
-    layoutResult: LayoutResult,
-  ): ViewCellHeights;
+    // 当前显示的 + 被隐藏的
+    const originalColumnsLength =
+      columnNodes.length + hiddenColumnFields.length;
+    const initColumnLeafNodes = store.get('initColumnLeafNodes', []);
+
+    if (originalColumnsLength !== initColumnLeafNodes.length) {
+      store.set('initColumnLeafNodes', columnNodes);
+    }
+  }
 }

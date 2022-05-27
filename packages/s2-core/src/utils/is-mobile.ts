@@ -2,7 +2,7 @@
  * 判断是否是移动端。
  * 兼容场景：pc端但是使用mobile配置。
  */
-export function isMobile(device?) {
+export function isMobile(device?: string) {
   if (device === 'mobile') {
     return true;
   }

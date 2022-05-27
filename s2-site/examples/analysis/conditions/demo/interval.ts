@@ -1,52 +1,36 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then((dataCfg) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        hoverHighlight: false,
       },
-
-      data,
-    };
-
-    const s2options = {
-      width: 800,
-      height: 600,
-      hoverHighlight: false,
       conditions: {
         interval: [
           {
-            field: 'price',
-            mapping(fieldValue, data) {
+            field: 'number',
+            mapping() {
               return {
                 fill: '#80BFFF',
                 // 自定义柱状图范围
                 isCompare: true,
-                maxValue: 20,
-                minValue: 5,
-              };
-            },
-          },
-          {
-            field: 'cost',
-            mapping(fieldValue, data) {
-              return {
-                fill: '#4DA6FF',
+                maxValue: 8000,
+                minValue: 300,
               };
             },
           },
         ],
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();
   });

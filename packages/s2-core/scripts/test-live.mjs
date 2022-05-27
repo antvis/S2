@@ -10,7 +10,7 @@ async function main() {
   const spinner = ora('读取测试文件中...').start();
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
 
-  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.tsx';
+  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.ts';
   spinner.stop();
 
   const selectedPath = await inquirer.prompt([
@@ -18,7 +18,6 @@ async function main() {
       type: 'autocomplete',
       message:
         '📢 请选择测试文件 (支持文件名搜索, 直接回车默认 spread-sheet-spec 🔍 )',
-      searchText: 'We are searching the internet for you!',
       emptyText: '未匹配到测试文件',
       name: 'path',
       loop: true,

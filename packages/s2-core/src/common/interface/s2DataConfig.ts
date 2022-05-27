@@ -5,7 +5,7 @@ import {
   SortParams,
 } from '@/common/interface/index';
 
-/** use for tabularSheet
+/** use for gridAnalysisSheet
  *  eg. { label: '余额女',
         values: [
           ['最近7天登端天数', 1, 3423423, 323],
@@ -17,9 +17,11 @@ import {
  */
 
 export interface MultiData {
-  // the title of one cell of the tabularSheet
-  label?: string;
   values: (string | number)[][];
+  originalValues?: (string | number)[][];
+  // the title of one cell of the gridAnalysisSheet
+  label?: string;
+  [key: string]: unknown;
 }
 
 export type SimpleDataItem = string | number;
@@ -50,7 +52,6 @@ export interface S2DataConfig {
   sortParams?: SortParams;
   // field filer params
   filterParams?: FilterParam[];
-
   // extra config
-  [key: string]: any;
+  [key: string]: unknown;
 }

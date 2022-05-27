@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "透视表",
+    "en": "Pivot"
+  },
+  "demos": [
+    {
+      "filename": "custom-width.ts",
+      "title": {
+        "zh": "根据指标自定义列宽",
+        "en": "Custom Width"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/mFDomjRbz7/f6719631-64b6-4741-a9c1-b21abe8b351c.png"
+    },
+    {
+      "filename": "custom-height.ts",
+      "title": {
+        "zh": "根据指标自定义行高",
+        "en": "Custom Height"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vb3ZAIvFqi/e483295e-5a73-49e7-ae00-1cee05b184e6.png"
+    }
+  ]
+}

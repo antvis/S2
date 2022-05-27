@@ -4,3 +4,5 @@ import { TableDataSet } from './table-data-set';
 import { CustomTreePivotDataSet } from './custom-tree-pivot-data-set';
 
 export { BaseDataSet, PivotDataSet, TableDataSet, CustomTreePivotDataSet };
+
+export * from './interface';

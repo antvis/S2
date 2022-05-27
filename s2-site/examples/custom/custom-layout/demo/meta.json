@@ -1,0 +1,40 @@
+{
+  "title": {
+    "zh": "自定义布局",
+    "en": "Custom Layout"
+  },
+  "demos": [
+    {
+      "filename": "custom-layout-arrange.ts",
+      "title": {
+        "zh": "自定义行列顺序",
+        "en": "Custom Layout Arrange"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/iw1AQBleoJ/634d1162-b4a4-472c-9bf5-76eca25c6b50.png"
+    },
+    {
+      "filename": "custom-coordinate.ts",
+      "title": {
+        "zh": "自定义行列坐标",
+        "en": "Custom Coordinate"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/VGuJd4OP2J/a21c6e22-05c0-4da1-860d-75be53afc43b.png"
+    },
+    {
+      "filename": "custom-data-position.ts",
+      "title": {
+        "zh": "自定义数据位置",
+        "en": "Custom Layout Data Position"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/SeGpS6Mf3p/c8b32cff-49bd-49f0-a2e8-03c5a769fa4c.png"
+    },
+    {
+      "filename": "custom-layout-hierarchy.ts",
+      "title": {
+        "zh": "自定义层级结构",
+        "en": "Custom Layout Hierarchy"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/s33%26UjDslN/fed91224-4700-455a-b50f-8adc5cad8abd.png"
+    }
+  ]
+}

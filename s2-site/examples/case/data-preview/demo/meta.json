@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "数据预览表",
+    "en": "Group drill down sheet"
+  },
+  "demos": [
+    {
+      "filename": "index.tsx",
+      "title": {
+        "zh": "数据预览表",
+        "en": "Data Preview Table"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nVlBvKDBjT/search.gif"
+    }
+  ]
+}

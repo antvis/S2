@@ -15,4 +15,11 @@ export class TableDataCell extends DataCell {
       linkTextFill,
     );
   }
+
+  protected drawBorderShape() {
+    super.drawBorderShape();
+    if (this.meta.colIndex === 0) {
+      this.drawLeftBorder();
+    }
+  }
 }

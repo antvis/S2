@@ -1,0 +1,15 @@
+{
+  "fields": {
+    "rows": ["row0"],
+    "columns": ["col0"],
+    "values": ["cost"],
+    "valueInCols": true
+  },
+  "data": [
+    {
+      "row0": 0,
+      "col0": 0,
+      "cost": 2
+    }
+  ]
+}

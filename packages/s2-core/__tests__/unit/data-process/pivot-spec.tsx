@@ -1,8 +1,8 @@
 /**
- * 交叉表核心数据流程（保证基本数据正确）
+ * 透视表核心数据流程（保证基本数据正确）
  * */
 import { flattenDeep, get, size, uniq } from 'lodash';
-import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
@@ -223,31 +223,25 @@ describe('Pivot Table Core Data Process', () => {
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
       s2.facet.layoutResult;
     const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
+    const expectedWidth = Math.max(
+      style.cellCfg.width,
+      width / (size(fields.rows) + size(colLeafNodes)),
+    );
     test('should calc correct row & cell width', () => {
-      expect(cellCfg.width).toEqual(
-        Math.max(
-          style.cellCfg.width,
-          width / (size(fields.rows) + size(colLeafNodes)),
-        ),
-      );
-      expect(rowCfg.width).toEqual(
-        Math.max(
-          style.cellCfg.width,
-          width / (size(fields.rows) + size(colLeafNodes)),
-        ),
-      );
+      expect(rowLeafNodes[0].width).toEqual(expectedWidth);
+      expect(colLeafNodes[0].width).toEqual(expectedWidth);
     });
     test('should calc correct row node size and coordinate', () => {
       // all sample width.
       expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(
-        rowCfg.width,
+        expectedWidth,
       );
       expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(
-        rowCfg.width,
+        expectedWidth,
       );
       // all width
       expect(uniq(rowsHierarchy.getNodes().map((node) => node.width))).toEqual([
-        rowCfg.width,
+        expectedWidth,
       ]);
       // leaf node
       rowLeafNodes.forEach((node, index) => {
@@ -256,7 +250,7 @@ describe('Pivot Table Core Data Process', () => {
           cellCfg.height + padding?.top + padding.bottom,
         );
         expect(node.y).toEqual(node.height * index);
-        expect(node.x).toEqual(rowCfg.width);
+        expect(node.x).toEqual(expectedWidth);
       });
       // level = 0
       const provinceNodes = rowsHierarchy.getNodes(0);
@@ -287,7 +281,7 @@ describe('Pivot Table Core Data Process', () => {
       );
       // leaf node
       colLeafNodes.forEach((node, index) => {
-        expect(node.width).toEqual(cellCfg.width);
+        expect(node.width).toEqual(expectedWidth);
         expect(node.x).toEqual(node.width * index);
         expect(node.y).toEqual(node.level * colCfg.height);
       });

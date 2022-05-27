@@ -1,21 +1,22 @@
-import { MenuProps } from 'antd';
-import { SpreadSheet } from '@/sheet-type';
-import { SortParam } from '@/common/interface';
-import { BaseTooltip } from '@/ui/tooltip';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { SpreadSheet } from '@/sheet-type';
+import type { S2CellType, SortParam } from '@/common/interface';
+import type { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
-  id: string;
-  icon?: React.ReactNode;
+  key: string;
+  icon?: Element | string;
   text?: string;
-  children?: TooltipOperatorMenu[]; // subMenu
+  onClick?: (cell: S2CellType) => void;
+  visible?: boolean | ((cell: S2CellType) => boolean);
+  children?: TooltipOperatorMenu[];
 }
 
 export interface TooltipOperatorOptions {
-  onClick: MenuProps['onClick'];
-  menus: TooltipOperatorMenu[];
-  [key: string]: unknown;
+  onClick?: (...args: unknown[]) => void;
+  menus?: TooltipOperatorMenu[];
 }
 
 export interface TooltipPosition {
@@ -26,7 +27,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: React.ReactNode;
+  icon?: Element | string;
 };
 
 export interface SortQuery {
@@ -42,6 +43,7 @@ export interface TooltipOptions {
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
+  enableFormat?: boolean;
 }
 
 export interface TooltipSummaryOptions {
@@ -71,21 +73,23 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: React.ReactNode;
+  icon?: Element | string;
   text?: string;
-  render?: React.ElementType;
+  render?: Element | string;
 };
 
-export type InfosProps = {
-  infos: React.ReactNode;
-};
-
-export type TooltipShowOptions = {
+export type TooltipShowOptions<T = TooltipContentType> = {
   position: TooltipPosition;
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  element?: React.ReactElement;
+  content?:
+    | ((
+        cell: S2CellType,
+        defaultTooltipShowOptions: TooltipShowOptions<T>,
+      ) => T)
+    | T;
+  event?: CanvasEvent | MouseEvent;
 };
 
 export type TooltipData = {
@@ -105,18 +109,18 @@ export type TooltipHeadInfo = {
   cols: ListItem[];
 };
 
-export type DataParam = {
+export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
-  isHeader?: boolean; // 是否是行头/列头
+  targetCell: S2CellType;
   getShowValue?: (
     selectedData: TooltipDataItem[],
     valueField: string,
   ) => string | number; // 自定义value
 };
 
-export type IconProps = {
-  icon: React.ReactNode;
+export type TooltipIconProps = {
+  icon: Element | string;
   [key: string]: unknown;
 };
 
@@ -124,11 +128,11 @@ export interface SummaryProps {
   summaries: TooltipSummaryOptions[];
 }
 
-export interface SummaryParam extends DataParam {
+export interface SummaryParam extends TooltipDataParams {
   cellInfos?: TooltipDataItem[];
 }
 
-export interface TooltipDataParam extends DataParam {
+export interface TooltipDataParam extends TooltipDataParams {
   cellInfos: TooltipDataItem[];
 }
 
@@ -140,33 +144,46 @@ export interface OrderOption {
 
 export type TooltipAutoAdjustBoundary = 'body' | 'container';
 
-export interface BaseTooltipConfig {
-  readonly showTooltip?: boolean;
-  // replace the whole default tooltip component
-  readonly tooltipComponent?: JSX.Element;
+export type TooltipContentType = Element | string;
+
+export interface BaseTooltipConfig<T = TooltipContentType> {
+  showTooltip?: boolean;
+  // Custom content
+  content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
-  readonly operation?: TooltipOperation;
-  readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  operation?: TooltipOperation;
+  // Tooltip Boundary
+  autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  // Custom tooltip
+  renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
+  // Custom tooltip position
+  adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
+  // Custom tooltip mount container
+  getContainer?: () => HTMLElement;
 }
 
-export interface Tooltip extends BaseTooltipConfig {
-  readonly row?: BaseTooltipConfig;
-  readonly col?: BaseTooltipConfig;
-  readonly cell?: BaseTooltipConfig;
-  // custom tooltips
-  readonly renderTooltip?: RenderTooltip;
+export interface TooltipPositionInfo {
+  position: TooltipPosition;
+  event: CanvasEvent | MouseEvent;
 }
 
-export interface TooltipOperation {
+export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
+  row?: BaseTooltipConfig<T>;
+  col?: BaseTooltipConfig<T>;
+  corner?: BaseTooltipConfig<T>;
+  data?: BaseTooltipConfig<T>;
+}
+
+export interface TooltipOperation extends TooltipOperatorOptions {
   // 隐藏列 (明细表有效)
   hiddenColumns?: boolean;
   // 趋势图
   trend?: boolean;
   // 组内排序
   sort?: boolean;
+  // 明细表排序
+  tableSort?: boolean;
 }
-
-export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export interface AutoAdjustPositionOptions {
   position: TooltipPosition;

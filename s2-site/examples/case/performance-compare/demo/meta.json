@@ -1,0 +1,32 @@
+{
+  "title": {
+    "zh": "性能表现",
+    "en": "Performance Compare"
+  },
+  "demos": [
+    {
+      "filename": "basic.tsx",
+      "title": {
+        "zh": "性能对比表",
+        "en": "Performance Compare"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/qOOrO1WEZr/41e23d54-9a21-4ef3-9609-aa46ca871d83.png"
+    },
+    {
+      "filename": "pivot.tsx",
+      "title": {
+        "zh": "100w条数据性能表现-透视表",
+        "en": "Performance Pivot Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aQQMy0LpzT/scroll-pivot.gif"
+    },
+    {
+      "filename": "table.tsx",
+      "title": {
+        "zh": "100w条数据性能表现-明细表",
+        "en": "Performance Table Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vkrof17e%24O/scroll-table.gif"
+    }
+  ]
+}

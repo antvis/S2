@@ -1,16 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
-      width: 800,
-      height: 600,
-      enableCopy: true,
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        enableCopy: true,
+      },
     };
 
     const s2DataConfig = {
@@ -26,8 +29,12 @@ fetch(
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
-        header={{ exportCfg: { open: true } }}
+        options={s2Options}
+        header={{
+          exportCfg: {
+            open: true,
+          },
+        }}
         adaptive={false}
       />,
       document.getElementById('container'),

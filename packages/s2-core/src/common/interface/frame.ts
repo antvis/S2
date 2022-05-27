@@ -1,5 +1,4 @@
-import { SpreadSheet } from '@/index';
-
+import { SpreadSheet } from '@/sheet-type';
 export interface FrameConfig {
   position: {
     x: number;
@@ -10,8 +9,8 @@ export interface FrameConfig {
   height: number;
   viewportWidth: number;
   viewportHeight: number;
-  showCornerRightShadow: boolean;
-  showViewPortRightShadow: boolean;
+  showViewportLeftShadow: boolean;
+  showViewportRightShadow: boolean;
   scrollContainsRowHeader: boolean;
   isPivotMode: boolean;
   spreadsheet: SpreadSheet;

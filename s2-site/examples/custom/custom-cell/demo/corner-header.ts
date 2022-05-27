@@ -1,14 +1,16 @@
 import { PivotSheet } from '@antv/s2';
-import { Group, IShape } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { get } from 'lodash';
-import '@antv/s2/dist/s2.min.css';
 
-// 自定义角头单元格，实现特有功能
-class CustomCornerHeader<Group> extends Group {
-  protected node: Group;
-  protected backgroundShape: IShape;
-  protected textShape: IShape;
-  public constructor(node: Group) {
+/**
+ * 自定义整个角头, 添加文字和背景色
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/header/corner.ts
+ */
+class CustomCornerHeader extends Group {
+  node;
+  backgroundShape;
+  textShape;
+  constructor(node) {
     super({});
     this.node = node;
     this.initCornerHeader();
@@ -60,16 +62,20 @@ fetch(
         columns: ['type', 'sub_type'],
         values: ['number'],
       },
+      meta: res.meta,
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       cornerHeader: (node, s2, headConfig) => {
         return new CustomCornerHeader(node);
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     // 使用
     s2.render();

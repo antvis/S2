@@ -1,6 +1,6 @@
 ---
 title: Hide Columns
-order: 3
+order: 2
 ---
 
 `markdown:docs/manual/advanced/interaction/hide-columns.zh.md`

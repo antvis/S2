@@ -1,5 +1,5 @@
 ---
-title: Custom Hook
+title: Customize Hook
 order: 1
 ---
 

@@ -1,15 +1,40 @@
-import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual, max } from 'lodash';
+import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import {
+  cond,
+  constant,
+  isEmpty,
+  isEqual,
+  last,
+  matches,
+  max,
+  stubTrue,
+} from 'lodash';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
+import {
+  getResizeAreaAttrs,
+  getOrCreateResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 import {
   CellTypes,
   EXTRA_FIELD,
+  DEFAULT_CORNER_TEXT,
   KEY_GROUP_CORNER_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import {
+  getTextPosition,
+  getVerticalPosition,
+  getBorderPositionAndStyle,
+} from '@/utils/cell/cell';
 import {
   renderLine,
   renderRect,
@@ -17,8 +42,13 @@ import {
   renderTreeIcon,
 } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  getEmptyPlaceholder,
+  measureTextWidth,
+} from '@/utils/text';
 import { CornerNodeType } from '@/common/interface/node';
+import { formattedFieldValue } from '@/utils/cell/header-cell';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -46,23 +76,26 @@ export class CornerCell extends HeaderCell {
   }
 
   protected drawCellText() {
-    const { label } = this.meta;
-
-    if (isEqual(label, EXTRA_FIELD)) {
-      // don't render extra node
-      return;
-    }
-
     const { x } = this.getContentArea();
     const { y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
-    const { formattedValue } = this.getFormattedFieldValue();
+    const cornerText = this.getCornerText();
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
-    const text = getEllipsisText(formattedValue, maxWidth, textStyle);
+    const emptyPlaceholder = getEmptyPlaceholder(
+      this.meta,
+      this.spreadsheet.options.placeholder,
+    );
+    const text = getEllipsisText({
+      text: cornerText,
+      maxWidth,
+      fontParam: textStyle,
+      placeholder: emptyPlaceholder,
+    });
+    this.actualText = text;
     const ellipseIndex = text.indexOf('...');
 
     let firstLine = text;
@@ -72,18 +105,22 @@ export class CornerCell extends HeaderCell {
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
       const lastIndex = ellipseIndex + (isIPhoneX() ? 1 : 0);
-      firstLine = formattedValue.substr(0, lastIndex);
-      secondLine = formattedValue.slice(lastIndex);
+      firstLine = cornerText.substr(0, lastIndex);
+      secondLine = cornerText.slice(lastIndex);
       // 第二行重新计算...逻辑
-      secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
+      secondLine = getEllipsisText({
+        text: secondLine,
+        maxWidth,
+        fontParam: textStyle,
+      });
     }
 
     const { x: textX } = getTextPosition(
       {
         x: x + this.getTreeIconWidth(),
-        y: y,
+        y,
         width: maxWidth,
-        height: height,
+        height,
       },
       textStyle,
     );
@@ -125,10 +162,9 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
+    if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
-    // 只有交叉表才有icon
     const { hierarchyCollapse } = this.headerConfig;
 
     const { size } = this.getStyle().icon;
@@ -156,10 +192,12 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawBackgroundShape() {
-    const { backgroundColorOpacity } = this.getStyle().cell;
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
+
     const attrs: ShapeAttrs = {
       ...this.getCellArea(),
-      opacity: backgroundColorOpacity,
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
     };
 
     this.backgroundShape = renderRect(this, attrs);
@@ -170,83 +208,101 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== CornerNodeType.ROW) {
-      return;
-    }
-    const { x, y, width, height } = this.getCellArea();
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
+    [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        this.getCellArea(),
+        this.getStyle().cell,
+      );
+      renderLine(this, position, style);
+    });
+  }
 
-    // horizontal border
-    renderLine(
-      this,
-      {
-        x1: x,
-        y1: y,
-        x2: x + width,
-        y2: y,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
-    // vertical border
-    renderLine(
-      this,
-      {
-        x1: x + width,
-        y1: y,
-        x2: x + width,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
+  private isLastRowCornerCell() {
+    const { cornerType, field } = this.meta;
+    const { rows } = this.headerConfig;
+    return (
+      cornerType === CornerNodeType.Row &&
+      (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)
     );
   }
 
+  private getResizeAreaEffect() {
+    const { cornerType } = this.meta;
+
+    if (cornerType === CornerNodeType.Series) {
+      return ResizeAreaEffect.Series;
+    }
+
+    return this.isLastRowCornerCell() && this.spreadsheet.isHierarchyTreeType()
+      ? ResizeAreaEffect.Tree
+      : ResizeAreaEffect.Field;
+  }
+
   private drawResizeArea() {
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    if (!this.shouldDrawResizeAreaByType('cornerCellHorizontal')) {
+      return;
+    }
+
+    const resizeStyle = this.getResizeAreaStyle();
+
+    const resizeArea = getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    const resizeStyle = this.getStyle('resizeArea');
-    const resizeArea = (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZE_AREA,
-      })) as Group;
-    const { position, scrollX } = this.headerConfig;
-    const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
+
+    const {
+      position,
+      scrollX,
+      scrollY,
+      width: headerWidth,
+      height: headerHeight,
+    } = this.headerConfig;
+    const { x, y, width, height, field, cornerType } = this.meta;
+
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size / 2,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+
+    const resizeClipAreaBBox = {
+      x: 0,
+      y: 0,
+      width: headerWidth,
+      height: headerHeight,
+    };
+
+    if (
+      cornerType === CornerNodeType.Col ||
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
+    ) {
+      return;
+    }
+    // 将相对坐标映射到全局坐标系中
+    // 最后一个维度需要撑满角头高度
+    const offsetX = position.x + x - scrollX;
+    const offsetY = position.y + (this.isLastRowCornerCell() ? 0 : y);
 
     resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x - scrollX + cellWidth - resizeStyle.size / 2,
-        y: position.y + y,
-        width: resizeStyle.size,
-        height: cellHeight,
-        fill: resizeStyle.background,
-        fillOpacity: resizeStyle.backgroundOpacity,
-        cursor: 'col-resize',
-        appendInfo: {
-          isResizeArea: true,
-          class: 'resize-trigger',
-          type: 'col',
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
           id: field,
-          affect: 'field',
-          offsetX: position.x + x,
-          offsetY: position.y + y,
-          width: cellWidth,
-          height: cellHeight,
-        } as ResizeInfo,
+          type: ResizeDirectionType.Horizontal,
+          effect: this.getResizeAreaEffect(),
+          offsetX,
+          offsetY,
+          width,
+          height,
+        }),
+        x: offsetX + width - resizeStyle.size / 2,
+        y: offsetY,
+        height: this.isLastRowCornerCell() ? headerHeight : height,
       },
     });
   }
@@ -254,9 +310,7 @@ export class CornerCell extends HeaderCell {
   private showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
     return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode() &&
-      this.meta?.x === 0
+      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
     );
   }
 
@@ -264,12 +318,16 @@ export class CornerCell extends HeaderCell {
     const textCfg = this.textShapes?.[0]?.cfg.attrs;
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle().icon;
+
     const iconX =
       textCfg?.x +
-      (textAlign === 'center'
-        ? this.actualTextWidth / 2
-        : this.actualTextWidth) +
+      cond([
+        [matches('center'), constant(this.actualTextWidth / 2)],
+        [matches('right'), constant(0)],
+        [stubTrue, constant(this.actualTextWidth)],
+      ])(textAlign) +
       margin.left;
+
     const iconY = getVerticalPosition(
       this.getContentArea(),
       textBaseline,
@@ -285,16 +343,15 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const cornerTextStyle = this.getStyle().bolderText;
+    const { cornerType } = this.meta;
+    const { text, bolderText } = this.getStyle();
+    const cornerTextStyle =
+      cornerType === CornerNodeType.Col ? text : bolderText;
+
     return {
       ...cornerTextStyle,
-      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
       textBaseline: 'middle',
     };
-  }
-
-  protected getFormattedFieldValue(): FormatResult {
-    return { formattedValue: this.meta.label, value: this.meta.label };
   }
 
   protected getMaxTextWidth(): number {
@@ -307,5 +364,22 @@ export class CornerCell extends HeaderCell {
       x: 0,
       y: 0,
     };
+  }
+
+  // corner cell 不需要使用formatter进行格式化
+  protected getFormattedFieldValue(): FormatResult {
+    return formattedFieldValue(
+      this.meta,
+      this.spreadsheet.dataSet.getFieldName(this.meta.label),
+    );
+  }
+
+  protected getCornerText(): string {
+    if (isEqual(this.meta.label, EXTRA_FIELD)) {
+      return this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+    }
+
+    const { formattedValue } = this.getFormattedFieldValue();
+    return formattedValue;
   }
 }

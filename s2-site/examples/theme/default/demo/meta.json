@@ -10,23 +10,23 @@
         "zh": "默认",
         "en": "Default"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/arBaswj563/2403e6a4-d97e-4f99-ae5e-347ebb218d50.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png"
     },
     {
-      "filename": "simple-blue.ts",
-      "title": {
-        "zh": "简约蓝",
-        "en": "Simple blue"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lr0Tau8Bo0/328ae2df-08f6-4797-a74f-903519298798.png"
-    },
-    {
-      "filename": "colorful-blue.ts",
+      "filename": "colorful.ts",
       "title": {
         "zh": "多彩蓝",
         "en": "Colorful blue"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oFlJ7J9%26M%26/05febcec-197a-4fef-8ff3-51d20307d647.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/rgLkfo4MrT/95b7fbc3-8c6e-442c-9c4b-8bf8b3c3da1d.png"
+    },
+    {
+      "filename": "gray.ts",
+      "title": {
+        "zh": "简约灰",
+        "en": "Simple Gray"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/4rwGg8Rp3N/cf08d7dd-ab96-446e-ba8d-146de8cb6a64.png"
     }
   ]
 }

@@ -17,9 +17,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，请提供一个可以在线访问的链接, 或者使用[codesandbox](https://codesandbox.io/s/29zle) 并详细说明复现步骤, 7天内未回复issue自动关闭。
+            你好 @${{ github.event.issue.user.login }}，请提供一个可以在线访问的链接, 或者使用 [codesandbox](https://codesandbox.io/s/29zle) 提供示例并详细说明复现步骤, 15 天内未回复issue自动关闭。
 
-            Hello, @${{ github.event.issue.user.login }}, please provide an accessible link or use[codesandbox](https://codesandbox.io/s/29zle) to describe the step. It will be closed if we receive no replay in 7 days.
+            Hello, @${{ github.event.issue.user.login }}, please provide an accessible link or usage [codesandbox](https://codesandbox.io/s/29zle) to describe the reproduction steps. The issue will be closed without any replay within 15 days.
 
       - name: Need more info
         if: github.event.label.name == '👀 need more info'
@@ -29,9 +29,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请完善 issue 描述, 提供 gif, 截图等方式, 详细说明复现步骤, 感谢配合, 谢谢!
+            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请按照 issue 模板填写相关信息 (参考 #852 #848), 提供 gif, 截图, 代码片段, 配置信息, 版本号, 可复现链接等方式, 详细说明复现步骤, 感谢配合, 谢谢! 15 天内未回复issue自动关闭。
 
-            Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to trace the problem. Please complete the issue description, provide gifs, screenshots, etc. and explain the reproduction steps in detail. Thank you so much for being so cooperative!
+            Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to troubleshoot the problem. Please complete the issue description (refer #852 #848), provide gifs, screenshots, config, version. And explain the reproduction steps in detail. Thanks so much for your cooperation! The issue will be closed without any replay within 15 days.
 
       - name: Invalid
         if: github.event.label.name == '⛔ invalid'
@@ -41,9 +41,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息, 方便大家高效沟通。
+            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息 (参考 #852 #848), 方便大家高效沟通。
 
-            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template, so that everyone can communicate efficiently. Thank you so much!
+            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template to facilitate communication efficiently (refer #852 #848). Thanks so much!
 
       - name: Enhancement
         if: github.event.label.name == '⚡ enhancement'
@@ -67,7 +67,7 @@ jobs:
           body: |
             你好 @${{ github.event.issue.user.login }}，很抱歉给你带来了不好的体验, 我们会尽快排查问题并修复, 请关注后续发布日志.
 
-            Hello, @${{ github.event.issue.user.login }}, We are very sorry for the bad experience. We will troubleshoot and fix the problem as soon as possible. Please pay attention to the subsequent change logs.
+            Hello, @${{ github.event.issue.user.login }}, We are so sorry for the bad experience. We will troubleshoot and fix the problem as soon as possible. Please pay attention to the follow-up change logs.
 
       - name: Usage
         if: github.event.label.name == '🙀 usage' || github.event.label.name == '❔question'
@@ -77,6 +77,42 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，Issue 板块是用于 bug 反馈与需求讨论的地方。你可以试着在 [antv s2 discussions](https://github.com/antvis/S2/discussions) 新开一个 discussion，选择 `🙏Q&A` 类别进行提问, 我们会及时进行解答, 感谢你的理解。
+            你好 @${{ github.event.issue.user.login }}, Issue 板块是用于 bug 反馈与需求讨论的地方。你可以试着在 [antv s2 discussions](https://github.com/antvis/S2/discussions) 新开一个 discussion, 选择 `🙏Q&A` 类别进行提问, 我们会及时进行解答, 感谢你的理解。
 
-            Hello, @${{ github.event.issue.user.login }}. The Issue section is used for bug feedback and requirement discussion. You can try to open a new discussion in [antv s2 discussions](https://github.com/antvis/S2/discussions), choose the `🙏Q&A` category to ask questions, we will answer in time. Thank you so much for being so understanding.
+            Hello, @${{ github.event.issue.user.login }}. The Issue section is used for bug feedback and requirement discussion. You could open a new discussion in [antv s2 discussions](https://github.com/antvis/S2/discussions), choose the `🙏Q&A` category to ask questions. We will answer in time. Thanks so much for your understanding.
+
+      - name: Accepted
+        if: github.event.label.name == '✅ accepted'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 请关注后续发布日志。
+
+            Hello, @${{ github.event.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development, please pay attention to the follow-up release logs.
+
+      - name: Pending
+        if: github.event.label.name == '💤 pending'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求现已被采纳, 我们会排期开发, 但人力资源有限, 短期内无法支持, 请关注后续发布日志。当然, 如果能贡献 PR 帮助我们改进, 不胜感激！
+
+            Hello, @${{ github.vent.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
+
+      - name: Rejected
+        if: github.event.label.name == '❌ rejected'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment,close-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, 你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}, your feature request is too customized to be directly implemented in S2 after our repeated discussion, you could implement it by yourself through the customization capabilities provided by S2. Thanks so much for your understanding.

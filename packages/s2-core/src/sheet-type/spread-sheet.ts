@@ -1,14 +1,13 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
-  clone,
   forEach,
+  forIn,
   get,
   includes,
   isEmpty,
+  isFunction,
   isString,
-  merge,
-  once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
@@ -19,6 +18,7 @@ import {
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
   KEY_GROUP_PANEL_SCROLL,
+  MIN_DEVICE_PIXEL_RATIO,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
@@ -26,14 +26,17 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  LayoutWidthType,
   OffsetConfig,
   Pagination,
   S2CellType,
   S2DataConfig,
   S2MountContainer,
   S2Options,
+  S2RenderOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
+  TooltipContentType,
   TooltipData,
   TooltipOptions,
   TooltipShowOptions,
@@ -44,7 +47,8 @@ import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet } from '@/data-set';
 import { BaseFacet } from '@/facet';
-import { CustomSVGIcon, Node, S2Theme } from '@/index';
+import { Node } from '@/facet/layout/node';
+import { CustomSVGIcon, S2Theme } from '@/common/interface';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -52,13 +56,12 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
-import { registerIcon, getIcon } from '@/common/icons/factory';
+import { registerIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
+import { PanelScrollGroup } from '@/group/panel-scroll-group';
+import { FrozenGroup } from '@/group/frozen-group';
 
 export abstract class SpreadSheet extends EE {
-  // dom id
-  public dom: S2MountContainer;
-
   // theme config
   public theme: S2Theme;
 
@@ -93,19 +96,19 @@ export abstract class SpreadSheet extends EE {
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
 
-  public panelScrollGroup: IGroup;
+  public panelScrollGroup: PanelScrollGroup;
 
-  public frozenRowGroup: IGroup;
+  public frozenRowGroup: FrozenGroup;
 
-  public frozenColGroup: IGroup;
+  public frozenColGroup: FrozenGroup;
 
-  public frozenTrailingRowGroup: IGroup;
+  public frozenTrailingRowGroup: FrozenGroup;
 
-  public frozenTrailingColGroup: IGroup;
+  public frozenTrailingColGroup: FrozenGroup;
 
-  public frozenTopGroup: IGroup;
+  public frozenTopGroup: FrozenGroup;
 
-  public frozenBottomGroup: IGroup;
+  public frozenBottomGroup: FrozenGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
@@ -134,13 +137,12 @@ export abstract class SpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = this.getMountContainer(dom);
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
-    this.initGroups();
+    this.initGroups(dom);
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
@@ -161,9 +163,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    const mountContainer = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    const mountContainer = isString(dom) ? document.querySelector(dom) : dom;
 
     if (!mountContainer) {
       throw new Error('Target mount container is not a DOM element');
@@ -199,7 +199,7 @@ export abstract class SpreadSheet extends EE {
     return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
   }
 
-  protected abstract bindEvents();
+  protected abstract bindEvents(): void;
 
   public abstract getDataSet(options: S2Options): BaseDataSet;
 
@@ -222,7 +222,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * Scroll Freeze Row Header
    */
-  public abstract isFreezeRowHeader(): boolean;
+  public abstract isFrozenRowHeader(): boolean;
 
   /**
    * Check if is pivot mode
@@ -247,11 +247,21 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: CanvasEvent, meta: Node) {}
+  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
 
-  public showTooltip(showOptions: TooltipShowOptions) {
-    this.tooltip.show?.(showOptions);
+  public showTooltip<T = TooltipContentType>(
+    showOptions: TooltipShowOptions<T>,
+  ) {
+    const { content, event } = showOptions;
+    const cell = this.getCell(event?.target);
+    const displayContent = isFunction(content)
+      ? content(cell, showOptions)
+      : content;
+
+    this.tooltip.show?.({
+      ...showOptions,
+      content: displayContent,
+    });
   }
 
   public showTooltipWithInfo(
@@ -259,16 +269,22 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
+    const { showTooltip, content } = getTooltipOptions(this, event);
     if (!showTooltip) {
       return;
     }
 
+    const targetCell = this.getCell(event?.target);
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
-      options,
+      targetCell,
+      options: {
+        enableFormat: true,
+        ...options,
+      },
     });
+
     this.showTooltip({
       data: tooltipData,
       position: {
@@ -279,7 +295,8 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
-      element: tooltipComponent,
+      event,
+      content,
     });
   }
 
@@ -293,12 +310,12 @@ export abstract class SpreadSheet extends EE {
 
   public registerIcons() {
     const customSVGIcons = this.options.customSVGIcons;
-    if (isEmpty(customSVGIcons)) return;
+    if (isEmpty(customSVGIcons)) {
+      return;
+    }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      if (isEmpty(getIcon(customSVGIcon.name))) {
-        registerIcon(customSVGIcon.name, customSVGIcon.svg);
-      }
+      registerIcon(customSVGIcon.name, customSVGIcon.svg);
     });
   }
 
@@ -310,11 +327,7 @@ export abstract class SpreadSheet extends EE {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     this.store.set('originalDataCfg', dataCfg);
-    const newDataCfg = clone(dataCfg);
-    const lastSortParam = this.store.get('sortParam');
-    const { sortParams } = newDataCfg;
-    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = getSafetyDataConfig(newDataCfg);
+    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
@@ -325,23 +338,33 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true) {
+  public render(reloadData = true, options: S2RenderOptions = {}) {
+    const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
+      options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+    if (reBuildDataSet) {
+      this.dataSet = this.getDataSet(this.options);
+    }
     if (reloadData) {
       this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
+    if (reBuildHiddenColumnsDetail) {
+      this.initHiddenColumnsDetail();
+    }
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
-    this.initHiddenColumnsDetail();
   }
 
   public destroy() {
-    this.facet.destroy();
+    this.emit(S2Event.LAYOUT_DESTROY);
+    this.facet?.destroy();
     this.hdAdapter?.destroy();
-    this.interaction.destroy();
-    this.store.clear();
+    this.interaction?.destroy();
+    this.store?.clear();
     this.destroyTooltip();
+    this.clearCanvasEvent();
+    this.container?.destroy();
   }
 
   /**
@@ -350,9 +373,12 @@ export abstract class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setThemeCfg(themeCfg: ThemeCfg) {
+  public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
-    this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
+    this.theme = customMerge(
+      getTheme({ ...themeCfg, spreadsheet: this }),
+      theme,
+    );
   }
 
   /**
@@ -360,7 +386,7 @@ export abstract class SpreadSheet extends EE {
    * @param pagination
    */
   public updatePagination(pagination: Pagination) {
-    this.options = merge({}, this.options, {
+    this.options = customMerge(this.options, {
       pagination,
     });
 
@@ -377,18 +403,43 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
+   * @param width
+   * @param height
+   * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
+   */
+  public changeSize(
+    width: number = this.options.width,
+    height: number = this.options.height,
+  ) {
+    this.changeSheetSize(width, height);
+  }
+
+  /**
    * 修改表格画布大小，不用重新加载数据
    * @param width
    * @param height
    */
-  public changeSize(width: number, height: number) {
-    this.options = merge({}, this.options, { width, height });
+  public changeSheetSize(
+    width: number = this.options.width,
+    height: number = this.options.height,
+  ) {
+    const containerWidth = this.container.get('width');
+    const containerHeight = this.container.get('height');
+
+    const isSizeChanged =
+      width !== containerWidth || height !== containerHeight;
+
+    if (!isSizeChanged) {
+      return;
+    }
+
+    this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
   }
 
-  public isColAdaptive(): boolean {
-    return this.options.style.colCfg?.colWidthType === 'adaptive';
+  public getLayoutWidthType(): LayoutWidthType {
+    return this.options.style.layoutWidthType;
   }
 
   public getRowNodes(level = -1): Node[] {
@@ -396,8 +447,12 @@ export abstract class SpreadSheet extends EE {
       return this.facet.layoutResult.rowNodes;
     }
     return this.facet.layoutResult.rowNodes.filter(
-      (value) => value.level === level,
+      (node) => node.level === level,
     );
+  }
+
+  public getRowLeafNodes(): Node[] {
+    return this.facet?.layoutResult.rowLeafNodes || [];
   }
 
   /**
@@ -405,12 +460,15 @@ export abstract class SpreadSheet extends EE {
    * @param level -1 = get all
    */
   public getColumnNodes(level = -1): Node[] {
+    const colNodes = this.facet?.layoutResult.colNodes || [];
     if (level === -1) {
-      return this.facet?.layoutResult.colNodes;
+      return colNodes;
     }
-    return this.facet?.layoutResult.colNodes.filter(
-      (value) => value.level === level,
-    );
+    return colNodes.filter((node) => node.level === level);
+  }
+
+  public getColumnLeafNodes(): Node[] {
+    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
@@ -422,8 +480,7 @@ export abstract class SpreadSheet extends EE {
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(
-      merge(
-        {},
+      customMerge(
         {
           offsetX: {
             value: undefined,
@@ -471,15 +528,18 @@ export abstract class SpreadSheet extends EE {
    */
   public getTotalsConfig(dimension: string): Partial<Totals['row']> {
     const { totals } = this.options;
-    const { rows } = this.dataCfg.fields;
+    const { rows } = this.dataSet.fields;
+
     const totalConfig = get(
       totals,
       includes(rows, dimension) ? 'row' : 'col',
       {},
     ) as Total;
-    const showSubTotals = totalConfig.showSubTotals
-      ? includes(totalConfig.subTotalsDimensions, dimension)
-      : false;
+    const showSubTotals =
+      totalConfig.showSubTotals &&
+      includes(totalConfig.subTotalsDimensions, dimension)
+        ? totalConfig.showSubTotals
+        : false;
     return {
       showSubTotals,
       showGrandTotals: totalConfig.showGrandTotals,
@@ -497,17 +557,19 @@ export abstract class SpreadSheet extends EE {
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
    * @param dom
-   * @param options
    * @private
    */
-  protected initGroups() {
-    const { width, height } = this.options;
+  protected initGroups(dom: S2MountContainer) {
+    const { width, height, supportCSSTransform, devicePixelRatio } =
+      this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom,
+      container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       localRefresh: false,
+      supportCSSTransform,
+      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
     });
 
     // the main three layer groups
@@ -524,29 +586,43 @@ export abstract class SpreadSheet extends EE {
       zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
     });
     this.initPanelGroupChildren();
+    this.updateContainerStyle();
+  }
+
+  // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
+  protected updateContainerStyle() {
+    const canvas = this.container.get('el') as HTMLCanvasElement;
+    canvas.style.display = 'block';
   }
 
   protected initPanelGroupChildren() {
-    this.panelScrollGroup = this.panelGroup.addGroup({
+    this.panelScrollGroup = new PanelScrollGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+      s2: this,
     });
+    this.panelGroup.add(this.panelScrollGroup);
   }
 
-  public getInitColumnNodes(): Node[] {
-    return this.store.get('initColumnNodes', []);
-  }
-
-  public hideColumns(hiddenColumnFields: string[] = []) {
-    hideColumnsByThunkGroup(this, hiddenColumnFields);
+  public getInitColumnLeafNodes(): Node[] {
+    return this.store.get('initColumnLeafNodes', []);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
-  private initHiddenColumnsDetail = once(() => {
+  private initHiddenColumnsDetail = () => {
     const { hiddenColumnFields } = this.options.interaction;
-    if (isEmpty(hiddenColumnFields)) {
+    const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
+    // 隐藏列为空, 并且没有操作的情况下, 则无需生成
+    if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
       return;
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
-  });
+  };
+
+  private clearCanvasEvent() {
+    const canvasEvents = this.getEvents();
+    forIn(canvasEvents, (_, event: keyof EmitterType) => {
+      this.off(event);
+    });
+  }
 }

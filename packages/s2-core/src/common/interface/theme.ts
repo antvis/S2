@@ -1,5 +1,7 @@
 import { ShapeAttrs } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { generateStandardColors } from '../../utils/color';
 import { CellTypes } from '@/common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -8,16 +10,51 @@ export type TextAlign = 'left' | 'center' | 'right';
 // 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
 export type TextBaseline = 'top' | 'middle' | 'bottom';
 
-export interface Palette {
-  /* 基础色值 */
-  basicColors: string[];
+export interface PaletteMeta {
+  /** 主题色 */
+  brandColor: string;
+  /**
+   * basicColors 与标准色卡 standardColors 数组下标的对应关系
+   * @see generateStandardColors
+   */
+  basicColorRelations: Array<{
+    basicColorIndex: number;
+    standardColorIndex: number;
+  }>;
   /* 语义色值 */
   semanticColors: {
     red?: string;
     green?: string;
-    /* 额外颜色字段 */
     [key: string]: string;
   };
+  /* 补充色值 */
+  others?: {
+    [key: string]: string;
+  };
+}
+
+export interface Palette extends PaletteMeta {
+  /*
+   * 基础色值（共15个）
+   *
+   * 1. 角头字体、列头字体
+   * 2. 行头背景、数据格背景(斑马纹)
+   * 3. 行头&数据格交互(hover、选中、十字)
+   * 4. 角头背景、列头背景
+   * 5. 列头交互(hover、选中)
+   * 6. 刷选遮罩
+   * 7. 行头 link
+   * 8. mini bar、resize 交互(参考线等)
+   * 9. 数据格背景(非斑马纹)、整体表底色(建议白色)
+   * 10. 行头边框、数据格边框
+   * 11. 角头边框、列头边框
+   * 12. 竖向大分割线
+   * 13. 横向大分割线
+   * 14. 数据格字体
+   * 15. 行头字体、数据格交互色(hover)
+   *
+   */
+  basicColors: string[];
 }
 
 export interface Padding {
@@ -36,10 +73,14 @@ export interface InteractionStateTheme {
   backgroundOpacity?: number;
   /* 背景填充色 */
   backgroundColor?: string;
+  /* 文本透明度 */
+  textOpacity?: number;
   /* 边线颜色 */
   borderColor?: string;
   /* 边线宽度 */
   borderWidth?: number;
+  /* 边线透明度 */
+  borderOpacity?: number;
   /* 透明度 */
   opacity?: number;
 }
@@ -90,7 +131,7 @@ export interface CellTheme {
   /* 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
   /* 单元格内边距 */
-  padding: Padding;
+  padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
@@ -118,9 +159,9 @@ export interface ResizeArea {
   /* 热区背景色 */
   background?: string;
   /* 参考线颜色 */
-  guidLineColor?: string;
+  guideLineColor?: string;
   /* 参考线间隔 */
-  guidLineDash?: number;
+  guideLineDash?: number[];
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */
@@ -155,8 +196,8 @@ export interface SplitLine {
   verticalBorderColorOpacity?: number;
   /* 垂直分割线宽度 */
   verticalBorderWidth?: number;
-  /* 分割线是否显示右侧外阴影 */
-  showRightShadow?: boolean;
+  /* 分割线是否显示外阴影 */
+  showShadow?: boolean;
   /* 阴影宽度 */
   shadowWidth?: number;
   /* 阴影线性渐变色 */
@@ -167,11 +208,13 @@ export interface SplitLine {
     right: string;
   };
 }
-export interface DefaultCellTheme {
+export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
   /* 文本样式 */
   text?: TextTheme;
+  /* 度量值文本样式 */
+  measureText?: TextTheme;
   /* 单元格样式 */
   cell?: CellTheme;
   /* 图标样式 */
@@ -180,7 +223,19 @@ export interface DefaultCellTheme {
   seriesNumberWidth?: number;
 }
 
-type CellThemes = {
+export interface GridAnalysisCellTheme {
+  // 次级文本，如副指标
+  minorText?: TextTheme;
+  // 衍生指标
+  derivedMeasureText?: {
+    mainUp: string;
+    mainDown: string;
+    minorUp: string;
+    minorDown: string;
+  };
+}
+
+export type CellThemes = {
   [K in CellTypes]?: DefaultCellTheme;
 };
 
@@ -195,17 +250,15 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
   background?: Background;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'simple' | 'colorful';
+export type ThemeName = 'default' | 'colorful' | 'gray';
 
 export interface ThemeCfg {
   /* 主题 */
   theme?: S2Theme;
   /* 色板 */
-  palette?: Palette;
+  palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
   /* 主题名 */
   name?: ThemeName;
 }

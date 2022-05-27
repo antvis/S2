@@ -1,18 +1,19 @@
 <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
 
-<h1 align="center">[WIP]S2</h1>
+<h1 align="center">S2</h1>
 
 <div align="center">
 
 数据驱动的多维分析表格。
 
-🚧 激情建设中。.. 详见 [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
-
 <p>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
+  <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
-    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="version">
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
@@ -27,19 +28,16 @@
 </p>
 
 <p>
-  <a href="https://david-dm.org/antvis/s2" target="_blank">
-    <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
-  </a>
-  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status" target="_blank">
-    <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
-  </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+  </a>
+  <a href="https://github.com/antvis/S2/discussions" target="_blank">
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
   </a>
-  <a href="#" target="_blank" target="_blank">
+  <a href="https://github.com/antvis/S2/blob/master/LICENSE" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
   </a>
 </p>
@@ -48,7 +46,12 @@
 
 S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数据驱动的方式。通过提供底层能力库，基础组件，业务场景组件以及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。
 
-<!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
+## 🏠 官网
+
+![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
+
+* [主页](https://antv-s2.gitee.io)
+* [Demo 示例](https://antv-s2.gitee.io/zh/examples/gallery)
 
 ## ✨ 特性
 
@@ -137,8 +140,8 @@ const s2DataConfig = {
 ### 2. 配置项准备
 
 ```ts
-const s2options = {
-  width: 800,
+const s2Options = {
+  width: 600,
   height: 600,
 }
 ```
@@ -151,11 +154,10 @@ const s2options = {
 
 ```ts
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2options)
+const s2 = new PivotSheet(container, s2DataConfig, s2Options)
 
 s2.render()
 ```
@@ -164,28 +166,55 @@ s2.render()
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
-## Author
+### 📦 Packages
 
-👤 [**@AntV**](https://github.com/orgs/antvis/people)
+| Package  | Latest  |  Beta | Alpha | Size | Download |
+|---|---|---|---| --- | --- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+
+## 👤 Author
+
+[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 🤝 参与贡献
 
 ```bash
 git clone git@github.com:antvis/S2.git
 
-cd s2
+cd S2
 
-yarn
+# 安装依赖
+yarn # 或者 yarn bootstrap
 
+# 调试 s2-core
 yarn core:start
 
+# 调试 s2-react
+yarn react:playground
+
+# 单元测试
+yarn test
+
+# 打包
+yarn build
+
+# 代码风格和类型检测
+yarn lint
+
 # 本地启动官网
-
 yarn site:bootstrap
-
 yarn site:start
 ```
 
+## 📧 联系我们
+
+<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
+
+## 👬 Contributors
+
+![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
+
 ## 📄 License
 
-MIT@[AntV](https://github.com/antvis).
+MIT@[AntV](https://github.com/antvis)

@@ -1,17 +1,26 @@
 import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
-import { Fields } from '@/common/interface/index';
+import { Fields, TotalsStatus, Totals } from '@/common/interface/index';
 
-/**
- * get intersections between two arrs
- *
- */
-export const getIntersections = (arr1: string[], arr2: string[]) => {
-  return arr1.filter((item) => arr2.includes(item));
+export const getListBySorted = (list: string[], sorted: string[]) => {
+  return list.sort((a, b) => {
+    const ia = sorted.indexOf(a);
+    const ib = sorted.indexOf(b);
+    if (ia === -1 && ib === -1) {
+      return 0;
+    }
+    if (ia === -1) {
+      return 1;
+    }
+    if (ib === -1) {
+      return -1;
+    }
+    return ia - ib;
+  });
 };
 
 export const filterUndefined = (values: string[]) => {
-  return filter(values, (t) => !isUndefined(t));
+  return filter(values, (t) => !isUndefined(t) && t !== 'undefined');
 };
 
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
@@ -98,5 +107,40 @@ export function splitTotal(rawData: Data[], fields: Fields): Data[] {
       return result;
     },
     [],
+  );
+}
+
+export function getAggregationAndCalcFuncByQuery(
+  totalsStatus: TotalsStatus,
+  totalsOptions: Totals,
+) {
+  const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
+  const { row, col } = totalsOptions || {};
+  const {
+    calcTotals: rowCalcTotals = {},
+    calcSubTotals: rowCalcSubTotals = {},
+  } = row || {};
+  const {
+    calcTotals: colCalcTotals = {},
+    calcSubTotals: colCalcSubTotals = {},
+  } = col || {};
+  const getCalcTotals = (dimensionTotals, totalType) => {
+    if (
+      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
+      totalType
+    ) {
+      return {
+        aggregation: dimensionTotals.aggregation,
+        calcFunc: dimensionTotals.calcFunc,
+      };
+    }
+  };
+
+  // 优先级: 列总计/小计 > 行总计/小计
+  return (
+    getCalcTotals(colCalcTotals, isColTotal) ||
+    getCalcTotals(colCalcSubTotals, isColSubTotal) ||
+    getCalcTotals(rowCalcTotals, isRowTotal) ||
+    getCalcTotals(rowCalcSubTotals, isRowSubTotal)
   );
 }

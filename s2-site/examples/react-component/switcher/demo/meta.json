@@ -10,23 +10,31 @@
         "zh": "维度切换组件",
         "en": "Switcher component"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vxwzDOxM2/a6904a1d-0b51-43d3-ac72-b6afe5131314.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/tiVXaKTKB/2021-11-16%25252022.18.52.gif"
+    },
+    {
+      "filename": "pivot-header.tsx",
+      "title": {
+        "zh": "维度切换头部组件",
+        "en": "Switcher header component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aBR%26EXlQb/2021-12-02%25252015.19.58.gif"
     },
     {
       "filename": "pivot.tsx",
       "title": {
-        "zh": "交叉表维度切换",
+        "zh": "透视表维度切换",
         "en": "Switcher in pivot sheet"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/KJWa1WHyF/7e5f6a82-9148-411d-826c-b361d30258cc.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WaJLe8CSf/2021-11-16%25252022.19.04.gif"
     },
     {
       "filename": "pivot-with-children.tsx",
       "title": {
-        "zh": "交叉表子维度切换",
+        "zh": "透视表子维度切换",
         "en": "Switcher with children in pivot sheet"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DHwIeV3Z3/10c6b7a6-b4ec-40af-ad22-a9c4d1d1fa55.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/EMriYgmG5/2021-11-16%25252022.20.42.gif"
     },
     {
       "filename": "table.tsx",
@@ -34,7 +42,7 @@
         "zh": "明细表维度切换",
         "en": "Switcher in table sheet"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/1G3F4i7rU/bd9f14a3-06da-4c5b-9e3d-d63ab5ee61e4.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24Z5M%26Kfq9%26/switcher.gif"
     }
   ]
 }

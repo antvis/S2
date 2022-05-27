@@ -1,5 +1,4 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 // 可借助 tinygradient 完成功能更全面的颜色过渡
 function getGradient(rate, startColor, endColor) {
@@ -19,31 +18,25 @@ function getGradient(rate, startColor, endColor) {
 }
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then((dataCfg) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price'],
-      },
-      data,
-    };
 
-    const s2options = {
-      width: 800,
-      height: 600,
-      hoverHighlight: false,
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        hoverHighlight: false,
+      },
       conditions: {
         interval: [
           {
-            field: 'price',
-            mapping(fieldValue, data) {
-              const maxValue = 20;
-              const minValue = 0;
+            field: 'number',
+            mapping(fieldValue) {
+              const maxValue = 7789;
+              const minValue = 352;
               const rage = (fieldValue - minValue) / (maxValue - minValue);
 
               const color = getGradient(rage, '#95F0FF', '#3A9DBF');
@@ -57,7 +50,7 @@ fetch(
         ],
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();
   });

@@ -20,11 +20,11 @@ const s2Options = {
 
 关闭高清适配
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png)
+<img src="https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png" width="600" alt="preview" />
 
 开启高清适配
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png)
+<img src="https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png" width="600" alt="preview" />
 
 ## 不同 DPR 设备间切换
 
@@ -43,7 +43,7 @@ const renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
   const newHeight = Math.floor(height * ratio);
 
   // 内部的更新容器大小方法
-  changeSize(newWidth, newHeight);
+  changeSheetSize(newWidth, newHeight);
 };
 ```
 
@@ -83,7 +83,7 @@ const renderByZoomScale = debounce((e) => {
     const newHeight = Math.floor(height * ratio);
 
     // 内部的更新容器大小方法
-    changeSize(newWidth, newHeight);
+    changeSheetSize(newWidth, newHeight);
   }
 }, 350);
 ```
@@ -97,3 +97,13 @@ const renderByZoomScale = debounce((e) => {
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Q1782WWQ3/Kapture%2525202021-10-19%252520at%25252014.36.05.gif)
 
 [完整代码](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts)
+
+## 自定义设备像素比
+
+表格默认使用设备当前像素比渲染，也就是 `window.devicePixelRatio`, 如果你觉得初始渲染就很模糊，可以手动指定表格按照 2 倍设备像素比来渲染
+
+```ts
+const s2Options = {
+  devicePixelRatio: 2
+}
+```

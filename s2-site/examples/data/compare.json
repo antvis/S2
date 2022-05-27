@@ -1,0 +1,728 @@
+{
+  "1000": [
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "1",
+      "value": 102
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "2",
+      "value": 103
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "3",
+      "value": 105
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "4",
+      "value": 102
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "5",
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "6",
+      "value": 103
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "7",
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "8",
+      "value": 105
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "9",
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": "10",
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "1",
+      "value": 54
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "2",
+      "value": 59
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "3",
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "4",
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "5",
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "6",
+      "value": 59
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "7",
+      "value": 54
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "8",
+      "value": 56
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "9",
+      "value": 57
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": "10",
+      "value": 56
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "1",
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "2",
+      "value": 14
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "3",
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "4",
+      "value": 16
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "5",
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "6",
+      "value": 13
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "7",
+      "value": 10
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "8",
+      "value": 11
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "9",
+      "value": 11
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": "10",
+      "value": 10
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "1",
+      "value": 114
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "2",
+      "value": 134
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "3",
+      "value": 122
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "4",
+      "value": 135
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "5",
+      "value": 141
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "6",
+      "value": 153
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "7",
+      "value": 140
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "8",
+      "value": 154
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "9",
+      "value": 136
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": "10",
+      "value": 153
+    }
+  ],
+  "10000": [
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "1",
+      "value": 569
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "2",
+      "value": 590
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "3",
+      "value": 597
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "4",
+      "value": 526
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "5",
+      "value": 525
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "6",
+      "value": 578
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "7",
+      "value": 506
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "8",
+      "value": 606
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "9",
+      "value": 562
+    },
+    {
+      "size": "100 * 100",
+      "name": "orb",
+      "time": "10",
+      "value": 493
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "1",
+      "value": 154
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "2",
+      "value": 159
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "3",
+      "value": 143
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "4",
+      "value": 138
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "5",
+      "value": 147
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "6",
+      "value": 166
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "7",
+      "value": 144
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "8",
+      "value": 163
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "9",
+      "value": 160
+    },
+    {
+      "size": "100 * 100",
+      "name": "@antv/s2",
+      "time": "10",
+      "value": 162
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "1",
+      "value": 53
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "2",
+      "value": 86
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "3",
+      "value": 74
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "4",
+      "value": 77
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "5",
+      "value": 75
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "6",
+      "value": 68
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "7",
+      "value": 57
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "8",
+      "value": 87
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "9",
+      "value": 95
+    },
+    {
+      "size": "100 * 100",
+      "name": "PivotTable.js",
+      "time": "10",
+      "value": 103
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "1",
+      "value": 904
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "2",
+      "value": 886
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "3",
+      "value": 1039
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "4",
+      "value": 1171
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "5",
+      "value": 987
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "6",
+      "value": 1005
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "7",
+      "value": 1045
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "8",
+      "value": 1065
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "9",
+      "value": 974
+    },
+    {
+      "size": "100 * 100",
+      "name": "ReactPivot",
+      "time": "10",
+      "value": 1042
+    }
+  ],
+  "1000000": [
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "1",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "2",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "3",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "4",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "5",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "6",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "7",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "8",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "9",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "orb",
+      "time": "10",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "1",
+      "value": 4940
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "2",
+      "value": 4618
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "3",
+      "value": 4640
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "4",
+      "value": 4628
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "5",
+      "value": 4679
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "6",
+      "value": 4675
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "7",
+      "value": 4820
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "8",
+      "value": 4821
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "9",
+      "value": 4769
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "@antv/s2",
+      "time": "10",
+      "value": 4834
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "1",
+      "value": 3834
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "2",
+      "value": 4618
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "3",
+      "value": 4640
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "4",
+      "value": 3381
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "5",
+      "value": 3281
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "6",
+      "value": 3435
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "7",
+      "value": 3865
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "8",
+      "value": 3434
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "9",
+      "value": 3605
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "PivotTable.js",
+      "time": "10",
+      "value": 3419
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "1",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "2",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "3",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "4",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "5",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "6",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "7",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "8",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "9",
+      "value": 0
+    },
+    {
+      "size": "1000 * 1000",
+      "name": "ReactPivot",
+      "time": "10",
+      "value": 0
+    }
+  ]
+}

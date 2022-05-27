@@ -1,8 +1,22 @@
-import { keys, has, uniq, isPlainObject, map, toUpper } from 'lodash';
-import { SortMethod, SortParam } from '@/common/interface';
+import {
+  keys,
+  has,
+  map,
+  toUpper,
+  endsWith,
+  uniq,
+  isEmpty,
+  includes,
+  split,
+  indexOf,
+  isArray,
+} from 'lodash';
+import { Fields, SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
-import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
-import { sortByItems } from '@/utils/data-set-operate';
+import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
+import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
+import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
+import { PivotDataSet } from '@/data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -31,7 +45,7 @@ export const sortAction = (
         if (Number(a) && Number(b)) {
           return (Number(a) - Number(b)) * sort;
         }
-        if (specialValues?.includes(a?.toString())) {
+        if (a && specialValues?.includes(a?.toString())) {
           return -sort;
         }
         if (Number(a) && specialValues?.includes(b?.toString())) {
@@ -41,6 +55,9 @@ export const sortAction = (
       if (a && b) {
         // 数据健全兼容，用户数据不全时，能够展示.
         return a.toString().localeCompare(b.toString(), 'zh') * sort;
+      }
+      if (a) {
+        return sort;
       }
       return -sort;
     },
@@ -52,94 +69,195 @@ const mergeDataWhenASC = (
   originValues: string[],
   asc: boolean,
 ) => {
-  let sortList = uniq(sortedValues);
   if (asc) {
     // 如果是升序，需要将无数据的项放到前面
-    sortList = sortByItems(originValues, sortList);
+    return sortByItems(originValues, uniq(sortedValues));
   }
-  return sortList;
+  return [...new Set([...sortedValues, ...originValues])];
 };
 
 export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam } = params;
   const { sortFunc } = sortParam;
-  return sortFunc({ data: measureValues, ...sortParam }) || originValues;
+  return (
+    (sortFunc({ data: measureValues, ...sortParam }) as string[]) ||
+    originValues
+  );
 };
 
 export const sortByCustom = (params: SortActionParams): string[] => {
-  const { sortByValues } = params;
-  return sortByValues;
+  const { sortByValues, originValues } = params;
+
+  // 从 originValues 中过滤出所有包含 sortByValue 的 id
+  const idWithPre = originValues.filter((originItem) =>
+    sortByValues.find((value) => endsWith(originItem, value)),
+  );
+  // 将 id 拆分为父节点和目标节点
+  const idListWithPre = idWithPre.map((idStr) => {
+    const ids = idStr.split(ID_SEPARATOR);
+    if (ids.length > 1) {
+      const parentId = ids.slice(0, ids.length - 1).join(ID_SEPARATOR);
+      return [parentId, ids[ids.length - 1]];
+    }
+    return ids;
+  });
+  // 获取父节点顺序
+  const parentOrder = Array.from(new Set(idListWithPre.map((id) => id[0])));
+  // 排序
+  idListWithPre.sort((a: string[], b: string[]) => {
+    const aParent = a.slice(0, a.length - 1);
+    const bParent = b.slice(0, b.length - 1);
+    // 父节点不同时，按 parentOrder 排序
+    if (aParent.join() !== bParent.join()) {
+      const aParentIndex = parentOrder.indexOf(aParent[0]);
+      const bParentIndex = parentOrder.indexOf(bParent[0]);
+      return aParentIndex - bParentIndex;
+    }
+    // 父节点相同时，按 sortByValues 排序
+    const aIndex = sortByValues.indexOf(a[a.length - 1]);
+    const bIndex = sortByValues.indexOf(b[b.length - 1]);
+    return aIndex - bIndex;
+  });
+  // 拼接 id
+  const sortedIdWithPre = idListWithPre.map((idArr) =>
+    idArr.join(ID_SEPARATOR),
+  );
+
+  return getListBySorted(originValues, sortedIdWithPre);
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {
-  const { sortParam, measureValues, originValues } = params;
+  const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
-  const result = map(
-    sortAction(
+  const { rows, columns } = dataSet.fields;
+  const isInRows = rows.includes(sortFieldId);
+  let result;
+
+  if (sortByMeasure) {
+    const dimensions = sortAction(
       measureValues,
       sortMethod,
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-    ),
-    (item) => (isPlainObject(item) ? item?.[sortFieldId] : item),
-  );
+    ) as Record<string, DataType>[];
 
-  return mergeDataWhenASC(result, originValues, sortMethod === 'ASC');
+    result = getDimensionsWithParentPath(
+      sortFieldId,
+      isInRows ? rows : columns,
+      dimensions,
+    );
+  } else {
+    result = map(sortAction(measureValues, sortMethod)) as string[];
+  }
+
+  return mergeDataWhenASC(result, originValues, isAscSort(sortMethod));
 };
 
 export const processSort = (params: SortActionParams): string[] => {
-  const { sortParam, originValues, measureValues } = params;
+  const { sortParam, originValues, measureValues, dataSet } = params;
   const { sortFunc, sortMethod, sortBy } = sortParam;
 
-  let result = [];
+  let result = originValues;
   const sortActionParams = {
     originValues,
     measureValues,
     sortParam,
+    dataSet,
   };
   if (sortFunc) {
     result = sortByFunc(sortActionParams);
   } else if (sortBy) {
     // 自定义列表
-    result = sortByCustom({ sortByValues: sortBy });
-  } else if (sortMethod) {
+    result = sortByCustom({ sortByValues: sortBy, originValues });
+  } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
   }
   return result;
 };
 
-export const handleSortAction = (params: SortActionParams): string[] => {
-  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
+/**
+ * 生成 getTotalValue (前端计算）所需的 params
+ * @param originValue
+ * @param fields
+ * @param sortFieldId
+ */
+const createTotalParams = (
+  originValue: string,
+  fields: Fields,
+  sortFieldId: string,
+) => {
+  const totalParams = {};
+  const isMultipleDimensionValue = includes(originValue, ID_SEPARATOR);
+
+  if (isMultipleDimensionValue) {
+    // 获取行/列小计时，需要将所有行/列维度的值作为 params
+    const realOriginValue = split(originValue, ID_SEPARATOR);
+    const keys = fields?.rows?.includes(sortFieldId)
+      ? fields.rows
+      : fields.columns;
+
+    for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
+      totalParams[keys[i]] = realOriginValue[i];
+    }
+  } else {
+    totalParams[sortFieldId] = originValue;
+  }
+  return totalParams;
+};
+
+export const getSortByMeasureValues = (
+  params: SortActionParams,
+): DataType[] => {
+  const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+
+  if (sortByMeasure !== TOTAL_VALUE) {
+    // 按指标只排序 - 最内侧的行列不需要汇总后排序
+    return dataSet.getMultiData(query);
+  }
+
+  const isRow =
+    fields?.columns?.includes(sortFieldId) &&
+    keys(query)?.length === 1 &&
+    has(query, EXTRA_FIELD);
+
+  // 按 data 数据中的小计，总计排序
+  const measureValues = dataSet.getMultiData(query, true, isRow);
+  if (measureValues && !isEmpty(measureValues)) {
+    return measureValues;
+  }
+  // 按前端的小计，总计排序
+  return map(originValues, (originValue) => {
+    const totalParams = createTotalParams(originValue, fields, sortFieldId);
+
+    return (dataSet as PivotDataSet).getTotalValue({
+      ...query,
+      ...totalParams,
+    });
+  });
+};
+
+export const handleSortAction = (params: SortActionParams): string[] => {
+  const { dataSet, sortParam, originValues, isSortByMeasure } = params;
   let measureValues;
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
-    if (sortByMeasure === TOTAL_VALUE) {
-      // 按小计，总计排序
-      const isRow =
-        fields?.columns?.includes(sortFieldId) &&
-        keys(query)?.length === 1 &&
-        has(query, EXTRA_FIELD);
-      measureValues = dataSet.getMultiData(query, true, isRow);
-    } else {
-      measureValues = dataSet.getMultiData(query);
-    }
+    measureValues = getSortByMeasureValues(params);
   } else {
     // 其他都是维度本身的排序方式
     measureValues = originValues;
   }
+
   return processSort({
     sortParam,
     originValues,
     measureValues,
+    dataSet,
   });
 };
 
-export const getSortTypeIcon = (
-  sortParam: SortParam,
-  isValueCell?: boolean,
-) => {
+export const getSortTypeIcon = (sortParam: SortParam, isSortCell?: boolean) => {
   if (sortParam?.sortMethod) {
     if (isAscSort(sortParam?.sortMethod)) {
       return 'groupAsc';
@@ -148,7 +266,7 @@ export const getSortTypeIcon = (
       return 'groupDesc';
     }
   }
-  if (isValueCell) {
+  if (isSortCell) {
     return 'SortDown';
   }
 };

@@ -1,7 +1,9 @@
 import { PivotSheet, RowCell } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
-// 自定义角头单元格，实现特有功能
+/**
+ * 自定义 RowCell，给行头添加背景图
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/row-cell.ts
+ */
 class CustomRowCell extends RowCell {
   // 覆盖背景绘制，可覆盖或者增加绘制方法
   drawBackgroundShape() {
@@ -26,16 +28,17 @@ fetch(
         columns: ['type', 'sub_type'],
         values: ['number'],
       },
+      meta: res.meta,
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       rowCell: (node, s2, headConfig) => {
         return new CustomRowCell(node, s2, headConfig);
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     // 使用
     s2.render();

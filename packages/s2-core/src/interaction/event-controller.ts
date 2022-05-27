@@ -3,26 +3,34 @@ import {
   Canvas,
   Event as CanvasEvent,
   LooseObject,
+  Shape,
 } from '@antv/g-canvas';
-import { each, get, isEmpty } from 'lodash';
+import { each, get, isEmpty, isNil } from 'lodash';
+import { GuiIcon } from '../common';
 import {
   CellTypes,
-  IMAGE,
   InteractionKeyboardKey,
   InterceptType,
   OriginEventType,
   S2Event,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
+import { EmitterType } from '@/common/interface/emitter';
 import { ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions } from '@/utils/tooltip';
+import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
   type: string;
   handler: EventListenerOrEventListenerObject;
+  options?: AddEventListenerOptions | boolean;
+}
+
+interface S2EventHandler {
+  type: keyof EmitterType;
+  handler: EmitterType[keyof EmitterType];
 }
 
 interface EventHandler {
@@ -38,7 +46,11 @@ export class EventController {
 
   public canvasEventHandlers: EventHandler[] = [];
 
+  public s2EventHandlers: S2EventHandler[] = [];
+
   public domEventListeners: EventListener[] = [];
+
+  private isCanvasEffect = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -49,23 +61,37 @@ export class EventController {
     return this.spreadsheet.container;
   }
 
+  public get isAutoResetSheetStyle() {
+    return this.spreadsheet.options.interaction.autoResetSheetStyle;
+  }
+
   public bindEvents() {
     this.clearAllEvents();
 
+    // canvas events
+    this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
+    this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
+    // spreadsheet events
+    this.addS2Event(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
+      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+      this.spreadsheet.interaction.clearState();
+    });
+
+    // dom events
     this.addDomEventListener(
-      document,
+      window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
         this.resetSheetStyle(event);
+        this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
-
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
@@ -89,35 +115,46 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_MOVE,
+      (event: MouseEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+      },
+    );
   }
 
-  private getTargetType() {
-    return get(this, 'target.cfg.type');
-  }
+  // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
+  private isGuiIconShape = (target: LooseObject) => {
+    return target instanceof Shape.Image && target.attrs.type === GuiIcon.type;
+  };
 
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
     if (
+      this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_COPIED,
-        getSelectedData(this.spreadsheet),
-      );
+      const copyData = getSelectedData(this.spreadsheet);
+      if (!isNil(copyData)) {
+        this.spreadsheet.emit(S2Event.GLOBAL_COPIED, copyData);
+      }
     }
   }
 
   private onKeyboardEsc(event: KeyboardEvent) {
-    if (keyEqualTo(event.key, InteractionKeyboardKey.ESC)) {
+    if (
+      this.isCanvasEffect &&
+      keyEqualTo(event.key, InteractionKeyboardKey.ESC)
+    ) {
       this.resetSheetStyle(event);
     }
   }
 
   private resetSheetStyle(event: Event) {
-    const { autoResetSheetStyle } = this.spreadsheet.options.interaction;
-    if (!autoResetSheetStyle) {
+    if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
       return;
     }
 
@@ -159,7 +196,7 @@ export class EventController {
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet.panelBBox;
+    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
     const { width, height } = this.spreadsheet.options;
     return {
       width: Math.min(width, maxX),
@@ -173,8 +210,14 @@ export class EventController {
     }
 
     const { x, y, width, height } =
-      this.spreadsheet.tooltip?.container?.getBoundingClientRect() || {};
+      this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
+    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+      return verifyTheElementInTooltip(
+        this.spreadsheet.tooltip?.container,
+        event.target,
+      );
+    }
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&
@@ -238,7 +281,7 @@ export class EventController {
       case CellTypes.CORNER_CELL:
         this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.MERGED_CELLS:
+      case CellTypes.MERGED_CELL:
         this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_DOWN, event);
         break;
       default:
@@ -270,7 +313,7 @@ export class EventController {
         case CellTypes.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.MERGED_CELLS:
+        case CellTypes.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_MOVE, event);
           break;
         default:
@@ -297,7 +340,7 @@ export class EventController {
           case CellTypes.CORNER_CELL:
             this.spreadsheet.emit(S2Event.CORNER_CELL_HOVER, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_HOVER, event);
             break;
           default:
@@ -313,39 +356,36 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
-      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-      this.spreadsheet.interaction.clearState();
-    });
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
-      // target相同，说明是一个cell内的click事件
+      // target相同，说明是一个cell内的 click 事件
       if (this.target === event.target) {
+        const isGuiIconShape = this.isGuiIconShape(event.target);
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
             break;
           case CellTypes.ROW_CELL:
-            // 屏蔽 actionIcons的点击，只有HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
-            if (this.getTargetType() === IMAGE) {
+            // 屏蔽 actionIcons 的点击，只有 HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellTypes.COL_CELL:
-            if (this.getTargetType() === IMAGE) {
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellTypes.CORNER_CELL:
-            if (this.getTargetType() === IMAGE) {
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
             break;
           default:
@@ -367,7 +407,7 @@ export class EventController {
         case CellTypes.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.MERGED_CELLS:
+        case CellTypes.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
           break;
         default:
@@ -376,12 +416,18 @@ export class EventController {
     }
   };
 
+  private onCanvasClick = (event: CanvasEvent) => {
+    this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
+  };
+
   private onCanvasDoubleClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
+    spreadsheet.emit(S2Event.GLOBAL_DOUBLE_CLICK, event);
     const cell = spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
@@ -399,7 +445,7 @@ export class EventController {
           case CellTypes.CORNER_CELL:
             spreadsheet.emit(S2Event.CORNER_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             spreadsheet.emit(S2Event.MERGED_CELLS_DOUBLE_CLICK, event);
             break;
           default:
@@ -409,13 +455,46 @@ export class EventController {
     }
   };
 
+  private onCanvasMouseout = (event: CanvasEvent) => {
+    if (!this.isAutoResetSheetStyle || event?.shape) {
+      return;
+    }
+    const { interaction } = this.spreadsheet;
+    // 两种情况不能重置 1. 选中单元格 2. 有 intercepts 时（重置会清空 intercepts）
+    if (!interaction.isSelectedState() && !(interaction.intercepts.size > 0)) {
+      interaction.reset();
+    }
+  };
+
   private onCanvasContextMenu = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
     spreadsheet.emit(S2Event.GLOBAL_CONTEXT_MENU, event);
+
+    const cellType = this.spreadsheet.getCellType(event.target);
+    switch (cellType) {
+      case CellTypes.DATA_CELL:
+        this.spreadsheet.emit(S2Event.DATA_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.ROW_CELL:
+        this.spreadsheet.emit(S2Event.ROW_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.COL_CELL:
+        this.spreadsheet.emit(S2Event.COL_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.CORNER_CELL:
+        this.spreadsheet.emit(S2Event.CORNER_CELL_CONTEXT_MENU, event);
+        break;
+      case CellTypes.MERGED_CELL:
+        this.spreadsheet.emit(S2Event.MERGED_CELLS_CONTEXT_MENU, event);
+        break;
+      default:
+        break;
+    }
   };
 
   public clear() {
@@ -434,14 +513,31 @@ export class EventController {
     this.canvasEventHandlers.push({ type: eventType, handler });
   }
 
+  private addS2Event<K extends keyof EmitterType>(
+    eventType: K,
+    handler: EmitterType[K],
+  ) {
+    this.spreadsheet.on(eventType, handler);
+    this.s2EventHandlers.push({
+      type: eventType,
+      handler,
+    });
+  }
+
   private addDomEventListener(
     target: EventTarget,
     type: string,
     handler: EventListenerOrEventListenerObject,
   ) {
     if (target.addEventListener) {
-      target.addEventListener(type, handler);
-      this.domEventListeners.push({ target, type, handler });
+      const { eventListenerOptions } = this.spreadsheet.options.interaction;
+      target.addEventListener(type, handler, eventListenerOptions);
+      this.domEventListeners.push({
+        target,
+        type,
+        handler,
+        options: eventListenerOptions,
+      });
     } else {
       // eslint-disable-next-line no-console
       console.error(`Please make sure ${target} has addEventListener function`);
@@ -452,10 +548,18 @@ export class EventController {
     each(this.canvasEventHandlers, ({ type, handler }) => {
       this.canvasContainer?.off(type, handler);
     });
-    each(this.domEventListeners, (event) => {
-      event.target.removeEventListener(event.type, event.handler);
+    each(this.s2EventHandlers, ({ type, handler }) => {
+      this.spreadsheet.off(type, handler);
+    });
+    each(this.domEventListeners, (listener) => {
+      listener.target.removeEventListener(
+        listener.type,
+        listener.handler,
+        listener.options,
+      );
     });
     this.canvasEventHandlers = [];
+    this.s2EventHandlers = [];
     this.domEventListeners = [];
   }
 }

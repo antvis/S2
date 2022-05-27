@@ -2,20 +2,37 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
-import { Group, IShape, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
-import { forEach, isEmpty, set } from 'lodash';
+import {
+  Group,
+  IShape,
+  ShapeAttrs,
+  ShapeCfg,
+  SimpleBBox,
+} from '@antv/g-canvas';
+import { forEach, isEmpty, set, isFunction } from 'lodash';
 import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
 
-export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
+export function renderRect(
+  group: Group,
+  attrs: ShapeAttrs,
+  extraParams?: Omit<ShapeCfg, 'attrs'>,
+): IShape {
   return group?.addShape?.('rect', {
     zIndex: 1,
     attrs,
+    ...(extraParams || {}),
   });
 }
 
 export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('polygon', {
+    attrs,
+  });
+}
+
+export function renderCircle(group: Group, attrs: ShapeAttrs): IShape {
+  return group?.addShape?.('circle', {
     attrs,
   });
 }
@@ -88,14 +105,16 @@ export function renderTreeIcon(
   area: SimpleBBox,
   fill: string,
   isCollapse: boolean,
-  onClick: () => void,
+  onClick?: () => void,
 ) {
   const icon = new GuiIcon({
-    name: isCollapse ? 'plus' : 'MinusSquare',
+    name: isCollapse ? 'Plus' : 'Minus',
     ...area,
     fill,
   });
-  icon.on('click', onClick);
+  if (isFunction(onClick)) {
+    icon.on('click', onClick);
+  }
   group?.add(icon);
   return icon;
 }

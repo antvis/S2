@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2';
+import { SheetComponent, Switcher } from '@antv/s2-react';
 import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
-    const s2options = {
-      width: 800,
-      height: 600,
+  .then((dataCfg) => {
+    const s2Options = {
+      width: 600,
+      height: 480,
     };
 
     // 明细表只需要 columns 字段
     const defaultFields = {
-      columns: ['province', 'city', 'type', 'price', 'cost'],
+      columns: ['province', 'city', 'type', 'sub_type', 'number'],
     };
 
     const defaultSwitcherFields = {
@@ -26,8 +26,8 @@ fetch(
           { id: 'province' },
           { id: 'city' },
           { id: 'type' },
-          { id: 'price' },
-          { id: 'cost' },
+          { id: 'sub_type' },
+          { id: 'number' },
         ],
       },
     };
@@ -64,12 +64,12 @@ fetch(
 
       return (
         <div>
-          <Switcher {...switcherFields} onSubmit={onSubmit} />
+          <Switcher sheetType="table" {...switcherFields} onSubmit={onSubmit} />
           <SheetComponent
-            sheetType={'table'}
+            sheetType="table"
             adaptive={false}
-            dataCfg={{ data, fields }}
-            options={{ ...s2options, hiddenColumnFields }}
+            dataCfg={{ ...dataCfg, fields }}
+            options={{ ...s2Options, interaction: { hiddenColumnFields } }}
           />
         </div>
       );

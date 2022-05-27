@@ -4,11 +4,12 @@ order: 1
 ---
 ## 📦 安装
 
-### npm or yarn 安装
+### npm | yarn 安装
 
 ```bash
 # npm
-$ npm install @antv/s2 --save
+$ npm install @antv/s2
+
 # yarn
 $ yarn add @antv/s2
 ```
@@ -17,26 +18,25 @@ $ yarn add @antv/s2
 
 ```html
 <!-- 引入在线资源 -->
-<script type="text/javascript" src="https://unpkg.com/@antv/s2@0.2.5/dist/s2.min.js"></script>
-<script>
- 
-</script>
+<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest/dist/index.min.js"></script>
+
 <!-- 下载到本地 引入本地脚本 -->
-<script src="./s2.min.js"></script>
+<script src="./dist/index.min.js"></script>
 ```
+
+如需兼容`IE`，需要自行引入 `polyfill` 兼容。
 
 ## 🔨 使用
 
-创建一个基础的透视表格需要以下三个步骤：
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue` 版本
 
-1. 准备绘制容器。
-2. 数据准备。
-3. 配置项准备。
-4. 创建透视表。
+- core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
+- react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- vue 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
 
-### 原生使用 S2
+### 基础类
 
-#### 1. 数据准备
+#### 1. 数据 (data) 准备
 
 <details>
   <summary> s2DataConfig</summary>
@@ -49,55 +49,103 @@ const s2DataConfig = {
     values: ['price'],
   },
   data: [
-     {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      price: "1",
     },
     {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      price: "2",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '17',
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      price: "17",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '0.5',
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      price: "6",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: '笔',
-      price: '8',
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      price: "8",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '笔',
-      price: '9',
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      price: "12",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: ' 纸张',
-      price: '3',
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      price: "3",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '纸张',
-      price: '1',
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      price: "25",
     },
-  ],
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      cost: "0.5",
+    },
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      cost: "20",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      cost: "1.7",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      cost: "0.12",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      cost: "10",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      cost: "9",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      cost: "3",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      cost: "1",
+    }
+  ]
 };
 ```
 
@@ -106,9 +154,9 @@ const s2DataConfig = {
 #### 2. 配置项准备
 
 ```ts
-const s2options = {
-  width: 800,
-  height: 600,
+const s2Options = {
+  width: 600,
+  height: 600
 }
 ```
 
@@ -120,56 +168,108 @@ const s2options = {
 
 ```ts
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2options);
+const s2 = new PivotSheet(container, s2DataConfig, s2Options)
 
-s2.render();
-
+s2.render()
 ```
 
 #### 4. 结果
 
-<playground path='basic/pivot/demo/grid.ts' rid='container' height='300'></playground>
+<playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
 
-### 在React 中使用 S2
+### `React` 版本
 
-S2 提供了开箱即用的 react 版本[表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的[分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
-使用 React 版本 S2，只有渲染这一步有所不同：
+使用 `React` 版本 `S2`，只有渲染这一步有所不同：
 
 ```ts
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const container = document.getElementById('container');
 
 ReactDOM.render(
- SheetComponent dataCfg={s2DataConfig} options={s2options} />,
-      document.getElementById('container'),
+  <SheetComponent
+    dataCfg={s2DataConfig}
+    options={s2Options}
+  />,
+  document.getElementById('container'),
 );
 
 ```
 
-## 本地开发
+### `Vue` 版本
+
+`S2` 同时也提供了开箱即用的 `Vue` 版本 [表格组件](###), 帮助开发者快速满足业务看数分析需求。
+
+使用 `Vue` 版本 `S2`：
+
+#### 表格组件使用
+
+```ts
+// App.vue
+<script lang="ts">
+import type { S2DataConfig, S2Options } from '@antv/s2';
+import { Sheet } from '@antv/s2-vue';
+import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+
+export default defineComponent({
+  setup() {   
+    // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
+    const dataCfg = shallowRef(s2DataConfig);
+    const options: S2Options = reactive(s2Options);
+
+    return {
+      dataCfg,
+      options,
+    };
+  },
+
+  components: {
+    Sheet,
+  },
+});
+</script>
+
+<template>
+  <Sheet :dataCfg="dataCfg" :options="options" />
+</template>
+
+<style lang="less">
+@import 'ant-design-vue/dist/antd.less';
+</style>
+```
+
+#### 渲染组件
+
+```ts
+import { createApp } from 'vue';
+import App from './App.vue';
+
+createApp(App).mount('#app');
+
+```
+
+​📊 查看 demo [Vue 版本透视表](###)。
+
+## ⌨️ 本地开发
 
 ```shell
 git clone git@github.com:antvis/S2.git
+cd S2
 
-cd s2
-
-yarn bootstrap
-
-yarn core:start
+# 本地启动开发
+yarn
+yarn core:watch
+yarn react:playground
 
 # 本地启动官网
-
 yarn site:bootstrap
-
 yarn site:start
-
 ```

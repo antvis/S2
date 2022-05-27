@@ -1,7 +1,23 @@
 import { S2Options } from '../interface/s2Options';
+import {
+  HOVER_FOCUS_DURATION,
+  ScrollbarPositionType,
+} from '../constant/interaction';
+import { EMPTY_PLACEHOLDER } from './basic';
 import { Style } from '@/common/interface/basic';
+import { ResizeType } from '@/common/constant/resize';
+
+export const MIN_DEVICE_PIXEL_RATIO = 1;
+
+export enum LayoutWidthTypes {
+  Adaptive = 'adaptive',
+  ColAdaptive = 'colAdaptive',
+  Compact = 'compact',
+}
 
 export const DEFAULT_STYLE: Readonly<Style> = {
+  layoutWidthType: LayoutWidthTypes.Adaptive,
+  showTreeLeafNodeAlignDot: false,
   treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
@@ -10,17 +26,14 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     height: 30,
   },
   rowCfg: {
-    width: 96,
+    width: null,
     widthByField: {},
+    heightByField: {},
   },
   colCfg: {
-    height: 40,
+    height: 30,
     widthByFieldValue: {},
     heightByField: {},
-    colWidthType: 'adaptive',
-    totalSample: 10,
-    detailSample: 30,
-    maxSampleIndex: 1,
   },
   device: 'pc',
 };
@@ -33,36 +46,53 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   conditions: {},
   totals: {},
   tooltip: {
-    showTooltip: true,
+    showTooltip: false,
     autoAdjustBoundary: 'body',
     operation: {
-      hiddenColumns: true,
+      hiddenColumns: false,
       trend: false,
-      sort: true,
+      sort: false,
+      menus: [],
     },
   },
   interaction: {
     linkFields: [],
     hiddenColumnFields: [],
-    selectedCellsSpotlight: true,
+    selectedCellsSpotlight: false,
     hoverHighlight: true,
+    hoverFocus: { duration: HOVER_FOCUS_DURATION },
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,
     },
     autoResetSheetStyle: true,
+    brushSelection: true,
+    multiSelection: true,
+    rangeSelection: true,
+    scrollbarPosition: ScrollbarPositionType.CONTENT,
+    resize: {
+      rowCellVertical: true,
+      cornerCellHorizontal: true,
+      colCellHorizontal: true,
+      colCellVertical: true,
+      rowResizeType: ResizeType.ALL,
+    },
+    eventListenerOptions: false,
   },
-  freezeRowHeader: true,
   showSeriesNumber: false,
-  scrollReachNodeField: {},
   customSVGIcons: [],
-  customHeaderCells: null,
-  showDefaultHeaderActionIcon: true,
+  showDefaultHeaderActionIcon: false,
   headerActionIcons: [],
   style: DEFAULT_STYLE,
+  frozenRowHeader: true,
   frozenRowCount: 0,
   frozenColCount: 0,
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
+  cornerText: '',
+  cornerExtraFieldText: '',
+  placeholder: EMPTY_PLACEHOLDER,
+  supportCSSTransform: false,
+  devicePixelRatio: window.devicePixelRatio,
 };

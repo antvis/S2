@@ -1,0 +1,74 @@
+{
+  "fields": {
+    "rows": ["date", "city", "type"],
+    "columns": [],
+    "values": ["a_sum", "b_sum"],
+    "valueInCols": true
+  },
+  "meta": [
+    {
+      "field": "date",
+      "name": "日期"
+    },
+    {
+      "field": "city",
+      "name": "城市"
+    },
+    {
+      "field": "type",
+      "name": "类型"
+    },
+    {
+      "field": "a_sum",
+      "name": "A类求和"
+    },
+    {
+      "field": "b_sum",
+      "name": "B类求和"
+    }
+  ],
+  "data": [
+    {
+      "date": "2021-12-01",
+      "city": "A市",
+      "type": "电子",
+      "a_sum": 6
+    },
+    {
+      "date": "2021-12-01",
+      "city": "A市",
+      "type": "电子",
+      "b_sum": 6
+    },
+    {
+      "date": "2021-12-01",
+      "city": "A市",
+      "type": "",
+      "b_sum": 6
+    },
+    {
+      "date": "2021-12-01",
+      "city": "A市",
+      "type": "undefined",
+      "b_sum": 6
+    },
+    {
+      "date": "2021-12-01",
+      "city": "A市",
+      "type": null,
+      "b_sum": 6
+    },
+    {
+      "date": "2021-12-01",
+      "city": "B市",
+      "type": "日用",
+      "a_sum": 1
+    },
+    {
+      "date": "2021-12-01",
+      "city": "B市",
+      "type": "",
+      "b_sum": 1
+    }
+  ]
+}

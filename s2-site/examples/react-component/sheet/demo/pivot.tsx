@@ -1,27 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
-fetch('../data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
+)
   .then((res) => res.json())
-  .then((res) => {
-    const s2options = {
+  .then((dataCfg) => {
+    const s2Options = {
       width: 600,
-      height: 400,
-    };
-
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price'],
-      },
-      data: res,
+      height: 480,
     };
 
     ReactDOM.render(
-      <SheetComponent dataCfg={s2DataConfig} options={s2options} />,
+      <SheetComponent dataCfg={dataCfg} options={s2Options} />,
       document.getElementById('container'),
     );
   });

@@ -22,4 +22,8 @@ export class Store {
   public clear() {
     this.store.clear();
   }
+
+  public size() {
+    return this.store.size;
+  }
 }

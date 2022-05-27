@@ -1,0 +1,89 @@
+.strategySheetTooltip {
+  line-height: 20px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  padding: 12px;
+
+  &.row {
+    .value {
+      font-weight: 700;
+    }
+  }
+
+  &.col {
+    .name {
+      margin-right: 20px;
+    }
+
+    .value {
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+
+  &.data {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .label {
+        font-weight: 700;
+      }
+    }
+
+    .originalValue {
+      text-align: right;
+    }
+
+    .divider {
+      border-top: 1px solid #e9e9e9;
+      margin: 10px -12px;
+    }
+
+    .derivedValues {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      > .value {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .derivedValueGroup {
+          color: rgba(0, 0, 0, 0.65);
+
+          .icon {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-right: 4px;
+            border-right: 4px solid transparent;
+            border-bottom: 9px solid #000;
+            border-left: 4px solid transparent;
+            transform: rotate(0deg);
+          }
+
+          &.up {
+            color: #f46649;
+
+            .icon {
+              border-bottom-color: #f46649;
+            }
+          }
+
+          &.down {
+            color: #2aa491;
+
+            .icon {
+              transform: rotate(180deg);
+              border-bottom-color: #2aa491;
+            }
+          }
+        }
+      }
+    }
+  }
+}

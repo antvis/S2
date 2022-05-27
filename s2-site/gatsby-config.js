@@ -5,14 +5,14 @@ module.exports = {
     {
       resolve: '@antv/gatsby-theme-antv',
       options: {
-        GATrackingId: ``,
+        GATrackingId: `G-SJ4N89WC85`,
       },
     },
   ],
   // 站点配置
   siteMetadata: {
     title: 'S2',
-    description: 'Ant effective spreadsheet render core lib homepage',
+    description: '多维交叉分析表格',
     siteUrl: homepage,
     githubUrl: repository.url,
     showLanguageSwitcher: true,
@@ -152,6 +152,14 @@ module.exports = {
         },
         order: 8,
       },
+      {
+        slug: 'manual/faq',
+        title: {
+          zh: '常见问题',
+          en: 'Common problem',
+        },
+        order: 8,
+      },
     ],
     // demo配置
     examples: [
@@ -171,7 +179,15 @@ module.exports = {
           en: 'Basic Sheets',
         },
       },
-       {
+      {
+        slug: 'layout',
+        icon: 'other',
+        title: {
+          zh: '布局',
+          en: 'Layout',
+        }
+      },
+      {
         slug: 'theme',
         icon: 'skin',
         title: {
@@ -199,7 +215,7 @@ module.exports = {
         slug: 'react-component',
         icon: 'build',
         title: {
-          zh: 'React组件',
+          zh: 'React 组件',
           en: 'React Component',
         },
       },
@@ -215,6 +231,12 @@ module.exports = {
     mdPlayground: {
       // markdown 文档中的 playground 若干设置
       splitPaneMainSize: '75%',
+    },
+    docsearchOptions: {
+      versionV3: true,
+      apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
+      indexName: 's2-antv-vision',
+      appId: 'D73DOU8RXD',
     },
     // 编辑器配置
     playground: {

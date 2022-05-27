@@ -1,5 +1,5 @@
 {
-  "describe": "标准交叉表数据。注意：不能随意改动！会影响单测结果！",
+  "describe": "标准透视表数据。注意：不能随意改动！会影响单测结果！",
   "meta": [
     {
       "field": "number",
@@ -22,6 +22,12 @@
       "name": "子类别"
     }
   ],
+  "fields": {
+    "rows": ["province", "city"],
+    "columns": ["type", "sub_type"],
+    "values": ["number"],
+    "valueInCols": true
+  },
   "data": [
     {
       "number": 7789,

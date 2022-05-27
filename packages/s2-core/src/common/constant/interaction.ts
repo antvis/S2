@@ -1,4 +1,5 @@
 export enum InteractionName {
+  CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
   ROW_COLUMN_CLICK = 'rowColumnClick',
@@ -6,7 +7,9 @@ export enum InteractionName {
   HOVER = 'hover',
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
-  COL_ROW_MULTI_SELECTION = 'colRowMultiSelection',
+  DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
+  RANGE_SELECTION = 'rangeSelection',
+  SELECTED_CELL_MOVE = 'selectedCellMove',
 }
 
 export enum InteractionStateName {
@@ -15,6 +18,8 @@ export enum InteractionStateName {
   UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
+  HIGHLIGHT = 'highlight',
+  SEARCH_RESULT = 'searchResult',
   PREPARE_SELECT = 'prepareSelect',
 }
 
@@ -24,10 +29,10 @@ export enum CellTypes {
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
-  MERGED_CELLS = 'mergedCells',
+  MERGED_CELL = 'mergedCell',
 }
 
-export const HOVER_FOCUS_TIME = 800;
+export const HOVER_FOCUS_DURATION = 800;
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
@@ -36,6 +41,7 @@ export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
   borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
+  borderWidth: 'lineWidth',
   opacity: 'opacity',
 };
 
@@ -43,9 +49,8 @@ export const SHAPE_STYLE_MAP = {
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
   linkFieldShape: ['opacity'],
-  backgroundShape: ['backgroundOpacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
-  interactiveBorderShape: ['borderColor', 'borderOpacity'],
+  interactiveBorderShape: ['borderColor', 'borderOpacity', 'borderWidth'],
 };
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';
@@ -61,6 +66,11 @@ export enum InteractionKeyboardKey {
   COPY = 'c',
   ESC = 'Escape',
   META = 'Meta',
+  CONTROL = 'Control',
+  ARROW_UP = 'ArrowUp',
+  ARROW_DOWN = 'ArrowDown',
+  ARROW_LEFT = 'ArrowLeft',
+  ARROW_RIGHT = 'ArrowRight',
 }
 
 export enum SortMethodType {
@@ -74,4 +84,25 @@ export enum InterceptType {
   BRUSH_SELECTION = 'brushSelection',
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
+}
+
+export const BRUSH_AUTO_SCROLL_INITIAL_CONFIG = {
+  x: {
+    value: 0,
+    scroll: false,
+  },
+  y: {
+    value: 0,
+    scroll: false,
+  },
+};
+
+export enum ScrollbarPositionType {
+  CONTENT = 'content',
+  CANVAS = 'canvas',
+}
+
+export enum ScrollDirection {
+  LEADING = 'leading',
+  TRAILING = 'trailing',
 }

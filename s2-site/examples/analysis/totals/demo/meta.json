@@ -10,7 +10,7 @@
         "zh": "单度量值",
         "en": "Single Value Totals"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/9TjR1hf1RL/d8da5e69-f9a7-4346-80e6-960d6bccbea5.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
     },
     {
       "filename": "multiple-values.ts",
@@ -18,7 +18,7 @@
         "zh": "多度量值",
         "en": "Multiple Value Totals"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2Z0P4kJ3Yu/6eba770f-414f-4356-a65f-201b23cca801.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3SuoQrkTsR/5657d02f-8e7f-4fbc-8159-7a0e8f772462.png"
     },
     {
       "filename": "tree.ts",
@@ -26,7 +26,23 @@
         "zh": "树状模式",
         "en": "Tree Totals"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/d5WnZsYacb/2f6954e8-a5d8-4576-ba0e-112710554b05.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/fjQwAfmonL/b697e97f-8bfb-49fe-a123-195ce1aa8a82.png"
+    },
+    {
+      "filename": "calculate.ts",
+      "title": {
+        "zh": "配置计算汇总值",
+        "en": "Calculate Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
+    },
+    {
+      "filename": "custom.ts",
+      "title": {
+        "zh": "自定义计算汇总值",
+        "en": "Custom Calculate Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
     }
   ]
 }

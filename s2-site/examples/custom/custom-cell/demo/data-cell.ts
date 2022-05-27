@@ -1,12 +1,12 @@
 import { PivotSheet, DataCell } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
-// 自定义单元格，实现特有功能
+/**
+ * 自定义 DataCell，给数值单元格添加背景图
+ * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
+ */
 class CustomDataCell extends DataCell {
-  /**
-   * Draw cell backgroud with image
-   */
-  protected drawBackgroundShape() {
+  // 重写绘制背景方法, 添加一个背景图片
+  drawBackgroundShape() {
     this.backgroundShape = this.addShape('image', {
       attrs: {
         ...this.getCellArea(),
@@ -28,17 +28,20 @@ fetch(
         columns: ['type', 'sub_type'],
         values: ['number'],
       },
+      meta: res.meta,
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
-      hoverHighlight: false, // 为了视觉效果，可不设置
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        hoverHighlight: false, // 关闭 hover 十字高亮, 为了视觉效果，可不设置
+      },
       dataCell: (viewMeta) => {
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     // 使用
     s2.render();

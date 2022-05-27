@@ -6,6 +6,7 @@ import { omit, clone } from 'lodash';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
+
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
@@ -17,8 +18,10 @@ export interface GuiIconCfg extends ShapeAttrs {
  * 使用 iconfont 上的 svg 来创建 Icon
  */
 export class GuiIcon extends Group {
+  static type = '__GUI_ICON__';
+
   // icon 对应的 GImage 对象
-  private image: Shape.Image;
+  public iconImageShape: Shape.Image;
 
   constructor(cfg: GuiIconCfg) {
     super(cfg);
@@ -32,7 +35,7 @@ export class GuiIcon extends Group {
     cacheKey: string,
     fill?: string,
   ): Promise<HTMLImageElement> {
-    return new Promise((resolve: (i) => void, reject: (i) => void): void => {
+    return new Promise<HTMLImageElement>((resolve, reject): void => {
       const img = new Image();
       // 成功
       img.onload = () => {
@@ -49,11 +52,12 @@ export class GuiIcon extends Group {
       // 1、base 64
       // 2、svg本地文件（兼容老方式，可以改颜色）
       // 3、线上支持的图片地址
-      if (svg && svg.includes('data:image/svg+xml')) {
+      if (
+        svg &&
+        (svg.includes('data:image/svg+xml') || this.hasSupportSuffix(svg))
+      ) {
         // 传入 base64 字符串
-        img.src = svg;
-      } else if (this.hasSupportSuffix(svg)) {
-        // online 图片
+        // 或者 online 链接
         img.src = svg;
       } else if (svg) {
         // 传入 svg 字符串（支持颜色fill）
@@ -84,8 +88,12 @@ export class GuiIcon extends Group {
   private render() {
     const { name, fill } = this.cfg;
     const attrs = clone(this.cfg);
+    const imageShapeAttrs: ShapeAttrs = {
+      ...omit(attrs, 'fill'),
+      type: GuiIcon.type,
+    };
     const image = new Shape.Image({
-      attrs: omit(attrs, 'fill'),
+      attrs: imageShapeAttrs,
     });
 
     const cacheKey = `${name}-${fill}`;
@@ -105,6 +113,6 @@ export class GuiIcon extends Group {
           console.warn(`GuiIcon ${name} load error`, err);
         });
     }
-    this.image = image;
+    this.iconImageShape = image;
   }
 }

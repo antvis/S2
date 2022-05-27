@@ -1,9 +1,11 @@
+import { i18n } from '../i18n';
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
+export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
 export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
-// export const COLUMN_FIELD_KEY = '$$column_key$$';
+export const DEFAULT_CORNER_TEXT = i18n('指标');
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
@@ -11,6 +13,7 @@ export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
 export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
+export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;
 export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 
 // panelGroup 上的 children 层叠顺序
@@ -31,6 +34,8 @@ export const KEY_GROUP_PANEL_FROZEN_TRAILING_COL = 'frozenTrailingColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
 export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
+export const KEY_GROUP_FROZEN_ROW_RESIZE_AREA = 'rowFrozenResizeAreaGroup';
+export const KEY_GROUP_FROZEN_SPLIT_LINE = 'frozenSplitLine';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
@@ -40,6 +45,7 @@ export const KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA =
 export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
+export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
@@ -69,5 +75,5 @@ export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
 
 export const IMAGE = 'image';
 
-// 箭头最大占整个容器的比例 (0-1)
+// 角头最大占整个容器的比例 (0-1)
 export const CORNER_MAX_WIDTH_RATIO = 0.5;

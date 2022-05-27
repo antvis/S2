@@ -5,7 +5,7 @@ redirect_from:
   - /en/docs/api
 ---
 
-S2 使用 [Antv/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图引擎。一些图形的样式配置，如单元格的 `fill`属性，`stroke`属性，以及绘制字体的`fontFamily`和`fontSize`等，都是直接透传 [Antv/G 的绘图属性](https://g.antv.vision/zh/docs/api/shape/attrs)。
+S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图引擎。一些图形的样式配置，如单元格的 `fill`属性，`stroke`属性，以及绘制字体的`fontFamily`和`fontSize`等，都是直接透传 [AntV/G 的绘图属性](https://g.antv.vision/zh/docs/api/shape/attrs)。
 
 这里对 S2 常用的绘图属性进行简单介绍：
 

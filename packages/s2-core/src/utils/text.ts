@@ -1,18 +1,27 @@
 import {
   clone,
-  get,
   isArray,
+  isEmpty,
+  isFunction,
+  isNil,
   isNumber,
   isString,
   memoize,
-  merge,
+  reverse,
   toString,
+  trim,
   values,
 } from 'lodash';
-import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, S2Theme } from '@/index';
+import { DefaultCellTheme, TextAlign } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
+import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import {
+  CellCfg,
+  Condition,
+  MultiData,
+  S2CellType,
+  ViewMeta,
+} from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -165,14 +174,23 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
  */
-export const getEllipsisText = (
-  text: string,
-  maxWidth: number,
-  fontParam?: unknown,
-  priorityParam?: string[],
-) => {
+export const getEllipsisText = ({
+  text,
+  maxWidth,
+  fontParam,
+  priorityParam,
+  placeholder,
+}: {
+  text: string | number;
+  maxWidth: number;
+  fontParam?: unknown;
+  priorityParam?: string[];
+  placeholder?: string;
+}) => {
   let font = {};
-  const finalText = text ?? '-';
+  const empty = placeholder ?? EMPTY_PLACEHOLDER;
+  // [null, undefined, ''] will return empty
+  const finalText = isNil(text) || text === '' ? empty : `${text}`;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -249,192 +267,179 @@ export const getEllipsisText = (
 };
 
 /**
- * To decide whether the derived data is positive or negtive.
+ * To decide whether the data is positive or negative.
  * Two cases needed to be considered since  the derived value could be number or string.
  * @param value
  * @param font
  */
-export const getDerivedDataState = (value: number | string): boolean => {
+export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
-  return !/^-/.test(value);
+  return !!value && !trim(value).startsWith('-');
 };
 
-const calX = (x: number, padding: number[], total?: number) => {
+const calX = (
+  x: number,
+  paddingRight: number,
+  total?: number,
+  textAlign = 'left',
+) => {
   const extra = total || 0;
-  return x + padding[PADDING_RIGHT] / 2 + extra;
+  if (textAlign === 'left') {
+    return x + paddingRight / 2 + extra;
+  }
+  if (textAlign === 'right') {
+    return x - paddingRight / 2 - extra;
+  }
+  // TODO 兼容 textAlign 为居中
+  return x;
 };
 
-const getStyle = (
+const getTextStyle = (
   rowIndex: number,
   colIndex: number,
-  value: string | number,
-  options: S2Options,
-  theme: S2Theme,
+  meta: ViewMeta,
+  data: string | number,
+  dataCellTheme: DefaultCellTheme,
+  textCondition: Condition,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
-  const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
-  const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
-  const isMinor = rowIndex === minorMeasureIndex;
-  const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor
-    ? clone(theme?.view?.minorText)
-    : clone(theme?.view?.text);
-  const derivedMeasureText = theme?.view?.derivedMeasureText;
-  const upFill = isMinor
-    ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || theme.dataCell.icon.upIconColor;
-  const downFill = isMinor
-    ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || theme.dataCell.icon.downIconColor;
-  if (isDerivedMeasure) {
-    const isUp = getDerivedDataState(value);
-    return merge(style, {
-      fill: isUp ? upFill : downFill,
-    });
+  const { isTotals } = meta;
+  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+  let fill = textStyle.fill;
+  if (textCondition?.mapping) {
+    fill = textCondition?.mapping(data, {
+      rowIndex,
+      colIndex,
+      meta,
+    }).fill;
   }
-  return style;
+  return { ...textStyle, fill };
+};
+
+/**
+ * 获取自定义空值占位符
+ */
+export const getEmptyPlaceholder = (
+  meta: Record<string, any>,
+  placeHolder: ((meta: Record<string, any>) => string) | string,
+) => {
+  return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
 };
 
 /**
  * @desc draw text shape of object
  * @param cell
+ * @multiData 自定义文本内容
+ * @disabledConditions 是否禁用条件格式
  */
-export const drawObjectText = (cell) => {
-  const { x, y, height, width } = cell.getContentArea();
-  const { formattedValue: text } = cell.getFormattedFieldValue();
-  const labelStyle = cell.theme?.view?.bolderText;
-  const textStyle = cell.theme?.view?.text;
-  const textFill = textStyle?.fill;
-  const padding = cell.theme?.view?.cell?.padding;
+export const drawObjectText = (
+  cell: S2CellType,
+  multiData?: MultiData,
+  disabledConditions?: boolean,
+) => {
+  const { x } = cell.getTextAndIconPosition(0).text;
+  const {
+    y,
+    height: totalTextHeight,
+    width: totalTextWidth,
+  } = cell.getContentArea();
+  const text = multiData || (cell.getMeta().fieldValue as MultiData);
+  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
+  const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
-  // 指标个数相同，任取其一即可
-  const realWidth = width / (text?.values[0].length + 1);
-  const realHeight = height / (text?.values.length + 1);
-  renderText(
-    cell,
-    cell.textShape,
-    calX(x, padding),
-    y + realHeight / 2,
-    getEllipsisText(
-      text?.label || '-',
-      width - padding[PADDING_LEFT],
+  const widthPercentCfg = valuesCfg?.widthPercentCfg;
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const { textAlign } = dataCellStyle.text;
+  const padding = dataCellStyle.cell.padding;
+
+  const realHeight = totalTextHeight / (text.values.length + 1);
+  let labelHeight = 0;
+  // 绘制单元格主标题
+  if (text?.label) {
+    labelHeight = realHeight / 2;
+    const labelStyle = dataCellStyle.bolderText;
+
+    renderText(
+      cell,
+      [],
+      calX(x, padding.right),
+      y + labelHeight,
+      getEllipsisText({
+        text: text.label,
+        maxWidth: totalTextWidth,
+        fontParam: labelStyle,
+      }),
       labelStyle,
-    ),
-    labelStyle,
-    textFill,
-  );
+    );
+  }
 
+  // 绘制指标
   const { values: textValues } = text;
   let curText: string | number;
   let curX: number;
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
-  for (let i = 0; i < textValues.length; i += 1) {
-    curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
+  for (let i = 0; i < textValues.length; i++) {
+    curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
-    for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j] || '-';
-      const curStyle = getStyle(
+    const measures = clone(textValues[i]);
+    if (textAlign === 'right') {
+      reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
+    }
+
+    for (let j = 0; j < measures.length; j++) {
+      curText = measures[j];
+      const curStyle = getTextStyle(
         i,
         j,
+        cell?.getMeta() as ViewMeta,
         curText,
-        cell?.spreadsheet?.options,
-        cell?.theme,
+        dataCellStyle,
+        textCondition,
       );
-      curWidth = j === 0 ? realWidth * 2 : realWidth;
-      curX = calX(x, padding, totalWidth);
+      curWidth = !isEmpty(widthPercentCfg)
+        ? totalTextWidth * (widthPercentCfg[j] / 100)
+        : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
+
+      curX = calX(x, padding.right, totalWidth, textAlign);
       totalWidth += curWidth;
+      const { placeholder } = cell?.getMeta().spreadsheet.options;
+      const emptyPlaceholder = getEmptyPlaceholder(
+        cell?.getMeta(),
+        placeholder,
+      );
       renderText(
         cell,
-        cell.textShape,
+        [],
         curX,
         curY,
-        getEllipsisText(`${curText}`, curWidth, curStyle),
+        getEllipsisText({
+          text: curText,
+          maxWidth: curWidth,
+          fontParam: curStyle,
+          placeholder: emptyPlaceholder,
+        }),
         curStyle,
-        curStyle?.fill,
       );
     }
   }
 };
 
 /**
- * @desc draw text shape of string
- * @param cell
- * @returns 文本左上角起点坐标
+ * 根据 cellCfg 配置获取当前单元格宽度
  */
-export const drawStringText = (cell) => {
-  const { x, y, height, width } = cell.getContentArea();
-  const { formattedValue: text } = cell.getFormattedFieldValue();
-  const { isTotals } = cell.meta;
-  const textStyle = isTotals
-    ? cell.theme.dataCell.bolderText
-    : cell.theme.dataCell.text;
-  const textFill = textStyle?.fill;
-  const padding = cell.theme.dataCell.cell.padding;
-
-  cell.textShape = renderText(
-    cell,
-    cell.textShape,
-    x + width - padding.right,
-    y + height / 2,
-    getEllipsisText(
-      `${text || '-'}`,
-      width - padding.left - padding.right,
-      textStyle,
-    ),
-    textStyle,
-    textFill,
-  );
+export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
+  const { width } = cellCfg;
+  const cellWidth = width;
+  return cellWidth * labelSize;
 };
 
-/**
- * @desc 根据单元格起点和配置（宽、高、水平对齐、垂直对齐）获取文字定位点坐标信息
- * ************************************************
- *     +-------------------------------------+
- *     |                  |                  |
- *     |            paddingTop               |
- *     |                  |                  |
- *     |  paddingLeft  |Text|  paddingRight  |
- *     |                  |                  |
- *     |            paddingBottom            |
- *     |                  |                  |
- *     +-------------------------------------+
- * ************************************************
- * @param cellBoxCfg
- */
-export const getTextPosition = (cellBoxCfg: CellBoxCfg): TooltipPosition => {
-  const { x, y, width, height, textAlign, textBaseline, padding } = cellBoxCfg;
-  let textX: number;
-  let textY: number;
-  switch (textAlign) {
-    case 'right':
-      textX = x + width - padding?.right;
-      break;
-    case 'center':
-      textX = x + padding?.left + (width - padding?.left - padding?.right) / 2;
-      break;
-    default:
-      textX = x + padding?.left;
-      break;
+export const safeJsonParse = (val: string) => {
+  try {
+    return JSON.parse(val);
+  } catch (err) {
+    return null;
   }
-
-  switch (textBaseline) {
-    case 'top':
-      textY = y + padding?.top;
-      break;
-    case 'middle':
-      textY = y + height / 2;
-      break;
-    default:
-      textY = y + height - padding?.bottom;
-      break;
-  }
-
-  return {
-    x: textX,
-    y: textY,
-  };
 };

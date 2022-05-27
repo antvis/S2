@@ -1,16 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import insertCss from 'insert-css';
+import { Button } from 'antd';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
-      width: 800,
-      height: 600,
-      enableCopy: true,
+    const s2Options = {
+      width: 600,
+      height: 480,
+      interaction: {
+        enableCopy: true,
+      },
     };
 
     const s2DataConfig = {
@@ -28,13 +33,18 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [ (<button style={{ verticalAlign: 'top' }}>  插入内容 </button>) ],
+      switcherCfg: { open: true },
+      extra: (
+        <Button size={'small'} style={{ verticalAlign: 'top' }}>
+          插入内容
+        </Button>
+      ),
     };
 
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         header={header}
         adaptive={false}
       />,
@@ -42,3 +52,8 @@ fetch(
     );
   });
 
+insertCss(`
+  .s2-header {
+    margin:0px !important;
+  }
+`);

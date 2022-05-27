@@ -11,10 +11,10 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: preactjs/compressed-size-action@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        pattern: "./packages/s2-core/dist/**/*.{js,css}"
-        build-script: "build"
+        pattern: "./packages/**/dist/**/*.{js,css}"
+        build-script: "build:umd"
         clean-script: "clean:lock-file"

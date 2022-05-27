@@ -1,0 +1,38 @@
+@preCls: antv-s2;
+
+.@{preCls} {
+  &-spin.ant-spin-nested-loading,
+  &-spin > .ant-spin-container {
+    height: 100%;
+  }
+
+  &-wrapper {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  &-container {
+    overflow: auto;
+    flex: 1 1 auto;
+
+    canvas {
+      display: block;
+    }
+  }
+
+  &-pagination {
+    display: flex;
+    align-items: center;
+    z-index: 1024;
+
+    &-count {
+      margin-left: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 64px;
+    }
+  }
+}

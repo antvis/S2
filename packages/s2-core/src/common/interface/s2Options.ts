@@ -1,21 +1,23 @@
-import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
-  ScrollRatio,
+  ViewMeta,
 } from './basic';
 import { Tooltip } from './tooltip';
+import { InteractionOptions } from './interaction';
+import { ColHeaderConfig } from '@/facet/header/col';
+import { RowHeaderConfig } from '@/facet/header/row';
+import { CornerHeaderConfig } from '@/facet/header/corner';
+import { Node } from '@/facet/layout/node';
 import {
   CellCallback,
   CornerHeaderCallback,
-  CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
   MappingDataItemCallback,
   MergedCellInfo,
-  NodeField,
   Pagination,
   Style,
   Totals,
@@ -28,80 +30,65 @@ import {
 } from '@/common/interface/hooks';
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
-import { Node } from '@/facet/layout/node';
 
-export interface InteractionOptions {
-  // record which row/col field need extra link info
-  readonly linkFields?: string[];
-  // focus selected cell, like the spotlight
-  readonly selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  readonly hoverHighlight?: boolean;
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
-  // auto reset sheet style when click outside or press ecs key, default true
-  readonly autoResetSheetStyle?: boolean;
-  readonly hiddenColumnFields?: string[];
-  // the ratio to control scroll speed, default set to 1
-  readonly scrollSpeedRatio?: ScrollRatio;
-  /** ***********CUSTOM INTERACTION HOOKS**************** */
-  // register custom interactions
-  customInteractions?: CustomInteraction[];
-}
-
-export interface S2BasicOptions {
+export interface S2BasicOptions<T = Element | string> {
   // canvas's width
-  readonly width: number;
+  width?: number;
   // canvas's height
-  readonly height: number;
+  height?: number;
   // debug info for developer
-  readonly debug?: boolean;
+  debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
+  hierarchyType?: 'grid' | 'tree' | 'customTree';
   // conditions config
-  readonly conditions?: Conditions;
+  conditions?: Conditions;
   // total config
-  readonly totals?: Totals;
+  totals?: Totals;
   // tooltip configs
-  readonly tooltip?: Tooltip;
+  tooltip?: Tooltip<T>;
   // interaction configs
-  readonly interaction?: InteractionOptions;
+  interaction?: InteractionOptions;
   // pagination config
-  readonly pagination?: Pagination;
+  pagination?: Pagination;
   // freeze row header
-  readonly freezeRowHeader?: boolean;
+  frozenRowHeader?: boolean;
   // show Series Number
-  readonly showSeriesNumber?: boolean;
-  // scroll reach node border(which field node belongs to) event config
-  readonly scrollReachNodeField?: NodeField;
-  // custom config of showing columns and rows
-  readonly customHeaderCells?: CustomHeaderCells;
+  showSeriesNumber?: boolean;
   // if show the default header actionIcons
-  readonly showDefaultHeaderActionIcon?: boolean;
+  showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
-  readonly headerActionIcons?: HeaderActionIcon[];
+  headerActionIcons?: HeaderActionIcon[];
   // register custom svg icons
-  readonly customSVGIcons?: CustomSVGIcon[];
+  customSVGIcons?: CustomSVGIcon[];
   // extra styles
-  readonly style?: Partial<Style>;
-  readonly hierarchyCollapse?: boolean;
-  readonly hdAdapter?: boolean;
+  style?: Partial<Style>;
+  hierarchyCollapse?: boolean;
+  hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
-  readonly mergedCellsInfo?: MergedCellInfo[][];
+  mergedCellsInfo?: MergedCellInfo[][];
+  // empty cell placeholder
+  placeholder?: ((meta: Record<string, any>) => string) | string;
+  // custom corner text
+  cornerText?: string;
+  // custom virtual extra field text
+  cornerExtraFieldText?: string;
+  supportCSSTransform?: boolean;
+  // custom device pixel ratio, default "window.devicePixelRatio"
+  devicePixelRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
-  readonly dataCell?: DataCellCallback;
+  dataCell?: DataCellCallback;
   // custom corner cell
-  readonly cornerCell?: CellCallback;
+  cornerCell?: CellCallback<CornerHeaderConfig>;
   // custom row cell
-  readonly rowCell?: CellCallback;
+  rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
-  readonly colCell?: CellCallback;
-  // custom frame TODO rename this
-  readonly frame?: FrameCallback;
+  colCell?: CellCallback<ColHeaderConfig>;
+  // custom frame
+  frame?: FrameCallback;
   // custom corner header
-  readonly cornerHeader?: CornerHeaderCallback;
+  cornerHeader?: CornerHeaderCallback;
 
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
@@ -120,32 +107,31 @@ export interface S2BasicOptions {
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
-
-  /** ***********CUSTOM LAYOUT HOOKS**************** */
-  otterLayout?: (
-    spreadsheet: SpreadSheet,
-    rowNode: Node,
-    colNode: Node,
-  ) => void;
 }
 
 // Table sheet options
 export interface S2TableSheetOptions {
   // frozen row & cols
-  readonly frozenRowCount?: number;
-  readonly frozenColCount?: number;
-  readonly frozenTrailingRowCount?: number;
-  readonly frozenTrailingColCount?: number;
+  frozenRowCount?: number;
+  frozenColCount?: number;
+  frozenTrailingRowCount?: number;
+  frozenTrailingColCount?: number;
 }
 
 // Pivot sheet options
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface S2PivotSheetOptions {}
 
-export interface S2Options
-  extends S2BasicOptions,
+export interface S2Options<T = Element | string>
+  extends S2BasicOptions<T>,
     S2TableSheetOptions,
     S2PivotSheetOptions {
   // custom data set
-  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+  dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+}
+
+export interface S2RenderOptions {
+  reloadData?: boolean;
+  reBuildDataSet?: boolean;
+  reBuildHiddenColumnsDetail?: boolean;
 }

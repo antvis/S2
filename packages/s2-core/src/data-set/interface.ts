@@ -14,6 +14,8 @@ export type PivotMetaValue = {
 
 export type PivotMeta = Map<string, PivotMetaValue>;
 
+export type SortedDimensionValues = Record<string, string[]>;
+
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
@@ -42,7 +44,7 @@ export interface SortActionParams {
   dataSet?: BaseDataSet;
   sortParam?: SortParam;
   originValues?: string[];
-  measureValues?: string[];
+  measureValues?: string[] | DataType[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }

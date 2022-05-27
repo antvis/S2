@@ -9,7 +9,7 @@ object 必选，_default：{}_ 功能描述：单元格数据和位置等信息
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) |  |   | 表类实例，可以访问任意的配置信息 |
+| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |   | 表类实例，可以访问任意的配置信息 |
 | id | `string` |  |   | 单元格唯一标识 |
 | x | `number` |  |   | 单元格 x 坐标 |
 | y | `number` |  |   | 单元格 y 坐标 |

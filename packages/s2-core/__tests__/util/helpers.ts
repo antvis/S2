@@ -3,13 +3,18 @@ import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
 import { Canvas } from '@antv/g-canvas';
+import { omit } from 'lodash';
+import * as simpleDataConfig from 'tests/data/simple-data.json';
+import * as dataConfig from 'tests/data/mock-dataset.json';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { S2CellType, S2Options, ViewMeta } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
+import { PanelBBox } from '@/facet/bbox/panelBBox';
+import { BaseFacet } from '@/facet';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -37,7 +42,7 @@ export const sleep = async (timeout = 0) => {
 };
 
 export const createFakeSpreadSheet = () => {
-  const container = document.createElement('div');
+  const container = getContainer();
 
   class FakeSpreadSheet extends EE {
     public options: S2Options;
@@ -47,13 +52,18 @@ export const createFakeSpreadSheet = () => {
     }
   }
 
-  const s2 = new FakeSpreadSheet() as SpreadSheet;
+  const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,
     height: DEFAULT_OPTIONS.height,
     container,
   });
+  s2.facet = {} as BaseFacet;
+  s2.facet.panelBBox = {
+    maxX: s2.options.width,
+    maxY: s2.options.height,
+  } as PanelBBox;
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {
@@ -62,7 +72,10 @@ export const createFakeSpreadSheet = () => {
   s2.getCellType = jest.fn();
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
+  s2.showTooltip = jest.fn();
   s2.showTooltipWithInfo = jest.fn();
+  s2.isTableMode = jest.fn();
+  s2.isPivotMode = jest.fn();
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
@@ -91,3 +104,42 @@ export function getGradient(
 
   return `rgb(${r},${g},${b})`;
 }
+
+export const createMockCellInfo = (
+  cellId: string,
+  { colIndex = 0, rowIndex = 0 } = {},
+) => {
+  const mockCellViewMeta: Partial<ViewMeta> = {
+    id: cellId,
+    colIndex,
+    rowIndex,
+    type: undefined,
+    x: 0,
+    y: 0,
+  };
+  const mockCellMeta = omit(mockCellViewMeta, ['x', 'y', 'update']);
+  const mockCell = {
+    ...mockCellViewMeta,
+    getMeta: () => mockCellViewMeta,
+    update: jest.fn(),
+    getActualText: jest.fn(),
+    getFieldValue: jest.fn(),
+    hideInteractionShape: jest.fn(),
+  } as unknown as S2CellType;
+
+  return {
+    mockCell,
+    mockCellMeta,
+  };
+};
+
+export const createPivotSheet = (
+  s2Options: S2Options,
+  { useSimpleData } = { useSimpleData: true },
+) => {
+  return new PivotSheet(
+    getContainer(),
+    useSimpleData ? simpleDataConfig : dataConfig,
+    s2Options,
+  );
+};

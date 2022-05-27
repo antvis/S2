@@ -16,11 +16,13 @@ order: 7
 
 目前，我们基于 `master` 分支开发，有任何修改，请基于 `master` 拉一个分支，然后通过 `PR` 的形式，我们集成了钉钉机器人，会第一次时间 review 你的 PR, 给与反馈
 
-## 提交 Bug
+## 提交 Bug 反馈
 
-很抱歉又写了一些 bug, 但求友好的提交一个有意义的 bug, 谁也不希望反馈的 bug 是这样：
+很抱歉又写了一些 bug, 但求友好的提交一个有意义的 bug 反馈，谁也不希望反馈的 bug 是这样：
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/j0jUvKwT%26/dd59fe64-7108-4ad7-a544-e19d79eea890.png)
+
+没有版本信息，没有复现步骤，没有问题描述，没有代码片段，开局一句话，内容全靠猜。
 
 首先选择 [Bug report]
 
@@ -32,11 +34,11 @@ order: 7
 
 ## Pull Request
 
-1. fork 项目 并 clone 下来 （或者使用 Github 的 Codespace 功能，非常方便）
+1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
 4. 如果你的改动是修复 bug, 还可以在提交信息后面加上 `close #issue 号`, 这样可以在 pr 合并后，可以自动关闭对应的 issue, 比如 `fix: render bug close #123`
-5. 确保加上了对应的单元测试
+5. 确保加上了对应的单元测试和文档 （如有必要）
 6. 所有 Lint 和 Test 检查通过后，并且 review 通过，我们会合并你的 pr.
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/ssOxFrycD/86339514-5f9a-4101-8690-e47c97cd8af5.png)
@@ -52,6 +54,8 @@ npm i -g yarn
 1. `yarn bootstrap` 安装依赖
 2. `yarn site:bootstrap` 安装网站相关依赖
 3. `yarn site:start` 启动本地的 `S2` 网站
-4. `yarn core:start` 可视化的方式调试测试
-5. `yarn build` 构建 `S2`, 输出 `umd`, `esm` 和 `lib` 目录
-6. `yarn test` 运行单元格测试
+4. `yarn core:start` 可视化的方式调试核心层测试 （基于 jest-electron)
+5. `yarn react:start` 可视化的方式调试组件层测试 （基于 jest-electron)
+6. `yarn react:playground` 启动本地的组件层 demo （基于 vite)
+7. `yarn build` 构建 `@antv/s2` 和 `@antv/s2-react` 两个包，分别输出 `umd`, `esm` 和 `lib` 目录
+8. `yarn test` 运行单元格测试

@@ -1,16 +1,20 @@
-import { BBox, IGroup, IShape } from '@antv/g-canvas';
+import { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
+import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
 import { translateGroup } from '../utils';
+import { PanelBBox } from '../bbox/panelBBox';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
-import { renderRect } from '@/utils/g-renders';
+import { renderRect, renderLine } from '@/utils/g-renders';
 import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Padding, ViewMeta } from '@/common/interface';
+import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
+
+  private leftBorderShape: IShape;
 
   /**
    * Get seriesNumber header by config
@@ -22,13 +26,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
    */
 
   public static getSeriesNumberHeader(
-    viewportBBox: BBox,
+    viewportBBox: PanelBBox,
     seriesNumberWidth: number,
     leafNodes: Node[],
     spreadsheet: SpreadSheet,
     cornerWidth: number,
   ): SeriesNumberHeader {
-    const { width, height } = viewportBBox;
+    const { height, viewportHeight } = viewportBBox;
     const seriesNodes: Node[] = [];
     const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
     leafNodes.forEach((node: Node): void => {
@@ -50,11 +54,10 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     return new SeriesNumberHeader({
       width: cornerWidth,
       height,
-      viewportWidth: width,
-      viewportHeight: height,
+      viewportWidth: cornerWidth,
+      viewportHeight,
       position: { x: 0, y: viewportBBox.y },
       data: seriesNodes,
-      offset: 0,
       spreadsheet,
     });
   }
@@ -63,10 +66,21 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     super(cfg);
   }
 
-  public clip(): void {}
+  public clip(): void {
+    const { width, viewportHeight, scrollY } = this.headerConfig;
+    this.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: scrollY,
+        width,
+        height: viewportHeight,
+      },
+    });
+  }
 
   public layout() {
-    const { data, offset, height, spreadsheet } = this.headerConfig;
+    const { data, scrollY, viewportHeight, spreadsheet } = this.headerConfig;
     if (spreadsheet.isPivotMode) {
       //  添加矩形背景
       this.addBackGround();
@@ -78,8 +92,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
         cellHeight,
-        offset,
-        height,
+        scrollY,
+        viewportHeight,
       );
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
@@ -92,7 +106,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
         // 添加边框
         if (!isLeaf) {
-          this.addBottomBorder(borderGroup, item);
+          this.addBorder(borderGroup, item);
         }
       }
     });
@@ -104,42 +118,51 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     if (this.backgroundShape) {
       this.backgroundShape.translate(position.x, position.y + scrollY);
     }
+    if (this.leftBorderShape) {
+      this.leftBorderShape.translate(position.x, position.y + scrollY);
+    }
   }
 
   private addBackGround() {
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
-    const { position, width, height } = this.headerConfig;
+    const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
       x: position.x,
       y: -position.y,
       width,
-      height,
+      height: viewportHeight,
       fill: rowCellTheme.backgroundColor,
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
     });
+
+    const { position: borderPosition, style: borderStyle } =
+      getBorderPositionAndStyle(
+        CellBorderPosition.LEFT,
+        {
+          x: position.x,
+          y: -position.y,
+          width,
+          height: viewportHeight,
+        },
+        rowCellTheme,
+      );
+
+    this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
   }
 
-  private addBottomBorder(group: IGroup, cellData) {
-    const { position, width } = this.headerConfig;
-    const { x, y } = cellData;
-    group.addShape('line', {
-      attrs: {
-        x1: x,
-        y1: y,
-        x2: position.x + width,
-        y2: y,
-        stroke:
-          this.headerConfig.spreadsheet.theme.rowCell.cell
-            .horizontalBorderColor,
-        lineWidth: 1,
-      },
-    });
+  private addBorder(group: IGroup, cellData) {
+    const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+
+    const { position: horizontalPosition, style: horizontalStyle } =
+      getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
+
+    renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
   private addText(group: IGroup, cellData: ViewMeta) {
-    const { offset, height } = this.headerConfig;
+    const { scrollY, viewportHeight: height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
       label,
@@ -156,7 +179,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
-      offset,
+      scrollY,
       height,
       textStyle.fontSize,
     );

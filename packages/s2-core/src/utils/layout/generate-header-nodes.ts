@@ -1,4 +1,4 @@
-import { isBoolean, merge } from 'lodash';
+import { includes, isBoolean } from 'lodash';
 import { HeaderNodesParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
@@ -23,7 +23,6 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
   } = params;
   const { spreadsheet, collapsedCols, colCfg } = facetCfg;
-  const hideMeasure = colCfg.hideMeasureColumn ?? false;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -41,9 +40,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = i18n((fieldValue as TotalClass).label);
       if (addMeasureInTotalQuery) {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
-        nodeQuery = merge({}, query, {
+        nodeQuery = {
+          ...query,
           [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
-        });
+        };
         isLeaf = true;
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
@@ -55,26 +55,31 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
-      nodeQuery = merge({}, query, { [EXTRA_FIELD]: value });
+      nodeQuery = { ...query, [EXTRA_FIELD]: value };
       adjustedField = EXTRA_FIELD;
       isLeaf = true;
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;
       adjustedField = fields[index];
-      nodeQuery = merge({}, query, { [adjustedField]: value });
+      nodeQuery = { ...query, [adjustedField]: value };
       isLeaf = true;
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
-      nodeQuery = merge({}, query, { [currentField]: value });
-      const extraSize = hideMeasure ? 2 : 1;
+      nodeQuery = { ...query, [currentField]: value };
+      const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
+      const isHideMeasure =
+        colCfg?.hideMeasureColumn &&
+        isValueInCols &&
+        includes(fields, EXTRA_FIELD);
+      const extraSize = isHideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
+    const uniqueId = generateId(parentNode.id, value);
     if (!uniqueId) return;
     // TODO need merge with collapsedRows
-    const isCollapsed = isBoolean(collapsedCols[uniqueId])
-      ? collapsedCols[uniqueId]
+    const isCollapsed = isBoolean(collapsedCols?.[uniqueId])
+      ? collapsedCols?.[uniqueId]
       : false;
     // create new header nodes
     const node = new Node({

@@ -10,7 +10,7 @@
         "zh": "链接跳转 - 透视表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif"
     },
     {
       "filename": "table-link-jump.ts",
@@ -18,31 +18,23 @@
         "zh": "链接跳转 - 明细表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DxQLZPeda/32a0cae6-0f1d-4e00-a274-4b0896467b02.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aygNlbA0fu/link-table.gif"
     },
     {
-      "filename": "hide-columns.ts",
+      "filename": "pivot-hide-columns.ts",
       "title": {
-        "zh": "明细表隐藏列头",
-        "en": "Hide table columns"
+        "zh": "隐藏列头 - 透视表",
+        "en": "Hide pivot sheet columns"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nAU23PQjf/61dc2aab-e1db-4403-8121-81d99029cd15.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif"
     },
     {
-      "filename": "custom.ts",
+      "filename": "table-hide-columns.ts",
       "title": {
-        "zh": "自定义交互 - 双击列隐藏",
-        "en": "Custom interaction"
+        "zh": "隐藏列头 - 明细表",
+        "en": "Hide table sheet columns"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png"
-    },
-    {
-      "filename": "custom-header-action-icon.tsx",
-      "title": {
-        "zh": "自定义行列头操作图标",
-        "en": "Custom header action icons"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%26aAhOS525G/8b2a2d0a-6190-4d82-be77-ee3b2cb2f066.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nDXb10yy0v/hide.gif"
     },
     {
       "filename": "scroll-speed-ratio.ts",
@@ -50,15 +42,23 @@
         "zh": "自定义滚动速度",
         "en": "Custom scroll speed"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/e0z41b3e4/2021-11-16%25252020.11.53.gif"
     },
     {
-      "filename": "auto-reset-sheet-style.ts",
+      "filename": "resize-active.ts",
       "title": {
-        "zh": "关闭自动交互状态重置",
-        "en": "Disable auto reset sheet style"
+        "zh": "自定义resize热区",
+        "en": "Custom resize area"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HEfCpSTRO/2021-12-06%25252011.39.15.gif"
+    },
+    {
+      "filename": "merge-cell.ts",
+      "title": {
+        "zh": "合并单元格",
+        "en": "Merge cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif"
     }
   ]
 }

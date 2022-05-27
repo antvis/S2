@@ -1,0 +1,59 @@
+{
+  "fields": {
+    "columns": [],
+    "rows": ["city", "type"],
+    "values": ["price", "cost"]
+  },
+  "meta": [
+    {
+      "field": "price",
+      "name": "价格"
+    },
+    {
+      "field": "city",
+      "name": "城市"
+    },
+    {
+      "field": "cost",
+      "name": "成本"
+    }
+  ],
+  "data": [
+    {
+      "city": "白山",
+      "type": "办公用品",
+      "price": ""
+    },
+    {
+      "city": "白山",
+      "type": "办公用品",
+      "cost": "",
+      "price": ""
+    },
+    {
+      "city": "抚顺",
+      "type": "办公用品",
+      "cost": "5",
+      "price": "12"
+    },
+    {
+      "city": "抚顺",
+      "type": "家具产品",
+      "cost": "3",
+      "price": "4"
+    },
+    {
+      "city": "白山",
+      "type": "家具产品",
+      "cost": "4",
+      "price": "4"
+    },
+    {
+      "city": "白山",
+      "type": "家具产品",
+      "cost": "2",
+      "price": "3"
+    }
+  ],
+  "totalData": []
+}

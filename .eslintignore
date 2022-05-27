@@ -8,3 +8,4 @@ lib
 dist
 .idea
 *.d.ts
+.eslintrc*
