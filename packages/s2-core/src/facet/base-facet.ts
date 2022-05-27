@@ -3,16 +3,7 @@ import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
-import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from 'src/utils/grid';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
-import {
-  getAdjustedRowScrollX,
-  getAdjustedScrollOffset,
-} from 'src/utils/facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -21,6 +12,8 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '@/utils/facet';
+import { getColsForGrid, getRowsForGrid } from '@/utils/grid';
 import {
   S2Event,
   KEY_GROUP_COL_RESIZE_AREA,

@@ -13,7 +13,7 @@ import {
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_FIELD, S2Event } from '@/common/constant';
+import { EXTRA_COLUMN_FIELD, EXTRA_FIELD, S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
@@ -301,6 +301,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public isMeasureField() {
-    return this.meta.field === EXTRA_FIELD;
+    return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
   }
 }

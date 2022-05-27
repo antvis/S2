@@ -2,10 +2,15 @@
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
 import { ShapeAttrs } from '@antv/g-canvas';
-import { S2DataConfig } from './../../esm/common/interface/s2DataConfig.d';
 import { TextTheme } from '@/common/interface/theme';
 import { PivotSheet } from '@/sheet-type';
-import { CellTypes, EXTRA_FIELD, TextAlign } from '@/common';
+import {
+  CellTypes,
+  EXTRA_COLUMN_FIELD,
+  EXTRA_FIELD,
+  S2DataConfig,
+  TextAlign,
+} from '@/common';
 import { RowCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 
@@ -328,5 +333,39 @@ describe('SpreadSheet Theme Tests', () => {
         fontWight: 'normal',
       });
     });
+
+    // https://github.com/antvis/S2/pull/1371
+    it.each(['left', 'center', 'right'] as TextAlign[])(
+      'should render %s text align for column nodes',
+      (textAlign) => {
+        s2.setThemeCfg({
+          theme: {
+            colCell: {
+              measureText: {
+                textAlign,
+              },
+            },
+          },
+        });
+
+        s2.setDataCfg({
+          fields: {
+            columns: [...s2.dataCfg.fields.columns, EXTRA_COLUMN_FIELD],
+          },
+        } as S2DataConfig);
+
+        s2.setOptions({
+          style: {
+            colCfg: {
+              hideMeasureColumn: true,
+            },
+          },
+        });
+
+        s2.render(true);
+
+        expectTextAlign({ textAlign, fontWight: 'normal' });
+      },
+    );
   });
 });
