@@ -7,7 +7,7 @@ on:
 jobs:
   compressed-size:
 
-    runs-on: macos-12
+    runs-on: macos-latest
 
     steps:
 

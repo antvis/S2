@@ -66,7 +66,7 @@
     "lint:fix-docs": "yarn lint:docs --fix && yarn lint:fix-word",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && lerna run changelog --stream",
     "update:deps": "yarn upgrade-interactive",
-    "prepare": "husky install && yarn core:build"
+    "prepare": "husky install"
   },
   "commitlint": {
     "extends": [
