@@ -379,7 +379,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         size="small"
         className={`${ADVANCED_PRE_CLS}-btn`}
       >
-        {text || i18n('排序')}
+        {text || i18n('高级排序')}
       </Button>
       <Modal
         title={text || i18n('高级排序')}
