@@ -161,9 +161,9 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataCfg, s2Options)
+const s2 = new PivotSheet(container, s2DataCfg, s2Options);
 
-s2.render()
+s2.render();
 ```
 
 ### 4. Preview

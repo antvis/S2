@@ -7,7 +7,7 @@ on:
 jobs:
   compressed-size:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-12
 
     steps:
 

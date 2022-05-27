@@ -73,6 +73,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           autoResetSheetStyle: true,
           // 趋势分析表禁用 刷选, 多选, 区间多选
           brushSelection: false,
+          selectedCellMove: false,
           multiSelection: false,
           rangeSelection: false,
         },
