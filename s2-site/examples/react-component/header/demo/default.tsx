@@ -30,15 +30,17 @@ fetch(
 
     const SheetHeader = () => {
       const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
+      const [sortParams, setSortParams] = React.useState([]);
       const header = {
         title: '表头标题',
         description: '表头描述',
         exportCfg: { open: true },
         advancedSortCfg: {
           open: true,
-          sortParams: [],
+          sortParams,
           onSortConfirm: (ruleValues, sortParams) => {
             setDataCfg({ ...dataCfg, sortParams });
+            setSortParams(sortParams);
           },
         },
         switcherCfg: { open: true },
