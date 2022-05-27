@@ -192,7 +192,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     let fill = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill;
+      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
 
     return { ...textStyle, fill };
