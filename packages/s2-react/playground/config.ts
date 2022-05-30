@@ -96,11 +96,6 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
-  style: {
-    cellCfg: {
-      height: 100,
-    },
-  },
   // totals: {
   //   col: {
   //     showGrandTotals: true,

@@ -159,6 +159,7 @@ function MainLayout() {
     React.useState<S2Options>(mockStrategyOptions);
   const s2Ref = React.useRef<SpreadSheet>();
   const [columnOptions, setColumnOptions] = React.useState([]);
+  const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
@@ -481,6 +482,7 @@ function MainLayout() {
                       ?.getRowNodes()
                       .find(({ id }) => id === 'root[&]四川省[&]成都市');
 
+                    clearInterval(scrollTimer.current);
                     s2Ref.current.updateScrollOffset({
                       offsetY: {
                         value: rowNode?.y,
@@ -494,6 +496,7 @@ function MainLayout() {
                 <Button
                   size="small"
                   onClick={() => {
+                    clearInterval(scrollTimer.current);
                     s2Ref.current.updateScrollOffset({
                       offsetY: {
                         value: 0,
@@ -506,19 +509,37 @@ function MainLayout() {
                 </Button>
                 <Button
                   size="small"
+                  danger
                   onClick={() => {
-                    setInterval(() => {
+                    if (
+                      scrollTimer.current ||
+                      !s2Ref.current.facet.vScrollBar
+                    ) {
+                      clearInterval(scrollTimer.current);
+                      return;
+                    }
+                    scrollTimer.current = setInterval(() => {
                       const { scrollY } = s2Ref.current.facet.getScrollOffset();
+                      if (s2Ref.current.facet.isScrollToBottom(scrollY)) {
+                        console.log('滚动到底部');
+                        s2Ref.current.updateScrollOffset({
+                          offsetY: {
+                            value: 0,
+                            animate: false,
+                          },
+                        });
+                        return;
+                      }
                       s2Ref.current.updateScrollOffset({
                         offsetY: {
-                          value: 50,
+                          value: scrollY + 50,
                           animate: true,
                         },
                       });
                     }, 500);
                   }}
                 >
-                  滚动到底部
+                  {scrollTimer.current ? '停止滚动' : '循环滚动'}
                 </Button>
               </Space>
               <Space
