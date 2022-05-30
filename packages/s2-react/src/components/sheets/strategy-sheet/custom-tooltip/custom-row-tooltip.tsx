@@ -1,10 +1,10 @@
 import React from 'react';
 import cls from 'classnames';
+import { i18n } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import styles from './index.module.less';
-import { i18n } from '@/common/i18n';
 
 export const RowTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const { field, spreadsheet, value, extra } = cell.getMeta();

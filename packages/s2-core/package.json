@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -46,8 +46,10 @@
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
+    "test:ci": "yarn test --maxWorkers=3",
+    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"

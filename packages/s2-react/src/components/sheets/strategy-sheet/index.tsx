@@ -5,11 +5,10 @@ import {
   ViewMeta,
   ColHeaderConfig,
   Node,
-  MultiData,
   S2Options,
   S2DataConfig,
 } from '@antv/s2';
-import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
+import { isEmpty, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
@@ -74,6 +73,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           autoResetSheetStyle: true,
           // 趋势分析表禁用 刷选, 多选, 区间多选
           brushSelection: false,
+          selectedCellMove: false,
           multiSelection: false,
           rangeSelection: false,
         },

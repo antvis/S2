@@ -52,6 +52,8 @@ export interface EmitterType {
   [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
+  [S2Event.GLOBAL_CLICK]: CanvasEventHandler;
+  [S2Event.GLOBAL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
@@ -77,6 +79,7 @@ export interface EmitterType {
   [S2Event.DATA_CELL_HOVER]: CanvasEventHandler;
   [S2Event.DATA_CELL_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
+  [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
   [S2Event.DATE_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
 
@@ -86,6 +89,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_HOVER]: CanvasEventHandler;
   [S2Event.ROW_CELL_CLICK]: CanvasEventHandler;
   [S2Event.ROW_CELL_DOUBLE_CLICK]: CanvasEventHandler;
+  [S2Event.ROW_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
     data: RowCellCollapseTreeRowsType,
@@ -97,6 +101,7 @@ export interface EmitterType {
   [S2Event.COL_CELL_HOVER]: CanvasEventHandler;
   [S2Event.COL_CELL_CLICK]: CanvasEventHandler;
   [S2Event.COL_CELL_DOUBLE_CLICK]: CanvasEventHandler;
+  [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
 
   /** ================ Corner Cell ================  */
@@ -105,6 +110,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_HOVER]: CanvasEventHandler;
   [S2Event.CORNER_CELL_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
 
   /** ================ Merged Cells ================  */
@@ -113,6 +119,7 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_CLICK]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
 
   /** ================ Layout ================  */

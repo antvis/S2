@@ -46,7 +46,6 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      interaction.clearState();
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,

@@ -1,5 +1,5 @@
 import { isNaN, toNumber } from 'lodash';
-import { Lang } from '../common/i18n';
+import { getLang } from '../common/i18n';
 import { PRECISION } from '@/common/constant';
 
 const FORMATTERS = {
@@ -22,7 +22,7 @@ const FORMATTERS = {
 export const auto = (
   v: number,
   fixed = 2,
-  formatter = FORMATTERS[Lang] || FORMATTERS.zh_CN,
+  formatter = FORMATTERS[getLang()] || FORMATTERS.zh_CN,
 ): string => {
   if (typeof v !== 'number' || isNaN(v)) {
     return '';

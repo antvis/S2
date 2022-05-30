@@ -87,9 +87,11 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         const cellIdSuffix =
           this.spreadsheet.facet.layoutResult.colLeafNodes[col].id;
         return range(start.rowIndex, end.rowIndex + 1).map((row) => {
-          const cellIdPrefix = this.spreadsheet.facet.getSeriesNumberWidth()
-            ? String(row)
-            : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
+          const cellIdPrefix =
+            this.spreadsheet.facet.getSeriesNumberWidth() ||
+            this.spreadsheet.isTableMode()
+              ? String(row)
+              : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
           return {
             id: cellIdPrefix + '-' + cellIdSuffix,
             colIndex: col,
