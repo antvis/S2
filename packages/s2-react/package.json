@@ -1,6 +1,7 @@
 {
+  "private": false,
   "name": "@antv/s2-react",
-  "version": "1.15.1",
+  "version": "1.16.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -69,7 +70,7 @@
   },
   "devDependencies": {
     "@antv/s2": "*",
-    "@antv/s2-shared":"*",
+    "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
@@ -90,5 +91,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "205 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
