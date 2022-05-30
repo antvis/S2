@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@antv/s2": "*",
-    "@antv/s2-shared":"*",
+    "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
