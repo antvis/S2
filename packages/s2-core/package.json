@@ -1,4 +1,5 @@
 {
+  "private": false,
   "name": "@antv/s2",
   "version": "1.18.0",
   "main": "lib/index.js",
@@ -85,5 +86,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "5 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
