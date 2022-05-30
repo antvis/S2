@@ -59,6 +59,14 @@
         "en": "Merge cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif"
+    },
+    {
+      "filename": "scroll-to-cell.ts",
+      "title": {
+        "zh": "滚动至指定单元格",
+        "en": "Scroll to cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif"
     }
   ]
 }

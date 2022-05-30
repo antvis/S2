@@ -235,8 +235,8 @@ export abstract class BaseFacet {
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {
-    if (offsetConfig.offsetX.value !== undefined) {
-      if (offsetConfig.offsetX.animate) {
+    if (offsetConfig.offsetX?.value !== undefined) {
+      if (offsetConfig.offsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);
@@ -244,8 +244,8 @@ export abstract class BaseFacet {
       return;
     }
 
-    if (offsetConfig.offsetY.value !== undefined) {
-      if (offsetConfig.offsetY.animate) {
+    if (offsetConfig.offsetY?.value !== undefined) {
+      if (offsetConfig.offsetY?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);

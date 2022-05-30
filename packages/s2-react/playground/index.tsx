@@ -472,10 +472,54 @@ function MainLayout() {
                     </>
                   }
                 >
-                  <Button size="small" style={{ marginLeft: 20 }}>
-                    滚动速率调整
-                  </Button>
+                  <Button size="small">滚动速率调整</Button>
                 </Popover>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    const rowNode = s2Ref.current
+                      ?.getRowNodes()
+                      .find(({ id }) => id === 'root[&]四川省[&]成都市');
+
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: rowNode?.y,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动至 [成都市]
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: 0,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动到顶部
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setInterval(() => {
+                      const { scrollY } = s2Ref.current.facet.getScrollOffset();
+                      s2Ref.current.updateScrollOffset({
+                        offsetY: {
+                          value: 50,
+                          animate: true,
+                        },
+                      });
+                    }, 500);
+                  }}
+                >
+                  滚动到底部
+                </Button>
               </Space>
               <Space
                 style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap' }}

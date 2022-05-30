@@ -15,6 +15,34 @@ order: 9
 
 `S2` 提供了一系列获取数据的 [API](/zh/docs/api/basic-class/spreadsheet), 下面介绍一些常用的场景
 
+### 获取指定区域单元格
+
+访问 `s2.facet.layoutResult` 获取到当前可视范围内所有单元格。[查看更多](/zh/docs/api/basic-class/base-facet)
+
+```ts
+console.log(s2.facet.layoutResult)
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview"/>
+
+- `colLeafNodes` 列头叶子节点
+- `colNodes` 列头节点
+- `colsHierarchy` 列头层级信息
+- `rowLeafNodes` 行头叶子节点
+- `rowNodes` 行头节点
+- `rowsHierarchy` 行头层级信息
+- `getCellMeta` 根据行列索引获取执行单元格信息
+
+对于数值单元格，由于虚拟滚动的特性，需要动态获取，更多请查看 [interaction API](/zh/docs/api/basic-class/interaction)
+
+```ts
+
+// 当前可视范围内的数值单元格
+s2.interaction.getPanelGroupAllDataCells()
+// 当前可视范围内未选中的数值单元格
+s2.interaction.getPanelGroupAllUnSelectedDataCells()
+```
+
 ### 监听点击事件获取对应单元格
 
 以点击行头单元格为例
