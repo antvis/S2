@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.16.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0...@antv/s2-react-v1.16.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* style 引入失败 ([8ee0a0b](https://github.com/antvis/S2/commit/8ee0a0b21c99d6f7bdf4a5d9fb91f9eaedf8d00f))
+
 # [@antv/s2-react-v1.16.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.1...@antv/s2-react-v1.16.0) (2022-05-30)
 
 
