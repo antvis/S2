@@ -11,9 +11,13 @@ order: 7
 
 ## 注意事项
 
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**, `@antv/s2-react` 中通过 [组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**
 
-- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react`, 免去你二次封装
+`React` 版本 和 `Vue3` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
+
+查看 `React` 版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
+
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便
 - 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
 - 别忘了引入样式
 
@@ -407,7 +411,9 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 在 `Vue3` 中可以通过两种方式自定义内容。[例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
 
-- 1. `createVNode` 自定义类的方式 （推荐）
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
+
+##### `createVNode` 自定义类的方式 （推荐）
 
 ```ts
 // TooltipContent.vue
@@ -451,7 +457,9 @@ class CustomTooltip extends BaseTooltip {
 }
 ```
 
-- 2. `defineCustomElement` 自定义内容的方式
+##### `defineCustomElement` 自定义内容的方式 （不推荐）
+
+> 注意，customElements 不能重复注册，否则浏览器会报错
 
 ```ts
 import { defineCustomElement } from "vue";
@@ -478,8 +486,6 @@ const s2Options = {
   },
 };
 ```
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
 
 #### 重写展示方法
 

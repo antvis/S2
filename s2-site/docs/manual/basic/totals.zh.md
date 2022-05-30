@@ -237,6 +237,20 @@ const s2Options = {
             reverseLayout: true,
             reverseSubLayout: true,
             subTotalsDimensions: [ 'province' ],
+            calcTotals: {
+                calcFunc: (query, data) => {
+                    return
+                ...
+                    ;
+                }
+            },
+            calcSubTotals: {
+                calcFunc: (query, data) => {
+                    return
+                ...
+                    ;
+                }
+            },
         },
         col: {
             showGrandTotals: true,
@@ -244,20 +258,20 @@ const s2Options = {
             reverseLayout: true,
             reverseSubLayout: true,
             subTotalsDimensions: [ 'type' ],
-        },
-        calcTotals: {
-            calcFunc: (query, data) => {
-                return
-            ...
-                ;
-            }
-        },
-        calcSubTotals: {
-            calcFunc: (query, data) => {
-                return
-            ...
-                ;
-            }
+            calcTotals: {
+                calcFunc: (query, data) => {
+                    return
+                ...
+                    ;
+                }
+            },
+            calcSubTotals: {
+                calcFunc: (query, data) => {
+                    return
+                ...
+                    ;
+                }
+            },
         },
     },
 };

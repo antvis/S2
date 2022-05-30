@@ -32,7 +32,6 @@ describe('Interaction Range Selection Tests', () => {
         },
       },
     } as S2Options;
-    s2.isTableMode = jest.fn(() => true);
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
     s2.interaction.getInteractedCells = () => [mockCell];
@@ -96,8 +95,10 @@ describe('Interaction Range Selection Tests', () => {
     });
   });
 
-  test('should select range cells', () => {
+  test('should select range cells when series number enable', () => {
     jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
+    s2.isTableMode = jest.fn(() => false);
+    s2.isPivotMode = jest.fn(() => true);
 
     s2.interaction.changeState({
       cells: [],
@@ -110,6 +111,72 @@ describe('Interaction Range Selection Tests', () => {
         rowLeafNodes: [{ id: '0' }, { id: '1' }],
       },
       getSeriesNumberWidth: () => 200,
+    } as any;
+
+    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
+    const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
+    const mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
+    const mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
+
+    const activeCells: S2CellType[] = [
+      mockCell00.mockCell,
+      mockCell10.mockCell,
+      mockCell01.mockCell,
+      mockCell11.mockCell,
+    ];
+
+    s2.store.set('lastClickedCell', mockCell00.mockCell);
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.SHIFT,
+    } as KeyboardEvent);
+
+    s2.getCell = () => mockCell11.mockCell as any;
+
+    s2.interaction.getActiveCells = () => activeCells;
+
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
+      key: InteractionKeyboardKey.SHIFT,
+    } as KeyboardEvent);
+
+    expect(s2.interaction.getState()).toEqual({
+      cells: [
+        mockCell00.mockCellMeta,
+        mockCell10.mockCellMeta,
+        mockCell01.mockCellMeta,
+        mockCell11.mockCellMeta,
+      ],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(selected).toHaveBeenCalledWith(activeCells);
+    expect(
+      s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
+    ).toBeTruthy();
+    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+  });
+
+  test('should select range cells in table mode', () => {
+    jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
+    s2.isTableMode = jest.fn(() => true);
+    s2.isPivotMode = jest.fn(() => false);
+
+    s2.interaction.changeState({
+      cells: [],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    s2.facet = {
+      layoutResult: {
+        colLeafNodes: [{ id: '0' }, { id: '1' }],
+        rowLeafNodes: [],
+      },
+      getSeriesNumberWidth: () => 0,
     } as any;
 
     const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });

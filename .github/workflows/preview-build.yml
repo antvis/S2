@@ -1,6 +1,6 @@
 name: Preview Build
 
-on: 
+on:
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
@@ -17,6 +17,7 @@ jobs:
         run: |
           yarn site:bootstrap
           yarn site:build
+
       - name: upload dist artifact
         uses: actions/upload-artifact@v2
         with:

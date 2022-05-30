@@ -152,7 +152,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       }
 
       // 鼠标在 resize 热区 按下时, 将 tooltip 关闭, 避免造成干扰
-      this.spreadsheet.hideTooltip();
+      this.spreadsheet.interaction.reset();
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeTarget(shape);
       this.showResizeGroup();
@@ -423,8 +423,16 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     if (style) {
       this.spreadsheet.setOptions({ style });
-    } else {
-      this.spreadsheet.theme.rowCell.seriesNumberWidth = seriesNumberWidth;
+    }
+
+    if (seriesNumberWidth) {
+      this.spreadsheet.setThemeCfg({
+        theme: {
+          rowCell: {
+            seriesNumberWidth,
+          },
+        },
+      });
     }
 
     this.spreadsheet.store.set('resized', true);

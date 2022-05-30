@@ -265,26 +265,29 @@ sortParams: [
 
 #### 度量值（数值）
 
-支持度量值自定义，即数值，举例如下：
+支持使用度量值进行自定义计算，举例如下：
 
 ```ts
 sortParams: [
-    {
-        // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
-        sortFieldId: 'price',
-        sortByMeasure: 'city',
-        sortFunc: function (params) {
-            const { data, sortByMeasure, sortFieldId } = params || {};
-            return data
-                ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
-                ?.map((item) => item[sortFieldId]);
-        },
-        query: { type: '纸张', [EXTRA_FIELD]: 'price' },
+  {
+    sortFieldId: 'city',
+    sortByMeasure: 'price',
+    // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
+    // 如下方限定 params.data 为 type=纸张, 数值=price 的数据
+    query: { type: '纸张', [EXTRA_FIELD]: 'price' },
+    sortFunc: function (params) {
+      const { data, sortByMeasure, sortFieldId } = params || {};
+      return data
+        // 使用 price 做比较
+        ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
+        // map 出 city 维度的数组
+        ?.map((item) => item[sortFieldId]);
     },
+  },
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*H_TESKL1MakAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width = "600"  alt="row" />
 
 📊 查看demo [自定义排序](/zh/examples/analysis/sort#custom-sort-func)。
 

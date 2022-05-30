@@ -20,6 +20,7 @@ import { RootInteraction } from '@/interaction/root';
 import { MergedCellInfo, S2CellType, TempMergedCell } from '@/common/interface';
 import { BaseFacet } from '@/facet';
 import { MergedCell } from '@/cell';
+import { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/sheet-type');
 
@@ -275,7 +276,7 @@ describe('Merge Cells Test', () => {
 
       mockInstance.panelScrollGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as IGroup;
+      } as unknown as GridGroup;
       updateMergedCells(mockInstance);
       expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
       mockInstance.options = {
@@ -294,7 +295,7 @@ describe('Merge Cells Test', () => {
       };
       mockInstance.panelScrollGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as IGroup;
+      } as unknown as GridGroup;
       updateMergedCells(mockInstance);
       expect(mockInstance.panelScrollGroup.getChildren).toHaveBeenCalled();
     });
