@@ -148,12 +148,12 @@ const containerId = 'containerId';
 
 ```tsx
 <template>
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="true"
   />
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="false"
@@ -165,12 +165,12 @@ const containerId = 'containerId';
 
 ```tsx
 <template>
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="{ width: true, height: true }"
   />
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="{ width: false, height: false }"
@@ -194,7 +194,7 @@ const adaptive = {
     id="containerId"
     style="width:600px;height:400px"
   >
-    <Sheet
+    <SheetComponent
       :dataCfg="your-dataCfg"
       :options="your-options"
       :adaptive="adaptive"
