@@ -3,7 +3,11 @@ title: 浏览器引入
 order: 5
 ---
 
-我们提供了 `dist` 目录的 `umd` 编译文件，引入 `dist/index.min.js` , 可访问全局变量 `window.S2`
+查看例子：
+
+[![Edit @antv/s2 import in browser](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-liu-lan-qi-yin-ru-shi-li-z42iy6?fontsize=14&hidenavigation=1&theme=dark)
+
+我们提供了 `dist` 目录的 `UMD` 编译文件，引入 `dist/index.min.js` , 可访问全局变量 `window.S2`
 
 ```ts
 <script src="./dist/index.min.js"></script>
