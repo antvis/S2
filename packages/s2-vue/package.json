@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-vue",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
