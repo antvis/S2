@@ -7,6 +7,8 @@ import {
   getEmptyPlaceholder,
 } from '@/utils/text';
 
+const isHD = window.devicePixelRatio >= 2;
+
 describe('Text Utils Tests', () => {
   const font = {
     fontFamily: 'Roboto',
@@ -74,14 +76,7 @@ describe('Text Utils Tests', () => {
 
   test('should get correct text width', () => {
     const width = measureTextWidth('test', font);
-    // 如果没改逻辑，16不要改，本地挂了也别改，机器分辨率不同，以 github ci 结果为准
-    expect(Math.floor(width)).toEqual(16);
-  });
-
-  test('should get correct text width roughly', () => {
-    const width = measureTextWidth('test', font);
-    // 同上
-    expect(Math.floor(width)).toEqual(16);
+    expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
   });
 
   test('should get correct ellipsis text inner', () => {

@@ -2,13 +2,13 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
+import { i18n } from '@antv/s2';
 import {
   CalendarIcon,
   LocationIcon,
   SearchIcon,
   TextIcon,
 } from '../icons/index';
-import { i18n } from '@/common/i18n';
 
 import './index.less';
 

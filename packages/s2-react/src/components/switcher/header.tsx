@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React from 'react';
 import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import { useUpdateEffect } from 'ahooks';
 import {
   generateSheetConfig,
   generateSwitcherFields,
@@ -30,13 +31,13 @@ export interface SwitcherHeaderProps extends SwitcherBasicCfg {
   options: S2Options;
 }
 
-export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
+export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({
   sheet,
   dataCfg,
   options,
   ...props
 }) => {
-  const [fields, setFields] = useState(() =>
+  const [fields, setFields] = React.useState(() =>
     generateSwitcherFields(
       sheet,
       dataCfg,
@@ -44,7 +45,7 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
     ),
   );
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     setFields(
       generateSwitcherFields(
         sheet,
@@ -52,22 +53,24 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
         options?.interaction?.hiddenColumnFields,
       ),
     );
-  }, [
-    sheet,
-    JSON.stringify(dataCfg?.fields),
-    JSON.stringify(dataCfg?.meta),
-    JSON.stringify(options?.interaction?.hiddenColumnFields),
-  ]);
+  }, [sheet, dataCfg, options?.interaction?.hiddenColumnFields]);
 
   const onSubmit = (result: SwitcherResult) => {
-    const { fields, hiddenColumnFields } = generateSheetConfig(sheet, result);
+    const { fields: currentFields, hiddenColumnFields } = generateSheetConfig(
+      sheet,
+      result,
+    );
+
     sheet.setDataCfg({
-      fields: { ...sheet.dataCfg.fields, ...fields },
+      fields: { ...sheet.dataCfg.fields, ...currentFields },
     } as S2DataConfig);
+
     if (hiddenColumnFields) {
       sheet.setOptions({ interaction: { hiddenColumnFields } });
     }
+
     sheet.render();
+
     setFields(
       generateSwitcherFieldsCfgFromResult(
         sheet,

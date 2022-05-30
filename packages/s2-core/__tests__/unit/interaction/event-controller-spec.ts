@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, BBox, CanvasCfg } from '@antv/g-canvas';
+import { Canvas, BBox, CanvasCfg, Shape } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { GuiIcon } from '@/common';
 import { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
@@ -47,16 +48,17 @@ describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
   let spreadsheet: SpreadSheet;
 
+  const mockEvent = {
+    target: undefined,
+    preventDefault: () => {},
+    originalEvent: {},
+    stopPropagation: () => {},
+  };
+
   const expectEvents =
     (eventType: OriginEventType, callback?: () => void) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
-      const mockEvent = {
-        target: undefined,
-        preventDefault: () => {},
-        originalEvent: {},
-        stopPropagation: () => {},
-      };
       spreadsheet.getCellType = () => type;
       spreadsheet.getCell = () =>
         ({
@@ -66,7 +68,7 @@ describe('Interaction Event Controller Tests', () => {
 
       eventNames.forEach((eventName) => {
         const eventHandler = jest.fn();
-        spreadsheet.on(eventName, eventHandler);
+        spreadsheet.once(eventName, eventHandler);
         spreadsheet.container.emit(eventType, mockEvent);
         expect(eventHandler).toHaveBeenCalledWith(mockEvent);
       });
@@ -130,6 +132,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.MOUSE_OUT,
       OriginEventType.CONTEXT_MENU,
       OriginEventType.DOUBLE_CLICK,
+      OriginEventType.CLICK,
     ];
     expect(eventController.canvasEventHandlers).toHaveLength(
       canvasEventTypes.length,
@@ -199,7 +202,10 @@ describe('Interaction Event Controller Tests', () => {
       type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_DOWN],
     },
-  ])('should emit mouse down for %o', expectEvents(OriginEventType.MOUSE_DOWN));
+  ])(
+    'should emit mouse down event for %o',
+    expectEvents(OriginEventType.MOUSE_DOWN),
+  );
 
   test.each([
     {
@@ -243,7 +249,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
   ])(
-    'should emit mouse move and hover for %s',
+    'should emit mouse move and hover event for %s',
     expectEvents(OriginEventType.MOUSE_MOVE),
   );
 
@@ -269,7 +275,7 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.MERGED_CELLS_MOUSE_UP],
     },
   ])(
-    'should emit mouse up and hover for %s',
+    'should emit mouse up and click event for %s',
     expectEvents(OriginEventType.MOUSE_UP),
   );
 
@@ -295,8 +301,40 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.MERGED_CELLS_DOUBLE_CLICK],
     },
   ])(
-    'should emit double click for %s',
+    'should emit double click event for %s',
     expectEvents(OriginEventType.DOUBLE_CLICK),
+  );
+
+  test.each([
+    {
+      type: CellTypes.DATA_CELL,
+      eventNames: [S2Event.DATA_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.ROW_CELL,
+      eventNames: [S2Event.ROW_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.COL_CELL,
+      eventNames: [S2Event.COL_CELL_CONTEXT_MENU, S2Event.GLOBAL_CONTEXT_MENU],
+    },
+    {
+      type: CellTypes.CORNER_CELL,
+      eventNames: [
+        S2Event.CORNER_CELL_CONTEXT_MENU,
+        S2Event.GLOBAL_CONTEXT_MENU,
+      ],
+    },
+    {
+      type: CellTypes.MERGED_CELL,
+      eventNames: [
+        S2Event.MERGED_CELLS_CONTEXT_MENU,
+        S2Event.GLOBAL_CONTEXT_MENU,
+      ],
+    },
+  ])(
+    'should emit context menu event for %s',
+    expectEvents(OriginEventType.CONTEXT_MENU),
   );
 
   test('should emit global context menu event', () => {
@@ -471,6 +509,48 @@ describe('Interaction Event Controller Tests', () => {
       new MouseEvent('click', {
         clientX: 300,
         clientY: 300,
+      } as MouseEventInit),
+    );
+
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  test('should not reset if current mouse not on the tooltip container but on the tooltip children container', () => {
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    // https://github.com/antvis/S2/pull/1352
+    const cTooltipParent = document.createElement('div');
+    const cTooltipChild = document.createElement('div');
+    cTooltipParent.setAttribute(
+      'style',
+      'position: relative; width: 200px; height: 200px;',
+    );
+    cTooltipParent.innerHTML = '创建一个div 模拟tooltip装载了一个”弹出层“元素';
+    cTooltipChild.setAttribute(
+      'style',
+      'position: absolute; top: 0; left: 0; width: 300px; height: 300px;',
+    );
+    cTooltipChild.innerHTML = '我是”弹出层“元素';
+    cTooltipParent.appendChild(cTooltipChild);
+    document.body.appendChild(cTooltipParent);
+
+    spreadsheet.tooltip.visible = true;
+    spreadsheet.tooltip.container = cTooltipParent;
+    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+      ({
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 200,
+      } as DOMRect);
+
+    cTooltipChild.dispatchEvent(
+      new MouseEvent('click', {
+        clientX: 233,
+        clientY: 233,
+        bubbles: true,
       } as MouseEventInit),
     );
 
@@ -673,6 +753,86 @@ describe('Interaction Event Controller Tests', () => {
 
       spreadsheet.off(event, captureEventHandler);
       window.removeEventListener(type, bubbleEventHandler);
+    },
+  );
+
+  test.each([
+    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+  ])(
+    'should not trigger click event if event target is gui icon image shape for event %o',
+    ({ cellType, event }) => {
+      spreadsheet.getCell = () =>
+        ({
+          cellType,
+          getMeta: () => {},
+        } as any);
+
+      const handler = jest.fn();
+      const { iconImageShape } = new GuiIcon({
+        name: 'test',
+        width: 10,
+        height: 10,
+      });
+
+      spreadsheet.once(event, handler);
+
+      Object.defineProperty(eventController, 'target', {
+        value: iconImageShape,
+        writable: true,
+      });
+
+      // 内部的 GuiIcon
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
+        ...mockEvent,
+        target: iconImageShape,
+      });
+
+      expect(handler).not.toHaveBeenCalled();
+
+      // 普通 Target
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, mockEvent);
+
+      expect(handler).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  // https://github.com/antvis/S2/issues/1360
+  test.each([
+    { cellType: CellTypes.ROW_CELL, event: S2Event.ROW_CELL_CLICK },
+    { cellType: CellTypes.COL_CELL, event: S2Event.COL_CELL_CLICK },
+    { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
+  ])(
+    'should trigger click event if event target is custom image shape for event %o',
+    ({ cellType, event }) => {
+      spreadsheet.getCell = () =>
+        ({
+          cellType,
+          getMeta: () => {},
+        } as any);
+
+      const handler = jest.fn();
+
+      const image = new Shape.Image({
+        name: 'test',
+        attrs: {
+          img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+        },
+      });
+
+      Object.defineProperty(eventController, 'target', {
+        value: image,
+        writable: true,
+      });
+
+      spreadsheet.on(event, handler);
+      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
+        ...mockEvent,
+        target: image,
+      });
+
+      expect(handler).toHaveBeenCalledTimes(1);
     },
   );
 });

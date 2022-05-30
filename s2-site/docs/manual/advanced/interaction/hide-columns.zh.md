@@ -3,13 +3,13 @@ title: 隐藏列头
 order: 2
 ---
 
-当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有两种方式隐藏列头
+当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头
 
 <playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>
 
-## 手动隐藏 - 通过点击
+## 1. 手动隐藏 - 通过点击
 
-点击列头，弹出 tooltip, 点击 `隐藏` 按钮即可
+点击列头在弹出的 `tooltip` 里, 点击 `隐藏` 按钮即可
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview" />
 
@@ -25,7 +25,7 @@ const s2Options = {
 }
 ```
 
-## 自动隐藏 - 通过配置
+## 2. 自动隐藏 - 通过配置
 
 可配置默认隐藏的列头，透视表和明细表
 
@@ -114,12 +114,23 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview" />
 
-## 事件监听
+## 3. 手动隐藏 - 通过实例方法
+
+[查看所有API](/zh/docs/api/basic-class/interaction)
+
+```ts
+const s2 = new PivotSheet(...)
+
+const hiddenColumnFields = ['province', 'type', 'price']
+s2.interaction.hideColumns(hiddenColumnFields)
+```
+
+## 获取隐藏列头数据
 
 可通过 `S2Event` 透出的 `LAYOUT_COLS_EXPANDED` 和 `LAYOUT_COLS_HIDDEN` 分别监听列头的展开和隐藏
 
 ```ts
-const s2 = new PivotSheet(container, dataCfg, s2Options);
+const s2 = new PivotSheet(...);
 
 s2.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
   console.log('列头展开', cell);
@@ -131,4 +142,11 @@ s2.on(
     console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
   },
 );
+```
+
+也可以访问存储在 [`store`](/zh/docs/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取
+
+```ts
+const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail')
+console.log(hiddenColumnsDetail)
 ```

@@ -1,13 +1,13 @@
 {
   "title": {
-    "zh": "数据单元格",
-    "en": "custom data cell"
+    "zh": "自定义单元格",
+    "en": "custom cell"
   },
   "demos": [
     {
       "filename": "data-cell.ts",
       "title": {
-        "zh": "数据单元格",
+        "zh": "自定义数据单元格",
         "en": "custom data cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/v3rnigo9e%24/6862c027-eb75-49e4-88e4-40b9855202a1.png"
@@ -15,7 +15,7 @@
     {
       "filename": "row-cell.ts",
       "title": {
-        "zh": "行头单元格",
+        "zh": "自定义行头单元格",
         "en": "custom row cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/OIp1I47w2P/c7f38d27-4025-4f05-abed-1d5b47b98145.png"
@@ -23,7 +23,7 @@
     {
       "filename": "col-cell.ts",
       "title": {
-        "zh": "列头单元格",
+        "zh": "自定义列头单元格",
         "en": "custom col cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/8gdiktjp8c/3e2453cb-f218-4435-9a24-2f0758bdad62.png"
@@ -31,7 +31,7 @@
     {
       "filename": "corner-cell.ts",
       "title": {
-        "zh": "角头单元格",
+        "zh": "自定义角头单元格",
         "en": "custom corner cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/0FL74ArooA/df0a2454-476c-4999-885f-e2a49c740334.png"
@@ -43,6 +43,14 @@
         "en": "custom corner header"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/KH6us7hvnV/a0860c18-3d00-48f9-8483-1b29de6cb149.png"
+    },
+    {
+      "filename": "totals-cell.ts",
+      "title": {
+        "zh": "自定义小计/总计单元格",
+        "en": "custom totals cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/W22O8FkKz/8ab7d837-4d91-49c1-81a5-66d6de619206.png"
     }
   ]
 }

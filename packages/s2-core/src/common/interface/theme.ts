@@ -213,6 +213,8 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
   bolderText?: TextTheme;
   /* 文本样式 */
   text?: TextTheme;
+  /* 度量值文本样式 */
+  measureText?: TextTheme;
   /* 单元格样式 */
   cell?: CellTheme;
   /* 图标样式 */
