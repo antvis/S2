@@ -8,13 +8,6 @@ export enum FrozenCellType {
   BOTTOM = 'bottom',
 }
 
-export enum FrozenGroup {
-  FROZEN_COL = 'frozenCol',
-  FROZEN_ROW = 'frozenRow',
-  FROZEN_TRAILING_COL = 'frozenTrailingCol',
-  FROZEN_TRAILING_ROW = 'frozenTrailingRow',
-}
-
 export const FrozenCellGroupMap = {
   [FrozenCellType.ROW]: 'frozenRowGroup',
   [FrozenCellType.COL]: 'frozenColGroup',

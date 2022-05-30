@@ -359,17 +359,13 @@ export class RowCell extends HeaderCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const { text, bolderText, measureText } = this.getStyle();
+    const { text, bolderText } = this.getStyle();
+    const style = this.isBolderText() ? bolderText : text;
 
-    if (this.isMeasureField()) {
-      return measureText || text;
-    }
-
-    if (this.isBolderText()) {
-      return bolderText;
-    }
-
-    return text;
+    return {
+      ...style,
+      textBaseline: 'top',
+    };
   }
 
   protected getIconPosition() {

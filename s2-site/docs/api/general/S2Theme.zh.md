@@ -58,7 +58,6 @@ order: 2
 | :---------------- | :----------- | :---------------------- | :----- | :--: |
 | bolderText        | 加粗文本样式 | [TextTheme](#texttheme) | -      |      |
 | text              | 文本样式     | [TextTheme](#texttheme) | -      |      |
-| measureText       | 度量值文本样式 | [TextTheme](#texttheme) | -      |      |
 | cell              | 单元格样式   | [CellTheme](#celltheme) | -      |      |
 | icon              | 图标样式     | [IconTheme](#icontheme) | -      |      |
 | seriesNumberWidth | 序号列宽     | `number`                | 80     |      |

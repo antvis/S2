@@ -382,7 +382,7 @@ export const adjustColHeaderScrollingViewport = (
  * @param textAlign
  * @returns
  */
-export const adjustColHeaderScrollingTextPosition = (
+export const adjustColHeaderScrollingTextPostion = (
   startX: number,
   restWidth: number,
   textAlign: TextAlign,

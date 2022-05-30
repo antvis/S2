@@ -1,4 +1,6 @@
-import { createPivotSheet } from 'tests/util/helpers';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer } from 'tests/util/helpers';
+import { PivotSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
@@ -10,7 +12,7 @@ const CONTAINER_CLASS_NAME = 'antv-s2-tooltip-container';
 
 describe('Tooltip Tests', () => {
   const createS2 = (tooltipOptions: S2Options['tooltip']) => {
-    return createPivotSheet({
+    return new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
       tooltip: tooltipOptions,
     });
@@ -49,28 +51,6 @@ describe('Tooltip Tests', () => {
     expect(
       document.querySelector(`body > div[class^="${CONTAINER_CLASS_NAME}"]`),
     ).toBeTruthy();
-
-    s2.destroy();
-  });
-
-  test('should render tooltip in custom position', () => {
-    const container = document.createElement('div');
-    container.id = 'custom-container';
-    document.body.appendChild(container);
-
-    const s2 = createS2({
-      showTooltip: true,
-      adjustPosition: (positionInfo) => {
-        const { position } = positionInfo;
-        return { x: position.x + 100, y: position.y + 100 };
-      },
-    });
-
-    s2.render();
-
-    s2.showTooltip({ position: { x: 0, y: 0 } });
-
-    expect(s2.tooltip.position).toEqual({ x: 115, y: 110 });
 
     s2.destroy();
   });

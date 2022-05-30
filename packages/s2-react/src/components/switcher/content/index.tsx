@@ -8,8 +8,6 @@ import {
   DragDropContext,
   DropResult,
 } from 'react-beautiful-dnd';
-import { i18n } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
 import { FieldType, SWITCHER_CONFIG, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
 import { SwitcherFields, SwitcherResult, SwitcherState } from '../interface';
@@ -22,7 +20,9 @@ import {
   moveItem,
   shouldCrossRows,
 } from '../util';
+import { i18n } from '@/common/i18n';
 import './index.less';
+import { SheetType } from '@/components/sheets/interface';
 
 const CLASS_NAME_PREFIX = 'content';
 export interface SwitcherContentRef {

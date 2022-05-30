@@ -50,13 +50,6 @@ export default defineConfig({
     vueJsx(),
     isAnalysisMode && visualizer({ gzipSize: true }),
   ].filter(Boolean) as PluginOption[],
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-      },
-    },
-  },
 
   build: {
     minify: isUmdFormat ? 'esbuild' : false,

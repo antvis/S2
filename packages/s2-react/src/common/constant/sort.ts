@@ -1,4 +1,4 @@
-import { i18n } from '@antv/s2';
+import { i18n } from '@/common/i18n';
 
 export const SORT_METHOD = [
   {

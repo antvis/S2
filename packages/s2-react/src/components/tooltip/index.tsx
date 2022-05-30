@@ -10,19 +10,23 @@ import {
   getTooltipDefaultOptions,
 } from '@antv/s2';
 import { TooltipDetail } from './components/detail';
+import { Divider } from './components/divider';
 import { TooltipHead } from './components/head-info';
 import { TooltipInfos } from './components/infos';
-import { TooltipInterpretation } from './components/interpretation';
+import { Interpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
-import { TooltipSimpleTips } from './components/simple-tips';
+import { SimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
 import { TooltipRenderProps } from './interface';
 
-import '@antv/s2/src/ui/tooltip/index.less';
-import '@antv/s2-shared/src/styles/tooltip/index.less';
+import './index.less';
 
 export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const { data, options, content, cell } = props;
+
+  const renderDivider = () => {
+    return <Divider />;
+  };
 
   const renderOperation = (
     operator: TooltipOperatorOptions,
@@ -42,7 +46,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
 
   const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
     const { name, tips } = nameTip || {};
-    return <TooltipSimpleTips name={name} tips={tips} />;
+    return <SimpleTips name={name} tips={tips} />;
   };
 
   const renderSummary = (summaries: TooltipSummaryOptions[]) => {
@@ -54,7 +58,10 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
 
     return (
       (!isEmpty(cols) || !isEmpty(rows)) && (
-        <TooltipHead cols={cols} rows={rows} />
+        <>
+          {renderDivider()}
+          <TooltipHead cols={cols} rows={rows} />
+        </>
       )
     );
   };
@@ -70,14 +77,15 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const renderInterpretation = (
     interpretation: TooltipInterpretationOptions,
   ) => {
-    return interpretation && <TooltipInterpretation {...interpretation} />;
+    return interpretation && <Interpretation {...interpretation} />;
   };
 
   const renderContent = () => {
-    const { operator, onlyMenu } = getTooltipDefaultOptions(options);
+    const option = getTooltipDefaultOptions(options);
+    const { operator, onlyMenu } = option;
     const { summaries, headInfo, details, interpretation, infos, tips, name } =
       data || {};
-    const nameTip: TooltipNameTipsOptions = { name, tips };
+    const nameTip = { name, tips };
 
     if (onlyMenu) {
       return renderOperation(operator, true);

@@ -1,59 +1,76 @@
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 import React from 'react';
-import { SpreadSheet, getTooltipOptions } from '@antv/s2';
+import {
+  SpreadSheet,
+  getTooltipOptions,
+  HeaderActionIcon,
+  GEvent,
+} from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-import {
-  ActionIconCallback,
-  handleDrillDown,
-  buildDrillDownOptions,
-} from '@/utils';
-import { usePivotSheetUpdate } from '@/hooks';
+import { handleDrillDown, handleDrillDownIcon } from '@/utils';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options: pivotOptions, ...restProps } = props;
-    const { dataCfg, partDrillDown } = restProps;
+    const { dataCfg, partDrillDown, options } = props;
+    // 记录 headerIcons 中的 下钻 icon
+    const drillDownIconRef = React.useRef<HeaderActionIcon>();
+
+    // 一些 props 的 latest ref
+    const latestPropsRef = useLatest(props);
+    const drillConfigRef = useLatest(partDrillDown?.drillConfig);
+    const rowFieldsRef = useLatest(dataCfg.fields.rows);
+    const fetchDataRef = useLatest(partDrillDown?.fetchData);
+    const drillItemsNumRef = useLatest(partDrillDown?.drillItemsNum);
 
     const s2Ref = React.useRef<SpreadSheet>();
+
     const [drillFields, setDrillFields] = React.useState<string[]>([]);
 
-    const onDrillDownIconClick = useLatest<ActionIconCallback>(
-      ({ sheetInstance, cacheDrillFields, disabledFields, event }) => {
-        const content = (
-          <DrillDown
-            {...partDrillDown?.drillConfig}
-            setDrillFields={setDrillFields}
-            drillFields={cacheDrillFields}
-            disabledFields={disabledFields}
-          />
-        );
-
-        if (event) {
-          const { showTooltip } = getTooltipOptions(sheetInstance, event);
-          if (!showTooltip) {
-            return;
-          }
-          sheetInstance.showTooltip<React.ReactNode>({
-            position: {
-              x: event.clientX,
-              y: event.clientY,
-            },
-            content,
-          });
-        }
-      },
-    );
-
-    /** 基于 props.options 来构造新的 options 传递给 base-sheet */
-    const options = React.useMemo(() => {
-      return buildDrillDownOptions(pivotOptions, partDrillDown, (params) =>
-        onDrillDownIconClick.current(params),
+    const onDrillDownIconClick = (
+      sheetInstance: SpreadSheet,
+      cacheDrillFields?: string[],
+      disabledFields?: string[],
+      event?: GEvent,
+    ) => {
+      const content = (
+        <DrillDown
+          {...drillConfigRef.current}
+          setDrillFields={setDrillFields}
+          drillFields={cacheDrillFields}
+          disabledFields={disabledFields}
+        />
       );
-    }, [pivotOptions, partDrillDown, onDrillDownIconClick]);
+
+      if (event) {
+        const { showTooltip } = getTooltipOptions(sheetInstance, event);
+        if (!showTooltip) {
+          return;
+        }
+        sheetInstance.showTooltip<React.ReactNode>({
+          position: {
+            x: event.clientX,
+            y: event.clientY,
+          },
+          content,
+        });
+      }
+    };
+
+    const updateDrillDownOptions = (
+      sheetProps: SheetComponentsProps = latestPropsRef.current,
+    ) => {
+      const drillDownOptions = handleDrillDownIcon(
+        sheetProps,
+        s2Ref.current,
+        onDrillDownIconClick,
+        drillDownIconRef,
+      );
+      s2Ref.current.setOptions(drillDownOptions);
+    };
 
     /**
      * 清空下钻信息
@@ -72,38 +89,49 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       if (isEmpty(drillFields)) {
         clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
       } else {
-        // 执行下钻
         handleDrillDown({
-          rows: dataCfg.fields.rows,
+          rows: rowFieldsRef.current,
           drillFields,
-          fetchData: partDrillDown?.fetchData,
-          drillItemsNum: partDrillDown?.drillItemsNum,
+          fetchData: fetchDataRef.current,
+          drillItemsNum: drillItemsNumRef.current,
           spreadsheet: s2Ref.current,
         });
       }
+      updateDrillDownOptions();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [drillFields]);
 
     React.useEffect(() => {
-      if (!isObject(partDrillDown?.clearDrillDown)) {
+      if (isEmpty(partDrillDown?.clearDrillDown)) {
         return;
       }
       clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
     }, [partDrillDown?.clearDrillDown]);
 
     /**
-     * 控制交叉表 render
+     * 表格完全渲染（清空下钻）
      */
-    const onSheetUpdate = usePivotSheetUpdate(partDrillDown);
+    React.useEffect(() => {
+      updateDrillDownOptions();
+      s2Ref.current.render();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+      partDrillDown?.drillConfig,
+      partDrillDown?.displayCondition,
+      partDrillDown?.drillItemsNum,
+      options.hierarchyType,
+    ]);
 
-    return (
-      <BaseSheet
-        {...restProps}
-        options={options}
-        onSheetUpdate={onSheetUpdate}
-        ref={s2Ref}
-      />
-    );
+    /**
+     * 表格仅重渲染视图（不清空数据）
+     */
+    React.useEffect(() => {
+      updateDrillDownOptions();
+      s2Ref.current.render(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [options.headerActionIcons]);
+
+    return <BaseSheet {...props} ref={s2Ref} />;
   },
 );
 

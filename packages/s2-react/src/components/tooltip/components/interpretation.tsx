@@ -1,11 +1,9 @@
 import React from 'react';
 import { TooltipInterpretationOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
-import { TooltipIcon } from './icon';
+import { Icon } from './icon';
 import { ReactElement } from '@/common/react-element';
 
-export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
-  props,
-) => {
+export const Interpretation = (props: TooltipInterpretationOptions) => {
   const { name, icon, text, render } = props;
 
   const renderName = () => {
@@ -29,7 +27,7 @@ export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-interpretation`}>
       <div className={`${TOOLTIP_PREFIX_CLS}-interpretation-head`}>
-        <TooltipIcon
+        <Icon
           icon={icon}
           className={`${TOOLTIP_PREFIX_CLS}-interpretation-icon`}
         />

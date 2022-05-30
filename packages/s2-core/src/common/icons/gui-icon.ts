@@ -6,7 +6,6 @@ import { omit, clone } from 'lodash';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
-
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
@@ -18,10 +17,8 @@ export interface GuiIconCfg extends ShapeAttrs {
  * 使用 iconfont 上的 svg 来创建 Icon
  */
 export class GuiIcon extends Group {
-  static type = '__GUI_ICON__';
-
   // icon 对应的 GImage 对象
-  public iconImageShape: Shape.Image;
+  private image: Shape.Image;
 
   constructor(cfg: GuiIconCfg) {
     super(cfg);
@@ -88,12 +85,8 @@ export class GuiIcon extends Group {
   private render() {
     const { name, fill } = this.cfg;
     const attrs = clone(this.cfg);
-    const imageShapeAttrs: ShapeAttrs = {
-      ...omit(attrs, 'fill'),
-      type: GuiIcon.type,
-    };
     const image = new Shape.Image({
-      attrs: imageShapeAttrs,
+      attrs: omit(attrs, 'fill'),
     });
 
     const cacheKey = `${name}-${fill}`;
@@ -113,6 +106,6 @@ export class GuiIcon extends Group {
           console.warn(`GuiIcon ${name} load error`, err);
         });
     }
-    this.iconImageShape = image;
+    this.image = image;
   }
 }

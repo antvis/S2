@@ -13,10 +13,11 @@ import {
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_COLUMN_FIELD, EXTRA_FIELD, S2Event } from '@/common/constant';
+import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
+import { TableColCell } from '@/cell/table-col-cell';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -298,9 +299,5 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public hideInteractionShape() {
     super.hideInteractionShape();
-  }
-
-  public isMeasureField() {
-    return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
   }
 }

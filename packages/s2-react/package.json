@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "1.16.0",
+  "version": "1.15.1",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -45,11 +45,9 @@
     "build:declaration": "ttsc -p tsconfig.declaration.json",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
-    "test": "jest --passWithNoTests",
-    "test:coverage": "yarn test --coverage",
-    "test:ci": "yarn test --maxWorkers=3",
-    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
+    "test": "jest",
     "test:live": "node ./scripts/test-live.mjs",
+    "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
@@ -69,7 +67,6 @@
   },
   "devDependencies": {
     "@antv/s2": "*",
-    "@antv/s2-shared":"*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",

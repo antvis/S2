@@ -77,9 +77,9 @@ const s2Options = {
 // 4, 渲染
 ReactDOM.render(
   <SheetComponent
-    sheetType="table"
     dataCfg={s2DataCfg}
     options={s2Options}
+    sheetType={"table"}
   />,
   document.getElementById('container')
 );
@@ -93,19 +93,19 @@ ReactDOM.render(
 import { TableSheet } from "@antv/s2";
 
 const container = document.getElementById('container');
-const tableSheet = new TableSheet(container, dataCfg, options);
-tableSheet.render();
+const sheet = new TableSheet(container, dataCfg, options);
+sheet.render();
 ```
 
 ## 特性
 
 ### 序号
 
-在 `s2Options` 中传入 `showSeriesNumber` 即可展示内置的序号。[查看 demo](https://s2.antv.vision/zh/examples/basic/table#table)
+在 `s2Options` 中传入 `showSeriesNumber` 即可展示内置的序号。
 
 ### 行列冻结
 
-行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。[查看 demo](https://s2.antv.vision/zh/examples/interaction/basic#frozen)
+行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。
 
 行列冻结通过在 `s2Options` 中传入这些属性控制：
 
@@ -121,5 +121,3 @@ tableSheet.render();
 效果如图：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
-
-<playground path='interaction/basic/demo/frozen.ts' rid='container' height='300'></playground>

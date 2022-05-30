@@ -15,6 +15,8 @@ import {
   CellBorderPosition,
   DefaultCellTheme,
   IconTheme,
+  TextAlign,
+  TextBaseline,
   TextTheme,
 } from '@/common/interface';
 import { AreaRange } from '@/common/interface/scroll';
@@ -24,7 +26,7 @@ import {
   getTextAndFollowingIconPosition,
   getTextAreaRange,
   adjustColHeaderScrollingViewport,
-  adjustColHeaderScrollingTextPosition,
+  adjustColHeaderScrollingTextPostion,
 } from '@/utils/cell/cell';
 import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
@@ -86,19 +88,29 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  protected getTextStyle(): TextTheme {
+  private getOriginalTextStyle(): TextTheme {
     const { isLeaf, isTotals } = this.meta;
-    const { text, bolderText, measureText } = this.getStyle();
+    const { text, bolderText } = this.getStyle();
+    return isLeaf && !isTotals ? text : bolderText;
+  }
 
-    if (this.isMeasureField()) {
-      return measureText || text;
+  protected getTextStyle(): TextTheme {
+    const { isLeaf } = this.meta;
+    const textStyle = this.getOriginalTextStyle();
+    const hideMeasureColumn =
+      this.spreadsheet.options.style.colCfg.hideMeasureColumn;
+    let textAlign: TextAlign;
+    let textBaseline: TextBaseline;
+    if (isLeaf && !hideMeasureColumn) {
+      textAlign = this.theme.dataCell.text.textAlign;
+      textBaseline = this.theme.dataCell.text.textBaseline;
+    } else {
+      // 为方便 getTextAreaRange 计算文字位置
+      // textAlign 固定为 center
+      textAlign = 'center';
+      textBaseline = 'middle';
     }
-
-    if (isTotals || !isLeaf) {
-      return bolderText;
-    }
-
-    return text;
+    return { ...textStyle, textAlign, textBaseline };
   }
 
   protected getMaxTextWidth(): number {
@@ -109,11 +121,9 @@ export class ColCell extends HeaderCell {
   protected getIconPosition(): Point {
     const { isLeaf } = this.meta;
     const iconStyle = this.getIconStyle();
-
     if (isLeaf) {
       return super.getIconPosition(this.getActionIconsCount());
     }
-
     const position = this.textAreaPosition;
 
     const totalSpace =
@@ -121,7 +131,6 @@ export class ColCell extends HeaderCell {
       this.getActionIconsWidth() -
       iconStyle.margin.right;
     const startX = position.x - totalSpace / 2;
-
     return {
       x: startX + this.actualTextWidth + iconStyle.margin.left,
       y: position.y - iconStyle.size / 2,
@@ -166,7 +175,7 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
-    const { textAlign } = this.getTextStyle();
+    const { textAlign } = this.getOriginalTextStyle();
     const adjustedViewport = adjustColHeaderScrollingViewport(
       viewport,
       textAlign,
@@ -187,7 +196,7 @@ export class ColCell extends HeaderCell {
 
     // textAreaRange.start 是以文字样式为 center 计算出的文字绘制点
     // 此处按实际样式(left or right)调整
-    const startX = adjustColHeaderScrollingTextPosition(
+    const startX = adjustColHeaderScrollingTextPostion(
       textAreaRange.start,
       textAreaRange.width - textAndIconSpace,
       textAlign,

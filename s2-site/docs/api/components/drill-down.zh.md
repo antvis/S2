@@ -34,10 +34,10 @@ order: 2
 
 <description>功能描述：下钻数据请求参数配置</description>
 
-| 参数       | 说明              | 类型            | 必选                | 默认值 |
-| --- | --- | --- |-------------------| ---  |
-| drillData | 下钻的数据 |  <code class="language-text">Record<string, string \| number>[] </code> | ✓ |   |
-| drillField | 下钻维度 value 值 | `string` | ✓                 |  |
+| 参数       | 说明              | 类型            | 必选  | 默认值 |
+| --- | --- | --- | --- | ---  |
+| drillData | 下钻的数据 |  <code class="language-text">Record<string, string \| number> </code> | ✓ |   |
+| drillField | 下钻维度 value 值 | `string` | ✓ |  |
 
 ### DrillDownProps
 

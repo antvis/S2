@@ -1,4 +1,4 @@
-import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
+import type { S2DataConfig } from '@antv/s2';
 
 export const customTree: S2DataConfig = {
   data: [
@@ -28,7 +28,7 @@ export const customTree: S2DataConfig = {
         values: [[377, 324, '0.02']],
       },
       date: '2021',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+      sub_type: JSON.stringify(['数值', '环比', '同比']),
     },
     {
       'measure-a': {
@@ -53,7 +53,7 @@ export const customTree: S2DataConfig = {
         values: [[377, 324, '0.02']],
       },
       date: '2022',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+      sub_type: JSON.stringify(['数值', '环比', '同比']),
     },
   ],
   meta: [
@@ -64,7 +64,7 @@ export const customTree: S2DataConfig = {
   ],
   fields: {
     rows: [],
-    columns: ['date', EXTRA_COLUMN_FIELD],
+    columns: ['date', 'sub_type'],
     values: [
       'measure-a',
       'measure-b',

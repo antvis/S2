@@ -1,10 +1,10 @@
 import { PivotSheet, CornerCell } from '@antv/s2';
 
-/**
- * 自定义 CornerCell，给角头添加背景图
- * 查看更多方法 https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/corner-cell.ts
- */
-class CustomCornerCell extends CornerCell {
+// 自定义角头单元格，实现特有功能
+class CustomCornelCell extends CornerCell {
+  /**
+   * 复写背景绘制方法，自定义用户需要的画布元素
+   */
   drawBackgroundShape() {
     this.addShape('image', {
       attrs: {
@@ -37,7 +37,7 @@ fetch(
         hoverHighlight: false,
       },
       cornerCell: (node, s2, headConfig) => {
-        return new CustomCornerCell(node, s2, headConfig);
+        return new CustomCornelCell(node, s2, headConfig);
       },
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);

@@ -1,5 +1,4 @@
 import { Node } from 'src/facet/layout/node';
-import { FrozenGroup } from 'src/group/frozen-group';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { TableDataCell, TableRowCell } from '@/cell';
@@ -84,31 +83,29 @@ export class TableSheet extends SpreadSheet {
 
   protected initPanelGroupChildren(): void {
     super.initPanelGroupChildren();
-    const commonParams = {
+    this.frozenRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_ROW,
       zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-      s2: this,
-    };
-    [
-      this.frozenRowGroup,
-      this.frozenColGroup,
-      this.frozenTrailingRowGroup,
-      this.frozenTrailingColGroup,
-      this.frozenTopGroup,
-      this.frozenBottomGroup,
-    ] = [
-      KEY_GROUP_PANEL_FROZEN_ROW,
-      KEY_GROUP_PANEL_FROZEN_COL,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-      KEY_GROUP_PANEL_FROZEN_TOP,
-      KEY_GROUP_PANEL_FROZEN_BOTTOM,
-    ].map((name) => {
-      const g = new FrozenGroup({
-        name,
-        ...commonParams,
-      });
-      this.panelGroup.add(g);
-      return g;
+    });
+    this.frozenColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_COL,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTrailingRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTrailingColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTopGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TOP,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenBottomGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
   }
 

@@ -49,8 +49,8 @@ order: 0
 | onCornerCellMouseUp | 角头鼠标按下事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellMouseUp |角头鼠标松开事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellMouseMove | 角头鼠标移动事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onMergedCellsHover | 合并单元格鼠标悬停事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onMergedCellsClick | 合并单元格鼠标点击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onMergedCellsHoverr | 合并单元格鼠标悬停事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onMergedCellClick | 合并单元格鼠标点击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellDoubleClick | 合并单元格鼠标双击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellsMouseDown | 合并单元格按下事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellsMouseUp |合并单元格松开事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |

@@ -14,14 +14,14 @@ jobs:
     # 自动发布成功后
     if: github.event.workflow_run.conclusion == 'success'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           ref: 'latest'
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 16.x
           cache: 'yarn'
 
       - name: Git bootstrap
@@ -36,10 +36,10 @@ jobs:
         run: |
           git checkout -b chore-sync
 
-      - name: Sleep 10m
+      - name: Sleep 2m
         uses: juliangruber/sleep-action@v1
         with:
-          time: 10m
+          time: 2m
 
       - name: Install dependencies
         run: yarn

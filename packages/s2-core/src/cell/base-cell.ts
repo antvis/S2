@@ -306,8 +306,4 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
     updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
   }
-
-  public getTextShape() {
-    return this.textShape;
-  }
 }

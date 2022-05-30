@@ -9,7 +9,6 @@ import { SpreadSheet } from '@/sheet-type';
 import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { PivotDataSet } from '@/data-set';
-import { ID_SEPARATOR, ROOT_ID } from '@/common';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -41,18 +40,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
-  // 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value
-  const dimensions =
-    ROOT_ID === id
-      ? sortedDimensionValues
-      : sortedDimensionValues?.filter((item) =>
-          item?.includes(id?.split(`${ROOT_ID}${ID_SEPARATOR}`)[1]),
-        );
-
   const dimValues = filterUndefined(
     getListBySorted(
       [...(pivotMeta.keys() || [])],
-      [...getDimensionsWithoutPathPre([...dimensions])],
+      [...getDimensionsWithoutPathPre([...sortedDimensionValues])],
     ),
   );
 

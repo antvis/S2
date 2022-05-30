@@ -33,62 +33,62 @@ import { SpreadSheet } from '@/sheet-type';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
-  width?: number;
+  readonly width?: number;
   // canvas's height
-  height?: number;
+  readonly height?: number;
   // debug info for developer
-  debug?: boolean;
+  readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  hierarchyType?: 'grid' | 'tree' | 'customTree';
+  readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // conditions config
-  conditions?: Conditions;
+  readonly conditions?: Conditions;
   // total config
-  totals?: Totals;
+  readonly totals?: Totals;
   // tooltip configs
-  tooltip?: Tooltip<T>;
+  readonly tooltip?: Tooltip<T>;
   // interaction configs
-  interaction?: InteractionOptions;
+  readonly interaction?: InteractionOptions;
   // pagination config
-  pagination?: Pagination;
+  readonly pagination?: Pagination;
   // freeze row header
-  frozenRowHeader?: boolean;
+  readonly frozenRowHeader?: boolean;
   // show Series Number
-  showSeriesNumber?: boolean;
+  readonly showSeriesNumber?: boolean;
   // if show the default header actionIcons
-  showDefaultHeaderActionIcon?: boolean;
+  readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
-  headerActionIcons?: HeaderActionIcon[];
+  readonly headerActionIcons?: HeaderActionIcon[];
   // register custom svg icons
-  customSVGIcons?: CustomSVGIcon[];
+  readonly customSVGIcons?: CustomSVGIcon[];
   // extra styles
-  style?: Partial<Style>;
-  hierarchyCollapse?: boolean;
-  hdAdapter?: boolean;
+  readonly style?: Partial<Style>;
+  readonly hierarchyCollapse?: boolean;
+  readonly hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
-  mergedCellsInfo?: MergedCellInfo[][];
+  readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
-  placeholder?: ((meta: Record<string, any>) => string) | string;
+  readonly placeholder?: ((meta: Record<string, any>) => string) | string;
   // custom corner text
-  cornerText?: string;
+  readonly cornerText?: string;
   // custom virtual extra field text
-  cornerExtraFieldText?: string;
-  supportCSSTransform?: boolean;
+  readonly cornerExtraFieldText?: string;
+  readonly supportCSSTransform?: boolean;
   // custom device pixel ratio, default "window.devicePixelRatio"
-  devicePixelRatio?: number;
+  readonly devicePixelRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
-  dataCell?: DataCellCallback;
+  readonly dataCell?: DataCellCallback;
   // custom corner cell
-  cornerCell?: CellCallback<CornerHeaderConfig>;
+  readonly cornerCell?: CellCallback<CornerHeaderConfig>;
   // custom row cell
-  rowCell?: CellCallback<RowHeaderConfig>;
+  readonly rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
-  colCell?: CellCallback<ColHeaderConfig>;
+  readonly colCell?: CellCallback<ColHeaderConfig>;
   // custom frame
-  frame?: FrameCallback;
+  readonly frame?: FrameCallback;
   // custom corner header
-  cornerHeader?: CornerHeaderCallback;
+  readonly cornerHeader?: CornerHeaderCallback;
 
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
@@ -112,10 +112,10 @@ export interface S2BasicOptions<T = Element | string> {
 // Table sheet options
 export interface S2TableSheetOptions {
   // frozen row & cols
-  frozenRowCount?: number;
-  frozenColCount?: number;
-  frozenTrailingRowCount?: number;
-  frozenTrailingColCount?: number;
+  readonly frozenRowCount?: number;
+  readonly frozenColCount?: number;
+  readonly frozenTrailingRowCount?: number;
+  readonly frozenTrailingColCount?: number;
 }
 
 // Pivot sheet options
@@ -127,11 +127,5 @@ export interface S2Options<T = Element | string>
     S2TableSheetOptions,
     S2PivotSheetOptions {
   // custom data set
-  dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
-}
-
-export interface S2RenderOptions {
-  reloadData?: boolean;
-  reBuildDataSet?: boolean;
-  reBuildHiddenColumnsDetail?: boolean;
+  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 }

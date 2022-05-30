@@ -22,13 +22,6 @@ import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
 import { CornerCell } from '@/cell/corner-cell';
 
-jest.mock('@/utils/hide-columns');
-
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-
-const mockHideColumnsByThunkGroup =
-  hideColumnsByThunkGroup as jest.Mock<PivotSheet>;
-
 const originalDataCfg = cloneDeep(dataCfg);
 
 describe('PivotSheet Tests', () => {
@@ -606,25 +599,6 @@ describe('PivotSheet Tests', () => {
 
   test('should get value is in columns', () => {
     expect(s2.isValueInCols()).toBeTruthy();
-  });
-
-  test('should rebuild hidden columns detail by status', () => {
-    // 重新更新, 但是没有隐藏列信息
-    s2.render(false, { reBuildHiddenColumnsDetail: true });
-
-    expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
-
-    s2.store.set('hiddenColumnsDetail', [null]);
-
-    // 重新更新, 有隐藏列信息, 但是 reBuildHiddenColumnsDetail 为 false
-    s2.render(false, { reBuildHiddenColumnsDetail: false });
-
-    expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
-
-    // 重新更新, 有隐藏列信息, 且 reBuildHiddenColumnsDetail 为 true
-    s2.render(false, { reBuildHiddenColumnsDetail: true });
-
-    expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(1);
   });
 
   test('should clear drill down data', () => {

@@ -18,7 +18,6 @@ describe('data cell formatter test', () => {
   } as unknown as ViewMeta;
 
   let s2: SpreadSheet;
-
   beforeEach(() => {
     const container = document.createElement('div');
 
@@ -26,7 +25,6 @@ describe('data cell formatter test', () => {
     const dataSet: PivotDataSet = new MockPivotDataSet(s2);
     s2.dataSet = dataSet;
   });
-
   test('should pass complete data into formater', () => {
     const formatter = jest.fn();
     jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
@@ -50,43 +48,5 @@ describe('data cell formatter test', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     expect(dataCell.textShape.attr('text')).toEqual('120');
-  });
-
-  test('should draw condition interval shape', () => {
-    const cellWidth = 120;
-    const fieldValue = 27.334666666666667;
-    const anthorMeta = {
-      width: cellWidth,
-      valueField: 'value',
-      fieldValue,
-      data: {
-        city: 'chengdu',
-        value: fieldValue,
-        [VALUE_FIELD]: 'value',
-        [EXTRA_FIELD]: fieldValue,
-      },
-    } as unknown as ViewMeta;
-
-    jest.spyOn(s2.dataSet, 'getValueRangeByField').mockReturnValue({
-      minValue: fieldValue,
-      maxValue: fieldValue,
-    });
-
-    s2.setOptions({
-      conditions: {
-        interval: [
-          {
-            field: 'value',
-            mapping: () => ({ fill: 'red' }),
-          },
-        ],
-      },
-    });
-
-    const dataCell = new DataCell(anthorMeta, s2);
-
-    expect(get(dataCell, 'conditionIntervalShape.attrs.width')).toEqual(
-      cellWidth,
-    );
   });
 });
