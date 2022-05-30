@@ -61,7 +61,7 @@ demo components and expansion capabilities, it allows developers to use it quick
 1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
 2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
 3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
-4. Out of the box: Provide out-of-the-box `React` and `Vue3` table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
+4. Out of the box: Provide out-of-the-box react table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
  of complex scenes quickly.
 5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
 

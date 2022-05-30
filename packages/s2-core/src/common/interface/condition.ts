@@ -25,21 +25,21 @@ export type MappingFunction = (
  * One field can hold a condition
  */
 export interface Condition {
-  field: string | RegExp;
-  mapping: MappingFunction;
+  readonly field: string | RegExp;
+  readonly mapping: MappingFunction;
 }
 
 export type IconPosition = 'left' | 'right';
 
 export interface IconCondition extends Condition {
-  position?: IconPosition; // right by default
+  readonly position?: IconPosition; // right by default
 }
 
 export interface Conditions {
-  text?: Condition[];
-  background?: Condition[];
-  interval?: Condition[];
-  icon?: IconCondition[];
+  readonly text?: Condition[];
+  readonly background?: Condition[];
+  readonly interval?: Condition[];
+  readonly icon?: IconCondition[];
 }
 
 export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &

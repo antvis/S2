@@ -8,7 +8,7 @@ import { Palette, PaletteMeta } from '@/common/interface/theme';
 const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
 
 /** S2 标准色板 mix 规则 */
-const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
+const STANDRAD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
 
 /**
  * basic color 数量
@@ -48,7 +48,7 @@ export const generateStandardColors = (brandColor: string) => {
   const standardColors = [];
 
   for (let index = 0; index < 11; index++) {
-    const mixPercent = STANDARD_COLOR_MIX_PERCENT[index];
+    const mixPercent = STANDRAD_COLOR_MIX_PERCENT[index];
     standardColors.push(
       mixPercent === 0
         ? brandColor.toUpperCase()

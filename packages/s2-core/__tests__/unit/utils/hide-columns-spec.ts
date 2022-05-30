@@ -202,21 +202,6 @@ describe('hide-columns test', () => {
     expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
   });
 
-  test('should clear hidden columns detail and options if hidden column fields isEmpty and enable force update', () => {
-    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [null]);
-
-    hideColumns(mockSpreadSheetInstance, [], true);
-
-    expect(mockSpreadSheetInstance.render).toHaveReturnedTimes(1);
-    expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
-    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual(
-      [],
-    );
-    expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
-    ).toEqual([]);
-  });
-
   test('should hidden columns correct', () => {
     hideColumns(mockSpreadSheetInstance, ['3']);
 
@@ -333,21 +318,6 @@ describe('hide-columns test', () => {
     hideColumnsByThunkGroup(mockSpreadSheetInstance, []);
 
     expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
-  });
-
-  test('should clear hidden group columns detail and options if hidden column fields isEmpty and enable force update', () => {
-    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [null]);
-
-    hideColumnsByThunkGroup(mockSpreadSheetInstance, [], true);
-
-    expect(mockSpreadSheetInstance.render).toHaveReturnedTimes(1);
-    expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
-    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual(
-      [],
-    );
-    expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
-    ).toEqual([]);
   });
 
   describe('Valid Display Sibling Node Tests', () => {

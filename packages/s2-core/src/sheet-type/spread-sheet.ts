@@ -8,6 +8,7 @@ import {
   isEmpty,
   isFunction,
   isString,
+  once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
@@ -33,7 +34,6 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
-  S2RenderOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -58,8 +58,6 @@ import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
-import { PanelScrollGroup } from '@/group/panel-scroll-group';
-import { FrozenGroup } from '@/group/frozen-group';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -96,19 +94,19 @@ export abstract class SpreadSheet extends EE {
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
 
-  public panelScrollGroup: PanelScrollGroup;
+  public panelScrollGroup: IGroup;
 
-  public frozenRowGroup: FrozenGroup;
+  public frozenRowGroup: IGroup;
 
-  public frozenColGroup: FrozenGroup;
+  public frozenColGroup: IGroup;
 
-  public frozenTrailingRowGroup: FrozenGroup;
+  public frozenTrailingRowGroup: IGroup;
 
-  public frozenTrailingColGroup: FrozenGroup;
+  public frozenTrailingColGroup: IGroup;
 
-  public frozenTopGroup: FrozenGroup;
+  public frozenTopGroup: IGroup;
 
-  public frozenBottomGroup: FrozenGroup;
+  public frozenBottomGroup: IGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
@@ -274,11 +272,9 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    const targetCell = this.getCell(event?.target);
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
-      targetCell,
       options: {
         enableFormat: true,
         ...options,
@@ -338,9 +334,7 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, options: S2RenderOptions = {}) {
-    const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
-      options;
+  public render(reloadData = true, reBuildDataSet = false) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet(this.options);
@@ -350,9 +344,7 @@ export abstract class SpreadSheet extends EE {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    if (reBuildHiddenColumnsDetail) {
-      this.initHiddenColumnsDetail();
-    }
+    this.initHiddenColumnsDetail();
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
@@ -373,7 +365,7 @@ export abstract class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setThemeCfg(themeCfg: ThemeCfg = {}) {
+  public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
     this.theme = customMerge(
       getTheme({ ...themeCfg, spreadsheet: this }),
@@ -451,10 +443,6 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
-  public getRowLeafNodes(): Node[] {
-    return this.facet?.layoutResult.rowLeafNodes || [];
-  }
-
   /**
    * get columnNode in levels,
    * @param level -1 = get all
@@ -468,7 +456,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getColumnLeafNodes(): Node[] {
-    return this.facet?.layoutResult.colLeafNodes || [];
+    return this.getColumnNodes().filter((node) => node.isLeaf);
   }
 
   /**
@@ -528,8 +516,7 @@ export abstract class SpreadSheet extends EE {
    */
   public getTotalsConfig(dimension: string): Partial<Totals['row']> {
     const { totals } = this.options;
-    const { rows } = this.dataSet.fields;
-
+    const { rows } = this.dataCfg.fields;
     const totalConfig = get(
       totals,
       includes(rows, dimension) ? 'row' : 'col',
@@ -596,12 +583,10 @@ export abstract class SpreadSheet extends EE {
   }
 
   protected initPanelGroupChildren() {
-    this.panelScrollGroup = new PanelScrollGroup({
+    this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-      s2: this,
     });
-    this.panelGroup.add(this.panelScrollGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {
@@ -609,15 +594,13 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
-  private initHiddenColumnsDetail = () => {
+  private initHiddenColumnsDetail = once(() => {
     const { hiddenColumnFields } = this.options.interaction;
-    const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
-    // 隐藏列为空, 并且没有操作的情况下, 则无需生成
-    if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
+    if (isEmpty(hiddenColumnFields)) {
       return;
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
-  };
+  });
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();

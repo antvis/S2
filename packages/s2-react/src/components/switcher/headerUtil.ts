@@ -6,8 +6,8 @@ import {
   Fields,
   Meta,
 } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
 import { filter, find, isEmpty, map, reduce } from 'lodash';
+import { SheetType } from './../sheets/interface';
 import { FieldType, SWITCHER_FIELDS } from './constant';
 import { SwitcherField, SwitcherFields, SwitcherResult } from './interface';
 

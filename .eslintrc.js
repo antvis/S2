@@ -33,6 +33,8 @@ module.exports = {
     },
   },
   rules: {
+    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/rules-of-hooks': 'error',
     'prettier/prettier': [
       1,
       {
@@ -47,7 +49,7 @@ module.exports = {
       },
     ],
     'import/order': 2,
-    'import/no-default-export': 0,
+    'import/no-default-export': 2,
     'no-restricted-syntax': 0,
     semi: 0,
     'no-console': 2,
@@ -71,8 +73,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     'import/no-named-default': 0,
-    'react-hooks/exhaustive-deps': 0,
-    'react-hooks/rules-of-hooks': 0,
     'react/jsx-filename-extension': [
       1,
       {
@@ -112,7 +112,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': [1, 4],
+    'max-params': [1, 3],
     'no-unreachable': 2,
     eqeqeq: [
       2,
@@ -122,20 +122,11 @@ module.exports = {
       },
     ],
     curly: [2, 'multi-line', 'consistent'],
-    'guard-for-in': 0,
-    'vue/multi-word-component-names': 0,
   },
   overrides: [
     {
       files: ['*.vue'],
       parser: 'vue-eslint-parser',
-    },
-    {
-      files: ['*.tsx'],
-      rules: {
-        'react-hooks/exhaustive-deps': 1,
-        'react-hooks/rules-of-hooks': 2,
-      },
     },
   ],
 };

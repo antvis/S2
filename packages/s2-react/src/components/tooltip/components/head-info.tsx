@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListItem, TooltipHeadInfo, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
-export const TooltipHead: React.FC<TooltipHeadInfo> = (props) => {
+export const TooltipHead = (props: TooltipHeadInfo) => {
   const { rows = [], cols = [] } = props;
 
   return (

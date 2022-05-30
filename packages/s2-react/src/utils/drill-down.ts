@@ -1,16 +1,18 @@
+import { clone, filter, get, isEmpty, set } from 'lodash';
 import {
-  GEvent,
-  HeaderActionIconProps,
-  i18n,
-  Node,
-  PartDrillDownDataCache,
-  PivotDataSet,
-  S2Event,
   S2Options,
+  HeaderActionIconProps,
+  S2Event,
   SpreadSheet,
+  Node,
+  PivotDataSet,
+  HeaderActionIcon,
+  PartDrillDownDataCache,
+  GEvent,
 } from '@antv/s2';
-import { clone, filter, isEmpty } from 'lodash';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
+import React from 'react';
+import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
+import { i18n } from '@/common/i18n';
 
 export interface DrillDownParams {
   // 行维度id
@@ -24,21 +26,21 @@ export interface DrillDownParams {
   fetchData?: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
-/** 下钻 icon 点击回调 */
-export type ActionIconCallback = (params: {
-  sheetInstance: SpreadSheet;
-  cacheDrillFields?: string[];
-  disabledFields?: string[];
-  event?: GEvent;
-}) => void;
-
 export interface ActionIconParams {
   // 点击节点信息
   meta: Node;
+  // 点击icon类型
+  iconName: string;
   // 点击事件event
   event?: GEvent;
+  spreadsheet: SpreadSheet;
   // 下钻维度的列表组件展示
-  callback: ActionIconCallback;
+  callback: (
+    spreadsheet: SpreadSheet,
+    cacheDrillFields: string[],
+    disabledFields: string[],
+    event?: GEvent,
+  ) => void;
 }
 
 /**
@@ -63,93 +65,94 @@ export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
  * @param params
  */
 export const handleActionIconClick = (params: ActionIconParams) => {
-  const { meta, event, callback } = params;
-  const { spreadsheet } = meta;
+  const { meta, spreadsheet, event, callback, iconName } = params;
 
-  spreadsheet.store.set('drillDownNode', meta);
-  const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
-    spreadsheet,
-    meta,
-  );
-  const cache = drillDownCurrentCache?.drillField
-    ? [drillDownCurrentCache?.drillField]
-    : [];
-  const disabled = [];
-  // 父节点已经下钻过的维度不应该再下钻
-  drillDownDataCache.forEach((val) => {
-    if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
-      disabled.push(val.drillField);
-    }
-  });
-  spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-  callback({
-    sheetInstance: spreadsheet,
-    cacheDrillFields: cache,
-    disabledFields: disabled,
-    event,
-  });
+  if (iconName === 'DrillDownIcon') {
+    spreadsheet.store.set('drillDownNode', meta);
+    const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
+      spreadsheet,
+      meta,
+    );
+    const cache = drillDownCurrentCache?.drillField
+      ? [drillDownCurrentCache?.drillField]
+      : [];
+    const disabled = [];
+    // 父节点已经下钻过的维度不应该再下钻
+    drillDownDataCache.forEach((val) => {
+      if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
+        disabled.push(val.drillField);
+      }
+    });
+    spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+    callback(spreadsheet, cache, disabled, event);
+  }
 };
 
-/**
- * 下钻 icon 默认展示规则
- * @param meta 节点
- * @returns
- */
-const defaultDisplayCondition = (meta: Node) => {
-  const iconLevel = meta.spreadsheet.dataCfg.fields.rows.length - 1;
-
-  // 只有数值置于列头且为树状分层结构时才支持下钻
-  return (
-    iconLevel <= meta.level &&
-    meta.spreadsheet.options.hierarchyType === 'tree' &&
-    meta.spreadsheet.isValueInCols() &&
-    meta.label !== i18n('总计')
-  );
-};
-
-/**
- * 构造下钻功能的 s2 options
- * @param options 原始 options
- * @param partDrillDown 下钻参数
- * @param callback 下钻点击事件
- * @returns 新 options
- */
-export const buildDrillDownOptions = (
-  options: S2Options,
-  partDrillDown: PartDrillDown,
-  callback: ActionIconCallback,
+export const handleDrillDownIcon = (
+  props: SheetComponentsProps,
+  spreadsheet: SpreadSheet,
+  callback: (
+    spreadsheet: SpreadSheet,
+    cacheDownDrillFields: string[],
+    disabledFields: string[],
+    event?: GEvent,
+  ) => void,
+  drillDownIconRef: React.MutableRefObject<HeaderActionIcon>,
 ): S2Options => {
-  const nextHeaderIcons = options.headerActionIcons?.length
-    ? [...options.headerActionIcons]
-    : [];
+  const nextHeaderIcons =
+    props.options.headerActionIcons?.filter(
+      (icon) => icon !== drillDownIconRef.current,
+    ) ?? [];
 
-  if (!isEmpty(partDrillDown)) {
+  if (props?.partDrillDown) {
+    let displayCondition = props.partDrillDown?.displayCondition;
+    if (isEmpty(displayCondition)) {
+      let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
+      if (iconLevel < 0) {
+        // 如果没有缓存，直接默认用叶子节点的层级
+        iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
+        // 缓存配置之初的icon层级
+        spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
+      }
+      displayCondition = (meta: Node) => {
+        // 只有数值置于列头且为树状分层结构时才支持下钻
+        return (
+          iconLevel <= meta.level &&
+          spreadsheet.options.hierarchyType === 'tree' &&
+          spreadsheet.dataCfg.fields.valueInCols &&
+          meta.label !== i18n('总计')
+        );
+      };
+    }
+
     const drillDownActionIcon = {
       belongsCell: 'rowCell',
       iconNames: ['DrillDownIcon'],
       defaultHide: true,
-      displayCondition:
-        partDrillDown.displayCondition || defaultDisplayCondition,
+      displayCondition,
       action: (actionIconProps: HeaderActionIconProps) => {
-        const { iconName, meta, event } = actionIconProps;
+        const { iconName, meta } = actionIconProps;
         if (iconName === 'DrillDownIcon') {
-          meta.spreadsheet.store.set('drillDownNode', meta);
+          spreadsheet.store.set('drillDownNode', meta);
           handleActionIconClick({
-            meta,
-            event,
+            ...actionIconProps,
+            spreadsheet,
             callback,
           });
         }
       },
     };
 
+    drillDownIconRef.current = drillDownActionIcon;
     nextHeaderIcons.push(drillDownActionIcon);
+  } else if (!props?.partDrillDown && drillDownIconRef.current) {
+    // clear previous icon ref
+    drillDownIconRef.current = null;
   }
 
-  return {
-    ...options,
-    headerActionIcons: nextHeaderIcons,
-  };
+  set(props.options, 'headerActionIcons', nextHeaderIcons);
+
+  return props.options;
 };
 
 export const handleDrillDown = (params: DrillDownParams) => {

@@ -22,12 +22,6 @@
       "name": "子类别"
     }
   ],
-  "fields": {
-    "rows": ["province", "city"],
-    "columns": ["type", "sub_type"],
-    "values": ["number"],
-    "valueInCols": true
-  },
   "data": [
     {
       "number": 7789,

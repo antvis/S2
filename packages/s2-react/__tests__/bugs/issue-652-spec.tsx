@@ -8,10 +8,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import type { S2Options } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { SheetType } from '@antv/s2-shared';
 import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';
-import { SheetComponentsProps } from '@/components/sheets/interface';
+import { SheetComponentsProps, SheetType } from '@/components/sheets/interface';
 
 const s2Options: S2Options = {
   width: 400,

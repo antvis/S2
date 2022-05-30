@@ -236,38 +236,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       );
     });
 
-    test('should not rerender after hidden empty column fields if disable force render', () => {
-      const defaultHiddenColumnsDetail = [null];
-      pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
-
-      const renderSpy = jest
-        .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
-
-      pivotSheet.interaction.hideColumns([], false);
-
-      const hiddenColumnsDetail = pivotSheet.store.get('hiddenColumnsDetail');
-
-      expect(renderSpy).not.toHaveBeenCalled();
-      expect(hiddenColumnsDetail).toEqual(defaultHiddenColumnsDetail);
-    });
-
-    test('should rerender after hidden empty column fields if enable force render', () => {
-      const defaultHiddenColumnsDetail = [null];
-      pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
-
-      const renderSpy = jest
-        .spyOn(pivotSheet, 'render')
-        .mockImplementationOnce(() => {});
-
-      pivotSheet.interaction.hideColumns([], true);
-
-      const hiddenColumnsDetail = pivotSheet.store.get('hiddenColumnsDetail');
-
-      expect(renderSpy).toHaveBeenCalledTimes(1);
-      expect(hiddenColumnsDetail).toEqual([]);
-    });
-
     test('should default hidden columns by interaction hiddenColumnFields config', () => {
       const hiddenColumns = [typePriceColumnId];
       const sheet = new PivotSheet(getContainer(), pivotDataCfg, {
@@ -277,7 +245,6 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         },
       });
       sheet.render();
-
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [priceDetail] = hiddenColumnsDetail;
       expect(sheet.options.interaction.hiddenColumnFields).toEqual(

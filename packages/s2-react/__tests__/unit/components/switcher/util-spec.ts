@@ -1,4 +1,4 @@
-import { SheetType } from '@antv/s2-shared';
+import { SheetType } from '@/components';
 import { FieldType } from '@/components/switcher/constant';
 import {
   SwitcherItem,

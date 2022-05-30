@@ -109,17 +109,17 @@ export type TooltipHeadInfo = {
   cols: ListItem[];
 };
 
-export type TooltipDataParams = {
+export type DataParam = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
-  targetCell: S2CellType;
+  isHeader?: boolean; // 是否是行头/列头
   getShowValue?: (
     selectedData: TooltipDataItem[],
     valueField: string,
   ) => string | number; // 自定义value
 };
 
-export type TooltipIconProps = {
+export type IconProps = {
   icon: Element | string;
   [key: string]: unknown;
 };
@@ -128,11 +128,11 @@ export interface SummaryProps {
   summaries: TooltipSummaryOptions[];
 }
 
-export interface SummaryParam extends TooltipDataParams {
+export interface SummaryParam extends DataParam {
   cellInfos?: TooltipDataItem[];
 }
 
-export interface TooltipDataParam extends TooltipDataParams {
+export interface TooltipDataParam extends DataParam {
   cellInfos: TooltipDataItem[];
 }
 
@@ -147,31 +147,22 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 export type TooltipContentType = Element | string;
 
 export interface BaseTooltipConfig<T = TooltipContentType> {
-  showTooltip?: boolean;
+  readonly showTooltip?: boolean;
   // Custom content
-  content?: TooltipShowOptions<T>['content'];
+  readonly content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
-  operation?: TooltipOperation;
-  // Tooltip Boundary
-  autoAdjustBoundary?: TooltipAutoAdjustBoundary;
-  // Custom tooltip
-  renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
-  // Custom tooltip position
-  adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
+  readonly operation?: TooltipOperation;
+  readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip mount container
-  getContainer?: () => HTMLElement;
-}
-
-export interface TooltipPositionInfo {
-  position: TooltipPosition;
-  event: CanvasEvent | MouseEvent;
+  readonly getContainer?: () => HTMLElement;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
-  row?: BaseTooltipConfig<T>;
-  col?: BaseTooltipConfig<T>;
-  corner?: BaseTooltipConfig<T>;
-  data?: BaseTooltipConfig<T>;
+  readonly row?: BaseTooltipConfig<T>;
+  readonly col?: BaseTooltipConfig<T>;
+  readonly corner?: BaseTooltipConfig<T>;
+  readonly data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation extends TooltipOperatorOptions {

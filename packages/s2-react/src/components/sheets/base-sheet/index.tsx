@@ -17,9 +17,11 @@ import './index.less';
 
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { dataCfg, options, header, showPagination } = props;
-    const { s2Ref, loading, containerRef, pagination, wrapperRef } =
-      useSpreadSheet(props);
+    const { dataCfg, options, header, showPagination, sheetType } = props;
+    const { s2Ref, loading, containerRef, pagination, wrapRef } =
+      useSpreadSheet(props, {
+        sheetType,
+      });
 
     // 同步实例
     React.useEffect(() => {
@@ -28,10 +30,17 @@ export const BaseSheet = React.forwardRef(
       }
     }, [ref, s2Ref]);
 
+    // 默认隐藏列
+    React.useEffect(() => {
+      s2Ref.current?.interaction.hideColumns(
+        options.interaction?.hiddenColumnFields,
+      );
+    }, [options.interaction?.hiddenColumnFields, s2Ref]);
+
     return (
       <React.StrictMode>
         <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
-          <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
+          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
               <Header
                 {...header}
@@ -57,7 +66,6 @@ export const BaseSheet = React.forwardRef(
   },
 );
 
-BaseSheet.displayName = 'BaseSheet';
 BaseSheet.defaultProps = {
   options: {} as S2Options,
   adaptive: false,

@@ -1,3 +1,1 @@
-import './utils/extendLocale';
-export * from './hooks/useExpose';
-export * from './components';
+export { default as PivotSheet } from './PivotSheet.vue';

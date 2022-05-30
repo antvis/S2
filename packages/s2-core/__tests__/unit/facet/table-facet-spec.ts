@@ -3,7 +3,6 @@
  */
 import { Canvas } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroup } from 'src/common/constant';
 import { merge } from 'lodash';
 import { data } from '../../data/mock-dataset.json';
 import { SpreadSheet } from '@/sheet-type';
@@ -253,21 +252,21 @@ describe('Table Mode Facet With Frozen Test', () => {
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
     expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
+      col: {
         range: [0, 1],
         width: 240,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      row: {
         height: 60,
-        range: [0, 1],
+        range: [0, 2],
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      trailingCol: {
         range: [3, 4],
         width: 240,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      trailingRow: {
         height: 60,
-        range: [30, 31],
+        range: [29, 31],
       },
     });
   });

@@ -43,11 +43,11 @@ export class BaseTooltip {
    * @param content
    */
   public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
-    const { position, options, content, event } = showOptions;
+    const { position, options, content } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
     const container = this.getContainer();
-    const { autoAdjustBoundary, adjustPosition } =
-      this.spreadsheet.options.tooltip || {};
+    const { autoAdjustBoundary } = this.spreadsheet.options.tooltip || {};
+
     this.visible = true;
     this.options = showOptions as unknown as TooltipShowOptions;
 
@@ -59,14 +59,16 @@ export class BaseTooltip {
       tooltipContainer: container,
       autoAdjustBoundary,
     });
-    this.position = adjustPosition?.({ position: { x, y }, event }) ?? {
+
+    this.position = {
       x,
       y,
     };
+
     setContainerStyle(container, {
       style: {
-        left: `${this.position?.x}px`,
-        top: `${this.position?.y}px`,
+        left: `${x}px`,
+        top: `${y}px`,
         pointerEvents: enterable ? 'all' : 'none',
       },
       className: `${TOOLTIP_CONTAINER_CLS}-show`,

@@ -4,12 +4,10 @@ import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
 import { Canvas } from '@antv/g-canvas';
 import { omit } from 'lodash';
-import * as simpleDataConfig from 'tests/data/simple-data.json';
-import * as dataConfig from 'tests/data/mock-dataset.json';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import { S2CellType, S2Options, ViewMeta } from '@/common/interface';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
@@ -131,15 +129,4 @@ export const createMockCellInfo = (
     mockCell,
     mockCellMeta,
   };
-};
-
-export const createPivotSheet = (
-  s2Options: S2Options,
-  { useSimpleData } = { useSimpleData: true },
-) => {
-  return new PivotSheet(
-    getContainer(),
-    useSimpleData ? simpleDataConfig : dataConfig,
-    s2Options,
-  );
 };

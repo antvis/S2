@@ -43,11 +43,9 @@ fetch('../data/basic.json')
           },
         },
         {
-          // 支持使用度量值进行自定义计算
-          sortFieldId: 'city',
-          sortByMeasure: 'price',
-          // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
-          // 如下方限定 params.data 为 type=纸张, 数值=price 的数据
+          // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
+          sortFieldId: 'price',
+          sortByMeasure: 'city',
           sortFunc: function (params) {
             const { data, sortByMeasure, sortFieldId } = params || {};
             return data

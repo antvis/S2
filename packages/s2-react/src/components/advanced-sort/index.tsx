@@ -13,15 +13,10 @@ import {
   uniq,
 } from 'lodash';
 import cx from 'classnames';
-import {
-  i18n,
-  SpreadSheet,
-  SortParam,
-  SortMethod,
-  TOTAL_VALUE,
-} from '@antv/s2';
+import { SpreadSheet, SortParam, SortMethod, TOTAL_VALUE } from '@antv/s2';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
+import { i18n } from '@/common/i18n';
 import { SORT_METHOD, RULE_OPTIONS, ADVANCED_PRE_CLS } from '@/common/constant';
 import './index.less';
 
@@ -240,7 +235,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     });
   };
 
-  const renderSide = () => {
+  const renderSider = () => {
     return (
       <Sider width={120} className={`${ADVANCED_PRE_CLS}-sider-layout`}>
         <div className={`${ADVANCED_PRE_CLS}-title`}>{i18n('可选字段')}</div>
@@ -392,7 +387,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         className={`${ADVANCED_PRE_CLS}-modal`}
       >
         <Layout>
-          {renderSide()}
+          {renderSider()}
           {renderContent()}
         </Layout>
       </Modal>

@@ -12,14 +12,14 @@ redirect_from:
 | data           | 原始数据        | [Data[]](#data) |    |   ✓   |
 | fields         | 维度指标配置项       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计数据       | [Data[]](#data) |    |      |
-| meta    | 全局化配置表数据的元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [Meta[]](#meta)  |  |       |
+| meta    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [Meta[]](#meta)  |  |       |
 | sortParams    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [SortParams](#sortparams)  |  |       |
 
 ### Data
 
 string | number | [MultiData](#multidata) **required**, _default：null_
 
-功能描述： 设置表的数据源数据源，例如：
+功能描述： 设置表的数据源数据源为对象集合，例如：
 
 ```ts
 const data = [
@@ -61,7 +61,7 @@ object **必选**,_default：null_
 
 array object **必选**,_default：null_
 
-功能描述： 全局化配置表数据的元信息，以度量为单位进行配置。在 meta 上的配置将同时影响所有组件的文本信息。
+功能描述： 全局化配置表数数据元信息，以度量为单位进行配置。在 meta 上的配置将同时影响所有组件的文本信息。
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | :--| :--------| :--- | :----- | :--- |

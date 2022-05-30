@@ -13,7 +13,6 @@ import {
   Collapse,
   Tag,
   Tabs,
-  DatePicker,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -32,11 +31,10 @@ import {
   DataType,
   generatePalette,
   getPalette,
+  InterceptType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
-import { Adaptive, SheetType } from '@antv/s2-shared';
-import { useUpdateEffect } from 'ahooks';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -52,7 +50,13 @@ import {
   defaultOptions,
 } from './config';
 import { ResizeConfig } from './resize';
-import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
+import {
+  SheetComponent,
+  SheetType,
+  PartDrillDown,
+  PartDrillDownInfo,
+  Adaptive,
+} from '@/components';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
@@ -130,7 +134,6 @@ const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
     <div>2</div>
-    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
   </div>
 );
 
@@ -143,9 +146,7 @@ function MainLayout() {
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
-    name: 'default',
-  });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
@@ -252,7 +253,7 @@ function MainLayout() {
     });
   }, [sheetType]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     switch (sheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);
@@ -547,48 +548,6 @@ function MainLayout() {
                   disabled={sheetType === 'table'}
                 />
                 <Switch
-                  checkedChildren="显示行小计/总计"
-                  unCheckedChildren="隐藏行小计/总计"
-                  defaultChecked={
-                    mergedOptions.totals?.row?.showSubTotals as boolean
-                  }
-                  onChange={(checked) => {
-                    updateOptions({
-                      totals: {
-                        row: {
-                          showGrandTotals: checked,
-                          showSubTotals: checked,
-                          reverseLayout: true,
-                          reverseSubLayout: true,
-                          subTotalsDimensions: ['province'],
-                        },
-                      },
-                    });
-                  }}
-                  disabled={sheetType === 'table'}
-                />
-                <Switch
-                  checkedChildren="显示列小计/总计"
-                  unCheckedChildren="隐藏列小计/总计"
-                  defaultChecked={
-                    mergedOptions.totals?.col?.showSubTotals as boolean
-                  }
-                  onChange={(checked) => {
-                    updateOptions({
-                      totals: {
-                        col: {
-                          showGrandTotals: checked,
-                          showSubTotals: checked,
-                          reverseLayout: true,
-                          reverseSubLayout: true,
-                          subTotalsDimensions: ['type'],
-                        },
-                      },
-                    });
-                  }}
-                  disabled={sheetType === 'table'}
-                />
-                <Switch
                   checkedChildren="冻结行头开"
                   unCheckedChildren="冻结行头关"
                   defaultChecked={mergedOptions.frozenRowHeader}
@@ -808,7 +767,6 @@ function MainLayout() {
               }}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
-              onLayoutResizeMouseUp={logHandler('onLayoutResizeMouseUp')}
               onCopied={logHandler('onCopied')}
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
@@ -823,28 +781,11 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <Switch
-            checkedChildren="单列头"
-            unCheckedChildren="多列头"
-            checked={strategyDataCfg.fields.columns.length === 1}
-            onChange={(checked) => {
-              setStrategyDataCfg(
-                customMerge(customTree, {
-                  fields: {
-                    columns: customTree.fields.columns.slice(
-                      0,
-                      checked ? 1 : 2,
-                    ),
-                  },
-                }),
-              );
-            }}
-          />
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
-            onRowCellClick={logHandler('onRowCellClick')}
+            onRowCellClick={(v) => console.log(v)}
             header={{ exportCfg: { open: true } }}
             themeCfg={{
               theme: strategyTheme,

@@ -110,37 +110,37 @@ export interface HoverFocusOptions {
 
 export interface InteractionOptions {
   // record which row/col field need extra link info
-  linkFields?: string[];
+  readonly linkFields?: string[];
   // focus selected cell, like the spotlight
-  selectedCellsSpotlight?: boolean;
+  readonly selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
+  readonly hoverHighlight?: boolean;
   // keep cell hovered after 800ms duration
-  hoverFocus?: boolean | HoverFocusOptions;
+  readonly hoverFocus?: boolean | HoverFocusOptions;
   // enable Command + C to copy spread data
-  enableCopy?: boolean;
+  readonly enableCopy?: boolean;
   // copy with filed format
-  copyWithFormat?: boolean;
+  readonly copyWithFormat?: boolean;
   // auto reset sheet style when click outside or press ecs key, default true
-  autoResetSheetStyle?: boolean;
-  hiddenColumnFields?: string[];
+  readonly autoResetSheetStyle?: boolean;
+  readonly hiddenColumnFields?: string[];
   // the ratio to control scroll speed, default set to 1
-  scrollSpeedRatio?: ScrollSpeedRatio;
+  readonly scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
-  resize?: boolean | ResizeActiveOptions;
+  readonly resize?: boolean | ResizeActiveOptions;
   // enable mouse drag brush selection
-  brushSelection?: boolean;
+  readonly brushSelection?: boolean;
   // enable Command / Ctrl + click multi selection
-  multiSelection?: boolean;
+  readonly multiSelection?: boolean;
   // enable Shift + click multi selection
-  rangeSelection?: boolean;
+  readonly rangeSelection?: boolean;
   // use arrow keyboard to move selected cell
-  selectedCellMove?: boolean;
+  readonly selectedCellMove?: boolean;
   // controls scrollbar's position type
-  scrollbarPosition?: ScrollbarPositionType;
+  readonly scrollbarPosition?: ScrollbarPositionType;
   // An object that specifies characteristics about the event listener
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
-  eventListenerOptions?: boolean | AddEventListenerOptions;
+  readonly eventListenerOptions?: boolean | AddEventListenerOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

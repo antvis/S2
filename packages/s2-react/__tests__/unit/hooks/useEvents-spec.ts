@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { PivotSheet, S2Event, S2Options, SpreadSheet, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { SheetComponentsProps } from '../../../src/components';
+import { BaseSheetComponentProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 
 const s2Options: S2Options = {
@@ -267,11 +267,11 @@ const cellEventCases = [
   },
   {
     event: S2Event.MERGED_CELLS_HOVER,
-    name: 'onMergedCellsHover',
+    name: 'onMergedCellsHoverer',
   },
   {
     event: S2Event.MERGED_CELLS_CLICK,
-    name: 'onMergedCellsClick',
+    name: 'onMergedCellClick',
   },
   {
     event: S2Event.MERGED_CELLS_DOUBLE_CLICK,
@@ -308,7 +308,7 @@ describe('useEvents tests', () => {
   });
 
   test('useEvents should be defined', () => {
-    const mockBaseSheetProps: SheetComponentsProps = {
+    const mockBaseSheetProps: BaseSheetComponentProps = {
       dataCfg: undefined,
       options: undefined,
       spreadsheet: () => s2,
@@ -320,11 +320,11 @@ describe('useEvents tests', () => {
   test.each(
     cellEventCases.concat(S2EventCases as any) as Array<{
       event: S2Event;
-      name: keyof SheetComponentsProps;
+      name: keyof BaseSheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;
     }>,
   )('eventHook should be called with %s', ({ event, name, eventHook }) => {
-    const props: SheetComponentsProps = {
+    const props: BaseSheetComponentProps = {
       dataCfg: mockDataConfig,
       options: s2Options,
       [name]: jest.fn(),
