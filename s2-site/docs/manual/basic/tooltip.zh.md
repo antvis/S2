@@ -409,7 +409,9 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 #### 在 Vue3 中自定义
 
-在 `Vue3` 中可以通过两种方式自定义内容。[例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
+在 `Vue3` 中可以通过两种方式自定义内容。
+
+[![Edit @antv/s2 Vue3 Tooltip Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
 
@@ -486,6 +488,13 @@ const s2Options = {
   },
 };
 ```
+
+<iframe src="https://codesandbox.io/embed/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="@antv/s2 Vue3 Tooltip Demo"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
 
 #### 重写展示方法
 

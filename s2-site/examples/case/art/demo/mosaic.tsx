@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-// Respect to Fuck Design (https://github.com/fuck-design/fuck-design)
-// more Info https://observablehq.com/@pearmini/draw-fuck-design-logo-with-antv-s2
+// more Info https://observablehq.com/@pearmini/mosaic-antv-s2
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/7f6ebbb4-ffeb-4f6c-a763-6faa8c0ccf7a.json',
@@ -18,27 +17,27 @@ fetch(
       conditions: {
         background: [
           {
-            field: "color",
-            mapping: (fill) => ({ fill })
-          }
-        ]
+            field: 'color',
+            mapping: (fill) => ({ fill }),
+          },
+        ],
       },
       interaction: {
         hoverHighlight: false,
-        hoverFocus: false
+        hoverFocus: false,
       },
       style: {
-        layoutWidthType: "compact",
+        layoutWidthType: 'compact',
         colCfg: {
           height: 0,
           widthByFieldValue: {
-            color: 23
-          }
+            color: 23,
+          },
         },
         cellCfg: {
-          height: 23
-        }
-      }
+          height: 23,
+        },
+      },
     };
 
     const customTheme = {
@@ -46,32 +45,36 @@ fetch(
         cell: {
           backgroundColor: dataCfg.data[0].color,
           horizontalBorderColorOpacity: 0,
-          verticalBorderColorOpacity: 0
-        }
+          verticalBorderColorOpacity: 0,
+        },
       },
       dataCell: {
         text: {
-          opacity: 0
+          opacity: 0,
         },
         cell: {
           horizontalBorderColorOpacity: 0,
-          verticalBorderColorOpacity: 0
-        }
+          verticalBorderColorOpacity: 0,
+        },
       },
       splitLine: {
         horizontalBorderColorOpacity: 0,
-        verticalBorderColorOpacity: 0
+        verticalBorderColorOpacity: 0,
       },
       background: {
         color: dataCfg.data[0].color,
       },
       scrollBar: {
-        size: 0
-      }
+        size: 0,
+      },
     };
 
     ReactDOM.render(
-      <SheetComponent dataCfg={dataCfg} options={s2Options} themeCfg={{ theme: customTheme }} />,
+      <SheetComponent
+        dataCfg={dataCfg}
+        options={s2Options}
+        themeCfg={{ theme: customTheme }}
+      />,
       document.getElementById('container'),
     );
   });
