@@ -20,16 +20,16 @@ import { GridGroup } from '@/group/grid-group';
 jest.mock('@/interaction/root');
 
 const actualPivotDataSet = jest.requireActual(
-  'src/data-set/pivot-data-set',
+  '@/data-set/pivot-data-set',
 ).PivotDataSet;
 const actualDataSet = jest.requireActual(
-  'src/data-set/base-data-set',
+  '@/data-set/base-data-set',
 ).BaseDataSet;
 
 const { rowPivotMeta, colPivotMeta, indexesData, sortedDimensionValues } =
   getMockPivotMeta();
 
-jest.mock('src/sheet-type', () => {
+jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
     height: 100,
@@ -67,7 +67,7 @@ jest.mock('src/sheet-type', () => {
   };
 });
 
-jest.mock('src/data-set/pivot-data-set', () => {
+jest.mock('@/data-set/pivot-data-set', () => {
   return {
     PivotDataSet: jest.fn().mockImplementation(() => {
       return {

@@ -1,4 +1,4 @@
-import { getValidFrozenOptions } from 'src/utils/layout/frozen';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
 import {
   getFrozenDataCellType,
   calculateFrozenCornerCells,

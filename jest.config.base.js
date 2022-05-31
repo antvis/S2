@@ -22,7 +22,6 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)': '<rootDir>/src/$1',
     '^tests/(.*)': '<rootDir>/__tests__/$1',
-    '^src/(.*)': '<rootDir>/src/$1',
   },
   testTimeout: 30000,
 };

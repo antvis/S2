@@ -1,13 +1,5 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, last, maxBy, set } from 'lodash';
-import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
-import { getIndexRangeWithOffsets } from 'src/utils/facet';
-import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from 'src/utils/grid';
-import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { TableRowCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -55,6 +47,14 @@ import {
   translateGroupX,
   translateGroupY,
 } from './utils';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
+import {
+  getColsForGrid,
+  getFrozenRowsForGrid,
+  getRowsForGrid,
+} from '@/utils/grid';
+import { getIndexRangeWithOffsets } from '@/utils/facet';
+import { getOccupiedWidthForTableCol } from '@/utils/cell/table-col-cell';
 
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];

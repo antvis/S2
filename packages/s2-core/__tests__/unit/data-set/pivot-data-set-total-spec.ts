@@ -11,8 +11,8 @@ import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
+jest.mock('@/sheet-type');
+jest.mock('@/facet/layout/node');
 const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
 
 describe('Pivot Dataset Total Test', () => {

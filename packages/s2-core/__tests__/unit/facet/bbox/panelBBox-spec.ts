@@ -1,6 +1,6 @@
-import { ThemeCfg } from 'src/common';
-import { BaseFacet } from 'src/facet/base-facet';
-import { PanelBBox } from 'src/facet/bbox/panelBBox';
+import { ThemeCfg } from '@/common';
+import { BaseFacet } from '@/facet/base-facet';
+import { PanelBBox } from '@/facet/bbox/panelBBox';
 
 describe('PanelBBox test', () => {
   const getMockFacet = (

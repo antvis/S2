@@ -1,32 +1,32 @@
 import { Canvas, Group } from '@antv/g-canvas';
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
-import { RootInteraction } from '@/interaction/root';
+import { Store } from '@/common/store';
 import {
+  BaseEvent,
+  BrushSelection,
   CellTypes,
+  CornerCellClick,
+  DataCell,
+  DataCellClick,
+  DataCellMultiSelection,
+  GuiIcon,
+  HoverEvent,
+  InteractionName,
   InteractionStateName,
   InterceptType,
-  DataCell,
-  S2Options,
-  SpreadSheet,
   MergedCell,
-  InteractionName,
-  DataCellClick,
-  RowColumnClick,
-  RowTextClick,
   MergedCellClick,
-  HoverEvent,
-  BrushSelection,
-  RowColumnResize,
-  DataCellMultiSelection,
   RangeSelection,
+  RowColumnClick,
+  RowColumnResize,
+  RowTextClick,
+  S2Options,
   SelectedCellMove,
-  BaseEvent,
-  GuiIcon,
-  CornerCellClick,
+  SpreadSheet,
 } from '@/index';
-import { Store } from '@/common/store';
+import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
+import { getCellMeta } from '@/utils/interaction/select-event';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');

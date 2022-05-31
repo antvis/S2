@@ -1,4 +1,4 @@
-import { getCellMeta } from 'src/utils/interaction/select-event';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { RowCell } from '@/cell/row-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { S2Options } from '@/common/interface';

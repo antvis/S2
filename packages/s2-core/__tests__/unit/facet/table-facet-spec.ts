@@ -2,18 +2,18 @@
  * table mode pivot test.
  */
 import { Canvas } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroup } from 'src/common/constant';
 import { merge } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
-import { SpreadSheet } from '@/sheet-type';
+import { FrozenGroup } from '@/common/constant';
+import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { Store } from '@/common/store';
-import { getTheme } from '@/theme';
 import { DEFAULT_STYLE } from '@/index';
+import { SpreadSheet } from '@/sheet-type';
+import { getTheme } from '@/theme';
 
-jest.mock('src/sheet-type', () => {
+jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
     height: 100,
@@ -48,7 +48,7 @@ jest.mock('src/sheet-type', () => {
     }),
   };
 });
-jest.mock('src/data-set/table-data-set', () => {
+jest.mock('@/data-set/table-data-set', () => {
   return {
     TableDataSet: jest.fn().mockImplementation(() => {
       return {
