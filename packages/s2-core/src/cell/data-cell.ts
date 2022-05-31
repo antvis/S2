@@ -1,12 +1,12 @@
 import type { IShape, Point } from '@antv/g-canvas';
 import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
-import { BaseCell } from '@/cell/base-cell';
+import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
-} from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
+} from '../common/constant/interaction';
+import { GuiIcon } from '../common/icons';
 import {
   Condition,
   Conditions,
@@ -20,17 +20,17 @@ import {
   ViewMeta,
   ViewMetaIndexType,
   CellBorderPosition,
-} from '@/common/interface';
-import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
-import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition/condition';
+} from '../common/interface';
+import { getMaxTextWidth, getBorderPositionAndStyle } from '../utils/cell/cell';
+import { includeCell } from '../utils/cell/data-cell';
+import { getIconPositionCfg } from '../utils/condition/condition';
 import {
   renderIcon,
   renderLine,
   renderRect,
   updateShapeAttr,
-} from '@/utils/g-renders';
-import { parseNumberWithPrecision } from '@/utils/formatter';
+} from '../utils/g-renders';
+import { parseNumberWithPrecision } from '../utils/formatter';
 
 /**
  * DataCell for panelGroup area

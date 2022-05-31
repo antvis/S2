@@ -1,34 +1,34 @@
 import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
-import { HeaderCell } from './header-cell';
-import { isMobile } from '@/utils/is-mobile';
+import { isMobile } from '../utils/is-mobile';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
-} from '@/common/constant';
-import { CellBorderPosition, TextTheme, ViewMeta } from '@/common/interface';
-import { RowHeaderConfig } from '@/facet/header/row';
+} from '../common/constant';
+import { CellBorderPosition, TextTheme, ViewMeta } from '../common/interface';
+import { RowHeaderConfig } from '../facet/header/row';
 import {
   getTextAndFollowingIconPosition,
   getBorderPositionAndStyle,
-} from '@/utils/cell/cell';
+} from '../utils/cell/cell';
 import {
   renderLine,
   renderRect,
   renderCircle,
   renderTreeIcon,
-} from '@/utils/g-renders';
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { getAdjustPosition } from '@/utils/text-absorption';
+} from '../utils/g-renders';
+import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
+import { getAdjustPosition } from '../utils/text-absorption';
 import {
   getResizeAreaAttrs,
   getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+} from '../utils/interaction/resize';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;

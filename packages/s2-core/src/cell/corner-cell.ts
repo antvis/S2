@@ -9,12 +9,10 @@ import {
   max,
   stubTrue,
 } from 'lodash';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
-import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
   getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+} from '../utils/interaction/resize';
 import {
   CellTypes,
   EXTRA_FIELD,
@@ -23,32 +21,34 @@ import {
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
-} from '@/common/constant';
+} from '../common/constant';
 import {
   CellBorderPosition,
   FormatResult,
   TextTheme,
-} from '@/common/interface';
-import { CornerHeaderConfig } from '@/facet/header/corner';
+} from '../common/interface';
+import { CornerHeaderConfig } from '../facet/header/corner';
 import {
   getTextPosition,
   getVerticalPosition,
   getBorderPositionAndStyle,
-} from '@/utils/cell/cell';
+} from '../utils/cell/cell';
 import {
   renderLine,
   renderRect,
   renderText,
   renderTreeIcon,
-} from '@/utils/g-renders';
-import { isIPhoneX } from '@/utils/is-mobile';
+} from '../utils/g-renders';
+import { isIPhoneX } from '../utils/is-mobile';
 import {
   getEllipsisText,
   getEmptyPlaceholder,
   measureTextWidth,
-} from '@/utils/text';
-import { CornerNodeType } from '@/common/interface/node';
-import { formattedFieldValue } from '@/utils/cell/header-cell';
+} from '../utils/text';
+import { CornerNodeType } from '../common/interface/node';
+import { formattedFieldValue } from '../utils/cell/header-cell';
+import { HeaderCell } from './header-cell';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
