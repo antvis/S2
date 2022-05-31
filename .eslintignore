@@ -6,6 +6,8 @@ package.json
 esm
 lib
 dist
+temp
 .idea
 *.d.ts
 .eslintrc*
+/scripts/*

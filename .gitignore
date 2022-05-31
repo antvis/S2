@@ -21,10 +21,11 @@ temp/
 s2-site/.cache/
 s2-site/public
 
-# s2-core
+# packages
 packages/s2-*/lib/
 packages/s2-*/esm/
 packages/s2-*/dist/
+packages/s2-*/temp/
 packages/s2-*/coverage/
 packages/s2-*/stats.html
 

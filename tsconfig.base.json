@@ -11,6 +11,7 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "lib": ["esnext", "dom"],
+    "noEmitHelpers": false,
     "skipLibCheck": true,
     "plugins": [
       {
@@ -18,7 +19,6 @@
         "exclude": ["*"]
       }
     ],
-    "types": ["node", "jest", "jest-extended"]
-  },
-  "exclude": ["node_modules", "coverage", "esm", "lib", "dist"]
+    "types": ["jest", "jest-extended"]
+  }
 }

@@ -93,6 +93,7 @@
     "@babel/core": "^7.17.9",
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
+    "@microsoft/api-extractor": "^7.24.2",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@rollup/plugin-alias": "^3.1.9",
     "@rollup/plugin-commonjs": "^21.1.0",
