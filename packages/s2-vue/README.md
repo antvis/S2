@@ -339,8 +339,9 @@ const rawOptions: S2Options = {
 // App.vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
+import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
+import "@antv/s2-vue/dist/style.min.css";
 
 export default defineComponent({
   setup() {
@@ -360,13 +361,13 @@ export default defineComponent({
   },
 
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
 
 <template>
-  <Sheet ref="s2" :dataCfg="dataCfg" :options="options" />
+  <SheetComponent ref="s2" :dataCfg="dataCfg" :options="options" />
 </template>
 
 <style lang="less">

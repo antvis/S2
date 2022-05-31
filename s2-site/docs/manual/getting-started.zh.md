@@ -220,8 +220,9 @@ ReactDOM.render(
 // App.vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
+import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import "@antv/s2-vue/dist/style.min.css";
 
 export default defineComponent({
   setup() {
@@ -236,13 +237,13 @@ export default defineComponent({
   },
 
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
 
 <template>
-  <Sheet :dataCfg="dataCfg" :options="options" />
+  <SheetComponent :dataCfg="dataCfg" :options="options" />
 </template>
 
 <style lang="less">
