@@ -141,6 +141,8 @@ export interface InteractionOptions {
   // An object that specifies characteristics about the event listener
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   readonly eventListenerOptions?: boolean | AddEventListenerOptions;
+  // hightlight col and row header for selected cell
+  readonly selectedCellHighlight?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

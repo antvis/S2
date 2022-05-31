@@ -146,6 +146,7 @@ describe('merge test', () => {
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
+        selectedCellHighlight: false,
         selectedCellsSpotlight: false,
         hoverHighlight: true,
         hoverFocus: { duration: HOVER_FOCUS_DURATION },

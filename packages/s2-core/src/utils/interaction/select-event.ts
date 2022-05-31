@@ -1,3 +1,6 @@
+import { ColCell, RowCell, TableRowCell } from 'src/cell';
+import { getDataCellId } from '../cell/data-cell';
+import { getActiveHoverRowColCells } from './hover-event';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
@@ -47,4 +50,34 @@ export function getRangeIndex<T extends CellMeta | ViewMeta>(start: T, end: T) {
       colIndex: maxColIndex,
     },
   };
+}
+
+export function getRowCellForSelectedCell(
+  meta: ViewMeta,
+  spreadsheet: SpreadSheet,
+): (ColCell | RowCell | TableRowCell)[] {
+  const { interaction, facet, options } = spreadsheet;
+
+  if (spreadsheet.isTableMode()) {
+    if (!options.showSeriesNumber) {
+      return [];
+    }
+    const colId = facet.layoutResult.colLeafNodes[0].id;
+    const id = getDataCellId(String(meta.rowIndex), colId);
+    const result: TableRowCell[] = [];
+    const rowCell = interaction
+      .getAllCells()
+      .find((cell) => cell.getMeta().id === id);
+
+    if (rowCell && rowCell instanceof TableRowCell) {
+      result.push(rowCell);
+    }
+    return result;
+  }
+
+  return getActiveHoverRowColCells(
+    meta.rowId,
+    interaction.getAllRowHeaderCells(),
+    spreadsheet.isHierarchyTreeType(),
+  );
 }

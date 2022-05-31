@@ -3,14 +3,12 @@ import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
-  ViewMeta,
 } from './basic';
 import { Tooltip } from './tooltip';
 import { InteractionOptions } from './interaction';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { Node } from '@/facet/layout/node';
 import {
   CellCallback,
   CornerHeaderCallback,
