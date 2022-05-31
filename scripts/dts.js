@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
+const { rewritePackage, restorePackage } = require('./rewritePackage');
 
 const libName = process.env.LIB;
 const libPath = path.join(__dirname, '../packages', libName);
@@ -27,7 +28,6 @@ function generateDts() {
 
   if (extractorResult.succeeded) {
     console.log(`🚀类型文件生成成功！！！`);
-    process.exit(0);
   } else {
     console.error(
       '🚨类型文件生成失败：' +
@@ -37,4 +37,10 @@ function generateDts() {
   }
 }
 
-generateDts();
+if (libName !== 's2-core') {
+  rewritePackage('s2-shared');
+  generateDts();
+  restorePackage();
+} else {
+  generateDts();
+}

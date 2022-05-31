@@ -1,5 +1,5 @@
 {
-  "private":"true",
+  "private": "true",
   "name": "@antv/s2-shared",
   "version": "1.0.0",
   "main": "./src/index.ts",
@@ -7,11 +7,12 @@
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
   "scripts": {
-    "build":"echo 'no need to build'",
-    "test":"jest"
+    "build": "echo 'no need to build'",
+    "build:dts": "tsc -p tsconfig.declaration.json",
+    "test": "jest"
   },
   "devDependencies": {
-    "@antv/s2":"*",
+    "@antv/s2": "*",
     "lodash": "^4.17.21"
   }
 }
