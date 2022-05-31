@@ -2,7 +2,7 @@ import { ShapeAttrs } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { generateStandardColors } from '../../utils/color';
-import { CellTypes } from '@/common/constant/interaction';
+import { CellTypes } from '../../common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';

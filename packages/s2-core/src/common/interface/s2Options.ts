@@ -1,16 +1,6 @@
-import { Conditions } from './condition';
-import {
-  FilterDataItemCallback,
-  HeaderActionIcon,
-  CustomSVGIcon,
-  ViewMeta,
-} from './basic';
-import { Tooltip } from './tooltip';
-import { InteractionOptions } from './interaction';
-import { ColHeaderConfig } from '@/facet/header/col';
-import { RowHeaderConfig } from '@/facet/header/row';
-import { CornerHeaderConfig } from '@/facet/header/corner';
-import { Node } from '@/facet/layout/node';
+import { ColHeaderConfig } from '../../facet/header/col';
+import { RowHeaderConfig } from '../../facet/header/row';
+import { CornerHeaderConfig } from '../../facet/header/corner';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -21,15 +11,23 @@ import {
   Pagination,
   Style,
   Totals,
-} from '@/common/interface/basic';
+} from '../../common/interface/basic';
 import {
   LayoutArrange,
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
-} from '@/common/interface/hooks';
-import { BaseDataSet } from '@/data-set';
-import { SpreadSheet } from '@/sheet-type';
+} from '../../common/interface/hooks';
+import { BaseDataSet } from '../../data-set';
+import { SpreadSheet } from '../../sheet-type';
+import { InteractionOptions } from './interaction';
+import { Tooltip } from './tooltip';
+import {
+  FilterDataItemCallback,
+  HeaderActionIcon,
+  CustomSVGIcon,
+} from './basic';
+import { Conditions } from './condition';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width

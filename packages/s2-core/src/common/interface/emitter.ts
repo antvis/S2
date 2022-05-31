@@ -1,18 +1,18 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { ResizeInfo } from './resize';
-import { Data } from '@/common/interface/s2DataConfig';
-import { FilterParam, SortParams, Style } from '@/common/interface/basic';
+import { Data } from '../../common/interface/s2DataConfig';
+import { FilterParam, SortParams, Style } from '../../common/interface/basic';
 import {
   HiddenColumnsInfo,
   S2CellType,
   ViewMeta,
   LayoutResult,
   CellScrollPosition,
-} from '@/common/interface';
+} from '../../common/interface';
 
-import { S2Event } from '@/common/constant';
-import { Node } from '@/facet/layout/node';
-import { DataCell } from '@/cell/data-cell';
+import { S2Event } from '../../common/constant';
+import { Node } from '../../facet/layout/node';
+import { DataCell } from '../../cell/data-cell';
+import { ResizeInfo } from './resize';
 
 export type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {

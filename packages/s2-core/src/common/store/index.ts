@@ -1,4 +1,4 @@
-import { StoreKey } from '@/common/interface';
+import { StoreKey } from '../../common/interface';
 
 /**
  * Store something in {@link SpreadSheet} temporary along with it's lifecycle

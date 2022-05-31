@@ -1,22 +1,25 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { S2CellType } from './interaction';
-import { DataItem, S2DataConfig } from './s2DataConfig';
-import { BaseHeaderConfig } from '@/facet/header/base';
+import { BaseHeaderConfig } from '../../facet/header/base';
 import {
   Condition,
   CustomTreeItem,
   Data,
   ResizeInfo,
-} from '@/common/interface';
-import { S2BasicOptions } from '@/common/interface/s2Options';
-import { BaseDataSet, DataType } from '@/data-set';
-import { Frame } from '@/facet/header';
-import { CellTypes } from '@/common/constant';
-import { FrameConfig } from '@/common/interface/frame';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
+} from '../../common/interface';
+import { S2BasicOptions } from '../../common/interface/s2Options';
+import { BaseDataSet, DataType } from '../../data-set';
+import { Frame } from '../../facet/header';
+import { CellTypes } from '../../common/constant';
+import { FrameConfig } from '../../common/interface/frame';
+import { Hierarchy } from '../../facet/layout/hierarchy';
+import { Node } from '../../facet/layout/node';
+import { SpreadSheet } from '../../sheet-type';
+import {
+  S2Options,
+  S2TableSheetOptions,
+} from '../../common/interface/s2Options';
+import { S2CellType } from './interaction';
+import { DataItem, S2DataConfig } from './s2DataConfig';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化

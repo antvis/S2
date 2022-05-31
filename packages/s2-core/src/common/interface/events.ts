@@ -1,8 +1,8 @@
 // 这里存放 emit 事件 透出的信息
 
 import { Event as GEvent } from '@antv/g-canvas';
+import { Node } from '../../facet/layout/node';
 import { S2CellType } from './interaction';
-import { Node } from '@/facet/layout/node';
 
 export interface CellScrollPosition {
   scrollX: number;

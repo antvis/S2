@@ -5,11 +5,11 @@ import {
   SortParam,
   ViewMeta,
 } from '../interface';
-import { ValueRanges } from './condition';
+import { Node } from '../../facet/layout/node';
+import { PartDrillDownFieldInLevel } from '../../common/interface';
+import { GuiIcon } from '../../common/icons';
 import { S2DataConfig } from './s2DataConfig';
-import { Node } from '@/facet/layout/node';
-import { PartDrillDownFieldInLevel } from '@/common/interface';
-import { GuiIcon } from '@/common/icons';
+import { ValueRanges } from './condition';
 
 export interface Selected {
   type:
