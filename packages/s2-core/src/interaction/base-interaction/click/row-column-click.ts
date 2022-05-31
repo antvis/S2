@@ -1,28 +1,28 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
-import { isMultiSelectionKey } from '@/utils/interaction/select-event';
 import {
-  hideColumnsByThunkGroup,
-  isEqualDisplaySiblingNodeId,
-} from '@/utils/hide-columns';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import {
-  S2Event,
-  InterceptType,
   CellTypes,
+  InterceptType,
+  S2Event,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
-} from '@/common/constant';
+} from '../../../common/constant';
 import {
   TooltipOperation,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
-} from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+} from '../../../common/interface';
+import { Node } from '../../../facet/layout/node';
+import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
 import {
-  mergeCellInfo,
+  hideColumnsByThunkGroup,
+  isEqualDisplaySiblingNodeId,
+} from '../../../utils/hide-columns';
+import { isMultiSelectionKey } from '../../../utils/interaction/select-event';
+import {
   getTooltipOptions,
   getTooltipVisibleOperator,
-} from '@/utils/tooltip';
+  mergeCellInfo,
+} from '../../../utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;

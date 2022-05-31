@@ -1,30 +1,30 @@
 import {
   Event as CanvasEvent,
   IGroup,
-  ShapeAttrs,
   IShape,
+  ShapeAttrs,
 } from '@antv/g-canvas';
-import { clone, isEmpty, throttle, get } from 'lodash';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { clone, get, isEmpty, throttle } from 'lodash';
+import {
+  InterceptType,
+  MIN_CELL_HEIGHT,
+  MIN_CELL_WIDTH,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+  ResizeType,
+  RESIZE_END_GUIDE_LINE_ID,
+  RESIZE_MASK_ID,
+  RESIZE_START_GUIDE_LINE_ID,
+  S2Event,
+} from '../common/constant';
 import {
   ResizeDetail,
   ResizeGuideLinePath,
   ResizeGuideLinePosition,
   ResizeInfo,
   ResizePosition,
-} from '@/common/interface/resize';
-import {
-  InterceptType,
-  MIN_CELL_HEIGHT,
-  MIN_CELL_WIDTH,
-  RESIZE_MASK_ID,
-  RESIZE_START_GUIDE_LINE_ID,
-  RESIZE_END_GUIDE_LINE_ID,
-  S2Event,
-  ResizeDirectionType,
-  ResizeAreaEffect,
-  ResizeType,
-} from '@/common/constant';
+} from '../common/interface/resize';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeTarget: IGroup;

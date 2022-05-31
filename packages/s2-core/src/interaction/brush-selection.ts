@@ -1,36 +1,40 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { getCellMeta } from 'src/utils/interaction/select-event';
-import {
-  getScrollOffsetForCol,
-  getScrollOffsetForRow,
-} from 'src/utils/interaction/';
 import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
-import { BaseEventImplement } from './base-event';
-import { BaseEvent } from './base-interaction';
-import { InterceptType, S2Event, ScrollDirection } from '@/common/constant';
+import { DataCell } from '../cell';
 import {
+  FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+  InterceptType,
+  S2Event,
+  ScrollDirection,
+} from '../common/constant';
+import {
+  BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
   InteractionStateName,
-  BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
-} from '@/common/constant/interaction';
+} from '../common/constant/interaction';
 import {
+  BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   OriginalEvent,
   ViewMeta,
-  BrushAutoScrollConfig,
-} from '@/common/interface';
-import { DataCell } from '@/cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
-import { getActiveCellsTooltipData } from '@/utils/tooltip';
+} from '../common/interface';
+import { TableFacet } from '../facet';
 import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
-} from '@/facet/utils';
-import { getValidFrozenOptions } from '@/utils/layout/frozen';
-import { TableFacet } from '@/facet';
+} from '../facet/utils';
+import {
+  getScrollOffsetForCol,
+  getScrollOffsetForRow,
+} from '../utils/interaction/';
+import { getCellMeta } from '../utils/interaction/select-event';
+import { getValidFrozenOptions } from '../utils/layout/frozen';
+import { getActiveCellsTooltipData } from '../utils/tooltip';
+import { BaseEventImplement } from './base-event';
+import { BaseEvent } from './base-interaction';
 
 /**
  * Panel area's brush selection interaction

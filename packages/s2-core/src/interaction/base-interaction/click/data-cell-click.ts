@@ -1,21 +1,24 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { getTooltipOptions, getTooltipVisibleOperator } from '@/utils/tooltip';
-import { getCellMeta } from '@/utils/interaction/select-event';
-import { DataCell } from '@/cell/data-cell';
+import { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
   TOOLTIP_OPERATOR_TREND_MENU,
-} from '@/common/constant';
+} from '../../../common/constant';
 import {
   CellAppendInfo,
   TooltipData,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
+} from '../../../common/interface';
+import { getCellMeta } from '../../../utils/interaction/select-event';
+import {
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '../../../utils/tooltip';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

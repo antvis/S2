@@ -1,8 +1,5 @@
-import { Node } from 'src/facet/layout/node';
-import { FrozenGroup } from 'src/group/frozen-group';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { SpreadSheet } from './spread-sheet';
-import { TableDataCell, TableRowCell } from '@/cell';
+import { TableDataCell, TableRowCell } from '../cell';
 import {
   InterceptType,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
@@ -14,16 +11,19 @@ import {
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
-} from '@/common/constant';
+} from '../common/constant';
 import {
   S2Options,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { TableDataSet } from '@/data-set';
-import { TableFacet } from '@/facet';
+} from '../common/interface';
+import { TableDataSet } from '../data-set';
+import { TableFacet } from '../facet';
+import { Node } from '../facet/layout/node';
+import { FrozenGroup } from '../group/frozen-group';
+import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {

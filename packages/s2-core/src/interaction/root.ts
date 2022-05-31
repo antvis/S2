@@ -1,21 +1,6 @@
-import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import type { IElement } from '@antv/g-canvas';
-import { CornerCellClick } from './base-interaction/click/corner-cell-click';
-import {
-  DataCellClick,
-  MergedCellClick,
-  RowColumnClick,
-  RowTextClick,
-} from './base-interaction/click';
-import { HoverEvent } from './base-interaction/hover';
-import { EventController } from './event-controller';
-import { RangeSelection } from './range-selection';
-import { SelectedCellMove } from './selected-cell-move';
-import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-import { Node } from '@/facet/layout/node';
-import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
+import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
+import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
   InteractionName,
@@ -23,7 +8,7 @@ import {
   INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
-} from '@/common/constant';
+} from '../common/constant';
 import {
   CustomInteraction,
   InteractionStateInfo,
@@ -31,14 +16,29 @@ import {
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
-} from '@/common/interface';
-import { ColHeader, RowHeader } from '@/facet/header';
-import { BaseEvent } from '@/interaction/base-event';
-import { SpreadSheet } from '@/sheet-type';
-import { getAllChildCells } from '@/utils/get-all-child-cells';
-import { clearState, setState } from '@/utils/interaction/state-controller';
-import { isMobile } from '@/utils/is-mobile';
-import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
+} from '../common/interface';
+import { ColHeader, RowHeader } from '../facet/header';
+import { Node } from '../facet/layout/node';
+import { SpreadSheet } from '../sheet-type';
+import { getAllChildCells } from '../utils/get-all-child-cells';
+import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
+import { getCellMeta } from '../utils/interaction/select-event';
+import { clearState, setState } from '../utils/interaction/state-controller';
+import { isMobile } from '../utils/is-mobile';
+import { BaseEvent } from './base-event';
+import {
+  DataCellClick,
+  MergedCellClick,
+  RowColumnClick,
+  RowTextClick,
+} from './base-interaction/click';
+import { CornerCellClick } from './base-interaction/click/corner-cell-click';
+import { HoverEvent } from './base-interaction/hover';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
+import { SelectedCellMove } from './selected-cell-move';
+import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;

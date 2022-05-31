@@ -1,4 +1,4 @@
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet } from '../sheet-type';
 
 export interface BaseEventImplement {
   bindEvents: () => void;

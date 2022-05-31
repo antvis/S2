@@ -1,7 +1,7 @@
 import {
-  Group,
   Canvas,
   Event as CanvasEvent,
+  Group,
   LooseObject,
   Shape,
 } from '@antv/g-canvas';
@@ -14,12 +14,11 @@ import {
   OriginEventType,
   S2Event,
   SHAPE_STYLE_MAP,
-} from '@/common/constant';
-import { EmitterType } from '@/common/interface/emitter';
-import { ResizeInfo } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
+} from '../common/constant';
+import { EmitterType, ResizeInfo } from '../common/interface';
+import { SpreadSheet } from '../sheet-type';
+import { getSelectedData, keyEqualTo } from '../utils/export/copy';
+import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
