@@ -38,7 +38,7 @@
   "scripts": {
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist temp",
-    "build": "run-s clean build:esm build:cjs build:umd",
+    "build": "run-s clean build:dts build:esm build:cjs build:umd",
     "build:esm": "cross-env FORMAT=esm rollup -c rollup.config.js",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",

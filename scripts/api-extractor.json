@@ -33,6 +33,12 @@
       }
     },
 
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "none"
+      }
+    },
+
     "extractorMessageReporting": {
       "default": {
         "logLevel": "warning"
