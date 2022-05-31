@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["node","jest","jest-extended"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
 }

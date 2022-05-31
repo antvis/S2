@@ -10,5 +10,6 @@
     },
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": true,
-  }
+  }, 
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
 }

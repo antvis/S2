@@ -8,5 +8,5 @@
       "tests/*": ["./__tests__/*"],
     }
   },
-  "exclude": ["node_modules", "coverage", "esm", "lib", "dist","temp"]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
 }
