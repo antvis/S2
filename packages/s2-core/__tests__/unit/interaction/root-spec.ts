@@ -241,7 +241,7 @@ describe('RootInteraction Tests', () => {
     let flag = false;
     const hoverTimer = setTimeout(() => {
       flag = true;
-    }, 100);
+    }, 100) as unknown as number;
 
     rootInteraction.setState({
       cells: [getCellMeta(mockCell)],
@@ -272,7 +272,7 @@ describe('RootInteraction Tests', () => {
     let flag = false;
     const hoverTimer = setTimeout(() => {
       flag = true;
-    }, 100);
+    }, 100) as unknown as number;
 
     rootInteraction.setState({
       cells: [getCellMeta(mockCell)],
@@ -475,7 +475,7 @@ describe('RootInteraction Tests', () => {
 
   describe('RootInteraction Hover Timer Tests', () => {
     test('should save hover timer', () => {
-      const timer = setTimeout(() => jest.fn(), 200);
+      const timer = setTimeout(() => jest.fn(), 200) as unknown as number;
 
       rootInteraction.setHoverTimer(timer);
 
@@ -486,7 +486,7 @@ describe('RootInteraction Tests', () => {
       let flag = false;
       const timer = setTimeout(() => {
         flag = true;
-      }, 200);
+      }, 200) as unknown as number;
 
       rootInteraction.setHoverTimer(timer);
       rootInteraction.clearHoverTimer();

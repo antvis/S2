@@ -27,10 +27,10 @@ function generateDts() {
   });
 
   if (extractorResult.succeeded) {
-    console.log(`🚀类型文件生成成功！！！`);
+    console.log(`🚀类型声明文件生成成功！！！`);
   } else {
     console.error(
-      '🚨类型文件生成失败：' +
+      '🚨类型声明文件生成失败：' +
         +`\n\t${extractorResult.errorCount} errors``\n\tand ${extractorResult.warningCount} warnings`,
     );
     process.exit(1);

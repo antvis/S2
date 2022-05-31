@@ -13,7 +13,7 @@ const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
 
 const OUT_DIR_NAME_MAP = {
-  esm: 'esm',
+  es: 'esm',
   cjs: 'lib',
   umd: 'dist',
 };

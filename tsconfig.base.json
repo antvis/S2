@@ -19,6 +19,6 @@
         "exclude": ["*"]
       }
     ],
-    "types": ["jest", "jest-extended"]
+    "types": ["node", "jest", "jest-extended"]
   }
 }
