@@ -1,4 +1,4 @@
-import { ScrollBarTheme } from '@/common/interface/theme';
+import { ScrollBarTheme } from '../../common/interface/theme';
 
 export interface ScrollBarCfg {
   // 布局 横向(horizontal) | 纵向(vertical)

@@ -1,5 +1,5 @@
-import { Palette, PaletteMeta } from '@/common';
-import { generatePalette } from '@/utils/color';
+import { Palette, PaletteMeta } from '../../common';
+import { generatePalette } from '../../utils/color';
 
 const paletteGrayMeta: PaletteMeta = {
   brandColor: '#9DA7B6',
