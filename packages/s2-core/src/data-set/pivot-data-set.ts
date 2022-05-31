@@ -18,7 +18,7 @@ import {
   every,
   first,
 } from 'lodash';
-import { Node } from '@/facet/layout/node';
+import { Node } from '../facet/layout/node';
 import {
   filterUndefined,
   flatten as customFlatten,
@@ -28,15 +28,15 @@ import {
   isEveryUndefined,
   splitTotal,
   isTotalData,
-} from '@/utils/data-set-operate';
+} from '../utils/data-set-operate';
 import {
   EXTRA_FIELD,
   TOTAL_VALUE,
   VALUE_FIELD,
   ID_SEPARATOR,
-} from '@/common/constant';
-import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
-import { i18n } from '@/common/i18n';
+} from '../common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
+import { i18n } from '../common/i18n';
 import {
   Data,
   Formatter,
@@ -45,24 +45,24 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
-} from '@/common/interface';
-import { BaseDataSet } from '@/data-set/base-data-set';
-import {
-  CellDataParams,
-  DataType,
-  PivotMeta,
-  SortedDimensionValues,
-} from '@/data-set/interface';
-import { handleSortAction } from '@/utils/sort-action';
+} from '../common/interface';
+import { handleSortAction } from '../utils/sort-action';
 import {
   transformIndexesData,
   getDataPath,
   getQueryDimValues,
   deleteMetaById,
   getDimensionsWithoutPathPre,
-} from '@/utils/dataset/pivot-data-set';
-import { calcActionByType } from '@/utils/number-calculate';
-import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
+} from '../utils/dataset/pivot-data-set';
+import { calcActionByType } from '../utils/number-calculate';
+import { getAggregationAndCalcFuncByQuery } from '../utils/data-set-operate';
+import {
+  CellDataParams,
+  DataType,
+  PivotMeta,
+  SortedDimensionValues,
+} from './interface';
+import { BaseDataSet } from './base-data-set';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
