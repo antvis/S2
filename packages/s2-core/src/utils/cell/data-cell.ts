@@ -1,12 +1,12 @@
 import { isEqual } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
 import {
+  CellMeta,
+  Data,
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
-  CellMeta,
-} from '@/common/interface';
-import { Data } from '@/common/interface/s2DataConfig';
+} from '../../common/interface';
 
 export const handleDataItem = (
   data: Data,

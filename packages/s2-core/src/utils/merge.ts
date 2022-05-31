@@ -1,7 +1,7 @@
 import { isArray, isEmpty, mergeWith } from 'lodash';
+import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import { DEFAULT_OPTIONS } from '../common/constant/options';
-import { S2DataConfig, S2Options } from '@/common/interface';
-import { DEFAULT_DATA_CONFIG } from '@/common/constant/dataConfig';
+import { S2DataConfig, S2Options } from '../common/interface';
 
 export const customMerge = (...objects: unknown[]) => {
   const customize = (origin: unknown, updated: unknown) => {

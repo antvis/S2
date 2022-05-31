@@ -1,8 +1,10 @@
-import { FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX } from 'src/common/constant';
 import { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
-import { ResizeInfo } from '@/common/interface/resize';
-import { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { ResizeDirectionType } from '@/common/constant/resize';
+import {
+  FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
+  ResizeDirectionType,
+} from '../../common/constant';
+import { ResizeInfo } from '../../common/interface/resize';
+import { SpreadSheet } from '../../sheet-type/spread-sheet';
 
 export const getResizeAreaAttrs = (
   options: Omit<ResizeInfo, 'size'>,

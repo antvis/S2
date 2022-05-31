@@ -1,13 +1,13 @@
 import { includes, isBoolean } from 'lodash';
-import { HeaderNodesParams } from '@/facet/layout/interface';
-import { TotalClass } from '@/facet/layout/total-class';
-import { TotalMeasure } from '@/facet/layout/total-measure';
-import { i18n } from '@/common/i18n';
-import { EXTRA_FIELD } from '@/common/constant';
-import { generateId } from '@/utils/layout/generate-id';
-import { Node } from '@/facet/layout/node';
-import { layoutHierarchy } from '@/facet/layout/layout-hooks';
-import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';
+import { EXTRA_FIELD } from '../../common/constant';
+import { i18n } from '../../common/i18n';
+import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
+import { HeaderNodesParams } from '../../facet/layout/interface';
+import { layoutHierarchy } from '../../facet/layout/layout-hooks';
+import { Node } from '../../facet/layout/node';
+import { TotalClass } from '../../facet/layout/total-class';
+import { TotalMeasure } from '../../facet/layout/total-measure';
+import { generateId } from '../../utils/layout/generate-id';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {

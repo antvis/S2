@@ -1,5 +1,5 @@
 import tinycolor from 'tinycolor2';
-import { Palette, PaletteMeta } from '@/common/interface/theme';
+import { Palette, PaletteMeta } from '../common/interface/theme';
 
 /**
  * 亮度范围 0~255

@@ -1,6 +1,6 @@
-import { SpreadSheet } from 'src/sheet-type';
-import { TableFacet } from 'src/facet';
-import { ScrollDirection } from 'src/common/constant/interaction';
+import { ScrollDirection } from '../../common/constant/interaction';
+import { TableFacet } from '../../facet';
+import { SpreadSheet } from '../../sheet-type';
 
 // 获取滚动指定列到视口内的滚动 x 轴 Offset。滚动到视口边缘位置，左侧和右侧视滚动方向而定。
 export const getScrollOffsetForCol = (

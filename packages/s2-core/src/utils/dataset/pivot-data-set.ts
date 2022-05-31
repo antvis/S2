@@ -1,11 +1,11 @@
-import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
-import { DataType } from '@/data-set/interface';
+import { forEach, isUndefined, last, map, reduce, set } from 'lodash';
+import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import {
   DataPathParams,
+  DataType,
   PivotMeta,
   SortedDimensionValues,
-} from '@/data-set/interface';
-import { ROOT_ID, ID_SEPARATOR } from '@/common/constant';
+} from '../../data-set/interface';
 
 interface Param {
   rows: string[];

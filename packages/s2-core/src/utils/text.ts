@@ -13,13 +13,7 @@ import {
   trim,
   values,
 } from 'lodash';
-import {
-  BulletTheme,
-  DefaultCellTheme,
-  RangeColors,
-} from '@/common/interface/theme';
-import { renderLine, renderText, renderRect } from '@/utils/g-renders';
-import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import {
   BulletValue,
   CellCfg,
@@ -27,7 +21,13 @@ import {
   MultiData,
   S2CellType,
   ViewMeta,
-} from '@/common/interface';
+} from '../common/interface';
+import {
+  BulletTheme,
+  DefaultCellTheme,
+  RangeColors,
+} from '../common/interface/theme';
+import { renderLine, renderRect, renderText } from '../utils/g-renders';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
