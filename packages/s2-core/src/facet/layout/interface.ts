@@ -1,10 +1,10 @@
-import { TotalClass } from '@/facet/layout/total-class';
-import { TotalMeasure } from '@/facet/layout/total-measure';
-import { Node } from '@/facet/layout/node';
-import { CustomTreeItem, SpreadSheetFacetCfg } from '@/common/interface';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { SpreadSheet } from '@/sheet-type';
-import { PivotMeta } from '@/data-set/interface';
+import { CustomTreeItem, SpreadSheetFacetCfg } from '../../common/interface';
+import { PivotMeta } from '../../data-set/interface';
+import { SpreadSheet } from '../../sheet-type';
+import { Hierarchy } from '../layout/hierarchy';
+import { Node } from '../layout/node';
+import { TotalClass } from '../layout/total-class';
+import { TotalMeasure } from '../layout/total-measure';
 
 export type FieldValue = string | TotalClass | TotalMeasure;
 

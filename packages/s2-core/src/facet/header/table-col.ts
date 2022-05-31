@@ -1,17 +1,17 @@
 import { IGroup } from '@antv/g-canvas';
-import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
-import { getValidFrozenOptions } from 'src/utils/layout/frozen';
-import { ColHeader, ColHeaderConfig } from './col';
+import { TableColCell, TableCornerCell } from '../../cell';
 import {
-  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-  SERIES_NUMBER_FIELD,
+  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_FROZEN_TRAILING,
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-} from '@/common/constant';
-import { TableColCell, TableCornerCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type/index';
+  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+  SERIES_NUMBER_FIELD,
+} from '../../common/constant';
+import { SpreadSheet } from '../../sheet-type';
+import { getValidFrozenOptions } from '../../utils/layout/frozen';
+import { Node } from '../layout/node';
+import { isFrozenCol, isFrozenTrailingCol } from '../utils';
+import { ColHeader, ColHeaderConfig } from './col';
 
 /**
  * Column Header for SpreadSheet

@@ -1,15 +1,15 @@
 import { each } from 'lodash';
 import type { IGroup, IShape } from '@antv/g-canvas';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { translateGroupX } from '@/facet/utils';
+import { translateGroupX } from '../utils';
 import {
   KEY_GROUP_COL_SCROLL,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-} from '@/common/constant';
-import { ColCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
+} from '../../common/constant';
+import { ColCell } from '../../cell';
+import { Node } from '../layout/node';
 
-import { SpreadSheet } from '@/sheet-type/index';
+import { SpreadSheet } from '../../sheet-type/index';
+import { BaseHeader, BaseHeaderConfig } from './base';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // corner width used when scroll {@link ColHeader#onColScroll}

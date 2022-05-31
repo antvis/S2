@@ -1,14 +1,13 @@
-import { SimpleBBox, IGroup } from '@antv/g-canvas';
+import { IGroup, SimpleBBox } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
-
-import { Indexes } from '../utils/indexes';
-import { ViewCellHeights } from './layout/interface';
 import {
+  FrozenCellIndex,
   FrozenCellType,
   FrozenOpts,
-  FrozenCellIndex,
-} from '@/common/constant/frozen';
-import { Pagination, ScrollSpeedRatio } from '@/common/interface';
+} from '../common/constant/frozen';
+import { Pagination, ScrollSpeedRatio } from '../common/interface';
+import { Indexes } from '../utils/indexes';
+import { ViewCellHeights } from './layout/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;

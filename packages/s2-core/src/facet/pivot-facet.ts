@@ -13,31 +13,29 @@ import {
   reduce,
   size,
 } from 'lodash';
-import { BaseFacet } from 'src/facet/base-facet';
-import { getDataCellId } from 'src/utils/cell/data-cell';
-import { getIndexRangeWithOffsets } from 'src/utils/facet';
-import { CellTypes } from 'src/common/constant/interaction';
-import { HeaderActionIcon } from 'src/common/interface/basic';
-import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
-import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '@/common/constant';
-import { DebuggerUtil } from '@/common/debug';
-import { LayoutResult, ViewMeta } from '@/common/interface';
-import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
-import { Hierarchy } from '@/facet/layout/hierarchy';
+import { IconTheme, MultiData } from '../common';
+import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
+import { CellTypes } from '../common/constant/interaction';
+import { DebuggerUtil } from '../common/debug';
+import { LayoutResult, ViewMeta } from '../common/interface';
+import { HeaderActionIcon } from '../common/interface/basic';
+import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
+import { shouldShowActionIcons } from '../utils/cell/header-cell';
 import {
-  layoutCoordinate,
-  layoutDataPosition,
-} from '@/facet/layout/layout-hooks';
-import { Node } from '@/facet/layout/node';
-import { handleDataItem } from '@/utils/cell/data-cell';
+  getIndexRangeWithOffsets,
+  getSubTotalNodeWidthOrHeightByLevel,
+} from '../utils/facet';
 import {
+  getCellWidth,
   measureTextWidth,
   measureTextWidthRoughly,
-  getCellWidth,
   safeJsonParse,
-} from '@/utils/text';
-import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
-import { IconTheme, MultiData } from '@/common';
+} from '../utils/text';
+import { BaseFacet } from './base-facet';
+import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
+import { Hierarchy } from './layout/hierarchy';
+import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
+import { Node } from './layout/node';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {

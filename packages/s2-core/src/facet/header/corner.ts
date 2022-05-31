@@ -1,23 +1,23 @@
 import { Group, Point } from '@antv/g-canvas';
-import { get, includes, isEmpty } from 'lodash';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { PanelBBox } from '@/facet/bbox/panelBBox';
-import { CornerBBox } from '@/facet/bbox/cornerBBox';
-import { translateGroupX } from '@/facet/utils';
-import { CornerCell } from '@/cell/corner-cell';
-import { KEY_SERIES_NUMBER_NODE } from '@/common/constant';
-import { i18n } from '@/common/i18n';
+import { includes, isEmpty } from 'lodash';
+import { CornerCell } from '../../cell/corner-cell';
+import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
+import { i18n } from '../../common/i18n';
 import {
   LayoutResult,
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
-} from '@/common/interface';
-import { BaseDataSet } from '@/data-set';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { CornerNodeType } from '@/common/interface/node';
+} from '../../common/interface';
+import { CornerNodeType } from '../../common/interface/node';
+import { BaseDataSet } from '../../data-set';
+import { SpreadSheet } from '../../sheet-type';
+import { CornerBBox } from '../bbox/cornerBBox';
+import { PanelBBox } from '../bbox/panelBBox';
+import { Hierarchy } from '../layout/hierarchy';
+import { Node } from '../layout/node';
+import { translateGroupX } from '../utils';
+import { BaseHeader, BaseHeaderConfig } from './base';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
