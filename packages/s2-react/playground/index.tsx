@@ -56,7 +56,6 @@ import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
-import '@antv/s2/esm/style.css';
 
 const { TabPane } = Tabs;
 

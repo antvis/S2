@@ -186,9 +186,9 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件), 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
-使用 `React` 版本 `S2`，只有渲染这一步有所不同：
+#### 表格组件使用
 
 ```ts
 import React from 'react';
@@ -206,6 +206,18 @@ ReactDOM.render(
   document.getElementById('container'),
 );
 
+```
+
+#### 注意事项
+
+`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`,`Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
+
+```ts
+yarn add antd @ant-design/icons
+```
+
+```ts
+import 'antd/dist/antd.min.css';
 ```
 
 ​📊 查看 [React 版本透视表 demo](/zh/examples/react-component/sheet#pivot)。
@@ -245,10 +257,6 @@ export default defineComponent({
 <template>
   <SheetComponent :dataCfg="dataCfg" :options="options" />
 </template>
-
-<style lang="less">
-@import 'ant-design-vue/dist/antd.less';
-</style>
 ```
 
 #### 渲染组件
@@ -259,6 +267,18 @@ import App from './App.vue';
 
 createApp(App).mount('#app');
 
+```
+
+#### 注意事项
+
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip`等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
+
+```ts
+yarn add ant-design-vue
+```
+
+```ts
+import "@antv/s2-vue/dist/style.min.css";
 ```
 
 ​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
