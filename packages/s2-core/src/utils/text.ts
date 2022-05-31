@@ -341,13 +341,13 @@ export const getBulletRangeColor = (
   target: number | string,
   rangeColors: RangeColors,
 ) => {
-  const range = Number(target) - Number(measure);
+  const delta = Number(target) - Number(measure);
 
-  if (range <= 0.1) {
+  if (delta <= 0.1) {
     return rangeColors.good;
   }
 
-  if (range > 0.1 && range <= 0.2) {
+  if (delta > 0.1 && delta <= 0.2) {
     return rangeColors.satisfactory;
   }
   return rangeColors.bad;
@@ -365,7 +365,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const { x, y, height, width } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
-  const bulletWidth = progressBar.widthPercentCfg * width;
+  const bulletWidth = progressBar.widthPercent * width;
   const measureWidth = width - bulletWidth;
 
   const padding = dataCellStyle.cell.padding;
@@ -462,7 +462,7 @@ export const drawObjectText = (
     return;
   }
 
-  const widthPercentCfg = valuesCfg?.widthPercentCfg;
+  const widthPercent = valuesCfg?.widthPercent;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const { textAlign } = dataCellStyle.text;
   const padding = dataCellStyle.cell.padding;
@@ -512,8 +512,8 @@ export const drawObjectText = (
         dataCellStyle,
         textCondition,
       );
-      curWidth = !isEmpty(widthPercentCfg)
-        ? totalTextWidth * (widthPercentCfg[j] / 100)
+      curWidth = !isEmpty(widthPercent)
+        ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
       curX = calX(x, padding.right, totalWidth, textAlign);

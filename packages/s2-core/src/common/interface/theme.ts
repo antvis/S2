@@ -279,7 +279,7 @@ export interface BulletTheme {
   /* 进度条 */
   progressBar: {
     /* 子弹图宽度相对整体单元格的占比，小数， default：0.7 */
-    widthPercentCfg: number;
+    widthPercent: number;
     height: number;
     /* 内高度 */
     innerHeight: number;
