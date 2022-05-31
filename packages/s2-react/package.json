@@ -68,9 +68,7 @@
     "ahooks": "^3.1.13",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0",
-    "@antv/s2-shared":"*"
-
+    "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
     "@antv/s2": "*",
