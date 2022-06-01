@@ -45,7 +45,7 @@
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
     "dts:build-shared":"yarn workspace @antv/s2-shared build:dts",
-    "dts:build":"ttsc -p tsconfig.declaration.json",
+    "dts:build":"tsc -p tsconfig.declaration.json",
     "dts:extract":"cross-env LIB=s2-react node ../../scripts/dts.js",
     "dts:clean":"rimraf temp",
     "bundle:size": "bundlesize",

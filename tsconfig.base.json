@@ -13,16 +13,11 @@
     "lib": ["esnext", "dom"],
     "noEmitHelpers": false,
     "skipLibCheck": true,
-    "plugins": [
-      {
-        "transform": "@zerollup/ts-transform-paths",
-        "exclude": ["*"]
-      }
-    ],
+
     "paths": {
       "@/*": ["./src/*"],
       "tests/*": ["./__tests__/*"]
     },
-    "types": ["node", "jest", "jest-extended"]
+    "types": ["node", "jest", "jest-extended", "vite/client"]
   }
 }
