@@ -4,7 +4,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { DraggableProvided } from 'react-beautiful-dnd';
 import { SwitcherField, SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';
-import { DimensionCommonProps } from '@/components/switcher/item';
+import { DimensionCommonProps } from '.';
 
 const CLASS_NAME_PREFIX = 'item';
 

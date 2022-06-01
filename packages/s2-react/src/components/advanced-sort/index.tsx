@@ -1,28 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Layout, Select, Radio, Form, Cascader } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
+  i18n,
+  SortMethod,
+  SortParam,
+  SpreadSheet,
+  TOTAL_VALUE,
+} from '@antv/s2';
+import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
+import cx from 'classnames';
+import {
+  filter,
+  find,
+  forEach,
+  includes,
   isEqual,
   keys,
   map,
-  includes,
   toUpper,
-  forEach,
-  filter,
-  find,
   uniq,
 } from 'lodash';
-import cx from 'classnames';
+import React, { useEffect, useState } from 'react';
 import {
-  i18n,
-  SpreadSheet,
-  SortParam,
-  SortMethod,
-  TOTAL_VALUE,
-} from '@antv/s2';
+  ADVANCED_PRE_CLS,
+  RULE_OPTIONS,
+  SORT_METHOD,
+} from '../../common/constant';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
-import { SORT_METHOD, RULE_OPTIONS, ADVANCED_PRE_CLS } from '@/common/constant';
 import './index.less';
 
 const { Sider, Content } = Layout;

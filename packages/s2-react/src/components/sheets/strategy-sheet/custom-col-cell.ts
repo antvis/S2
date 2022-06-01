@@ -1,5 +1,11 @@
-import { drawObjectText, safeJsonParse } from '@antv/s2';
-import { ColCell, Node, SpreadSheet, ColHeaderConfig } from '@antv/s2';
+import {
+  ColCell,
+  ColHeaderConfig,
+  drawObjectText,
+  Node,
+  safeJsonParse,
+  SpreadSheet,
+} from '@antv/s2';
 import { isArray } from 'lodash';
 
 /**

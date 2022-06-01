@@ -1,7 +1,7 @@
+import { getIcon, TooltipIconProps } from '@antv/s2';
 import React from 'react';
-import { TooltipIconProps, getIcon } from '@antv/s2';
-import { HtmlIcon } from '@/common/icons';
-import { ReactElement } from '@/common/react-element';
+import { HtmlIcon } from '../../../common/icons';
+import { ReactElement } from '../../../common/react-element';
 
 export const TooltipIcon: React.FC<TooltipIconProps> = (props) => {
   const { icon, ...attrs } = props;

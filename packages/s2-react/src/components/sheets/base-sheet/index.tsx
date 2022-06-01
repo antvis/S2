@@ -1,18 +1,17 @@
-import { Spin } from 'antd';
-import React from 'react';
 import {
-  S2_PREFIX_CLS,
-  S2Options,
   getSafetyDataConfig,
+  S2Options,
+  S2_PREFIX_CLS,
   SpreadSheet,
 } from '@antv/s2';
+import { Spin } from 'antd';
 import { get } from 'lodash';
-import { Header } from '@/components/header';
-import { SheetComponentsProps } from '@/components/sheets/interface';
-import { S2Pagination } from '@/components/pagination';
-import { getSheetComponentOptions } from '@/utils';
-import { useSpreadSheet } from '@/hooks/useSpreadSheet';
-
+import React from 'react';
+import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
+import { getSheetComponentOptions } from '../../../utils';
+import { Header } from '../../header';
+import { S2Pagination } from '../../pagination';
+import { SheetComponentsProps } from '../../sheets/interface';
 import './index.less';
 
 export const BaseSheet = React.forwardRef(

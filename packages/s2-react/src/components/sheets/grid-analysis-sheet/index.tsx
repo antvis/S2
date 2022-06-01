@@ -1,9 +1,9 @@
+import { customMerge, SpreadSheet } from '@antv/s2';
 import React from 'react';
-import { SpreadSheet, customMerge } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
+import { SheetComponentsProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
-import { SheetComponentsProps } from '@/components/sheets/interface';
 
 export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {

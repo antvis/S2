@@ -1,12 +1,9 @@
-import React from 'react';
+import { getEmptyPlaceholder, isUpDataValue } from '@antv/s2';
 import cls from 'classnames';
 import { find, first, get, isEmpty, isNil } from 'lodash';
-import { isUpDataValue, MultiData, getEmptyPlaceholder } from '@antv/s2';
-import { CustomTooltipProps } from './interface';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import React from 'react';
 import styles from './index.module.less';
+import { CustomTooltipProps } from './interface';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();

@@ -10,7 +10,7 @@ import {
   SpreadSheet,
 } from '@antv/s2';
 import { clone, filter, isEmpty } from 'lodash';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
+import { PartDrillDown, PartDrillDownInfo } from '../components';
 
 export interface DrillDownParams {
   // 行维度id
