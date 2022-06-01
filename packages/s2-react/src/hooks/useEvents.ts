@@ -6,7 +6,7 @@ import {
   TargetCellInfo,
 } from '@antv/s2';
 import React from 'react';
-import { SheetComponentsProps } from '../components';
+import type { SheetComponentsProps } from '../components';
 
 export const useCellEvent = (
   eventName: S2Event,

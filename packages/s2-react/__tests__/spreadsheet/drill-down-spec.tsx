@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { GuiIcon, Node, RowCell, S2Options, SpreadSheet } from '@antv/s2';
+import type { GuiIcon, Node, RowCell, S2Options, SpreadSheet } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { get, noop } from 'lodash';
 import { SheetComponentsProps, SheetComponent } from '../../src';

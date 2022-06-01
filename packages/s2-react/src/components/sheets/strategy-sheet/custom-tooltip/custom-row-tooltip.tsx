@@ -2,7 +2,7 @@ import { i18n } from '@antv/s2';
 import cls from 'classnames';
 import React from 'react';
 import styles from './index.module.less';
-import { CustomTooltipProps } from './interface';
+import type { CustomTooltipProps } from './interface';
 
 export const RowTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const { field, spreadsheet, value, extra } = cell.getMeta();

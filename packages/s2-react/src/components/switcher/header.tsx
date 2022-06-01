@@ -1,5 +1,5 @@
 import React from 'react';
-import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
 import {
   generateSheetConfig,
@@ -7,7 +7,7 @@ import {
   generateSwitcherFieldsCfgFromResult,
   getSheetType,
 } from './headerUtil';
-import { SwitcherResult } from './interface';
+import type { SwitcherResult } from './interface';
 import { Switcher, SwitcherProps } from '.';
 import './index.less';
 

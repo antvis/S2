@@ -3,7 +3,7 @@ import { PivotSheet, S2Options } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { useSpreadSheet } from '@/hooks';
-import { SheetComponentsProps } from '@/components';
+import type { SheetComponentsProps } from '@/components';
 
 const s2Options: S2Options = {
   width: 200,

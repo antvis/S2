@@ -1,7 +1,7 @@
 import type { Node } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
-import { DrillDownProps } from '../drill-down';
-import { HeaderCfgProps } from '../header';
+import type { DrillDownProps } from '../drill-down';
+import type { HeaderCfgProps } from '../header';
 
 export interface PartDrillDownInfo {
   // The data of drill down

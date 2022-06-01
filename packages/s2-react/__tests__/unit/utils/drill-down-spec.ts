@@ -20,7 +20,7 @@ import {
   buildDrillDownOptions,
   getDrillDownCache,
 } from '@/utils';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
+import type { PartDrillDown, PartDrillDownInfo } from '@/components';
 
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;

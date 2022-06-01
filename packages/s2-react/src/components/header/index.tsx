@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import { PageHeader, PageHeaderProps } from 'antd';
 import cx from 'classnames';
-import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
 import { Export, ExportCfgProps } from '../export';
 import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 

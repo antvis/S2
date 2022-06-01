@@ -15,7 +15,7 @@ import {
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
-import { SwitcherFields } from '@/components/switcher/interface';
+import type { SwitcherFields } from '@/components/switcher/interface';
 import { SheetComponent } from '@/components';
 import '@antv/s2/esm/style.css';
 

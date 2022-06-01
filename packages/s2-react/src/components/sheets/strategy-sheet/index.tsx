@@ -10,7 +10,7 @@ import {
 import { isEmpty, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import { SheetComponentsProps } from '../interface';
+import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';

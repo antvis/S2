@@ -1,7 +1,7 @@
-import { SpreadSheet } from '@antv/s2';
+import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
-import { SheetComponentsProps } from './interface';
+import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';

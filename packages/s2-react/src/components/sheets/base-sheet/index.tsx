@@ -11,7 +11,7 @@ import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
-import { SheetComponentsProps } from '../../sheets/interface';
+import type { SheetComponentsProps } from '../../sheets/interface';
 import './index.less';
 
 export const BaseSheet = React.forwardRef(

@@ -3,7 +3,7 @@ import cls from 'classnames';
 import { find, first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
 import styles from './index.module.less';
-import { CustomTooltipProps } from './interface';
+import type { CustomTooltipProps } from './interface';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();

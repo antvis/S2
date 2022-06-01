@@ -14,7 +14,7 @@ import {
   ThemeCfg,
   TooltipAutoAdjustBoundary,
 } from '@antv/s2';
-import { Adaptive, SheetType } from '@antv/s2-shared';
+import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
 import { useUpdateEffect } from 'ahooks';
 import {

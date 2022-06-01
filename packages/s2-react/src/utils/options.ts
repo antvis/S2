@@ -1,6 +1,6 @@
-import { S2Options } from '@antv/s2';
+import type { S2Options } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
-import React from 'react';
+import type React from 'react';
 import { RENDER_TOOLTIP_OPTION } from '../common';
 
 export const getSheetComponentOptions = (

@@ -10,7 +10,7 @@ import {
 } from '../../../utils';
 import { DrillDown } from '../../drill-down';
 import { BaseSheet } from '../base-sheet';
-import { SheetComponentsProps } from '../interface';
+import type { SheetComponentsProps } from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {

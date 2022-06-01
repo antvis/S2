@@ -1,7 +1,7 @@
 import { customMerge, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import { SheetComponentsProps } from '../interface';
+import type { SheetComponentsProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 

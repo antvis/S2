@@ -16,7 +16,7 @@ import { TooltipInterpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
 import { TooltipSimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
-import { TooltipRenderProps } from './interface';
+import type { TooltipRenderProps } from './interface';
 
 import '@antv/s2/dist/style.min.css';
 import '@antv/s2-shared/src/styles/tooltip/index.less';

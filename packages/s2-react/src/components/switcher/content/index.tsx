@@ -1,6 +1,6 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { i18n } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2-shared';
 import { Button } from 'antd';
 import cx from 'classnames';
 import { isEqual } from 'lodash';
@@ -12,7 +12,11 @@ import {
 } from 'react-beautiful-dnd';
 import { FieldType, SWITCHER_CONFIG, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
-import { SwitcherFields, SwitcherResult, SwitcherState } from '../interface';
+import type {
+  SwitcherFields,
+  SwitcherResult,
+  SwitcherState,
+} from '../interface';
 import {
   checkItem,
   generateSwitchResult,
