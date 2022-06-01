@@ -20,7 +20,7 @@ import {
   RowColumnClick,
   RowColumnResize,
   RowTextClick,
-  S2Options,
+  type S2Options,
   SelectedCellMove,
   SpreadSheet,
 } from '@/index';

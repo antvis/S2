@@ -4,7 +4,7 @@ import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import react from '@vitejs/plugin-react';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, LibraryFormats, PluginOption } from 'vite';
+import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
 
 const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',

@@ -24,7 +24,7 @@ import type {
   ResizeInfo,
   ResizePosition,
 } from '../common/interface/resize';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeTarget: IGroup;

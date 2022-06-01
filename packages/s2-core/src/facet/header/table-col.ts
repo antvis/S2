@@ -11,7 +11,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import { isFrozenCol, isFrozenTrailingCol } from '../utils';
-import { ColHeader, ColHeaderConfig } from './col';
+import { ColHeader, type ColHeaderConfig } from './col';
 
 /**
  * Column Header for SpreadSheet

@@ -8,8 +8,8 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
+import { CellBorderPosition } from '../common/interface';
+import type {
   DefaultCellTheme,
   IconTheme,
   TextTheme,
@@ -34,7 +34,7 @@ import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
-  protected headerConfig: ColHeaderConfig;
+  protected declare headerConfig: ColHeaderConfig;
 
   /** 文字区域（含icon）绘制起始坐标 */
   protected textAreaPosition: Point;

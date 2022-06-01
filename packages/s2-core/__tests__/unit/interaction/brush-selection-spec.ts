@@ -12,11 +12,11 @@ import {
   InteractionBrushSelectionStage,
   InterceptType,
   Node,
-  OriginalEvent,
+  type OriginalEvent,
   PivotSheet,
   S2Event,
   SpreadSheet,
-  ViewMeta,
+  type ViewMeta,
 } from '@/index';
 import type { TableFacet } from '@/facet';
 

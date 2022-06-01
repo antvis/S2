@@ -4,7 +4,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import { HOVER_FOCUS_DURATION, S2DataConfig } from '@/common';
+import { HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {

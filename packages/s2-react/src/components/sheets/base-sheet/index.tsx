@@ -1,6 +1,6 @@
 import {
   getSafetyDataConfig,
-  S2Options,
+  type S2Options,
   S2_PREFIX_CLS,
   SpreadSheet,
 } from '@antv/s2';

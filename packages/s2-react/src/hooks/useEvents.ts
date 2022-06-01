@@ -3,7 +3,7 @@ import {
   GEvent,
   S2Event,
   SpreadSheet,
-  TargetCellInfo,
+  type TargetCellInfo,
 } from '@antv/s2';
 import React from 'react';
 import type { SheetComponentsProps } from '../components';

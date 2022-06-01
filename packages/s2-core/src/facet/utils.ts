@@ -1,10 +1,8 @@
 import type { IGroup, SimpleBBox } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
-import {
-  FrozenCellIndex,
-  FrozenCellType,
-  FrozenOpts,
-} from '../common/constant/frozen';
+
+import { FrozenCellType } from '../common/constant/frozen';
+import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
 import type { Pagination, ScrollSpeedRatio } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
 import type { ViewCellHeights } from './layout/interface';

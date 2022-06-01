@@ -1,11 +1,9 @@
-import {
-  PivotSheet,
+import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import type {
   S2Constructor,
   S2DataConfig,
   S2Options,
   ThemeCfg,
-  SpreadSheet,
-  TableSheet,
 } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';

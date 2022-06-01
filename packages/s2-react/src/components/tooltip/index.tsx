@@ -1,13 +1,13 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
-import {
+import { getTooltipDefaultOptions } from '@antv/s2';
+import type {
   ListItem,
   TooltipOperatorOptions,
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
   TooltipInterpretationOptions,
-  getTooltipDefaultOptions,
 } from '@antv/s2';
 import { TooltipDetail } from './components/detail';
 import { TooltipHead } from './components/head-info';

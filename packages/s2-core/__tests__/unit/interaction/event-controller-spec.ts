@@ -1,5 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, BBox, CanvasCfg, Shape } from '@antv/g-canvas';
+import { Canvas, type BBox, type CanvasCfg, Shape } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';

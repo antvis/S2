@@ -10,7 +10,7 @@ import type {
   SimpleBBox,
 } from '@antv/g-canvas';
 import { forEach, isEmpty, isFunction, set } from 'lodash';
-import { GuiIcon, GuiIconCfg } from '../common/icons/gui-icon';
+import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
 
 export function renderRect(

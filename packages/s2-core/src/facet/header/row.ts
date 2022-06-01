@@ -4,7 +4,7 @@ import { RowCell } from '../../cell';
 import type { S2CellType, S2Options } from '../../common/interface';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy

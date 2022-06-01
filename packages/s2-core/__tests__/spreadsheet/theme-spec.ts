@@ -8,8 +8,8 @@ import {
   CellTypes,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
-  S2DataConfig,
-  TextAlign,
+  type S2DataConfig,
+  type TextAlign,
 } from '@/common';
 import type { RowCell } from '@/cell';
 import type { Node } from '@/facet/layout/node';

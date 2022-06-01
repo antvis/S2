@@ -2,7 +2,7 @@ import {
   Canvas,
   Event as CanvasEvent,
   Group,
-  LooseObject,
+  type LooseObject,
   Shape,
 } from '@antv/g-canvas';
 import { each, get, isEmpty, isNil } from 'lodash';

@@ -14,7 +14,7 @@ import type {
 } from '../../common/interface';
 import { getActiveHoverRowColCells } from '../../utils/interaction/hover-event';
 import { getCellMeta } from '../../utils/interaction/select-event';
-import { BaseEvent, BaseEventImplement } from '../base-event';
+import { BaseEvent, type BaseEventImplement } from '../base-event';
 
 /**
  * @description Hover event for data cells, row cells and col cells

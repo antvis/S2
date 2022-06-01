@@ -1,6 +1,6 @@
 import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { type FC, useEffect, useRef, useState } from 'react';
 import type { DraggableProvided } from 'react-beautiful-dnd';
 import type { SwitcherField, SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';

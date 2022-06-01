@@ -1,8 +1,7 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
-import {
+import type {
   AreaRange,
-  CellBorderPosition,
   CellTheme,
   IconCfg,
   Padding,
@@ -10,7 +9,7 @@ import {
   TextAlignCfg,
   TextBaseline,
 } from '../../common/interface';
-
+import { CellBorderPosition } from '../../common/interface';
 /**
  * -----------------------------
  * |           padding         |

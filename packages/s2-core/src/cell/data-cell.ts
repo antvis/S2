@@ -7,8 +7,8 @@ import {
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
 import type { GuiIcon } from '../common/icons';
-import {
-  CellBorderPosition,
+import { CellBorderPosition } from '../common/interface';
+import type {
   CellMeta,
   Condition,
   Conditions,

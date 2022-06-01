@@ -6,7 +6,7 @@ import { BaseDataSet } from './base-data-set';
 
 export class TableDataSet extends BaseDataSet {
   // data that goes into canvas (aka sorted & filtered)
-  protected displayData: DataType[];
+  protected declare displayData: DataType[];
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;

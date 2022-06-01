@@ -1,7 +1,7 @@
 import {
   PivotDataSet,
   RootInteraction,
-  S2Options,
+  type S2Options,
   Store,
   Node,
   SpreadSheet,

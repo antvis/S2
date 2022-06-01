@@ -1,8 +1,8 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import {
   i18n,
-  SortMethod,
-  SortParam,
+  type SortMethod,
+  type SortParam,
   SpreadSheet,
   TOTAL_VALUE,
 } from '@antv/s2';

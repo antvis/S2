@@ -15,7 +15,11 @@ import {
   ROOT_BEGINNING_REGEX,
   ROOT_ID,
 } from '../../common/constant';
-import { CornerNodeType, MultiData, ViewMeta } from '../../common/interface';
+import {
+  CornerNodeType,
+  type MultiData,
+  type ViewMeta,
+} from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';

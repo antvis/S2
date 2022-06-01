@@ -1,11 +1,11 @@
 import {
-  ColHeaderConfig,
+  type ColHeaderConfig,
   customMerge,
   Node,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
-  ViewMeta,
+  type ViewMeta,
 } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import React from 'react';

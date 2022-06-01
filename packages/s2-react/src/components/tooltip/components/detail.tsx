@@ -1,5 +1,9 @@
 import React from 'react';
-import { ListItem, TooltipDetailProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import {
+  type ListItem,
+  type TooltipDetailProps,
+  TOOLTIP_PREFIX_CLS,
+} from '@antv/s2';
 import { TooltipIcon } from './icon';
 
 export const TooltipDetail: React.FC<TooltipDetailProps> = (

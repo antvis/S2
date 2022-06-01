@@ -8,7 +8,7 @@ import {
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // corner width used when scroll {@link ColHeader#onColScroll}

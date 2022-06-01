@@ -3,7 +3,7 @@ import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 
 export class Frame extends Group {
-  cfg: FrameConfig;
+  declare cfg: FrameConfig;
 
   constructor(cfg: FrameConfig) {
     super(cfg);

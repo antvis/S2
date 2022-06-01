@@ -18,11 +18,8 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
-  FormatResult,
-  TextTheme,
-} from '../common/interface';
+import { CellBorderPosition } from '../common/interface';
+import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import type { CornerHeaderConfig } from '../facet/header/corner';
 import {
@@ -51,7 +48,7 @@ import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
-  protected headerConfig: CornerHeaderConfig;
+  protected declare headerConfig: CornerHeaderConfig;
 
   protected textShapes: IShape[] = [];
 

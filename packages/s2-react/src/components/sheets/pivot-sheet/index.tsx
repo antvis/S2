@@ -4,7 +4,7 @@ import { isEmpty, isObject } from 'lodash';
 import React from 'react';
 import { usePivotSheetUpdate } from '../../../hooks';
 import {
-  ActionIconCallback,
+  type ActionIconCallback,
   buildDrillDownOptions,
   handleDrillDown,
 } from '../../../utils';

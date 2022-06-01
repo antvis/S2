@@ -1,6 +1,6 @@
 import {
   ColCell,
-  ColHeaderConfig,
+  type ColHeaderConfig,
   drawObjectText,
   Node,
   safeJsonParse,

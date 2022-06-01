@@ -1,7 +1,8 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node","jest","jest-extended","vite/client"]
+    "target": "ESNext",
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
 }

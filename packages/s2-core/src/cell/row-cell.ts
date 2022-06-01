@@ -8,7 +8,11 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition, TextTheme, ViewMeta } from '../common/interface';
+import {
+  CellBorderPosition,
+  type TextTheme,
+  type ViewMeta,
+} from '../common/interface';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
@@ -31,7 +35,7 @@ import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
-  protected headerConfig: RowHeaderConfig;
+  protected declare headerConfig: RowHeaderConfig;
 
   private gm: GM;
 

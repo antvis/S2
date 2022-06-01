@@ -12,7 +12,7 @@ import {
   isMultiSelectionKey,
 } from '../utils/interaction/select-event';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent

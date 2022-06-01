@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { Group, IElement } from '@antv/g-canvas';
+import { Group, type IElement } from '@antv/g-canvas';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
 
 class MockDataCell extends Group {}

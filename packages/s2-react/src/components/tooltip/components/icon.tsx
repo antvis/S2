@@ -1,4 +1,4 @@
-import { getIcon, TooltipIconProps } from '@antv/s2';
+import { getIcon, type TooltipIconProps } from '@antv/s2';
 import React from 'react';
 import { HtmlIcon } from '../../../common/icons';
 import { ReactElement } from '../../../common/react-element';

@@ -1,12 +1,12 @@
 import {
   GEvent,
-  HeaderActionIconProps,
+  type HeaderActionIconProps,
   i18n,
   Node,
-  PartDrillDownDataCache,
+  type PartDrillDownDataCache,
   PivotDataSet,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
 } from '@antv/s2';
 import { clone, filter, isEmpty } from 'lodash';

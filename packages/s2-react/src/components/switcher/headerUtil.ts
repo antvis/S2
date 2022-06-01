@@ -1,10 +1,10 @@
 import {
   PivotSheet,
-  S2DataConfig,
+  type S2DataConfig,
   SpreadSheet,
   TableSheet,
-  Fields,
-  Meta,
+  type Fields,
+  type Meta,
 } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { filter, find, isEmpty, map, reduce } from 'lodash';

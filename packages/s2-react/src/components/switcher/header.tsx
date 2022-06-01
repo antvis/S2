@@ -8,7 +8,7 @@ import {
   getSheetType,
 } from './headerUtil';
 import type { SwitcherResult } from './interface';
-import { Switcher, SwitcherProps } from '.';
+import { Switcher, type SwitcherProps } from '.';
 import './index.less';
 
 type SwitcherBasicCfg = Pick<

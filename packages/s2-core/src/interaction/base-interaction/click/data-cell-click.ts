@@ -18,7 +18,7 @@ import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
-import { BaseEvent, BaseEventImplement } from '../../base-event';
+import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

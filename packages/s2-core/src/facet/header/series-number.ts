@@ -1,6 +1,10 @@
 import type { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { CellBorderPosition, Padding, ViewMeta } from '../../common/interface';
+import {
+  CellBorderPosition,
+  type Padding,
+  type ViewMeta,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import { getBorderPositionAndStyle } from '../../utils/cell/cell';
 import { renderLine, renderRect } from '../../utils/g-renders';
@@ -9,7 +13,7 @@ import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;

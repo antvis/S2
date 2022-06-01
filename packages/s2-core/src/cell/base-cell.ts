@@ -1,4 +1,5 @@
-import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,

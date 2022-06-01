@@ -1,5 +1,5 @@
 import {
-  CellMeta,
+  type CellMeta,
   CellTypes,
   CopyType,
   InteractionStateName,

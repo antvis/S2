@@ -17,7 +17,7 @@ import type { PanelBBox } from '../bbox/panelBBox';
 import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type

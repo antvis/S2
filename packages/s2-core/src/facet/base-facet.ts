@@ -1,8 +1,8 @@
 import type { IElement, IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import { GestureEvent, Wheel } from '@antv/g-gesture';
+import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
-import { timer, Timer } from 'd3-timer';
+import { timer, type Timer } from 'd3-timer';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -35,7 +35,7 @@ import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
-import { diffPanelIndexes, PanelIndexes } from '../utils/indexes';
+import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { updateMergedCells } from '../utils/interaction/merge-cell';
 import { isMobile } from '../utils/is-mobile';
 import { CornerBBox } from './bbox/cornerBBox';

@@ -12,7 +12,10 @@ import type {
   TooltipOperatorOptions,
 } from '../../../common/interface';
 import type { Node } from '../../../facet/layout/node';
-import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
+import {
+  BaseEvent,
+  type BaseEventImplement,
+} from '../../../interaction/base-event';
 import {
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,

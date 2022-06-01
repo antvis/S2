@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ESNEXT",
+    "target": "ESNext",
     "jsx": "react",
     "baseUrl": ".",
   }, 

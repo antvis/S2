@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 import type { GuiIcon, Node, RowCell, S2Options, SpreadSheet } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { get, noop } from 'lodash';
-import { SheetComponentsProps, SheetComponent } from '../../src';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {

@@ -12,7 +12,7 @@ import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private isRangeSelection = false;

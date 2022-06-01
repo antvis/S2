@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 import {
   customMerge,
-  DataType,
+  type DataType,
   generatePalette,
   getPalette,
-  HeaderActionIconProps,
+  type HeaderActionIconProps,
   Node,
-  S2DataConfig,
+  type S2DataConfig,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
-  TargetCellInfo,
-  ThemeCfg,
-  TooltipAutoAdjustBoundary,
+  type TargetCellInfo,
+  type ThemeCfg,
+  type TooltipAutoAdjustBoundary,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -24,7 +24,7 @@ import {
   Input,
   Popover,
   Radio,
-  RadioChangeEvent,
+  type RadioChangeEvent,
   Select,
   Slider,
   Space,
@@ -39,7 +39,8 @@ import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import { PartDrillDown, PartDrillDownInfo, SheetComponent } from '../src';
+import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';

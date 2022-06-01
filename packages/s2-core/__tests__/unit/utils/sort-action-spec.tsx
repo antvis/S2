@@ -6,9 +6,14 @@ import {
   sortByCustom,
   sortByFunc,
 } from '@/utils/sort-action';
-import { EXTRA_FIELD, S2Options, SortParam, TOTAL_VALUE } from '@/common';
+import {
+  EXTRA_FIELD,
+  type S2Options,
+  type SortParam,
+  TOTAL_VALUE,
+} from '@/common';
 import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet, SortActionParams } from '@/data-set';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {

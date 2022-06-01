@@ -6,14 +6,14 @@ import EE from '@antv/event-emitter';
 import type { Canvas } from '@antv/g-canvas';
 import {
   Store,
-  S2Options,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
   BaseTooltip,
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
-  ViewMeta,
+  type ViewMeta,
 } from '@antv/s2';
 import { omit } from 'lodash';
 

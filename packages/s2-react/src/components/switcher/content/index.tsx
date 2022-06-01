@@ -6,9 +6,9 @@ import cx from 'classnames';
 import { isEqual } from 'lodash';
 import React from 'react';
 import {
-  BeforeCapture,
+  type BeforeCapture,
   DragDropContext,
-  DropResult,
+  type DropResult,
 } from 'react-beautiful-dnd';
 import { FieldType, SWITCHER_CONFIG, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';

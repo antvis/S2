@@ -1,11 +1,11 @@
 import type { Event } from '@antv/g-canvas';
-import { CellMeta, CellTypes, ViewMeta } from '../common';
+import { type CellMeta, CellTypes, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
   InteractionKeyboardKey.ARROW_LEFT,

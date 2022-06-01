@@ -1,4 +1,4 @@
-import { Group, IElement } from '@antv/g-canvas';
+import { Group, type IElement } from '@antv/g-canvas';
 
 export const getAllChildCells = <T extends IElement>(
   children: IElement[] = [],

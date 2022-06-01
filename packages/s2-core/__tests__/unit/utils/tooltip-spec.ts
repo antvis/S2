@@ -17,13 +17,13 @@ import {
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
-  S2CellType,
+  type S2CellType,
   SpreadSheet,
-  Tooltip,
-  TooltipData,
+  type Tooltip,
+  type TooltipData,
   TOOLTIP_POSITION_OFFSET,
-  Total,
-  Totals,
+  type Total,
+  type Totals,
   VALUE_FIELD,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
