@@ -17,7 +17,7 @@ let locale: LocaleType = {
 
 export const getLang = () => lang;
 
-const isEnUS = (l: LangType) => l.indexOf('en') === 0;
+const isEnUS = (l: LangType) => l.startsWith('en');
 
 /**
  * 设置语言
@@ -30,15 +30,12 @@ export const setLang = (l: LangType) => {
 /**
  * 拓展locale配置
  */
-export const extendLocale = (extend: LocaleType) => {
-  locale = merge({}, locale, extend);
+export const extendLocale = (extraLocale: LocaleType) => {
+  locale = merge({}, locale, extraLocale);
 };
 
-/**
- * 国际化方法
- * 国际化是 eva 整个整体设置，不跟着实例走！默认认为同一页面，不可能出现中文和英文两种语言
- *
- */
+export const getLocale = () => locale;
+
 export const i18n = (key: string, defaultValue = key) => {
   return get(locale, [lang, key], defaultValue);
 };
