@@ -1,4 +1,4 @@
-import { SimpleBBox } from '@antv/g-canvas';
+import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import {
   AreaRange,

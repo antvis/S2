@@ -1,4 +1,4 @@
-import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -12,14 +12,14 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../common/constant/interaction';
-import {
+import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   OriginalEvent,
   ViewMeta,
 } from '../common/interface';
-import { TableFacet } from '../facet';
+import type { TableFacet } from '../facet';
 import {
   isFrozenCol,
   isFrozenRow,
@@ -33,7 +33,7 @@ import {
 import { getCellMeta } from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
-import { BaseEventImplement } from './base-event';
+import type { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 
 /**

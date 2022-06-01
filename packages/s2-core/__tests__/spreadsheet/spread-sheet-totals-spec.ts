@@ -2,8 +2,8 @@ import { getContainer } from 'tests/util/helpers';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { flatMap, merge } from 'lodash';
 import { PivotSheet } from '@/sheet-type';
-import { S2DataConfig, S2Options } from '@/common';
-import { Node } from '@/facet/layout/node';
+import type { S2DataConfig, S2Options } from '@/common';
+import type { Node } from '@/facet/layout/node';
 
 describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;

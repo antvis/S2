@@ -1,5 +1,5 @@
 import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
-import { Data, Fields, Totals, TotalsStatus } from '../common/interface';
+import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (list: string[], sorted: string[]) => {
   return list.sort((a, b) => {

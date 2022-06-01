@@ -1,6 +1,6 @@
-import { SimpleBBox } from '@antv/g-canvas';
+import type { SimpleBBox } from '@antv/g-canvas';
 import { CellBorderPosition, CellTheme } from '@/common/interface';
-import { AreaRange } from '@/common/interface/scroll';
+import type { AreaRange } from '@/common/interface/scroll';
 import {
   getContentArea,
   getMaxTextWidth,

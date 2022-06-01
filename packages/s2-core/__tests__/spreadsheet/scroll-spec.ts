@@ -2,7 +2,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellMeta, S2Options } from '@/common/interface';
+import type { CellMeta, S2Options } from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,

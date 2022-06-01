@@ -1,12 +1,12 @@
-import { SpreadSheetFacetCfg } from '../../common/interface';
-import { PivotDataSet } from '../../data-set';
-import { SpreadSheet } from '../../sheet-type';
+import type { SpreadSheetFacetCfg } from '../../common/interface';
+import type { PivotDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
 import { buildGridHierarchy } from '../layout/build-gird-hierarchy';
 import { buildRowCustomTreeHierarchy } from '../layout/build-row-custom-tree-hierarchy';
 import { buildRowTreeHierarchy } from '../layout/build-row-tree-hierarchy';
 import { buildTableHierarchy } from '../layout/build-table-hierarchy';
 import { Hierarchy } from '../layout/hierarchy';
-import { BuildHeaderParams, BuildHeaderResult } from '../layout/interface';
+import type { BuildHeaderParams, BuildHeaderResult } from '../layout/interface';
 import { Node } from '../layout/node';
 
 interface HeaderParams {

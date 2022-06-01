@@ -1,5 +1,5 @@
-import { get } from 'lodash';
 import Decimal from 'decimal.js';
+import { get } from 'lodash';
 import { Aggregation } from '../common/interface';
 
 type DataItem = Record<string, any>;

@@ -1,6 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { S2Options } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
 

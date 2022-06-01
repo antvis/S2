@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import { FrameConfig } from '../../common/interface';
+import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 
 export class Frame extends Group {

@@ -4,7 +4,7 @@
 import { get, keys } from 'lodash';
 import { assembleDataCfg } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';

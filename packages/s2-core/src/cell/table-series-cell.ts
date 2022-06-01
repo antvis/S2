@@ -1,16 +1,16 @@
+import { DataCell } from '../cell/data-cell';
+import {
+  CellTypes,
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+} from '../common/constant';
+import type { TextTheme } from '../common/interface';
 import {
   isFrozenRow as isFrozenRowUtil,
   isFrozenTrailingRow as isFrozenTrailingRowUtil,
 } from '../facet/utils';
-import { DataCell } from '../cell/data-cell';
-import {
-  CellTypes,
-  KEY_GROUP_ROW_RESIZE_AREA,
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-} from '../common/constant';
-import { TextTheme } from '../common/interface';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,

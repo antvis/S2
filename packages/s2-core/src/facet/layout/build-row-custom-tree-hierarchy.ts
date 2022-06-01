@@ -1,7 +1,7 @@
 import { get, isEmpty } from 'lodash';
 import { EXTRA_FIELD } from '../../common/constant';
 import { generateId } from '../../utils/layout/generate-id';
-import { CustomTreeHeaderParams } from '../layout/interface';
+import type { CustomTreeHeaderParams } from '../layout/interface';
 import { Node } from '../layout/node';
 import { layoutHierarchy } from './layout-hooks';
 

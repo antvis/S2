@@ -1,6 +1,5 @@
-import { Point, SimpleBBox } from '@antv/g-canvas';
+import type { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
-import { shouldAddResizeArea } from '../utils/interaction/resize';
 import {
   CellTypes,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
@@ -15,20 +14,21 @@ import {
   IconTheme,
   TextTheme,
 } from '../common/interface';
-import { AreaRange } from '../common/interface/scroll';
-import { ColHeaderConfig } from '../facet/header/col';
+import type { AreaRange } from '../common/interface/scroll';
+import type { ColHeaderConfig } from '../facet/header/col';
 import {
+  adjustColHeaderScrollingTextPosition,
+  adjustColHeaderScrollingViewport,
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
   getTextAreaRange,
-  adjustColHeaderScrollingViewport,
-  adjustColHeaderScrollingTextPosition,
 } from '../utils/cell/cell';
 import { renderIcon, renderLine, renderRect } from '../utils/g-renders';
 import { isLastColumnAfterHidden } from '../utils/hide-columns';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
+  shouldAddResizeArea,
 } from '../utils/interaction/resize';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';

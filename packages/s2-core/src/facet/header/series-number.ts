@@ -1,12 +1,12 @@
-import { Group, IGroup, IShape } from '@antv/g-canvas';
+import type { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
 import { CellBorderPosition, Padding, ViewMeta } from '../../common/interface';
-import { SpreadSheet } from '../../sheet-type/index';
+import type { SpreadSheet } from '../../sheet-type/index';
 import { getBorderPositionAndStyle } from '../../utils/cell/cell';
 import { renderLine, renderRect } from '../../utils/g-renders';
 import { measureTextWidth } from '../../utils/text';
 import { getAdjustPosition } from '../../utils/text-absorption';
-import { PanelBBox } from '../bbox/panelBBox';
+import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';

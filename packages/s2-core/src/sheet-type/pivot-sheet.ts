@@ -1,4 +1,4 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { clone, last } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -7,7 +7,7 @@ import {
   S2Event,
   TOOLTIP_OPERATOR_SORT_MENUS,
 } from '../common/constant';
-import {
+import type {
   RowCellCollapseTreeRowsType,
   S2Options,
   SortMethod,
@@ -19,7 +19,7 @@ import {
 import { PivotDataSet } from '../data-set';
 import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
 import { PivotFacet } from '../facet';
-import { Node } from '../facet/layout/node';
+import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {

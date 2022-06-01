@@ -1,5 +1,5 @@
 import { PALETTE_MAP } from '../common/constant';
-import { Palette, ThemeName } from '../common/interface/theme';
+import type { Palette, ThemeName } from '../common/interface/theme';
 
 /**
  * 获取当前的主题色板

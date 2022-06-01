@@ -20,7 +20,7 @@ import {
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
 } from '../common/debug';
-import {
+import type {
   FrameConfig,
   GridInfo,
   LayoutResult,
@@ -30,7 +30,7 @@ import {
   ViewMeta,
 } from '../common/interface';
 import type { S2WheelEvent, ScrollOffset } from '../common/interface/scroll';
-import { SpreadSheet } from '../sheet-type';
+import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -47,8 +47,8 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from './header';
-import { ViewCellHeights } from './layout/interface';
-import { Node } from './layout/node';
+import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 import {
   calculateInViewIndexes,
   getCellRange,

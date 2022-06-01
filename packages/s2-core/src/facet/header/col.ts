@@ -1,14 +1,13 @@
-import { each } from 'lodash';
 import type { IGroup, IShape } from '@antv/g-canvas';
-import { translateGroupX } from '../utils';
-import {
-  KEY_GROUP_COL_SCROLL,
-  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-} from '../../common/constant';
+import { each } from 'lodash';
 import { ColCell } from '../../cell';
-import { Node } from '../layout/node';
-
-import { SpreadSheet } from '../../sheet-type/index';
+import {
+  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  KEY_GROUP_COL_SCROLL,
+} from '../../common/constant';
+import type { SpreadSheet } from '../../sheet-type';
+import type { Node } from '../layout/node';
+import { translateGroupX } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {

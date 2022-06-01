@@ -1,8 +1,8 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { Event as GEvent } from '@antv/g-canvas';
-import { S2CellType } from '@/common/interface/interaction';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { Event as GEvent } from '@antv/g-canvas';
+import type { S2CellType } from '@/common/interface/interaction';
+import type { S2Options } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,

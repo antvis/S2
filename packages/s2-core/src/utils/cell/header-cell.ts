@@ -1,7 +1,10 @@
 import { isEmpty, isEqual } from 'lodash';
 import { CellTypes, EXTRA_FIELD } from '../../common/constant';
-import { FormatResult, HeaderActionIcon } from '../../common/interface/basic';
-import { Node } from '../../facet/layout/node';
+import type {
+  FormatResult,
+  HeaderActionIcon,
+} from '../../common/interface/basic';
+import type { Node } from '../../facet/layout/node';
 
 export const shouldShowActionIcons = (
   actionIconCfg: HeaderActionIcon,

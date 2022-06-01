@@ -2,7 +2,7 @@ import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { each, get } from 'lodash';
 import { MIN_SCROLL_BAR_HEIGHT } from '../../common/constant/scroll';
-import { ScrollBarTheme } from '../../common/interface/theme';
+import type { ScrollBarTheme } from '../../common/interface/theme';
 import type { PointObject, ScrollBarCfg } from './interface';
 
 export enum ScrollType {

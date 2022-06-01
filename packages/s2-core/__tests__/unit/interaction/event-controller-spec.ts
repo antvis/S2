@@ -2,7 +2,7 @@
 import { Canvas, BBox, CanvasCfg, Shape } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { GuiIcon } from '@/common';
-import { EmitterType } from '@/common/interface/emitter';
+import type { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
   InteractionKeyboardKey,
@@ -12,10 +12,10 @@ import {
   S2Event,
 } from '@/common/constant';
 import { EventController } from '@/interaction/event-controller';
-import { SpreadSheet } from '@/sheet-type';
+import type { SpreadSheet } from '@/sheet-type';
 import { RootInteraction } from '@/interaction/root';
-import { CellMeta, S2Options } from '@/common/interface';
-import { BaseFacet } from '@/facet';
+import type { CellMeta, S2Options } from '@/common/interface';
+import type { BaseFacet } from '@/facet';
 
 const MOCK_COPY_DATA = 'data';
 

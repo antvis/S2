@@ -9,13 +9,13 @@ import {
 } from 'lodash';
 import { MergedCell } from '../../cell/merged-cell';
 import { CellTypes } from '../../common/constant';
-import {
+import type {
   MergedCellInfo,
   S2CellType,
   TempMergedCell,
   ViewMeta,
 } from '../../common/interface';
-import { SpreadSheet } from '../../sheet-type';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,

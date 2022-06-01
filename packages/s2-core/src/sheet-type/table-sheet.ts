@@ -1,4 +1,4 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { TableDataCell, TableRowCell } from '../cell';
 import {
   InterceptType,
@@ -12,7 +12,7 @@ import {
   S2Event,
   TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
 } from '../common/constant';
-import {
+import type {
   S2Options,
   SortParam,
   SpreadSheetFacetCfg,
@@ -21,7 +21,7 @@ import {
 } from '../common/interface';
 import { TableDataSet } from '../data-set';
 import { TableFacet } from '../facet';
-import { Node } from '../facet/layout/node';
+import type { Node } from '../facet/layout/node';
 import { FrozenGroup } from '../group/frozen-group';
 import { SpreadSheet } from './spread-sheet';
 

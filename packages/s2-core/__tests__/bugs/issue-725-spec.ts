@@ -8,7 +8,7 @@
 
 import * as mockDataConfig from 'tests/data/data-issue-725.json';
 import { assembleDataCfg } from '../util';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set';
 import { EXTRA_FIELD } from '@/common/constant';

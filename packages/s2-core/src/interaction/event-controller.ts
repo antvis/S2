@@ -15,8 +15,8 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import { EmitterType, ResizeInfo } from '../common/interface';
-import { SpreadSheet } from '../sheet-type';
+import type { EmitterType, ResizeInfo } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 

@@ -1,4 +1,4 @@
-import { Node } from '../../facet/layout/node';
+import type { Node } from '../../facet/layout/node';
 
 export function getDimsCondition(parent: Node, force?: boolean) {
   const cond = {};

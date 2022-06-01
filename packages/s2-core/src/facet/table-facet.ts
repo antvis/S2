@@ -22,16 +22,24 @@ import type {
   TableSortParam,
   ViewMeta,
 } from '../common/interface';
-import { TableDataSet } from '../data-set';
+import type { TableDataSet } from '../data-set';
 import { getDataCellId } from '../utils/cell/data-cell';
+import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
+import { getIndexRangeWithOffsets } from '../utils/facet';
 import { renderLine } from '../utils/g-renders';
 import { getAllChildCells } from '../utils/get-all-child-cells';
-import { PanelIndexes } from '../utils/indexes';
+import {
+  getColsForGrid,
+  getFrozenRowsForGrid,
+  getRowsForGrid,
+} from '../utils/grid';
+import type { PanelIndexes } from '../utils/indexes';
+import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { measureTextWidth, measureTextWidthRoughly } from '../utils/text';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
-import { SeriesNumberHeader } from './header';
-import { ColHeader } from './header/col';
+import type { SeriesNumberHeader } from './header';
+import type { ColHeader } from './header/col';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import { Hierarchy } from './layout/hierarchy';
@@ -47,14 +55,6 @@ import {
   translateGroupX,
   translateGroupY,
 } from './utils';
-import { getValidFrozenOptions } from '@/utils/layout/frozen';
-import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from '@/utils/grid';
-import { getIndexRangeWithOffsets } from '@/utils/facet';
-import { getOccupiedWidthForTableCol } from '@/utils/cell/table-col-cell';
 
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];

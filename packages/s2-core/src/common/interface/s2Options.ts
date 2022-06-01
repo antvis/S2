@@ -1,7 +1,4 @@
-import { ColHeaderConfig } from '../../facet/header/col';
-import { RowHeaderConfig } from '../../facet/header/row';
-import { CornerHeaderConfig } from '../../facet/header/corner';
-import {
+import type {
   CellCallback,
   CornerHeaderCallback,
   DataCellCallback,
@@ -12,22 +9,25 @@ import {
   Style,
   Totals,
 } from '../../common/interface/basic';
-import {
+import type {
   LayoutArrange,
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
 } from '../../common/interface/hooks';
-import { BaseDataSet } from '../../data-set';
-import { SpreadSheet } from '../../sheet-type';
-import { InteractionOptions } from './interaction';
-import { Tooltip } from './tooltip';
-import {
+import type { BaseDataSet } from '../../data-set';
+import type { ColHeaderConfig } from '../../facet/header/col';
+import type { CornerHeaderConfig } from '../../facet/header/corner';
+import type { RowHeaderConfig } from '../../facet/header/row';
+import type { SpreadSheet } from '../../sheet-type';
+import type {
+  CustomSVGIcon,
   FilterDataItemCallback,
   HeaderActionIcon,
-  CustomSVGIcon,
 } from './basic';
-import { Conditions } from './condition';
+import type { Conditions } from './condition';
+import type { InteractionOptions } from './interaction';
+import type { Tooltip } from './tooltip';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width

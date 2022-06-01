@@ -11,9 +11,9 @@ import {
   uniq,
 } from 'lodash';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
-import { Fields, SortMethod, SortParam } from '../common/interface';
-import { PivotDataSet } from '../data-set';
-import { DataType, SortActionParams } from '../data-set/interface';
+import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type { PivotDataSet } from '../data-set';
+import type { DataType, SortActionParams } from '../data-set/interface';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 

@@ -1,68 +1,68 @@
 import {
   compact,
+  difference,
   each,
+  every,
+  filter,
   find,
+  first,
+  forEach,
   get,
   has,
   includes,
   isEmpty,
+  isNumber,
   isUndefined,
   keys,
   uniq,
-  values,
-  filter,
-  forEach,
   unset,
-  isNumber,
-  difference,
-  every,
-  first,
+  values,
 } from 'lodash';
+import {
+  EXTRA_FIELD,
+  ID_SEPARATOR,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+} from '../common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
+import { i18n } from '../common/i18n';
+import type {
+  Data,
+  Formatter,
+  Meta,
+  PartDrillDownDataCache,
+  PartDrillDownFieldInLevel,
+  S2DataConfig,
+  ViewMeta,
+} from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
   filterUndefined,
   flatten as customFlatten,
   flattenDeep as customFlattenDeep,
+  getAggregationAndCalcFuncByQuery,
   getFieldKeysByDimensionValues,
   getListBySorted,
   isEveryUndefined,
-  splitTotal,
   isTotalData,
+  splitTotal,
 } from '../utils/data-set-operate';
 import {
-  EXTRA_FIELD,
-  TOTAL_VALUE,
-  VALUE_FIELD,
-  ID_SEPARATOR,
-} from '../common/constant';
-import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
-import { i18n } from '../common/i18n';
-import {
-  Data,
-  Formatter,
-  Meta,
-  S2DataConfig,
-  ViewMeta,
-  PartDrillDownDataCache,
-  PartDrillDownFieldInLevel,
-} from '../common/interface';
-import { handleSortAction } from '../utils/sort-action';
-import {
-  transformIndexesData,
-  getDataPath,
-  getQueryDimValues,
   deleteMetaById,
+  getDataPath,
   getDimensionsWithoutPathPre,
+  getQueryDimValues,
+  transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
-import { getAggregationAndCalcFuncByQuery } from '../utils/data-set-operate';
-import {
+import { handleSortAction } from '../utils/sort-action';
+import { BaseDataSet } from './base-data-set';
+import type {
   CellDataParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from './interface';
-import { BaseDataSet } from './base-data-set';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure

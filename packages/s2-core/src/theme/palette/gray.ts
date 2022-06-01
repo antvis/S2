@@ -1,4 +1,4 @@
-import { Palette, PaletteMeta } from '../../common';
+import type { Palette, PaletteMeta } from '../../common';
 import { generatePalette } from '../../utils/color';
 
 const paletteGrayMeta: PaletteMeta = {

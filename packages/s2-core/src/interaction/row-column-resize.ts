@@ -1,4 +1,4 @@
-import {
+import type {
   Event as CanvasEvent,
   IGroup,
   IShape,
@@ -17,7 +17,7 @@ import {
   RESIZE_START_GUIDE_LINE_ID,
   S2Event,
 } from '../common/constant';
-import {
+import type {
   ResizeDetail,
   ResizeGuideLinePath,
   ResizeGuideLinePosition,

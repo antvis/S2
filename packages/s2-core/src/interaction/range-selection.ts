@@ -1,4 +1,4 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { inRange, isNil, range } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -8,8 +8,8 @@ import {
   InterceptType,
   S2Event,
 } from '../common/constant';
-import { S2CellType, ViewMeta } from '../common/interface';
-import { Node } from '../facet/layout/node';
+import type { S2CellType, ViewMeta } from '../common/interface';
+import type { Node } from '../facet/layout/node';
 import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, BaseEventImplement } from './base-interaction';

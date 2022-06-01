@@ -1,9 +1,9 @@
 import { find, get } from 'lodash';
 import { CellTypes } from '../../common/constant';
-import { HeaderActionIcon } from '../../common/interface/basic';
-import { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
-import { Node } from '../../facet/layout/node';
-import { SpreadSheet } from '../../sheet-type';
+import type { HeaderActionIcon } from '../../common/interface/basic';
+import type { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 import { shouldShowActionIcons } from './header-cell';
 
 export const getTableColIconsWidth = (

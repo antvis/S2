@@ -8,7 +8,7 @@ import {
   getDimensionsWithoutPathPre,
   getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 
 describe('PivotDataSet util test', () => {
   const dataCfg: S2DataConfig = assembleDataCfg({

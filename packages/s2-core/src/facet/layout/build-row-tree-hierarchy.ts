@@ -1,11 +1,11 @@
 import { get, isEmpty } from 'lodash';
 import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
-import { PivotDataSet } from '../../data-set';
-import { SpreadSheet } from '../../sheet-type';
+import type { PivotDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
 import { filterUndefined, getListBySorted } from '../../utils/data-set-operate';
 import { getDimensionsWithoutPathPre } from '../../utils/dataset/pivot-data-set';
 import { generateId } from '../../utils/layout/generate-id';
-import { FieldValue, TreeHeaderParams } from '../layout/interface';
+import type { FieldValue, TreeHeaderParams } from '../layout/interface';
 import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
 import { Node } from '../layout/node';
 import { TotalClass } from '../layout/total-class';

@@ -2,8 +2,8 @@
  * 获取tooltip中需要显示的数据项
  */
 
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import * as CSS from 'csstype';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type * as CSS from 'csstype';
 import {
   assign,
   compact,
@@ -32,7 +32,7 @@ import {
 } from '../common/constant';
 import { TOOLTIP_POSITION_OFFSET } from '../common/constant/tooltip';
 import { i18n } from '../common/i18n';
-import {
+import type {
   AutoAdjustPositionOptions,
   Data,
   LayoutResult,
@@ -40,8 +40,8 @@ import {
   Tooltip,
   ViewMeta,
 } from '../common/interface';
-import { S2CellType } from '../common/interface/interaction';
-import {
+import type { S2CellType } from '../common/interface/interaction';
+import type {
   BaseTooltipConfig,
   SummaryParam,
   TooltipData,
@@ -55,7 +55,7 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
 } from '../common/interface/tooltip';
-import { SpreadSheet } from '../sheet-type';
+import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';

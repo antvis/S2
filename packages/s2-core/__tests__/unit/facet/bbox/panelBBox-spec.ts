@@ -1,5 +1,5 @@
-import { ThemeCfg } from '@/common';
-import { BaseFacet } from '@/facet/base-facet';
+import type { ThemeCfg } from '@/common';
+import type { BaseFacet } from '@/facet/base-facet';
 import { PanelBBox } from '@/facet/bbox/panelBBox';
 
 describe('PanelBBox test', () => {

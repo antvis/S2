@@ -6,12 +6,12 @@ import {
   S2Event,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
 } from '../../../common/constant';
-import {
+import type {
   TooltipOperation,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
 } from '../../../common/interface';
-import { Node } from '../../../facet/layout/node';
+import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, BaseEventImplement } from '../../../interaction/base-event';
 import {
   hideColumnsByThunkGroup,

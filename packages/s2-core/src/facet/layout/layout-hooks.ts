@@ -1,7 +1,7 @@
 import { each, isBoolean, isEmpty } from 'lodash';
-import { LayoutResult, SpreadSheetFacetCfg } from '../../common/interface';
-import { Hierarchy } from '../layout/hierarchy';
-import { Node } from '../layout/node';
+import type { LayoutResult, SpreadSheetFacetCfg } from '../../common/interface';
+import type { Hierarchy } from '../layout/hierarchy';
+import type { Node } from '../layout/node';
 
 /**
  * re-arrange field values by custom arrange hooks

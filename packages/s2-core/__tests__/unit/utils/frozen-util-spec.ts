@@ -6,8 +6,8 @@ import {
   getCellRange,
 } from '@/facet/utils';
 import { FrozenCellType } from '@/common/constant/frozen';
-import { Indexes } from '@/utils/indexes';
-import { ViewCellHeights } from '@/facet/layout/interface';
+import type { Indexes } from '@/utils/indexes';
+import type { ViewCellHeights } from '@/facet/layout/interface';
 
 describe('Frozen util test', () => {
   describe('getCellRange', () => {

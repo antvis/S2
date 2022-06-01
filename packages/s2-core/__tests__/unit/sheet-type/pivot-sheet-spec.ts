@@ -20,7 +20,7 @@ import {
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
-import { CornerCell } from '@/cell/corner-cell';
+import type { CornerCell } from '@/cell/corner-cell';
 
 jest.mock('@/utils/hide-columns');
 

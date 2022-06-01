@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { ColCell, RowCell } from '../../cell';
+import type { ColCell, RowCell } from '../../cell';
 import { ID_SEPARATOR } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
 

@@ -1,13 +1,13 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { DataCell } from '../../../cell/data-cell';
+import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
   TOOLTIP_OPERATOR_TREND_MENU,
 } from '../../../common/constant';
-import {
+import type {
   CellAppendInfo,
   TooltipData,
   TooltipOperatorOptions,

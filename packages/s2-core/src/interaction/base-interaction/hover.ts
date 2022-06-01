@@ -1,13 +1,17 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach, isBoolean, isEmpty } from 'lodash';
-import { ColCell, RowCell } from '../../cell';
+import type { ColCell, RowCell } from '../../cell';
 import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
   InteractionStateName,
   InterceptType,
 } from '../../common/constant/interaction';
-import { S2CellType, TooltipOptions, ViewMeta } from '../../common/interface';
+import type {
+  S2CellType,
+  TooltipOptions,
+  ViewMeta,
+} from '../../common/interface';
 import { getActiveHoverRowColCells } from '../../utils/interaction/hover-event';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseEvent, BaseEventImplement } from '../base-event';

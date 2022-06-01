@@ -9,7 +9,7 @@ import {
   InterceptType,
   S2Event,
 } from '../common/constant';
-import {
+import type {
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
@@ -19,14 +19,14 @@ import {
 } from '../common/interface';
 import { ColHeader, RowHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
-import { SpreadSheet } from '../sheet-type';
+import type { SpreadSheet } from '../sheet-type';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
 import { getCellMeta } from '../utils/interaction/select-event';
 import { clearState, setState } from '../utils/interaction/state-controller';
 import { isMobile } from '../utils/is-mobile';
-import { BaseEvent } from './base-event';
+import type { BaseEvent } from './base-event';
 import {
   DataCellClick,
   MergedCellClick,

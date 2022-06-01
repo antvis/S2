@@ -1,3 +1,3 @@
-export { BaseEvent, BaseEventImplement } from '../base-event';
-export { HoverEvent } from './hover';
+export { BaseEvent, type BaseEventImplement } from '../base-event';
 export * from './click';
+export { HoverEvent } from './hover';

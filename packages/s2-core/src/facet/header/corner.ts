@@ -1,20 +1,20 @@
-import { Group, Point } from '@antv/g-canvas';
+import type { Group, Point } from '@antv/g-canvas';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
-import {
+import type {
   LayoutResult,
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
 } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
-import { BaseDataSet } from '../../data-set';
-import { SpreadSheet } from '../../sheet-type';
-import { CornerBBox } from '../bbox/cornerBBox';
-import { PanelBBox } from '../bbox/panelBBox';
-import { Hierarchy } from '../layout/hierarchy';
+import type { BaseDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
+import type { CornerBBox } from '../bbox/cornerBBox';
+import type { PanelBBox } from '../bbox/panelBBox';
+import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';

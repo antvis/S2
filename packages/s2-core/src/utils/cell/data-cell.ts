@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
-import {
+import type {
   CellMeta,
   Data,
   FilterDataItemCallback,

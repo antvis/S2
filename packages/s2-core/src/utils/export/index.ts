@@ -16,8 +16,8 @@ import {
   ROOT_ID,
 } from '../../common/constant';
 import { CornerNodeType, MultiData, ViewMeta } from '../../common/interface';
-import { Node } from '../../facet/layout/node';
-import { SpreadSheet } from '../../sheet-type';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
 import { getCsvString } from './export-worker';
 

@@ -1,4 +1,4 @@
-import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import type { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import {
   cond,
   constant,
@@ -10,13 +10,9 @@ import {
   stubTrue,
 } from 'lodash';
 import {
-  getResizeAreaAttrs,
-  getOrCreateResizeAreaGroupById,
-} from '../utils/interaction/resize';
-import {
   CellTypes,
-  EXTRA_FIELD,
   DEFAULT_CORNER_TEXT,
+  EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -27,28 +23,32 @@ import {
   FormatResult,
   TextTheme,
 } from '../common/interface';
-import { CornerHeaderConfig } from '../facet/header/corner';
+import { CornerNodeType } from '../common/interface/node';
+import type { CornerHeaderConfig } from '../facet/header/corner';
 import {
+  getBorderPositionAndStyle,
   getTextPosition,
   getVerticalPosition,
-  getBorderPositionAndStyle,
 } from '../utils/cell/cell';
+import { formattedFieldValue } from '../utils/cell/header-cell';
 import {
   renderLine,
   renderRect,
   renderText,
   renderTreeIcon,
 } from '../utils/g-renders';
+import {
+  getOrCreateResizeAreaGroupById,
+  getResizeAreaAttrs,
+} from '../utils/interaction/resize';
 import { isIPhoneX } from '../utils/is-mobile';
 import {
   getEllipsisText,
   getEmptyPlaceholder,
   measureTextWidth,
 } from '../utils/text';
-import { CornerNodeType } from '../common/interface/node';
-import { formattedFieldValue } from '../utils/cell/header-cell';
-import { HeaderCell } from './header-cell';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;

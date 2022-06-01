@@ -1,11 +1,11 @@
 import { find, get } from 'lodash';
-import { Group } from '@antv/g-canvas';
+import type { Group } from '@antv/g-canvas';
 import { ColCell } from '../cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
-import { FormatResult, SortParam } from '../common/interface';
+import type { FormatResult, SortParam } from '../common/interface';
 import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
 import { getContentArea } from '../utils/cell/cell';
 import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';

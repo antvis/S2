@@ -1,12 +1,12 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
-import { DataCell } from '../cell';
+import type { DataCell } from '../cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '../common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '../common/interface';
+import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,

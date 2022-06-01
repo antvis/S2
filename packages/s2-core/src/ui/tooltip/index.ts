@@ -3,7 +3,7 @@ import {
   TOOLTIP_CONTAINER_CLS,
   TOOLTIP_PREFIX_CLS,
 } from '../../common/constant/tooltip';
-import {
+import type {
   TooltipContentType,
   TooltipPosition,
   TooltipShowOptions,

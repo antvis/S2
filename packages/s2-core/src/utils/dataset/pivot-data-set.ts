@@ -1,6 +1,6 @@
 import { forEach, isUndefined, last, map, reduce, set } from 'lodash';
 import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
-import {
+import type {
   DataPathParams,
   DataType,
   PivotMeta,

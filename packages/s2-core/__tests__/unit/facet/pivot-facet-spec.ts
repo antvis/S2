@@ -13,9 +13,9 @@ import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
-import { ViewMeta } from '@/common/interface/basic';
+import type { ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
-import { GridGroup } from '@/group/grid-group';
+import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/interaction/root');
 

@@ -2,7 +2,7 @@ import { includes, isBoolean } from 'lodash';
 import { EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
-import { HeaderNodesParams } from '../../facet/layout/interface';
+import type { HeaderNodesParams } from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';

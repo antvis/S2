@@ -7,7 +7,7 @@
 import { getContainer } from 'tests/util/helpers';
 import dataCfg from '../data/data-issue-860.json';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
+import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

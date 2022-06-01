@@ -14,7 +14,7 @@ import {
   S2Options,
   SpreadSheet,
 } from '@/index';
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');

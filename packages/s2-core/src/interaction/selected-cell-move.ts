@@ -1,8 +1,8 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { CellMeta, CellTypes, ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
-import { SpreadSheet } from '../sheet-type';
+import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils';
 import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
 import { BaseEvent, BaseEventImplement } from './base-interaction';

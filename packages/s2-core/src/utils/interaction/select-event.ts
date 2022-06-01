@@ -3,8 +3,8 @@ import {
   InteractionStateName,
   S2Event,
 } from '../../common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
-import { SpreadSheet } from '../../sheet-type';
+import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(

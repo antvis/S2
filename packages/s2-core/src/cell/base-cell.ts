@@ -6,7 +6,7 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import {
+import type {
   CellThemes,
   DefaultCellTheme,
   FormatResult,
@@ -17,7 +17,7 @@ import {
   StateShapeLayer,
   TextTheme,
 } from '../common/interface';
-import { SpreadSheet } from '../sheet-type';
+import type { SpreadSheet } from '../sheet-type';
 import {
   getContentArea,
   getTextAndFollowingIconPosition,

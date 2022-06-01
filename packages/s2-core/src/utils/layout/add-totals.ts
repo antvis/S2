@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { EXTRA_FIELD } from '../../common/constant';
-import { TotalParams } from '../../facet/layout/interface';
+import type { TotalParams } from '../../facet/layout/interface';
 import { TotalClass } from '../../facet/layout/total-class';
 
 export const addTotals = (params: TotalParams) => {

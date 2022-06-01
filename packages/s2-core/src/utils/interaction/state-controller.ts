@@ -1,7 +1,7 @@
 import { forEach, isEmpty } from 'lodash';
 import { INTERACTION_STATE_INFO_KEY } from '../../common/constant';
-import { InteractionStateInfo, S2CellType } from '../../common/interface';
-import { SpreadSheet } from '../../sheet-type';
+import type { InteractionStateInfo, S2CellType } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  * @desc clear the interaction state information

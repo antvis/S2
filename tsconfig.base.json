@@ -13,7 +13,7 @@
     "lib": ["esnext", "dom"],
     "noEmitHelpers": false,
     "skipLibCheck": true,
-
+    "importsNotUsedAsValues": "error",
     "paths": {
       "@/*": ["./src/*"],
       "tests/*": ["./__tests__/*"]

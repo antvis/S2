@@ -1,5 +1,5 @@
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
+import type { Node } from '@/facet/layout/node';
+import type { SpreadSheet } from '@/sheet-type';
 import { getOccupiedWidthForTableCol } from '@/utils/cell/table-col-cell';
 
 describe('Table col cell util test', () => {

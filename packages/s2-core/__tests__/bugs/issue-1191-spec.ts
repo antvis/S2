@@ -5,12 +5,10 @@
  * link field should use linkFieldFill color
  *
  */
-import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { filter, get } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
+import type { S2Options } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
-import { CornerCell } from '@/cell';
 
 const s2options: S2Options = {
   width: 300,

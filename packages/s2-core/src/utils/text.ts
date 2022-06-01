@@ -14,7 +14,7 @@ import {
   values,
 } from 'lodash';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
-import {
+import type {
   BulletValue,
   CellCfg,
   Condition,
@@ -22,7 +22,7 @@ import {
   S2CellType,
   ViewMeta,
 } from '../common/interface';
-import {
+import type {
   BulletTheme,
   DefaultCellTheme,
   RangeColors,

@@ -1,15 +1,15 @@
-import { BBox, Group } from '@antv/g-canvas';
-import {
+import type { BBox, Group } from '@antv/g-canvas';
+import type {
   InteractionStateInfo,
   S2CellType,
   SortParam,
   ViewMeta,
 } from '../interface';
-import { Node } from '../../facet/layout/node';
-import { PartDrillDownFieldInLevel } from '../../common/interface';
-import { GuiIcon } from '../../common/icons';
-import { S2DataConfig } from './s2DataConfig';
-import { ValueRanges } from './condition';
+import type { Node } from '../../facet/layout/node';
+import type { PartDrillDownFieldInLevel } from '../../common/interface';
+import type { GuiIcon } from '../../common/icons';
+import type { S2DataConfig } from './s2DataConfig';
+import type { ValueRanges } from './condition';
 
 export interface Selected {
   type:

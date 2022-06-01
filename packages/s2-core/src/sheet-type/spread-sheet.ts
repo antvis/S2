@@ -25,7 +25,7 @@ import {
 import { DebuggerUtil } from '../common/debug';
 import { i18n } from '../common/i18n';
 import { registerIcon } from '../common/icons/factory';
-import {
+import type {
   CustomSVGIcon,
   EmitterType,
   LayoutWidthType,
@@ -47,10 +47,10 @@ import {
   Totals,
 } from '../common/interface';
 import { Store } from '../common/store';
-import { BaseDataSet } from '../data-set';
-import { BaseFacet } from '../facet';
-import { Node } from '../facet/layout/node';
-import { FrozenGroup } from '../group/frozen-group';
+import type { BaseDataSet } from '../data-set';
+import type { BaseFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import type { FrozenGroup } from '../group/frozen-group';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';

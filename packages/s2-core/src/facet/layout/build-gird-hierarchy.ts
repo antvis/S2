@@ -1,10 +1,10 @@
 import { isEmpty, isUndefined, uniqWith } from 'lodash';
 import { EXTRA_COLUMN_FIELD, EXTRA_FIELD } from '../../common/constant';
-import { SpreadSheetFacetCfg } from '../../common/interface';
+import type { SpreadSheetFacetCfg } from '../../common/interface';
 import { addTotals } from '../../utils/layout/add-totals';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
 import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node';
-import { FieldValue, GridHeaderParams } from '../layout/interface';
+import type { FieldValue, GridHeaderParams } from '../layout/interface';
 import { layoutArrange } from '../layout/layout-hooks';
 import { TotalMeasure } from '../layout/total-measure';
 

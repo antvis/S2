@@ -13,12 +13,12 @@ import {
   reduce,
   size,
 } from 'lodash';
-import { IconTheme, MultiData } from '../common';
+import type { IconTheme, MultiData } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import { LayoutResult, ViewMeta } from '../common/interface';
-import { HeaderActionIcon } from '../common/interface/basic';
+import type { LayoutResult, ViewMeta } from '../common/interface';
+import type { HeaderActionIcon } from '../common/interface/basic';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
 import { shouldShowActionIcons } from '../utils/cell/header-cell';
 import {
@@ -33,7 +33,7 @@ import {
 } from '../utils/text';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
-import { Hierarchy } from './layout/hierarchy';
+import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
 

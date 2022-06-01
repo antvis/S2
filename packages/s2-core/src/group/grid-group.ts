@@ -1,8 +1,8 @@
 import type { IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { KEY_GROUP_GRID_GROUP } from '../common/constant';
-import { GridInfo } from '../common/interface';
-import { SpreadSheet } from '../sheet-type/spread-sheet';
+import type { GridInfo } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type/spread-sheet';
 import { renderLine } from '../utils/g-renders';
 
 export class GridGroup extends Group {

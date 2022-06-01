@@ -1,10 +1,13 @@
-import { CustomTreeItem, SpreadSheetFacetCfg } from '../../common/interface';
-import { PivotMeta } from '../../data-set/interface';
-import { SpreadSheet } from '../../sheet-type';
-import { Hierarchy } from '../layout/hierarchy';
-import { Node } from '../layout/node';
-import { TotalClass } from '../layout/total-class';
-import { TotalMeasure } from '../layout/total-measure';
+import type {
+  CustomTreeItem,
+  SpreadSheetFacetCfg,
+} from '../../common/interface';
+import type { PivotMeta } from '../../data-set/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import type { Hierarchy } from '../layout/hierarchy';
+import type { Node } from '../layout/node';
+import type { TotalClass } from '../layout/total-class';
+import type { TotalMeasure } from '../layout/total-measure';
 
 export type FieldValue = string | TotalClass | TotalMeasure;
 

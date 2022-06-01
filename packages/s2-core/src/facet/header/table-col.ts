@@ -1,4 +1,4 @@
-import { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-canvas';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -7,9 +7,9 @@ import {
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
-import { SpreadSheet } from '../../sheet-type';
+import type { SpreadSheet } from '../../sheet-type';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
-import { Node } from '../layout/node';
+import type { Node } from '../layout/node';
 import { isFrozenCol, isFrozenTrailingCol } from '../utils';
 import { ColHeader, ColHeaderConfig } from './col';
 

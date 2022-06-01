@@ -1,5 +1,5 @@
-import { ViewCellHeights } from '../facet/layout/interface';
-import { Node } from '../facet/layout/node';
+import type { ViewCellHeights } from '../facet/layout/interface';
+import type { Node } from '../facet/layout/node';
 
 export const getColsForGrid = (
   colMin: number,

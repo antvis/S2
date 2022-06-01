@@ -1,7 +1,7 @@
 import { each, orderBy, filter, includes, isFunction } from 'lodash';
 import { isAscSort, isDescSort } from '..';
-import { S2DataConfig } from '../common/interface';
-import { CellDataParams, DataType } from './interface';
+import type { S2DataConfig } from '../common/interface';
+import type { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from './base-data-set';
 
 export class TableDataSet extends BaseDataSet {

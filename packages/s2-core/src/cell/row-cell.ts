@@ -1,7 +1,6 @@
-import { Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
-import { isMobile } from '../utils/is-mobile';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -10,23 +9,24 @@ import {
   S2Event,
 } from '../common/constant';
 import { CellBorderPosition, TextTheme, ViewMeta } from '../common/interface';
-import { RowHeaderConfig } from '../facet/header/row';
+import type { RowHeaderConfig } from '../facet/header/row';
 import {
-  getTextAndFollowingIconPosition,
   getBorderPositionAndStyle,
+  getTextAndFollowingIconPosition,
 } from '../utils/cell/cell';
 import {
+  renderCircle,
   renderLine,
   renderRect,
-  renderCircle,
   renderTreeIcon,
 } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
-import { getAdjustPosition } from '../utils/text-absorption';
 import {
-  getResizeAreaAttrs,
   getOrCreateResizeAreaGroupById,
+  getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { isMobile } from '../utils/is-mobile';
+import { getAdjustPosition } from '../utils/text-absorption';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 

@@ -18,7 +18,7 @@ import {
   SpreadSheet,
   ViewMeta,
 } from '@/index';
-import { TableFacet } from '@/facet';
+import type { TableFacet } from '@/facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
