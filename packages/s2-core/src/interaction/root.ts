@@ -38,7 +38,9 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
-import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
+import { BrushSelection } from './brush-selection';
+import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { RowColumnResize } from './row-column-resize';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
