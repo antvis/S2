@@ -40,9 +40,9 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
     currentRow?.valueFiled || currentRow?.value,
   );
 
-  const [value, ...derivedValues] = first(
-    (meta.fieldValue as MultiData)?.values,
-  ) || [meta.fieldValue];
+  const [value, ...derivedValues] = first(meta.fieldValue?.values) || [
+    meta.fieldValue,
+  ];
 
   const { placeholder, style } = meta.spreadsheet.options;
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);

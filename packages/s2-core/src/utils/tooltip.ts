@@ -68,10 +68,12 @@ export const getAutoAdjustPosition = ({
   tooltipContainer,
   autoAdjustBoundary,
 }: AutoAdjustPositionOptions): TooltipPosition => {
+  const canvas = spreadsheet.getCanvasElement();
+
   let x = position.x + TOOLTIP_POSITION_OFFSET.x;
   let y = position.y + TOOLTIP_POSITION_OFFSET.y;
 
-  if (!autoAdjustBoundary) {
+  if (!autoAdjustBoundary || !canvas) {
     return {
       x,
       y,
@@ -81,7 +83,6 @@ export const getAutoAdjustPosition = ({
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
   const { maxX, maxY } = spreadsheet.facet.panelBBox;
   const { width, height } = spreadsheet.options;
-  const canvas = spreadsheet.container.get('el') as HTMLCanvasElement;
 
   const { top: canvasOffsetTop, left: canvasOffsetLeft } =
     canvas.getBoundingClientRect();

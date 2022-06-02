@@ -69,7 +69,7 @@ const getValueFromMeta = (
     return cell[VALUE_FIELD];
   }
   const fieldId = getFiledIdFromMeta(meta, spreadsheet);
-  return displayData[meta.rowIndex][fieldId];
+  return displayData[meta.rowIndex]?.[fieldId];
 };
 
 const format = (

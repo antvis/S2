@@ -14,7 +14,7 @@ import insertCss from 'insert-css';
 const ID_SEPARATOR = '[&]';
 const defaultHouseInfo = {
   name: ['15#', '16#', '21#', '22#'],
-  unit: [1, 2],
+  unit: ['1单元', '2单元'],
   building: [1, 2, 3, 4, 5],
   nearStreet: [true, false],
   property: ['公寓', '住宅'],
