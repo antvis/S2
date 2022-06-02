@@ -16,7 +16,7 @@ describe('Interaction Corner Cell Click Tests', () => {
   const mockCellInfo = createMockCellInfo('testId');
   let cornerCellClick: CornerCellClick;
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCellInfo.mockCell as any;
     s2.options = {

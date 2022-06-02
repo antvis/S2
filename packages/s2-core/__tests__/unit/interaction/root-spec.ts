@@ -62,7 +62,7 @@ describe('RootInteraction Tests', () => {
       },
     } as unknown as DataCell);
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockSpreadSheet.mockClear();
     panelGroupAllDataCells = Array.from<DataCell>({ length: 10 }).map(
       (_, idx) => getMockCell(idx),

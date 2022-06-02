@@ -16,7 +16,7 @@ const s2Options: S2Options = {
 describe('Interaction Tooltip Tests', () => {
   let s2: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell);
@@ -25,7 +25,7 @@ describe('Interaction Tooltip Tests', () => {
     s2.render();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     s2.destroy();
   });
 

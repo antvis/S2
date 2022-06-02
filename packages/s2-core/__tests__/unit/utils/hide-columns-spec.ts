@@ -28,7 +28,7 @@ describe('hide-columns test', () => {
     { field: '5', id: 'id-5', colIndex: 5 },
   ];
 
-  beforeAll(() => {
+  beforeEach(() => {
     sheet = {
       getInitColumnLeafNodes: () => initColumnNodes,
       getColumnNodes: () => initColumnNodes,

@@ -27,7 +27,7 @@ const s2Options: S2Options = {
 describe('Sync Row Scroll Offset Tests', () => {
   let s2: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });

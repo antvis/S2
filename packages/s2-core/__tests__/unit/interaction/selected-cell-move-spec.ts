@@ -14,7 +14,7 @@ describe('Interaction Keyboard Move Tests', () => {
   let mockCell10;
   let mockCell11;
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
     mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
     mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });

@@ -29,7 +29,7 @@ describe('State Controller Utils Tests', () => {
 
   let mockInstance: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockSpreadSheet.mockClear();
 
     mockInstance = new MockSpreadSheet();

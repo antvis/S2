@@ -76,7 +76,7 @@ describe('Interaction Event Controller Tests', () => {
       callback?.();
     };
 
-  beforeAll(() => {
+  beforeEach(() => {
     const container = document.createElement('div');
     spreadsheet = createFakeSpreadSheet();
     spreadsheet.container = new Canvas({
@@ -112,7 +112,7 @@ describe('Interaction Event Controller Tests', () => {
     });
   });
 
-  afterAll(() => {
+  afterEach(() => {
     spreadsheet.setOptions({
       interaction: {
         autoResetSheetStyle: true,

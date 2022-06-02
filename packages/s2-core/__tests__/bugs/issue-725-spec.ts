@@ -24,7 +24,7 @@ describe('Multi Measure Correct Render Tests1', () => {
     ...mockDataConfig,
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
     dataSet = new PivotDataSet(mockSheet);
@@ -50,7 +50,7 @@ describe('Group Sort When Have Same Child Measure', () => {
     ],
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     dataSet.setDataCfg(dataCfg);
   });
 

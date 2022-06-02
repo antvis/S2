@@ -28,7 +28,7 @@ const testData = originalData.map((item, i) => {
 
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
@@ -45,7 +45,7 @@ describe('List Table Core Data Process', () => {
     s2.render();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     s2.destroy();
   });
 
@@ -461,7 +461,7 @@ describe('Pivot Table Core Data Process', () => {
 
 describe('List Table getCopyData', () => {
   let s2: TableSheet;
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({

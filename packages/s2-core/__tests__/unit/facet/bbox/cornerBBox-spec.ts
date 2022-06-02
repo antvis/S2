@@ -3,7 +3,7 @@ import { CornerBBox } from '@/facet/bbox/cornerBBox';
 
 describe('cornerBBox test', () => {
   let mockFacet;
-  beforeAll(() => {
+  beforeEach(() => {
     mockFacet = {
       layoutResult: {
         rowsHierarchy: {

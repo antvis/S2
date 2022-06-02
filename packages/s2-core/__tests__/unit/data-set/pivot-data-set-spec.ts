@@ -33,7 +33,7 @@ describe('Pivot Dataset Test', () => {
     meta: [],
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
     mockSheet.store = new Store();
@@ -472,7 +472,7 @@ describe('Pivot Dataset Test', () => {
   describe('meta config test', () => {
     let dataConfig: S2DataConfig;
 
-    beforeAll(() => {
+    beforeEach(() => {
       dataConfig = assembleDataCfg({
         meta: [
           {
@@ -517,7 +517,7 @@ describe('Pivot Dataset Test', () => {
     const mockPriceFormatter = jest.fn();
     const mockCostFormatter = jest.fn();
 
-    beforeAll(() => {
+    beforeEach(() => {
       dataConfig = assembleDataCfg({
         meta: [
           {
@@ -537,7 +537,7 @@ describe('Pivot Dataset Test', () => {
       dataSet.setDataCfg(dataConfig);
     });
 
-    afterAll(() => {
+    afterEach(() => {
       mockPriceFormatter.mockReset();
       mockCostFormatter.mockReset();
     });

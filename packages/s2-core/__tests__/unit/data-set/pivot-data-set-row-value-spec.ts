@@ -25,7 +25,7 @@ describe('Pivot Mode Test When Value In Row', () => {
     },
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
     mockSheet.store = new Store();

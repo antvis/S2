@@ -16,7 +16,7 @@ describe.skip('HD Adapter Tests', () => {
     updatedSize?: [number, number],
   ) => void;
 
-  beforeAll(() => {
+  beforeEach(() => {
     Object.defineProperty(window, 'devicePixelRatio', {
       value: DPR,
     });
@@ -44,7 +44,7 @@ describe.skip('HD Adapter Tests', () => {
     };
   });
 
-  afterAll(() => {
+  afterEach(() => {
     hdAdapter.destroy();
 
     Object.defineProperty(visualViewport, 'scale', {

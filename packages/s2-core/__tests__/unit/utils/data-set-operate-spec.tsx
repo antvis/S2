@@ -10,7 +10,7 @@ import { Aggregation } from '@/common/interface';
 describe('Data Set Operate Test', () => {
   const data = [];
   describe('Dataset Operate Test That Data Has No undefined', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       const paths = [
         [0, 0],
         [0, 1],
@@ -32,7 +32,7 @@ describe('Data Set Operate Test', () => {
   });
 
   describe('Dataset Operate Test That Data Has undefined', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       const paths = [
         [0, 0],
         [0, 1],
@@ -57,7 +57,7 @@ describe('Data Set Operate Test', () => {
 
   describe('Dataset Operate Test GetListBySorted', () => {
     let list = [];
-    beforeAll(() => {
+    beforeEach(() => {
       list = ['浙江省', '四川省'];
     });
 

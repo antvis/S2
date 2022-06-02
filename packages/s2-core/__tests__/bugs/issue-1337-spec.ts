@@ -19,7 +19,7 @@ describe('Totals Tests', () => {
     },
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     spreadsheet = new PivotSheet(getContainer(), dataCfg, assembleOptions());
   });
 

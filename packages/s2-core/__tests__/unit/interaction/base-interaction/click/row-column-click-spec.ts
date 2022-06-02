@@ -43,7 +43,7 @@ describe('Interaction Data Cell Click Tests', () => {
     { field: '5', colIndex: 5 },
   ];
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell as any;
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
@@ -75,7 +75,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.isTableMode = jest.fn(() => true);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     s2.off(S2Event.ROW_CELL_CLICK);
     s2.off(S2Event.COL_CELL_CLICK);
   });

@@ -27,7 +27,8 @@ const s2Options: S2Options = {
 
 describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
-  beforeAll(() => {
+
+  beforeEach(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });

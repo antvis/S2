@@ -31,7 +31,8 @@ describe('Merge Cells Test', () => {
   let mockTwoCellEdges: number[][][] = [];
   let mockMergeCellInfo: MergedCellInfo[] = [];
   let mockAllVisibleCells: S2CellType[] = [];
-  beforeAll(() => {
+
+  beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();
     mockInstance.interaction = {} as unknown as RootInteraction;

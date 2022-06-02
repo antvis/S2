@@ -47,7 +47,7 @@ const dataCfg = {
 describe('Column Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     s2 = new TableSheet(getContainer(), dataCfg, s2Options);
     s2.render();
   });

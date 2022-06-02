@@ -19,7 +19,7 @@ describe('data cell formatter test', () => {
 
   let s2: SpreadSheet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     const container = document.createElement('div');
 
     s2 = new MockPivotSheet(container);

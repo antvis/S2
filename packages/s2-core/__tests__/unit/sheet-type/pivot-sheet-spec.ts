@@ -54,7 +54,7 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeAll(() => {
+  beforeEach(() => {
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
