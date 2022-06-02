@@ -18,8 +18,7 @@ import { TooltipSimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
 import type { TooltipRenderProps } from './interface';
 
-import '@antv/s2/dist/style.min.css';
-import '@antv/s2-shared/src/styles/tooltip/index.less';
+import './index.less';
 
 export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const { data, options, content, cell } = props;
