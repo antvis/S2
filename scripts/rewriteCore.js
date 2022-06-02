@@ -4,6 +4,7 @@ const coreRewriter = require('./rewriter')(
   's2-core',
   reset
     ? {
+        mainPath: 'src/index.ts',
         modulePath: 'src/index.ts',
         typesPath: 'src/index.ts',
       }
