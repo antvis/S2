@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.17.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.1...@antv/s2-react-v1.17.0) (2022-06-02)
+
+
+### Bug Fixes
+
+* **locale:** 修复国际化配置不生效 close [#1394](https://github.com/antvis/S2/issues/1394) ([#1397](https://github.com/antvis/S2/issues/1397)) ([cfd5dbe](https://github.com/antvis/S2/commit/cfd5dbe0344afbb6f3929bece1778c02f9bbc00b))
+* style 引入失败 ([#1390](https://github.com/antvis/S2/issues/1390)) ([7d11561](https://github.com/antvis/S2/commit/7d11561039f33c897910bacab2cf8ce20b8543d0))
+* 修复表格卸载后调用实例方法报错的问题 close [#1349](https://github.com/antvis/S2/issues/1349) ([#1400](https://github.com/antvis/S2/issues/1400)) ([bcf21bb](https://github.com/antvis/S2/commit/bcf21bb2099e04496c76b9cd28fa6d7723c9edcb))
+
+
+### Features
+
+* 趋势分析表支持子弹图配置 ([#1367](https://github.com/antvis/S2/issues/1367)) ([b5756cc](https://github.com/antvis/S2/commit/b5756cc2f4d2054f3d5a8eb31134efd23b1dd230))
+
 # [@antv/s2-react-v1.16.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0...@antv/s2-react-v1.16.1) (2022-05-30)
 
 
