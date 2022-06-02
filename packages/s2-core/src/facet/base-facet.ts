@@ -822,7 +822,7 @@ export abstract class BaseFacet {
     1. auto => 只有在滚动到表格顶部或底部时才触发外部容器滚动
     1. contain => 默认的滚动边界行为不变（“触底”效果或者刷新），但是临近的滚动区域不会被滚动链影响到
     2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
-    所以只要不为 `auto`, 都需要阻止外部容器滚动
+    所以只要不为 `auto`, 或者表格内, 都需要阻止外部容器滚动
   */
   private stopScrollChainingIfNeeded = (
     event: S2WheelEvent,

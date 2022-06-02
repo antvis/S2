@@ -40,7 +40,7 @@ describe('Options Tests', () => {
           rowResizeType: 'all',
         },
         eventListenerOptions: false,
-        overscrollBehavior: 'contain',
+        overscrollBehavior: 'auto',
       },
       showSeriesNumber: false,
       customSVGIcons: [],

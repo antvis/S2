@@ -78,7 +78,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       rowResizeType: ResizeType.ALL,
     },
     eventListenerOptions: false,
-    overscrollBehavior: 'contain',
+    overscrollBehavior: 'auto',
   },
   showSeriesNumber: false,
   customSVGIcons: [],

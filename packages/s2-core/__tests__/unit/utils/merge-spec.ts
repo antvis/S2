@@ -166,7 +166,7 @@ describe('merge test', () => {
         },
         scrollbarPosition: 'content',
         eventListenerOptions: false,
-        overscrollBehavior: 'contain',
+        overscrollBehavior: 'auto',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
