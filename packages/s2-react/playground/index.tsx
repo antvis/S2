@@ -32,6 +32,8 @@ import {
   DataType,
   generatePalette,
   getPalette,
+  getLang,
+  setLang,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
@@ -56,6 +58,8 @@ import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
+
+// setLang('en_US');
 
 const { TabPane } = Tabs;
 
@@ -840,6 +844,9 @@ function MainLayout() {
                     </span>
                     <span>
                       {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                    </span>
+                    <span>
+                      lang: <Tag>{getLang()}</Tag>
                     </span>
                   </Space>
                 ),

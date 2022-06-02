@@ -20,9 +20,13 @@ import {
   SortMethod,
   TOTAL_VALUE,
 } from '@antv/s2';
+import {
+  ADVANCED_SORT_PRE_CLS,
+  getSortRuleOptions,
+  getSortMethod,
+} from '@antv/s2-shared';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
-import { SORT_METHOD, RULE_OPTIONS, ADVANCED_PRE_CLS } from '@/common/constant';
 import './index.less';
 
 const { Sider, Content } = Layout;
@@ -85,6 +89,9 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const [sortBy, setSortBy] = useState([]);
   const [currentDimension, setCurrentDimension] = useState<Dimension>();
   const [form] = Form.useForm();
+
+  const SORT_RULE_OPTIONS = React.useMemo(getSortRuleOptions, []);
+  const SORT_METHOD = React.useMemo(getSortMethod, []);
 
   const handleModal = () => {
     setIsModalVisible(!isSortVisible);
@@ -203,7 +210,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     if (ruleOptions) {
       return ruleOptions;
     }
-    return map(RULE_OPTIONS, (item) => {
+    return map(SORT_RULE_OPTIONS, (item) => {
       if (item.value === 'sortByMeasure') {
         const { values } = sheet.dataCfg.fields || {};
         item.children = map(values, (vi) => {
@@ -242,13 +249,15 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
 
   const renderSide = () => {
     return (
-      <Sider width={120} className={`${ADVANCED_PRE_CLS}-sider-layout`}>
-        <div className={`${ADVANCED_PRE_CLS}-title`}>{i18n('可选字段')}</div>
+      <Sider width={120} className={`${ADVANCED_SORT_PRE_CLS}-sider-layout`}>
+        <div className={`${ADVANCED_SORT_PRE_CLS}-title`}>
+          {i18n('可选字段')}
+        </div>
         <div>
           {map(dimensionList, (item) => {
             return (
               <div
-                className={`${ADVANCED_PRE_CLS}-dimension-item`}
+                className={`${ADVANCED_SORT_PRE_CLS}-dimension-item`}
                 key={item.field}
                 onClick={() => {
                   handleDimension(item);
@@ -264,14 +273,14 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   };
   const renderContent = () => {
     return (
-      <Content className={`${ADVANCED_PRE_CLS}-content-layout`}>
-        <div className={`${ADVANCED_PRE_CLS}-title`}>
+      <Content className={`${ADVANCED_SORT_PRE_CLS}-content-layout`}>
+        <div className={`${ADVANCED_SORT_PRE_CLS}-title`}>
           {ruleText || i18n('按以下规则进行排序（优先级由低到高）')}
         </div>
         <Form
           form={form}
           name="form"
-          className={`${ADVANCED_PRE_CLS}-custom-form`}
+          className={`${ADVANCED_SORT_PRE_CLS}-custom-form`}
         >
           {map(ruleList, (item) => {
             const {
@@ -285,11 +294,11 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
               <Form.Item name={field} key={field}>
                 <Form.Item name={[field, 'name']} initialValue={name} noStyle>
                   <Select
-                    className={`${ADVANCED_PRE_CLS}-select`}
+                    className={`${ADVANCED_SORT_PRE_CLS}-select`}
                     size="small"
                   />
                 </Form.Item>
-                <span className={`${ADVANCED_PRE_CLS}-field-prefix`}>
+                <span className={`${ADVANCED_SORT_PRE_CLS}-field-prefix`}>
                   {i18n('按')}
                 </span>
                 <Form.Item
@@ -315,7 +324,9 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                         name={[field, 'sortMethod']}
                         initialValue={toUpper(sortMethod) || 'ASC'}
                       >
-                        <Radio.Group className={`${ADVANCED_PRE_CLS}-rule-end`}>
+                        <Radio.Group
+                          className={`${ADVANCED_SORT_PRE_CLS}-rule-end`}
+                        >
                           {map(SORT_METHOD, (i) => {
                             return (
                               <Radio value={i.value} key={i.value}>
@@ -328,7 +339,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                     ) : (
                       <>
                         <a
-                          className={`${ADVANCED_PRE_CLS}-rule-end`}
+                          className={`${ADVANCED_SORT_PRE_CLS}-rule-end`}
                           onClick={() => {
                             handleCustomSort(item, currentSortBy);
                           }}
@@ -345,7 +356,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                   }}
                 </Form.Item>
                 <DeleteOutlined
-                  className={`${ADVANCED_PRE_CLS}-rule-end-delete`}
+                  className={`${ADVANCED_SORT_PRE_CLS}-rule-end-delete`}
                   onClick={() => {
                     deleteRule(item);
                   }}
@@ -372,12 +383,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   }, [isSortVisible]);
 
   return (
-    <div className={cx(ADVANCED_PRE_CLS, className)}>
+    <div className={cx(ADVANCED_SORT_PRE_CLS, className)}>
       <Button
         onClick={sortClick}
         icon={icon || <SortIcon />}
         size="small"
-        className={`${ADVANCED_PRE_CLS}-btn`}
+        className={`${ADVANCED_SORT_PRE_CLS}-btn`}
       >
         {text || i18n('高级排序')}
       </Button>
@@ -389,7 +400,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         okText={i18n('确定')}
         cancelText={i18n('取消')}
         destroyOnClose
-        className={`${ADVANCED_PRE_CLS}-modal`}
+        className={`${ADVANCED_SORT_PRE_CLS}-modal`}
       >
         <Layout>
           {renderSide()}
@@ -404,7 +415,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         okText={i18n('确定')}
         cancelText={i18n('取消')}
         destroyOnClose
-        className={`${ADVANCED_PRE_CLS}-custom-modal`}
+        className={`${ADVANCED_SORT_PRE_CLS}-custom-modal`}
       >
         <CustomSort splitOrders={sortBy} setSplitOrders={setSortBy} />
       </Modal>
