@@ -6,6 +6,7 @@ import type { PropType } from 'vue';
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
 interface PropOption<T = any> {
   type?: PropType<T>;
+  default: T;
 }
 
 interface RequiredPropOption<T = any> {
