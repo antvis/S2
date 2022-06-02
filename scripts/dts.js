@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs');
+
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
-const { rewritePackage, restorePackage } = require('./rewritePackage');
+const createRewriter = require('./rewriter');
 
 const libName = process.env.LIB;
 const libPath = path.join(__dirname, '../packages', libName);
@@ -38,9 +39,14 @@ function generateDts() {
 }
 
 if (libName !== 's2-core') {
-  rewritePackage('s2-shared');
+  const shareRewriter = createRewriter('s2-shared');
+  const coreRewriter = createRewriter('s2-core', 'esm/index.d.ts');
+
+  shareRewriter.rewritePackage();
+  coreRewriter.rewritePackage();
   generateDts();
-  restorePackage();
+  shareRewriter.restorePackage();
+  coreRewriter.restorePackage();
 } else {
   generateDts();
 }
