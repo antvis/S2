@@ -1,5 +1,5 @@
 ---
-title: adaptive Layout
+title: Adaptive Layout
 order: 2
 ---
 

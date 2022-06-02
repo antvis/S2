@@ -38,11 +38,11 @@ const debounceRender = debounce((width, height) => {
   s2.render(false) // 不重新加载数据
 }, 200)
 
-window.addEventListener('resize', () => {
-  const parent = /* 你的容器节点 */
-  const { width, height } = parent.getBoundingClientRect()
-  debounceRender(width, height)
-})
+
+new ResizeObserver(([entry] = []) => {
+    const [size] = entry.borderBoxSize || [];
+    debounceRender(size.inlineSize, size.blockSize)
+}).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)

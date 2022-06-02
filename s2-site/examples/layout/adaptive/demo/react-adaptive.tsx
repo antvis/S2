@@ -18,7 +18,7 @@ fetch(
       <SheetComponent dataCfg={dataCfg} options={s2Options} adaptive={{
           width: true,
           height: false,
-          getContainer: () => document.getElementById('container') // 或者使用 document.getElementById(containerId)
+          getContainer: () => document.getElementById('container')
       }} />,
       document.getElementById('container'),
     );

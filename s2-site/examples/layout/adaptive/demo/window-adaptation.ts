@@ -14,16 +14,16 @@ fetch(
             height: 480,
         };
         const s2 = new PivotSheet(container, dataCfg, s2Options);
-
         s2.render();
+
         const debounceRender = debounce((width, height) => {
             s2.changeSheetSize(width, height)
             s2.render(false) // 不重新加载数据
         }, 200)
 
-        window.addEventListener('resize', () => {
-            const { width, height } = container.getBoundingClientRect()
-            debounceRender(width, height)
-        })
+        new ResizeObserver(([entry] = []) => {
+            const [size] = entry.borderBoxSize || [];
+            debounceRender(size.inlineSize, size.blockSize)
+        }).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
     });
 
