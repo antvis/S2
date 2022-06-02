@@ -85,7 +85,7 @@ export const getAutoAdjustPosition = ({
   const { width, height } = spreadsheet.options;
 
   const { top: canvasOffsetTop, left: canvasOffsetLeft } =
-    canvas?.getBoundingClientRect?.() || {};
+    canvas.getBoundingClientRect();
   const { width: tooltipWidth, height: tooltipHeight } =
     tooltipContainer.getBoundingClientRect();
   const { width: viewportWidth, height: viewportHeight } =
