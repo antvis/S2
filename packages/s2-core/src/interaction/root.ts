@@ -50,7 +50,7 @@ export class RootInteraction {
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  private hoverTimer: NodeJS.Timeout = null;
+  private hoverTimer: number = null;
 
   public eventController: EventController;
 
@@ -503,7 +503,7 @@ export class RootInteraction {
     clearTimeout(this.hoverTimer);
   }
 
-  public setHoverTimer(timer: NodeJS.Timeout) {
+  public setHoverTimer(timer: number) {
     this.hoverTimer = timer;
   }
 

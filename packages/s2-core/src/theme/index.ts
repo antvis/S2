@@ -386,6 +386,26 @@ export const getTheme = (
         right: 'rgba(0,0,0,0)',
       },
     },
+    // ------------- bullet graph -----------------
+    bullet: {
+      progressBar: {
+        widthPercent: 0.7,
+        height: 10,
+        innerHeight: 6,
+      },
+      comparativeMeasure: {
+        width: 1,
+        height: 12,
+        color: basicColors[13],
+        opacity: 0.25,
+      },
+      rangeColors: {
+        good: semanticColors?.green,
+        satisfactory: semanticColors.yellow,
+        bad: semanticColors.red,
+      },
+      backgroundColor: '#E9E9E9',
+    },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
       backgroundColor: basicColors[5],

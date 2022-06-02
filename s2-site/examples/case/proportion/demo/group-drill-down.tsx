@@ -24,7 +24,7 @@ fetch(
             width: 400,
             height: 100,
             valuesCfg: {
-              widthPercentCfg: [40, 20, 20, 20],
+              widthPercent: [40, 20, 20, 20],
               conditions: {
                 text: {
                   field: 'number',

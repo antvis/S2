@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach, isEqual, isBoolean } from 'lodash';
+import { isEmpty, forEach, isBoolean } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
@@ -95,7 +95,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     if (hoverFocusDuration === 0) {
       handleHoverFocus();
     } else {
-      const hoverTimer = setTimeout(
+      const hoverTimer: number = window.setTimeout(
         () => handleHoverFocus(),
         hoverFocusDuration,
       );

@@ -2,9 +2,14 @@ export { BaseSheet } from './sheets/base-sheet';
 export { TableSheet } from './sheets/table-sheet';
 export { GridAnalysisSheet } from './sheets/grid-analysis-sheet';
 export { StrategySheet } from './sheets/strategy-sheet';
-export { AdvancedSort } from './advanced-sort';
-export { DrillDown } from './drill-down';
+export {
+  AdvancedSort,
+  type AdvancedSortProps,
+  type AdvancedSortCfgProps,
+} from './advanced-sort';
+export { DrillDown, type DrillDownProps, type DataSet } from './drill-down';
 export { TooltipComponent } from './tooltip';
-export { Switcher } from './switcher';
+export type { TooltipRenderProps } from './tooltip/interface';
+export { Switcher, type SwitcherProps } from './switcher';
 export * from './sheets';
 export * from './sheets/interface';

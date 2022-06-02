@@ -3,7 +3,7 @@
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import { Sheet } from '../src';
+import { SheetComponent } from '../src';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -607,7 +607,7 @@ export default defineComponent({
     };
   },
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
@@ -646,7 +646,7 @@ export default defineComponent({
       </label>
     </div>
   </div>
-  <Sheet
+  <SheetComponent
     ref="s2"
     :sheetType="sheetType"
     :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"

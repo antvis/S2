@@ -38,14 +38,16 @@ const debounceRender = debounce((width, height) => {
   s2.render(false) // 不重新加载数据
 }, 200)
 
-window.addEventListener('resize', () => {
-  const parent = /* 你的容器节点 */
-  const { width, height } = parent.getBoundingClientRect()
-  debounceRender(width, height)
-})
+
+new ResizeObserver(([entry] = []) => {
+    const [size] = entry.borderBoxSize || [];
+    debounceRender(size.inlineSize, size.blockSize)
+}).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
+
+​📊 查看[窗口自适应 demo](zh/examples/layout/adaptive#window-adaptation)
 
 ### 容器自适应
 
@@ -76,6 +78,8 @@ resizeObserver.observe(parent);
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
+
+​📊 查看[容器自适应 demo](zh/examples/layout/adaptive#container-adaptation)
 
 ### React 组件
 
@@ -140,6 +144,8 @@ const containerId = 'containerId';
 </div>
 ```
 
+​📊 查看[React 组件自适应 demo](zh/examples/layout/adaptive#react-adaptive)
+
 ### Vue 组件
 
 如果是使用 `@antv/s2-vue` 的方式，可以配置 `adaptive` 参数开启自适应，`adaptive`参数的类型和使用方法与`@antv/s2-react`基本一致。
@@ -148,12 +154,12 @@ const containerId = 'containerId';
 
 ```tsx
 <template>
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="true"
   />
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="false"
@@ -165,12 +171,12 @@ const containerId = 'containerId';
 
 ```tsx
 <template>
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="{ width: true, height: true }"
   />
-  <Sheet
+  <SheetComponent
     :dataCfg="your-dataCfg"
     :options="your-options"
     :adaptive="{ width: false, height: false }"
@@ -194,7 +200,7 @@ const adaptive = {
     id="containerId"
     style="width:600px;height:400px"
   >
-    <Sheet
+    <SheetComponent
       :dataCfg="your-dataCfg"
       :options="your-options"
       :adaptive="adaptive"
@@ -202,3 +208,5 @@ const adaptive = {
   </div>
 </template>
 ```
+
+​📊 查看[Vue 组件自适应 demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)

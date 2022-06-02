@@ -145,7 +145,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Sheet ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
+  <SheetComponent ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
 </template>
 ```
 
@@ -178,7 +178,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Sheet :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
+  <SheetComponent :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
 </template>
 ```
 
@@ -202,7 +202,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Sheet ref="s2Ref" />
+  <SheetComponent ref="s2Ref" />
 </template>
 ```
 

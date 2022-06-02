@@ -192,14 +192,28 @@ git clone git@github.com:antvis/S2.git
 
 cd S2
 
-yarn
+yarn # or yarn bootstrap
 
+# build all
+yarn build
+
+# debug s2-core
 yarn core:start
 
+# debug s2-react
+yarn react:playground
+
+# debug s2-vue
+yarn vue:playground
+
+# unit test
+yarn test
+
+# check the code style and the type definition
+yarn lint
+
 # start the website
-
 yarn site:bootstrap
-
 yarn site:start
 ```
 
