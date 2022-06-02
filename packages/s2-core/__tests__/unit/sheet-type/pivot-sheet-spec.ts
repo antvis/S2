@@ -54,7 +54,7 @@ describe('PivotSheet Tests', () => {
 
   let container: HTMLDivElement;
 
-  beforeEach(() => {
+  beforeAll(() => {
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
@@ -911,7 +911,7 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('Test Layout by dataCfg fields', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       s2.destroy();
     });
 

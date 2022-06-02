@@ -106,7 +106,7 @@ describe('Interaction Row Column Resize Tests', () => {
     return resizeInfo;
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     MockRootInteraction.mockClear();
 
     s2 = new PivotSheet(document.createElement('div'), null, s2Options);

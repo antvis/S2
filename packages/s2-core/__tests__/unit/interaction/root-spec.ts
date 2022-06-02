@@ -363,7 +363,7 @@ describe('RootInteraction Tests', () => {
   });
 
   describe('RootInteraction Calc Utils Tests', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       rootInteraction.setState({
         cells: [getCellMeta(mockCell)],
         stateName: InteractionStateName.SELECTED,

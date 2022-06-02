@@ -40,7 +40,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     };
   };
 
-  beforeAll(() => {
+  beforeEach(() => {
     const mockCell = createMockCell('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;

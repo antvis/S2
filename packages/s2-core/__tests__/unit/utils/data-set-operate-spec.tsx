@@ -80,7 +80,7 @@ describe('Data Set Operate Test', () => {
 
   describe('Dataset Operate Test GetAggregationAndCalcFuncByQuery', () => {
     let totalsOptions = {};
-    beforeAll(() => {
+    beforeEach(() => {
       totalsOptions = {
         row: {
           calcTotals: {
