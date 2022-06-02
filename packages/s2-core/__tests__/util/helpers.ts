@@ -76,6 +76,7 @@ export const createFakeSpreadSheet = () => {
   s2.showTooltipWithInfo = jest.fn();
   s2.isTableMode = jest.fn();
   s2.isPivotMode = jest.fn();
+  s2.getCanvasElement = () => s2.container.get('el');
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
