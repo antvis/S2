@@ -3,7 +3,7 @@ import { Store } from '@/common/store';
 describe('Store Test', () => {
   let store: Store;
 
-  beforeEach(() => {
+  beforeAll(() => {
     store = new Store();
   });
 

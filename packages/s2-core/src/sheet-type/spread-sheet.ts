@@ -26,6 +26,7 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -141,6 +142,7 @@ export abstract class SpreadSheet extends EE {
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
+    this.setDebug();
     this.initTooltip();
     this.initGroups(dom);
     this.bindEvents();
@@ -148,7 +150,26 @@ export abstract class SpreadSheet extends EE {
     this.initTheme();
     this.initHdAdapter();
     this.registerIcons();
-    this.setDebug();
+    this.setOverscrollBehavior();
+  }
+
+  private setOverscrollBehavior() {
+    const { overscrollBehavior } = this.options.interaction;
+    const initOverscrollBehavior = document.body.style
+      .overscrollBehavior as InteractionOptions['overscrollBehavior'];
+
+    // 用户没有在 body 上主动设置过 overscrollBehavior，才进行更新
+    if (overscrollBehavior && !initOverscrollBehavior) {
+      document.body.style.overscrollBehavior = overscrollBehavior;
+      return;
+    }
+
+    this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+  }
+
+  private restoreOverscrollBehavior() {
+    document.body.style.overscrollBehavior =
+      this.store.get('initOverscrollBehavior') || '';
   }
 
   private setDebug() {
@@ -370,6 +391,7 @@ export abstract class SpreadSheet extends EE {
     this.destroyTooltip();
     this.clearCanvasEvent();
     this.container?.destroy();
+    this.restoreOverscrollBehavior();
   }
 
   /**

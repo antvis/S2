@@ -5,6 +5,7 @@ import {
   SortParam,
   ViewMeta,
 } from '../interface';
+import { InteractionOptions, S2Options } from '..';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
@@ -86,6 +87,6 @@ export interface StoreKey {
 
   // last click cell
   lastClickedCell: S2CellType<ViewMeta>;
-
+  initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
   [key: string]: unknown;
 }

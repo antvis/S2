@@ -1,8 +1,9 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { before } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellMeta, S2Options } from '@/common/interface';
+import { CellMeta, InteractionOptions, S2Options } from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,
@@ -31,7 +32,7 @@ describe('Scroll By Group Tests', () => {
   let s2: SpreadSheet;
   let canvas: HTMLCanvasElement;
 
-  beforeEach(() => {
+  beforeAll(() => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
@@ -41,8 +42,8 @@ describe('Scroll By Group Tests', () => {
     canvas = s2.container.get('el') as HTMLCanvasElement;
   });
 
-  afterEach(() => {
-    s2 = null;
+  afterAll(() => {
+    // s2.destroy();
     canvas = null;
   });
 
@@ -320,5 +321,99 @@ describe('Scroll By Group Tests', () => {
     s2.changeSheetSize(1000, 200); // 纵向滚动条
     s2.render(false);
     expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+  });
+
+  describe('Scroll Overscroll Behavior Tests', () => {
+    const defaultOffset = {
+      scrollX: 10,
+      scrollY: 10,
+    };
+
+    const getConfig = (
+      isScrollOverTheViewport: boolean,
+      stopScrollChainingTimes: number,
+    ) => ({
+      isScrollOverTheViewport,
+      stopScrollChainingTimes,
+      offset: defaultOffset,
+    });
+
+    beforeAll(() => {
+      document.body.style.height = '2000px';
+      document.body.style.width = '2000px';
+
+      s2.facet.cornerBBox.maxY = -9999;
+      s2.facet.panelBBox.minX = -9999;
+      s2.facet.panelBBox.minY = -9999;
+
+      window.scrollTo(0, 0);
+    });
+
+    it.each([
+      {
+        overscrollBehavior: 'auto',
+        ...getConfig(false, 0),
+      },
+      {
+        overscrollBehavior: 'auto',
+        ...getConfig(true, 1),
+      },
+      {
+        overscrollBehavior: 'none',
+        ...getConfig(false, 1),
+      },
+      {
+        overscrollBehavior: 'none',
+        ...getConfig(true, 1),
+      },
+      {
+        overscrollBehavior: 'contain',
+        ...getConfig(false, 1),
+      },
+      {
+        overscrollBehavior: 'contain',
+        ...getConfig(true, 1),
+      },
+    ])(
+      'should scroll by overscroll behavior %o',
+      ({
+        overscrollBehavior,
+        isScrollOverTheViewport,
+        stopScrollChainingTimes,
+        offset,
+      }) => {
+        s2.setOptions({
+          interaction: {
+            overscrollBehavior:
+              overscrollBehavior as InteractionOptions['overscrollBehavior'],
+          },
+        });
+        s2.render(false);
+
+        jest
+          .spyOn(s2.facet, 'isScrollOverTheViewport')
+          .mockImplementationOnce(() => isScrollOverTheViewport);
+
+        const stopScrollChainingSpy = jest
+          .spyOn(s2.facet, 'stopScrollChaining' as any)
+          .mockImplementation(() => null);
+
+        const wheelEvent = new WheelEvent('wheel', {
+          deltaX: offset.scrollX,
+          deltaY: offset.scrollY,
+        });
+
+        canvas.dispatchEvent(wheelEvent);
+
+        expect(document.body.style.overscrollBehavior).toEqual(
+          overscrollBehavior,
+        );
+        expect(stopScrollChainingSpy).toHaveBeenCalledTimes(
+          stopScrollChainingTimes,
+        );
+
+        stopScrollChainingSpy.mockRestore();
+      },
+    );
   });
 });

@@ -259,7 +259,7 @@ describe('getSortByMeasureValues', () => {
       },
     },
   } as S2Options;
-  beforeEach(() => {
+  beforeAll(() => {
     sheet = new PivotSheet(getContainer(), sortData, s2Options);
     dataSet = new PivotDataSet(sheet);
     dataSet.setDataCfg(sortData);

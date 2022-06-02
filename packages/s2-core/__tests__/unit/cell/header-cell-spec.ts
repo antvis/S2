@@ -33,7 +33,7 @@ describe('header cell formatter test', () => {
 
   let s2: SpreadSheet;
   describe('pivot header cell formatter test', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       const container = document.createElement('div');
 
       s2 = new MockPivotSheet(container);
@@ -74,7 +74,7 @@ describe('header cell formatter test', () => {
   });
 
   describe('table header cell formatter test', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       const container = document.createElement('div');
 
       s2 = new MockTableSheet(container);

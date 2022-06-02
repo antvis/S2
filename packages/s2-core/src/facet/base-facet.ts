@@ -816,13 +816,36 @@ export abstract class BaseFacet {
     }
   };
 
+  /**
+    https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior
+    阻止外部容器滚动: 表格是虚拟滚动, 这里按照标准模拟浏览器的 [overscroll-behavior] 实现
+    1. auto => 只有在滚动到表格顶部或底部时才触发外部容器滚动
+    1. contain => 默认的滚动边界行为不变（“触底”效果或者刷新），但是临近的滚动区域不会被滚动链影响到
+    2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
+    所以只要不为 `auto`, 都需要阻止外部容器滚动
+  */
+  private stopScrollChainingIfNeeded = (
+    event: S2WheelEvent,
+    scrollOverTheViewport = true,
+  ) => {
+    const { interaction } = this.spreadsheet.options;
+
+    if (scrollOverTheViewport || interaction.overscrollBehavior !== 'auto') {
+      this.stopScrollChaining(event);
+    }
+  };
+
+  private stopScrollChaining = (event: S2WheelEvent) => {
+    event?.preventDefault?.();
+  };
+
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
+    const { interaction } = this.spreadsheet.options;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,
-      ratio,
+      interaction.scrollSpeedRatio,
     );
 
     this.spreadsheet.hideTooltip();
@@ -831,10 +854,12 @@ export abstract class BaseFacet {
     if (
       !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
     ) {
+      this.stopScrollChainingIfNeeded(event, false);
       return;
     }
 
-    event?.preventDefault?.();
+    this.stopScrollChainingIfNeeded(event);
+
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     if (!this.cancelScrollFrame()) {
@@ -992,11 +1017,7 @@ export abstract class BaseFacet {
 
   protected renderBackground() {
     const { width, height } = this.getCanvasHW();
-    const color = get(this.cfg, 'spreadsheet.theme.background.color') as string;
-    const opacity = get(
-      this.cfg,
-      'spreadsheet.theme.background.opacity',
-    ) as number;
+    const { color, opacity } = this.spreadsheet.theme.background;
 
     this.backgroundGroup.addShape('rect', {
       attrs: {

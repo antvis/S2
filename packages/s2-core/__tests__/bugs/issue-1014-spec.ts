@@ -56,7 +56,7 @@ const dataCfg = {
 describe('Formatter Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2options);
     s2.render();
   });

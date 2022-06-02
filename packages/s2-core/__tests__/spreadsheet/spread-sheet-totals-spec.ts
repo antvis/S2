@@ -9,7 +9,7 @@ describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;
   const dataCfg = assembleDataCfg();
 
-  beforeEach(() => {
+  beforeAll(() => {
     spreadsheet = new PivotSheet(getContainer(), dataCfg, assembleOptions());
   });
 

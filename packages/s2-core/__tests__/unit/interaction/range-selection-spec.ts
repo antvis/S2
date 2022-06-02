@@ -19,7 +19,7 @@ describe('Interaction Range Selection Tests', () => {
   let rangeSelection: RangeSelection;
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeAll(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
@@ -37,7 +37,7 @@ describe('Interaction Range Selection Tests', () => {
     s2.interaction.getInteractedCells = () => [mockCell];
   });
 
-  afterEach(() => {
+  afterAll(() => {
     s2.store.set('lastClickedCell', null);
   });
 

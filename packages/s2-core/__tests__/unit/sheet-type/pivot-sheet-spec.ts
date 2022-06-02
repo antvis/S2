@@ -911,7 +911,7 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('Test Layout by dataCfg fields', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       s2.destroy();
     });
 

@@ -10,12 +10,12 @@ describe('Tooltip Tests', () => {
   let s2: SpreadSheet;
   let tooltip: BaseTooltip;
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = createFakeSpreadSheet();
     tooltip = new BaseTooltip(s2);
   });
 
-  afterEach(() => {
+  afterAll(() => {
     tooltip?.destroy();
   });
 

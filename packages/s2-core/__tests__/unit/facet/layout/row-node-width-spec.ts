@@ -10,7 +10,7 @@ const s2options: S2Options = {
 
 describe('Row width Test in grid mode', () => {
   let s2: PivotSheet;
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
     s2.render();
   });

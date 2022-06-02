@@ -81,7 +81,7 @@ describe('Interaction Brush Selection Tests', () => {
     } as any);
   };
 
-  beforeEach(() => {
+  beforeAll(() => {
     MockRootInteraction.mockClear();
 
     mockSpreadSheetInstance = new PivotSheet(

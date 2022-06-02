@@ -19,7 +19,7 @@ describe('Pivot Dataset Total Test', () => {
   let dataSet: PivotDataSet;
   let dataCfg: S2DataConfig;
 
-  beforeEach(() => {
+  beforeAll(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
     mockSheet.store = new Store();
@@ -224,7 +224,7 @@ describe('Pivot Dataset Total Test', () => {
     });
 
     describe('getCellData function when totals calculated by aggregation', () => {
-      beforeEach(() => {
+      beforeAll(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
         mockSheet.store = new Store();
@@ -328,7 +328,7 @@ describe('Pivot Dataset Total Test', () => {
       });
 
       describe('getCellData function when totals calculated when multi values', () => {
-        beforeEach(() => {
+        beforeAll(() => {
           MockPivotSheet.mockClear();
           const mockSheet = new MockPivotSheet();
           mockSheet.store = new Store();
@@ -395,7 +395,7 @@ describe('Pivot Dataset Total Test', () => {
     });
 
     describe('getCellData function when totals calculated by calcFunc', () => {
-      beforeEach(() => {
+      beforeAll(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
         mockSheet.store = new Store();
@@ -604,7 +604,7 @@ describe('Pivot Dataset Total Test', () => {
   });
 
   describe('test for get total status', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       MockPivotSheet.mockClear();
       const mockSheet = new MockPivotSheet();
       mockSheet.store = new Store();

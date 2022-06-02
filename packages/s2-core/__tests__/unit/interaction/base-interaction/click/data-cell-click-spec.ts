@@ -19,7 +19,7 @@ describe('Interaction Data Cell Click Tests', () => {
   let s2: SpreadSheet;
   const mockCellInfo = createMockCellInfo('testId');
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCellInfo.mockCell as any;
     s2.options = {

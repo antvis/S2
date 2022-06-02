@@ -17,7 +17,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
   describe('TableSheet', () => {
     let tableSheet: TableSheet;
 
-    beforeEach(() => {
+    beforeAll(() => {
       tableSheet = new TableSheet(
         getContainer(),
         mockTableDataConfig,
@@ -26,7 +26,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       tableSheet.render();
     });
 
-    afterEach(() => {
+    afterAll(() => {
       tableSheet.destroy();
     });
 
@@ -168,12 +168,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       },
     };
 
-    beforeEach(() => {
+    beforeAll(() => {
       pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2Options);
       pivotSheet.render();
     });
 
-    afterEach(() => {
+    afterAll(() => {
       pivotSheet.destroy();
     });
 

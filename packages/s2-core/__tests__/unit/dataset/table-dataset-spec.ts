@@ -20,7 +20,7 @@ describe('Table Mode Dataset Test', () => {
       columns: ['province', 'city', 'type', 'sub_type', 'number'],
     },
   };
-  beforeEach(() => {
+  beforeAll(() => {
     MockTableSheet.mockClear();
     dataSet = new TableDataSet(new MockTableSheet());
 

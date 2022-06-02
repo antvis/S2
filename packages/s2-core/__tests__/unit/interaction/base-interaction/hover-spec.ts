@@ -51,7 +51,7 @@ describe('Interaction Hover Tests', () => {
       cellType: 'dataCell',
     } as any);
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = getCell;
     s2.options = {
@@ -67,7 +67,7 @@ describe('Interaction Hover Tests', () => {
     hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
   });
 
-  afterEach(() => {
+  afterAll(() => {
     mockCellUpdate.mockReset();
   });
 

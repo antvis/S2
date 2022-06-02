@@ -37,7 +37,7 @@ describe('Frozen util test', () => {
   });
 
   describe('getFrozenDataCellType', () => {
-    beforeEach(() => {});
+    beforeAll(() => {});
 
     it('should return correct data cell type', () => {
       const colLength = 10;

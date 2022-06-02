@@ -56,7 +56,7 @@ describe('Table Mode Dataset Test', () => {
       },
     ],
   };
-  beforeEach(() => {
+  beforeAll(() => {
     MockTableSheet.mockClear();
     dataSet = new TableDataSet(new MockTableSheet());
 

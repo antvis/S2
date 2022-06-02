@@ -26,7 +26,7 @@ describe('Interaction Row Text Click Tests', () => {
     },
   ];
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = createFakeSpreadSheet();
     rowTextClick = new RowTextClick(s2 as unknown as SpreadSheet);
     s2.options = {

@@ -18,7 +18,7 @@ const s2Options: S2Options = {
 describe('Empty String Row Value Tests', () => {
   let s2: SpreadSheet;
 
-  beforeEach(() => {
+  beforeAll(() => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2Options);
     s2.render();
   });
