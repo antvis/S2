@@ -33,7 +33,8 @@
     "s2-vue",
     "spreadsheet",
     "pivot table",
-    "table"
+    "table",
+    "crossTable"
   ],
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
