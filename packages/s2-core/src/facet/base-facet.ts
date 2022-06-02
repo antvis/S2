@@ -194,7 +194,7 @@ export abstract class BaseFacet {
     this.renderHeaders();
     this.renderScrollBars();
     this.renderBackground();
-    this.dynamicRenderCell(false);
+    this.dynamicRenderCell();
   }
 
   /**
@@ -971,15 +971,6 @@ export abstract class BaseFacet {
     this.preCellIndexes = indexes;
   };
 
-  /**
-   * How long about the delay period, need be re-considered,
-   * for now only delay, oppose to immediately
-   * @private
-   */
-  debounceRenderCell = (scrollX: number, scrollY: number) => {
-    this.realCellRender(scrollX, scrollY);
-  };
-
   protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
@@ -995,7 +986,6 @@ export abstract class BaseFacet {
     this.calculateCellWidthHeight();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
-
     this.clipPanelGroup();
     this.bindEvents();
   }
@@ -1183,10 +1173,9 @@ export abstract class BaseFacet {
   /**
    * When scroll behavior happened, only render one time in a period,
    * but render immediately in initiate
-   * @param delay debounce render cell
    * @protected
    */
-  protected dynamicRenderCell(delay = true) {
+  protected dynamicRenderCell() {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
 
@@ -1196,12 +1185,7 @@ export abstract class BaseFacet {
       this.panelBBox.viewportHeight,
     );
 
-    if (delay) {
-      this.debounceRenderCell(scrollX, scrollY);
-    } else {
-      this.realCellRender(scrollX, scrollY);
-    }
-
+    this.realCellRender(scrollX, scrollY);
     this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
