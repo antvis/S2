@@ -27,6 +27,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Change Core Package.json Path
+        run: yarn build:change-core-package
+
       # 自动发布完成后 触发 github.release.published 事件
       # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
       - name: Release
@@ -34,6 +37,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn release
+
+      - name: Change Core Package.json Path
+        run: |
+          yarn build:reset-core-package
+          git add .
+          git commit -m "chore: 🤖 重置 @antv/s2 package.json 文件" --no-verify
+          git push --no-verify
 
       # 发布失败通知内部开发群
       - name: Release failed ding talk dev group notify

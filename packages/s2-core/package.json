@@ -39,7 +39,7 @@
   "scripts": {
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist temp",
-    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm --sequential build:dts",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
     "build:esm": "cross-env FORMAT=es rollup -c rollup.config.js",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
@@ -47,7 +47,6 @@
     "build:dts": "run-s dts:*",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
-    "dts:clean": "rimraf temp",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
