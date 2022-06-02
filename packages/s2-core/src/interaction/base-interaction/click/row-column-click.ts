@@ -4,7 +4,7 @@ import {
   CellTypes,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
+  getTooltipOperatorHiddenColumnsMenu,
 } from '../../../common/constant';
 import type {
   TooltipOperation,
@@ -116,6 +116,9 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     // 只有一个叶子节点时, 不显示隐藏按钮
     const isOnlyOneLeafColumn =
       this.spreadsheet.getColumnLeafNodes().length === 1;
+
+    const TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU =
+      getTooltipOperatorHiddenColumnsMenu();
 
     const enableHiddenColumnOperator =
       isColCell &&

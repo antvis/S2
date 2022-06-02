@@ -83,9 +83,10 @@ export class HdAdapter {
       container,
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
-
+    const canvas = this.spreadsheet.getCanvasElement();
     const lastRatio = container.get('pixelRatio');
-    if (lastRatio === ratio) {
+
+    if (lastRatio === ratio || !canvas) {
       return;
     }
 

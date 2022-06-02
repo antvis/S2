@@ -62,6 +62,7 @@ jest.mock('@/sheet-type', () => {
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
         },
+        getCanvasElement: () => container.get('el'),
       };
     }),
   };

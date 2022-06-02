@@ -1,6 +1,20 @@
-import { i18n, setLang } from '@/common/i18n';
+import { getLang, i18n, setLang } from '@/common/i18n';
 
 describe('I18n Test', () => {
+  test('should get default chinese lang', () => {
+    expect(getLang()).toEqual('zh_CN');
+  });
+
+  test('should set custom lang', () => {
+    setLang('en_US');
+    expect(getLang()).toEqual('en_US');
+  });
+
+  test('should get default chinese lang if receive a empty lang type', () => {
+    setLang(null);
+    expect(getLang()).toEqual('zh_CN');
+  });
+
   test('should show english text when set lang to en', () => {
     setLang('en_US');
     expect(i18n('小计')).toEqual('Total');

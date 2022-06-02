@@ -5,7 +5,7 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_TREND_MENU,
+  getTooltipOperatorTrendMenu,
 } from '../../../common/constant';
 import type {
   CellAppendInfo,
@@ -62,6 +62,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     event: CanvasEvent,
     meta: ViewMeta,
   ): TooltipOperatorOptions {
+    const TOOLTIP_OPERATOR_TREND_MENU = getTooltipOperatorTrendMenu();
     const cell = this.spreadsheet.getCell(event.target);
     const { operation } = getTooltipOptions(this.spreadsheet, event);
     const trendMenu = operation.trend && {

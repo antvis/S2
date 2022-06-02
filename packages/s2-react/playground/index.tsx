@@ -13,6 +13,8 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
+  getLang,
+  setLang,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -56,6 +58,8 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+// setLang('en_US');
 
 const { TabPane } = Tabs;
 
@@ -411,6 +415,16 @@ function MainLayout() {
                     主题色调整
                   </Button>
                 </Popover>
+                <Button
+                  danger
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.destroy();
+                    s2Ref.current?.render();
+                  }}
+                >
+                  卸载组件 (s2.destroy)
+                </Button>
               </Space>
               <Space style={{ margin: '20px 0', display: 'flex' }}>
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
@@ -445,6 +459,15 @@ function MainLayout() {
                   prefix="高度"
                   size="small"
                 />
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.changeSheetSize(400, 400);
+                    s2Ref.current?.render(false);
+                  }}
+                >
+                  改变表格大小 (s2.changeSheetSize)
+                </Button>
                 <Popover
                   placement="bottomRight"
                   content={
@@ -839,6 +862,9 @@ function MainLayout() {
                     </span>
                     <span>
                       {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                    </span>
+                    <span>
+                      lang: <Tag>{getLang()}</Tag>
                     </span>
                   </Space>
                 ),

@@ -179,7 +179,11 @@ export class EventController {
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
-      const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+      const canvas = this.spreadsheet.getCanvasElement();
+      if (!canvas) {
+        return false;
+      }
+
       const { x, y } = canvas.getBoundingClientRect() || {};
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)

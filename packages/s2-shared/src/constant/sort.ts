@@ -1,6 +1,6 @@
 import { i18n } from '@antv/s2';
 
-export const SORT_METHOD = [
+export const getSortMethod = () => [
   {
     name: i18n('升序'),
     value: 'ASC',
@@ -11,7 +11,7 @@ export const SORT_METHOD = [
   },
 ];
 
-export const RULE_OPTIONS = [
+export const getSortRuleOptions = () => [
   {
     label: i18n('首字母'),
     value: 'sortMethod',
@@ -27,4 +27,4 @@ export const RULE_OPTIONS = [
   },
 ];
 
-export const ADVANCED_PRE_CLS = 'antv-s2-advanced-sort';
+export const ADVANCED_SORT_PRE_CLS = 'antv-s2-advanced-sort';

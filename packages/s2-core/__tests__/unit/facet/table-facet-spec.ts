@@ -44,6 +44,7 @@ jest.mock('@/sheet-type', () => {
         isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
+        getCanvasElement: () => container.get('el'),
       };
     }),
   };
