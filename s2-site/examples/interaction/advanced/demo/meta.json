@@ -75,6 +75,14 @@
         "en": "Scroll loop"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3q7Rp9HhP/Kapture%2525202022-05-30%252520at%25252015.53.27.gif"
+    },
+    {
+      "filename": "overscroll-behavior.ts",
+      "title": {
+        "zh": "关闭浏览器默认边界滚动行为",
+        "en": "Reaching the boundary of a scrolling area"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
     }
   ]
 }

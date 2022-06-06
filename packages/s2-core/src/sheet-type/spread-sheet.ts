@@ -155,16 +155,25 @@ export abstract class SpreadSheet extends EE {
 
   private setOverscrollBehavior() {
     const { overscrollBehavior } = this.options.interaction;
-    const initOverscrollBehavior = document.body.style
-      .overscrollBehavior as InteractionOptions['overscrollBehavior'];
+    // 行内样式 + css 样式
+    const initOverscrollBehavior = window
+      .getComputedStyle(document.body)
+      .getPropertyValue(
+        'overscroll-behavior',
+      ) as InteractionOptions['overscrollBehavior'];
 
     // 用户没有在 body 上主动设置过 overscrollBehavior，才进行更新
-    if (overscrollBehavior && !initOverscrollBehavior) {
+    const hasInitOverscrollBehavior =
+      initOverscrollBehavior && initOverscrollBehavior !== 'auto';
+
+    if (overscrollBehavior && !hasInitOverscrollBehavior) {
       document.body.style.overscrollBehavior = overscrollBehavior;
       return;
     }
 
-    this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    if (hasInitOverscrollBehavior) {
+      this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    }
   }
 
   private restoreOverscrollBehavior() {
@@ -383,6 +392,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public destroy() {
+    this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();
     this.hdAdapter?.destroy();
@@ -391,7 +401,6 @@ export abstract class SpreadSheet extends EE {
     this.destroyTooltip();
     this.clearCanvasEvent();
     this.container?.destroy();
-    this.restoreOverscrollBehavior();
   }
 
   /**

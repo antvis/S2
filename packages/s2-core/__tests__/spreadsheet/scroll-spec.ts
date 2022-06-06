@@ -1,7 +1,6 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { before } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { CellMeta, InteractionOptions, S2Options } from '@/common/interface';
 import {
@@ -32,19 +31,19 @@ describe('Scroll By Group Tests', () => {
   let s2: SpreadSheet;
   let canvas: HTMLCanvasElement;
 
-  beforeAll(() => {
+  beforeEach(() => {
     jest
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
 
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
-    canvas = s2.container.get('el') as HTMLCanvasElement;
+    canvas = s2.getCanvasElement();
   });
 
-  afterAll(() => {
-    // s2.destroy();
-    canvas = null;
+  afterEach(() => {
+    s2.destroy();
+    canvas.remove();
   });
 
   test('should hide tooltip when start scroll', () => {
@@ -301,6 +300,7 @@ describe('Scroll By Group Tests', () => {
     });
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
+
     expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
     expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
 
@@ -315,11 +315,13 @@ describe('Scroll By Group Tests', () => {
     });
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
+
     expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
     expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
 
     s2.changeSheetSize(1000, 200); // 纵向滚动条
     s2.render(false);
+
     expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
   });
 
@@ -338,7 +340,8 @@ describe('Scroll By Group Tests', () => {
       offset: defaultOffset,
     });
 
-    beforeAll(() => {
+    beforeEach(() => {
+      document.body.style.overscrollBehavior = '';
       document.body.style.height = '2000px';
       document.body.style.width = '2000px';
 
@@ -405,14 +408,75 @@ describe('Scroll By Group Tests', () => {
 
         canvas.dispatchEvent(wheelEvent);
 
-        expect(document.body.style.overscrollBehavior).toEqual(
-          overscrollBehavior,
-        );
         expect(stopScrollChainingSpy).toHaveBeenCalledTimes(
           stopScrollChainingTimes,
         );
 
         stopScrollChainingSpy.mockRestore();
+      },
+    );
+
+    it('should not add property to body when render and destroyed if overscrollBehavior is null', () => {
+      const sheet = new PivotSheet(getContainer(), mockDataConfig, {
+        ...s2Options,
+        interaction: {
+          overscrollBehavior: null,
+        },
+      });
+
+      sheet.render();
+
+      expect(
+        document.body.style.getPropertyValue('overscroll-behavior'),
+      ).toBeFalsy();
+
+      sheet.destroy();
+
+      expect(
+        document.body.style.getPropertyValue('overscroll-behavior'),
+      ).toBeFalsy();
+    });
+
+    it('should not change init body overscrollBehavior style when render and destroyed', () => {
+      document.body.style.overscrollBehavior = 'none';
+
+      const sheet = new PivotSheet(getContainer(), mockDataConfig, {
+        ...s2Options,
+        interaction: {
+          overscrollBehavior: 'contain',
+        },
+      });
+
+      sheet.render();
+
+      expect(sheet.store.get('initOverscrollBehavior')).toEqual('none');
+      expect(document.body.style.overscrollBehavior).toEqual('none');
+
+      sheet.destroy();
+
+      expect(document.body.style.overscrollBehavior).toEqual('none');
+    });
+
+    it.each(['auto', 'contain', 'none'])(
+      'should add %s property to body',
+      (overscrollBehavior: InteractionOptions['overscrollBehavior']) => {
+        document.body.style.overscrollBehavior = '';
+
+        const sheet = new PivotSheet(getContainer(), mockDataConfig, {
+          ...s2Options,
+          interaction: {
+            overscrollBehavior,
+          },
+        });
+        sheet.render();
+
+        expect(sheet.store.get('initOverscrollBehavior')).toBeUndefined();
+        expect(document.body.style.overscrollBehavior).toEqual(
+          overscrollBehavior,
+        );
+
+        sheet.destroy();
+        expect(document.body.style.overscrollBehavior).toBeFalsy();
       },
     );
   });
