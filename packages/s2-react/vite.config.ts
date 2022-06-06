@@ -31,6 +31,7 @@ export default defineConfig({
 
   // 打包配置
   resolve: {
+    mainFields: ['src', 'module', 'main'],
     alias: {
       lodash: 'lodash-es',
     },

@@ -3,8 +3,7 @@
   "name": "@antv/s2-shared",
   "version": "1.0.0",
   "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
+  "types": "temp/index.d.ts",
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
   "scripts": {

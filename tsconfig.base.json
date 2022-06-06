@@ -16,9 +16,10 @@
     "isolatedModules": true,
     "preserveValueImports": true,
     "forceConsistentCasingInFileNames": true,
+    "baseUrl": "packages",
     "paths": {
-      "@/*": ["./src/*"],
-      "tests/*": ["./__tests__/*"]
+      "@antv/s2": ["s2-core/src/index.ts"],
+      "@antv/s2-shared": ["s2-shared/src/index.ts"]
     },
     "types": ["node", "jest", "jest-extended", "vite/client"]
   }

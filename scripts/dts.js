@@ -38,17 +38,4 @@ function generateDts() {
   }
 }
 
-if (libName !== 's2-core') {
-  const shareRewriter = createRewriter('s2-shared');
-  const coreRewriter = createRewriter('s2-core');
-
-  shareRewriter.rewritePackage();
-  coreRewriter.rewritePackage();
-
-  generateDts();
-
-  shareRewriter.restorePackage();
-  coreRewriter.restorePackage();
-} else {
-  generateDts();
-}
+generateDts();

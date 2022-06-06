@@ -1,7 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "paths": {
+      "@antv/s2":["s2-core/src/index.ts"],
+      "@antv/s2-shared":["s2-shared/src/index.ts"],
+      "@/*":["s2-core/src/*"],
+      "tests/*":["s2-core/__tests__/*"]
+    },
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
 }

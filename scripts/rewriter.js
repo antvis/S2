@@ -3,11 +3,7 @@ const path = require('path');
 
 module.exports = function createRewriter(
   libName,
-  {
-    mainPath = 'lib/index.js',
-    modulePath = 'esm/index.js',
-    typesPath = 'temp/index.d.ts',
-  } = {},
+  typesPath = 'temp/index.d.ts',
 ) {
   let originalPackageConfig = null;
   let packagePath = null;
@@ -23,8 +19,6 @@ module.exports = function createRewriter(
     originalPackageConfig = require(packageRelativePath);
     const copySharedPackage = { ...originalPackageConfig };
     // 配合 tsconfig.declaration.json 配置的声明文件导出路径
-    copySharedPackage.main = mainPath;
-    copySharedPackage.module = modulePath;
     copySharedPackage.types = typesPath;
     fs.writeFileSync(
       packagePath,
