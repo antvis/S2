@@ -1,3 +1,17 @@
+# [@antv/s2-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0...@antv/s2-v1.19.0) (2022-06-02)
+
+
+### Bug Fixes
+
+* **copy:** 修复rowdata可能为null的情况 ([#1393](https://github.com/antvis/S2/issues/1393)) ([0beeac4](https://github.com/antvis/S2/commit/0beeac424d809e5d97844ff95490bd80e7c451ea))
+* **locale:** 修复国际化配置不生效 close [#1394](https://github.com/antvis/S2/issues/1394) ([#1397](https://github.com/antvis/S2/issues/1397)) ([cfd5dbe](https://github.com/antvis/S2/commit/cfd5dbe0344afbb6f3929bece1778c02f9bbc00b))
+* 修复表格卸载后调用实例方法报错的问题 close [#1349](https://github.com/antvis/S2/issues/1349) ([#1400](https://github.com/antvis/S2/issues/1400)) ([bcf21bb](https://github.com/antvis/S2/commit/bcf21bb2099e04496c76b9cd28fa6d7723c9edcb))
+
+
+### Features
+
+* 趋势分析表支持子弹图配置 ([#1367](https://github.com/antvis/S2/issues/1367)) ([b5756cc](https://github.com/antvis/S2/commit/b5756cc2f4d2054f3d5a8eb31134efd23b1dd230))
+
 # [@antv/s2-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-v1.17.0...@antv/s2-v1.18.0) (2022-05-30)
 
 
