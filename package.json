@@ -34,8 +34,6 @@
     "vue:test": "yarn workspace @antv/s2-vue test",
     "vue:watch": " yarn workspace @antv/s2-vue watch",
     "build": "lerna run build --include-dependencies --stream --concurrency 1",
-    "build:change-core-package":"node ./scripts/rewriteCore.js",
-    "build:reset-core-package":"cross-env RESET=reset node ./scripts/rewriteCore.js",
     "build:esm": "lerna run build:esm --include-dependencies --stream --concurrency 1",
     "build:umd": "lerna run build:umd --include-dependencies --stream --concurrency 1",
     "bundle:size": "lerna run bundle:size --stream",

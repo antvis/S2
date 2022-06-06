@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
-const createRewriter = require('./rewriter');
 
 const libName = process.env.LIB;
 const libPath = path.join(__dirname, '../packages', libName);
