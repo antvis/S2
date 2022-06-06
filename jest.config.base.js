@@ -23,8 +23,8 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)': '<rootDir>/src/$1',
     '^tests/(.*)': '<rootDir>/__tests__/$1',
-    '^@antv/s2': path.join(__dirname, 'packages/s2-core/src'),
-    '^@antv/s2-shared': path.join(__dirname, 'packages/s2-shared/src'),
+    '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
+    '^@antv/s2-shared$': path.join(__dirname, 'packages/s2-shared/src'),
   },
   testTimeout: 30000,
 };
