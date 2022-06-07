@@ -166,13 +166,10 @@ export abstract class SpreadSheet extends EE {
     const hasInitOverscrollBehavior =
       initOverscrollBehavior && initOverscrollBehavior !== 'auto';
 
-    if (overscrollBehavior && !hasInitOverscrollBehavior) {
-      document.body.style.overscrollBehavior = overscrollBehavior;
-      return;
-    }
-
     if (hasInitOverscrollBehavior) {
       this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    } else if (overscrollBehavior) {
+      document.body.style.overscrollBehavior = overscrollBehavior;
     }
   }
 

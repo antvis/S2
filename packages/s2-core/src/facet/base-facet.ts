@@ -824,13 +824,10 @@ export abstract class BaseFacet {
     2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
     所以只要不为 `auto`, 或者表格内, 都需要阻止外部容器滚动
   */
-  private stopScrollChainingIfNeeded = (
-    event: S2WheelEvent,
-    scrollOverTheViewport = true,
-  ) => {
+  private stopScrollChainingIfNeeded = (event: S2WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
 
-    if (scrollOverTheViewport || interaction.overscrollBehavior !== 'auto') {
+    if (interaction.overscrollBehavior !== 'auto') {
       this.stopScrollChaining(event);
     }
   };
@@ -854,11 +851,11 @@ export abstract class BaseFacet {
     if (
       !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
     ) {
-      this.stopScrollChainingIfNeeded(event, false);
+      this.stopScrollChainingIfNeeded(event);
       return;
     }
 
-    this.stopScrollChainingIfNeeded(event);
+    this.stopScrollChaining(event);
 
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
