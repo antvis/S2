@@ -15,6 +15,7 @@ import {
   type TooltipAutoAdjustBoundary,
   getLang,
   setLang,
+  type InteractionOptions,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -175,10 +176,20 @@ function MainLayout() {
     setDataCfg(customMerge({}, currentDataCfg, newDataCfg));
   };
 
-  const onAutoAdjustBoundary = (value: TooltipAutoAdjustBoundary) => {
+  const onAutoAdjustBoundaryChange = (value: TooltipAutoAdjustBoundary) => {
     updateOptions({
       tooltip: {
         autoAdjustBoundary: value || null,
+      },
+    });
+  };
+
+  const onOverscrollBehaviorChange = (
+    overscrollBehavior: InteractionOptions['overscrollBehavior'],
+  ) => {
+    updateOptions({
+      interaction: {
+        overscrollBehavior,
       },
     });
   };
@@ -430,7 +441,7 @@ function MainLayout() {
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                   <Select
                     defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
-                    onChange={onAutoAdjustBoundary}
+                    onChange={onAutoAdjustBoundaryChange}
                     style={{ width: 230 }}
                     size="small"
                   >
@@ -496,6 +507,18 @@ function MainLayout() {
                 >
                   <Button size="small">滚动速率调整</Button>
                 </Popover>
+                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
+                  <Select
+                    defaultValue={mergedOptions.interaction.overscrollBehavior}
+                    onChange={onOverscrollBehaviorChange}
+                    style={{ width: 150 }}
+                    size="small"
+                  >
+                    <Select.Option value="auto">auto</Select.Option>
+                    <Select.Option value="contain">contain</Select.Option>
+                    <Select.Option value="none">none</Select.Option>
+                  </Select>
+                </Tooltip>
                 <Button
                   size="small"
                   onClick={() => {

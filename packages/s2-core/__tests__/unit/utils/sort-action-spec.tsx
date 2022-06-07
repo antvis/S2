@@ -264,12 +264,14 @@ describe('getSortByMeasureValues', () => {
       },
     },
   } as S2Options;
+
   beforeEach(() => {
     sheet = new PivotSheet(getContainer(), sortData, s2Options);
     dataSet = new PivotDataSet(sheet);
     dataSet.setDataCfg(sortData);
     sheet.dataSet = dataSet;
   });
+
   test('should sort by col total', () => {
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {

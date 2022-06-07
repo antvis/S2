@@ -1,5 +1,6 @@
 import type { BBox, Group } from '@antv/g-canvas';
 import type {
+  InteractionOptions,
   InteractionStateInfo,
   S2CellType,
   SortParam,
@@ -86,6 +87,6 @@ export interface StoreKey {
 
   // last click cell
   lastClickedCell: S2CellType<ViewMeta>;
-
+  initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
   [key: string]: unknown;
 }

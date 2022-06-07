@@ -27,10 +27,12 @@ const s2Options: S2Options = {
 
 describe('GrandTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
+
   beforeEach(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });
+
   test('should get right height of GrandTotal node', () => {
     const hierarchy = s2.facet.layoutResult.colsHierarchy;
     const grandTotalNode = find(

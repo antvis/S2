@@ -28,6 +28,7 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   CustomSVGIcon,
   EmitterType,
+  InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -145,6 +146,7 @@ export abstract class SpreadSheet extends EE {
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
+    this.setDebug();
     this.initTooltip();
     this.initGroups(dom);
     this.bindEvents();
@@ -152,7 +154,32 @@ export abstract class SpreadSheet extends EE {
     this.initTheme();
     this.initHdAdapter();
     this.registerIcons();
-    this.setDebug();
+    this.setOverscrollBehavior();
+  }
+
+  private setOverscrollBehavior() {
+    const { overscrollBehavior } = this.options.interaction;
+    // 行内样式 + css 样式
+    const initOverscrollBehavior = window
+      .getComputedStyle(document.body)
+      .getPropertyValue(
+        'overscroll-behavior',
+      ) as InteractionOptions['overscrollBehavior'];
+
+    // 用户没有在 body 上主动设置过 overscrollBehavior，才进行更新
+    const hasInitOverscrollBehavior =
+      initOverscrollBehavior && initOverscrollBehavior !== 'auto';
+
+    if (hasInitOverscrollBehavior) {
+      this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    } else if (overscrollBehavior) {
+      document.body.style.overscrollBehavior = overscrollBehavior;
+    }
+  }
+
+  private restoreOverscrollBehavior() {
+    document.body.style.overscrollBehavior =
+      this.store.get('initOverscrollBehavior') || '';
   }
 
   private setDebug() {
@@ -366,6 +393,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public destroy() {
+    this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();
     this.hdAdapter?.destroy();

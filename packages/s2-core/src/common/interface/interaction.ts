@@ -141,6 +141,8 @@ export interface InteractionOptions {
   // An object that specifies characteristics about the event listener
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+  overscrollBehavior?: 'auto' | 'none' | 'contain';
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

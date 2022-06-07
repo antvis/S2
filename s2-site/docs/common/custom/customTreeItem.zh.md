@@ -14,5 +14,5 @@ order: 8
 | key | 当前节点唯一标识 | `string` |    | ✓ |
 | title | 当前节点展示名 | `string` |    | ✓ |
 | collapsed | 节点是否收起（只会在自身代表非叶子节点生效） | `boolean` |  `false`  |  |
-| description | 节点的额外描述信息 | `string` |    |  |
+| description | 节点的额外描述信息，在对应行头的 tooltip 中展示 | `string` |    |  |
 | children | 子节点 | `CustomTreeItem[]` |    |  |

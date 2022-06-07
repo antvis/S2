@@ -22,6 +22,7 @@ describe('Empty String Row Value Tests', () => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2Options);
     s2.render();
   });
+
   test('should get correct row hierarchy with empty row node', () => {
     const layoutResult = s2.facet.layoutResult;
     expect(layoutResult.rowNodes).toHaveLength(8);
