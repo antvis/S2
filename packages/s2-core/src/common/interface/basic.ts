@@ -47,13 +47,13 @@ export enum CellBorderPosition {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  readonly field?: string; // 字段 id
-  readonly name?: string; // 字段名称
-  readonly description?: string; // 字段描述
+  field?: string; // 字段 id
+  name?: string; // 字段名称
+  description?: string; // 字段描述
   // 格式化
   // 数值字段：一般用于格式化数字单位
   // 文本字段：一般用于做字段枚举值的别名
-  readonly formatter?: Formatter;
+  formatter?: Formatter;
 }
 
 /**
@@ -150,8 +150,8 @@ export interface Total {
  * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
  */
 export interface Totals {
-  readonly row?: Partial<Readonly<Total>>;
-  readonly col?: Partial<Readonly<Total>>;
+  row?: Partial<Total>;
+  col?: Partial<Total>;
 }
 
 export interface Sort {
@@ -186,19 +186,19 @@ export interface FilterParam {
 export type SortParams = SortParam[];
 
 export interface Style {
-  readonly layoutWidthType?: LayoutWidthType;
+  layoutWidthType?: LayoutWidthType;
   // 是否展示树状分层下的层级占位点
-  readonly showTreeLeafNodeAlignDot?: boolean;
+  showTreeLeafNodeAlignDot?: boolean;
   // row cell's height in tree mode
-  readonly treeRowsWidth?: number;
+  treeRowsWidth?: number;
   // row header in tree mode collapse some nodes
-  readonly collapsedRows?: Record<string, boolean>;
+  collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
-  readonly collapsedCols?: Record<string, boolean>;
-  readonly cellCfg?: CellCfg;
-  readonly colCfg?: ColCfg;
-  readonly rowCfg?: RowCfg;
-  readonly device?: 'pc' | 'mobile'; // 设备，pc || mobile
+  collapsedCols?: Record<string, boolean>;
+  cellCfg?: CellCfg;
+  colCfg?: ColCfg;
+  rowCfg?: RowCfg;
+  device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
 export type Pagination = {
@@ -292,7 +292,7 @@ export interface CellCfg {
     // 原始值字段
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
-    widthPercentCfg?: number[];
+    widthPercent?: number[];
     // 条件格式
     conditions?: { text: Condition };
   };

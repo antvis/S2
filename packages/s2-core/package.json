@@ -1,6 +1,7 @@
 {
+  "private": false,
   "name": "@antv/s2",
-  "version": "1.17.0",
+  "version": "1.19.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -37,17 +38,23 @@
   ],
   "scripts": {
     "start": "yarn test:live",
-    "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:esm build:cjs build:umd",
-    "build:esm": "cross-env FORMAT=esm rollup -c rollup.config.js",
+    "clean": "rimraf lib esm dist temp",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm --sequential build:dts",
+    "build:esm": "cross-env FORMAT=es rollup -c rollup.config.js",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
+    "build:dts": "run-s dts:*",
+    "dts:build": "ttsc -p tsconfig.declaration.json",
+    "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
+    "dts:clean": "rimraf temp",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
+    "test:ci": "yarn test --maxWorkers=3",
+    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
@@ -83,5 +90,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "5 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

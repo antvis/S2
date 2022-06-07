@@ -61,7 +61,7 @@ demo components and expansion capabilities, it allows developers to use it quick
 1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
 2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
 3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
-4. Out of the box: Provide out-of-the-box react table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
+4. Out of the box: Provide out-of-the-box `React` and `Vue3` table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
  of complex scenes quickly.
 5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
 
@@ -161,9 +161,9 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataCfg, s2Options)
+const s2 = new PivotSheet(container, s2DataCfg, s2Options);
 
-s2.render()
+s2.render();
 ```
 
 ### 4. Preview
@@ -172,10 +172,11 @@ s2.render()
 
 ### 📦 Packages
 
-| Package  | Latest  |  Beta | Alpha | Size | Download |
-|---|---|---|---| --- | --- |
-| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| Package                                                                      | Latest                                                            | Beta                                                          | Alpha                                                           | Size                                                                                                                          | Download                                                      |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| [@antv/s2-vue](https://github.com/antvis/S2/tree/master/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
 
 ## 👤 Author
 
@@ -191,14 +192,28 @@ git clone git@github.com:antvis/S2.git
 
 cd S2
 
-yarn
+yarn # or yarn bootstrap
 
+# build all
+yarn build
+
+# debug s2-core
 yarn core:start
 
+# debug s2-react
+yarn react:playground
+
+# debug s2-vue
+yarn vue:playground
+
+# unit test
+yarn test
+
+# check the code style and the type definition
+yarn lint
+
 # start the website
-
 yarn site:bootstrap
-
 yarn site:start
 ```
 

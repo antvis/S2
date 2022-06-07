@@ -192,7 +192,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     let fill = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill;
+      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
 
     return { ...textStyle, fill };
@@ -302,9 +302,13 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!attrs) {
         return;
       }
-      const { minValue, maxValue } = attrs.isCompare
+
+      const valueRange = attrs.isCompare
         ? attrs
         : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
+      const minValue = parseNumberWithPrecision(valueRange.minValue);
+      const maxValue = parseNumberWithPrecision(valueRange.maxValue);
+
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );

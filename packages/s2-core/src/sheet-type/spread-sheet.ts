@@ -8,7 +8,6 @@ import {
   isEmpty,
   isFunction,
   isString,
-  once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
@@ -34,6 +33,7 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
+  S2RenderOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -338,7 +338,14 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true, reBuildDataSet = false) {
+  public render(reloadData = true, options: S2RenderOptions = {}) {
+    // 防止表格卸载后, 再次调用 render 函数的报错
+    if (!this.getCanvasElement()) {
+      return;
+    }
+
+    const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
+      options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet(this.options);
@@ -348,7 +355,9 @@ export abstract class SpreadSheet extends EE {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    this.initHiddenColumnsDetail();
+    if (reBuildHiddenColumnsDetail) {
+      this.initHiddenColumnsDetail();
+    }
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
@@ -369,7 +378,7 @@ export abstract class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setThemeCfg(themeCfg: ThemeCfg) {
+  public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
     this.theme = customMerge(
       getTheme({ ...themeCfg, spreadsheet: this }),
@@ -419,19 +428,27 @@ export abstract class SpreadSheet extends EE {
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
+    const canvas = this.getCanvasElement();
     const containerWidth = this.container.get('width');
     const containerHeight = this.container.get('height');
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
 
-    if (!isSizeChanged) {
+    if (!isSizeChanged || !canvas) {
       return;
     }
 
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
+  }
+
+  /**
+   * 获取 <canvas/> HTML元素
+   */
+  public getCanvasElement(): HTMLCanvasElement {
+    return this.container.get('el') as HTMLCanvasElement;
   }
 
   public getLayoutWidthType(): LayoutWidthType {
@@ -447,6 +464,10 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
+  public getRowLeafNodes(): Node[] {
+    return this.facet?.layoutResult.rowLeafNodes || [];
+  }
+
   /**
    * get columnNode in levels,
    * @param level -1 = get all
@@ -460,7 +481,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getColumnLeafNodes(): Node[] {
-    return this.getColumnNodes().filter((node) => node.isLeaf);
+    return this.facet?.layoutResult.colLeafNodes || [];
   }
 
   /**
@@ -583,8 +604,10 @@ export abstract class SpreadSheet extends EE {
 
   // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
   protected updateContainerStyle() {
-    const canvas = this.container.get('el') as HTMLCanvasElement;
-    canvas.style.display = 'block';
+    const canvas = this.getCanvasElement();
+    if (canvas) {
+      canvas.style.display = 'block';
+    }
   }
 
   protected initPanelGroupChildren() {
@@ -601,13 +624,15 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
-  private initHiddenColumnsDetail = once(() => {
+  private initHiddenColumnsDetail = () => {
     const { hiddenColumnFields } = this.options.interaction;
-    if (isEmpty(hiddenColumnFields)) {
+    const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
+    // 隐藏列为空, 并且没有操作的情况下, 则无需生成
+    if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
       return;
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
-  });
+  };
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();

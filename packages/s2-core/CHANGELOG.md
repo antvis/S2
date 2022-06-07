@@ -1,3 +1,48 @@
+# [@antv/s2-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0...@antv/s2-v1.19.0) (2022-06-02)
+
+
+### Bug Fixes
+
+* **copy:** 修复rowdata可能为null的情况 ([#1393](https://github.com/antvis/S2/issues/1393)) ([0beeac4](https://github.com/antvis/S2/commit/0beeac424d809e5d97844ff95490bd80e7c451ea))
+* **locale:** 修复国际化配置不生效 close [#1394](https://github.com/antvis/S2/issues/1394) ([#1397](https://github.com/antvis/S2/issues/1397)) ([cfd5dbe](https://github.com/antvis/S2/commit/cfd5dbe0344afbb6f3929bece1778c02f9bbc00b))
+* 修复表格卸载后调用实例方法报错的问题 close [#1349](https://github.com/antvis/S2/issues/1349) ([#1400](https://github.com/antvis/S2/issues/1400)) ([bcf21bb](https://github.com/antvis/S2/commit/bcf21bb2099e04496c76b9cd28fa6d7723c9edcb))
+
+
+### Features
+
+* 趋势分析表支持子弹图配置 ([#1367](https://github.com/antvis/S2/issues/1367)) ([b5756cc](https://github.com/antvis/S2/commit/b5756cc2f4d2054f3d5a8eb31134efd23b1dd230))
+
+# [@antv/s2-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-v1.17.0...@antv/s2-v1.18.0) (2022-05-30)
+
+
+### Bug Fixes
+
+* **facet:** DataCell 边框改为统一绘制的 Grid ([#1297](https://github.com/antvis/S2/issues/1297)) ([daaf989](https://github.com/antvis/S2/commit/daaf989fbb2be537d30675c661aff08a74d6b7f6))
+* fieldValue精度过高时intervalShape未绘制 ([#1372](https://github.com/antvis/S2/issues/1372)) ([0bb19b7](https://github.com/antvis/S2/commit/0bb19b7215c6d55b31fb4111d736f7d9a39e2fd8))
+* **interaction:** 修复自定义单元格有自定义图片时无法触发点击 close [#1360](https://github.com/antvis/S2/issues/1360) ([#1365](https://github.com/antvis/S2/issues/1365)) ([685cd04](https://github.com/antvis/S2/commit/685cd0458e33d189ced36eb708c8ed697f3d024c))
+* **interaction:** 修复默认隐藏列的配置更新为空数组时, 未触发表格更新 ([#1351](https://github.com/antvis/S2/issues/1351)) ([7ed1011](https://github.com/antvis/S2/commit/7ed101152caa180cc7090861f4fbf7f774148a23))
+* **strategysheet:** 修复趋势分析表多列头时叶子节点未和数值单元格对齐 ([#1371](https://github.com/antvis/S2/issues/1371)) ([2d3ff04](https://github.com/antvis/S2/commit/2d3ff047b414b5861203d39b5f3db23fe1307c16))
+* **tooltip:** 修复存在小计/总计时汇总数据计算错误 close [#1137](https://github.com/antvis/S2/issues/1137) ([#1346](https://github.com/antvis/S2/issues/1346)) ([f6e5e8c](https://github.com/antvis/S2/commit/f6e5e8c1b05563dee29e926887aa08ef92bd4302))
+* total 配置项取用错误 ([#1338](https://github.com/antvis/S2/issues/1338)) ([e514ad6](https://github.com/antvis/S2/commit/e514ad6048a12ab52f6137c14ba3c27582424e84))
+* 下钻数据没有按照用户数据展示 ([#1353](https://github.com/antvis/S2/issues/1353)) ([065c3bd](https://github.com/antvis/S2/commit/065c3bdea3625232de7d98797ef7266eea74f67c))
+* 增加默认条件格式默认默认默认值 ([#1379](https://github.com/antvis/S2/issues/1379)) ([c084c01](https://github.com/antvis/S2/commit/c084c01ddb471000f32b255260c45e1427884681))
+* 明细表下range-selection报错 ([#1368](https://github.com/antvis/S2/issues/1368)) ([189d337](https://github.com/antvis/S2/commit/189d337dc7efc3ec9ba1a48c4fc8d0649d1d5439))
+
+
+### Features
+
+* **interaction:** 增加单元格的右键事件 close [#1326](https://github.com/antvis/S2/issues/1326) ([#1334](https://github.com/antvis/S2/issues/1334)) ([230f3cc](https://github.com/antvis/S2/commit/230f3cc80137d666acf90c35891654cbefa83703))
+* sortFunc 支持使用手动排序兜底 ([#1374](https://github.com/antvis/S2/issues/1374)) ([252acdd](https://github.com/antvis/S2/commit/252acdd3f44816a0cf490a1fe2c39fd1e461bc54))
+* **theme:** 新增度量值的主题配置, 修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
+* Vue 1.0 ([#1290](https://github.com/antvis/S2/issues/1290)) ([0745836](https://github.com/antvis/S2/commit/07458368d7eafd3ddee168d5b2adca463374ab5a))
+* 丰富tooltip关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
+* 支持回调函数调整 Tooltip 位置 ([#1350](https://github.com/antvis/S2/issues/1350)) ([898f3df](https://github.com/antvis/S2/commit/898f3df590227ef0f0d2afd17892a9514bb7c2a3))
+
+
+### Reverts
+
+* Revert "chore(release): @antv/s2@1.18.0 @antv/s2-react@1.16.0 @antv/s2-vue@1.0.0 (#1384)" (#1386) ([60cdf6a](https://github.com/antvis/S2/commit/60cdf6abe7fb3b44f831051bd55622587a0f5bf8)), closes [#1384](https://github.com/antvis/S2/issues/1384) [#1386](https://github.com/antvis/S2/issues/1386)
+
 # [@antv/s2-v1.17.0](https://github.com/antvis/S2/compare/@antv/s2-v1.16.0...@antv/s2-v1.17.0) (2022-05-13)
 
 

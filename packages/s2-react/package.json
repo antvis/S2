@@ -1,6 +1,7 @@
 {
+  "private": false,
   "name": "@antv/s2-react",
-  "version": "1.15.1",
+  "version": "1.17.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -36,18 +37,23 @@
   ],
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
-    "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:esm build:cjs build:umd build:declaration",
+    "clean": "rimraf lib esm dist temp",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm --sequential build:dts",
     "build:esm": "cross-env FORMAT=es vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:declaration": "ttsc -p tsconfig.declaration.json",
+    "build:dts": "run-s dts:*",
+    "dts:build-shared": "yarn workspace @antv/s2-shared build:dts",
+    "dts:build": "ttsc -p tsconfig.declaration.json",
+    "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
+    "dts:clean": "rimraf temp",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
-    "test": "jest",
-    "test:live": "node ./scripts/test-live.mjs",
+    "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
+    "test:ci": "yarn test --maxWorkers=3",
+    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
+    "test:live": "node ./scripts/test-live.mjs",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
@@ -67,6 +73,7 @@
   },
   "devDependencies": {
     "@antv/s2": "*",
+    "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
@@ -87,5 +94,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "205 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

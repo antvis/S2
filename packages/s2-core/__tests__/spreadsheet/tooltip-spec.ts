@@ -60,7 +60,8 @@ describe('Tooltip Tests', () => {
 
     const s2 = createS2({
       showTooltip: true,
-      adjustPosition: (position) => {
+      adjustPosition: (positionInfo) => {
+        const { position } = positionInfo;
         return { x: position.x + 100, y: position.y + 100 };
       },
     });

@@ -1,14 +1,5 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import {
-  each,
-  get,
-  includes,
-  isBoolean,
-  isFunction,
-  isNumber,
-  keys,
-  pickBy,
-} from 'lodash';
+import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -17,6 +8,7 @@ import {
 } from '@/common/constant';
 import {
   CellThemes,
+  DefaultCellTheme,
   FormatResult,
   ResizeActiveOptions,
   ResizeArea,
@@ -153,12 +145,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public getStyle<K extends keyof S2Theme = keyof CellThemes>(
     name?: K,
-  ): S2Theme[K] {
+  ): DefaultCellTheme | S2Theme[K] {
     return this.theme[name || this.cellType];
   }
 
   protected getResizeAreaStyle(): ResizeArea {
-    return this.getStyle('resizeArea');
+    return this.getStyle('resizeArea') as ResizeArea;
   }
 
   protected shouldDrawResizeAreaByType(type: keyof ResizeActiveOptions) {
@@ -177,7 +169,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // get content area that exclude padding
   public getContentArea() {
-    const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
+    const cellStyle = (this.getStyle() ||
+      this.theme.dataCell) as DefaultCellTheme;
+    const { padding } = cellStyle?.cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
@@ -305,5 +299,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
     updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
+  }
+
+  public getTextShape() {
+    return this.textShape;
   }
 }

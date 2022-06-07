@@ -13,6 +13,7 @@ import {
   Collapse,
   Tag,
   Tabs,
+  DatePicker,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -31,10 +32,13 @@ import {
   DataType,
   generatePalette,
   getPalette,
-  InterceptType,
+  getLang,
+  setLang,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { debounce, forEach, random } from 'lodash';
+import { Adaptive, SheetType } from '@antv/s2-shared';
+import { useUpdateEffect } from 'ahooks';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
@@ -50,17 +54,12 @@ import {
   defaultOptions,
 } from './config';
 import { ResizeConfig } from './resize';
-import {
-  SheetComponent,
-  SheetType,
-  PartDrillDown,
-  PartDrillDownInfo,
-  Adaptive,
-} from '@/components';
+import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
-import '@antv/s2/esm/style.css';
+
+// setLang('en_US');
 
 const { TabPane } = Tabs;
 
@@ -134,6 +133,7 @@ const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
     <div>2</div>
+    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
   </div>
 );
 
@@ -146,7 +146,9 @@ function MainLayout() {
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
+    name: 'default',
+  });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
@@ -160,6 +162,7 @@ function MainLayout() {
     React.useState<S2Options>(mockStrategyOptions);
   const s2Ref = React.useRef<SpreadSheet>();
   const [columnOptions, setColumnOptions] = React.useState([]);
+  const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
@@ -253,7 +256,7 @@ function MainLayout() {
     });
   }, [sheetType]);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     switch (sheetType) {
       case 'table':
         setDataCfg(tableSheetDataCfg);
@@ -413,6 +416,16 @@ function MainLayout() {
                     主题色调整
                   </Button>
                 </Popover>
+                <Button
+                  danger
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.destroy();
+                    s2Ref.current?.render();
+                  }}
+                >
+                  卸载组件 (s2.destroy)
+                </Button>
               </Space>
               <Space style={{ margin: '20px 0', display: 'flex' }}>
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
@@ -447,6 +460,15 @@ function MainLayout() {
                   prefix="高度"
                   size="small"
                 />
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.changeSheetSize(400, 400);
+                    s2Ref.current?.render(false);
+                  }}
+                >
+                  改变表格大小 (s2.changeSheetSize)
+                </Button>
                 <Popover
                   placement="bottomRight"
                   content={
@@ -473,10 +495,74 @@ function MainLayout() {
                     </>
                   }
                 >
-                  <Button size="small" style={{ marginLeft: 20 }}>
-                    滚动速率调整
-                  </Button>
+                  <Button size="small">滚动速率调整</Button>
                 </Popover>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    const rowNode = s2Ref.current
+                      ?.getRowNodes()
+                      .find(({ id }) => id === 'root[&]四川省[&]成都市');
+
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: rowNode?.y,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动至 [成都市]
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      offsetY: {
+                        value: 0,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动到顶部
+                </Button>
+                <Button
+                  size="small"
+                  danger
+                  onClick={() => {
+                    if (
+                      scrollTimer.current ||
+                      !s2Ref.current.facet.vScrollBar
+                    ) {
+                      clearInterval(scrollTimer.current);
+                      return;
+                    }
+                    scrollTimer.current = setInterval(() => {
+                      const { scrollY } = s2Ref.current.facet.getScrollOffset();
+                      if (s2Ref.current.facet.isScrollToBottom(scrollY)) {
+                        console.log('滚动到底部');
+                        s2Ref.current.updateScrollOffset({
+                          offsetY: {
+                            value: 0,
+                            animate: false,
+                          },
+                        });
+                        return;
+                      }
+                      s2Ref.current.updateScrollOffset({
+                        offsetY: {
+                          value: scrollY + 50,
+                          animate: true,
+                        },
+                      });
+                    }, 500);
+                  }}
+                >
+                  {scrollTimer.current ? '停止滚动' : '循环滚动'}
+                </Button>
               </Space>
               <Space
                 style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap' }}
@@ -778,6 +864,9 @@ function MainLayout() {
                     <span>
                       {corePkg.name}: <Tag>{corePkg.version}</Tag>
                     </span>
+                    <span>
+                      lang: <Tag>{getLang()}</Tag>
+                    </span>
                   </Space>
                 ),
                 switcherCfg: { open: true },
@@ -809,6 +898,7 @@ function MainLayout() {
               }}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onLayoutResizeMouseUp={logHandler('onLayoutResizeMouseUp')}
               onCopied={logHandler('onCopied')}
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
@@ -823,11 +913,28 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
+          <Switch
+            checkedChildren="单列头"
+            unCheckedChildren="多列头"
+            checked={strategyDataCfg.fields.columns.length === 1}
+            onChange={(checked) => {
+              setStrategyDataCfg(
+                customMerge(customTree, {
+                  fields: {
+                    columns: customTree.fields.columns.slice(
+                      0,
+                      checked ? 1 : 2,
+                    ),
+                  },
+                }),
+              );
+            }}
+          />
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
-            onRowCellClick={(v) => console.log(v)}
+            onRowCellClick={logHandler('onRowCellClick')}
             header={{ exportCfg: { open: true } }}
             themeCfg={{
               theme: strategyTheme,

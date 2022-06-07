@@ -3,11 +3,12 @@ import {
   Canvas,
   Event as CanvasEvent,
   LooseObject,
+  Shape,
 } from '@antv/g-canvas';
 import { each, get, isEmpty, isNil } from 'lodash';
+import { GuiIcon } from '../common';
 import {
   CellTypes,
-  IMAGE,
   InteractionKeyboardKey,
   InterceptType,
   OriginEventType,
@@ -18,7 +19,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions } from '@/utils/tooltip';
+import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -123,9 +124,10 @@ export class EventController {
     );
   }
 
-  private getTargetType() {
-    return get(this, 'target.cfg.type');
-  }
+  // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
+  private isGuiIconShape = (target: LooseObject) => {
+    return target instanceof Shape.Image && target.attrs.type === GuiIcon.type;
+  };
 
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
@@ -178,7 +180,11 @@ export class EventController {
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
-      const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+      const canvas = this.spreadsheet.getCanvasElement();
+      if (!canvas) {
+        return false;
+      }
+
       const { x, y } = canvas.getBoundingClientRect() || {};
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)
@@ -210,6 +216,12 @@ export class EventController {
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
+    if (event.target instanceof Node && this.spreadsheet.tooltip.visible) {
+      return verifyTheElementInTooltip(
+        this.spreadsheet.tooltip?.container,
+        event.target,
+      );
+    }
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&
@@ -351,27 +363,28 @@ export class EventController {
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
-      // target相同，说明是一个cell内的click事件
+      // target相同，说明是一个cell内的 click 事件
       if (this.target === event.target) {
+        const isGuiIconShape = this.isGuiIconShape(event.target);
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
             break;
           case CellTypes.ROW_CELL:
-            // 屏蔽 actionIcons的点击，只有HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
-            if (this.getTargetType() === IMAGE) {
+            // 屏蔽 actionIcons 的点击，只有 HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellTypes.COL_CELL:
-            if (this.getTargetType() === IMAGE) {
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellTypes.CORNER_CELL:
-            if (this.getTargetType() === IMAGE) {
+            if (isGuiIconShape) {
               break;
             }
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);

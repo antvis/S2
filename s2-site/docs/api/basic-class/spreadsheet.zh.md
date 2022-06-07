@@ -51,7 +51,7 @@ s2.xx()
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`) | `() => void` |
 | setDataCfg | 更新数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig) ) => void |
 | setOptions | 更新表格配置 | (options: [S2Options](/zh/docs/api/general/S2Options)) => void |
-| render | 重新渲染表格，如果 reloadData = true, 则会重新计算数据 | `(reloadData: boolean) => void` |
+| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |
 | destroy | 销毁表格 | `() => void` |
 | setThemeCfg | 更新主题配置 | (themeCfg: [ThemeCfg](/zh/docs/api/general/S2Theme)) => void |
 | updatePagination | 更新分页 | (pagination: [Pagination](/zh/docs/api/general/S2Options#pagination)) => void |
@@ -59,12 +59,15 @@ s2.xx()
 | changeSheetSize （别名：changeSize) | 修改表格画布大小，不用重新加载数据 | `(width?: number, height?: number) => void` |
 | getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|
 | getRowNodes | 获取行头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getRowLeafNodes | 获取行头叶子节点 | () => [Node[]](/zh/docs/api/basic-class/node/) |
 | getColumnNodes | 获取列头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getColumnLeafNodes | 获取列头叶子节点 | () => [Node[]](/zh/docs/api/basic-class/node/) |
 | updateScrollOffset | 更新滚动偏移 | (config: [OffsetConfig](#offsetconfig)) => void |
 | getCell | 根据 event.target 获取当前 单元格 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/zh/docs/api/basic-class/base-cell#s2celltype) |
 | getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |
 | getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
 | getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
+| getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素 | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |
 
 ### S2MountContainer
 

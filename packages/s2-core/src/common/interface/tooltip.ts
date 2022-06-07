@@ -119,7 +119,7 @@ export type TooltipDataParams = {
   ) => string | number; // 自定义value
 };
 
-export type IconProps = {
+export type TooltipIconProps = {
   icon: Element | string;
   [key: string]: unknown;
 };
@@ -147,25 +147,31 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 export type TooltipContentType = Element | string;
 
 export interface BaseTooltipConfig<T = TooltipContentType> {
-  readonly showTooltip?: boolean;
+  showTooltip?: boolean;
   // Custom content
-  readonly content?: TooltipShowOptions<T>['content'];
+  content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
-  readonly operation?: TooltipOperation;
-  readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  operation?: TooltipOperation;
+  // Tooltip Boundary
+  autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  // Custom tooltip
+  renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
   // Custom tooltip position
-  readonly adjustPosition?: (position: TooltipPosition) => TooltipPosition;
-  // Custom tooltip content
-  readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
+  adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
   // Custom tooltip mount container
-  readonly getContainer?: () => HTMLElement;
+  getContainer?: () => HTMLElement;
+}
+
+export interface TooltipPositionInfo {
+  position: TooltipPosition;
+  event: CanvasEvent | MouseEvent;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
-  readonly row?: BaseTooltipConfig<T>;
-  readonly col?: BaseTooltipConfig<T>;
-  readonly corner?: BaseTooltipConfig<T>;
-  readonly data?: BaseTooltipConfig<T>;
+  row?: BaseTooltipConfig<T>;
+  col?: BaseTooltipConfig<T>;
+  corner?: BaseTooltipConfig<T>;
+  data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation extends TooltipOperatorOptions {

@@ -25,6 +25,7 @@ export interface PaletteMeta {
   semanticColors: {
     red?: string;
     green?: string;
+    yellow?: string;
     [key: string]: string;
   };
   /* 补充色值 */
@@ -213,6 +214,8 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
   bolderText?: TextTheme;
   /* 文本样式 */
   text?: TextTheme;
+  /* 度量值文本样式 */
+  measureText?: TextTheme;
   /* 单元格样式 */
   cell?: CellTheme;
   /* 图标样式 */
@@ -244,6 +247,8 @@ export interface S2Theme extends CellThemes {
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */
   splitLine?: SplitLine;
+  /* 趋势分析表子弹图样式配置 */
+  bullet?: BulletTheme;
   /* 刷选遮罩 */
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
@@ -259,4 +264,39 @@ export interface ThemeCfg {
   palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
   /* 主题名 */
   name?: ThemeName;
+}
+
+/* 趋势分析表子弹图状态颜色 */
+export interface RangeColors {
+  /* 满意 */
+  good: string;
+  /* 良好 */
+  satisfactory: string;
+  /* 不符合预期 */
+  bad: string;
+}
+
+/* 趋势分析表子弹图样式配置 */
+export interface BulletTheme {
+  /* 进度条 */
+  progressBar: {
+    /* 子弹图宽度相对整体单元格的占比，小数， default：0.7 */
+    widthPercent: number;
+    height: number;
+    /* 内高度 */
+    innerHeight: number;
+  };
+
+  /* 测量标记线 */
+  comparativeMeasure: {
+    width: number;
+    height: number;
+    color?: string;
+    opacity?: number;
+  };
+
+  /* 子弹图状态颜色 */
+  rangeColors: RangeColors;
+  /* 子弹图背景色 */
+  backgroundColor: string;
 }

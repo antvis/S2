@@ -1,16 +1,16 @@
-import { clone, filter, isEmpty } from 'lodash';
 import {
-  S2Options,
-  HeaderActionIconProps,
-  S2Event,
-  SpreadSheet,
-  Node,
-  PivotDataSet,
-  PartDrillDownDataCache,
   GEvent,
+  HeaderActionIconProps,
+  i18n,
+  Node,
+  PartDrillDownDataCache,
+  PivotDataSet,
+  S2Event,
+  S2Options,
+  SpreadSheet,
 } from '@antv/s2';
-import { PartDrillDownInfo, PartDrillDown } from '@/components';
-import { i18n } from '@/common/i18n';
+import { clone, filter, isEmpty } from 'lodash';
+import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
 export interface DrillDownParams {
   // 行维度id

@@ -59,6 +59,22 @@
         "en": "Merge cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif"
+    },
+    {
+      "filename": "scroll-to-cell.ts",
+      "title": {
+        "zh": "滚动至指定单元格",
+        "en": "Scroll to cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/303GANzFN/Kapture%2525202022-05-30%252520at%25252015.56.54.gif"
+    },
+    {
+      "filename": "scroll-loop.ts",
+      "title": {
+        "zh": "循环滚动",
+        "en": "Scroll loop"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3q7Rp9HhP/Kapture%2525202022-05-30%252520at%25252015.53.27.gif"
     }
   ]
 }

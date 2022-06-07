@@ -1,4 +1,4 @@
-import type { S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
 
 export const customTree: S2DataConfig = {
   data: [
@@ -28,7 +28,71 @@ export const customTree: S2DataConfig = {
         values: [[377, 324, '0.02']],
       },
       date: '2021',
-      sub_type: JSON.stringify(['数值', '环比', '同比']),
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+    },
+    {
+      'measure-a': {
+        originalValues: {
+          measure: 0.75,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.75',
+          target: '0.8',
+        },
+      },
+      'measure-b': {
+        originalValues: {
+          measure: 0.25,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.25',
+          target: '0.8',
+        },
+      },
+      'measure-c': {
+        originalValues: {
+          measure: 1,
+          target: 0.3,
+        },
+        values: {
+          measure: '1',
+          target: '0.3',
+        },
+      },
+      'measure-d': {
+        originalValues: {
+          measure: 0.5,
+          target: 0.3,
+        },
+        values: {
+          measure: '0.5',
+          target: '0.3',
+        },
+      },
+      'measure-e': {
+        originalValues: {
+          measure: 0.68,
+          target: 0.8,
+        },
+        values: {
+          measure: '0.68',
+          target: '0.8',
+        },
+      },
+      'measure-f': {
+        originalValues: {
+          measure: 0.25,
+          target: 0.9,
+        },
+        values: {
+          measure: '0.25',
+          target: '0.9',
+        },
+      },
+      date: '2021年',
+      sub_type: '净增完成度',
     },
     {
       'measure-a': {
@@ -53,7 +117,7 @@ export const customTree: S2DataConfig = {
         values: [[377, 324, '0.02']],
       },
       date: '2022',
-      sub_type: JSON.stringify(['数值', '环比', '同比']),
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
   ],
   meta: [
@@ -64,7 +128,7 @@ export const customTree: S2DataConfig = {
   ],
   fields: {
     rows: [],
-    columns: ['date', 'sub_type'],
+    columns: ['date', EXTRA_COLUMN_FIELD],
     values: [
       'measure-a',
       'measure-b',

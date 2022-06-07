@@ -3,16 +3,7 @@ import { GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
-import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from 'src/utils/grid';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
-import {
-  getAdjustedRowScrollX,
-  getAdjustedScrollOffset,
-} from 'src/utils/facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -21,6 +12,8 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '@/utils/facet';
+import { getColsForGrid, getRowsForGrid } from '@/utils/grid';
 import {
   S2Event,
   KEY_GROUP_COL_RESIZE_AREA,
@@ -165,7 +158,7 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    const canvas = this.spreadsheet.getCanvasElement();
     canvas?.addEventListener('wheel', this.onWheel);
   };
 
@@ -201,7 +194,7 @@ export abstract class BaseFacet {
     this.renderHeaders();
     this.renderScrollBars();
     this.renderBackground();
-    this.dynamicRenderCell(false);
+    this.dynamicRenderCell();
   }
 
   /**
@@ -242,8 +235,8 @@ export abstract class BaseFacet {
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {
-    if (offsetConfig.offsetX.value !== undefined) {
-      if (offsetConfig.offsetX.animate) {
+    if (offsetConfig.offsetX?.value !== undefined) {
+      if (offsetConfig.offsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);
@@ -251,8 +244,8 @@ export abstract class BaseFacet {
       return;
     }
 
-    if (offsetConfig.offsetY.value !== undefined) {
-      if (offsetConfig.offsetY.animate) {
+    if (offsetConfig.offsetY?.value !== undefined) {
+      if (offsetConfig.offsetY?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);
@@ -314,7 +307,7 @@ export abstract class BaseFacet {
   };
 
   private unbindEvents = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLElement;
+    const canvas = this.spreadsheet.getCanvasElement();
     canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
   };
@@ -978,15 +971,6 @@ export abstract class BaseFacet {
     this.preCellIndexes = indexes;
   };
 
-  /**
-   * How long about the delay period, need be re-considered,
-   * for now only delay, oppose to immediately
-   * @private
-   */
-  debounceRenderCell = (scrollX: number, scrollY: number) => {
-    this.realCellRender(scrollX, scrollY);
-  };
-
   protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
@@ -1002,7 +986,6 @@ export abstract class BaseFacet {
     this.calculateCellWidthHeight();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
-
     this.clipPanelGroup();
     this.bindEvents();
   }
@@ -1190,10 +1173,9 @@ export abstract class BaseFacet {
   /**
    * When scroll behavior happened, only render one time in a period,
    * but render immediately in initiate
-   * @param delay debounce render cell
    * @protected
    */
-  protected dynamicRenderCell(delay = true) {
+  protected dynamicRenderCell() {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
 
@@ -1203,12 +1185,7 @@ export abstract class BaseFacet {
       this.panelBBox.viewportHeight,
     );
 
-    if (delay) {
-      this.debounceRenderCell(scrollX, scrollY);
-    } else {
-      this.realCellRender(scrollX, scrollY);
-    }
-
+    this.realCellRender(scrollX, scrollY);
     this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);

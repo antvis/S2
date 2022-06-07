@@ -1,5 +1,5 @@
-import { ColIcon, RowIcon, ValueIcon } from '../icons/index';
-import { i18n } from '@/common/i18n';
+import { i18n } from '@antv/s2';
+import { ColIcon, RowIcon, ValueIcon } from '../icons';
 
 export const SWITCHER_PREFIX_CLS = 'switcher';
 
@@ -20,7 +20,7 @@ export const SWITCHER_FIELDS = [
   FieldType.Values,
 ];
 
-export const SWITCHER_CONFIG = {
+export const getSwitcherConfig = () => ({
   [FieldType.Rows]: {
     text: i18n('行头'),
     icon: RowIcon,
@@ -36,4 +36,4 @@ export const SWITCHER_CONFIG = {
     icon: ValueIcon,
     droppableType: DroppableType.Measure,
   },
-} as const;
+});

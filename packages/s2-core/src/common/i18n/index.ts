@@ -1,27 +1,41 @@
-import { get } from 'lodash';
-import { ZH_CN } from './zh_CN';
-import { EN_US } from './en_US';
+import { get, merge } from 'lodash';
+import { ZH_CN as BASE_ZH_CN } from './zh_CN';
+import { EN_US as BASE_EN_US } from './en_US';
 
-export let Lang = 'zh_CN';
+const DEFAULT_LANG: LangType = 'zh_CN';
 
-let Locale = ZH_CN;
+export type LangType = 'zh_CN' | 'en_US';
 
-const isEnUS = (l: string) => l.indexOf('en') === 0;
+export type LocaleType = {
+  [K in LangType]: Record<string, string>;
+};
+
+let lang: LangType = DEFAULT_LANG;
+
+let locale: LocaleType = {
+  zh_CN: BASE_ZH_CN,
+  en_US: BASE_EN_US,
+};
+
+export const getLang = () => lang;
 
 /**
  * 设置语言
  * @param lang
  */
-export const setEVALocale = (lang: string) => {
-  Lang = isEnUS(lang) ? 'en_US' : 'zh_CN';
-  Locale = isEnUS(lang) ? EN_US : ZH_CN;
+export const setLang = (langType: LangType) => {
+  lang = langType || DEFAULT_LANG;
 };
 
 /**
- * 国际化方法
- * 国际化是 eva 整个整体设置，不跟着实例走！默认认为同一页面，不可能出现中文和英文两种语言
- *
+ * 拓展locale配置
  */
+export const extendLocale = (extraLocale: LocaleType) => {
+  locale = merge({}, locale, extraLocale);
+};
+
+export const getLocale = () => locale;
+
 export const i18n = (key: string, defaultValue = key) => {
-  return get(Locale, key, defaultValue);
+  return get(locale, [lang, key], defaultValue);
 };

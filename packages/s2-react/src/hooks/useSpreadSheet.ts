@@ -10,40 +10,25 @@ import {
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
-import type { BaseSheetComponentProps, SheetType } from '../components';
+import { SheetComponentsProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
 import { useResize } from './useResize';
 
-export interface UseSpreadSheetConfig {
-  s2Options?: S2Options;
-  sheetType: SheetType;
-}
-
-type RenderOptions = {
-  reBuildDataSet: boolean;
-  reloadData: boolean;
-};
-
-/** render callback */
-export type SheetUpdateCallback = (params: RenderOptions) => RenderOptions;
-
-export function useSpreadSheet(
-  props: BaseSheetComponentProps,
-  config: UseSpreadSheetConfig,
-) {
+export function useSpreadSheet(props: SheetComponentsProps) {
   const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
-  const wrapRef = React.useRef<HTMLDivElement>();
+  const wrapperRef = React.useRef<HTMLDivElement>();
 
   const {
     spreadsheet: customSpreadSheet,
     dataCfg,
     options,
     themeCfg,
+    sheetType,
     onSheetUpdate = identity,
   } = props;
   /** 保存重渲 effect 的 deps */
@@ -60,17 +45,17 @@ export function useSpreadSheet(
 
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
-      const s2Options = config.s2Options || getSheetComponentOptions(options);
+      const s2Options = getSheetComponentOptions(options);
       const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
       if (customSpreadSheet) {
         return customSpreadSheet(...s2Constructor);
       }
-      if (config.sheetType === 'table') {
+      if (sheetType === 'table') {
         return new TableSheet(container, dataCfg, s2Options);
       }
       return new PivotSheet(container, dataCfg, s2Options);
     },
-    [config.s2Options, config.sheetType, options, dataCfg, customSpreadSheet],
+    [sheetType, options, dataCfg, customSpreadSheet],
   );
 
   const buildSpreadSheet = React.useCallback(() => {
@@ -131,25 +116,22 @@ export function useSpreadSheet(
       reBuildDataSet,
     });
 
-    s2Ref.current?.render(
-      renderOptions.reloadData,
-      renderOptions.reBuildDataSet,
-    );
+    s2Ref.current?.render(renderOptions.reloadData, {
+      reBuildDataSet: renderOptions.reBuildDataSet,
+    });
   }, [dataCfg, options, themeCfg, onSheetUpdate]);
 
   useResize({
     s2: s2Ref.current,
     container: containerRef.current,
-    wrapper: wrapRef.current,
+    wrapper: wrapperRef.current,
     adaptive: props.adaptive,
-    optionWidth: options.width,
-    optionHeight: options.height,
   });
 
   return {
     s2Ref,
     containerRef,
-    wrapRef,
+    wrapperRef,
     loading,
     setLoading,
     pagination,
