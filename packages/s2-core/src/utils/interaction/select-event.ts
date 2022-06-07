@@ -1,4 +1,4 @@
-import { ColCell, RowCell, TableRowCell } from 'src/cell';
+import { ColCell, RowCell, TableRowCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
