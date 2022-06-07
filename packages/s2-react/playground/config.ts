@@ -1,4 +1,5 @@
-import { isUpDataValue, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
+import { isUpDataValue } from '@antv/s2';
+import type { S2DataConfig, S2Options, S2Theme } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';

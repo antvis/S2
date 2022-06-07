@@ -1,15 +1,14 @@
-import { isEmpty, get } from 'lodash';
-import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
-import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
-import { TotalClass } from '@/facet/layout/total-class';
-import { i18n } from '@/common/i18n';
-import { Node } from '@/facet/layout/node';
-import { generateId } from '@/utils/layout/generate-id';
-import { SpreadSheet } from '@/sheet-type';
-import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
-import { PivotDataSet } from '@/data-set';
-import { ID_SEPARATOR, ROOT_ID } from '@/common';
+import { get, isEmpty } from 'lodash';
+import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
+import type { PivotDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
+import { filterUndefined, getListBySorted } from '../../utils/data-set-operate';
+import { getDimensionsWithoutPathPre } from '../../utils/dataset/pivot-data-set';
+import { generateId } from '../../utils/layout/generate-id';
+import type { FieldValue, TreeHeaderParams } from '../layout/interface';
+import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
+import { Node } from '../layout/node';
+import { TotalClass } from '../layout/total-class';
 
 const addTotals = (
   spreadsheet: SpreadSheet,

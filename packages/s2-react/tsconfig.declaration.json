@@ -3,7 +3,8 @@
   "compilerOptions": {
     "declarationDir": "temp",
     "declaration": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "paths": {}
   },
   "include": ["src"]
 }

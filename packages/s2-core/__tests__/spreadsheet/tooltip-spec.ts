@@ -1,5 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
-import { S2Options } from '@/common/interface';
+import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 300,

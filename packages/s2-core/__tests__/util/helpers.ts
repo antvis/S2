@@ -8,13 +8,13 @@ import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { S2CellType, S2Options, ViewMeta } from '@/common/interface';
+import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { BaseTooltip } from '@/ui/tooltip';
+import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
-import { PanelBBox } from '@/facet/bbox/panelBBox';
-import { BaseFacet } from '@/facet';
+import type { PanelBBox } from '@/facet/bbox/panelBBox';
+import type { BaseFacet } from '@/facet';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';

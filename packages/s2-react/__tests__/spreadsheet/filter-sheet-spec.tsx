@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { Button, Space } from 'antd';
 import {
-  S2DataConfig,
+  type S2DataConfig,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
   TableSheet,
 } from '@antv/s2';

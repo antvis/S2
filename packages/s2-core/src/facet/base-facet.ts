@@ -1,60 +1,60 @@
 import type { IElement, IGroup } from '@antv/g-canvas';
-import { GestureEvent, Wheel } from '@antv/g-gesture';
-import { interpolateArray } from 'd3-interpolate';
-import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
+import { type GestureEvent, Wheel } from '@antv/g-gesture';
+import { interpolateArray } from 'd3-interpolate';
+import { timer, type Timer } from 'd3-timer';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
-import { CornerBBox } from './bbox/cornerBBox';
-import { PanelBBox } from './bbox/panelBBox';
+import { DataCell } from '../cell';
 import {
-  calculateInViewIndexes,
-  getCellRange,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
-import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '@/utils/facet';
-import { getColsForGrid, getRowsForGrid } from '@/utils/grid';
-import {
-  S2Event,
+  InterceptType,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
-  InterceptType,
+  S2Event,
   ScrollbarPositionType,
-} from '@/common/constant';
-import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllChildCells } from '@/utils/get-all-child-cells';
+} from '../common/constant';
+import {
+  DebuggerUtil,
+  DEBUG_HEADER_LAYOUT,
+  DEBUG_VIEW_RENDER,
+} from '../common/debug';
+import type {
+  FrameConfig,
+  GridInfo,
+  LayoutResult,
+  OffsetConfig,
+  S2CellType,
+  SpreadSheetFacetCfg,
+  ViewMeta,
+} from '../common/interface';
+import type { S2WheelEvent, ScrollOffset } from '../common/interface/scroll';
+import type { SpreadSheet } from '../sheet-type';
+import { ScrollBar, ScrollType } from '../ui/scrollbar';
+import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
+import { getAllChildCells } from '../utils/get-all-child-cells';
+import { getColsForGrid, getRowsForGrid } from '../utils/grid';
+import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
+import { updateMergedCells } from '../utils/interaction/merge-cell';
+import { isMobile } from '../utils/is-mobile';
+import { CornerBBox } from './bbox/cornerBBox';
+import { PanelBBox } from './bbox/panelBBox';
 import {
   ColHeader,
   CornerHeader,
   Frame,
   RowHeader,
   SeriesNumberHeader,
-} from '@/facet/header';
-import { ViewCellHeights } from '@/facet/layout/interface';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { ScrollBar, ScrollType } from '@/ui/scrollbar';
-import { isMobile } from '@/utils/is-mobile';
+} from './header';
+import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 import {
-  DebuggerUtil,
-  DEBUG_HEADER_LAYOUT,
-  DEBUG_VIEW_RENDER,
-} from '@/common/debug';
-import {
-  LayoutResult,
-  OffsetConfig,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  S2CellType,
-  FrameConfig,
-  GridInfo,
-} from '@/common/interface';
-import { updateMergedCells } from '@/utils/interaction/merge-cell';
-import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
-import { DataCell } from '@/cell';
+  calculateInViewIndexes,
+  getCellRange,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
 
 export abstract class BaseFacet {
   // spreadsheet instance

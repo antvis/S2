@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import {
   SpreadSheet,
-  S2CellType,
+  type S2CellType,
   S2Event,
   BaseEvent,
   InteractionStateName,

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
+
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
-const { rewritePackage, restorePackage } = require('./rewritePackage');
 
 const libName = process.env.LIB;
 const libPath = path.join(__dirname, '../packages', libName);
@@ -37,10 +37,4 @@ function generateDts() {
   }
 }
 
-if (libName !== 's2-core') {
-  rewritePackage('s2-shared');
-  generateDts();
-  restorePackage();
-} else {
-  generateDts();
-}
+generateDts();

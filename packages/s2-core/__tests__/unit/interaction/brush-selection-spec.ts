@@ -1,7 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import { range } from 'lodash';
-import { DataCell } from 'src/cell/data-cell';
-import { FrozenGroup } from 'src/common/constant';
+import { DataCell } from '@/cell/data-cell';
+import { FrozenGroup } from '@/common/constant';
 import { RootInteraction } from '@/interaction/root';
 import {
   ScrollDirection,
@@ -12,18 +12,18 @@ import {
   InteractionBrushSelectionStage,
   InterceptType,
   Node,
-  OriginalEvent,
+  type OriginalEvent,
   PivotSheet,
   S2Event,
   SpreadSheet,
-  ViewMeta,
+  type ViewMeta,
 } from '@/index';
-import { TableFacet } from '@/facet';
+import type { TableFacet } from '@/facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
-jest.mock('src/cell/data-cell');
+jest.mock('@/cell/data-cell');
 
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;

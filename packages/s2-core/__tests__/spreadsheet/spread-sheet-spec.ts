@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { S2Event, S2Options } from '@/common';
+import { S2Event, type S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,

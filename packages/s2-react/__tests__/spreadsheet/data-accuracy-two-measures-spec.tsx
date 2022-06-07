@@ -5,8 +5,8 @@ import {
   auto,
   EXTRA_FIELD,
   PivotSheet,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
 } from '@antv/s2';
 import {

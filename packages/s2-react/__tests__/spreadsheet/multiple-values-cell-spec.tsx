@@ -5,8 +5,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
   Node,

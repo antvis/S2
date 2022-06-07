@@ -1,16 +1,14 @@
-import {
-  PivotSheet,
+import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import type {
   S2Constructor,
   S2DataConfig,
   S2Options,
   ThemeCfg,
-  SpreadSheet,
-  TableSheet,
 } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
-import { SheetComponentsProps } from '../components';
+import type { SheetComponentsProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';

@@ -5,11 +5,11 @@
  *
  */
 import { getContainer } from 'tests/util/helpers';
-import * as mockDataConfig from 'tests/data/simple-data.json';
 import { filter, get } from 'lodash';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
+import * as mockDataConfig from 'tests/data/simple-data.json';
 import { CornerCell } from '@/cell';
+import type { S2Options } from '@/common/interface';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2options: S2Options = {
   // 让被测试的单元格在首屏显示出来

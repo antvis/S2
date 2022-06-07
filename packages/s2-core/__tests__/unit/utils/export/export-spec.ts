@@ -1,6 +1,6 @@
-import { TableSheet, PivotSheet } from 'src/sheet-type';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 
 describe('TableSheet Export Test', () => {

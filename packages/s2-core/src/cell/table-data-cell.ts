@@ -1,4 +1,4 @@
-import { DataCell } from '@/cell/data-cell';
+import { DataCell } from '../cell/data-cell';
 
 export class TableDataCell extends DataCell {
   protected drawTextShape() {

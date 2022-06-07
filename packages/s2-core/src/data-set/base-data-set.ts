@@ -9,7 +9,7 @@ import {
   memoize,
   min,
 } from 'lodash';
-import {
+import type {
   Fields,
   FilterParam,
   Formatter,
@@ -17,13 +17,13 @@ import {
   S2DataConfig,
   SortParams,
 } from '../common/interface';
-import { ValueRange } from './../common/interface/condition';
-import { CellDataParams, DataType } from '@/data-set/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { ValueRange } from '../common/interface/condition';
+import type { SpreadSheet } from '../sheet-type';
 import {
   getValueRangeState,
   setValueRangeState,
-} from '@/utils/condition/state-controller';
+} from '../utils/condition/state-controller';
+import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
   // 字段域信息

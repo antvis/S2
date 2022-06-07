@@ -4,7 +4,7 @@
  * https://github.com/antvis/S2/issues/1201
  * fillOpacity
  */
-import { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-canvas';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-292.json';
 import { PivotSheet } from '@/sheet-type';

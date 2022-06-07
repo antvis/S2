@@ -1,11 +1,14 @@
-import { VALUE_FIELD } from '@/common/constant/basic';
-import { copyToClipboard } from '@/utils/export';
-import { CellMeta } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
-import { DataType } from '@/data-set/interface';
-import { Node } from '@/facet/layout/node';
-import { CopyType } from '@/common';
+import {
+  type CellMeta,
+  CellTypes,
+  CopyType,
+  InteractionStateName,
+  VALUE_FIELD,
+} from '../../common';
+import type { DataType } from '../../data-set/interface';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { copyToClipboard } from '../../utils/export';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {

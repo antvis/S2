@@ -1,9 +1,9 @@
 import { Group } from '@antv/g-canvas';
-import { translateGroup } from '@/facet/utils';
-import { FrameConfig } from '@/common/interface';
+import type { FrameConfig } from '../../common/interface';
+import { translateGroup } from '../utils';
 
 export class Frame extends Group {
-  cfg: FrameConfig;
+  declare cfg: FrameConfig;
 
   constructor(cfg: FrameConfig) {
     super(cfg);

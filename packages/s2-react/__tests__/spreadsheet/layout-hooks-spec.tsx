@@ -3,15 +3,15 @@ import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {
-  GetCellMeta,
+  type GetCellMeta,
   Node,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  LayoutHierarchyReturnType,
+  type SpreadSheetFacetCfg,
+  type ViewMeta,
+  type LayoutHierarchyReturnType,
   generateId,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';

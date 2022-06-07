@@ -1,64 +1,64 @@
 /* eslint-disable no-console */
 import {
-  Radio,
-  Space,
-  Switch,
-  RadioChangeEvent,
-  Tooltip,
-  Select,
-  Input,
-  Popover,
-  Slider,
-  Button,
-  Collapse,
-  Tag,
-  Tabs,
-  DatePicker,
-} from 'antd';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ChromePicker } from 'react-color';
-import {
-  HeaderActionIconProps,
-  S2Options,
-  Node,
-  S2DataConfig,
-  TargetCellInfo,
-  SpreadSheet,
-  S2Event,
-  TooltipAutoAdjustBoundary,
   customMerge,
-  ThemeCfg,
-  DataType,
+  type DataType,
   generatePalette,
   getPalette,
+  type HeaderActionIconProps,
+  Node,
+  type S2DataConfig,
+  S2Event,
+  type S2Options,
+  SpreadSheet,
+  type TargetCellInfo,
+  type ThemeCfg,
+  type TooltipAutoAdjustBoundary,
   getLang,
   setLang,
-  InteractionOptions,
+  type InteractionOptions,
 } from '@antv/s2';
+import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
-import { debounce, forEach, random } from 'lodash';
-import { Adaptive, SheetType } from '@antv/s2-shared';
 import { useUpdateEffect } from 'ahooks';
+import {
+  Button,
+  Collapse,
+  DatePicker,
+  Input,
+  Popover,
+  Radio,
+  type RadioChangeEvent,
+  Select,
+  Slider,
+  Space,
+  Switch,
+  Tabs,
+  Tag,
+  Tooltip,
+} from 'antd';
+import 'antd/dist/antd.min.css';
+import { debounce, forEach, random } from 'lodash';
+import React from 'react';
+import { ChromePicker } from 'react-color';
+import ReactDOM from 'react-dom';
+import reactPkg from '../package.json';
+import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import { customTree } from '../__tests__/data/strategy-data';
-import reactPkg from '../package.json';
 import {
+  defaultOptions,
+  mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
-  tableSheetDataCfg,
-  strategyTheme,
   strategyOptions as mockStrategyOptions,
-  mockGridAnalysisOptions,
-  defaultOptions,
+  strategyTheme,
+  tableSheetDataCfg,
 } from './config';
-import { ResizeConfig } from './resize';
-import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
-
 import './index.less';
-import 'antd/dist/antd.min.css';
+import { ResizeConfig } from './resize';
 
 // setLang('en_US');
 
@@ -169,7 +169,6 @@ function MainLayout() {
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
     setOptions(customMerge({}, options, newOptions));
   };
-
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
       sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;

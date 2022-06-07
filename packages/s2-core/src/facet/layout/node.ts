@@ -1,9 +1,8 @@
-import { omit, isEqual } from 'lodash';
-import { Hierarchy } from './hierarchy';
-import { ROOT_ID } from '@/common/constant/basic';
-import { SpreadSheet } from '@/sheet-type';
-import { S2CellType } from '@/common/interface';
-import { CornerNodeType } from '@/common/interface/node';
+import { isEqual, omit } from 'lodash';
+import { ROOT_ID } from '../../common/constant/basic';
+import type { CornerNodeType, S2CellType } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import type { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;

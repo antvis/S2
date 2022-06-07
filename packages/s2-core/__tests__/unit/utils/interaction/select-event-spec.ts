@@ -1,5 +1,5 @@
-import { isMultiSelectionKey } from 'src/utils/interaction/select-event';
-import { InteractionKeyboardKey } from 'src/common/constant';
+import { isMultiSelectionKey } from '@/utils/interaction/select-event';
+import { InteractionKeyboardKey } from '@/common/constant';
 
 describe('Select Event Utils Tests', () => {
   describe('isMultiSelection test', () => {

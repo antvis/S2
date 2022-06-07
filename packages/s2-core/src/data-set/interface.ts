@@ -1,6 +1,6 @@
-import { Node } from '@/facet/layout/node';
-import { BaseDataSet } from '@/data-set/base-data-set';
-import { SortParam } from '@/common/interface';
+import type { SortParam } from '../common/interface';
+import type { Node } from '../facet/layout/node';
+import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
 export type DataType = Record<string, any>;
 

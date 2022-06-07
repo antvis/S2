@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, type S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { cloneDeep, omit } from 'lodash';
 import { usePagination } from '@/hooks';
-import { SheetComponentsProps } from '@/components/sheets/interface';
+import type { SheetComponentsProps } from '@/components/sheets/interface';
 
 const s2Options: S2Options = {
   width: 200,

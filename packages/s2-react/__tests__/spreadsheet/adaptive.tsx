@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { SpreadSheet, S2Options } from '@antv/s2';
+import type { SpreadSheet, S2Options } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
-import { Adaptive } from '@antv/s2-shared';
+import type { Adaptive } from '@antv/s2-shared';
 import { SheetComponent } from '@/components/sheets';
 
 interface Props {

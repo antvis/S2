@@ -1,4 +1,4 @@
-import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
 
 export const customTree: S2DataConfig = {
   data: [

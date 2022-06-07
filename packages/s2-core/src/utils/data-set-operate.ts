@@ -1,6 +1,5 @@
-import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
-import { Data } from '@/common/interface/s2DataConfig';
-import { Fields, TotalsStatus, Totals } from '@/common/interface/index';
+import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
+import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
 
 export const getListBySorted = (list: string[], sorted: string[]) => {
   return list.sort((a, b) => {

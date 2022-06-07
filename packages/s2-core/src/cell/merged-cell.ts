@@ -1,12 +1,12 @@
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
-import { ViewMeta } from '../common/interface';
+import type { ViewMeta } from '../common/interface';
+import type { S2CellType } from '../common/interface/interaction';
+import type { SpreadSheet } from '../sheet-type';
+import { renderPolygon } from '../utils/g-renders';
+import { getPolygonPoints } from '../utils/interaction/merge-cell';
+import { drawObjectText } from '../utils/text';
 import { DataCell } from './data-cell';
-import { getPolygonPoints } from '@/utils/interaction/merge-cell';
-import { SpreadSheet } from '@/sheet-type';
-import { S2CellType } from '@/common/interface/interaction';
-import { renderPolygon } from '@/utils/g-renders';
-import { drawObjectText } from '@/utils/text';
 
 /**
  * Cell for panelGroup area

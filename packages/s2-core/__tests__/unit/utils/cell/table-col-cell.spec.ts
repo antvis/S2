@@ -1,6 +1,6 @@
-import { Node } from 'src/facet/layout/node';
-import { SpreadSheet } from 'src/sheet-type';
-import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
+import type { Node } from '@/facet/layout/node';
+import type { SpreadSheet } from '@/sheet-type';
+import { getOccupiedWidthForTableCol } from '@/utils/cell/table-col-cell';
 
 describe('Table col cell util test', () => {
   test('should return right occupied width for table col', () => {

@@ -1,5 +1,5 @@
-import { Palette, PaletteMeta } from '@/common';
-import { generatePalette } from '@/utils/color';
+import type { Palette, PaletteMeta } from '../../common';
+import { generatePalette } from '../../utils/color';
 
 const paletteDefaultMeta: PaletteMeta = {
   brandColor: '#326EF4',
