@@ -49,7 +49,7 @@ export class EventController {
 
   public domEventListeners: EventListener[] = [];
 
-  private isCanvasEffect = false;
+  public isCanvasEffect = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
