@@ -289,9 +289,8 @@ import "@antv/s2-vue/dist/style.min.css";
 git clone git@github.com:antvis/S2.git
 cd S2
 
-# 本地启动开发
+# 安装依赖
 yarn
-yarn core:watch
 # 调试 s2-react
 yarn react:playground
 # 调试 s2-vue

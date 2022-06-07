@@ -1,7 +1,11 @@
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { BaseTooltip } from '@/ui/tooltip';
-import { TOOLTIP_CONTAINER_CLS, TOOLTIP_POSITION_OFFSET } from '@/common';
+import {
+  TOOLTIP_CONTAINER_CLS,
+  TOOLTIP_POSITION_OFFSET,
+  TOOLTIP_PREFIX_CLS,
+} from '@/common';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -20,12 +24,17 @@ describe('Tooltip Tests', () => {
   });
 
   test('should init tooltip', () => {
+    const container = document.querySelector(
+      `.${TOOLTIP_PREFIX_CLS}-container`,
+    );
     expect(tooltip).toBeDefined();
     expect(tooltip.position).toEqual({
       x: 0,
       y: 0,
     });
     expect(tooltip.visible).toBeFalsy();
+    expect(container).toBeDefined();
+    expect(tooltip.container).toEqual(container);
   });
 
   test('should show tooltip', () => {

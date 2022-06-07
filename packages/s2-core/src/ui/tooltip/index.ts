@@ -32,19 +32,12 @@ export class BaseTooltip {
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
+    this.initContainer();
   }
 
-  /**
-   * Show toolTips
-   * @param position
-   * @param data
-   * @param options {@link TooltipOptions}
-   * @param content
-   */
   public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
     const { position, options, content, event } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
-    const container = this.getContainer();
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
     this.visible = true;
@@ -55,20 +48,20 @@ export class BaseTooltip {
     const { x, y } = getAutoAdjustPosition({
       spreadsheet: this.spreadsheet,
       position,
-      tooltipContainer: container,
+      tooltipContainer: this.container,
       autoAdjustBoundary,
     });
     this.position = adjustPosition?.({ position: { x, y }, event }) ?? {
       x,
       y,
     };
-    setContainerStyle(container, {
+    setContainerStyle(this.container, {
       style: {
         left: `${this.position?.x}px`,
         top: `${this.position?.y}px`,
         pointerEvents: enterable ? 'all' : 'none',
       },
-      className: `${TOOLTIP_CONTAINER_CLS}-show`,
+      className: `${TOOLTIP_PREFIX_CLS}-container ${TOOLTIP_CONTAINER_CLS}-show`,
     });
   }
 
@@ -78,22 +71,21 @@ export class BaseTooltip {
     if (!this.container) {
       return;
     }
-    const container = this.getContainer();
-    setContainerStyle(container, {
+
+    setContainerStyle(this.container, {
       style: {
         pointerEvents: 'none',
       },
-      className: `${TOOLTIP_CONTAINER_CLS}-hide`,
+      className: `${TOOLTIP_PREFIX_CLS}-container ${TOOLTIP_CONTAINER_CLS}-hide`,
     });
     this.resetPosition();
   }
 
   public destroy() {
     this.visible = false;
-    const container = this.getContainer();
-    if (container) {
+    if (this.container) {
       this.resetPosition();
-      container.remove?.();
+      this.container.remove?.();
     }
   }
 
@@ -102,7 +94,6 @@ export class BaseTooltip {
 
     const { content: contentFromOptions } =
       this.spreadsheet.options.tooltip || {};
-    const container = this.getContainer();
     const displayContent = content ?? contentFromOptions;
 
     // 兼容 displayContent = '' 空字符串的场景
@@ -111,18 +102,17 @@ export class BaseTooltip {
     }
 
     if (typeof displayContent === 'string') {
-      container.innerHTML = displayContent;
+      this.container.innerHTML = displayContent;
       return;
     }
 
     if (displayContent instanceof Element) {
-      container.appendChild(displayContent as Element);
+      this.container.appendChild(displayContent as Element);
     }
   }
 
   public clearContent() {
-    const container = this.getContainer();
-    container.innerHTML = '';
+    this.container.innerHTML = '';
   }
 
   public disablePointerEvent() {
@@ -144,20 +134,18 @@ export class BaseTooltip {
     this.position = { x: 0, y: 0 };
   }
 
-  /**
-   * ToolTips container element
-   */
-  protected getContainer(): HTMLElement {
-    if (!this.container) {
-      const rootContainer =
-        this.spreadsheet.options.tooltip.getContainer?.() || document.body;
-
-      const container = document.createElement('div');
-      rootContainer.appendChild(container);
-
-      this.container = container;
+  private initContainer() {
+    if (this.container) {
+      return;
     }
-    this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
-    return this.container;
+
+    const rootContainer =
+      this.spreadsheet.options.tooltip.getContainer?.() || document.body;
+
+    const container = document.createElement('div');
+    container.className = `${TOOLTIP_PREFIX_CLS}-container`;
+    rootContainer.appendChild(container);
+
+    this.container = container;
   }
 }
