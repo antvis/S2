@@ -25,8 +25,8 @@ jobs:
       - name: Lint scripts, type, style and docs
         run: yarn lint
 
-      - name: Build Umd
-        run: yarn build:umd
+      - name: Build
+        run: yarn build
     
       - name: Bundle size
         run: yarn bundle:size
