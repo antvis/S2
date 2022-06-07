@@ -1,22 +1,29 @@
 import {
-  last,
-  isEmpty,
   clone,
-  trim,
-  max,
-  isObject,
+  flatten,
   forEach,
   isArray,
-  flatten,
+  isEmpty,
+  isObject,
+  last,
+  max,
   size,
+  trim,
 } from 'lodash';
+import {
+  ID_SEPARATOR,
+  ROOT_BEGINNING_REGEX,
+  ROOT_ID,
+} from '../../common/constant';
+import {
+  CornerNodeType,
+  type MultiData,
+  type ViewMeta,
+} from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { safeJsonParse } from '../../utils/text';
 import { getCsvString } from './export-worker';
-import { SpreadSheet } from '@/sheet-type';
-import { CornerNodeType, ViewMeta } from '@/common/interface';
-import { ID_SEPARATOR, ROOT_BEGINNING_REGEX, ROOT_ID } from '@/common/constant';
-import { MultiData } from '@/common/interface';
-import { safeJsonParse } from '@/utils/text';
-import { Node } from '@/facet/layout/node';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {

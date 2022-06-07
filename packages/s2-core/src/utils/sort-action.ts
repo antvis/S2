@@ -1,21 +1,21 @@
 import {
-  keys,
-  has,
-  map,
-  toUpper,
   endsWith,
-  uniq,
-  isEmpty,
+  has,
   includes,
-  split,
   indexOf,
+  isEmpty,
+  keys,
+  map,
+  split,
+  toUpper,
+  uniq,
 } from 'lodash';
-import { Fields, SortMethod, SortParam } from '@/common/interface';
-import { DataType, SortActionParams } from '@/data-set/interface';
-import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
-import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
-import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
-import { PivotDataSet } from '@/data-set';
+import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
+import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type { PivotDataSet } from '../data-set';
+import type { DataType, SortActionParams } from '../data-set/interface';
+import { getListBySorted, sortByItems } from '../utils/data-set-operate';
+import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 

@@ -6,7 +6,7 @@ import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
+import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 
 describe('Pivot Table Core Data Process', () => {

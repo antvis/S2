@@ -1,4 +1,4 @@
-import { Data } from '@antv/s2';
+import type { Data } from '@antv/s2';
 
 export const multipleDataWithNormal: Data[] = [
   {

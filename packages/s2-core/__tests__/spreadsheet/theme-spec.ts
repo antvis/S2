@@ -1,18 +1,18 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
 import { get } from 'lodash';
-import { ShapeAttrs } from '@antv/g-canvas';
-import { TextTheme } from '@/common/interface/theme';
-import { PivotSheet } from '@/sheet-type';
+import type { ShapeAttrs } from '@antv/g-canvas';
+import type { TextTheme } from '@/common/interface/theme';
+import type { PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
-  S2DataConfig,
-  TextAlign,
+  type S2DataConfig,
+  type TextAlign,
 } from '@/common';
-import { RowCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
+import type { RowCell } from '@/cell';
+import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;

@@ -1,12 +1,13 @@
-import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
-} from '@/common/constant';
-import {
+} from '../common/constant';
+import type {
   CellThemes,
   DefaultCellTheme,
   FormatResult,
@@ -16,19 +17,19 @@ import {
   S2Theme,
   StateShapeLayer,
   TextTheme,
-} from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+} from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import {
   getContentArea,
   getTextAndFollowingIconPosition,
-} from '@/utils/cell/cell';
-import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
-import { isMobile } from '@/utils/is-mobile';
+} from '../utils/cell/cell';
+import { renderLine, renderText, updateShapeAttr } from '../utils/g-renders';
+import { isMobile } from '../utils/is-mobile';
 import {
   getEllipsisText,
   getEmptyPlaceholder,
   measureTextWidth,
-} from '@/utils/text';
+} from '../utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info

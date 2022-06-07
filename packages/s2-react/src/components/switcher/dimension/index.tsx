@@ -1,12 +1,12 @@
 import cx from 'classnames';
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { Checkbox } from 'antd';
 import { i18n } from '@antv/s2';
 import { DroppableType, getSwitcherConfig } from '../constant';
-import { SwitcherField, SwitcherItem } from '../interface';
-import { DimensionCommonProps, DimensionItem } from '../item';
+import type { SwitcherField, SwitcherItem } from '../interface';
+import { type DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
 import './index.less';
 

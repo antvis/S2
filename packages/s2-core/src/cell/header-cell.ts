@@ -1,22 +1,26 @@
-import { Event as CanvasEvent, IShape } from '@antv/g-canvas';
-import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
-import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
-import { BaseCell } from '@/cell/base-cell';
-import { InteractionStateName } from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
+import type { Event as CanvasEvent, IShape } from '@antv/g-canvas';
+import { find, first, forEach, get, includes, isEqual, map } from 'lodash';
+import { BaseCell } from '../cell/base-cell';
 import {
-  HeaderActionIcon,
+  CellTypes,
+  EXTRA_COLUMN_FIELD,
+  EXTRA_FIELD,
+  S2Event,
+} from '../common/constant';
+import { InteractionStateName } from '../common/constant/interaction';
+import { GuiIcon } from '../common/icons';
+import type {
   CellMeta,
   FormatResult,
+  HeaderActionIcon,
   HeaderActionIconOptions,
-} from '@/common/interface';
-import { BaseHeaderConfig } from '@/facet/header/base';
-import { Node } from '@/facet/layout/node';
-import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_COLUMN_FIELD, EXTRA_FIELD, S2Event } from '@/common/constant';
-import { CellTypes } from '@/common/constant';
-import { getSortTypeIcon } from '@/utils/sort-action';
-import { SortParam } from '@/common/interface';
+  SortParam,
+} from '../common/interface';
+import type { BaseHeaderConfig } from '../facet/header/base';
+import type { Node } from '../facet/layout/node';
+import { includeCell } from '../utils/cell/data-cell';
+import { shouldShowActionIcons } from '../utils/cell/header-cell';
+import { getSortTypeIcon } from '../utils/sort-action';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;

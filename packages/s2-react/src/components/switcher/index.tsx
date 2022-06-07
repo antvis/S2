@@ -1,8 +1,8 @@
-import { Button, Popover, PopoverProps } from 'antd';
-import React, { FC, ReactNode, useState } from 'react';
+import { Button, Popover, type PopoverProps } from 'antd';
+import React, { type FC, type ReactNode, useState } from 'react';
 import { i18n } from '@antv/s2';
 import { SwitcherIcon } from '../icons';
-import { SwitcherContent, SwitcherContentProps } from './content';
+import { SwitcherContent, type SwitcherContentProps } from './content';
 import { getSwitcherClassName } from './util';
 import './index.less';
 

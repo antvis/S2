@@ -5,8 +5,6 @@ import type {
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
-import type { ViewMeta } from './basic';
-import type { ResizeActiveOptions } from './resize';
 import type {
   BaseCell,
   ColCell,
@@ -14,11 +12,13 @@ import type {
   DataCell,
   MergedCell,
   RowCell,
-} from '@/cell';
-import type { HeaderCell } from '@/cell/header-cell';
-import type { Node } from '@/facet/layout/node';
-import type { BaseEvent } from '@/interaction/base-event';
-import type { SpreadSheet } from '@/sheet-type';
+} from '../../cell';
+import type { HeaderCell } from '../../cell/header-cell';
+import type { Node } from '../../facet/layout/node';
+import type { BaseEvent } from '../../interaction/base-event';
+import type { SpreadSheet } from '../../sheet-type';
+import type { ResizeActiveOptions } from './resize';
+import type { ViewMeta } from './basic';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -143,6 +143,8 @@ export interface InteractionOptions {
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // hightlight col and row header for selected cell
   selectedCellHighlight?: boolean;
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+  overscrollBehavior?: 'auto' | 'none' | 'contain';
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

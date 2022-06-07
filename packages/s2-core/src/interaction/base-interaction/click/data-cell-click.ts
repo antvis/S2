@@ -1,27 +1,30 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach, get } from 'lodash';
-import { getTooltipOptions, getTooltipVisibleOperator } from '@/utils/tooltip';
-import {
-  getCellMeta,
-  getRowCellForSelectedCell,
-} from '@/utils/interaction/select-event';
-import { DataCell } from '@/cell/data-cell';
+import type { DataCell } from '../../../cell/data-cell';
+import type { ColCell } from '../../../cell/col-cell';
+import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
   getTooltipOperatorTrendMenu,
-} from '@/common/constant';
-import {
+} from '../../../common/constant';
+import type {
   CellAppendInfo,
   TooltipData,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
-import { ColCell } from '@/cell/col-cell';
-import { RowCell } from '@/cell';
+} from '../../../common/interface';
+import {
+  getCellMeta,
+  getRowCellForSelectedCell,
+} from '../../../utils/interaction/select-event';
+import {
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '../../../utils/tooltip';
+import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import { getActiveHoverRowColCells } from '../../../utils/interaction/hover-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

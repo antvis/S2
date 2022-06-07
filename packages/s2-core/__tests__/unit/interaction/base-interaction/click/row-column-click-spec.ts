@@ -1,16 +1,16 @@
-import { Event as GEvent } from '@antv/g-canvas';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
-import {
+import type {
   HiddenColumnsInfo,
   S2CellType,
   S2Options,
   ViewMeta,
 } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
-import { Node } from '@/facet/layout/node';
+import type { Node } from '@/facet/layout/node';
 
 jest.mock('@/interaction/event-controller');
 

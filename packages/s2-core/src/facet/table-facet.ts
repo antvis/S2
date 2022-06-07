@@ -1,60 +1,60 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, last, maxBy, set } from 'lodash';
-import { TableColHeader } from 'src/facet/header/table-col';
-import { ColHeader } from 'src/facet/header/col';
-import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
-import { getValidFrozenOptions } from 'src/utils/layout/frozen';
-import { getIndexRangeWithOffsets } from 'src/utils/facet';
+import { TableRowCell } from '../cell';
 import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from 'src/utils/grid';
-import {
-  calculateFrozenCornerCells,
-  calculateInViewIndexes,
-  getFrozenDataCellType,
-  splitInViewIndexesWithFrozen,
-  translateGroup,
-  translateGroupX,
-  translateGroupY,
-  isFrozenTrailingRow,
-} from './utils';
-import { CornerBBox } from './bbox/cornerBBox';
-import { SeriesNumberHeader } from './header';
-import { TableRowCell } from '@/cell';
-import type {
-  LayoutResult,
-  S2CellType,
-  SplitLine,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  ResizeActiveOptions,
-  TableSortParam,
-} from '@/common/interface';
-import { getDataCellId } from '@/utils/cell/data-cell';
-import {
+  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  FrozenGroup,
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
   S2Event,
   SERIES_NUMBER_FIELD,
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-  KEY_GROUP_FROZEN_SPLIT_LINE,
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-  FrozenGroup,
-} from '@/common/constant';
-import { FrozenCellGroupMap } from '@/common/constant/frozen';
-import { DebuggerUtil } from '@/common/debug';
-import { BaseFacet } from '@/facet/base-facet';
-import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { layoutCoordinate } from '@/facet/layout/layout-hooks';
-import { Node } from '@/facet/layout/node';
-import { renderLine } from '@/utils/g-renders';
-import { TableDataSet } from '@/data-set';
-import { PanelIndexes } from '@/utils/indexes';
-import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
-import { getAllChildCells } from '@/utils/get-all-child-cells';
+} from '../common/constant';
+import { FrozenCellGroupMap } from '../common/constant/frozen';
+import { DebuggerUtil } from '../common/debug';
+import type {
+  LayoutResult,
+  ResizeActiveOptions,
+  S2CellType,
+  SplitLine,
+  SpreadSheetFacetCfg,
+  TableSortParam,
+  ViewMeta,
+} from '../common/interface';
+import type { TableDataSet } from '../data-set';
+import { getDataCellId } from '../utils/cell/data-cell';
+import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
+import { getIndexRangeWithOffsets } from '../utils/facet';
+import { renderLine } from '../utils/g-renders';
+import { getAllChildCells } from '../utils/get-all-child-cells';
+import {
+  getColsForGrid,
+  getFrozenRowsForGrid,
+  getRowsForGrid,
+} from '../utils/grid';
+import type { PanelIndexes } from '../utils/indexes';
+import { getValidFrozenOptions } from '../utils/layout/frozen';
+import { measureTextWidth, measureTextWidthRoughly } from '../utils/text';
+import { BaseFacet } from './base-facet';
+import { CornerBBox } from './bbox/cornerBBox';
+import type { SeriesNumberHeader } from './header';
+import type { ColHeader } from './header/col';
+import { TableColHeader } from './header/table-col';
+import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
+import { Hierarchy } from './layout/hierarchy';
+import { layoutCoordinate } from './layout/layout-hooks';
+import { Node } from './layout/node';
+import {
+  calculateFrozenCornerCells,
+  calculateInViewIndexes,
+  getFrozenDataCellType,
+  isFrozenTrailingRow,
+  splitInViewIndexesWithFrozen,
+  translateGroup,
+  translateGroupX,
+  translateGroupY,
+} from './utils';
 
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];

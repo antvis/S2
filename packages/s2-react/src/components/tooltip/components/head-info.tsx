@@ -1,5 +1,9 @@
 import React from 'react';
-import { ListItem, TooltipHeadInfo, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import {
+  type ListItem,
+  type TooltipHeadInfo,
+  TOOLTIP_PREFIX_CLS,
+} from '@antv/s2';
 
 export const TooltipHead: React.FC<TooltipHeadInfo> = (props) => {
   const { rows = [], cols = [] } = props;

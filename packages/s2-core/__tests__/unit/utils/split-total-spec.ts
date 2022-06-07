@@ -1,9 +1,9 @@
 /**
  * split-total function test
  */
-import { splitTotal } from 'src/index';
 import { every } from 'lodash';
 import { data, totalData } from 'tests/data/mock-dataset.json';
+import { splitTotal } from '@/index';
 
 describe('DataSet splitTotal function test', () => {
   test('should return all total data.', () => {

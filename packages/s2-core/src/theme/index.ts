@@ -1,6 +1,6 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { S2Theme, ThemeCfg } from '../common/interface';
-import { SpreadSheet } from '../sheet-type';
+import type { S2Theme, ThemeCfg } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 

@@ -1,15 +1,19 @@
-import { Group, IGroup, IShape } from '@antv/g-canvas';
+import type { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
+import {
+  CellBorderPosition,
+  type Padding,
+  type ViewMeta,
+} from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type/index';
+import { getBorderPositionAndStyle } from '../../utils/cell/cell';
+import { renderLine, renderRect } from '../../utils/g-renders';
+import { measureTextWidth } from '../../utils/text';
+import { getAdjustPosition } from '../../utils/text-absorption';
+import type { PanelBBox } from '../bbox/panelBBox';
+import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { PanelBBox } from '../bbox/panelBBox';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type/index';
-import { renderRect, renderLine } from '@/utils/g-renders';
-import { measureTextWidth } from '@/utils/text';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;

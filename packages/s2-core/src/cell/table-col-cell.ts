@@ -1,18 +1,18 @@
 import { find, get } from 'lodash';
-import { Group } from '@antv/g-canvas';
-import { ColCell } from '@/cell/col-cell';
+import type { Group } from '@antv/g-canvas';
+import { ColCell } from '../cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-} from '@/common/constant';
-import { FormatResult, SortParam } from '@/common/interface';
-import { isFrozenCol, isFrozenTrailingCol } from '@/facet/utils';
-import { getContentArea } from '@/utils/cell/cell';
-import { getExtraPaddingForExpandIcon } from '@/utils/cell/table-col-cell';
-import { renderRect } from '@/utils/g-renders';
-import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
-import { getSortTypeIcon } from '@/utils/sort-action';
-import { formattedFieldValue } from '@/utils/cell/header-cell';
+} from '../common/constant';
+import type { FormatResult, SortParam } from '../common/interface';
+import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
+import { getContentArea } from '../utils/cell/cell';
+import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';
+import { renderRect } from '../utils/g-renders';
+import { getOrCreateResizeAreaGroupById } from '../utils/interaction/resize';
+import { getSortTypeIcon } from '../utils/sort-action';
+import { formattedFieldValue } from '../utils/cell/header-cell';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {

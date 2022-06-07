@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SpreadSheet, S2Options, BaseTooltip, S2Event, GEvent } from '@antv/s2';
+import {
+  SpreadSheet,
+  type S2Options,
+  BaseTooltip,
+  S2Event,
+  GEvent,
+} from '@antv/s2';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { act } from 'react-dom/test-utils';

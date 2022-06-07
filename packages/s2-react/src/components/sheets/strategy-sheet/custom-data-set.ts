@@ -1,7 +1,7 @@
 import { isObject, uniq, forIn, forEach } from 'lodash';
 import {
   CustomTreePivotDataSet,
-  S2DataConfig,
+  type S2DataConfig,
   EXTRA_FIELD,
   VALUE_FIELD,
 } from '@antv/s2';

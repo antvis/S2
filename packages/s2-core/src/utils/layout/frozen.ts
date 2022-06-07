@@ -1,4 +1,4 @@
-import { S2TableSheetOptions } from 'src/common/interface';
+import type { S2TableSheetOptions } from '../../common/interface';
 
 export const getValidFrozenOptions = (
   opts: S2TableSheetOptions,

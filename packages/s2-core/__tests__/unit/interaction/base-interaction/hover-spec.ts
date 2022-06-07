@@ -1,9 +1,9 @@
-import { Event as GEvent } from '@antv/g-canvas';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
-import { S2Options, ViewMeta } from '@/common/interface';
+import type { S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
-import { SpreadSheet } from '@/sheet-type';
+import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
   InteractionStateName,

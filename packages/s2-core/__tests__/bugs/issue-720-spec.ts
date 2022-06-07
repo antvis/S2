@@ -6,9 +6,9 @@
  */
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { S2Event } from '../../src/common/constant';
+import { S2Event } from '@/common/constant';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
+import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 200,

@@ -1,8 +1,5 @@
-import { Point, SimpleBBox } from '@antv/g-canvas';
+import type { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
-import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
-import { HeaderCell } from './header-cell';
-import { shouldAddResizeArea } from '@/utils/interaction/resize';
 import {
   CellTypes,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
@@ -10,31 +7,34 @@ import {
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
-} from '@/common/constant';
-import {
-  CellBorderPosition,
+} from '../common/constant';
+import { CellBorderPosition } from '../common/interface';
+import type {
   DefaultCellTheme,
   IconTheme,
   TextTheme,
-} from '@/common/interface';
-import { AreaRange } from '@/common/interface/scroll';
-import { ColHeaderConfig } from '@/facet/header/col';
+} from '../common/interface';
+import type { AreaRange } from '../common/interface/scroll';
+import type { ColHeaderConfig } from '../facet/header/col';
 import {
+  adjustColHeaderScrollingTextPosition,
+  adjustColHeaderScrollingViewport,
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
   getTextAreaRange,
-  adjustColHeaderScrollingViewport,
-  adjustColHeaderScrollingTextPosition,
-} from '@/utils/cell/cell';
-import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
-import { isLastColumnAfterHidden } from '@/utils/hide-columns';
+} from '../utils/cell/cell';
+import { renderIcon, renderLine, renderRect } from '../utils/g-renders';
+import { isLastColumnAfterHidden } from '../utils/hide-columns';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
-} from '@/utils/interaction/resize';
+  shouldAddResizeArea,
+} from '../utils/interaction/resize';
+import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
+import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
-  protected headerConfig: ColHeaderConfig;
+  protected declare headerConfig: ColHeaderConfig;
 
   /** 文字区域（含icon）绘制起始坐标 */
   protected textAreaPosition: Point;

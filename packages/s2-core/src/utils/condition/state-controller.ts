@@ -1,9 +1,9 @@
 import {
   DEFAULT_VALUE_RANGES,
   VALUE_RANGES_KEY,
-} from '@/common/constant/condition';
-import { ValueRanges } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+} from '../../common/constant/condition';
+import type { ValueRanges } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  * @desc clear all value ranges

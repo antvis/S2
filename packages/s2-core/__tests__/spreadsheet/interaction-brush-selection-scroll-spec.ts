@@ -1,8 +1,8 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
   TableSheet,
-  S2Options,
-  S2DataConfig,
+  type S2Options,
+  type S2DataConfig,
   S2Event,
   DataCell,
   InteractionName,

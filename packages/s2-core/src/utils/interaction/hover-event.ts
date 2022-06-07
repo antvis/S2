@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
+import type { ColCell, RowCell } from '../../cell';
+import { ID_SEPARATOR } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
-import { ID_SEPARATOR } from '@/common/constant';
-import { ColCell, RowCell } from '@/cell';
 
 /**
  * @description Return all the row cells or column cells which are needed to be highlighted.

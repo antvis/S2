@@ -3,17 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g-canvas';
 import {
   Store,
-  S2Options,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
   BaseTooltip,
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
-  ViewMeta,
+  type ViewMeta,
 } from '@antv/s2';
 import { omit } from 'lodash';
 

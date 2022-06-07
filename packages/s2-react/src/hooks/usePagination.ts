@@ -2,7 +2,7 @@ import React from 'react';
 import { S2Event, SpreadSheet } from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { isEmpty } from 'lodash';
-import { SheetComponentsProps } from '../components';
+import type { SheetComponentsProps } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;

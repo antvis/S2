@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Event, type S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { useLoading } from '@/hooks';

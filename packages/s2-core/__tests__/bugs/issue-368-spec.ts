@@ -7,7 +7,7 @@
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-368.json';
 import { PivotSheet } from '@/sheet-type';
-import { Node } from '@/facet/layout/node';
+import type { Node } from '@/facet/layout/node';
 
 const s2Options = {
   width: 800,

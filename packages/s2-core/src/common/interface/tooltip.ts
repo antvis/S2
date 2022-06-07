@@ -1,7 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import type { SpreadSheet } from '@/sheet-type';
-import type { S2CellType, SortParam } from '@/common/interface';
-import type { BaseTooltip } from '@/ui/tooltip';
+import type { SpreadSheet } from '../../sheet-type';
+import type { S2CellType, SortParam } from '../../common/interface';
+import type { BaseTooltip } from '../../ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 

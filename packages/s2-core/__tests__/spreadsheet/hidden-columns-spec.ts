@@ -3,7 +3,7 @@ import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { difference } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { S2Options } from '@/common';
+import type { S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,

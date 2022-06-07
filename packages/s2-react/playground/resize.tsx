@@ -1,12 +1,12 @@
 import {
   customMerge,
-  ResizeActiveOptions,
-  S2Options,
-  ThemeCfg,
+  type ResizeActiveOptions,
+  type S2Options,
+  type ThemeCfg,
   ResizeType,
 } from '@antv/s2';
 import { Checkbox, Switch } from 'antd';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 const RESIZE_CONFIG: Array<{
   label: string;

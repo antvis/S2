@@ -6,21 +6,21 @@ import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
-  CustomSVGIcon,
+  type CustomSVGIcon,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  RowCellCollapseTreeRowsType,
-  S2DataConfig,
+  type RowCellCollapseTreeRowsType,
+  type S2DataConfig,
   S2Event,
-  S2Options,
-  TooltipShowOptions,
+  type S2Options,
+  type TooltipShowOptions,
   TOOLTIP_CONTAINER_CLS,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
-import { CornerCell } from '@/cell/corner-cell';
+import type { CornerCell } from '@/cell/corner-cell';
 
 jest.mock('@/utils/hide-columns');
 

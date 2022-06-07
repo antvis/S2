@@ -7,9 +7,9 @@ import {
   data as drillDownData,
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
-import { ViewMeta, SortMethod } from '@/common/interface';
+import type { ViewMeta, SortMethod } from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';

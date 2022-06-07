@@ -2,12 +2,13 @@
   "private": "true",
   "name": "@antv/s2-shared",
   "version": "1.0.0",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "src/index.ts",
+  "types": "temp/index.d.ts",
   "description": "internal utility functions and constants shared across s2 packages.",
   "license": "MIT",
   "scripts": {
-    "build": "echo 'no need to build'",
+    "build": "run-s clean build:dts",
+    "clean": "rimraf temp",
     "build:dts": "tsc -p tsconfig.declaration.json",
     "test": "jest"
   },

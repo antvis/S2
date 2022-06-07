@@ -1,11 +1,11 @@
 import {
   isMultiSelectionKey,
   getRowCellForSelectedCell,
-} from 'src/utils/interaction/select-event';
-import { InteractionKeyboardKey } from 'src/common/constant';
-import { SpreadSheet } from 'src';
-import { TableRowCell } from 'src/cell';
-import { ViewMeta } from 'src/common';
+} from '@/utils/interaction/select-event';
+import { InteractionKeyboardKey } from '@/common/constant';
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
+import { TableRowCell } from '@/cell';
+import type { ViewMeta } from '@/common';
 
 jest.mock('src/cell', () => {
   return {

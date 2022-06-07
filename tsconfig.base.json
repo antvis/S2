@@ -11,14 +11,16 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "lib": ["esnext", "dom"],
-    "noEmitHelpers": false,
     "skipLibCheck": true,
-    "plugins": [
-      {
-        "transform": "@zerollup/ts-transform-paths",
-        "exclude": ["*"]
-      }
-    ],
-    "types": ["node", "jest", "jest-extended"]
+    "importsNotUsedAsValues": "error",
+    "isolatedModules": true,
+    "preserveValueImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "packages",
+    "paths": {
+      "@antv/s2": ["s2-core/src/index.ts"],
+      "@antv/s2-shared": ["s2-shared/src/index.ts"]
+    },
+    "types": ["node", "jest", "jest-extended", "vite/client"]
   }
 }

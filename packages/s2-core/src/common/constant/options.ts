@@ -1,11 +1,11 @@
-import { S2Options } from '../interface/s2Options';
+import { ResizeType } from '../../common/constant/resize';
+import type { Style } from '../../common/interface/basic';
 import {
   HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
 } from '../constant/interaction';
+import type { S2Options } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
-import { Style } from '@/common/interface/basic';
-import { ResizeType } from '@/common/constant/resize';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
 
@@ -79,6 +79,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     },
     eventListenerOptions: false,
     selectedCellHighlight: false,
+    overscrollBehavior: 'auto',
   },
   showSeriesNumber: false,
   customSVGIcons: [],

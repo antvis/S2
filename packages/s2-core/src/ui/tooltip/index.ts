@@ -1,20 +1,19 @@
 import { isNil } from 'lodash';
-import type { SpreadSheet } from '@/sheet-type';
 import {
+  TOOLTIP_CONTAINER_CLS,
+  TOOLTIP_PREFIX_CLS,
+} from '../../common/constant/tooltip';
+import type {
   TooltipContentType,
   TooltipPosition,
   TooltipShowOptions,
-} from '@/common/interface';
+} from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 import {
-  getTooltipDefaultOptions,
   getAutoAdjustPosition,
+  getTooltipDefaultOptions,
   setContainerStyle,
-} from '@/utils/tooltip';
-import {
-  TOOLTIP_PREFIX_CLS,
-  TOOLTIP_CONTAINER_CLS,
-} from '@/common/constant/tooltip';
-
+} from '../../utils/tooltip';
 import './index.less';
 
 /**

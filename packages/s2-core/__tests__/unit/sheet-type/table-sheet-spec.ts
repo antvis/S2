@@ -1,8 +1,8 @@
 import { getContainer } from 'tests/util/helpers';
-import { Event as GEvent } from '@antv/g-canvas';
+import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
-import { S2Options } from '@/common';
+import type { S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
 
 describe('TableSheet Tests', () => {

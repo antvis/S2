@@ -13,7 +13,7 @@ export const initBaseSheetProps = () => ({
   themeCfg: Object as PropType<ThemeCfg>,
   showPagination: {
     type: Object as PropType<BaseSheetComponentProps['showPagination']>,
-    default: false,
+    default: false as BaseSheetComponentProps['showPagination'],
   },
   loading: Boolean,
   // TODO: 待后续完善
@@ -26,7 +26,7 @@ export const initBaseSheetProps = () => ({
   },
   adaptive: {
     type: Object as PropType<Adaptive>,
-    default: false,
+    default: false as Adaptive,
   },
   onSpreadsheet: Function as PropType<BaseSheetComponentProps['spreadsheet']>,
   onGetSpreadSheet: Function as PropType<

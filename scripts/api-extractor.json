@@ -6,7 +6,7 @@
   "bundledPackages": ["@antv/s2-shared"],
 
   "compiler": {
-    "tsconfigFilePath": "<projectFolder>/tsconfig.json"
+    "tsconfigFilePath": "<projectFolder>/tsconfig.declaration.json"
   },
 
   "dtsRollup": {
@@ -20,7 +20,7 @@
   },
 
   "docModel": {
-    "enabled": true
+    "enabled": false
   },
   "tsdocMetadata": {
     "enabled": false

@@ -5,8 +5,8 @@ import React from 'react';
 import {
   auto,
   EXTRA_FIELD,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
 } from '@antv/s2';

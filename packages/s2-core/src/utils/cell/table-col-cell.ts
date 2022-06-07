@@ -1,9 +1,9 @@
-import { Node } from 'src/facet/layout/node';
-import { get, find } from 'lodash';
-import { CellTypes } from 'src/common/constant';
-import { DefaultCellTheme, IconTheme } from 'src/common/interface/theme';
-import { SpreadSheet } from 'src/sheet-type';
-import { HeaderActionIcon } from 'src/common/interface/basic';
+import { find, get } from 'lodash';
+import { CellTypes } from '../../common/constant';
+import type { HeaderActionIcon } from '../../common/interface/basic';
+import type { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 import { shouldShowActionIcons } from './header-cell';
 
 export const getTableColIconsWidth = (
