@@ -13,6 +13,7 @@ const s2Options: S2Options = {
 describe('SpreadSheet Tests', () => {
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
+
     beforeAll(() => {
       container = getContainer();
     });
@@ -20,6 +21,7 @@ describe('SpreadSheet Tests', () => {
     afterAll(() => {
       container?.remove();
     });
+
     test('should init sheet by dom container', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
       s2.render();
@@ -130,6 +132,7 @@ describe('SpreadSheet Tests', () => {
 
   describe('Destroy Sheet Tests', () => {
     let container: HTMLElement;
+
     beforeAll(() => {
       container = getContainer();
     });
@@ -137,6 +140,7 @@ describe('SpreadSheet Tests', () => {
     afterAll(() => {
       container?.remove();
     });
+
     test.each([PivotSheet, TableSheet])(
       'should destroy sheet correctly',
       (Sheet) => {
@@ -151,6 +155,7 @@ describe('SpreadSheet Tests', () => {
 
         expect(s2.container.get('el')).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
+        expect(document.body.style.overscrollBehavior).toBeFalsy();
       },
     );
 

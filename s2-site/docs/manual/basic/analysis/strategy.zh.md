@@ -11,7 +11,7 @@ order: 9
 
 ## 快速上手
 
-### [DataConfig](https://gw.alipayobjects.com/os/bmw-prod/e97a8fe6-1026-4fed-b420-cd7d0e88e8b4.json)
+### [DataConfig](https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json)
 
 <details>
 <summary>点击查看趋势分析表 options 配置</summary>
@@ -84,7 +84,7 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | :------------- | :----------------- | :--------- | :----- | :--- |
-| values           | 格式化后的数据，直接展示在dataCfg中 | `(string | number)[][]`   |  ✓   |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
 | originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
@@ -99,4 +99,4 @@ object **必选**,_default：null_
 ### S2Options 配置
 
 * 必须指定 `hierarchyType: 'customTree'`
-* 染色逻辑配置可以在  `style.cellCfg.conditions` 中配置，用法参考[字段标记](/zh/docs/manual/basic/conditions)目前暂时只支持文本颜色通道
+* 染色逻辑配置可以在  `style.cellCfg.conditions` 中配置，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道

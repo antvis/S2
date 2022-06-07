@@ -12,8 +12,8 @@ redirect_from:
 | data           | 原始数据        | [Data[]](#data) |    |   ✓   |
 | fields         | 维度指标配置项       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计数据       | [Data[]](#data) |    |      |
-| meta    | 全局化配置表数据的元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [Meta[]](#meta)  |  |       |
-| sortParams    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [SortParams](#sortparams)  |  |       |
+| meta    | 全局化配置表数据的元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息 | [Meta[]](#meta)  |  |       |
+| sortParams    | 排序参数配置 | [SortParams](#sortparams)  |  |       |
 
 ### Data
 
@@ -78,7 +78,7 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | :------------- | :----------------- | :--------- | :----- | :--- |
-| values           | 格式化后的数据，直接展示在dataCfg中 | `(string | number)[][]`   |  ✓   |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
 | originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
