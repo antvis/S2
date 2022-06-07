@@ -32,12 +32,12 @@ export class BaseTooltip {
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.initContainer();
   }
 
   public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
     const { position, options, content, event } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
+    const container = this.getContainer();
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
     this.visible = true;
@@ -48,14 +48,16 @@ export class BaseTooltip {
     const { x, y } = getAutoAdjustPosition({
       spreadsheet: this.spreadsheet,
       position,
-      tooltipContainer: this.container,
+      tooltipContainer: container,
       autoAdjustBoundary,
     });
+
     this.position = adjustPosition?.({ position: { x, y }, event }) ?? {
       x,
       y,
     };
-    setContainerStyle(this.container, {
+
+    setContainerStyle(container, {
       style: {
         left: `${this.position?.x}px`,
         top: `${this.position?.y}px`,
@@ -83,13 +85,20 @@ export class BaseTooltip {
 
   public destroy() {
     this.visible = false;
-    if (this.container) {
-      this.resetPosition();
-      this.container.remove?.();
+
+    if (!this.container) {
+      return;
     }
+
+    this.resetPosition();
+    this.container.remove?.();
   }
 
   public renderContent<T = TooltipContentType>(content: T) {
+    if (!this.container) {
+      return;
+    }
+
     this.clearContent();
 
     const { content: contentFromOptions } =
@@ -112,6 +121,9 @@ export class BaseTooltip {
   }
 
   public clearContent() {
+    if (!this.container) {
+      return;
+    }
     this.container.innerHTML = '';
   }
 
@@ -134,18 +146,17 @@ export class BaseTooltip {
     this.position = { x: 0, y: 0 };
   }
 
-  private initContainer() {
-    if (this.container) {
-      return;
+  private getContainer(): HTMLElement {
+    if (!this.container) {
+      const rootContainer =
+        this.spreadsheet.options.tooltip.getContainer?.() || document.body;
+      const container = document.createElement('div');
+      container.className = `${TOOLTIP_PREFIX_CLS}-container`;
+      rootContainer.appendChild(container);
+
+      this.container = container;
+      return this.container;
     }
-
-    const rootContainer =
-      this.spreadsheet.options.tooltip.getContainer?.() || document.body;
-
-    const container = document.createElement('div');
-    container.className = `${TOOLTIP_PREFIX_CLS}-container`;
-    rootContainer.appendChild(container);
-
-    this.container = container;
+    return this.container;
   }
 }

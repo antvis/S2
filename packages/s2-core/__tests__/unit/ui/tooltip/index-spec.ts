@@ -33,6 +33,21 @@ describe('Tooltip Tests', () => {
       y: 0,
     });
     expect(tooltip.visible).toBeFalsy();
+    expect(container).toBeFalsy();
+    expect(tooltip.container).not.toEqual(container);
+  });
+
+  test('should create tooltip container when call tooltip show method', () => {
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+    });
+
+    const container = document.querySelector(
+      `.${TOOLTIP_PREFIX_CLS}-container`,
+    );
     expect(container).toBeDefined();
     expect(tooltip.container).toEqual(container);
   });
