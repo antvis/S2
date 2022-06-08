@@ -147,7 +147,7 @@ export const setContainerStyle = (
     });
   }
   if (className) {
-    container.classList.add(className);
+    container.className = className;
   }
 };
 

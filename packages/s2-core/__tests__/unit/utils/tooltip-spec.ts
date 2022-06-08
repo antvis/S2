@@ -676,6 +676,7 @@ describe('Tooltip Utils Tests', () => {
 
   test('should set container class name', () => {
     const container = document.createElement('div');
+    container.className = 'a';
 
     setContainerStyle(container, {
       className: 'test',

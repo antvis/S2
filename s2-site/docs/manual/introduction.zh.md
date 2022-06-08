@@ -214,7 +214,6 @@ yarn # 或者 yarn bootstrap
 yarn core:start
 
 # 调试 s2-react
-yarn core:watch
 yarn react:playground
 
 # 调试 s2-vue
