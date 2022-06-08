@@ -407,6 +407,7 @@ export const getSelectedCellsData = (
 
     return compact(
       map(selectedCellIndexes, ([i, j]) => {
+        if (isNil(i) || isNil(j)) return;
         const currentCellMeta = layoutResult.getCellMeta(i, j);
         if (isBelongTotalCell(currentCellMeta)) {
           return;
