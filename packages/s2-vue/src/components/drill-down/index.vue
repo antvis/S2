@@ -3,15 +3,20 @@ import {
   defineComponent,
   onMounted,
   reactive,
+  ref,
   watch,
   watchEffect,
   watchPostEffect,
 } from 'vue';
+import type { Ref } from 'vue';
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
+// todo-zc:
+import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import _ from 'lodash';
-import ColIcon from '@antv/s2-shared/src/icons/col-icon.svg?component';
-import RowIcon from '@antv/s2-shared/src/icons/row-icon.svg';
+import LocationIcon from '@antv/s2-shared/src/icons/location-icon.svg?component';
+import TextIcon from '@antv/s2-shared/src/icons/text-icon.svg?component';
+import CalendarIcon from '@antv/s2-shared/src/icons/calendar-icon.svg?component';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -21,11 +26,16 @@ export default defineComponent({
   name: 'DrillDown',
   props: initDrillDownProps(),
   emits: initDrillDownEmits(),
-  components: { Button, Input, Empty, Menu, MenuItem, ColIcon, RowIcon },
-  methods: {
-    // _() {
-    //   return _;
-    // }
+  methods: {},
+  components: {
+    Button,
+    Input,
+    Empty,
+    Menu,
+    MenuItem,
+    LocationIcon,
+    TextIcon,
+    CalendarIcon,
   },
   setup(props, ctx) {
     const {
@@ -36,11 +46,6 @@ export default defineComponent({
       className,
     } = props as BaseDrillDownComponentProps;
     const PRE_CLASS = 's2-drill-down';
-    // const DRILL_DOWN_ICON_MAP = {
-    //   text: <ColIcon />,
-    //   location: <ColIcon />,
-    //   date: <ColIcon />,
-    // };
     const getOptions = () => {
       return dataSet.map((val: BaseDataSet) => {
         const item = val;
@@ -51,7 +56,7 @@ export default defineComponent({
       });
     };
 
-    let options: BaseDataSet[] = reactive(getOptions());
+    const options: Ref<BaseDataSet[]> = ref(getOptions());
 
     onMounted(() => {
       // console.log(dataSet, 'dataSet');
@@ -65,20 +70,21 @@ export default defineComponent({
       const { value } = e.target;
 
       if (!value) {
-        options = [...dataSet];
+        options.value = [...dataSet];
       } else {
         const reg = new RegExp(value, 'gi');
         const result = dataSet.filter((item) => reg.test(item.name));
-        options = [...result];
+        options.value = [...result];
       }
     };
 
-    const handleSelect = (value: any) => {
+    const handleSelect = (value: SelectInfo) => {
+      // console.log(value, 'e.target')
       const key = value?.selectedKeys;
       if (getDrillFields) {
-        getDrillFields([...key]);
+        getDrillFields(key as string[]);
       }
-      if (setDrillFields) setDrillFields([...key]);
+      if (setDrillFields) setDrillFields(key as string[]);
     };
 
     const handleClear = (e: { stopPropagation: () => void }) => {
@@ -137,9 +143,9 @@ export default defineComponent({
         :class="`${PRE_CLASS}-menu-item`"
       >
         <template #icon>
-          <!--          option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type]-->
-          <col-icon />
-          <row-icon />
+          <text-icon v-if="option.type === 'text'" />
+          <calendar-icon v-if="option.type === 'date'" />
+          <location-icon v-if="option.type === 'location'" />
         </template>
         {{ option?.name }}
       </MenuItem>
@@ -148,5 +154,5 @@ export default defineComponent({
 </template>
 
 <style lang="less" scoped>
-@import 'index.less';
+//@import '@antv/s2-shared/src/styles/drilldown.less';
 </style>

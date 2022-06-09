@@ -11,7 +11,7 @@ import {
   TextIcon,
 } from '../icons/index';
 
-import './index.less';
+import '@antv/s2-shared/src/styles/drilldown.less';
 
 export interface DataSet extends BaseDataSet {
   icon?: React.ReactNode;
