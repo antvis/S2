@@ -10,7 +10,7 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
-  getTooltipOperatorSortMenus,
+  getTooltipOperatorTableSortMenus,
 } from '../common/constant';
 import type {
   S2Options,
@@ -169,11 +169,10 @@ export class TableSheet extends SpreadSheet {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const TOOLTIP_OPERATOR_TABLE_SORT_MENUS = getTooltipOperatorSortMenus();
     const operator: TooltipOperatorOptions = {
       onClick: (params: { key: string }) =>
         this.onSortTooltipClick(params, meta),
-      menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
+      menus: getTooltipOperatorTableSortMenus(),
     };
 
     this.showTooltipWithInfo(event, [], {

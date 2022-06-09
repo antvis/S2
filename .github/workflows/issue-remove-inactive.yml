@@ -16,4 +16,4 @@ jobs:
         with:
           actions: 'remove-labels'
           issue-number: ${{ github.event.issue.number }}
-          labels: '🤔 need reproduce, 👀 need more info'
+          labels: '💤 inactive,🤔 need reproduce,👀 need more info'

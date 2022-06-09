@@ -16,6 +16,8 @@ import {
   type S2Options,
   type TooltipShowOptions,
   TOOLTIP_CONTAINER_CLS,
+  setLang,
+  type LangType,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -55,6 +57,7 @@ describe('PivotSheet Tests', () => {
   let container: HTMLDivElement;
 
   beforeAll(() => {
+    setLang('zh_CN');
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
@@ -797,6 +800,48 @@ describe('PivotSheet Tests', () => {
     });
   });
 
+  // https://github.com/antvis/S2/issues/1421
+  test.each(['zh_CN', 'en_US'])(
+    'should render group sort menu',
+    (lang: LangType) => {
+      setLang(lang);
+      const sheet = new PivotSheet(container, dataCfg, s2Options);
+      sheet.render();
+
+      const showTooltipWithInfoSpy = jest
+        .spyOn(sheet, 'showTooltipWithInfo')
+        .mockImplementation(() => {});
+
+      const event = {
+        stopPropagation() {},
+      } as GEvent;
+
+      sheet.handleGroupSort(event, null);
+
+      const isEnUS = lang === 'en_US';
+      const groupAscText = isEnUS ? 'Group ASC' : '组内升序';
+      const groupDescText = isEnUS ? 'Group DESC' : '组内降序';
+      const groupNoneText = isEnUS ? 'No order' : '不排序';
+
+      expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.anything(),
+        {
+          onlyMenu: true,
+          operator: {
+            menus: [
+              { icon: 'groupAsc', key: 'asc', text: groupAscText },
+              { icon: 'groupDesc', key: 'desc', text: groupDescText },
+              { key: 'none', text: groupNoneText },
+            ],
+            onClick: expect.anything(),
+          },
+        },
+      );
+      sheet.destroy();
+    },
+  );
+
   test('should handle group sort', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
@@ -837,6 +882,8 @@ describe('PivotSheet Tests', () => {
         sortMethod: 'desc',
       },
     ]);
+
+    expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
     expect(renderSpy).toHaveBeenCalledTimes(2);
 
     renderSpy.mockRestore();
@@ -853,6 +900,7 @@ describe('PivotSheet Tests', () => {
     });
     s2.options.style.colCfg.hideMeasureColumn = true;
     s2.groupSortByMethod('asc', nodeMeta);
+
     expect(s2.dataCfg.sortParams).toEqual([
       {
         query: { $$extra$$: 'price', type: '笔' },
