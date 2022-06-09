@@ -6,6 +6,7 @@ import {
   InterceptType,
   S2Event,
   getTooltipOperatorTableSortMenus,
+  getTooltipOperatorSortMenus,
 } from '../common/constant';
 import type {
   RowCellCollapseTreeRowsType,
@@ -197,14 +198,12 @@ export class PivotSheet extends SpreadSheet {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const TOOLTIP_OPERATOR_SORT_MENUS = getTooltipOperatorTableSortMenus();
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
         this.groupSortByMethod(key as unknown as SortMethod, meta);
-        // 排序事件完成触发
         this.emit(S2Event.RANGE_SORTED, event);
       },
-      menus: TOOLTIP_OPERATOR_SORT_MENUS,
+      menus: getTooltipOperatorSortMenus(),
     };
 
     this.showTooltipWithInfo(event, [], {

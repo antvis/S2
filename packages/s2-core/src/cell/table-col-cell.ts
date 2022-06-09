@@ -1,4 +1,4 @@
-import { find, get } from 'lodash';
+import { find } from 'lodash';
 import type { Group } from '@antv/g-canvas';
 import { ColCell } from '../cell/col-cell';
 import {
@@ -72,7 +72,7 @@ export class TableColCell extends ColCell {
 
   protected getTextStyle() {
     const style = this.getStyle();
-    return get(style, 'bolderText');
+    return style?.bolderText;
   }
 
   public getContentArea() {
