@@ -1,13 +1,11 @@
 import {
   find,
   forEach,
-  forIn,
   get,
   isArray,
   isEmpty,
-  isObject,
+  keys,
   last,
-  max,
   maxBy,
   merge,
   reduce,
@@ -618,23 +616,40 @@ export class PivotFacet extends BaseFacet {
       return labels.length;
     }
 
-    // 否则动态采样前50条数据，如果数据value是数组类型，获取其长度
-    const { dataSet } = this.cfg;
-    const multiData = dataSet.getMultiData(
-      col.query,
-      col.isTotals || col.isTotalMeasure,
-    );
     // 采样前50，根据指标个数获取单元格列宽
-    const demoData = multiData?.slice(0, 50) ?? [];
-    const lengths = [];
-    forEach(demoData, (value) => {
-      forIn(value, (v: MultiData) => {
-        if (isObject(v) && v?.values) {
-          lengths.push(size(v?.values[0]));
-        }
+    let maxLength = 1;
+    for (let index = 0; index < 50; index++) {
+      const rowNode = this.spreadsheet.facet.layoutResult.rowLeafNodes[index];
+      if (!rowNode) {
+        // 抽样个数大于叶子节点个数
+        return maxLength;
+      }
+
+      const cellData = this.cfg.dataSet.getCellData({
+        query: {
+          ...col.query,
+          ...rowNode.query,
+        },
+        isTotals:
+          col.isTotals ||
+          col.isTotalMeasure ||
+          rowNode.isTotals ||
+          rowNode.isTotalMeasure,
       });
-    });
-    return max(lengths) || 1;
+
+      const cellDataKeys = keys(cellData);
+      for (let j = 0; j < cellDataKeys.length; j++) {
+        const dataValue: MultiData = cellData[cellDataKeys[j]];
+
+        const valueSize = size(dataValue?.values?.[0]);
+        if (valueSize > maxLength) {
+          // greater length
+          maxLength = valueSize;
+        }
+      }
+    }
+
+    return maxLength;
   }
 
   /**
