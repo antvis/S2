@@ -11,7 +11,7 @@ import {
   reduce,
   size,
 } from 'lodash';
-import type { IconTheme, MultiData } from '../common';
+import { LAYOUT_SAMPLE_COUNT, type IconTheme, type MultiData } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
@@ -152,6 +152,7 @@ export class PivotFacet extends BaseFacet {
     this.calculateColNodesCoordinate(
       colLeafNodes,
       colsHierarchy,
+      rowLeafNodes,
       rowsHierarchy.width,
     );
   }
@@ -163,10 +164,13 @@ export class PivotFacet extends BaseFacet {
    * colsHierarchy's width
    * @param colLeafNodes
    * @param colsHierarchy
+   * @param rowLeafNodes
+   * @param rowHeaderWidth
    */
   private calculateColNodesCoordinate(
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
+    rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ) {
     const { spreadsheet } = this.cfg;
@@ -186,6 +190,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.width = this.calculateColLeafNodesWidth(
           currentNode,
           colLeafNodes,
+          rowLeafNodes,
           rowHeaderWidth,
         );
         colsHierarchy.width += currentNode.width;
@@ -236,6 +241,7 @@ export class PivotFacet extends BaseFacet {
   private calculateColLeafNodesWidth(
     col: Node,
     colLeafNodes: Node[],
+    rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
@@ -270,21 +276,40 @@ export class PivotFacet extends BaseFacet {
       const leafNodeRoughWidth =
         measureTextWidthRoughly(leafNodeLabel) + iconWidth;
 
-      // will deal with real width calculation in multiple values render pr
-      const multiData = dataSet.getMultiData(
-        col.query,
-        col.isTotals || col.isTotalMeasure,
-      );
-      const allDataLabels = multiData
-        .map((data) => `${handleDataItem(data, filterDisplayDataItem)}`)
-        ?.slice(0, 50);
-      const maxDataLabel = maxBy(allDataLabels, (label) =>
-        measureTextWidthRoughly(label),
-      );
+      // 采样 50 个 label，逐个计算找出最长的 label
+      let maxDataLabel: string;
+      let maxDataLabelWidth = 0;
+      for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
+        const rowNode = rowLeafNodes[index];
+        if (rowNode) {
+          const cellData = dataSet.getCellData({
+            query: { ...col.query, ...rowNode.query },
+            rowNode,
+            isTotals:
+              col.isTotals ||
+              col.isTotalMeasure ||
+              rowNode.isTotals ||
+              rowNode.isTotalMeasure,
+          });
+
+          if (cellData) {
+            // 总小计格子不一定有数据
+            const cellLabel = `${handleDataItem(
+              cellData,
+              filterDisplayDataItem,
+            )}`;
+            const cellLabelWidth = measureTextWidthRoughly(cellLabel);
+
+            if (cellLabelWidth > maxDataLabelWidth) {
+              maxDataLabel = cellLabel;
+              maxDataLabelWidth = cellLabelWidth;
+            }
+          }
+        }
+      }
 
       // compare result
-      const isLeafNodeWidthLonger =
-        leafNodeRoughWidth > measureTextWidthRoughly(maxDataLabel);
+      const isLeafNodeWidthLonger = leafNodeRoughWidth > maxDataLabelWidth;
       const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
       const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
 
@@ -618,7 +643,7 @@ export class PivotFacet extends BaseFacet {
 
     // 采样前50，根据指标个数获取单元格列宽
     let maxLength = 1;
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
       const rowNode = this.spreadsheet.facet.layoutResult.rowLeafNodes[index];
       if (!rowNode) {
         // 抽样个数大于叶子节点个数
@@ -630,6 +655,7 @@ export class PivotFacet extends BaseFacet {
           ...col.query,
           ...rowNode.query,
         },
+        rowNode,
         isTotals:
           col.isTotals ||
           col.isTotalMeasure ||
@@ -738,7 +764,7 @@ export class PivotFacet extends BaseFacet {
     );
     const allLabels = dataSet
       .getDimensionValues(field)
-      ?.slice(0, 50)
+      ?.slice(0, LAYOUT_SAMPLE_COUNT)
       .map(
         (dimValue) =>
           this.spreadsheet.dataSet.getFieldFormatter(field)?.(dimValue) ??
