@@ -39,7 +39,7 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
 
   const onResize = () => {
     //取dom的大小，解决scale问题
-    const { width: nodeWidth, height: nodeHeight } =
+    const { clientWidth: nodeWidth, clientHeight: nodeHeight } =
       container;
 
     const width = adaptiveWidth
