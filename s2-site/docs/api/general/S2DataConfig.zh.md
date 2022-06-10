@@ -10,8 +10,8 @@ redirect_from:
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | :------------- | :----------------- | :--------- | :----- | :--- |
 | data           | 原始数据        | [Data[]](#data) |    |   ✓   |
-| fields         | 维度指标配置项       | [Fields](#fields) |    |   ✓     |
-| totalData        | 总计数据       | [Data[]](#data) |    |      |
+| fields         | 维度指标       | [Fields](#fields) |    |   ✓     |
+| totalData        | 总计/小计数据       | [TotalData[]](#data) |    |      |
 | meta    | 全局化配置表数据的元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息 | [Meta[]](#meta)  |  |       |
 | sortParams    | 排序参数配置 | [SortParams](#sortparams)  |  |       |
 

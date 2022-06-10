@@ -1,7 +1,6 @@
 import {
   PivotSheet,
   TableSheet,
-  type S2Constructor,
   type S2Options,
   type SpreadSheet,
 } from '@antv/s2';
@@ -42,9 +41,8 @@ export function useSpreadSheet(
     const rawOptions = toRaw(options);
 
     const s2Options = getSheetComponentOptions(rawOptions as S2Options);
-    const s2Constructor: S2Constructor = [container, rawDataCfg, s2Options];
     if (onSpreadsheet) {
-      return onSpreadsheet(...s2Constructor);
+      return onSpreadsheet(container, rawDataCfg, s2Options);
     }
     if (sheetType === 'table') {
       return new TableSheet(container, rawDataCfg, s2Options);

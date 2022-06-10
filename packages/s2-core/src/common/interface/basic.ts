@@ -450,12 +450,6 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
 
 export type S2MountContainer = string | Element;
 
-export type S2Constructor<T = Element | string> = [
-  S2MountContainer,
-  S2DataConfig,
-  S2Options<T>,
-];
-
 export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;

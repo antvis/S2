@@ -4,7 +4,6 @@ import type {
   CellScrollPosition,
   TargetCellInfo,
   ResizeParams,
-  S2Constructor,
   Node,
   SpreadSheet,
   ThemeCfg,
@@ -21,6 +20,7 @@ import type {
   S2CellType,
   TooltipOperatorOptions,
   S2RenderOptions,
+  S2MountContainer,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -42,7 +42,11 @@ export interface BaseSheetComponentProps<
   Header = unknown,
 > {
   sheetType?: SheetType;
-  spreadsheet?: (...args: S2Constructor) => SpreadSheet;
+  spreadsheet?: (
+    container: S2MountContainer,
+    dataCfg: S2DataConfig,
+    options: S2Options,
+  ) => SpreadSheet;
   dataCfg: S2DataConfig;
   options?: S2Options;
   loading?: boolean;
