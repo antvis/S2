@@ -21,6 +21,8 @@ export type DataPathParams = {
   colDimensionValues: string[];
   // first create data path
   isFirstCreate?: boolean;
+  // callback when pivot map create node
+  onFirstCreate?: (dimension, paths) => void;
   // use for multiple data queries（path contains undefined）
   careUndefined?: boolean;
   // use in row tree mode to append fields information

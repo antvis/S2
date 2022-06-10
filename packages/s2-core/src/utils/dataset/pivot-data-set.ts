@@ -1,4 +1,4 @@
-import { forEach, isUndefined, last, map, reduce, set } from 'lodash';
+import { forEach, isUndefined, last, reduce, set } from 'lodash';
 import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
@@ -35,19 +35,9 @@ interface Param {
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
-  sortedDimensionValues: SortedDimensionValues,
 ): string[] {
-  const dimensionValuePath: string[] = [];
-  return map(dimensions, (dimension) => {
+  return dimensions.map((dimension) => {
     const dimensionValue = record[dimension];
-    dimensionValuePath.push(`${dimensionValue}`);
-    const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
-
-    if (!sortedDimensionValues[dimension]) {
-      sortedDimensionValues[dimension] = [cacheKey];
-    } else if (!sortedDimensionValues[dimension]?.includes(cacheKey)) {
-      sortedDimensionValues[dimension].push(cacheKey);
-    }
 
     // 保证 undefined 之外的数据都为 string 类型
     if (dimensionValue === undefined) {
@@ -129,6 +119,7 @@ export function getDataPath(params: DataPathParams) {
     colDimensionValues,
     careUndefined,
     isFirstCreate,
+    onFirstCreate,
     rowFields,
     colFields,
     rowPivotMeta,
@@ -155,6 +146,7 @@ export function getDataPath(params: DataPathParams) {
             level: currentMeta.size,
             children: new Map(),
           });
+          onFirstCreate?.(fields?.[i], dimensionValues.slice(0, i + 1));
         } else {
           const meta = currentMeta.get(value);
           if (meta) {
@@ -239,23 +231,32 @@ export function transformIndexesData(params: Param) {
     colPivotMeta,
   } = params;
   const paths = [];
+
+  /**
+   * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
+   * @param dimension 维度 id，如 city
+   * @param dimensionPath 维度数组 ['四川省', '成都市']
+   */
+  const onFirstCreate = (dimension, dimensionPath) => {
+    (
+      sortedDimensionValues[dimension] ||
+      (sortedDimensionValues[dimension] = [])
+    ).push(
+      // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
+      dimensionPath.map(String).join(ID_SEPARATOR),
+    );
+  };
+
   for (const data of [...originData, ...totalData]) {
-    const rowDimensionValues = transformDimensionsValues(
-      data,
-      rows,
-      sortedDimensionValues,
-    );
-    const colDimensionValues = transformDimensionsValues(
-      data,
-      columns,
-      sortedDimensionValues,
-    );
+    const rowDimensionValues = transformDimensionsValues(data, rows);
+    const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: true,
+      onFirstCreate,
       careUndefined: totalData?.length > 0,
       rowFields: rows,
       colFields: columns,
