@@ -242,12 +242,15 @@ export function transformIndexesData(params: Param) {
       sortedDimensionValues[dimension] ||
       (sortedDimensionValues[dimension] = [])
     ).push(
+      // 拼接维度路径
       // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
-      dimensionPath.map(String).join(ID_SEPARATOR),
+      dimensionPath.map((it) => `${it}`).join(ID_SEPARATOR),
     );
   };
 
-  for (const data of [...originData, ...totalData]) {
+  const allData = originData.concat(totalData);
+  for (let index = 0; index < allData.length; index++) {
+    const data = allData[index];
     const rowDimensionValues = transformDimensionsValues(data, rows);
     const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({
