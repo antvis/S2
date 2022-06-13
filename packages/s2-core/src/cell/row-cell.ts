@@ -364,16 +364,16 @@ export class RowCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const { text, bolderText, measureText } = this.getStyle();
-
+    let style: TextTheme;
     if (this.isMeasureField()) {
-      return measureText || text;
+      style = measureText || text;
+    } else if (this.isBolderText()) {
+      style = bolderText;
+    } else {
+      style = text;
     }
 
-    if (this.isBolderText()) {
-      return bolderText;
-    }
-
-    return text;
+    return { ...style, textBaseline: 'top' };
   }
 
   protected getIconPosition() {

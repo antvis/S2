@@ -171,7 +171,10 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   private addText(group: IGroup, cellData: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
-    const textStyle = this.getStye().seriesText;
+    const textStyle = {
+      ...this.getStye().seriesText,
+      textBaseline: 'top' as const,
+    };
     const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
     const padding = this.getTextPadding(label, cellWidth);
     const textY = getAdjustPosition(
@@ -185,7 +188,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     group.addShape('text', {
       attrs: {
         x: x + padding.left,
-        y: textY + textStyle.fontSize / 2,
+        y: textY,
         text: label,
         ...textStyle,
         cursor: 'pointer',
