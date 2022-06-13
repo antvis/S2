@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Event } from '@antv/s2';
 import insertCss from 'insert-css';
 
 // 每次滚动的距离
@@ -76,6 +76,11 @@ fetch(
       },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);
+
+    // 记得在表格卸载后 或者 `s2.destroy()` 后清除定时器
+    s2.on(S2Event.LAYOUT_DESTROY, () => {
+      clearInterval(timer);
+    });
 
     s2.render();
 

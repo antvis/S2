@@ -3,13 +3,13 @@ title: 高级排序
 order: 1
 ---
 
-`SheetComponent` 自带高级排序组件，可选择使用。
+`React` 版本提供高级排序组件，可选择使用。[例子](https://s2.antv.vision/zh/examples/analysis/sort#advanced)
 
 > 注意：内部不维护状态
 
 ## 快速上手
 
-使用 `s2-react` 的组件 `SheetComponent` ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
@@ -22,23 +22,21 @@ const AdvancedSortDemo = () => {
   const [dataCfg, setDataCfg] = useState(s2DataConfig);
 
   return (
-    <div>
-      <SheetComponent
-        sheetType="pivot"
-        adaptive={false}
-        dataCfg={dataCfg}
-        options={s2Options}
-        header={{
-          advancedSortCfg: {
-            open: true,
-            sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
-            onSortConfirm: (ruleValues, sortParams: SortParams) => {
-              setDataCfg({ ...dataCfg, sortParams });
-            },
+    <SheetComponent
+      sheetType="pivot"
+      adaptive={false}
+      dataCfg={dataCfg}
+      options={s2Options}
+      header={{
+        advancedSortCfg: {
+          open: true,
+          sortParams: [{ sortFieldId: 'province', sortMethod: 'DESC' }],
+          onSortConfirm: (ruleValues, sortParams: SortParams) => {
+            setDataCfg({ ...dataCfg, sortParams });
           },
-        }}
-      />
-    </div>
+        },
+      }}
+    />
   );
 };
 
@@ -80,7 +78,7 @@ advancedSortCfg: {
 
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
-| className    | class类名称    | `string`            | -      |      |
+| className    | class 类名称    | `string`            | -      |      |
 | icon    | 排序按钮图标    | `React.ReactNode`          | -      |      |
 | text    | 排序按钮名称    | `ReactNode`             | -      |      |
 | ruleText    | 规则描述    | `string`            | -      |      |
@@ -95,7 +93,7 @@ advancedSortCfg: {
 
 | 参数  | 说明     | 类型       | 默认值 | 必选 |
 | ----- | -------- | ---------- | ------ | ---- |
-| field | 维度id   | `string`   | -      | ✓   |
+| field | 维度 id   | `string`   | -      | ✓   |
 | name  | 维度名称 | `string`   | -      | ✓   |
 | list  | 维度列表 | `string[]` | -      | ✓   |
 

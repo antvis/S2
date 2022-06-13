@@ -3,7 +3,7 @@ title: 高清适配
 order: 7
 ---
 
-S2 基于 `canvas` 开发，在实际的业务场景开发中，我们发现有 2 种使用场景会导致 **表格渲染模糊**
+S2 基于 `Canvas` 渲染，在实际的业务场景开发中，我们发现有以下使用场景会导致 **表格渲染模糊**
 
 1. 不同 `DPR` 的设备之间来回切换：比如一台 mac （视网膜屏）, 外接一台显示器 （普通 2k 屏）, 将浏览器移到外接设备查看
 2. 使用 `mac` 触摸板对页面进行缩放：双指缩放，来放大显示，而不是传统的 `cmd` + `+`, `cmd` + `-` 缩放浏览器窗口大小
@@ -28,7 +28,7 @@ const s2Options = {
 
 ## 不同 DPR 设备间切换
 
-对于这种场景，我们使用 [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) 来监听 DPR 的变化，更新 canvas 的尺寸，从而达到高清的效果
+对于这种场景，我们使用 [matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) 来监听 DPR 的变化，更新 `canvas` 的尺寸，从而达到高清的效果
 
 ```ts
 const { width, height } = s2Options
