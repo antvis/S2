@@ -128,7 +128,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBackGround() {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const rowCellTheme = this.getStyle().cell;
     const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
@@ -157,7 +157,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBorder(group: IGroup, cellData) {
-    const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const cellTheme = this.getStyle().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
       getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
@@ -165,21 +165,18 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
+  private getStyle() {
+    return this.headerConfig.spreadsheet.theme.rowCell;
+  }
+
   private addText(group: IGroup, cellData: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      isLeaf,
-      isTotals,
-    } = cellData;
+    const textStyle = {
+      ...this.getStyle().seriesText,
+      textBaseline: 'top' as const,
+    };
+    const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
     const padding = this.getTextPadding(label, cellWidth);
-    const textStyle =
-      isLeaf && !isTotals ? rowCellTheme.text : rowCellTheme.bolderText;
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
@@ -191,7 +188,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     group.addShape('text', {
       attrs: {
         x: x + padding.left,
-        y: textY + textStyle.fontSize / 2,
+        y: textY,
         text: label,
         ...textStyle,
         cursor: 'pointer',
@@ -200,8 +197,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const textWidth = measureTextWidth(text, rowCellTheme.text);
+    const rowCellTheme = this.getStyle();
+    const textWidth = measureTextWidth(text, rowCellTheme.seriesText);
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
       ...rowCellTheme.cell.padding,

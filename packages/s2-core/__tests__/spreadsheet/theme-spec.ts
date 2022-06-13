@@ -1,8 +1,9 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
+import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
 import type { ShapeAttrs } from '@antv/g-canvas';
-import type { TextTheme } from '@/common/interface/theme';
+import type { TextBaseline, TextTheme } from '@/common/interface/theme';
 import type { PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -365,6 +366,48 @@ describe('SpreadSheet Theme Tests', () => {
         s2.render(true);
 
         expectTextAlign({ textAlign, fontWight: 'normal' });
+      },
+    );
+  });
+
+  describe('Series Cell Tests', () => {
+    const getTextShape = (group: IGroup) => {
+      return group
+        .getChildren()
+        .find((child) => child instanceof child.getShapeBase().Text);
+    };
+
+    test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
+      'should render %s text align for column nodes',
+      (textBaseline) => {
+        s2.setThemeCfg({
+          theme: {
+            rowCell: {
+              seriesText: {
+                textBaseline,
+              },
+              bolderText: {
+                textBaseline,
+              },
+            },
+          },
+        });
+
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+
+        s2.render();
+
+        const rowCell = s2.facet.rowHeader.getChildByIndex(0) as IGroup; // 浙江省
+        const textOfRowCell = getTextShape(rowCell);
+
+        const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
+        const textOfSeriesCell = getTextShape(seriesCell);
+
+        expect(textOfRowCell.attr('textBaseline')).toEqual('top');
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
     );
   });

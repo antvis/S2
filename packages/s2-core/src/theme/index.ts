@@ -70,6 +70,16 @@ export const getTheme = (
       },
     },
     rowCell: {
+      seriesText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[14],
+        linkTextFill: basicColors[6],
+        opacity: 1,
+        textBaseline: 'middle',
+        textAlign: 'center',
+      },
       measureText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
