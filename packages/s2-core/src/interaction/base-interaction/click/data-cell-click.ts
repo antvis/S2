@@ -1,6 +1,8 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { get } from 'lodash';
+import { forEach, get } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
+import type { ColCell } from '../../../cell/col-cell';
+import type { RowCell } from '../../../cell/row-cell';
 import {
   InteractionStateName,
   InterceptType,
@@ -13,12 +15,16 @@ import type {
   TooltipOperatorOptions,
   ViewMeta,
 } from '../../../common/interface';
-import { getCellMeta } from '../../../utils/interaction/select-event';
+import {
+  getCellMeta,
+  getRowCellForSelectedCell,
+} from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import { updateAllColHeaderCellState } from '../../../utils/interaction/hover-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -28,7 +34,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
-      const { interaction } = this.spreadsheet;
+      const { interaction, options } = this.spreadsheet;
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
@@ -55,7 +61,30 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
+      if (options.interaction.selectedCellHighlight) {
+        this.updateRowColCells(meta);
+      }
     });
+  }
+
+  public updateRowColCells(meta: ViewMeta) {
+    const { rowId, colId } = meta;
+    const { interaction } = this.spreadsheet;
+    updateAllColHeaderCellState(
+      colId,
+      interaction.getAllColHeaderCells(),
+      InteractionStateName.SELECTED,
+    );
+
+    if (rowId) {
+      const allRowHeaderCells = getRowCellForSelectedCell(
+        meta,
+        this.spreadsheet,
+      );
+      forEach(allRowHeaderCells, (cell: RowCell) => {
+        cell.updateByState(InteractionStateName.SELECTED);
+      });
+    }
   }
 
   private getTooltipOperator(

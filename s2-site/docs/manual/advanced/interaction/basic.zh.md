@@ -224,6 +224,20 @@ const s2Options = {
 };
 ```
 
+### 单选后行列头高亮
+
+在鼠标选中单元格后时，高亮当前单元格对应的行列头单元格，利于快速定位单元格所在行列。默认关闭，可配置 `selectedCellHighlight` 开启：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600" />
+
+```ts
+const s2Options = {
+  interaction: {
+    selectedCellHighlight: true // 默认 false
+  }
+};
+```
+
 ### 悬停聚焦
 
 鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭，也可配置 `hoverFocus.duration` 更改出现 `tooltip` 的时间间隔。如果希望 hover 后立刻出现 tooltip，可以设置 `duration` 为 0;

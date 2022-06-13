@@ -12,7 +12,10 @@ import type {
   TooltipOptions,
   ViewMeta,
 } from '../../common/interface';
-import { getActiveHoverRowColCells } from '../../utils/interaction/hover-event';
+import {
+  getActiveHoverRowColCells,
+  updateAllColHeaderCellState,
+} from '../../utils/interaction/hover-event';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from '../base-event';
 
@@ -29,16 +32,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
     const { interaction } = this.spreadsheet;
-    if (colId) {
-      // update colHeader cells
-      const allColHeaderCells = getActiveHoverRowColCells(
-        colId,
-        interaction.getAllColHeaderCells(),
-      );
-      forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.updateByState(InteractionStateName.HOVER);
-      });
-    }
+    updateAllColHeaderCellState(
+      colId,
+      interaction.getAllColHeaderCells(),
+      InteractionStateName.HOVER,
+    );
 
     if (rowId) {
       // update rowHeader cells

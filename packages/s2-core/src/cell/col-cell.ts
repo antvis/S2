@@ -363,9 +363,9 @@ export class ColCell extends HeaderCell {
     renderLine(this, position, style);
   }
 
-  protected drawVerticalBorder() {
+  protected drawVerticalBorder(dir: CellBorderPosition) {
     const { position, style } = getBorderPositionAndStyle(
-      CellBorderPosition.RIGHT,
+      dir,
       this.meta as SimpleBBox,
       this.theme.colCell.cell,
     );
@@ -373,8 +373,16 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawBorders() {
+    const { options, isTableMode } = this.spreadsheet;
+    if (
+      this.meta.colIndex === 0 &&
+      isTableMode() &&
+      !options.showSeriesNumber
+    ) {
+      this.drawVerticalBorder(CellBorderPosition.LEFT);
+    }
     this.drawHorizontalBorder();
-    this.drawVerticalBorder();
+    this.drawVerticalBorder(CellBorderPosition.RIGHT);
   }
 
   protected hasHiddenColumnCell() {
