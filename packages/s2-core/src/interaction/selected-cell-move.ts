@@ -24,7 +24,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     super(spreadsheet);
   }
 
-  private getIsCanvasEffect() {
+  private isCanvasEffect() {
     return this.spreadsheet.interaction.eventController.isCanvasEffect;
   }
 
@@ -32,7 +32,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (!this.getIsCanvasEffect()) {
+        if (!this.isCanvasEffect()) {
           return;
         }
         const isShift = event.shiftKey;
