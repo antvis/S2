@@ -24,10 +24,17 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     super(spreadsheet);
   }
 
+  private isCanvasEffect() {
+    return this.spreadsheet.interaction.eventController.isCanvasEffect;
+  }
+
   public bindEvents() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
+        if (!this.isCanvasEffect()) {
+          return;
+        }
         const isShift = event.shiftKey;
         const isMeta = event.metaKey;
         const hasDirection = SelectedCellMoveMap.includes(
