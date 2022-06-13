@@ -22,7 +22,9 @@ export class GridGroup extends Group {
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
     const bbox = this.getBBox();
-    const style = this.s2.theme.dataCell.cell;
+    const { theme, isTableMode, options } = this.s2;
+    const style = theme.dataCell.cell;
+    const shoudDrawLeftBorder = isTableMode() && !options.showSeriesNumber;
 
     if (!this.gridGroup || !this.findById(id)) {
       this.gridGroup = this.addGroup({
@@ -33,8 +35,13 @@ export class GridGroup extends Group {
     this.gridGroup.clear();
 
     this.gridInfo = gridInfo;
+
+    if (shoudDrawLeftBorder) {
+      this.gridInfo.cols.unshift(0);
+    }
+
     this.gridInfo.cols.forEach((item) => {
-      const x = item - style.verticalBorderWidth / 2;
+      const x = Math.max(item - style.verticalBorderWidth / 2, 0);
       renderLine(
         this.gridGroup as Group,
         {
