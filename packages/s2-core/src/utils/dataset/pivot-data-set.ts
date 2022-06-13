@@ -1,4 +1,4 @@
-import { forEach, isUndefined, last, reduce, set } from 'lodash';
+import { forEach, isUndefined, keys, last, reduce, set } from 'lodash';
 import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
@@ -267,6 +267,13 @@ export function transformIndexesData(params: Param) {
     paths.push(path);
     set(indexesData, path, data);
   }
+
+  // 当行、列都配置了同一字段维度时，保证 sortedDimensionValues 不重复
+  keys(sortedDimensionValues).forEach((key) => {
+    const dimArr = sortedDimensionValues[key];
+    sortedDimensionValues[key] = Array.from(new Set(dimArr));
+  });
+
   return {
     paths,
     indexesData,
