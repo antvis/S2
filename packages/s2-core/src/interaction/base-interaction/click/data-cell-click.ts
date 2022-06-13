@@ -24,7 +24,7 @@ import {
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import { getActiveHoverRowColCells } from '../../../utils/interaction/hover-event';
+import { updateAllColHeaderCellState } from '../../../utils/interaction/hover-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -70,15 +70,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
     const { interaction } = this.spreadsheet;
-    if (colId) {
-      const allColHeaderCells = getActiveHoverRowColCells(
-        colId,
-        interaction.getAllColHeaderCells(),
-      );
-      forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.updateByState(InteractionStateName.SELECTED);
-      });
-    }
+    updateAllColHeaderCellState(
+      colId,
+      interaction.getAllColHeaderCells(),
+      InteractionStateName.SELECTED,
+    );
 
     if (rowId) {
       const allRowHeaderCells = getRowCellForSelectedCell(

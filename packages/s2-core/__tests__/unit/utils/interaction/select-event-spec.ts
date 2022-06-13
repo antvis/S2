@@ -7,7 +7,7 @@ import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { TableRowCell } from '@/cell';
 import type { ViewMeta } from '@/common';
 
-jest.mock('src/cell', () => {
+jest.mock('@/cell', () => {
   return {
     // eslint-disable-next-line object-shorthand
     TableRowCell: function () {
