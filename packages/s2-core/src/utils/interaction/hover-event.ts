@@ -1,6 +1,6 @@
-import { filter } from 'lodash';
+import { filter, forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
-import { ID_SEPARATOR } from '../../common/constant';
+import { ID_SEPARATOR, InteractionStateName } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
 
 /**
@@ -29,4 +29,17 @@ export const getActiveHoverRowColCells = (
     allHeaderIds.includes(cell.getMeta()?.id),
   );
   return allHeaderCells;
+};
+
+export const updateAllColHeaderCellState = (
+  colId: string,
+  colHeaderCells: ColCell[],
+  stateName: InteractionStateName,
+) => {
+  if (colId) {
+    const allColHeaderCells = getActiveHoverRowColCells(colId, colHeaderCells);
+    forEach(allColHeaderCells, (cell: ColCell) => {
+      cell.updateByState(stateName);
+    });
+  }
 };
