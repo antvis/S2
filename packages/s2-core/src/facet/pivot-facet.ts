@@ -328,7 +328,7 @@ export class PivotFacet extends BaseFacet {
     }
     // adaptive
     if (this.spreadsheet.isHierarchyTreeType()) {
-      return this.getAdaptTreeColWidth(col, colLeafNodes);
+      return this.getAdaptTreeColWidth(col, colLeafNodes, rowLeafNodes);
     }
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
@@ -621,7 +621,11 @@ export class PivotFacet extends BaseFacet {
    *  计算树状模式等宽条件下的列宽
    * @returns number
    */
-  private getAdaptTreeColWidth(col: Node, colLeafNodes: Node[]): number {
+  private getAdaptTreeColWidth(
+    col: Node,
+    colLeafNodes: Node[],
+    rowLeafNodes: Node[],
+  ): number {
     // tree row width = [config width, canvas / 2]
     const canvasW = this.getCanvasHW().width;
     const rowHeaderWidth = Math.min(canvasW / 2, this.getTreeRowHeaderWidth());
@@ -629,12 +633,12 @@ export class PivotFacet extends BaseFacet {
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
     return Math.max(
-      getCellWidth(cellCfg, this.getColLabelLength(col)),
+      getCellWidth(cellCfg, this.getColLabelLength(col, rowLeafNodes)),
       (canvasW - rowHeaderWidth) / colSize,
     );
   }
 
-  private getColLabelLength(col: Node) {
+  private getColLabelLength(col: Node, rowLeafNodes: Node[]) {
     // 如果 label 字段形如 "["xx","xxx"]"，直接获取其长度
     const labels = safeJsonParse(col?.value);
     if (isArray(labels)) {
@@ -644,7 +648,7 @@ export class PivotFacet extends BaseFacet {
     // 采样前50，根据指标个数获取单元格列宽
     let maxLength = 1;
     for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
-      const rowNode = this.spreadsheet.facet.layoutResult.rowLeafNodes[index];
+      const rowNode = rowLeafNodes[index];
       if (!rowNode) {
         // 抽样个数大于叶子节点个数
         return maxLength;
