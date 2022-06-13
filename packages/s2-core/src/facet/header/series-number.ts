@@ -128,7 +128,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBackGround() {
-    const rowCellTheme = this.getStye().cell;
+    const rowCellTheme = this.getStyle().cell;
     const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
@@ -157,7 +157,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBorder(group: IGroup, cellData) {
-    const cellTheme = this.getStye().cell;
+    const cellTheme = this.getStyle().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
       getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
@@ -165,14 +165,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
-  private getStye() {
+  private getStyle() {
     return this.headerConfig.spreadsheet.theme.rowCell;
   }
 
   private addText(group: IGroup, cellData: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
     const textStyle = {
-      ...this.getStye().seriesText,
+      ...this.getStyle().seriesText,
       textBaseline: 'top' as const,
     };
     const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
@@ -197,7 +197,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {
-    const rowCellTheme = this.getStye();
+    const rowCellTheme = this.getStyle();
     const textWidth = measureTextWidth(text, rowCellTheme.seriesText);
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
