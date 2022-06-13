@@ -34,8 +34,8 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |
 | height |   单元格高度（普通状态） | `number` | 30 |  |
-| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `Record<string, number> key 是指标的key`   | - |  |
-| hideMeasureColumn | 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其更美观。<br> 且数值只有一个时才能生效。 | `boolean` | false |  |
+| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `Record<string, number> key 是指标的 key`   | - |  |
+| hideMeasureColumn | 默认数值挂列头，会同时显示列头和数值，隐藏数值列，使其更美观。 | `boolean` | false |  |
 
 ## RowCfg
 
