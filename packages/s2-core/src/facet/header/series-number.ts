@@ -128,7 +128,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBackGround() {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const rowCellTheme = this.getStye().cell;
     const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
@@ -157,7 +157,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBorder(group: IGroup, cellData) {
-    const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const cellTheme = this.getStye().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
       getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
@@ -165,21 +165,15 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
+  private getStye() {
+    return this.headerConfig.spreadsheet.theme.rowCell;
+  }
+
   private addText(group: IGroup, cellData: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      isLeaf,
-      isTotals,
-    } = cellData;
+    const textStyle = this.getStye().seriesText;
+    const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
     const padding = this.getTextPadding(label, cellWidth);
-    const textStyle =
-      isLeaf && !isTotals ? rowCellTheme.text : rowCellTheme.bolderText;
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
@@ -200,8 +194,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const textWidth = measureTextWidth(text, rowCellTheme.text);
+    const rowCellTheme = this.getStye();
+    const textWidth = measureTextWidth(text, rowCellTheme.seriesText);
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
       ...rowCellTheme.cell.padding,

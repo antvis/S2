@@ -22,7 +22,7 @@ export class TableRowCell extends DataCell {
   }
 
   protected getTextStyle(): TextTheme {
-    return this.theme.rowCell.text;
+    return this.theme.rowCell.seriesText;
   }
 
   protected drawBorderShape() {
