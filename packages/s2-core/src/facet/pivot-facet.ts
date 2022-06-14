@@ -207,7 +207,7 @@ export class PivotFacet extends BaseFacet {
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
     if (!isEmpty(spreadsheet.options.totals?.col)) {
-      this.adustTotalNodesCoordinate(colsHierarchy);
+      this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
     }
   }
@@ -441,7 +441,7 @@ export class PivotFacet extends BaseFacet {
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
-        this.adustTotalNodesCoordinate(rowsHierarchy, true);
+        this.adjustTotalNodesCoordinate(rowsHierarchy, true);
         this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
       }
     }
@@ -476,7 +476,7 @@ export class PivotFacet extends BaseFacet {
    * @param hierarchy Hierarchy
    * @param isRowHeader boolean
    */
-  private adustTotalNodesCoordinate(
+  private adjustTotalNodesCoordinate(
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
   ) {
