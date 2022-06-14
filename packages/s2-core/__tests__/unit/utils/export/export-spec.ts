@@ -132,16 +132,15 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(5);
+    expect(rows[0].split('\t').length).toEqual(5);
     expect(rows[0].split('\t')[0]).toEqual('"类别"');
     expect(rows[0].split('\t')[1]).toEqual('"家具"');
     expect(rows[1].split('\t')[0]).toEqual('"子类别"');
     expect(rows[1].split('\t')[1]).toEqual('"桌子"');
     expect(rows[2].split('\t')[0]).toEqual('"省份"');
     expect(rows[2].split('\t')[1]).toEqual('"数量"');
-    rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(5);
-    });
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
@@ -157,7 +156,9 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(13);
+    expect(rows[0].split('\t').length).toEqual(6);
     expect(rows[0].split('\t')[1]).toEqual('"类别"');
     expect(rows[0].split('\t')[2]).toEqual('"家具"');
     expect(rows[1].split('\t')[1]).toEqual('"子类别"');
@@ -165,9 +166,6 @@ describe('PivotSheet Export Test', () => {
     expect(rows[2].split('\t')[0]).toEqual('"省份"');
     expect(rows[2].split('\t')[1]).toEqual('"城市"');
     expect(rows[2].split('\t')[2]).toEqual('"数量"');
-    rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(6);
-    });
   });
 
   it('should export correct data in grid mode with valueInCols is false', () => {
