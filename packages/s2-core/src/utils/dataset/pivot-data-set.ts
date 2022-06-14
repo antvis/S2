@@ -1,4 +1,12 @@
-import { forEach, isUndefined, last, map, reduce, set } from 'lodash';
+import {
+  forEach,
+  intersection,
+  isUndefined,
+  keys,
+  last,
+  reduce,
+  set,
+} from 'lodash';
 import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
@@ -35,19 +43,9 @@ interface Param {
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
-  sortedDimensionValues: SortedDimensionValues,
 ): string[] {
-  const dimensionValuePath: string[] = [];
-  return map(dimensions, (dimension) => {
+  return dimensions.map((dimension) => {
     const dimensionValue = record[dimension];
-    dimensionValuePath.push(`${dimensionValue}`);
-    const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
-
-    if (!sortedDimensionValues[dimension]) {
-      sortedDimensionValues[dimension] = [cacheKey];
-    } else if (!sortedDimensionValues[dimension]?.includes(cacheKey)) {
-      sortedDimensionValues[dimension].push(cacheKey);
-    }
 
     // 保证 undefined 之外的数据都为 string 类型
     if (dimensionValue === undefined) {
@@ -129,6 +127,7 @@ export function getDataPath(params: DataPathParams) {
     colDimensionValues,
     careUndefined,
     isFirstCreate,
+    onFirstCreate,
     rowFields,
     colFields,
     rowPivotMeta,
@@ -154,6 +153,11 @@ export function getDataPath(params: DataPathParams) {
           currentMeta.set(value, {
             level: currentMeta.size,
             children: new Map(),
+          });
+          onFirstCreate?.({
+            isRow,
+            dimension: fields?.[i],
+            dimensionPath: dimensionValues.slice(0, i + 1),
           });
         } else {
           const meta = currentMeta.get(value);
@@ -239,30 +243,51 @@ export function transformIndexesData(params: Param) {
     colPivotMeta,
   } = params;
   const paths = [];
-  for (const data of [...originData, ...totalData]) {
-    const rowDimensionValues = transformDimensionsValues(
-      data,
-      rows,
-      sortedDimensionValues,
+
+  /**
+   * 记录行头、列头重复的字段
+   */
+  const repeatedDimensionSet = new Set(intersection(rows, columns));
+
+  /**
+   * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
+   */
+  const onFirstCreate = ({ isRow, dimension, dimensionPath }) => {
+    if (!isRow && repeatedDimensionSet.has(dimension)) {
+      // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
+      // 所有重复字段的维度值无需再加入到 sortedDimensionValues
+      return;
+    }
+
+    (
+      sortedDimensionValues[dimension] ||
+      (sortedDimensionValues[dimension] = [])
+    ).push(
+      // 拼接维度路径
+      // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
+      dimensionPath.map((it) => `${it}`).join(ID_SEPARATOR),
     );
-    const colDimensionValues = transformDimensionsValues(
-      data,
-      columns,
-      sortedDimensionValues,
-    );
+  };
+
+  const allData = originData.concat(totalData);
+  allData.forEach((data) => {
+    const rowDimensionValues = transformDimensionsValues(data, rows);
+    const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
       isFirstCreate: true,
+      onFirstCreate,
       careUndefined: totalData?.length > 0,
       rowFields: rows,
       colFields: columns,
     });
     paths.push(path);
     set(indexesData, path, data);
-  }
+  });
+
   return {
     paths,
     indexesData,
