@@ -143,12 +143,12 @@ export abstract class BaseFacet {
   };
 
   showVerticalScrollBar = () => {
-    this.vScrollBar?.show();
+    this.vScrollBar?.setAttribute('visibility', 'visible');
   };
 
   showHorizontalScrollBar = () => {
-    this.hRowScrollBar?.show();
-    this.hScrollBar?.show();
+    this.hRowScrollBar?.setAttribute('visibility', 'visible');
+    this.hScrollBar?.setAttribute('visibility', 'visible');
   };
 
   onContainerWheel = () => {
