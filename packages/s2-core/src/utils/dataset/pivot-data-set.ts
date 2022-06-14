@@ -249,8 +249,7 @@ export function transformIndexesData(params: Param) {
   };
 
   const allData = originData.concat(totalData);
-  for (let index = 0; index < allData.length; index++) {
-    const data = allData[index];
+  allData.forEach((data) => {
     const rowDimensionValues = transformDimensionsValues(data, rows);
     const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({
@@ -266,7 +265,7 @@ export function transformIndexesData(params: Param) {
     });
     paths.push(path);
     set(indexesData, path, data);
-  }
+  });
 
   // 当行、列都配置了同一字段维度时，保证 sortedDimensionValues 不重复
   keys(sortedDimensionValues).forEach((key) => {
