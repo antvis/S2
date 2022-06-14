@@ -12,7 +12,7 @@ const s2Options = {
 }
 ```
 
-需要注意的是，表格基于 `canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
+需要注意的是，表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
 
 ```ts
 const s2Options = {
@@ -38,7 +38,6 @@ const debounceRender = debounce((width, height) => {
   s2.render(false) // 不重新加载数据
 }, 200)
 
-
 new ResizeObserver(([entry] = []) => {
     const [size] = entry.borderBoxSize || [];
     debounceRender(size.inlineSize, size.blockSize)
@@ -47,7 +46,7 @@ new ResizeObserver(([entry] = []) => {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
-​📊 查看[窗口自适应 demo](zh/examples/layout/adaptive#window-adaptation)
+​📊 查看 [窗口自适应 demo](zh/examples/layout/adaptive#window-adaptation)
 
 ### 容器自适应
 
@@ -79,7 +78,7 @@ resizeObserver.observe(parent);
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
 
-​📊 查看[容器自适应 demo](zh/examples/layout/adaptive#container-adaptation)
+​📊 查看 [容器自适应 demo](zh/examples/layout/adaptive#container-adaptation)
 
 ### React 组件
 
@@ -144,7 +143,7 @@ const containerId = 'containerId';
 </div>
 ```
 
-​📊 查看[React 组件自适应 demo](zh/examples/layout/adaptive#react-adaptive)
+​📊 查看 [React 组件自适应 demo](zh/examples/layout/adaptive#react-adaptive)
 
 ### Vue 组件
 
@@ -209,4 +208,4 @@ const adaptive = {
 </template>
 ```
 
-​📊 查看[Vue 组件自适应 demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)
+​📊 查看 [Vue 组件自适应 demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)
