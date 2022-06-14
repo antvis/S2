@@ -640,7 +640,7 @@ export const verifyTheElementInTooltip = (
 ): boolean => {
   let result = false;
   let currentNode: Node = child;
-  while (currentNode !== document.body) {
+  while (currentNode !==null && currentNode !== document.body) {
     if (parent === currentNode) {
       result = true;
       break;
