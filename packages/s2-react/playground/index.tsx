@@ -59,10 +59,6 @@ import {
 import './index.less';
 import { ResizeConfig } from './resize';
 
-pivotSheetDataCfg.data.forEach((item) => {
-  item.country = '中国';
-});
-
 const { TabPane } = Tabs;
 
 const fieldMap = {
