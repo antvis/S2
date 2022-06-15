@@ -47,7 +47,6 @@ new ResizeObserver(([entry] = []) => {
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
 ​📊 查看 [窗口自适应 demo](/zh/examples/layout/adaptive#window-adaptation)
->>>>>>> origin/master
 
 ### 容器自适应
 
