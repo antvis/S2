@@ -116,3 +116,21 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/OXHJhUbEH/85b95114-f5db-48ca-981c-cb29b004514f.png" alt="preview" width="600"/>
+
+### 隐藏列头
+
+还可以将高度设置为 `0`, 从而实现**隐藏列头**的效果
+
+```ts
+const s2Options = {
+  style: {
+    colCfg: {
+      height: 0,
+    },
+  },
+}
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/VKHZ7SqIL/7371cfc3-b8e9-4f0b-a9c5-a9689aa0053a.png" alt="preview" width="600"/>
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/EeYXxuDHO/17f257f8-c0ad-438b-8b0e-6db064892af9.png" alt="preview" width="600"/>

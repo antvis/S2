@@ -37,13 +37,8 @@ fetch('../data/basic.json')
       width: 600,
       height: 480,
       style: {
-        rowCfg: {
-          heightByField: {
-            '1': 130,
-            '3': 60,
-            '10': 80,
-            '15': 20,
-          },
+        colCfg: {
+          height: 0,
         },
       },
     };

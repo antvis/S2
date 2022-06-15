@@ -27,6 +27,14 @@
         "en": "Custom Height"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vb3ZAIvFqi/e483295e-5a73-49e7-ae00-1cee05b184e6.png"
+    },
+    {
+      "filename": "hide-columns.ts",
+      "title": {
+        "zh": "隐藏列头",
+        "en": "Hide Columns"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7uLsxYg0N/b85dc985-6a07-40fd-a73e-4f0f17e63b72.png"
     }
   ]
 }
