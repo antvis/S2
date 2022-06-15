@@ -91,8 +91,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     }
 
     const borderGroup = this.addGroup();
-    each(data, (item: any) => {
-      const { y, height: cellHeight, isLeaf } = item;
+    each(data, (cellData) => {
+      const { y, height: cellHeight, isLeaf } = cellData;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
         cellHeight,
@@ -104,13 +104,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         const group = this.addGroup();
 
         // 添加文本
-        this.addText(group, item);
+        this.addText(group, cellData);
 
         this.add(group);
 
         // 添加边框
         if (!isLeaf) {
-          this.addBorder(borderGroup, item);
+          this.addBorder(borderGroup, cellData);
         }
       }
     });
@@ -169,7 +169,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     return this.headerConfig.spreadsheet.theme.rowCell;
   }
 
-  private addText(group: IGroup, cellData: ViewMeta) {
+  private addText(group: IGroup, cellData: Node) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
     const textStyle = {
       ...this.getStyle().seriesText,

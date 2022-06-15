@@ -1,5 +1,5 @@
 import type { IElement } from '@antv/g-canvas';
-import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
+import { concat, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
@@ -17,7 +17,7 @@ import type {
   S2CellType,
   SelectHeaderCellInfo,
 } from '../common/interface';
-import { ColHeader, RowHeader } from '../facet/header';
+import { ColHeader, RowHeader, SeriesNumberHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -191,41 +191,21 @@ export class RootInteraction {
   }
 
   public getAllRowHeaderCells(): RowCell[] {
-    const children = this.spreadsheet.foregroundGroup?.getChildren();
-    const rowHeader = filter(
-      children,
-      (group) => group instanceof RowHeader,
-    )?.[0];
-    let currentNode = rowHeader?.cfg?.children;
-    if (isEmpty(currentNode)) {
-      return [];
-    }
-    while (!currentNode?.[0]?.cellType) {
-      currentNode = currentNode?.[0]?.cfg?.children;
-    }
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const rowHeader = children.find((group) => group instanceof RowHeader);
+    const headerChildren = rowHeader?.cfg?.children || [];
 
-    const rowCells = currentNode || [];
-    return rowCells.filter(
+    return getAllChildCells<RowCell>(headerChildren, RowCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     );
   }
 
   public getAllColHeaderCells(): ColCell[] {
-    const children = this.spreadsheet?.foregroundGroup?.getChildren();
-    const colHeader = filter(
-      children,
-      (group) => group instanceof ColHeader,
-    )[0];
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const colHeader = children.find((group) => group instanceof ColHeader);
+    const headerChildren = colHeader?.cfg?.children || [];
 
-    const headerChildren = colHeader?.cfg?.children;
-
-    if (isEmpty(headerChildren)) {
-      return [];
-    }
-
-    const colCells = getAllChildCells(headerChildren, ColCell) as ColCell[];
-
-    return colCells.filter(
+    return getAllChildCells<ColCell>(headerChildren, ColCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     );
   }

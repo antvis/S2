@@ -5,6 +5,14 @@
   },
   "demos": [
     {
+      "filename": "custom-size.ts",
+      "title": {
+        "zh": "自定义行列宽高",
+        "en": "Custom Size"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24sNoM1o7b/8a35f685-f989-4125-aada-046f90b93969.png"
+    },
+    {
       "filename": "custom-width.ts",
       "title": {
         "zh": "根据指标自定义列宽",

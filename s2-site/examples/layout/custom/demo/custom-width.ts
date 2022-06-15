@@ -41,6 +41,7 @@ fetch('../data/basic.json')
       style: {
         colCfg: {
           widthByFieldValue: {
+            price: 90,
             cost: 50,
           },
         },
