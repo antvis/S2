@@ -14,7 +14,6 @@ import {
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
   getLang,
-  setLang,
   type InteractionOptions,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
@@ -59,8 +58,6 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
-
-// setLang('en_US');
 
 const { TabPane } = Tabs;
 

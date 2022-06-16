@@ -221,6 +221,7 @@ export class EventController {
         event.target,
       );
     }
+
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&
