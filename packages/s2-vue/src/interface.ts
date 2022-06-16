@@ -1,6 +1,7 @@
 import type {
   BaseSheetComponentProps,
   BaseDrillDownComponentProps,
+  PartDrillDown,
 } from '@antv/s2-shared';
 import type { ComponentObjectPropsOptions, PropType } from 'vue';
 import type { UnionToIntersection } from '@vue/shared';
@@ -78,7 +79,9 @@ type GetInitEmits<T> = {
 
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
-export type BaseSheetInitProps = GetInitProps<BaseSheetComponentProps>;
+export type BaseSheetInitProps = GetInitProps<
+  BaseSheetComponentProps<PartDrillDown>
+>;
 export type BaseSheetInitEmits = GetInitEmits<BaseSheetComponentProps>;
 export type BaseDrillDownProps = GetInitProps<BaseDrillDownComponentProps>;
 export type BaseDrillDownEmitKeys = GetEmitKeys<BaseDrillDownComponentProps>;

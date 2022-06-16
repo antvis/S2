@@ -1,4 +1,4 @@
-import type { S2DataConfig, S2Options, ThemeCfg,i18n } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg, i18n } from '@antv/s2';
 import type {
   Adaptive,
   BaseSheetComponentProps,
@@ -57,6 +57,7 @@ export const initDrillDownProps = () => ({
   extra: Node,
   dataSet: {
     type: Array as PropType<BaseDataSet[]>,
+    default: [],
     required: true,
   },
   drillFields: Array as PropType<string[]>,
@@ -68,7 +69,7 @@ export const initDrillDownProps = () => ({
 export const initDrillDownEmits = (): BaseDrillDownEmits => {
   const keys: BaseDrillDownEmitKeys[] = ['getDrillFields', 'setDrillFields'];
   return keys as unknown as BaseDrillDownEmits;
-}
+};
 
 export type BaseSheetProps = ExtractPropTypes<
   ReturnType<typeof initBaseSheetProps>
