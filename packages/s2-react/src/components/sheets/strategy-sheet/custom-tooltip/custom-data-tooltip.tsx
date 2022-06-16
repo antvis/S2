@@ -1,20 +1,19 @@
-import { getEmptyPlaceholder, isUpDataValue } from '@antv/s2';
+import {
+  getEmptyPlaceholder,
+  isUpDataValue,
+  type MultiData,
+  type ViewMeta,
+} from '@antv/s2';
 import cls from 'classnames';
 import { find, first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
+import { useRowName } from '../hooks/useRowName';
 import styles from './index.module.less';
 import type { CustomTooltipProps } from './interface';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
-  const meta = cell.getMeta();
-
-  const currentRow = React.useMemo(
-    () =>
-      find(meta.spreadsheet.getRowNodes(), {
-        rowIndex: meta.rowIndex,
-      }),
-    [meta],
-  );
+  const meta = cell.getMeta() as ViewMeta;
+  const metaFieldValue = meta?.fieldValue as MultiData;
 
   const currentLeafCol = React.useMemo(
     () =>
@@ -33,18 +32,16 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
     }
   }, [currentLeafCol.value]);
 
-  const rowName = meta.spreadsheet.dataSet.getFieldName(
-    currentRow?.valueFiled || currentRow?.value,
-  );
+  const rowName = useRowName(meta);
 
-  const [value, ...derivedValues] = first(meta.fieldValue?.values) || [
-    meta.fieldValue,
+  const [value, ...derivedValues] = first(metaFieldValue?.values) || [
+    metaFieldValue,
   ];
 
   const { placeholder, style } = meta.spreadsheet.options;
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
   const valuesCfg = style.cellCfg?.valuesCfg;
-  const originalValue = get(meta.fieldValue, valuesCfg?.originalValueField);
+  const originalValue = get(metaFieldValue, valuesCfg?.originalValueField);
 
   return (
     <div className={cls(styles.strategySheetTooltip, styles.data)}>
@@ -59,11 +56,11 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
       </div>
       {!isEmpty(derivedValues) && (
         <>
-          <div className={styles.divider}></div>
+          <div className={styles.divider} />
           <ul className={styles.derivedValues}>
             {derivedValues.map((derivedValue, i) => {
               const isNormal = isNil(derivedValue);
-              const isUp = isUpDataValue(derivedValue);
+              const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
 
               return (

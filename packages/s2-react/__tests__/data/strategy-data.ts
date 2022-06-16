@@ -1,6 +1,6 @@
 import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
 
-export const customTree: S2DataConfig = {
+export const StrategySheetDataConfig: S2DataConfig = {
   data: [
     {
       'measure-a': {
@@ -91,8 +91,8 @@ export const customTree: S2DataConfig = {
           target: '0.9',
         },
       },
-      date: '2021年',
-      sub_type: '净增完成度',
+      date: '2021年目标',
+      [EXTRA_COLUMN_FIELD]: '净增完成度',
     },
     {
       'measure-a': {

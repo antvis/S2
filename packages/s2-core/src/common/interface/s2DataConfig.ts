@@ -24,9 +24,9 @@ export interface BulletValue {
         ],
       }
  */
-export interface MultiData {
-  values: (string | number)[][] | BulletValue;
-  originalValues?: (string | number)[][] | BulletValue;
+export interface MultiData<T = (string | number)[][]> {
+  values: T;
+  originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
   label?: string;
   [key: string]: unknown;
@@ -34,9 +34,9 @@ export interface MultiData {
 
 export type SimpleDataItem = string | number;
 
-export type DataItem = SimpleDataItem | MultiData;
+export type DataItem<T = (string | number)[][]> = SimpleDataItem | MultiData<T>;
 
-export type Data = Record<string, DataItem>;
+export type Data<T = (string | number)[][]> = Record<string, DataItem<T>>;
 
 export interface CustomTreeItem {
   key: string;

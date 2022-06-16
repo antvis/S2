@@ -6,14 +6,16 @@ import {
   type S2Options,
   SpreadSheet,
   type ViewMeta,
+  type MultiData,
 } from '@antv/s2';
-import { isEmpty, size } from 'lodash';
+import { isArray, isEmpty, isObject, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
+import { BulletTooltip } from './custom-tooltip/custom-bullet-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
@@ -23,6 +25,8 @@ import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
  * 1. 维度为空时默认为自定义目录树结构
  * 2. 单指标时数值置于列头，且隐藏指标列头
  * 3. 多指标时数值置于行头，不隐藏指标列头
+ * 4. 支持 KPI 进度 (子弹图)
+ * 5. 行头, 数值单元格不支持多选
  */
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -98,21 +102,34 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             ),
           },
           data: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <DataTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell, defaultTooltipShowOptions) => {
+              const meta = cell.getMeta() as ViewMeta;
+              const fieldValue = meta.fieldValue as MultiData;
+              if (isArray(fieldValue?.values)) {
+                return (
+                  <DataTooltip
+                    cell={cell}
+                    defaultTooltipShowOptions={defaultTooltipShowOptions}
+                  />
+                );
+              }
+              return (
+                <BulletTooltip
+                  cell={cell}
+                  defaultTooltipShowOptions={defaultTooltipShowOptions}
+                />
+              );
+            },
           },
         },
       };
     }, [dataCfg, options.hierarchyType]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
-      const defaultFields = {
+      const defaultFields: Partial<S2DataConfig> = {
         fields: {
-          valueInCols: size(dataCfg?.fields?.values) <= 1, // 多指标数值挂行头，单指标挂列头
+          // 多指标数值挂行头，单指标挂列头
+          valueInCols: size(dataCfg?.fields?.values) <= 1,
         },
       };
       return customMerge(dataCfg, defaultFields);

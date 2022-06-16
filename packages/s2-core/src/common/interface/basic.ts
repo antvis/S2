@@ -9,7 +9,6 @@ import type {
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
-  S2Options,
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
 import type { BaseDataSet, DataType } from '../../data-set';
@@ -19,7 +18,7 @@ import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType } from './interaction';
-import type { DataItem, S2DataConfig } from './s2DataConfig';
+import type { DataItem } from './s2DataConfig';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化

@@ -21,6 +21,11 @@
     }
   }
 
+  .divider {
+    border-top: 1px solid #e9e9e9;
+    margin: 10px -12px;
+  }
+
   &.data {
     .header {
       display: flex;
@@ -34,11 +39,6 @@
 
     .originalValue {
       text-align: right;
-    }
-
-    .divider {
-      border-top: 1px solid #e9e9e9;
-      margin: 10px -12px;
     }
 
     .derivedValues {
@@ -84,6 +84,72 @@
           }
         }
       }
+    }
+  }
+
+  &.bullet {
+    .title {
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 22px;
+      margin-bottom: 10px;
+    }
+
+    .progress {
+      .item {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 400;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.45);
+        padding-left: 15px;
+
+        .value {
+          color: rgba(0, 0, 0, 0.85);
+        }
+
+        & + .item {
+          margin-top: 5px;
+        }
+
+        &.current,
+        &.target {
+          .legend {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        &.current {
+          .legend {
+            width: 10px;
+            height: 10px;
+            background-color: var(--current-color, transparent);
+          }
+        }
+
+        &.target {
+          .legend {
+            width: 1px;
+            height: 12px;
+            border-left: 1px solid rgba(0, 0, 0, 0.25);
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+
+    .desc {
+      color: rgba(0, 0, 0, 0.45);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-weight: 400;
     }
   }
 }
