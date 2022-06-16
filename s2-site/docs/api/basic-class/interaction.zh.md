@@ -40,16 +40,17 @@ s2.interaction.xx()
 | getRowColActiveCells | 获取行头和列头激活的单元格 | `() => RowCell[] | ColCell[]` |
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
-| selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
+| selectHeaderCell | 选中指定行列头单元格 | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
 | getCellLeafNodes | 获取当前单元格的叶子节点 | `(cell: S2CellType[]) => Node[]` |
 | hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
-| unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
+| unmergeCells | 取消合并单元格 | `(removedCells: MergedCell[]) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |
 | updateCells | 更新指定单元格 | `(cells: S2CellType[]) => void` |
-| addIntercepts | 新增交互拦截 | `(interceptTypes: InterceptType[]) => void` |
-| hasIntercepts | 是否有指定拦截的交互 | `(interceptTypes: InterceptType[]) => boolean` |
-| removeIntercepts | 移除指定交互拦截 | `(interceptTypes: InterceptType[]) => void` |
+| addIntercepts | 新增交互拦截 | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
+| hasIntercepts | 是否有指定拦截的交互 | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
+| removeIntercepts | 移除指定交互拦截 | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
+| highlightNodes | 高亮节点对应的单元格 | (nodes: [Node](/zh/docs/api/basic-class/node)[]) => void |
 
 `markdown:docs/common/interaction.zh.md`
 

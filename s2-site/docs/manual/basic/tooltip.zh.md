@@ -114,6 +114,7 @@ const s2Options = {
 
 ```ts
 const content = document.createElement('div')
+content.innerHTML = '我是自定义内容'
 
 const s2Options = {
   tooltip: {

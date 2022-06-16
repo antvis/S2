@@ -59,8 +59,6 @@ import {
 import './index.less';
 import { ResizeConfig } from './resize';
 
-// setLang('en_US');
-
 const { TabPane } = Tabs;
 
 const fieldMap = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { size, reduce } from 'lodash';
+import { size, sumBy } from 'lodash';
 import { i18n, type SummaryProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import cls from 'classnames';
 
@@ -7,11 +7,7 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
   const { summaries = [] } = props;
 
   const renderSelected = () => {
-    const count = reduce(
-      summaries,
-      (pre, next) => pre + size(next?.selectedData),
-      0,
-    );
+    const count = sumBy(summaries, (item) => size(item?.selectedData));
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
         <span className={`${TOOLTIP_PREFIX_CLS}-selected`}>

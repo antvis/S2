@@ -23,6 +23,8 @@ import {
   type S2Options,
   SelectedCellMove,
   SpreadSheet,
+  Node,
+  type S2CellType,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -390,6 +392,33 @@ describe('RootInteraction Tests', () => {
       ]);
       rootInteraction.resetState();
       expect(rootInteraction.getActiveCells()).toEqual([]);
+    });
+
+    test('should set selected status after highlight nodes', () => {
+      const belongsCell = createMockCellInfo('test-A').mockCell;
+
+      const mockNodeA = new Node({
+        id: 'test',
+        key: 'test',
+        value: '1',
+        belongsCell,
+      });
+
+      const mockNodeB = new Node({
+        id: 'test',
+        key: 'test',
+        value: '1',
+        belongsCell,
+      });
+
+      rootInteraction.highlightNodes([mockNodeA, mockNodeB]);
+
+      [mockNodeA, mockNodeB].forEach((node) => {
+        expect(node.belongsCell.updateByState).toHaveBeenCalledWith(
+          InteractionStateName.SELECTED,
+          belongsCell,
+        );
+      });
     });
 
     test.each`
