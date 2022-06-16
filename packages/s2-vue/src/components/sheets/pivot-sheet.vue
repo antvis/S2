@@ -25,15 +25,15 @@ import BaseSheet from './base-sheet.vue';
 export default defineComponent({
   name: 'PivotSheet',
   // todo-zc:
-  props: initBaseSheetProps() as unknown as BaseSheetInitProps,
-  emits: initBaseSheetEmits() as unknown as BaseSheetInitEmits,
+  props: initBaseSheetProps(),
+  emits: initBaseSheetEmits(),
   setup(props, ctx) {
     // fallthroughAttributes vs  inject
-    // console.log(props, 'props pivot sheet !!');
     const s2Ref = useExpose(ctx.expose);
-    const instance = s2Ref?.value?.instance;
+    // Getting a value from the `props` in root scope of `setup()` will cause the value to lose reactivity
     const { options: pivotOptions, ...restProps } = toRefs(props);
 
+    // console.log(props, 'props pivot sheet !!');
     const { dataCfg, partDrillDown } = toRefs(props);
 
     const drillVisible = ref<boolean>(false);
@@ -43,18 +43,20 @@ export default defineComponent({
 
     // 执行下钻操作
     const setDrillFields = (fields: string[]) => {
+      // console.log(fields, 'fileds')
+      const instance = s2Ref?.value?.instance;
       drillFields.value = fields;
       instance?.hideTooltip();
-      // console.log(fields, 'fileds')
+      drillVisible.value = false;
       if (isEmpty(drillFields)) {
         instance?.clearDrillDownData(instance?.store.get('drillDownNode')?.id);
       } else {
         // 执行下钻
         handleDrillDown({
-          rows: dataCfg.fields.rows ?? [],
+          rows: dataCfg.value?.fields.rows ?? [],
           drillFields: drillFields.value,
-          fetchData: partDrillDown?.fetchData,
-          drillItemsNum: partDrillDown?.drillItemsNum,
+          fetchData: partDrillDown.value?.fetchData,
+          drillItemsNum: partDrillDown.value?.drillItemsNum,
           spreadsheet: instance as SpreadSheet,
         });
       }
@@ -64,17 +66,14 @@ export default defineComponent({
      * 点击下钻 出现 todo-zc: 完成点击后，下钻组件的出现
      * dataset + fetchData
      */
-    //
-
     const onDrillDownIconClick = (params: ActionIconCallbackParams) => {
-      // console.log(params, 'params');
-      // set drillVisible is true
+      drillVisible.value = true;
     };
     // 展示下钻icon
     const options = computed(() =>
       buildDrillDownOptions(
         pivotOptions as S2Options,
-        partDrillDown as PartDrillDown,
+        partDrillDown.value as PartDrillDown,
         (params) => onDrillDownIconClick(params),
       ),
     );
@@ -84,35 +83,13 @@ export default defineComponent({
     const disabledFields = ['name'];
     const clearButtonText = '清除';
 
-    const dataSet = [
-      {
-        name: '性别',
-        value: 'sex',
-        type: 'text',
-      },
-      {
-        name: '姓名',
-        value: 'name',
-        type: 'text',
-      },
-      {
-        name: '城市',
-        value: 'city',
-        type: 'location',
-      },
-      {
-        name: '日期',
-        value: 'date',
-        type: 'date',
-      },
-    ];
     return {
       s2Ref,
-      dataSet,
+      dataSet: partDrillDown.value?.drillConfig.dataSet ?? [],
       disabledFields,
       clearButtonText,
       setDrillFields,
-      drillVisible: drillVisible.value,
+      drillVisible,
       restProps,
       options,
     };
