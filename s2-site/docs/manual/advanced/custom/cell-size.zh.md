@@ -133,4 +133,4 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/VKHZ7SqIL/7371cfc3-b8e9-4f0b-a9c5-a9689aa0053a.png" alt="preview" width="600"/>
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/EeYXxuDHO/17f257f8-c0ad-438b-8b0e-6db064892af9.png" alt="preview" width="600"/>
+<playground path='layout/custom/demo/hide-columns.ts' rid='hide-columns' height='400'></playground>
