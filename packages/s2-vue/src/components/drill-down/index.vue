@@ -4,6 +4,7 @@ import {
   onMounted,
   reactive,
   ref,
+  toRefs,
   watch,
   watchEffect,
   watchPostEffect,
@@ -45,6 +46,7 @@ export default defineComponent({
       setDrillFields,
       className,
     } = props as BaseDrillDownComponentProps;
+    const { drillVisible } = toRefs(props);
     const PRE_CLASS = 's2-drill-down';
     const getOptions = () => {
       return dataSet.map((val: BaseDataSet) => {
@@ -107,52 +109,54 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :class="[PRE_CLASS, className]">
-    <header :class="PRE_CLASS + '-header'">
-      <div>{{ titleText }}</div>
-      <Button
-        type="link"
-        :disabled="_.isEmpty(drillFields)"
-        @click="handleClear"
+  <teleport v-if="drillVisible" to=".antv-s2-tooltip-container">
+    <div :class="[PRE_CLASS, className]">
+      <header :class="PRE_CLASS + '-header'">
+        <div>{{ titleText }}</div>
+        <Button
+          type="link"
+          :disabled="_.isEmpty(drillFields)"
+          @click="handleClear"
+        >
+          {{ clearButtonText }}
+        </Button>
+      </header>
+      <Input
+        :class="`${PRE_CLASS}-search`"
+        :placeholder="searchText"
+        @change="handleSearch"
+        @pressEnter="handleSearch"
+        :allowClear="true"
+      />
+      <Empty
+        v-if="_.isEmpty(options)"
+        :imageStyle="{ height: '64px' }"
+        :class="`${PRE_CLASS}-empty`"
+      />
+      <!--    <slot></slot>-->
+      <Menu
+        class="`${PRE_CLASS}-menu`"
+        v-model:selectedKeys="selectedKeys"
+        @select="handleSelect"
       >
-        {{ clearButtonText }}
-      </Button>
-    </header>
-    <Input
-      :class="`${PRE_CLASS}-search`"
-      :placeholder="searchText"
-      @change="handleSearch"
-      @pressEnter="handleSearch"
-      :allowClear="true"
-    />
-    <Empty
-      v-if="_.isEmpty(options)"
-      :imageStyle="{ height: '64px' }"
-      :class="`${PRE_CLASS}-empty`"
-    />
-    <!--    <slot></slot>-->
-    <Menu
-      class="`${PRE_CLASS}-menu`"
-      v-model:selectedKeys="selectedKeys"
-      @select="handleSelect"
-    >
-      <MenuItem
-        v-for="option in options"
-        :key="option.value"
-        :disabled="option.disabled"
-        :class="`${PRE_CLASS}-menu-item`"
-      >
-        <template #icon>
-          <text-icon v-if="option.type === 'text'" />
-          <calendar-icon v-if="option.type === 'date'" />
-          <location-icon v-if="option.type === 'location'" />
-        </template>
-        {{ option?.name }}
-      </MenuItem>
-    </Menu>
-  </div>
+        <MenuItem
+          v-for="option in options"
+          :key="option.value"
+          :disabled="option.disabled"
+          :class="`${PRE_CLASS}-menu-item`"
+        >
+          <template #icon>
+            <text-icon v-if="option.type === 'text'" />
+            <calendar-icon v-if="option.type === 'date'" />
+            <location-icon v-if="option.type === 'location'" />
+          </template>
+          {{ option?.name }}
+        </MenuItem>
+      </Menu>
+    </div>
+  </teleport>
 </template>
 
 <style lang="less" scoped>
-//@import '@antv/s2-shared/src/styles/drilldown.less';
+@import '@antv/s2-shared/src/styles/drilldown.less';
 </style>
