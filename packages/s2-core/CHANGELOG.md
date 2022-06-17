@@ -1,3 +1,24 @@
+# [@antv/s2-v1.20.0](https://github.com/antvis/S2/compare/@antv/s2-v1.19.0...@antv/s2-v1.20.0) (2022-06-17)
+
+
+### Bug Fixes
+
+* **copy:** 修复字段名带有-导致复制失败的问题 ([#1433](https://github.com/antvis/S2/issues/1433)) ([7fb7fac](https://github.com/antvis/S2/commit/7fb7fac7fb6ab09762c26efa2dd0226dc35c15bb))
+* **sort:** 透视表/明细表 排序菜单文案显示错误 ([#1424](https://github.com/antvis/S2/issues/1424)) ([d837b41](https://github.com/antvis/S2/commit/d837b415d55189d3c5f7e7b2734d41076a054ce3))
+* **tooltip:** 修复行/列层级超过2级时选中数据统计错误 ([#1443](https://github.com/antvis/S2/issues/1443)) ([09dd677](https://github.com/antvis/S2/commit/09dd677458c904f7b86c8457a489bca26a366269))
+* **tooltip:** 减少 tooltip 框重绘 ([#1418](https://github.com/antvis/S2/issues/1418)) ([59c6a87](https://github.com/antvis/S2/commit/59c6a87f256866962ea3b523fd882a8d4e1eb6e9))
+* 修复序号对齐问题， close [#1412](https://github.com/antvis/S2/issues/1412) ([#1431](https://github.com/antvis/S2/issues/1431)) ([cbe4980](https://github.com/antvis/S2/commit/cbe498059dacd53edb58e387f5357f9740ffb194))
+* 出现 tooltip 后点击画布外面的空白区域可能抛出错误 ([#1438](https://github.com/antvis/S2/issues/1438)) ([483367e](https://github.com/antvis/S2/commit/483367e0363373965290831d2cb1e479854641f7))
+* 树状结构下，子节点全部折叠，导出内容错误 ([#1435](https://github.com/antvis/S2/issues/1435)) ([fa36599](https://github.com/antvis/S2/commit/fa36599a988a6e7b1ac75b65646b2e767587081a))
+
+
+### Features
+
+* canvas 未聚焦时不触发选中格子的键盘 move 行为 ([#1415](https://github.com/antvis/S2/issues/1415)) ([e9255be](https://github.com/antvis/S2/commit/e9255bead71d44b344851ccdcc7def6fb51e79c2))
+* **interaction:** 选中单元格后对应行列头高亮 ([#1414](https://github.com/antvis/S2/issues/1414)) ([202b378](https://github.com/antvis/S2/commit/202b378fed8e880cea0a75b12db905c3ae385b19))
+* **scroll:** 增加边界滚动配置, 解决横屏滚动会触发 mac 回退的问题 ([#1409](https://github.com/antvis/S2/issues/1409)) ([ada5082](https://github.com/antvis/S2/commit/ada5082d299357b1b38af7629a784e3d071e6b77))
+* 无序号列时绘制左侧列边框 ([#1417](https://github.com/antvis/S2/issues/1417)) ([041b8aa](https://github.com/antvis/S2/commit/041b8aa9714b096e0f24e62dd57079401519ec07))
+
 # [@antv/s2-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0...@antv/s2-v1.19.0) (2022-06-02)
 
 
