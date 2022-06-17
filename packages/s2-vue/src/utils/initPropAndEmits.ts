@@ -64,6 +64,10 @@ export const initDrillDownProps = () => ({
   disabledFields: Array as PropType<string[]>,
   getDrillFields: Function as PropType<(drillFields: string[]) => void>,
   setDrillFields: Function as PropType<(drillFields: string[]) => void>,
+  drillVisible: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const initDrillDownEmits = (): BaseDrillDownEmits => {

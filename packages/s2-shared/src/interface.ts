@@ -219,6 +219,7 @@ export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
   disabledFields?: string[];
   getDrillFields?: (drillFields: string[]) => void;
   setDrillFields?: (drillFields: string[]) => void;
+  drillVisible?: boolean;
 }
 
 export interface PartDrillDownInfo {

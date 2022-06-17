@@ -24,13 +24,14 @@ export interface DrillDownParams {
   fetchData?: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
-/** 下钻 icon 点击回调 */
-export type ActionIconCallback = (params: {
+export type ActionIconCallbackParams = {
   sheetInstance: SpreadSheet;
   cacheDrillFields?: string[];
   disabledFields?: string[];
   event?: GEvent;
-}) => void;
+};
+/** 下钻 icon 点击回调 */
+export type ActionIconCallback = (params: ActionIconCallbackParams) => void;
 
 export interface ActionIconParams {
   // 点击节点信息
