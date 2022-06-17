@@ -935,6 +935,7 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
           <SheetComponent
+            adaptive
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}

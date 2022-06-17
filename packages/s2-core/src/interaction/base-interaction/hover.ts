@@ -9,6 +9,7 @@ import {
 } from '../../common/constant/interaction';
 import type {
   S2CellType,
+  TooltipData,
   TooltipOptions,
   ViewMeta,
 } from '../../common/interface';
@@ -86,7 +87,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
-      const data = this.getCellInfo(meta, showSingleTips);
+      const data = this.getCellData(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     };
     let hoverFocusDuration = HOVER_FOCUS_DURATION;
@@ -138,15 +139,15 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         showSingleTips,
         enableFormat: this.spreadsheet.isPivotMode(),
       };
-      const data = this.getCellInfo(meta, showSingleTips);
+      const data = this.getCellData(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     }
   }
 
-  private getCellInfo(
+  private getCellData(
     meta: ViewMeta = {} as ViewMeta,
     showSingleTips?: boolean,
-  ) {
+  ): TooltipData[] {
     const {
       data,
       query,
@@ -169,7 +170,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         ]
       : [currentCellMeta || { ...rowQuery, ...colQuery }];
 
-    return cellInfos;
+    return cellInfos as TooltipData[];
   }
 
   public bindDataCellHover() {

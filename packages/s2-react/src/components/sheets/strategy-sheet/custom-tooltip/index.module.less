@@ -5,6 +5,13 @@
   overflow: hidden;
   padding: 12px;
 
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   &.row {
     .value {
       font-weight: 700;
@@ -88,6 +95,51 @@
   }
 
   &.bullet {
+    // 让描述一行显示
+    max-width: max-content;
+
+    .content {
+      .item {
+        color: rgba(0, 0, 0, 0.45);
+
+        .value {
+          color: rgba(0, 0, 0, 0.85);
+        }
+
+        &.current {
+          .legend {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 8px;
+          }
+        }
+
+        &.target {
+          .legend {
+            display: inline-block;
+            width: 1px;
+            height: 12px;
+            border-left: 1px solid rgba(0, 0, 0, 0.25);
+            margin: 0 12px 0 4px;
+          }
+        }
+      }
+    }
+  }
+
+  &.kpiMeasure {
+    max-width: 200px;
+
+    .content {
+      .item {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
+
+  &.kpiMeasure,
+  &.bullet {
     .title {
       font-weight: 500;
       font-size: 14px;
@@ -96,7 +148,7 @@
       margin-bottom: 10px;
     }
 
-    .progress {
+    .content {
       .item {
         position: relative;
         display: flex;
@@ -104,42 +156,9 @@
         align-items: center;
         font-weight: 400;
         font-size: 12px;
-        color: rgba(0, 0, 0, 0.45);
-        padding-left: 15px;
-
-        .value {
-          color: rgba(0, 0, 0, 0.85);
-        }
 
         & + .item {
-          margin-top: 5px;
-        }
-
-        &.current,
-        &.target {
-          .legend {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-          }
-        }
-
-        &.current {
-          .legend {
-            width: 10px;
-            height: 10px;
-            background-color: var(--current-color, transparent);
-          }
-        }
-
-        &.target {
-          .legend {
-            width: 1px;
-            height: 12px;
-            border-left: 1px solid rgba(0, 0, 0, 0.25);
-            margin-left: 4px;
-          }
+          margin-top: 2px;
         }
       }
     }
@@ -150,6 +169,11 @@
       padding: 0;
       list-style: none;
       font-weight: 400;
+      white-space: pre-wrap;
+
+      > li + li {
+        margin-top: 6px;
+      }
     }
   }
 }

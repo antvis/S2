@@ -169,13 +169,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     return this.headerConfig.spreadsheet.theme.rowCell;
   }
 
-  private addText(group: IGroup, cellData: ViewMeta) {
+  private addText(group: IGroup, meta: ViewMeta) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
     const textStyle = {
       ...this.getStyle().seriesText,
       textBaseline: 'top' as const,
     };
-    const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
+    const { label, x, y, width: cellWidth, height: cellHeight } = meta;
     const padding = this.getTextPadding(label, cellWidth);
     const textY = getAdjustPosition(
       y + padding.top,

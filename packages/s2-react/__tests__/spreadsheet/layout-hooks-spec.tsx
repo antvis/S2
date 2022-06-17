@@ -131,7 +131,7 @@ const CustomLayoutDataPosition = (
   spreadsheet: SpreadSheet,
   getCellData: GetCellMeta,
 ): GetCellMeta => {
-  const getCellMeta = (rowIndex: number, colIndex: number): ViewMeta => {
+  return (rowIndex: number, colIndex: number): ViewMeta => {
     const viewMeta = getCellData(rowIndex, colIndex);
     // 更改0，0 坐标的值为 999
     if (rowIndex === 0 && colIndex === 0) {
@@ -151,7 +151,6 @@ const CustomLayoutDataPosition = (
     }
     return viewMeta;
   };
-  return getCellMeta;
 };
 
 const getOptions = () => {

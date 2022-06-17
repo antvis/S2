@@ -2,37 +2,30 @@ import {
   getEmptyPlaceholder,
   isUpDataValue,
   type MultiData,
+  type SimpleDataItem,
   type ViewMeta,
 } from '@antv/s2';
 import cls from 'classnames';
-import { find, first, get, isEmpty, isNil } from 'lodash';
+import { first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
-import { useRowName } from '../hooks/useRowName';
+import { getLeafColNode, getRowName } from '../utils';
 import styles from './index.module.less';
 import type { CustomTooltipProps } from './interface';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta() as ViewMeta;
-  const metaFieldValue = meta?.fieldValue as MultiData;
+  const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const currentLeafCol = React.useMemo(
-    () =>
-      find(meta.spreadsheet.getColumnNodes(), {
-        colIndex: meta.colIndex,
-        isLeaf: true,
-      }),
-    [meta],
-  );
+  const rowName = getRowName(meta);
+  const leftColNode = getLeafColNode(meta);
 
   const [, ...derivedLabels] = React.useMemo(() => {
     try {
-      return JSON.parse(currentLeafCol.value);
+      return JSON.parse(leftColNode.value);
     } catch {
       return [];
     }
-  }, [currentLeafCol.value]);
-
-  const rowName = useRowName(meta);
+  }, [leftColNode.value]);
 
   const [value, ...derivedValues] = first(metaFieldValue?.values) || [
     metaFieldValue,

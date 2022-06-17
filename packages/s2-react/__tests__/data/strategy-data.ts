@@ -1,36 +1,15 @@
-import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, type Data, type S2DataConfig } from '@antv/s2';
+import {
+  KpiType,
+  KPI_TYPES_CONFIG,
+} from '../../src/components/sheets/strategy-sheet/constants/config';
 
-export const StrategySheetDataConfig: S2DataConfig = {
-  data: [
-    {
-      'measure-a': {
-        originalValues: [[3877, 4324, 0.42]],
-        values: [[3877, 4324, '42%']],
-      },
-      'measure-b': {
-        originalValues: [[377, 324, -0.02]],
-        values: [[377, 324, '-0.02']],
-      },
-      'measure-c': {
-        originalValues: [[377, 0, null]],
-        values: [[377, 0, null]],
-      },
-      'measure-d': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-e': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-f': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      date: '2021',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
-    },
-    {
+const getKPIMockData = (kpiType: KpiType): Data => {
+  const config = KPI_TYPES_CONFIG[kpiType];
+  const date = `2021${config.name}`;
+
+  if (kpiType === KpiType.NetAddedProgress) {
+    return {
       'measure-a': {
         originalValues: {
           measure: 0.75,
@@ -91,9 +70,84 @@ export const StrategySheetDataConfig: S2DataConfig = {
           target: '0.9',
         },
       },
-      date: '2021年目标',
-      [EXTRA_COLUMN_FIELD]: '净增完成度',
+      date: '2021年净增完成度',
+      [EXTRA_COLUMN_FIELD]: KPI_TYPES_CONFIG[KpiType.NetAddedProgress].name,
+    };
+  }
+
+  return {
+    'measure-a': {
+      originalValues: [[110000]],
+      values: [['11万']],
+      kpiType,
     },
+    'measure-b': {
+      originalValues: [[220000]],
+      values: [['22万']],
+      kpiType,
+    },
+    'measure-c': {
+      originalValues: [[330000]],
+      values: [['33万']],
+      kpiType,
+    },
+    'measure-d': {
+      originalValues: [[440000]],
+      values: [['44万']],
+      kpiType,
+    },
+    'measure-e': {
+      originalValues: [[550000]],
+      values: [['55万']],
+      kpiType,
+    },
+    'measure-f': {
+      originalValues: [[660000]],
+      values: [['66万']],
+      kpiType,
+    },
+    date,
+    [EXTRA_COLUMN_FIELD]: config.name,
+  };
+};
+
+export const StrategySheetDataConfig: S2DataConfig = {
+  data: [
+    // 普通数值+同环比数据
+    {
+      'measure-a': {
+        originalValues: [[3877, 4324, 0.42]],
+        values: [[3877, 4324, '42%']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324, -0.02]],
+        values: [[377, 324, '-0.02']],
+      },
+      'measure-c': {
+        originalValues: [[377, 0, null]],
+        values: [[377, 0, null]],
+      },
+      'measure-d': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      'measure-e': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      'measure-f': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      date: '2021',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+    },
+    // 净增目标完成度子弹图数据
+    getKPIMockData(KpiType.NetAddedProgress),
+    getKPIMockData(KpiType.TargetValue),
+    getKPIMockData(KpiType.ReferenceValue),
+    getKPIMockData(KpiType.NetAddedValue),
+    getKPIMockData(KpiType.TargetNetAddedValue),
     {
       'measure-a': {
         originalValues: [[377, '', 0.02]],
@@ -111,7 +165,6 @@ export const StrategySheetDataConfig: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-
       'measure-f': {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
@@ -127,7 +180,6 @@ export const StrategySheetDataConfig: S2DataConfig = {
     },
   ],
   fields: {
-    rows: [],
     columns: ['date', EXTRA_COLUMN_FIELD],
     values: [
       'measure-a',
@@ -164,6 +216,12 @@ export const StrategySheetDataConfig: S2DataConfig = {
                 key: 'measure-c',
                 title: '指标C',
                 description: '指标C描述',
+                children: [],
+              },
+              {
+                key: 'measure-d',
+                title: '指标D',
+                description: '指标D描述',
                 children: [],
               },
             ],

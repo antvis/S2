@@ -15,10 +15,11 @@ import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
-import { BulletTooltip } from './custom-tooltip/custom-bullet-tooltip';
+import { KpiBulletTooltip } from './custom-tooltip/kpi-columns/custom-bullet-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
+import { KpiMeasureTooltip } from './custom-tooltip/kpi-columns/custom-measure-tooltip';
 
 /* *
  * 趋势分析表特性：
@@ -86,39 +87,30 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <RowTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell) => <RowTooltip cell={cell} />,
           },
           col: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <ColTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell) => <ColTooltip cell={cell} />,
           },
           data: {
-            content: (cell, defaultTooltipShowOptions) => {
+            content: (cell) => {
               const meta = cell.getMeta() as ViewMeta;
               const fieldValue = meta.fieldValue as MultiData;
+
+              // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return (
-                  <DataTooltip
-                    cell={cell}
-                    defaultTooltipShowOptions={defaultTooltipShowOptions}
-                  />
-                );
+                if (fieldValue?.kpiType) {
+                  return <KpiMeasureTooltip cell={cell} />;
+                }
+                return <DataTooltip cell={cell} />;
               }
-              return (
-                <BulletTooltip
-                  cell={cell}
-                  defaultTooltipShowOptions={defaultTooltipShowOptions}
-                />
-              );
+
+              // 如果是对象, 说明是子弹图数据, 显示子弹图定制 Tooltip
+              if (isObject(fieldValue?.values)) {
+                return <KpiBulletTooltip cell={cell} />;
+              }
+
+              return <></>;
             },
           },
         },
