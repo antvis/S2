@@ -1,65 +1,63 @@
 /* eslint-disable no-console */
 import {
-  Radio,
-  Space,
-  Switch,
-  RadioChangeEvent,
-  Tooltip,
-  Select,
-  Input,
-  Popover,
-  Slider,
-  Button,
-  Collapse,
-  Tag,
-  Tabs,
-  DatePicker,
-} from 'antd';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ChromePicker } from 'react-color';
-import {
-  HeaderActionIconProps,
-  S2Options,
-  Node,
-  S2DataConfig,
-  TargetCellInfo,
-  SpreadSheet,
-  S2Event,
-  TooltipAutoAdjustBoundary,
   customMerge,
-  ThemeCfg,
-  DataType,
+  type DataType,
   generatePalette,
   getPalette,
+  type HeaderActionIconProps,
+  Node,
+  type S2DataConfig,
+  S2Event,
+  type S2Options,
+  SpreadSheet,
+  type TargetCellInfo,
+  type ThemeCfg,
+  type TooltipAutoAdjustBoundary,
   getLang,
-  setLang,
+  type InteractionOptions,
 } from '@antv/s2';
+import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
-import { debounce, forEach, random } from 'lodash';
-import { Adaptive, SheetType } from '@antv/s2-shared';
 import { useUpdateEffect } from 'ahooks';
+import {
+  Button,
+  Collapse,
+  DatePicker,
+  Input,
+  Popover,
+  Radio,
+  type RadioChangeEvent,
+  Select,
+  Slider,
+  Space,
+  Switch,
+  Tabs,
+  Tag,
+  Tooltip,
+} from 'antd';
+import 'antd/dist/antd.min.css';
+import { debounce, forEach, random } from 'lodash';
+import React from 'react';
+import { ChromePicker } from 'react-color';
+import ReactDOM from 'react-dom';
+import reactPkg from '../package.json';
+import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import { customTree } from '../__tests__/data/strategy-data';
-import reactPkg from '../package.json';
 import {
+  defaultOptions,
+  mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
-  tableSheetDataCfg,
-  strategyTheme,
   strategyOptions as mockStrategyOptions,
-  mockGridAnalysisOptions,
-  defaultOptions,
+  strategyTheme,
+  tableSheetDataCfg,
 } from './config';
-import { ResizeConfig } from './resize';
-import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/index';
-
 import './index.less';
-import 'antd/dist/antd.min.css';
-
-// setLang('en_US');
+import { ResizeConfig } from './resize';
 
 const { TabPane } = Tabs;
 
@@ -168,7 +166,6 @@ function MainLayout() {
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
     setOptions(customMerge({}, options, newOptions));
   };
-
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
       sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
@@ -176,10 +173,20 @@ function MainLayout() {
     setDataCfg(customMerge({}, currentDataCfg, newDataCfg));
   };
 
-  const onAutoAdjustBoundary = (value: TooltipAutoAdjustBoundary) => {
+  const onAutoAdjustBoundaryChange = (value: TooltipAutoAdjustBoundary) => {
     updateOptions({
       tooltip: {
         autoAdjustBoundary: value || null,
+      },
+    });
+  };
+
+  const onOverscrollBehaviorChange = (
+    overscrollBehavior: InteractionOptions['overscrollBehavior'],
+  ) => {
+    updateOptions({
+      interaction: {
+        overscrollBehavior,
       },
     });
   };
@@ -227,7 +234,9 @@ function MainLayout() {
   const logHandler =
     (name: string) =>
     (...args: unknown[]) => {
-      console.log(name, ...args);
+      if (s2Ref.current?.options?.debug) {
+        console.log(name, ...args);
+      }
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -251,6 +260,7 @@ function MainLayout() {
   //  ================== Hooks ========================
 
   React.useEffect(() => {
+    console.log(s2Ref.current.facet.layoutResult);
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
     });
@@ -431,7 +441,7 @@ function MainLayout() {
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                   <Select
                     defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
-                    onChange={onAutoAdjustBoundary}
+                    onChange={onAutoAdjustBoundaryChange}
                     style={{ width: 230 }}
                     size="small"
                   >
@@ -497,6 +507,18 @@ function MainLayout() {
                 >
                   <Button size="small">滚动速率调整</Button>
                 </Popover>
+                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
+                  <Select
+                    defaultValue={mergedOptions.interaction.overscrollBehavior}
+                    onChange={onOverscrollBehaviorChange}
+                    style={{ width: 150 }}
+                    size="small"
+                  >
+                    <Select.Option value="auto">auto</Select.Option>
+                    <Select.Option value="contain">contain</Select.Option>
+                    <Select.Option value="none">none</Select.Option>
+                  </Select>
+                </Tooltip>
                 <Button
                   size="small"
                   onClick={() => {

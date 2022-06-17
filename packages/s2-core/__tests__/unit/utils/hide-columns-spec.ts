@@ -1,6 +1,6 @@
 import { getContainer } from 'tests/util/helpers';
-import { RootInteraction } from '@/interaction/root';
-import { Node } from '@/facet/layout/node';
+import type { RootInteraction } from '@/interaction/root';
+import type { Node } from '@/facet/layout/node';
 import {
   getHiddenColumnNodes,
   getHiddenColumnDisplaySiblingNode,

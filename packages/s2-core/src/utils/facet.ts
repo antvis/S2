@@ -1,5 +1,5 @@
 import { findIndex } from 'lodash';
-import { Node } from '@/facet/layout/node';
+import type { Node } from '../facet/layout/node';
 
 export const getSubTotalNodeWidthOrHeightByLevel = (
   sampleNodesForAllLevels: Node[],

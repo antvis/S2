@@ -1,5 +1,10 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import { TableSheet, S2Options, S2DataConfig, ResizeType } from '@/index';
+import {
+  TableSheet,
+  type S2Options,
+  type S2DataConfig,
+  ResizeType,
+} from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',

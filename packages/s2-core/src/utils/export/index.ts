@@ -1,22 +1,29 @@
 import {
-  last,
-  isEmpty,
   clone,
-  trim,
-  max,
-  isObject,
+  flatten,
   forEach,
   isArray,
-  flatten,
+  isEmpty,
+  isObject,
+  last,
+  max,
   size,
+  trim,
 } from 'lodash';
+import {
+  ID_SEPARATOR,
+  ROOT_BEGINNING_REGEX,
+  ROOT_ID,
+} from '../../common/constant';
+import {
+  CornerNodeType,
+  type MultiData,
+  type ViewMeta,
+} from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { safeJsonParse } from '../../utils/text';
 import { getCsvString } from './export-worker';
-import { SpreadSheet } from '@/sheet-type';
-import { CornerNodeType, ViewMeta } from '@/common/interface';
-import { ID_SEPARATOR, ROOT_BEGINNING_REGEX, ROOT_ID } from '@/common/constant';
-import { MultiData } from '@/common/interface';
-import { safeJsonParse } from '@/utils/text';
-import { Node } from '@/facet/layout/node';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -252,10 +259,11 @@ export const copyData = (
   split: string,
   formatOptions?: FormatOptions,
 ): string => {
+  // isFormatHeader 格式化表头， isFormatData 格式化数据
   const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
-  const { maxLevel } = rowsHierarchy;
+  const { maxLevel: maxRowsHeaderLevel } = rowsHierarchy;
   const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
@@ -267,7 +275,6 @@ export const copyData = (
     const length = cur.query ? Object.keys(cur.query).length : 0;
     return length > pre ? length : pre;
   }, 0);
-
   // Generate the table body.
   let detailRows = [];
   let maxRowLength = 0;
@@ -289,7 +296,7 @@ export const copyData = (
         tempLine = id.split(ID_SEPARATOR);
       }
       // TODO 兼容下钻，需要获取下钻最大层级
-      const totalLevel = maxLevel + 1;
+      const totalLevel = maxRowsHeaderLevel + 1;
       const emptyLength = totalLevel - tempLine.length;
       if (emptyLength > 0) {
         tempLine.push(...new Array(emptyLength));
@@ -388,21 +395,20 @@ export const copyData = (
         const colNodes = data.filter(
           ({ cornerType }) => cornerType === CornerNodeType.Col,
         );
-        const rowNodes = data.filter(
-          ({ cornerType }) => cornerType === CornerNodeType.Row,
-        );
 
         if (index < colHeader.length - 1) {
           return [
-            ...Array(rowLength - 1).fill(''),
+            ...Array(maxRowsHeaderLevel).fill(''),
             colNodes.find(({ field }) => field === columns[index])?.label || '',
             ...item,
           ];
         }
         if (index < colHeader.length) {
+          // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
+          const copiedRows = rows.slice(0, maxRowsHeaderLevel + 1);
           return [
-            ...rows.map(
-              (row) => rowNodes.find(({ field }) => field === row)?.label || '',
+            ...copiedRows.map(
+              (row) => sheetInstance.dataSet.getFieldName(row) || '',
             ),
             ...item,
           ];

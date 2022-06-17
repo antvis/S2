@@ -1,8 +1,5 @@
-import { Node } from 'src/facet/layout/node';
-import { FrozenGroup } from 'src/group/frozen-group';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { SpreadSheet } from './spread-sheet';
-import { TableDataCell, TableRowCell } from '@/cell';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
@@ -13,17 +10,20 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
-  getTooltipOperatorSortMenus,
-} from '@/common/constant';
-import {
+  getTooltipOperatorTableSortMenus,
+} from '../common/constant';
+import type {
   S2Options,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { TableDataSet } from '@/data-set';
-import { TableFacet } from '@/facet';
+} from '../common/interface';
+import { TableDataSet } from '../data-set';
+import { TableFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import { FrozenGroup } from '../group/frozen-group';
+import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {
@@ -118,7 +118,7 @@ export class TableSheet extends SpreadSheet {
     // 默认单元格实现
     const defaultCell = (facet: ViewMeta) => {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
-        return new TableRowCell(facet, this);
+        return new TableSeriesCell(facet, this);
       }
       return new TableDataCell(facet, this);
     };
@@ -169,11 +169,10 @@ export class TableSheet extends SpreadSheet {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
-    const TOOLTIP_OPERATOR_TABLE_SORT_MENUS = getTooltipOperatorSortMenus();
     const operator: TooltipOperatorOptions = {
       onClick: (params: { key: string }) =>
         this.onSortTooltipClick(params, meta),
-      menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
+      menus: getTooltipOperatorTableSortMenus(),
     };
 
     this.showTooltipWithInfo(event, [], {

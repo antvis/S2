@@ -2,12 +2,12 @@
  * table mode data-set test.
  */
 import { assembleDataCfg } from 'tests/util';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
+jest.mock('@/sheet-type');
+jest.mock('@/facet/layout/node');
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {

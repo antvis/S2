@@ -1,11 +1,10 @@
 import React from 'react';
-import { PageHeader, PageHeaderProps } from 'antd';
+import { PageHeader, type PageHeaderProps } from 'antd';
 import cx from 'classnames';
-import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
-import { Export, ExportCfgProps } from '../export';
-import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
-import { SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
-
+import type { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import { Export, type ExportCfgProps } from '../export';
+import { AdvancedSort, type AdvancedSortCfgProps } from '../advanced-sort';
+import { type SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
 
 export interface HeaderCfgProps extends PageHeaderProps {

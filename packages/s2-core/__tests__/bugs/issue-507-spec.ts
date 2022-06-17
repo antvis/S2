@@ -8,7 +8,7 @@
 import { cloneDeep } from 'lodash';
 import { getContainer } from '../util/helpers';
 import { valueInCols } from '../data/data-issue-507.json';
-import { S2Options, PivotSheet } from '@/index';
+import { type S2Options, PivotSheet } from '@/index';
 
 const valueInRows = cloneDeep(valueInCols);
 

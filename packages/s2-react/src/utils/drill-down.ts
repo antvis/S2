@@ -1,16 +1,16 @@
 import {
   GEvent,
-  HeaderActionIconProps,
+  type HeaderActionIconProps,
   i18n,
   Node,
-  PartDrillDownDataCache,
+  type PartDrillDownDataCache,
   PivotDataSet,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
 } from '@antv/s2';
 import { clone, filter, isEmpty } from 'lodash';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
+import type { PartDrillDown, PartDrillDownInfo } from '../components';
 
 export interface DrillDownParams {
   // 行维度id

@@ -1,13 +1,15 @@
 import type { IShape, Point } from '@antv/g-canvas';
-import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
-import { BaseCell } from '@/cell/base-cell';
+import { clamp, find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
-} from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
-import {
+} from '../common/constant/interaction';
+import type { GuiIcon } from '../common/icons';
+import { CellBorderPosition } from '../common/interface';
+import type {
+  CellMeta,
   Condition,
   Conditions,
   FormatResult,
@@ -15,22 +17,20 @@ import {
   IconCfg,
   IconCondition,
   MappingResult,
-  CellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
-  CellBorderPosition,
-} from '@/common/interface';
-import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
-import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition/condition';
+} from '../common/interface';
+import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
+import { includeCell } from '../utils/cell/data-cell';
+import { getIconPositionCfg } from '../utils/condition/condition';
+import { parseNumberWithPrecision } from '../utils/formatter';
 import {
   renderIcon,
   renderLine,
   renderRect,
   updateShapeAttr,
-} from '@/utils/g-renders';
-import { parseNumberWithPrecision } from '@/utils/formatter';
+} from '../utils/g-renders';
 
 /**
  * DataCell for panelGroup area

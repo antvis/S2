@@ -1,18 +1,22 @@
 import { ReloadOutlined } from '@ant-design/icons';
+import { i18n } from '@antv/s2';
+import type { SheetType } from '@antv/s2-shared';
 import { Button } from 'antd';
-import { isEqual } from 'lodash';
 import cx from 'classnames';
+import { isEqual } from 'lodash';
 import React from 'react';
 import {
-  BeforeCapture,
+  type BeforeCapture,
   DragDropContext,
-  DropResult,
+  type DropResult,
 } from 'react-beautiful-dnd';
-import { i18n } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
 import { FieldType, getSwitcherConfig, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
-import { SwitcherFields, SwitcherResult, SwitcherState } from '../interface';
+import type {
+  SwitcherFields,
+  SwitcherResult,
+  SwitcherState,
+} from '../interface';
 import {
   checkItem,
   generateSwitchResult,

@@ -2,62 +2,65 @@
  * 获取tooltip中需要显示的数据项
  */
 
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type * as CSS from 'csstype';
 import {
   assign,
+  compact,
   concat,
+  every,
   filter,
   find,
   forEach,
   get,
   isEmpty,
   isEqual,
+  isFunction,
   isNil,
   isNumber,
-  map,
-  pick,
-  some,
-  uniq,
-  noop,
-  mapKeys,
-  every,
   isObject,
-  isFunction,
-  compact,
+  map,
+  mapKeys,
+  noop,
+  pick,
 } from 'lodash';
-import * as CSS from 'csstype';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
-import { customMerge } from './merge';
-import { getEmptyPlaceholder } from './text';
-import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
-import { LayoutResult } from '@/common/interface/basic';
-import {
-  SummaryParam,
-  TooltipData,
-  TooltipDataItem,
-  TooltipDataParam,
-  TooltipHeadInfo,
-  TooltipOptions,
-  TooltipPosition,
-  TooltipSummaryOptions,
-  BaseTooltipConfig,
-  TooltipOperatorOptions,
-  TooltipOperation,
-  TooltipOperatorMenu,
-} from '@/common/interface/tooltip';
-import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
-import { S2CellType } from '@/common/interface/interaction';
-import { SpreadSheet } from '@/sheet-type';
-import { i18n } from '@/common/i18n';
 import {
   CellTypes,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
-} from '@/common/constant';
-import { Tooltip, ViewMeta } from '@/common/interface';
-import { isNotNumber, getDataSumByField } from '@/utils/number-calculate';
+} from '../common/constant';
+import { TOOLTIP_POSITION_OFFSET } from '../common/constant/tooltip';
+import { i18n } from '../common/i18n';
+import type {
+  AutoAdjustPositionOptions,
+  Data,
+  LayoutResult,
+  ListItem,
+  Tooltip,
+  ViewMeta,
+} from '../common/interface';
+import type { S2CellType } from '../common/interface/interaction';
+import type {
+  BaseTooltipConfig,
+  SummaryParam,
+  TooltipData,
+  TooltipDataItem,
+  TooltipDataParam,
+  TooltipHeadInfo,
+  TooltipOperation,
+  TooltipOperatorMenu,
+  TooltipOperatorOptions,
+  TooltipOptions,
+  TooltipPosition,
+  TooltipSummaryOptions,
+} from '../common/interface/tooltip';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+import { customMerge } from './merge';
+import { getEmptyPlaceholder } from './text';
 
 /**
  * calculate tooltip show position
@@ -144,7 +147,7 @@ export const setContainerStyle = (
     });
   }
   if (className) {
-    container.classList.add(className);
+    container.className = className;
   }
 };
 
@@ -637,7 +640,7 @@ export const verifyTheElementInTooltip = (
 ): boolean => {
   let result = false;
   let currentNode: Node = child;
-  while (currentNode !== document.body) {
+  while (currentNode && currentNode !== document.body) {
     if (parent === currentNode) {
       result = true;
       break;

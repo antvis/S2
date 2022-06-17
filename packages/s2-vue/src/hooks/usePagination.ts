@@ -70,7 +70,9 @@ export const usePagination = (
       return;
     }
 
-    const totalUpdateCallback: EmitterType['layout:pagination'] = (data) => {
+    const totalUpdateCallback: EmitterType[S2Event.LAYOUT_PAGINATION] = (
+      data,
+    ) => {
       if (isEmpty(props.options?.pagination)) {
         return;
       }

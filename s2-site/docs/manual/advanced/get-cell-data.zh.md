@@ -3,7 +3,7 @@ title: 获取单元格数据
 order: 9
 ---
 
-> 请确保已经阅读过 基础教程，数据流处理，布局等章节
+> **阅读本章前，请确保已经阅读过 基础教程，数据流处理，布局等章节**
 
 在实际的业务场景中，往往会遇到一些需要获取**单元格数据**的场景，常见的比如：
 
@@ -17,9 +17,12 @@ order: 9
 
 ### 获取指定区域单元格
 
-访问 `s2.facet.layoutResult` 获取到当前可视范围内所有单元格。[查看更多](/zh/docs/api/basic-class/base-facet)
+在渲染完成后，访问 `s2.facet.layoutResult` 获取到当前可视范围内所有 [单元格](/zh/docs/api/basic-class/node)。[查看更多](/zh/docs/api/basic-class/base-facet)
 
 ```ts
+s2.render()
+
+// 确保在 s2.render() 之后获取
 console.log(s2.facet.layoutResult)
 ```
 
@@ -152,9 +155,9 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
+const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
+const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
 

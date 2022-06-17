@@ -1,6 +1,6 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { S2Theme, ThemeCfg } from '../common/interface';
-import { SpreadSheet } from '../sheet-type';
+import type { S2Theme, ThemeCfg } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 
@@ -70,6 +70,16 @@ export const getTheme = (
       },
     },
     rowCell: {
+      seriesText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[14],
+        linkTextFill: basicColors[6],
+        opacity: 1,
+        textBaseline: 'middle',
+        textAlign: 'center',
+      },
       measureText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,

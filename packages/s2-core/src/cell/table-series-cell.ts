@@ -1,28 +1,28 @@
+import { DataCell } from '../cell/data-cell';
+import {
+  CellTypes,
+  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+  KEY_GROUP_ROW_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+} from '../common/constant';
+import type { TextTheme } from '../common/interface';
 import {
   isFrozenRow as isFrozenRowUtil,
   isFrozenTrailingRow as isFrozenTrailingRowUtil,
-} from 'src/facet/utils';
-import { DataCell } from '@/cell/data-cell';
-import {
-  CellTypes,
-  KEY_GROUP_ROW_RESIZE_AREA,
-  KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
-  ResizeAreaEffect,
-  ResizeDirectionType,
-} from '@/common/constant';
-import { TextTheme } from '@/common/interface';
+} from '../facet/utils';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
-} from '@/utils/interaction/resize';
+} from '../utils/interaction/resize';
 
-export class TableRowCell extends DataCell {
+export class TableSeriesCell extends DataCell {
   public get cellType() {
     return CellTypes.ROW_CELL;
   }
 
   protected getTextStyle(): TextTheme {
-    return this.theme.rowCell.text;
+    return this.theme.rowCell.seriesText;
   }
 
   protected drawBorderShape() {

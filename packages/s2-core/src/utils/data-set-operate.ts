@@ -1,9 +1,17 @@
-import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
-import { Data } from '@/common/interface/s2DataConfig';
-import { Fields, TotalsStatus, Totals } from '@/common/interface/index';
+import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
+import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
 
-export const getListBySorted = (list: string[], sorted: string[]) => {
+export const getListBySorted = (
+  list: string[],
+  sorted: string[],
+  mapValue?: (val: string) => string,
+) => {
   return list.sort((a, b) => {
+    if (mapValue) {
+      a = mapValue(a);
+      b = mapValue(b);
+    }
+
     const ia = sorted.indexOf(a);
     const ib = sorted.indexOf(b);
     if (ia === -1 && ib === -1) {
@@ -40,8 +48,8 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   if (Array.isArray(data)) {
     keys(data)?.forEach((item) => {
       const current = get(data, item);
-      if (keys(current)?.includes('undefined')) {
-        keys(current)?.forEach((ki) => {
+      if ('undefined' in current) {
+        keys(current).forEach((ki) => {
           result.push(current[ki]);
         });
       } else {

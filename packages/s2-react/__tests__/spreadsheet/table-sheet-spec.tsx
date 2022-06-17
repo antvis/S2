@@ -6,18 +6,18 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  S2DataConfig,
+  type S2DataConfig,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
-  S2WheelEvent,
+  type S2WheelEvent,
   TableSheet,
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
-import { SwitcherFields } from '@/components/switcher/interface';
+import type { SwitcherFields } from '@/components/switcher/interface';
 import { SheetComponent } from '@/components';
-import '@antv/s2/esm/style.css';
+import '@/components/tooltip/index.less';
 
 let s2: TableSheet;
 

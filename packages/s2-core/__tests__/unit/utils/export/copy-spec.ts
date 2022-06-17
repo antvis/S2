@@ -457,6 +457,39 @@ describe('Pivot Table Core Data Process', () => {
     const data = getSelectedData(s2New);
     expect(data).toBe(convertString(`7789\n元`));
   });
+
+  it('should get correct data with - string in header name', () => {
+    const s2New = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          { field: 'number', name: 'number-3', formatter: (v) => v + '\n元' },
+        ],
+        fields: {
+          columns: ['number', 'type', 'sub_type'],
+        },
+        data: originalData,
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+        showSeriesNumber: false,
+      }),
+    );
+    s2New.render();
+    const cell = s2New.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2New.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2New);
+    expect(data).toBe(convertString(`7789\n元`));
+  });
 });
 
 describe('List Table getCopyData', () => {

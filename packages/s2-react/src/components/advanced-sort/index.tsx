@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Layout, Select, Radio, Form, Cascader } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
+  i18n,
+  type SortMethod,
+  type SortParam,
+  SpreadSheet,
+  TOTAL_VALUE,
+} from '@antv/s2';
+import { Button, Cascader, Form, Layout, Modal, Radio, Select } from 'antd';
+import cx from 'classnames';
+import {
+  filter,
+  find,
+  forEach,
+  includes,
   isEqual,
   keys,
   map,
-  includes,
   toUpper,
-  forEach,
-  filter,
-  find,
   uniq,
 } from 'lodash';
-import cx from 'classnames';
-import {
-  i18n,
-  SpreadSheet,
-  SortParam,
-  SortMethod,
-  TOTAL_VALUE,
-} from '@antv/s2';
+import React, { useEffect, useState } from 'react';
+
 import {
   ADVANCED_SORT_PRE_CLS,
   getSortRuleOptions,

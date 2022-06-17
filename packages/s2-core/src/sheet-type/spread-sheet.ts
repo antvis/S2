@@ -1,5 +1,5 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -9,8 +9,7 @@ import {
   isFunction,
   isString,
 } from 'lodash';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-import { BaseCell } from '@/cell';
+import { BaseCell } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -22,10 +21,14 @@ import {
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
-} from '@/common/constant';
-import { DebuggerUtil } from '@/common/debug';
-import { i18n } from '@/common/i18n';
-import {
+} from '../common/constant';
+import { DebuggerUtil } from '../common/debug';
+import { i18n } from '../common/i18n';
+import { registerIcon } from '../common/icons/factory';
+import type {
+  CustomSVGIcon,
+  EmitterType,
+  InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -34,6 +37,7 @@ import {
   S2MountContainer,
   S2Options,
   S2RenderOptions,
+  S2Theme,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -42,24 +46,25 @@ import {
   TooltipShowOptions,
   Total,
   Totals,
-} from '@/common/interface';
-import { EmitterType } from '@/common/interface/emitter';
-import { Store } from '@/common/store';
-import { BaseDataSet } from '@/data-set';
-import { BaseFacet } from '@/facet';
-import { Node } from '@/facet/layout/node';
-import { CustomSVGIcon, S2Theme } from '@/common/interface';
-import { RootInteraction } from '@/interaction/root';
-import { getTheme } from '@/theme';
-import { HdAdapter } from '@/ui/hd-adapter';
-import { BaseTooltip } from '@/ui/tooltip';
-import { clearValueRangeState } from '@/utils/condition/state-controller';
-import { customMerge } from '@/utils/merge';
-import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
-import { registerIcon } from '@/common/icons/factory';
-import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
-import { PanelScrollGroup } from '@/group/panel-scroll-group';
-import { FrozenGroup } from '@/group/frozen-group';
+} from '../common/interface';
+import { Store } from '../common/store';
+import type { BaseDataSet } from '../data-set';
+import type { BaseFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import type { FrozenGroup } from '../group/frozen-group';
+import { PanelScrollGroup } from '../group/panel-scroll-group';
+import { RootInteraction } from '../interaction/root';
+import { getTheme } from '../theme';
+import { HdAdapter } from '../ui/hd-adapter';
+import { BaseTooltip } from '../ui/tooltip';
+import { clearValueRangeState } from '../utils/condition/state-controller';
+import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import {
+  customMerge,
+  getSafetyDataConfig,
+  getSafetyOptions,
+} from '../utils/merge';
+import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -141,6 +146,7 @@ export abstract class SpreadSheet extends EE {
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
+    this.setDebug();
     this.initTooltip();
     this.initGroups(dom);
     this.bindEvents();
@@ -148,7 +154,32 @@ export abstract class SpreadSheet extends EE {
     this.initTheme();
     this.initHdAdapter();
     this.registerIcons();
-    this.setDebug();
+    this.setOverscrollBehavior();
+  }
+
+  private setOverscrollBehavior() {
+    const { overscrollBehavior } = this.options.interaction;
+    // 行内样式 + css 样式
+    const initOverscrollBehavior = window
+      .getComputedStyle(document.body)
+      .getPropertyValue(
+        'overscroll-behavior',
+      ) as InteractionOptions['overscrollBehavior'];
+
+    // 用户没有在 body 上主动设置过 overscrollBehavior，才进行更新
+    const hasInitOverscrollBehavior =
+      initOverscrollBehavior && initOverscrollBehavior !== 'auto';
+
+    if (hasInitOverscrollBehavior) {
+      this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    } else if (overscrollBehavior) {
+      document.body.style.overscrollBehavior = overscrollBehavior;
+    }
+  }
+
+  private restoreOverscrollBehavior() {
+    document.body.style.overscrollBehavior =
+      this.store.get('initOverscrollBehavior') || '';
   }
 
   private setDebug() {
@@ -362,6 +393,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public destroy() {
+    this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();
     this.hdAdapter?.destroy();

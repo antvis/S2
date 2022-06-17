@@ -1,8 +1,8 @@
-import { ShapeAttrs } from '@antv/g-canvas';
-import { InteractionStateName } from '../constant';
+import type { ShapeAttrs } from '@antv/g-canvas';
+import type { InteractionStateName } from '../constant';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { generateStandardColors } from '../../utils/color';
-import { CellTypes } from '@/common/constant/interaction';
+import type { CellTypes } from '../../common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -214,6 +214,8 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
   bolderText?: TextTheme;
   /* 文本样式 */
   text?: TextTheme;
+  /* 序号样式 */
+  seriesText?: TextTheme;
   /* 度量值文本样式 */
   measureText?: TextTheme;
   /* 单元格样式 */

@@ -1,16 +1,9 @@
-import {
-  PivotSheet,
-  S2Constructor,
-  S2DataConfig,
-  S2Options,
-  ThemeCfg,
-  SpreadSheet,
-  TableSheet,
-} from '@antv/s2';
+import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
-import { SheetComponentsProps } from '../components';
+import type { SheetComponentsProps } from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
@@ -46,9 +39,8 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
       const s2Options = getSheetComponentOptions(options);
-      const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
       if (customSpreadSheet) {
-        return customSpreadSheet(...s2Constructor);
+        return customSpreadSheet(container, dataCfg, s2Options);
       }
       if (sheetType === 'table') {
         return new TableSheet(container, dataCfg, s2Options);

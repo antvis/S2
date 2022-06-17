@@ -1,11 +1,14 @@
-import { VALUE_FIELD } from '@/common/constant/basic';
-import { copyToClipboard } from '@/utils/export';
-import { CellMeta } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
-import { DataType } from '@/data-set/interface';
-import { Node } from '@/facet/layout/node';
-import { CopyType } from '@/common';
+import {
+  type CellMeta,
+  CellTypes,
+  CopyType,
+  InteractionStateName,
+  VALUE_FIELD,
+} from '../../common';
+import type { DataType } from '../../data-set/interface';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { copyToClipboard } from '../../utils/export';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -25,9 +28,11 @@ const getColNodeField = (spreadsheet: SpreadSheet, id: string) => {
   return colNode?.field;
 };
 
-const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
-  const ids = meta.id.split('-');
-  return getColNodeField(spreadsheet, ids[ids.length - 1]);
+const getFiledIdFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
+  const colNode = spreadsheet
+    .getColumnNodes()
+    .find((col) => col.colIndex === colIndex);
+  return getColNodeField(spreadsheet, colNode.id);
 };
 
 const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
@@ -38,9 +43,11 @@ const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   ];
 };
 
-const getFormat = (cellId: string, spreadsheet: SpreadSheet) => {
-  const ids = cellId.split('-');
-  const fieldId = getColNodeField(spreadsheet, ids[ids.length - 1]);
+const getFormat = (colIndex: number, spreadsheet: SpreadSheet) => {
+  const colNode = spreadsheet
+    .getColumnNodes()
+    .find((col) => col.colIndex === colIndex);
+  const fieldId = getColNodeField(spreadsheet, colNode.id);
   if (spreadsheet.options.interaction.copyWithFormat) {
     return spreadsheet.dataSet.getFieldFormatter(fieldId);
   }
@@ -68,7 +75,7 @@ const getValueFromMeta = (
     });
     return cell[VALUE_FIELD];
   }
-  const fieldId = getFiledIdFromMeta(meta, spreadsheet);
+  const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId];
 };
 
@@ -77,7 +84,7 @@ const format = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const formatter = getFormat(meta.id, spreadsheet);
+  const formatter = getFormat(meta.colIndex, spreadsheet);
   return formatter(getValueFromMeta(meta, displayData, spreadsheet));
 };
 
@@ -171,7 +178,10 @@ const getPivotCopyData = (
               colNode.isTotals ||
               colNode.isTotalMeasure,
           });
-          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+          return getFormat(
+            colNode.colIndex,
+            spreadsheet,
+          )(cellData[VALUE_FIELD]);
         })
         .join(newTab),
     )

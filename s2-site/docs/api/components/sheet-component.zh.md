@@ -14,7 +14,7 @@ order: 0
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: | --- | --- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |
-| spreadsheet | 自定义表 | (...args: [S2Constructor](/zh/docs/api/basic-class/spreadsheet#s2constructor)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [S2Options](/zh/docs/api/general/S2Options)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [S2Options](/zh/docs/api/general/S2Options) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/zh/docs/api/components/drill-down) |  |  |
@@ -66,7 +66,7 @@ order: 0
 | onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: Record<string, boolean>, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
+| onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
 | onCollapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
@@ -80,9 +80,9 @@ order: 0
 | onLayoutResizeColWidth | 列头单元格宽度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeColHeight | 列头单元格高度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeTreeWidth | 树状行头整体宽度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
-| onLayoutResizeMouseDown | resize 热区鼠标按下事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
-| onLayoutResizeMouseUp | resize 热区鼠标松开事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
-| onLayoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
+| onLayoutResizeMouseDown | resize 热区鼠标按下事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| onLayoutResizeMouseUp | resize 热区鼠标松开事件 | ( event: `MouseEvent`,  resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| onLayoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | onKeyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | onKeyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
 | onCopied | 复制事件 | (copyData: string) => void |  |  |
@@ -119,7 +119,7 @@ order: 0
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
-| spreadsheet | 自定义表 | (...args: [S2Constructor](/zh/docs/api/basic-class/spreadsheet#s2constructor)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [S2Options](/zh/docs/api/general/S2Options)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParams](#sortparams) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -163,7 +163,7 @@ order: 0
 | layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | layoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | layoutCellScroll | 单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: Record<string, boolean>, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
+| layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
 | collapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | layoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | layoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
@@ -177,9 +177,9 @@ order: 0
 | layoutResizeColWidth | 列头单元格宽度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeColHeight | 列头单元格高度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeTreeWidth | 树状行头整体宽度更改事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
-| layoutResizeMouseDown | resize 热区鼠标按下事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
-| layoutResizeMouseUp | resize 热区鼠标松开事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
-| layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event: Partial<MouseEvent>;resizeInfo?: [ResizeInfo](#resizeinfo);) => void; |  |  |
+| layoutResizeMouseDown | resize 热区鼠标按下事件 | ( event: `MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| layoutResizeMouseUp | resize 热区鼠标松开事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
+| layoutResizeMouseMove | resize 热区鼠标移动事件 | ( event:`MouseEvent`, resizeInfo?: [ResizeInfo](#resizeinfo)) => void; |  |  |
 | keyBoardDown | 键盘按下事件 | (event: KeyboardEvent) => void |  |  |
 | keyBoardUp | 键盘松开事件 | (event: KeyboardEvent) => void |  |  |
 | copied | 复制事件 | (copyData: string) => void |  |  |

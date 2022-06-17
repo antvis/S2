@@ -1,6 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { S2Options } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
 
@@ -62,6 +62,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
     s2.interaction.getInteractedCells = () => [mockCell];
+    s2.interaction.eventController.isCanvasEffect = true;
   });
 
   test('should bind events', () => {
@@ -286,5 +287,22 @@ describe('Interaction Keyboard Move Tests', () => {
       ],
       stateName: 'selected',
     });
+  });
+
+  test('should not move selected cell down when isCanvasEffect is false', () => {
+    s2.interaction.changeState = jest.fn((state) => {});
+    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell01.mockCell;
+    keyboardMove.endCell = mockCell01.mockCell;
+
+    s2.interaction.eventController.isCanvasEffect = false;
+
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.ARROW_DOWN,
+    } as KeyboardEvent);
+    expect(s2.interaction.changeState).not.toBeCalled();
+
+    s2.interaction.eventController.isCanvasEffect = true;
   });
 });

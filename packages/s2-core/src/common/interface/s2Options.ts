@@ -1,17 +1,4 @@
-import { Conditions } from './condition';
-import {
-  FilterDataItemCallback,
-  HeaderActionIcon,
-  CustomSVGIcon,
-  ViewMeta,
-} from './basic';
-import { Tooltip } from './tooltip';
-import { InteractionOptions } from './interaction';
-import { ColHeaderConfig } from '@/facet/header/col';
-import { RowHeaderConfig } from '@/facet/header/row';
-import { CornerHeaderConfig } from '@/facet/header/corner';
-import { Node } from '@/facet/layout/node';
-import {
+import type {
   CellCallback,
   CornerHeaderCallback,
   DataCellCallback,
@@ -21,15 +8,26 @@ import {
   Pagination,
   Style,
   Totals,
-} from '@/common/interface/basic';
-import {
+} from '../../common/interface/basic';
+import type {
   LayoutArrange,
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
-} from '@/common/interface/hooks';
-import { BaseDataSet } from '@/data-set';
-import { SpreadSheet } from '@/sheet-type';
+} from '../../common/interface/hooks';
+import type { BaseDataSet } from '../../data-set';
+import type { ColHeaderConfig } from '../../facet/header/col';
+import type { CornerHeaderConfig } from '../../facet/header/corner';
+import type { RowHeaderConfig } from '../../facet/header/row';
+import type { SpreadSheet } from '../../sheet-type';
+import type {
+  CustomSVGIcon,
+  FilterDataItemCallback,
+  HeaderActionIcon,
+} from './basic';
+import type { Conditions } from './condition';
+import type { InteractionOptions } from './interaction';
+import type { Tooltip } from './tooltip';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
@@ -52,7 +50,7 @@ export interface S2BasicOptions<T = Element | string> {
   pagination?: Pagination;
   // freeze row header
   frozenRowHeader?: boolean;
-  // show Series Number
+  // show series Number
   showSeriesNumber?: boolean;
   // if show the default header actionIcons
   showDefaultHeaderActionIcon?: boolean;

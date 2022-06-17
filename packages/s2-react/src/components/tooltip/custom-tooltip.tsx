@@ -1,8 +1,8 @@
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TooltipComponent } from '@/components/tooltip';
-import { TooltipRenderProps } from '@/components/tooltip/interface';
+import type { TooltipRenderProps } from './interface';
+import { TooltipComponent } from './index';
 
 export class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet: SpreadSheet) {

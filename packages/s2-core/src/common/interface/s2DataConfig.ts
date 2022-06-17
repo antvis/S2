@@ -1,9 +1,9 @@
-import {
+import type {
   Fields,
   FilterParam,
   Meta,
   SortParams,
-} from '@/common/interface/index';
+} from '../../common/interface';
 
 /* 子弹图数据结构 */
 export interface BulletValue {

@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import { ResizeArea, ResizeInfo } from '@/common/interface';
+import type { ResizeArea, ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
   getResizeAreaAttrs,

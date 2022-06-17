@@ -38,8 +38,8 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
   const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
 
   const onResize = () => {
-    const { width: nodeWidth, height: nodeHeight } =
-      container?.getBoundingClientRect();
+    // 取dom的大小，解决scale问题
+    const { clientWidth: nodeWidth, clientHeight: nodeHeight } = container;
 
     const width = adaptiveWidth
       ? Math.floor(nodeWidth ?? s2.options.width)

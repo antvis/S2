@@ -1,32 +1,34 @@
 import { Canvas, Group } from '@antv/g-canvas';
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
-import { RootInteraction } from '@/interaction/root';
+import { Store } from '@/common/store';
 import {
+  BaseEvent,
+  BrushSelection,
   CellTypes,
+  CornerCellClick,
+  DataCell,
+  DataCellClick,
+  DataCellMultiSelection,
+  GuiIcon,
+  HoverEvent,
+  InteractionName,
   InteractionStateName,
   InterceptType,
-  DataCell,
-  S2Options,
-  SpreadSheet,
   MergedCell,
-  InteractionName,
-  DataCellClick,
-  RowColumnClick,
-  RowTextClick,
   MergedCellClick,
-  HoverEvent,
-  BrushSelection,
-  RowColumnResize,
-  DataCellMultiSelection,
   RangeSelection,
+  RowColumnClick,
+  RowColumnResize,
+  RowTextClick,
+  type S2Options,
   SelectedCellMove,
-  BaseEvent,
-  GuiIcon,
-  CornerCellClick,
+  SpreadSheet,
+  Node,
+  type S2CellType,
 } from '@/index';
-import { Store } from '@/common/store';
+import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
+import { getCellMeta } from '@/utils/interaction/select-event';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -390,6 +392,33 @@ describe('RootInteraction Tests', () => {
       ]);
       rootInteraction.resetState();
       expect(rootInteraction.getActiveCells()).toEqual([]);
+    });
+
+    test('should set selected status after highlight nodes', () => {
+      const belongsCell = createMockCellInfo('test-A').mockCell;
+
+      const mockNodeA = new Node({
+        id: 'test',
+        key: 'test',
+        value: '1',
+        belongsCell,
+      });
+
+      const mockNodeB = new Node({
+        id: 'test',
+        key: 'test',
+        value: '1',
+        belongsCell,
+      });
+
+      rootInteraction.highlightNodes([mockNodeA, mockNodeB]);
+
+      [mockNodeA, mockNodeB].forEach((node) => {
+        expect(node.belongsCell.updateByState).toHaveBeenCalledWith(
+          InteractionStateName.SELECTED,
+          belongsCell,
+        );
+      });
     });
 
     test.each`

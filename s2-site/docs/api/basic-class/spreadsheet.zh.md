@@ -123,13 +123,3 @@ type BBox = {
   height: number;
 };
 ```
-
-### S2Constructor
-
-功能描述：透视表内部构造参数
-
-```ts
-type S2MountContainer = string | HTMLElement;
-
-type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
-```

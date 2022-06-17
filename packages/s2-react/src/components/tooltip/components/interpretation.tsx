@@ -1,7 +1,10 @@
+import {
+  type TooltipInterpretationOptions,
+  TOOLTIP_PREFIX_CLS,
+} from '@antv/s2';
 import React from 'react';
-import { TooltipInterpretationOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import { ReactElement } from '../../../common/react-element';
 import { TooltipIcon } from './icon';
-import { ReactElement } from '@/common/react-element';
 
 export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
   props,

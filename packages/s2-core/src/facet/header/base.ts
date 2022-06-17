@@ -1,7 +1,7 @@
-import { Group, Point } from '@antv/g-canvas';
-import { SortParam } from '@/common/interface';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
+import { Group, type Point } from '@antv/g-canvas';
+import type { SortParam } from '../../common/interface';
+import type { Node } from '../layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  * Base header config interface

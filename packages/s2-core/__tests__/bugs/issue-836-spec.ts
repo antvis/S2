@@ -8,8 +8,8 @@ import { find } from 'lodash';
 import * as mockDataConfig from 'tests/data/data-issue-836.json';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import { Node } from '@/facet/layout/node';
-import { S2Options } from '@/common';
+import type { Node } from '@/facet/layout/node';
+import type { S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 1200,
@@ -27,6 +27,7 @@ const s2Options: S2Options = {
 
 describe('GrandTotal and SubTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
+
   beforeEach(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
