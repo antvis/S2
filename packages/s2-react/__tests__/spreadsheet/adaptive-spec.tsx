@@ -83,8 +83,9 @@ describe('SheetComponent adaptive Tests', () => {
     await sleep(1000);
     return { newContainerHeight, newContainerWidth, options };
   };
+
   beforeEach(() => {
-    s2 = null;
+    // s2.destroy()
   });
 
   test('should use container width when table first rendered', async () => {
@@ -313,5 +314,45 @@ describe('SheetComponent adaptive Tests', () => {
     expect(s2.options.height).toEqual(options.height);
     expect(s2.container.cfg.height).toEqual(options.height);
     expect(s2.container.cfg.width).toEqual(options.width);
+  });
+
+  // https://github.com/antvis/S2/issues/1411
+  test('should get original container size if container scaled', async () => {
+    const newContainerWidth = 1000;
+    const newContainerHeight = 500;
+    const containerId = 'scaleContainer';
+
+    act(() => {
+      ReactDOM.render(
+        <MainLayout
+          adaptive={{
+            getContainer: () => {
+              const container = document.getElementById(containerId);
+              container.style.transform = 'scale(0.5)';
+              return container;
+            },
+          }}
+          containerId={containerId}
+        />,
+        getContainer(),
+      );
+    });
+
+    act(() => {
+      const container = document.getElementById(containerId);
+      container.style.width = newContainerWidth + 'px';
+      container.style.height = newContainerHeight + 'px';
+    });
+
+    act(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    await sleep(1000);
+
+    expect(s2.options.width).toEqual(newContainerWidth);
+    expect(s2.options.height).toEqual(newContainerHeight);
+    expect(s2.container.cfg.height).toEqual(newContainerHeight);
+    expect(s2.container.cfg.width).toEqual(newContainerWidth);
   });
 });

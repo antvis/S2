@@ -38,15 +38,16 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
   const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
 
   const onResize = () => {
-    // 取dom的大小，解决scale问题
-    const { clientWidth: nodeWidth, clientHeight: nodeHeight } = container;
+    // 解决父容器有缩放, 获取宽高不对的问题: https://github.com/antvis/S2/pull/1425
+    const { clientWidth: containerWidth, clientHeight: containerHeight } =
+      container;
 
     const width = adaptiveWidth
-      ? Math.floor(nodeWidth ?? s2.options.width)
+      ? Math.floor(containerWidth ?? s2.options.width)
       : s2.options.width;
     const height = adaptiveHeight
       ? // 去除 header 和 page 后才是 sheet 真正的高度
-        Math.floor(nodeHeight ?? s2.options.height)
+        Math.floor(containerHeight ?? s2.options.height)
       : s2.options.height;
 
     if (!adaptiveWidth && !adaptiveHeight) {

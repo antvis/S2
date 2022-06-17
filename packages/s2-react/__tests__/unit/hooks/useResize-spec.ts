@@ -23,6 +23,10 @@ describe('useResize tests', () => {
     jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
   });
 
+  afterEach(() => {
+    // s2.destroy();
+  });
+
   test('should rerender when option width or height changed and adaptive disable', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
