@@ -234,7 +234,9 @@ function MainLayout() {
   const logHandler =
     (name: string) =>
     (...args: unknown[]) => {
-      console.log(name, ...args);
+      if (s2Ref.current?.options?.debug) {
+        console.log(name, ...args);
+      }
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -258,6 +260,7 @@ function MainLayout() {
   //  ================== Hooks ========================
 
   React.useEffect(() => {
+    console.log(s2Ref.current.facet.layoutResult);
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
     });

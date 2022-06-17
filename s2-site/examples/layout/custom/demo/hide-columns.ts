@@ -6,9 +6,7 @@ fetch('../data/basic.json')
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: [],
         columns: ['type', 'province', 'city', 'price', 'cost'],
-        values: [],
       },
       meta: [
         {
@@ -39,13 +37,8 @@ fetch('../data/basic.json')
       width: 600,
       height: 480,
       style: {
-        rowCfg: {
-          heightByField: {
-            '1': 130,
-            '3': 60,
-            '10': 80,
-            '15': 20,
-          },
+        colCfg: {
+          height: 0,
         },
       },
     };

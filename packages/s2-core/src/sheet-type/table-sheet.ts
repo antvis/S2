@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { TableDataCell, TableRowCell } from '../cell';
+import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
@@ -118,7 +118,7 @@ export class TableSheet extends SpreadSheet {
     // 默认单元格实现
     const defaultCell = (facet: ViewMeta) => {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
-        return new TableRowCell(facet, this);
+        return new TableSeriesCell(facet, this);
       }
       return new TableDataCell(facet, this);
     };

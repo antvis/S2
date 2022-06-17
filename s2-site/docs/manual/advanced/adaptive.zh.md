@@ -46,7 +46,7 @@ new ResizeObserver(([entry] = []) => {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
-​📊 查看 [窗口自适应 demo](zh/examples/layout/adaptive#window-adaptation)
+​📊 查看 [窗口自适应 demo](/zh/examples/layout/adaptive#window-adaptation)
 
 ### 容器自适应
 
@@ -78,7 +78,7 @@ resizeObserver.observe(parent);
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
 
-​📊 查看 [容器自适应 demo](zh/examples/layout/adaptive#container-adaptation)
+​📊 查看 [容器自适应 demo](/zh/examples/layout/adaptive#container-adaptation)
 
 ### React 组件
 
@@ -143,7 +143,7 @@ const containerId = 'containerId';
 </div>
 ```
 
-​📊 查看 [React 组件自适应 demo](zh/examples/layout/adaptive#react-adaptive)
+​📊 查看 [React 组件自适应 demo](/zh/examples/layout/adaptive#react-adaptive)
 
 ### Vue 组件
 

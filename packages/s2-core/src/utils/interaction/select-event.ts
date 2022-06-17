@@ -1,4 +1,4 @@
-import { ColCell, RowCell, TableRowCell } from '../../cell';
+import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
@@ -55,7 +55,7 @@ export function getRangeIndex<T extends CellMeta | ViewMeta>(start: T, end: T) {
 export function getRowCellForSelectedCell(
   meta: ViewMeta,
   spreadsheet: SpreadSheet,
-): (ColCell | RowCell | TableRowCell)[] {
+): (ColCell | RowCell | TableSeriesCell)[] {
   const { interaction, facet, options } = spreadsheet;
 
   if (spreadsheet.isTableMode()) {
@@ -64,12 +64,12 @@ export function getRowCellForSelectedCell(
     }
     const colId = facet.layoutResult.colLeafNodes[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
-    const result: TableRowCell[] = [];
+    const result: TableSeriesCell[] = [];
     const rowCell = interaction
       .getAllCells()
       .find((cell) => cell.getMeta().id === id);
 
-    if (rowCell && rowCell instanceof TableRowCell) {
+    if (rowCell && rowCell instanceof TableSeriesCell) {
       result.push(rowCell);
     }
     return result;

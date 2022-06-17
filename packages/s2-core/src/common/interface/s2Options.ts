@@ -50,7 +50,7 @@ export interface S2BasicOptions<T = Element | string> {
   pagination?: Pagination;
   // freeze row header
   frozenRowHeader?: boolean;
-  // show Series Number
+  // show series Number
   showSeriesNumber?: boolean;
   // if show the default header actionIcons
   showDefaultHeaderActionIcon?: boolean;

@@ -1,6 +1,6 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach, isBoolean, isEmpty } from 'lodash';
-import type { ColCell, RowCell } from '../../cell';
+import type { RowCell } from '../../cell';
 import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
@@ -32,6 +32,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
     const { interaction } = this.spreadsheet;
+
     updateAllColHeaderCellState(
       colId,
       interaction.getAllColHeaderCells(),

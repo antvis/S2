@@ -57,7 +57,7 @@ describe('Interaction Multi Selection Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   // https://github.com/antvis/S2/issues/1306
