@@ -4,13 +4,13 @@ import {
 } from '@/utils/interaction/select-event';
 import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { TableRowCell } from '@/cell';
+import { TableSeriesCell } from '@/cell';
 import type { ViewMeta } from '@/common';
 
 jest.mock('@/cell', () => {
   return {
     // eslint-disable-next-line object-shorthand
-    TableRowCell: function () {
+    TableSeriesCell: function () {
       this.getMeta = () => {
         return {
           id: '5-序号',
@@ -39,7 +39,7 @@ describe('Select Event Utils Tests', () => {
 
   describe('getRowCellForSelectedCell test', () => {
     test('should return correct value for getRowCellForSelectedCell', () => {
-      const cell = new TableRowCell(
+      const cell = new TableSeriesCell(
         {} as unknown as ViewMeta,
         {} as unknown as SpreadSheet,
       );

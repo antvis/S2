@@ -1,14 +1,13 @@
-import { PivotSheet } from '@antv/s2';
+import { TableSheet } from '@antv/s2';
 
 fetch('../data/basic.json')
   .then((res) => res.json())
   .then((data) => {
+    // 详情请查看: https://s2.antv.vision/zh/docs/manual/advanced/custom/cell-size
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['type', 'province', 'city', 'price', 'cost'],
       },
       meta: [
         {
@@ -39,14 +38,26 @@ fetch('../data/basic.json')
       width: 600,
       height: 480,
       style: {
+        // 列头宽度始终和数值单元格一致
+        cellCfg: {
+          width: 200,
+          height: 50,
+        },
         colCfg: {
-          widthByFieldValue: {
-            cost: 50,
+          height: 50,
+        },
+        // 每一行根据指标单独设置
+        rowCfg: {
+          heightByField: {
+            '1': 130,
+            '3': 60,
+            '10': 80,
+            '15': 20,
           },
         },
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });

@@ -16,7 +16,7 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 
-export class TableRowCell extends DataCell {
+export class TableSeriesCell extends DataCell {
   public get cellType() {
     return CellTypes.ROW_CELL;
   }
