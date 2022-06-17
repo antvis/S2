@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v1.0.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.0.1...@antv/s2-vue-v1.0.2) (2022-06-17)
+
+
+### Bug Fixes
+
+* 修复打包core层源码中样式文件错误问题 ([#1408](https://github.com/antvis/S2/issues/1408)) ([d2c0894](https://github.com/antvis/S2/commit/d2c08949d22dc61dbc73e01a779756e1d7a78fb6))
+
 # [@antv/s2-vue-v1.0.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.0.0...@antv/s2-vue-v1.0.1) (2022-06-02)
 
 
