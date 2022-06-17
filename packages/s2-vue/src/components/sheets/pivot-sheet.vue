@@ -31,13 +31,13 @@ export default defineComponent({
     const { options: pivotOptions, ...restProps } = toRefs(props);
 
     const { dataCfg, partDrillDown } = toRefs(props);
-    const drillVisible = ref<boolean>(false);
+    // const { getDrillFields, ...restPartDrillDown } = toRefs(partDrillDown);
     const drillDownPosition = ref<{
       x: number;
       y: number;
     }>({ x: 0, y: 0 });
 
-    // 下钻方法
+    // 被下钻的 field
     const drillFields = ref<string[]>([]);
 
     // 执行下钻操作
@@ -47,8 +47,6 @@ export default defineComponent({
 
       // 隐藏 tooltip + drilldown 的UI层
       instance?.hideTooltip();
-      drillVisible.value = false;
-
       if (isEmpty(fields)) {
         instance?.clearDrillDownData(instance?.store.get('drillDownNode')?.id);
       } else {
@@ -84,7 +82,6 @@ export default defineComponent({
           event,
           content: drillDownNode,
         });
-        drillVisible.value = true;
       }
     };
 
@@ -95,15 +92,10 @@ export default defineComponent({
         partDrillDown.value as PartDrillDown,
         (params) => onDrillDownIconClick(params),
       ),
-    );
+    ) as S2Options;
 
     return {
       s2Ref,
-      dataSet: partDrillDown.value?.drillConfig.dataSet,
-      setDrillFields,
-      drillVisible,
-      drillDownPosition,
-      drillFields,
       restProps,
       options,
     };

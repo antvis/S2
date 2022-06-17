@@ -110,11 +110,7 @@ export default defineComponent({
   <div :class="[PRE_CLASS, className]">
     <header :class="PRE_CLASS + '-header'">
       <div>{{ titleText }}</div>
-      <Button
-        type="link"
-        :disabled="_.isEmpty(drillFields)"
-        @click="handleClear"
-      >
+      <Button type="link" @click="handleClear">
         {{ clearButtonText }}
       </Button>
     </header>
