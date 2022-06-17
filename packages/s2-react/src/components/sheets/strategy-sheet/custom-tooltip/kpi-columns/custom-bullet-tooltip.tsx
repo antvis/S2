@@ -1,5 +1,6 @@
 import {
   getBulletRangeColor,
+  i18n,
   transformRatioToPercent,
   type BulletTheme,
   type BulletValue,
@@ -9,8 +10,9 @@ import {
 import cls from 'classnames';
 import React from 'react';
 import type { CustomTooltipProps } from '../interface';
+import { getColName, getRowName } from '../../utils';
+
 import styles from '../index.module.less';
-import { getRowName } from '../../utils';
 
 export const KpiBulletTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta() as ViewMeta;
@@ -35,6 +37,7 @@ export const KpiBulletTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   );
 
   const rowName = getRowName(meta);
+  const colName = getColName(meta);
 
   return (
     <div className={cls(styles.strategySheetTooltip, styles.bullet)}>
@@ -48,14 +51,14 @@ export const KpiBulletTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
                 backgroundColor: currentLegendColor,
               }}
             />
-            实际完成度
+            {colName}
           </span>
           <span className={styles.value}>{currentPercent}</span>
         </li>
         <li className={cls(styles.item, styles.target)}>
           <span className={styles.label}>
             <span className={styles.legend} />
-            目标值
+            {i18n('目标值')}
           </span>
           <span className={styles.value}>{targetPercent}</span>
         </li>

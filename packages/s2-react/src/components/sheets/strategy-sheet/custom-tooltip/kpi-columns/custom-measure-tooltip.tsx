@@ -1,10 +1,15 @@
 import cls from 'classnames';
 import React from 'react';
 import { first } from 'lodash';
-import type { ViewMeta, MultiData, SimpleDataItem } from '@antv/s2';
+import {
+  type ViewMeta,
+  type MultiData,
+  type SimpleDataItem,
+  i18n,
+} from '@antv/s2';
 import type { CustomTooltipProps } from '../interface';
 import { KPI_TYPES_CONFIG } from '../../constants/config';
-import { getLeafColNode, getRowName } from '../../utils';
+import { getColName, getRowName } from '../../utils';
 
 import styles from '../index.module.less';
 
@@ -19,10 +24,7 @@ export const KpiMeasureTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   }
 
   const rowName = getRowName(meta);
-  const leafColNode = getLeafColNode(meta);
-
-  // 兼容多列头, 优先取父级节点标题
-  const colName = leafColNode?.parent?.label || leafColNode?.label || '';
+  const colName = getColName(meta);
   const [value] = first(metaFieldValue?.values) || [metaFieldValue];
   const kpiConfig = KPI_TYPES_CONFIG[metaFieldValue?.kpiType as string];
 
@@ -31,15 +33,15 @@ export const KpiMeasureTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
       <div className={styles.title}>{colName}</div>
       <div className={styles.content}>
         <li className={styles.item}>
-          <span className={styles.label}>时间</span>
+          <span className={styles.label}>{i18n('时间')}</span>
           <span className={styles.value}>{colName}</span>
         </li>
         <li className={styles.item}>
-          <span className={styles.label}>指标</span>
+          <span className={styles.label}>{i18n('指标')}</span>
           <span className={styles.value}>{rowName}</span>
         </li>
         <li className={styles.item}>
-          <span className={styles.label}>目标值</span>
+          <span className={styles.label}>{i18n('目标值')}</span>
           <span className={styles.value}>{value}</span>
         </li>
       </div>

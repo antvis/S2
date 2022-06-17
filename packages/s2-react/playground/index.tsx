@@ -366,7 +366,11 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="strategy" type="card" destroyInactiveTabPane>
+      <Tabs
+        defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}
+        type="card"
+        destroyInactiveTabPane
+      >
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey={['filter', 'interaction']}>
             <Collapse.Panel header="筛选器" key="filter">

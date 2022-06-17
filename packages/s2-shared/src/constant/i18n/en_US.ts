@@ -39,4 +39,9 @@ export const EN_US: Record<string, string> = {
   下载格式化数据: 'Download formatted data',
   操作成功: 'Operation successful',
   操作失败: 'Operation failed',
+
+  // strategy
+  时间: 'Date',
+  指标: 'Measure',
+  目标值: 'Target Value',
 };

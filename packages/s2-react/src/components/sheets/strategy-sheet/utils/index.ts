@@ -17,3 +17,10 @@ export const getRowName = (meta: ViewMeta) => {
     currentRow?.valueFiled || currentRow?.value,
   );
 };
+
+export const getColName = (meta: ViewMeta) => {
+  const leafColNode = getLeafColNode(meta);
+
+  // 兼容多列头, 优先取父级节点标题
+  return leafColNode?.parent?.label || leafColNode?.label || '';
+};

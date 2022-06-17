@@ -9,8 +9,9 @@ import cls from 'classnames';
 import { first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
 import { getLeafColNode, getRowName } from '../utils';
-import styles from './index.module.less';
 import type { CustomTooltipProps } from './interface';
+
+import styles from './index.module.less';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta() as ViewMeta;
