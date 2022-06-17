@@ -12,12 +12,12 @@ import {
 import type { Ref } from 'vue';
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
-// todo-zc:
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
 import _ from 'lodash';
 import LocationIcon from '@antv/s2-shared/src/icons/location-icon.svg?component';
 import TextIcon from '@antv/s2-shared/src/icons/text-icon.svg?component';
 import CalendarIcon from '@antv/s2-shared/src/icons/calendar-icon.svg?component';
+import type { Key } from 'ant-design-vue/lib/_util/type';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -46,7 +46,6 @@ export default defineComponent({
       setDrillFields,
       className,
     } = props as BaseDrillDownComponentProps;
-    const { drillVisible } = toRefs(props);
     const PRE_CLASS = 's2-drill-down';
     const getOptions = () => {
       return dataSet.map((val: BaseDataSet) => {
@@ -59,14 +58,10 @@ export default defineComponent({
     };
 
     const options: Ref<BaseDataSet[]> = ref(getOptions());
-
+    const selected = ref<Key[]>([]);
     onMounted(() => {
       // console.log(dataSet, 'dataSet');
     });
-    //
-    // watch(disabledFields, () => {
-    //   options = getOptions();
-    // })
 
     const handleSearch = (e: any) => {
       const { value } = e.target;
@@ -83,6 +78,7 @@ export default defineComponent({
     const handleSelect = (value: SelectInfo) => {
       // console.log(value, 'e.target')
       const key = value?.selectedKeys;
+      selected.value = key;
       if (getDrillFields) {
         getDrillFields(key as string[]);
       }
@@ -91,6 +87,7 @@ export default defineComponent({
 
     const handleClear = (e: { stopPropagation: () => void }) => {
       e.stopPropagation();
+      selected.value = [];
       if (getDrillFields) getDrillFields([]);
       if (setDrillFields) setDrillFields([]);
     };
@@ -102,6 +99,7 @@ export default defineComponent({
       handleClear,
       PRE_CLASS,
       className,
+      selected,
       _,
     };
   },
@@ -109,52 +107,49 @@ export default defineComponent({
 </script>
 
 <template>
-  <teleport v-if="drillVisible" to=".antv-s2-tooltip-container">
-    <div :class="[PRE_CLASS, className]">
-      <header :class="PRE_CLASS + '-header'">
-        <div>{{ titleText }}</div>
-        <Button
-          type="link"
-          :disabled="_.isEmpty(drillFields)"
-          @click="handleClear"
-        >
-          {{ clearButtonText }}
-        </Button>
-      </header>
-      <Input
-        :class="`${PRE_CLASS}-search`"
-        :placeholder="searchText"
-        @change="handleSearch"
-        @pressEnter="handleSearch"
-        :allowClear="true"
-      />
-      <Empty
-        v-if="_.isEmpty(options)"
-        :imageStyle="{ height: '64px' }"
-        :class="`${PRE_CLASS}-empty`"
-      />
-      <!--    <slot></slot>-->
-      <Menu
-        class="`${PRE_CLASS}-menu`"
-        v-model:selectedKeys="selectedKeys"
-        @select="handleSelect"
+  <div :class="[PRE_CLASS, className]">
+    <header :class="PRE_CLASS + '-header'">
+      <div>{{ titleText }}</div>
+      <Button
+        type="link"
+        :disabled="_.isEmpty(drillFields)"
+        @click="handleClear"
       >
-        <MenuItem
-          v-for="option in options"
-          :key="option.value"
-          :disabled="option.disabled"
-          :class="`${PRE_CLASS}-menu-item`"
-        >
-          <template #icon>
-            <text-icon v-if="option.type === 'text'" />
-            <calendar-icon v-if="option.type === 'date'" />
-            <location-icon v-if="option.type === 'location'" />
-          </template>
-          {{ option?.name }}
-        </MenuItem>
-      </Menu>
-    </div>
-  </teleport>
+        {{ clearButtonText }}
+      </Button>
+    </header>
+    <Input
+      :class="`${PRE_CLASS}-search`"
+      :placeholder="searchText"
+      @change="handleSearch"
+      @pressEnter="handleSearch"
+      :allowClear="true"
+    />
+    <Empty
+      v-if="_.isEmpty(options)"
+      :imageStyle="{ height: '64px' }"
+      :class="`${PRE_CLASS}-empty`"
+    />
+    <Menu
+      class="`${PRE_CLASS}-menu`"
+      v-model:selectedKeys="selected"
+      @select="handleSelect"
+    >
+      <MenuItem
+        v-for="option in options"
+        :key="option.value"
+        :disabled="option.disabled"
+        :class="`${PRE_CLASS}-menu-item`"
+      >
+        <template #icon>
+          <text-icon v-if="option.type === 'text'" />
+          <calendar-icon v-if="option.type === 'date'" />
+          <location-icon v-if="option.type === 'location'" />
+        </template>
+        {{ option?.name }}
+      </MenuItem>
+    </Menu>
+  </div>
 </template>
 
 <style lang="less" scoped>
