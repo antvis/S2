@@ -49,7 +49,14 @@ fetch('../data/basic-table-mode.json')
         dataCfg={s2DataConfig}
         options={s2Options}
         sheetType="table"
-        showPagination={true}
+        showPagination={{
+          onChange: (current) => {
+            console.log(current);
+          },
+          onShowSizeChange: (pageSize) => {
+            console.log(pageSize);
+          },
+        }}
       />,
       document.getElementById('container'),
     );
