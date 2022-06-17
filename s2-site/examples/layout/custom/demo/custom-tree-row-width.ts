@@ -11,26 +11,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      hierarchyType: 'grid', // 'tree'
+      hierarchyType: 'tree',
       style: {
-        // 树状默认下生效
-        treeRowsWidth: 100,
-        cellCfg: {
-          width: 100,
-          height: 90,
-        },
-        rowCfg: {
-          width: 100,
-          heightByField: {
-            'root[&]浙江省[&]杭州市': 30,
-            'root[&]浙江省[&]宁波市': 100,
-          },
-        },
-        colCfg: {
-          widthByFieldValue: {
-            number: 100,
-          },
-        },
+        treeRowsWidth: 200,
       },
     };
 
