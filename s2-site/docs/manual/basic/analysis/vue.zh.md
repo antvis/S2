@@ -1,6 +1,6 @@
 ---
 title: Vue 3.0 组件
-order: 11
+order: 13
 ---
 
 ## 基础表组件
