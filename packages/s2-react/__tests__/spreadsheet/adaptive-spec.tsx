@@ -85,7 +85,7 @@ describe('SheetComponent adaptive Tests', () => {
   };
 
   beforeEach(() => {
-    // s2.destroy()
+    s2.destroy();
   });
 
   test('should use container width when table first rendered', async () => {

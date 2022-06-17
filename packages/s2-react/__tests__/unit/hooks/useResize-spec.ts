@@ -24,7 +24,7 @@ describe('useResize tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   test('should rerender when option width or height changed and adaptive disable', () => {
