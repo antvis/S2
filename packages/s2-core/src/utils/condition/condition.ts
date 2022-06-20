@@ -39,10 +39,11 @@ export const getIntervalScale = (
     //    1. 如果当前值是正值，则从0点开始绘制： minValue____[0____current]____maxValue
     //    1. 如果当前值是负值，则从current点开始绘制： minValue___[current____0]____maxValue
     const zeroScale = realEnableNegativeInterval
-      ? clamp(Math.abs((current > 0 ? 0 : current) - minValue) / distance, 0, 1)
+      ? clamp(Math.abs(0 - minValue) / distance, 0, 1)
       : 0;
 
-    const scale = clamp(Math.abs(current - zero) / distance, 0, 1);
+    // scale 为负值时，代表方向绘制（g支持的模式）
+    const scale = clamp((current - zero) / distance, -1, 1);
     return { isNegative, zeroScale, scale };
   };
 };

@@ -100,8 +100,8 @@ describe('getIntervalScale Test', () => {
 
     expect(getScale(-20)).toEqual({
       isNegative: true,
-      zeroScale: 0.4,
-      scale: 0.1,
+      zeroScale: 0.5,
+      scale: -0.1,
     });
   });
 });
