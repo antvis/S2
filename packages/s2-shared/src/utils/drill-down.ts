@@ -1,16 +1,15 @@
-import {
-  GEvent,
+import { i18n, S2Event } from '@antv/s2';
+import type {
   HeaderActionIconProps,
-  i18n,
-  Node,
   PartDrillDownDataCache,
-  PivotDataSet,
-  S2Event,
   S2Options,
+  GEvent,
+  Node,
+  PivotDataSet,
   SpreadSheet,
 } from '@antv/s2';
-import { clone, filter, isEmpty } from 'lodash';
-import { PartDrillDown, PartDrillDownInfo } from '../interface';
+import { clone, filter, get, isEmpty, isNil } from 'lodash';
+import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {
   // 行维度id
@@ -75,14 +74,16 @@ export const handleActionIconClick = (params: ActionIconParams) => {
   const cache = drillDownCurrentCache?.drillField
     ? [drillDownCurrentCache?.drillField]
     : [];
-  const disabled = [];
+  const disabled: string[] = [];
   // 父节点已经下钻过的维度不应该再下钻
   drillDownDataCache.forEach((val) => {
     if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
       disabled.push(val.drillField);
     }
   });
-  spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+  if (event) {
+    spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+  }
   callback({
     sheetInstance: spreadsheet,
     cacheDrillFields: cache,
@@ -97,7 +98,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
  * @returns
  */
 const defaultDisplayCondition = (meta: Node) => {
-  const iconLevel = meta.spreadsheet.dataCfg.fields.rows.length - 1;
+  const iconLevel = get(meta, 'spreadsheet.dataCfg.fields.rows.length') - 1;
 
   // 只有数值置于列头且为树状分层结构时才支持下钻
   return (
@@ -155,7 +156,9 @@ export const buildDrillDownOptions = (
 
 export const handleDrillDown = (params: DrillDownParams) => {
   const { fetchData, spreadsheet, drillFields, drillItemsNum } = params;
-  spreadsheet.store.set('drillItemsNum', drillItemsNum);
+  if (drillItemsNum) {
+    spreadsheet.store.set('drillItemsNum', drillItemsNum);
+  }
   const meta = spreadsheet.store.get('drillDownNode');
   const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
     spreadsheet,
@@ -168,6 +171,9 @@ export const handleDrillDown = (params: DrillDownParams) => {
       drillDownDataCache,
       (cache) => cache.rowId !== meta.id,
     );
+  }
+  if (!fetchData) {
+    return;
   }
   fetchData(meta, drillFields).then((info) => {
     const { drillData, drillField } = info;

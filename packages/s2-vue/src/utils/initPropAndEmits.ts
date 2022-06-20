@@ -1,4 +1,4 @@
-import type { S2DataConfig, S2Options, ThemeCfg, i18n } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import type {
   Adaptive,
   BaseSheetComponentProps,

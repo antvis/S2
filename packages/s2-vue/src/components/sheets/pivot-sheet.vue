@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, h, createVNode } from 'vue';
+import { computed, defineComponent, ref, toRefs, createVNode } from 'vue';
 import { isEmpty } from 'lodash';
 import { buildDrillDownOptions, handleDrillDown } from '@antv/s2-shared';
 import type { SpreadSheet, S2Options } from '@antv/s2';
@@ -89,5 +89,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <BaseSheet ref="s2Ref" v-bind="$props" :options="options" />
+  <BaseSheet v-bind="$props" ref="s2Ref" :options="options" />
 </template>

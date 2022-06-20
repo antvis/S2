@@ -1,14 +1,5 @@
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  reactive,
-  ref,
-  toRefs,
-  watch,
-  watchEffect,
-  watchPostEffect,
-} from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
@@ -38,7 +29,7 @@ export default defineComponent({
     TextIcon,
     CalendarIcon,
   },
-  setup(props, ctx) {
+  setup(props) {
     const {
       dataSet,
       disabledFields,

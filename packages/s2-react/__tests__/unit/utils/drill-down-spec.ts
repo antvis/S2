@@ -7,6 +7,12 @@ import {
   SpreadSheet,
   PivotSheet,
 } from '@antv/s2';
+import {
+  buildDrillDownOptions,
+  getDrillDownCache,
+  handleActionIconClick,
+  handleDrillDown,
+} from '@antv/s2-shared';
 import { sleep, getContainer } from '../../util/helpers';
 import { data as originData } from '../../data/mock-dataset.json';
 import {
@@ -14,13 +20,7 @@ import {
   HZDrillDownData,
   SXDrillDownData,
 } from '../../data/mock-drill-down-dataset.json';
-import {
-  handleActionIconClick,
-  handleDrillDown,
-  buildDrillDownOptions,
-  getDrillDownCache,
-} from '@/utils';
-import type { PartDrillDown, PartDrillDownInfo } from '@/components';
+import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;
@@ -86,7 +86,11 @@ describe('Drill Down Test', () => {
   const iconClickCallback = jest.fn();
 
   beforeEach(() => {
-    mockInstance = new PivotSheet(getContainer(), mockDataCfg, null);
+    mockInstance = new PivotSheet(
+      getContainer(),
+      mockDataCfg,
+      null as unknown as S2Options,
+    );
     mockInstance.store = new Store();
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);

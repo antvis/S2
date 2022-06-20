@@ -536,7 +536,7 @@ const partDrillDown: PartDrillDown = {
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowData = dataSet
-        .getMultiData(meta?.query, true, true, [preDrillDownfield])
+        .getMultiData(meta?.query as DataType, true, true, [preDrillDownfield])
         .filter(
           (item) => item.sub_type && item.type && item[preDrillDownfield],
         );
@@ -551,7 +551,7 @@ const partDrillDown: PartDrillDown = {
           number: number0,
           sub_type: subType,
           type,
-          [field]: fieldMap[field][0],
+          [field]: fieldMap[field as keyof typeof fieldMap][0],
         };
         drillDownData.push(dataItem0);
         const dataItem1 = {
@@ -559,7 +559,7 @@ const partDrillDown: PartDrillDown = {
           number: number1,
           sub_type: subType,
           type,
-          [field]: fieldMap[field][1],
+          [field]: fieldMap[field as keyof typeof fieldMap][1],
         };
 
         drillDownData.push(dataItem1);

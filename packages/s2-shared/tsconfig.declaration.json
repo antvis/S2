@@ -6,5 +6,5 @@
     "emitDeclarationOnly": true,
     "paths": {}
   },
-  "include": ["src/**/*.ts", "src/typings.d.ts"]
+  "include": ["src/**/*.ts"]
 }
