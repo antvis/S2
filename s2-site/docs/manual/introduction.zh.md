@@ -34,7 +34,7 @@ redirect_from:
 
 ## ✨ 特性
 
-1. 开箱即用：提供不同场景下开箱即用的 `react` 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景。
+1. 开箱即用：提供不同场景下开箱即用的 `React`, `Vue3` 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景。
 2. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
 3. 高性能：能支持全量百万数据下 `<4s` 渲染，也能通过局部下钻来实现秒级渲染。
 4. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据流等）。
@@ -183,24 +183,20 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options)
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.render()
+s2.render();
 ```
 
 ### 4. 结果
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-### 📦 Packages
+## 📦 版本
 
-| Package                                                                      | Latest                                                            | Beta                                                          | Alpha                                                           | Size                                                                                                                          | Download                                                      |
-| ---------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
-| [@antv/s2-vue](https://github.com/antvis/S2/tree/master/packages/s2-vue)     | ![latest](https://img.shields.io/npm/v/@antv/s2-vue/latest.svg)   | ![beta](https://img.shields.io/npm/v/@antv/s2-vue/beta.svg)   | ![alpha](https://img.shields.io/npm/v/@antv/s2-vue/alpha.svg)   | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-vue@latest/dist/index.min.js?label=gzip%20size&compression=gzip)   | ![download](https://img.shields.io/npm/dm/@antv/s2-vue.svg)   |
+`markdown:docs/common/packages.zh.md`
 
-## 👤 Author
+## 👤 作者
 
 [**@AntV**](https://github.com/orgs/antvis/people)
 
@@ -218,11 +214,16 @@ yarn # 或者 yarn bootstrap
 yarn core:start
 
 # 调试 s2-react
-yarn core:watch
 yarn react:playground
+
+# 调试 s2-vue
+yarn vue:playground
 
 # 单元测试
 yarn test
+
+# 可视化调试单元测试
+yarn core:start
 
 # 打包
 yarn build

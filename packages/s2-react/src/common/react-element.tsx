@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { S2_PREFIX_CLS, TooltipContentType } from '@antv/s2';
+import { S2_PREFIX_CLS, type TooltipContentType } from '@antv/s2';
 
 interface Props {
   content: TooltipContentType;

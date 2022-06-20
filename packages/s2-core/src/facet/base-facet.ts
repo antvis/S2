@@ -1,67 +1,60 @@
 import type { IElement, IGroup } from '@antv/g-canvas';
-import { GestureEvent, Wheel } from '@antv/g-gesture';
-import { interpolateArray } from 'd3-interpolate';
-import { timer, Timer } from 'd3-timer';
 import { Group } from '@antv/g-canvas';
-import {
-  getColsForGrid,
-  getFrozenRowsForGrid,
-  getRowsForGrid,
-} from 'src/utils/grid';
+import { type GestureEvent, Wheel } from '@antv/g-gesture';
+import { interpolateArray } from 'd3-interpolate';
+import { timer, type Timer } from 'd3-timer';
 import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
+import { DataCell } from '../cell';
 import {
-  getAdjustedRowScrollX,
-  getAdjustedScrollOffset,
-} from 'src/utils/facet';
-import { CornerBBox } from './bbox/cornerBBox';
-import { PanelBBox } from './bbox/panelBBox';
-import {
-  calculateInViewIndexes,
-  getCellRange,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
-import {
-  S2Event,
+  InterceptType,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
-  InterceptType,
+  S2Event,
   ScrollbarPositionType,
-} from '@/common/constant';
-import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllChildCells } from '@/utils/get-all-child-cells';
+} from '../common/constant';
+import {
+  DebuggerUtil,
+  DEBUG_HEADER_LAYOUT,
+  DEBUG_VIEW_RENDER,
+} from '../common/debug';
+import type {
+  FrameConfig,
+  GridInfo,
+  LayoutResult,
+  OffsetConfig,
+  S2CellType,
+  SpreadSheetFacetCfg,
+  ViewMeta,
+} from '../common/interface';
+import type { S2WheelEvent, ScrollOffset } from '../common/interface/scroll';
+import type { SpreadSheet } from '../sheet-type';
+import { ScrollBar, ScrollType } from '../ui/scrollbar';
+import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
+import { getAllChildCells } from '../utils/get-all-child-cells';
+import { getColsForGrid, getRowsForGrid } from '../utils/grid';
+import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
+import { updateMergedCells } from '../utils/interaction/merge-cell';
+import { isMobile } from '../utils/is-mobile';
+import { CornerBBox } from './bbox/cornerBBox';
+import { PanelBBox } from './bbox/panelBBox';
 import {
   ColHeader,
   CornerHeader,
   Frame,
   RowHeader,
   SeriesNumberHeader,
-} from '@/facet/header';
-import { ViewCellHeights } from '@/facet/layout/interface';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { ScrollBar, ScrollType } from '@/ui/scrollbar';
-import { isMobile } from '@/utils/is-mobile';
+} from './header';
+import type { ViewCellHeights } from './layout/interface';
+import type { Node } from './layout/node';
 import {
-  DebuggerUtil,
-  DEBUG_HEADER_LAYOUT,
-  DEBUG_VIEW_RENDER,
-} from '@/common/debug';
-import {
-  LayoutResult,
-  OffsetConfig,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  S2CellType,
-  FrameConfig,
-  GridInfo,
-} from '@/common/interface';
-import { updateMergedCells } from '@/utils/interaction/merge-cell';
-import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
-import { DataCell } from '@/cell';
+  calculateInViewIndexes,
+  getCellRange,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -165,7 +158,7 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    const canvas = this.spreadsheet.getCanvasElement();
     canvas?.addEventListener('wheel', this.onWheel);
   };
 
@@ -201,7 +194,7 @@ export abstract class BaseFacet {
     this.renderHeaders();
     this.renderScrollBars();
     this.renderBackground();
-    this.dynamicRenderCell(false);
+    this.dynamicRenderCell();
   }
 
   /**
@@ -242,8 +235,8 @@ export abstract class BaseFacet {
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {
-    if (offsetConfig.offsetX.value !== undefined) {
-      if (offsetConfig.offsetX.animate) {
+    if (offsetConfig.offsetX?.value !== undefined) {
+      if (offsetConfig.offsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);
@@ -251,8 +244,8 @@ export abstract class BaseFacet {
       return;
     }
 
-    if (offsetConfig.offsetY.value !== undefined) {
-      if (offsetConfig.offsetY.animate) {
+    if (offsetConfig.offsetY?.value !== undefined) {
+      if (offsetConfig.offsetY?.animate) {
         this.scrollWithAnimation(offsetConfig);
       } else {
         this.scrollImmediately(offsetConfig);
@@ -314,7 +307,7 @@ export abstract class BaseFacet {
   };
 
   private unbindEvents = () => {
-    const canvas = this.spreadsheet.container.get('el') as HTMLElement;
+    const canvas = this.spreadsheet.getCanvasElement();
     canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
   };
@@ -823,13 +816,33 @@ export abstract class BaseFacet {
     }
   };
 
+  /**
+    https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior
+    阻止外部容器滚动: 表格是虚拟滚动, 这里按照标准模拟浏览器的 [overscroll-behavior] 实现
+    1. auto => 只有在滚动到表格顶部或底部时才触发外部容器滚动
+    1. contain => 默认的滚动边界行为不变（“触底”效果或者刷新），但是临近的滚动区域不会被滚动链影响到
+    2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
+    所以只要不为 `auto`, 或者表格内, 都需要阻止外部容器滚动
+  */
+  private stopScrollChainingIfNeeded = (event: S2WheelEvent) => {
+    const { interaction } = this.spreadsheet.options;
+
+    if (interaction.overscrollBehavior !== 'auto') {
+      this.stopScrollChaining(event);
+    }
+  };
+
+  private stopScrollChaining = (event: S2WheelEvent) => {
+    event?.preventDefault?.();
+  };
+
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
+    const { interaction } = this.spreadsheet.options;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,
-      ratio,
+      interaction.scrollSpeedRatio,
     );
 
     this.spreadsheet.hideTooltip();
@@ -838,10 +851,12 @@ export abstract class BaseFacet {
     if (
       !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
     ) {
+      this.stopScrollChainingIfNeeded(event);
       return;
     }
 
-    event?.preventDefault?.();
+    this.stopScrollChaining(event);
+
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     if (!this.cancelScrollFrame()) {
@@ -978,15 +993,6 @@ export abstract class BaseFacet {
     this.preCellIndexes = indexes;
   };
 
-  /**
-   * How long about the delay period, need be re-considered,
-   * for now only delay, oppose to immediately
-   * @private
-   */
-  debounceRenderCell = (scrollX: number, scrollY: number) => {
-    this.realCellRender(scrollX, scrollY);
-  };
-
   protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
@@ -1002,18 +1008,13 @@ export abstract class BaseFacet {
     this.calculateCellWidthHeight();
     this.calculateCornerBBox();
     this.calculatePanelBBox();
-
     this.clipPanelGroup();
     this.bindEvents();
   }
 
   protected renderBackground() {
     const { width, height } = this.getCanvasHW();
-    const color = get(this.cfg, 'spreadsheet.theme.background.color') as string;
-    const opacity = get(
-      this.cfg,
-      'spreadsheet.theme.background.opacity',
-    ) as number;
+    const { color, opacity } = this.spreadsheet.theme.background;
 
     this.backgroundGroup.addShape('rect', {
       attrs: {
@@ -1190,10 +1191,9 @@ export abstract class BaseFacet {
   /**
    * When scroll behavior happened, only render one time in a period,
    * but render immediately in initiate
-   * @param delay debounce render cell
    * @protected
    */
-  protected dynamicRenderCell(delay = true) {
+  protected dynamicRenderCell() {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
 
@@ -1203,12 +1203,7 @@ export abstract class BaseFacet {
       this.panelBBox.viewportHeight,
     );
 
-    if (delay) {
-      this.debounceRenderCell(scrollX, scrollY);
-    } else {
-      this.realCellRender(scrollX, scrollY);
-    }
-
+    this.realCellRender(scrollX, scrollY);
     this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);

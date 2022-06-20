@@ -4,10 +4,16 @@ import {
   getSortByMeasureValues,
   sortAction,
   sortByCustom,
+  sortByFunc,
 } from '@/utils/sort-action';
-import { EXTRA_FIELD, S2Options, SortParam, TOTAL_VALUE } from '@/common';
+import {
+  EXTRA_FIELD,
+  type S2Options,
+  type SortParam,
+  TOTAL_VALUE,
+} from '@/common';
 import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet, SortActionParams } from '@/data-set';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -171,6 +177,66 @@ describe('Sort By Custom Test', () => {
   });
 });
 
+describe('Sort By Func Tests', () => {
+  test('should return default values', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
+    const result = sortByFunc({
+      originValues,
+      sortParam: {
+        sortFieldId: 'city',
+        sortFunc: () => [],
+      },
+    });
+
+    expect(result).toEqual(originValues);
+  });
+
+  test('should return sortFunc result', () => {
+    const result = sortByFunc({
+      sortParam: {
+        sortFieldId: 'city',
+        sortFunc: () => ['浙江[&]杭州'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    expect(result).toEqual(['浙江[&]杭州']);
+  });
+
+  test('should return fallback result', () => {
+    const result = sortByFunc({
+      originValues: [
+        '四川[&]成都',
+        '四川[&]绵阳',
+        '浙江[&]杭州',
+        '浙江[&]绍兴',
+      ],
+      sortParam: {
+        sortFieldId: 'city',
+        // 不返回带 [&] 分隔符的结果
+        sortFunc: () => ['绍兴', '绵阳', '杭州', '成都'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    expect(result).toEqual([
+      '四川[&]绵阳',
+      '四川[&]成都',
+      '浙江[&]绍兴',
+      '浙江[&]杭州',
+    ]);
+  });
+});
+
 describe('getSortByMeasureValues', () => {
   let sheet: PivotSheet;
   let dataSet: PivotDataSet;
@@ -198,12 +264,14 @@ describe('getSortByMeasureValues', () => {
       },
     },
   } as S2Options;
+
   beforeEach(() => {
     sheet = new PivotSheet(getContainer(), sortData, s2Options);
     dataSet = new PivotDataSet(sheet);
     dataSet.setDataCfg(sortData);
     sheet.dataSet = dataSet;
   });
+
   test('should sort by col total', () => {
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {

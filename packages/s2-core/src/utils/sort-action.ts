@@ -1,22 +1,21 @@
 import {
-  keys,
-  has,
-  map,
-  toUpper,
   endsWith,
-  uniq,
-  isEmpty,
+  has,
   includes,
-  split,
   indexOf,
-  isArray,
+  isEmpty,
+  keys,
+  map,
+  split,
+  toUpper,
+  uniq,
 } from 'lodash';
-import { Fields, SortMethod, SortParam } from '@/common/interface';
-import { DataType, SortActionParams } from '@/data-set/interface';
-import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
-import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
-import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
-import { PivotDataSet } from '@/data-set';
+import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
+import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type { PivotDataSet } from '../data-set';
+import type { DataType, SortActionParams } from '../data-set/interface';
+import { getListBySorted, sortByItems } from '../utils/data-set-operate';
+import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -76,15 +75,6 @@ const mergeDataWhenASC = (
   return [...new Set([...sortedValues, ...originValues])];
 };
 
-export const sortByFunc = (params: SortActionParams): string[] => {
-  const { originValues, measureValues, sortParam } = params;
-  const { sortFunc } = sortParam;
-  return (
-    (sortFunc({ data: measureValues, ...sortParam }) as string[]) ||
-    originValues
-  );
-};
-
 export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
 
@@ -124,6 +114,37 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   );
 
   return getListBySorted(originValues, sortedIdWithPre);
+};
+
+export const sortByFunc = (params: SortActionParams): string[] => {
+  const { originValues, measureValues, sortParam, dataSet } = params;
+  const { sortFunc, sortFieldId } = sortParam;
+
+  const sortResult = sortFunc({
+    data: measureValues,
+    ...sortParam,
+  }) as string[];
+
+  if (!sortResult?.length) {
+    return originValues;
+  }
+
+  if (
+    (dataSet.fields.rows.indexOf(sortFieldId) > 0 ||
+      dataSet.fields.columns.indexOf(sortFieldId) > 0) &&
+    !includes(sortResult[0], ID_SEPARATOR)
+  ) {
+    /**
+     * 当被排序字段为 行、列维度的非首维度，且用户返回的结果没有 [&] 连接符，把使用 sortResult 按照手动排序进行兜底处理
+     * 如 行维度=[province, city]，sortFieldId=city
+     * sortResult 返回的为 ['成都', '杭州']，而不是 ['浙江[&]杭州', '四川[&]成都']
+     */
+    return sortByCustom({
+      sortByValues: sortResult,
+      originValues,
+    });
+  }
+  return sortResult;
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {

@@ -51,7 +51,7 @@ s2.xx()
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`) | `() => void` |
 | setDataCfg | 更新数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig) ) => void |
 | setOptions | 更新表格配置 | (options: [S2Options](/zh/docs/api/general/S2Options)) => void |
-| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据, `reBuildDataSet` = true, 重新构建数据集, `reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |
+| render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |
 | destroy | 销毁表格 | `() => void` |
 | setThemeCfg | 更新主题配置 | (themeCfg: [ThemeCfg](/zh/docs/api/general/S2Theme)) => void |
 | updatePagination | 更新分页 | (pagination: [Pagination](/zh/docs/api/general/S2Options#pagination)) => void |
@@ -67,6 +67,7 @@ s2.xx()
 | getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |
 | getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
 | getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
+| getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素 | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |
 
 ### S2MountContainer
 
@@ -121,14 +122,4 @@ type BBox = {
   width: number;
   height: number;
 };
-```
-
-### S2Constructor
-
-功能描述：透视表内部构造参数
-
-```ts
-type S2MountContainer = string | HTMLElement;
-
-type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
 ```

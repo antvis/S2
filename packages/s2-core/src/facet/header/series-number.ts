@@ -1,15 +1,19 @@
-import { Group, IGroup, IShape } from '@antv/g-canvas';
+import type { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
+import {
+  CellBorderPosition,
+  type Padding,
+  type ViewMeta,
+} from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type/index';
+import { getBorderPositionAndStyle } from '../../utils/cell/cell';
+import { renderLine, renderRect } from '../../utils/g-renders';
+import { measureTextWidth } from '../../utils/text';
+import { getAdjustPosition } from '../../utils/text-absorption';
+import type { PanelBBox } from '../bbox/panelBBox';
+import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { PanelBBox } from '../bbox/panelBBox';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type/index';
-import { renderRect, renderLine } from '@/utils/g-renders';
-import { measureTextWidth } from '@/utils/text';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
+import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
@@ -87,8 +91,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     }
 
     const borderGroup = this.addGroup();
-    each(data, (item: any) => {
-      const { y, height: cellHeight, isLeaf } = item;
+    each(data, (cellData) => {
+      const { y, height: cellHeight, isLeaf } = cellData;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
         cellHeight,
@@ -100,13 +104,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         const group = this.addGroup();
 
         // 添加文本
-        this.addText(group, item);
+        this.addText(group, cellData);
 
         this.add(group);
 
         // 添加边框
         if (!isLeaf) {
-          this.addBorder(borderGroup, item);
+          this.addBorder(borderGroup, cellData);
         }
       }
     });
@@ -124,7 +128,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBackGround() {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const rowCellTheme = this.getStyle().cell;
     const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
@@ -153,7 +157,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBorder(group: IGroup, cellData) {
-    const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const cellTheme = this.getStyle().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
       getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
@@ -161,21 +165,18 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
-  private addText(group: IGroup, cellData: ViewMeta) {
+  private getStyle() {
+    return this.headerConfig.spreadsheet.theme.rowCell;
+  }
+
+  private addText(group: IGroup, cellData: Node) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      isLeaf,
-      isTotals,
-    } = cellData;
+    const textStyle = {
+      ...this.getStyle().seriesText,
+      textBaseline: 'top' as const,
+    };
+    const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
     const padding = this.getTextPadding(label, cellWidth);
-    const textStyle =
-      isLeaf && !isTotals ? rowCellTheme.text : rowCellTheme.bolderText;
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
@@ -187,7 +188,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     group.addShape('text', {
       attrs: {
         x: x + padding.left,
-        y: textY + textStyle.fontSize / 2,
+        y: textY,
         text: label,
         ...textStyle,
         cursor: 'pointer',
@@ -196,8 +197,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {
-    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
-    const textWidth = measureTextWidth(text, rowCellTheme.text);
+    const rowCellTheme = this.getStyle();
+    const textWidth = measureTextWidth(text, rowCellTheme.seriesText);
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
       ...rowCellTheme.cell.padding,

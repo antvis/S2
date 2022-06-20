@@ -1,12 +1,9 @@
-import React from 'react';
+import { getEmptyPlaceholder, isUpDataValue } from '@antv/s2';
 import cls from 'classnames';
 import { find, first, get, isEmpty, isNil } from 'lodash';
-import { isUpDataValue, MultiData, getEmptyPlaceholder } from '@antv/s2';
-import { CustomTooltipProps } from './interface';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import React from 'react';
 import styles from './index.module.less';
+import type { CustomTooltipProps } from './interface';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();
@@ -40,9 +37,9 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
     currentRow?.valueFiled || currentRow?.value,
   );
 
-  const [value, ...derivedValues] = first(
-    (meta.fieldValue as MultiData)?.values,
-  ) || [meta.fieldValue];
+  const [value, ...derivedValues] = first(meta.fieldValue?.values) || [
+    meta.fieldValue,
+  ];
 
   const { placeholder, style } = meta.spreadsheet.options;
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);

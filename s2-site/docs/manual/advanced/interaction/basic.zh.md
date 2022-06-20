@@ -224,6 +224,20 @@ const s2Options = {
 };
 ```
 
+### 单选后行列头高亮
+
+在鼠标选中单元格后时，高亮当前单元格对应的行列头单元格，利于快速定位单元格所在行列。默认关闭，可配置 `selectedCellHighlight` 开启：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600" />
+
+```ts
+const s2Options = {
+  interaction: {
+    selectedCellHighlight: true // 默认 false
+  }
+};
+```
+
 ### 悬停聚焦
 
 鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭，也可配置 `hoverFocus.duration` 更改出现 `tooltip` 的时间间隔。如果希望 hover 后立刻出现 tooltip，可以设置 `duration` 为 0;
@@ -353,6 +367,10 @@ const s2Options = {
 
 查看 [详情](/zh/docs/manual/advanced/interaction/link-jump) 或 [具体例子](/zh/examples/interaction/advanced#pivot-link-jump)
 
+### 滚动
+
+查看 [详情](/zh/docs/manual/advanced/interaction/scroll)
+
 ### 重置交互
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pTs1QZPz4/Kapture%2525202022-04-19%252520at%25252019.24.56.gif" alt="preview" width="600" />
@@ -381,24 +399,9 @@ const s2Options = {
 };
 ```
 
-## 自定义滚动速度
-
-可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，默认为 1。 [查看具体例子](/zh/examples/interaction/advanced#scroll-speed-ratio)
-
-```ts
-const s2Options = {
-  interaction: {
-    scrollSpeedRatio: {
-      vertical: 0.3, // 垂直
-      horizontal: 1, // 水平
-    },
-  },
-};
-```
-
 ## 调用交互方法
 
-`S2` 内置了一些交互相关的方法，统一挂载在 `interaction` 命名空间下，你可以在拿到 `SpreadSheet` 实例后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
+`S2` 内置了一些交互相关的方法，统一挂载在 `interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/zh/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet()

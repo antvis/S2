@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/data-issue-372.json';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import { S2Options } from '@/common';
+import type { S2Options } from '@/common';
 
 const s2options: S2Options = {
   width: 800,

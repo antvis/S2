@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "表格组件",
+    "en": "Sheet Component"
+  },
+  "demos": [
+    {
+      "filename": "pivot.tsx",
+      "title": {
+        "zh": "透视表分页",
+        "en": "PivotSheet pagination"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6h9nmPdj9b/e4163ac4-2d17-4efd-8556-d5e32fd15b25.png"
+    },
+    {
+      "filename": "table.tsx",
+      "title": {
+        "zh": "明细表分页",
+        "en": "TableSheet pagination"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MK67LrYwRh/5e972478-06e4-40fc-bcbe-21c05fd144e5.png"
+    }
+  ]
+}

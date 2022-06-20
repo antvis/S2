@@ -4,14 +4,14 @@
 import { get, keys } from 'lodash';
 import { assembleDataCfg } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
+jest.mock('@/sheet-type');
+jest.mock('@/facet/layout/node');
 const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
 
 describe('Pivot Mode Test When Value In Row', () => {

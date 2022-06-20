@@ -1,9 +1,7 @@
-import React from 'react';
 import cls from 'classnames';
-import { CustomTooltipProps } from './interface';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import React from 'react';
 import styles from './index.module.less';
+import type { CustomTooltipProps } from './interface';
 
 export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();

@@ -1,7 +1,7 @@
-import React from 'react';
 import { Card } from 'antd';
-import { HtmlIcon } from '@/common/icons';
-import { ADVANCED_PRE_CLS } from '@/common/constant';
+import React from 'react';
+import { ADVANCED_SORT_PRE_CLS } from '@antv/s2-shared';
+import { HtmlIcon } from '../../common/icons';
 
 export interface CustomSortProps {
   splitOrders: string[];
@@ -38,7 +38,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
       <>
         <span className="split-text">{value}</span>
         <span
-          className={`${ADVANCED_PRE_CLS}-split-icon`}
+          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
           onClick={() => {
             upHandler(value);
           }}
@@ -46,7 +46,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
           <HtmlIcon name="groupAsc" />
         </span>
         <span
-          className={`${ADVANCED_PRE_CLS}-split-icon`}
+          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
           onClick={() => {
             downHandler(value);
           }}
@@ -54,7 +54,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
           <HtmlIcon name="groupDesc" />
         </span>
         <span
-          className={`${ADVANCED_PRE_CLS}-split-icon`}
+          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
           onClick={() => {
             toTopHandler(value);
           }}
@@ -66,11 +66,11 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
   };
 
   return (
-    <Card className={`${ADVANCED_PRE_CLS}-card-content`}>
+    <Card className={`${ADVANCED_SORT_PRE_CLS}-card-content`}>
       {splitOrders.map((value) => (
         <li
           key={value}
-          className={`${ADVANCED_PRE_CLS}-split-value`}
+          className={`${ADVANCED_SORT_PRE_CLS}-split-value`}
           title={value}
         >
           {renderItem(value)}

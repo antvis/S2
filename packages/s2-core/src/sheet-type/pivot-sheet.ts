@@ -1,26 +1,27 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { clone, last } from 'lodash';
-import { SpreadSheet } from './spread-sheet';
-import { Node } from '@/facet/layout/node';
-import { DataCell } from '@/cell';
+import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_SORT_MENUS,
-} from '@/common/constant';
-import {
+  getTooltipOperatorTableSortMenus,
+  getTooltipOperatorSortMenus,
+} from '../common/constant';
+import type {
+  RowCellCollapseTreeRowsType,
   S2Options,
   SortMethod,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { RowCellCollapseTreeRowsType } from '@/common/interface/emitter';
-import { PivotDataSet } from '@/data-set';
-import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
-import { PivotFacet } from '@/facet';
+} from '../common/interface';
+import { PivotDataSet } from '../data-set';
+import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
+import { PivotFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {
@@ -196,13 +197,13 @@ export class PivotSheet extends SpreadSheet {
   public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
+
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
         this.groupSortByMethod(key as unknown as SortMethod, meta);
-        // 排序事件完成触发
         this.emit(S2Event.RANGE_SORTED, event);
       },
-      menus: TOOLTIP_OPERATOR_SORT_MENUS,
+      menus: getTooltipOperatorSortMenus(),
     };
 
     this.showTooltipWithInfo(event, [], {

@@ -1,20 +1,21 @@
-import { BBox, Group, IShape, ShapeAttrs } from '@antv/g-canvas';
+import type { BBox, IShape, ShapeAttrs } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
   ResizeAreaEffect,
   ResizeDirectionType,
-  ResizeInfo,
+  type ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
   RowColumnResize,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
 } from '@/index';
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');

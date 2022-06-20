@@ -1,15 +1,16 @@
-import { BBox, Group } from '@antv/g-canvas';
-import {
+import type { BBox, Group } from '@antv/g-canvas';
+import type {
+  InteractionOptions,
   InteractionStateInfo,
   S2CellType,
   SortParam,
   ViewMeta,
 } from '../interface';
-import { ValueRanges } from './condition';
-import { S2DataConfig } from './s2DataConfig';
-import { Node } from '@/facet/layout/node';
-import { PartDrillDownFieldInLevel } from '@/common/interface';
-import { GuiIcon } from '@/common/icons';
+import type { Node } from '../../facet/layout/node';
+import type { PartDrillDownFieldInLevel } from '../../common/interface';
+import type { GuiIcon } from '../../common/icons';
+import type { S2DataConfig } from './s2DataConfig';
+import type { ValueRanges } from './condition';
 
 export interface Selected {
   type:
@@ -86,6 +87,6 @@ export interface StoreKey {
 
   // last click cell
   lastClickedCell: S2CellType<ViewMeta>;
-
+  initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
   [key: string]: unknown;
 }

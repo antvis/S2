@@ -1,8 +1,8 @@
 import {
-  Group,
   Canvas,
   Event as CanvasEvent,
-  LooseObject,
+  Group,
+  type LooseObject,
   Shape,
 } from '@antv/g-canvas';
 import { each, get, isEmpty, isNil } from 'lodash';
@@ -14,12 +14,11 @@ import {
   OriginEventType,
   S2Event,
   SHAPE_STYLE_MAP,
-} from '@/common/constant';
-import { EmitterType } from '@/common/interface/emitter';
-import { ResizeInfo } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
+} from '../common/constant';
+import type { EmitterType, ResizeInfo } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
+import { getSelectedData, keyEqualTo } from '../utils/export/copy';
+import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -50,7 +49,7 @@ export class EventController {
 
   public domEventListeners: EventListener[] = [];
 
-  private isCanvasEffect = false;
+  public isCanvasEffect = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -180,7 +179,11 @@ export class EventController {
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
-      const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+      const canvas = this.spreadsheet.getCanvasElement();
+      if (!canvas) {
+        return false;
+      }
+
       const { x, y } = canvas.getBoundingClientRect() || {};
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)
@@ -218,6 +221,7 @@ export class EventController {
         event.target,
       );
     }
+
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&

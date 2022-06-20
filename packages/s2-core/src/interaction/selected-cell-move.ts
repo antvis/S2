@@ -1,11 +1,11 @@
-import { Event } from '@antv/g-canvas';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { CellTypes, CellMeta, ViewMeta } from '@/common';
-import { getDataCellId } from '@/utils';
-import { SpreadSheet } from '@/sheet-type';
-import { calculateInViewIndexes } from '@/facet/utils';
-import { selectCells, getRangeIndex } from '@/utils/interaction/select-event';
+import type { Event } from '@antv/g-canvas';
+import { type CellMeta, CellTypes, type ViewMeta } from '../common';
+import { InteractionKeyboardKey, S2Event } from '../common/constant';
+import { calculateInViewIndexes } from '../facet/utils';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataCellId } from '../utils';
+import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
   InteractionKeyboardKey.ARROW_LEFT,
@@ -24,10 +24,17 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     super(spreadsheet);
   }
 
+  private isCanvasEffect() {
+    return this.spreadsheet.interaction.eventController.isCanvasEffect;
+  }
+
   public bindEvents() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
+        if (!this.isCanvasEffect()) {
+          return;
+        }
         const isShift = event.shiftKey;
         const isMeta = event.metaKey;
         const hasDirection = SelectedCellMoveMap.includes(

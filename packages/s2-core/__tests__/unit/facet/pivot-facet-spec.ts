@@ -13,23 +13,23 @@ import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
-import { ViewMeta } from '@/common/interface/basic';
+import type { ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
-import { GridGroup } from '@/group/grid-group';
+import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/interaction/root');
 
 const actualPivotDataSet = jest.requireActual(
-  'src/data-set/pivot-data-set',
+  '@/data-set/pivot-data-set',
 ).PivotDataSet;
 const actualDataSet = jest.requireActual(
-  'src/data-set/base-data-set',
+  '@/data-set/base-data-set',
 ).BaseDataSet;
 
 const { rowPivotMeta, colPivotMeta, indexesData, sortedDimensionValues } =
   getMockPivotMeta();
 
-jest.mock('src/sheet-type', () => {
+jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
     height: 100,
@@ -62,12 +62,13 @@ jest.mock('src/sheet-type', () => {
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
         },
+        getCanvasElement: () => container.get('el'),
       };
     }),
   };
 });
 
-jest.mock('src/data-set/pivot-data-set', () => {
+jest.mock('@/data-set/pivot-data-set', () => {
   return {
     PivotDataSet: jest.fn().mockImplementation(() => {
       return {

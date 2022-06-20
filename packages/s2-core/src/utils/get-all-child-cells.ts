@@ -1,9 +1,14 @@
-import { Group, IElement } from '@antv/g-canvas';
+import { Group, type IElement } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
 
 export const getAllChildCells = <T extends IElement>(
   children: IElement[] = [],
   cellType: any,
 ): T[] => {
+  if (isEmpty(children)) {
+    return [];
+  }
+
   const cells: T[] = [];
   children.forEach((child) => {
     if (child instanceof cellType) {

@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   createPivotSheet,
 } from 'tests/util/helpers';
-import { BBox } from '@antv/g-canvas';
+import type { BBox } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import {
   getAutoAdjustPosition,
@@ -17,16 +17,16 @@ import {
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
-  S2CellType,
+  type S2CellType,
   SpreadSheet,
-  Tooltip,
-  TooltipData,
+  type Tooltip,
+  type TooltipData,
   TOOLTIP_POSITION_OFFSET,
-  Total,
-  Totals,
+  type Total,
+  type Totals,
   VALUE_FIELD,
 } from '@/index';
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 
 jest.mock('@/interaction/event-controller');
 
@@ -676,6 +676,7 @@ describe('Tooltip Utils Tests', () => {
 
   test('should set container class name', () => {
     const container = document.createElement('div');
+    container.className = 'a';
 
     setContainerStyle(container, {
       className: 'test',

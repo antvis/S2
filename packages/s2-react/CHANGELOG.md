@@ -1,52 +1,62 @@
-# [@antv/s2-react-v1.16.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.4...@antv/s2-react-v1.16.0-alpha.5) (2022-05-25)
+# [@antv/s2-react-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.17.0...@antv/s2-react-v1.18.0) (2022-06-17)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复行/列层级超过2级时选中数据统计错误 ([#1443](https://github.com/antvis/S2/issues/1443)) ([09dd677](https://github.com/antvis/S2/commit/09dd677458c904f7b86c8457a489bca26a366269))
+* **tooltip:** 减少 tooltip 框重绘 ([#1418](https://github.com/antvis/S2/issues/1418)) ([59c6a87](https://github.com/antvis/S2/commit/59c6a87f256866962ea3b523fd882a8d4e1eb6e9))
+* 修复打包core层源码中样式文件错误问题 ([#1408](https://github.com/antvis/S2/issues/1408)) ([d2c0894](https://github.com/antvis/S2/commit/d2c08949d22dc61dbc73e01a779756e1d7a78fb6))
+
+
+### Features
+
+* **scroll:** 增加边界滚动配置, 解决横屏滚动会触发 mac 回退的问题 ([#1409](https://github.com/antvis/S2/issues/1409)) ([ada5082](https://github.com/antvis/S2/commit/ada5082d299357b1b38af7629a784e3d071e6b77))
+
+# [@antv/s2-react-v1.17.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.1...@antv/s2-react-v1.17.0) (2022-06-02)
+
+
+### Bug Fixes
+
+* **locale:** 修复国际化配置不生效 close [#1394](https://github.com/antvis/S2/issues/1394) ([#1397](https://github.com/antvis/S2/issues/1397)) ([cfd5dbe](https://github.com/antvis/S2/commit/cfd5dbe0344afbb6f3929bece1778c02f9bbc00b))
+* style 引入失败 ([#1390](https://github.com/antvis/S2/issues/1390)) ([7d11561](https://github.com/antvis/S2/commit/7d11561039f33c897910bacab2cf8ce20b8543d0))
+* 修复表格卸载后调用实例方法报错的问题 close [#1349](https://github.com/antvis/S2/issues/1349) ([#1400](https://github.com/antvis/S2/issues/1400)) ([bcf21bb](https://github.com/antvis/S2/commit/bcf21bb2099e04496c76b9cd28fa6d7723c9edcb))
+
+
+### Features
+
+* 趋势分析表支持子弹图配置 ([#1367](https://github.com/antvis/S2/issues/1367)) ([b5756cc](https://github.com/antvis/S2/commit/b5756cc2f4d2054f3d5a8eb31134efd23b1dd230))
+
+# [@antv/s2-react-v1.16.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0...@antv/s2-react-v1.16.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* style 引入失败 ([8ee0a0b](https://github.com/antvis/S2/commit/8ee0a0b21c99d6f7bdf4a5d9fb91f9eaedf8d00f))
+
+# [@antv/s2-react-v1.16.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.1...@antv/s2-react-v1.16.0) (2022-05-30)
 
 
 ### Bug Fixes
 
 * **interaction:** 修复自定义单元格有自定义图片时无法触发点击 close [#1360](https://github.com/antvis/S2/issues/1360) ([#1365](https://github.com/antvis/S2/issues/1365)) ([685cd04](https://github.com/antvis/S2/commit/685cd0458e33d189ced36eb708c8ed697f3d024c))
-
-
-### Features
-
-* **theme:** 新增度量值的主题配置, 修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
-
-# [@antv/s2-react-v1.16.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.3...@antv/s2-react-v1.16.0-alpha.4) (2022-05-20)
-
-
-### Bug Fixes
-
-* 下钻数据没有按照用户数据展示 ([#1353](https://github.com/antvis/S2/issues/1353)) ([065c3bd](https://github.com/antvis/S2/commit/065c3bdea3625232de7d98797ef7266eea74f67c))
-
-
-### Features
-
-* 丰富tooltip关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
-
-# [@antv/s2-react-v1.16.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.2...@antv/s2-react-v1.16.0-alpha.3) (2022-05-19)
-
-
-### Bug Fixes
-
 * **interaction:** 修复默认隐藏列的配置更新为空数组时, 未触发表格更新 ([#1351](https://github.com/antvis/S2/issues/1351)) ([7ed1011](https://github.com/antvis/S2/commit/7ed101152caa180cc7090861f4fbf7f774148a23))
-
-# [@antv/s2-react-v1.16.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.0-alpha.1...@antv/s2-react-v1.16.0-alpha.2) (2022-05-18)
-
-
-### Bug Fixes
-
+* **strategysheet:** 修复趋势分析表多列头时叶子节点未和数值单元格对齐 ([#1371](https://github.com/antvis/S2/issues/1371)) ([2d3ff04](https://github.com/antvis/S2/commit/2d3ff047b414b5861203d39b5f3db23fe1307c16))
 * **tooltip:** 修复存在小计/总计时汇总数据计算错误 close [#1137](https://github.com/antvis/S2/issues/1137) ([#1346](https://github.com/antvis/S2/issues/1346)) ([f6e5e8c](https://github.com/antvis/S2/commit/f6e5e8c1b05563dee29e926887aa08ef92bd4302))
-
-# [@antv/s2-react-v1.16.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.1...@antv/s2-react-v1.16.0-alpha.1) (2022-05-17)
-
-
-### Bug Fixes
-
+* 下钻数据没有按照用户数据展示 ([#1353](https://github.com/antvis/S2/issues/1353)) ([065c3bd](https://github.com/antvis/S2/commit/065c3bdea3625232de7d98797ef7266eea74f67c))
 * 不应以mutable的方式修改headerActionIcons ([#1331](https://github.com/antvis/S2/issues/1331)) ([518456e](https://github.com/antvis/S2/commit/518456e7ec7ce7e9e5d91237f8092250b9a585d3))
 
 
 ### Features
 
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* **theme:** 新增度量值的主题配置, 修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
+* Vue 1.0 ([#1290](https://github.com/antvis/S2/issues/1290)) ([0745836](https://github.com/antvis/S2/commit/07458368d7eafd3ddee168d5b2adca463374ab5a))
+* 丰富tooltip关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
+* 新增 "如何用 S2 买房" demo ([#1383](https://github.com/antvis/S2/issues/1383)) ([1e790dc](https://github.com/antvis/S2/commit/1e790dc4eb16b292d22dcf5233e199913ff1c17d))
+
+
+### Reverts
+
+* Revert "chore(release): @antv/s2@1.18.0 @antv/s2-react@1.16.0 @antv/s2-vue@1.0.0 (#1384)" (#1386) ([60cdf6a](https://github.com/antvis/S2/commit/60cdf6abe7fb3b44f831051bd55622587a0f5bf8)), closes [#1384](https://github.com/antvis/S2/issues/1384) [#1386](https://github.com/antvis/S2/issues/1386)
 
 # [@antv/s2-react-v1.15.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.15.0...@antv/s2-react-v1.15.1) (2022-05-13)
 

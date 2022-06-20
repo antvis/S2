@@ -1,13 +1,13 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
-import {
+import { getTooltipDefaultOptions } from '@antv/s2';
+import type {
   ListItem,
   TooltipOperatorOptions,
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
   TooltipInterpretationOptions,
-  getTooltipDefaultOptions,
 } from '@antv/s2';
 import { TooltipDetail } from './components/detail';
 import { TooltipHead } from './components/head-info';
@@ -16,10 +16,9 @@ import { TooltipInterpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
 import { TooltipSimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
-import { TooltipRenderProps } from './interface';
+import type { TooltipRenderProps } from './interface';
 
-import '@antv/s2/src/ui/tooltip/index.less';
-import '@antv/s2-shared/src/styles/tooltip/index.less';
+import './index.less';
 
 export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const { data, options, content, cell } = props;

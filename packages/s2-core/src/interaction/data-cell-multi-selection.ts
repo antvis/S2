@@ -1,18 +1,18 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
+import type { DataCell } from '../cell';
+import {
+  InteractionStateName,
+  InterceptType,
+  S2Event,
+} from '../common/constant';
+import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
-} from 'src/utils/interaction/select-event';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { getActiveCellsTooltipData } from '@/utils/tooltip';
-import {
-  InterceptType,
-  InteractionStateName,
-  S2Event,
-} from '@/common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
-import { DataCell } from '@/cell';
+} from '../utils/interaction/select-event';
+import { getActiveCellsTooltipData } from '../utils/tooltip';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent

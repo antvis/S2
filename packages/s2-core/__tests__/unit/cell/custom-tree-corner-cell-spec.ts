@@ -4,9 +4,9 @@
 import { get } from 'lodash';
 import { customTreeItems } from 'tests/data/custom-tree-items';
 import { dataCustomTrees } from 'tests/data/data-custom-trees';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
-import { CornerCell, S2Options } from '@/index';
+import { CornerCell, type S2Options } from '@/index';
 
 describe('test for corner text', () => {
   const values = [

@@ -1,4 +1,3 @@
-import { IGroup } from '@antv/g-canvas';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -16,11 +15,15 @@ import {
   MergedCellConvertTempMergedCells,
   differenceTempMergedCells,
 } from '@/utils';
-import { RootInteraction } from '@/interaction/root';
-import { MergedCellInfo, S2CellType, TempMergedCell } from '@/common/interface';
-import { BaseFacet } from '@/facet';
-import { MergedCell } from '@/cell';
-import { GridGroup } from '@/group/grid-group';
+import type { RootInteraction } from '@/interaction/root';
+import type {
+  MergedCellInfo,
+  S2CellType,
+  TempMergedCell,
+} from '@/common/interface';
+import type { BaseFacet } from '@/facet';
+import type { MergedCell } from '@/cell';
+import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/sheet-type');
 
@@ -31,6 +34,7 @@ describe('Merge Cells Test', () => {
   let mockTwoCellEdges: number[][][] = [];
   let mockMergeCellInfo: MergedCellInfo[] = [];
   let mockAllVisibleCells: S2CellType[] = [];
+
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();

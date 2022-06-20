@@ -1,33 +1,37 @@
 import cx from 'classnames';
-import React, { FC, useState } from 'react';
+import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { Checkbox } from 'antd';
 import { i18n } from '@antv/s2';
-import { DroppableType, SWITCHER_CONFIG } from '../constant';
-import { SwitcherField, SwitcherItem } from '../interface';
-import { DimensionCommonProps, DimensionItem } from '../item';
+import { DroppableType, getSwitcherConfig } from '../constant';
+import type { SwitcherField, SwitcherItem } from '../interface';
+import { type DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
 import './index.less';
 
 const CLASS_NAME_PREFIX = 'dimension';
+
 type DimensionProps = SwitcherField &
   DimensionCommonProps & {
     droppableType: DroppableType;
     crossRows?: boolean;
   };
 
-export const Dimension: FC<DimensionProps> = ({
-  fieldType,
-  crossRows,
-  expandable,
-  expandText,
-  allowEmpty,
-  items,
-  droppableType,
-  ...rest
-}) => {
-  const [expandChildren, setExpandChildren] = useState(true);
+export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
+  const {
+    fieldType,
+    crossRows,
+    expandable,
+    expandText = i18n('展开子项'),
+    allowEmpty,
+    items,
+    droppableType,
+    ...rest
+  } = props;
+
+  const [expandChildren, setExpandChildren] = React.useState(true);
+  const SWITCHER_CONFIG = React.useMemo(getSwitcherConfig, []);
 
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);
@@ -85,13 +89,13 @@ export const Dimension: FC<DimensionProps> = ({
       </Droppable>
     </div>
   );
-};
+});
 
+Dimension.displayName = 'Dimension';
 Dimension.defaultProps = {
   allowEmpty: true,
   crossRows: false,
   expandable: false,
-  expandText: i18n('展开子项'),
   selectable: false,
   items: [],
 };

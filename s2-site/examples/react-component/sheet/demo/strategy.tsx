@@ -4,7 +4,7 @@ import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/e97a8fe6-1026-4fed-b420-cd7d0e88e8b4.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json',
 )
   .then((res) => res.json())
   .then((dataCfg) => {

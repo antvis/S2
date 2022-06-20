@@ -3,7 +3,7 @@ title: 表格自适应
 order: 9
 ---
 
-表格默认根据配置的 `width` 和 `height` 渲染
+表格默认根据配置的 `width` 和 `height` 渲染：
 
 ```ts
 const s2Options = {
@@ -12,7 +12,7 @@ const s2Options = {
 }
 ```
 
-需要注意的是，表格基于 `canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的
+需要注意的是，表格基于 `Canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的：
 
 ```ts
 const s2Options = {
@@ -25,7 +25,7 @@ const s2Options = {
 
 ### 窗口自适应
 
-如果想让表格撑满整个父容器，可以监听 窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高
+如果想让表格撑满整个父容器，可以监听 窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高：
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -38,18 +38,19 @@ const debounceRender = debounce((width, height) => {
   s2.render(false) // 不重新加载数据
 }, 200)
 
-window.addEventListener('resize', () => {
-  const parent = /* 你的容器节点 */
-  const { width, height } = parent.getBoundingClientRect()
-  debounceRender(width, height)
-})
+new ResizeObserver(([entry] = []) => {
+    const [size] = entry.borderBoxSize || [];
+    debounceRender(size.inlineSize, size.blockSize)
+}).observe(document.body); // 通过监听 document.body 来实现监听窗口大小变化
 ```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
 
+​📊 查看 [窗口自适应 demo](/zh/examples/layout/adaptive#window-adaptation)
+
 ### 容器自适应
 
-如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
+如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小：
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -77,11 +78,13 @@ resizeObserver.observe(parent);
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
 
+​📊 查看 [容器自适应 demo](/zh/examples/layout/adaptive#container-adaptation)
+
 ### React 组件
 
 如果是使用 `@antv/s2-react` 的方式，可以配置 `adaptive` 参数开启自适应。
 
-### Adaptive
+#### Adaptive 参数类型
 
 ```ts
 // `adaptive` 的类型 `Adaptive`
@@ -94,10 +97,10 @@ type Adaptive =
     }
 ```
 
-配置为 `boolean` 值时:
+配置为 `boolean` 值时：
 
-true: 容器默认为内部的 `<div class=antv-s2-wrapper>`, 只有宽度自适应，高度以 options 设置的为准。
-false: 宽高都以 options 设置的为准。
+* true: 容器默认为内部的 `<div class=antv-s2-wrapper>`, 只有宽度自适应，高度以 options 设置的为准
+* false: 宽高都以 options 设置的为准
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
@@ -106,7 +109,7 @@ import { SheetComponent } from '@antv/s2-react';
 <SheetComponent adaptive={false} />
 ```
 
-也可以配置只对宽度或高度开启自适应，上面的配置等同于
+也可以配置只对宽度或高度开启自适应，上面的配置等同于：
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
@@ -115,7 +118,7 @@ import { SheetComponent } from '@antv/s2-react';
 <SheetComponent adaptive={{ width: false, height: false }} />
 ```
 
-还可以自定义自适应的容器
+还可以自定义自适应的容器：
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
@@ -125,11 +128,10 @@ const containerId = 'containerId';
 
 <div
   id={containerId}
-  style={{
+  :style="{
     width: 600,
     height: 400,
-  }}
-  ref={ adaptiveRef }
+  }"
 >
   <SheetComponent
     adaptive={{
@@ -140,3 +142,70 @@ const containerId = 'containerId';
   />
 </div>
 ```
+
+​📊 查看 [React 组件自适应 demo](/zh/examples/layout/adaptive#react-adaptive)
+
+### Vue 组件
+
+如果是使用 `@antv/s2-vue` 的方式，可以配置 `adaptive` 参数开启自适应，`adaptive`参数的类型和使用方法与`@antv/s2-react`基本一致。
+
+可以配置为 `boolean` 值：
+
+```tsx
+<template>
+  <SheetComponent
+    :dataCfg="your-dataCfg"
+    :options="your-options"
+    :adaptive="true"
+  />
+  <SheetComponent
+    :dataCfg="your-dataCfg"
+    :options="your-options"
+    :adaptive="false"
+  />
+</template>
+```
+
+也可以配置只对宽度或高度开启自适应，上面的配置等同于：
+
+```tsx
+<template>
+  <SheetComponent
+    :dataCfg="your-dataCfg"
+    :options="your-options"
+    :adaptive="{ width: true, height: true }"
+  />
+  <SheetComponent
+    :dataCfg="your-dataCfg"
+    :options="your-options"
+    :adaptive="{ width: false, height: false }"
+  />
+</template>
+```
+
+还可以自定义自适应的容器：
+
+```tsx
+<script setup>
+const adaptive = {
+  width: true,
+  height: true,
+  getContainer: () => document.getElementById('containerId'),
+};
+</script>
+
+<template>
+  <div
+    id="containerId"
+    style="width:600px;height:400px"
+  >
+    <SheetComponent
+      :dataCfg="your-dataCfg"
+      :options="your-options"
+      :adaptive="adaptive"
+    />
+  </div>
+</template>
+```
+
+​📊 查看 [Vue 组件自适应 demo](https://codesandbox.io/s/vue-adaptive-demo-4pptyy?file=/src/App.vue)

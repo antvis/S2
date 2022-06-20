@@ -1,13 +1,19 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
+import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { ShapeAttrs } from '@antv/g-canvas';
-import { S2DataConfig } from './../../esm/common/interface/s2DataConfig.d';
-import { TextTheme } from '@/common/interface/theme';
-import { PivotSheet } from '@/sheet-type';
-import { CellTypes, EXTRA_FIELD, TextAlign } from '@/common';
-import { RowCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
+import type { ShapeAttrs } from '@antv/g-canvas';
+import type { TextBaseline, TextTheme } from '@/common/interface/theme';
+import type { PivotSheet } from '@/sheet-type';
+import {
+  CellTypes,
+  EXTRA_COLUMN_FIELD,
+  EXTRA_FIELD,
+  type S2DataConfig,
+  type TextAlign,
+} from '@/common';
+import type { RowCell } from '@/cell';
+import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
@@ -328,5 +334,81 @@ describe('SpreadSheet Theme Tests', () => {
         fontWight: 'normal',
       });
     });
+
+    // https://github.com/antvis/S2/pull/1371
+    it.each(['left', 'center', 'right'] as TextAlign[])(
+      'should render %s text align for column nodes',
+      (textAlign) => {
+        s2.setThemeCfg({
+          theme: {
+            colCell: {
+              measureText: {
+                textAlign,
+              },
+            },
+          },
+        });
+
+        s2.setDataCfg({
+          fields: {
+            columns: [...s2.dataCfg.fields.columns, EXTRA_COLUMN_FIELD],
+          },
+        } as S2DataConfig);
+
+        s2.setOptions({
+          style: {
+            colCfg: {
+              hideMeasureColumn: true,
+            },
+          },
+        });
+
+        s2.render(true);
+
+        expectTextAlign({ textAlign, fontWight: 'normal' });
+      },
+    );
+  });
+
+  describe('Series Cell Tests', () => {
+    const getTextShape = (group: IGroup) => {
+      return group
+        .getChildren()
+        .find((child) => child instanceof child.getShapeBase().Text);
+    };
+
+    test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
+      'should render %s text align for column nodes',
+      (textBaseline) => {
+        s2.setThemeCfg({
+          theme: {
+            rowCell: {
+              seriesText: {
+                textBaseline,
+              },
+              bolderText: {
+                textBaseline,
+              },
+            },
+          },
+        });
+
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+
+        s2.render();
+
+        const rowCell = s2.facet.rowHeader.getChildByIndex(0) as IGroup; // 浙江省
+        const textOfRowCell = getTextShape(rowCell);
+
+        const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
+        const textOfSeriesCell = getTextShape(seriesCell);
+
+        expect(textOfRowCell.attr('textBaseline')).toEqual('top');
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
+      },
+    );
   });
 });

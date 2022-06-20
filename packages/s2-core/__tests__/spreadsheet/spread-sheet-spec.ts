@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { S2Event, S2Options } from '@/common';
+import { S2Event, type S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
@@ -13,6 +13,7 @@ const s2Options: S2Options = {
 describe('SpreadSheet Tests', () => {
   describe('Mount Sheet Tests', () => {
     let container: HTMLElement;
+
     beforeAll(() => {
       container = getContainer();
     });
@@ -54,6 +55,7 @@ describe('SpreadSheet Tests', () => {
         const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
         s2.render();
         s2.destroy();
+        s2.render();
       }
 
       expect(init).toThrowError('Target mount container is not a DOM element');
@@ -129,10 +131,19 @@ describe('SpreadSheet Tests', () => {
   });
 
   describe('Destroy Sheet Tests', () => {
+    let container: HTMLElement;
+
+    beforeAll(() => {
+      container = getContainer();
+    });
+
+    afterAll(() => {
+      container?.remove();
+    });
+
     test.each([PivotSheet, TableSheet])(
       'should destroy sheet correctly',
       (Sheet) => {
-        const container = getContainer();
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         s2.render();
 
@@ -144,6 +155,80 @@ describe('SpreadSheet Tests', () => {
 
         expect(s2.container.get('el')).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
+        expect(document.body.style.overscrollBehavior).toBeFalsy();
+      },
+    );
+
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when repeat render after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
+
+          Array.from({ length: 10 }).forEach(() => {
+            s2.render();
+          });
+        }
+
+        expect(init).not.toThrowError();
+      },
+    );
+
+    // https://github.com/antvis/S2/issues/1349
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when change sheet size after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
+          s2.changeSheetSize(200, 200);
+        }
+
+        expect(init).not.toThrowError();
+      },
+    );
+
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when window resize after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
+
+          visualViewport.dispatchEvent(new Event('resize'));
+        }
+
+        expect(init).not.toThrowError();
+      },
+    );
+
+    test.each([PivotSheet, TableSheet])(
+      'should not build sheet when sheet destroy before sheet render',
+      (Sheet) => {
+        const s2 = new Sheet(container, mockDataConfig, s2Options);
+
+        const beforeRender = jest.fn();
+        const afterRender = jest.fn();
+
+        const clearDrillDownDataSpy = jest
+          .spyOn(s2, 'clearDrillDownData')
+          .mockImplementationOnce(() => {});
+
+        s2.on(S2Event.LAYOUT_BEFORE_RENDER, beforeRender);
+        s2.on(S2Event.LAYOUT_AFTER_RENDER, afterRender);
+        s2.destroy();
+
+        Array.from({ length: 10 }).forEach(() => {
+          s2.render();
+        });
+
+        expect(beforeRender).toHaveBeenCalledTimes(0);
+        expect(afterRender).toHaveBeenCalledTimes(0);
+        expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(0);
       },
     );
 
@@ -151,7 +236,6 @@ describe('SpreadSheet Tests', () => {
     test.each([PivotSheet, TableSheet])(
       'should delay destroy sheet correctly',
       async (Sheet) => {
-        const container = getContainer();
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         s2.render();
 
@@ -174,7 +258,6 @@ describe('SpreadSheet Tests', () => {
 
     // https://github.com/antvis/S2/issues/1011
     test('should toggle sheet type', () => {
-      const container = getContainer();
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
       s2.render();
 

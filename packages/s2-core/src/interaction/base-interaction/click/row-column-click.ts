@@ -1,28 +1,31 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
-import { isMultiSelectionKey } from '@/utils/interaction/select-event';
 import {
-  hideColumnsByThunkGroup,
-  isEqualDisplaySiblingNodeId,
-} from '@/utils/hide-columns';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import {
-  S2Event,
-  InterceptType,
   CellTypes,
-  TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
-} from '@/common/constant';
-import {
+  InterceptType,
+  S2Event,
+  getTooltipOperatorHiddenColumnsMenu,
+} from '../../../common/constant';
+import type {
   TooltipOperation,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
-} from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+} from '../../../common/interface';
+import type { Node } from '../../../facet/layout/node';
 import {
-  mergeCellInfo,
+  BaseEvent,
+  type BaseEventImplement,
+} from '../../../interaction/base-event';
+import {
+  hideColumnsByThunkGroup,
+  isEqualDisplaySiblingNodeId,
+} from '../../../utils/hide-columns';
+import { isMultiSelectionKey } from '../../../utils/interaction/select-event';
+import {
   getTooltipOptions,
   getTooltipVisibleOperator,
-} from '@/utils/tooltip';
+  mergeCellInfo,
+} from '../../../utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -113,6 +116,9 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     // 只有一个叶子节点时, 不显示隐藏按钮
     const isOnlyOneLeafColumn =
       this.spreadsheet.getColumnLeafNodes().length === 1;
+
+    const TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU =
+      getTooltipOperatorHiddenColumnsMenu();
 
     const enableHiddenColumnOperator =
       isColCell &&
