@@ -44,6 +44,33 @@ describe('merge test', () => {
     });
   });
 
+  test('should unique dataConfig fields', () => {
+    expect(
+      getSafetyDataConfig({
+        fields: {
+          rows: ['province', 'city', 'city'],
+          columns: ['type', 'type'],
+          values: ['count', 'cost', 'cost'],
+          customTreeItems: [],
+          valueInCols: false,
+        },
+      }),
+    ).toStrictEqual({
+      data: [],
+      totalData: [],
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['count', 'cost'],
+        customTreeItems: [],
+        valueInCols: false,
+      },
+      meta: [],
+      sortParams: [],
+      filterParams: [],
+    });
+  });
+
   test('should cancel valueInCols if customTreeItems is not empty by get safety data config', () => {
     const fields: Partial<S2DataConfig['fields']> = {
       customTreeItems: [{ key: '1', title: 'test' }],

@@ -353,6 +353,18 @@ export const getBulletRangeColor = (
   return rangeColors.bad;
 };
 
+// 比率转百分比, 简单解决计算精度问题
+export const transformRatioToPercent = (
+  ratio: number | string,
+  fractionDigits = 0,
+) => {
+  const value = Number(ratio);
+  if (Number.isNaN(value)) {
+    return ratio;
+  }
+  return `${(value * 100).toFixed(fractionDigits)}%`;
+};
+
 /**
  *  绘制子弹图单元格
  */
@@ -420,6 +432,8 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     },
   );
 
+  const measurePercent = transformRatioToPercent(measure);
+
   // 绘制指标
   renderText(
     cell,
@@ -427,7 +441,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     positionX - padding.right,
     y + height / 2,
     getEllipsisText({
-      text: `${Number(measure) * 100}%`,
+      text: measurePercent,
       maxWidth: measureWidth,
       fontParam: dataCellStyle.text,
     }),
@@ -457,6 +471,7 @@ export const drawObjectText = (
   const { values: textValues } = text;
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
+
   if (!isArray(textValues)) {
     drawBullet(textValues, cell);
     return;

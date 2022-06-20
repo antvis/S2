@@ -60,7 +60,6 @@ export interface S2BasicOptions<T = Element | string> {
   customSVGIcons?: CustomSVGIcon[];
   // extra styles
   style?: Partial<Style>;
-  hierarchyCollapse?: boolean;
   hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
   mergedCellsInfo?: MergedCellInfo[][];

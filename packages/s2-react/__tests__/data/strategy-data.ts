@@ -1,7 +1,75 @@
-import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, type Data, type S2DataConfig } from '@antv/s2';
 
-export const customTree: S2DataConfig = {
+const getKPIMockData = (): Data => {
+  return {
+    'measure-a': {
+      originalValues: {
+        measure: 0.75,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.75',
+        target: '0.8',
+      },
+    },
+    'measure-b': {
+      originalValues: {
+        measure: 0.25,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.8',
+      },
+    },
+    'measure-c': {
+      originalValues: {
+        measure: 1,
+        target: 0.3,
+      },
+      values: {
+        measure: '1',
+        target: '0.3',
+      },
+    },
+    'measure-d': {
+      originalValues: {
+        measure: 0.5,
+        target: 0.3,
+      },
+      values: {
+        measure: '0.5',
+        target: '0.3',
+      },
+    },
+    'measure-e': {
+      originalValues: {
+        measure: 0.68,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.68',
+        target: '0.8',
+      },
+    },
+    'measure-f': {
+      originalValues: {
+        measure: 0.25,
+        target: 0.9,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.9',
+      },
+    },
+    date: '2021年净增完成度',
+    [EXTRA_COLUMN_FIELD]: '净增完成度',
+  };
+};
+
+export const StrategySheetDataConfig: S2DataConfig = {
   data: [
+    // 普通数值+同环比数据
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
@@ -30,70 +98,8 @@ export const customTree: S2DataConfig = {
       date: '2021',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
-    {
-      'measure-a': {
-        originalValues: {
-          measure: 0.75,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.75',
-          target: '0.8',
-        },
-      },
-      'measure-b': {
-        originalValues: {
-          measure: 0.25,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.25',
-          target: '0.8',
-        },
-      },
-      'measure-c': {
-        originalValues: {
-          measure: 1,
-          target: 0.3,
-        },
-        values: {
-          measure: '1',
-          target: '0.3',
-        },
-      },
-      'measure-d': {
-        originalValues: {
-          measure: 0.5,
-          target: 0.3,
-        },
-        values: {
-          measure: '0.5',
-          target: '0.3',
-        },
-      },
-      'measure-e': {
-        originalValues: {
-          measure: 0.68,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.68',
-          target: '0.8',
-        },
-      },
-      'measure-f': {
-        originalValues: {
-          measure: 0.25,
-          target: 0.9,
-        },
-        values: {
-          measure: '0.25',
-          target: '0.9',
-        },
-      },
-      date: '2021年',
-      sub_type: '净增完成度',
-    },
+    // 净增目标完成度子弹图数据
+    getKPIMockData(),
     {
       'measure-a': {
         originalValues: [[377, '', 0.02]],
@@ -111,7 +117,6 @@ export const customTree: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-
       'measure-f': {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
@@ -127,7 +132,6 @@ export const customTree: S2DataConfig = {
     },
   ],
   fields: {
-    rows: [],
     columns: ['date', EXTRA_COLUMN_FIELD],
     values: [
       'measure-a',
@@ -164,6 +168,12 @@ export const customTree: S2DataConfig = {
                 key: 'measure-c',
                 title: '指标C',
                 description: '指标C描述',
+                children: [],
+              },
+              {
+                key: 'measure-d',
+                title: '指标D',
+                description: '指标D描述',
                 children: [],
               },
             ],

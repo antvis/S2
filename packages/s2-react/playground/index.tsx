@@ -46,13 +46,13 @@ import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import { customTree } from '../__tests__/data/strategy-data';
+import { StrategySheetDataConfig } from '../__tests__/data/strategy-data';
 import {
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
-  strategyOptions as mockStrategyOptions,
+  strategyOptions,
   strategyTheme,
   tableSheetDataCfg,
 } from './config';
@@ -140,6 +140,7 @@ const CustomColTooltip = () => <div>custom colTooltip</div>;
 const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
 
 function MainLayout() {
+  //  ================== State ========================
   const [render, setRender] = React.useState(true);
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [showPagination, setShowPagination] = React.useState(false);
@@ -154,12 +155,13 @@ function MainLayout() {
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
-  const [strategyDataCfg, setStrategyDataCfg] =
-    React.useState<S2DataConfig>(customTree);
-  const [strategyOptions, setStrategyOptions] =
-    React.useState<S2Options>(mockStrategyOptions);
-  const s2Ref = React.useRef<SpreadSheet>();
+  const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
+    StrategySheetDataConfig,
+  );
   const [columnOptions, setColumnOptions] = React.useState([]);
+
+  //  ================== Refs ========================
+  const s2Ref = React.useRef<SpreadSheet>();
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
@@ -260,10 +262,10 @@ function MainLayout() {
   //  ================== Hooks ========================
 
   React.useEffect(() => {
-    console.log(s2Ref.current.facet.layoutResult);
-    s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
-      console.log('趋势图icon点击', meta);
-    });
+    s2Ref.current?.on(
+      S2Event.DATA_CELL_TREND_ICON_CLICK,
+      logHandler('趋势图点击'),
+    );
   }, [sheetType]);
 
   useUpdateEffect(() => {
@@ -367,7 +369,11 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="basic" type="card" destroyInactiveTabPane>
+      <Tabs
+        defaultActiveKey={localStorage.getItem('debugTabKey') || 'basic'}
+        type="card"
+        destroyInactiveTabPane
+      >
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey={['filter', 'interaction']}>
             <Collapse.Panel header="筛选器" key="filter">
@@ -619,10 +625,12 @@ function MainLayout() {
                     checkedChildren="收起子节点"
                     unCheckedChildren="展开子节点"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.hierarchyCollapse}
+                    checked={mergedOptions.style.hierarchyCollapse}
                     onChange={(checked) => {
                       updateOptions({
-                        hierarchyCollapse: checked,
+                        style: {
+                          hierarchyCollapse: checked,
+                        },
                       });
                     }}
                   />
@@ -935,29 +943,36 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <Switch
-            checkedChildren="单列头"
-            unCheckedChildren="多列头"
-            checked={strategyDataCfg.fields.columns.length === 1}
-            onChange={(checked) => {
-              setStrategyDataCfg(
-                customMerge(customTree, {
-                  fields: {
-                    columns: customTree.fields.columns.slice(
-                      0,
-                      checked ? 1 : 2,
-                    ),
-                  },
-                }),
-              );
-            }}
-          />
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            header={{ exportCfg: { open: true } }}
+            header={{
+              title: '趋势分析表',
+              description: '支持子弹图',
+              switcherCfg: { open: true },
+              exportCfg: { open: true },
+              extra: (
+                <Switch
+                  checkedChildren="单列头"
+                  unCheckedChildren="多列头"
+                  checked={strategyDataCfg.fields.columns.length === 1}
+                  onChange={(checked) => {
+                    setStrategyDataCfg(
+                      customMerge(StrategySheetDataConfig, {
+                        fields: {
+                          columns: StrategySheetDataConfig.fields.columns.slice(
+                            0,
+                            checked ? 1 : 2,
+                          ),
+                        },
+                      }),
+                    );
+                  }}
+                />
+              ),
+            }}
             themeCfg={{
               theme: strategyTheme,
               name: 'gray',

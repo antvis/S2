@@ -743,12 +743,12 @@ describe('PivotSheet Tests', () => {
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
 
       expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.hierarchyCollapse).toBeFalsy();
+      expect(s2.options.style.hierarchyCollapse).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
       expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.hierarchyCollapse).toBeTruthy();
+      expect(s2.options.style.hierarchyCollapse).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -758,7 +758,9 @@ describe('PivotSheet Tests', () => {
       const tree = new PivotSheet(getContainer(), dataCfg, {
         ...s2Options,
         hierarchyType: 'tree',
-        hierarchyCollapse: true,
+        style: {
+          hierarchyCollapse: true,
+        },
       });
       tree.render();
 
@@ -767,7 +769,9 @@ describe('PivotSheet Tests', () => {
       ).toEqual(['province']);
 
       tree.setOptions({
-        hierarchyCollapse: false,
+        style: {
+          hierarchyCollapse: false,
+        },
       });
       tree.render();
 

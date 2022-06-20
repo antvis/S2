@@ -93,18 +93,12 @@ export const s2Options: S2Options = {
   debug: true,
   width: 600,
   height: 400,
-  hierarchyCollapse: false,
   interaction: {
     enableCopy: true,
   },
-  // totals: {
-  //   col: {
-  //     showGrandTotals: true,
-  //     showSubTotals: true,
-  //     reverseLayout: true,
-  //     reverseSubLayout: false,
-  //   },
-  // },
+  style: {
+    hierarchyCollapse: false,
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {

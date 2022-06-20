@@ -126,7 +126,9 @@ describe('PivotSheet Export Test', () => {
       assembleDataCfg(),
       assembleOptions({
         hierarchyType: 'tree',
-        hierarchyCollapse: true,
+        style: {
+          hierarchyCollapse: true,
+        },
       }),
     );
     s2.render();
@@ -150,7 +152,9 @@ describe('PivotSheet Export Test', () => {
       assembleDataCfg(),
       assembleOptions({
         hierarchyType: 'tree',
-        hierarchyCollapse: false,
+        style: {
+          hierarchyCollapse: false,
+        },
       }),
     );
     s2.render();

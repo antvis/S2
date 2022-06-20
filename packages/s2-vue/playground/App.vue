@@ -515,7 +515,9 @@ export default defineComponent({
       debug: true,
       width: 600,
       height: 400,
-      hierarchyCollapse: false,
+      style: {
+        hierarchyCollapse: false,
+      },
       tooltip: {
         operation: {
           trend: true,

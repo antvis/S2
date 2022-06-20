@@ -24,7 +24,6 @@ order: 1
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
 | frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
 | frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
-| hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder |  `(meta: Record<string, any>) => string | string` |    |  | 空单元格的填充内容 |
