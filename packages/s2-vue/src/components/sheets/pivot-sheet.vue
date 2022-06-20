@@ -1,17 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, h, createVNode } from 'vue';
 import { isEmpty } from 'lodash';
-import {
-  buildDrillDownOptions,
-  handleDrillDown,
-} from '@antv/s2-shared/src/utils/drill-down';
-import type {
-  ActionIconCallback,
-  ActionIconCallbackParams,
-} from '@antv/s2-shared/src/utils/drill-down';
-
+import { buildDrillDownOptions, handleDrillDown } from '@antv/s2-shared';
 import type { SpreadSheet, S2Options } from '@antv/s2';
-import type { PartDrillDown } from '@antv/s2-shared';
+import type { PartDrillDown, ActionIconCallbackParams } from '@antv/s2-shared';
 import { useExpose } from '../../hooks/useExpose';
 import {
   initBaseSheetEmits,
