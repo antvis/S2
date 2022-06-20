@@ -98,9 +98,40 @@
     // 让描述一行显示
     max-width: max-content;
 
+    .title {
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 22px;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      color: rgba(0, 0, 0, 0.45);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-weight: 400;
+      white-space: pre-wrap;
+
+      > li + li {
+        margin-top: 6px;
+      }
+    }
+
     .content {
       .item {
         color: rgba(0, 0, 0, 0.45);
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 400;
+        font-size: 12px;
+
+        & + .item {
+          margin-top: 2px;
+        }
 
         .value {
           color: rgba(0, 0, 0, 0.85);
@@ -124,55 +155,6 @@
             margin: 0 12px 0 4px;
           }
         }
-      }
-    }
-  }
-
-  &.kpiMeasure {
-    max-width: 200px;
-
-    .content {
-      .item {
-        color: rgba(0, 0, 0, 0.65);
-      }
-    }
-  }
-
-  &.kpiMeasure,
-  &.bullet {
-    .title {
-      font-weight: 500;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.85);
-      line-height: 22px;
-      margin-bottom: 10px;
-    }
-
-    .content {
-      .item {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 400;
-        font-size: 12px;
-
-        & + .item {
-          margin-top: 2px;
-        }
-      }
-    }
-
-    .desc {
-      color: rgba(0, 0, 0, 0.45);
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      font-weight: 400;
-      white-space: pre-wrap;
-
-      > li + li {
-        margin-top: 6px;
       }
     }
   }
