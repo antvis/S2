@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.17.0...@antv/s2-react-v1.18.0) (2022-06-17)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复行/列层级超过2级时选中数据统计错误 ([#1443](https://github.com/antvis/S2/issues/1443)) ([09dd677](https://github.com/antvis/S2/commit/09dd677458c904f7b86c8457a489bca26a366269))
+* **tooltip:** 减少 tooltip 框重绘 ([#1418](https://github.com/antvis/S2/issues/1418)) ([59c6a87](https://github.com/antvis/S2/commit/59c6a87f256866962ea3b523fd882a8d4e1eb6e9))
+* 修复打包core层源码中样式文件错误问题 ([#1408](https://github.com/antvis/S2/issues/1408)) ([d2c0894](https://github.com/antvis/S2/commit/d2c08949d22dc61dbc73e01a779756e1d7a78fb6))
+
+
+### Features
+
+* **scroll:** 增加边界滚动配置, 解决横屏滚动会触发 mac 回退的问题 ([#1409](https://github.com/antvis/S2/issues/1409)) ([ada5082](https://github.com/antvis/S2/commit/ada5082d299357b1b38af7629a784e3d071e6b77))
+
 # [@antv/s2-react-v1.17.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.16.1...@antv/s2-react-v1.17.0) (2022-06-02)
 
 
