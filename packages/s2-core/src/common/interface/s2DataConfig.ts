@@ -24,9 +24,9 @@ export interface BulletValue {
         ],
       }
  */
-export interface MultiData {
-  values: (string | number)[][] | BulletValue;
-  originalValues?: (string | number)[][] | BulletValue;
+export interface MultiData<T = SimpleDataItem[][] | BulletValue> {
+  values: T;
+  originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
   label?: string;
   [key: string]: unknown;

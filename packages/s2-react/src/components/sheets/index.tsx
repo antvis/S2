@@ -3,7 +3,7 @@ import React from 'react';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
-import { StrategySheet } from './strategy-sheet';
+import { StrategySheet, type StrategySheetProps } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
 
 const Sheet = React.forwardRef(
@@ -29,7 +29,7 @@ const Sheet = React.forwardRef(
         case 'gridAnalysis':
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':
-          return <StrategySheet {...sheetProps} />;
+          return <StrategySheet {...(sheetProps as StrategySheetProps)} />;
         default:
           return <PivotSheet {...sheetProps} />;
       }
@@ -39,8 +39,8 @@ const Sheet = React.forwardRef(
   },
 );
 
-Sheet.displayName = 'SheetComponent';
-
 export const SheetComponent: React.ForwardRefExoticComponent<
   SheetComponentsProps & React.RefAttributes<SpreadSheet>
 > = React.memo(Sheet);
+
+SheetComponent.displayName = 'SheetComponent';

@@ -1,15 +1,16 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellTypes } from '../../common/constant';
 import type {
+  BulletValue,
   Condition,
   CustomTreeItem,
   Data,
   ResizeInfo,
+  SimpleDataItem,
 } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
-  S2Options,
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
 import type { BaseDataSet, DataType } from '../../data-set';
@@ -19,7 +20,7 @@ import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType } from './interaction';
-import type { DataItem, S2DataConfig } from './s2DataConfig';
+import type { DataItem } from './s2DataConfig';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化
@@ -410,7 +411,10 @@ export interface ViewMeta {
   colId?: string;
   field?: string;
   isFrozenCorner?: boolean;
-  [key: string]: any;
+  label?: string;
+  value?: string | number;
+  query?: Record<string, any>;
+  [key: string]: unknown;
 }
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;

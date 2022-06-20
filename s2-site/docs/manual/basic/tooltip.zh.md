@@ -156,6 +156,18 @@ const s2Options = {
 };
 ```
 
+如果需要使用默认 Tooltip, 返回 `null` 即可
+
+```ts
+const s2Options = {
+  tooltip: {
+    content: () => {
+      return null
+    },
+  },
+};
+```
+
 ##### 1. 配置级
 
 对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
