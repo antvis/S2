@@ -1,113 +1,69 @@
 import { EXTRA_COLUMN_FIELD, type Data, type S2DataConfig } from '@antv/s2';
-import {
-  KpiType,
-  KPI_TYPES_CONFIG,
-} from '../../src/components/sheets/strategy-sheet/constants/config';
 
-const getKPIMockData = (kpiType: KpiType): Data => {
-  const config = KPI_TYPES_CONFIG[kpiType];
-  const date = `2021${config.name}`;
-
-  if (kpiType === KpiType.NetAddedProgress) {
-    return {
-      'measure-a': {
-        originalValues: {
-          measure: 0.75,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.75',
-          target: '0.8',
-        },
-      },
-      'measure-b': {
-        originalValues: {
-          measure: 0.25,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.25',
-          target: '0.8',
-        },
-      },
-      'measure-c': {
-        originalValues: {
-          measure: 1,
-          target: 0.3,
-        },
-        values: {
-          measure: '1',
-          target: '0.3',
-        },
-      },
-      'measure-d': {
-        originalValues: {
-          measure: 0.5,
-          target: 0.3,
-        },
-        values: {
-          measure: '0.5',
-          target: '0.3',
-        },
-      },
-      'measure-e': {
-        originalValues: {
-          measure: 0.68,
-          target: 0.8,
-        },
-        values: {
-          measure: '0.68',
-          target: '0.8',
-        },
-      },
-      'measure-f': {
-        originalValues: {
-          measure: 0.25,
-          target: 0.9,
-        },
-        values: {
-          measure: '0.25',
-          target: '0.9',
-        },
-      },
-      date: '2021年净增完成度',
-      [EXTRA_COLUMN_FIELD]: KPI_TYPES_CONFIG[KpiType.NetAddedProgress].name,
-    };
-  }
-
+const getKPIMockData = (): Data => {
   return {
     'measure-a': {
-      originalValues: [[110000]],
-      values: [['11万']],
-      kpiType,
+      originalValues: {
+        measure: 0.75,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.75',
+        target: '0.8',
+      },
     },
     'measure-b': {
-      originalValues: [[220000]],
-      values: [['22万']],
-      kpiType,
+      originalValues: {
+        measure: 0.25,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.8',
+      },
     },
     'measure-c': {
-      originalValues: [[330000]],
-      values: [['33万']],
-      kpiType,
+      originalValues: {
+        measure: 1,
+        target: 0.3,
+      },
+      values: {
+        measure: '1',
+        target: '0.3',
+      },
     },
     'measure-d': {
-      originalValues: [[440000]],
-      values: [['44万']],
-      kpiType,
+      originalValues: {
+        measure: 0.5,
+        target: 0.3,
+      },
+      values: {
+        measure: '0.5',
+        target: '0.3',
+      },
     },
     'measure-e': {
-      originalValues: [[550000]],
-      values: [['55万']],
-      kpiType,
+      originalValues: {
+        measure: 0.68,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.68',
+        target: '0.8',
+      },
     },
     'measure-f': {
-      originalValues: [[660000]],
-      values: [['66万']],
-      kpiType,
+      originalValues: {
+        measure: 0.25,
+        target: 0.9,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.9',
+      },
     },
-    date,
-    [EXTRA_COLUMN_FIELD]: config.name,
+    date: '2021年净增完成度',
+    [EXTRA_COLUMN_FIELD]: '净增完成度',
   };
 };
 
@@ -143,11 +99,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
     // 净增目标完成度子弹图数据
-    getKPIMockData(KpiType.NetAddedProgress),
-    getKPIMockData(KpiType.TargetValue),
-    getKPIMockData(KpiType.ReferenceValue),
-    getKPIMockData(KpiType.NetAddedValue),
-    getKPIMockData(KpiType.TargetNetAddedValue),
+    getKPIMockData(),
     {
       'measure-a': {
         originalValues: [[377, '', 0.02]],

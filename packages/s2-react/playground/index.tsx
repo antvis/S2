@@ -262,10 +262,10 @@ function MainLayout() {
   //  ================== Hooks ========================
 
   React.useEffect(() => {
-    console.log(s2Ref.current.facet.layoutResult);
-    s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
-      console.log('趋势图icon点击', meta);
-    });
+    s2Ref.current?.on(
+      S2Event.DATA_CELL_TREND_ICON_CLICK,
+      logHandler('趋势图点击'),
+    );
   }, [sheetType]);
 
   useUpdateEffect(() => {
@@ -942,7 +942,6 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
           <SheetComponent
-            adaptive
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}

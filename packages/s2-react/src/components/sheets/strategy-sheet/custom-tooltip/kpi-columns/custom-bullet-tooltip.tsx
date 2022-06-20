@@ -13,8 +13,14 @@ import type { CustomTooltipProps } from '../interface';
 import { getColName, getRowName } from '../../utils';
 
 import styles from '../index.module.less';
+import type { StrategySheetProps } from '../..';
 
-export const KpiBulletTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
+export interface KpiBulletTooltipProps extends CustomTooltipProps {
+  description?: StrategySheetProps['bulletTooltipDescription'];
+}
+
+export const KpiBulletTooltip: React.FC<KpiBulletTooltipProps> = (props) => {
+  const { cell, description } = props;
   const meta = cell.getMeta() as ViewMeta;
   const bulletValue = meta.fieldValue as unknown as MultiData<BulletValue>;
 
@@ -64,12 +70,14 @@ export const KpiBulletTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
         </li>
       </div>
       <div className={styles.divider} />
-      <ul className={styles.desc}>
-        <li>指标目标字段的净增目标完成度，净增目标完成度=净增值/净增目标</li>
-        <li>绿色：实际完成度落后时间进度 10%（包含）以内或超出时间进度</li>
-        <li>黄色：实际完成度慢于时间进度 10%-20%</li>
-        <li>红色：实际完成度慢于时间进度 20% 以上li或者为负数</li>
-      </ul>
+      {description?.(cell) ?? (
+        <ul className={styles.desc}>
+          <li>指标目标字段的净增目标完成度，净增目标完成度=净增值/净增目标</li>
+          <li>绿色：实际完成度落后时间进度 10%（包含）以内或超出时间进度</li>
+          <li>黄色：实际完成度慢于时间进度 10%-20%</li>
+          <li>红色：实际完成度慢于时间进度 20% 以上li或者为负数</li>
+        </ul>
+      )}
     </div>
   );
 };
