@@ -154,8 +154,8 @@ export class PivotSheet extends SpreadSheet {
 
   protected handleTreeRowsCollapseAll(isCollapsed: boolean) {
     const options: Partial<S2Options> = {
-      hierarchyCollapse: !isCollapsed,
       style: {
+        hierarchyCollapse: !isCollapsed,
         collapsedRows: null,
       },
     };

@@ -619,10 +619,12 @@ function MainLayout() {
                     checkedChildren="收起子节点"
                     unCheckedChildren="展开子节点"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.hierarchyCollapse}
+                    checked={mergedOptions.style.hierarchyCollapse}
                     onChange={(checked) => {
                       updateOptions({
-                        hierarchyCollapse: checked,
+                        style: {
+                          hierarchyCollapse: checked,
+                        },
                       });
                     }}
                   />

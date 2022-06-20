@@ -108,7 +108,6 @@ const getOptions = () => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    hierarchyCollapse: false,
     showSeriesNumber: false,
     frozenRowHeader: false,
     totals: {
@@ -129,6 +128,7 @@ const getOptions = () => {
     },
     style: {
       treeRowsWidth: 100,
+      hierarchyCollapse: false,
       collapsedRows: {},
       colCfg: {
         widthByFieldValue: {},
