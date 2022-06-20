@@ -160,10 +160,10 @@ const getOptions = () => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    hierarchyCollapse: false,
     frozenRowHeader: true,
     style: {
       treeRowsWidth: 120,
+      hierarchyCollapse: false,
       collapsedRows: {},
       colCfg: {
         widthByFieldValue: {},
