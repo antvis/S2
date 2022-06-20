@@ -14,6 +14,8 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
+  // negative value interval fill color
+  negativeFill?: string;
 }
 
 export type MappingFunction = (
