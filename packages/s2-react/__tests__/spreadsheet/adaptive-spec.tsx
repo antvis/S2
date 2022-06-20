@@ -85,7 +85,8 @@ describe('SheetComponent adaptive Tests', () => {
   };
 
   beforeEach(() => {
-    s2 = null;
+    s2?.setOptions({ width: s2Options.width, height: s2Options.height });
+    s2?.render(false);
   });
 
   test('should use container width when table first rendered', async () => {
@@ -103,9 +104,12 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   test('should use container width when container width less than options width and table first rendered', async () => {
+    s2?.changeSheetSize(s2Options.width, s2Options.height);
+    s2?.render(false);
+
     act(() => {
       ReactDOM.render(
-        <MainLayout adaptive={true} containerWidth={s2Options.width - 100} />,
+        <MainLayout adaptive containerWidth={s2Options.width - 100} />,
         getContainer(),
       );
     });
