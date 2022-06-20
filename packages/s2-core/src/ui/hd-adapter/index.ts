@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
-import { MIN_DEVICE_PIXEL_RATIO } from '@/common/constant/options';
-import { isMobile } from '@/utils/is-mobile';
-import type { SpreadSheet } from '@/sheet-type';
+import { MIN_DEVICE_PIXEL_RATIO } from '../../common/constant/options';
+import type { SpreadSheet } from '../../sheet-type';
+import { isMobile } from '../../utils/is-mobile';
 
 export class HdAdapter {
   private viewport = window as typeof window & { visualViewport: Element };
@@ -83,9 +83,10 @@ export class HdAdapter {
       container,
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
-
+    const canvas = this.spreadsheet.getCanvasElement();
     const lastRatio = container.get('pixelRatio');
-    if (lastRatio === ratio) {
+
+    if (lastRatio === ratio || !canvas) {
       return;
     }
 

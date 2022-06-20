@@ -293,7 +293,7 @@ insertCss(`
     display: flex;
     width: 100%;
     overflow: hidden;
-        margin-bottom: 16px;
+    margin-bottom: 16px;
   }
   .palette-group {
     display: flex;

@@ -1,9 +1,9 @@
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { FieldType } from '../constant';
-import { SwitcherField, SwitcherItem } from '../interface';
+import type { FieldType } from '../constant';
+import type { SwitcherField, SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';
 import { SingleItem } from './single-item';
 import './index.less';

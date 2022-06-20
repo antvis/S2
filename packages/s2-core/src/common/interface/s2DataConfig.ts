@@ -1,9 +1,18 @@
-import {
+import type {
   Fields,
   FilterParam,
   Meta,
   SortParams,
-} from '@/common/interface/index';
+} from '../../common/interface';
+
+/* 子弹图数据结构 */
+export interface BulletValue {
+  // 当前指标
+  measure: number | string;
+  // 目标值
+  target: number | string;
+  [key: string]: unknown;
+}
 
 /** use for gridAnalysisSheet
  *  eg. { label: '余额女',
@@ -15,10 +24,9 @@ import {
         ],
       }
  */
-
 export interface MultiData {
-  values: (string | number)[][];
-  originalValues?: (string | number)[][];
+  values: (string | number)[][] | BulletValue;
+  originalValues?: (string | number)[][] | BulletValue;
   // the title of one cell of the gridAnalysisSheet
   label?: string;
   [key: string]: unknown;

@@ -15,5 +15,7 @@ window.tableCss = require('antd/es/table/style/index.css');
 window.spaceCss = require('antd/es/space/style/index.css');
 window.cascaderCss = require('antd/es/cascader/style/index.css');
 window.checkboxCss = require('antd/es/checkbox/style/index.css');
+window.paginationCss = require('antd/es/pagination/style/index.css');
+window.inputNumberCss = require('antd/es/input-number/style/index.css');
 window.s2Css = require('@antv/s2/dist/style.min.css');
 window.s2ReactCss = require('@antv/s2-react/dist/style.min.css');

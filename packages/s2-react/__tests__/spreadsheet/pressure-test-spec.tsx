@@ -2,7 +2,7 @@ import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { auto, S2DataConfig, S2Options, PivotSheet } from '@antv/s2';
+import { auto, type S2DataConfig, type S2Options, PivotSheet } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components';
 

@@ -3,7 +3,7 @@
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
-import { Sheet } from '../src';
+import { SheetComponent } from '../src';
 
 const dataCfg1: S2DataConfig = {
   fields: {
@@ -511,7 +511,7 @@ export default defineComponent({
     const dataCfgFlag = ref(1);
     //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
     //  reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
-    const options: S2Options = reactive({
+    const options = reactive({
       debug: true,
       width: 600,
       height: 400,
@@ -521,7 +521,7 @@ export default defineComponent({
           trend: true,
           hiddenColumns: true,
           sort: true,
-          onClick: (...args) => {
+          onClick: (...args: any[]) => {
             console.log('menuClick', ...args);
           },
           menus: [
@@ -529,7 +529,7 @@ export default defineComponent({
               key: '1',
               icon: 'Trend',
               text: '菜单1',
-              onClick(cell) {
+              onClick(cell: any) {
                 console.log('cell-1: ', cell);
               },
               children: [
@@ -537,7 +537,7 @@ export default defineComponent({
                   key: '1-1',
                   icon: 'Trend',
                   text: '菜单1-1',
-                  onClick(cell) {
+                  onClick(cell: any) {
                     console.log('cell-1-1: ', cell);
                   },
                 },
@@ -547,14 +547,14 @@ export default defineComponent({
               key: '2',
               icon: 'Trend',
               text: '菜单2',
-              onClick(cell) {
+              onClick(cell: any) {
                 console.log('cell-2: ', cell);
               },
             },
           ],
         },
       },
-    });
+    }) as unknown as S2Options;
 
     const themeCfg = reactive({
       theme: {
@@ -607,7 +607,7 @@ export default defineComponent({
     };
   },
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
@@ -646,7 +646,7 @@ export default defineComponent({
       </label>
     </div>
   </div>
-  <Sheet
+  <SheetComponent
     ref="s2"
     :sheetType="sheetType"
     :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"

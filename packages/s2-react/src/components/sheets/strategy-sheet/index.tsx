@@ -1,22 +1,22 @@
-import React from 'react';
 import {
+  type ColHeaderConfig,
   customMerge,
-  SpreadSheet,
-  ViewMeta,
-  ColHeaderConfig,
   Node,
-  S2Options,
-  S2DataConfig,
+  type S2DataConfig,
+  type S2Options,
+  SpreadSheet,
+  type ViewMeta,
 } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
+import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
-import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
-import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
+import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
-import { SheetComponentsProps } from '@/components/sheets/interface';
+import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
+import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
+import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 
 /* *
  * 趋势分析表特性：

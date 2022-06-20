@@ -1,0 +1,32 @@
+{
+  "title": {
+    "zh": "表格自适应",
+    "en": "Table Adaptive"
+  },
+  "demos": [
+    {
+      "filename": "window-adaptation.ts",
+      "title": {
+        "zh": "窗口自适应",
+        "en": "Window adaptation"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/lAWvv3XGU/chuangkouzishiying.gif"
+    },
+    {
+      "filename": "container-adaptation.ts",
+      "title": {
+        "zh": "容器自适应",
+        "en": "Container adaptation"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/KGzcHFhKw/rongqizishiying.gif"
+    },
+    {
+      "filename": "react-adaptive.tsx",
+      "title": {
+        "zh": "React 组件自适应",
+        "en": "React adaptive"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/tKAKwgB5r/React%252520zujianzishiying.gif"
+    }
+  ]
+}

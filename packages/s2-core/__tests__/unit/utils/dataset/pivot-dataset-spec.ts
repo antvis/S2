@@ -8,7 +8,7 @@ import {
   getDimensionsWithoutPathPre,
   getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '@/common/interface';
 
 describe('PivotDataSet util test', () => {
   const dataCfg: S2DataConfig = assembleDataCfg({
@@ -67,7 +67,6 @@ describe('PivotDataSet util test', () => {
 
   test('for transformDimensionsValues function', () => {
     const rows = ['province', 'city'];
-    const sortedDimensionValues = {};
     const data = {
       city: '杭州市',
       number: 7789,
@@ -75,13 +74,12 @@ describe('PivotDataSet util test', () => {
       sub_type: '桌子',
       type: '家具',
     };
-    const result = transformDimensionsValues(data, rows, sortedDimensionValues);
+    const result = transformDimensionsValues(data, rows);
     expect(result).toEqual(['浙江省', '杭州市']);
   });
 
   test('for return type of transformDimensionsValues function', () => {
     const rows = ['row0', 'row1'];
-    const sortedDimensionValues = {};
     const data = {
       row0: 0,
       number: 7789,
@@ -89,7 +87,7 @@ describe('PivotDataSet util test', () => {
       sub_type: '桌子',
       type: '家具',
     };
-    const result = transformDimensionsValues(data, rows, sortedDimensionValues);
+    const result = transformDimensionsValues(data, rows);
     expect(result).toEqual(['0', '1']);
   });
 

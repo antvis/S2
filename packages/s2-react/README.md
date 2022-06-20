@@ -33,7 +33,7 @@ $ npm install @antv/s2-react
 ### 1. 数据准备
 
 <details>
-  <summary> s2DataConfig</summary>
+  <summary>s2DataConfig</summary>
 
 ```ts
 const s2DataConfig = {
@@ -100,12 +100,12 @@ const s2DataConfig = {
 ### 2. 配置项准备
 
 <details>
-  <summary> s2Options</summary>
-  
+  <summary>s2Options</summary>
+
 ```ts
 const s2Options = {
   width: 600,
-  height: 600,
+  height: 480,
 }
 ```
 

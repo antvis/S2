@@ -7,7 +7,7 @@ on:
 jobs:
   compressed-size:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
 
@@ -17,4 +17,4 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/**/dist/**/*.{js,css}"
         build-script: "build:umd"
-        clean-script: "clean:lock-file"
+        # clean-script: "clean:lock-file"

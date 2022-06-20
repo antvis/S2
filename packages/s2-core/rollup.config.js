@@ -8,19 +8,18 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
 
 const OUT_DIR_NAME_MAP = {
-  esm: 'esm',
+  es: 'esm',
   cjs: 'lib',
   umd: 'dist',
 };
 
 const outDir = OUT_DIR_NAME_MAP[format];
-const isEsmFormat = format === 'esm';
+
 const isUmdFormat = format === 'umd';
 
 const output = {
@@ -42,17 +41,12 @@ const plugins = [
   commonjs(),
   resolve(),
   typescript({
-    outDir,
     abortOnError: true,
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
-      exclude: ['__tests__'],
-      compilerOptions: {
-        declaration: isEsmFormat,
-        declarationMap: isEsmFormat,
-      },
+      outDir,
+      include: ['src'],
     },
-    typescript: ttypescript,
   }),
   postcss({
     minimize: isUmdFormat,

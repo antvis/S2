@@ -1,4 +1,4 @@
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 import { CornerBBox } from '@/facet/bbox/cornerBBox';
 
 describe('cornerBBox test', () => {

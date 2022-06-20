@@ -1,13 +1,13 @@
 import { forEach, get, has, intersection, isEmpty, keys, uniq } from 'lodash';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { CellDataParams, DataType } from '@/data-set/interface';
-import { S2DataConfig } from '@/common/interface';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
+import type { S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   getQueryDimValues,
   transformIndexesData,
-} from '@/utils/dataset/pivot-data-set';
+} from '../utils/dataset/pivot-data-set';
+import type { CellDataParams, DataType } from './interface';
+import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {

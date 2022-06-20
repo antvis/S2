@@ -10,7 +10,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    const sortParams = [
+    const defaultSortParams = [
       { sortFieldId: 'province', sortMethod: 'DESC' },
       { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
       {
@@ -45,7 +45,7 @@ fetch(
         },
       ],
       data,
-      sortParams,
+      sortParams: defaultSortParams,
     };
 
     const s2Options = {
@@ -55,6 +55,7 @@ fetch(
 
     const AdvancedSortDemo = () => {
       const [dataCfg, setDataCfg] = useState(s2DataConfig);
+        const [sortParams, setSortParams] = React.useState(defaultSortParams);
 
       return (
         <div>
@@ -69,6 +70,7 @@ fetch(
                 sortParams,
                 onSortConfirm: (ruleValues, sortParams) => {
                   setDataCfg({ ...dataCfg, sortParams });
+                  setSortParams(sortParams);
                 },
               },
             }}

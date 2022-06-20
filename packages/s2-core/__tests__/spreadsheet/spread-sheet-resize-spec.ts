@@ -5,7 +5,7 @@ import {
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  S2Options,
+  type S2Options,
 } from '@/common';
 
 function renderSheet(options: S2Options) {

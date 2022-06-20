@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
-import { Formatter, ViewMeta } from '@/common';
+import type { Formatter, ViewMeta } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { DataCell } from '@/cell';

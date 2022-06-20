@@ -1,22 +1,25 @@
-import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { S2CellType } from './interaction';
-import { DataItem, S2DataConfig } from './s2DataConfig';
-import { BaseHeaderConfig } from '@/facet/header/base';
-import {
+import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { CellTypes } from '../../common/constant';
+import type {
   Condition,
   CustomTreeItem,
   Data,
   ResizeInfo,
-} from '@/common/interface';
-import { S2BasicOptions } from '@/common/interface/s2Options';
-import { BaseDataSet, DataType } from '@/data-set';
-import { Frame } from '@/facet/header';
-import { CellTypes } from '@/common/constant';
-import { FrameConfig } from '@/common/interface/frame';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
+} from '../../common/interface';
+import type { FrameConfig } from '../../common/interface/frame';
+import type {
+  S2BasicOptions,
+  S2Options,
+  S2TableSheetOptions,
+} from '../../common/interface/s2Options';
+import type { BaseDataSet, DataType } from '../../data-set';
+import type { Frame } from '../../facet/header';
+import type { BaseHeaderConfig } from '../../facet/header/base';
+import type { Hierarchy } from '../../facet/layout/hierarchy';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import type { S2CellType } from './interaction';
+import type { DataItem, S2DataConfig } from './s2DataConfig';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化
@@ -292,7 +295,7 @@ export interface CellCfg {
     // 原始值字段
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
-    widthPercentCfg?: number[];
+    widthPercent?: number[];
     // 条件格式
     conditions?: { text: Condition };
   };
@@ -446,12 +449,6 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
 }
 
 export type S2MountContainer = string | Element;
-
-export type S2Constructor<T = Element | string> = [
-  S2MountContainer,
-  S2DataConfig,
-  S2Options<T>,
-];
 
 export interface OriginalEvent extends Event {
   layerX: number;

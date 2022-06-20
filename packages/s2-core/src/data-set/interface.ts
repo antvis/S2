@@ -1,6 +1,6 @@
-import { Node } from '@/facet/layout/node';
-import { BaseDataSet } from '@/data-set/base-data-set';
-import { SortParam } from '@/common/interface';
+import type { SortParam } from '../common/interface';
+import type { Node } from '../facet/layout/node';
+import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
 export type DataType = Record<string, any>;
 
@@ -21,6 +21,15 @@ export type DataPathParams = {
   colDimensionValues: string[];
   // first create data path
   isFirstCreate?: boolean;
+  // callback when pivot map create node
+  onFirstCreate?: (params: {
+    // 是否是行头字段
+    isRow: boolean;
+    // 维度 id，如 city
+    dimension: string;
+    // 维度数组 ['四川省', '成都市']
+    dimensionPath: string[];
+  }) => void;
   // use for multiple data queries（path contains undefined）
   careUndefined?: boolean;
   // use in row tree mode to append fields information

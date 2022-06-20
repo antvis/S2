@@ -1,17 +1,16 @@
+import { getTooltipOptions, SpreadSheet } from '@antv/s2';
+import { useLatest } from 'ahooks';
 import { isEmpty, isObject } from 'lodash';
 import React from 'react';
-import { SpreadSheet, getTooltipOptions } from '@antv/s2';
-import { useLatest } from 'ahooks';
-import { BaseSheet } from '../base-sheet';
-import { DrillDown } from '@/components/drill-down';
-import { SheetComponentsProps } from '@/components/sheets/interface';
-
+import { usePivotSheetUpdate } from '../../../hooks';
 import {
-  ActionIconCallback,
-  handleDrillDown,
+  type ActionIconCallback,
   buildDrillDownOptions,
-} from '@/utils';
-import { usePivotSheetUpdate } from '@/hooks';
+  handleDrillDown,
+} from '../../../utils';
+import { DrillDown } from '../../drill-down';
+import { BaseSheet } from '../base-sheet';
+import type { SheetComponentsProps } from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {

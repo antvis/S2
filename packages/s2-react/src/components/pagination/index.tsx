@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination as AntDPagination } from 'antd';
 import { isEmpty } from 'lodash';
-import { i18n, S2_PREFIX_CLS, Pagination } from '@antv/s2';
+import { i18n, S2_PREFIX_CLS, type Pagination } from '@antv/s2';
 
 export interface S2PaginationProps {
   pagination: Pagination;

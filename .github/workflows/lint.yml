@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
@@ -22,15 +22,12 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      # prepare 已经跑过 core:build 了, 这里只需要跑 react
-      - name: Build
-        run: |
-          yarn react:build
-          yarn vue:build
-
       - name: Lint scripts, type, style and docs
         run: yarn lint
 
+      - name: Build
+        run: yarn build
+    
       - name: Bundle size
         run: yarn bundle:size
         env:

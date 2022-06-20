@@ -1,8 +1,8 @@
 import { data, totalData, meta } from 'tests/data/mock-dataset.json';
 import {
   DEFAULT_OPTIONS,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   DEFAULT_DATA_CONFIG,
 } from '@/index';
 import { customMerge } from '@/utils';

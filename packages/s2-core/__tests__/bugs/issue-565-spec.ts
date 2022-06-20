@@ -28,6 +28,6 @@ describe('Export data in pivot tree mode', () => {
     expect(rows[1].split('\t')[0]).toEqual('');
     expect(rows[7].split('\t')[0]).toEqual('"row0"');
     expect(rows[8].split('\t')[0]).toEqual('"row0"');
-    expect(data.length).toEqual(263);
+    expect(data.length).toEqual(281);
   });
 });

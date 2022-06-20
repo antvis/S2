@@ -1,9 +1,9 @@
 import { createFakeSpreadSheet } from 'tests/util/helpers';
-import { Event as GEvent } from '@antv/g-canvas';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
-import { CellMeta, S2Options, ViewMeta } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { CellMeta, S2Options, ViewMeta } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,

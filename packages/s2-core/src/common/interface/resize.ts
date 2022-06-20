@@ -1,11 +1,11 @@
-import { Style } from './basic';
-import { ResizeArea } from './theme';
-import { S2Event } from '@/common/constant/events/basic';
-import {
-  ResizeType,
+import type { S2Event } from '../../common/constant/events/basic';
+import type {
   ResizeAreaEffect,
   ResizeDirectionType,
-} from '@/common/constant/resize';
+  ResizeType,
+} from '../../common/constant/resize';
+import type { Style } from './basic';
+import type { ResizeArea } from './theme';
 
 export type ResizeGuideLinePath = [operation: 'M' | 'L', x: number, y: number];
 

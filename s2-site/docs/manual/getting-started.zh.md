@@ -14,25 +14,29 @@ $ npm install @antv/s2
 $ yarn add @antv/s2
 ```
 
-### 浏览器引入
+### 使用 React 或 Vue3 版本
 
-```html
-<!-- 引入在线资源 -->
-<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest/dist/index.min.js"></script>
+```bash
+# React
+$ yarn add @antv/s2 @antv/s2-react
 
-<!-- 下载到本地 引入本地脚本 -->
-<script src="./dist/index.min.js"></script>
+# Vue3
+$ yarn add @antv/s2 @antv/s2-vue
 ```
+
+### 浏览器引入（不推荐）
+
+`markdown:docs/common/browser.zh.md`
 
 如需兼容`IE`，需要自行引入 `polyfill` 兼容。
 
 ## 🔨 使用
 
-创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue` 版本
+创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
 
 - core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
-- react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
-- vue 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
+- React 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- Vue3 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
 
 ### 基础类
 
@@ -156,7 +160,7 @@ const s2DataConfig = {
 ```ts
 const s2Options = {
   width: 600,
-  height: 600
+  height: 480
 }
 ```
 
@@ -171,9 +175,9 @@ import { PivotSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new PivotSheet(container, s2DataConfig, s2Options)
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.render()
+s2.render();
 ```
 
 #### 4. 结果
@@ -182,9 +186,9 @@ s2.render()
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件), 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
-使用 `React` 版本 `S2`，只有渲染这一步有所不同：
+#### 表格组件使用
 
 ```ts
 import React from 'react';
@@ -204,11 +208,23 @@ ReactDOM.render(
 
 ```
 
-### `Vue` 版本
+#### 注意事项
 
-`S2` 同时也提供了开箱即用的 `Vue` 版本 [表格组件](###), 帮助开发者快速满足业务看数分析需求。
+`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`,`Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
 
-使用 `Vue` 版本 `S2`：
+```ts
+yarn add antd @ant-design/icons
+```
+
+```ts
+import 'antd/dist/antd.min.css';
+```
+
+​📊 查看 [React 版本透视表 demo](/zh/examples/react-component/sheet#pivot)。
+
+### `Vue3` 版本
+
+`S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -216,11 +232,12 @@ ReactDOM.render(
 // App.vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
+import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import "@antv/s2-vue/dist/style.min.css";
 
 export default defineComponent({
-  setup() {   
+  setup() {
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
     const dataCfg = shallowRef(s2DataConfig);
     const options: S2Options = reactive(s2Options);
@@ -232,18 +249,14 @@ export default defineComponent({
   },
 
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
 
 <template>
-  <Sheet :dataCfg="dataCfg" :options="options" />
+  <SheetComponent :dataCfg="dataCfg" :options="options" />
 </template>
-
-<style lang="less">
-@import 'ant-design-vue/dist/antd.less';
-</style>
 ```
 
 #### 渲染组件
@@ -256,7 +269,19 @@ createApp(App).mount('#app');
 
 ```
 
-​📊 查看 demo [Vue 版本透视表](###)。
+#### 注意事项
+
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip`等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
+
+```ts
+yarn add ant-design-vue
+```
+
+```ts
+import "@antv/s2-vue/dist/style.min.css";
+```
+
+​📊 查看 [Vue3 版本透视表 demo](https://codesandbox.io/s/s2-vue-hwg64q)。
 
 ## ⌨️ 本地开发
 
@@ -264,10 +289,12 @@ createApp(App).mount('#app');
 git clone git@github.com:antvis/S2.git
 cd S2
 
-# 本地启动开发
+# 安装依赖
 yarn
-yarn core:watch
+# 调试 s2-react
 yarn react:playground
+# 调试 s2-vue
+yarn vue:playground
 
 # 本地启动官网
 yarn site:bootstrap

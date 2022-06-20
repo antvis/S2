@@ -1,7 +1,7 @@
-import { BBox } from '@antv/g-canvas';
-import { BaseFacet } from '@/facet/base-facet';
-import { LayoutResult } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { BBox } from '@antv/g-canvas';
+import type { LayoutResult } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import type { BaseFacet } from '../base-facet';
 
 // BBox相同数据结构，便于已有逻辑的直接复用
 export abstract class BaseBBox implements BBox {

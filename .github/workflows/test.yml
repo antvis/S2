@@ -4,9 +4,10 @@ on: [push, pull_request]
 
 jobs:
   test:
-    # jest-electron 需要 macos 环境, 但是 免费用户 并发有限制, 容易排队 https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
-    # runs-on: macos-latest # (目前 macos-latest 对应的是 10.15)
-    runs-on: macos-11
+    # jest-electron 需要 macOS 环境, 但是 免费用户 并发有限制, 容易排队 https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+    # runs-on: macos-latest # (目前 macos-latest 对应的是 Big Sur 11, macos-12 对应  Monterey 12)
+    # macOS 3-core CPU, 其他 2-core CPU
+    runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
@@ -26,7 +27,7 @@ jobs:
 
       - name: Test
         run: |
-          yarn test:coverage
+          yarn test:ci-coverage
 
       - name: Upload test coverage
         uses: codecov/codecov-action@v2

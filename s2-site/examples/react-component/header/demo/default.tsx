@@ -28,28 +28,40 @@ fetch(
       data: res.data,
     };
 
-    const header = {
-      title: '表头标题',
-      description: '表头描述',
-      exportCfg: { open: true },
-      advancedSortCfg: { open: true },
-      switcherCfg: { open: true },
-      extra: (
-        <Button size={'small'} style={{ verticalAlign: 'top' }}>
-          插入内容
-        </Button>
-      ),
+    const SheetHeader = () => {
+      const [dataCfg, setDataCfg] = React.useState(s2DataConfig);
+      const [sortParams, setSortParams] = React.useState([]);
+      const header = {
+        title: '表头标题',
+        description: '表头描述',
+        exportCfg: { open: true },
+        advancedSortCfg: {
+          open: true,
+          sortParams,
+          onSortConfirm: (ruleValues, sortParams) => {
+            setDataCfg({ ...dataCfg, sortParams });
+            setSortParams(sortParams);
+          },
+        },
+        switcherCfg: { open: true },
+        extra: (
+          <Button size={'small'} style={{ verticalAlign: 'top' }}>
+            插入内容
+          </Button>
+        ),
+      };
+
+      return (
+        <SheetComponent
+          dataCfg={dataCfg}
+          options={s2Options}
+          header={header}
+          adaptive={false}
+        />
+      );
     };
 
-    ReactDOM.render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2Options}
-        header={header}
-        adaptive={false}
-      />,
-      document.getElementById('container'),
-    );
+    ReactDOM.render(<SheetHeader />, document.getElementById('container'));
   });
 
 insertCss(`

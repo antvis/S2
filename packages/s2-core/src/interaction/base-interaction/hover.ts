@@ -1,16 +1,23 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach, isEqual, isBoolean } from 'lodash';
-import { BaseEvent, BaseEventImplement } from '../base-event';
-import { ColCell, RowCell } from '@/cell';
-import { S2Event } from '@/common/constant';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { forEach, isBoolean, isEmpty } from 'lodash';
+import type { RowCell } from '../../cell';
+import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
   InteractionStateName,
   InterceptType,
-} from '@/common/constant/interaction';
-import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
-import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
+} from '../../common/constant/interaction';
+import type {
+  S2CellType,
+  TooltipOptions,
+  ViewMeta,
+} from '../../common/interface';
+import {
+  getActiveHoverRowColCells,
+  updateAllColHeaderCellState,
+} from '../../utils/interaction/hover-event';
+import { getCellMeta } from '../../utils/interaction/select-event';
+import { BaseEvent, type BaseEventImplement } from '../base-event';
 
 /**
  * @description Hover event for data cells, row cells and col cells
@@ -25,16 +32,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
     const { interaction } = this.spreadsheet;
-    if (colId) {
-      // update colHeader cells
-      const allColHeaderCells = getActiveHoverRowColCells(
-        colId,
-        interaction.getAllColHeaderCells(),
-      );
-      forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.updateByState(InteractionStateName.HOVER);
-      });
-    }
+
+    updateAllColHeaderCellState(
+      colId,
+      interaction.getAllColHeaderCells(),
+      InteractionStateName.HOVER,
+    );
 
     if (rowId) {
       // update rowHeader cells
@@ -95,7 +98,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     if (hoverFocusDuration === 0) {
       handleHoverFocus();
     } else {
-      const hoverTimer = setTimeout(
+      const hoverTimer: number = window.setTimeout(
         () => handleHoverFocus(),
         hoverFocusDuration,
       );

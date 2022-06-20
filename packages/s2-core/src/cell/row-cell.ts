@@ -1,37 +1,41 @@
-import { Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
-import { HeaderCell } from './header-cell';
-import { isMobile } from '@/utils/is-mobile';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
-} from '@/common/constant';
-import { CellBorderPosition, TextTheme, ViewMeta } from '@/common/interface';
-import { RowHeaderConfig } from '@/facet/header/row';
+} from '../common/constant';
 import {
-  getTextAndFollowingIconPosition,
+  CellBorderPosition,
+  type TextTheme,
+  type ViewMeta,
+} from '../common/interface';
+import type { RowHeaderConfig } from '../facet/header/row';
+import {
   getBorderPositionAndStyle,
-} from '@/utils/cell/cell';
+  getTextAndFollowingIconPosition,
+} from '../utils/cell/cell';
 import {
+  renderCircle,
   renderLine,
   renderRect,
-  renderCircle,
   renderTreeIcon,
-} from '@/utils/g-renders';
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { getAdjustPosition } from '@/utils/text-absorption';
+} from '../utils/g-renders';
+import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
-  getResizeAreaAttrs,
   getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+  getResizeAreaAttrs,
+} from '../utils/interaction/resize';
+import { isMobile } from '../utils/is-mobile';
+import { getAdjustPosition } from '../utils/text-absorption';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
-  protected headerConfig: RowHeaderConfig;
+  protected declare headerConfig: RowHeaderConfig;
 
   private gm: GM;
 
@@ -360,16 +364,16 @@ export class RowCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const { text, bolderText, measureText } = this.getStyle();
-
+    let style: TextTheme;
     if (this.isMeasureField()) {
-      return measureText || text;
+      style = measureText || text;
+    } else if (this.isBolderText()) {
+      style = bolderText;
+    } else {
+      style = text;
     }
 
-    if (this.isBolderText()) {
-      return bolderText;
-    }
-
-    return text;
+    return { ...style, textBaseline: 'top' };
   }
 
   protected getIconPosition() {

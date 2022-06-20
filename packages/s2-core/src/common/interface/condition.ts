@@ -1,4 +1,4 @@
-import { IconTheme } from './theme';
+import type { IconTheme } from './theme';
 
 export interface ValueRange {
   minValue?: number;

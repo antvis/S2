@@ -1,5 +1,8 @@
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import { S2Event, InterceptType } from '@/common/constant';
+import { InterceptType, S2Event } from '../../../common/constant';
+import {
+  BaseEvent,
+  type BaseEventImplement,
+} from '../../../interaction/base-event';
 
 export class CornerCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

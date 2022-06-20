@@ -1,15 +1,12 @@
-import { isEmpty, get } from 'lodash';
-import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
-import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
-import { TotalClass } from '@/facet/layout/total-class';
-import { i18n } from '@/common/i18n';
-import { Node } from '@/facet/layout/node';
-import { generateId } from '@/utils/layout/generate-id';
-import { SpreadSheet } from '@/sheet-type';
-import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
-import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
-import { PivotDataSet } from '@/data-set';
-import { ID_SEPARATOR, ROOT_ID } from '@/common';
+import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
+import type { PivotDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
+import { filterUndefined, getListBySorted } from '../../utils/data-set-operate';
+import { generateId } from '../../utils/layout/generate-id';
+import type { FieldValue, TreeHeaderParams } from '../layout/interface';
+import { layoutArrange, layoutHierarchy } from '../layout/layout-hooks';
+import { Node } from '../layout/node';
+import { TotalClass } from '../layout/total-class';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -26,6 +23,8 @@ const addTotals = (
   }
 };
 
+const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
+
 /**
  * Only row header has tree hierarchy, in this scene:
  * 1、value in rows is not work => valueInCols is ineffective
@@ -36,24 +35,24 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
     params;
   const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
-  const { query, id } = parentNode;
+  const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
-  // 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value
-  const dimensions =
-    ROOT_ID === id
-      ? sortedDimensionValues
-      : sortedDimensionValues?.filter((item) =>
-          item?.includes(id?.split(`${ROOT_ID}${ID_SEPARATOR}`)[1]),
-        );
-
-  const dimValues = filterUndefined(
-    getListBySorted(
-      [...(pivotMeta.keys() || [])],
-      [...getDimensionsWithoutPathPre([...dimensions])],
-    ),
+  const unsortedDimValues = filterUndefined(Array.from(pivotMeta.keys()));
+  const dimValues = getListBySorted(
+    unsortedDimValues,
+    sortedDimensionValues,
+    (dimVal) => {
+      // 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
+      // unsortedDimValues：['成都', '绵阳']
+      // sortedDimensionValues: ['四川[&]成都']
+      if (ROOT_ID === parentId) {
+        return dimVal;
+      }
+      return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
+    },
   );
 
   let fieldValues: FieldValue[] = layoutArrange(
@@ -95,8 +94,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         [currentField]: value,
       };
     }
-    const uniqueId = generateId(parentNode.id, value);
-    const isCollapsedRow = get(collapsedRows, uniqueId);
+    const uniqueId = generateId(parentId, value);
+    const isCollapsedRow = collapsedRows?.[uniqueId];
     const isCollapse = isCollapsedRow ?? hierarchyCollapse;
 
     const node = new Node({
@@ -120,7 +119,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       hierarchy.maxLevel = level;
     }
 
-    const emptyChildren = isEmpty(pivotMetaValue?.children);
+    const emptyChildren = !pivotMetaValue.children?.size;
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
