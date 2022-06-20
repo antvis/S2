@@ -104,13 +104,17 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   test('should use container width when container width less than options width and table first rendered', async () => {
-    s2?.changeSheetSize(s2Options.width, s2Options.height);
-    s2?.render(false);
+    const container = getContainer();
+    container.style.width = `${s2Options.width - 100}px`;
 
     act(() => {
       ReactDOM.render(
-        <MainLayout adaptive containerWidth={s2Options.width - 100} />,
-        getContainer(),
+        <MainLayout
+          adaptive={{
+            getContainer: () => container,
+          }}
+        />,
+        container,
       );
     });
 
