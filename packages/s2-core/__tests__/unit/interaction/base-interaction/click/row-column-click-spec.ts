@@ -14,7 +14,7 @@ import type { Node } from '@/facet/layout/node';
 
 jest.mock('@/interaction/event-controller');
 
-describe('Interaction Data Cell Click Tests', () => {
+describe('Interaction Row & Column Cell Click Tests', () => {
   let rowColumnClick: RowColumnClick;
   let s2: SpreadSheet;
 
@@ -147,6 +147,52 @@ describe('Interaction Data Cell Click Tests', () => {
         stopPropagation() {},
       } as unknown as GEvent);
       expect(selected).toHaveBeenCalledWith([mockCell]);
+    },
+  );
+
+  test.each([
+    {
+      event: S2Event.ROW_CELL_CLICK,
+      enableMultiSelection: false,
+      result: false,
+    },
+    {
+      event: S2Event.COL_CELL_CLICK,
+      enableMultiSelection: false,
+      result: false,
+    },
+    {
+      event: S2Event.ROW_CELL_CLICK,
+      enableMultiSelection: true,
+      result: true,
+    },
+    {
+      event: S2Event.COL_CELL_CLICK,
+      enableMultiSelection: true,
+      result: true,
+    },
+  ])(
+    'should emit cell selected event when %s clicked111',
+    ({ event, enableMultiSelection, result }) => {
+      s2.options.interaction.multiSelection = enableMultiSelection;
+
+      const selectHeaderCellSpy = jest
+        .spyOn(s2.interaction, 'selectHeaderCell')
+        .mockImplementation(() => true);
+
+      Object.defineProperty(rowColumnClick, 'isMultiSelection', {
+        value: true,
+        writable: true,
+      });
+
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+
+      expect(selectHeaderCellSpy).toHaveBeenCalledWith({
+        cell: expect.anything(),
+        isMultiSelection: result,
+      });
     },
   );
 

@@ -523,7 +523,7 @@ export abstract class SpreadSheet extends EE {
    * default offsetX(horizontal scroll need animation)
    * but offsetY(vertical scroll don't need animation)
    */
-  public updateScrollOffset(offsetConfig: OffsetConfig): void {
+  public updateScrollOffset(offsetConfig: OffsetConfig) {
     this.facet.updateScrollOffset(
       customMerge(
         {

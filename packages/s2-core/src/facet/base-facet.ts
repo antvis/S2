@@ -423,14 +423,14 @@ export abstract class BaseFacet {
   };
 
   scrollWithAnimation = (
-    offsetConfig: OffsetConfig,
+    offsetConfig: OffsetConfig = {},
     duration = 200,
     cb?: () => void,
   ) => {
     const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
       this.getAdjustedScrollOffset({
-        scrollX: offsetConfig.offsetX.value || 0,
-        scrollY: offsetConfig.offsetY.value || 0,
+        scrollX: offsetConfig.offsetX?.value || 0,
+        scrollY: offsetConfig.offsetY?.value || 0,
       });
     if (this.timer) {
       this.timer.stop();
@@ -453,10 +453,10 @@ export abstract class BaseFacet {
     });
   };
 
-  scrollImmediately = (offsetConfig: OffsetConfig) => {
+  scrollImmediately = (offsetConfig: OffsetConfig = {}) => {
     const { scrollX, scrollY } = this.getAdjustedScrollOffset({
-      scrollX: offsetConfig.offsetX.value || 0,
-      scrollY: offsetConfig.offsetY.value || 0,
+      scrollX: offsetConfig.offsetX?.value || 0,
+      scrollY: offsetConfig.offsetY?.value || 0,
     });
     this.setScrollOffset({ scrollX, scrollY });
     this.startScroll(scrollX, scrollY);
