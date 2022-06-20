@@ -320,28 +320,23 @@ describe('SheetComponent adaptive Tests', () => {
   test('should get original container size if container scaled', async () => {
     const newContainerWidth = 1000;
     const newContainerHeight = 500;
-    const containerId = 'scaleContainer';
+    const container = getContainer();
+
+    container.style.width = newContainerWidth + 'px';
+    container.style.height = newContainerHeight + 'px';
+    container.style.transform = 'scale(0.5)';
 
     act(() => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            getContainer: () => {
-              const container = document.getElementById(containerId);
-              container.style.transform = 'scale(0.5)';
-              return container;
-            },
+            width: true,
+            height: true,
+            getContainer: () => container,
           }}
-          containerId={containerId}
         />,
-        getContainer(),
+        container,
       );
-    });
-
-    act(() => {
-      const container = document.getElementById(containerId);
-      container.style.width = newContainerWidth + 'px';
-      container.style.height = newContainerHeight + 'px';
     });
 
     act(() => {
@@ -351,8 +346,6 @@ describe('SheetComponent adaptive Tests', () => {
     await sleep(1000);
 
     expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.options.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.height).toEqual(newContainerHeight);
     expect(s2.container.cfg.width).toEqual(newContainerWidth);
   });
 });
