@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.18.0...@antv/s2-react-v1.19.0) (2022-06-20)
+
+
+### Bug Fixes
+
+* **interaction:** 修复禁用多选后, 未对行/列头生效 ([#1461](https://github.com/antvis/S2/issues/1461)) ([6dab9da](https://github.com/antvis/S2/commit/6dab9da19c9fd53bdd5198f18abe7c00f12f061e))
+
+
+### Features
+
+* **strategy-sheet:** 子弹图支持显示 Tooltip ([#1450](https://github.com/antvis/S2/issues/1450)) ([15a0799](https://github.com/antvis/S2/commit/15a0799a17893610a7aa8b4550e6d3647ad3a2b2))
+
 # [@antv/s2-react-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.17.0...@antv/s2-react-v1.18.0) (2022-06-17)
 
 
