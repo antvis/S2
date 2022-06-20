@@ -68,6 +68,7 @@ export const initBaseSheetEmits = () => {
     'dataCellMouseMove',
     'dataCellTrendIconClick',
     'dataCellBrushSelection',
+    'dataCellSelectMove',
 
     // ============== Corner Cell ====================
     'cornerCellHover',
