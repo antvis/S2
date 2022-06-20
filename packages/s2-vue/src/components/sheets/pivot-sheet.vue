@@ -26,17 +26,8 @@ export default defineComponent({
   emits: initBaseSheetEmits(),
   setup(props, ctx) {
     const s2Ref = useExpose(ctx.expose);
-    // Getting a value from the `props` in root scope of `setup()` will cause the value to lose reactivity
-    // const { options: pivotOptions, ...restProps } = props;
-    const { options: pivotOptions, ...restProps } = toRefs(props);
-
+    const { options: pivotOptions } = toRefs(props);
     const { dataCfg, partDrillDown } = toRefs(props);
-    // const { getDrillFields, ...restPartDrillDown } = toRefs(partDrillDown);
-    const drillDownPosition = ref<{
-      x: number;
-      y: number;
-    }>({ x: 0, y: 0 });
-
     // 被下钻的 field
     const drillFields = ref<string[]>([]);
 
@@ -44,8 +35,6 @@ export default defineComponent({
     const setDrillFields = (fields: string[]) => {
       const instance = s2Ref?.value?.instance;
       drillFields.value = fields;
-
-      // 隐藏 tooltip + drilldown 的UI层
       instance?.hideTooltip();
       if (isEmpty(fields)) {
         instance?.clearDrillDownData(instance?.store.get('drillDownNode')?.id);
@@ -65,15 +54,17 @@ export default defineComponent({
      * 点击下钻后，下钻组件的出现
      */
     const onDrillDownIconClick = (params: ActionIconCallbackParams) => {
-      const { event } = params;
+      const { event, disabledFields } = params;
       if (event) {
         const instance = s2Ref?.value?.instance;
         const drillDownNode = createVNode(DrillDown, {
+          ...partDrillDown.value?.drillConfig,
           setDrillFields,
-          dataSet: partDrillDown.value?.drillConfig.dataSet,
           drillFields: drillFields.value,
+          disabledFields,
         });
-        // 下钻通过 teleport 出现
+
+        // 将下钻设置为 tooltip 的 content 进行展示
         instance?.showTooltip({
           position: {
             x: event.clientX,
@@ -88,7 +79,7 @@ export default defineComponent({
     // 展示下钻icon
     const options = computed(() =>
       buildDrillDownOptions(
-        pivotOptions as S2Options,
+        pivotOptions.value as S2Options,
         partDrillDown.value as PartDrillDown,
         (params) => onDrillDownIconClick(params),
       ),
@@ -96,7 +87,6 @@ export default defineComponent({
 
     return {
       s2Ref,
-      restProps,
       options,
     };
   },
@@ -107,5 +97,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <BaseSheet ref="s2Ref" :options="options" v-bind="restProps" />
+  <BaseSheet ref="s2Ref" v-bind="$props" :options="options" />
 </template>
