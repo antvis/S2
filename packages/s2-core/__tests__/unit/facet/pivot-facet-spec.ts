@@ -79,8 +79,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         sortedDimensionValues,
         moreThanOneValue: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
-        getFieldMeta: (field: string, meta: ViewMeta) =>
-          find(meta, (m) => m.field === field),
+        getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
         getCellData: actualPivotDataSet.prototype.getCellData,
         getMultiData: jest.fn(),
@@ -256,4 +255,29 @@ describe('Pivot Mode Facet Test', () => {
       expect(get(sampleDataCell, 'meta.data.number')).toBe(7789);
     });
   });
+
+  it.each(['updateScrollOffset', 'scrollWithAnimation', 'scrollImmediately'])(
+    'should not throw "Cannot read property \'value\' of undefined" error if called with single offset config',
+    (method) => {
+      const onlyOffsetYFn = () => {
+        facet[method]({
+          offsetY: {
+            value: 10,
+          },
+        });
+      };
+
+      const onlyOffsetXFn = () => {
+        facet[method]({
+          offsetX: {
+            value: 10,
+          },
+        });
+      };
+
+      [onlyOffsetXFn, onlyOffsetYFn].forEach((handler) => {
+        expect(handler).not.toThrowError();
+      });
+    },
+  );
 });

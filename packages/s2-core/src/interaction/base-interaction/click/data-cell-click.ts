@@ -119,7 +119,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     } = meta;
     const currentCellMeta = data;
     const showSingleTips = this.spreadsheet.isTableMode();
-    const cellData = showSingleTips
+    const cellData: TooltipData = showSingleTips
       ? {
           ...currentCellMeta,
           value: value || fieldValue,

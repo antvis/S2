@@ -48,8 +48,9 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   if (Array.isArray(data)) {
     keys(data)?.forEach((item) => {
       const current = get(data, item);
-      if ('undefined' in current) {
-        keys(current).forEach((ki) => {
+      const currentKeys = keys(current);
+      if (currentKeys.includes('undefined')) {
+        currentKeys.forEach((ki) => {
           result.push(current[ki]);
         });
       } else {

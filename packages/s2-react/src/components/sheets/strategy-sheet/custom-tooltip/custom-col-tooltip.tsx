@@ -1,7 +1,8 @@
 import cls from 'classnames';
 import React from 'react';
-import styles from './index.module.less';
 import type { CustomTooltipProps } from './interface';
+
+import styles from './index.module.less';
 
 export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();

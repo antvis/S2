@@ -6,27 +6,44 @@ import {
   type S2Options,
   SpreadSheet,
   type ViewMeta,
+  type MultiData,
+  type S2CellType,
 } from '@antv/s2';
-import { isEmpty, size } from 'lodash';
+import { isArray, isEmpty, isObject, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
+import { KpiBulletTooltip } from './custom-tooltip/kpi-columns/custom-bullet-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
+
+export interface StrategySheetProps extends SheetComponentsProps {
+  bulletTooltipDescription: (
+    cell: S2CellType<Node | ViewMeta>,
+  ) => React.ReactNode;
+}
 
 /* *
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
  * 2. 单指标时数值置于列头，且隐藏指标列头
  * 3. 多指标时数值置于行头，不隐藏指标列头
+ * 4. 支持 KPI 进度 (子弹图)
+ * 5. 行头, 数值单元格不支持多选
  */
-export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
+export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
   (props) => {
-    const { options, themeCfg, dataCfg, ...restProps } = props;
+    const {
+      options,
+      themeCfg,
+      dataCfg,
+      bulletTooltipDescription,
+      ...restProps
+    } = props;
     const s2Ref = React.useRef<SpreadSheet>();
 
     const strategySheetOptions = React.useMemo<
@@ -82,37 +99,43 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <RowTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell) => <RowTooltip cell={cell} />,
           },
           col: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <ColTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell) => <ColTooltip cell={cell} />,
           },
           data: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <DataTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell) => {
+              const meta = cell.getMeta() as ViewMeta;
+              const fieldValue = meta.fieldValue as MultiData;
+
+              // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
+              if (isArray(fieldValue?.values)) {
+                return <DataTooltip cell={cell} />;
+              }
+
+              // 如果是对象, 说明是子弹图数据, 显示子弹图定制 Tooltip
+              if (isObject(fieldValue?.values)) {
+                return (
+                  <KpiBulletTooltip
+                    cell={cell}
+                    description={bulletTooltipDescription}
+                  />
+                );
+              }
+
+              return <></>;
+            },
           },
         },
       };
-    }, [dataCfg, options.hierarchyType]);
+    }, [dataCfg, options.hierarchyType, bulletTooltipDescription]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
-      const defaultFields = {
+      const defaultFields: Partial<S2DataConfig> = {
         fields: {
-          valueInCols: size(dataCfg?.fields?.values) <= 1, // 多指标数值挂行头，单指标挂列头
+          // 多指标数值挂行头，单指标挂列头
+          valueInCols: size(dataCfg?.fields?.values) <= 1,
         },
       };
       return customMerge(dataCfg, defaultFields);
