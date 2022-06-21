@@ -14,8 +14,6 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
-  // negative value interval fill color
-  negativeFill?: string;
 }
 
 export type MappingFunction = (
@@ -38,9 +36,6 @@ export interface IconCondition extends Condition {
 }
 
 export interface Conditions {
-  // distinct negative and positive value, and use different direction interval
-  // 双向柱状图
-  bidirectionalInterval?: boolean;
   text?: Condition[];
   background?: Condition[];
   interval?: Condition[];

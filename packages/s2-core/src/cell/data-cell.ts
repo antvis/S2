@@ -34,7 +34,6 @@ import {
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { normalizeIntervalConditionMappingResult } from './../utils/condition/condition';
 
 /**
  * DataCell for panelGroup area
@@ -278,9 +277,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     if (intervalCondition && intervalCondition.mapping && formattedValue) {
-      const attrs = normalizeIntervalConditionMappingResult(
-        this.mappingValue(intervalCondition),
-      );
+      const attrs = this.mappingValue(intervalCondition);
       if (!attrs) {
         return;
       }
@@ -301,15 +298,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
 
-      const getScale = getIntervalScale(
-        minValue,
-        maxValue,
-        this.conditions?.bidirectionalInterval,
-      );
-      const { isNegative, zeroScale, scale } = getScale(fieldValue);
+      const getScale = getIntervalScale(minValue, maxValue);
+      const { zeroScale, scale } = getScale(fieldValue);
 
-      const fill =
-        (isNegative ? attrs.negativeFill : attrs.fill) ?? barChartFillColor;
+      const fill = attrs.fill ?? barChartFillColor;
 
       this.conditionIntervalShape = renderRect(this, {
         x: x + width * zeroScale,
