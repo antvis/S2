@@ -100,7 +100,6 @@ const s2Options = {
 | isCompare |仅用于**柱状图**字段标记，当为 `true` 时，可以定制柱状图的最大最小值 |`boolean`| -      |      |
 | minValue | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最小值  |`number` | -      |      |
 | maxValue |  仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值 |`number` | -      |      |
-| negativeFill |  仅用于**柱状图**字段标记且 `bidirectionalInterval` 为 `true` 时，指定负区间的填充颜色 |`string` | -      |      |
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
 
@@ -129,7 +128,7 @@ const s2Options = {
 
 ### 双向柱状图
 
-当柱状图的区间有正负之分时，可以开启 `conditions.bidirectionalInterval` 配置，并搭配 `mapping` 函数返回值的 `negativeFill` 属性，即可绘制出带有不同颜色的正负双向柱状图：
+当柱状图的区间有正负之分时，并搭配 `mapping` 函数返回值的 `fill` 属性，即可绘制出带有不同颜色的正负双向柱状图：
 
 <playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
 

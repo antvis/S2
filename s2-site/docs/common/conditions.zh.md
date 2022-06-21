@@ -7,11 +7,10 @@ order: 2
 
 类型：`object`，**必选**，默认值：`{}`
 
-<description>功能描述： 配置字段标记。分为文本 (text)，背景 (background)，柱状图 (interval)，图标 (icon)；以及相关配置。</description>
+<description>功能描述： 配置字段标记。分为文本 (text)，背景 (background)，柱状图 (interval)，图标 (icon)。</description>
 
 | 参数       | 说明 | 类型            | 默认值 | 必选  |
 | ---------- | ---------- | ---------------  | ------ | ---- |
-| bidirectionalInterval       | 是否使用双向柱状图模式（即区分正负方向）   | `boolean`     | `false` |            |
 | text       | 文本字段标记   | `Condition[]`     | - |            |
 | background | 背景字段标记   | `Condition[]`    | -      |            |
 | interval   | 柱状图字段标记 | `Condition[]`     | -      |            |
@@ -45,7 +44,6 @@ type MappingFunction = (
   isCompare?: boolean;
   minValue?: number;
   maxValue?: number;
-  negativeFill?: string;
 } | null | undefined // 返回值为空时，表示当前字段不显示字段标记样式
 
 ```

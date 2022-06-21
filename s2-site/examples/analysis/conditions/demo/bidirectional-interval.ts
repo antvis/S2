@@ -14,14 +14,12 @@ fetch(
         hoverHighlight: false,
       },
       conditions: {
-        bidirectionalInterval: true,
         interval: [
           {
             field: 'delta',
-            mapping() {
+            mapping(value) {
               return {
-                fill: '#80BFFF',
-                negativeFill: '#F4664A',
+                fill: value >= 0 ? '#80BFFF' : '#F4664A',
               };
             },
           },
