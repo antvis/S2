@@ -1,3 +1,10 @@
+# [@antv/s2-v1.21.1](https://github.com/antvis/S2/compare/@antv/s2-v1.21.0...@antv/s2-v1.21.1) (2022-06-21)
+
+
+### Bug Fixes
+
+* 构造含总计的 tree 行头布局时报错 ([a44c2c8](https://github.com/antvis/S2/commit/a44c2c81a5c0454a506ebd61014a72f810c921e8))
+
 # [@antv/s2-v1.21.0](https://github.com/antvis/S2/compare/@antv/s2-v1.20.0...@antv/s2-v1.21.0) (2022-06-20)
 
 
