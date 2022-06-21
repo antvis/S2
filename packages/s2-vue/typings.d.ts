@@ -1,4 +1,3 @@
-/// <reference types="../../env.base.d.ts" />
 /// <reference types="vite-svg-loader" />
 
 declare module '*.svg' {

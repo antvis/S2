@@ -1,14 +1,16 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import type { Ref } from 'vue';
 import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { Button, Input, Empty, Menu, MenuItem } from 'ant-design-vue';
 import type { SelectInfo } from 'ant-design-vue/lib/menu/src/interface';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import LocationIcon from '@antv/s2-shared/src/icons/location-icon.svg?component';
 import TextIcon from '@antv/s2-shared/src/icons/text-icon.svg?component';
 import CalendarIcon from '@antv/s2-shared/src/icons/calendar-icon.svg?component';
 import type { Key } from 'ant-design-vue/lib/_util/type';
+import type { ChangeEvent } from 'ant-design-vue/lib/_util/EventInterface';
+import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
 import {
   initDrillDownEmits,
   initDrillDownProps,
@@ -37,24 +39,17 @@ export default defineComponent({
       setDrillFields,
       className,
     } = props as BaseDrillDownComponentProps;
-    const PRE_CLASS = 's2-drill-down';
     const getOptions = () => {
       return dataSet.map((val: BaseDataSet) => {
-        const item = val;
-        item.disabled = !!(
-          disabledFields && disabledFields.includes(item.value)
-        );
-        return item;
+        val.disabled = !!(disabledFields && disabledFields.includes(val.value));
+        return val;
       });
     };
 
     const options: Ref<BaseDataSet[]> = ref(getOptions());
     const selected = ref<Key[]>([]);
-    onMounted(() => {
-      // console.log(dataSet, 'dataSet');
-    });
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e: ChangeEvent) => {
       const { value } = e.target;
 
       if (!value) {
@@ -67,7 +62,6 @@ export default defineComponent({
     };
 
     const handleSelect = (value: SelectInfo) => {
-      // console.log(value, 'e.target')
       const key = value?.selectedKeys;
       selected.value = key;
       if (getDrillFields) {
@@ -88,37 +82,37 @@ export default defineComponent({
       handleSearch,
       handleSelect,
       handleClear,
-      PRE_CLASS,
       className,
       selected,
-      _,
+      isEmpty,
+      DRILL_DOWN_PRE_CLASS,
     };
   },
 });
 </script>
 
 <template>
-  <div :class="[PRE_CLASS, className]">
-    <header :class="PRE_CLASS + '-header'">
+  <div :class="[DRILL_DOWN_PRE_CLASS, className]">
+    <header :class="`${DRILL_DOWN_PRE_CLASS}-header`">
       <div>{{ titleText }}</div>
       <Button type="link" @click="handleClear">
         {{ clearButtonText }}
       </Button>
     </header>
     <Input
-      :class="`${PRE_CLASS}-search`"
+      :class="`${DRILL_DOWN_PRE_CLASS}-search`"
       :placeholder="searchText"
       @change="handleSearch"
       @pressEnter="handleSearch"
       :allowClear="true"
     />
     <Empty
-      v-if="_.isEmpty(options)"
+      v-if="isEmpty(options)"
       :imageStyle="{ height: '64px' }"
-      :class="`${PRE_CLASS}-empty`"
+      :class="`${DRILL_DOWN_PRE_CLASS}-empty`"
     />
     <Menu
-      class="`${PRE_CLASS}-menu`"
+      class="`${DRILL_DOWN_PRE_CLASS}-menu`"
       v-model:selectedKeys="selected"
       @select="handleSelect"
     >
@@ -126,7 +120,7 @@ export default defineComponent({
         v-for="option in options"
         :key="option.value"
         :disabled="option.disabled"
-        :class="`${PRE_CLASS}-menu-item`"
+        :class="`${DRILL_DOWN_PRE_CLASS}-menu-item`"
       >
         <template #icon>
           <text-icon v-if="option.type === 'text'" />

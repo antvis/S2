@@ -1,5 +1,5 @@
 /**
- *
+ * drill-down.ts 文件已迁移至 shared 文件，但因 spec 中需要的相关方法和数据很多都是在 react 共用的。所以暂不迁移
  */
 import {
   PivotDataSet,

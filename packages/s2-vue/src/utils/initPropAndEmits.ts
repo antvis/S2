@@ -1,4 +1,5 @@
 import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
+import { i18n } from '@antv/s2';
 import type {
   Adaptive,
   BaseSheetComponentProps,
@@ -44,21 +45,20 @@ export const initDrillDownProps = () => ({
   className: String,
   titleText: {
     type: String,
-    default: '选择下钻维度',
+    default: i18n('选择下钻维度'),
   },
   searchText: {
     type: String,
-    default: '搜索字段',
+    default: i18n('搜索字段'),
   },
   clearButtonText: {
     type: String,
-    default: '恢复默认',
+    default: i18n('恢复默认'),
   },
   extra: Node,
   dataSet: {
     type: Array as PropType<BaseDataSet[]>,
     default: [],
-    required: true,
   },
   drillFields: Array as PropType<string[]>,
   disabledFields: Array as PropType<string[]>,
