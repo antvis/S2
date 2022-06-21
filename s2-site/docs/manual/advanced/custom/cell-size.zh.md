@@ -7,7 +7,7 @@ S2 可以手动拖拽动态改变单元格的宽高，也提供默认的 `行列
 
 我们可以通过 [主题](/zh/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/zh/docs/api/general/S2Options#style) 配置来实现
 
-<playground path='layout/custom/demo/custom-size.ts' rid='container' height='400'></playground>
+<playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
 
 ```ts
 const s2Options = {
@@ -119,7 +119,7 @@ const s2Options = {
 
 ### 隐藏列头
 
-还可以将高度设置为 `0`, 从而实现**隐藏列头**的效果
+还可以将高度设置为 `0`, 从而实现**隐藏列头**的效果，[查看例子](/zh/examples/layout/custom#hide-columns)
 
 ```ts
 const s2Options = {
@@ -132,5 +132,3 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/VKHZ7SqIL/7371cfc3-b8e9-4f0b-a9c5-a9689aa0053a.png" alt="preview" width="600"/>
-
-<playground path='layout/custom/demo/hide-columns.ts' rid='hide-columns' height='400'></playground>
