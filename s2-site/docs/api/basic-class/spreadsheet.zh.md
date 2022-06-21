@@ -68,6 +68,7 @@ s2.xx()
 | getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
 | getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
 | getCanvasElement | 获取表格对应的 `<canvas/>` HTML 元素 | () => [HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement) |
+| clearColumnLeafNodes | 清空存储在 store 中的初始叶子节点 | () => void |
 
 ### S2MountContainer
 

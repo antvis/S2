@@ -34,7 +34,13 @@ export const useSheetUpdate = (
 
   watch(
     () => props.dataCfg!,
-    (dataCfg) => {
+    (dataCfg, prevDataCfg) => {
+      if (
+        prevDataCfg?.fields?.columns?.length !==
+        dataCfg?.fields?.columns?.length
+      ) {
+        s2Ref.value?.clearColumnLeafNodes();
+      }
       updateFlag.rerender = true;
       updateFlag.reloadData = true;
       s2Ref.value?.setDataCfg(dataCfg);
