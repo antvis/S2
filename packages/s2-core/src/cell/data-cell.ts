@@ -304,7 +304,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       const getScale = getIntervalScale(
         minValue,
         maxValue,
-        this.conditions?.enableNegativeInterval,
+        this.conditions?.bidirectionalInterval,
       );
       const { isNegative, zeroScale, scale } = getScale(fieldValue);
 
