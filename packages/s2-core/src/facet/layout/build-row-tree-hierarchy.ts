@@ -119,7 +119,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       hierarchy.maxLevel = level;
     }
 
-    const emptyChildren = !pivotMetaValue.children?.size;
+    const emptyChildren = !pivotMetaValue?.children?.size;
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
