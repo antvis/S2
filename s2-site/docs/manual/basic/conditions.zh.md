@@ -100,6 +100,7 @@ const s2Options = {
 | isCompare |仅用于**柱状图**字段标记，当为 `true` 时，可以定制柱状图的最大最小值 |`boolean`| -      |      |
 | minValue | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最小值  |`number` | -      |      |
 | maxValue |  仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值 |`number` | -      |      |
+| negativeFill |  仅用于**柱状图**字段标记且 `bidirectionalInterval` 为 `true` 时，指定负区间的填充颜色 |`string` | -      |      |
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
 
@@ -119,16 +120,24 @@ const s2Options = {
 
 ### 自定义柱状图范围
 
-通过显示指定 `interval` 字段标记中的 `mapping 函数` 返回值  `isCompare` 属性值为 `true`，并指定 `maxValue` 和 `minValue` 的值，可以自定义柱状图的区间范围。
+通过显示指定 `interval` 字段标记中的 `mapping` 函数返回值  `isCompare` 属性值为 `true`，并指定 `maxValue` 和 `minValue` 的值，可以自定义柱状图的区间范围。
 > 如果 `mapping 函数` 返回值中的 `isCompare` 属性值为 `false` 或者不返回该属性。此时 `maxValue` 和 `minValue` 会以所有图表数据中该字段的最大最小值为区间范围
 
 `price` 字段使用自定义模式，`cost` 字段使用默认模式：
 
 <playground path="analysis/conditions/demo/interval.ts" rid='interval'></playground>
 
+### 双向柱状图
+
+当柱状图的区间有正负之分时，可以开启 `conditions.bidirectionalInterval` 配置，并搭配 `mapping` 函数返回值的 `negativeFill` 属性，即可绘制出带有不同颜色的正负双向柱状图：
+
+<playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
+
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+
 ### 渐变柱状图
 
-`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)等。
+`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86) 等。
 
 `price` 字段使用渐变色：
 <playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
