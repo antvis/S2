@@ -1,3 +1,6 @@
+/**
+ *
+ */
 import {
   PivotDataSet,
   RootInteraction,
@@ -12,6 +15,8 @@ import {
   getDrillDownCache,
   handleActionIconClick,
   handleDrillDown,
+  type PartDrillDown,
+  type PartDrillDownInfo,
 } from '@antv/s2-shared';
 import { sleep, getContainer } from '../../util/helpers';
 import { data as originData } from '../../data/mock-dataset.json';
@@ -20,7 +25,6 @@ import {
   HZDrillDownData,
   SXDrillDownData,
 } from '../../data/mock-drill-down-dataset.json';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;
