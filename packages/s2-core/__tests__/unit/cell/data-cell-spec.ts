@@ -55,7 +55,7 @@ describe('data cell formatter test', () => {
   test('should draw condition interval shape', () => {
     const cellWidth = 120;
     const fieldValue = 27.334666666666667;
-    const anthorMeta = {
+    const anotherMeta = {
       width: cellWidth,
       valueField: 'value',
       fieldValue,
@@ -68,7 +68,7 @@ describe('data cell formatter test', () => {
     } as unknown as ViewMeta;
 
     jest.spyOn(s2.dataSet, 'getValueRangeByField').mockReturnValue({
-      minValue: fieldValue,
+      minValue: 0,
       maxValue: fieldValue,
     });
 
@@ -83,8 +83,7 @@ describe('data cell formatter test', () => {
       },
     });
 
-    const dataCell = new DataCell(anthorMeta, s2);
-
+    const dataCell = new DataCell(anotherMeta, s2);
     expect(get(dataCell, 'conditionIntervalShape.attrs.width')).toEqual(
       cellWidth,
     );
