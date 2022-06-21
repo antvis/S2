@@ -43,8 +43,9 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   height: 480,
   debug: false,
   hierarchyType: 'grid',
-  enableNegativeIntervalCondition: false,
-  conditions: {},
+  conditions: {
+    enableNegativeInterval: false,
+  },
   totals: {},
   tooltip: {
     showTooltip: false,

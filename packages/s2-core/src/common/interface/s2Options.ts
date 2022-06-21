@@ -38,8 +38,6 @@ export interface S2BasicOptions<T = Element | string> {
   debug?: boolean;
   // row header hierarchy type only work in pivot mode
   hierarchyType?: 'grid' | 'tree' | 'customTree';
-  // distinct negative and positive value, and use different direction interval
-  enableNegativeIntervalCondition?: boolean;
   // conditions config
   conditions?: Conditions;
   // total config

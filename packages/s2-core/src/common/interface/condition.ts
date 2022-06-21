@@ -38,6 +38,8 @@ export interface IconCondition extends Condition {
 }
 
 export interface Conditions {
+  // distinct negative and positive value, and use different direction interval
+  enableNegativeInterval?: boolean;
   text?: Condition[];
   background?: Condition[];
   interval?: Condition[];
