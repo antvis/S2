@@ -114,7 +114,6 @@ module.exports = {
     'max-statements-per-line': [2, { max: 1 }],
     'max-params': [1, 4],
     'no-unreachable': 2,
-    'no-nested-ternary': 0,
     eqeqeq: [
       2,
       'always',

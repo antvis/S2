@@ -33,19 +33,19 @@ export const getIntervalScale = (minValue = 0, maxValue = 0) => {
   const allPositiveValue = minValue >= 0;
   const bothPositiveAndNegativeValue = maxValue >= 0 && minValue <= 0;
 
-  const zero = bothPositiveAndNegativeValue
-    ? 0
-    : allPositiveValue
+  const zeroForEitherPositiveOrNegative = allPositiveValue
     ? minValue
     : maxValue;
+  const zero = bothPositiveAndNegativeValue
+    ? 0
+    : zeroForEitherPositiveOrNegative;
 
   const distance = maxValue - minValue;
   return (current: number) => {
+    const zeroScaleForEitherPositiveOrNegative = allPositiveValue ? 0 : 1;
     const zeroScale = bothPositiveAndNegativeValue
       ? clamp(Math.abs(0 - minValue) / distance, 0, 1)
-      : allPositiveValue
-      ? 0
-      : 1;
+      : zeroScaleForEitherPositiveOrNegative;
 
     // scale 为负值时，代表方向绘制（g支持的模式）
     const scale = clamp((current - zero) / distance, -1, 1);
