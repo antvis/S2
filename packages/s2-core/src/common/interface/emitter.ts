@@ -2,6 +2,7 @@ import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type { DataCell } from '../../cell/data-cell';
 import type { S2Event } from '../../common/constant';
 import type {
+  CellMeta,
   CellScrollPosition,
   HiddenColumnsInfo,
   LayoutResult,
@@ -85,6 +86,7 @@ export interface EmitterType {
   [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
   [S2Event.DATE_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
+  [S2Event.DATE_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;

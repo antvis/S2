@@ -41,6 +41,7 @@ describe('Options Tests', () => {
         },
         eventListenerOptions: false,
         overscrollBehavior: 'auto',
+        selectedCellHighlight: false,
       },
       showSeriesNumber: false,
       customSVGIcons: [],

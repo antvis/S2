@@ -21,6 +21,7 @@ import type {
   TooltipOperatorOptions,
   S2RenderOptions,
   S2MountContainer,
+  CellMeta,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -97,6 +98,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
+  onDataCellSelectMove?: (metas: CellMeta[]) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
