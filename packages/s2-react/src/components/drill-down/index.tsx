@@ -2,7 +2,7 @@ import React, { type ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
+import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { i18n } from '@antv/s2';
 import {
   CalendarIcon,

@@ -8,7 +8,7 @@ import type {
   PivotDataSet,
   SpreadSheet,
 } from '@antv/s2';
-import { clone, filter, get, isEmpty, isNil } from 'lodash';
+import { clone, filter, get, isEmpty } from 'lodash';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {
