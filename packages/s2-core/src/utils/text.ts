@@ -13,6 +13,7 @@ import {
   trim,
   values,
 } from 'lodash';
+import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
   BulletValue,
@@ -24,8 +25,8 @@ import type {
 } from '../common/interface';
 import type {
   BulletTheme,
-  DefaultCellTheme,
   RangeColors,
+  TextTheme,
 } from '../common/interface/theme';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 
@@ -302,16 +303,51 @@ const calX = (
   return x;
 };
 
-const getTextStyle = (
-  rowIndex: number,
-  colIndex: number,
-  meta: ViewMeta,
-  data: string | number,
-  dataCellTheme: DefaultCellTheme,
-  textCondition: Condition,
-) => {
-  const { isTotals } = meta;
-  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+/**
+ * 返回需要绘制的 cell 主题
+ * @param cell 目标 cell
+ * @returns cell 主题和具体 text 主题
+ */
+const getDrawStyle = (cell: S2CellType) => {
+  const { isTotals } = cell.getMeta();
+  const isMeasureField = (cell as ColCell).isMeasureField?.();
+  const cellStyle = cell.getStyle(
+    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
+  );
+
+  let textStyle: TextTheme;
+  if (isMeasureField) {
+    textStyle = cellStyle.measureText;
+  } else if (isTotals) {
+    textStyle = cellStyle.bolderText;
+  } else {
+    textStyle = cellStyle.text;
+  }
+
+  return {
+    cellStyle,
+    textStyle,
+  };
+};
+
+/**
+ * 获取当前文字的绘制样式
+ */
+const getCurrentTextStyle = ({
+  rowIndex,
+  colIndex,
+  meta,
+  data,
+  textStyle,
+  textCondition,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  meta: ViewMeta;
+  data: string | number;
+  textStyle: TextTheme;
+  textCondition: Condition;
+}) => {
   let fill = textStyle.fill;
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
@@ -478,16 +514,15 @@ export const drawObjectText = (
   }
 
   const widthPercent = valuesCfg?.widthPercent;
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const { textAlign } = dataCellStyle.text;
-  const padding = dataCellStyle.cell.padding;
 
   const realHeight = totalTextHeight / (textValues.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
-    labelHeight = realHeight / 2;
+    const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
     const labelStyle = dataCellStyle.bolderText;
+    const { padding } = dataCellStyle.cell;
+    labelHeight = realHeight / 2;
 
     renderText(
       cell,
@@ -504,6 +539,10 @@ export const drawObjectText = (
   }
 
   // 绘制指标
+  const { cellStyle, textStyle } = getDrawStyle(cell);
+  const { textAlign } = textStyle;
+  const { padding } = cellStyle.cell;
+
   let curText: string | number;
   let curX: number;
   let curY: number = y + realHeight / 2;
@@ -519,14 +558,14 @@ export const drawObjectText = (
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = getTextStyle(
-        i,
-        j,
-        cell?.getMeta() as ViewMeta,
-        curText,
-        dataCellStyle,
+      const curStyle = getCurrentTextStyle({
+        rowIndex: i,
+        colIndex: j,
+        meta: cell?.getMeta() as ViewMeta,
+        data: curText,
+        textStyle,
         textCondition,
-      );
+      });
       curWidth = !isEmpty(widthPercent)
         ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
