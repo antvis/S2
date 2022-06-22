@@ -30,7 +30,12 @@ import {
   PRECISION,
   VALUE_FIELD,
 } from '../common/constant';
-import { TOOLTIP_POSITION_OFFSET } from '../common/constant/tooltip';
+import {
+  TOOLTIP_CONTAINER_CLS,
+  TOOLTIP_CONTAINER_HIDE_CLS,
+  TOOLTIP_CONTAINER_SHOW_CLS,
+  TOOLTIP_POSITION_OFFSET,
+} from '../common/constant/tooltip';
 import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
@@ -128,27 +133,31 @@ export const getMergedQuery = (meta: ViewMeta) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
-/**
- * add style to container
- */
-export const setContainerStyle = (
+export const setTooltipContainerStyle = (
   container: HTMLElement,
-  options: { style?: CSS.Properties; className?: string } = {
-    className: '',
+  options: {
+    visible?: boolean;
+    style?: CSS.Properties;
+    className?: string[];
   },
 ) => {
   if (!container) {
     return;
   }
-  const { style, className } = options;
+
+  const { style, className = [], visible } = options;
+
   if (style) {
-    Object.keys(style).forEach((item) => {
-      container.style[item] = style[item];
-    });
+    Object.assign(container.style, style);
   }
-  if (className) {
-    container.className = className;
+
+  if (className.length) {
+    const classList = className.filter(Boolean);
+    container.classList.add(...classList);
   }
+
+  container.classList.toggle(TOOLTIP_CONTAINER_SHOW_CLS, visible);
+  container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
 };
 
 /* formate */

@@ -130,8 +130,8 @@ const partDrillDown: PartDrillDown = {
 const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
-    <div>2</div>
-    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
+    <div style={{ width: 1000, height: 2000 }}>我很宽很长</div>
+    <DatePicker.RangePicker getPopupContainer={(node) => node.parentElement} />
   </div>
 );
 

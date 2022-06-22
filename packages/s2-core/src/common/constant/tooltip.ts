@@ -8,6 +8,8 @@ import type {
 export const TOOLTIP_PREFIX_CLS = `${S2_PREFIX_CLS}-tooltip`;
 
 export const TOOLTIP_CONTAINER_CLS = `${TOOLTIP_PREFIX_CLS}-container`;
+export const TOOLTIP_CONTAINER_SHOW_CLS = `${TOOLTIP_CONTAINER_CLS}-show`;
+export const TOOLTIP_CONTAINER_HIDE_CLS = `${TOOLTIP_CONTAINER_CLS}-hide`;
 
 export const TOOLTIP_OPERATION_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-operation`;
 
