@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 import 'antd/es/checkbox/style/index.css';
-import { S2DataConfig, S2Event, S2Options, SpreadSheet, TableDataCell } from '@antv/s2';
+import { S2Event } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 
 // 初始化配置
-const initOptions: S2Options = {
+const s2Options = {
   width: 600,
   height: 400,
   showSeriesNumber: true,
@@ -17,15 +17,15 @@ const initOptions: S2Options = {
 }
 
 // 初始化数据
-const initData = {
+const s2DataCfg = {
   fields: { columns: ['province', 'city', 'type', 'price'], },
   sortParams: [],
 }
 
 const App = ({ data }) => {
-  const S2Ref = useRef<SpreadSheet>(null);
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [value, setValue] = useState<any>('');
+  const S2Ref = useRef(null);
+  const inputRef = useRef(null)
+  const [value, setValue] = useState('');
   const [show, setShow] = useState(false)
   const [position, setPosition] = useState({
     left: 0,
@@ -33,18 +33,16 @@ const App = ({ data }) => {
     width: 0,
     height: 0,
   })
-  const [options, setOptions] = useState<S2Options>(initOptions);
-  const [dataCfg, setDataCfg] = useState<S2DataConfig>({ ...initData, data });
-  const [cell, setCell] = useState<TableDataCell | null>(null)
-  const [scroll, setScroll] = useState<{ scrollX?: number, scrollY?: number }>({
+  const [options, setOptions] = useState(s2Options);
+  const [dataCfg, setDataCfg] = useState({ ...s2DataCfg, data });
+  const [cell, setCell] = useState(null)
+  const [scroll, setScroll] = useState({
     scrollX: 0,
     scrollY: 0,
   })
 
   // 改变S2实际渲染内容
-  const onSave = (inputVal: string) => {
-    console.log(1212, inputVal);
-
+  const onSave = (inputVal) => {
     const spreadsheet = S2Ref.current
     if (spreadsheet && cell) {
       const { rowIndex, valueField } = cell.getMeta();
@@ -61,12 +59,9 @@ const App = ({ data }) => {
       onSave(value)
       setCell(e.target.cfg.parent)
     }
-    if (spreadsheet) {
-      spreadsheet.on(S2Event.DATA_CELL_CLICK, handleClick)
-    }
+    spreadsheet?.on(S2Event.DATA_CELL_CLICK, handleClick)
     return () => {
       spreadsheet?.off(S2Event.DATA_CELL_CLICK, handleClick)
-
     }
   }, [value])
 
@@ -80,31 +75,32 @@ const App = ({ data }) => {
         }
       }
     }
-    if (spreadsheet) {
-      spreadsheet.on(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
-    }
+    spreadsheet?.on(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
     return () => {
       spreadsheet?.off(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
     }
   }, [])
 
+  const setCellPosition = (spreadsheet, cell) => {
+    const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
+    const colCellHeight = (spreadsheet.getColumnNodes()[0] || { height: 0 }).height
+    cellMeta.x -= scroll.scrollX || 0;
+    cellMeta.y -= (scroll.scrollY || 0) - colCellHeight;
+    setPosition({
+      left: cellMeta.x,
+      top: cellMeta.y,
+      width: cellMeta.width,
+      height: cellMeta.height,
+    })
+  }
+
   // 设置 position 和 初始值
   useEffect(() => {
     const spreadsheet = S2Ref.current
     if (spreadsheet && cell) {
-      const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height', 'fieldValue']);
-      cellMeta.x -= scroll.scrollX || 0;
-      cellMeta.y -=
-        (scroll.scrollY || 0) -
-        (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
+      setCellPosition(spreadsheet, cell)
       setShow(true)
-      setPosition({
-        left: cellMeta.x,
-        top: cellMeta.y,
-        width: cellMeta.width,
-        height: cellMeta.height,
-      })
-      setValue(cellMeta.fieldValue)
+      setValue(cell.getMeta().fieldValue)
     }
   }, [cell])
 
@@ -112,25 +108,13 @@ const App = ({ data }) => {
   useEffect(() => {
     const spreadsheet = S2Ref.current
     if (spreadsheet && cell) {
-      const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height', 'fieldValue']);
-      cellMeta.x -= scroll.scrollX || 0;
-      cellMeta.y -=
-        (scroll.scrollY || 0) -
-        (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
-      setPosition({
-        left: cellMeta.x,
-        top: cellMeta.y,
-        width: cellMeta.width,
-        height: cellMeta.height,
-      })
+      setCellPosition(spreadsheet, cell)
     }
   }, [scroll])
 
   // show的时候自动focus
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+    inputRef.current?.focus({ preventScroll: true })
   }, [show])
 
   // 绑定回车键 回车的时候触发保存
