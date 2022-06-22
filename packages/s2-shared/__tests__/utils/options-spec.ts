@@ -31,6 +31,7 @@ describe('Options Tests', () => {
           vertical: 1,
         },
         scrollbarPosition: 'content',
+        selectedCellHighlight: false,
         autoResetSheetStyle: true,
         resize: {
           rowCellVertical: true,
