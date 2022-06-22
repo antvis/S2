@@ -134,7 +134,7 @@ const App = ({ data }) => {
     }
   }, [value])
 
-  const styleProps = {
+  const style = {
     ...position,
     position: 'absolute',
     textAlign: 'right',
@@ -145,7 +145,7 @@ const App = ({ data }) => {
     <div style={{ position: 'relative' }}>
       {show && <input
         ref={inputRef}
-        style={styleProps as any}
+        style={style}
         value={value}
         onChange={e => setValue(e.target.value)}
         onBlur={() => onSave(value)}
