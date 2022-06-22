@@ -154,8 +154,8 @@ export class BaseTooltip {
       const container = document.createElement('div');
 
       setTooltipContainerStyle(container, {
-        style: tooltip.containerStyle,
-        className: [TOOLTIP_CONTAINER_CLS, tooltip.containerClassName],
+        style: tooltip.style,
+        className: [TOOLTIP_CONTAINER_CLS, tooltip.className],
       });
 
       rootContainer.appendChild(container);

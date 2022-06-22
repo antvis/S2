@@ -161,10 +161,10 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
   // Custom tooltip mount container
   getContainer?: () => HTMLElement;
-  // Extra tooltip class name
-  containerClassName?: string;
-  // Extra tooltip style
-  containerStyle?: CSS.Properties;
+  // Extra tooltip container class name
+  className?: string;
+  // Extra tooltip container style
+  style?: CSS.Properties;
 }
 
 export interface TooltipPositionInfo {

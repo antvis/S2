@@ -96,12 +96,6 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
-  tooltip: {
-    containerStyle: {
-      fontSize: '20px',
-    },
-    containerClassName: 'test',
-  },
   style: {
     cellCfg: {
       height: 50,

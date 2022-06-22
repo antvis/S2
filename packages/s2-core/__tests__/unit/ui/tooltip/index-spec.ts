@@ -353,7 +353,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should set custom container style', () => {
-    s2.options.tooltip.containerStyle = {
+    s2.options.tooltip.style = {
       fontSize: '20px',
       color: 'red',
     };
@@ -371,7 +371,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should set custom container class name', () => {
-    s2.options.tooltip.containerClassName = 'custom';
+    s2.options.tooltip.className = 'custom';
 
     tooltip = new BaseTooltip(s2);
 

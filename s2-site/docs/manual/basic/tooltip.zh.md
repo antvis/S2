@@ -323,10 +323,10 @@ const s2Options = {
 ```ts
 const s2Options = {
   tooltip: {
-    containerStyle: {
+    style: {
       fontSize: '20px'
     },
-    containerClassName: 'test'
+    className: 'test'
   }
 };
 ```
