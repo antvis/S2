@@ -20,6 +20,8 @@ object **必选**,_default：null_ 功能描述： tooltip 配置
 | autoAdjustBoundary | 当 tooltip 超过边界时自动调整显示位置，container: 图表区域，body: 整个浏览器窗口，设置为 `null` 可关闭此功能 | `container` \| `body`                   | `body` |      |
 | adjustPosition | 自定义 tooltip 位置，| (positionInfo: [TooltipPositionInfo](#tooltippositioninfo) ) => {x: number, y: number}                  |  |      |
 | getContainer | 自定义 tooltip 挂载容器，| `() => HTMLElement`                   | `document.body` |      |
+| containerClassName | 额外的容器类名，| `string`                   | - |      |
+| containerStyle | 额外的容器样式，| [CSSProperties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference)                   | - |      |
 
 ### BaseTooltipConfig
 

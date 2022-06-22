@@ -3,6 +3,8 @@ import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { BaseTooltip } from '@/ui/tooltip';
 import {
   TOOLTIP_CONTAINER_CLS,
+  TOOLTIP_CONTAINER_HIDE_CLS,
+  TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
   TOOLTIP_PREFIX_CLS,
 } from '@/common';
@@ -24,9 +26,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should init tooltip', () => {
-    const container = document.querySelector(
-      `.${TOOLTIP_PREFIX_CLS}-container`,
-    );
+    const container = document.querySelector(`.${TOOLTIP_CONTAINER_CLS}`);
     expect(tooltip).toBeDefined();
     expect(tooltip.position).toEqual({
       x: 0,
@@ -45,9 +45,7 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    const container = document.querySelector(
-      `.${TOOLTIP_PREFIX_CLS}-container`,
-    );
+    const container = document.querySelector(`.${TOOLTIP_CONTAINER_CLS}`);
     expect(container).toBeDefined();
     expect(tooltip.container).toEqual(container);
   });
@@ -71,7 +69,7 @@ describe('Tooltip Tests', () => {
     });
     // add class
     expect(tooltip.container.className).toEqual(
-      `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_CLS}-show`,
+      `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_SHOW_CLS}`,
     );
     // visible status
     expect(tooltip.visible).toBeTruthy();
@@ -102,7 +100,7 @@ describe('Tooltip Tests', () => {
     expect(tooltip.visible).toBeFalsy();
     // add class
     expect(tooltip.container.className).toEqual(
-      `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_CLS}-hide`,
+      `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_HIDE_CLS}`,
     );
     // add pointer events
     expect(style.pointerEvents).toEqual('none');
@@ -316,5 +314,74 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.innerHTML).toEqual('custom content');
+  });
+
+  test('should render max container size if content size more than container size', () => {
+    const contentSize = {
+      width: 9999,
+      height: 9999,
+    };
+
+    const MAX_HEIGHT = window.innerHeight;
+    const MAX_WIDTH = 640;
+
+    const node = document.createElement('div');
+    node.innerHTML = '我很宽,很长';
+    node.style.width = `${contentSize.width}px`;
+    node.style.height = `${contentSize.height}px`;
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: node,
+    });
+
+    const tooltipRect = tooltip.container.getBoundingClientRect();
+
+    // Tooltip 最大宽度/高度
+    expect(tooltipRect.width).toStrictEqual(MAX_WIDTH);
+    expect(tooltipRect.height).toStrictEqual(MAX_HEIGHT);
+
+    // Tooltip 容器应该有滚动条
+    expect(tooltip.container.scrollWidth).toStrictEqual(contentSize.width);
+    expect(tooltip.container.scrollHeight).toStrictEqual(contentSize.height);
+    expect(tooltip.container.clientWidth).toBeLessThan(
+      tooltip.container.scrollWidth,
+    );
+  });
+
+  test('should set custom container style', () => {
+    s2.options.tooltip.containerStyle = {
+      fontSize: '20px',
+      color: 'red',
+    };
+
+    tooltip = new BaseTooltip(s2);
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+    });
+
+    expect(tooltip.container.style.fontSize).toEqual('20px');
+  });
+
+  test('should set custom container class name', () => {
+    s2.options.tooltip.containerClassName = 'custom';
+
+    tooltip = new BaseTooltip(s2);
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+    });
+
+    expect(tooltip.container.classList.contains('custom')).toBeTruthy();
   });
 });
