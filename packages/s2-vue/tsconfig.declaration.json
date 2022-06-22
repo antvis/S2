@@ -5,6 +5,5 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "paths": {}
-  },
-  "include": ["src"]
+  }
 }

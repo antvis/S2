@@ -1,8 +1,13 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { S2DataConfig, S2Options } from '@antv/s2';
-import type { SheetType } from '@antv/s2-shared';
+import type { DataType, S2DataConfig, S2Options, Node } from '@antv/s2';
+import type {
+  PartDrillDown,
+  PartDrillDownInfo,
+  SheetType,
+} from '@antv/s2-shared';
 import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import { forEach, random } from 'lodash';
 import { SheetComponent } from '../src';
 
 const dataCfg1: S2DataConfig = {
@@ -503,6 +508,69 @@ const dataCfg2: S2DataConfig = {
     },
   ],
 };
+const fieldMap = {
+  channel: ['物美', '华联'],
+  sex: ['男', '女'],
+};
+const partDrillDown: PartDrillDown = {
+  drillConfig: {
+    dataSet: [
+      {
+        name: '销售渠道',
+        value: 'channel',
+        type: 'text',
+      },
+      {
+        name: '客户性别',
+        value: 'sex',
+        type: 'text',
+      },
+    ],
+  },
+  // drillItemsNum: 1,
+  fetchData: (meta, drillFields) =>
+    new Promise<PartDrillDownInfo>((resolve) => {
+      // 弹窗 -> 选择 -> 请求数据
+      const preDrillDownfield =
+        meta.spreadsheet.store.get('drillDownNode')?.field;
+      const dataSet = meta.spreadsheet.dataSet;
+      const field = drillFields[0];
+      const rowData = dataSet
+        .getMultiData(meta?.query as DataType, true, true, [preDrillDownfield])
+        .filter(
+          (item) => item.sub_type && item.type && item[preDrillDownfield],
+        );
+      console.log(rowData);
+      const drillDownData: DataType[] = [];
+      forEach(rowData, (data: DataType) => {
+        const { number, sub_type: subType, type } = data;
+        const number0 = random(50, number);
+        const number1 = number - number0;
+        const dataItem0 = {
+          ...meta.query,
+          number: number0,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field as keyof typeof fieldMap][0],
+        };
+        drillDownData.push(dataItem0);
+        const dataItem1 = {
+          ...meta.query,
+          number: number1,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field as keyof typeof fieldMap][1],
+        };
+
+        drillDownData.push(dataItem1);
+      });
+      console.log(drillDownData);
+      resolve({
+        drillField: field,
+        drillData: drillDownData,
+      });
+    }),
+};
 
 export default defineComponent({
   setup() {
@@ -602,6 +670,7 @@ export default defineComponent({
       onRowCellClick,
       onGetSpreadsheet,
       togglePagination,
+      partDrillDown,
       showPagination: {
         onChange: handlePageChange,
         onShowSizeChange: handlePageSizeChange,
@@ -656,6 +725,7 @@ export default defineComponent({
     :themeCfg="themeCfg"
     :adaptive="true"
     :showPagination="showPagination"
+    :partDrillDown="partDrillDown"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
   />

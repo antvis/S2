@@ -200,3 +200,45 @@ export interface TooltipOperatorProps
   onlyMenu: boolean;
   cell: S2CellType;
 }
+
+// 下钻相关类型
+export interface BaseDataSet {
+  name: string;
+  value: string;
+  type?: 'text' | 'location' | 'date';
+  disabled?: boolean;
+}
+
+export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
+  className?: string;
+  titleText?: string;
+  searchText?: string;
+  clearButtonText?: string;
+  dataSet: DataSet[];
+  drillFields?: string[];
+  disabledFields?: string[];
+  getDrillFields?: (drillFields: string[]) => void;
+  setDrillFields?: (drillFields: string[]) => void;
+  drillVisible?: boolean;
+}
+
+export interface PartDrillDownInfo {
+  // The data of drill down
+  drillData: Record<string, string | number>[];
+  // The field of drill down
+  drillField: string;
+}
+
+export interface PartDrillDown {
+  // The configuration of drill down
+  drillConfig: BaseDrillDownComponentProps;
+  // The numbers of drill down result
+  drillItemsNum?: number;
+  fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
+  // Clear the info of drill down
+  clearDrillDown?: {
+    rowId: string;
+  };
+  // Decide the drill down icon show conditions.
+  displayCondition?: (meta: Node) => boolean;
+}
