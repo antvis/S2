@@ -149,7 +149,13 @@ export class TableDataSet extends BaseDataSet {
     if (this.displayData.length === 0 && query.rowIndex === 0) {
       return;
     }
-    return this.displayData[query.rowIndex][query.col];
+
+    const rowData = this.displayData[query.rowIndex];
+
+    if (!('col' in query)) {
+      return rowData;
+    }
+    return rowData[query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
