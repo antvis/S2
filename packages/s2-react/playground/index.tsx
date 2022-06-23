@@ -269,6 +269,7 @@ function MainLayout() {
     );
     s2Ref.current?.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
       logHandler('🔗链接跳转 data:')(data);
+
       window.open(
         'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
       );
@@ -780,14 +781,14 @@ function MainLayout() {
                   onChange={setShowCustomTooltip}
                 />
                 <Switch
-                  checkedChildren="无链接跳转"
-                  unCheckedChildren="打开链接跳转"
+                  checkedChildren="打开链接跳转"
+                  unCheckedChildren="无链接跳转"
                   checked={showJumpLink}
                   onChange={(checked) => {
                     setShowJumpLink(checked);
                     updateOptions({
                       interaction: {
-                        linkFields: checked ? ['province', 'city'] : null,
+                        linkFields: checked ? ['province', 'city'] : [],
                       },
                     });
                   }}
