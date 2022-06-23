@@ -56,6 +56,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     props.onRowCellCollapseTreeRows,
     s2,
   );
+  useS2Event(S2Event.ROW_CELL_SCROLL, props.onRowCellScroll, s2);
 
   // ============== Col Cell ====================
   useCellEvent(S2Event.COL_CELL_HOVER, props.onColCellHover, s2);
@@ -80,11 +81,12 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(
-    S2Event.DATE_CELL_BRUSH_SELECTION,
+    S2Event.DATA_CELL_BRUSH_SELECTION,
     props.onDataCellBrushSelection,
     s2,
   );
-  useS2Event(S2Event.DATE_CELL_SELECT_MOVE, props.onDataCellSelectMove, s2);
+  useS2Event(S2Event.DATA_CELL_SELECT_MOVE, props.onDataCellSelectMove, s2);
+  useS2Event(S2Event.DATA_CELL_SCROLL, props.onDataCellScroll, s2);
 
   // ============== Corner Cell ====================
   useCellEvent(S2Event.CORNER_CELL_HOVER, props.onCornerCellHover, s2);
@@ -144,6 +146,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.LAYOUT_PAGINATION, props.onLayoutPagination, s2);
+  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
   useS2Event(
     S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
@@ -212,4 +215,5 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_MOUSE_UP, props.onMouseUp, s2);
   useS2Event(S2Event.GLOBAL_RESET, props.onReset, s2);
   useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
+  useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
 }

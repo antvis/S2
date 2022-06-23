@@ -261,7 +261,7 @@ describe('Interaction Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
     mockSpreadSheetInstance.on(
-      S2Event.DATE_CELL_BRUSH_SELECTION,
+      S2Event.DATA_CELL_BRUSH_SELECTION,
       brushSelectionFn,
     );
 

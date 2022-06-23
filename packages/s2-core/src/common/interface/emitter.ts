@@ -61,6 +61,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
+  [S2Event.GLOBAL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
@@ -85,8 +86,9 @@ export interface EmitterType {
   [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
-  [S2Event.DATE_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
-  [S2Event.DATE_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
+  [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
+  [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
+  [S2Event.DATA_CELL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -99,6 +101,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
     data: RowCellCollapseTreeRowsType,
   ) => void;
+  [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -138,7 +141,8 @@ export interface EmitterType {
     current: number;
   }) => void;
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
-  [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
+  /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
+  [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
   [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,

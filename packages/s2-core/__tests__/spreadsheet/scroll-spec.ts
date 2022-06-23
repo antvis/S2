@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
   CellMeta,
@@ -31,9 +32,32 @@ const s2Options: S2Options = {
   },
 };
 
-describe('Scroll By Group Tests', () => {
+describe('Scroll Tests', () => {
   let s2: SpreadSheet;
   let canvas: HTMLCanvasElement;
+
+  const getScrollExpect = () => {
+    const onScroll = jest.fn();
+    const onRowScroll = jest.fn();
+    const onDeprecatedLayoutCellScroll = jest.fn();
+    const onDataCellScroll = jest.fn();
+
+    s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
+    s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+    s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
+    s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
+
+    return () => {
+      [
+        onScroll,
+        onRowScroll,
+        onDeprecatedLayoutCellScroll,
+        onDataCellScroll,
+      ].forEach((handler) => {
+        expect(handler).not.toHaveBeenCalled();
+      });
+    };
+  };
 
   beforeEach(() => {
     jest
@@ -69,18 +93,16 @@ describe('Scroll By Group Tests', () => {
   });
 
   test('should not trigger scroll if not scroll over the viewport', () => {
-    const onScroll = jest.fn();
-    s2.on(S2Event.LAYOUT_CELL_SCROLL, onScroll);
+    const expectScroll = getScrollExpect();
 
     canvas.dispatchEvent(new WheelEvent('wheel', { deltaX: 20, deltaY: 20 }));
 
     expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalsy();
-    expect(onScroll).not.toHaveBeenCalled();
+    expectScroll();
   });
 
   test('should not trigger scroll if scroll over the corner header', () => {
-    const onScroll = jest.fn();
-    s2.on(S2Event.LAYOUT_CELL_SCROLL, onScroll);
+    const expectScroll = getScrollExpect();
 
     canvas.dispatchEvent(
       new WheelEvent('wheel', {
@@ -90,7 +112,49 @@ describe('Scroll By Group Tests', () => {
     );
 
     expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalsy();
-    expect(onScroll).not.toHaveBeenCalled();
+    expectScroll();
+  });
+
+  test('should scroll if scroll over the row cell', async () => {
+    const position: CellScrollPosition = {
+      scrollX: 20,
+      scrollY: 0,
+    };
+
+    const onScroll = jest.fn();
+    const onRowScroll = jest.fn();
+    const onDeprecatedLayoutCellScroll = jest.fn();
+    const onDataCellScroll = jest.fn();
+
+    s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
+    s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+    s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
+    s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
+
+    s2.setOptions({ frozenRowHeader: true });
+    s2.render(false);
+
+    // 模拟在行头滚动
+    jest
+      .spyOn(s2.facet, 'isScrollOverTheCornerArea')
+      .mockImplementation(() => true);
+    jest
+      .spyOn(s2.facet, 'isScrollOverTheViewport')
+      .mockImplementation(() => true);
+
+    const wheelEvent = new WheelEvent('wheel', {
+      deltaX: position.scrollX,
+      deltaY: position.scrollY,
+    });
+
+    canvas.dispatchEvent(wheelEvent);
+
+    // wait requestAnimationFrame
+    await sleep(200);
+
+    // emit event
+    expect(onRowScroll).toHaveBeenCalled();
+    expect(onScroll).toHaveBeenCalled();
   });
 
   test.each([
@@ -129,6 +193,16 @@ describe('Scroll By Group Tests', () => {
   ])(
     'should scroll if scroll over the panel viewport by %o',
     async ({ type, offset, frozenRowHeader }) => {
+      const onScroll = jest.fn();
+      const onRowScroll = jest.fn();
+      const onDeprecatedLayoutCellScroll = jest.fn();
+      const onDataCellScroll = jest.fn();
+
+      s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
+      s2.on(S2Event.GLOBAL_SCROLL, onScroll);
+      s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
+      s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
+
       // toggle frozenRowHeader mode
       s2.setOptions({ frozenRowHeader });
       s2.render(false);
@@ -161,6 +235,12 @@ describe('Scroll By Group Tests', () => {
 
       // wait requestAnimationFrame
       await sleep(200);
+
+      // emit event
+      expect(onScroll).toHaveBeenCalledWith(offset);
+      expect(onDataCellScroll).toHaveBeenCalledWith(offset);
+      expect(onDeprecatedLayoutCellScroll).toHaveBeenCalledWith(offset);
+      expect(onRowScroll).not.toHaveBeenCalled();
 
       if (frozenRowHeader) {
         // show scrollbar
@@ -208,8 +288,7 @@ describe('Scroll By Group Tests', () => {
         .spyOn(s2.facet, 'showVerticalScrollBar')
         .mockImplementation(() => {});
 
-      const onScroll = jest.fn();
-      s2.on(S2Event.LAYOUT_CELL_SCROLL, onScroll);
+      const expectScroll = getScrollExpect();
 
       s2.facet.cornerBBox.maxY = -9999;
       s2.facet.panelBBox.minX = -9999;
@@ -232,8 +311,9 @@ describe('Scroll By Group Tests', () => {
       expect(showVerticalScrollBarSpy).not.toHaveBeenCalled();
 
       await sleep(200);
-      // emit scroll event
-      expect(onScroll).not.toHaveBeenCalled();
+
+      // not emit scroll event
+      expectScroll();
     },
   );
 

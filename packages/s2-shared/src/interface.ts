@@ -78,6 +78,7 @@ export interface BaseSheetComponentProps<
     isCollapsed: boolean;
     node: Node;
   }) => void;
+  onRowCellScroll?: (position: CellScrollPosition) => void;
 
   // ============== Col Cell ====================
   onColCellHover?: (data: TargetCellInfo) => void;
@@ -99,6 +100,7 @@ export interface BaseSheetComponentProps<
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellScroll?: (position: CellScrollPosition) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -137,6 +139,7 @@ export interface BaseSheetComponentProps<
     total: number;
     current: number;
   }) => void;
+  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
@@ -184,6 +187,7 @@ export interface BaseSheetComponentProps<
   onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;
+  onScroll?: (position: CellScrollPosition) => void;
 }
 
 // useResize 参数

@@ -261,13 +261,6 @@ function MainLayout() {
 
   //  ================== Hooks ========================
 
-  React.useEffect(() => {
-    s2Ref.current?.on(
-      S2Event.DATA_CELL_TREND_ICON_CLICK,
-      logHandler('趋势图点击'),
-    );
-  }, [sheetType]);
-
   useUpdateEffect(() => {
     switch (sheetType) {
       case 'table':
@@ -933,6 +926,8 @@ function MainLayout() {
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
               onSelected={logHandler('onSelected')}
+              onScroll={logHandler('onScroll')}
+              onRowCellScroll={logHandler('onRowCellScroll')}
             />
           )}
         </TabPane>
