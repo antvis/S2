@@ -150,6 +150,7 @@ function MainLayout() {
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
+  const [showJumpLink, setShowJumpLink] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
@@ -234,11 +235,13 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) =>
+    (name: string, callback: () => void) =>
     (...args: unknown[]) => {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
+
+      callback?.();
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -765,6 +768,19 @@ function MainLayout() {
                   checked={showCustomTooltip}
                   onChange={setShowCustomTooltip}
                 />
+                <Switch
+                  checkedChildren="打开链接跳转"
+                  unCheckedChildren="无链接跳转"
+                  checked={showJumpLink}
+                  onChange={(checked) => {
+                    setShowJumpLink(checked);
+                    updateOptions({
+                      interaction: {
+                        linkFields: checked ? ['province', 'city'] : [],
+                      },
+                    });
+                  }}
+                />
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
@@ -928,6 +944,11 @@ function MainLayout() {
               onSelected={logHandler('onSelected')}
               onScroll={logHandler('onScroll')}
               onRowCellScroll={logHandler('onRowCellScroll')}
+              onLinkFieldJump={logHandler('onLinkFieldJump', () => {
+                window.open(
+                  'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                );
+              })}
             />
           )}
         </TabPane>
