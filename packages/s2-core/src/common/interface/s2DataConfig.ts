@@ -4,9 +4,20 @@ import type {
   Meta,
   SortParams,
 } from '../../common/interface';
+import type { MiniChartTypes } from '../constant';
+
+export interface BaseChartData {
+  type: MiniChartTypes;
+  data: Data[];
+  encode?: {
+    x: keyof Data;
+    y: keyof Data;
+  };
+}
 
 /* 子弹图数据结构 */
 export interface BulletValue {
+  type: MiniChartTypes.BULLET;
   // 当前指标
   measure: number | string;
   // 目标值
@@ -14,6 +25,7 @@ export interface BulletValue {
   [key: string]: unknown;
 }
 
+export type MiniChartData = BaseChartData | BulletValue;
 /** use for gridAnalysisSheet
  *  eg. { label: '余额女',
         values: [
@@ -24,7 +36,7 @@ export interface BulletValue {
         ],
       }
  */
-export interface MultiData<T = SimpleDataItem[][] | BulletValue> {
+export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
   values: T;
   originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
