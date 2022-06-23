@@ -219,11 +219,13 @@ describe('Interaction Keyboard Move Tests', () => {
   });
 
   test('should move selected with shift', () => {
+    const callback = jest.fn(() => {});
     s2.interaction.changeState = jest.fn((state) => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
     keyboardMove.startCell = mockCell00.mockCell;
     keyboardMove.endCell = mockCell00.mockCell;
+    s2.on(S2Event.DATE_CELL_SELECT_MOVE, callback);
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
       shiftKey: true,
@@ -251,6 +253,7 @@ describe('Interaction Keyboard Move Tests', () => {
       ],
       stateName: 'selected',
     });
+    expect(callback).toBeCalled();
   });
 
   test('should move selected with shift and meta', () => {

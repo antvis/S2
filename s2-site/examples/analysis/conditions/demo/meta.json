@@ -67,6 +67,14 @@
         "en": "Multi-conditions"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6FFtlY%240T/792a0865-b01d-4674-a3ef-98da6c5be285.png"
+    },
+    {
+      "filename": "bidirectional-interval.ts",
+      "title": {
+        "zh": "双向柱状图",
+        "en": "Bidirectional interval"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
     }
   ]
 }

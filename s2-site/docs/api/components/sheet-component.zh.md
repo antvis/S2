@@ -47,6 +47,7 @@ order: 0
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellTrendIconClick | 趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
 | onDataCellBrushSelection | 单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| onDataCellSelectMove | 单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

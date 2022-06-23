@@ -97,6 +97,9 @@ export const s2Options: S2Options = {
     enableCopy: true,
   },
   style: {
+    cellCfg: {
+      height: 50,
+    },
     hierarchyCollapse: false,
   },
 };

@@ -8,7 +8,7 @@ export class Store {
   private store = new Map<keyof StoreKey, unknown>();
 
   public set<T extends keyof StoreKey>(key: T, value: StoreKey[T]) {
-    this.store.set(key, value);
+    return this.store.set(key, value);
   }
 
   public get<T extends keyof StoreKey>(

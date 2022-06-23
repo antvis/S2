@@ -19,7 +19,7 @@ order: 5
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
 | brushSelection                 | 是否允许刷选                         | `boolean` | `true`  |       |
-| multiSelection                 | 是否允许多选                         | `boolean` | `true`  |       |
+| multiSelection                 | 是否允许多选 （包含行头，列头，数值单元格）                         | `boolean` | `true`  |       |
 | rangeSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
 | scrollbarPosition | 用于控制滚动条展示在内容区边缘还是画布边缘 | `content`\| `canvas`  | `content`  |   |
 | eventListenerOptions | 事件监听函数 `addEventListener` 的 [可选项配置](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener), 可控制事件从冒泡阶段还是捕获阶段触发 | `false`  |   |

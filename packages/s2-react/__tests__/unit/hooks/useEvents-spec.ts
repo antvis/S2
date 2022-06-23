@@ -248,6 +248,14 @@ const cellEventCases = [
     name: 'onDataCellMouseMove',
   },
   {
+    event: S2Event.DATE_CELL_BRUSH_SELECTION,
+    name: 'onDataCellBrushSelection',
+  },
+  {
+    event: S2Event.DATE_CELL_SELECT_MOVE,
+    name: 'onDataCellSelectMove',
+  },
+  {
     event: S2Event.CORNER_CELL_HOVER,
     name: 'onCornerCellHover',
   },

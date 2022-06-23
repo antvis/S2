@@ -130,8 +130,8 @@ const partDrillDown: PartDrillDown = {
 const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
-    <div>2</div>
-    <DatePicker.RangePicker getPopupContainer={(t) => t.parentElement} />
+    <div style={{ width: 1000, height: 2000 }}>我很宽很长</div>
+    <DatePicker.RangePicker getPopupContainer={(node) => node.parentElement} />
   </div>
 );
 
@@ -150,6 +150,7 @@ function MainLayout() {
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
+  const [showJumpLink, setShowJumpLink] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
@@ -266,6 +267,13 @@ function MainLayout() {
       S2Event.DATA_CELL_TREND_ICON_CLICK,
       logHandler('趋势图点击'),
     );
+    s2Ref.current?.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
+      logHandler('🔗链接跳转 data:')(data);
+
+      window.open(
+        'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+      );
+    });
   }, [sheetType]);
 
   useUpdateEffect(() => {
@@ -771,6 +779,19 @@ function MainLayout() {
                   unCheckedChildren="默认Tooltip"
                   checked={showCustomTooltip}
                   onChange={setShowCustomTooltip}
+                />
+                <Switch
+                  checkedChildren="打开链接跳转"
+                  unCheckedChildren="无链接跳转"
+                  checked={showJumpLink}
+                  onChange={(checked) => {
+                    setShowJumpLink(checked);
+                    updateOptions({
+                      interaction: {
+                        linkFields: checked ? ['province', 'city'] : [],
+                      },
+                    });
+                  }}
                 />
               </Space>
             </Collapse.Panel>

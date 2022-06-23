@@ -21,9 +21,9 @@ jobs:
         uses: yanglbme/gitee-pages-action@master
         with:
           # 注意替换为你的 Gitee 用户名
-          gitee-username: afc163
+          gitee-username: xingwanying
           # 注意在 Settings->Secrets 配置 GITEE_PASSWORD
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+          gitee-password: ${{ secrets.S2_GITEE_PASSWORD }}
           # 参数默认是 master，若是其他分支，需要指定
           branch: gh-pages
           # 注意替换为你的 Gitee 仓库

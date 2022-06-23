@@ -120,6 +120,12 @@ export const useEvents = (
       S2Event.DATE_CELL_BRUSH_SELECTION,
       'dataCellBrushSelection',
     );
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.DATE_CELL_SELECT_MOVE,
+      'dataCellSelectMove',
+    );
 
     // ============== Corner Cell ====================
     useCellEvent(s2Ref, emit, S2Event.CORNER_CELL_HOVER, 'cornerCellHover');

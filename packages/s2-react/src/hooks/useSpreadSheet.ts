@@ -81,6 +81,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     let reloadData = false;
     let reBuildDataSet = false;
     if (!Object.is(prevDataCfg, dataCfg)) {
+      // 列头变化需要重新计算初始叶子节点
+      if (
+        prevDataCfg?.fields?.columns?.length !==
+        dataCfg?.fields?.columns?.length
+      ) {
+        s2Ref.current?.clearColumnLeafNodes();
+      }
+
       reloadData = true;
       s2Ref.current?.setDataCfg(dataCfg);
     }
@@ -95,6 +103,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
       s2Ref.current?.setOptions(options);
       s2Ref.current?.changeSheetSize(options.width, options.height);
     }
+
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);
     }

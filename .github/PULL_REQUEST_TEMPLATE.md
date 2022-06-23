@@ -38,7 +38,7 @@
 
 <!-- close #0 -->
 
-### 🔍 Self-Check before merge
+### 🔍 Self-Check before the merge
 
 - [ ] Add or update relevant docs.
 - [ ] Add or update relevant demos.

@@ -523,7 +523,7 @@ export abstract class SpreadSheet extends EE {
    * default offsetX(horizontal scroll need animation)
    * but offsetY(vertical scroll don't need animation)
    */
-  public updateScrollOffset(offsetConfig: OffsetConfig): void {
+  public updateScrollOffset(offsetConfig: OffsetConfig) {
     this.facet.updateScrollOffset(
       customMerge(
         {
@@ -653,6 +653,10 @@ export abstract class SpreadSheet extends EE {
 
   public getInitColumnLeafNodes(): Node[] {
     return this.store.get('initColumnLeafNodes', []);
+  }
+
+  public clearColumnLeafNodes() {
+    this.store.set('initColumnLeafNodes', undefined);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

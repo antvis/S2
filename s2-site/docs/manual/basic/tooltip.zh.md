@@ -316,6 +316,25 @@ const s2Options = {
 }
 ```
 
+#### 自定义 Tooltip 容器样式
+
+在 `tooltip` 容器中添加额外的 `style` 样式和 `class` 类名，可以更方便的覆盖样式
+
+```ts
+const s2Options = {
+  tooltip: {
+    style: {
+      fontSize: '20px'
+    },
+    className: 'test'
+  }
+};
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/5Mk9LYotc/bb266a1d-7f8a-4876-b2b4-c633fc44efc2.png)
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/mGoP8DC5d/db963e35-dfe2-4e46-8866-aec85cbd38da.png)
+
 #### 自定义 Tooltip 类
 
 除了上面讲到的 `自定义 Tooltip 内容` 外，你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合

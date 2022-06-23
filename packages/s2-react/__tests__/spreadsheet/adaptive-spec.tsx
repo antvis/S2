@@ -101,20 +101,6 @@ describe('SheetComponent adaptive Tests', () => {
     expect(s2.container.cfg.width).toEqual(400);
   });
 
-  test('should use container width when container width less than options width and table first rendered', async () => {
-    act(() => {
-      ReactDOM.render(
-        <MainLayout adaptive={true} containerWidth={s2Options.width - 100} />,
-        getContainer(),
-      );
-    });
-
-    await sleep(1000);
-
-    expect(s2.options.width).toEqual(s2Options.width - 100);
-    expect(s2.container.cfg.width).toEqual(s2Options.width - 100);
-  });
-
   test('should use option width and height when table first rendered, and disable adaptive', async () => {
     act(() => {
       ReactDOM.render(
@@ -313,5 +299,38 @@ describe('SheetComponent adaptive Tests', () => {
     expect(s2.options.height).toEqual(options.height);
     expect(s2.container.cfg.height).toEqual(options.height);
     expect(s2.container.cfg.width).toEqual(options.width);
+  });
+
+  // https://github.com/antvis/S2/issues/1411
+  test('should get original container size if container scaled', async () => {
+    const newContainerWidth = 1000;
+    const newContainerHeight = 500;
+    const container = getContainer();
+
+    container.style.width = newContainerWidth + 'px';
+    container.style.height = newContainerHeight + 'px';
+    container.style.transform = 'scale(0.5)';
+
+    act(() => {
+      ReactDOM.render(
+        <MainLayout
+          adaptive={{
+            width: true,
+            height: true,
+            getContainer: () => container,
+          }}
+        />,
+        container,
+      );
+    });
+
+    act(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    await sleep(1000);
+
+    expect(s2.options.width).toEqual(newContainerWidth);
+    expect(s2.container.cfg.width).toEqual(newContainerWidth);
   });
 });

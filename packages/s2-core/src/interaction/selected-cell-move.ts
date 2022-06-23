@@ -117,6 +117,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       this.startCell = movedCell;
     }
     this.endCell = movedCell;
+    this.spreadsheet.emit(S2Event.DATE_CELL_SELECT_MOVE, selectedCells);
   }
 
   private generateCellMeta(spreadsheet: SpreadSheet, row: number, col: number) {

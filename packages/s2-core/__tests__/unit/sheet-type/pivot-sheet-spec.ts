@@ -593,6 +593,14 @@ describe('PivotSheet Tests', () => {
     expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
   });
 
+  test('should clear init column nodes', () => {
+    s2.store.set('initColumnLeafNodes', [null, null]);
+
+    s2.clearColumnLeafNodes();
+
+    expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
+  });
+
   test('should get pivot mode', () => {
     expect(s2.isPivotMode()).toBeTruthy();
     expect(s2.isTableMode()).toBeFalsy();

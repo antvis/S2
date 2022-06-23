@@ -72,12 +72,17 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
-    const { interaction } = this.spreadsheet;
+
+    const { interaction, options } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
+
+    const { multiSelection: enableMultiSelection } = options.interaction;
+    // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
+    const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
 
     const success = interaction.selectHeaderCell({
       cell,
-      isMultiSelection: this.isMultiSelection,
+      isMultiSelection,
     });
 
     if (success) {

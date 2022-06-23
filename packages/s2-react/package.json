@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2-react",
-  "version": "1.18.0",
+  "version": "1.19.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -44,6 +44,7 @@
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:dts": "run-s dts:*",
+    "watch": "rimraf esm && yarn build:esm -w",
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
     "bundle:size": "bundlesize",
@@ -80,8 +81,9 @@
     "@types/react-dom": "17.0.14",
     "antd": "^4.19.3",
     "react": "^17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
-    "react-color": "^2.19.3"
+    "vite-plugin-svgr": "^2.1.0"
   },
   "bundlesize": [
     {
