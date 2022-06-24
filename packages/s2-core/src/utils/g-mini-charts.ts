@@ -7,13 +7,13 @@ import { get, isEmpty, map, max, min } from 'lodash';
 import type {
   BaseChartData,
   BulletValue,
-  Data,
   MiniChartData,
   S2CellType,
 } from '../common/interface';
 import type { RangeColors } from '../common/interface/theme';
 import {
   renderCircle,
+  renderPolyline,
   renderLine,
   renderRect,
   renderText,
@@ -58,38 +58,28 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
   const intervalX = (xEnd - xStart) / (measures.length - 1);
 
   const points = map(encodedData, (item: { x: number; y: number }, key) => {
-    return {
-      x: xStart + key * intervalX,
-      y:
-        yStart +
-        ((item?.y - minMeasure) / (maxMeasure - minMeasure)) * (yEnd - yStart),
-    };
+    const positionX = xStart + key * intervalX;
+    const positionY =
+      yStart +
+      ((item?.y - minMeasure) / (maxMeasure - minMeasure)) * (yEnd - yStart);
+    return [positionX, positionY];
+  });
+
+  renderPolyline(cell, {
+    points,
+    stroke: linkLine.fill,
+    lineWidth: linkLine.size,
+    opacity: linkLine.opacity,
   });
 
   for (let i = 0; i < points.length; i++) {
     renderCircle(cell, {
-      x: points[i].x,
-      y: points[i].y,
+      x: points[i][0],
+      y: points[i][1],
       r: point.size,
       fill: point.fill,
       fillOpacity: point.opacity,
     });
-    if (i !== points.length - 1) {
-      renderLine(
-        cell,
-        {
-          x1: points[i].x,
-          y1: points[i].y,
-          x2: points[i + 1].x,
-          y2: points[i + 1].y,
-        },
-        {
-          stroke: linkLine.fill,
-          lineWidth: linkLine.size,
-          opacity: linkLine.opacity,
-        },
-      );
-    }
   }
 };
 
