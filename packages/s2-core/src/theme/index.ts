@@ -293,9 +293,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 0,
+          top: 8,
           right: 8,
-          bottom: 0,
+          bottom: 8,
           left: 8,
         },
         /* ---------- interaction state ----------- */
