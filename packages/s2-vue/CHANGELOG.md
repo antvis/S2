@@ -1,3 +1,17 @@
+# [@antv/s2-vue-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.0.2...@antv/s2-vue-v1.1.0) (2022-06-24)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复趋势分析表多列头切换为单列头后, 隐藏列头功能失效 ([#1470](https://github.com/antvis/S2/issues/1470)) ([b39742e](https://github.com/antvis/S2/commit/b39742e3a7276836c504f2a0d5343ff201a65bba))
+
+
+### Features
+
+* **interaction:** 增加行头单元格和全局单元格滚动事件及文档 ([#1483](https://github.com/antvis/S2/issues/1483)) ([329aaa6](https://github.com/antvis/S2/commit/329aaa6c9f9ae926f392e3e8f676af1ec201cce2))
+* **interaction:** 添加 onDataCellSelectMove 事件 ([#1468](https://github.com/antvis/S2/issues/1468)) ([da2a78e](https://github.com/antvis/S2/commit/da2a78ec511a85380824fa2b7147854e857df7f3))
+* s2-vue 添加下钻组件 ([#1471](https://github.com/antvis/S2/issues/1471)) ([7f42b82](https://github.com/antvis/S2/commit/7f42b82264230f4b914adc39277e8ca6fbcf0cd3))
+
 # [@antv/s2-vue-v1.0.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.0.1...@antv/s2-vue-v1.0.2) (2022-06-17)
 
 
