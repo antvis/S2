@@ -97,7 +97,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     const trendMenu = operation.trend && {
       ...TOOLTIP_OPERATOR_TREND_MENU,
       onClick: () => {
-        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
+        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, {
+          ...meta,
+          record: meta.spreadsheet.dataSet.getCellData({
+            query: { rowIndex: meta.rowIndex },
+          }),
+        });
         this.spreadsheet.hideTooltip();
       },
     };
