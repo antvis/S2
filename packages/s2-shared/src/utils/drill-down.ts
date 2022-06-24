@@ -1,16 +1,15 @@
-import {
+import { i18n, S2Event } from '@antv/s2';
+import type {
+  HeaderActionIconProps,
+  PartDrillDownDataCache,
+  S2Options,
   GEvent,
-  type HeaderActionIconProps,
-  i18n,
   Node,
-  type PartDrillDownDataCache,
   PivotDataSet,
-  S2Event,
-  type S2Options,
   SpreadSheet,
 } from '@antv/s2';
-import { clone, filter, isEmpty } from 'lodash';
-import type { PartDrillDown, PartDrillDownInfo } from '../components';
+import { clone, filter, get, isEmpty } from 'lodash';
+import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {
   // 行维度id
@@ -24,13 +23,14 @@ export interface DrillDownParams {
   fetchData?: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
-/** 下钻 icon 点击回调 */
-export type ActionIconCallback = (params: {
+export type ActionIconCallbackParams = {
   sheetInstance: SpreadSheet;
   cacheDrillFields?: string[];
   disabledFields?: string[];
   event?: GEvent;
-}) => void;
+};
+/** 下钻 icon 点击回调 */
+export type ActionIconCallback = (params: ActionIconCallbackParams) => void;
 
 export interface ActionIconParams {
   // 点击节点信息
@@ -74,14 +74,16 @@ export const handleActionIconClick = (params: ActionIconParams) => {
   const cache = drillDownCurrentCache?.drillField
     ? [drillDownCurrentCache?.drillField]
     : [];
-  const disabled = [];
+  const disabled: string[] = [];
   // 父节点已经下钻过的维度不应该再下钻
   drillDownDataCache.forEach((val) => {
     if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
       disabled.push(val.drillField);
     }
   });
-  spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+  if (event) {
+    spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+  }
   callback({
     sheetInstance: spreadsheet,
     cacheDrillFields: cache,
@@ -96,7 +98,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
  * @returns
  */
 const defaultDisplayCondition = (meta: Node) => {
-  const iconLevel = meta.spreadsheet.dataCfg.fields.rows.length - 1;
+  const iconLevel = get(meta, 'spreadsheet.dataCfg.fields.rows.length') - 1;
 
   // 只有数值置于列头且为树状分层结构时才支持下钻
   return (
@@ -154,7 +156,9 @@ export const buildDrillDownOptions = (
 
 export const handleDrillDown = (params: DrillDownParams) => {
   const { fetchData, spreadsheet, drillFields, drillItemsNum } = params;
-  spreadsheet.store.set('drillItemsNum', drillItemsNum);
+  if (drillItemsNum) {
+    spreadsheet.store.set('drillItemsNum', drillItemsNum);
+  }
   const meta = spreadsheet.store.get('drillDownNode');
   const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
     spreadsheet,
@@ -167,6 +171,9 @@ export const handleDrillDown = (params: DrillDownParams) => {
       drillDownDataCache,
       (cache) => cache.rowId !== meta.id,
     );
+  }
+  if (!fetchData) {
+    return;
   }
   fetchData(meta, drillFields).then((info) => {
     const { drillData, drillField } = info;

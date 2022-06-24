@@ -10,7 +10,9 @@
     "build": "run-s clean build:dts",
     "clean": "rimraf temp",
     "build:dts": "tsc -p tsconfig.declaration.json",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
+    "test:ci-coverage": "yarn test:coverage --maxWorkers=3"
   },
   "devDependencies": {
     "@antv/s2": "*",

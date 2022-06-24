@@ -1,4 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType, SortParam } from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
@@ -160,6 +161,10 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
   // Custom tooltip mount container
   getContainer?: () => HTMLElement;
+  // Extra tooltip container class name
+  className?: string;
+  // Extra tooltip container style
+  style?: CSS.Properties;
 }
 
 export interface TooltipPositionInfo {

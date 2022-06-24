@@ -1,6 +1,5 @@
 import {
   clone,
-  get,
   isArray,
   isEmpty,
   isFunction,
@@ -13,21 +12,18 @@ import {
   trim,
   values,
 } from 'lodash';
+import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
-  BulletValue,
   CellCfg,
   Condition,
   MultiData,
   S2CellType,
   ViewMeta,
 } from '../common/interface';
-import type {
-  BulletTheme,
-  DefaultCellTheme,
-  RangeColors,
-} from '../common/interface/theme';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import type { TextTheme } from '../common/interface/theme';
+import { renderText } from '../utils/g-renders';
+import { renderChart } from './g-mini-charts';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -302,16 +298,51 @@ const calX = (
   return x;
 };
 
-const getTextStyle = (
-  rowIndex: number,
-  colIndex: number,
-  meta: ViewMeta,
-  data: string | number,
-  dataCellTheme: DefaultCellTheme,
-  textCondition: Condition,
-) => {
-  const { isTotals } = meta;
-  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+/**
+ * 返回需要绘制的 cell 主题
+ * @param cell 目标 cell
+ * @returns cell 主题和具体 text 主题
+ */
+const getDrawStyle = (cell: S2CellType) => {
+  const { isTotals } = cell.getMeta();
+  const isMeasureField = (cell as ColCell).isMeasureField?.();
+  const cellStyle = cell.getStyle(
+    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
+  );
+
+  let textStyle: TextTheme;
+  if (isMeasureField) {
+    textStyle = cellStyle.measureText;
+  } else if (isTotals) {
+    textStyle = cellStyle.bolderText;
+  } else {
+    textStyle = cellStyle.text;
+  }
+
+  return {
+    cellStyle,
+    textStyle,
+  };
+};
+
+/**
+ * 获取当前文字的绘制样式
+ */
+const getCurrentTextStyle = ({
+  rowIndex,
+  colIndex,
+  meta,
+  data,
+  textStyle,
+  textCondition,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  meta: ViewMeta;
+  data: string | number;
+  textStyle: TextTheme;
+  textCondition: Condition;
+}) => {
   let fill = textStyle.fill;
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
@@ -331,122 +362,6 @@ export const getEmptyPlaceholder = (
   placeHolder: ((meta: Record<string, any>) => string) | string,
 ) => {
   return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
-};
-
-/**
- * 根据当前值和目标值获取子弹图填充色
- */
-export const getBulletRangeColor = (
-  measure: number | string,
-  target: number | string,
-  rangeColors: RangeColors,
-) => {
-  const delta = Number(target) - Number(measure);
-
-  if (delta <= 0.1) {
-    return rangeColors.good;
-  }
-
-  if (delta > 0.1 && delta <= 0.2) {
-    return rangeColors.satisfactory;
-  }
-  return rangeColors.bad;
-};
-
-// 比率转百分比, 简单解决计算精度问题
-export const transformRatioToPercent = (
-  ratio: number | string,
-  fractionDigits = 0,
-) => {
-  const value = Number(ratio);
-  if (Number.isNaN(value)) {
-    return ratio;
-  }
-  return `${(value * 100).toFixed(fractionDigits)}%`;
-};
-
-/**
- *  绘制子弹图单元格
- */
-export const drawBullet = (value: BulletValue, cell: S2CellType) => {
-  if (isEmpty(value)) {
-    return;
-  }
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const bulletStyle = cell.getStyle('bullet') as BulletTheme;
-  const { x, y, height, width } = cell.getMeta();
-  const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
-    bulletStyle;
-  const bulletWidth = progressBar.widthPercent * width;
-  const measureWidth = width - bulletWidth;
-
-  const padding = dataCellStyle.cell.padding;
-  const { measure, target } = value;
-
-  // TODO 先支持默认右对齐
-  // 绘制子弹图
-  // 1. 背景
-  const positionX = x + width - padding.right - bulletWidth;
-  const positionY = y + height / 2 - progressBar.height / 2;
-  renderRect(cell, {
-    x: positionX,
-    y: positionY,
-    width: bulletWidth,
-    height: progressBar.height,
-    fill: backgroundColor,
-    textBaseline: dataCellStyle.text.textBaseline,
-  });
-
-  // 2. 进度条
-  const getRangeColor = get(
-    cell.getMeta(),
-    'spreadsheet.options.bullet.getRangeColor',
-  );
-  renderRect(cell, {
-    x: positionX,
-    y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
-    width: Math.min(bulletWidth * Number(measure), bulletWidth),
-    height: progressBar.innerHeight,
-    fill:
-      getRangeColor?.(measure, target) ??
-      getBulletRangeColor(measure, target, rangeColors),
-  });
-
-  // 3.测量标记线
-  const lineX = positionX + bulletWidth * Number(target);
-  renderLine(
-    cell,
-    {
-      x1: lineX,
-      y1: y + (height - comparativeMeasure.height) / 2,
-      x2: lineX,
-      y2:
-        y +
-        (height - comparativeMeasure.height) / 2 +
-        comparativeMeasure.height,
-    },
-    {
-      stroke: comparativeMeasure.color,
-      lineWidth: comparativeMeasure.width,
-      opacity: comparativeMeasure?.opacity,
-    },
-  );
-
-  const measurePercent = transformRatioToPercent(measure);
-
-  // 绘制指标
-  renderText(
-    cell,
-    [],
-    positionX - padding.right,
-    y + height / 2,
-    getEllipsisText({
-      text: measurePercent,
-      maxWidth: measureWidth,
-      fontParam: dataCellStyle.text,
-    }),
-    dataCellStyle.text,
-  );
 };
 
 /**
@@ -473,21 +388,20 @@ export const drawObjectText = (
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
   if (!isArray(textValues)) {
-    drawBullet(textValues, cell);
+    renderChart(textValues, cell);
     return;
   }
 
   const widthPercent = valuesCfg?.widthPercent;
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const { textAlign } = dataCellStyle.text;
-  const padding = dataCellStyle.cell.padding;
 
   const realHeight = totalTextHeight / (textValues.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
-    labelHeight = realHeight / 2;
+    const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
     const labelStyle = dataCellStyle.bolderText;
+    const { padding } = dataCellStyle.cell;
+    labelHeight = realHeight / 2;
 
     renderText(
       cell,
@@ -504,6 +418,10 @@ export const drawObjectText = (
   }
 
   // 绘制指标
+  const { cellStyle, textStyle } = getDrawStyle(cell);
+  const { textAlign } = textStyle;
+  const { padding } = cellStyle.cell;
+
   let curText: string | number;
   let curX: number;
   let curY: number = y + realHeight / 2;
@@ -519,14 +437,14 @@ export const drawObjectText = (
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = getTextStyle(
-        i,
-        j,
-        cell?.getMeta() as ViewMeta,
-        curText,
-        dataCellStyle,
+      const curStyle = getCurrentTextStyle({
+        rowIndex: i,
+        colIndex: j,
+        meta: cell?.getMeta() as ViewMeta,
+        data: curText,
+        textStyle,
         textCondition,
-      );
+      });
       curWidth = !isEmpty(widthPercent)
         ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可

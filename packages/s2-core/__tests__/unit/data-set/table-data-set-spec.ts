@@ -105,6 +105,18 @@ describe('Table Mode Dataset Test', () => {
     test('getCellData function', () => {
       expect(
         dataSet.getCellData({
+          query: { rowIndex: 0 },
+        }),
+      ).toEqual({
+        city: '杭州市',
+        number: 7789,
+        province: '浙江省',
+        sub_type: '桌子',
+        type: '家具',
+      });
+
+      expect(
+        dataSet.getCellData({
           query: {
             rowIndex: 0,
             col: 'city',

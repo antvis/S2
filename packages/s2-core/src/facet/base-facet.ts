@@ -3,7 +3,17 @@ import { Group } from '@antv/g-canvas';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
-import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
+import {
+  clamp,
+  debounce,
+  each,
+  find,
+  findKey,
+  get,
+  isUndefined,
+  last,
+  reduce,
+} from 'lodash';
 import { DataCell } from '../cell';
 import {
   InterceptType,
@@ -29,7 +39,11 @@ import type {
   SpreadSheetFacetCfg,
   ViewMeta,
 } from '../common/interface';
-import type { S2WheelEvent, ScrollOffset } from '../common/interface/scroll';
+import type {
+  S2WheelEvent,
+  ScrollOffset,
+  CellScrollPosition,
+} from '../common/interface/scroll';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
@@ -531,8 +545,9 @@ export abstract class BaseFacet {
 
       this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-        const hRowScrollX = newOffset;
+        const hRowScrollX = Math.floor(newOffset);
         this.setScrollOffset({ hRowScrollX });
+
         this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
@@ -542,23 +557,27 @@ export abstract class BaseFacet {
           hRowScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
         );
-        this.hRowScrollBar.updateThumbOffset(
-          this.getScrollBarOffset(newOffset, this.hRowScrollBar),
-          false,
+
+        const scrollBarOffsetX = this.getScrollBarOffset(
+          hRowScrollX,
+          this.hRowScrollBar,
         );
+
+        const position: CellScrollPosition = {
+          scrollX: scrollBarOffsetX,
+          scrollY: 0,
+        };
+
+        this.hRowScrollBar.updateThumbOffset(scrollBarOffsetX, false);
+        this.spreadsheet.emit(S2Event.ROW_CELL_SCROLL, position);
+        this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
       });
       this.foregroundGroup.add(this.hRowScrollBar);
     }
   };
 
   getValidScrollBarOffset = (offset: number, maxOffset: number) => {
-    if (offset > maxOffset) {
-      return maxOffset;
-    }
-    if (offset < 0) {
-      return 0;
-    }
-    return offset;
+    return clamp(offset, 0, maxOffset);
   };
 
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
@@ -679,7 +698,9 @@ export abstract class BaseFacet {
   // (滑动 offset / 最大 offset（滚动对象真正长度 - 轨道长）) = (滑块 offset / 最大滑动距离（轨道长 - 滑块长）)
   getScrollBarOffset = (offset: number, scrollbar: ScrollBar) => {
     const { trackLen, thumbLen, scrollTargetMaxOffset } = scrollbar;
-    return (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
+    const scrollBarOffset =
+      (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
+    return Math.floor(scrollBarOffset);
   };
 
   isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
@@ -1194,11 +1215,14 @@ export abstract class BaseFacet {
    * @protected
    */
   protected dynamicRenderCell() {
-    const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
-    let scrollY = sy + this.getPaginationScrollY();
-
-    scrollY = getAdjustedScrollOffset(
-      scrollY,
+    const {
+      scrollX,
+      scrollY: originalScrollY,
+      hRowScrollX,
+    } = this.getScrollOffset();
+    const defaultScrollY = originalScrollY + this.getPaginationScrollY();
+    const scrollY = getAdjustedScrollOffset(
+      defaultScrollY,
       this.viewCellHeights.getTotalHeight(),
       this.panelBBox.viewportHeight,
     );
@@ -1207,9 +1231,14 @@ export abstract class BaseFacet {
     this.drawGrid();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-
-    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
+    this.emitScrollEvent({ scrollX, scrollY });
     this.onAfterScroll();
+  }
+
+  private emitScrollEvent(position: CellScrollPosition) {
+    /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, position);
+    this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
   }
 
   protected onAfterScroll = debounce(() => {

@@ -3,7 +3,7 @@ title: 滚动
 order: 6
 ---
 
-#### 1. 虚拟滚动
+#### 虚拟滚动
 
 S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域内的单元格，默认开启。[查看更多](https://www.yuque.com/antv/vo4vyz/srtq5q#mI1n7)
 
@@ -11,7 +11,7 @@ S2 基于 `Canvas` 渲染，也实现了虚拟滚动，即只渲染可视区域�
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/3l%26fv9SHB/Kapture%2525202022-06-06%252520at%25252010.55.24.gif" alt="preview" width="600" />
 
-#### 2. 自定义滚动速度
+#### 自定义滚动速度
 
 可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，范围为 `0-1`, 默认为 `1`。 [查看具体例子](/zh/examples/interaction/advanced#scroll-speed-ratio)
 
@@ -26,7 +26,11 @@ const s2Options = {
 };
 ```
 
-#### 3. 修改滚动至边界行为
+#### 鼠标滚轮水平滚动
+
+滑动滚轮垂直滚动，如果同时按住 `Shift` 即可水平滚动
+
+#### 修改滚动至边界行为
 
 对于自身和父容器都存在滚动条时，浏览器默认的滚动行为是：非边界不触发父容器滚动，到达边界后，触发父容器滚动，同时还可以配置 [overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) 改变默认行为。
 
@@ -61,7 +65,32 @@ const s2Options = {
 
 <br/>
 
-#### 4. 手动触发表格滚动
+#### 监听滚动事件
+
+对于 `透视表`, 可滚动的区域分别是 `行头单元格` 和 `数值单元格`, 对于 `明细表`, 可滚动的区域只有 `数值单元格`, 可分别监听，也可以统一监听
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/D9%24skF%24Bl/Kapture%2525202022-06-23%252520at%25252017.08.17.gif" alt="preview" width="600" />
+
+`S2` 提供两种滚动事件：
+
+- `S2Event.GLOBAL_SCROLL`: 单元格滚动，数值/行头单元格滚动时都会触发
+- `S2Event.ROW_CELL_SCROLL`: 行头单元格滚动
+
+同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/zh/docs/api/components/sheet-component)
+
+需要注意的是：行头单元格只会在**固定行头时**才会显示滚动条，且只会有**水平滚动条**, 所以拿到的 `scrollY` 永远都是 `0`
+
+```ts
+s2.on(S2Event.GLOBAL_SCROLL, (position) => {
+  console.log('表格滚动', position) // { scrollX: 0, scrollY: 100 }
+})
+
+s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
+  console.log('行头单元格滚动', position) // { scrollX: 0, scrollY: 100 }
+})
+```
+
+#### 手动触发表格滚动
 
 参考以下例子：
 

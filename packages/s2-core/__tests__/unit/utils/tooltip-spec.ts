@@ -7,7 +7,7 @@ import type { BBox } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import {
   getAutoAdjustPosition,
-  setContainerStyle,
+  setTooltipContainerStyle,
   getTooltipOptions,
   getTooltipData,
 } from '@/utils/tooltip';
@@ -25,6 +25,8 @@ import {
   type Total,
   type Totals,
   VALUE_FIELD,
+  TOOLTIP_CONTAINER_SHOW_CLS,
+  TOOLTIP_CONTAINER_HIDE_CLS,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -663,7 +665,7 @@ describe('Tooltip Utils Tests', () => {
   test('should set container style', () => {
     const container = document.createElement('div');
 
-    setContainerStyle(container, {
+    setTooltipContainerStyle(container, {
       style: {
         width: '100px',
         pointerEvents: 'none',
@@ -678,10 +680,38 @@ describe('Tooltip Utils Tests', () => {
     const container = document.createElement('div');
     container.className = 'a';
 
-    setContainerStyle(container, {
-      className: 'test',
+    setTooltipContainerStyle(container, {
+      className: ['test'],
     });
 
-    expect(container.className).toEqual('test');
+    expect(container.classList.contains('test')).toBeTruthy();
+
+    setTooltipContainerStyle(container, {
+      className: ['test', null, undefined, ''],
+    });
+
+    expect(container.classList.contains('null')).toBeFalsy();
+    expect(container.classList.contains('undefined')).toBeFalsy();
+  });
+
+  test('should set container class name by visible', () => {
+    const container = document.createElement('div');
+    container.className = 'visible';
+
+    setTooltipContainerStyle(container, {
+      visible: true,
+    });
+
+    expect(container.className).toEqual(
+      `visible ${TOOLTIP_CONTAINER_SHOW_CLS}`,
+    );
+
+    setTooltipContainerStyle(container, {
+      visible: false,
+    });
+
+    expect(container.className).toEqual(
+      `visible ${TOOLTIP_CONTAINER_HIDE_CLS}`,
+    );
   });
 });

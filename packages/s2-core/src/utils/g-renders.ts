@@ -31,6 +31,12 @@ export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
   });
 }
 
+export function renderPolyline(group: Group, attrs: ShapeAttrs): IShape {
+  return group?.addShape?.('polyline', {
+    attrs,
+  });
+}
+
 export function renderCircle(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('circle', {
     attrs,

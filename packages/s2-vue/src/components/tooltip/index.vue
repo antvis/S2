@@ -13,12 +13,12 @@ import type { TooltipRenderProps } from './interface';
 export default defineComponent({
   name: 'TooltipComponent',
   props: [
-    'content',
     'data',
     'options',
     'cell',
     'position',
     'event',
+    'content',
   ] as unknown as GetInitProps<TooltipRenderProps>,
   setup(props) {
     const { operator, onlyMenu } = getTooltipDefaultOptions(props.options);
@@ -54,7 +54,11 @@ export default defineComponent({
       :cell="cell"
       @click="operator?.onClick"
     />
-    <template v-if="content">{{ content }}</template>
+
+    <template v-if="content">
+      <slot name="content"></slot>
+    </template>
+
     <template v-else>
       <TooltipSimpleTips :name="data?.name" :tips="data?.tips" />
       <TooltipSummary

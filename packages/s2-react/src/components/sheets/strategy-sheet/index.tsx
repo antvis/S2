@@ -8,6 +8,7 @@ import {
   type ViewMeta,
   type MultiData,
   type S2CellType,
+  MiniChartTypes,
 } from '@antv/s2';
 import { isArray, isEmpty, isObject, size } from 'lodash';
 import React from 'react';
@@ -114,8 +115,13 @@ export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
                 return <DataTooltip cell={cell} />;
               }
 
-              // 如果是对象, 说明是子弹图数据, 显示子弹图定制 Tooltip
-              if (isObject(fieldValue?.values)) {
+              // 如果是对象, 且是子弹图数据, 显示子弹图定制 Tooltip
+              const ifShowBulletTooltip =
+                isObject(fieldValue?.values) &&
+                (fieldValue?.values?.type === MiniChartTypes.Bullet ||
+                  !fieldValue?.values?.type);
+
+              if (ifShowBulletTooltip) {
                 return (
                   <KpiBulletTooltip
                     cell={cell}

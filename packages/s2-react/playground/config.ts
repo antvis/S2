@@ -10,69 +10,6 @@ import {
   fields,
 } from '../__tests__/data/mock-dataset.json';
 
-const BASIC_BACKGROUND_COLOR = '#FFFFFF';
-const INTERACTIVE_BACKGROUND_COLOR = '#E1EAFE';
-
-export const strategyTheme: S2Theme = {
-  cornerCell: {
-    icon: {
-      size: 12,
-    },
-  },
-  rowCell: {
-    cell: {
-      backgroundColor: BASIC_BACKGROUND_COLOR,
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-    },
-    icon: {
-      size: 12,
-    },
-  },
-  colCell: {
-    cell: {
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-      padding: {
-        left: 4,
-        right: 4,
-      },
-    },
-  },
-  dataCell: {
-    cell: {
-      crossBackgroundColor: BASIC_BACKGROUND_COLOR,
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        hoverFocus: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        unselected: {},
-        prepareSelect: {
-          borderColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-    },
-  },
-};
-
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
@@ -95,6 +32,11 @@ export const s2Options: S2Options = {
   height: 400,
   interaction: {
     enableCopy: true,
+  },
+  tooltip: {
+    operation: {
+      trend: true,
+    },
   },
   style: {
     cellCfg: {

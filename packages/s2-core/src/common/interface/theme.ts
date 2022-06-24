@@ -222,6 +222,8 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
   cell?: CellTheme;
   /* 图标样式 */
   icon?: IconTheme;
+  /* mini 图样式配置 */
+  miniChart?: MiniChartTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
 }
@@ -249,8 +251,6 @@ export interface S2Theme extends CellThemes {
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */
   splitLine?: SplitLine;
-  /* 趋势分析表子弹图样式配置 */
-  bullet?: BulletTheme;
   /* 刷选遮罩 */
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
@@ -278,7 +278,7 @@ export interface RangeColors {
   bad: string;
 }
 
-/* 趋势分析表子弹图样式配置 */
+/* 子弹图样式配置 */
 export interface BulletTheme {
   /* 进度条 */
   progressBar: {
@@ -301,4 +301,27 @@ export interface BulletTheme {
   rangeColors: RangeColors;
   /* 子弹图背景色 */
   backgroundColor: string;
+}
+
+/* 折线图样式配置 */
+export interface LineTheme {
+  /* 点 */
+  point?: {
+    // 半径
+    size: number;
+    fill?: string;
+    opacity?: number;
+  };
+  /* 线 */
+  linkLine?: {
+    size: number;
+    fill?: string;
+    opacity?: number;
+  };
+}
+
+/* 迷你图样式 */
+export interface MiniChartTheme {
+  line?: LineTheme;
+  bullet?: BulletTheme;
 }

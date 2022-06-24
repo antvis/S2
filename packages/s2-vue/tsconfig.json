@@ -4,5 +4,6 @@
     "target": "ESNext",
     "jsx": "preserve"
   },
-  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
+  "include": ["src", "./typings.d.ts"]
 }

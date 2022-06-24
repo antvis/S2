@@ -12,8 +12,9 @@ import type { SpreadSheet } from '../../sheet-type';
 import {
   getAutoAdjustPosition,
   getTooltipDefaultOptions,
-  setContainerStyle,
+  setTooltipContainerStyle,
 } from '../../utils/tooltip';
+
 import './index.less';
 
 /**
@@ -57,13 +58,13 @@ export class BaseTooltip {
       y,
     };
 
-    setContainerStyle(container, {
+    setTooltipContainerStyle(container, {
       style: {
         left: `${this.position?.x}px`,
         top: `${this.position?.y}px`,
         pointerEvents: enterable ? 'all' : 'none',
       },
-      className: `${TOOLTIP_PREFIX_CLS}-container ${TOOLTIP_CONTAINER_CLS}-show`,
+      visible: true,
     });
   }
 
@@ -74,11 +75,11 @@ export class BaseTooltip {
       return;
     }
 
-    setContainerStyle(this.container, {
+    setTooltipContainerStyle(this.container, {
       style: {
         pointerEvents: 'none',
       },
-      className: `${TOOLTIP_PREFIX_CLS}-container ${TOOLTIP_CONTAINER_CLS}-hide`,
+      visible: false,
     });
     this.resetPosition();
   }
@@ -135,7 +136,7 @@ export class BaseTooltip {
     if (this.container.style.pointerEvents === 'none') {
       return;
     }
-    setContainerStyle(this.container, {
+    setTooltipContainerStyle(this.container, {
       style: {
         pointerEvents: 'none',
       },
@@ -148,10 +149,15 @@ export class BaseTooltip {
 
   private getContainer(): HTMLElement {
     if (!this.container) {
-      const rootContainer =
-        this.spreadsheet.options.tooltip.getContainer?.() || document.body;
+      const { tooltip } = this.spreadsheet.options;
+      const rootContainer = tooltip.getContainer?.() || document.body;
       const container = document.createElement('div');
-      container.className = `${TOOLTIP_PREFIX_CLS}-container`;
+
+      setTooltipContainerStyle(container, {
+        style: tooltip.style,
+        className: [TOOLTIP_CONTAINER_CLS, tooltip.className],
+      });
+
       rootContainer.appendChild(container);
 
       this.container = container;

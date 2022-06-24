@@ -2,7 +2,9 @@ import React, { type ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
+import type { BaseDataSet, BaseDrillDownComponentProps } from '@antv/s2-shared';
 import { i18n } from '@antv/s2';
+import { DRILL_DOWN_PRE_CLASS } from '@antv/s2-shared';
 import {
   CalendarIcon,
   LocationIcon,
@@ -10,27 +12,14 @@ import {
   TextIcon,
 } from '../icons/index';
 
-import './index.less';
+import '@antv/s2-shared/src/styles/drilldown.less';
 
-export interface DataSet {
+export interface DataSet extends BaseDataSet {
   icon?: React.ReactNode;
-  name: string;
-  value: string;
-  type?: 'text' | 'location' | 'date';
-  disabled?: boolean;
 }
 
-export interface DrillDownProps {
-  className?: string;
-  titleText?: string;
-  searchText?: string;
-  clearButtonText?: string;
+export interface DrillDownProps extends BaseDrillDownComponentProps<DataSet> {
   extra?: ReactNode;
-  dataSet: DataSet[];
-  drillFields?: string[];
-  disabledFields?: string[];
-  getDrillFields?: (drillFields: string[]) => void;
-  setDrillFields?: (drillFields: string[]) => void;
 }
 
 export const DrillDown: React.FC<DrillDownProps> = ({
@@ -46,7 +35,6 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   setDrillFields,
   ...restProps
 }) => {
-  const PRE_CLASS = 's2-drill-down';
   const DRILL_DOWN_ICON_MAP = {
     text: <TextIcon />,
     location: <LocationIcon />,
@@ -55,9 +43,8 @@ export const DrillDown: React.FC<DrillDownProps> = ({
 
   const getOptions = () => {
     return dataSet.map((val: DataSet) => {
-      const item = val;
-      item.disabled = !!(disabledFields && disabledFields.includes(item.value));
-      return item;
+      val.disabled = !!(disabledFields && disabledFields.includes(val.value));
+      return val;
     });
   };
 
@@ -95,8 +82,8 @@ export const DrillDown: React.FC<DrillDownProps> = ({
 
   return (
     <ConfigProvider>
-      <div className={cx(PRE_CLASS, className)} {...restProps}>
-        <header className={`${PRE_CLASS}-header`}>
+      <div className={cx(DRILL_DOWN_PRE_CLASS, className)} {...restProps}>
+        <header className={`${DRILL_DOWN_PRE_CLASS}-header`}>
           <div>{titleText}</div>
           <Button
             type="link"
@@ -107,7 +94,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
           </Button>
         </header>
         <Input
-          className={`${PRE_CLASS}-search`}
+          className={`${DRILL_DOWN_PRE_CLASS}-search`}
           placeholder={searchText}
           onChange={handleSearch}
           onPressEnter={handleSearch}
@@ -117,12 +104,12 @@ export const DrillDown: React.FC<DrillDownProps> = ({
         {isEmpty(options) && (
           <Empty
             imageStyle={{ height: '64px' }}
-            className={`${PRE_CLASS}-empty`}
+            className={`${DRILL_DOWN_PRE_CLASS}-empty`}
           />
         )}
         {extra}
         <Menu
-          className={`${PRE_CLASS}-menu`}
+          className={`${DRILL_DOWN_PRE_CLASS}-menu`}
           selectedKeys={drillFields}
           onSelect={handleSelect}
         >
@@ -130,7 +117,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
             <Menu.Item
               key={option.value}
               disabled={option.disabled}
-              className={`${PRE_CLASS}-menu-item`}
+              className={`${DRILL_DOWN_PRE_CLASS}-menu-item`}
               icon={
                 option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type]
               }

@@ -27,7 +27,7 @@ const S2EventCases = [
     name: 'onDataCellTrendIconClick',
   },
   {
-    event: S2Event.DATE_CELL_BRUSH_SELECTION,
+    event: S2Event.DATA_CELL_BRUSH_SELECTION,
     name: 'onDataCellBrushSelection',
   },
   {
@@ -246,6 +246,14 @@ const cellEventCases = [
   {
     event: S2Event.DATA_CELL_MOUSE_MOVE,
     name: 'onDataCellMouseMove',
+  },
+  {
+    event: S2Event.DATA_CELL_BRUSH_SELECTION,
+    name: 'onDataCellBrushSelection',
+  },
+  {
+    event: S2Event.DATA_CELL_SELECT_MOVE,
+    name: 'onDataCellSelectMove',
   },
   {
     event: S2Event.CORNER_CELL_HOVER,

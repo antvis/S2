@@ -1,5 +1,5 @@
 import type { IShape, Point } from '@antv/g-canvas';
-import { clamp, find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -23,7 +23,10 @@ import type {
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
-import { getIconPositionCfg } from '../utils/condition/condition';
+import {
+  getIconPositionCfg,
+  getIntervalScale,
+} from '../utils/condition/condition';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import {
   renderIcon,
@@ -262,30 +265,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * 计算柱图的 scale 函数（两种情况）
-   *
-   * min_________x_____0___________________________max
-   * |<----r---->|
-   *
-   * 0_________________min_________x_______________max
-   * |<-------------r------------->|
-   *
-   * @param minValue in current field values
-   * @param max in current field values
-   */
-  private getIntervalScale(minValue = 0, maxValue = 0) {
-    minValue = parseNumberWithPrecision(minValue);
-    maxValue = parseNumberWithPrecision(maxValue);
-
-    const realMin = minValue >= 0 ? 0 : minValue;
-    const distance = maxValue - realMin || 1;
-    return (current: number) =>
-      // max percentage shouldn't be greater than 100%
-      // min percentage shouldn't be less than 0%
-      clamp((current - realMin) / distance, 0, 1);
-  }
-
-  /**
    * Draw interval condition shape
    * @private
    */
@@ -316,19 +295,18 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (fieldValue < minValue || fieldValue > maxValue) {
         return;
       }
-
-      const scale = this.getIntervalScale(minValue, maxValue);
-      const zero = scale(0); // 零点
-      const current = scale(fieldValue); // 当前数据点
-
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
+
+      const getScale = getIntervalScale(minValue, maxValue);
+      const { zeroScale, scale } = getScale(fieldValue);
+
       const fill = attrs.fill ?? barChartFillColor;
 
       this.conditionIntervalShape = renderRect(this, {
-        x: x + width * zero,
+        x: x + width * zeroScale,
         y: y + height / 2 - barChartHeight / 2,
-        width: width * (current - zero),
+        width: width * scale,
         height: barChartHeight,
         fill,
       });
