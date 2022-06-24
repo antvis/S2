@@ -96,6 +96,11 @@ export const s2Options: S2Options = {
   interaction: {
     enableCopy: true,
   },
+  tooltip: {
+    operation: {
+      trend: true,
+    },
+  },
   style: {
     cellCfg: {
       height: 50,
