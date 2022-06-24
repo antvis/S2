@@ -416,11 +416,7 @@ export class TableFacet extends BaseFacet {
   protected getDefaultCellHeight() {
     const { cellCfg } = this.cfg;
 
-    return (
-      cellCfg.height +
-      this.dataCellTheme.padding?.top +
-      this.dataCellTheme.padding?.bottom
-    );
+    return cellCfg.height;
   }
 
   public getCellHeight(index: number) {

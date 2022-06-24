@@ -80,3 +80,9 @@ export const CORNER_MAX_WIDTH_RATIO = 0.5;
 
 /** 布局采样数 */
 export const LAYOUT_SAMPLE_COUNT = 50;
+
+/** mini 图类型 */
+export enum MiniChartTypes {
+  Line = 'line',
+  Bullet = 'bullet',
+}

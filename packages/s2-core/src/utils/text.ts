@@ -1,6 +1,5 @@
 import {
   clone,
-  get,
   isArray,
   isEmpty,
   isFunction,
@@ -16,19 +15,15 @@ import {
 import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
-  BulletValue,
   CellCfg,
   Condition,
   MultiData,
   S2CellType,
   ViewMeta,
 } from '../common/interface';
-import type {
-  BulletTheme,
-  RangeColors,
-  TextTheme,
-} from '../common/interface/theme';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import type { TextTheme } from '../common/interface/theme';
+import { renderText } from '../utils/g-renders';
+import { renderChart } from './g-mini-charts';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -370,122 +365,6 @@ export const getEmptyPlaceholder = (
 };
 
 /**
- * 根据当前值和目标值获取子弹图填充色
- */
-export const getBulletRangeColor = (
-  measure: number | string,
-  target: number | string,
-  rangeColors: RangeColors,
-) => {
-  const delta = Number(target) - Number(measure);
-
-  if (delta <= 0.1) {
-    return rangeColors.good;
-  }
-
-  if (delta > 0.1 && delta <= 0.2) {
-    return rangeColors.satisfactory;
-  }
-  return rangeColors.bad;
-};
-
-// 比率转百分比, 简单解决计算精度问题
-export const transformRatioToPercent = (
-  ratio: number | string,
-  fractionDigits = 0,
-) => {
-  const value = Number(ratio);
-  if (Number.isNaN(value)) {
-    return ratio;
-  }
-  return `${(value * 100).toFixed(fractionDigits)}%`;
-};
-
-/**
- *  绘制子弹图单元格
- */
-export const drawBullet = (value: BulletValue, cell: S2CellType) => {
-  if (isEmpty(value)) {
-    return;
-  }
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const bulletStyle = cell.getStyle('bullet') as BulletTheme;
-  const { x, y, height, width } = cell.getMeta();
-  const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
-    bulletStyle;
-  const bulletWidth = progressBar.widthPercent * width;
-  const measureWidth = width - bulletWidth;
-
-  const padding = dataCellStyle.cell.padding;
-  const { measure, target } = value;
-
-  // TODO 先支持默认右对齐
-  // 绘制子弹图
-  // 1. 背景
-  const positionX = x + width - padding.right - bulletWidth;
-  const positionY = y + height / 2 - progressBar.height / 2;
-  renderRect(cell, {
-    x: positionX,
-    y: positionY,
-    width: bulletWidth,
-    height: progressBar.height,
-    fill: backgroundColor,
-    textBaseline: dataCellStyle.text.textBaseline,
-  });
-
-  // 2. 进度条
-  const getRangeColor = get(
-    cell.getMeta(),
-    'spreadsheet.options.bullet.getRangeColor',
-  );
-  renderRect(cell, {
-    x: positionX,
-    y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
-    width: Math.min(bulletWidth * Number(measure), bulletWidth),
-    height: progressBar.innerHeight,
-    fill:
-      getRangeColor?.(measure, target) ??
-      getBulletRangeColor(measure, target, rangeColors),
-  });
-
-  // 3.测量标记线
-  const lineX = positionX + bulletWidth * Number(target);
-  renderLine(
-    cell,
-    {
-      x1: lineX,
-      y1: y + (height - comparativeMeasure.height) / 2,
-      x2: lineX,
-      y2:
-        y +
-        (height - comparativeMeasure.height) / 2 +
-        comparativeMeasure.height,
-    },
-    {
-      stroke: comparativeMeasure.color,
-      lineWidth: comparativeMeasure.width,
-      opacity: comparativeMeasure?.opacity,
-    },
-  );
-
-  const measurePercent = transformRatioToPercent(measure);
-
-  // 绘制指标
-  renderText(
-    cell,
-    [],
-    positionX - padding.right,
-    y + height / 2,
-    getEllipsisText({
-      text: measurePercent,
-      maxWidth: measureWidth,
-      fontParam: dataCellStyle.text,
-    }),
-    dataCellStyle.text,
-  );
-};
-
-/**
  * @desc draw text shape of object
  * @param cell
  * @multiData 自定义文本内容
@@ -509,7 +388,7 @@ export const drawObjectText = (
   const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
 
   if (!isArray(textValues)) {
-    drawBullet(textValues, cell);
+    renderChart(textValues, cell);
     return;
   }
 
