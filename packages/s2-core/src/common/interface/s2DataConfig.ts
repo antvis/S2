@@ -17,7 +17,7 @@ export interface BaseChartData {
 
 /* 子弹图数据结构 */
 export interface BulletValue {
-  type: MiniChartTypes.BULLET;
+  type: MiniChartTypes.Bullet;
   // 当前指标
   measure: number | string;
   // 目标值

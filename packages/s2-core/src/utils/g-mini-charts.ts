@@ -203,7 +203,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
 
 export const renderChart = (data: MiniChartData, cell: S2CellType) => {
   switch (data?.type) {
-    case MiniChartTypes.LINE:
+    case MiniChartTypes.Line:
       drawLine(data, cell);
       break;
     default:

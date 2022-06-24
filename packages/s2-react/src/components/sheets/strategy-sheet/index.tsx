@@ -116,11 +116,12 @@ export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
               }
 
               // 如果是对象, 且是子弹图数据, 显示子弹图定制 Tooltip
-              if (
+              const ifShowBulletTooltip =
                 isObject(fieldValue?.values) &&
-                (fieldValue?.values?.type === MiniChartTypes.BULLET ||
-                  !fieldValue?.values?.type)
-              ) {
+                (fieldValue?.values?.type === MiniChartTypes.Bullet ||
+                  !fieldValue?.values?.type);
+
+              if (ifShowBulletTooltip) {
                 return (
                   <KpiBulletTooltip
                     cell={cell}
