@@ -351,12 +351,12 @@ export const getTheme = (
         line: {
           point: {
             size: 2.2,
-            fill: semanticColors.green,
+            fill: basicColors[6],
             opacity: 1,
           },
           linkLine: {
             size: 1.5,
-            fill: semanticColors.green,
+            fill: basicColors[6],
             opacity: 0.6,
           },
         },

@@ -53,7 +53,6 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   strategyOptions,
-  strategyTheme,
   tableSheetDataCfg,
 } from './config';
 import './index.less';
@@ -993,10 +992,6 @@ function MainLayout() {
                   }}
                 />
               ),
-            }}
-            themeCfg={{
-              theme: strategyTheme,
-              name: 'gray',
             }}
           />
         </TabPane>
