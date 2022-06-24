@@ -130,7 +130,7 @@ s2.render(false)
 
 ### 鼠标滚动如何进行水平滚动
 
-按住 `Shift` 键
+按住 `Shift` 键的同时滚动鼠标
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 
