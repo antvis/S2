@@ -706,7 +706,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.SELECTED,
     });
     this.spreadsheet.emit(
-      S2Event.DATE_CELL_BRUSH_SELECTION,
+      S2Event.DATA_CELL_BRUSH_SELECTION,
       this.brushRangeDataCells,
     );
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
