@@ -127,7 +127,6 @@ export const useEvents = (
       S2Event.DATA_CELL_SELECT_MOVE,
       'dataCellSelectMove',
     );
-    useS2Event(s2Ref, emit, S2Event.DATA_CELL_SCROLL, 'dataCellScroll');
 
     // ============== Corner Cell ====================
     useCellEvent(s2Ref, emit, S2Event.CORNER_CELL_HOVER, 'cornerCellHover');

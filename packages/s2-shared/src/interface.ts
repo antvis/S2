@@ -100,7 +100,6 @@ export interface BaseSheetComponentProps<
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
-  onDataCellScroll?: (position: CellScrollPosition) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;

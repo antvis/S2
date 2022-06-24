@@ -235,7 +235,7 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string, callback: () => void) =>
+    (name: string, callback?: () => void) =>
     (...args: unknown[]) => {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);

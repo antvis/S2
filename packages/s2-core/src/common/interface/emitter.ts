@@ -88,7 +88,6 @@ export interface EmitterType {
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
   [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
   [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
-  [S2Event.DATA_CELL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;

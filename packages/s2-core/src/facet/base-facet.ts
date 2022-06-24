@@ -8,6 +8,7 @@ import {
   debounce,
   each,
   find,
+  findKey,
   get,
   isUndefined,
   last,
@@ -1237,7 +1238,6 @@ export abstract class BaseFacet {
   private emitScrollEvent(position: CellScrollPosition) {
     /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, position);
-    this.spreadsheet.emit(S2Event.DATA_CELL_SCROLL, position);
     this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
   }
 

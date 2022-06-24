@@ -40,22 +40,17 @@ describe('Scroll Tests', () => {
     const onScroll = jest.fn();
     const onRowScroll = jest.fn();
     const onDeprecatedLayoutCellScroll = jest.fn();
-    const onDataCellScroll = jest.fn();
 
     s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
     s2.on(S2Event.GLOBAL_SCROLL, onScroll);
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
-    s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
 
     return () => {
-      [
-        onScroll,
-        onRowScroll,
-        onDeprecatedLayoutCellScroll,
-        onDataCellScroll,
-      ].forEach((handler) => {
-        expect(handler).not.toHaveBeenCalled();
-      });
+      [onScroll, onRowScroll, onDeprecatedLayoutCellScroll].forEach(
+        (handler) => {
+          expect(handler).not.toHaveBeenCalled();
+        },
+      );
     };
   };
 
@@ -124,12 +119,10 @@ describe('Scroll Tests', () => {
     const onScroll = jest.fn();
     const onRowScroll = jest.fn();
     const onDeprecatedLayoutCellScroll = jest.fn();
-    const onDataCellScroll = jest.fn();
 
     s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
     s2.on(S2Event.GLOBAL_SCROLL, onScroll);
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
-    s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
 
     s2.setOptions({ frozenRowHeader: true });
     s2.render(false);
@@ -196,12 +189,10 @@ describe('Scroll Tests', () => {
       const onScroll = jest.fn();
       const onRowScroll = jest.fn();
       const onDeprecatedLayoutCellScroll = jest.fn();
-      const onDataCellScroll = jest.fn();
 
       s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
       s2.on(S2Event.GLOBAL_SCROLL, onScroll);
       s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
-      s2.on(S2Event.DATA_CELL_SCROLL, onDataCellScroll);
 
       // toggle frozenRowHeader mode
       s2.setOptions({ frozenRowHeader });
@@ -238,7 +229,6 @@ describe('Scroll Tests', () => {
 
       // emit event
       expect(onScroll).toHaveBeenCalledWith(offset);
-      expect(onDataCellScroll).toHaveBeenCalledWith(offset);
       expect(onDeprecatedLayoutCellScroll).toHaveBeenCalledWith(offset);
       expect(onRowScroll).not.toHaveBeenCalled();
 

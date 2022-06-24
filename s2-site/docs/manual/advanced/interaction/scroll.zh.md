@@ -71,32 +71,22 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/D9%24skF%24Bl/Kapture%2525202022-06-23%252520at%25252017.08.17.gif" alt="preview" width="600" />
 
-`S2` 提供三个滚动事件：
+`S2` 提供两种滚动事件：
 
 - `S2Event.GLOBAL_SCROLL`: 单元格滚动，数值/行头单元格滚动时都会触发
-- `S2Event.DATA_CELL_SCROLL`: 数值单元格滚动
 - `S2Event.ROW_CELL_SCROLL`: 行头单元格滚动
 
 同时：对于 `s2-react` 和 `s2-vue` 版本，也提供了事件的隐射，具体请查看 [API 文档](/zh/docs/api/components/sheet-component)
 
 需要注意的是：行头单元格只会在**固定行头时**才会显示滚动条，且只会有**水平滚动条**, 所以拿到的 `scrollY` 永远都是 `0`
 
-##### 统一监听
-
 ```ts
 s2.on(S2Event.GLOBAL_SCROLL, (position) => {
   console.log('表格滚动', position) // { scrollX: 0, scrollY: 100 }
 })
-```
 
-##### 分别监听
-
-```ts
-s2.on(S2Event.DATA_CELL_SCROLL, (position) => {
-  console.log('数值单元格滚动', position) // { scrollX: 0, scrollY: 100 }
-})
 s2.on(S2Event.ROW_CELL_SCROLL, (position) => {
-  console.log('行头单元格滚动', position) // { scrollX: 0, scrollY: 0 }
+  console.log('行头单元格滚动', position) // { scrollX: 0, scrollY: 100 }
 })
 ```
 
