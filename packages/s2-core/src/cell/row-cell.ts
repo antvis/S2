@@ -37,7 +37,7 @@ import { HeaderCell } from './header-cell';
 export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
 
-  private gm: GM;
+  protected gm: GM;
 
   public get cellType() {
     return CellTypes.ROW_CELL;
@@ -95,11 +95,11 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  private showTreeIcon() {
+  protected showTreeIcon() {
     return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
   }
 
-  private showTreeLeafNodeAlignDot() {
+  protected showTreeLeafNodeAlignDot() {
     return (
       get(this.spreadsheet, 'options.style.showTreeLeafNodeAlignDot') &&
       this.spreadsheet.isHierarchyTreeType()
@@ -107,7 +107,7 @@ export class RowCell extends HeaderCell {
   }
 
   // 获取树状模式下叶子节点的父节点收起展开 icon 图形属性
-  private getParentTreeIconCfg() {
+  protected getParentTreeIconCfg() {
     if (
       !this.showTreeLeafNodeAlignDot() ||
       !this.spreadsheet.isHierarchyTreeType() ||
@@ -429,7 +429,7 @@ export class RowCell extends HeaderCell {
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
-  private getTextArea() {
+  protected getTextArea() {
     const content = this.getContentArea();
     const textIndent = this.getTextIndent();
     return {
@@ -461,7 +461,7 @@ export class RowCell extends HeaderCell {
     return { x: textX, y: textY };
   }
 
-  private getIconYPosition() {
+  protected getIconYPosition() {
     const textY = this.getTextPosition().y;
     const { size } = this.getStyle().icon;
     const { fontSize } = this.getTextStyle();

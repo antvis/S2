@@ -348,7 +348,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 绘制热区
-  private drawResizeArea() {
+  protected drawResizeArea() {
     this.drawHorizontalResizeArea();
     this.drawVerticalResizeArea();
   }
@@ -408,12 +408,12 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  private getExpandIconTheme(): IconTheme {
+  protected getExpandIconTheme(): IconTheme {
     const themeCfg = this.getStyle() as DefaultCellTheme;
     return themeCfg.icon;
   }
 
-  private addExpandColumnSplitLine() {
+  protected addExpandColumnSplitLine() {
     const { x, y, width, height } = this.meta;
     const {
       horizontalBorderColor,
@@ -438,7 +438,7 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  private addExpandColumnIconShapes() {
+  protected addExpandColumnIconShapes() {
     if (!this.hasHiddenColumnCell()) {
       return;
     }
@@ -446,7 +446,7 @@ export class ColCell extends HeaderCell {
     this.addExpandColumnIcon();
   }
 
-  private addExpandColumnIcon() {
+  protected addExpandColumnIcon() {
     const iconConfig = this.getExpandColumnIconConfig();
     const icon = renderIcon(this, {
       ...iconConfig,
@@ -459,7 +459,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  private getExpandColumnIconConfig() {
+  protected getExpandColumnIconConfig() {
     const { size } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getCellArea();
 
@@ -475,7 +475,7 @@ export class ColCell extends HeaderCell {
     };
   }
 
-  private isLastColumn() {
+  protected isLastColumn() {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 }

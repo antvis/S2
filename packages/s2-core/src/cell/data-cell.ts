@@ -266,7 +266,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Draw interval condition shape
-   * @private
+   * @protected
    */
   protected drawConditionIntervalShape() {
     const { x, y, height, width } = this.getCellArea();
@@ -397,7 +397,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeRowColSelectState(indexType: ViewMetaIndexType) {
+  protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
@@ -415,7 +415,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Render cell border controlled by verticalBorder & horizontalBorder
-   * @private
+   * @protected
    */
   protected drawBorderShape() {
     [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
