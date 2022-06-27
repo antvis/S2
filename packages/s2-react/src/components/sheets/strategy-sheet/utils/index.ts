@@ -1,3 +1,4 @@
+import { STRATEGY_TOOLTIP_PRE_CLASS as CLS_PREFIX } from '@antv/s2-shared';
 import type { ViewMeta } from '@antv/s2';
 import { find } from 'lodash';
 
@@ -23,4 +24,9 @@ export const getColName = (meta: ViewMeta) => {
 
   // 兼容多列头, 优先取父级节点标题
   return leafColNode?.parent?.label || leafColNode?.label || '';
+};
+
+/** 获取 tooltip css class name */
+export const getTooltipClsName = (name?: string) => {
+  return name ? `${CLS_PREFIX}-${name}` : CLS_PREFIX;
 };
