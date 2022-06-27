@@ -233,7 +233,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       fill: linkFillColor,
       cursor: 'pointer',
       appendInfo: {
-        isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        isLinkFieldText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
         cellData: this.meta,
       },
     });

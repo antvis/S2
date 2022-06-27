@@ -73,6 +73,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
 
+    if (this.isLinkFieldText(event.target)) {
+      return;
+    }
+
     const { interaction, options } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
 

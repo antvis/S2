@@ -34,13 +34,18 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
+
       const { interaction, options } = this.spreadsheet;
+      interaction.clearHoverTimer();
+
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
 
-      interaction.clearHoverTimer();
-      this.emitLinkFieldClickEvent(event);
+      if (this.isLinkFieldText(event.target)) {
+        this.emitLinkFieldClickEvent(event);
+        return;
+      }
 
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
@@ -146,19 +151,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private emitLinkFieldClickEvent(event: CanvasEvent) {
-    const appendInfo = get(
-      event.target,
-      'attrs.appendInfo',
-      {},
-    ) as CellAppendInfo<ViewMeta>;
+    const { cellData } = this.getCellAppendInfo(event.target);
+    const { valueField: key, data: record } = cellData;
 
-    if (appendInfo.isRowHeaderText) {
-      const { cellData } = appendInfo;
-      const { valueField: key, data: record } = cellData;
-      this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
-        key,
-        record: Object.assign({ rowIndex: cellData.rowIndex }, record),
-      });
-    }
+    this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
+      key,
+      record: Object.assign({ rowIndex: cellData.rowIndex }, record),
+    });
   }
 }
