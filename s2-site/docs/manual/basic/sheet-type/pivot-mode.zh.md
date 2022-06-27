@@ -57,7 +57,7 @@ const data = [
 // 2. 配置数据
 const dataCfg = {
   fields: {
-    rows: ["province", "city"]
+    rows: ["province", "city"],
     columns: ["type", "sub_type"],
     values: ["price"]
   },
