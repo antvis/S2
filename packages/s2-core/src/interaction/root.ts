@@ -65,6 +65,7 @@ export class RootInteraction {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
     this.registerInteractions();
+    window.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   public destroy() {
@@ -73,6 +74,7 @@ export class RootInteraction {
     this.eventController.clear();
     this.clearHoverTimer();
     this.resetState();
+    window.removeEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   public reset() {
@@ -81,6 +83,11 @@ export class RootInteraction {
     this.intercepts.clear();
     this.spreadsheet.hideTooltip();
   }
+
+  private handleVisibilityChange = () => {
+    this.interactions.get(InteractionName.RANGE_SELECTION)?.reset();
+    this.interactions.get(InteractionName.DATA_CELL_MULTI_SELECTION)?.reset();
+  };
 
   public setState(interactionStateInfo: InteractionStateInfo) {
     setState(this.spreadsheet, interactionStateInfo);
