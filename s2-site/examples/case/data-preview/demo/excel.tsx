@@ -76,8 +76,10 @@ const App = ({ data }) => {
       }
     };
     spreadsheet?.on(S2Event.GLOBAL_SCROLL, handleScroll);
+    spreadsheet?.on(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
     return () => {
       spreadsheet?.off(S2Event.GLOBAL_SCROLL, handleScroll);
+      spreadsheet?.off(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
     };
   }, []);
 
