@@ -12,5 +12,7 @@ export abstract class BaseEvent {
     this.bindEvents();
   }
 
+  reset() {}
+
   public abstract bindEvents(): void;
 }

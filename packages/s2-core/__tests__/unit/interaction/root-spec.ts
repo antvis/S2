@@ -613,4 +613,16 @@ describe('RootInteraction Tests', () => {
       });
     },
   );
+
+  test('should reset interaction when visibilitychange', () => {
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    rootInteraction.interactions.forEach((interaction) => {
+      interaction.reset = jest.fn();
+    });
+    window.dispatchEvent(new Event('visibilitychange'));
+
+    rootInteraction.interactions.forEach((interaction) => {
+      expect(interaction.reset).toHaveBeenCalled();
+    });
+  });
 });

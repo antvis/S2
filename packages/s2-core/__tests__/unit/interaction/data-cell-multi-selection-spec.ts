@@ -227,4 +227,13 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
     expect(s2.store.get('lastClickedCell')).toEqual(mockCell00.mockCell);
   });
+
+  test('should get correct state when reset', () => {
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.META,
+    } as KeyboardEvent);
+    expect((dataCellMultiSelection as any).isMultiSelection).toBe(true);
+    dataCellMultiSelection.reset();
+    expect((dataCellMultiSelection as any).isMultiSelection).toBe(false);
+  });
 });
