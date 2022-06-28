@@ -8,11 +8,8 @@ import {
 import cls from 'classnames';
 import { first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
-import {
-  getLeafColNode,
-  getRowName,
-  getTooltipClsName as tooltipCls,
-} from '../utils';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
+import { getLeafColNode, getRowName } from '../utils';
 import type { CustomTooltipProps } from './interface';
 
 import './index.less';

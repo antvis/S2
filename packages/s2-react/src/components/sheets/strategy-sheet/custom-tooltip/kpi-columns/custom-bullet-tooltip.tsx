@@ -9,12 +9,9 @@ import {
 } from '@antv/s2';
 import cls from 'classnames';
 import React from 'react';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import type { CustomTooltipProps } from '../interface';
-import {
-  getColName,
-  getRowName,
-  getTooltipClsName as tooltipCls,
-} from '../../utils';
+import { getColName, getRowName } from '../../utils';
 
 import '../index.less';
 import type { StrategySheetProps } from '../..';
