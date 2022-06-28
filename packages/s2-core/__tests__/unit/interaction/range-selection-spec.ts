@@ -231,8 +231,8 @@ describe('Interaction Range Selection Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.SHIFT,
     } as KeyboardEvent);
-    expect((rangeSelection as any).isMultiSelection).toBe(true);
+    expect((rangeSelection as any).isRangeSelection).toBe(true);
     rangeSelection.reset();
-    expect((rangeSelection as any).isMultiSelection).toBe(false);
+    expect((rangeSelection as any).isRangeSelection).toBe(false);
   });
 });
