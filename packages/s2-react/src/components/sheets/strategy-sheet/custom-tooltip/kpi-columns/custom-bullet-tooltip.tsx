@@ -9,10 +9,11 @@ import {
 } from '@antv/s2';
 import cls from 'classnames';
 import React from 'react';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import type { CustomTooltipProps } from '../interface';
 import { getColName, getRowName } from '../../utils';
 
-import styles from '../index.module.less';
+import '../index.less';
 import type { StrategySheetProps } from '../..';
 
 export interface KpiBulletTooltipProps extends CustomTooltipProps {
@@ -46,32 +47,32 @@ export const KpiBulletTooltip: React.FC<KpiBulletTooltipProps> = (props) => {
   const colName = getColName(meta);
 
   return (
-    <div className={cls(styles.strategySheetTooltip, styles.bullet)}>
-      <div className={styles.title}>{rowName}</div>
-      <div className={styles.content}>
-        <li className={cls(styles.item, styles.current)}>
-          <span className={styles.label}>
+    <div className={cls(tooltipCls(), tooltipCls('bullet'))}>
+      <div className={tooltipCls('title')}>{rowName}</div>
+      <div className={tooltipCls('content')}>
+        <li className={cls('tooltip-bullet-item', 'bullet-current-item')}>
+          <span className="tooltip-bullet-item-label">
             <span
-              className={styles.legend}
+              className="bullet-item-legend"
               style={{
                 backgroundColor: currentLegendColor,
               }}
             />
             {colName}
           </span>
-          <span className={styles.value}>{currentPercent}</span>
+          <span className="tooltip-bullet-item-value">{currentPercent}</span>
         </li>
-        <li className={cls(styles.item, styles.target)}>
-          <span className={styles.label}>
-            <span className={styles.legend} />
+        <li className={cls('tooltip-bullet-item', 'bullet-target-item')}>
+          <span className="tooltip-bullet-item-label">
+            <span className="bullet-item-legend" />
             {i18n('目标值')}
           </span>
-          <span className={styles.value}>{targetPercent}</span>
+          <span className="tooltip-bullet-item-value">{targetPercent}</span>
         </li>
       </div>
-      <div className={styles.divider} />
+      <div className={tooltipCls('divider')} />
       {description?.(cell) ?? (
-        <ul className={styles.desc}>
+        <ul className={tooltipCls('desc')}>
           <li>指标目标字段的净增目标完成度，净增目标完成度=净增值/净增目标</li>
           <li>绿色：实际完成度落后时间进度 10%（包含）以内或超出时间进度</li>
           <li>黄色：实际完成度慢于时间进度 10%-20%</li>
