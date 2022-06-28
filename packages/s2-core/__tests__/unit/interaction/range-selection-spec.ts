@@ -226,4 +226,13 @@ describe('Interaction Range Selection Tests', () => {
     ).toBeTruthy();
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
+
+  test('should get correct state when reset', () => {
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.SHIFT,
+    } as KeyboardEvent);
+    expect((rangeSelection as any).isRangeSelection).toBe(true);
+    rangeSelection.reset();
+    expect((rangeSelection as any).isRangeSelection).toBe(false);
+  });
 });

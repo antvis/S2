@@ -27,5 +27,7 @@ export abstract class BaseEvent {
     return cellAppendInfo?.isLinkFieldText;
   };
 
+  public reset() {}
+
   public abstract bindEvents(): void;
 }
