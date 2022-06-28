@@ -137,6 +137,38 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     },
   );
 
+  test('should emit link field jump event when row cell clicked and not show tooltip', () => {
+    const linkFieldJump = jest.fn();
+
+    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
+
+    const selectHeaderCellSpy = jest
+      .spyOn(s2.interaction, 'selectHeaderCell')
+      .mockImplementationOnce(() => false);
+
+    const mockCellData = {
+      valueField: 'valueField',
+      data: { a: 1 },
+    };
+
+    s2.emit(S2Event.ROW_CELL_CLICK, {
+      stopPropagation() {},
+      target: {
+        attrs: {
+          appendInfo: {
+            cellData: mockCellData,
+            isLinkFieldText: true,
+          },
+        },
+      },
+    } as unknown as GEvent);
+
+    expect(linkFieldJump).toHaveBeenCalledTimes(1);
+    expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();
+    expect(s2.showTooltip).not.toHaveBeenCalled();
+    expect(selectHeaderCellSpy).not.toHaveBeenCalled();
+  });
+
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
     'should emit cell selected event when %s clicked',
     (event) => {
@@ -172,7 +204,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       result: true,
     },
   ])(
-    'should emit cell selected event when %s clicked111',
+    'should emit cell selected event when %s clicked with multi selection',
     ({ event, enableMultiSelection, result }) => {
       s2.options.interaction.multiSelection = enableMultiSelection;
 

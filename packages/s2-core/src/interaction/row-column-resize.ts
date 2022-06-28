@@ -143,8 +143,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
       const shape = event.target as IGroup;
-      const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
       const originalEvent = event.originalEvent as MouseEvent;
+      const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
       this.spreadsheet.store.set('resized', false);
 
       if (!resizeInfo?.isResizeArea) {
@@ -440,7 +440,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeInfo(): ResizeInfo {
-    return this.resizeTarget?.attr('appendInfo');
+    return this.getCellAppendInfo<ResizeInfo>(this.resizeTarget);
   }
 
   private render() {

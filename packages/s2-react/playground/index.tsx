@@ -149,7 +149,6 @@ function MainLayout() {
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [showJumpLink, setShowJumpLink] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
@@ -770,9 +769,8 @@ function MainLayout() {
                 <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
-                  checked={showJumpLink}
+                  checked={mergedOptions.interaction.linkFields.length}
                   onChange={(checked) => {
-                    setShowJumpLink(checked);
                     updateOptions({
                       interaction: {
                         linkFields: checked ? ['province', 'city'] : [],
