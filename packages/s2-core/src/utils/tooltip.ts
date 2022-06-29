@@ -23,6 +23,7 @@ import {
   mapKeys,
   noop,
   pick,
+  includes,
 } from 'lodash';
 import {
   CellTypes,
@@ -491,6 +492,21 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   return summaries;
 };
 
+export const getDescription = (targetCell: S2CellType): string => {
+  if (!targetCell) {
+    return '';
+  }
+
+  const meta = targetCell.getMeta();
+  const filedTypes = map(meta.spreadsheet.dataCfg.meta, (item) => {
+    return item.field;
+  });
+  const field = includes(filedTypes, meta.field)
+    ? meta.field
+    : meta.value || meta.valueField;
+  return meta.spreadsheet.dataSet.getFieldDescription(field);
+};
+
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const {
     spreadsheet,
@@ -504,6 +520,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   let headInfo = null;
   let details = null;
 
+  const description = getDescription(targetCell);
   const firstCellInfo = cellInfos[0] || {};
 
   if (!options?.hideSummary) {
@@ -534,7 +551,16 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     details = getDetailList(spreadsheet, firstCellInfo, options);
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
-  return { summaries, interpretation, infos, tips, name, headInfo, details };
+  return {
+    summaries,
+    interpretation,
+    infos,
+    tips,
+    name,
+    headInfo,
+    details,
+    description,
+  };
 };
 
 export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {

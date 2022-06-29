@@ -416,6 +416,7 @@ describe('Tooltip Utils Tests', () => {
       name: undefined,
       summaries: [],
       tips: undefined,
+      description: undefined,
     };
 
     const getCellData = (
@@ -660,6 +661,41 @@ describe('Tooltip Utils Tests', () => {
         s2.destroy();
       },
     );
+
+    describe('Tooltip Description Tests', () => {
+      test('Row Cell Tests', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(rowCell);
+
+        expect(tooltipData.description).toEqual('省份说明。。');
+      });
+
+      test('Col Cell Tests', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const colCell = s2.interaction.getAllColHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(colCell);
+
+        expect(tooltipData.description).toEqual('类别说明。。');
+      });
+
+      test('Data Cell Tests', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
+        const tooltipData = getMockTooltipData(dataCell);
+
+        expect(tooltipData.description).toEqual('数量说明。。');
+      });
+    });
   });
 
   test('should set container style', () => {

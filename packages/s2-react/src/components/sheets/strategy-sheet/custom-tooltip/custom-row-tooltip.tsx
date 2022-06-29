@@ -8,7 +8,6 @@ import './index.less';
 
 export const RowTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const { field, spreadsheet, value, extra } = cell.getMeta() as Node;
-
   const description =
     spreadsheet.dataSet.getFieldDescription(field) || extra?.description;
 

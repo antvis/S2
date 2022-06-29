@@ -237,7 +237,6 @@ function MainLayout() {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
-
       callback?.();
     };
 
