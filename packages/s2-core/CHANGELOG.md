@@ -1,3 +1,24 @@
+# [@antv/s2-v1.23.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0-alpha.1) (2022-06-29)
+
+
+### Bug Fixes
+
+* **interaction:** 修复按下快捷选中按钮之后通过触摸板切换页面，快捷键状态没有reset的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
+* **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
+* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
+* 修复 pivot 无法获取整行数据，而报错的问题 ([#1504](https://github.com/antvis/S2/issues/1504)) ([89e22d3](https://github.com/antvis/S2/commit/89e22d3ffd425b3e1e7a180744b3d85e3635adb6))
+* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
+
+
+### Features
+
+* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
 # [@antv/s2-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-v1.21.1...@antv/s2-v1.22.0) (2022-06-24)
 
 
