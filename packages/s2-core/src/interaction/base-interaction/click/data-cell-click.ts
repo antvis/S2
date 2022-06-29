@@ -104,9 +104,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       onClick: () => {
         this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, {
           ...meta,
-          record: meta.spreadsheet.dataSet.getCellData({
-            query: { rowIndex: meta.rowIndex },
-          }),
+          // record 只有明细模式下存在
+          record: this.spreadsheet.isTableMode()
+            ? this.spreadsheet.dataSet.getCellData({
+                query: { rowIndex: meta.rowIndex },
+              })
+            : undefined,
         });
         this.spreadsheet.hideTooltip();
       },
