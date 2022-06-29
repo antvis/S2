@@ -52,7 +52,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
           (measures.length - 1) * miniChart?.bar?.intervalPadding) /
           measures.length +
         miniChart?.bar?.intervalPadding
-      : (xEnd - xStart) / (measures.length - 1);
+      : (xEnd - xStart) / (measures.length - 1) ?? 0;
 
   const points = map(encodedData, (item: { x: number; y: number }, key) => {
     const positionX = xStart + key * intervalX;
