@@ -56,7 +56,7 @@ describe('Interaction Row Text Click Tests', () => {
       target: {
         attrs: {
           appendInfo: {
-            isRowHeaderText: true,
+            isLinkFieldText: true,
             cellData,
           },
         },
@@ -99,7 +99,7 @@ describe('Interaction Row Text Click Tests', () => {
       target: {
         attrs: {
           appendInfo: {
-            isRowHeaderText: true,
+            isLinkFieldText: true,
             cellData,
           },
         },

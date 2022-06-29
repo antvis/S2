@@ -15,8 +15,6 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: 'latest'
 
       - name: Use Node.js 16
         uses: actions/setup-node@v3
@@ -35,11 +33,12 @@ jobs:
       - name: Checkout branch
         run: |
           git checkout -b chore-sync
+          git merge origin/latest --squash
 
-      - name: Sleep 10m
+      - name: Sleep 5m
         uses: juliangruber/sleep-action@v1
         with:
-          time: 10m
+          time: 5m
 
       - name: Install dependencies
         run: yarn
@@ -50,8 +49,8 @@ jobs:
       - name: Push lock
         run: |
           git add .
-          git commit -m "chore: 🤖 更新 lock 和 changelog 文件" --no-verify
-          git push origin chore-sync --no-verify
+          git commit -m "chore: 🤖 更新 lock 和 changelog 文件" -n
+          git push origin chore-sync -f
 
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR

@@ -26,6 +26,11 @@ export class DataCellMultiSelection
     this.bindKeyboardUp();
   }
 
+  public reset() {
+    this.isMultiSelection = false;
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+  }
+
   private bindKeyboardDown() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
@@ -41,8 +46,7 @@ export class DataCellMultiSelection
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
-        this.isMultiSelection = false;
-        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.reset();
       }
     });
   }

@@ -24,6 +24,11 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     this.bindKeyboardUp();
   }
 
+  public reset() {
+    this.isRangeSelection = false;
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+  }
+
   private bindKeyboardDown() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
@@ -39,8 +44,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
-        this.isRangeSelection = false;
-        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.reset();
       }
     });
   }
