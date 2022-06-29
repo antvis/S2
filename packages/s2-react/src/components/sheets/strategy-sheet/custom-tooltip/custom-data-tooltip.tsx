@@ -8,11 +8,10 @@ import {
 import cls from 'classnames';
 import { first, get, isEmpty, isNil } from 'lodash';
 import React from 'react';
-import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import { getLeafColNode, getRowName } from '../utils';
 import type { CustomTooltipProps } from './interface';
 
-import './index.less';
+import styles from './index.module.less';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta() as ViewMeta;
@@ -39,40 +38,38 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const originalValue = get(metaFieldValue, valuesCfg?.originalValueField);
 
   return (
-    <div className={cls(tooltipCls(), tooltipCls('data'))}>
-      <div className={tooltipCls('header')}>
-        <span className={'header-label'}>{rowName}</span>
+    <div className={cls(styles.strategySheetTooltip, styles.data)}>
+      <div className={styles.header}>
+        <span className={styles.label}>{rowName}</span>
         <span>{value ?? emptyPlaceholder}</span>
       </div>
-      <div className={tooltipCls('original-value')}>
+      <div className={styles.originalValue}>
         {isNil(originalValue?.[0]?.[0])
           ? emptyPlaceholder
           : originalValue?.[0]?.[0]}
       </div>
       {!isEmpty(derivedValues) && (
         <>
-          <div className={tooltipCls('divider')} />
-          <ul className={tooltipCls('derived-values')}>
+          <div className={styles.divider} />
+          <ul className={styles.derivedValues}>
             {derivedValues.map((derivedValue, i) => {
               const isNormal = isNil(derivedValue);
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
 
               return (
-                <li className="derived-value-item" key={i}>
-                  <span className="derived-value-label">
+                <li className={styles.value} key={i}>
+                  <span className={styles.derivedValueLabel}>
                     {derivedLabels[i]}
                   </span>
                   <span
-                    className={cls('derived-value-group', {
-                      ['derived-value-trend-up']: isUp,
-                      ['derived-value-trend-down']: isDown,
+                    className={cls(styles.derivedValueGroup, {
+                      [styles.up]: isUp,
+                      [styles.down]: isDown,
                     })}
                   >
-                    {!isNormal && (
-                      <span className="derived-value-trend-icon"></span>
-                    )}
-                    <span className="derived-value-content">
+                    {!isNormal && <span className={styles.icon}></span>}
+                    <span className={styles.value}>
                       {derivedValue ?? emptyPlaceholder}
                     </span>
                   </span>
