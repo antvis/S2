@@ -14,76 +14,77 @@ const s2Options = {
   tooltip: { showTooltip: false },
   interaction: { enableCopy: true, hoverHighlight: false },
   showDefaultHeaderActionIcon: false,
-}
+};
 
 // 初始化数据
 const s2DataCfg = {
-  fields: { columns: ['province', 'city', 'type', 'price'], },
+  fields: { columns: ['province', 'city', 'type', 'price'] },
   sortParams: [],
-}
+};
 
 const App = ({ data }) => {
   const S2Ref = useRef(null);
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
   const [value, setValue] = useState('');
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
   const [position, setPosition] = useState({
     left: 0,
     top: 0,
     width: 0,
     height: 0,
-  })
+  });
   const [options, setOptions] = useState(s2Options);
   const [dataCfg, setDataCfg] = useState({ ...s2DataCfg, data });
-  const [cell, setCell] = useState(null)
+  const [cell, setCell] = useState(null);
   const [scroll, setScroll] = useState({
     scrollX: 0,
     scrollY: 0,
-  })
+  });
 
   // 改变S2实际渲染内容
   const onSave = (inputVal) => {
-    const spreadsheet = S2Ref.current
+    const spreadsheet = S2Ref.current;
     if (spreadsheet && cell) {
       const { rowIndex, valueField } = cell.getMeta();
       spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
       spreadsheet.render(true);
-      setShow(false)
+      setShow(false);
     }
-  }
+  };
 
   // 绑定 S2Event.DATA_CELL_CLICK 事件，触发时先将上一个cell的值保存，然后设置当前cell
   useEffect(() => {
-    const spreadsheet = S2Ref.current
+    const spreadsheet = S2Ref.current;
     const handleClick = (e) => {
-      onSave(value)
-      setCell(e.target.cfg.parent)
-    }
-    spreadsheet?.on(S2Event.DATA_CELL_CLICK, handleClick)
+      onSave(value);
+      setCell(e.target.cfg.parent);
+    };
+    spreadsheet?.on(S2Event.DATA_CELL_CLICK, handleClick);
     return () => {
-      spreadsheet?.off(S2Event.DATA_CELL_CLICK, handleClick)
-    }
-  }, [value])
+      spreadsheet?.off(S2Event.DATA_CELL_CLICK, handleClick);
+    };
+  }, [value]);
 
   useEffect(() => {
-    const spreadsheet = S2Ref.current
+    const spreadsheet = S2Ref.current;
     const handleScroll = (e) => {
       if (spreadsheet) {
-        const newScroll = spreadsheet.facet.getScrollOffset()
+        const newScroll = spreadsheet.facet.getScrollOffset();
         if (!isEqual(newScroll, scroll)) {
-          setScroll(spreadsheet.facet.getScrollOffset())
+          setScroll(spreadsheet.facet.getScrollOffset());
         }
       }
-    }
-    spreadsheet?.on(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
+    };
+    spreadsheet?.on(S2Event.GLOBAL_SCROLL, handleScroll);
     return () => {
-      spreadsheet?.off(S2Event.LAYOUT_CELL_SCROLL, handleScroll)
-    }
-  }, [])
+      spreadsheet?.off(S2Event.GLOBAL_SCROLL, handleScroll);
+    };
+  }, []);
 
   const setCellPosition = (spreadsheet, cell) => {
     const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
-    const colCellHeight = (spreadsheet.getColumnNodes()[0] || { height: 0 }).height
+    const colCellHeight = (spreadsheet.getColumnNodes()[0] || { height: 0 })
+      .height;
     cellMeta.x -= scroll.scrollX || 0;
     cellMeta.y -= (scroll.scrollY || 0) - colCellHeight;
     setPosition({
@@ -91,31 +92,31 @@ const App = ({ data }) => {
       top: cellMeta.y,
       width: cellMeta.width,
       height: cellMeta.height,
-    })
-  }
+    });
+  };
 
   // 设置 position 和 初始值
   useEffect(() => {
-    const spreadsheet = S2Ref.current
+    const spreadsheet = S2Ref.current;
     if (spreadsheet && cell) {
-      setCellPosition(spreadsheet, cell)
-      setShow(true)
-      setValue(cell.getMeta().fieldValue)
+      setCellPosition(spreadsheet, cell);
+      setShow(true);
+      setValue(cell.getMeta().fieldValue);
     }
-  }, [cell])
+  }, [cell]);
 
   // 监听滚动
   useEffect(() => {
-    const spreadsheet = S2Ref.current
+    const spreadsheet = S2Ref.current;
     if (spreadsheet && cell) {
-      setCellPosition(spreadsheet, cell)
+      setCellPosition(spreadsheet, cell);
     }
-  }, [scroll])
+  }, [scroll]);
 
   // show的时候自动focus
   useEffect(() => {
-    inputRef.current?.focus({ preventScroll: true })
-  }, [show])
+    inputRef.current?.focus({ preventScroll: true });
+  }, [show]);
 
   // 绑定回车键 回车的时候触发保存
   useEffect(() => {
@@ -127,29 +128,31 @@ const App = ({ data }) => {
       }
     };
     if (inputRef.current) {
-      inputRef.current.addEventListener('keydown', onKeyDown)
+      inputRef.current.addEventListener('keydown', onKeyDown);
     }
     return () => {
-      inputRef.current?.removeEventListener('keydown', onKeyDown)
-    }
-  }, [value])
+      inputRef.current?.removeEventListener('keydown', onKeyDown);
+    };
+  }, [value]);
 
   const style = {
     ...position,
     position: 'absolute',
     textAlign: 'right',
     zIndex: 1000,
-  }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
-      {show && <input
-        ref={inputRef}
-        style={style}
-        value={value}
-        onChange={e => setValue(e.target.value)}
-        onBlur={() => onSave(value)}
-      />}
+      {show && (
+        <input
+          ref={inputRef}
+          style={style}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={() => onSave(value)}
+        />
+      )}
       <SheetComponent
         ref={S2Ref}
         dataCfg={dataCfg}

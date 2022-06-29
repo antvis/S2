@@ -6,9 +6,11 @@ import {
   measureTextWidth,
   getCellWidth,
   getEmptyPlaceholder,
+} from '@/utils/text';
+import {
   getBulletRangeColor,
   transformRatioToPercent,
-} from '@/utils/text';
+} from '@/utils/g-mini-charts';
 
 const isHD = window.devicePixelRatio >= 2;
 

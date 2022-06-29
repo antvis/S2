@@ -25,7 +25,7 @@ order: 0
 | 多选                | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                                                  |
 | 行/列头快捷多选     | `S2Event.GLOBAL_SELECTED`                                     | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                                                   |
 | 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                       | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                                                         |
-| 刷选                | `S2Event.DATE_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                                                |
+| 刷选                | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                                                |
 | 区间快捷多选        | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                       |
 | 悬停                | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/zh/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
 | 复制                | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                                                              |
@@ -57,6 +57,7 @@ order: 0
 | 鼠标按下     | `S2Event.ROW_CELL_MOUSE_DOWN`         | 行头单元格鼠标按下         |
 | 鼠标移动     | `S2Event.ROW_CELL_MOUSE_MOVE`         | 行头单元格鼠标移动         |
 | 鼠标松开     | `S2Event.ROW_CELL_MOUSE_UP`           | 行头单元格鼠标松开         |
+| 滚动         | `S2Event.ROW_CELL_SCROLL`            | 行头单元格滚动         |
 
 ### 列头
 
@@ -82,7 +83,7 @@ order: 0
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
 | 趋势 icon 点击 | `S2Event.DATA_CELL_TREND_ICON_CLICK` | 数值单元格 tooltip 里面的趋势 icon 点击 |
-| 刷选           | `S2Event.DATE_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
+| 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
 
 ### 角头
 
@@ -111,6 +112,7 @@ order: 0
 | 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` | 树状模式下，单元格宽度发生改变时触发        |
 | 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发，明细表有效                  |
 | 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发，明细表有效                  |
+| 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
 
 ### 全局
 
@@ -128,6 +130,7 @@ order: 0
 | 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击行列头被编辑为链接字段的文本时           |
 | icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
 | icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
+| 滚动      | `S2Event.GLOBAL_SCROLL`            | 表格滚动 （含数值和行头单元格） |
 
 </details>
 
@@ -137,7 +140,7 @@ order: 0
 import { PivotSheet, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.on(S2Event.DATE_CELL_BRUSH_SELECTION, (cells) => {
+s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
   console.log('刷选的单元格：', cells)
   ...
 })

@@ -1,8 +1,8 @@
 import {
+  CellTypes,
   getBulletRangeColor,
   i18n,
   transformRatioToPercent,
-  type BulletTheme,
   type BulletValue,
   type MultiData,
   type ViewMeta,
@@ -35,7 +35,7 @@ export const KpiBulletTooltip: React.FC<KpiBulletTooltipProps> = (props) => {
   const currentPercent = transformRatioToPercent(measure);
 
   // 当前子弹图进度颜色
-  const bulletStyle = cell.getStyle('bullet') as BulletTheme;
+  const bulletStyle = cell.getStyle(CellTypes.DATA_CELL).miniChart.bullet;
   const currentLegendColor = getBulletRangeColor(
     measure,
     target,

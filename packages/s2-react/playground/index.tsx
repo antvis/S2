@@ -53,7 +53,6 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   strategyOptions,
-  strategyTheme,
   tableSheetDataCfg,
 } from './config';
 import './index.less';
@@ -235,11 +234,13 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) =>
+    (name: string, callback?: () => void) =>
     (...args: unknown[]) => {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
+
+      callback?.();
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -261,20 +262,6 @@ function MainLayout() {
   };
 
   //  ================== Hooks ========================
-
-  React.useEffect(() => {
-    s2Ref.current?.on(
-      S2Event.DATA_CELL_TREND_ICON_CLICK,
-      logHandler('趋势图点击'),
-    );
-    s2Ref.current?.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-      logHandler('🔗链接跳转 data:')(data);
-
-      window.open(
-        'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
-      );
-    });
-  }, [sheetType]);
 
   useUpdateEffect(() => {
     switch (sheetType) {
@@ -954,6 +941,13 @@ function MainLayout() {
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
               onSelected={logHandler('onSelected')}
+              onScroll={logHandler('onScroll')}
+              onRowCellScroll={logHandler('onRowCellScroll')}
+              onLinkFieldJump={logHandler('onLinkFieldJump', () => {
+                window.open(
+                  'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                );
+              })}
             />
           )}
         </TabPane>
@@ -993,10 +987,6 @@ function MainLayout() {
                   }}
                 />
               ),
-            }}
-            themeCfg={{
-              theme: strategyTheme,
-              name: 'gray',
             }}
           />
         </TabPane>

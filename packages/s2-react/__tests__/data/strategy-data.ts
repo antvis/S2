@@ -1,6 +1,6 @@
-import { EXTRA_COLUMN_FIELD, type Data, type S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
 
-const getKPIMockData = (): Data => {
+const getKPIMockData = () => {
   return {
     'measure-a': {
       originalValues: {
@@ -67,6 +67,93 @@ const getKPIMockData = (): Data => {
   };
 };
 
+const getTrendMockData = () => {
+  return {
+    'measure-a': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 15468 },
+          { year: '2019', value: 16100 },
+          { year: '2020', value: 15900 },
+          { year: '2021', value: 17409 },
+          { year: '2022', value: 17000 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-b': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 168 },
+          { year: '2019', value: 1600 },
+          { year: '2020', value: 1900 },
+          { year: '2021', value: 1749 },
+          { year: '2022', value: 700 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-c': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 154 },
+          { year: '2019', value: 161 },
+          { year: '2020', value: 159 },
+          { year: '2021', value: 174 },
+          { year: '2022', value: 170 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-d': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 68 },
+          { year: '2019', value: 100 },
+          { year: '2020', value: 900 },
+          { year: '2021', value: 409 },
+          { year: '2022', value: 300 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-e': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 368 },
+          { year: '2019', value: 5500 },
+          { year: '2020', value: 900 },
+          { year: '2021', value: 409 },
+          { year: '2022', value: 2300 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    date: '趋势',
+    [EXTRA_COLUMN_FIELD]: '趋势',
+  };
+};
+
 export const StrategySheetDataConfig: S2DataConfig = {
   data: [
     // 普通数值+同环比数据
@@ -100,6 +187,8 @@ export const StrategySheetDataConfig: S2DataConfig = {
     },
     // 净增目标完成度子弹图数据
     getKPIMockData(),
+    // 趋势图数据
+    getTrendMockData(),
     {
       'measure-a': {
         originalValues: [[377, '', 0.02]],

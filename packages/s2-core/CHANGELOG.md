@@ -1,28 +1,24 @@
-# [@antv/s2-v1.22.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.21.1...@antv/s2-v1.22.0-alpha.1) (2022-06-23)
+# [@antv/s2-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-v1.21.1...@antv/s2-v1.22.0) (2022-06-24)
 
 
 ### Bug Fixes
 
-* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+* node 可能为null ([#1486](https://github.com/antvis/S2/issues/1486)) ([bce985f](https://github.com/antvis/S2/commit/bce985fac083009668cb30c9b936e68c4b97b4ba))
 * **strategysheet:** 修复趋势分析表多列头切换为单列头后, 隐藏列头功能失效 ([#1470](https://github.com/antvis/S2/issues/1470)) ([b39742e](https://github.com/antvis/S2/commit/b39742e3a7276836c504f2a0d5343ff201a65bba))
-* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
-* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
 * 修复柱状图区间及零点问题 ([#1465](https://github.com/antvis/S2/issues/1465)) ([a78d944](https://github.com/antvis/S2/commit/a78d9441d7b821c1518ed70ddaa80f468b4a110b))
 * 增加tooltip允许复制的样式防止被覆盖 ([#1477](https://github.com/antvis/S2/issues/1477)) ([39775ca](https://github.com/antvis/S2/commit/39775ca6dddf830e52f1fc530cd0af2f32c84da6))
 * 构造含总计的 tree 行头布局时报错 ([#1472](https://github.com/antvis/S2/issues/1472)) ([faff65c](https://github.com/antvis/S2/commit/faff65cb5378e94e2557c0b561b461eaaa5f1c37))
-* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
 * 趋势表自定义列头数值误用数据单元格样式 ([#1479](https://github.com/antvis/S2/issues/1479)) ([c23e105](https://github.com/antvis/S2/commit/c23e105b6d633cd2b66ac3a8618851923be7d1be))
 
 
 ### Features
 
-* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* **interaction:** 增加行头单元格和全局单元格滚动事件及文档 ([#1483](https://github.com/antvis/S2/issues/1483)) ([329aaa6](https://github.com/antvis/S2/commit/329aaa6c9f9ae926f392e3e8f676af1ec201cce2))
 * **interaction:** 添加 onDataCellSelectMove 事件 ([#1468](https://github.com/antvis/S2/issues/1468)) ([da2a78e](https://github.com/antvis/S2/commit/da2a78ec511a85380824fa2b7147854e857df7f3))
 * **tooltip:** 支持额外的样式和类名 & 修复内容过长 tooltip 展示不全的问题 ([#1478](https://github.com/antvis/S2/issues/1478)) ([e3103d7](https://github.com/antvis/S2/commit/e3103d7a5499871f22bacf47bf7dbb89a947ff59))
-* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
-* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 支持绘制 mini 折线图 ([#1484](https://github.com/antvis/S2/issues/1484)) ([cfa5987](https://github.com/antvis/S2/commit/cfa5987f48ce3cc434e953fef00837e1fc617400))
 * 明细表的 getCellData 可获取单行数据 ([#1482](https://github.com/antvis/S2/issues/1482)) ([c3e1662](https://github.com/antvis/S2/commit/c3e16622cf5e1247a5503c92e694adc7d047a321))
+* 明细表趋势图透出点击透出整行数据 ([#1485](https://github.com/antvis/S2/issues/1485)) ([ea82780](https://github.com/antvis/S2/commit/ea827809e333d37a7301fac4785add8d87ca4c0e))
 
 # [@antv/s2-v1.21.1](https://github.com/antvis/S2/compare/@antv/s2-v1.21.0...@antv/s2-v1.21.1) (2022-06-21)
 

@@ -293,9 +293,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 0,
+          top: 8,
           right: 8,
-          bottom: 0,
+          bottom: 8,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -341,10 +341,45 @@ export const getTheme = (
             borderWidth: 1,
           },
         },
-
-        // ------------- mini chart ---------------
+        // TODO 全部收敛到 miniChart 里
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
         miniBarChartFillColor: basicColors[7],
+      },
+      // ------------- mini chart ---------------
+      miniChart: {
+        // ------------- line graph -----------------
+        line: {
+          point: {
+            size: 2.2,
+            fill: basicColors[6],
+            opacity: 1,
+          },
+          linkLine: {
+            size: 1.5,
+            fill: basicColors[6],
+            opacity: 0.6,
+          },
+        },
+        // ------------- bullet graph -----------------
+        bullet: {
+          progressBar: {
+            widthPercent: 0.7,
+            height: 10,
+            innerHeight: 6,
+          },
+          comparativeMeasure: {
+            width: 1,
+            height: 12,
+            color: basicColors[13],
+            opacity: 0.25,
+          },
+          rangeColors: {
+            good: semanticColors?.green,
+            satisfactory: semanticColors.yellow,
+            bad: semanticColors.red,
+          },
+          backgroundColor: '#E9E9E9',
+        },
       },
       icon: {
         fill: basicColors[13],
@@ -395,26 +430,6 @@ export const getTheme = (
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
       },
-    },
-    // ------------- bullet graph -----------------
-    bullet: {
-      progressBar: {
-        widthPercent: 0.7,
-        height: 10,
-        innerHeight: 6,
-      },
-      comparativeMeasure: {
-        width: 1,
-        height: 12,
-        color: basicColors[13],
-        opacity: 0.25,
-      },
-      rangeColors: {
-        good: semanticColors?.green,
-        satisfactory: semanticColors.yellow,
-        bad: semanticColors.red,
-      },
-      backgroundColor: '#E9E9E9',
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {

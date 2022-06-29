@@ -128,6 +128,10 @@ s2.render(false)
 
 ![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
 
+### 鼠标滚动如何进行水平滚动
+
+按住 `Shift` 键的同时滚动鼠标
+
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 
 目前，S2 由三个包构成

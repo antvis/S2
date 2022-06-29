@@ -4,11 +4,6 @@ import type { Event as GEvent } from '@antv/g-canvas';
 import type { Node } from '../../facet/layout/node';
 import type { S2CellType } from './interaction';
 
-export interface CellScrollPosition {
-  scrollX: number;
-  scrollY: number;
-  thumbOffset?: number;
-}
 export interface ListSortParams {
   sortFieldId: string;
   sortMethod: string;

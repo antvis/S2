@@ -5,7 +5,7 @@ order: 0
 
 # React 表组件
 
-基于 `core` 层封装的 `react` 版开箱即用的组件 `<SheetComponent />`
+基于 `@antv/s2` 封装的 `React` 版开箱即用的组件 `<SheetComponent />`
 
 ## SpreadsheetProps
 
@@ -33,6 +33,7 @@ order: 0
 | onRowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: number;isCollapsed: boolean;node: Node;}) => void |  |  |
+| onRowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -45,9 +46,9 @@ order: 0
 | onDataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onDataCellTrendIconClick | 趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| onDataCellBrushSelection | 单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
-| onDataCellSelectMove | 单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
+| onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
+| onDataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -66,7 +67,7 @@ order: 0
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
-| onLayoutCellScroll | 单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
 | onCollapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
@@ -95,10 +96,11 @@ order: 0
 | onSelected | 单元格选中事件 | (cells: S2Cell[]) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 
 # Vue 表组件
 
-基于 `core` 层封装的 `Vue` 版开箱即用的组件 `<SheetComponent />`
+基于 `@antv/s2` 层封装的 `Vue 3.0` 版开箱即用的组件 `<SheetComponent />`
 
 ## props
 
@@ -131,6 +133,7 @@ order: 0
 | rowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: number;isCollapsed: boolean;node: Node;}) => void |  |  |
+| rowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -143,8 +146,9 @@ order: 0
 | dataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| dataCellTrendIconClick | 趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| dataCellBrushSelection | 单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| dataCellTrendIconClick | 数值趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
+| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellDoubleClick | 角头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -163,7 +167,7 @@ order: 0
 | rangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
 | layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | layoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
-| layoutCellScroll | 单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| layoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/zh/docs/api/basic-class/node) ) => void; |  |  |
 | collapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
 | layoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
@@ -192,6 +196,7 @@ order: 0
 | selected | 单元格选中事件 | (cells: S2Cell[]) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
+| scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 
 # 公共对象
 
@@ -213,9 +218,8 @@ order: 0
 
 | 参数        | 说明         | 类型   | 默认值 | 必选 |
 | :---------- | :----------- | :----- | :----- | :--: |
-| scrollX     | 滚动 x 坐标  | number |        |      |
-| scrollY     | 滚动 y 坐标  | number |        |      |
-| thumbOffset | 滚动条偏移量 | number |        |      |
+| scrollX     | 水平方向滚动偏移量  | `number` |        |      |
+| scrollY     | 垂直方向滚动偏移量  | `number` |        |      |
 
 ## HiddenColumnsInfo
 

@@ -1,4 +1,4 @@
-# [@antv/s2-react-v1.20.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.19.0...@antv/s2-react-v1.20.0-alpha.1) (2022-06-23)
+# [@antv/s2-react-v1.20.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.19.0...@antv/s2-react-v1.20.0) (2022-06-24)
 
 
 ### Bug Fixes
@@ -9,11 +9,13 @@
 
 ### Features
 
+* **interaction:** 增加行头单元格和全局单元格滚动事件及文档 ([#1483](https://github.com/antvis/S2/issues/1483)) ([329aaa6](https://github.com/antvis/S2/commit/329aaa6c9f9ae926f392e3e8f676af1ec201cce2))
 * **interaction:** 添加 onDataCellSelectMove 事件 ([#1468](https://github.com/antvis/S2/issues/1468)) ([da2a78e](https://github.com/antvis/S2/commit/da2a78ec511a85380824fa2b7147854e857df7f3))
 * s2-vue 添加下钻组件 ([#1471](https://github.com/antvis/S2/issues/1471)) ([7f42b82](https://github.com/antvis/S2/commit/7f42b82264230f4b914adc39277e8ca6fbcf0cd3))
 * **tooltip:** 支持额外的样式和类名 & 修复内容过长 tooltip 展示不全的问题 ([#1478](https://github.com/antvis/S2/issues/1478)) ([e3103d7](https://github.com/antvis/S2/commit/e3103d7a5499871f22bacf47bf7dbb89a947ff59))
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 支持绘制 mini 折线图 ([#1484](https://github.com/antvis/S2/issues/1484)) ([cfa5987](https://github.com/antvis/S2/commit/cfa5987f48ce3cc434e953fef00837e1fc617400))
 * 明细表的 getCellData 可获取单行数据 ([#1482](https://github.com/antvis/S2/issues/1482)) ([c3e1662](https://github.com/antvis/S2/commit/c3e16622cf5e1247a5503c92e694adc7d047a321))
+* 明细表趋势图透出点击透出整行数据 ([#1485](https://github.com/antvis/S2/issues/1485)) ([ea82780](https://github.com/antvis/S2/commit/ea827809e333d37a7301fac4785add8d87ca4c0e))
 
 # [@antv/s2-react-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.18.0...@antv/s2-react-v1.19.0) (2022-06-20)
 

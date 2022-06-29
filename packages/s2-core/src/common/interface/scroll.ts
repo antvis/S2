@@ -13,3 +13,8 @@ export interface AreaRange {
   start: number;
   width: number;
 }
+
+export interface CellScrollPosition {
+  scrollX: number;
+  scrollY: number;
+}
