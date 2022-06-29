@@ -84,5 +84,6 @@ export const LAYOUT_SAMPLE_COUNT = 50;
 /** mini 图类型 */
 export enum MiniChartTypes {
   Line = 'line',
+  Bar = 'bar',
   Bullet = 'bullet',
 }

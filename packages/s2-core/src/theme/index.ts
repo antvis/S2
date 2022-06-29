@@ -351,14 +351,20 @@ export const getTheme = (
         line: {
           point: {
             size: 2.2,
-            fill: basicColors[6],
+            fill: semanticColors.red,
             opacity: 1,
           },
           linkLine: {
             size: 1.5,
-            fill: basicColors[6],
+            fill: semanticColors.red,
             opacity: 0.6,
           },
+        },
+        // ------------- bar graph -----------------
+        bar: {
+          intervalPadding: 4,
+          fill: basicColors[6],
+          opacity: 1,
         },
         // ------------- bullet graph -----------------
         bullet: {
