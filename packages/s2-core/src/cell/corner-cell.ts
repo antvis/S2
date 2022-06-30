@@ -11,7 +11,6 @@ import {
 } from 'lodash';
 import {
   CellTypes,
-  DEFAULT_CORNER_TEXT,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
@@ -44,6 +43,7 @@ import {
   getEmptyPlaceholder,
   measureTextWidth,
 } from '../utils/text';
+import { i18n } from './../common/i18n';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -373,7 +373,7 @@ export class CornerCell extends HeaderCell {
 
   protected getCornerText(): string {
     if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+      return this.spreadsheet.options?.cornerText || i18n('指标');
     }
 
     const { formattedValue } = this.getFormattedFieldValue();
