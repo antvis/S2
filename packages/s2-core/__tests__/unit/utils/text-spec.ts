@@ -1,4 +1,3 @@
-import type { RangeColors } from '../../../src/common/interface/theme';
 import {
   getEllipsisText,
   getEllipsisTextInner,
@@ -7,10 +6,6 @@ import {
   getCellWidth,
   getEmptyPlaceholder,
 } from '@/utils/text';
-import {
-  getBulletRangeColor,
-  transformRatioToPercent,
-} from '@/utils/g-mini-charts';
 
 const isHD = window.devicePixelRatio >= 2;
 
@@ -144,25 +139,5 @@ describe('Text Utils Tests', () => {
     });
 
     expect(placeholder).toEqual('test');
-  });
-
-  test('should get bullet range color', () => {
-    const rangeColors: RangeColors = {
-      good: 'green',
-      satisfactory: 'yellow',
-      bad: 'red',
-    };
-
-    expect(getBulletRangeColor(0.2, 0.2, rangeColors)).toEqual('green');
-    expect(getBulletRangeColor(0.3, 0.5, rangeColors)).toEqual('yellow');
-    expect(getBulletRangeColor(0.1, 0.9, rangeColors)).toEqual('red');
-  });
-
-  test('should transform ratio to percent', () => {
-    expect(transformRatioToPercent(0.2)).toEqual('20%');
-    expect(transformRatioToPercent('0.2')).toEqual('20%');
-    expect(transformRatioToPercent('test')).toEqual('test');
-    expect(transformRatioToPercent(0.02)).toEqual('2%');
-    expect(transformRatioToPercent(0.02, 2)).toEqual('2.00%');
   });
 });
