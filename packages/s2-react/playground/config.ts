@@ -60,7 +60,7 @@ export const sliderOptions: SliderSingleProps = {
 
 export const strategyOptions: S2Options = {
   width: 800,
-  height: 400,
+  height: 800,
   cornerText: '指标',
   placeholder: (v) => {
     const placeholder = v?.fieldValue ? '-' : '';

@@ -320,8 +320,17 @@ export interface LineTheme {
   };
 }
 
+/* 柱状图样式配置 */
+export interface BarTheme {
+  // 柱状图之间的间隔距离
+  intervalPadding?: number;
+  fill?: string;
+  opacity?: number;
+}
+
 /* 迷你图样式 */
 export interface MiniChartTheme {
   line?: LineTheme;
+  bar?: BarTheme;
   bullet?: BulletTheme;
 }
