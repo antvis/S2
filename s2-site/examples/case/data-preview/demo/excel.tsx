@@ -75,11 +75,7 @@ const App = ({ data }) => {
           const inView = (x, y) => {
             const inX = x > scroll.scrollX && x < scroll.scrollX + spreadsheet.options.width
             const inY = y > scroll.scrollY + colCellHeight && y < scroll.scrollY + spreadsheet.options.height
-            if (inX && inY) {
-              return true;
-            } else {
-              return false;
-            }
+            return inX && inY
           }
           if (inView(position.left, position.top + colCellHeight)) {
             if (show === false) {
