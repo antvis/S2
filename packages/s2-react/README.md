@@ -69,7 +69,7 @@ const s2DataConfig = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '笔',
       price: '8',
     },
@@ -81,7 +81,7 @@ const s2DataConfig = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: ' 纸张',
       price: '3',
     },

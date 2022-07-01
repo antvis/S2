@@ -59,7 +59,7 @@ sortParams: [
 ```ts
 sortParams: [
     { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
-    { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '丹东' ] },
+    { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '长春' ] },
     { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
 ];
 ```
