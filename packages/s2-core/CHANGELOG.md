@@ -1,3 +1,12 @@
+# [@antv/s2-v1.23.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.1...@antv/s2-v1.23.0-alpha.2) (2022-07-01)
+
+
+### Bug Fixes
+
+* body样式影响measureTextWidth测量结果 ([af578a8](https://github.com/antvis/S2/commit/af578a876d6d0ec811c72e1608b3ed8e4c248931))
+* import remove alias ([4b75925](https://github.com/antvis/S2/commit/4b759251cb1af519f2feedff6179dc49a56792e7))
+* 列头text未适配left/right对齐方式 ([cad4ed7](https://github.com/antvis/S2/commit/cad4ed7c0e1778625d83fdf194e0813e797fffaf))
+
 # [@antv/s2-v1.23.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0-alpha.1) (2022-06-29)
 
 
