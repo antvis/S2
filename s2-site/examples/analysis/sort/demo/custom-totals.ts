@@ -1,7 +1,7 @@
 import { PivotSheet, EXTRA_FIELD, TOTAL_VALUE } from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/ad982192-a708-4732-99af-153f422e7b75.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/4347c2dd-6554-451b-9d44-15b04e5de657.json',
 )
   .then((res) => res.json())
   .then((data) => {

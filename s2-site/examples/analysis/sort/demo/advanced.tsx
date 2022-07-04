@@ -6,7 +6,7 @@ import 'antd/es/cascader/style/index.css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/21ffc284-50a2-4a30-8bb0-b2f9ac4a8fbc.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -55,7 +55,7 @@ fetch(
 
     const AdvancedSortDemo = () => {
       const [dataCfg, setDataCfg] = useState(s2DataConfig);
-        const [sortParams, setSortParams] = React.useState(defaultSortParams);
+      const [sortParams, setSortParams] = React.useState(defaultSortParams);
 
       return (
         <div>
