@@ -7,7 +7,6 @@ import {
   type HeaderActionIconProps,
   Node,
   type S2DataConfig,
-  S2Event,
   type S2Options,
   SpreadSheet,
   type TargetCellInfo,
@@ -279,7 +278,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
+  const mergedOptions: S2Options<React.ReactNode> = customMerge(
     {},
     {
       pagination: showPagination && {
@@ -879,8 +878,8 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg as S2DataConfig}
-              options={mergedOptions as S2Options}
+              dataCfg={dataCfg}
+              options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}
               ref={s2Ref}
