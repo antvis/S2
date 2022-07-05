@@ -321,8 +321,8 @@ export default defineComponent({
   setup() {
     const s2 = shallowRef();
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
-    const dataCfg = shallowRef(rawDataCfg);
-    const options: S2Options = reactive(rawOptions);
+    const dataCfg = shallowRef(s2DataConfig);
+    const options: S2Options = reactive(S2Options);
 
     onMounted(() => {
       console.log('s2 instance:', s2.value?.instance);
