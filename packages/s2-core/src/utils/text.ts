@@ -23,10 +23,8 @@ import type {
 } from '../common/interface';
 import type { TextTheme } from '../common/interface/theme';
 import { renderText } from '../utils/g-renders';
+import { getOffscreenCanvas } from './canvas';
 import { renderChart } from './g-mini-charts';
-
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
 
 /**
  * 计算文本在画布中的宽度
@@ -36,6 +34,8 @@ export const measureTextWidth = memoize(
     if (!font) {
       return 0;
     }
+    const ctx = getOffscreenCanvas().getContext('2d');
+
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
     // copy G 里面的处理逻辑
