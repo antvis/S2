@@ -84,13 +84,14 @@ export const strategyOptions: S2Options = {
             field: 'number',
             mapping: (value, cellInfo) => {
               const { meta } = cellInfo;
-              const isNormalValue = isNil(value);
+              const isNormalValue = isNil(value) || value === '';
 
               if (meta.fieldValue.values[0][0] === value || isNormalValue) {
                 return {
                   fill: '#000',
                 };
               }
+
               return {
                 fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
               };
