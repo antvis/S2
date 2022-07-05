@@ -97,17 +97,17 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
               const meta = cell.getMeta() as ViewMeta;
               const fieldValue = meta.fieldValue as MultiData;
 
-              // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
-              if (isArray(fieldValue?.values)) {
-                return <DataTooltip cell={cell} />;
-              }
-
               const tooltipContent = options.tooltip?.data
                 ?.content as TooltipShowOptions<React.ReactNode>['content'];
 
               const content = isFunction(tooltipContent)
                 ? tooltipContent?.(cell, defaultTooltipShowOptions)
                 : tooltipContent;
+
+              // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
+              if (isArray(fieldValue?.values)) {
+                return content ?? <DataTooltip cell={cell} />;
+              }
 
               return content ?? <></>;
             },
