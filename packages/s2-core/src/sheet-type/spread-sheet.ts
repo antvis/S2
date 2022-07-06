@@ -65,6 +65,7 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -402,6 +403,8 @@ export abstract class SpreadSheet extends EE {
     this.destroyTooltip();
     this.clearCanvasEvent();
     this.container?.destroy();
+
+    removeOffscreenCanvas();
   }
 
   /**
