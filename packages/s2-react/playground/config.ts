@@ -79,7 +79,7 @@ export const strategyOptions: S2Options = {
       {
         mapping: (value, cellInfo) => {
           const { meta } = cellInfo;
-          const isNilValue = isNil(value);
+          const isNilValue = isNil(value) || value === '';
 
           if (
             meta?.fieldValue?.values[0][0] === value ||

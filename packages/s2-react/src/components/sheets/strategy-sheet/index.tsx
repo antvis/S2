@@ -7,8 +7,9 @@ import {
   SpreadSheet,
   type ViewMeta,
   type MultiData,
+  type TooltipShowOptions,
 } from '@antv/s2';
-import { isArray, isEmpty, size } from 'lodash';
+import { isArray, isEmpty, isFunction, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
@@ -33,7 +34,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2Ref = React.useRef<SpreadSheet>();
 
     const strategySheetOptions = React.useMemo<
-      Partial<S2Options<React.ReactNode>>
+      S2Options<React.ReactNode>
     >(() => {
       if (isEmpty(dataCfg)) {
         return {};
@@ -56,6 +57,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       ) {
         hideMeasureColumn = true;
       }
+
       return {
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
@@ -91,21 +93,28 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             content: (cell) => <ColTooltip cell={cell} />,
           },
           data: {
-            content: (cell) => {
+            content: (cell, defaultTooltipShowOptions) => {
               const meta = cell.getMeta() as ViewMeta;
               const fieldValue = meta.fieldValue as MultiData;
 
+              const tooltipContent = options.tooltip?.data
+                ?.content as TooltipShowOptions<React.ReactNode>['content'];
+
+              const content = isFunction(tooltipContent)
+                ? tooltipContent?.(cell, defaultTooltipShowOptions)
+                : tooltipContent;
+
               // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return <DataTooltip cell={cell} />;
+                return content ?? <DataTooltip cell={cell} />;
               }
 
-              return <></>;
+              return content ?? <></>;
             },
           },
         },
       };
-    }, [dataCfg, options.hierarchyType]);
+    }, [dataCfg, options.hierarchyType, options.tooltip]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields: Partial<S2DataConfig> = {
