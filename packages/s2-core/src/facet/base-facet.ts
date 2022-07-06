@@ -698,9 +698,7 @@ export abstract class BaseFacet {
   // (滑动 offset / 最大 offset（滚动对象真正长度 - 轨道长）) = (滑块 offset / 最大滑动距离（轨道长 - 滑块长）)
   getScrollBarOffset = (offset: number, scrollbar: ScrollBar) => {
     const { trackLen, thumbLen, scrollTargetMaxOffset } = scrollbar;
-    const scrollBarOffset =
-      (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
-    return Math.floor(scrollBarOffset);
+    return (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
   };
 
   isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
