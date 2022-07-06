@@ -1,3 +1,18 @@
+# [@antv/s2-v1.23.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.2...@antv/s2-v1.23.0-alpha.3) (2022-07-06)
+
+
+### Bug Fixes
+
+* 🐛 明细表大数据量下滚动条无法滚动到顶部 ([#1529](https://github.com/antvis/S2/issues/1529)) ([2791be9](https://github.com/antvis/S2/commit/2791be9769b3082bdfe8ae9a8ae0831ca821251a)), closes [#1528](https://github.com/antvis/S2/issues/1528)
+* 修复角头数值i18n展示问题 ([#1509](https://github.com/antvis/S2/issues/1509)) ([9166137](https://github.com/antvis/S2/commit/91661376dadc66def28ec328de36d0bf828a3f2e))
+* 列头文字&icon无法正确对齐 ([#1515](https://github.com/antvis/S2/issues/1515)) ([3457af9](https://github.com/antvis/S2/commit/3457af9da4205765115b6174a53d7a4d92a8ceef))
+* 移除字段标记中多余的 fieldValue判断 ([#1525](https://github.com/antvis/S2/issues/1525)) ([fb06ce0](https://github.com/antvis/S2/commit/fb06ce0fadb7cc8f2b42c5f78b85f22d91a2640a))
+
+
+### Features
+
+* 支持 绘制 mini 柱状图 ([#1505](https://github.com/antvis/S2/issues/1505)) ([24a6ca6](https://github.com/antvis/S2/commit/24a6ca643e3b1154e4093c15216b218ef02cf3df))
+
 # [@antv/s2-v1.23.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.1...@antv/s2-v1.23.0-alpha.2) (2022-07-01)
 
 
