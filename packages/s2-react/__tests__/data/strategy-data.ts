@@ -162,7 +162,10 @@ export const StrategySheetDataConfig: S2DataConfig = {
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
-        values: [[3877, 4324, '42%']],
+        values: [
+          [3877, 4324, '42%'],
+          [877, 324, '2%'],
+        ],
       },
       'measure-b': {
         originalValues: [[377, 324, -0.02]],

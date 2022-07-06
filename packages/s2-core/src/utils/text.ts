@@ -21,7 +21,7 @@ import type {
   S2CellType,
   ViewMeta,
 } from '../common/interface';
-import type { TextTheme } from '../common/interface/theme';
+import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
 import { renderChart } from './g-mini-charts';
@@ -281,21 +281,29 @@ export const isUpDataValue = (value: number | string): boolean => {
   return !!value && !trim(value).startsWith('-');
 };
 
+/**
+ * 根据单元格对齐方式计算文本的 x 坐标
+ * @param x 单元格的 x 坐标
+ * @param paddingRight
+ * @param extraWidth 额外的宽度
+ * @param textAlign 文本对齐方式
+ */
 const calX = (
   x: number,
-  paddingRight: number,
-  total?: number,
+  padding: Padding,
+  extraWidth?: number,
   textAlign = 'left',
 ) => {
-  const extra = total || 0;
+  const { right, left } = padding;
+  const extra = extraWidth || 0;
   if (textAlign === 'left') {
-    return x + paddingRight / 2 + extra;
+    return x + right / 2 + extra;
   }
   if (textAlign === 'right') {
-    return x - paddingRight / 2 - extra;
+    return x - right / 2 - extra;
   }
-  // TODO 兼容 textAlign 为居中
-  return x;
+
+  return x + left / 2 + extra;
 };
 
 /**
@@ -370,12 +378,7 @@ export const getEmptyPlaceholder = (
  * @multiData 自定义文本内容
  * @disabledConditions 是否禁用条件格式
  */
-export const drawObjectText = (
-  cell: S2CellType,
-  multiData?: MultiData,
-  // 绘制指标列头需要禁用
-  disabledConditions?: boolean,
-) => {
+export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
   const { x } = cell.getTextAndIconPosition(0).text;
   const {
     y,
@@ -384,9 +387,10 @@ export const drawObjectText = (
   } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { values: textValues } = text;
-  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
-  const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
-
+  const { options } = cell?.getMeta().spreadsheet;
+  const { valuesCfg } = options.style.cellCfg;
+  // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
+  const textCondition = options?.conditions?.text[0];
   if (!isArray(textValues)) {
     renderChart(textValues, cell);
     return;
@@ -406,7 +410,7 @@ export const drawObjectText = (
     renderText(
       cell,
       [],
-      calX(x, padding.right),
+      calX(x, padding),
       y + labelHeight,
       getEllipsisText({
         text: text.label,
@@ -425,7 +429,7 @@ export const drawObjectText = (
   let curText: string | number;
   let curX: number;
   let curY: number = y + realHeight / 2;
-  let curWidth: number;
+  let avgWidth: number;
   let totalWidth = 0;
   for (let i = 0; i < textValues.length; i++) {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
@@ -445,12 +449,12 @@ export const drawObjectText = (
         textStyle,
         textCondition,
       });
-      curWidth = !isEmpty(widthPercent)
+      avgWidth = !isEmpty(widthPercent)
         ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
-      curX = calX(x, padding.right, totalWidth, textAlign);
-      totalWidth += curWidth;
+      curX = calX(x, padding, totalWidth, textAlign);
+      totalWidth += avgWidth;
       const { placeholder } = cell?.getMeta().spreadsheet.options;
       const emptyPlaceholder = getEmptyPlaceholder(
         cell?.getMeta(),
@@ -463,7 +467,7 @@ export const drawObjectText = (
         curY,
         getEllipsisText({
           text: curText,
-          maxWidth: curWidth,
+          maxWidth: avgWidth,
           fontParam: curStyle,
           placeholder: emptyPlaceholder,
         }),
