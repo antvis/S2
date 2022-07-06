@@ -13,27 +13,32 @@ fetch(
       height: 480,
       cornerText: '指标层级',
       hierarchyType: 'customTree',
+      conditions: {
+        text: [
+          {
+            field: 'number',
+            mapping: (value, cellInfo) => {
+              const { meta } = cellInfo;
+              if (
+                meta?.fieldValue?.values[0][0] === value ||
+                !value ||
+                !meta?.fieldValue
+              ) {
+                return {
+                  fill: '#000',
+                };
+              }
+              return {
+                fill: value > 0 ? '#FF4D4F' : '#29A294',
+              };
+            },
+          },
+        ],
+      },
       style: {
         cellCfg: {
           valuesCfg: {
             originalValueField: 'originalValues',
-            conditions: {
-              text: {
-                field: 'number',
-                mapping: (value, cellInfo) => {
-                  const { meta } = cellInfo;
-
-                  if (meta.fieldValue.values[0][0] === value || !value) {
-                    return {
-                      fill: '#000',
-                    };
-                  }
-                  return {
-                    fill: value > 0 ? '#FF4D4F' : '#29A294',
-                  };
-                },
-              },
-            },
           },
         },
       },

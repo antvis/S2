@@ -25,7 +25,7 @@ export type MappingFunction = (
  * One field can hold a condition
  */
 export interface Condition {
-  field: string | RegExp;
+  field?: string | RegExp;
   mapping: MappingFunction;
 }
 

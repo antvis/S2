@@ -67,7 +67,7 @@ const getKPIMockData = () => {
   };
 };
 
-const getTrendMockData = () => {
+const getMiniChartMockData = () => {
   return {
     'measure-a': {
       values: {
@@ -87,13 +87,14 @@ const getTrendMockData = () => {
     },
     'measure-b': {
       values: {
-        type: 'line',
+        type: 'bar',
         data: [
+          { year: '2017', value: 368 },
           { year: '2018', value: 168 },
-          { year: '2019', value: 1600 },
-          { year: '2020', value: 1900 },
-          { year: '2021', value: 1749 },
-          { year: '2022', value: 700 },
+          { year: '2019', value: 160 },
+          { year: '2020', value: 290 },
+          { year: '2021', value: 149 },
+          { year: '2022', value: 300 },
         ],
         encode: {
           x: 'year',
@@ -135,13 +136,14 @@ const getTrendMockData = () => {
     },
     'measure-e': {
       values: {
-        type: 'line',
+        type: 'bar',
         data: [
+          { year: '2017', value: 568 },
           { year: '2018', value: 368 },
-          { year: '2019', value: 5500 },
+          { year: '2019', value: 550 },
           { year: '2020', value: 900 },
           { year: '2021', value: 409 },
-          { year: '2022', value: 2300 },
+          { year: '2022', value: 230 },
         ],
         encode: {
           x: 'year',
@@ -160,7 +162,10 @@ export const StrategySheetDataConfig: S2DataConfig = {
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
-        values: [[3877, 4324, '42%']],
+        values: [
+          [3877, 4324, '42%'],
+          [877, 324, '2%'],
+        ],
       },
       'measure-b': {
         originalValues: [[377, 324, -0.02]],
@@ -188,7 +193,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
     // 净增目标完成度子弹图数据
     getKPIMockData(),
     // 趋势图数据
-    getTrendMockData(),
+    getMiniChartMockData(),
     {
       'measure-a': {
         originalValues: [[377, '', 0.02]],

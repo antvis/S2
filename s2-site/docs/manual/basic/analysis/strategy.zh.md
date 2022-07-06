@@ -99,4 +99,4 @@ object **必选**,_default：null_
 ### S2Options 配置
 
 * 必须指定 `hierarchyType: 'customTree'`
-* 染色逻辑配置可以在  `style.cellCfg.conditions` 中配置，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+* 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道

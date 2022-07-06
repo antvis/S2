@@ -1,5 +1,5 @@
 import { isUpDataValue } from '@antv/s2';
-import type { S2DataConfig, S2Options, S2Theme } from '@antv/s2';
+import type { S2DataConfig, S2Options } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import { isNil } from 'lodash';
@@ -60,7 +60,7 @@ export const sliderOptions: SliderSingleProps = {
 
 export const strategyOptions: S2Options = {
   width: 800,
-  height: 400,
+  height: 800,
   cornerText: '指标',
   placeholder: (v) => {
     const placeholder = v?.fieldValue ? '-' : '';
@@ -74,28 +74,34 @@ export const strategyOptions: S2Options = {
       action: () => {},
     },
   ],
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          const isNilValue = isNil(value) || value === '';
+
+          if (
+            meta?.fieldValue?.values[0][0] === value ||
+            isNilValue ||
+            !meta?.fieldValue
+          ) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+  },
   style: {
     cellCfg: {
+      height: 76,
       valuesCfg: {
         originalValueField: 'originalValues',
-        conditions: {
-          text: {
-            field: 'number',
-            mapping: (value, cellInfo) => {
-              const { meta } = cellInfo;
-              const isNormalValue = isNil(value);
-
-              if (meta.fieldValue.values[0][0] === value || isNormalValue) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
       },
     },
   },

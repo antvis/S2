@@ -250,9 +250,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
       const position = this.getIconPosition();
-      const { formattedValue } = this.getFormattedFieldValue();
       const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon) && formattedValue) {
+      if (!isEmpty(attrs?.icon)) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
           name: attrs.icon,
@@ -270,13 +269,12 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawConditionIntervalShape() {
     const { x, y, height, width } = this.getCellArea();
-    const { formattedValue } = this.getFormattedFieldValue();
 
     const intervalCondition = this.findFieldCondition(
       this.conditions?.interval,
     );
 
-    if (intervalCondition && intervalCondition.mapping && formattedValue) {
+    if (intervalCondition && intervalCondition.mapping) {
       const attrs = this.mappingValue(intervalCondition);
       if (!attrs) {
         return;

@@ -51,7 +51,7 @@ export const sortData = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '笔',
       price: '10',
     },
@@ -63,7 +63,7 @@ export const sortData = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '纸张',
       price: '3',
     },
@@ -101,7 +101,7 @@ export const sortData = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '笔',
       price: '10',
     },
@@ -113,7 +113,7 @@ export const sortData = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '纸张',
       price: '3',
     },
@@ -146,7 +146,7 @@ export const sortData = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       price: '5',
     },
     {

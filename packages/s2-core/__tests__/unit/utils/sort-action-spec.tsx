@@ -352,7 +352,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -376,7 +376,7 @@ describe('getSortByMeasureValues', () => {
       },
       {
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         type: '笔',
         price: '10',
         $$extra$$: 'price',
@@ -410,7 +410,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -433,7 +433,7 @@ describe('getSortByMeasureValues', () => {
       {
         $$extra$$: 'price',
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         $$value$$: 13,
         price: 13,
       },
@@ -464,7 +464,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -488,7 +488,7 @@ describe('getSortByMeasureValues', () => {
       },
       {
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         type: '纸张',
         price: '3',
         $$extra$$: 'price',

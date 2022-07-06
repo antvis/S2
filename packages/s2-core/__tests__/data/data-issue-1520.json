@@ -1,0 +1,27 @@
+{
+  "fields": {
+    "rows": ["province", "city"],
+    "columns": ["type"],
+    "values": ["cost"],
+    "valueInCols": true
+  },
+  "data": [
+    {
+      "province": "浙江",
+      "city": "义乌",
+      "cost": -10
+    },
+    {
+      "province": "浙江",
+      "city": "义乌",
+      "type": "笔",
+      "cost": 10
+    },
+    {
+      "province": "浙江",
+      "city": "杭州",
+      "type": "笔",
+      "cost": 0
+    }
+  ]
+}

@@ -360,6 +360,12 @@ export const getTheme = (
             opacity: 0.6,
           },
         },
+        // ------------- bar graph -----------------
+        bar: {
+          intervalPadding: 4,
+          fill: basicColors[6],
+          opacity: 1,
+        },
         // ------------- bullet graph -----------------
         bullet: {
           progressBar: {

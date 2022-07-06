@@ -54,7 +54,7 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
             {derivedValues.map((derivedValue, i) => {
-              const isNormal = isNil(derivedValue);
+              const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
 
