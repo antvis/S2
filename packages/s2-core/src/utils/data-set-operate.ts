@@ -44,21 +44,22 @@ export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
   }, []);
 
 export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
-  let result = [];
+  const result = [];
+
   if (Array.isArray(data)) {
-    keys(data)?.forEach((item) => {
-      const current = get(data, item);
-      const currentKeys = keys(current);
-      if (currentKeys.includes('undefined')) {
-        currentKeys.forEach((ki) => {
+    data.forEach((current) => {
+      if (current && 'undefined' in current) {
+        keys(current).forEach((ki) => {
           result.push(current[ki]);
         });
+      } else if (Array.isArray(current)) {
+        result.push(...current);
       } else {
-        result = result.concat(current);
+        result.push(current);
       }
     });
   } else {
-    result = result.concat(data);
+    result.push(data);
   }
   return result;
 };
