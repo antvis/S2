@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.21.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0-alpha.1...@antv/s2-react-v1.21.0-alpha.2) (2022-07-06)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复趋势分析表无法自定义 Tooltip ([#1523](https://github.com/antvis/S2/issues/1523)) ([6b47b05](https://github.com/antvis/S2/commit/6b47b052560ba0a6e3d20236770ee97bca535c61))
+
+
+### Features
+
+* 支持 绘制 mini 柱状图 ([#1505](https://github.com/antvis/S2/issues/1505)) ([24a6ca6](https://github.com/antvis/S2/commit/24a6ca643e3b1154e4093c15216b218ef02cf3df))
+
 # [@antv/s2-react-v1.21.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.20.0...@antv/s2-react-v1.21.0-alpha.1) (2022-06-29)
 
 
