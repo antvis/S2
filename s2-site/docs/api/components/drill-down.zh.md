@@ -27,9 +27,9 @@ const s2Options = {
 
 ```vue
 const s2Options = {
-width: 600,
-height: 480,
-hierarchyType: 'tree',
+  width: 600,
+  height: 480,
+  hierarchyType: 'tree',
 };
 
 <template>
@@ -44,7 +44,7 @@ hierarchyType: 'tree',
 
 ​📊 查看 [Vue 版下钻 demo](https://codesandbox.io/s/vue-drilldown-demo-8p1lmv?file=/src/App.vue:6385-6396)
 
-# 公共API
+# 公共 API
 
 <description>功能描述：配置维度下钻，当前仅支持透视模式的树形结构下，行头维度下钻</description>
 
