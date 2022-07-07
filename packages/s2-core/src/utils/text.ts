@@ -349,7 +349,7 @@ const getCurrentTextStyle = ({
   meta: ViewMeta;
   data: string | number;
   textStyle: TextTheme;
-  textCondition: Condition;
+  textCondition?: Condition;
 }) => {
   let fill = textStyle.fill;
   if (textCondition?.mapping) {
@@ -390,7 +390,7 @@ export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
   const { options } = cell?.getMeta().spreadsheet;
   const { valuesCfg } = options.style.cellCfg;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
-  const textCondition = options?.conditions?.text[0];
+  const textCondition = options?.conditions?.text?.[0];
   if (!isArray(textValues)) {
     renderChart(textValues, cell);
     return;
