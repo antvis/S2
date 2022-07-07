@@ -47,7 +47,7 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   const result = [];
 
   if (Array.isArray(data)) {
-    // 总计小计在数组里面，以 undefine作为key, 所以需要 keys 拿到所有字段，直接forEach的话会漏掉总计小计
+    // 总计小计在数组里面，以 undefine作为key, 直接forEach的话会漏掉总计小计
     const containsTotal = 'undefined' in data;
     const itemLength = data.length + (containsTotal ? 1 : 0);
 
