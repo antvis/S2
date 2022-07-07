@@ -12,7 +12,7 @@ import {
   trim,
   values,
 } from 'lodash';
-import type { ColCell } from '../cell';
+import { DataCell, type ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
   CellCfg,
@@ -379,6 +379,7 @@ export const getEmptyPlaceholder = (
  * @disabledConditions 是否禁用条件格式
  */
 export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
+  const isDataCell = cell instanceof DataCell;
   const { x } = cell.getTextAndIconPosition(0).text;
   const {
     y,
@@ -441,14 +442,16 @@ export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = getCurrentTextStyle({
-        rowIndex: i,
-        colIndex: j,
-        meta: cell?.getMeta() as ViewMeta,
-        data: curText,
-        textStyle,
-        textCondition,
-      });
+      const curStyle = isDataCell
+        ? getCurrentTextStyle({
+            rowIndex: i,
+            colIndex: j,
+            meta: cell?.getMeta() as ViewMeta,
+            data: curText,
+            textStyle,
+            textCondition,
+          })
+        : textStyle;
       avgWidth = !isEmpty(widthPercent)
         ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可

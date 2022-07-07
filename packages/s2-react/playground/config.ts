@@ -80,12 +80,7 @@ export const strategyOptions: S2Options = {
         mapping: (value, cellInfo) => {
           const { meta } = cellInfo;
           const isNilValue = isNil(value) || value === '';
-
-          if (
-            meta?.fieldValue?.values[0][0] === value ||
-            isNilValue ||
-            !meta?.fieldValue
-          ) {
+          if (meta?.fieldValue?.values[0][0] === value || !isNilValue) {
             return {
               fill: '#000',
             };
@@ -123,7 +118,6 @@ export const mockGridAnalysisOptions: S2Options = {
   conditions: {
     text: [
       {
-        field: 'number',
         mapping: (value, cellInfo) => {
           const { colIndex } = cellInfo;
           if (colIndex <= 1) {
