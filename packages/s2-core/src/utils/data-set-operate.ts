@@ -47,7 +47,16 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   const result = [];
 
   if (Array.isArray(data)) {
-    data.forEach((current) => {
+    // 总计小计在数组里面，以 undefine作为key, 所以需要 keys 拿到所有字段，直接forEach的话会漏掉总计小计
+    const containsTotal = 'undefined' in data;
+    const itemLength = data.length + (containsTotal ? 1 : 0);
+
+    let i = 0;
+    while (i < itemLength) {
+      // eslint-disable-next-line dot-notation
+      const current = i === data.length ? data['undefined'] : data[i];
+      i++;
+
       if (current && 'undefined' in current) {
         keys(current).forEach((ki) => {
           result.push(current[ki]);
@@ -57,7 +66,7 @@ export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
       } else {
         result.push(current);
       }
-    });
+    }
   } else {
     result.push(data);
   }
