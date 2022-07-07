@@ -3,7 +3,6 @@
   "fields": {
     "rows": ["province", "city"],
     "columns": ["type", "sub_type"],
-    "values": ["number"],
     "valueInCols": true
   },
   "meta": [

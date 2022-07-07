@@ -1,5 +1,14 @@
 import type { Event as CanvasEvent, IShape } from '@antv/g-canvas';
-import { find, first, forEach, get, includes, isEqual, map } from 'lodash';
+import {
+  find,
+  first,
+  forEach,
+  get,
+  includes,
+  isEmpty,
+  isEqual,
+  map,
+} from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -89,7 +98,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected showSortIcon() {
-    if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
+    const { options, dataCfg } = this.spreadsheet;
+    const isEmptyValues = isEmpty(dataCfg.fields.values);
+
+    if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
       // sortParam的query，和type本身可能会 undefined
@@ -100,6 +112,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         sortParam?.type !== 'none'
       );
     }
+
     return false;
   }
 

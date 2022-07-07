@@ -1,4 +1,4 @@
-import { i18n, S2Event } from '@antv/s2';
+import { S2Event } from '@antv/s2';
 import type {
   HeaderActionIconProps,
   PartDrillDownDataCache,
@@ -8,7 +8,7 @@ import type {
   PivotDataSet,
   SpreadSheet,
 } from '@antv/s2';
-import { clone, filter, get, isEmpty } from 'lodash';
+import { clone, filter, isEmpty } from 'lodash';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {
@@ -97,15 +97,21 @@ export const handleActionIconClick = (params: ActionIconParams) => {
  * @param meta 节点
  * @returns
  */
-const defaultDisplayCondition = (meta: Node) => {
-  const iconLevel = get(meta, 'spreadsheet.dataCfg.fields.rows.length') - 1;
+const defaultPartDrillDownDisplayCondition = (meta: Node) => {
+  const s2 = meta.spreadsheet;
+  const { fields } = s2.dataCfg;
+  const iconLevel = fields.rows.length - 1;
+
+  // 当 values 为空时, 会将 dataCfg.fields.valueInCols 强制置为 false, 导致下钻 icon 不显示
+  // 兼容初始 values 为空, 默认需要显示下钻 icon, 通过下钻动态改变 values 的场景  https://github.com/antvis/S2/issues/1514
+  const isValueInCols = !isEmpty(fields.values) ? s2.isValueInCols() : true;
 
   // 只有数值置于列头且为树状分层结构时才支持下钻
   return (
     iconLevel <= meta.level &&
-    meta.spreadsheet.options.hierarchyType === 'tree' &&
-    meta.spreadsheet.isValueInCols() &&
-    meta.label !== i18n('总计')
+    s2.isHierarchyTreeType() &&
+    isValueInCols &&
+    !meta.isGrandTotals
   );
 };
 
@@ -131,7 +137,7 @@ export const buildDrillDownOptions = (
       iconNames: ['DrillDownIcon'],
       defaultHide: true,
       displayCondition:
-        partDrillDown.displayCondition || defaultDisplayCondition,
+        partDrillDown.displayCondition || defaultPartDrillDownDisplayCondition,
       action: (actionIconProps: HeaderActionIconProps) => {
         const { iconName, meta, event } = actionIconProps;
         if (iconName === 'DrillDownIcon') {
