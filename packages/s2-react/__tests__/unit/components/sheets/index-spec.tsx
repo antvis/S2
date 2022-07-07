@@ -8,7 +8,7 @@ import { getContainer } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
   describe('Render Tests', () => {
-    test.each(['pivot', 'table', 'strategy', 'grid'] as SheetType[])(
+    test.each(['pivot', 'table', 'strategy', 'gridAnalysis'] as SheetType[])(
       'should render successfully with %s',
       (sheetType) => {
         function render() {
