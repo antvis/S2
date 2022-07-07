@@ -16,10 +16,11 @@ import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
-import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
-import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
-import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
-
+import {
+  StrategySheetColTooltip,
+  StrategySheetDataTooltip,
+  StrategySheetRowTooltip,
+} from './custom-tooltip';
 /* *
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
@@ -87,10 +88,10 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell) => <RowTooltip cell={cell} />,
+            content: (cell) => <StrategySheetRowTooltip cell={cell} />,
           },
           col: {
-            content: (cell) => <ColTooltip cell={cell} />,
+            content: (cell) => <StrategySheetColTooltip cell={cell} />,
           },
           data: {
             content: (cell, defaultTooltipShowOptions) => {
@@ -106,7 +107,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
 
               // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return content ?? <DataTooltip cell={cell} />;
+                return content ?? <StrategySheetDataTooltip cell={cell} />;
               }
 
               return content ?? <></>;

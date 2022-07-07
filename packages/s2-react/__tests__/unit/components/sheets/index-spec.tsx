@@ -1,11 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { type SpreadSheet, type S2DataConfig } from '@antv/s2';
+import { type SpreadSheet, type S2DataConfig, customMerge } from '@antv/s2';
+import { SheetType } from '@antv/s2-shared';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
+  describe('Render Tests', () => {
+    test.each(['pivot', 'table', 'strategy', 'grid'] as SheetType[])(
+      'should render successfully with %s',
+      (sheetType) => {
+        function render() {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null}
+            />,
+            getContainer(),
+          );
+        }
+
+        expect(render).not.toThrowError();
+      },
+    );
+  });
+
   describe('<StrategySheet/> Tests', () => {
     let s2: SpreadSheet;
     let container: HTMLDivElement;
@@ -18,7 +39,10 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(
           <SheetComponent
             sheetType="strategy"
-            options={options}
+            options={customMerge(options, {
+              width: 200,
+              height: 200,
+            })}
             dataCfg={dataCfg}
             getSpreadSheet={(instance) => {
               s2 = instance;

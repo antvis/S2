@@ -5,7 +5,10 @@ import type { CustomTooltipProps } from './interface';
 
 import './index.less';
 
-export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
+export const StrategySheetColTooltip: React.FC<CustomTooltipProps> = ({
+  cell,
+  label,
+}) => {
   const meta = cell.getMeta();
 
   // 趋势分析表叶子节点显示是指标标题, tooltip 中没必要再显示了
@@ -14,10 +17,11 @@ export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   }
 
   const cellName = meta.spreadsheet.dataSet.getFieldName(meta.field);
+  const name = label ?? cellName;
 
   return (
     <div className={cls(tooltipCls(), tooltipCls('col'))}>
-      <span className={tooltipCls('name')}>{cellName}</span>
+      <span className={tooltipCls('name')}>{name}</span>
       <span className={tooltipCls('value')}>{meta.value}</span>
     </div>
   );

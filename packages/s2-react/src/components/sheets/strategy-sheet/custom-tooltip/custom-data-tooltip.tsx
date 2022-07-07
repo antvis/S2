@@ -14,11 +14,14 @@ import type { CustomTooltipProps } from './interface';
 
 import './index.less';
 
-export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
+export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
+  cell,
+  label,
+}) => {
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const rowName = getRowName(meta);
+  const rowName = label ?? getRowName(meta);
   const leftColNode = getLeafColNode(meta);
 
   const [, ...derivedLabels] = React.useMemo(() => {
