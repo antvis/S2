@@ -1,3 +1,27 @@
+# [@antv/s2-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0) (2022-07-08)
+
+
+### Bug Fixes
+
+* 🐛 明细表大数据量下滚动条无法滚动到顶部 ([#1529](https://github.com/antvis/S2/issues/1529)) ([2791be9](https://github.com/antvis/S2/commit/2791be9769b3082bdfe8ae9a8ae0831ca821251a)), closes [#1528](https://github.com/antvis/S2/issues/1528)
+* **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
+* **interaction:** 修复按下快捷选中按钮之后通过触摸板切换页面，快捷键状态没有reset的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
+* **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
+* **theme:** 修复调整序号列后色板丢失 close [#1538](https://github.com/antvis/S2/issues/1538) ([#1543](https://github.com/antvis/S2/issues/1543)) ([6678848](https://github.com/antvis/S2/commit/6678848094c5c707a5586b33117bfd0b968fc302))
+* 优化 mini 图坐标计算逻辑 ([#1534](https://github.com/antvis/S2/issues/1534)) ([88a61e0](https://github.com/antvis/S2/commit/88a61e08b70750401d86e99dd5a6d320a1390da8))
+* 修复 pivot 无法获取整行数据，而报错的问题 ([#1504](https://github.com/antvis/S2/issues/1504)) ([89e22d3](https://github.com/antvis/S2/commit/89e22d3ffd425b3e1e7a180744b3d85e3635adb6))
+* 修复大量数据下，行列总计单元格计算时耗时和内存问题 ([#1531](https://github.com/antvis/S2/issues/1531)) ([2913ce9](https://github.com/antvis/S2/commit/2913ce98b053edafde3568e67df9112e69bf3bab))
+* 修复角头数值i18n展示问题 ([#1509](https://github.com/antvis/S2/issues/1509)) ([9166137](https://github.com/antvis/S2/commit/91661376dadc66def28ec328de36d0bf828a3f2e))
+* 列头文字&icon无法正确对齐 ([#1515](https://github.com/antvis/S2/issues/1515)) ([3457af9](https://github.com/antvis/S2/commit/3457af9da4205765115b6174a53d7a4d92a8ceef))
+* 移除字段标记中多余的 fieldValue判断 ([#1525](https://github.com/antvis/S2/issues/1525)) ([fb06ce0](https://github.com/antvis/S2/commit/fb06ce0fadb7cc8f2b42c5f78b85f22d91a2640a))
+* 趋势分析表 conditions 增加容错能力 ([#1537](https://github.com/antvis/S2/issues/1537)) ([4770c9a](https://github.com/antvis/S2/commit/4770c9af5025f2318ca4c9d02f8217ada83fd00c))
+
+
+### Features
+
+* 基础表、趋势分析表tooltip新增显示字段说明功能 ([#1541](https://github.com/antvis/S2/issues/1541)) ([3a9f3cb](https://github.com/antvis/S2/commit/3a9f3cb2f22aeb14b15b8d3fe79f107ff8f04516))
+* 支持 绘制 mini 柱状图 ([#1505](https://github.com/antvis/S2/issues/1505)) ([24a6ca6](https://github.com/antvis/S2/commit/24a6ca643e3b1154e4093c15216b218ef02cf3df))
+
 # [@antv/s2-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-v1.21.1...@antv/s2-v1.22.0) (2022-06-24)
 
 
