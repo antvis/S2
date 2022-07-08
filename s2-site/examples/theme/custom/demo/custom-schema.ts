@@ -1,7 +1,7 @@
 import { TableSheet } from '@antv/s2';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/4eff53f3-f952-4b77-8862-4b6ecbd31667.json',
 )
   .then((res) => res.json())
   .then((data) => {

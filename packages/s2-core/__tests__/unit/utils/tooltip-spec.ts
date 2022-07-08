@@ -416,6 +416,7 @@ describe('Tooltip Utils Tests', () => {
       name: undefined,
       summaries: [],
       tips: undefined,
+      description: undefined,
     };
 
     const getCellData = (
@@ -583,6 +584,7 @@ describe('Tooltip Utils Tests', () => {
 
         expect(tooltipData).toStrictEqual({
           ...defaultTooltipData,
+          description: isTotalCell ? undefined : '省份说明。。',
           summaries: [
             {
               name: '数量',
@@ -660,6 +662,75 @@ describe('Tooltip Utils Tests', () => {
         s2.destroy();
       },
     );
+
+    describe('Tooltip Description Tests', () => {
+      afterEach(() => {
+        s2.destroy();
+      });
+
+      test('should get row cell description', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(rowCell);
+
+        expect(tooltipData.description).toEqual('省份说明。。');
+      });
+
+      test('should get col cell descriptions', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const colCell = s2.interaction.getAllColHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(colCell);
+
+        expect(tooltipData.description).toEqual('类别说明。。');
+      });
+
+      test('should get data cell description', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
+        const tooltipData = getMockTooltipData(dataCell);
+
+        expect(tooltipData.description).toEqual('数量说明。。');
+      });
+
+      test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(
+        'should not get total cell description with %s',
+        (key) => {
+          s2 = createTotalsPivotSheet({
+            col: colTotalOptions,
+            row: rowTotalOptions,
+          });
+          s2.render();
+
+          const colTotalCell = s2.interaction
+            .getAllColHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          const rowTotalCell = s2.interaction
+            .getAllRowHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          expect(getMockTooltipData(colTotalCell).description).toBeUndefined();
+          expect(getMockTooltipData(rowTotalCell).description).toBeUndefined();
+
+          s2.destroy();
+        },
+      );
+    });
   });
 
   test('should set container style', () => {

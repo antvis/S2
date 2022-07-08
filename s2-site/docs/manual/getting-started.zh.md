@@ -28,7 +28,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 `markdown:docs/common/browser.zh.md`
 
-如需兼容`IE`，需要自行引入 `polyfill` 兼容。
+如需兼容 `IE`，需要自行引入 `polyfill` 兼容。
 
 ## 🔨 使用
 
@@ -43,7 +43,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 #### 1. 数据 (data) 准备
 
 <details>
-  <summary> s2DataConfig</summary>
+  <summary>s2DataConfig</summary>
 
 ```ts
 const s2DataConfig = {
@@ -79,7 +79,7 @@ const s2DataConfig = {
     },
     {
       province: "吉林",
-      city: "丹东",
+      city: "长春",
       type: "笔",
       price: "8",
     },
@@ -91,7 +91,7 @@ const s2DataConfig = {
     },
     {
       province: "吉林",
-      city: "丹东",
+      city: "长春",
       type: "纸张",
       price: "3",
     },
@@ -127,7 +127,7 @@ const s2DataConfig = {
     },
     {
       province: "吉林",
-      city: "丹东",
+      city: "长春",
       type: "笔",
       cost: "10",
     },
@@ -139,7 +139,7 @@ const s2DataConfig = {
     },
     {
       province: "吉林",
-      city: "丹东",
+      city: "长春",
       type: "纸张",
       cost: "3",
     },
@@ -186,7 +186,7 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件), 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -271,7 +271,7 @@ createApp(App).mount('#app');
 
 #### 注意事项
 
-`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip`等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
+`Vue3` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `ant-design-vue` 组件库开发，如需使用，需要额外安装，并引入对应样式
 
 ```ts
 yarn add ant-design-vue

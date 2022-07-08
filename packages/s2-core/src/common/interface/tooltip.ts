@@ -103,6 +103,7 @@ export type TooltipData = {
   interpretation?: TooltipInterpretationOptions;
   colIndex?: number;
   rowIndex?: number;
+  description?: string;
 };
 
 export type TooltipHeadInfo = {

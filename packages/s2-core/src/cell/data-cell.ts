@@ -250,9 +250,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
       const position = this.getIconPosition();
-      const { formattedValue } = this.getFormattedFieldValue();
       const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon) && formattedValue) {
+      if (!isEmpty(attrs?.icon)) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
           name: attrs.icon,
@@ -266,17 +265,16 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Draw interval condition shape
-   * @private
+   * @protected
    */
   protected drawConditionIntervalShape() {
     const { x, y, height, width } = this.getCellArea();
-    const { formattedValue } = this.getFormattedFieldValue();
 
     const intervalCondition = this.findFieldCondition(
       this.conditions?.interval,
     );
 
-    if (intervalCondition && intervalCondition.mapping && formattedValue) {
+    if (intervalCondition && intervalCondition.mapping) {
       const attrs = this.mappingValue(intervalCondition);
       if (!attrs) {
         return;
@@ -397,7 +395,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeRowColSelectState(indexType: ViewMetaIndexType) {
+  protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
@@ -415,7 +413,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Render cell border controlled by verticalBorder & horizontalBorder
-   * @private
+   * @protected
    */
   protected drawBorderShape() {
     [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {

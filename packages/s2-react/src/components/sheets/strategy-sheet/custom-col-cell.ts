@@ -28,7 +28,7 @@ export class CustomColCell extends ColCell {
     const fieldValue = this.getMeta()?.value;
     const values = safeJsonParse(fieldValue);
     if (isArray(values)) {
-      drawObjectText(this, { values: [values] }, true);
+      drawObjectText(this, { values: [values] }, false);
     } else {
       super.drawTextShape();
     }

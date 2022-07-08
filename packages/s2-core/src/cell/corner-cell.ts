@@ -11,7 +11,6 @@ import {
 } from 'lodash';
 import {
   CellTypes,
-  DEFAULT_CORNER_TEXT,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
@@ -44,6 +43,7 @@ import {
   getEmptyPlaceholder,
   measureTextWidth,
 } from '../utils/text';
+import { i18n } from './../common/i18n';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -158,7 +158,7 @@ export class CornerCell extends HeaderCell {
   /**
    * 绘制折叠展开的icon
    */
-  private drawTreeIcon() {
+  protected drawTreeIcon() {
     if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
@@ -188,7 +188,7 @@ export class CornerCell extends HeaderCell {
     );
   }
 
-  private drawBackgroundShape() {
+  protected drawBackgroundShape() {
     const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
 
     const attrs: ShapeAttrs = {
@@ -202,7 +202,7 @@ export class CornerCell extends HeaderCell {
 
   /**
    * Render cell horizontalBorder border
-   * @private
+   * @protected
    */
   protected drawBorderShape() {
     [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
@@ -215,7 +215,7 @@ export class CornerCell extends HeaderCell {
     });
   }
 
-  private isLastRowCornerCell() {
+  protected isLastRowCornerCell() {
     const { cornerType, field } = this.meta;
     const { rows } = this.headerConfig;
     return (
@@ -224,7 +224,7 @@ export class CornerCell extends HeaderCell {
     );
   }
 
-  private getResizeAreaEffect() {
+  protected getResizeAreaEffect() {
     const { cornerType } = this.meta;
 
     if (cornerType === CornerNodeType.Series) {
@@ -236,7 +236,7 @@ export class CornerCell extends HeaderCell {
       : ResizeAreaEffect.Field;
   }
 
-  private drawResizeArea() {
+  protected drawResizeArea() {
     if (!this.shouldDrawResizeAreaByType('cornerCellHorizontal')) {
       return;
     }
@@ -304,7 +304,7 @@ export class CornerCell extends HeaderCell {
     });
   }
 
-  private showTreeIcon() {
+  protected showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
     return (
       this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
@@ -334,7 +334,7 @@ export class CornerCell extends HeaderCell {
     return { x: iconX, y: iconY };
   }
 
-  private getTreeIconWidth() {
+  protected getTreeIconWidth() {
     const { size, margin } = this.getStyle().icon;
     return this.showTreeIcon() ? size + margin.right : 0;
   }
@@ -373,7 +373,7 @@ export class CornerCell extends HeaderCell {
 
   protected getCornerText(): string {
     if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+      return this.spreadsheet.options?.cornerText || i18n('指标');
     }
 
     const { formattedValue } = this.getFormattedFieldValue();

@@ -6,7 +6,7 @@ import { getPalette } from '../utils/theme';
 
 /**
  * @describe generate the theme according to the type
- * @param  name
+ * @param themeCfg
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
@@ -93,7 +93,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
@@ -183,7 +183,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -263,7 +263,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
@@ -359,6 +359,12 @@ export const getTheme = (
             fill: basicColors[6],
             opacity: 0.6,
           },
+        },
+        // ------------- bar graph -----------------
+        bar: {
+          intervalPadding: 4,
+          fill: basicColors[6],
+          opacity: 1,
         },
         // ------------- bullet graph -----------------
         bullet: {

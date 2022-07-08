@@ -12,9 +12,18 @@ export const getRowName = (meta: ViewMeta) => {
   const currentRow = find(meta.spreadsheet.getRowNodes(), {
     rowIndex: meta.rowIndex,
   });
-
   return meta.spreadsheet.dataSet.getFieldName(
     currentRow?.valueFiled || currentRow?.value,
+  );
+};
+
+export const getRowDescription = (meta: ViewMeta) => {
+  const currentRow = find(meta.spreadsheet.getRowNodes(), {
+    rowIndex: meta.rowIndex,
+  });
+  return (
+    meta.spreadsheet.dataSet.getFieldDescription(currentRow?.field) ||
+    currentRow?.extra.description
   );
 };
 

@@ -1,19 +1,25 @@
 import { i18n, Node } from '@antv/s2';
 import cls from 'classnames';
 import React from 'react';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
+import { isFunction } from 'lodash';
 import type { CustomTooltipProps } from './interface';
 
-import styles from './index.module.less';
+import './index.less';
 
-export const RowTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
+export const StrategySheetRowTooltip: React.FC<CustomTooltipProps> = ({
+  cell,
+  label,
+}) => {
   const { field, spreadsheet, value, extra } = cell.getMeta() as Node;
-
+  const customLabel = isFunction(label) ? label(cell, value) : label;
+  const rowName = customLabel ?? value;
   const description =
     spreadsheet.dataSet.getFieldDescription(field) || extra?.description;
 
   return (
-    <div className={cls(styles.strategySheetTooltip, styles.row)}>
-      <div className={styles.value}>{value}</div>
+    <div className={cls(tooltipCls(), tooltipCls('row'))}>
+      <div className={tooltipCls('value')}>{rowName}</div>
       {description && (
         <div>
           {i18n('说明')}: {description}

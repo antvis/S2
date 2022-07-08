@@ -36,8 +36,8 @@ import { HeaderCell } from './header-cell';
 export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
 
-  /** 文字区域（含icon）绘制起始坐标 */
-  protected textAreaPosition: Point;
+  /** 文字绘制起始坐标 */
+  protected textPosition: Point;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -107,24 +107,60 @@ export class ColCell extends HeaderCell {
   }
 
   protected getIconPosition(): Point {
-    const { isLeaf } = this.meta;
-    const iconStyle = this.getIconStyle();
-
-    if (isLeaf) {
+    if (this.meta.isLeaf) {
       return super.getIconPosition(this.getActionIconsCount());
     }
 
-    const position = this.textAreaPosition;
+    // 非叶子节点，因 label 滚动展示，需要适配不同 align情况
+    const iconStyle = this.getIconStyle();
+    const iconMarginLeft = iconStyle.margin.left;
 
-    const totalSpace =
-      this.actualTextWidth +
-      this.getActionIconsWidth() -
-      iconStyle.margin.right;
-    const startX = position.x - totalSpace / 2;
+    const textStyle = this.getTextStyle();
+    const position = this.textPosition;
+    const textX = position.x;
 
+    const y = position.y - iconStyle.size / 2;
+
+    if (textStyle.textAlign === 'left') {
+      /**
+       * textX          x
+       *   |            |
+       *   v            v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: textX + this.actualTextWidth + iconMarginLeft,
+        y,
+      };
+    }
+    if (textStyle.textAlign === 'right') {
+      /**
+       *         textX  x
+       *             |  |
+       *             v  v
+       *   +---------+  +----+
+       *   |  text   |--|icon|
+       *   +---------+  +----+
+       */
+      return {
+        x: textX + iconMarginLeft,
+        y,
+      };
+    }
+
+    /**
+     *      textX     x
+     *        |       |
+     *        v       v
+     *   +---------+  +----+
+     *   |  text   |--|icon|
+     *   +---------+  +----+
+     */
     return {
-      x: startX + this.actualTextWidth + iconStyle.margin.left,
-      y: position.y - iconStyle.size / 2,
+      x: textX + this.actualTextWidth / 2 + iconMarginLeft,
+      y,
     };
   }
 
@@ -173,11 +209,8 @@ export class ColCell extends HeaderCell {
       this.getStyle().cell?.padding,
     );
 
-    const iconCount = this.getActionIconsCount();
-    const textAndIconSpace =
-      this.actualTextWidth +
-      this.getActionIconsWidth() -
-      (iconCount ? iconStyle.margin.right : 0);
+    const actionIconSpace = this.getActionIconsWidth();
+    const textAndIconSpace = this.actualTextWidth + actionIconSpace;
 
     const textAreaRange = getTextAreaRange(
       adjustedViewport,
@@ -185,26 +218,26 @@ export class ColCell extends HeaderCell {
       textAndIconSpace, // icon position 默认为 right
     );
 
-    // textAreaRange.start 是以文字样式为 center 计算出的文字绘制点
-    // 此处按实际样式(left or right)调整
-    const startX = adjustColHeaderScrollingTextPosition(
-      textAreaRange.start,
-      textAreaRange.width - textAndIconSpace,
+    // textAreaRange.start 是 text&icon 整个区域的 center
+    // 此处按实际样式(left or right)调整计算出的文字绘制点
+    const textX = adjustColHeaderScrollingTextPosition(
+      textAreaRange,
+      this.actualTextWidth,
+      actionIconSpace,
       textAlign,
     );
-
     const textY = contentBox.y + contentBox.height / 2;
-    this.textAreaPosition = { x: startX, y: textY };
-    return {
-      x: startX - textAndIconSpace / 2 + this.actualTextWidth / 2,
-      y: textY,
-    };
+
+    this.textPosition = { x: textX, y: textY };
+    return this.textPosition;
   }
 
   protected getActionIconsWidth() {
     const { size, margin } = this.getStyle().icon;
     const iconCount = this.getActionIconsCount();
-    return (size + margin.left) * iconCount + iconCount > 0 ? margin.right : 0;
+    return (
+      (size + margin.left) * iconCount + (iconCount > 0 ? margin.right : 0)
+    );
   }
 
   protected getColResizeAreaKey() {
@@ -348,7 +381,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 绘制热区
-  private drawResizeArea() {
+  protected drawResizeArea() {
     this.drawHorizontalResizeArea();
     this.drawVerticalResizeArea();
   }
@@ -408,12 +441,12 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  private getExpandIconTheme(): IconTheme {
+  protected getExpandIconTheme(): IconTheme {
     const themeCfg = this.getStyle() as DefaultCellTheme;
     return themeCfg.icon;
   }
 
-  private addExpandColumnSplitLine() {
+  protected addExpandColumnSplitLine() {
     const { x, y, width, height } = this.meta;
     const {
       horizontalBorderColor,
@@ -438,7 +471,7 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  private addExpandColumnIconShapes() {
+  protected addExpandColumnIconShapes() {
     if (!this.hasHiddenColumnCell()) {
       return;
     }
@@ -446,7 +479,7 @@ export class ColCell extends HeaderCell {
     this.addExpandColumnIcon();
   }
 
-  private addExpandColumnIcon() {
+  protected addExpandColumnIcon() {
     const iconConfig = this.getExpandColumnIconConfig();
     const icon = renderIcon(this, {
       ...iconConfig,
@@ -459,7 +492,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  private getExpandColumnIconConfig() {
+  protected getExpandColumnIconConfig() {
     const { size } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getCellArea();
 
@@ -475,7 +508,7 @@ export class ColCell extends HeaderCell {
     };
   }
 
-  private isLastColumn() {
+  protected isLastColumn() {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 }

@@ -93,7 +93,7 @@ fetch('../data/basic-table-mode.json')
                 sortParams: [
                   {
                     sortFieldId: 'city',
-                    sortBy: ['白山', '丹东', '杭州', '舟山'],
+                    sortBy: ['白山', '长春', '杭州', '舟山'],
                   },
                 ],
               });

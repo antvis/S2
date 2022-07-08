@@ -1,13 +1,6 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellTypes } from '../../common/constant';
-import type {
-  BulletValue,
-  Condition,
-  CustomTreeItem,
-  Data,
-  ResizeInfo,
-  SimpleDataItem,
-} from '../../common/interface';
+import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
@@ -299,8 +292,6 @@ export interface CellCfg {
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
     widthPercent?: number[];
-    // 条件格式
-    conditions?: { text: Condition };
   };
 }
 
@@ -444,7 +435,7 @@ export interface OffsetConfig {
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
-  isRowHeaderText?: boolean;
+  isLinkFieldText?: boolean;
   cellData?: T;
 }
 

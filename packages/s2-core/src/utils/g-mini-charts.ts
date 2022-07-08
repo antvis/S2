@@ -21,23 +21,15 @@ import {
 import { CellTypes, MiniChartTypes } from '../common/constant';
 import { getEllipsisText } from './text';
 
-// ========================= mini 折线相关 ==============================
-
 /**
- *  绘制单元格内的 mini子弹图
+ *  坐标转换
  */
-export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
-  if (isEmpty(chartData?.data) || isEmpty(cell)) {
-    return;
-  }
+export const scale = (chartData: BaseChartData, cell: S2CellType) => {
+  const { data, encode, type } = chartData;
   const { x, y, height, width } = cell.getMeta();
-
-  const { data, encode } = chartData;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const { cell: cellStyle, miniChart } = dataCellStyle;
-  const { point, linkLine } = miniChart.line;
   const measures = [];
-
   const encodedData = map(data, (item) => {
     measures.push(item?.[encode.y]);
     return {
@@ -45,25 +37,84 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
       y: item[encode.y],
     };
   });
-
   const maxMeasure = max(measures);
   const minMeasure = min(measures);
+  let measureRange = maxMeasure - minMeasure;
 
   const xStart = x + cellStyle.padding.left;
   const xEnd = x + width - cellStyle.padding.right;
   const yStart = y + cellStyle.padding.top;
   const yEnd = y + height - cellStyle.padding.bottom;
 
-  // 先支持 x 轴的离散数据
-  const intervalX = (xEnd - xStart) / (measures.length - 1);
+  const heightRange = yEnd - yStart;
 
+  const intervalX =
+    type === MiniChartTypes.Bar
+      ? (xEnd -
+          xStart -
+          (measures.length - 1) * miniChart?.bar?.intervalPadding) /
+          measures.length +
+        miniChart?.bar?.intervalPadding
+      : (xEnd - xStart) / (measures.length - 1) ?? 0;
+  const box = [];
   const points = map(encodedData, (item: { x: number; y: number }, key) => {
     const positionX = xStart + key * intervalX;
-    const positionY =
-      yStart +
-      ((item?.y - minMeasure) / (maxMeasure - minMeasure)) * (yEnd - yStart);
+    let positionY: number;
+
+    if (measureRange !== 0) {
+      positionY = yEnd - ((item?.y - minMeasure) / measureRange) * heightRange;
+    } else {
+      positionY = minMeasure > 0 ? yStart : yEnd;
+    }
+    if (type === MiniChartTypes.Bar) {
+      let baseLinePositionY: number;
+      let barHeight: number;
+
+      if (minMeasure < 0 && maxMeasure > 0 && measureRange !== 0) {
+        // 基准线（0 坐标）在中间
+        baseLinePositionY =
+          yEnd - ((0 - minMeasure) / measureRange) * heightRange;
+        barHeight = Math.abs(positionY - baseLinePositionY);
+        if (item?.y < 0) {
+          positionY = baseLinePositionY; // 如果值小于 0 需要从基准线为起始 y 坐标开始绘制
+        }
+      } else {
+        // TODO 之后看需不需要把基准线画出来
+        baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
+        measureRange = max([Math.abs(maxMeasure), Math.abs(minMeasure)]);
+        barHeight =
+          measureRange === 0
+            ? heightRange
+            : (Math.abs(item?.y - 0) / measureRange) * heightRange;
+        positionY = baseLinePositionY;
+      }
+
+      const barWidth = intervalX - miniChart?.bar?.intervalPadding;
+      box.push([barWidth, barHeight]);
+    }
     return [positionX, positionY];
   });
+  return {
+    points,
+    box,
+  };
+};
+
+// ========================= mini 折线相关 ==============================
+
+/**
+ *  绘制单元格内的 mini 折线图
+ */
+export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
+  if (isEmpty(chartData?.data) || isEmpty(cell)) {
+    return;
+  }
+
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const { miniChart } = dataCellStyle;
+  const { point, linkLine } = miniChart.line;
+
+  const { points } = scale(chartData, cell);
 
   renderPolyline(cell, {
     points,
@@ -79,6 +130,33 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
       r: point.size,
       fill: point.fill,
       fillOpacity: point.opacity,
+    });
+  }
+};
+
+// ========================= mini 柱状图相关 ==============================
+
+/**
+ *  绘制单元格内的 mini 柱状图
+ */
+export const drawBar = (chartData: BaseChartData, cell: S2CellType) => {
+  if (isEmpty(chartData?.data) || isEmpty(cell)) {
+    return;
+  }
+
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const { miniChart } = dataCellStyle;
+  const { bar } = miniChart;
+
+  const { points, box } = scale(chartData, cell);
+  for (let i = 0; i < points.length; i++) {
+    renderRect(cell, {
+      x: points[i][0],
+      y: points[i][1],
+      width: box[i][0],
+      height: box[i][1],
+      fill: bar.fill, // TODO 支持色板配置
+      fillOpacity: bar.opacity,
     });
   }
 };
@@ -205,6 +283,9 @@ export const renderChart = (data: MiniChartData, cell: S2CellType) => {
   switch (data?.type) {
     case MiniChartTypes.Line:
       drawLine(data, cell);
+      break;
+    case MiniChartTypes.Bar:
+      drawBar(data, cell);
       break;
     default:
       drawBullet(data as BulletValue, cell);

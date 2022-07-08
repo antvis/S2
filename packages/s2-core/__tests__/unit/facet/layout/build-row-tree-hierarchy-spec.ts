@@ -42,7 +42,7 @@ describe('build row tree hierarchy', () => {
     expect(rowLeafNodes[1].label).toEqual('杭州');
     expect(rowLeafNodes[2].label).toEqual('舟山');
     expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('丹东');
+    expect(rowLeafNodes[4].label).toEqual('长春');
     expect(rowLeafNodes[5].label).toEqual('白山');
     expect(rowLeafNodes[6].label).toEqual('总计');
   });
@@ -70,7 +70,7 @@ describe('build row tree hierarchy', () => {
     expect(rowLeafNodes[1].label).toEqual('舟山');
     expect(rowLeafNodes[2].label).toEqual('杭州');
     expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('丹东');
+    expect(rowLeafNodes[4].label).toEqual('长春');
     expect(rowLeafNodes[5].label).toEqual('白山');
     expect(rowLeafNodes[6].label).toEqual('总计');
   });

@@ -65,6 +65,7 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -402,20 +403,19 @@ export abstract class SpreadSheet extends EE {
     this.destroyTooltip();
     this.clearCanvasEvent();
     this.container?.destroy();
+
+    removeOffscreenCanvas();
   }
 
-  /**
-   * Update theme config, if the {@param type} is exists, re-use it,
-   * otherwise create new one {@see theme}
-   * @param type string
-   * @param theme
-   */
   public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
-    this.theme = customMerge(
-      getTheme({ ...themeCfg, spreadsheet: this }),
-      theme,
-    );
+    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+
+    this.theme = customMerge(newTheme, theme);
+  }
+
+  public setTheme(theme: S2Theme) {
+    this.theme = customMerge(this.theme, theme);
   }
 
   /**

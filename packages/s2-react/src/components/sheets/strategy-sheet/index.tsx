@@ -7,27 +7,20 @@ import {
   SpreadSheet,
   type ViewMeta,
   type MultiData,
-  type S2CellType,
-  MiniChartTypes,
+  type TooltipShowOptions,
 } from '@antv/s2';
-import { isArray, isEmpty, isObject, size } from 'lodash';
+import { isArray, isEmpty, isFunction, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
-import { KpiBulletTooltip } from './custom-tooltip/kpi-columns/custom-bullet-tooltip';
-import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
-import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
-import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
-
-export interface StrategySheetProps extends SheetComponentsProps {
-  bulletTooltipDescription: (
-    cell: S2CellType<Node | ViewMeta>,
-  ) => React.ReactNode;
-}
-
+import {
+  StrategySheetColTooltip,
+  StrategySheetDataTooltip,
+  StrategySheetRowTooltip,
+} from './custom-tooltip';
 /* *
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
@@ -36,19 +29,13 @@ export interface StrategySheetProps extends SheetComponentsProps {
  * 4. 支持 KPI 进度 (子弹图)
  * 5. 行头, 数值单元格不支持多选
  */
-export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
+export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const {
-      options,
-      themeCfg,
-      dataCfg,
-      bulletTooltipDescription,
-      ...restProps
-    } = props;
+    const { options, themeCfg, dataCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
 
     const strategySheetOptions = React.useMemo<
-      Partial<S2Options<React.ReactNode>>
+      S2Options<React.ReactNode>
     >(() => {
       if (isEmpty(dataCfg)) {
         return {};
@@ -71,6 +58,7 @@ export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
       ) {
         hideMeasureColumn = true;
       }
+
       return {
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
@@ -100,42 +88,34 @@ export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell) => <RowTooltip cell={cell} />,
+            content: (cell) => <StrategySheetRowTooltip cell={cell} />,
           },
           col: {
-            content: (cell) => <ColTooltip cell={cell} />,
+            content: (cell) => <StrategySheetColTooltip cell={cell} />,
           },
           data: {
-            content: (cell) => {
+            content: (cell, defaultTooltipShowOptions) => {
               const meta = cell.getMeta() as ViewMeta;
               const fieldValue = meta.fieldValue as MultiData;
 
+              const tooltipContent = options.tooltip?.data
+                ?.content as TooltipShowOptions<React.ReactNode>['content'];
+
+              const content = isFunction(tooltipContent)
+                ? tooltipContent?.(cell, defaultTooltipShowOptions)
+                : tooltipContent;
+
               // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return <DataTooltip cell={cell} />;
+                return content ?? <StrategySheetDataTooltip cell={cell} />;
               }
 
-              // 如果是对象, 且是子弹图数据, 显示子弹图定制 Tooltip
-              const ifShowBulletTooltip =
-                isObject(fieldValue?.values) &&
-                (fieldValue?.values?.type === MiniChartTypes.Bullet ||
-                  !fieldValue?.values?.type);
-
-              if (ifShowBulletTooltip) {
-                return (
-                  <KpiBulletTooltip
-                    cell={cell}
-                    description={bulletTooltipDescription}
-                  />
-                );
-              }
-
-              return <></>;
+              return content ?? <></>;
             },
           },
         },
       };
-    }, [dataCfg, options.hierarchyType, bulletTooltipDescription]);
+    }, [dataCfg, options.hierarchyType, options.tooltip]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields: Partial<S2DataConfig> = {

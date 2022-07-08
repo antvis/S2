@@ -66,8 +66,9 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   ) {
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
-    interaction.clearHoverTimer();
     const { hoverFocus } = interactionOptions;
+
+    interaction.clearHoverTimer();
 
     const handleHoverFocus = () => {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {

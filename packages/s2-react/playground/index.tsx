@@ -7,7 +7,6 @@ import {
   type HeaderActionIconProps,
   Node,
   type S2DataConfig,
-  S2Event,
   type S2Options,
   SpreadSheet,
   type TargetCellInfo,
@@ -149,7 +148,6 @@ function MainLayout() {
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
-  const [showJumpLink, setShowJumpLink] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
@@ -166,13 +164,14 @@ function MainLayout() {
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
-    setOptions(customMerge({}, options, newOptions));
+    setOptions(customMerge(options, newOptions));
   };
+
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
       sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
 
-    setDataCfg(customMerge({}, currentDataCfg, newDataCfg));
+    setDataCfg(customMerge(currentDataCfg, newDataCfg));
   };
 
   const onAutoAdjustBoundaryChange = (value: TooltipAutoAdjustBoundary) => {
@@ -239,7 +238,6 @@ function MainLayout() {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
-
       callback?.();
     };
 
@@ -280,7 +278,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
+  const mergedOptions: S2Options<React.ReactNode> = customMerge(
     {},
     {
       pagination: showPagination && {
@@ -770,9 +768,8 @@ function MainLayout() {
                 <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
-                  checked={showJumpLink}
+                  checked={mergedOptions.interaction.linkFields.length}
                   onChange={(checked) => {
-                    setShowJumpLink(checked);
                     updateOptions({
                       interaction: {
                         linkFields: checked ? ['province', 'city'] : [],
@@ -881,8 +878,8 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg as S2DataConfig}
-              options={mergedOptions as S2Options}
+              dataCfg={dataCfg}
+              options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}
               ref={s2Ref}

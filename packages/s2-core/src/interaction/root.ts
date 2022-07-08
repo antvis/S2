@@ -65,6 +65,10 @@ export class RootInteraction {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
     this.registerInteractions();
+    window.addEventListener(
+      'visibilitychange',
+      this.onTriggerInteractionsResetEffect,
+    );
   }
 
   public destroy() {
@@ -73,6 +77,10 @@ export class RootInteraction {
     this.eventController.clear();
     this.clearHoverTimer();
     this.resetState();
+    window.removeEventListener(
+      'visibilitychange',
+      this.onTriggerInteractionsResetEffect,
+    );
   }
 
   public reset() {
@@ -81,6 +89,12 @@ export class RootInteraction {
     this.intercepts.clear();
     this.spreadsheet.hideTooltip();
   }
+
+  private onTriggerInteractionsResetEffect = () => {
+    this.interactions.forEach((interaction) => {
+      interaction.reset();
+    });
+  };
 
   public setState(interactionStateInfo: InteractionStateInfo) {
     setState(this.spreadsheet, interactionStateInfo);
