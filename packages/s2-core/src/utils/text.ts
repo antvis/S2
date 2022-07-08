@@ -12,7 +12,7 @@ import {
   trim,
   values,
 } from 'lodash';
-import { DataCell, type ColCell } from '../cell';
+import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
   CellCfg,
@@ -376,10 +376,13 @@ export const getEmptyPlaceholder = (
  * @desc draw text shape of object
  * @param cell
  * @multiData 自定义文本内容
- * @disabledConditions 是否禁用条件格式
+ * @useCondition 是否使用条件格式
  */
-export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
-  const isDataCell = cell instanceof DataCell;
+export const drawObjectText = (
+  cell: S2CellType,
+  multiData?: MultiData,
+  useCondition = true,
+) => {
   const { x } = cell.getTextAndIconPosition(0).text;
   const {
     y,
@@ -442,7 +445,7 @@ export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = isDataCell
+      const curStyle = useCondition
         ? getCurrentTextStyle({
             rowIndex: i,
             colIndex: j,
