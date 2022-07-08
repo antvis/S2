@@ -24,6 +24,7 @@ import {
   noop,
   pick,
   includes,
+  matches,
 } from 'lodash';
 import {
   CellTypes,
@@ -498,12 +499,11 @@ export const getDescription = (targetCell: S2CellType): string => {
   }
 
   const meta = targetCell.getMeta();
-  const filedTypes = map(meta.spreadsheet.dataCfg.meta, (item) => {
-    return item.field;
+  const fieldObj = find(meta.spreadsheet.dataCfg.meta, {
+    field: meta.field || meta.value || meta.valueField,
   });
-  const field = includes(filedTypes, meta.field)
-    ? meta.field
-    : meta.value || meta.valueField;
+  const field = fieldObj?.field;
+
   return meta.spreadsheet.dataSet.getFieldDescription(field);
 };
 

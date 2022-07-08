@@ -5,11 +5,9 @@ interface TooltipDescriptionProps {
   description: string;
 }
 
-export const TooltipDescription: React.FC<TooltipDescriptionProps> = (
-  props,
-) => {
-  const { description } = props;
-
+export const TooltipDescription: React.FC<TooltipDescriptionProps> = ({
+  description,
+}) => {
   return (
     <>
       {description && (
