@@ -24,7 +24,6 @@ import type {
   ResizeInfo,
   ResizePosition,
 } from '../common/interface/resize';
-import { customMerge } from '../utils';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {

@@ -409,7 +409,8 @@ export abstract class SpreadSheet extends EE {
 
   public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
-    const newTheme = getTheme(themeCfg, this);
+    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+
     this.theme = customMerge(newTheme, theme);
   }
 

@@ -9,8 +9,7 @@ import { getPalette } from '../utils/theme';
  * @param themeCfg
  */
 export const getTheme = (
-  themeCfg: Omit<ThemeCfg, 'theme'>,
-  spreadsheet?: SpreadSheet,
+  themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): S2Theme => {
   const {
     basicColors,
@@ -18,7 +17,7 @@ export const getTheme = (
     others: otherColors,
   } = themeCfg?.palette || getPalette(themeCfg?.name);
 
-  const isTable = spreadsheet?.isTableMode();
+  const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
     // ------------- Headers -------------------
