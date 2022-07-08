@@ -14,6 +14,7 @@ import {
   S2Event,
   type S2Options,
   SpreadSheet,
+  type ThemeCfg,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -434,6 +435,25 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     expect(s2.theme.rowCell.seriesNumberWidth).toEqual(resizeInfo.width);
+  });
+
+  // https://github.com/antvis/S2/issues/1538
+  test('should not reset theme palette after resize series', () => {
+    const palette: ThemeCfg['palette'] = {
+      basicColors: Array.from({ length: 10 }).fill('red') as string[],
+      semanticColors: {
+        red: 'red',
+        green: 'green',
+      },
+    };
+
+    s2.setThemeCfg({
+      palette,
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Series);
+
+    expect(s2.theme.background.color).toEqual('red');
   });
 
   test('should get vertical cell resize style', () => {

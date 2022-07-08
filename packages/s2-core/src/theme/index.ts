@@ -6,7 +6,7 @@ import { getPalette } from '../utils/theme';
 
 /**
  * @describe generate the theme according to the type
- * @param  name
+ * @param themeCfg
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },

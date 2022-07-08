@@ -30,6 +30,7 @@ export const s2Options: S2Options = {
   debug: true,
   width: 600,
   height: 400,
+  showSeriesNumber: false,
   interaction: {
     enableCopy: true,
   },
