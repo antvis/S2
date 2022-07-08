@@ -1,4 +1,5 @@
 import {
+  i18n,
   getEmptyPlaceholder,
   isUpDataValue,
   type MultiData,
@@ -9,7 +10,7 @@ import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
-import { getLeafColNode, getRowName } from '../utils';
+import { getLeafColNode, getRowName, getRowDescription } from '../utils';
 import type { CustomTooltipProps } from './interface';
 
 import './index.less';
@@ -21,6 +22,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
+  const rowDiscription = getRowDescription(meta);
   const defaultRowName = getRowName(meta);
   const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
   const rowName = customLabel ?? defaultRowName;
@@ -86,6 +88,11 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
             })}
           </ul>
         </>
+      )}
+      {rowDiscription && (
+        <div>
+          {i18n('说明')}: {rowDiscription}
+        </div>
       )}
     </div>
   );

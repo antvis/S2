@@ -54,6 +54,11 @@ export const createFakeSpreadSheet = () => {
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
+  s2.dataCfg = {
+    meta: null,
+    data: [],
+    fields: {},
+  };
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,
     height: DEFAULT_OPTIONS.height,
@@ -117,8 +122,23 @@ export const createMockCellInfo = (
     type: undefined,
     x: 0,
     y: 0,
+    spreadsheet: {
+      dataCfg: {
+        meta: null,
+        data: [],
+        fields: {},
+      },
+      dataSet: {
+        getFieldDescription: jest.fn(),
+      },
+    } as unknown as SpreadSheet,
   };
-  const mockCellMeta = omit(mockCellViewMeta, ['x', 'y', 'update']);
+  const mockCellMeta = omit(mockCellViewMeta, [
+    'x',
+    'y',
+    'update',
+    'spreadsheet',
+  ]);
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
