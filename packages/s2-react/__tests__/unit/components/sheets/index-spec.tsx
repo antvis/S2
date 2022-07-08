@@ -7,9 +7,21 @@ import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
+  let s2: SpreadSheet;
+  let container: HTMLDivElement;
+
+  beforeEach(() => {
+    container = getContainer();
+  });
+
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
+  });
+
   describe('Render Tests', () => {
     test.each(['pivot', 'table', 'strategy', 'gridAnalysis'] as SheetType[])(
-      'should render successfully with %s',
+      'should render successfully for %s sheet',
       (sheetType) => {
         function render() {
           ReactDOM.render(
@@ -18,7 +30,7 @@ describe('<SheetComponent/> Tests', () => {
               options={{ width: 200, height: 200 }}
               dataCfg={null}
             />,
-            getContainer(),
+            container,
           );
         }
 
@@ -28,9 +40,6 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   describe('<StrategySheet/> Tests', () => {
-    let s2: SpreadSheet;
-    let container: HTMLDivElement;
-
     const renderStrategySheet = (
       options: SheetComponentsProps['options'],
       dataCfg: S2DataConfig = null,
@@ -52,15 +61,6 @@ describe('<SheetComponent/> Tests', () => {
         );
       });
     };
-
-    beforeEach(() => {
-      container = getContainer();
-    });
-
-    afterEach(() => {
-      ReactDOM.unmountComponentAtNode(container);
-      container.remove();
-    });
 
     test('should overwrite strategy sheet tooltip data cell content', () => {
       const content = 'custom';
@@ -120,17 +120,6 @@ describe('<SheetComponent/> Tests', () => {
       renderStrategySheet(null);
 
       expect(s2.options.tooltip.operation.hiddenColumns).toBeTruthy();
-    });
-
-    test.each([
-      'brushSelection',
-      'selectedCellMove',
-      'multiSelection',
-      'rangeSelection',
-    ])('should disable %s interaction', (interactionName) => {
-      renderStrategySheet(null);
-
-      expect(s2.options.interaction[interactionName]).toBeFalsy();
     });
   });
 });

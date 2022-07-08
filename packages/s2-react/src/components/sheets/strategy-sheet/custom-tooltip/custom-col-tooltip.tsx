@@ -1,6 +1,7 @@
 import cls from 'classnames';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
+import { isFunction } from 'lodash';
 import type { CustomTooltipProps } from './interface';
 
 import './index.less';
@@ -17,7 +18,8 @@ export const StrategySheetColTooltip: React.FC<CustomTooltipProps> = ({
   }
 
   const cellName = meta.spreadsheet.dataSet.getFieldName(meta.field);
-  const name = label ?? cellName;
+  const customLabel = isFunction(label) ? label(cell, cellName) : label;
+  const name = customLabel ?? cellName;
 
   return (
     <div className={cls(tooltipCls(), tooltipCls('col'))}>
