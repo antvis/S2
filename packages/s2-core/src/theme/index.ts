@@ -6,10 +6,11 @@ import { getPalette } from '../utils/theme';
 
 /**
  * @describe generate the theme according to the type
- * @param  name
+ * @param themeCfg
  */
 export const getTheme = (
-  themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
+  themeCfg: Omit<ThemeCfg, 'theme'>,
+  spreadsheet?: SpreadSheet,
 ): S2Theme => {
   const {
     basicColors,
@@ -17,7 +18,7 @@ export const getTheme = (
     others: otherColors,
   } = themeCfg?.palette || getPalette(themeCfg?.name);
 
-  const isTable = themeCfg?.spreadsheet?.isTableMode();
+  const isTable = spreadsheet?.isTableMode();
 
   return {
     // ------------- Headers -------------------

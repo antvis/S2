@@ -407,18 +407,14 @@ export abstract class SpreadSheet extends EE {
     removeOffscreenCanvas();
   }
 
-  /**
-   * Update theme config, if the {@param type} is exists, re-use it,
-   * otherwise create new one {@see theme}
-   * @param type string
-   * @param theme
-   */
   public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
-    this.theme = customMerge(
-      getTheme({ ...themeCfg, spreadsheet: this }),
-      theme,
-    );
+    const newTheme = getTheme(themeCfg, this);
+    this.theme = customMerge(newTheme, theme);
+  }
+
+  public setTheme(theme: S2Theme) {
+    this.theme = customMerge(this.theme, theme);
   }
 
   /**

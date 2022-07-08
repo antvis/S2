@@ -24,6 +24,7 @@ import type {
   ResizeInfo,
   ResizePosition,
 } from '../common/interface/resize';
+import { customMerge } from '../utils';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -426,11 +427,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     if (seriesNumberWidth) {
-      this.spreadsheet.setThemeCfg({
-        theme: {
-          rowCell: {
-            seriesNumberWidth,
-          },
+      this.spreadsheet.setTheme({
+        rowCell: {
+          seriesNumberWidth,
         },
       });
     }

@@ -51,21 +51,21 @@ s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](https://s2.antv.vision/zh/docs/api/general/S2Options)
+更新 options: [可选项](/zh/docs/api/general/S2Options)
 
 ```ts
 pivotSheet.setOptions({ ... })
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
+更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)
 
 ```ts
 pivotSheet.setDataCfg({ ... })
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-更新 theme: [可选项](https://s2.antv.vision/zh/docs/api/general/S2Theme)
+更新 theme: [可选项](/zh/docs/api/general/S2Theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
@@ -150,7 +150,7 @@ s2.render(false)
 
 ### 怎样贡献代码？
 
-请查看 [贡献指南](https://s2.antv.vision/zh/docs/manual/contribution)
+请查看 [贡献指南](/zh/docs/manual/contribution)
 
 ### 为什么在小程序上面表格无法显示？
 
@@ -182,7 +182,7 @@ s2.render(false)
 
 - 尽量抹去一些带有你自己业务语义的一些名词和描述
 
-在提出问题前，请确保你已经阅读过 [官方文档](https://s2.antv.vision/zh/docs/manual/introduction) 和 [常见问题](https://s2.antv.vision/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed)
+在提出问题前，请确保你已经阅读过 [官方文档](/zh/docs/manual/introduction) 和 [常见问题](/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed)
 
 强烈建议阅读：
 
