@@ -7,7 +7,7 @@ import {
   type ViewMeta,
 } from '@antv/s2';
 import cls from 'classnames';
-import { first, get, isEmpty, isNil } from 'lodash';
+import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import { getLeafColNode, getRowName, getRowDescription } from '../utils';
@@ -15,21 +15,27 @@ import type { CustomTooltipProps } from './interface';
 
 import './index.less';
 
-export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
+export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
+  cell,
+  label,
+}) => {
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const rowName = getRowName(meta);
   const rowDiscription = getRowDescription(meta);
+  const defaultRowName = getRowName(meta);
+  const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
+  const rowName = customLabel ?? defaultRowName;
   const leftColNode = getLeafColNode(meta);
 
   const [, ...derivedLabels] = React.useMemo(() => {
     try {
-      return JSON.parse(leftColNode.value);
+      return JSON.parse(leftColNode?.value);
     } catch {
       return [];
     }
-  }, [leftColNode.value]);
+  }, [leftColNode?.value]);
+
   const [value, ...derivedValues] = first(metaFieldValue?.values) || [
     metaFieldValue,
   ];
