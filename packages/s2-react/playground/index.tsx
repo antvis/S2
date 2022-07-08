@@ -137,32 +137,6 @@ const CustomColTooltip = () => <div>custom colTooltip</div>;
 
 const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
 
-const s2Palette = {
-  basicColors: [
-    '#FFFFFF',
-    '#F8F5FE',
-    '#EDE1FD',
-    '#873BF4',
-    '#7232CF',
-    '#7232CF',
-    '#7232CF',
-    '#AB76F7',
-    '#FFFFFF',
-    '#DDC7FC',
-    '#9858F5',
-    '#B98EF8',
-    '#873BF4',
-    '#282B33',
-    '#121826',
-  ],
-
-  // ---------- semantic colors ----------
-  semanticColors: {
-    red: '#FF4D4F',
-    green: '#29A294',
-  },
-};
-
 function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
@@ -171,7 +145,6 @@ function MainLayout() {
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
     name: 'default',
-    palette: s2Palette,
   });
   const [themeColor, setThemeColor] = React.useState<string>('#FFF');
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
