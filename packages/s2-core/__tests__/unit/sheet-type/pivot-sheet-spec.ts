@@ -1077,6 +1077,33 @@ describe('PivotSheet Tests', () => {
       );
       // modify valueInCols config
       expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
+
+      sheet.destroy();
+    });
+
+    // https://github.com/antvis/S2/issues/1514
+    it('should not show default action icons if values is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
+        fields: {
+          values: [],
+          valueInCols: true,
+        },
+      } as S2DataConfig);
+
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
+        width: 400,
+        height: 200,
+        showDefaultHeaderActionIcon: true,
+        hierarchyType: 'tree',
+      });
+      sheet.render();
+
+      sheet.getRowLeafNodes().forEach((node) => {
+        const rowCell = node.belongsCell;
+        expect(get(rowCell, 'actionIcons')).toHaveLength(0);
+      });
+
+      sheet.destroy();
     });
   });
 });
