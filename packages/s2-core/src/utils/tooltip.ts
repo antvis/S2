@@ -499,10 +499,10 @@ export const getDescription = (targetCell: S2CellType): string => {
   }
 
   const meta = targetCell.getMeta();
-  const fieldObj = find(meta.spreadsheet.dataCfg.meta, {
+  const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
     field: meta.field || meta.value || meta.valueField,
   });
-  const field = fieldObj?.field;
+  const field = currentMeta?.field;
 
   return meta.spreadsheet.dataSet.getFieldDescription(field);
 };
