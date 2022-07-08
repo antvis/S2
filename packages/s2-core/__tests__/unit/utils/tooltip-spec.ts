@@ -584,6 +584,7 @@ describe('Tooltip Utils Tests', () => {
 
         expect(tooltipData).toStrictEqual({
           ...defaultTooltipData,
+          description: isTotalCell ? undefined : '省份说明。。',
           summaries: [
             {
               name: '数量',
@@ -663,7 +664,11 @@ describe('Tooltip Utils Tests', () => {
     );
 
     describe('Tooltip Description Tests', () => {
-      test('Row Cell Tests', () => {
+      afterEach(() => {
+        s2.destroy();
+      });
+
+      test('should get row cell description', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
@@ -674,7 +679,7 @@ describe('Tooltip Utils Tests', () => {
         expect(tooltipData.description).toEqual('省份说明。。');
       });
 
-      test('Col Cell Tests', () => {
+      test('should get col cell descriptions', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
@@ -685,7 +690,7 @@ describe('Tooltip Utils Tests', () => {
         expect(tooltipData.description).toEqual('类别说明。。');
       });
 
-      test('Data Cell Tests', () => {
+      test('should get data cell description', () => {
         s2 = createTotalsPivotSheet(null);
         s2.render();
 
@@ -695,6 +700,36 @@ describe('Tooltip Utils Tests', () => {
 
         expect(tooltipData.description).toEqual('数量说明。。');
       });
+
+      test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(
+        'should not get total cell description with %s',
+        (key) => {
+          s2 = createTotalsPivotSheet({
+            col: colTotalOptions,
+            row: rowTotalOptions,
+          });
+          s2.render();
+
+          const colTotalCell = s2.interaction
+            .getAllColHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          const rowTotalCell = s2.interaction
+            .getAllRowHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          expect(getMockTooltipData(colTotalCell).description).toBeUndefined();
+          expect(getMockTooltipData(rowTotalCell).description).toBeUndefined();
+
+          s2.destroy();
+        },
+      );
     });
   });
 

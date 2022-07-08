@@ -495,10 +495,15 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
 export const getDescription = (targetCell: S2CellType): string => {
   if (!targetCell) {
-    return '';
+    return;
   }
 
   const meta = targetCell.getMeta();
+
+  if (meta.isTotals) {
+    return;
+  }
+
   const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
     field: meta.field || meta.value || meta.valueField,
   });
