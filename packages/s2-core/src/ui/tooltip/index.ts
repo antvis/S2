@@ -93,6 +93,7 @@ export class BaseTooltip {
 
     this.resetPosition();
     this.container.remove?.();
+    this.container = null;
   }
 
   public renderContent<T = TooltipContentType>(content: T) {
@@ -155,7 +156,7 @@ export class BaseTooltip {
 
       setTooltipContainerStyle(container, {
         style: tooltip.style,
-        className: [TOOLTIP_CONTAINER_CLS, tooltip.className],
+        className: [TOOLTIP_CONTAINER_CLS].concat(tooltip.className),
       });
 
       rootContainer.appendChild(container);
