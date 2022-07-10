@@ -1,6 +1,7 @@
 import {
+  compact,
+  concat,
   endsWith,
-  has,
   includes,
   indexOf,
   isEmpty,
@@ -226,37 +227,93 @@ const createTotalParams = (
   return totalParams;
 };
 
+const filterExtraField = (fields: string[]) =>
+  fields.filter((field) => field !== EXTRA_FIELD);
+
 export const getSortByMeasureValues = (
   params: SortActionParams,
 ): DataType[] => {
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+  const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
 
+  /**
+   * 按明细数据
+   * 需要过滤查询出的总/小计“汇总数据”
+   */
   if (sortByMeasure !== TOTAL_VALUE) {
-    // 按指标只排序 - 最内侧的行列不需要汇总后排序
-    return dataSet.getMultiData(query);
-  }
+    const rowColFields = concat(fields.rows, fields.columns);
 
-  const isRow =
-    fields?.columns?.includes(sortFieldId) &&
-    keys(query)?.length === 1 &&
-    has(query, EXTRA_FIELD);
-
-  // 按 data 数据中的小计，总计排序
-  const measureValues = dataSet.getMultiData(query, true, isRow);
-  if (measureValues && !isEmpty(measureValues)) {
-    return measureValues;
-  }
-  // 按前端的小计，总计排序
-  return map(originValues, (originValue) => {
-    const totalParams = createTotalParams(originValue, fields, sortFieldId);
-
-    return (dataSet as PivotDataSet).getTotalValue({
-      ...query,
-      ...totalParams,
+    return dataList.filter((dataItem) => {
+      const dataItemKeys = new Set(keys(dataItem));
+      // 过滤出包含所有行列维度的数据
+      // 若确实任意 field，则是汇总数据，需要过滤掉
+      return rowColFields.every((field) => dataItemKeys.has(field));
     });
+  }
+
+  /**
+   * 按汇总值进行排序
+   * 因为当 query 想查汇总值时，会把下属维度的数据都查出来
+   * 所以需要过滤出用于排序“汇总数据”
+   */
+  const isSortFieldInRow = includes(fields.rows, sortFieldId);
+  // 排序字段所在一侧的全部字段
+  const sortFields = filterExtraField(
+    isSortFieldInRow ? fields.rows : fields.columns,
+  );
+  // 与排序交叉的另一侧全部字段
+  const oppositeFields = filterExtraField(
+    isSortFieldInRow ? fields.columns : fields.rows,
+  );
+
+  const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
+  const queryKeys = keys(query);
+  const missedOppositeFields = oppositeFields.filter((field) => {
+    return !queryKeys.includes(field);
   });
+
+  const totalDataList = dataList.filter((dataItem) => {
+    const dataItemKeys = new Set(keys(dataItem));
+    if (!dataItemKeys.has(sortFieldId)) {
+      // 若排序数据中都不含被排序字段，则过滤
+      // 如按`省`排序，query={[EXTRA_FIELD]: 'price'}
+      // 查询出的数据包含 “行总计x列总计” 数据了（需要过滤）
+      return false;
+    }
+
+    if (dataItemKeys.has(fieldAfterSortField)) {
+      // 若排序数据包含`排序字段`的后一个维度字段，则过滤
+      // 不需要更维度更“明细”的数据，仅sortFieldId的汇总即可
+      return false;
+    }
+
+    // 过滤出排序字段会与“relative字段”交叉出的汇总字段
+    const allMissed = missedOppositeFields.every((missedField) => {
+      return !dataItemKeys.has(missedField);
+    });
+    return allMissed;
+  });
+
+  if (!isEmpty(totalDataList)) {
+    return totalDataList;
+  }
+
+  /**
+   * 无汇总值的兜底
+   * 按前端的小计，总计排序
+   */
+  return compact(
+    map(originValues, (originValue) => {
+      const totalParams = createTotalParams(originValue, fields, sortFieldId);
+
+      return (dataSet as PivotDataSet).getTotalValue({
+        ...query,
+        ...totalParams,
+      });
+    }),
+  );
 };
 
 export const handleSortAction = (params: SortActionParams): string[] => {
