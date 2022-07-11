@@ -230,6 +230,14 @@ const createTotalParams = (
 const filterExtraField = (fields: string[]) =>
   fields.filter((field) => field !== EXTRA_FIELD);
 
+/**
+ * 获取 “按数值排序” 的排序参考数据
+ *
+ * 本函数可用以下结构的交叉表理解
+ * rows：province、city
+ * cols：type、subType
+ * vals：price、account
+ */
 export const getSortByMeasureValues = (
   params: SortActionParams,
 ): DataType[] => {
@@ -248,15 +256,16 @@ export const getSortByMeasureValues = (
     return dataList.filter((dataItem) => {
       const dataItemKeys = new Set(keys(dataItem));
       // 过滤出包含所有行列维度的数据
-      // 若确实任意 field，则是汇总数据，需要过滤掉
+      // 若缺失任意 field，则是汇总数据，需要过滤掉
       return rowColFields.every((field) => dataItemKeys.has(field));
     });
   }
 
   /**
    * 按汇总值进行排序
-   * 因为当 query 想查汇总值时，会把下属维度的数据都查出来
-   * 所以需要过滤出用于排序“汇总数据”
+   * 需要过滤出符合要求的 “汇总数据”
+   * 因为 getMultiData 会查询出 query 及其子维度的所有数据
+   * 如 query={ type: 'xx' } 会包含 { type: 'xx', subType: '*' } 的数据
    */
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
@@ -278,21 +287,25 @@ export const getSortByMeasureValues = (
     const dataItemKeys = new Set(keys(dataItem));
     if (!dataItemKeys.has(sortFieldId)) {
       // 若排序数据中都不含被排序字段，则过滤
-      // 如按`省`排序，query={[EXTRA_FIELD]: 'price'}
-      // 查询出的数据包含 “行总计x列总计” 数据了（需要过滤）
+      // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
+      // 查询出的数据会包含 “行总计x列总计” 数据，需要过滤
       return false;
     }
 
     if (dataItemKeys.has(fieldAfterSortField)) {
       // 若排序数据包含`排序字段`的后一个维度字段，则过滤
-      // 不需要更维度更“明细”的数据，仅sortFieldId的汇总即可
+      // 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
       return false;
     }
 
-    // 过滤出排序字段会与“relative字段”交叉出的汇总字段
+    // 当排序字段这一侧的维度匹配完成
+    // 另一侧维度参考 query 中的维度缺失情况，过滤出汇总数据即可
+    // 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
     const allMissed = missedOppositeFields.every((missedField) => {
       return !dataItemKeys.has(missedField);
     });
+
+    // 返回符合要求的汇总数据
     return allMissed;
   });
 
