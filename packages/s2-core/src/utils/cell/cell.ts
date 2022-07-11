@@ -1,5 +1,6 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
+import { ROOT_ID } from '../../common/constant/basic';
 import type {
   AreaRange,
   CellTheme,
@@ -10,6 +11,8 @@ import type {
   TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
+
 /**
  * -----------------------------
  * |           padding         |
@@ -422,4 +425,16 @@ export const adjustColHeaderScrollingTextPosition = (
   return textAlign === 'left'
     ? startX - offset
     : startX + offset - actionIconSpace;
+};
+
+export const getNodeDepth = (node: Node) => {
+  let depth = 0;
+  while (node) {
+    if (node.id === ROOT_ID) {
+      break;
+    }
+    depth++;
+    node = node.parent;
+  }
+  return depth;
 };
