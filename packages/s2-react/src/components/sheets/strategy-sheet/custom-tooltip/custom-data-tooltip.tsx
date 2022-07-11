@@ -22,7 +22,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const rowDiscription = getRowDescription(meta);
+  const rowDescription = getRowDescription(meta);
   const defaultRowName = getRowName(meta);
   const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
   const rowName = customLabel ?? defaultRowName;
@@ -89,9 +89,9 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
           </ul>
         </>
       )}
-      {rowDiscription && (
-        <div>
-          {i18n('说明')}: {rowDiscription}
+      {rowDescription && (
+        <div className={tooltipCls('description')}>
+          {i18n('说明')}: {rowDescription}
         </div>
       )}
     </div>

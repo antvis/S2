@@ -1,3 +1,4 @@
+import type { S2CellType } from '@antv/s2';
 import {
   type ColHeaderConfig,
   customMerge,
@@ -21,6 +22,7 @@ import {
   StrategySheetDataTooltip,
   StrategySheetRowTooltip,
 } from './custom-tooltip';
+
 /* *
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
@@ -59,6 +61,23 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         hideMeasureColumn = true;
       }
 
+      const getContent =
+        (cellType: 'row' | 'col' | 'data') =>
+        (
+          cell: S2CellType,
+          tooltipOptions: TooltipShowOptions<React.ReactNode>,
+        ): React.ReactNode => {
+          // 优先级: 单元格 > 表格级
+          const tooltipContent: TooltipShowOptions<React.ReactNode>['content'] =
+            options.tooltip?.[cellType]?.content ?? options.tooltip?.content;
+
+          const content = isFunction(tooltipContent)
+            ? tooltipContent?.(cell, tooltipOptions)
+            : tooltipContent;
+
+          return content;
+        };
+
       return {
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
@@ -88,28 +107,36 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell) => <StrategySheetRowTooltip cell={cell} />,
+            content: (cell, tooltipOptions) =>
+              getContent('row')(cell, tooltipOptions) ?? (
+                <StrategySheetRowTooltip cell={cell} />
+              ),
           },
           col: {
-            content: (cell) => <StrategySheetColTooltip cell={cell} />,
+            content: (cell, tooltipOptions) =>
+              getContent('row')(cell, tooltipOptions) ?? (
+                <StrategySheetColTooltip cell={cell} />
+              ),
           },
           data: {
-            content: (cell, defaultTooltipShowOptions) => {
+            content: (cell, tooltipOptions) => {
               const meta = cell.getMeta() as ViewMeta;
               const fieldValue = meta.fieldValue as MultiData;
-
-              const tooltipContent = options.tooltip?.data
-                ?.content as TooltipShowOptions<React.ReactNode>['content'];
-
-              const content = isFunction(tooltipContent)
-                ? tooltipContent?.(cell, defaultTooltipShowOptions)
-                : tooltipContent;
+              const content = getContent('data')(cell, tooltipOptions);
 
               // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return content ?? <StrategySheetDataTooltip cell={cell} />;
+                return (
+                  content ?? (
+                    <StrategySheetDataTooltip
+                      cell={cell}
+                      label={(cell, defaultLabel) =>
+                        `${defaultLabel}（自定义标题）`
+                      }
+                    />
+                  )
+                );
               }
-
               return content ?? <></>;
             },
           },
