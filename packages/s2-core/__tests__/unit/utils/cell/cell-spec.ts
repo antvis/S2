@@ -1,4 +1,5 @@
 import type { SimpleBBox } from '@antv/g-canvas';
+import { getNodeDepth } from './../../../../src/utils/cell/cell';
 import { CellBorderPosition, type CellTheme } from '@/common/interface';
 import type { AreaRange } from '@/common/interface/scroll';
 import {
@@ -8,6 +9,7 @@ import {
   getTextAreaRange,
   getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
+import { Node } from '@/facet/layout/node';
 
 describe('Cell Content Test', () => {
   test('should return content area', () => {
@@ -557,5 +559,20 @@ describe('Horizontal Scrolling Text Position Test', () => {
       x2: 200,
       y2: 49,
     });
+  });
+});
+
+describe('Node Depth Test', () => {
+  const root = Node.rootNode();
+  test('should return 1 when node only has root parent', () => {
+    const node = new Node({ id: 'node', parent: root } as any);
+    expect(getNodeDepth(node)).toEqual(1);
+  });
+
+  test('should return 2 when node has two ancestors', () => {
+    const node1 = new Node({ id: 'node1', parent: root } as any);
+    const node2 = new Node({ id: 'node2', parent: node1 } as any);
+    expect(getNodeDepth(node1)).toEqual(1);
+    expect(getNodeDepth(node2)).toEqual(2);
   });
 });
