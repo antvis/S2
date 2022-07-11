@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test col label',
+  component: [Function: StrategySheetColTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetColTooltip'
+  }
+} 1`] = `
+<span
+  class="s2-strategy-sheet-tooltip-name"
+>
+  test col label
+</span>
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test data label',
+  component: [Function: StrategySheetDataTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetDataTooltip'
+  }
+} 1`] = `
+<span
+  class="header-label"
+>
+  test data label
+</span>
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test row label',
+  component: [Function: StrategySheetRowTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetRowTooltip'
+  }
+} 1`] = `
+<div
+  class="s2-strategy-sheet-tooltip-value"
+>
+  test row label
+</div>
+`;

@@ -102,6 +102,11 @@ export const createMockCellInfo = (
     type: undefined,
     update: jest.fn(),
     spreadsheet: {
+      options: {
+        style: {},
+      },
+      getRowNodes: jest.fn(),
+      getColumnNodes: jest.fn(),
       dataCfg: {
         meta: null,
         data: [],
@@ -109,6 +114,7 @@ export const createMockCellInfo = (
       },
       dataSet: {
         getFieldDescription: jest.fn(),
+        getFieldName: jest.fn(),
       },
     } as unknown as SpreadSheet,
   };
