@@ -163,7 +163,7 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   // Custom tooltip mount container
   getContainer?: () => HTMLElement;
   // Extra tooltip container class name
-  className?: string;
+  className?: string | string[];
   // Extra tooltip container style
   style?: CSS.Properties;
 }
