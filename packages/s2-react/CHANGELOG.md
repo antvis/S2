@@ -1,3 +1,22 @@
+# [@antv/s2-react-v1.22.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0-alpha.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
+
+
+### Features
+
+* **strategysheet:** 趋势分析表允许对行头和列头的 tooltip 做自定义 ([#1552](https://github.com/antvis/S2/issues/1552)) ([abfa98b](https://github.com/antvis/S2/commit/abfa98bca5e2528040e1cdfbde0f55e4e1298d0b))
+* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
+
+### Reverts
+
+* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
+
 # [@antv/s2-react-v1.21.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0-alpha.1...@antv/s2-react-v1.21.0-alpha.2) (2022-07-06)
 
 ### Bug Fixes
