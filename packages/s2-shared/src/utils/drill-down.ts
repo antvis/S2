@@ -161,10 +161,10 @@ export const buildDrillDownOptions = (
 };
 
 export const handleDrillDown = (params: DrillDownParams) => {
-  const { fetchData, spreadsheet, drillFields, drillItemsNum } = params;
-  if (drillItemsNum) {
-    spreadsheet.store.set('drillItemsNum', drillItemsNum);
-  }
+  const { fetchData, spreadsheet, drillFields, drillItemsNum = -1 } = params;
+
+  spreadsheet.store.set('drillItemsNum', drillItemsNum);
+
   const meta = spreadsheet.store.get('drillDownNode');
   const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
     spreadsheet,
