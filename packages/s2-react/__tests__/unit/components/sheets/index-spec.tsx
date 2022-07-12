@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { type SpreadSheet, type S2DataConfig, customMerge } from '@antv/s2';
+import {
+  type SpreadSheet,
+  type S2DataConfig,
+  customMerge,
+  CellTypes,
+} from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 
@@ -121,5 +127,32 @@ describe('<SheetComponent/> Tests', () => {
 
       expect(s2.options.tooltip.operation.hiddenColumns).toBeTruthy();
     });
+
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
+      (cellType) => {
+        const content = `${cellType} test content`;
+        const cell = {
+          [CellTypes.ROW_CELL]: 'row',
+          [CellTypes.COL_CELL]: 'col',
+          [CellTypes.DATA_CELL]: 'data',
+        }[cellType];
+
+        renderStrategySheet({
+          tooltip: {
+            showTooltip: true,
+            [cell]: {
+              content: () => <div>{content}</div>,
+            },
+          },
+        });
+
+        jest.spyOn(s2, 'getCellType').mockReturnValueOnce(cellType);
+
+        s2.showTooltipWithInfo({} as GEvent, []);
+
+        expect(s2.tooltip.container.innerText).toEqual(content);
+      },
+    );
   });
 });

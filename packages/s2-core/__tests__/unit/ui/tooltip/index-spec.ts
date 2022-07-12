@@ -127,6 +127,7 @@ describe('Tooltip Tests', () => {
     expect(tooltip.visible).toBeFalsy();
     // remove container
     expect(document.getElementById(containerId)).toBeFalsy();
+    expect(tooltip.container).toBe(null);
   });
 
   test('should disable pointer event', () => {
@@ -383,5 +384,22 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.classList.contains('custom')).toBeTruthy();
+  });
+
+  test('should set custom container class name list', () => {
+    const classList = ['custom1', 'custom2'];
+    s2.options.tooltip.className = classList;
+
+    tooltip = new BaseTooltip(s2);
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+    });
+
+    expect(tooltip.container.classList.contains(classList[0])).toBeTruthy();
+    expect(tooltip.container.classList.contains(classList[1])).toBeTruthy();
   });
 });

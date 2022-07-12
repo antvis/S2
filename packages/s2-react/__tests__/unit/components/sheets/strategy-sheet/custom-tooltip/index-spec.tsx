@@ -9,24 +9,6 @@ import {
 
 describe('StrategySheet Tooltip Tests', () => {
   const mockCellInfo = createMockCellInfo('test');
-  const mockCell = {
-    ...mockCellInfo.mockCell,
-    getMeta: () => {
-      return {
-        spreadsheet: {
-          options: {
-            style: {},
-          },
-          getRowNodes: jest.fn(),
-          getColumnNodes: jest.fn(),
-          dataSet: {
-            getFieldDescription: jest.fn(),
-            getFieldName: jest.fn(),
-          },
-        },
-      };
-    },
-  };
 
   test.each([
     {
@@ -42,7 +24,8 @@ describe('StrategySheet Tooltip Tests', () => {
       component: StrategySheetRowTooltip,
     },
   ])('should render tooltip with %o', ({ label, component: Comp }) => {
-    render(<Comp cell={mockCell} label={label} />);
+    render(<Comp cell={mockCellInfo.mockCell} label={label} />);
     expect(screen.getByText(label)).toBeDefined();
+    expect(screen.getByText(label)).toMatchSnapshot();
   });
 });

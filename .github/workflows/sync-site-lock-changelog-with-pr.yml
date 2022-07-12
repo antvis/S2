@@ -33,6 +33,7 @@ jobs:
       - name: Checkout branch
         run: |
           git checkout -b chore-sync
+          git fetch --all
           git merge origin/latest --squash
 
       - name: Sleep 5m

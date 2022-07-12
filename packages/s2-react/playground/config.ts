@@ -59,50 +59,6 @@ export const sliderOptions: SliderSingleProps = {
   },
 };
 
-export const strategyOptions: S2Options = {
-  width: 800,
-  height: 800,
-  cornerText: '指标',
-  placeholder: (v) => {
-    const placeholder = v?.fieldValue ? '-' : '';
-    return placeholder;
-  },
-  headerActionIcons: [
-    {
-      iconNames: ['Trend'],
-      belongsCell: 'rowCell',
-      defaultHide: true,
-      action: () => {},
-    },
-  ],
-  conditions: {
-    text: [
-      {
-        mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
-          const isNilValue = isNil(value) || value === '';
-          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
-            return {
-              fill: '#000',
-            };
-          }
-          return {
-            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-          };
-        },
-      },
-    ],
-  },
-  style: {
-    cellCfg: {
-      height: 76,
-      valuesCfg: {
-        originalValueField: 'originalValues',
-      },
-    },
-  },
-};
-
 export const mockGridAnalysisOptions: S2Options = {
   width: 1600,
   height: 600,

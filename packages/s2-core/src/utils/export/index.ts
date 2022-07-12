@@ -271,9 +271,10 @@ export const copyData = (
   );
 
   // get max query property length
-  const rowLength = rowLeafNodes.reduce((pre, cur) => {
-    const length = cur.query ? Object.keys(cur.query).length : 0;
-    return length > pre ? length : pre;
+  const maxRowDepth = rowLeafNodes.reduce((maxDepth, node) => {
+    // 第一层的level为0
+    const depth = (node.level ?? 0) + 1;
+    return depth > maxDepth ? depth : maxDepth;
   }, 0);
   // Generate the table body.
   let detailRows = [];
@@ -403,22 +404,25 @@ export const copyData = (
             ...item,
           ];
         }
-        if (index < colHeader.length) {
-          // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
-          const copiedRows = rows.slice(0, maxRowsHeaderLevel + 1);
-          return [
-            ...copiedRows.map(
-              (row) => sheetInstance.dataSet.getFieldName(row) || '',
-            ),
-            ...item,
-          ];
-        }
+        // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
 
-        return rowsHeader.concat(...item);
+        const copiedRows = rows.slice(0, maxRowDepth);
+        // 在趋势分析表中，行头只有一个 extra的维度，但是有有个层级
+        if (copiedRows.length < maxRowDepth) {
+          copiedRows.unshift(
+            ...Array(maxRowDepth - copiedRows.length).fill(''),
+          );
+        }
+        return [
+          ...copiedRows.map(
+            (row) => sheetInstance.dataSet.getFieldName(row) || '',
+          ),
+          ...item,
+        ];
       }
 
       return index < colHeader.length
-        ? Array(rowLength)
+        ? Array(maxRowDepth)
             .fill('')
             .concat(...item)
         : rowsHeader.concat(...item);

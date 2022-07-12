@@ -1,4 +1,5 @@
 import type { IElement, IGroup } from '@antv/g-canvas';
+import type { Event as GraphEvent } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -853,6 +854,8 @@ export abstract class BaseFacet {
 
   private stopScrollChaining = (event: S2WheelEvent) => {
     event?.preventDefault?.();
+    // 移动端的 prevent 存在于 originalEvent上
+    (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
   };
 
   onWheel = (event: S2WheelEvent) => {

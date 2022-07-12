@@ -45,13 +45,15 @@ import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import { StrategySheetDataConfig } from '../__tests__/data/strategy-data';
+import {
+  StrategySheetDataConfig,
+  StrategyOptions,
+} from '../__tests__/data/strategy-data';
 import {
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
-  strategyOptions,
   tableSheetDataCfg,
 } from './config';
 import './index.less';
@@ -958,7 +960,7 @@ function MainLayout() {
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
-            options={strategyOptions}
+            options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
             header={{
               title: '趋势分析表',

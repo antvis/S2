@@ -17,41 +17,41 @@ order: 9
 <summary>点击查看趋势分析表 options 配置</summary>
 
 ```js
- const s2Options = {
-      width: 600,
-      height: 480,
-      cornerText: '指标层级', // 角头对应行头的 label 名
-      hierarchyType: 'customTree', // 必须指定类型
-      style: {  // 染色逻辑，区分指标和副指标
-        cellCfg: {
-          valuesCfg: {
-            originalValueField: 'originalValues',
-            conditions: {
-              text: {
-                field: 'number',
-                mapping: (value, cellInfo) => {
-                  const { meta } = cellInfo;
+const s2Options = {
+  width: 600,
+  height: 480,
+  cornerText: '指标层级', // 角头对应行头的 label 名
+  hierarchyType: 'customTree', // 必须指定类型
+  style: {  // 染色逻辑，区分指标和副指标
+    cellCfg: {
+      valuesCfg: {
+        originalValueField: 'originalValues',
+        conditions: {
+          text: {
+            field: 'number',
+            mapping: (value, cellInfo) => {
+              const { meta } = cellInfo;
 
-                  if (meta.fieldValue.values[0][0] === value || !value) {
-                    return {
-                      fill: '#000',
-                    };
-                  }
-                  return {
-                    fill: value > 0 ? '#FF4D4F' : '#29A294',
-                  };
-                },
-              },
+              if (meta.fieldValue.values[0][0] === value || !value) {
+                return {
+                  fill: '#000',
+                };
+              }
+              return {
+                fill: value > 0 ? '#FF4D4F' : '#29A294',
+              };
             },
           },
         },
       },
-    };
+    },
+  },
+};
 ```
 
 </details>
 
-```js
+```ts
 import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
@@ -100,3 +100,33 @@ object **必选**,_default：null_
 
 * 必须指定 `hierarchyType: 'customTree'`
 * 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+
+## Tooltip
+
+趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (row)`, `列头 (col)`, `数值 (data)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105), 同时可以在 `@antv/s2-react` 包中进行单独引入
+
+```ts
+import { StrategySheetRowTooltip, StrategySheetColTooltip, StrategySheetDataTooltip } from '@antv/s2-react'
+
+const s2Options = {
+  tooltip: {
+    content: (cell) => <StrategySheetDataTooltip cell={cell} label={label}/>
+  }
+}
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/MCgZSZyEm/df084a59-407c-4a69-bc93-1f12eb01b019.png" width="600"  alt="preview" />
+
+### 自定义标题
+
+默认使用行头节点名字作为 Tooltip 标题，可通过 `label` 自定义内容的方式
+
+```ts
+// 字符串
+<StrategySheetDataTooltip cell={cell} label={"自定义标题"}/>
+
+// 自定义组件
+<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel}（自定义标题`} />
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/dosQkhLBp/fbe5a635-60ad-4e55-9a23-858842b977ac.png" width="600"  alt="preview" />
