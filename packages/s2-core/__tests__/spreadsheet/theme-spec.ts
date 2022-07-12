@@ -3,7 +3,11 @@ import { createPivotSheet } from 'tests/util/helpers';
 import type { IGroup } from '@antv/g-canvas';
 import { get } from 'lodash';
 import type { ShapeAttrs } from '@antv/g-canvas';
-import type { TextBaseline, TextTheme } from '@/common/interface/theme';
+import type {
+  TextBaseline,
+  TextTheme,
+  ThemeCfg,
+} from '@/common/interface/theme';
 import type { PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -61,6 +65,46 @@ describe('SpreadSheet Theme Tests', () => {
         expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
       },
     );
+
+    test('should set theme correctly', () => {
+      s2.setTheme({
+        rowCell: {
+          seriesNumberWidth: 200,
+        },
+      });
+
+      expect(s2.theme.rowCell.seriesNumberWidth).toStrictEqual(200);
+    });
+
+    // https://github.com/antvis/S2/issues/1538
+    test('should not reset theme palette after updated theme', () => {
+      const palette: ThemeCfg['palette'] = {
+        basicColors: Array.from({ length: 10 }).fill('red') as string[],
+        semanticColors: {
+          red: 'red',
+          green: 'green',
+        },
+      };
+
+      s2.setThemeCfg({
+        palette,
+        theme: {
+          rowCell: {
+            text: {
+              textAlign: 'left',
+            },
+          },
+        },
+      });
+
+      s2.setTheme({
+        rowCell: {
+          seriesNumberWidth: 200,
+        },
+      });
+
+      expect(s2.theme.background.color).toStrictEqual('red');
+    });
   });
 
   describe('Custom SVG Icon Tests', () => {

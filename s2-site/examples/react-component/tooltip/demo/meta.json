@@ -67,6 +67,14 @@
         "en": "Custom Hover Show Tooltip"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/c%24ICO1qvb/Kapture%2525202021-12-03%252520at%25252016.30.11.gif"
+    },
+    {
+      "filename": "custom-description.tsx",
+      "title": {
+        "zh": "Tooltip 中显示字段描述",
+        "en": "Custom Field Description"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Z8%24cg%24so%24/Kapture%2525202022-07-07%252520at%25252017.28.31.gif"
     }
   ]
 }

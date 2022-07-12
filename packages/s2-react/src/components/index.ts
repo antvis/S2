@@ -2,6 +2,7 @@ export { BaseSheet } from './sheets/base-sheet';
 export { TableSheet } from './sheets/table-sheet';
 export { GridAnalysisSheet } from './sheets/grid-analysis-sheet';
 export { StrategySheet } from './sheets/strategy-sheet';
+export * from './sheets/strategy-sheet/custom-tooltip';
 export {
   AdvancedSort,
   type AdvancedSortProps,

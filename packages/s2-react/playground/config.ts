@@ -30,6 +30,7 @@ export const s2Options: S2Options = {
   debug: true,
   width: 600,
   height: 400,
+  showSeriesNumber: false,
   interaction: {
     enableCopy: true,
   },
@@ -80,12 +81,7 @@ export const strategyOptions: S2Options = {
         mapping: (value, cellInfo) => {
           const { meta } = cellInfo;
           const isNilValue = isNil(value) || value === '';
-
-          if (
-            meta?.fieldValue?.values[0][0] === value ||
-            isNilValue ||
-            !meta?.fieldValue
-          ) {
+          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
             return {
               fill: '#000',
             };
@@ -117,24 +113,25 @@ export const mockGridAnalysisOptions: S2Options = {
       height: 100,
       valuesCfg: {
         widthPercent: [40, 20, 20, 20],
-        conditions: {
-          text: {
-            field: 'number',
-            mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
-              if (colIndex <= 1) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
       },
     },
+  },
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { colIndex } = cellInfo;
+          if (colIndex <= 1) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
   },
 };
 

@@ -16,6 +16,7 @@ import { TooltipInterpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
 import { TooltipSimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
+import { TooltipDescription } from './components/description';
 import type { TooltipRenderProps } from './interface';
 
 import './index.less';
@@ -72,10 +73,22 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     return interpretation && <TooltipInterpretation {...interpretation} />;
   };
 
+  const renderDescription = (description: string) => {
+    return <TooltipDescription description={description} />;
+  };
+
   const renderContent = () => {
     const { operator, onlyMenu } = getTooltipDefaultOptions(options);
-    const { summaries, headInfo, details, interpretation, infos, tips, name } =
-      data || {};
+    const {
+      summaries,
+      headInfo,
+      details,
+      interpretation,
+      infos,
+      tips,
+      name,
+      description,
+    } = data || {};
     const nameTip: TooltipNameTipsOptions = { name, tips };
 
     if (onlyMenu) {
@@ -90,6 +103,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
         {renderHeadInfo(headInfo)}
         {renderDetail(details)}
         {renderInfos(infos)}
+        {renderDescription(description)}
       </>
     );
 

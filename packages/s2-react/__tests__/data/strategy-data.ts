@@ -69,15 +69,31 @@ const getKPIMockData = () => {
 
 const getMiniChartMockData = () => {
   return {
+    'custom-node-1': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: -1 },
+          { year: '2019', value: 1 },
+          { year: '2020', value: 2 },
+          { year: '2021', value: -100 },
+          { year: '2022', value: 2 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
     'measure-a': {
       values: {
         type: 'line',
         data: [
-          { year: '2018', value: 15468 },
-          { year: '2019', value: 16100 },
-          { year: '2020', value: 15900 },
-          { year: '2021', value: 17409 },
-          { year: '2022', value: 17000 },
+          { year: '2018', value: 100 },
+          { year: '2019', value: 100 },
+          { year: '2020', value: 100 },
+          { year: '2021', value: 100 },
+          { year: '2022', value: 100 },
         ],
         encode: {
           x: 'year',
@@ -89,12 +105,12 @@ const getMiniChartMockData = () => {
       values: {
         type: 'bar',
         data: [
-          { year: '2017', value: 368 },
-          { year: '2018', value: 168 },
-          { year: '2019', value: 160 },
-          { year: '2020', value: 290 },
-          { year: '2021', value: 149 },
-          { year: '2022', value: 300 },
+          { year: '2017', value: -368 },
+          { year: '2018', value: 368 },
+          { year: '2019', value: 368 },
+          { year: '2020', value: 368 },
+          { year: '2021', value: 368 },
+          { year: '2022', value: 368 },
         ],
         encode: {
           x: 'year',
@@ -106,14 +122,37 @@ const getMiniChartMockData = () => {
       values: {
         type: 'line',
         data: [
-          { year: '2018', value: 154 },
-          { year: '2019', value: 161 },
-          { year: '2020', value: 159 },
-          { year: '2021', value: 174 },
-          { year: '2022', value: 170 },
+          {
+            date: '2022-06-30',
+            value: 0,
+          },
+          {
+            date: '2022-07-01',
+            value: 0,
+          },
+          {
+            date: '2022-07-02',
+            value: 8,
+          },
+          {
+            date: '2022-07-03',
+            value: 8,
+          },
+          {
+            date: '2022-07-04',
+            value: 8,
+          },
+          {
+            date: '2022-07-05',
+            value: 8,
+          },
+          {
+            date: '2022-07-06',
+            value: 0,
+          },
         ],
         encode: {
-          x: 'year',
+          x: 'date',
           y: 'value',
         },
       },
@@ -122,11 +161,11 @@ const getMiniChartMockData = () => {
       values: {
         type: 'line',
         data: [
-          { year: '2018', value: 68 },
-          { year: '2019', value: 100 },
-          { year: '2020', value: 900 },
-          { year: '2021', value: 409 },
-          { year: '2022', value: 300 },
+          { year: '2018', value: 0 },
+          { year: '2019', value: 0 },
+          { year: '2020', value: 0 },
+          { year: '2021', value: 0 },
+          { year: '2022', value: 0 },
         ],
         encode: {
           x: 'year',
@@ -138,12 +177,10 @@ const getMiniChartMockData = () => {
       values: {
         type: 'bar',
         data: [
-          { year: '2017', value: 568 },
-          { year: '2018', value: 368 },
-          { year: '2019', value: 550 },
-          { year: '2020', value: 900 },
-          { year: '2021', value: 409 },
-          { year: '2022', value: 230 },
+          { year: '2018', value: -5 },
+          { year: '2019', value: -10 },
+          { year: '2020', value: -5 },
+          { year: '2021', value: -10 },
         ],
         encode: {
           x: 'year',
@@ -228,6 +265,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
   fields: {
     columns: ['date', EXTRA_COLUMN_FIELD],
     values: [
+      'custom-node-1',
       'measure-a',
       'measure-b',
       'measure-c',

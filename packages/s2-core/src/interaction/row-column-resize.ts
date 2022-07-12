@@ -426,11 +426,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     if (seriesNumberWidth) {
-      this.spreadsheet.setThemeCfg({
-        theme: {
-          rowCell: {
-            seriesNumberWidth,
-          },
+      this.spreadsheet.setTheme({
+        rowCell: {
+          seriesNumberWidth,
         },
       });
     }

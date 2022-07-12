@@ -349,7 +349,7 @@ const getCurrentTextStyle = ({
   meta: ViewMeta;
   data: string | number;
   textStyle: TextTheme;
-  textCondition: Condition;
+  textCondition?: Condition;
 }) => {
   let fill = textStyle.fill;
   if (textCondition?.mapping) {
@@ -376,9 +376,13 @@ export const getEmptyPlaceholder = (
  * @desc draw text shape of object
  * @param cell
  * @multiData 自定义文本内容
- * @disabledConditions 是否禁用条件格式
+ * @useCondition 是否使用条件格式
  */
-export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
+export const drawObjectText = (
+  cell: S2CellType,
+  multiData?: MultiData,
+  useCondition = true,
+) => {
   const { x } = cell.getTextAndIconPosition(0).text;
   const {
     y,
@@ -390,7 +394,7 @@ export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
   const { options } = cell?.getMeta().spreadsheet;
   const { valuesCfg } = options.style.cellCfg;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
-  const textCondition = options?.conditions?.text[0];
+  const textCondition = options?.conditions?.text?.[0];
   if (!isArray(textValues)) {
     renderChart(textValues, cell);
     return;
@@ -441,14 +445,16 @@ export const drawObjectText = (cell: S2CellType, multiData?: MultiData) => {
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = getCurrentTextStyle({
-        rowIndex: i,
-        colIndex: j,
-        meta: cell?.getMeta() as ViewMeta,
-        data: curText,
-        textStyle,
-        textCondition,
-      });
+      const curStyle = useCondition
+        ? getCurrentTextStyle({
+            rowIndex: i,
+            colIndex: j,
+            meta: cell?.getMeta() as ViewMeta,
+            data: curText,
+            textStyle,
+            textCondition,
+          })
+        : textStyle;
       avgWidth = !isEmpty(widthPercent)
         ? totalTextWidth * (widthPercent[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可

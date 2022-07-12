@@ -164,13 +164,14 @@ function MainLayout() {
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
-    setOptions(customMerge({}, options, newOptions));
+    setOptions(customMerge(options, newOptions));
   };
+
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
       sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
 
-    setDataCfg(customMerge({}, currentDataCfg, newDataCfg));
+    setDataCfg(customMerge(currentDataCfg, newDataCfg));
   };
 
   const onAutoAdjustBoundaryChange = (value: TooltipAutoAdjustBoundary) => {
@@ -237,7 +238,6 @@ function MainLayout() {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
-
       callback?.();
     };
 
