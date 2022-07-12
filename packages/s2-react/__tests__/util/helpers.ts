@@ -101,6 +101,22 @@ export const createMockCellInfo = (
     rowIndex,
     type: undefined,
     update: jest.fn(),
+    spreadsheet: {
+      options: {
+        style: {},
+      },
+      getRowNodes: jest.fn(),
+      getColumnNodes: jest.fn(),
+      dataCfg: {
+        meta: null,
+        data: [],
+        fields: {},
+      },
+      dataSet: {
+        getFieldDescription: jest.fn(),
+        getFieldName: jest.fn(),
+      },
+    } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, 'update');
   const mockCell = {

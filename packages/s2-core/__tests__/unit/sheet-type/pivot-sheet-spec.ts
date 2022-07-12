@@ -115,7 +115,7 @@ describe('PivotSheet Tests', () => {
       s2.tooltip.destroy();
 
       // remove container
-      expect(s2.tooltip.container.children).toHaveLength(0);
+      expect(s2.tooltip.container).toBe(null);
       // reset position
       expect(s2.tooltip.position).toEqual({
         x: 0,
@@ -935,6 +935,17 @@ describe('PivotSheet Tests', () => {
     s2.render(false);
 
     s2.store.set('test', 111);
+
+    // restore mock...
+    (s2.tooltip.show as jest.Mock).mockRestore();
+    s2.showTooltip({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: () => 'custom callback content',
+    });
+    s2.hideTooltip();
     s2.tooltip.container.classList.add('destroy-test');
     s2.interaction.addIntercepts([InterceptType.HOVER]);
     s2.interaction.interactions.set('test-interaction', null);
@@ -955,7 +966,8 @@ describe('PivotSheet Tests', () => {
     expect(s2.interaction.eventController.s2EventHandlers).toHaveLength(0);
     expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
     // destroy tooltip
-    expect(s2.tooltip.container.children).toHaveLength(0);
+    expect(document.querySelector('.destroy-test')).toBe(null);
+    expect(s2.tooltip.container).toBe(null);
     // destroy facet
     expect(facetDestroySpy).toHaveBeenCalledTimes(1);
     // destroy hdAdapter
@@ -1077,6 +1089,33 @@ describe('PivotSheet Tests', () => {
       );
       // modify valueInCols config
       expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
+
+      sheet.destroy();
+    });
+
+    // https://github.com/antvis/S2/issues/1514
+    it('should not show default action icons if values is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
+        fields: {
+          values: [],
+          valueInCols: true,
+        },
+      } as S2DataConfig);
+
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
+        width: 400,
+        height: 200,
+        showDefaultHeaderActionIcon: true,
+        hierarchyType: 'tree',
+      });
+      sheet.render();
+
+      sheet.getRowLeafNodes().forEach((node) => {
+        const rowCell = node.belongsCell;
+        expect(get(rowCell, 'actionIcons')).toHaveLength(0);
+      });
+
+      sheet.destroy();
     });
   });
 });

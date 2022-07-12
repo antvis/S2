@@ -43,6 +43,15 @@ order: 13
      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
    ></iframe>
 
+### Vue 组件下钻 demo
+
+<iframe src="https://codesandbox.io/embed/vue-drilldown-demo-8p1lmv?fontsize=14&hidenavigation=1&theme=dark"
+style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+title="vue-drilldown-demo"
+allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
 ## 布局
 
 ### Vue 组件自适应 demo

@@ -12,6 +12,7 @@ import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
 import type { SheetComponentsProps } from '../../sheets/interface';
+
 import './index.less';
 
 export const BaseSheet = React.forwardRef(

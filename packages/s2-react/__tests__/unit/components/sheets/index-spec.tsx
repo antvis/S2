@@ -1,15 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { type SpreadSheet, type S2DataConfig } from '@antv/s2';
+import {
+  type SpreadSheet,
+  type S2DataConfig,
+  customMerge,
+  CellTypes,
+} from '@antv/s2';
+import { SheetType } from '@antv/s2-shared';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 
 describe('<SheetComponent/> Tests', () => {
-  describe('<StrategySheet/> Tests', () => {
-    let s2: SpreadSheet;
-    let container: HTMLDivElement;
+  let s2: SpreadSheet;
+  let container: HTMLDivElement;
 
+  beforeEach(() => {
+    container = getContainer();
+  });
+
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
+  });
+
+  describe('Render Tests', () => {
+    test.each(['pivot', 'table', 'strategy', 'gridAnalysis'] as SheetType[])(
+      'should render successfully for %s sheet',
+      (sheetType) => {
+        function render() {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null}
+            />,
+            container,
+          );
+        }
+
+        expect(render).not.toThrowError();
+      },
+    );
+  });
+
+  describe('<StrategySheet/> Tests', () => {
     const renderStrategySheet = (
       options: SheetComponentsProps['options'],
       dataCfg: S2DataConfig = null,
@@ -18,7 +54,10 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(
           <SheetComponent
             sheetType="strategy"
-            options={options}
+            options={customMerge(options, {
+              width: 200,
+              height: 200,
+            })}
             dataCfg={dataCfg}
             getSpreadSheet={(instance) => {
               s2 = instance;
@@ -28,15 +67,6 @@ describe('<SheetComponent/> Tests', () => {
         );
       });
     };
-
-    beforeEach(() => {
-      container = getContainer();
-    });
-
-    afterEach(() => {
-      ReactDOM.unmountComponentAtNode(container);
-      container.remove();
-    });
 
     test('should overwrite strategy sheet tooltip data cell content', () => {
       const content = 'custom';
@@ -98,15 +128,31 @@ describe('<SheetComponent/> Tests', () => {
       expect(s2.options.tooltip.operation.hiddenColumns).toBeTruthy();
     });
 
-    test.each([
-      'brushSelection',
-      'selectedCellMove',
-      'multiSelection',
-      'rangeSelection',
-    ])('should disable %s interaction', (interactionName) => {
-      renderStrategySheet(null);
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
+      (cellType) => {
+        const content = `${cellType} test content`;
+        const cell = {
+          [CellTypes.ROW_CELL]: 'row',
+          [CellTypes.COL_CELL]: 'col',
+          [CellTypes.DATA_CELL]: 'data',
+        }[cellType];
 
-      expect(s2.options.interaction[interactionName]).toBeFalsy();
-    });
+        renderStrategySheet({
+          tooltip: {
+            showTooltip: true,
+            [cell]: {
+              content: () => <div>{content}</div>,
+            },
+          },
+        });
+
+        jest.spyOn(s2, 'getCellType').mockReturnValueOnce(cellType);
+
+        s2.showTooltipWithInfo({} as GEvent, []);
+
+        expect(s2.tooltip.container.innerText).toEqual(content);
+      },
+    );
   });
 });

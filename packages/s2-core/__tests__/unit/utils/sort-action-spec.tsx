@@ -11,9 +11,11 @@ import {
   type S2Options,
   type SortParam,
   TOTAL_VALUE,
+  type S2DataConfig,
+  VALUE_FIELD,
 } from '@/common';
-import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet, type SortActionParams } from '@/data-set';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { BaseDataSet, PivotDataSet, type SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -237,7 +239,162 @@ describe('Sort By Func Tests', () => {
   });
 });
 
-describe('getSortByMeasureValues', () => {
+describe('GetSortByMeasureValues Tests', () => {
+  let s2: SpreadSheet;
+
+  beforeEach(() => {
+    const dataCfg: S2DataConfig = {
+      ...sortData,
+      // 补充一些总、小计数据
+      totalData: [
+        {
+          province: '浙江',
+          price: '777',
+        },
+        {
+          province: '吉林',
+          price: '888',
+        },
+        {
+          province: '浙江',
+          type: '笔',
+          price: '199',
+        },
+        {
+          province: '吉林',
+          type: '笔',
+          price: '188',
+        },
+      ],
+    };
+    s2 = new PivotSheet(getContainer(), dataCfg, {
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          subTotalsDimensions: ['province'],
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+        },
+      },
+    });
+    s2.render();
+  });
+
+  afterEach(() => {
+    s2.destroy();
+  });
+
+  test('should return detail data', () => {
+    // 对城市（最后一个维度）进行按指标排序
+    // query 会包含所有列维度，才能指向明细数据格（无汇总数据）
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortByMeasure: 'price',
+      sortMethod: 'desc',
+      query: { province: '吉林', type: '笔', [EXTRA_FIELD]: 'price' },
+    };
+
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '吉林',
+        city: '长春',
+        type: '笔',
+        price: '10',
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: '10',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '笔',
+        price: '9',
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: '9',
+      },
+    ]);
+  });
+
+  test('should return sub-total data', () => {
+    // 对省维度（非最后一个维度）进行按指标排序
+    // 排序数据需要取汇总值
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { type: '笔', [EXTRA_FIELD]: 'price' },
+    };
+
+    // query 限定了 type
+    // 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        type: '笔',
+        price: '199',
+        $$extra$$: 'price',
+        $$value$$: '199',
+      },
+      {
+        province: '吉林',
+        type: '笔',
+        price: '188',
+        $$extra$$: 'price',
+        $$value$$: '188',
+      },
+    ]);
+  });
+
+  test('should return grand-total data', () => {
+    // 对省维度（非最后一个维度）进行按指标排序
+    // 排序数据需要取汇总值
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    // query 为限定任何列维度
+    // 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        price: '777',
+        $$extra$$: 'price',
+        $$value$$: '777',
+      },
+      {
+        province: '吉林',
+        price: '888',
+        $$extra$$: 'price',
+        $$value$$: '888',
+      },
+    ]);
+  });
+});
+
+describe('GetSortByMeasureValues Total Fallback Tests', () => {
   let sheet: PivotSheet;
   let dataSet: PivotDataSet;
   const s2Options = {
