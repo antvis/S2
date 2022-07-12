@@ -126,17 +126,9 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
 
               // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
               if (isArray(fieldValue?.values)) {
-                return (
-                  content ?? (
-                    <StrategySheetDataTooltip
-                      cell={cell}
-                      label={(cell, defaultLabel) =>
-                        `${defaultLabel}（自定义标题）`
-                      }
-                    />
-                  )
-                );
+                return content ?? <StrategySheetDataTooltip cell={cell} />;
               }
+
               return content ?? <></>;
             },
           },
