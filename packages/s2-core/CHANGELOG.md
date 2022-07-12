@@ -1,3 +1,28 @@
+# [@antv/s2-v1.24.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0-alpha.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* body样式影响measureTextWidth测量结果 ([af578a8](https://github.com/antvis/S2/commit/af578a876d6d0ec811c72e1608b3ed8e4c248931))
+* import remove alias ([4b75925](https://github.com/antvis/S2/commit/4b759251cb1af519f2feedff6179dc49a56792e7))
+* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
+* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 修复移动端滚动没有prevent问题 ([#1549](https://github.com/antvis/S2/issues/1549)) ([a3ab84c](https://github.com/antvis/S2/commit/a3ab84c80b582190bee6094b1c1c44e5ef0b9b3c))
+* 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
+* 列头text未适配left/right对齐方式 ([cad4ed7](https://github.com/antvis/S2/commit/cad4ed7c0e1778625d83fdf194e0813e797fffaf))
+* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
+* 维度按指标汇总值排序时结果错误 ([#1550](https://github.com/antvis/S2/issues/1550)) ([b60564c](https://github.com/antvis/S2/commit/b60564cea08fac0a5334f38b1b1d4882d22d284b))
+
+
+### Features
+
+* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+
 # [@antv/s2-v1.23.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.2...@antv/s2-v1.23.0-alpha.3) (2022-07-06)
 
 ### Bug Fixes
