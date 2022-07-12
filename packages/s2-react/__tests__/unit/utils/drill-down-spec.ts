@@ -12,6 +12,7 @@ import {
 } from '@antv/s2';
 import {
   buildDrillDownOptions,
+  DrillDownParams,
   getDrillDownCache,
   handleActionIconClick,
   handleDrillDown,
@@ -105,9 +106,31 @@ describe('Drill Down Test', () => {
     cityNode.spreadsheet = mockInstance;
   });
 
+  test('should set correct drilldownNum', () => {
+    const getDrillDownParams = (drillItemsNum?: number) =>
+      ({
+        rows: mockDataCfg.fields.rows,
+        drillFields: ['district'],
+        fetchData,
+        spreadsheet: mockInstance,
+        drillItemsNum,
+      } as DrillDownParams);
+
+    // drillDownNum = undefined
+    handleDrillDown(getDrillDownParams());
+    expect(mockInstance.store.get('drillItemsNum')).toEqual(-1);
+
+    // reset
+    mockInstance.store.get('drillItemsNum', undefined);
+
+    // drillDownNum = integer
+    handleDrillDown(getDrillDownParams(19));
+    expect(mockInstance.store.get('drillItemsNum')).toEqual(19);
+  });
+
   test('for handleDrillDown function', async () => {
     mockInstance.store.set('drillDownNode', cityNode);
-    const drillDownCfg = {
+    const drillDownCfg: DrillDownParams = {
       rows: mockDataCfg.fields.rows,
       drillFields: ['district'],
       fetchData,
