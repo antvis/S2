@@ -1,3 +1,23 @@
+# [@antv/s2-v1.23.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.3...@antv/s2-v1.23.0-alpha.4) (2022-07-12)
+
+
+### Bug Fixes
+
+* **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
+* **theme:** 修复调整序号列后色板丢失 close [#1538](https://github.com/antvis/S2/issues/1538) ([#1543](https://github.com/antvis/S2/issues/1543)) ([6678848](https://github.com/antvis/S2/commit/6678848094c5c707a5586b33117bfd0b968fc302))
+* 优化 mini 图坐标计算逻辑 ([#1534](https://github.com/antvis/S2/issues/1534)) ([88a61e0](https://github.com/antvis/S2/commit/88a61e08b70750401d86e99dd5a6d320a1390da8))
+* 修复大量数据下，行列总计单元格计算时耗时和内存问题 ([#1531](https://github.com/antvis/S2/issues/1531)) ([2913ce9](https://github.com/antvis/S2/commit/2913ce98b053edafde3568e67df9112e69bf3bab))
+* 修复移动端滚动没有prevent问题 ([#1549](https://github.com/antvis/S2/issues/1549)) ([a3ab84c](https://github.com/antvis/S2/commit/a3ab84c80b582190bee6094b1c1c44e5ef0b9b3c))
+* 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
+* 维度按指标汇总值排序时结果错误 ([#1550](https://github.com/antvis/S2/issues/1550)) ([b60564c](https://github.com/antvis/S2/commit/b60564cea08fac0a5334f38b1b1d4882d22d284b))
+* 趋势分析表 conditions 增加容错能力 ([#1537](https://github.com/antvis/S2/issues/1537)) ([4770c9a](https://github.com/antvis/S2/commit/4770c9af5025f2318ca4c9d02f8217ada83fd00c))
+
+
+### Features
+
+* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* 基础表、趋势分析表tooltip新增显示字段说明功能 ([#1541](https://github.com/antvis/S2/issues/1541)) ([3a9f3cb](https://github.com/antvis/S2/commit/3a9f3cb2f22aeb14b15b8d3fe79f107ff8f04516))
+
 # [@antv/s2-v1.23.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0-alpha.2...@antv/s2-v1.23.0-alpha.3) (2022-07-06)
 
 ### Bug Fixes
