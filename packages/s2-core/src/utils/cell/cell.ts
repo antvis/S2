@@ -1,6 +1,5 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
-import { ROOT_ID } from '../../common/constant/basic';
 import type {
   AreaRange,
   CellTheme,
@@ -11,7 +10,6 @@ import type {
   TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
-import type { Node } from '../../facet/layout/node';
 
 /**
  * -----------------------------
