@@ -1,4 +1,10 @@
-import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
+import {
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
+import { isNil } from 'lodash';
 
 const getKPIMockData = () => {
   return {
@@ -346,5 +352,49 @@ export const StrategySheetDataConfig: S2DataConfig = {
         ],
       },
     ],
+  },
+};
+
+export const StrategyOptions: S2Options = {
+  width: 800,
+  height: 800,
+  cornerText: '指标',
+  placeholder: (v) => {
+    const placeholder = v?.fieldValue ? '-' : '';
+    return placeholder;
+  },
+  headerActionIcons: [
+    {
+      iconNames: ['Trend'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+      action: () => {},
+    },
+  ],
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          const isNilValue = isNil(value) || value === '';
+          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+  },
+  style: {
+    cellCfg: {
+      height: 76,
+      valuesCfg: {
+        originalValueField: 'originalValues',
+      },
+    },
   },
 };
