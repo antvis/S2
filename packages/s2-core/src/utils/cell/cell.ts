@@ -426,15 +426,3 @@ export const adjustColHeaderScrollingTextPosition = (
     ? startX - offset
     : startX + offset - actionIconSpace;
 };
-
-export const getNodeDepth = (node: Node) => {
-  let depth = 0;
-  while (node) {
-    if (node.id === ROOT_ID) {
-      break;
-    }
-    depth++;
-    node = node.parent;
-  }
-  return depth;
-};
