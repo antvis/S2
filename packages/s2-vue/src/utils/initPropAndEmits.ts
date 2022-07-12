@@ -19,7 +19,9 @@ export const initBaseSheetProps = () => ({
   dataCfg: Object as PropType<S2DataConfig>,
   themeCfg: Object as PropType<ThemeCfg>,
   showPagination: {
-    type: Object as PropType<BaseSheetComponentProps['showPagination']>,
+    type: [Object, Boolean] as PropType<
+      BaseSheetComponentProps['showPagination']
+    >,
     default: false as BaseSheetComponentProps['showPagination'],
   },
   loading: Boolean,
@@ -32,7 +34,7 @@ export const initBaseSheetProps = () => ({
     default: {} as S2Options,
   },
   adaptive: {
-    type: Object as PropType<Adaptive>,
+    type: [Object, Boolean] as PropType<Adaptive>,
     default: false as Adaptive,
   },
   onSpreadsheet: Function as PropType<BaseSheetComponentProps['spreadsheet']>,
@@ -167,6 +169,8 @@ export const initBaseSheetEmits = () => {
     'selected',
     'reset',
     'linkFieldJump',
+
+    'scroll',
   ];
   return keys as unknown as BaseSheetInitEmits;
 };
