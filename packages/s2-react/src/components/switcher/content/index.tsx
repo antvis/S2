@@ -10,7 +10,7 @@ import {
   DragDropContext,
   type DropResult,
 } from 'react-beautiful-dnd';
-import { FieldType, getSwitcherConfig, SWITCHER_FIELDS } from '../constant';
+import { FieldType, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
 import type {
   SwitcherFields,
@@ -22,6 +22,7 @@ import {
   generateSwitchResult,
   getMainLayoutClassName,
   getSwitcherClassName,
+  getSwitcherConfig,
   getSwitcherState,
   moveItem,
   shouldCrossRows,
