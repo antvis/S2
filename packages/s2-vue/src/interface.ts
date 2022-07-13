@@ -3,7 +3,7 @@ import type {
   BaseDrillDownComponentProps,
   PartDrillDown,
 } from '@antv/s2-shared';
-import type { ComponentObjectPropsOptions, PropType } from 'vue';
+import type { PropType } from 'vue';
 import type { UnionToIntersection } from '@vue/shared';
 
 // 这个是vue中的类型，但是vue没有export

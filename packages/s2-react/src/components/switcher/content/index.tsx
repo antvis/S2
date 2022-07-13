@@ -38,6 +38,7 @@ export interface SwitcherContentProps extends SwitcherFields {
   contentTitleText?: string;
   resetText?: string;
   innerContentClassName?: string;
+  allowSwitchBetweenRowsAndCols?: boolean;
   onToggleVisible: () => void;
   onSubmit?: (result: SwitcherResult) => void;
 }
@@ -48,18 +49,18 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       innerContentClassName,
       contentTitleText = i18n('行列切换'),
       resetText = i18n('恢复默认'),
+      allowSwitchBetweenRowsAndCols = true,
       onToggleVisible,
       onSubmit,
       sheetType,
       ...defaultFields
     } = props;
 
+    const switcherConfig = getSwitcherConfig(allowSwitchBetweenRowsAndCols);
     const defaultState = getSwitcherState(defaultFields);
 
     const [state, setState] = React.useState<SwitcherState>(defaultState);
     const [draggingItemId, setDraggingItemId] = React.useState<string>(null);
-    const SWITCHER_CONFIG = React.useMemo(getSwitcherConfig, []);
-
     const onBeforeDragStart = (initial: BeforeCapture) => {
       setDraggingItemId(initial.draggableId);
     };
@@ -143,9 +144,9 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
                 fieldType={type}
                 items={state[type]}
                 crossRows={shouldCrossRows(sheetType, type)}
-                droppableType={SWITCHER_CONFIG[type].droppableType}
                 draggingItemId={draggingItemId}
                 onVisibleItemChange={onVisibleItemChange}
+                {...switcherConfig[type]}
               />
             ))}
           </main>

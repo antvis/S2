@@ -10,8 +10,10 @@ export enum FieldType {
 }
 
 export enum DroppableType {
-  Dimension = 'dimension',
-  Measure = 'measure',
+  Dimensions = 'dimensions',
+  Measures = 'measures',
+  Rows = 'rows',
+  Cols = 'cols',
 }
 
 export const SWITCHER_FIELDS = [
@@ -20,20 +22,25 @@ export const SWITCHER_FIELDS = [
   FieldType.Values,
 ];
 
-export const getSwitcherConfig = () => ({
+// 是否开启行列维度相互切换
+export const getSwitcherConfig = (allowSwitchBetweenRowsAndCols = true) => ({
   [FieldType.Rows]: {
     text: i18n('行头'),
     icon: RowIcon,
-    droppableType: DroppableType.Dimension,
+    droppableType: allowSwitchBetweenRowsAndCols
+      ? DroppableType.Dimensions
+      : DroppableType.Rows,
   },
   [FieldType.Cols]: {
     text: i18n('列头'),
     icon: ColIcon,
-    droppableType: DroppableType.Dimension,
+    droppableType: allowSwitchBetweenRowsAndCols
+      ? DroppableType.Dimensions
+      : DroppableType.Cols,
   },
   [FieldType.Values]: {
     text: i18n('值'),
     icon: ValueIcon,
-    droppableType: DroppableType.Measure,
+    droppableType: DroppableType.Measures,
   },
 });
