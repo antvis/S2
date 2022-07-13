@@ -17,6 +17,7 @@ order: 3
 | contentTitleText | 弹窗默认标题文字 | `string` | 行列切换 |  |
 | resetText | 重置按钮文字 | `string` | 恢复默认 |  |
 | innerContentClassName | 弹出框内容样式名 | `string` |  |  |
+| allowSwitchBetweenRowsAndCols| 是否允许指标在行列维度之间相互切换 | `boolean` |  |  `true`|
 | onSubmit | 关闭弹窗后，处理行列切换结果的回调函数 | `(result:` [SwitcherResult](#switcherresult)`) => void` |  |  |
 | popover | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |  |  |
 
