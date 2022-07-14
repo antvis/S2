@@ -10,7 +10,7 @@ import {
   type MultiData,
   type TooltipShowOptions,
 } from '@antv/s2';
-import { isArray, isEmpty, isFunction, size } from 'lodash';
+import { isArray, isEmpty, isFunction, isNil, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
 import type { SheetComponentsProps } from '../interface';
@@ -124,12 +124,17 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
               const fieldValue = meta.fieldValue as MultiData;
               const content = getContent('data')(cell, tooltipOptions);
 
-              // 如果是数组, 说明是普通数值+同环比数据 或者 KPI数据, 显示普通数值 Tooltip
-              if (isArray(fieldValue?.values)) {
-                return content ?? <StrategySheetDataTooltip cell={cell} />;
+              // 自定义内容优先级最高
+              if (!isNil(content)) {
+                return content;
               }
 
-              return content ?? <></>;
+              // 如果是数组, 说明是普通数值+同环比数据, 显示普通数值 Tooltip
+              if (isArray(fieldValue?.values)) {
+                return <StrategySheetDataTooltip cell={cell} />;
+              }
+
+              return <></>;
             },
           },
         },
