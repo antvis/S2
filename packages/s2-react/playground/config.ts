@@ -33,6 +33,8 @@ export const s2Options: S2Options = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
+    // 防止 mac 触摸板横向滚动触发浏览器返回
+    overscrollBehavior: 'contain',
   },
   tooltip: {
     operation: {
