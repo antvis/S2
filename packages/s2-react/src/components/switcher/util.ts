@@ -13,18 +13,18 @@ import type {
 } from './interface';
 
 // 是否开启行列维度相互切换
-export const getSwitcherConfig = (allowSwitchBetweenRowsAndCols = true) => ({
+export const getSwitcherConfig = (allowExchangeHeader = true) => ({
   [FieldType.Rows]: {
     text: i18n('行头'),
     icon: RowIcon,
-    droppableType: allowSwitchBetweenRowsAndCols
+    droppableType: allowExchangeHeader
       ? DroppableType.Dimensions
       : DroppableType.Rows,
   },
   [FieldType.Cols]: {
     text: i18n('列头'),
     icon: ColIcon,
-    droppableType: allowSwitchBetweenRowsAndCols
+    droppableType: allowExchangeHeader
       ? DroppableType.Dimensions
       : DroppableType.Cols,
   },

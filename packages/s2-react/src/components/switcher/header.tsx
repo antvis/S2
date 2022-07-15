@@ -19,7 +19,7 @@ type SwitcherBasicCfg = Pick<
   | 'contentTitleText'
   | 'popover'
   | 'disabled'
-  | 'allowSwitchBetweenRowsAndCols'
+  | 'allowExchangeHeader'
 >;
 
 export interface SwitcherCfgProps extends SwitcherBasicCfg {

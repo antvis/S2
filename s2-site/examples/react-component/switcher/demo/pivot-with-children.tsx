@@ -91,7 +91,7 @@ fetch(
           <Switcher
             {...switcherFields}
             // 是否允许指标在行列维度之间相互切换
-            allowSwitchBetweenRowsAndCols={true}
+            allowExchangeHeader={true}
             onSubmit={onSubmit}
           />
           <SheetComponent

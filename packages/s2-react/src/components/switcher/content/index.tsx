@@ -39,7 +39,7 @@ export interface SwitcherContentProps extends SwitcherFields {
   contentTitleText?: string;
   resetText?: string;
   innerContentClassName?: string;
-  allowSwitchBetweenRowsAndCols?: boolean;
+  allowExchangeHeader?: boolean;
   onToggleVisible: () => void;
   onSubmit?: (result: SwitcherResult) => void;
 }
@@ -50,14 +50,14 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       innerContentClassName,
       contentTitleText = i18n('行列切换'),
       resetText = i18n('恢复默认'),
-      allowSwitchBetweenRowsAndCols = true,
+      allowExchangeHeader = true,
       onToggleVisible,
       onSubmit,
       sheetType,
       ...defaultFields
     } = props;
 
-    const switcherConfig = getSwitcherConfig(allowSwitchBetweenRowsAndCols);
+    const switcherConfig = getSwitcherConfig(allowExchangeHeader);
     const defaultState = getSwitcherState(defaultFields);
 
     const [state, setState] = React.useState<SwitcherState>(defaultState);
