@@ -39,7 +39,7 @@ describe('Grid Border Tests', () => {
       newLeftBorderBbox.minY -
       (originalLeftBorderBbox.maxY - originalLeftBorderBbox.minY);
     // g绘制时，会将坐标1变成0.5，来达到真正绘制1px的效果，因此宽高不一定完全相同，会有1px的差值
-    expect(widthRatio).not.toBeGreaterThan(1);
-    expect(heightRatio).not.toBeGreaterThan(1);
+    expect(widthRatio).toBeLessThanOrEqual(1);
+    expect(heightRatio).toBeLessThanOrEqual(1);
   });
 });
