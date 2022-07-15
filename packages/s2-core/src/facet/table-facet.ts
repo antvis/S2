@@ -298,7 +298,7 @@ export class TableFacet extends BaseFacet {
       allNodes.length,
     );
 
-    const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
+    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
 
     const nodes = [];
 
@@ -309,7 +309,7 @@ export class TableFacet extends BaseFacet {
       currentNode.x = preLeafNode.x + preLeafNode.width;
       currentNode.width = this.calculateColLeafNodesWidth(
         currentNode,
-        adaptiveColWitdth,
+        adaptiveColWidth,
       );
       preLeafNode = currentNode;
       currentNode.y = 0;
@@ -348,7 +348,7 @@ export class TableFacet extends BaseFacet {
 
   private calculateColLeafNodesWidth(
     col: Node,
-    adaptiveColWitdth: number,
+    adaptiveColWidth: number,
   ): number {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
@@ -402,7 +402,7 @@ export class TableFacet extends BaseFacet {
             EXTRA_PIXEL;
         }
       } else {
-        colWidth = adaptiveColWitdth;
+        colWidth = adaptiveColWidth;
       }
 
       if (col.field === SERIES_NUMBER_FIELD) {
