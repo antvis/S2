@@ -8,6 +8,7 @@ import {
   map,
 } from 'lodash';
 import { MergedCell } from '../../cell/merged-cell';
+import { DataCell } from '../../cell/data-cell';
 import { CellTypes } from '../../common/constant';
 import type {
   MergedCellInfo,
@@ -190,6 +191,7 @@ export const getTempMergedCell = (
   if (isPartiallyVisible) {
     const { cells: invisibleCells, cellsMeta: invisibleMeta } =
       getInvisibleInfo(invisibleCellInfo, sheet);
+
     viewMeta = viewMeta || invisibleMeta;
     mergedAllCells = cells.concat(invisibleCells);
   }
@@ -246,7 +248,7 @@ export const mergeCell = (
 
   const allVisibleCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCell),
+    (child) => child instanceof DataCell,
   ) as unknown as S2CellType[];
   const { cells, viewMeta, isPartiallyVisible } = getTempMergedCell(
     allVisibleCells,
@@ -260,7 +262,7 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.add(
+    sheet.mergedCellsGroup.add(
       new MergedCell(sheet, cells, meta, isPartiallyVisible),
     );
   }
@@ -384,7 +386,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   // 可见区域的所有cells
   const allCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCell),
+    (child) => child instanceof DataCell,
   ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
@@ -397,10 +399,8 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     }
   });
   // 获取 oldTempMergedCells 便用后续进行 diff 操作
-  const oldMergedCells = filter(
-    sheet.panelScrollGroup.getChildren(),
-    (child) => child instanceof MergedCell,
-  ) as unknown as MergedCell[];
+  const oldMergedCells =
+    sheet.mergedCellsGroup.getChildren() as unknown as MergedCell[];
 
   const oldTempMergedCells: TempMergedCell[] =
     MergedCellConvertTempMergedCells(oldMergedCells);
@@ -424,7 +424,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta, isPartiallyVisible }) => {
-    sheet.panelScrollGroup.add(
+    sheet.mergedCellsGroup.add(
       new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
     );
   });
