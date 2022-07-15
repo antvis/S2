@@ -7,14 +7,14 @@ const SortMethodType = {
     asc: 'asc',
     desc: 'desc',
     none: 'none',
-    manual: 'manual'
+    custom: 'custom'
 }
 
 const MENUS = [
     { key: SortMethodType.none, text: '不排序' },
     { key: SortMethodType.asc, text: '升序', icon: 'GroupAsc' },
     { key: SortMethodType.desc, text: '降序', icon: 'GroupDesc' },
-    { key: SortMethodType.manual, text: '手动排序', icon: 'Trend' },
+    { key: SortMethodType.custom, text: '自定义排序', icon: 'Trend' },
 ];
 const s2DataConfig = {
     fields: {
@@ -70,7 +70,7 @@ const App = () => {
     const dataCfg = useDataCfg();
     const [ sortParams, setSortParams ] = useState([]);
 
-    // 使用刚定义的 icon
+    // 设置自定义 `icon` 的展示条件
     const headerActionIcons = [
         {
             // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
@@ -83,8 +83,6 @@ const App = () => {
                 const { meta, event } = props;
                 const operator = {
                     onClick: ({ key }) => {
-                        // 更新被排序的列的排序 action Icon
-                        // 这里的回调，用户已经排序了
                         handleSortCallback(meta, key);
                         meta.spreadsheet.hideTooltip();
                     },
@@ -99,9 +97,10 @@ const App = () => {
             },
         },
     ];
-    //
+
+    // 执行自定义排序回调
     const handleSortCallback = (meta, key) => {
-        if (key === SortMethodType.manual) {
+        if (key === SortMethodType.custom) {
             const sortParams = [
                 { sortFieldId: 'type', sortBy: [ '办公用品', '家具' ] },
                 { sortFieldId: 'city', sortMethod: 'ASC' },
