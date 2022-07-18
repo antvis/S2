@@ -16,7 +16,6 @@ import type {
   ViewMeta,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-
 /**
  *  according to the coordinates of the starting point of the rectangle,
  * return the four sides of the rectangle in a clockwise direction.
@@ -198,10 +197,10 @@ export const getTempMergedCell = (
   if (!isEmpty(cells) && !viewMeta) {
     viewMeta = mergedAllCells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
   }
+
   return {
     cells: mergedAllCells,
     viewMeta: viewMeta as ViewMeta,
-    isPartiallyVisible,
   };
 };
 
@@ -246,7 +245,7 @@ export const mergeCell = (
   }
 
   const allVisibleCells = sheet.interaction.getPanelGroupAllDataCells();
-  const { cells, viewMeta, isPartiallyVisible } = getTempMergedCell(
+  const { cells, viewMeta } = getTempMergedCell(
     allVisibleCells,
     sheet,
     mergeCellInfo,
@@ -258,9 +257,7 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.mergedCellsGroup.add(
-      new MergedCell(sheet, cells, meta, isPartiallyVisible),
-    );
+    sheet.mergedCellsGroup.add(new MergedCell(sheet, cells, meta));
   }
 };
 
@@ -344,14 +341,12 @@ export const MergedCellConvertTempMergedCells = (
     return {
       cells: mergedCell.cells,
       viewMeta: mergedCell.getMeta(),
-      isPartiallyVisible: mergedCell.isPartiallyVisible,
     };
   });
 };
 
 /**
  * 对比两个TempMergedCell，返回 mainTempMergedCells 中存在的，但是 otherTempMergedCells 中不存在的的 TempMergedCell
- * 因为 g-base 无法渲染不在可视区域内的图形，所以 isPartiallyVisible 为 true 时也需要重新渲染
  * @param mainTempMergedCells
  * @param compareTempMergedCells
  */
@@ -363,10 +358,7 @@ export const differenceTempMergedCells = (
     mainTempMergedCells,
     compareTempMergedCells,
     (main, compare) => {
-      return (
-        isEqual(main.viewMeta.id, compare.viewMeta.id) &&
-        !main.isPartiallyVisible
-      );
+      return isEqual(main.viewMeta.id, compare.viewMeta.id);
     },
   );
 };
@@ -404,11 +396,11 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     oldTempMergedCells,
     allVisibleTempMergedCells,
   );
-
   const addTempMergedCells = differenceTempMergedCells(
     allVisibleTempMergedCells,
     oldTempMergedCells,
   );
+
   // remove old MergedCells
   forEach(removeTempMergedCells, (tempMergedCell) => {
     const oldMergedCell = find(oldMergedCells, (mergedCell) => {
@@ -417,9 +409,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     oldMergedCell?.remove(true);
   });
   // add new MergedCells
-  forEach(addTempMergedCells, ({ cells, viewMeta, isPartiallyVisible }) => {
-    sheet.mergedCellsGroup.add(
-      new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
-    );
+  forEach(addTempMergedCells, ({ cells, viewMeta }) => {
+    sheet.mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
   });
 };

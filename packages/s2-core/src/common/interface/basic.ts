@@ -341,7 +341,6 @@ export interface MergedCellInfo {
 export type TempMergedCell = {
   cells: S2CellType[];
   viewMeta: ViewMeta;
-  isPartiallyVisible?: boolean;
 };
 
 export type FilterDataItemCallback = (
