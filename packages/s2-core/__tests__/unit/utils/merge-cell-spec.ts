@@ -38,7 +38,11 @@ describe('Merge Cells Test', () => {
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();
-    mockInstance.interaction = {} as unknown as RootInteraction;
+    mockInstance.interaction = {
+      getPanelGroupAllDataCells() {
+        return mockAllVisibleCells;
+      },
+    } as unknown as RootInteraction;
     mockInstance.facet = {
       cfg: {
         dataCell: jest.fn(),
@@ -297,11 +301,19 @@ describe('Merge Cells Test', () => {
         height: 100,
         mergedCellsInfo: [mockMergeCellInfo],
       };
-      mockInstance.panelScrollGroup = {
+      mockInstance.interaction = {
+        getPanelGroupAllDataCells() {
+          return [];
+        },
+      } as unknown as RootInteraction;
+
+      mockInstance.mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
       } as unknown as GridGroup;
+
       updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).toHaveBeenCalled();
+
+      expect(mockInstance.mergedCellsGroup.getChildren).not.toHaveBeenCalled();
     });
 
     test('should merge TempMergedCell when cell viewMeta id is equal. (mergeTempMergedCell)', () => {
