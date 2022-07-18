@@ -3,6 +3,7 @@ import { Group } from '@antv/g-canvas';
 import {
   KEY_GROUP_GRID_GROUP,
   KEY_GROUP_PANEL_FROZEN_COL,
+  SQUARE_LINE_CAP,
 } from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
@@ -68,7 +69,7 @@ export class GridGroup extends Group {
           stroke: style.verticalBorderColor,
           strokeOpacity: style.verticalBorderColorOpacity,
           lineWidth: verticalBorderWidth,
-          lineCap: 'square',
+          lineCap: SQUARE_LINE_CAP,
         },
       );
     });
@@ -88,7 +89,7 @@ export class GridGroup extends Group {
           stroke: style.horizontalBorderColor,
           strokeOpacity: style.horizontalBorderColorOpacity,
           lineWidth: horizontalBorderWidth,
-          lineCap: 'square',
+          lineCap: SQUARE_LINE_CAP,
         },
       );
     });
