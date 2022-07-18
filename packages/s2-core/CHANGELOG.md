@@ -1,3 +1,15 @@
+# [@antv/s2-v1.24.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.1...@antv/s2-v1.24.0-alpha.2) (2022-07-18)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
+* 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
+* 修复 line 包围盒问题 ([#1566](https://github.com/antvis/S2/issues/1566)) ([7fb4352](https://github.com/antvis/S2/commit/7fb435289f8de078382426695a2ebc18b8c25efc))
+* 修复合并单元格临界情况被错误移除的问题 ([#1574](https://github.com/antvis/S2/issues/1574)) ([311eeaa](https://github.com/antvis/S2/commit/311eeaa64e612ca81bbb5d5f5ea036d4bfe2111d))
+* 修复合并单元格被grid边框覆盖的问题 ([#1569](https://github.com/antvis/S2/issues/1569)) ([3498edb](https://github.com/antvis/S2/commit/3498edbe901ac99605d61191fcf55530b71dd32e))
+* 修复明细表最左侧边框绘制问题 ([#1562](https://github.com/antvis/S2/issues/1562)) ([a8b62bb](https://github.com/antvis/S2/commit/a8b62bbe6421829bd2067030caeb5bbad0651649))
+
 # [@antv/s2-v1.24.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0-alpha.1) (2022-07-12)
 
 
