@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2-vue",
-  "version": "1.2.0-alpha.2",
+  "version": "1.2.0-alpha.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
