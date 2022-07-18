@@ -14,12 +14,6 @@ jobs:
         node-version: [16]
 
     steps:
-      # 每次 push 代码时取消上一次的 CI, 避免排队
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@main
-        with:
-          access_token: ${{ github.token }}
-
       - uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}

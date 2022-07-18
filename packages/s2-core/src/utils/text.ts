@@ -24,7 +24,7 @@ import type {
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
-import { renderChart } from './g-mini-charts';
+import { renderMiniChart } from './g-mini-charts';
 
 /**
  * 计算文本在画布中的宽度
@@ -395,8 +395,9 @@ export const drawObjectText = (
   const { valuesCfg } = options.style.cellCfg;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
   const textCondition = options?.conditions?.text?.[0];
+
   if (!isArray(textValues)) {
-    renderChart(textValues, cell);
+    renderMiniChart(textValues, cell);
     return;
   }
 
