@@ -350,7 +350,6 @@ describe('Merge Cells Test', () => {
         {
           cells: mockAllVisibleCells,
           viewMeta: mockMergeCellInfo[2],
-          isPartiallyVisible: true,
         },
       ]);
     });
@@ -371,22 +370,6 @@ describe('Merge Cells Test', () => {
       );
 
       expect(result).toEqual([{ viewMeta: { id: '2' } }]);
-    });
-
-    test('should get TempMergedCells when MergedCell isPartiallyVisible is true. (differenceTempMergedCells)', () => {
-      const mainTempMergedCells = [
-        { viewMeta: { id: '1' }, isPartiallyVisible: true },
-      ] as TempMergedCell[];
-      const compareTempMergedCells = [
-        { viewMeta: { id: '1' }, isPartiallyVisible: true },
-      ] as TempMergedCell[];
-
-      const result = differenceTempMergedCells(
-        mainTempMergedCells,
-        compareTempMergedCells,
-      );
-
-      expect(result).toEqual(mainTempMergedCells);
     });
   });
 });
