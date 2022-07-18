@@ -8,7 +8,6 @@ import {
   map,
 } from 'lodash';
 import { MergedCell } from '../../cell/merged-cell';
-import { DataCell } from '../../cell/data-cell';
 import { CellTypes } from '../../common/constant';
 import type {
   MergedCellInfo,
@@ -246,10 +245,7 @@ export const mergeCell = (
     return;
   }
 
-  const allVisibleCells = filter(
-    sheet.panelScrollGroup.getChildren(),
-    (child) => child instanceof DataCell,
-  ) as unknown as S2CellType[];
+  const allVisibleCells = sheet.interaction.getPanelGroupAllDataCells();
   const { cells, viewMeta, isPartiallyVisible } = getTempMergedCell(
     allVisibleCells,
     sheet,
@@ -384,10 +380,8 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   if (isEmpty(mergedCellsInfo)) return;
 
   // 可见区域的所有cells
-  const allCells = filter(
-    sheet.panelScrollGroup.getChildren(),
-    (child) => child instanceof DataCell,
-  ) as unknown as S2CellType[];
+  const allCells = sheet.interaction.getPanelGroupAllDataCells();
+
   if (isEmpty(allCells)) return;
 
   // allVisibleTempMergedCells 所有可视区域的 mergedCell
