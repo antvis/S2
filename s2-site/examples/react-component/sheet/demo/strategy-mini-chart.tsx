@@ -9,7 +9,7 @@ fetch(
   .then((res) => res.json())
   .then((dataCfg) => {
     const s2Options = {
-      width: 600,
+      width: 1000,
       height: 480,
       cornerText: '指标层级',
       hierarchyType: 'customTree',
