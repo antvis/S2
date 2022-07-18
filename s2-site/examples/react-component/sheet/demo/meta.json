@@ -27,6 +27,14 @@
         "en": "StrategySheet component"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png"
+    },
+    {
+      "filename": "strategy-mini-chart.tsx",
+      "title": {
+        "zh": "mini 图表组件",
+        "en": "StrategySheet with mini chart"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }
