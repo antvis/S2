@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
-import { SortMethod } from "@antv/s2/src";
 
 const SortMethodType = {
     asc: 'asc',
@@ -109,7 +108,7 @@ const App = () => {
             console.log('可以在这里实现你手动排序的交互和逻辑哟', sortParams)
         } else {
             // 使用 S2 提供的组内排序方式
-            meta.spreadsheet.groupSortByMethod(key as unknown as SortMethod, meta);
+            meta.spreadsheet.groupSortByMethod(key, meta);
         }
     }
 
