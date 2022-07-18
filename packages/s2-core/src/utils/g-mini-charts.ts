@@ -204,33 +204,32 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     return;
   }
 
-  const FRACTION_DIGITS = 2;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
   const { x, y, height, width } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
 
+  const { measure, target } = value;
+  const displayMeasure = Math.max(Number(measure), 0);
+  const displayTarget = Math.max(Number(target), 0);
+
   // 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
-  // 所以子弹图需要为小数点后两位的额外数值预留宽度, 即 `.22`
-  const simplePercentText = `.${'0'.repeat(FRACTION_DIGITS)}`;
+  // 所以子弹图需要为数值预留宽度
+  const measurePercent = transformRatioToPercent(displayMeasure, 2);
   const measurePercentWidth = Math.ceil(
-    measureTextWidth(simplePercentText, dataCellStyle),
+    measureTextWidth(measurePercent, dataCellStyle),
   );
 
   const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
   const measureWidth = width - bulletWidth;
 
   const padding = dataCellStyle.cell.padding;
-  const { measure, target } = value;
-
-  const displayMeasure = Math.max(Number(measure), 0);
-  const displayTarget = Math.max(Number(target), 0);
 
   // TODO 先支持默认右对齐
   // 绘制子弹图
   // 1. 背景
-  const positionX = x + width - padding.right - bulletWidth;
+  const positionX = x + width - padding.right - padding.left - bulletWidth;
   const positionY = y + height / 2 - progressBar.height / 2;
 
   renderRect(cell, {
@@ -279,10 +278,6 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 
   // 4.绘制指标
-  const measurePercent = transformRatioToPercent(
-    displayMeasure,
-    FRACTION_DIGITS,
-  );
   renderText(
     cell,
     [],
