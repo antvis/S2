@@ -86,3 +86,6 @@ export enum MiniChartTypes {
   Bar = 'bar',
   Bullet = 'bullet',
 }
+
+// 线条 linecap 样式
+export const SQUARE_LINE_CAP = 'square';
