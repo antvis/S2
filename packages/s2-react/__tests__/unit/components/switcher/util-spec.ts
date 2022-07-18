@@ -1,5 +1,5 @@
 import type { SheetType } from '@antv/s2-shared';
-import { FieldType } from '@/components/switcher/constant';
+import { FieldType, DroppableType } from '@/components/switcher/constant';
 import type {
   SwitcherItem,
   SwitcherState,
@@ -13,6 +13,7 @@ import {
   moveItem,
   checkItem,
   generateSwitchResult,
+  getSwitcherConfig,
 } from '@/components/switcher/util';
 
 describe('switcher util test', () => {
@@ -439,6 +440,48 @@ describe('switcher util test', () => {
       rows: [{ id: 'row' }],
       columns: [{ id: 'column' }],
       values: [{ id: 'value' }],
+    });
+  });
+});
+
+describe('getSwitcherConfig test', () => {
+  test('should return same droppableType type when allow switch between rows and cols', () => {
+    expect(getSwitcherConfig()).toEqual({
+      [FieldType.Rows]: {
+        text: '行头',
+        icon: expect.anything(),
+        droppableType: DroppableType.Dimensions,
+      },
+      [FieldType.Cols]: {
+        text: '列头',
+        icon: expect.anything(),
+        droppableType: DroppableType.Dimensions,
+      },
+      [FieldType.Values]: {
+        text: '值',
+        icon: expect.anything(),
+        droppableType: DroppableType.Measures,
+      },
+    });
+  });
+
+  test('should return different droppableType type when disallow switch between rows and cols', () => {
+    expect(getSwitcherConfig(false)).toEqual({
+      [FieldType.Rows]: {
+        text: '行头',
+        icon: expect.anything(),
+        droppableType: DroppableType.Rows,
+      },
+      [FieldType.Cols]: {
+        text: '列头',
+        icon: expect.anything(),
+        droppableType: DroppableType.Cols,
+      },
+      [FieldType.Values]: {
+        text: '值',
+        icon: expect.anything(),
+        droppableType: DroppableType.Measures,
+      },
     });
   });
 });

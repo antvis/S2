@@ -19,7 +19,7 @@ import {
   renderText,
 } from '../utils/g-renders';
 import { CellTypes, MiniChartTypes } from '../common/constant';
-import { getEllipsisText } from './text';
+import { getEllipsisText, measureTextWidth } from './text';
 
 /**
  *  坐标转换
@@ -180,6 +180,7 @@ export const getBulletRangeColor = (
   if (delta > 0.1 && delta <= 0.2) {
     return rangeColors.satisfactory;
   }
+
   return rangeColors.bad;
 };
 
@@ -202,22 +203,35 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   if (isEmpty(value)) {
     return;
   }
+
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
   const { x, y, height, width } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
-  const bulletWidth = progressBar.widthPercent * width;
+
+  const { measure, target } = value;
+  const displayMeasure = Math.max(Number(measure), 0);
+  const displayTarget = Math.max(Number(target), 0);
+
+  // 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
+  // 所以子弹图需要为数值预留宽度
+  const measurePercent = transformRatioToPercent(displayMeasure, 2);
+  const measurePercentWidth = Math.ceil(
+    measureTextWidth(measurePercent, dataCellStyle),
+  );
+
+  const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
   const measureWidth = width - bulletWidth;
 
   const padding = dataCellStyle.cell.padding;
-  const { measure, target } = value;
 
   // TODO 先支持默认右对齐
   // 绘制子弹图
   // 1. 背景
-  const positionX = x + width - padding.right - bulletWidth;
+  const positionX = x + width - padding.right - padding.left - bulletWidth;
   const positionY = y + height / 2 - progressBar.height / 2;
+
   renderRect(cell, {
     x: positionX,
     y: positionY,
@@ -232,18 +246,19 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     cell.getMeta(),
     'spreadsheet.options.bullet.getRangeColor',
   );
+
   renderRect(cell, {
     x: positionX,
     y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
-    width: Math.min(bulletWidth * Number(measure), bulletWidth),
+    width: Math.min(bulletWidth * displayMeasure, bulletWidth),
     height: progressBar.innerHeight,
     fill:
-      getRangeColor?.(measure, target) ??
-      getBulletRangeColor(measure, target, rangeColors),
+      getRangeColor?.(displayMeasure, displayTarget) ??
+      getBulletRangeColor(displayMeasure, displayTarget, rangeColors),
   });
 
   // 3.测量标记线
-  const lineX = positionX + bulletWidth * Number(target);
+  const lineX = positionX + bulletWidth * displayTarget;
   renderLine(
     cell,
     {
@@ -262,9 +277,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     },
   );
 
-  const measurePercent = transformRatioToPercent(measure);
-
-  // 绘制指标
+  // 4.绘制指标
   renderText(
     cell,
     [],
@@ -279,7 +292,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 };
 
-export const renderChart = (data: MiniChartData, cell: S2CellType) => {
+export const renderMiniChart = (data: MiniChartData, cell: S2CellType) => {
   switch (data?.type) {
     case MiniChartTypes.Line:
       drawLine(data, cell);

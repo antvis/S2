@@ -64,7 +64,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
   // limit displayed drill down data by drillItemsNum
   const drillItemsNum = spreadsheet.store.get('drillItemsNum');
-  if (drillItemsNum && isDrillDownItem) {
+  if (isDrillDownItem && drillItemsNum > 0) {
     fieldValues = fieldValues.slice(0, drillItemsNum);
   }
 

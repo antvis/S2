@@ -435,6 +435,7 @@ export abstract class BaseFacet {
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
+    this.spreadsheet.mergedCellsGroup?.set('children', []);
   };
 
   scrollWithAnimation = (
@@ -1008,6 +1009,7 @@ export abstract class BaseFacet {
         findOne?.remove(true);
       });
       updateMergedCells(this.spreadsheet);
+
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
       );
@@ -1230,10 +1232,15 @@ export abstract class BaseFacet {
 
     this.realCellRender(scrollX, scrollY);
     this.drawGrid();
+    this.putMergedCellsGroupToFront();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
     this.emitScrollEvent({ scrollX, scrollY });
     this.onAfterScroll();
+  }
+
+  private putMergedCellsGroupToFront() {
+    this.spreadsheet.mergedCellsGroup?.toFront();
   }
 
   private emitScrollEvent(position: CellScrollPosition) {

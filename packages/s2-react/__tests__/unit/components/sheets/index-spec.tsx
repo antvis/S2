@@ -11,6 +11,7 @@ import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
+import { StrategySheetDataConfig } from '../../../data/strategy-data';
 
 describe('<SheetComponent/> Tests', () => {
   let s2: SpreadSheet;
@@ -54,10 +55,13 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(
           <SheetComponent
             sheetType="strategy"
-            options={customMerge(options, {
-              width: 200,
-              height: 200,
-            })}
+            options={customMerge(
+              {
+                width: 200,
+                height: 200,
+              },
+              options,
+            )}
             dataCfg={dataCfg}
             getSpreadSheet={(instance) => {
               s2 = instance;
@@ -154,5 +158,38 @@ describe('<SheetComponent/> Tests', () => {
         expect(s2.tooltip.container.innerText).toEqual(content);
       },
     );
+
+    test('should render correctly KPI bullet column measure text', () => {
+      renderStrategySheet(
+        {
+          width: 600,
+          height: 600,
+        },
+        StrategySheetDataConfig,
+      );
+
+      // 当前测试数据, 第二列是子弹图
+      const dataCell = s2.interaction
+        .getPanelGroupAllDataCells()
+        .filter((cell) => {
+          const meta = cell.getMeta();
+          return meta.colIndex === 1 && meta.fieldValue;
+        });
+
+      const bulletMeasureTextList = dataCell.map((cell) => {
+        const textShape = cell
+          .getChildren()
+          .find((child) => child.cfg.type === 'text');
+        return textShape?.attr('text');
+      });
+
+      expect(bulletMeasureTextList).toStrictEqual([
+        '0.25%',
+        '0.00%',
+        '100.00%',
+        '50.00%',
+        '68.00%',
+      ]);
+    });
   });
 });

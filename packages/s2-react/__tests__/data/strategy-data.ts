@@ -14,18 +14,18 @@ const getKPIMockData = () => {
         target: 0.8,
       },
       values: {
-        measure: '0.75',
-        target: '0.8',
+        measure: '0.00251',
+        target: '0.76',
       },
     },
     'measure-b': {
       originalValues: {
-        measure: 0.25,
-        target: 0.8,
+        measure: -0.82607,
+        target: 0.53022,
       },
       values: {
-        measure: '0.25',
-        target: '0.8',
+        measure: -0.82607,
+        target: 0.53022,
       },
     },
     'measure-c': {

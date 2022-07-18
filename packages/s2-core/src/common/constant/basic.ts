@@ -25,6 +25,7 @@ export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
 export const KEY_GROUP_FORE_GROUND = 'foreGroundGroup';
 export const KEY_GROUP_PANEL_GROUND = 'panelGroup';
 export const KEY_GROUP_PANEL_SCROLL = 'panelScrollGroup';
+export const KEY_GROUP_MERGED_CELLS = 'mergedCellsGroup';
 export const KEY_GROUP_PANEL_FROZEN_ROW = 'frozenRowGroup';
 export const KEY_GROUP_PANEL_FROZEN_COL = 'frozenColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TRAILING_ROW = 'frozenTrailingRowGroup';
@@ -85,3 +86,6 @@ export enum MiniChartTypes {
   Bar = 'bar',
   Bullet = 'bullet',
 }
+
+// 线条 linecap 样式
+export const SQUARE_LINE_CAP = 'square';
