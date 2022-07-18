@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.22.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.1...@antv/s2-react-v1.22.0-alpha.2) (2022-07-18)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
+* **strategysheet:** 修复趋势分析表错误的标题 ([#1556](https://github.com/antvis/S2/issues/1556)) ([d9ebb51](https://github.com/antvis/S2/commit/d9ebb51f39953ae5535c7c925cfdcef1fb9c2e0d))
+* 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
+
+
+### Features
+
+* 增加允许/禁用指标在行列维度中相互切换的能力 ([#1558](https://github.com/antvis/S2/issues/1558)) ([39f0f89](https://github.com/antvis/S2/commit/39f0f89cc999313d55077c06f72da13dab1f1316))
+
 # [@antv/s2-react-v1.22.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0-alpha.1) (2022-07-12)
 
 
