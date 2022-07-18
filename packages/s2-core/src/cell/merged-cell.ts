@@ -14,16 +14,12 @@ import { DataCell } from './data-cell';
 export class MergedCell extends DataCell {
   public cells: S2CellType[];
 
-  public isPartiallyVisible: boolean;
-
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
     meta?: ViewMeta,
-    isPartiallyVisible = true, // 合并的单元格只有部分可见。为了方便 Diff 操作，故新增此属性
   ) {
     super(meta, spreadsheet, cells);
-    this.isPartiallyVisible = isPartiallyVisible;
   }
 
   handleRestOptions(...[cells]: [S2CellType[]]) {
