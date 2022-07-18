@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { Checkbox } from 'antd';
 import { i18n } from '@antv/s2';
-import { DroppableType, getSwitcherConfig } from '../constant';
+import type { DroppableType } from '../constant';
 import type { SwitcherField, SwitcherItem } from '../interface';
 import { type DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
@@ -15,23 +15,27 @@ const CLASS_NAME_PREFIX = 'dimension';
 type DimensionProps = SwitcherField &
   DimensionCommonProps & {
     droppableType: DroppableType;
+    text: string;
+    icon: React.FunctionComponent;
     crossRows?: boolean;
   };
 
 export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
   const {
     fieldType,
-    crossRows,
-    expandable,
+    crossRows = false,
+    selectable = false,
+    expandable = false,
     expandText = i18n('展开子项'),
-    allowEmpty,
-    items,
+    allowEmpty = true,
+    items = [],
     droppableType,
+    text,
+    icon: Icon,
     ...rest
   } = props;
 
   const [expandChildren, setExpandChildren] = React.useState(true);
-  const SWITCHER_CONFIG = React.useMemo(getSwitcherConfig, []);
 
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);
@@ -39,8 +43,6 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
 
   // 开启不允许为空后，如果当前有且仅有一个item时，需要禁用拖动
   const isDragDisabled = !allowEmpty && items.length === 1;
-
-  const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
     <div
       className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), {
@@ -79,6 +81,7 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
                 item={item}
                 expandable={expandable}
                 expandChildren={expandChildren}
+                selectable={selectable}
                 isDragDisabled={isDragDisabled}
                 {...rest}
               />
@@ -92,10 +95,3 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
 });
 
 Dimension.displayName = 'Dimension';
-Dimension.defaultProps = {
-  allowEmpty: true,
-  crossRows: false,
-  expandable: false,
-  selectable: false,
-  items: [],
-};
