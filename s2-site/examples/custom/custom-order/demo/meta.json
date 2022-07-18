@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "自定义排序功能",
+    "en": "custom order"
+  },
+  "demos": [
+    {
+      "filename": "custom-order.tsx",
+      "title": {
+        "zh": "自定义排序功能",
+        "en": "custom order"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oOiZ02mZJ/zidingyipaixu.gif"
+    }
+  ]
+}
