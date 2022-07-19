@@ -1,4 +1,4 @@
-import { fill, forEach } from 'lodash';
+import { fill, forEach, map } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -331,7 +331,23 @@ const getPivotColHeader = (cellMetas: CellMeta[]) => {
   return colLines.join(newLine);
 };
 
-// const getPivotRowHeader = (cellMetas: CellMeta[]) => {}
+const getPivotRowHeader = (cellMetas: CellMeta[][]) => {
+  const getColList = (meta: CellMeta) => {
+    const colId = meta.id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+    const colList = colId.split(ID_SEPARATOR);
+    colList.shift(); // 去除 root
+    return colList;
+  };
+
+  const rowLines = map(cellMetas, (cellMeta) => {
+    return getColList(cellMeta[0])
+      .map((word) => convertString(word))
+      .join(newTab);
+  }).join(newLine);
+
+  // console.log(rowLines, 'rowlines');
+  return rowLines;
+};
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
@@ -358,7 +374,12 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
     }
     // normal selected
     const selectedCellMeta = getTwoDimData(cells);
-    getPivotColHeader(selectedCellMeta[0]);
+    // 根据第一行的数据 id, 获取单元格对应的 列头文本
+    const colHeader = getPivotColHeader(selectedCellMeta[0]);
+    // 根据第一列的数据 id，获取单元格对应的 行头文本
+    const rowHeader = getPivotRowHeader(selectedCellMeta);
+    // console.log(colHeader, 'colHeader');
+    // console.log(rowHeader, 'rowheader');
     data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
   }
 
