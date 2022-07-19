@@ -407,11 +407,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   };
 
   private updateResizeGuideLineTheme(endGuideLineShape: IShape) {
-    const { guideLineColor } = this.getResizeAreaTheme();
+    const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
     const { isDisabled } = this.getNotAllowResizeInfo();
     endGuideLineShape.attr(
       'stroke',
-      isDisabled ? 'rgba(0,0,0,.25)' : guideLineColor,
+      isDisabled ? guideLineDisableColor : guideLineColor,
     );
     this.setResizeMaskCursor(isDisabled ? 'no-drop' : 'default');
   }

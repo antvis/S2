@@ -404,6 +404,7 @@ export const getTheme = (
       background: basicColors[7],
       backgroundOpacity: 0,
       guideLineColor: basicColors[7],
+      guideLineDisableColor: 'rgba(0,0,0,0.25)',
       guideLineDash: [3, 3],
       /* ---------- interaction state ----------- */
       interactionState: {

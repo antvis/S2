@@ -366,7 +366,10 @@ export const StrategyOptions: S2Options = {
   interaction: {
     resize: {
       disable: (resizeInfo) => {
-        return resizeInfo.resizedWidth < resizeInfo.width;
+        return (
+          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.resizedWidth < resizeInfo.width
+        );
       },
     },
   },
