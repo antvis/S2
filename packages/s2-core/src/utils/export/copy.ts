@@ -1,7 +1,10 @@
+import { fill, forEach } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
   CopyType,
+  EMPTY_PLACEHOLDER,
+  ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
 } from '../../common';
@@ -303,6 +306,33 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
   }
 };
 
+/**
+ * 通过 cellMetas 获取单元格对应的列头文本
+ * @param cellMetas
+ *  @return string
+ */
+const getPivotColHeader = (cellMetas: CellMeta[]) => {
+  // 将 id : "root[&]四川省[&]成都市-root[&]家具[&]桌子[&]group1[&]price" 转换为 ['家具', '桌子', 'price']
+  const getColList = (meta: CellMeta) => {
+    const colId = meta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+    const colList = colId.split(ID_SEPARATOR);
+    colList.shift(); // 去除 root
+    return colList;
+  };
+
+  // 将列头数据转换为横向查看的数组： ['家具 家具', '桌子 沙发','price num']
+  const colLines = fill(Array(getColList(cellMetas[0]).length), '');
+  forEach(cellMetas, (meta) => {
+    forEach(getColList(meta), (t, i) => {
+      colLines[i] += convertString(t) + newTab;
+    });
+  });
+
+  return colLines.join(newLine);
+};
+
+// const getPivotRowHeader = (cellMetas: CellMeta[]) => {}
+
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
   const cells = interaction.getState().cells || [];
@@ -327,6 +357,8 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
       return;
     }
     // normal selected
+    const selectedCellMeta = getTwoDimData(cells);
+    getPivotColHeader(selectedCellMeta[0]);
     data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
   }
 
