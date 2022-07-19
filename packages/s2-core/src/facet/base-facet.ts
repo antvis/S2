@@ -435,7 +435,9 @@ export abstract class BaseFacet {
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
+    // 在 panelScroll 和 mergedCellsGroups 都清空后，需要重新将mergedCellsGroups设置为panelScroll的子节点，保证它们的初始化层级关系
     this.spreadsheet.mergedCellsGroup?.set('children', []);
+    this.spreadsheet.panelScrollGroup.add(this.spreadsheet.mergedCellsGroup);
   };
 
   scrollWithAnimation = (
