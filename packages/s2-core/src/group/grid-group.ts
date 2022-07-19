@@ -10,16 +10,16 @@ import type { SpreadSheet } from '../sheet-type/spread-sheet';
 import { renderLine } from '../utils/g-renders';
 
 export class GridGroup extends Group {
-  private s2: SpreadSheet;
+  protected s2: SpreadSheet;
 
   constructor(cfg) {
     super(cfg);
     this.s2 = cfg.s2;
   }
 
-  private gridGroup: IGroup;
+  protected gridGroup: IGroup;
 
-  private gridInfo: GridInfo = {
+  protected gridInfo: GridInfo = {
     cols: [],
     rows: [],
   };

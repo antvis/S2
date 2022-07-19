@@ -20,7 +20,6 @@ import {
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_MERGED_CELLS,
   KEY_GROUP_PANEL_GROUND,
   KEY_GROUP_PANEL_SCROLL,
   MIN_DEVICE_PIXEL_RATIO,
@@ -109,9 +108,6 @@ export abstract class SpreadSheet extends EE {
   public panelGroup: IGroup;
 
   public panelScrollGroup: PanelScrollGroup;
-
-  // 包含合并单元格的组
-  public mergedCellsGroup: IGroup;
 
   public frozenRowGroup: FrozenGroup;
 
@@ -658,14 +654,6 @@ export abstract class SpreadSheet extends EE {
       s2: this,
     });
     this.panelGroup.add(this.panelScrollGroup);
-
-    this.mergedCellsGroup = new Group({
-      name: KEY_GROUP_MERGED_CELLS,
-      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-      s2: this,
-    });
-
-    this.panelScrollGroup.add(this.mergedCellsGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {
