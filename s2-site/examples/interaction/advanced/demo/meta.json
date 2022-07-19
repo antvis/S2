@@ -47,10 +47,18 @@
     {
       "filename": "resize-active.ts",
       "title": {
-        "zh": "自定义resize热区",
+        "zh": "自定义行列宽度调整热区",
         "en": "Custom resize area"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HEfCpSTRO/2021-12-06%25252011.39.15.gif"
+    },
+    {
+      "filename": "resize-disable.ts",
+      "title": {
+        "zh": "自定义行列宽度调整规则",
+        "en": "Custom resize disable"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif"
     },
     {
       "filename": "merge-cell.ts",

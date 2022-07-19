@@ -62,6 +62,10 @@ export interface ResizeInfo {
   id?: string;
   /** 当前拖拽热区对应的节点信息 */
   meta: Node | ViewMeta;
+  /** 拖拽后的宽度 */
+  resizedWidth?: number;
+  /** 拖拽后的高度 */
+  resizedHeight?: number;
 }
 
 export interface ResizeInteractionOptions {
@@ -71,13 +75,7 @@ export interface ResizeInteractionOptions {
   colCellVertical?: boolean; // 列头垂直方向resize -> 针对列头各层级节点
   rowResizeType?: ResizeType; // 行高调整时，影响当前行还是全部行
   // 是否允许调整, 返回 false 时拖拽的宽高无效
-  disabled?:
-    | ((
-        resizeInfo: ResizeInfo & {
-          resizedWidth: number;
-        },
-      ) => boolean)
-    | boolean;
+  disable?: (resizeInfo: ResizeInfo) => boolean;
   // 是否显示热区
   visible?: (cell: S2CellType) => boolean;
 }

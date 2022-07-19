@@ -365,7 +365,7 @@ export const StrategyOptions: S2Options = {
   },
   interaction: {
     resize: {
-      disbaled: (resizeInfo) => {
+      disable: (resizeInfo) => {
         return resizeInfo.resizedWidth < resizeInfo.width;
       },
     },

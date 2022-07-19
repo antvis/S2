@@ -4,7 +4,7 @@ import type {
   IShape,
   ShapeAttrs,
 } from '@antv/g-canvas';
-import { clone, get, isEmpty, isFunction, throttle } from 'lodash';
+import { clone, isEmpty, throttle } from 'lodash';
 import type { ResizeInteractionOptions, Style } from '../common';
 import {
   InterceptType,
@@ -203,23 +203,26 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private getNotAllowResizeInfo() {
     const resizeInfo = this.getResizeInfo();
-    const resizeOptions = this.spreadsheet.options.interaction
-      .resize as ResizeInteractionOptions;
+    const { resize } = this.spreadsheet.options.interaction;
     const { start, end } = this.getResizeGuideLinePosition();
     const resizedWidth = Math.floor(end.x - start.x);
+    const resizedHeight = Math.floor(end.y - start.y);
 
     const originalWidth = resizeInfo.width;
-    const isDisabled = isFunction(resizeOptions.disabled)
-      ? resizeOptions?.disabled?.({
-          ...resizeInfo,
-          resizedWidth,
-        })
-      : resizeOptions.disabled;
+    const originalHeight = resizeInfo.height;
+
+    const isDisabled = (resize as ResizeInteractionOptions)?.disable?.({
+      ...resizeInfo,
+      resizedWidth,
+      resizedHeight,
+    });
 
     const displayWidth = isDisabled ? originalWidth : resizedWidth;
+    const displayHeight = isDisabled ? originalHeight : resizedHeight;
 
     return {
       displayWidth,
+      displayHeight,
       isDisabled,
     };
   }
@@ -284,10 +287,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       },
     } = this.spreadsheet;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
-    const { start, end } = this.getResizeGuideLinePosition();
-    const baseHeight = Math.floor(end.y - start.y);
-    const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
+    const { displayHeight } = this.getNotAllowResizeInfo();
+    const height = displayHeight - rowCellPadding.top - rowCellPadding.bottom;
 
     let rowCellStyle: Style;
     switch (resizeInfo.effect) {
@@ -297,7 +299,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             colCfg: {
               heightByField: {
-                [resizeInfo.id]: baseHeight,
+                [resizeInfo.id]: displayHeight,
               },
             },
           },
@@ -305,7 +307,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       case ResizeAreaEffect.Cell:
         if (
           heightByField[String(resizeInfo.id)] ||
-          get(resize, 'rowResizeType') === ResizeType.CURRENT
+          (resize as ResizeInteractionOptions)?.rowResizeType ===
+            ResizeType.CURRENT
         ) {
           rowCellStyle = {
             rowCfg: {
