@@ -4,7 +4,9 @@ import type {
   ResizeDirectionType,
   ResizeType,
 } from '../../common/constant/resize';
-import type { Style } from './basic';
+import type { Node } from '../../facet/layout/node';
+import type { Style, ViewMeta } from './basic';
+import type { S2CellType } from './interaction';
 import type { ResizeArea } from './theme';
 
 export type ResizeGuideLinePath = [operation: 'M' | 'L', x: number, y: number];
@@ -58,12 +60,24 @@ export interface ResizeInfo {
   isResizeArea?: boolean;
   /** 字段id */
   id?: string;
+  /** 当前拖拽热区对应的节点信息 */
+  meta: Node | ViewMeta;
 }
 
-export interface ResizeActiveOptions {
+export interface ResizeInteractionOptions {
   rowCellVertical?: boolean; // 行头垂直方向resize -> 针对行头叶子节点
   cornerCellHorizontal?: boolean; // 角头水平方向resize -> 针对角头CornerNodeType为Series和Row
   colCellHorizontal?: boolean; // 列头水平方向resize -> 针对列头叶子节点
   colCellVertical?: boolean; // 列头垂直方向resize -> 针对列头各层级节点
   rowResizeType?: ResizeType; // 行高调整时，影响当前行还是全部行
+  // 是否允许调整, 返回 false 时拖拽的宽高无效
+  disabled?:
+    | ((
+        resizeInfo: ResizeInfo & {
+          resizedWidth: number;
+        },
+      ) => boolean)
+    | boolean;
+  // 是否显示热区
+  visible?: (cell: S2CellType) => boolean;
 }

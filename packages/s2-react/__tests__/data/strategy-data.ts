@@ -363,6 +363,13 @@ export const StrategyOptions: S2Options = {
     const placeholder = v?.fieldValue ? '-' : '';
     return placeholder;
   },
+  interaction: {
+    resize: {
+      disbaled: (resizeInfo) => {
+        return resizeInfo.resizedWidth < resizeInfo.width;
+      },
+    },
+  },
   headerActionIcons: [
     {
       iconNames: ['Trend'],

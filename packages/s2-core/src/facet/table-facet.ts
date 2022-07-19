@@ -15,7 +15,7 @@ import { FrozenCellGroupMap } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
   LayoutResult,
-  ResizeActiveOptions,
+  ResizeInteractionOptions,
   S2CellType,
   SplitLine,
   SpreadSheetFacetCfg,
@@ -866,7 +866,7 @@ export class TableFacet extends BaseFacet {
 
     const shouldDrawResize = isBoolean(resize)
       ? resize
-      : (resize as ResizeActiveOptions)?.rowCellVertical;
+      : (resize as ResizeInteractionOptions)?.rowCellVertical;
     if (!shouldDrawResize) {
       return;
     }

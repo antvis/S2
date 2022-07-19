@@ -78,6 +78,7 @@ export class TableSeriesCell extends DataCell {
           offsetY: yOffset,
           width,
           height,
+          meta: this.meta,
         }),
         x,
         y: yOffset + height - resizeStyle.size / 2,
