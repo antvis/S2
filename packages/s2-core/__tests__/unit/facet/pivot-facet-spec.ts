@@ -5,6 +5,7 @@ import { Canvas, Group } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
 import { getMockPivotMeta } from './util';
+import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotFacet } from '@/facet/pivot-facet';
@@ -15,7 +16,6 @@ import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import type { ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
-import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/interaction/root');
 
@@ -35,8 +35,8 @@ jest.mock('@/sheet-type', () => {
     height: 100,
     container: document.body,
   });
-  const panelScrollGroup = new Group({}) as GridGroup;
-  panelScrollGroup.updateGrid = () => {};
+  const panelScrollGroup = new Group({}) as PanelScrollGroup;
+  panelScrollGroup.update = () => {};
   container.add(panelScrollGroup);
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
