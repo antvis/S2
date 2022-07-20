@@ -99,6 +99,58 @@ export const convertString = (v: string) => {
   return v;
 };
 
+/**
+ * 根据 id 计算出行头或者列头展示的文本数组
+ * 将 id : root[&]家具[&]桌子[&]price"
+ * 转换为 List: ['四川省', '成都市']
+ * @param headerId
+ */
+const getHeaderList = (headerId: string) => {
+  const headerList = headerId.split(ID_SEPARATOR);
+  headerList.shift(); // 去除 root
+  return headerList;
+};
+
+// 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
+const assembleMatrix = (
+  rowMatrix: string[][],
+  colMatrix: string[][],
+  dataMatrix: string[][],
+) => {
+  const rowWidth = rowMatrix[0]?.length ?? 0;
+  const colHeight = colMatrix?.length ?? 0;
+  const dataWidth = dataMatrix[0]?.length ?? 0;
+  const dataHeight = dataMatrix.length ?? 0;
+  const matrixWidth = rowWidth + dataWidth;
+  const matrixHeight = colHeight + dataHeight;
+
+  const matrix = Array.from(Array(matrixHeight), () => new Array(matrixWidth));
+
+  return map(matrix, (heightArr, y) => {
+    return map(heightArr, (w, x) => {
+      if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
+        return '';
+      }
+      if (x >= rowWidth && x <= matrixWidth && y >= 0 && y < colHeight) {
+        return colMatrix[y][x - rowWidth];
+      }
+      if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
+        return rowMatrix[y - colHeight][x];
+      }
+      if (
+        x >= rowWidth &&
+        x <= matrixWidth &&
+        y >= colHeight &&
+        y < matrixHeight
+      ) {
+        return dataMatrix[y - colHeight][x - rowWidth];
+      }
+      // todo-zc: 上线前改
+      return undefined;
+    }).join(newTab);
+  }).join(newLine);
+};
+
 export const processCopyData = (
   displayData: DataType[],
   cells: CellMeta[][],
@@ -160,36 +212,61 @@ const processTableColSelected = (
     .join(newLine);
 };
 
-const getPivotCopyData = (
+const getDataMatrix = (
+  leafRowNodes: Node[],
+  leafColNodes: Node[],
+  spreadsheet: SpreadSheet,
+) => {
+  return map(leafRowNodes, (rowNode) => {
+    return leafColNodes.map((colNode) => {
+      const cellData = spreadsheet.dataSet.getCellData({
+        query: {
+          ...rowNode.query,
+          ...colNode.query,
+        },
+        rowNode,
+        isTotals:
+          rowNode.isTotals ||
+          rowNode.isTotalMeasure ||
+          colNode.isTotals ||
+          colNode.isTotalMeasure,
+      });
+      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+    });
+  });
+};
+
+const getPivotWithoutHeaderCopyData = (
   spreadsheet: SpreadSheet,
   leafRows: Node[],
   leafCols: Node[],
 ) => {
-  return leafRows
-    .map((rowNode) =>
-      leafCols
-        .map((colNode) => {
-          const cellData = spreadsheet.dataSet.getCellData({
-            query: {
-              ...rowNode.query,
-              ...colNode.query,
-            },
-            rowNode,
-            isTotals:
-              rowNode.isTotals ||
-              rowNode.isTotalMeasure ||
-              colNode.isTotals ||
-              colNode.isTotalMeasure,
-          });
-          return getFormat(
-            colNode.colIndex,
-            spreadsheet,
-          )(cellData[VALUE_FIELD]);
-        })
-        .join(newTab),
-    )
-    .join(newLine);
+  const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
+  return map(dataMatrix, (line) => line.join(newTab)).join(newLine);
 };
+
+const getPivotWithHeaderCopyData = (
+  spreadsheet: SpreadSheet,
+  leafRowNodes: Node[],
+  leafColNodes: Node[],
+) => {
+  const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
+  const colMatrix = zip(...map(leafColNodes, (n) => getHeaderList(n.id)));
+  const dataMatrix = getDataMatrix(leafRowNodes, leafColNodes, spreadsheet);
+  return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
+};
+
+function getPivotCopyData(
+  spreadsheet: SpreadSheet,
+  allRowLeafNodes: Node[],
+  colNodes: Node[],
+) {
+  const { copyWithHeader } = spreadsheet.options.interaction;
+
+  return copyWithHeader
+    ? getPivotWithHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes)
+    : getPivotWithoutHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes);
+}
 
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
@@ -208,6 +285,7 @@ const processPivotColSelected = (
         return arr;
       }, [])
     : allColLeafNodes;
+
   return getPivotCopyData(spreadsheet, allRowLeafNodes, colNodes);
 };
 const processColSelected = (
@@ -307,104 +385,6 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
 };
 
 /**
- * 通过 cellMetas 获取单元格对应的列头文本
- * @param cellMetas
- *  @return string
- */
-const getPivotColHeader = (cellMetas: CellMeta[]) => {
-  const getColList = (meta: CellMeta) => {
-    const colId = meta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
-    const colList = colId.split(ID_SEPARATOR);
-    colList.shift(); // 去除 root
-    return colList;
-  };
-
-  // 将列头数据转换为横向查看的数组： ['家具 家具', '桌子 沙发','price num']
-  const colLines = fill(Array(getColList(cellMetas[0]).length), '');
-  forEach(cellMetas, (meta) => {
-    forEach(getColList(meta), (t, i) => {
-      colLines[i] += convertString(t) + newTab;
-    });
-  });
-
-  return colLines.join(newLine) + newLine;
-};
-
-/**
- * 根据 id 计算出行头或者列头展示的文本数组
- * 将 id : "root[&]四川省[&]成都市-root[&]家具[&]桌子[&]price"
- * 转换为 colList: ['家具', '桌子', 'price'] 或者 rowList: ['四川省', '成都市']
- * @param meta
- * @param isRow
- */
-const getHeaderList = (meta: CellMeta, isRow = false) => {
-  const headerIndex = isRow ? 0 : 1; // id = `${rowId}-${colId}` 拼接形成
-  const headerId = meta.id.split(EMPTY_PLACEHOLDER)?.[headerIndex] ?? '';
-  const headerList = headerId.split(ID_SEPARATOR);
-  headerList.shift(); // 去除 root
-  return headerList;
-};
-const getPivotRowHeader = (cellMetas: CellMeta[][]) => {
-  const rowMatrix = map(cellMetas, (meta) => {
-    return getHeaderList(meta[0], true);
-  });
-
-  const createTextLine = (matrix: string[][]) => {
-    map(matrix, (line) => {
-      map(line, (word) => convertString(word)).join(newTab);
-    }).join(newLine);
-  };
-
-  const rowLines = map(cellMetas, (cellMeta) => {
-    return getHeaderList(cellMeta[0])
-      .map((word) => convertString(word))
-      .join(newTab);
-  }).join(newLine);
-
-  return rowLines;
-};
-
-function assembleMatrix(
-  rowMatrix: string[][],
-  colMatrix: string[][],
-  dataMatrix: string[][],
-) {
-  const rowWidth = rowMatrix[0]?.length ?? 0;
-  const colHeight = colMatrix?.length ?? 0;
-  const dataWidth = dataMatrix[0]?.length ?? 0;
-  const dataHeight = dataMatrix.length ?? 0;
-  const matrixWidth = rowWidth + dataWidth;
-  const matrixHeight = colHeight + dataHeight;
-
-  const matrix = Array.from(Array(matrixHeight), () => new Array(matrixWidth));
-
-  // https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
-  return map(matrix, (heightArr, y) => {
-    return map(heightArr, (w, x) => {
-      if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
-        return '';
-      }
-      if (x >= rowWidth && x <= matrixWidth && y >= 0 && y < colHeight) {
-        return colMatrix[y][x - rowWidth];
-      }
-      if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
-        return rowMatrix[y - colHeight][x];
-      }
-      if (
-        x >= rowWidth &&
-        x <= matrixWidth &&
-        y >= colHeight &&
-        y < matrixHeight
-      ) {
-        return dataMatrix[y - colHeight][x - rowWidth];
-      }
-      // todo-zc: 上线前改
-      return undefined;
-    }).join(newTab);
-  }).join(newLine);
-}
-
-/**
  * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
  * https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
  * @param cellMetaMatrix
@@ -416,9 +396,17 @@ const dataWithHeaderMatrix = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const colMatrix = zip(...map(cellMetaMatrix[0], (it) => getHeaderList(it)));
+  const colMatrix = zip(
+    ...map(cellMetaMatrix[0], (it) => {
+      const colId = it.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+      return getHeaderList(colId);
+    }),
+  );
 
-  const rowMatrix = map(cellMetaMatrix, (arr) => getHeaderList(arr[0], true));
+  const rowMatrix = map(cellMetaMatrix, (arr) => {
+    const rowId = arr[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+    return getHeaderList(rowId);
+  });
 
   const dataMatrix = map(cellMetaMatrix, (metaArr) => {
     return map(metaArr, (it) => format(it, displayData, spreadsheet));
