@@ -201,7 +201,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private getNotAllowResizeInfo() {
+  private getDisAllowResizeInfo() {
     const resizeInfo = this.getResizeInfo();
     const { resize } = this.spreadsheet.options.interaction;
     const { start, end } = this.getResizeGuideLinePosition();
@@ -229,7 +229,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private getResizeWidthDetail(): ResizeDetail {
     const resizeInfo = this.getResizeInfo();
-    const { displayWidth } = this.getNotAllowResizeInfo();
+    const { displayWidth } = this.getDisAllowResizeInfo();
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
@@ -288,7 +288,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     } = this.spreadsheet;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const resizeInfo = this.getResizeInfo();
-    const { displayHeight } = this.getNotAllowResizeInfo();
+    const { displayHeight } = this.getDisAllowResizeInfo();
     const height = displayHeight - rowCellPadding.top - rowCellPadding.bottom;
 
     let rowCellStyle: Style;
@@ -408,7 +408,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private updateResizeGuideLineTheme(endGuideLineShape: IShape) {
     const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
-    const { isDisabled } = this.getNotAllowResizeInfo();
+    const { isDisabled } = this.getDisAllowResizeInfo();
     endGuideLineShape.attr(
       'stroke',
       isDisabled ? guideLineDisableColor : guideLineColor,
