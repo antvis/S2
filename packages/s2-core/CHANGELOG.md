@@ -1,3 +1,11 @@
+# [@antv/s2-v1.24.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.2...@antv/s2-v1.24.0-alpha.3) (2022-07-20)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
+* 修复初始化时, border不见的问题 ([#1581](https://github.com/antvis/S2/issues/1581)) ([5d9e204](https://github.com/antvis/S2/commit/5d9e2041466e38e603eb509bb9d35398484f9f65))
+
 # [@antv/s2-v1.24.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.1...@antv/s2-v1.24.0-alpha.2) (2022-07-18)
 
 
