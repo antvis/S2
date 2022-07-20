@@ -121,6 +121,8 @@ export interface InteractionOptions {
   enableCopy?: boolean;
   // copy with filed format
   copyWithFormat?: boolean;
+  // copy with header info
+  copyWithHeader?: boolean;
   // auto reset sheet style when click outside or press ecs key, default true
   autoResetSheetStyle?: boolean;
   hiddenColumnFields?: string[];
