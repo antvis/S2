@@ -245,13 +245,29 @@ describe('MiniCharts Utils Tests', () => {
     expect(getBulletRangeColor(0.2, 0.2, rangeColors)).toEqual('green');
     expect(getBulletRangeColor(0.3, 0.5, rangeColors)).toEqual('yellow');
     expect(getBulletRangeColor(0.1, 0.9, rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(-0.1386, 0.0137, rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(-0.2, -0.2, rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(0.1, -0.2, rangeColors)).toEqual('green');
+    expect(getBulletRangeColor(0.09799999, 0.19788888, rangeColors)).toEqual(
+      'green',
+    );
+    expect(getBulletRangeColor(0.09788888, 0.19788888, rangeColors)).toEqual(
+      'green',
+    );
+    expect(getBulletRangeColor('测试', '牛批', rangeColors)).toEqual('red');
+    expect(getBulletRangeColor('测试', 0.2, rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(0.2, '牛批', rangeColors)).toEqual('red');
   });
 
   test('should transform ratio to percent', () => {
     expect(transformRatioToPercent(0.2)).toEqual('20%');
     expect(transformRatioToPercent('0.2')).toEqual('20%');
     expect(transformRatioToPercent('test')).toEqual('test');
+    expect(transformRatioToPercent('牛批')).toEqual('牛批');
     expect(transformRatioToPercent(0.02)).toEqual('2%');
     expect(transformRatioToPercent(0.02, 2)).toEqual('2.00%');
+    expect(transformRatioToPercent(-122.2)).toEqual('-12220%');
+    expect(transformRatioToPercent('-122.2')).toEqual('-12220%');
+    expect(transformRatioToPercent(-122.2, 2)).toEqual('-12220.00%');
   });
 });

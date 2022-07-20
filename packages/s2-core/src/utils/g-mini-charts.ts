@@ -173,6 +173,10 @@ export const getBulletRangeColor = (
 ) => {
   const delta = Number(target) - Number(measure);
 
+  if (Number.isNaN(delta) || Number(measure) < 0) {
+    return rangeColors.bad;
+  }
+
   if (delta <= 0.1) {
     return rangeColors.good;
   }
