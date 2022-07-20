@@ -1,3 +1,4 @@
+import type { IGroup } from '@antv/g-canvas';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -23,7 +24,6 @@ import type {
 } from '@/common/interface';
 import type { BaseFacet } from '@/facet';
 import type { MergedCell } from '@/cell';
-import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/sheet-type');
 
@@ -282,17 +282,19 @@ describe('Merge Cells Test', () => {
         mergedCellsInfo: undefined,
       };
 
-      mockInstance.panelScrollGroup = {
+      const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as GridGroup;
-      updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+      } as unknown as IGroup;
+
+      updateMergedCells(mockInstance, mergedCellsGroup);
+
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
       mockInstance.options = {
         ...mockInstance.options,
         mergedCellsInfo: [],
       };
-      updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+      updateMergedCells(mockInstance, mergedCellsGroup);
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
     });
 
     test('should not update mergedCells when visible area do not contain MergedCell', () => {
@@ -307,13 +309,13 @@ describe('Merge Cells Test', () => {
         },
       } as unknown as RootInteraction;
 
-      mockInstance.mergedCellsGroup = {
+      const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as GridGroup;
+      } as unknown as IGroup;
 
-      updateMergedCells(mockInstance);
+      updateMergedCells(mockInstance, mergedCellsGroup);
 
-      expect(mockInstance.mergedCellsGroup.getChildren).not.toHaveBeenCalled();
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
     });
 
     test('should merge TempMergedCell when cell viewMeta id is equal. (mergeTempMergedCell)', () => {

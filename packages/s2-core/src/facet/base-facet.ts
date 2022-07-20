@@ -4,17 +4,7 @@ import { Group } from '@antv/g-canvas';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
-import {
-  clamp,
-  debounce,
-  each,
-  find,
-  findKey,
-  get,
-  isUndefined,
-  last,
-  reduce,
-} from 'lodash';
+import { clamp, debounce, each, find, isUndefined, last, reduce } from 'lodash';
 import { DataCell } from '../cell';
 import {
   InterceptType,
@@ -435,7 +425,6 @@ export abstract class BaseFacet {
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
-    this.spreadsheet.mergedCellsGroup?.set('children', []);
   };
 
   scrollWithAnimation = (
@@ -1008,7 +997,6 @@ export abstract class BaseFacet {
         );
         findOne?.remove(true);
       });
-      updateMergedCells(this.spreadsheet);
 
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
@@ -1207,9 +1195,9 @@ export abstract class BaseFacet {
     };
   };
 
-  public drawGrid() {
+  public updatePanelScrollGroup() {
     this.gridInfo = this.getGridInfo();
-    this.spreadsheet.panelScrollGroup.updateGrid(this.gridInfo);
+    this.spreadsheet.panelScrollGroup.update(this.gridInfo);
   }
 
   /**
@@ -1231,16 +1219,11 @@ export abstract class BaseFacet {
     );
 
     this.realCellRender(scrollX, scrollY);
-    this.drawGrid();
-    this.putMergedCellsGroupToFront();
+    this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
     this.emitScrollEvent({ scrollX, scrollY });
     this.onAfterScroll();
-  }
-
-  private putMergedCellsGroupToFront() {
-    this.spreadsheet.mergedCellsGroup?.toFront();
   }
 
   private emitScrollEvent(position: CellScrollPosition) {

@@ -211,12 +211,14 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     bulletStyle;
 
   const { measure, target } = value;
+
   const displayMeasure = Math.max(Number(measure), 0);
   const displayTarget = Math.max(Number(target), 0);
 
   // 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
   // 所以子弹图需要为数值预留宽度
-  const measurePercent = transformRatioToPercent(displayMeasure, 2);
+  // 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
+  const measurePercent = transformRatioToPercent(measure, 2);
   const measurePercentWidth = Math.ceil(
     measureTextWidth(measurePercent, dataCellStyle),
   );
@@ -247,10 +249,15 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     'spreadsheet.options.bullet.getRangeColor',
   );
 
+  const displayBulletWidth = Math.max(
+    Math.min(bulletWidth * displayMeasure, bulletWidth),
+    0,
+  );
+
   renderRect(cell, {
     x: positionX,
     y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
-    width: Math.min(bulletWidth * displayMeasure, bulletWidth),
+    width: displayBulletWidth,
     height: progressBar.innerHeight,
     fill:
       getRangeColor?.(displayMeasure, displayTarget) ??

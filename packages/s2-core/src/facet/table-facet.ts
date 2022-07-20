@@ -1151,8 +1151,8 @@ export class TableFacet extends BaseFacet {
     }
   }
 
-  public drawGrid() {
-    super.drawGrid();
+  public updatePanelScrollGroup() {
+    super.updatePanelScrollGroup();
     [
       FrozenGroup.FROZEN_COL,
       FrozenGroup.FROZEN_ROW,

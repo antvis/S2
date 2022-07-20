@@ -185,8 +185,8 @@ describe('<SheetComponent/> Tests', () => {
 
       expect(bulletMeasureTextList).toStrictEqual([
         '0.25%',
-        '0.00%',
-        '100.00%',
+        '-82.61%',
+        '1073.92%',
         '50.00%',
         '68.00%',
       ]);

@@ -1,3 +1,4 @@
+import type { IGroup } from '@antv/g-canvas';
 import {
   differenceWith,
   filter,
@@ -257,7 +258,7 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.mergedCellsGroup.add(new MergedCell(sheet, cells, meta));
+    sheet.panelScrollGroup.addMergeCell(new MergedCell(sheet, cells, meta));
   }
 };
 
@@ -367,7 +368,10 @@ export const differenceTempMergedCells = (
  * update the mergedCell
  * @param sheet the base sheet instance
  */
-export const updateMergedCells = (sheet: SpreadSheet) => {
+export const updateMergedCells = (
+  sheet: SpreadSheet,
+  mergedCellsGroup: IGroup,
+) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) return;
 
@@ -386,7 +390,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   });
   // 获取 oldTempMergedCells 便用后续进行 diff 操作
   const oldMergedCells =
-    sheet.mergedCellsGroup.getChildren() as unknown as MergedCell[];
+    mergedCellsGroup.getChildren() as unknown as MergedCell[];
 
   const oldTempMergedCells: TempMergedCell[] =
     MergedCellConvertTempMergedCells(oldMergedCells);
@@ -410,6 +414,6 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta }) => {
-    sheet.mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
+    mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
   });
 };
