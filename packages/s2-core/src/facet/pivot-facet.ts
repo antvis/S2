@@ -4,6 +4,8 @@ import {
   get,
   isArray,
   isEmpty,
+  isFunction,
+  isNil,
   keys,
   last,
   maxBy,
@@ -11,7 +13,14 @@ import {
   reduce,
   size,
 } from 'lodash';
-import { LAYOUT_SAMPLE_COUNT, type IconTheme, type MultiData } from '../common';
+import {
+  LAYOUT_SAMPLE_COUNT,
+  type CellCustomWidth,
+  type ColCfg,
+  type IconTheme,
+  type MultiData,
+  type RowCfg,
+} from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
@@ -245,16 +254,25 @@ export class PivotFacet extends BaseFacet {
     rowHeaderWidth: number,
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
-    // current.width =  get(colCfg, `widthByFieldValue.${current.value}`, current.width);
+
     const userDragWidth = get(
-      get(colCfg, 'widthByFieldValue'),
+      colCfg?.widthByFieldValue,
       `${col.value}`,
       col.width,
     );
+
+    // 1. 拖拽后的宽度优先级最高
     if (userDragWidth) {
       return userDragWidth;
     }
 
+    // 2. 其次是自定义, 返回 null 则使用默认宽度
+    const userCustomWidth = this.getUserCustomWidth(col, colCfg?.width);
+    if (userCustomWidth) {
+      return userCustomWidth;
+    }
+
+    // 3. 紧凑布局
     if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
       const {
         bolderText: colCellTextStyle,
@@ -326,10 +344,13 @@ export class PivotFacet extends BaseFacet {
         appendedWidth
       );
     }
-    // adaptive
+
+    // 4. 自适应 adaptive
+    // 4.1 树状自定义
     if (this.spreadsheet.isHierarchyTreeType()) {
       return this.getAdaptTreeColWidth(col, colLeafNodes, rowLeafNodes);
     }
+    // 4.2 网格自定义
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
 
@@ -590,6 +611,10 @@ export class PivotFacet extends BaseFacet {
     });
   }
 
+  private getUserCustomWidth(node: Node, width: CellCustomWidth) {
+    return isFunction(width) ? width?.(node) : width;
+  }
+
   /**
    * 计算 grid 模式下 node 宽度
    * @param node
@@ -599,11 +624,12 @@ export class PivotFacet extends BaseFacet {
     const { rowCfg, spreadsheet } = this.cfg;
 
     const userDragWidth = get(rowCfg, `widthByField.${node.key}`);
-    const userCustomWidth = get(rowCfg, 'width');
+
     if (userDragWidth) {
       return userDragWidth;
     }
 
+    const userCustomWidth = this.getUserCustomWidth(node, rowCfg?.width);
     if (userCustomWidth) {
       return userCustomWidth;
     }
@@ -709,12 +735,19 @@ export class PivotFacet extends BaseFacet {
    */
   private getTreeRowHeaderWidth(): number {
     const { rows, dataSet, rowCfg, treeRowsWidth } = this.cfg;
-    // user drag happened
+
+    // 1. 用户拖拽或手动指定的行头宽度优先级最高
     if (rowCfg?.treeRowsWidth) {
       return rowCfg?.treeRowsWidth;
     }
 
-    // + province/city/level
+    // 2. 其次是自定义
+    const customRowWidth = this.getUserCustomWidth(null, rowCfg?.width);
+    if (customRowWidth) {
+      return customRowWidth;
+    }
+
+    // 3. 然后是计算 (+ icon province/city/level)
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
@@ -758,7 +791,7 @@ export class PivotFacet extends BaseFacet {
     } = spreadsheet.theme.cornerCell;
     const { field, isLeaf } = node;
 
-    // calc rowNodeWitdh
+    // calc rowNode width
     const rowIconWidth = this.getExpectedCellIconWidth(
       CellTypes.ROW_CELL,
       !spreadsheet.isValueInCols() &&
