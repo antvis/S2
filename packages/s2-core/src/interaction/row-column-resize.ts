@@ -201,7 +201,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private getNotAllowResizeInfo() {
+  private getDisAllowResizeInfo() {
     const resizeInfo = this.getResizeInfo();
     const { resize } = this.spreadsheet.options.interaction;
     const { start, end } = this.getResizeGuideLinePosition();
