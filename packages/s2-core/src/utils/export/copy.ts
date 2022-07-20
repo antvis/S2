@@ -111,6 +111,11 @@ const getHeaderList = (headerId: string) => {
   return headerList;
 };
 
+// 把 string[][] 矩阵转换成字符串格式
+const transformDataMatrixToStr = (dataMatrix: string[][]) => {
+  return map(dataMatrix, (line) => line.join(newTab)).join(newLine);
+};
+
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
 const assembleMatrix = (
   rowMatrix: string[][],
@@ -124,9 +129,9 @@ const assembleMatrix = (
   const matrixWidth = rowWidth + dataWidth;
   const matrixHeight = colHeight + dataHeight;
 
-  const matrix = Array.from(Array(matrixHeight), () => new Array(matrixWidth));
+  let matrix = Array.from(Array(matrixHeight), () => new Array(matrixWidth));
 
-  return map(matrix, (heightArr, y) => {
+  matrix = map(matrix, (heightArr, y) => {
     return map(heightArr, (w, x) => {
       if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
         return '';
@@ -145,10 +150,11 @@ const assembleMatrix = (
       ) {
         return dataMatrix[y - colHeight][x - rowWidth];
       }
-      // todo-zc: 上线前改
       return undefined;
-    }).join(newTab);
-  }).join(newLine);
+    });
+  }) as string[][];
+
+  return transformDataMatrixToStr(matrix);
 };
 
 export const processCopyData = (
@@ -242,7 +248,7 @@ const getPivotWithoutHeaderCopyData = (
   leafCols: Node[],
 ) => {
   const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
-  return map(dataMatrix, (line) => line.join(newTab)).join(newLine);
+  return transformDataMatrixToStr(dataMatrix);
 };
 
 const getPivotWithHeaderCopyData = (
