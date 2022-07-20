@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.22.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.2...@antv/s2-react-v1.22.0-alpha.3) (2022-07-20)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
+
 # [@antv/s2-react-v1.22.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.1...@antv/s2-react-v1.22.0-alpha.2) (2022-07-18)
 
 
