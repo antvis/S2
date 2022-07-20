@@ -15,9 +15,9 @@ order: 5
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
 | customInteractions     | 自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |
-| scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollSpeedRatio](/zh/docs/api/general/S2Options#scrollspeedratio)                                |         |       |
+| scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollSpeedRatio](#scrollspeedratio)                                |         |       |
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
-| resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
+| resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeInteractionOptions](#resizeinteractionoptions) | `true`  |       |
 | brushSelection                 | 是否允许刷选                         | `boolean` | `true`  |       |
 | multiSelection                 | 是否允许多选 （包含行头，列头，数值单元格）                         | `boolean` | `true`  |       |
 | rangeSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
@@ -44,7 +44,7 @@ interface ScrollSpeedRatio {
 }
 ```
 
-### ResizeActiveOptions
+### ResizeInteractionOptions
 
 | 参数                 | 说明                                                                               | 类型              | 默认值 | 必选  |
 | -------------------- | ---------------------------------------------------------------------------------- | ----------------- | ------ | :---: |
@@ -53,3 +53,5 @@ interface ScrollSpeedRatio {
 | colCellHorizontal    | 是否开启列头水平方向 resize 热区                                                   | `boolean`         | true   |       |
 | colCellVertical      | 是否开启列头垂直方向 resize 热区                                                   | `boolean`         | true   |       |
 | rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效 | `all`\| `current` | `all`  |       |
+| disable        | 用于控制行高 resize 是否生效 查看例子 | (resizeInfo: [S2CellType](/zh/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
+| visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/zh/docs/api/basic-class/base-cell)) => boolean |   |       |

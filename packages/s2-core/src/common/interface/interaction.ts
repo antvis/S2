@@ -17,7 +17,7 @@ import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
-import type { ResizeActiveOptions } from './resize';
+import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
@@ -127,7 +127,7 @@ export interface InteractionOptions {
   // the ratio to control scroll speed, default set to 1
   scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
-  resize?: boolean | ResizeActiveOptions;
+  resize?: boolean | ResizeInteractionOptions;
   // enable mouse drag brush selection
   brushSelection?: boolean;
   // enable Command / Ctrl + click multi selection
@@ -141,7 +141,7 @@ export interface InteractionOptions {
   // An object that specifies characteristics about the event listener
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
-  // hightlight col and row header for selected cell
+  // highlight col and row header for selected cell
   selectedCellHighlight?: boolean;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain';

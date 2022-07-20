@@ -237,7 +237,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected drawResizeArea() {
-    if (!this.shouldDrawResizeAreaByType('cornerCellHorizontal')) {
+    if (!this.shouldDrawResizeAreaByType('cornerCellHorizontal', this)) {
       return;
     }
 
@@ -296,6 +296,7 @@ export class CornerCell extends HeaderCell {
           offsetY,
           width,
           height,
+          meta: this.meta,
         }),
         x: offsetX + width - resizeStyle.size / 2,
         y: offsetY,

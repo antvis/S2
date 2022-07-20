@@ -363,6 +363,16 @@ export const StrategyOptions: S2Options = {
     const placeholder = v?.fieldValue ? '-' : '';
     return placeholder;
   },
+  interaction: {
+    resize: {
+      disable: (resizeInfo) => {
+        return (
+          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.resizedWidth < resizeInfo.width
+        );
+      },
+    },
+  },
   headerActionIcons: [
     {
       iconNames: ['Trend'],
