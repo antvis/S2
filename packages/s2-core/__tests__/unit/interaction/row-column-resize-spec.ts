@@ -564,7 +564,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     expect(getResizeMask().attr('cursor')).toEqual('no-drop');
-    expect(getEndGuideLine().attr('stroke')).toEqual('rgba(0,0,0,.25)');
+    expect(getEndGuideLine().attr('stroke')).toEqual('rgba(0,0,0,0.25)');
     expect(disable).toHaveBeenCalledWith({
       ...resizeInfo,
       resizedWidth: 0,
