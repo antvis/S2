@@ -49,6 +49,28 @@ export class TableColCell extends ColCell {
       this.spreadsheet.dataSet.getFieldName(this.meta.label),
     );
   }
+  
+  protected shouldAddVerticalResizeArea() {
+    if (this.isFrozenCell()) return true
+    else return super.shouldAddVerticalResizeArea()
+  }
+
+  protected getVerticalResizeAreaOffset() {
+    const { x, y } = this.meta;
+    const { scrollX, position } = this.headerConfig;
+
+    if (this.isFrozenCell()) {
+      return {
+        x,
+        y,
+      };
+    }
+    return {
+      x: position.x + x - scrollX,
+      y: position.y + y,
+    };
+  }
+
 
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
