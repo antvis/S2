@@ -161,6 +161,8 @@ export interface ResizeArea {
   background?: string;
   /* 参考线颜色 */
   guideLineColor?: string;
+  /* 参考线不可用颜色 */
+  guideLineDisableColor?: string;
   /* 参考线间隔 */
   guideLineDash?: number[];
   /* 热区背景色透明度 */

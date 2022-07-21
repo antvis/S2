@@ -50,12 +50,12 @@ const getKPIMockData = () => {
     },
     'measure-e': {
       originalValues: {
-        measure: 0.68,
-        target: 0.8,
+        measure: 0.09775,
+        target: 0.1978,
       },
       values: {
-        measure: '0.68',
-        target: '0.8',
+        measure: 0.09775,
+        target: 0.1978,
       },
     },
     'measure-f': {
@@ -362,6 +362,16 @@ export const StrategyOptions: S2Options = {
   placeholder: (v) => {
     const placeholder = v?.fieldValue ? '-' : '';
     return placeholder;
+  },
+  interaction: {
+    resize: {
+      disable: (resizeInfo) => {
+        return (
+          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.resizedWidth < resizeInfo.width
+        );
+      },
+    },
   },
   headerActionIcons: [
     {
