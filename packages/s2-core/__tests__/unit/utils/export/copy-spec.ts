@@ -103,6 +103,25 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(s2).split('\n')[2].split('\t').length).toBe(5);
   });
 
+  it('should copy normal data with header in table mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: true,
+      },
+    });
+    s2.render();
+
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(getSelectedData(s2)).toEqual('province\r\n浙江省');
+  });
+
   it('should copy format data', () => {
     const ss = new TableSheet(
       getContainer(),
@@ -132,6 +151,13 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with data filtered', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: false,
+      },
+    });
+    s2.render();
+
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey: 'province',
       filteredValues: ['浙江省'],
