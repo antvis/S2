@@ -21,6 +21,11 @@ import {
 import { CellTypes, MiniChartTypes } from '../common/constant';
 import { getEllipsisText, measureTextWidth } from './text';
 
+interface FractionDigitsOptions {
+  min: number;
+  max: number;
+}
+
 /**
  *  坐标转换
  */
@@ -173,6 +178,10 @@ export const getBulletRangeColor = (
 ) => {
   const delta = Number(target) - Number(measure);
 
+  if (Number.isNaN(delta) || Number(measure) < 0) {
+    return rangeColors.bad;
+  }
+
   if (delta <= 0.1) {
     return rangeColors.good;
   }
@@ -187,13 +196,29 @@ export const getBulletRangeColor = (
 // 比率转百分比, 简单解决计算精度问题
 export const transformRatioToPercent = (
   ratio: number | string,
-  fractionDigits = 0,
+  fractionDigits: FractionDigitsOptions | number = { min: 0, max: 0 },
 ) => {
   const value = Number(ratio);
   if (Number.isNaN(value)) {
     return ratio;
   }
-  return `${(value * 100).toFixed(fractionDigits)}%`;
+
+  const minimumFractionDigits =
+    (fractionDigits as FractionDigitsOptions)?.min ??
+    (fractionDigits as number);
+  const maximumFractionDigits =
+    (fractionDigits as FractionDigitsOptions)?.max ??
+    (fractionDigits as number);
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits,
+    maximumFractionDigits,
+    // 禁用自动分组: "12220%" => "12,220%"
+    useGrouping: false,
+    style: 'percent',
+  });
+
+  return formatter.format(value);
 };
 
 /**
