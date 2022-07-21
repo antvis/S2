@@ -1,3 +1,16 @@
+# [@antv/s2-v1.24.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.3...@antv/s2-v1.24.0-alpha.4) (2022-07-21)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
+
+
+### Features
+
+* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
+* **layout:** 支持自定义行/列单元格宽度 close [#1585](https://github.com/antvis/S2/issues/1585) ([#1591](https://github.com/antvis/S2/issues/1591)) ([ea5c1f3](https://github.com/antvis/S2/commit/ea5c1f3b41a0ccc9766fe2466924db1b8ea586ee))
+
 # [@antv/s2-v1.24.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.2...@antv/s2-v1.24.0-alpha.3) (2022-07-20)
 
 
