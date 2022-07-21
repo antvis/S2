@@ -1,5 +1,5 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
-import { get, isBoolean, last, maxBy, set, values } from 'lodash';
+import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
 import { TableSeriesCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -353,17 +353,17 @@ export class TableFacet extends BaseFacet {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
 
-    const userDragWidth = this.getUserDragWidth(col);
+    const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
-    if (userDragWidth) {
-      return userDragWidth;
+    if (cellDraggedWidth) {
+      return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const userCustomWidth = this.getUserCustomWidth(col, colCfg?.width);
-    if (userCustomWidth) {
-      return userCustomWidth;
+    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
+    if (!isNil(cellCustomWidth)) {
+      return cellCustomWidth;
     }
 
     let colWidth: number;

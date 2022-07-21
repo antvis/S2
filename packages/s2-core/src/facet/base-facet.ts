@@ -145,11 +145,11 @@ export abstract class BaseFacet {
     this.init();
   }
 
-  protected getUserCustomWidth(node: Node, width: CellCustomWidth) {
+  protected getCellCustomWidth(node: Node, width: CellCustomWidth) {
     return isFunction(width) ? width?.(node) : width;
   }
 
-  protected getUserDragWidth(node: Node): number {
+  protected getCellDraggedWidth(node: Node): number {
     const { colCfg } = this.cfg;
     return get(colCfg?.widthByFieldValue, `${node.value}`, node.width);
   }

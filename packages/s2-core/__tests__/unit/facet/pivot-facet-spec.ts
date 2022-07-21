@@ -63,6 +63,10 @@ jest.mock('@/sheet-type', () => {
           getFreezeCornerDiffWidth: jest.fn(),
         },
         getCanvasElement: () => container.get('el'),
+        hideTooltip: jest.fn(),
+        interaction: {
+          clearHoverTimer: jest.fn(),
+        },
       };
     }),
   };

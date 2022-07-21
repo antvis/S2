@@ -255,17 +255,17 @@ export class PivotFacet extends BaseFacet {
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
 
-    const userDragWidth = this.getUserDragWidth(col);
+    const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
-    if (userDragWidth) {
-      return userDragWidth;
+    if (cellDraggedWidth) {
+      return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const userCustomWidth = this.getUserCustomWidth(col, colCfg?.width);
-    if (userCustomWidth) {
-      return userCustomWidth;
+    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
+    if (!isNil(cellCustomWidth)) {
+      return cellCustomWidth;
     }
 
     // 3. 紧凑布局
@@ -615,15 +615,15 @@ export class PivotFacet extends BaseFacet {
   private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCfg, spreadsheet } = this.cfg;
 
-    const userDragWidth = get(rowCfg, `widthByField.${node.key}`);
+    const cellDraggedWidth = get(rowCfg, `widthByField.${node.key}`);
 
-    if (userDragWidth) {
-      return userDragWidth;
+    if (cellDraggedWidth) {
+      return cellDraggedWidth;
     }
 
-    const userCustomWidth = this.getUserCustomWidth(node, rowCfg?.width);
-    if (userCustomWidth) {
-      return userCustomWidth;
+    const cellCustomWidth = this.getCellCustomWidth(node, rowCfg?.width);
+    if (!isNil(cellCustomWidth)) {
+      return cellCustomWidth;
     }
 
     if (spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Adaptive) {
@@ -734,7 +734,7 @@ export class PivotFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义
-    const customRowWidth = this.getUserCustomWidth(null, rowCfg?.width);
+    const customRowWidth = this.getCellCustomWidth(null, rowCfg?.width);
     if (customRowWidth) {
       return customRowWidth;
     }

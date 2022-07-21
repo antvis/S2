@@ -45,6 +45,10 @@ jest.mock('@/sheet-type', () => {
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () => container.get('el'),
+        hideTooltip: jest.fn(),
+        interaction: {
+          clearHoverTimer: jest.fn(),
+        },
       };
     }),
   };
