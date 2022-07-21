@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
@@ -72,7 +73,7 @@ describe('Scroll Tests', () => {
   test('should hide tooltip when start scroll', () => {
     const hideTooltipSpy = jest
       .spyOn(s2, 'hideTooltip')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     canvas.dispatchEvent(new WheelEvent('wheel', { deltaX: 20, deltaY: 0 }));
     expect(hideTooltipSpy).toHaveBeenCalledTimes(1);
@@ -81,10 +82,33 @@ describe('Scroll Tests', () => {
   test('should clear hover timer when start scroll', () => {
     const clearHoverTimerSpy = jest
       .spyOn(s2.interaction, 'clearHoverTimer')
-      .mockImplementation(() => {});
+      .mockImplementationOnce(() => {});
 
     canvas.dispatchEvent(new WheelEvent('wheel', { deltaX: 20, deltaY: 0 }));
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('should clear hover timer and hide tooltip when drag scroll bar', () => {
+    const hideTooltipSpy = jest
+      .spyOn(s2, 'hideTooltip')
+      .mockImplementationOnce(() => {});
+
+    const clearHoverTimerSpy = jest
+      .spyOn(s2.interaction, 'clearHoverTimer')
+      .mockImplementationOnce(() => {});
+
+    s2.facet.hScrollBar.emit(ScrollType.ScrollChange, {
+      offset: 10,
+      updateThumbOffset: 10,
+    });
+
+    s2.facet.vScrollBar.emit(ScrollType.ScrollChange, {
+      offset: 10,
+      updateThumbOffset: 10,
+    });
+
+    expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
+    expect(hideTooltipSpy).toHaveBeenCalledTimes(2);
   });
 
   test('should not trigger scroll if not scroll over the viewport', () => {

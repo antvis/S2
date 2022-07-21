@@ -1,5 +1,5 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
-import { get, isBoolean, last, maxBy, set } from 'lodash';
+import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
 import { TableSeriesCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -271,16 +271,16 @@ export class TableFacet extends BaseFacet {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
       const canvasW = this.getCanvasHW().width - seriesNumberWidth;
-      return Math.max(cellCfg.width, canvasW / Math.max(1, colHeaderColSize));
+      return Math.max(cellCfg?.width, canvasW / Math.max(1, colHeaderColSize));
     }
-    return cellCfg.width;
+    return cellCfg?.width;
   }
 
-  private getColNodeHeight(col: Node) {
+  private getColNodeHeight() {
     const { colCfg } = this.cfg;
     // 明细表所有列节点高度保持一致
-    const userDragHeight = Object.values(get(colCfg, `heightByField`))[0];
-    return userDragHeight || colCfg.height;
+    const userDragHeight = values(colCfg?.heightByField)[0];
+    return userDragHeight || colCfg?.height;
   }
 
   private calculateColNodesCoordinate(
@@ -290,7 +290,7 @@ export class TableFacet extends BaseFacet {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.height = this.getColNodeHeight(levelSample);
+      levelSample.height = this.getColNodeHeight();
       colsHierarchy.height += levelSample.height;
     }
     const { frozenTrailingColCount } = getValidFrozenOptions(
@@ -314,7 +314,7 @@ export class TableFacet extends BaseFacet {
       preLeafNode = currentNode;
       currentNode.y = 0;
 
-      currentNode.height = this.getColNodeHeight(currentNode);
+      currentNode.height = this.getColNodeHeight();
 
       nodes.push(currentNode);
 
@@ -353,61 +353,65 @@ export class TableFacet extends BaseFacet {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
 
-    const userDragWidth = get(
-      get(colCfg, 'widthByFieldValue'),
-      `${col.value}`,
-      col.width,
-    );
+    const cellDraggedWidth = this.getCellDraggedWidth(col);
+
+    // 1. 拖拽后的宽度优先级最高
+    if (cellDraggedWidth) {
+      return cellDraggedWidth;
+    }
+
+    // 2. 其次是自定义, 返回 null 则使用默认宽度
+    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
+    if (!isNil(cellCustomWidth)) {
+      return cellCustomWidth;
+    }
+
     let colWidth: number;
-    if (userDragWidth) {
-      colWidth = userDragWidth;
-    } else {
-      if (layoutWidthType === LayoutWidthTypes.Compact) {
-        const datas = dataSet.getDisplayDataSet();
-        const colLabel = col.label;
+    if (layoutWidthType === LayoutWidthTypes.Compact) {
+      const datas = dataSet.getDisplayDataSet();
+      const colLabel = col.label;
 
-        const allLabels =
-          datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
-        allLabels.push(colLabel);
-        const maxLabel = maxBy(allLabels, (label) =>
-          measureTextWidthRoughly(label),
-        );
+      const allLabels =
+        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
+      allLabels.push(colLabel);
+      const maxLabel = maxBy(allLabels, (label) =>
+        measureTextWidthRoughly(label),
+      );
 
-        const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
-        const { text: dataCellTextStyle, cell: cellStyle } =
-          spreadsheet.theme.dataCell;
+      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
+      const { text: dataCellTextStyle, cell: cellStyle } =
+        spreadsheet.theme.dataCell;
 
-        DebuggerUtil.getInstance().logger(
-          'Max Label In Col:',
-          col.field,
-          maxLabel,
-        );
+      DebuggerUtil.getInstance().logger(
+        'Max Label In Col:',
+        col.field,
+        maxLabel,
+      );
 
-        // 最长的 Label 如果是列名，按列名的标准计算宽度
-        if (colLabel === maxLabel) {
-          colWidth =
-            measureTextWidth(maxLabel, colCellTextStyle) +
-            getOccupiedWidthForTableCol(
-              this.spreadsheet,
-              col,
-              spreadsheet.theme.colCell,
-            );
-        } else {
-          // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
-          const EXTRA_PIXEL = 1;
-          colWidth =
-            measureTextWidth(maxLabel, dataCellTextStyle) +
-            cellStyle.padding.left +
-            cellStyle.padding.right +
-            EXTRA_PIXEL;
-        }
+      // 最长的 Label 如果是列名，按列名的标准计算宽度
+      if (colLabel === maxLabel) {
+        colWidth =
+          measureTextWidth(maxLabel, colCellTextStyle) +
+          getOccupiedWidthForTableCol(
+            this.spreadsheet,
+            col,
+            spreadsheet.theme.colCell,
+          );
       } else {
-        colWidth = adaptiveColWidth;
+        // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
+        const EXTRA_PIXEL = 1;
+        colWidth =
+          measureTextWidth(maxLabel, dataCellTextStyle) +
+          cellStyle.padding.left +
+          cellStyle.padding.right +
+          EXTRA_PIXEL;
       }
+    } else {
+      colWidth = adaptiveColWidth;
+    }
 
-      if (col.field === SERIES_NUMBER_FIELD) {
-        colWidth = this.getSeriesNumberWidth();
-      }
+    if (col.field === SERIES_NUMBER_FIELD) {
+      colWidth = this.getSeriesNumberWidth();
     }
 
     return colWidth;
@@ -416,7 +420,7 @@ export class TableFacet extends BaseFacet {
   protected getDefaultCellHeight() {
     const { cellCfg } = this.cfg;
 
-    return cellCfg.height;
+    return cellCfg?.height;
   }
 
   public getCellHeight(index: number) {

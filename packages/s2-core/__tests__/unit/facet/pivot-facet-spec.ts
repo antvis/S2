@@ -63,6 +63,10 @@ jest.mock('@/sheet-type', () => {
           getFreezeCornerDiffWidth: jest.fn(),
         },
         getCanvasElement: () => container.get('el'),
+        hideTooltip: jest.fn(),
+        interaction: {
+          clearHoverTimer: jest.fn(),
+        },
       };
     }),
   };
@@ -184,10 +188,10 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct result when tree mode', () => {
     s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
-    const ds = new MockPivotDataSet(s2);
+    const mockDataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet({
       spreadsheet: s2,
-      dataSet: ds,
+      dataSet: mockDataSet,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
@@ -278,6 +282,36 @@ describe('Pivot Mode Facet Test', () => {
       [onlyOffsetXFn, onlyOffsetYFn].forEach((handler) => {
         expect(handler).not.toThrowError();
       });
+    },
+  );
+
+  // https://github.com/antvis/S2/pull/1591
+  test.each([
+    { width: 200, useFunc: false },
+    { width: 300, useFunc: true },
+  ])(
+    'should render custom column leaf node width by %o',
+    ({ width, useFunc }) => {
+      const mockDataSet = new MockPivotDataSet(s2);
+      const widthFn = jest.fn(() => width);
+      const customWidthFacet = new PivotFacet({
+        spreadsheet: s2,
+        dataSet: mockDataSet,
+        ...assembleDataCfg().fields,
+        ...assembleOptions(),
+        colCfg: {
+          width: useFunc ? widthFn : width,
+        },
+      });
+
+      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+        expect(node.width).toStrictEqual(width);
+      });
+
+      if (useFunc) {
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(widthFn).toHaveReturnedTimes(4);
+      }
     },
   );
 });
