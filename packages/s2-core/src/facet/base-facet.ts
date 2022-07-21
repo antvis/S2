@@ -4,7 +4,17 @@ import { Group } from '@antv/g-canvas';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
-import { clamp, debounce, each, find, isUndefined, last, reduce } from 'lodash';
+import {
+  clamp,
+  debounce,
+  each,
+  find,
+  get,
+  isFunction,
+  isUndefined,
+  last,
+  reduce,
+} from 'lodash';
 import { DataCell } from '../cell';
 import {
   InterceptType,
@@ -22,6 +32,7 @@ import {
   DEBUG_VIEW_RENDER,
 } from '../common/debug';
 import type {
+  CellCustomWidth,
   FrameConfig,
   GridInfo,
   LayoutResult,
@@ -132,6 +143,15 @@ export abstract class BaseFacet {
     this.cfg = cfg;
     this.spreadsheet = cfg.spreadsheet;
     this.init();
+  }
+
+  protected getUserCustomWidth(node: Node, width: CellCustomWidth) {
+    return isFunction(width) ? width?.(node) : width;
+  }
+
+  protected getUserDragWidth(node: Node): number {
+    const { colCfg } = this.cfg;
+    return get(colCfg?.widthByFieldValue, `${node.value}`, node.width);
   }
 
   hideScrollBar = () => {
@@ -1217,6 +1237,9 @@ export abstract class BaseFacet {
       this.viewCellHeights.getTotalHeight(),
       this.panelBBox.viewportHeight,
     );
+
+    this.spreadsheet.hideTooltip();
+    this.spreadsheet.interaction.clearHoverTimer();
 
     this.realCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();

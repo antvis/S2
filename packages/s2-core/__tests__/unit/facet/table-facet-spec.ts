@@ -457,10 +457,10 @@ describe('Table Mode Facet Test With Zero Height', () => {
 });
 
 describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const s2: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(s2);
   const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
+    spreadsheet: s2,
     dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
@@ -481,4 +481,42 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
       expect(item.width).toBe(200);
     });
   });
+});
+
+describe('Custom Column Width Tests', () => {
+  // https://github.com/antvis/S2/pull/1591
+  test.each([
+    { width: 200, useFunc: false },
+    { width: 300, useFunc: true },
+  ])(
+    'should render custom column leaf node width by %o',
+    ({ width, useFunc }) => {
+      const s2: SpreadSheet = new MockSpreadSheet();
+      const dataSet: TableDataSet = new MockTableDataSet(s2);
+      const widthFn = jest.fn(() => width);
+      const customWidthFacet = new TableFacet({
+        spreadsheet: s2,
+        dataSet,
+        ...assembleDataCfg().fields,
+        ...assembleOptions(),
+        ...DEFAULT_STYLE,
+        colCfg: {
+          width: useFunc ? widthFn : width,
+        },
+      });
+
+      customWidthFacet.layoutResult.colNodes.forEach((node) => {
+        expect(node.width).toStrictEqual(width);
+      });
+
+      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+        expect(node.width).toStrictEqual(width);
+      });
+
+      if (useFunc) {
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(widthFn).toHaveReturnedTimes(2);
+      }
+    },
+  );
 });

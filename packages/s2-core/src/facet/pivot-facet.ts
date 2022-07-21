@@ -255,11 +255,7 @@ export class PivotFacet extends BaseFacet {
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
 
-    const userDragWidth = get(
-      colCfg?.widthByFieldValue,
-      `${col.value}`,
-      col.width,
-    );
+    const userDragWidth = this.getUserDragWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
     if (userDragWidth) {
@@ -609,10 +605,6 @@ export class PivotFacet extends BaseFacet {
         });
       }
     });
-  }
-
-  private getUserCustomWidth(node: Node, width: CellCustomWidth) {
-    return isFunction(width) ? width?.(node) : width;
   }
 
   /**
