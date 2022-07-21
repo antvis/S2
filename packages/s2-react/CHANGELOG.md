@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.22.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.3...@antv/s2-react-v1.22.0-alpha.4) (2022-07-21)
+
+
+### Bug Fixes
+
+* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
+
+
+### Features
+
+* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
+
 # [@antv/s2-react-v1.22.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.2...@antv/s2-react-v1.22.0-alpha.3) (2022-07-20)
 
 
