@@ -257,6 +257,11 @@ describe('MiniCharts Utils Tests', () => {
     expect(getBulletRangeColor('测试', '牛批', rangeColors)).toEqual('red');
     expect(getBulletRangeColor('测试', 0.2, rangeColors)).toEqual('red');
     expect(getBulletRangeColor(0.2, '牛批', rangeColors)).toEqual('red');
+
+    // toFixed(2) 四舍五入精度问题
+    expect(getBulletRangeColor(0.09775, 0.1978, rangeColors)).toEqual('yellow');
+    expect(getBulletRangeColor(0.09774, 0.1978, rangeColors)).toEqual('yellow');
+    expect(getBulletRangeColor(0.09774, 0.1974, rangeColors)).toEqual('green');
   });
 
   test('should transform ratio to percent', () => {
@@ -269,5 +274,31 @@ describe('MiniCharts Utils Tests', () => {
     expect(transformRatioToPercent(-122.2)).toEqual('-12220%');
     expect(transformRatioToPercent('-122.2')).toEqual('-12220%');
     expect(transformRatioToPercent(-122.2, 2)).toEqual('-12220.00%');
+  });
+
+  test('should transform ratio to percent for auto adjust fraction digits', () => {
+    expect(transformRatioToPercent(0.09775)).toEqual('10%');
+    expect(transformRatioToPercent(-0.09775, { min: 2, max: 2 })).toEqual(
+      '-9.78%',
+    );
+    expect(transformRatioToPercent(0.09775, { min: 2, max: 2 })).toEqual(
+      '9.78%',
+    );
+    expect(transformRatioToPercent(0.09775, { min: 2, max: 3 })).toEqual(
+      '9.775%',
+    );
+    expect(transformRatioToPercent(0.09775, { min: 2, max: 4 })).toEqual(
+      '9.775%',
+    );
+    expect(transformRatioToPercent(0.0977599999, { min: 2, max: 5 })).toEqual(
+      '9.776%',
+    );
+    expect(transformRatioToPercent(-0.0977599999, { min: 2, max: 5 })).toEqual(
+      '-9.776%',
+    );
+    expect(transformRatioToPercent(0.09775, { min: 0, max: 0 })).toEqual('10%');
+    expect(transformRatioToPercent(0.09, { min: 0, max: 2 })).toEqual('9%');
+    expect(transformRatioToPercent(0.09)).toEqual('9%');
+    expect(transformRatioToPercent(0.09, 2)).toEqual('9.00%');
   });
 });
