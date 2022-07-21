@@ -13,6 +13,7 @@ order: 5
 | hoverFocus             | 鼠标悬停在当前单元格超过默认 800ms 后，保持当前高亮，显示 tooltip，悬停时间通过设置 `duration` 来控制     | `boolean | {duration: number}`                                                                                | `true`  |       |
 | hiddenColumnFields     | 用于配置默认隐藏的列，透视表需要配置列头唯一 id, 明细表配置列头 field 字段即可                                | `string[]`                                                                               |         |       |
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
+| copyWithHeader                       | 复制数据是否带表头信息                               | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
 | customInteractions     | 自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |
 | scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollSpeedRatio](#scrollspeedratio)                                |         |       |

@@ -23,6 +23,19 @@ const s2Options = {
 
 ![复制](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*oL8_S5zBKSYAAAAAAAAAAAAAARQnAQ)
 
+**copyWithHeader**: 复制数据是否带表头信息，默认为 `false`
+
+```ts
+const s2Options = {
+  interaction: {
+    enableCopy: true,
+    copyWithHeader: true,
+  }
+};
+```
+
+![带表头复制](https://gw.alipayobjects.com/zos/antfincdn/wSBjSYKSM/3eee7bc2-7f8e-4dd9-8836-52a978d9718a.png)
+
 ### 导出
 
 `@antv/s2-react` 组件层提供了导出功能
