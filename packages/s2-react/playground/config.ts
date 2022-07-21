@@ -42,9 +42,6 @@ export const s2Options: S2Options = {
     },
   },
   style: {
-    colCfg: {
-      width: 300,
-    },
     cellCfg: {
       height: 50,
     },
