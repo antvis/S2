@@ -1,3 +1,24 @@
+# [@antv/s2-react-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0) (2022-07-22)
+
+
+### Bug Fixes
+
+* **layout:** 修复 Firefox 浏览器部分 icon 渲染失败 close [#1571](https://github.com/antvis/S2/issues/1571) ([#1599](https://github.com/antvis/S2/issues/1599)) ([6b76c4e](https://github.com/antvis/S2/commit/6b76c4e2c80b88eeb63d7adfc6b48da7d0b3ea4c))
+* **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
+* **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
+* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
+* **strategysheet:** 修复趋势分析表错误的标题 ([#1556](https://github.com/antvis/S2/issues/1556)) ([d9ebb51](https://github.com/antvis/S2/commit/d9ebb51f39953ae5535c7c925cfdcef1fb9c2e0d))
+* 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
+* 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
+
+
+### Features
+
+* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
+* **strategysheet:** 趋势分析表允许对行头和列头的 tooltip 做自定义 ([#1552](https://github.com/antvis/S2/issues/1552)) ([abfa98b](https://github.com/antvis/S2/commit/abfa98bca5e2528040e1cdfbde0f55e4e1298d0b))
+* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* 增加允许/禁用指标在行列维度中相互切换的能力 ([#1558](https://github.com/antvis/S2/issues/1558)) ([39f0f89](https://github.com/antvis/S2/commit/39f0f89cc999313d55077c06f72da13dab1f1316))
+
 # [@antv/s2-react-v1.21.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.20.0...@antv/s2-react-v1.21.0) (2022-07-08)
 
 
