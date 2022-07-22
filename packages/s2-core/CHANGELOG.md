@@ -1,3 +1,31 @@
+# [@antv/s2-v1.24.0](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0) (2022-07-22)
+
+
+### Bug Fixes
+
+* **layout:** 修复 Firefox 浏览器部分 icon 渲染失败 close [#1571](https://github.com/antvis/S2/issues/1571) ([#1599](https://github.com/antvis/S2/issues/1599)) ([6b76c4e](https://github.com/antvis/S2/commit/6b76c4e2c80b88eeb63d7adfc6b48da7d0b3ea4c))
+* **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
+* **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
+* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
+* 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
+* 修复 line 包围盒问题 ([#1566](https://github.com/antvis/S2/issues/1566)) ([7fb4352](https://github.com/antvis/S2/commit/7fb435289f8de078382426695a2ebc18b8c25efc))
+* 修复初始化时, border不见的问题 ([#1581](https://github.com/antvis/S2/issues/1581)) ([5d9e204](https://github.com/antvis/S2/commit/5d9e2041466e38e603eb509bb9d35398484f9f65))
+* 修复合并单元格临界情况被错误移除的问题 ([#1574](https://github.com/antvis/S2/issues/1574)) ([311eeaa](https://github.com/antvis/S2/commit/311eeaa64e612ca81bbb5d5f5ea036d4bfe2111d))
+* 修复合并单元格被grid边框覆盖的问题 ([#1569](https://github.com/antvis/S2/issues/1569)) ([3498edb](https://github.com/antvis/S2/commit/3498edbe901ac99605d61191fcf55530b71dd32e))
+* 修复明细表最左侧边框绘制问题 ([#1562](https://github.com/antvis/S2/issues/1562)) ([a8b62bb](https://github.com/antvis/S2/commit/a8b62bbe6421829bd2067030caeb5bbad0651649))
+* 修复移动端滚动没有prevent问题 ([#1549](https://github.com/antvis/S2/issues/1549)) ([a3ab84c](https://github.com/antvis/S2/commit/a3ab84c80b582190bee6094b1c1c44e5ef0b9b3c))
+* 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
+* 有冻结行且有垂直scrollWidth时冻结行无法 resize ([#1594](https://github.com/antvis/S2/issues/1594)) ([bcdcbe1](https://github.com/antvis/S2/commit/bcdcbe1a8ab889b2b040625e01989c099854843c))
+* 维度按指标汇总值排序时结果错误 ([#1550](https://github.com/antvis/S2/issues/1550)) ([b60564c](https://github.com/antvis/S2/commit/b60564cea08fac0a5334f38b1b1d4882d22d284b))
+
+
+### Features
+
+* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
+* **layout:** 支持自定义行/列单元格宽度 close [#1585](https://github.com/antvis/S2/issues/1585) ([#1591](https://github.com/antvis/S2/issues/1591)) ([ea5c1f3](https://github.com/antvis/S2/commit/ea5c1f3b41a0ccc9766fe2466924db1b8ea586ee))
+* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* 当前只能复制数值可带表头复制 ([#1590](https://github.com/antvis/S2/issues/1590)) ([b2ff70e](https://github.com/antvis/S2/commit/b2ff70e11d3abaab318aec9acc4bc4e2ac8c4114)), closes [#1583](https://github.com/antvis/S2/issues/1583)
+
 # [@antv/s2-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0) (2022-07-08)
 
 
