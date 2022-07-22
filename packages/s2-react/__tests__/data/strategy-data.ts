@@ -1,4 +1,10 @@
-import { EXTRA_COLUMN_FIELD, type S2DataConfig } from '@antv/s2';
+import {
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
+import { isNil } from 'lodash';
 
 const getKPIMockData = () => {
   return {
@@ -8,28 +14,28 @@ const getKPIMockData = () => {
         target: 0.8,
       },
       values: {
-        measure: '0.75',
-        target: '0.8',
+        measure: '0.00251',
+        target: '0.76',
       },
     },
     'measure-b': {
       originalValues: {
-        measure: 0.25,
-        target: 0.8,
+        measure: -0.82607,
+        target: 0.53022,
       },
       values: {
-        measure: '0.25',
-        target: '0.8',
+        measure: -0.82607,
+        target: 0.53022,
       },
     },
     'measure-c': {
       originalValues: {
-        measure: 1,
-        target: 0.3,
+        measure: 10.73922,
+        target: 0.54396,
       },
       values: {
-        measure: '1',
-        target: '0.3',
+        measure: 10.73922,
+        target: 0.54396,
       },
     },
     'measure-d': {
@@ -44,12 +50,12 @@ const getKPIMockData = () => {
     },
     'measure-e': {
       originalValues: {
-        measure: 0.68,
-        target: 0.8,
+        measure: 0.09775,
+        target: 0.1978,
       },
       values: {
-        measure: '0.68',
-        target: '0.8',
+        measure: 0.09775,
+        target: 0.1978,
       },
     },
     'measure-f': {
@@ -346,5 +352,59 @@ export const StrategySheetDataConfig: S2DataConfig = {
         ],
       },
     ],
+  },
+};
+
+export const StrategyOptions: S2Options = {
+  width: 800,
+  height: 800,
+  cornerText: '指标',
+  placeholder: (v) => {
+    const placeholder = v?.fieldValue ? '-' : '';
+    return placeholder;
+  },
+  interaction: {
+    resize: {
+      disable: (resizeInfo) => {
+        return (
+          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.resizedWidth < resizeInfo.width
+        );
+      },
+    },
+  },
+  headerActionIcons: [
+    {
+      iconNames: ['Trend'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+      action: () => {},
+    },
+  ],
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          const isNilValue = isNil(value) || value === '';
+          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+  },
+  style: {
+    cellCfg: {
+      height: 76,
+      valuesCfg: {
+        originalValueField: 'originalValues',
+      },
+    },
   },
 };

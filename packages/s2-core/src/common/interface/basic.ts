@@ -283,6 +283,8 @@ export type HierarchyCallback = (
   node: Node,
 ) => HierarchyResult;
 
+export type CellCustomWidth = number | ((node: Node) => number);
+
 export interface CellCfg {
   width?: number;
   height?: number;
@@ -297,7 +299,7 @@ export interface CellCfg {
 
 export interface RowCfg {
   // row's cell width
-  width?: number;
+  width?: CellCustomWidth;
   // specific some row field's width
   widthByField?: Record<string, number>;
   heightByField?: Record<string, number>;
@@ -306,6 +308,8 @@ export interface RowCfg {
 }
 
 export interface ColCfg {
+  // custom column width
+  width?: CellCustomWidth;
   // columns height(for normal state)
   height?: number;
   // specific some col field's width
@@ -341,7 +345,6 @@ export interface MergedCellInfo {
 export type TempMergedCell = {
   cells: S2CellType[];
   viewMeta: ViewMeta;
-  isPartiallyVisible?: boolean;
 };
 
 export type FilterDataItemCallback = (

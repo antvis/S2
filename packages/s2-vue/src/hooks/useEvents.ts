@@ -313,6 +313,7 @@ export const useEvents = (
     useS2Event(s2Ref, emit, S2Event.GLOBAL_MOUSE_UP, 'mouseUp');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_RESET, 'reset');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_LINK_FIELD_JUMP, 'linkFieldJump');
+
     useS2Event(s2Ref, emit, S2Event.GLOBAL_SCROLL, 'scroll');
   });
 };

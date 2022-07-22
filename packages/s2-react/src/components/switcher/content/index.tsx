@@ -10,7 +10,7 @@ import {
   DragDropContext,
   type DropResult,
 } from 'react-beautiful-dnd';
-import { FieldType, getSwitcherConfig, SWITCHER_FIELDS } from '../constant';
+import { FieldType, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
 import type {
   SwitcherFields,
@@ -22,6 +22,7 @@ import {
   generateSwitchResult,
   getMainLayoutClassName,
   getSwitcherClassName,
+  getSwitcherConfig,
   getSwitcherState,
   moveItem,
   shouldCrossRows,
@@ -38,6 +39,7 @@ export interface SwitcherContentProps extends SwitcherFields {
   contentTitleText?: string;
   resetText?: string;
   innerContentClassName?: string;
+  allowExchangeHeader?: boolean;
   onToggleVisible: () => void;
   onSubmit?: (result: SwitcherResult) => void;
 }
@@ -48,18 +50,18 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       innerContentClassName,
       contentTitleText = i18n('行列切换'),
       resetText = i18n('恢复默认'),
+      allowExchangeHeader = true,
       onToggleVisible,
       onSubmit,
       sheetType,
       ...defaultFields
     } = props;
 
+    const switcherConfig = getSwitcherConfig(allowExchangeHeader);
     const defaultState = getSwitcherState(defaultFields);
 
     const [state, setState] = React.useState<SwitcherState>(defaultState);
     const [draggingItemId, setDraggingItemId] = React.useState<string>(null);
-    const SWITCHER_CONFIG = React.useMemo(getSwitcherConfig, []);
-
     const onBeforeDragStart = (initial: BeforeCapture) => {
       setDraggingItemId(initial.draggableId);
     };
@@ -143,9 +145,9 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
                 fieldType={type}
                 items={state[type]}
                 crossRows={shouldCrossRows(sheetType, type)}
-                droppableType={SWITCHER_CONFIG[type].droppableType}
                 draggingItemId={draggingItemId}
                 onVisibleItemChange={onVisibleItemChange}
+                {...switcherConfig[type]}
               />
             ))}
           </main>

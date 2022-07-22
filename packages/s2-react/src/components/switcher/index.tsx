@@ -1,5 +1,10 @@
 import { Button, Popover, type PopoverProps } from 'antd';
-import React, { type FC, type ReactNode, useState } from 'react';
+import React, {
+  type FC,
+  type ReactNode,
+  useState,
+  isValidElement,
+} from 'react';
 import { i18n } from '@antv/s2';
 import { SwitcherIcon } from '../icons';
 import { SwitcherContent, type SwitcherContentProps } from './content';
@@ -21,7 +26,6 @@ export const Switcher: FC<SwitcherProps> = ({
   ...otherProps
 }) => {
   const [visible, setVisible] = useState(false);
-
   const onToggleVisible = () => {
     setVisible((prev) => !prev);
   };
@@ -38,14 +42,16 @@ export const Switcher: FC<SwitcherProps> = ({
       destroyTooltipOnHide
       {...popover}
     >
-      {title || (
+      {isValidElement(title) ? (
+        title
+      ) : (
         <Button
           className={getSwitcherClassName('entry-button')}
           size="small"
           disabled={disabled}
           icon={<SwitcherIcon />}
         >
-          {i18n('行列切换')}
+          {title || i18n('行列切换')}
         </Button>
       )}
     </Popover>

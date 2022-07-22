@@ -31,7 +31,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   }
 
   generateHeaderNodes({
-    currentField: displayedColumns[0],
+    currentField: fields[0],
     fields,
     fieldValues,
     facetCfg,

@@ -256,7 +256,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
-    if (!this.shouldDrawResizeAreaByType('colCellVertical')) {
+    if (!this.shouldDrawResizeAreaByType('colCellVertical', this)) {
       return;
     }
 
@@ -289,6 +289,7 @@ export class ColCell extends HeaderCell {
           offsetY: y,
           width: resizeAreaWidth,
           height,
+          meta: this.meta,
         }),
         name: resizeAreaName,
         x: 0,
@@ -343,7 +344,7 @@ export class ColCell extends HeaderCell {
   protected drawVerticalResizeArea() {
     if (
       !this.meta.isLeaf ||
-      !this.shouldDrawResizeAreaByType('colCellHorizontal')
+      !this.shouldDrawResizeAreaByType('colCellHorizontal', this)
     ) {
       return;
     }
@@ -372,6 +373,7 @@ export class ColCell extends HeaderCell {
           offsetY,
           width,
           height,
+          meta: this.meta,
         }),
         x: offsetX + width - resizeStyle.size / 2,
         y: offsetY,

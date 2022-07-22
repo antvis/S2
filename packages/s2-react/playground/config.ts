@@ -33,6 +33,8 @@ export const s2Options: S2Options = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
+    // 防止 mac 触摸板横向滚动触发浏览器返回
+    overscrollBehavior: 'contain',
   },
   tooltip: {
     operation: {
@@ -56,50 +58,6 @@ export const sliderOptions: SliderSingleProps = {
     1: '1 (默认)',
     2: '2',
     10: '10',
-  },
-};
-
-export const strategyOptions: S2Options = {
-  width: 800,
-  height: 800,
-  cornerText: '指标',
-  placeholder: (v) => {
-    const placeholder = v?.fieldValue ? '-' : '';
-    return placeholder;
-  },
-  headerActionIcons: [
-    {
-      iconNames: ['Trend'],
-      belongsCell: 'rowCell',
-      defaultHide: true,
-      action: () => {},
-    },
-  ],
-  conditions: {
-    text: [
-      {
-        mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
-          const isNilValue = isNil(value) || value === '';
-          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
-            return {
-              fill: '#000',
-            };
-          }
-          return {
-            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-          };
-        },
-      },
-    ],
-  },
-  style: {
-    cellCfg: {
-      height: 76,
-      valuesCfg: {
-        originalValueField: 'originalValues',
-      },
-    },
   },
 };
 

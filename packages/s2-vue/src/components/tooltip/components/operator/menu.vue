@@ -5,6 +5,7 @@ import {
   TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
 import { Menu } from 'ant-design-vue';
+import { isEmpty } from 'lodash';
 import { defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
@@ -23,6 +24,7 @@ export default defineComponent({
     };
     return {
       onMenuTitleClick,
+      isEmpty,
       TOOLTIP_PREFIX_CLS,
     };
   },
@@ -36,6 +38,7 @@ export default defineComponent({
 
 <template>
   <SubMenu
+    v-if="!isEmpty(menu.children)"
     :key="menu.key"
     :popupClassName="`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`"
     @titleClick="onMenuTitleClick"
@@ -54,6 +57,10 @@ export default defineComponent({
       </template>
     </template>
   </SubMenu>
+  <!-- v-if/else branches must use unique keys. -->
+  <MenuItem v-if="isEmpty(menu.children)" :title="menu.text" :key="menu.key">
+    <TooltipOperatorTitle :menu="menu" @click="onMenuTitleClick" />
+  </MenuItem>
 </template>
 
 <style lang="less"></style>

@@ -19,7 +19,12 @@ import {
   renderText,
 } from '../utils/g-renders';
 import { CellTypes, MiniChartTypes } from '../common/constant';
-import { getEllipsisText } from './text';
+import { getEllipsisText, measureTextWidth } from './text';
+
+interface FractionDigitsOptions {
+  min: number;
+  max: number;
+}
 
 /**
  *  坐标转换
@@ -173,6 +178,10 @@ export const getBulletRangeColor = (
 ) => {
   const delta = Number(target) - Number(measure);
 
+  if (Number.isNaN(delta) || Number(measure) < 0) {
+    return rangeColors.bad;
+  }
+
   if (delta <= 0.1) {
     return rangeColors.good;
   }
@@ -180,19 +189,36 @@ export const getBulletRangeColor = (
   if (delta > 0.1 && delta <= 0.2) {
     return rangeColors.satisfactory;
   }
+
   return rangeColors.bad;
 };
 
 // 比率转百分比, 简单解决计算精度问题
 export const transformRatioToPercent = (
   ratio: number | string,
-  fractionDigits = 0,
+  fractionDigits: FractionDigitsOptions | number = { min: 0, max: 0 },
 ) => {
   const value = Number(ratio);
   if (Number.isNaN(value)) {
     return ratio;
   }
-  return `${(value * 100).toFixed(fractionDigits)}%`;
+
+  const minimumFractionDigits =
+    (fractionDigits as FractionDigitsOptions)?.min ??
+    (fractionDigits as number);
+  const maximumFractionDigits =
+    (fractionDigits as FractionDigitsOptions)?.max ??
+    (fractionDigits as number);
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits,
+    maximumFractionDigits,
+    // 禁用自动分组: "12220%" => "12,220%"
+    useGrouping: false,
+    style: 'percent',
+  });
+
+  return formatter.format(value);
 };
 
 /**
@@ -202,22 +228,37 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   if (isEmpty(value)) {
     return;
   }
+
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
   const { x, y, height, width } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
-  const bulletWidth = progressBar.widthPercent * width;
+
+  const { measure, target } = value;
+
+  const displayMeasure = Math.max(Number(measure), 0);
+  const displayTarget = Math.max(Number(target), 0);
+
+  // 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
+  // 所以子弹图需要为数值预留宽度
+  // 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
+  const measurePercent = transformRatioToPercent(measure, 2);
+  const measurePercentWidth = Math.ceil(
+    measureTextWidth(measurePercent, dataCellStyle),
+  );
+
+  const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
   const measureWidth = width - bulletWidth;
 
   const padding = dataCellStyle.cell.padding;
-  const { measure, target } = value;
 
   // TODO 先支持默认右对齐
   // 绘制子弹图
   // 1. 背景
-  const positionX = x + width - padding.right - bulletWidth;
+  const positionX = x + width - padding.right - padding.left - bulletWidth;
   const positionY = y + height / 2 - progressBar.height / 2;
+
   renderRect(cell, {
     x: positionX,
     y: positionY,
@@ -232,18 +273,24 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     cell.getMeta(),
     'spreadsheet.options.bullet.getRangeColor',
   );
+
+  const displayBulletWidth = Math.max(
+    Math.min(bulletWidth * displayMeasure, bulletWidth),
+    0,
+  );
+
   renderRect(cell, {
     x: positionX,
     y: positionY + (progressBar.height - progressBar.innerHeight) / 2,
-    width: Math.min(bulletWidth * Number(measure), bulletWidth),
+    width: displayBulletWidth,
     height: progressBar.innerHeight,
     fill:
-      getRangeColor?.(measure, target) ??
-      getBulletRangeColor(measure, target, rangeColors),
+      getRangeColor?.(displayMeasure, displayTarget) ??
+      getBulletRangeColor(displayMeasure, displayTarget, rangeColors),
   });
 
   // 3.测量标记线
-  const lineX = positionX + bulletWidth * Number(target);
+  const lineX = positionX + bulletWidth * displayTarget;
   renderLine(
     cell,
     {
@@ -262,9 +309,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     },
   );
 
-  const measurePercent = transformRatioToPercent(measure);
-
-  // 绘制指标
+  // 4.绘制指标
   renderText(
     cell,
     [],
@@ -279,7 +324,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 };
 
-export const renderChart = (data: MiniChartData, cell: S2CellType) => {
+export const renderMiniChart = (data: MiniChartData, cell: S2CellType) => {
   switch (data?.type) {
     case MiniChartTypes.Line:
       drawLine(data, cell);

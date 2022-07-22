@@ -1,5 +1,10 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
+import {
+  Canvas,
+  Event as CanvasEvent,
+  Group,
+  type IGroup,
+} from '@antv/g-canvas';
 import {
   forEach,
   forIn,

@@ -88,7 +88,12 @@ fetch(
 
       return (
         <div>
-          <Switcher {...switcherFields} onSubmit={onSubmit} />
+          <Switcher
+            {...switcherFields}
+            // 是否允许指标在行列维度之间相互切换
+            allowExchangeHeader={true}
+            onSubmit={onSubmit}
+          />
           <SheetComponent
             sheetType={'pivot'}
             adaptive={false}

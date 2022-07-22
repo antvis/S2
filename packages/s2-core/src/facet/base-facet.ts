@@ -1,4 +1,5 @@
 import type { IElement, IGroup } from '@antv/g-canvas';
+import type { Event as GraphEvent } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -8,8 +9,8 @@ import {
   debounce,
   each,
   find,
-  findKey,
   get,
+  isFunction,
   isUndefined,
   last,
   reduce,
@@ -31,6 +32,7 @@ import {
   DEBUG_VIEW_RENDER,
 } from '../common/debug';
 import type {
+  CellCustomWidth,
   FrameConfig,
   GridInfo,
   LayoutResult,
@@ -141,6 +143,15 @@ export abstract class BaseFacet {
     this.cfg = cfg;
     this.spreadsheet = cfg.spreadsheet;
     this.init();
+  }
+
+  protected getCellCustomWidth(node: Node, width: CellCustomWidth) {
+    return isFunction(width) ? width?.(node) : width;
+  }
+
+  protected getCellDraggedWidth(node: Node): number {
+    const { colCfg } = this.cfg;
+    return get(colCfg?.widthByFieldValue, `${node.value}`, node.width);
   }
 
   hideScrollBar = () => {
@@ -853,6 +864,8 @@ export abstract class BaseFacet {
 
   private stopScrollChaining = (event: S2WheelEvent) => {
     event?.preventDefault?.();
+    // 移动端的 prevent 存在于 originalEvent上
+    (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
   };
 
   onWheel = (event: S2WheelEvent) => {
@@ -1004,7 +1017,7 @@ export abstract class BaseFacet {
         );
         findOne?.remove(true);
       });
-      updateMergedCells(this.spreadsheet);
+
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
       );
@@ -1202,9 +1215,9 @@ export abstract class BaseFacet {
     };
   };
 
-  public drawGrid() {
+  public updatePanelScrollGroup() {
     this.gridInfo = this.getGridInfo();
-    this.spreadsheet.panelScrollGroup.updateGrid(this.gridInfo);
+    this.spreadsheet.panelScrollGroup.update(this.gridInfo);
   }
 
   /**
@@ -1225,8 +1238,11 @@ export abstract class BaseFacet {
       this.panelBBox.viewportHeight,
     );
 
+    this.spreadsheet.hideTooltip();
+    this.spreadsheet.interaction.clearHoverTimer();
+
     this.realCellRender(scrollX, scrollY);
-    this.drawGrid();
+    this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
     this.emitScrollEvent({ scrollX, scrollY });

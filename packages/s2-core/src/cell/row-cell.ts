@@ -245,7 +245,7 @@ export class RowCell extends HeaderCell {
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
-      !this.shouldDrawResizeAreaByType('rowCellVertical')
+      !this.shouldDrawResizeAreaByType('rowCellVertical', this)
     ) {
       return;
     }
@@ -307,6 +307,7 @@ export class RowCell extends HeaderCell {
           offsetY,
           width,
           height,
+          meta: this.meta,
         }),
         x: offsetX,
         y: offsetY + height - resizeStyle.size / 2,

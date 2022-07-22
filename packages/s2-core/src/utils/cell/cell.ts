@@ -10,6 +10,7 @@ import type {
   TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
+
 /**
  * -----------------------------
  * |           padding         |

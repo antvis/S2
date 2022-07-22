@@ -54,19 +54,19 @@ describe('Interaction Row Column Resize Tests', () => {
   };
 
   const getStartGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_START_GUIDE_LINE_ID,
     ) as IShape;
   };
 
   const getEndGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_END_GUIDE_LINE_ID,
     ) as IShape;
   };
 
   const getResizeMask = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_MASK_ID,
     ) as IShape;
   };
@@ -501,5 +501,85 @@ describe('Interaction Row Column Resize Tests', () => {
       resizeInfo,
     );
     expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not update col width after resized if resize disabled', () => {
+    s2.setOptions({
+      interaction: {
+        resize: {
+          disable: () => true,
+        },
+      },
+    });
+
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Field,
+    );
+
+    expect(s2.options.style.rowCfg.widthByField).toEqual({
+      [resizeInfo.id]: resizeInfo.width,
+    });
+  });
+
+  test('should set no drop cursor and gray guide line if disable resize', () => {
+    const disable = jest.fn(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          disable,
+        },
+      },
+    });
+
+    const resizeInfo = {
+      theme: {},
+      type: ResizeDirectionType.Vertical,
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      effect: ResizeAreaEffect.Cell,
+      id: '',
+    } as ResizeInfo;
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+      {
+        offsetX: 20,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    expect(getResizeMask().attr('cursor')).toEqual('no-drop');
+    expect(getEndGuideLine().attr('stroke')).toEqual('rgba(0,0,0,0.25)');
+    expect(disable).toHaveBeenCalledWith({
+      ...resizeInfo,
+      resizedWidth: 0,
+      resizedHeight: 16,
+    });
+
+    emitResizeEvent(
+      S2Event.GLOBAL_MOUSE_UP,
+      {
+        offsetX: 20,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    expect(getResizeMask()).toBeFalsy();
   });
 });

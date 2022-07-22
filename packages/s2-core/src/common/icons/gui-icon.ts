@@ -69,12 +69,13 @@ export class GuiIcon extends Group {
           svg = svg.replace(/fill=[\'\"]#?\w+[\'\"]/g, ''); // 移除 fill="red|#fff"
           svg = svg.replace(/fill>/g, '>'); // fill> 替换为 >
         }
+        svg = svg.replace(
+          STYLE_PLACEHOLDER,
+          `${STYLE_PLACEHOLDER} fill="${fill}"`,
+        );
+        // 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
         // https://www.chromestatus.com/features/5656049583390720
-        // # 井号不能当做svg的body，这个bug在chrome72已经修复.
-        svg = svg
-          .replace(STYLE_PLACEHOLDER, `${STYLE_PLACEHOLDER} fill="${fill}"`)
-          .replace(/#/g, '%23');
-        img.src = `data:image/svg+xml;utf-8,${svg}`;
+        img.src = `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`;
       }
     });
   }

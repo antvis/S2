@@ -1,3 +1,4 @@
+import type { IGroup } from '@antv/g-canvas';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -23,7 +24,6 @@ import type {
 } from '@/common/interface';
 import type { BaseFacet } from '@/facet';
 import type { MergedCell } from '@/cell';
-import type { GridGroup } from '@/group/grid-group';
 
 jest.mock('@/sheet-type');
 
@@ -38,7 +38,11 @@ describe('Merge Cells Test', () => {
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();
-    mockInstance.interaction = {} as unknown as RootInteraction;
+    mockInstance.interaction = {
+      getPanelGroupAllDataCells() {
+        return mockAllVisibleCells;
+      },
+    } as unknown as RootInteraction;
     mockInstance.facet = {
       cfg: {
         dataCell: jest.fn(),
@@ -278,17 +282,19 @@ describe('Merge Cells Test', () => {
         mergedCellsInfo: undefined,
       };
 
-      mockInstance.panelScrollGroup = {
+      const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as GridGroup;
-      updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+      } as unknown as IGroup;
+
+      updateMergedCells(mockInstance, mergedCellsGroup);
+
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
       mockInstance.options = {
         ...mockInstance.options,
         mergedCellsInfo: [],
       };
-      updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+      updateMergedCells(mockInstance, mergedCellsGroup);
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
     });
 
     test('should not update mergedCells when visible area do not contain MergedCell', () => {
@@ -297,11 +303,19 @@ describe('Merge Cells Test', () => {
         height: 100,
         mergedCellsInfo: [mockMergeCellInfo],
       };
-      mockInstance.panelScrollGroup = {
+      mockInstance.interaction = {
+        getPanelGroupAllDataCells() {
+          return [];
+        },
+      } as unknown as RootInteraction;
+
+      const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as GridGroup;
-      updateMergedCells(mockInstance);
-      expect(mockInstance.panelScrollGroup.getChildren).toHaveBeenCalled();
+      } as unknown as IGroup;
+
+      updateMergedCells(mockInstance, mergedCellsGroup);
+
+      expect(mergedCellsGroup.getChildren).not.toHaveBeenCalled();
     });
 
     test('should merge TempMergedCell when cell viewMeta id is equal. (mergeTempMergedCell)', () => {
@@ -338,7 +352,6 @@ describe('Merge Cells Test', () => {
         {
           cells: mockAllVisibleCells,
           viewMeta: mockMergeCellInfo[2],
-          isPartiallyVisible: true,
         },
       ]);
     });
@@ -359,22 +372,6 @@ describe('Merge Cells Test', () => {
       );
 
       expect(result).toEqual([{ viewMeta: { id: '2' } }]);
-    });
-
-    test('should get TempMergedCells when MergedCell isPartiallyVisible is true. (differenceTempMergedCells)', () => {
-      const mainTempMergedCells = [
-        { viewMeta: { id: '1' }, isPartiallyVisible: true },
-      ] as TempMergedCell[];
-      const compareTempMergedCells = [
-        { viewMeta: { id: '1' }, isPartiallyVisible: true },
-      ] as TempMergedCell[];
-
-      const result = differenceTempMergedCells(
-        mainTempMergedCells,
-        compareTempMergedCells,
-      );
-
-      expect(result).toEqual(mainTempMergedCells);
     });
   });
 });
