@@ -1,7 +1,10 @@
+import { fill, forEach, map, zip } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
   CopyType,
+  EMPTY_PLACEHOLDER,
+  ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
 } from '../../common';
@@ -96,6 +99,64 @@ export const convertString = (v: string) => {
   return v;
 };
 
+/**
+ * 根据 id 计算出行头或者列头展示的文本数组
+ * 将 id : root[&]家具[&]桌子[&]price"
+ * 转换为 List: ['四川省', '成都市']
+ * @param headerId
+ */
+const getHeaderList = (headerId: string) => {
+  const headerList = headerId.split(ID_SEPARATOR);
+  headerList.shift(); // 去除 root
+  return headerList;
+};
+
+// 把 string[][] 矩阵转换成字符串格式
+const transformDataMatrixToStr = (dataMatrix: string[][]) => {
+  return map(dataMatrix, (line) => line.join(newTab)).join(newLine);
+};
+
+// 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
+const assembleMatrix = (
+  rowMatrix: string[][],
+  colMatrix: string[][],
+  dataMatrix: string[][],
+) => {
+  const rowWidth = rowMatrix[0]?.length ?? 0;
+  const colHeight = colMatrix?.length ?? 0;
+  const dataWidth = dataMatrix[0]?.length ?? 0;
+  const dataHeight = dataMatrix.length ?? 0;
+  const matrixWidth = rowWidth + dataWidth;
+  const matrixHeight = colHeight + dataHeight;
+
+  let matrix = Array.from(Array(matrixHeight), () => new Array(matrixWidth));
+
+  matrix = map(matrix, (heightArr, y) => {
+    return map(heightArr, (w, x) => {
+      if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
+        return '';
+      }
+      if (x >= rowWidth && x <= matrixWidth && y >= 0 && y < colHeight) {
+        return colMatrix[y][x - rowWidth];
+      }
+      if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
+        return rowMatrix[y - colHeight][x];
+      }
+      if (
+        x >= rowWidth &&
+        x <= matrixWidth &&
+        y >= colHeight &&
+        y < matrixHeight
+      ) {
+        return dataMatrix[y - colHeight][x - rowWidth];
+      }
+      return undefined;
+    });
+  }) as string[][];
+
+  return transformDataMatrixToStr(matrix);
+};
+
 export const processCopyData = (
   displayData: DataType[],
   cells: CellMeta[][],
@@ -110,7 +171,12 @@ export const processCopyData = (
   return cells.reduce(getColString, '').slice(0, -2);
 };
 
-export const getTwoDimData = (cells: CellMeta[]) => {
+/**
+ * 返回选中数据单元格生成的二维数组（ CellMeta[][]）
+ * @param { CellMeta[] } cells
+ * @return { CellMeta[][] }
+ */
+export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   if (!cells?.length) return [];
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
@@ -157,36 +223,61 @@ const processTableColSelected = (
     .join(newLine);
 };
 
-const getPivotCopyData = (
+const getDataMatrix = (
+  leafRowNodes: Node[],
+  leafColNodes: Node[],
+  spreadsheet: SpreadSheet,
+) => {
+  return map(leafRowNodes, (rowNode) => {
+    return leafColNodes.map((colNode) => {
+      const cellData = spreadsheet.dataSet.getCellData({
+        query: {
+          ...rowNode.query,
+          ...colNode.query,
+        },
+        rowNode,
+        isTotals:
+          rowNode.isTotals ||
+          rowNode.isTotalMeasure ||
+          colNode.isTotals ||
+          colNode.isTotalMeasure,
+      });
+      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+    });
+  });
+};
+
+const getPivotWithoutHeaderCopyData = (
   spreadsheet: SpreadSheet,
   leafRows: Node[],
   leafCols: Node[],
 ) => {
-  return leafRows
-    .map((rowNode) =>
-      leafCols
-        .map((colNode) => {
-          const cellData = spreadsheet.dataSet.getCellData({
-            query: {
-              ...rowNode.query,
-              ...colNode.query,
-            },
-            rowNode,
-            isTotals:
-              rowNode.isTotals ||
-              rowNode.isTotalMeasure ||
-              colNode.isTotals ||
-              colNode.isTotalMeasure,
-          });
-          return getFormat(
-            colNode.colIndex,
-            spreadsheet,
-          )(cellData[VALUE_FIELD]);
-        })
-        .join(newTab),
-    )
-    .join(newLine);
+  const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
+  return transformDataMatrixToStr(dataMatrix);
 };
+
+const getPivotWithHeaderCopyData = (
+  spreadsheet: SpreadSheet,
+  leafRowNodes: Node[],
+  leafColNodes: Node[],
+) => {
+  const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
+  const colMatrix = zip(...map(leafColNodes, (n) => getHeaderList(n.id)));
+  const dataMatrix = getDataMatrix(leafRowNodes, leafColNodes, spreadsheet);
+  return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
+};
+
+function getPivotCopyData(
+  spreadsheet: SpreadSheet,
+  allRowLeafNodes: Node[],
+  colNodes: Node[],
+) {
+  const { copyWithHeader } = spreadsheet.options.interaction;
+
+  return copyWithHeader
+    ? getPivotWithHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes)
+    : getPivotWithoutHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes);
+}
 
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
@@ -205,6 +296,7 @@ const processPivotColSelected = (
         return arr;
       }, [])
     : allColLeafNodes;
+
   return getPivotCopyData(spreadsheet, allRowLeafNodes, colNodes);
 };
 const processColSelected = (
@@ -303,8 +395,41 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
   }
 };
 
+/**
+ * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
+ * https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
+ * @param cellMetaMatrix
+ * @param displayData
+ * @param spreadsheet
+ */
+const getDataWithHeaderMatrix = (
+  cellMetaMatrix: CellMeta[][],
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
+  const colMatrix = zip(
+    ...map(cellMetaMatrix[0], (cellMeta) => {
+      const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+      return getHeaderList(colId);
+    }),
+  );
+
+  const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
+    const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+    return getHeaderList(rowId);
+  });
+
+  const dataMatrix = map(cellMetaMatrix, (cellsMeta) => {
+    return map(cellsMeta, (it) => format(it, displayData, spreadsheet));
+  });
+
+  return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
+};
+
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
+  const { copyWithHeader } = spreadsheet.options.interaction;
+
   const cells = interaction.getState().cells || [];
   let data: string;
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
@@ -327,7 +452,17 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
       return;
     }
     // normal selected
-    data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
+    const selectedCellsMeta = getSelectedCellsMeta(cells);
+
+    if (copyWithHeader) {
+      data = getDataWithHeaderMatrix(
+        selectedCellsMeta,
+        displayData,
+        spreadsheet,
+      );
+    } else {
+      data = processCopyData(displayData, selectedCellsMeta, spreadsheet);
+    }
   }
 
   if (data) {
