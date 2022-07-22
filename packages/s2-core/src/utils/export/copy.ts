@@ -171,7 +171,12 @@ export const processCopyData = (
   return cells.reduce(getColString, '').slice(0, -2);
 };
 
-export const getTwoDimData = (cells: CellMeta[]) => {
+/**
+ * 返回选中数据单元格生成的二维数组（ CellMeta[][]）
+ * @param { CellMeta[] } cells
+ * @return { CellMeta[][] }
+ */
+export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   if (!cells?.length) return [];
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
@@ -397,25 +402,25 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
  * @param displayData
  * @param spreadsheet
  */
-const dataWithHeaderMatrix = (
+const getDataWithHeaderMatrix = (
   cellMetaMatrix: CellMeta[][],
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
   const colMatrix = zip(
-    ...map(cellMetaMatrix[0], (it) => {
-      const colId = it.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+    ...map(cellMetaMatrix[0], (cellMeta) => {
+      const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
       return getHeaderList(colId);
     }),
   );
 
-  const rowMatrix = map(cellMetaMatrix, (arr) => {
-    const rowId = arr[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+  const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
+    const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
     return getHeaderList(rowId);
   });
 
-  const dataMatrix = map(cellMetaMatrix, (metaArr) => {
-    return map(metaArr, (it) => format(it, displayData, spreadsheet));
+  const dataMatrix = map(cellMetaMatrix, (cellsMeta) => {
+    return map(cellsMeta, (it) => format(it, displayData, spreadsheet));
   });
 
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
@@ -447,11 +452,16 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
       return;
     }
     // normal selected
-    const selectedCellMeta = getTwoDimData(cells);
-    data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
+    const selectedCellsMeta = getSelectedCellsMeta(cells);
 
     if (copyWithHeader) {
-      data = dataWithHeaderMatrix(selectedCellMeta, displayData, spreadsheet);
+      data = getDataWithHeaderMatrix(
+        selectedCellsMeta,
+        displayData,
+        spreadsheet,
+      );
+    } else {
+      data = processCopyData(displayData, selectedCellsMeta, spreadsheet);
     }
   }
 
