@@ -4,6 +4,7 @@ import {
   type S2Options,
   type S2DataConfig,
   ResizeType,
+  ColCell,
 } from '@/index';
 
 const data = getMockData(
@@ -123,5 +124,33 @@ describe('TableSheet normal spec', () => {
       hRowScrollX: 0,
     });
     expect(onScrollFinish).toBeCalled();
+
+    s2.destroy();
   });
+
+  test('should be able to resize frozen col when there is a vertical scroll width', async () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+    s2.render();
+
+    const onScrollFinish = jest.fn();
+    s2.facet.scrollWithAnimation(
+      {
+        offsetX: {
+          value: 100,
+          animate: true,
+        },
+      },
+      10,
+      onScrollFinish,
+    );
+    await sleep(30);
+
+
+    const firstColCell = s2.getColumnNodes()[1].belongsCell as any
+
+    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true)
+    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 })
+
+  });
+
 });

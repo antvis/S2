@@ -49,10 +49,10 @@ export class TableColCell extends ColCell {
       this.spreadsheet.dataSet.getFieldName(this.meta.label),
     );
   }
-  
+
   protected shouldAddVerticalResizeArea() {
     if (this.isFrozenCell()) return true
-    else return super.shouldAddVerticalResizeArea()
+    return super.shouldAddVerticalResizeArea()
   }
 
   protected getVerticalResizeAreaOffset() {
@@ -74,10 +74,7 @@ export class TableColCell extends ColCell {
 
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
-
-    if (!isFrozenCell) {
-      return super.getColResizeArea();
-    }
+    if (!isFrozenCell) return super.getColResizeArea();
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
