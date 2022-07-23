@@ -194,8 +194,11 @@ describe('Sort By Func Tests', () => {
     expect(result).toEqual(originValues);
   });
 
-  test('should return sortFunc result', () => {
+  test('should return merged result', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
     const result = sortByFunc({
+      originValues,
       sortParam: {
         sortFieldId: 'city',
         sortFunc: () => ['浙江[&]杭州'],
@@ -207,7 +210,30 @@ describe('Sort By Func Tests', () => {
       } as unknown as PivotDataSet,
     });
 
-    expect(result).toEqual(['浙江[&]杭州']);
+    // sortFunc 返回的值在前，未返回的值在后
+    expect(result).toEqual(['浙江[&]杭州', '四川[&]成都', '四川[&]绵阳']);
+  });
+
+  test('should return merged result when sorting by ASC', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
+    const result = sortByFunc({
+      originValues,
+      sortParam: {
+        sortMethod: 'ASC',
+        sortFieldId: 'city',
+        sortFunc: () => ['浙江[&]杭州'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    // asc 升序时
+    // sortFunc 没返回的值在前，返回的值在后
+    expect(result).toEqual(['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州']);
   });
 
   test('should return fallback result', () => {

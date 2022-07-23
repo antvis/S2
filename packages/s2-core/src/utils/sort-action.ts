@@ -119,7 +119,7 @@ export const sortByCustom = (params: SortActionParams): string[] => {
 
 export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam, dataSet } = params;
-  const { sortFunc, sortFieldId } = sortParam;
+  const { sortFunc, sortFieldId, sortMethod } = sortParam;
 
   const sortResult = sortFunc({
     data: measureValues,
@@ -145,7 +145,9 @@ export const sortByFunc = (params: SortActionParams): string[] => {
       originValues,
     });
   }
-  return sortResult;
+
+  // 用户返回的 sortResult 可能是不全的，需要用原始数据补全
+  return mergeDataWhenASC(sortResult, originValues, isAscSort(sortMethod));
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {
