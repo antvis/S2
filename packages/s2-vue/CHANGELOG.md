@@ -1,3 +1,17 @@
+# [@antv/s2-vue-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.1.0...@antv/s2-vue-v1.2.0) (2022-07-22)
+
+
+### Bug Fixes
+
+* s2-vue 保持和react组件一致的tooltip summary渲染逻辑 ([#1576](https://github.com/antvis/S2/issues/1576)) ([32135f7](https://github.com/antvis/S2/commit/32135f7f5a3cb2be8183d313bccdfaef2d3ceebd))
+* **s2-vue:** 修复表头排序交互不起作用的问题 ([#1559](https://github.com/antvis/S2/issues/1559)) ([4008894](https://github.com/antvis/S2/commit/40088947f3dd959e6d09e052076b2071653d5710))
+* 去除 vue prop warning 信息 ([#1555](https://github.com/antvis/S2/issues/1555)) ([d703737](https://github.com/antvis/S2/commit/d7037377ff1c47ad858fe7225c2229344c8b7092))
+
+
+### Features
+
+* 增加允许/禁用指标在行列维度中相互切换的能力 ([#1558](https://github.com/antvis/S2/issues/1558)) ([39f0f89](https://github.com/antvis/S2/commit/39f0f89cc999313d55077c06f72da13dab1f1316))
+
 # [@antv/s2-vue-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.0.2...@antv/s2-vue-v1.1.0) (2022-06-24)
 
 
