@@ -6,6 +6,7 @@ import {
   ResizeType,
   ColCell,
 } from '@/index';
+import { fireEvent } from '@testing-library/dom';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -97,6 +98,7 @@ const options: S2Options = {
 };
 
 describe('TableSheet normal spec', () => {
+
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
@@ -151,6 +153,38 @@ describe('TableSheet normal spec', () => {
     expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true)
     expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 })
 
+    s2.destroy();
   });
+
+  test('should be able to resize last column', async () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+    s2.render();
+
+    await sleep(30);
+
+    fireEvent(s2.getCanvasElement(), new MouseEvent('mousedown', {
+      clientX: 839,
+      clientY: 88,
+    }))
+
+    fireEvent(window, new MouseEvent('mousemove', {
+      clientX: 900,
+      clientY: 88,
+
+    }))
+    await sleep(50);
+
+    fireEvent(window, new MouseEvent('mouseup', {
+      clientX: 900,
+      clientY: 88
+    }))
+
+    await sleep(50);
+
+    const columnNodes = s2.getColumnNodes()
+    const lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell
+    expect(lastColumnCell.getMeta().width).toBe(159)
+  });
+
 
 });
