@@ -358,7 +358,10 @@ export const copyData = (
           arrayLength = max([arrayLength, size(label)]);
         } else {
           // label 为数组时不进行格式化
-          label = isFormatHeader ? getNodeFormatLabel(curColItem) : label;
+          label =
+            isFormatHeader && sheetInstance.isPivotMode()
+              ? getNodeFormatLabel(curColItem)
+              : label;
         }
         tempCol.push(label);
         curColItem = curColItem.parent;
