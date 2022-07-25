@@ -1,4 +1,5 @@
 import type { Event } from '@antv/g-canvas';
+import { get } from 'lodash';
 import { type CellMeta, CellTypes, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';
 import { calculateInViewIndexes } from '../facet/utils';
@@ -235,14 +236,21 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { colLeafNodes } = facet.layoutResult;
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
+    const splitLineStyle = get(spreadsheet, 'theme.splitLine');
     const frozenColWidth = frozenColGroup
-      ? Math.floor(frozenColGroup.getBBox().width)
+      ? Math.floor(
+          frozenColGroup.getBBox().width -
+            splitLineStyle.verticalBorderWidth / 2,
+        )
       : 0;
     const frozenTrailingColWidth = frozenTrailingColGroup
       ? Math.floor(frozenTrailingColGroup.getBBox().width)
       : 0;
     const frozenRowHeight = frozenRowGroup
-      ? Math.floor(frozenRowGroup.getBBox().height)
+      ? Math.floor(
+          frozenRowGroup.getBBox().height -
+            splitLineStyle.horizontalBorderWidth / 2,
+        )
       : 0;
     const frozenTrailingRowHeight = frozenTrailingRowGroup
       ? Math.floor(frozenTrailingRowGroup.getBBox().height)
