@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/dom';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
   TableSheet,
@@ -6,7 +7,6 @@ import {
   ResizeType,
   ColCell,
 } from '@/index';
-import { fireEvent } from '@testing-library/dom';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -172,14 +172,14 @@ describe('TableSheet normal spec', () => {
       clientY: 88,
 
     }))
-    await sleep(50);
+    await sleep(300);
 
     fireEvent(window, new MouseEvent('mouseup', {
       clientX: 900,
       clientY: 88
     }))
 
-    await sleep(50);
+    await sleep(300);
 
     const columnNodes = s2.getColumnNodes()
     const lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell
