@@ -1,4 +1,3 @@
-import { fireEvent } from '@testing-library/dom';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
   TableSheet,
@@ -162,19 +161,20 @@ describe('TableSheet normal spec', () => {
 
     await sleep(30);
 
-    fireEvent(s2.getCanvasElement(), new MouseEvent('mousedown', {
+    s2.getCanvasElement().dispatchEvent(new MouseEvent('mousedown', {
       clientX: 839,
       clientY: 88,
     }))
 
-    fireEvent(window, new MouseEvent('mousemove', {
+
+    window.dispatchEvent(new MouseEvent('mousemove', {
       clientX: 900,
       clientY: 88,
 
     }))
     await sleep(300);
 
-    fireEvent(window, new MouseEvent('mouseup', {
+    window.dispatchEvent(new MouseEvent('mouseup', {
       clientX: 900,
       clientY: 88
     }))
