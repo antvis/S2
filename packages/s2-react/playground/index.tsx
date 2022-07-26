@@ -955,22 +955,6 @@ function MainLayout() {
             dataCfg={{
               data: dataCustomTrees,
               fields: customTreeFields,
-              meta: [
-                {
-                  field: 'type',
-                  formatter: (v, vv) => {
-                    console.log(v, vv);
-                    return 11;
-                  },
-                },
-                {
-                  field: 'sub_type',
-                  formatter: (v, vv) => {
-                    console.log(v, vv);
-                    return 22;
-                  },
-                },
-              ],
             }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
           />
