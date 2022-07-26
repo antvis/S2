@@ -161,29 +161,31 @@ describe('TableSheet normal spec', () => {
 
     await sleep(30);
 
+    const { x, width, top } = s2.getCanvasElement().getBoundingClientRect()
     s2.getCanvasElement().dispatchEvent(new MouseEvent('mousedown', {
-      clientX: 839,
-      clientY: 88,
+      clientX: x + width - 1,
+      clientY: top + 25,
     }))
 
 
     window.dispatchEvent(new MouseEvent('mousemove', {
-      clientX: 900,
-      clientY: 88,
+      clientX: x+ width + 100,
+      clientY: top + 25,
 
     }))
     await sleep(300);
 
     window.dispatchEvent(new MouseEvent('mouseup', {
-      clientX: 900,
-      clientY: 88
+      clientX: x + width + 100,
+      clientY: top + 25
     }))
 
     await sleep(300);
 
     const columnNodes = s2.getColumnNodes()
     const lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell
-    expect(lastColumnCell.getMeta().width).toBe(159)
+    
+    expect(lastColumnCell.getMeta().width).toBe(199)
   });
 
 
