@@ -6,6 +6,8 @@ import {
   type S2DataConfig,
   customMerge,
   CellTypes,
+  EXTRA_COLUMN_FIELD,
+  Formatter,
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
@@ -49,7 +51,7 @@ describe('<SheetComponent/> Tests', () => {
   describe('<StrategySheet/> Tests', () => {
     const renderStrategySheet = (
       options: SheetComponentsProps['options'],
-      dataCfg: S2DataConfig = null,
+      dataCfg?: S2DataConfig,
     ) => {
       act(() => {
         ReactDOM.render(
@@ -62,7 +64,7 @@ describe('<SheetComponent/> Tests', () => {
               },
               options,
             )}
-            dataCfg={dataCfg}
+            dataCfg={dataCfg as S2DataConfig}
             getSpreadSheet={(instance) => {
               s2 = instance;
             }}
@@ -94,6 +96,7 @@ describe('<SheetComponent/> Tests', () => {
       };
 
       const s2DataConfig: S2DataConfig = {
+        data: [],
         fields: {
           rows: [],
           customTreeItems: [
@@ -116,6 +119,7 @@ describe('<SheetComponent/> Tests', () => {
       };
 
       const s2DataConfig: S2DataConfig = {
+        data: [],
         fields: {
           values: ['a'],
         },
@@ -190,6 +194,61 @@ describe('<SheetComponent/> Tests', () => {
         '50.00%',
         '9.78%',
       ]);
+    });
+
+    test('should format corner date field', () => {
+      renderStrategySheet(
+        {
+          width: 600,
+          height: 600,
+        },
+        {
+          ...StrategySheetDataConfig,
+          meta: [
+            {
+              field: 'date',
+              name: '日期',
+            },
+          ],
+        },
+      );
+
+      const textList = s2.facet.cornerHeader
+        .getChildren()
+        .map((element) => (element as any).actualText);
+
+      expect(textList).toEqual(['数值', '日期']);
+    });
+
+    test('should format extra column field', () => {
+      const MOCK_NAME = 'test';
+
+      const formatter = jest.fn((value, data, meta) => {
+        return meta?.colIndex === 0 ? MOCK_NAME : value;
+      });
+
+      renderStrategySheet(
+        {
+          width: 600,
+          height: 600,
+        },
+        {
+          ...StrategySheetDataConfig,
+          meta: [
+            {
+              field: EXTRA_COLUMN_FIELD,
+              formatter: formatter as unknown as Formatter,
+            },
+          ],
+        },
+      );
+
+      const { colLeafNodes } = s2.facet.layoutResult;
+
+      expect(formatter).toHaveBeenCalledWith(expect.anything(), undefined, {
+        ...expect.anything(),
+        field: EXTRA_COLUMN_FIELD,
+      });
     });
   });
 });

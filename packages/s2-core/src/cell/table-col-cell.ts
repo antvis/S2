@@ -51,8 +51,10 @@ export class TableColCell extends ColCell {
   }
 
   protected shouldAddVerticalResizeArea() {
-    if (this.isFrozenCell()) return true
-    return super.shouldAddVerticalResizeArea()
+    if (this.isFrozenCell()) {
+      return true;
+    }
+    return super.shouldAddVerticalResizeArea();
   }
 
   protected getVerticalResizeAreaOffset() {
@@ -70,7 +72,6 @@ export class TableColCell extends ColCell {
       y: position.y + y,
     };
   }
-
 
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
