@@ -2,8 +2,8 @@ import _ from 'lodash';
 import type { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
+import type { Formatter, TextAlign } from '@/common';
 import { ColCell } from '@/cell';
-import type { TextAlign } from '@/common';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -104,5 +104,36 @@ describe('Col Cell Tests', () => {
         });
       },
     );
+  });
+
+  describe('Col Cell Formatter Test', () => {
+    const node = {
+      id: 1,
+      label: 'label',
+      fieldValue: 'fieldValue',
+      value: 'value',
+    } as unknown as Node;
+
+    test('should get correct col cell formatter', () => {
+      const formatter = jest.fn();
+      jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const colCell = new ColCell(node, s2);
+
+      expect(formatter).toHaveBeenCalledWith(node.label, undefined, node);
+    });
+
+    test('should return correct formatted value', () => {
+      const formatter: Formatter = jest.fn(() => 'test');
+
+      jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
+
+      const colCell = new ColCell(node, s2);
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(colCell.textShape.attr('text')).toEqual('test');
+    });
   });
 });
