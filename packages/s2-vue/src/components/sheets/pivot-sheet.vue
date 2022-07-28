@@ -5,17 +5,15 @@ import { buildDrillDownOptions, handleDrillDown } from '@antv/s2-shared';
 import type { SpreadSheet, S2Options } from '@antv/s2';
 import type { PartDrillDown, ActionIconCallbackParams } from '@antv/s2-shared';
 import { useExpose } from '../../hooks/useExpose';
-import {
-  initBaseSheetEmits,
-  initBaseSheetProps,
-} from '../../utils/initPropAndEmits';
+import type { BaseSheetInitEmits } from '../../interface';
+import { initBaseSheetProps } from '../../utils/initPropAndEmits';
 import DrillDown from '../drill-down/index.vue';
 import BaseSheet from './base-sheet.vue';
 
 export default defineComponent({
   name: 'PivotSheet',
   props: initBaseSheetProps(),
-  emits: initBaseSheetEmits(),
+  emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
     const s2Ref = useExpose(ctx.expose);
     const { options: pivotOptions } = toRefs(props);

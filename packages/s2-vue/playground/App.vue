@@ -639,7 +639,12 @@ export default defineComponent({
     const onRowCellClick = (params: any) => {
       console.log('row cell click: ', params);
     };
-
+    const onDataCellClick = (params: any) => {
+      console.log('data Cell Click: ', params)
+    }
+    const onColCellClick = (params: any) => {
+      console.log('col cell click: ', params)
+    }
     const onGetSpreadsheet = (params: any) => {
       console.log('getSpreadsheet: ', params);
     };
@@ -668,6 +673,8 @@ export default defineComponent({
       options,
       themeCfg,
       onRowCellClick,
+      onDataCellClick,
+      onColCellClick,
       onGetSpreadsheet,
       togglePagination,
       partDrillDown,
@@ -728,6 +735,8 @@ export default defineComponent({
     :partDrillDown="partDrillDown"
     @rowCellClick="onRowCellClick"
     @getSpreadSheet="onGetSpreadsheet"
+    @dataCellClick="onDataCellClick"
+    @colCellClick="onColCellClick"
   />
 </template>
 
