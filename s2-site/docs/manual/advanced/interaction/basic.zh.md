@@ -40,104 +40,11 @@ order: 0
 - `layout:xx`: 布局改变事件
 - `cell:xx`:  单元格级别的事件，整个表格分为不同的单元格类型，你可以对特定的单元格进行事件监听，实现自定义需求
 
-[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
-
-<details>
-<summary>点击查看所有交互事件</summary>
-
-### 行头
-
-| 名称         | 事件名                                | 描述                       |
-| :----------- | :------------------------------------ | :------------------------- |
-| 展开树状结构 | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | 树状结构下，行头单元格展开 |
-| 点击         | `S2Event.ROW_CELL_CLICK`              | 行头单元格点击             |
-| 双击         | `S2Event.ROW_CELL_DOUBLE_CLICK`       | 行头单元格双击             |
-| 右键         | `S2Event.ROW_CELL_CONTEXT_MENU`       | 行头单元格右键             |
-| 悬停         | `S2Event.ROW_CELL_HOVER`              | 行头单元格悬停             |
-| 鼠标按下     | `S2Event.ROW_CELL_MOUSE_DOWN`         | 行头单元格鼠标按下         |
-| 鼠标移动     | `S2Event.ROW_CELL_MOUSE_MOVE`         | 行头单元格鼠标移动         |
-| 鼠标松开     | `S2Event.ROW_CELL_MOUSE_UP`           | 行头单元格鼠标松开         |
-| 滚动         | `S2Event.ROW_CELL_SCROLL`            | 行头单元格滚动         |
-
-### 列头
-
-| 名称     | 事件名                          | 描述               |
-| :------- | :------------------------------ | :----------------- |
-| 点击     | `S2Event.COL_CELL_CLICK`        | 列头单元格点击     |
-| 双击     | `S2Event.COL_CELL_DOUBLE_CLICK` | 列头单元格双击     |
-| 右键     | `S2Event.COL_CELL_CONTEXT_MENU` | 列头单元格右键     |
-| 悬停     | `S2Event.COL_CELL_HOVER`        | 列头单元格悬停     |
-| 鼠标按下 | `S2Event.COL_CELL_MOUSE_DOWN`   | 列头单元格鼠标按下 |
-| 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
-| 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
-
-### 数值单元格
-
-| 名称           | 事件名                               | 描述                                    |
-| :------------- | :----------------------------------- | :-------------------------------------- |
-| 点击           | `S2Event.DATA_CELL_CLICK`            | 数值单元格点击                          |
-| 双击           | `S2Event.DATA_CELL_DOUBLE_CLICK`     | 数值单元格双击                          |
-| 右键           | `S2Event.DATA_CELL_CONTEXT_MENU`      | 数值单元格右键                          |
-| 悬停           | `S2Event.DATA_CELL_HOVER`            | 数值单元格悬停                          |
-| 鼠标按下       | `S2Event.DATA_CELL_MOUSE_DOWN`       | 数值单元格鼠标按下                      |
-| 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
-| 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
-| 趋势 icon 点击 | `S2Event.DATA_CELL_TREND_ICON_CLICK` | 数值单元格 tooltip 里面的趋势 icon 点击 |
-| 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
-
-### 角头
-
-| 名称     | 事件名                             | 描述               |
-| :------- | :--------------------------------- | :----------------- |
-| 点击     | `S2Event.CORNER_CELL_CLICK`        | 角头单元格点击     |
-| 双击     | `S2Event.CORNER_CELL_DOUBLE_CLICK` | 角头单元格双击     |
-| 右键     | `S2Event.CORNER_CELL_CONTEXT_MENU` | 角头单元格右键     |
-| 悬停     | `S2Event.CORNER_CELL_HOVER`        | 角头单元格悬停     |
-| 鼠标按下 | `S2Event.CORNER_CELL_MOUSE_DOWN`   | 角头单元格鼠标按下 |
-| 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 角头单元格鼠标移动 |
-| 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 角头单元格鼠标松开 |
-
-### 布局
-
-| 名称                     | 事件名                             | 描述                                        |
-| :----------------------- | :--------------------------------- | :------------------------------------------ |
-| 单元格调整               | `S2Event.LAYOUT_RESIZE`            | 单元格宽高发生改变                          |
-| 调整单元格大小时鼠标按下 | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN` | 调整单元格大小鼠标按下，目前仅 行/列 头有效 |
-| 调整单元格大小时鼠标移动 | `S2Event.LAYOUT_RESIZE_MOUSE_MOVE` | 调整单元格大小鼠标移动，目前仅 行/列 头有效 |
-| 调整单元格大小时鼠标松开 | `S2Event.LAYOUT_RESIZE_MOUSE_UP`   | 调整单元格大小鼠标松开，目前仅 行/列 头有效 |
-| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_ROW_WIDTH`  |                                             |
-| 行头高度改变             | `S2Event.LAYOUT_RESIZE_ROW_HEIGHT` |                                             |
-| 列头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_WIDTH`  |                                             |
-| 行头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |                                             |
-| 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` | 树状模式下，单元格宽度发生改变时触发        |
-| 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发，明细表有效                  |
-| 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发，明细表有效                  |
-| 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
-
-### 全局
-
-| 名称      | 事件名                             | 描述                                         |
-| :-------- | :--------------------------------- | :------------------------------------------- |
-| 键盘按下  | `S2Event.GLOBAL_KEYBOARD_DOWN`     | 键盘按下                                     |
-| 键盘松开  | `S2Event.GLOBAL_KEYBOARD_UP`       | 键盘松开                                     |
-| 复制      | `S2Event.GLOBAL_COPIED`            | 对选中的单元格复制                           |
-| 鼠标松开  | `S2Event.GLOBAL_MOUSE_UP`          | 图表区域鼠标松开                             |
-| 点击      | `S2Event.GLOBAL_CLICK`             | 图表区域点击                                 |
-| 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键                             |
-| 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
-| 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
-| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时       |
-| 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击行列头被编辑为链接字段的文本时           |
-| icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
-| icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
-| 滚动      | `S2Event.GLOBAL_SCROLL`            | 表格滚动 （含数值和行头单元格） |
-
-</details>
-
-可以根据实际需要，监听所需事件，实现自定义业务
+[查看完整事件列表](/zh/docs/api/general/S2Event)
 
 ```ts
 import { PivotSheet, S2Event } from '@antv/s2';
+
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
@@ -154,7 +61,27 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
-如果使用的是 `@antv/s2-react`, 可以拿到 [S2 表格实例](/zh/docs/manual/advanced/get-instance/) 后对所需事件进行监听，和 `@antv/s2` 使用方式完全一致，同时 `react` 版本提供了事件的隐射，也可以使用更符合使用习惯的 `onXX` 的方式 ([查看所有 API](/zh/docs/api/components/sheet-component))
+如果使用的是 `@antv/s2-react` 或 `@antv/s2-vue`, 可以拿到 [S2 表格实例](/zh/docs/manual/advanced/get-instance/) 后对所需事件进行监听，和 `@antv/s2` **使用方式完全一致**
+
+```ts
+import { S2Event, SpreadSheet } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react';
+
+function App() {
+  const s2Ref = React.useRef<SpreadSheet>();
+
+  React.useEffect(() => {
+    s2Ref.current?.on(S2Event.DATA_CELL_CLICK, (event) => {
+      console.log('onDataCellClick: ', event)
+    })
+  }, [s2Ref])
+
+  return <SheetComponent ref={s2Ref}/>
+}
+
+```
+
+同时 `React`, `Vue` 版本提供了事件的隐射，也可以方便的使用更符合使用习惯的 `onDataCellClick`, `@dataCellClick` 的方式 ([查看所有 API](/zh/docs/api/components/sheet-component))
 
 ```ts
 import { SheetComponent } from '@antv/s2-react';
@@ -162,6 +89,14 @@ import { SheetComponent } from '@antv/s2-react';
 const onDataCellClick = () => {}
 
 <SheetComponent onDataCellClick={onDataCellClick} />
+```
+
+```ts
+import { SheetComponent } from '@antv/s2-vue';
+
+const onDataCellClick = () => {}
+
+<SheetComponent @dataCellClick={onDataCellClick} />
 ```
 
 对于全局图表事件，底层通过浏览器的 [EventTarget.addEventListener()](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener) API 实现，如需配置其第三个可选参数，可通过 `eventListenerOptions` 进行透传，从而控制事件从 `冒泡阶段` 还是 `捕获阶段` 触发，或者只触发一次等配置。
@@ -434,9 +369,9 @@ const s2Options = {
 };
 ```
 
-## 调用交互方法
+## 调用 API
 
-`S2` 内置了一些交互相关的方法，统一挂载在 `interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/zh/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
+`S2` 内置了一些交互相关的 `API`，统一挂载在 `s2.interaction` 命名空间下，你可以在拿到 [SpreadSheet 实例](/zh/docs/api/basic-class/spreadsheet) 后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet()
