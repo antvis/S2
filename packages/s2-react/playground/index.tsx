@@ -952,7 +952,10 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
-            dataCfg={{ data: dataCustomTrees, fields: customTreeFields }}
+            dataCfg={{
+              data: dataCustomTrees,
+              fields: customTreeFields,
+            }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
           />
         </TabPane>

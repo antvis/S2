@@ -265,7 +265,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
   meta: [
     {
       field: 'date',
-      name: '时间',
+      name: '日期',
     },
   ],
   fields: {

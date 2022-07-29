@@ -2,7 +2,6 @@ import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import { isNil } from 'lodash';
 import {
   data,
   totalData,
