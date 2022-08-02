@@ -5,6 +5,7 @@ import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
 import type { Pagination, ScrollSpeedRatio } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type { ViewCellHeights } from './layout/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
@@ -356,7 +357,7 @@ export const getCellRange = (
   let end = heights.getTotalLength() - 1;
 
   if (pagination) {
-    const { current, pageSize } = pagination;
+    const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
 
     start = Math.max((current - 1) * pageSize, 0);
     end = Math.min(current * pageSize - 1, heights.getTotalLength() - 1);

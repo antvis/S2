@@ -121,7 +121,7 @@ const customTheme = {
   },
 };
 
-s2.setThemeCfg({ theme: customTheme }); // 也可以使用：s2.setTheme(customTheme)
+s2.setTheme(customTheme)
 s2.render(false);
 ```
 
