@@ -20,7 +20,7 @@ export default function invokeComponent<P>(
   params: P,
   spreadsheet: SpreadSheet,
   id?: string,
-  onCleanup?: Function,
+  onCleanup?: () => void,
 ) {
   if (id) {
     const domNode = document.querySelector(`#${id}`);
@@ -42,6 +42,20 @@ export default function invokeComponent<P>(
   let resolveCb;
   let rejectCb;
 
+  function destroy(...args: any[]) {
+    const unmountResult = ReactDOM.unmountComponentAtNode(div);
+    if (unmountResult && div.parentNode) {
+      div.parentNode.removeChild(div);
+
+      if (onCleanup) onCleanup();
+    }
+  }
+
+  function close(...args: any[]) {
+    destroy.call(null, ...args);
+    rejectCb();
+  }
+
   const prom = new Promise((resolve, reject) => {
     resolveCb = resolve;
     rejectCb = reject;
@@ -49,14 +63,6 @@ export default function invokeComponent<P>(
     close();
     return val;
   });
-
-  function destroy(...args: any[]) {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
-      div.parentNode.removeChild(div);
-      onCleanup && onCleanup();
-    }
-  }
 
   function render() {
     setTimeout(() => {
@@ -67,11 +73,6 @@ export default function invokeComponent<P>(
         div,
       );
     });
-  }
-
-  function close(...args: any[]) {
-    destroy.call(null, ...args);
-    rejectCb();
   }
 
   render();
