@@ -414,6 +414,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Tree,
     );
 
+    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
     expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
   });
 

@@ -248,7 +248,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
+            treeRowsWidth: displayWidth,
             rowCfg: {
+              /**
+               * @deprecated 已废弃, 以 style.treeRowsWidth 为准, 保持兼容, 暂时保留
+               */
               treeRowsWidth: displayWidth,
             },
           },

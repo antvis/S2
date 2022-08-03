@@ -40,10 +40,15 @@ export const s2Options: S2Options = {
       trend: true,
     },
   },
+  hierarchyType: 'tree',
   style: {
     cellCfg: {
       height: 50,
     },
+    rowCfg: {
+      width: 300,
+    },
+    treeRowsWidth: 500,
     hierarchyCollapse: false,
   },
 };

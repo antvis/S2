@@ -14,6 +14,8 @@ import {
   size,
 } from 'lodash';
 import {
+  DEFAULT_STYLE,
+  DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type CellCustomWidth,
   type ColCfg,
@@ -729,8 +731,10 @@ export class PivotFacet extends BaseFacet {
     const { rows, dataSet, rowCfg, treeRowsWidth } = this.cfg;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    if (rowCfg?.treeRowsWidth) {
-      return rowCfg?.treeRowsWidth;
+    // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCfg.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
+    const currentTreeRowsWidth = treeRowsWidth ?? rowCfg?.treeRowsWidth;
+    if (currentTreeRowsWidth) {
+      return currentTreeRowsWidth;
     }
 
     // 2. 其次是自定义
@@ -754,7 +758,10 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme.padding?.left +
       this.rowCellTheme.padding?.right;
 
-    return Math.max(treeRowsWidth, maxLabelWidth);
+    return Math.max(
+      currentTreeRowsWidth ?? DEFAULT_TREE_ROW_WIDTH,
+      maxLabelWidth,
+    );
   }
 
   /**
