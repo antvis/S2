@@ -244,15 +244,14 @@ order: 0
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
-| theme | resize 热区配置 | [ResizeArea](#resizearea) |  | ✓ |
-| type | resize 方向 | `Horizontal` \| `Vertical` |  | ✓ |
-| offsetX | 横向偏移量 | `number` |  | ✓ |
-| offsetY | 纵向偏移量 | `number` |  | ✓ |
-| offsetX | 横向偏移量 | `number` |  | ✓ |
-| width | 拖拽的宽度 | `number` |  | ✓ |
-| height | 拖拽 | `number` |  | ✓ |
-| size | 热区尺寸 | `number` |  | ✓ |
-| effect | 拖拽更改影响的区域 | `Field` \| `Cell` \| `Tree` \| `Series` |  | ✓ |
+| theme | resize 热区配置 | [ResizeArea](#resizearea) |  |  |
+| type | resize 方向 | `Horizontal` \| `Vertical` |  |  |
+| offsetX | 横向偏移量 | `number` |  |  |
+| offsetY | 纵向偏移量 | `number` |  |  |
+| width | 拖拽的宽度 | `number` |  |  |
+| height | 拖拽 | `number` |  |  |
+| size | 热区尺寸 | `number` |  |  |
+| effect | 拖拽更改影响的区域 | `Field` \| `Cell` \| `Tree` \| `Series` |  |  |
 | isResizeArea | 是否属于 resize 热区 | [style](/zh/docs/api/general/S2Options#style) |  |  |
 | id | 字段 id | `string` |  |  |
 | meta | resize 热区对应单元格节点信息 | [Node](/zh/docs/api/basic-class/node) |  |  |
