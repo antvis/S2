@@ -5,6 +5,7 @@ import {
   includes,
   indexOf,
   isEmpty,
+  isNumber,
   keys,
   map,
   split,
@@ -42,7 +43,7 @@ export const sortAction = (
       if (key) {
         a = pre[key];
         b = next[key];
-        if (Number(a) && Number(b)) {
+        if (isNumber(Number(a)) && isNumber(Number(b))) {
           return (Number(a) - Number(b)) * sort;
         }
         if (a && specialValues?.includes(a?.toString())) {
@@ -52,7 +53,7 @@ export const sortAction = (
           return sort;
         }
       }
-      if (a && b) {
+      if (isNumber(Number(a)) && isNumber(Number(b))) {
         // 数据健全兼容，用户数据不全时，能够展示.
         return a.toString().localeCompare(b.toString(), 'zh') * sort;
       }
