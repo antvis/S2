@@ -687,4 +687,12 @@ describe('List Table getCopyData', () => {
     expect(data.split('\n').length).toBe(2);
     expect(data.split('\t').length).toBe(5);
   });
+
+  it('should copy in multiple format', () => {
+    const data = getCopyData(s2, CopyType.ROW, [
+      'text/plain',
+      'text/html',
+    ]) as string[];
+    expect(data.length).toBe(2);
+  });
 });
