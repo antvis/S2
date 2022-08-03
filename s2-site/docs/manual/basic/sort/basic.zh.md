@@ -7,7 +7,7 @@ order: 0
 
 根据 `数值升/降序` 对 `行头/列头` 进行排序
 
-`组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`province` 的排序方式不会更改，只会更改每个 `province` 内部 `city` 的顺序
+`组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`省份` 的排序方式不会更改，只会更改每个 `省份` 内部 `城市` 的顺序
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*SszqS7EGaXkAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 

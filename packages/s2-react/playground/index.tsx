@@ -910,6 +910,11 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
+              getSpreadSheet={(s2) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                window.s2 = s2;
+              }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onDestroy={logHandler('onDestroy')}
