@@ -231,16 +231,16 @@ order: 0
 
 ## ResizeParams
 
-功能描述：表格 resize（ 表体尺寸大小变化、单元格行高列宽拖动变化） 信息
+功能描述：表格 resize（单元格行高列宽拖动变化）和单元格样式信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
-| resizeInfo | resize 配置信息 | [ResizeInfo](#resizeinfo) |  |  |
+| info | resize 配置信息 | [ResizeInfo](#resizeinfo) |  |  |
 | style | options 中样式相关配置 | [style](/zh/docs/api/general/S2Options#style) |  |  |
 
 ## ResizeInfo
 
-功能描述：表格 resize（ 表体尺寸大小变化、单元格行高列宽拖动变化） 配置信息
+功能描述：表格 resize（ 单元格行高列宽拖动变化）配置信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
