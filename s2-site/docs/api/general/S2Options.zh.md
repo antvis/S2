@@ -182,8 +182,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| colIndex        | 单元格的列索引        | `number`               | -      |      |
-| rowIndex        | 单元格的行索引        | `number`               | -      |      |
-| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，</br>若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
+`markdown:docs/common/merged-cell.zh.md`

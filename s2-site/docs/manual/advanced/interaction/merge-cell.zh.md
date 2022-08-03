@@ -343,17 +343,11 @@ s2.render();
 
 ## 配置和方法说明
 
-### mergedCellsInfo
+### MergedCellInfo
 
-<description> **optional**  _MergedCellInfo[][]_   default: `undefined` </description>
+`markdown:docs/common/merged-cell.zh.md`
 
-设置默认合并的单元格信息
-
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| colIndex        | 单元格的列索引        | `number`               | -      |      |
-| rowIndex        | 单元格的行索引        | `number`               | -      |      |
-| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，</br>若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
+![合并单元格](https://gw.alipayobjects.com/zos/antfincdn/kHAYfFaJA/ae92e636-6574-487b-8d78-57dcae21e1d4.png)
 
 ### mergeCells
 
