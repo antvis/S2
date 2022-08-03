@@ -36,9 +36,9 @@ describe('Sort Action Test', () => {
     });
 
     test('sort action with zero and number arr', () => {
-      const data1 = [1, 6, -2, 0, -10];
-      expect(sortAction(data1, 'ASC')).toEqual([-10, -2, 0, 1, 6]);
-      expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2, -10]);
+      const data1 = [1, 6, -2, 0];
+      expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
+      expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
 
       const data2 = ['0', 0, 2, -2];
       expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
