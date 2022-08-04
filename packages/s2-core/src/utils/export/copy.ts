@@ -1,4 +1,4 @@
-import { map, zip } from 'lodash';
+import { map, zip, escape } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -161,7 +161,9 @@ const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
   function createTableData(data: string[], tagName: string) {
-    return data.map((cell) => `<${tagName}>${cell}</${tagName}>`).join('');
+    return data
+      .map((cell) => `<${tagName}>${escape(cell)}</${tagName}>`)
+      .join('');
   }
 
   function createBody(data: string[][], tagName: string) {
