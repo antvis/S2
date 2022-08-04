@@ -194,7 +194,7 @@ fetch(
 
     const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.setThemeCfg({ theme: customTheme });
+    s2.setTheme(customTheme);
 
     s2.render();
   });
