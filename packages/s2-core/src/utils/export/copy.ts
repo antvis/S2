@@ -151,7 +151,7 @@ const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
 
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
-  function getCells(data: string[], tagName) {
+  function createTableRow(data: string[], tagName) 
     return data.map((cell) => `<${tagName}>${cell}</${tagName}>`).join('');
   }
 
