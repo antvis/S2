@@ -2,6 +2,7 @@ import {
   clone,
   flatten,
   forEach,
+  get,
   isArray,
   isEmpty,
   isObject,
@@ -23,15 +24,18 @@ import {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
-import type { Copyable, CopyableItem } from './copy';
+import { CopyMIMEType, type Copyable, type CopyableItem } from './copy';
 import { getCsvString } from './export-worker';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
   return new Promise((resolve, reject) => {
     let content: string;
     if (Array.isArray(data)) {
-      content =
-        data.filter((item) => item.type === 'text/plain')[0].content || '';
+      content = get(
+        data.filter((item) => item.type === CopyMIMEType.PLAIN),
+        '[0].content',
+        '',
+      );
     } else {
       content = data.content || '';
     }
@@ -80,7 +84,7 @@ export const copyToClipboard = (
   if (typeof data === 'string') {
     copyableItem = {
       content: data,
-      type: 'text/plain',
+      type: CopyMIMEType.PLAIN,
     };
   } else {
     copyableItem = data;

@@ -113,7 +113,10 @@ const getHeaderList = (headerId: string) => {
 
 type MatrixTransformer = (data: string[][]) => CopyableItem;
 
-type CopyMIMEType = 'text/plain' | 'text/html';
+export enum CopyMIMEType {
+  PLAIN = 'text/plain',
+  HTML = 'text/html',
+}
 
 export type CopyableItem = {
   type: CopyMIMEType;
@@ -124,14 +127,13 @@ export type Copyable = CopyableItem | CopyableItem[];
 
 function pickDataFromCopyable(
   copyable: Copyable,
-  type: CopyMIMEType | CopyMIMEType[] = 'text/plain',
+  type: CopyMIMEType | CopyMIMEType[] = CopyMIMEType.PLAIN,
 ): string | string[] {
   if (Array.isArray(type)) {
     return ([].concat(copyable) as CopyableItem[])
       .filter((item) => type.includes(item.type))
       .map((item) => item.content);
   }
-
   return (
     ([].concat(copyable) as CopyableItem[])
       .filter((item) => item.type === type)
@@ -142,7 +144,7 @@ function pickDataFromCopyable(
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
   return {
-    type: 'text/plain',
+    type: CopyMIMEType.PLAIN,
     content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
   };
 };
@@ -158,7 +160,7 @@ const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
   }
 
   return {
-    type: 'text/html',
+    type: CopyMIMEType.HTML,
     content: `<meta charset="utf-8"><table><tbody>${createBody(
       dataMatrix,
     )}</tbody></table>`,
@@ -404,7 +406,7 @@ const processRowSelected = (
 export const getCopyData = (
   spreadsheet: SpreadSheet,
   copyType: CopyType,
-  copyFormat: CopyMIMEType | CopyMIMEType[] = 'text/plain',
+  copyFormat: CopyMIMEType | CopyMIMEType[] = CopyMIMEType.PLAIN,
 ): string | string[] => {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const cells = spreadsheet.interaction.getState().cells || [];
@@ -529,5 +531,5 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   if (data) {
     copyToClipboard(data);
   }
-  return pickDataFromCopyable(data, 'text/plain') as string;
+  return pickDataFromCopyable(data, CopyMIMEType.PLAIN) as string;
 };

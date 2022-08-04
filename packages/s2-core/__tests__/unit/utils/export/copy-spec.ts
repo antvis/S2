@@ -11,6 +11,7 @@ import {
 } from '@/common/constant/interaction';
 import {
   convertString,
+  CopyMIMEType,
   getCopyData,
   getSelectedData,
 } from '@/utils/export/copy';
@@ -690,8 +691,8 @@ describe('List Table getCopyData', () => {
 
   it('should copy in multiple format', () => {
     const data = getCopyData(s2, CopyType.ROW, [
-      'text/plain',
-      'text/html',
+      CopyMIMEType.PLAIN,
+      CopyMIMEType.HTML,
     ]) as string[];
     expect(data.length).toBe(2);
   });
