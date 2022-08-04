@@ -52,8 +52,8 @@ import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
 import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
-import { updateMergedCells } from '../utils/interaction/merge-cell';
 import { isMobile } from '../utils/is-mobile';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -281,7 +281,7 @@ export abstract class BaseFacet {
   public getPaginationScrollY(): number {
     const { pagination } = this.cfg;
     if (pagination) {
-      const { current, pageSize } = pagination;
+      const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
       const heights = this.viewCellHeights;
       const offset = Math.max((current - 1) * pageSize, 0);
       return heights.getCellOffsetY(offset);
@@ -317,7 +317,7 @@ export abstract class BaseFacet {
   emitPaginationEvent = () => {
     const { pagination } = this.cfg;
     if (pagination) {
-      const { current, pageSize } = pagination;
+      const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
       const total = this.viewCellHeights.getTotalLength();
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
