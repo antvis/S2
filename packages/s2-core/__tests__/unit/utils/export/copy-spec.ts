@@ -672,19 +672,19 @@ describe('List Table getCopyData', () => {
   });
 
   it('should get correct data in CopyType.ALL', () => {
-    const data = getCopyData(s2, CopyType.ALL) as string;
+    const data = getCopyData(s2, CopyType.ALL);
     expect(data.split('\n').length).toBe(33);
     expect(data.split('\n')[2].split('\t').length).toBe(5);
   });
 
   it('should get correct data in CopyType.COL', () => {
-    const data = getCopyData(s2, CopyType.COL) as string;
+    const data = getCopyData(s2, CopyType.COL);
     expect(data.split('\n').length).toBe(32);
     expect(data.split('\n')[2].split('\t').length).toBe(1);
   });
 
   it('should get correct data in CopyType.ROW', () => {
-    const data = getCopyData(s2, CopyType.ROW) as string;
+    const data = getCopyData(s2, CopyType.ROW);
     expect(data.split('\n').length).toBe(2);
     expect(data.split('\t').length).toBe(5);
   });

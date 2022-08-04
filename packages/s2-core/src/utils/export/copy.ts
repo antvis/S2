@@ -127,8 +127,17 @@ export type Copyable = CopyableItem | CopyableItem[];
 
 function pickDataFromCopyable(
   copyable: Copyable,
-  type: CopyMIMEType | CopyMIMEType[] = CopyMIMEType.PLAIN,
-): string | string[] {
+  type: CopyMIMEType[],
+): string[];
+function pickDataFromCopyable(copyable: Copyable, type: CopyMIMEType): string;
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType | CopyMIMEType[],
+): string | string[];
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
+): string[] | string {
   if (Array.isArray(type)) {
     return ([].concat(copyable) as CopyableItem[])
       .filter((item) => type.includes(item.type))
@@ -151,18 +160,21 @@ const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
 
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
-  function createTableRow(data: string[], tagName) 
+  function createTableData(data: string[], tagName: string) {
     return data.map((cell) => `<${tagName}>${cell}</${tagName}>`).join('');
   }
 
-  function createBody(data: string[][]) {
-    return data.map((row) => `<tr>${getCells(row, 'td')}</tr>`).join('');
+  function createBody(data: string[][], tagName: string) {
+    return data
+      .map((row) => `<${tagName}>${createTableData(row, 'td')}</${tagName}>`)
+      .join('');
   }
 
   return {
     type: CopyMIMEType.HTML,
     content: `<meta charset="utf-8"><table><tbody>${createBody(
       dataMatrix,
+      'tr',
     )}</tbody></table>`,
   };
 };
@@ -403,11 +415,28 @@ const processRowSelected = (
   return processTableRowSelected(displayData, selectedRows);
 };
 
-export const getCopyData = (
+export function getCopyData(
   spreadsheet: SpreadSheet,
   copyType: CopyType,
-  copyFormat: CopyMIMEType | CopyMIMEType[] = CopyMIMEType.PLAIN,
-): string | string[] => {
+  copyFormat: CopyMIMEType,
+): string;
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+  copyFormat: CopyMIMEType[],
+): string[];
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+): string;
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+  copyFormat: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
+): string[] | string {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const cells = spreadsheet.interaction.getState().cells || [];
   if (copyType === CopyType.ALL) {
@@ -456,7 +485,7 @@ export const getCopyData = (
       copyFormat,
     );
   }
-};
+}
 
 /**
  * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
@@ -531,5 +560,5 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   if (data) {
     copyToClipboard(data);
   }
-  return pickDataFromCopyable(data, CopyMIMEType.PLAIN) as string;
+  return pickDataFromCopyable(data, CopyMIMEType.PLAIN);
 };
