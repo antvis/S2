@@ -64,10 +64,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
-  // 这个的 getFormattedFieldValue 主要是 row 和 col header 的格式化，这里不需要传递 data info
   protected getFormattedFieldValue(): FormatResult {
     const { label } = this.meta;
-    let content = label;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
@@ -75,12 +73,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     const isTableMode = this.spreadsheet.isTableMode();
     // 如果是 table mode，列头不需要被格式化
-    if (formatter && !isTableMode) {
-      content = formatter(label);
-    }
+    const formattedValue =
+      formatter && !isTableMode
+        ? formatter(label, undefined, this.meta)
+        : label;
 
     return {
-      formattedValue: content,
+      formattedValue,
       value: label,
     };
   }

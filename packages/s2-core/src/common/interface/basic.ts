@@ -19,7 +19,11 @@ import type { DataItem } from './s2DataConfig';
 // 1. data cell 格式化
 // 2. copy/export
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
-export type Formatter = (v: unknown, data?: Data | Data[]) => string;
+export type Formatter = (
+  v: unknown,
+  data?: Data | Data[],
+  meta?: Node | ViewMeta,
+) => string;
 
 export interface FormatResult {
   formattedValue: string;

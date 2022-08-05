@@ -169,7 +169,8 @@ export const initBaseSheetEmits = () => {
     'selected',
     'reset',
     'linkFieldJump',
-
+    'click',
+    'doubleClick',
     'scroll',
   ];
   return keys as unknown as BaseSheetInitEmits;

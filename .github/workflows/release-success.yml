@@ -1,4 +1,4 @@
-name: 🔁 Sync Site S2 Lock And Changelog With PR
+name: 🚀 After the release is successful
 
 # 自动发布 action 执行完成后再执行 (无论成功失败都会执行)
 on:
@@ -59,3 +59,7 @@ jobs:
           gh pr create --title "chore: 🤖 更新 lock 和 changelog 文件" --body "🤖 由 [[Sync Site S2 Lock And Changelog With PR](https://github.com/antvis/S2/blob/master/.github/workflows/sync-site-lock-changelog-with-pr.yml)] action 自动创建."
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
+
+      # 部署官网
+      - name: Delpoy Site
+        run: yarn site:deploy

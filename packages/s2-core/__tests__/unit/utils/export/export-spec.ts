@@ -8,7 +8,13 @@ describe('TableSheet Export Test', () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [],
+        meta: [
+          {
+            field: 'type',
+            name: '产品类型',
+            formatter: (type) => `${type}产品`,
+          },
+        ],
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
@@ -18,7 +24,9 @@ describe('TableSheet Export Test', () => {
       }),
     );
     s2.render();
-    const data = copyData(s2, '\t');
+    const data = copyData(s2, '\t', {
+      isFormatHeader: true,
+    });
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
     // 33行数据 包括一行列头
@@ -31,7 +39,7 @@ describe('TableSheet Export Test', () => {
       '序号',
       'province',
       'city',
-      'type',
+      '产品类型',
       'sub_type',
       'number',
     ]);
