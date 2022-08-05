@@ -431,11 +431,13 @@ describe('Interaction Row Column Resize Tests', () => {
         rowCfg: {
           treeRowsWidth: 5,
         },
+        treeRowsWidth: 5,
       },
     };
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {

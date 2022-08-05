@@ -4,6 +4,7 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
+import { DEFAULT_TREE_ROW_WIDTH } from './../../../src/common/constant/options';
 import { getMockPivotMeta } from './util';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
@@ -206,10 +207,11 @@ describe('Pivot Mode Facet Test', () => {
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
-      expect(rowsHierarchy.width).toBe(width);
+      expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_WIDTH);
+      expect(width).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
-        expect(node.width).toBe(width);
+        expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
         expect(node.height).toBe(
           cellCfg.height +
             rowCellStyle.padding?.top +
@@ -314,4 +316,30 @@ describe('Pivot Mode Facet Test', () => {
       }
     },
   );
+
+  // https://github.com/antvis/S2/issues/1622
+  test('should render custom column leaf node width and use treeRowsWidth first for tree mode', () => {
+    const mockDataSet = new MockPivotDataSet(s2);
+    const customWidthFacet = new PivotFacet({
+      spreadsheet: s2,
+      dataSet: mockDataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      hierarchyType: 'tree',
+      cellCfg: {},
+      colCfg: {},
+      rowCfg: {
+        // 行头宽度
+        width: 200,
+        // 已废弃
+        treeRowsWidth: 300,
+      },
+      // 树状结构下行头宽度 (优先级最高)
+      treeRowsWidth: 400,
+    });
+
+    customWidthFacet.layoutResult.rowNodes.forEach((node) => {
+      expect(node.width).toStrictEqual(400);
+    });
+  });
 });
