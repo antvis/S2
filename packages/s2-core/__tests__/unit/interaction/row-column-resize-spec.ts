@@ -15,6 +15,7 @@ import {
   type S2Options,
   SpreadSheet,
   type ThemeCfg,
+  customMerge,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -233,6 +234,8 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      resizedWidth: 5,
+      resizedHeight: 0,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -343,6 +346,8 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      resizedWidth: 0,
+      resizedHeight: 2,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -409,32 +414,81 @@ describe('Interaction Row Column Resize Tests', () => {
   });
 
   test('should get horizontal tree resize style', () => {
+    const resize = jest.fn();
+    const treeWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_TREE_WIDTH, treeWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Tree,
     );
 
-    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: {
+        rowCfg: {
+          treeRowsWidth: 5,
+        },
+        treeRowsWidth: 5,
+      },
+    };
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {
+    const resize = jest.fn();
+    const rowWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_ROW_WIDTH, rowWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Field,
     );
 
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: {
+        rowCfg: {
+          widthByField: {
+            [resizeInfo.id]: 5,
+          },
+        },
+      },
+    };
+
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(rowWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style.rowCfg.widthByField).toEqual({
       [resizeInfo.id]: resizeInfo.width,
     });
   });
 
   test('should get horizontal series resize style', () => {
+    const resize = jest.fn();
+    const seriesWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_SERIES_WIDTH, seriesWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Series,
     );
 
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: undefined,
+    };
+
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(seriesWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.theme.rowCell.seriesNumberWidth).toEqual(resizeInfo.width);
   });
 

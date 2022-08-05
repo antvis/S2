@@ -43,8 +43,8 @@ export interface ResizeDetail {
 }
 
 export interface ResizeParams {
-  resizeInfo?: ResizeInfo;
-  style?: Style;
+  info: ResizeInfo;
+  style: Style;
 }
 
 export interface ResizeInfo {

@@ -52,7 +52,7 @@ interface ScrollSpeedRatio {
 | rowCellVertical      | 是否开启行头垂直方向 resize 热区                                                   | `boolean`         | true   |       |
 | cornerCellHorizontal | 是否开启角头水平方向 resize 热区                                                   | `boolean`         | true   |       |
 | colCellHorizontal    | 是否开启列头水平方向 resize 热区                                                   | `boolean`         | true   |       |
-| colCellVertical      | 是否开启列头垂直方向 resize 热区                                                   | `boolean`         | true   |       |
+| colCellVertical      | 是否开启列头垂直方向 resize 热区 （列头隐藏时该配置无效）                                                   | `boolean`         | true   |       |
 | rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效 | `all`\| `current` | `all`  |       |
 | disable        | 用于控制行高 resize 是否生效 查看例子 | (resizeInfo: [S2CellType](/zh/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
 | visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/zh/docs/api/basic-class/base-cell)) => boolean |   |       |
