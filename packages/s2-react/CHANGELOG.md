@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0...@antv/s2-react-v1.23.0) (2022-08-05)
+
+
+### Bug Fixes
+
+* **layout:** 修复 treeRowsWidth 配置不生效 close [#1622](https://github.com/antvis/S2/issues/1622) ([#1646](https://github.com/antvis/S2/issues/1646)) ([9e70d62](https://github.com/antvis/S2/commit/9e70d62549da5e14d40d373d23d8592763c550a3))
+* **pagination:** 分页配置未传 current 参数时表格渲染空白 ([#1633](https://github.com/antvis/S2/issues/1633)) ([1c65443](https://github.com/antvis/S2/commit/1c654437073071c1fb8b118018b3007922d198f4))
+* **strategysheet:** 修复趋势分析表列头格式化不生效 ([#1616](https://github.com/antvis/S2/issues/1616)) ([ca3cbb5](https://github.com/antvis/S2/commit/ca3cbb58da57d7989654bb982e6a508d0fd3a42a))
+
+
+### Features
+
+* **interaction:** 宽高调整事件透出 resizedWidth/resizedHeight, 修复错误类型定义 ([#1638](https://github.com/antvis/S2/issues/1638)) ([fbf45df](https://github.com/antvis/S2/commit/fbf45dfffaf7b17409010c16c7f6a5bb73133197))
+
 # [@antv/s2-react-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0) (2022-07-22)
 
 
