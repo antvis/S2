@@ -1,4 +1,4 @@
-import { fill, forEach, map, zip } from 'lodash';
+import { map, zip, escape } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -111,9 +111,74 @@ const getHeaderList = (headerId: string) => {
   return headerList;
 };
 
-// 把 string[][] 矩阵转换成字符串格式
-const transformDataMatrixToStr = (dataMatrix: string[][]) => {
-  return map(dataMatrix, (line) => line.join(newTab)).join(newLine);
+type MatrixTransformer = (data: string[][]) => CopyableItem;
+
+export enum CopyMIMEType {
+  PLAIN = 'text/plain',
+  HTML = 'text/html',
+}
+
+export type CopyableItem = {
+  type: CopyMIMEType;
+  content: string;
+};
+
+export type Copyable = CopyableItem | CopyableItem[];
+
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType[],
+): string[];
+function pickDataFromCopyable(copyable: Copyable, type: CopyMIMEType): string;
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType | CopyMIMEType[],
+): string | string[];
+function pickDataFromCopyable(
+  copyable: Copyable,
+  type: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
+): string[] | string {
+  if (Array.isArray(type)) {
+    return ([].concat(copyable) as CopyableItem[])
+      .filter((item) => type.includes(item.type))
+      .map((item) => item.content);
+  }
+  return (
+    ([].concat(copyable) as CopyableItem[])
+      .filter((item) => item.type === type)
+      .map((item) => item.content)[0] || ''
+  );
+}
+
+// 把 string[][] 矩阵转换成 CopyableItem
+const matrixPlainTextTransformer: MatrixTransformer = (dataMatrix) => {
+  return {
+    type: CopyMIMEType.PLAIN,
+    content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
+  };
+};
+
+// 把 string[][] 矩阵转换成 CopyableItem
+const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
+  function createTableData(data: string[], tagName: string) {
+    return data
+      .map((cell) => `<${tagName}>${escape(cell)}</${tagName}>`)
+      .join('');
+  }
+
+  function createBody(data: string[][], tagName: string) {
+    return data
+      .map((row) => `<${tagName}>${createTableData(row, 'td')}</${tagName}>`)
+      .join('');
+  }
+
+  return {
+    type: CopyMIMEType.HTML,
+    content: `<meta charset="utf-8"><table><tbody>${createBody(
+      dataMatrix,
+      'tr',
+    )}</tbody></table>`,
+  };
 };
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
@@ -121,7 +186,7 @@ const assembleMatrix = (
   rowMatrix: string[][],
   colMatrix: string[][],
   dataMatrix: string[][],
-) => {
+): Copyable => {
   const rowWidth = rowMatrix[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
@@ -154,21 +219,19 @@ const assembleMatrix = (
     });
   }) as string[][];
 
-  return transformDataMatrixToStr(matrix);
+  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
 export const processCopyData = (
   displayData: DataType[],
   cells: CellMeta[][],
   spreadsheet: SpreadSheet,
-): string => {
-  const getRowString = (pre: string, cur: CellMeta) =>
-    pre +
-    (cur ? convertString(format(cur, displayData, spreadsheet)) : '') +
-    newTab;
-  const getColString = (pre: string, cur: CellMeta[]) =>
-    pre + cur.reduce(getRowString, '').slice(0, -1) + newLine;
-  return cells.reduce(getColString, '').slice(0, -2);
+): Copyable => {
+  const matrix = cells.map((cols) =>
+    cols.map((item) => convertString(format(item, displayData, spreadsheet))),
+  );
+
+  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
 /**
@@ -210,17 +273,19 @@ const processTableColSelected = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
-) => {
+): Copyable => {
   const selectedFiled = selectedCols.length
     ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
     : spreadsheet.dataCfg.fields.columns;
-  return displayData
-    .map((row) => {
-      return selectedFiled
-        .map((filed) => convertString(row[filed]))
-        .join(newTab);
-    })
-    .join(newLine);
+
+  const dataMatrix = displayData.map((row) => {
+    return selectedFiled.map((filed) => convertString(row[filed]));
+  });
+
+  return [
+    matrixPlainTextTransformer(dataMatrix),
+    matrixHtmlTransformer(dataMatrix),
+  ];
 };
 
 const getDataMatrix = (
@@ -251,16 +316,19 @@ const getPivotWithoutHeaderCopyData = (
   spreadsheet: SpreadSheet,
   leafRows: Node[],
   leafCols: Node[],
-) => {
+): Copyable => {
   const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
-  return transformDataMatrixToStr(dataMatrix);
+  return [
+    matrixPlainTextTransformer(dataMatrix),
+    matrixHtmlTransformer(dataMatrix),
+  ];
 };
 
 const getPivotWithHeaderCopyData = (
   spreadsheet: SpreadSheet,
   leafRowNodes: Node[],
   leafColNodes: Node[],
-) => {
+): Copyable => {
   const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
   const colMatrix = zip(...map(leafColNodes, (n) => getHeaderList(n.id)));
   const dataMatrix = getDataMatrix(leafRowNodes, leafColNodes, spreadsheet);
@@ -271,7 +339,7 @@ function getPivotCopyData(
   spreadsheet: SpreadSheet,
   allRowLeafNodes: Node[],
   colNodes: Node[],
-) {
+): Copyable {
   const { copyWithHeader } = spreadsheet.options.interaction;
 
   return copyWithHeader
@@ -282,7 +350,7 @@ function getPivotCopyData(
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
-) => {
+): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
     .filter((node) => node.isLeaf);
@@ -303,7 +371,7 @@ const processColSelected = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
-) => {
+): Copyable => {
   if (spreadsheet.isPivotMode()) {
     return processPivotColSelected(spreadsheet, selectedCols);
   }
@@ -313,22 +381,18 @@ const processColSelected = (
 const processTableRowSelected = (
   displayData: DataType[],
   selectedRows: CellMeta[],
-) => {
+): Copyable => {
   const selectedIndex = selectedRows.map((e) => e.rowIndex);
-  return displayData
+  const matrix = displayData
     .filter((e, i) => selectedIndex.includes(i))
-    .map((e) =>
-      Object.keys(e)
-        .map((key) => convertString(e[key]))
-        .join(newTab),
-    )
-    .join(newLine);
+    .map((e) => Object.keys(e).map((key) => convertString(e[key])));
+  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
 const processPivotRowSelected = (
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
-) => {
+): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
     .filter((node) => node.isLeaf);
@@ -346,18 +410,42 @@ const processRowSelected = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
-) => {
+): Copyable => {
   if (spreadsheet.isPivotMode()) {
     return processPivotRowSelected(spreadsheet, selectedRows);
   }
   return processTableRowSelected(displayData, selectedRows);
 };
 
-export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+  copyFormat: CopyMIMEType,
+): string;
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+  copyFormat: CopyMIMEType[],
+): string[];
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+): string;
+
+export function getCopyData(
+  spreadsheet: SpreadSheet,
+  copyType: CopyType,
+  copyFormat: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
+): string[] | string {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const cells = spreadsheet.interaction.getState().cells || [];
   if (copyType === CopyType.ALL) {
-    return processColSelected(displayData, spreadsheet, []);
+    return pickDataFromCopyable(
+      processColSelected(displayData, spreadsheet, []),
+      copyFormat,
+    );
   }
   if (copyType === CopyType.COL) {
     const colIndexes = cells.reduce<number[]>((pre, cur) => {
@@ -374,7 +462,10 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
         rowIndex: node.rowIndex,
         type: CellTypes.COL_CELL,
       }));
-    return processColSelected(displayData, spreadsheet, colNodes);
+    return pickDataFromCopyable(
+      processColSelected(displayData, spreadsheet, colNodes),
+      copyFormat,
+    );
   }
   if (copyType === CopyType.ROW) {
     const rowIndexes = cells.reduce<number[]>((pre, cur) => {
@@ -391,9 +482,12 @@ export const getCopyData = (spreadsheet: SpreadSheet, copyType: CopyType) => {
         type: CellTypes.ROW_CELL,
       };
     });
-    return processRowSelected(displayData, spreadsheet, rowNodes);
+    return pickDataFromCopyable(
+      processRowSelected(displayData, spreadsheet, rowNodes),
+      copyFormat,
+    );
   }
-};
+}
 
 /**
  * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
@@ -406,7 +500,7 @@ const getDataWithHeaderMatrix = (
   cellMetaMatrix: CellMeta[][],
   displayData: DataType[],
   spreadsheet: SpreadSheet,
-) => {
+): Copyable => {
   const colMatrix = zip(
     ...map(cellMetaMatrix[0], (cellMeta) => {
       const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
@@ -426,12 +520,12 @@ const getDataWithHeaderMatrix = (
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
-export const getSelectedData = (spreadsheet: SpreadSheet) => {
+export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   const interaction = spreadsheet.interaction;
   const { copyWithHeader } = spreadsheet.options.interaction;
 
   const cells = interaction.getState().cells || [];
-  let data: string;
+  let data: Copyable;
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
   const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
 
@@ -468,5 +562,5 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
   if (data) {
     copyToClipboard(data);
   }
-  return data;
+  return pickDataFromCopyable(data, CopyMIMEType.PLAIN);
 };

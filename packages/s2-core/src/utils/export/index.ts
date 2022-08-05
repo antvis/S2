@@ -2,6 +2,7 @@ import {
   clone,
   flatten,
   forEach,
+  get,
   isArray,
   isEmpty,
   isObject,
@@ -23,12 +24,24 @@ import {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
+import { CopyMIMEType, type Copyable, type CopyableItem } from './copy';
 import { getCsvString } from './export-worker';
 
-export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
+export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
   return new Promise((resolve, reject) => {
+    let content: string;
+    if (Array.isArray(data)) {
+      content = get(
+        data.filter((item) => item.type === CopyMIMEType.PLAIN),
+        '[0].content',
+        '',
+      );
+    } else {
+      content = data.content || '';
+    }
+
     const textarea = document.createElement('textarea');
-    textarea.value = str;
+    textarea.value = content;
     document.body.appendChild(textarea);
     // 开启 preventScroll, 防止页面有滚动条时触发滚动
     textarea.focus({ preventScroll: true });
@@ -45,17 +58,42 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   });
 };
 
-export const copyToClipboardByClipboard = (str: string): Promise<void> => {
-  return navigator.clipboard.writeText(str).catch(() => {
-    return copyToClipboardByExecCommand(str);
-  });
+export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
+  return navigator.clipboard
+    .write([
+      new ClipboardItem(
+        [].concat(data).reduce((prev, copyable: CopyableItem) => {
+          const { type, content } = copyable;
+          return {
+            ...prev,
+            [type]: new Blob([content], { type }),
+          };
+        }, {}),
+      ),
+    ])
+    .catch(() => {
+      return copyToClipboardByExecCommand(data);
+    });
 };
 
-export const copyToClipboard = (str: string, sync = false): Promise<void> => {
-  if (!navigator.clipboard || sync) {
-    return copyToClipboardByExecCommand(str);
+export const copyToClipboard = (
+  data: Copyable | string,
+  sync = false,
+): Promise<void> => {
+  let copyableItem: Copyable;
+  if (typeof data === 'string') {
+    copyableItem = {
+      content: data,
+      type: CopyMIMEType.PLAIN,
+    };
+  } else {
+    copyableItem = data;
   }
-  return copyToClipboardByClipboard(str);
+
+  if (!navigator.clipboard || sync) {
+    return copyToClipboardByExecCommand(copyableItem);
+  }
+  return copyToClipboardByClipboard(copyableItem);
 };
 
 export const download = (str: string, fileName: string) => {
