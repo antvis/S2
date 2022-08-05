@@ -1,6 +1,6 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { cloneDeep, isEmpty, isNil, isNumber, throttle } from 'lodash';
-import { DataCell } from '../cell';
+import { ColCell, DataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InterceptType,
@@ -41,7 +41,10 @@ import { BaseEvent } from './base-interaction';
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends BaseEvent implements BaseEventImplement {
+export class BrushSelectionHeader
+  extends BaseEvent
+  implements BaseEventImplement
+{
   public displayedDataCells: S2CellType[] = [];
 
   public prepareSelectMaskShape: IShape;
@@ -109,7 +112,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       this.resetScrollDelta();
     };
     [
-      S2Event.ROW_CELL_MOUSE_DOWN,
+      // S2Event.ROW_CELL_MOUSE_DOWN,
       S2Event.COL_CELL_MOUSE_DOWN,
       // S2Event.CORNER_CELL_MOUSE_DOWN,
       // S2Event.DATA_CELL_MOUSE_DOWN,
@@ -122,7 +125,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private isPointInCanvas(point: { x: number; y: number }) {
     const { height, width } = this.spreadsheet.facet.getCanvasHW();
-    const { minX, minY } = this.spreadsheet.facet.panelBBox;
+    // col
+    const { width: minX, minY } = this.spreadsheet.facet.cornerBBox;
 
     return (
       point.x > minX && point.x < width && point.y > minY && point.y < height
@@ -157,8 +161,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
     const { minX, minY, maxX, maxY } = facet.panelBBox;
-    let newX = this.endBrushPoint.x + x;
-    let newY = this.endBrushPoint.y + y;
+    let newX = this.endBrushPoint?.x + x;
+    let newY = this.endBrushPoint?.y + y;
     let needScrollForX = true;
     let needScrollForY = true;
     const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
@@ -316,7 +320,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const dir =
         config.y.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
       const rowIndex = this.adjustNextRowIndexWithFrozen(
-        this.endBrushPoint.rowIndex,
+        this.endBrushPoint?.rowIndex,
         dir,
       );
       const nextIndex = this.validateYIndex(
@@ -331,7 +335,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       const dir =
         config.x.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
       const colIndex = this.adjustNextColIndexWithFrozen(
-        this.endBrushPoint.colIndex,
+        this.endBrushPoint?.colIndex,
         dir,
       );
       const nextIndex = this.validateXIndex(
@@ -456,19 +460,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const target = this.spreadsheet.container.getShape(x, y);
 
     const cell = this.spreadsheet.getCell(target);
-    // header
-    // const node =
 
-    if (!cell || !(cell instanceof DataCell)) {
+    if (!cell || !(cell instanceof ColCell)) {
       return;
     }
-    const { rowIndex, colIndex } = cell.getMeta();
+    const { rowIndex, colIndex, x: NodeX, y: NodeY } = cell.getMeta();
 
     this.endBrushPoint = {
       x,
       y,
       rowIndex,
       colIndex,
+      NodeY,
+      NodeX,
     };
 
     const { interaction } = this.spreadsheet;
@@ -479,7 +483,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   };
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -491,8 +495,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas.x - this.endBrushPoint.x;
-        const deltaY = pointInCanvas.y - this.endBrushPoint.y;
+        const deltaX = pointInCanvas.x - this.endBrushPoint?.x;
+        const deltaY = pointInCanvas.y - this.endBrushPoint?.y;
         this.handleScroll(deltaX, deltaY);
         return;
       }
@@ -558,8 +562,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private setDisplayedDataCells() {
     // todo-zc: 这里只是可视化区域内的 cell, 需要的是所有被构造的 cell
-    this.displayedDataCells = this.spreadsheet.interaction.getAllCells();
-    // console.log(this.displayedDataCells, 'displayed data cell');
+    this.displayedDataCells =
+      this.spreadsheet.interaction.getAllColHeaderCells();
   }
 
   private updatePrepareSelectMask() {
@@ -618,29 +622,29 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
-      this.endBrushPoint.rowIndex,
+      this.endBrushPoint?.rowIndex,
     );
     const maxRowIndex = Math.max(
       this.startBrushPoint.rowIndex,
-      this.endBrushPoint.rowIndex,
+      this.endBrushPoint?.rowIndex,
     );
     const minColIndex = Math.min(
       this.startBrushPoint.colIndex,
-      this.endBrushPoint.colIndex,
+      this.endBrushPoint?.colIndex,
     );
     const maxColIndex = Math.max(
       this.startBrushPoint.colIndex,
-      this.endBrushPoint.colIndex,
+      this.endBrushPoint?.colIndex,
     );
     const startXInView =
       this.startBrushPoint.x + this.startBrushPoint.scrollX - scrollX;
     const startYInView =
       this.startBrushPoint.y + this.startBrushPoint.scrollY - scrollY;
     // startBrushPoint 和 endBrushPoint 加上当前 offset
-    const minX = Math.min(startXInView, this.endBrushPoint.x);
-    const maxX = Math.max(startXInView, this.endBrushPoint.x);
-    const minY = Math.min(startYInView, this.endBrushPoint.y);
-    const maxY = Math.max(startYInView, this.endBrushPoint.y);
+    const minX = Math.min(startXInView, this.endBrushPoint?.x);
+    const maxX = Math.max(startXInView, this.endBrushPoint?.x);
+    const minY = Math.min(startYInView, this.endBrushPoint?.y);
+    const maxY = Math.max(startYInView, this.endBrushPoint?.y);
 
     const minNodeX = Math.min(
       this.startBrushPoint?.NodeX,
@@ -688,16 +692,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private isInBrushRange = (meta: ViewMeta | Node) => {
     const { start, end } = this.getBrushRange();
-
-    if (this.isViewMeta(meta)) {
-      const { rowIndex = undefined, colIndex = undefined } = meta;
-      return (
-        rowIndex >= start.rowIndex &&
-        rowIndex <= end.rowIndex &&
-        colIndex >= start.colIndex &&
-        colIndex <= end.colIndex
-      );
-    }
     const { x = 0, y = 0 } = meta;
     // console.info(meta);
 
@@ -773,8 +767,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       cells: this.getSelectedCellMetas(range),
       stateName: InteractionStateName.SELECTED,
     });
+    // emit header cell;
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this.brushRangeDataCells,
     );
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);

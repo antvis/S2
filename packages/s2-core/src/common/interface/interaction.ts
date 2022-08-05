@@ -72,6 +72,8 @@ export interface BrushPoint {
   y: number;
   scrollX?: number;
   scrollY?: number;
+  NodeX?: number;
+  NodeY?: number;
 }
 
 export interface BrushRange {
