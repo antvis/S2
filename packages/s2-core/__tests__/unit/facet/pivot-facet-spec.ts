@@ -4,6 +4,7 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
+import { DEFAULT_TREE_ROW_WIDTH } from './../../../src/common/constant/options';
 import { getMockPivotMeta } from './util';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
@@ -206,10 +207,11 @@ describe('Pivot Mode Facet Test', () => {
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
-      expect(rowsHierarchy.width).toBe(width);
+      expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_WIDTH);
+      expect(width).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
-        expect(node.width).toBe(width);
+        expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
         expect(node.height).toBe(
           cellCfg.height +
             rowCellStyle.padding?.top +
