@@ -5,6 +5,8 @@ import {
   includes,
   indexOf,
   isEmpty,
+  isNaN,
+  isNil,
   keys,
   map,
   split,
@@ -22,6 +24,8 @@ export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
+const canTobeNumber = (a?: string | number) => !isNaN(Number(a));
+
 /**
  * 执行排序
  * @param list - 待排序数组
@@ -37,12 +41,12 @@ export const sortAction = (
   const specialValues = ['-', undefined];
   return list?.sort(
     (pre: string | number | DataType, next: string | number | DataType) => {
-      let a = pre;
-      let b = next;
+      let a = pre as string | number;
+      let b = next as string | number;
       if (key) {
-        a = pre[key];
-        b = next[key];
-        if (Number(a) && Number(b)) {
+        a = pre[key] as string | number;
+        b = next[key] as string | number;
+        if (canTobeNumber(a) && canTobeNumber(b)) {
           return (Number(a) - Number(b)) * sort;
         }
         if (a && specialValues?.includes(a?.toString())) {
@@ -52,7 +56,8 @@ export const sortAction = (
           return sort;
         }
       }
-      if (a && b) {
+      // 没有参数 key 时，需要理解成按字典序（首字母）进行排序，用于排维度值的。（我也不理解为啥要把这两个逻辑写在一起，很容易误解
+      if (!isNil(a) && !isNil(b)) {
         // 数据健全兼容，用户数据不全时，能够展示.
         return a.toString().localeCompare(b.toString(), 'zh') * sort;
       }
