@@ -15,10 +15,11 @@ export enum LayoutWidthTypes {
   Compact = 'compact',
 }
 
+export const DEFAULT_TREE_ROW_WIDTH = 120;
+
 export const DEFAULT_STYLE: Readonly<Style> = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
   showTreeLeafNodeAlignDot: false,
-  treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
   cellCfg: {
