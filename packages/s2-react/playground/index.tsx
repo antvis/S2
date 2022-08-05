@@ -14,6 +14,7 @@ import {
   type TooltipAutoAdjustBoundary,
   getLang,
   type InteractionOptions,
+  DEFAULT_STYLE,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -770,11 +771,25 @@ function MainLayout() {
                 <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
-                  checked={mergedOptions.interaction.linkFields.length}
+                  checked={!!mergedOptions.interaction.linkFields.length}
                   onChange={(checked) => {
                     updateOptions({
                       interaction: {
                         linkFields: checked ? ['province', 'city'] : [],
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="隐藏列头"
+                  unCheckedChildren="显示列头"
+                  checked={mergedOptions.style?.colCfg?.height === 0}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        colCfg: {
+                          height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
+                        },
                       },
                     });
                   }}
@@ -940,8 +955,7 @@ function MainLayout() {
                 });
               }}
               onDataCellClick={logHandler('onDataCellClick')}
-              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
-              onLayoutResizeMouseUp={logHandler('onLayoutResizeMouseUp')}
+              onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
