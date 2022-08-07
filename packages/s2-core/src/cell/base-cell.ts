@@ -239,7 +239,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         {
           x1: minX,
           y1: maxY + 1,
-          x2: minX + this.actualTextWidth, // 不用 bbox 的 maxX，因为文字宽度预估偏差较大
+          x2: minX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
           y2: maxY + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
