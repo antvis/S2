@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v1.2.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.2.0...@antv/s2-vue-v1.2.1) (2022-08-05)
+
+
+### Bug Fixes
+
+* 修复pivot模式 cell点击事件无法触发BUG ([#1623](https://github.com/antvis/S2/issues/1623)) ([a9172a0](https://github.com/antvis/S2/commit/a9172a04c32d8b02a258e2ac2650970ea3f241e5))
+
 # [@antv/s2-vue-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.1.0...@antv/s2-vue-v1.2.0) (2022-07-22)
 
 

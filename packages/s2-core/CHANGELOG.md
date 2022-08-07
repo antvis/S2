@@ -1,3 +1,23 @@
+# [@antv/s2-v1.25.0](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0...@antv/s2-v1.25.0) (2022-08-05)
+
+
+### Bug Fixes
+
+*  修复存在 0 时，数值为 number 时，排序错误的问题 ([#1644](https://github.com/antvis/S2/issues/1644)) ([8138c69](https://github.com/antvis/S2/commit/8138c699dd4e14385ee8dc78ddcaca6f8f7a5ec0))
+* **interaction:** 向左移动到不完全可见cell的时候，没有滚动过去 ([#1607](https://github.com/antvis/S2/issues/1607)) ([42541a5](https://github.com/antvis/S2/commit/42541a55f50158f5241c5777cb5d70a4c26599af))
+* **layout:** 修复 treeRowsWidth 配置不生效 close [#1622](https://github.com/antvis/S2/issues/1622) ([#1646](https://github.com/antvis/S2/issues/1646)) ([9e70d62](https://github.com/antvis/S2/commit/9e70d62549da5e14d40d373d23d8592763c550a3))
+* **pagination:** 分页配置未传 current 参数时表格渲染空白 ([#1633](https://github.com/antvis/S2/issues/1633)) ([1c65443](https://github.com/antvis/S2/commit/1c654437073071c1fb8b118018b3007922d198f4))
+* sortByFunc 排序后行列维度节点丢失 ([#1606](https://github.com/antvis/S2/issues/1606)) ([3a20d7d](https://github.com/antvis/S2/commit/3a20d7d8d4f86d3413c191cda08c71cd293538b0))
+* **strategysheet:** 修复趋势分析表列头格式化不生效 ([#1616](https://github.com/antvis/S2/issues/1616)) ([ca3cbb5](https://github.com/antvis/S2/commit/ca3cbb58da57d7989654bb982e6a508d0fd3a42a))
+* 明细表复制时无需使用formatter格式化列头label ([#1610](https://github.com/antvis/S2/issues/1610)) ([8f13911](https://github.com/antvis/S2/commit/8f13911a176384c8ce27ad6d02862dd3ba04e27c))
+
+
+### Features
+
+* **interaction:** 宽高调整事件透出 resizedWidth/resizedHeight, 修复错误类型定义 ([#1638](https://github.com/antvis/S2/issues/1638)) ([fbf45df](https://github.com/antvis/S2/commit/fbf45dfffaf7b17409010c16c7f6a5bb73133197))
+* 复制支持html格式 ([#1647](https://github.com/antvis/S2/issues/1647)) ([3ea6349](https://github.com/antvis/S2/commit/3ea634970a162d869cf12dad7aa754bebafd30f3))
+* 支持resize最右侧column ([#1611](https://github.com/antvis/S2/issues/1611)) ([f63bfa2](https://github.com/antvis/S2/commit/f63bfa2a0e95c8c42c064d0e2e56ce9550ac50c6))
+
 # [@antv/s2-v1.24.0](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0) (2022-07-22)
 
 
