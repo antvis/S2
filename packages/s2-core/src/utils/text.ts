@@ -28,6 +28,7 @@ import { renderMiniChart } from './g-mini-charts';
 
 /**
  * 计算文本在画布中的宽度
+ * @deprecated 已废弃，该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
@@ -53,11 +54,13 @@ export const measureTextWidth = memoize(
  * 算法（减少每次 measureText 的长度，measureText 的性能跟字符串时间相关）：
  * 1. 先通过 STEP 逐步计算，找到最后一个小于 maxWidth 的字符串
  * 2. 然后对最后这个字符串二分计算
+ * @param measureTextWidth 文本宽度预估函数
  * @param text 需要计算的文本, 由于历史原因 除了支持string，还支持空值,number和数组等
  * @param maxWidth
  * @param font
  */
 export const getEllipsisTextInner = (
+  measureTextWidth: (text: number | string, font: unknown) => number,
   text: any,
   maxWidth: number,
   font: CSSStyleDeclaration,
@@ -148,6 +151,7 @@ export const getEllipsisTextInner = (
  * 然后分别乘以中文、符号的宽度
  * @param text
  * @param font
+ * @deprecated 已废弃，该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
@@ -171,18 +175,21 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
 
 /**
  * @desc 改良版 获取文本的 ... 文本（可传入 优先文本片段）
+ * @param measureTextWidth 文本长度计算函数
  * @param text 需要计算的文本
  * @param maxWidth
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = ({
+  measureTextWidth,
   text,
   maxWidth,
   fontParam,
   priorityParam,
   placeholder,
 }: {
+  measureTextWidth: (text: number | string, font: unknown) => number;
   text: string | number;
   maxWidth: number;
   fontParam?: unknown;
@@ -201,6 +208,7 @@ export const getEllipsisText = ({
   }
   if (!priority || !priority.length) {
     return getEllipsisTextInner(
+      measureTextWidth,
       finalText,
       maxWidth,
       font as CSSStyleDeclaration,
@@ -253,6 +261,7 @@ export const getEllipsisText = ({
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
         const ellipsis = getEllipsisTextInner(
+          measureTextWidth,
           subText,
           remainWidth,
           font as CSSStyleDeclaration,
@@ -391,7 +400,7 @@ export const drawObjectText = (
   } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { values: textValues } = text;
-  const { options } = cell?.getMeta().spreadsheet;
+  const { options, measureTextWidth } = cell.getMeta().spreadsheet;
   const { valuesCfg } = options.style.cellCfg;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
   const textCondition = options?.conditions?.text?.[0];
@@ -418,6 +427,7 @@ export const drawObjectText = (
       calX(x, padding),
       y + labelHeight,
       getEllipsisText({
+        measureTextWidth,
         text: text.label,
         maxWidth: totalTextWidth,
         fontParam: labelStyle,
@@ -473,6 +483,7 @@ export const drawObjectText = (
         curX,
         curY,
         getEllipsisText({
+          measureTextWidth,
           text: curText,
           maxWidth: avgWidth,
           fontParam: curStyle,
