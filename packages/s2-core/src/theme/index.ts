@@ -245,6 +245,12 @@ export const getTheme = (
             backgroundColor: otherColors?.highlight ?? basicColors[6],
             backgroundOpacity: 1,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
         },
       },
       icon: {

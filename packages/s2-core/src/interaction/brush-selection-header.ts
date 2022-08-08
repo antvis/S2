@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, isNumber, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, isNumber, map, throttle } from 'lodash';
 import { ColCell, DataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
@@ -716,13 +716,17 @@ export class BrushSelectionHeader
     // console.info(brushRangeDataCells);
     // console.log('要选中正确的 cell');
     // todo-zc: 这里需要自己写一个 header 相关的
-    this.spreadsheet.interaction.changeState({
-      cells: brushRangeDataCells.map((item) => getCellMeta(item)),
-      stateName: InteractionStateName.PREPARE_SELECT,
-      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
-      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
-      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
-      force: true,
+    // this.spreadsheet.interaction.changeState({
+    //   interactedCells: brushRangeDataCells,
+    //   nodes: map(brushRangeDataCells, cell =>  cell.getNode(cell)),
+    //   stateName: InteractionStateName.PREPARE_SELECT,
+    //   // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
+    //   // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
+    //   // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+    //   force: true,
+    // });
+    map(brushRangeDataCells, (cell: ColCell) => {
+      cell.updateByState(InteractionStateName.PREPARE_SELECT);
     });
     this.brushRangeDataCells = brushRangeDataCells;
   };

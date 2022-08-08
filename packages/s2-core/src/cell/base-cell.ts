@@ -264,8 +264,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
 
-    const { x, y, height, width } = this.getCellArea();
-
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
@@ -287,15 +285,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
-            const { horizontalBorderWidth, verticalBorderWidth } =
-              this.theme.dataCell.cell;
-
-            const marginStyle = {
-              x: x + verticalBorderWidth / 2 + style / 2,
-              y: y + horizontalBorderWidth / 2 + style / 2,
-              width: width - verticalBorderWidth - style,
-              height: height - horizontalBorderWidth - style,
-            };
+            const marginStyle = this.getInteractiveBorderShapeStyle(style);
             each(marginStyle, (currentStyle, currentStyleKey) => {
               updateShapeAttr(shape, currentStyleKey, currentStyle);
             });
@@ -304,6 +294,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
+  }
+
+  protected getInteractiveBorderShapeStyle<T>(style: T & number) {
+    const { x, y, height, width } = this.getCellArea();
+
+    const { horizontalBorderWidth, verticalBorderWidth } =
+      this.theme.dataCell.cell;
+
+    return {
+      x: x + verticalBorderWidth / 2 + style / 2,
+      y: y + horizontalBorderWidth / 2 + style / 2,
+      width: width - verticalBorderWidth - style,
+      height: height - horizontalBorderWidth - style,
+    };
   }
 
   public hideInteractionShape() {
