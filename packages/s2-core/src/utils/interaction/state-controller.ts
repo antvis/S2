@@ -9,31 +9,35 @@ import type { SpreadSheet } from '../../sheet-type';
  */
 export const clearState = (spreadsheet: SpreadSheet): boolean => {
   const activeIcons = spreadsheet.store.get('visibleActionIcons');
+  const allInteractedCells = spreadsheet.interaction.getInteractedCells();
+  const cellMetas = spreadsheet.interaction.getState().cells;
+  // 如果都处于初始化状态 不需要clear
+  if (
+    isEmpty(allInteractedCells) &&
+    isEmpty(cellMetas) &&
+    isEmpty(activeIcons)
+  ) {
+    return false;
+  }
   forEach(activeIcons, (icon) => {
     icon.set('visible', false);
   });
   spreadsheet.store.set('visibleActionIcons', []);
 
-  const allInteractedCells = spreadsheet.interaction.getInteractedCells();
-  const cellMetas = spreadsheet.interaction.getState().cells;
+  forEach(allInteractedCells, (cell: S2CellType) => {
+    cell.hideInteractionShape();
+  });
 
-  if (!isEmpty(allInteractedCells) || !isEmpty(cellMetas)) {
-    forEach(allInteractedCells, (cell: S2CellType) => {
-      cell.hideInteractionShape();
+  spreadsheet.interaction.resetState();
+  if (spreadsheet.options.interaction.selectedCellsSpotlight) {
+    const unSelectedCells =
+      spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+
+    forEach(unSelectedCells, (cell) => {
+      cell.clearUnselectedState();
     });
-
-    spreadsheet.interaction.resetState();
-    if (spreadsheet.options.interaction.selectedCellsSpotlight) {
-      const unSelectedCells =
-        spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
-
-      forEach(unSelectedCells, (cell) => {
-        cell.clearUnselectedState();
-      });
-    }
-    return true;
   }
-  return false;
+  return true;
 };
 
 /**
