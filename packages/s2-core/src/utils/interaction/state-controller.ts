@@ -7,7 +7,7 @@ import type { SpreadSheet } from '../../sheet-type';
  * @desc clear the interaction state information
  * @param spreadsheet sheet instance
  */
-export const clearState = (spreadsheet: SpreadSheet) => {
+export const clearState = (spreadsheet: SpreadSheet): boolean => {
   const activeIcons = spreadsheet.store.get('visibleActionIcons');
   forEach(activeIcons, (icon) => {
     icon.set('visible', false);
@@ -31,7 +31,9 @@ export const clearState = (spreadsheet: SpreadSheet) => {
         cell.clearUnselectedState();
       });
     }
+    return true;
   }
+  return false;
 };
 
 /**
