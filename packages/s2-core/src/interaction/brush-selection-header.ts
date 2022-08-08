@@ -507,7 +507,7 @@ export class BrushSelectionHeader
 
   private bindMouseUp() {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
-    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_UP, (event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
         this.resetDrag();
         return;
@@ -519,10 +519,10 @@ export class BrushSelectionHeader
           InterceptType.BRUSH_SELECTION,
         ]);
         this.updateSelectedCells();
-        this.spreadsheet.showTooltipWithInfo(
-          event,
-          getActiveCellsTooltipData(this.spreadsheet),
-        );
+        // this.spreadsheet.showTooltipWithInfo(
+        //   event,
+        //   getActiveCellsTooltipData(this.spreadsheet),
+        // );
       }
       if (
         this.spreadsheet.interaction.getCurrentStateName() ===
@@ -712,23 +712,14 @@ export class BrushSelectionHeader
 
   // 刷选过程中高亮的cell
   private showPrepareSelectedCells = () => {
-    const brushRangeDataCells = this.getBrushRangeDataCells();
-    // console.info(brushRangeDataCells);
-    // console.log('要选中正确的 cell');
-    // todo-zc: 这里需要自己写一个 header 相关的
-    // this.spreadsheet.interaction.changeState({
-    //   interactedCells: brushRangeDataCells,
-    //   nodes: map(brushRangeDataCells, cell =>  cell.getNode(cell)),
-    //   stateName: InteractionStateName.PREPARE_SELECT,
-    //   // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
-    //   // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
-    //   // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
-    //   force: true,
-    // });
-    map(brushRangeDataCells, (cell: ColCell) => {
-      cell.updateByState(InteractionStateName.PREPARE_SELECT);
+    this.brushRangeDataCells = this.getBrushRangeDataCells();
+
+    this.spreadsheet.interaction.changeHeaderState({
+      interactedCells: this.brushRangeDataCells,
+      cells: map(this.brushRangeDataCells, (cell) => getCellMeta(cell)),
+      stateName: InteractionStateName.PREPARE_SELECT,
+      force: true,
     });
-    this.brushRangeDataCells = brushRangeDataCells;
   };
 
   public getSelectedCellMetas = (range: BrushRange) => {
@@ -765,12 +756,11 @@ export class BrushSelectionHeader
   private updateSelectedCells() {
     const { interaction } = this.spreadsheet;
 
-    const range = this.getBrushRange();
-
-    interaction.changeState({
-      cells: this.getSelectedCellMetas(range),
+    interaction.changeHeaderState({
+      cells: map(this.brushRangeDataCells, (cell) => getCellMeta(cell)),
       stateName: InteractionStateName.SELECTED,
     });
+
     // emit header cell;
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,

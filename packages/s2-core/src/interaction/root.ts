@@ -39,6 +39,7 @@ import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection } from './brush-selection';
+import { BrushSelectionHeader } from './brush-selection-header';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -387,6 +388,7 @@ export class RootInteraction {
       },
       {
         key: InteractionName.BRUSH_SELECTION,
+        // interaction: BrushSelectionHeader,
         interaction: BrushSelection,
         enable: !isMobile() && brushSelection,
       },
@@ -472,6 +474,31 @@ export class RootInteraction {
     this.clearState();
     this.setState(interactionStateInfo);
     this.updatePanelGroupAllDataCells();
+    this.draw();
+  }
+
+  public changeHeaderState(interactionStateInfo: InteractionStateInfo) {
+    const { interaction } = this.spreadsheet;
+    const { cells, force, stateName } = interactionStateInfo;
+
+    if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
+      if (force) {
+        interaction.changeState({
+          cells: [],
+          stateName: InteractionStateName.UNSELECTED,
+        });
+      }
+      return;
+    }
+
+    // 之前是全选状态，需要清除格子的样式
+    if (this.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
+      this.clearStyleIndependent();
+    }
+
+    this.clearState();
+    this.setState(interactionStateInfo);
+    this.updateCells(this.getAllColHeaderCells());
     this.draw();
   }
 
