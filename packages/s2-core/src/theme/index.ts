@@ -147,6 +147,12 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: otherColors?.results ?? basicColors[2],
@@ -235,6 +241,12 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: otherColors?.results ?? basicColors[2],
@@ -244,12 +256,6 @@ export const getTheme = (
           highlight: {
             backgroundColor: otherColors?.highlight ?? basicColors[6],
             backgroundOpacity: 1,
-          },
-          // -------------- prepare select --------------
-          prepareSelect: {
-            borderColor: basicColors[14],
-            borderOpacity: 1,
-            borderWidth: 1,
           },
         },
       },

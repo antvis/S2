@@ -103,16 +103,6 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  protected getInteractiveBorderShapeStyle(border: number) {
-    const { x, y, height, width } = this.getCellArea();
-    return {
-      x: x + border,
-      y: y + border,
-      width: width - border * 2,
-      height: height - border * 2,
-    };
-  }
-
   protected getTextStyle(): TextTheme {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText, measureText } = this.getStyle();

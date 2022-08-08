@@ -1,6 +1,14 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, isNumber, map, throttle } from 'lodash';
-import { ColCell } from '../cell';
+import {
+  cloneDeep,
+  concat,
+  isEmpty,
+  isNil,
+  isNumber,
+  map,
+  throttle,
+} from 'lodash';
+import { RowCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InterceptType,
@@ -41,7 +49,7 @@ import { BaseEvent } from './base-interaction';
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelectionHeader
+export class BrushSelectionRowHeader
   extends BaseEvent
   implements BaseEventImplement
 {
@@ -111,12 +119,8 @@ export class BrushSelectionHeader
       this.startBrushPoint = this.getBrushPoint(event);
       this.resetScrollDelta();
     };
-    [
-      // S2Event.ROW_CELL_MOUSE_DOWN,
-      S2Event.COL_CELL_MOUSE_DOWN,
-      // S2Event.CORNER_CELL_MOUSE_DOWN,
-      // S2Event.DATA_CELL_MOUSE_DOWN,
-    ].forEach((e: S2Event) => {
+
+    [S2Event.ROW_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
       this.spreadsheet.on(e, (event: CanvasEvent) => {
         mouseDown(event);
       });
@@ -125,8 +129,8 @@ export class BrushSelectionHeader
 
   private isPointInCanvas(point: { x: number; y: number }) {
     const { height, width } = this.spreadsheet.facet.getCanvasHW();
-    // col
-    const { width: minX, minY } = this.spreadsheet.facet.cornerBBox;
+    // row
+    const { minX, height: minY } = this.spreadsheet.facet.cornerBBox;
 
     return (
       point.x > minX && point.x < width && point.y > minY && point.y < height
@@ -461,7 +465,7 @@ export class BrushSelectionHeader
 
     const cell = this.spreadsheet.getCell(target);
 
-    if (!cell || !(cell instanceof ColCell)) {
+    if (!cell || !(cell instanceof RowCell)) {
       return;
     }
     const { rowIndex, colIndex, x: NodeX, y: NodeY } = cell.getMeta();
@@ -483,7 +487,7 @@ export class BrushSelectionHeader
   };
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -561,9 +565,8 @@ export class BrushSelectionHeader
   }
 
   private setDisplayedDataCells() {
-    // todo-zc: 这里只是可视化区域内的 cell, 需要的是所有被构造的 cell
     this.displayedDataCells =
-      this.spreadsheet.interaction.getAllColHeaderCells();
+      this.spreadsheet.interaction.getAllRowHeaderCells();
   }
 
   private updatePrepareSelectMask() {

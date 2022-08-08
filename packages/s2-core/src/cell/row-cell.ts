@@ -54,6 +54,8 @@ export class RowCell extends HeaderCell {
     this.drawBackgroundShape();
     // 绘制交互背景
     this.drawInteractiveBgShape();
+    // 绘制交互边框
+    this.drawInteractiveBorderShape();
     // 绘制单元格文本
     this.drawTextShape();
     // 绘制树状模式收起展开的 icon
@@ -77,6 +79,21 @@ export class RowCell extends HeaderCell {
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
     });
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 2;
+
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
+        visible: false,
+      }),
+    );
   }
 
   // 交互使用的背景色
