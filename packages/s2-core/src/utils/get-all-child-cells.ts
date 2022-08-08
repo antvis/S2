@@ -2,7 +2,7 @@ import { Group, type IElement } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 
 export const getAllChildCells = <T extends IElement>(
-  children: IElement[] = [],
+  children: T[] = [],
   cellType: any,
 ): T[] => {
   if (isEmpty(children)) {

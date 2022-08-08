@@ -1,6 +1,6 @@
-import type { Group, IElement, IGroup } from '@antv/g-canvas';
+import type { Group, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
-import { TableSeriesCell } from '../cell';
+import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
   FrozenGroup,
@@ -885,10 +885,10 @@ export class TableFacet extends BaseFacet {
     if (rowResizeFrozenGroup) {
       rowResizeFrozenGroup.set('children', []);
     }
-    const allCells: TableSeriesCell[] = getAllChildCells(
-      this.panelGroup.getChildren() as IElement[],
-      TableSeriesCell,
-    );
+    const allCells = getAllChildCells(
+      this.panelGroup.getChildren() as TableDataCell[],
+      TableDataCell,
+    ).filter((cell: TableDataCell) => cell.shouldDrawResizeArea());
 
     allCells.forEach((cell) => {
       cell.drawResizeArea();
