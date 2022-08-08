@@ -68,6 +68,8 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        measureTextWidth:
+          jest.fn() as unknown as SpreadSheet['measureTextWidth'],
       };
     }),
   };
@@ -189,6 +191,7 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct result when tree mode', () => {
     s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
+    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
     const mockDataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet({
       spreadsheet: s2,
@@ -199,6 +202,10 @@ describe('Pivot Mode Facet Test', () => {
       hierarchyType: 'tree',
     });
     const { rowsHierarchy } = treeFacet.layoutResult;
+
+    afterAll(() => {
+      spy.mockRestore();
+    });
 
     test('row hierarchy when tree mode', () => {
       const { cellCfg, spreadsheet } = facet.cfg;
