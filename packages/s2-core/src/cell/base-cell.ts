@@ -287,11 +287,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
+            const { horizontalBorderWidth, verticalBorderWidth } =
+              this.theme.dataCell.cell;
+
             const marginStyle = {
-              x: x + style / 2,
-              y: y + style / 2,
-              width: width - style - 1,
-              height: height - style - 1,
+              x: x + verticalBorderWidth / 2 + style / 2,
+              y: y + horizontalBorderWidth / 2 + style / 2,
+              width: width - verticalBorderWidth - style,
+              height: height - horizontalBorderWidth - style,
             };
             each(marginStyle, (currentStyle, currentStyleKey) => {
               updateShapeAttr(shape, currentStyleKey, currentStyle);
