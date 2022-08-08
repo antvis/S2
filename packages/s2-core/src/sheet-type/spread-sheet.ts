@@ -705,7 +705,7 @@ export abstract class SpreadSheet extends EE {
         .join(' ')
         .trim();
 
-      return ctx.measureText(`${text}`).width;
+      return ctx.measureText(String(text)).width;
     },
     (text: any, font) => [text, ...values(font)].join(''),
   );
