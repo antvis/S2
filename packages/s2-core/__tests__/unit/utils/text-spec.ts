@@ -1,8 +1,8 @@
+import { createPivotSheet } from 'tests/util/helpers';
 import {
   getEllipsisText,
   getEllipsisTextInner,
   isUpDataValue,
-  measureTextWidth,
   getCellWidth,
   getEmptyPlaceholder,
 } from '@/utils/text';
@@ -16,74 +16,91 @@ describe('Text Utils Tests', () => {
     fontWeight: 'normal',
   } as unknown as CSSStyleDeclaration;
 
-  test('should get correct text', () => {
-    const text = getEllipsisText({
-      text: '12',
-      maxWidth: 200,
-      placeholder: '--',
+  describe('Test Widths Tests', () => {
+    let measureTextWidth: (text: number | string, font: unknown) => number;
+
+    beforeEach(() => {
+      measureTextWidth = createPivotSheet(
+        {},
+        { useSimpleData: true },
+      ).measureTextWidth;
     });
 
-    expect(text).toEqual('12');
-  });
+    test('should get correct text', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: '12',
+        maxWidth: 200,
+        placeholder: '--',
+      });
 
-  test('should get correct text ellipsis', () => {
-    const text = getEllipsisText({
-      text: '12121212121212121212',
-      maxWidth: 20,
-      placeholder: '--',
+      expect(text).toEqual('12');
     });
 
-    expect(text).toEndWith('...');
-    expect(text.length).toBeLessThanOrEqual(5);
-  });
+    test('should get correct text ellipsis', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: '12121212121212121212',
+        maxWidth: 20,
+        placeholder: '--',
+      });
 
-  test('should get correct placeholder text with ""', () => {
-    const text = getEllipsisText({
-      text: '',
-      maxWidth: 20,
-      placeholder: '--',
-    });
-    expect(text).toEqual('--');
-  });
-
-  test('should get correct placeholder text with 0', () => {
-    const text = getEllipsisText({
-      text: 0 as unknown as string,
-      maxWidth: 20,
-      placeholder: '--',
+      expect(text).toEndWith('...');
+      expect(text.length).toBeLessThanOrEqual(5);
     });
 
-    expect(text).toEqual('0');
-  });
-
-  test('should get correct placeholder text with null', () => {
-    const text = getEllipsisText({
-      text: null,
-      maxWidth: 20,
-      placeholder: '--',
+    test('should get correct placeholder text with ""', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: '',
+        maxWidth: 20,
+        placeholder: '--',
+      });
+      expect(text).toEqual('--');
     });
 
-    expect(text).toEqual('--');
-  });
+    test('should get correct placeholder text with 0', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: 0 as unknown as string,
+        maxWidth: 20,
+        placeholder: '--',
+      });
 
-  test('should get correct ellipsis text', () => {
-    const text = getEllipsisText({
-      text: '长度测试',
-      maxWidth: 24,
+      expect(text).toEqual('0');
     });
 
-    expect(text).toEndWith('...');
-    expect(text.length).toBeLessThanOrEqual(4);
-  });
+    test('should get correct placeholder text with null', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: null,
+        maxWidth: 20,
+        placeholder: '--',
+      });
 
-  test('should get correct text width', () => {
-    const width = measureTextWidth('test', font);
-    expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
-  });
+      expect(text).toEqual('--');
+    });
 
-  test('should get correct ellipsis text inner', () => {
-    const text = getEllipsisTextInner('test', 15, font);
-    expect(text).toEqual('t...');
+    test('should get correct ellipsis text', () => {
+      const text = getEllipsisText({
+        measureTextWidth,
+        text: '长度测试',
+        maxWidth: 24,
+      });
+
+      expect(text).toEndWith('...');
+      expect(text.length).toBeLessThanOrEqual(4);
+    });
+
+    test('should get correct text width', () => {
+      const width = measureTextWidth('test', font);
+      expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
+    });
+
+    test('should get correct ellipsis text inner', () => {
+      const text = getEllipsisTextInner(measureTextWidth, 'test', 15, font);
+      expect(text).toEqual('t...');
+    });
   });
 
   test.each`

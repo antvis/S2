@@ -34,11 +34,7 @@ import {
 } from '../utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '../utils/g-renders';
 import { isMobile } from '../utils/is-mobile';
-import {
-  getEllipsisText,
-  getEmptyPlaceholder,
-  measureTextWidth,
-} from '../utils/text';
+import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -201,9 +197,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const { placeholder } = this.spreadsheet.options;
+    const {
+      options: { placeholder },
+      measureTextWidth,
+    } = this.spreadsheet;
     const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
     const ellipsisText = getEllipsisText({
+      measureTextWidth,
       text: formattedValue,
       maxWidth: maxTextWidth,
       fontParam: textStyle,
@@ -233,13 +233,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const device = this.spreadsheet.options.style.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
-      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      const { minX, maxY }: BBox = this.textShape.getBBox();
       this.linkFieldShape = renderLine(
         this,
         {
           x1: minX,
           y1: maxY + 1,
-          x2: maxX,
+          x2: minX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
           y2: maxY + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
@@ -287,11 +287,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
+            const { horizontalBorderWidth, verticalBorderWidth } =
+              this.theme.dataCell.cell;
+
             const marginStyle = {
-              x: x + style / 2,
-              y: y + style / 2,
-              width: width - style - 1,
-              height: height - style - 1,
+              x: x + verticalBorderWidth / 2 + style / 2,
+              y: y + horizontalBorderWidth / 2 + style / 2,
+              width: width - verticalBorderWidth - style,
+              height: height - horizontalBorderWidth - style,
             };
             each(marginStyle, (currentStyle, currentStyleKey) => {
               updateShapeAttr(shape, currentStyleKey, currentStyle);

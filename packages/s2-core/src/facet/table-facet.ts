@@ -35,7 +35,6 @@ import {
 } from '../utils/grid';
 import type { PanelIndexes } from '../utils/indexes';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
-import { measureTextWidth, measureTextWidthRoughly } from '../utils/text';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import type { SeriesNumberHeader } from './header';
@@ -375,7 +374,7 @@ export class TableFacet extends BaseFacet {
         datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
-        measureTextWidthRoughly(label),
+        spreadsheet.measureTextWidthRoughly(label),
       );
 
       const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
@@ -391,7 +390,7 @@ export class TableFacet extends BaseFacet {
       // 最长的 Label 如果是列名，按列名的标准计算宽度
       if (colLabel === maxLabel) {
         colWidth =
-          measureTextWidth(maxLabel, colCellTextStyle) +
+          spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
           getOccupiedWidthForTableCol(
             this.spreadsheet,
             col,
@@ -401,7 +400,7 @@ export class TableFacet extends BaseFacet {
         // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
         const EXTRA_PIXEL = 1;
         colWidth =
-          measureTextWidth(maxLabel, dataCellTextStyle) +
+          spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
           cellStyle.padding.left +
           cellStyle.padding.right +
           EXTRA_PIXEL;
