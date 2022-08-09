@@ -28,7 +28,7 @@ import { renderMiniChart } from './g-mini-charts';
 
 /**
  * 计算文本在画布中的宽度
- * @deprecated 已废弃，该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
+ * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
@@ -151,7 +151,7 @@ export const getEllipsisTextInner = (
  * 然后分别乘以中文、符号的宽度
  * @param text
  * @param font
- * @deprecated 已废弃，该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
+ * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
