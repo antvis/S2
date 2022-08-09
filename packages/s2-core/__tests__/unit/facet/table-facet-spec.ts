@@ -173,11 +173,33 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
 
 describe('Table Mode Facet Test With Compact Layout', () => {
   describe('should get correct col layout', () => {
+    const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
     const ss: SpreadSheet = new MockSpreadSheet();
     const dataSet: TableDataSet = new MockTableDataSet(ss);
     ss.getLayoutWidthType = () => {
       return 'compact';
     };
+
+    const mockMeasureFunc = (text: string | number) => {
+      switch (text) {
+        case '浙江省':
+          return LABEL_WIDTH[0];
+        case '杭州市':
+          return LABEL_WIDTH[1];
+        case '办公用品':
+          return LABEL_WIDTH[2];
+        case '沙发':
+          return LABEL_WIDTH[3];
+        case 'undefined':
+          return LABEL_WIDTH[4];
+        default:
+          return 0;
+      }
+    };
+    ss.measureTextWidth =
+      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+    ss.measureTextWidthRoughly = mockMeasureFunc;
+
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
       dataSet,
@@ -190,7 +212,6 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
-
       const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
@@ -205,11 +226,32 @@ describe('Table Mode Facet Test With Compact Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
+    const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
     const ss: SpreadSheet = new MockSpreadSheet();
     const dataSet: TableDataSet = new MockTableDataSet(ss);
     ss.getLayoutWidthType = () => {
       return 'compact';
     };
+    const mockMeasureFunc = (text: string | number) => {
+      switch (text) {
+        case '浙江省':
+          return LABEL_WIDTH[0];
+        case '杭州市':
+          return LABEL_WIDTH[1];
+        case '办公用品':
+          return LABEL_WIDTH[2];
+        case '沙发':
+          return LABEL_WIDTH[3];
+        case 'undefined': // seriesnumber & price
+          return LABEL_WIDTH[4];
+        default:
+          return 0;
+      }
+    };
+    ss.measureTextWidth =
+      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+    ss.measureTextWidthRoughly = mockMeasureFunc;
+
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
       dataSet,

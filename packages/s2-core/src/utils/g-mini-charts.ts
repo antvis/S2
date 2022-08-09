@@ -19,7 +19,7 @@ import {
   renderText,
 } from '../utils/g-renders';
 import { CellTypes, MiniChartTypes } from '../common/constant';
-import { getEllipsisText, measureTextWidth } from './text';
+import { getEllipsisText } from './text';
 
 interface FractionDigitsOptions {
   min: number;
@@ -231,7 +231,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
 
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
-  const { x, y, height, width } = cell.getMeta();
+  const { x, y, height, width, spreadsheet } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
 
@@ -245,7 +245,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   // 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
   const measurePercent = transformRatioToPercent(measure, 2);
   const measurePercentWidth = Math.ceil(
-    measureTextWidth(measurePercent, dataCellStyle),
+    spreadsheet.measureTextWidth(measurePercent, dataCellStyle),
   );
 
   const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
@@ -316,6 +316,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     positionX - padding.right,
     y + height / 2,
     getEllipsisText({
+      measureTextWidth: spreadsheet.measureTextWidth,
       text: measurePercent,
       maxWidth: measureWidth,
       fontParam: dataCellStyle.text,

@@ -38,11 +38,7 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isIPhoneX } from '../utils/is-mobile';
-import {
-  getEllipsisText,
-  getEmptyPlaceholder,
-  measureTextWidth,
-} from '../utils/text';
+import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import { i18n } from './../common/i18n';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
@@ -86,7 +82,9 @@ export class CornerCell extends HeaderCell {
       this.meta,
       this.spreadsheet.options.placeholder,
     );
+    const { measureTextWidth } = this.spreadsheet;
     const text = getEllipsisText({
+      measureTextWidth,
       text: cornerText,
       maxWidth,
       fontParam: textStyle,
@@ -106,6 +104,7 @@ export class CornerCell extends HeaderCell {
       secondLine = cornerText.slice(lastIndex);
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText({
+        measureTextWidth,
         text: secondLine,
         maxWidth,
         fontParam: textStyle,
