@@ -1,5 +1,5 @@
 ---
-title: header
+title: Header
 order: 4
 ---
 
