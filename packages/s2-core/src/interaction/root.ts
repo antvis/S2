@@ -38,9 +38,10 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
-import { BrushSelection } from './brush-selection';
-import { BrushSelectionHeader } from './brush-selection-header';
-import { BrushSelectionRowHeader } from './brush-selection-row-header';
+import { BaseBrushSelection } from './base-brush-selection';
+import { DataCellBrushSelection } from './data-cell-brush-selection';
+import { ColBrushSelection } from './col-brush-selection';
+import { RowBrushSelection } from './row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -391,17 +392,17 @@ export class RootInteraction {
       },
       {
         key: InteractionName.BRUSH_SELECTION,
-        interaction: BrushSelection,
+        interaction: DataCellBrushSelection,
         enable: !isMobile() && brushSelection,
       },
       {
         key: InteractionName.ROW_BRUSH_SELECTION,
-        interaction: BrushSelectionRowHeader,
+        interaction: RowBrushSelection,
         enable: !isMobile() && rowBrushSelection,
       },
       {
         key: InteractionName.COL_BRUSH_SELECTION,
-        interaction: BrushSelectionHeader,
+        interaction: ColBrushSelection,
         enable: !isMobile() && colBrushSelection,
       },
       {
@@ -510,8 +511,8 @@ export class RootInteraction {
 
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updateCells(this.getAllColHeaderCells());
     this.updateCells(this.getAllRowHeaderCells());
+    this.updateCells(this.getAllColHeaderCells());
     this.draw();
   }
 
