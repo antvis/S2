@@ -85,12 +85,7 @@ export interface BrushRange {
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
 
-export type Intercept =
-  | InterceptType.HOVER
-  | InterceptType.CLICK
-  | InterceptType.BRUSH_SELECTION
-  | InterceptType.MULTI_SELECTION
-  | InterceptType.RESIZE;
+export type Intercept = InterceptType[keyof InterceptType];
 
 export interface BrushAutoScrollConfigItem {
   value: number;
@@ -132,8 +127,12 @@ export interface InteractionOptions {
   scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
   resize?: boolean | ResizeInteractionOptions;
-  // enable mouse drag brush selection
+  // enable mouse drag brush selection on data cell
   brushSelection?: boolean;
+  // enable mouse drag brush selection on row cell
+  rowBrushSelection?: boolean;
+  // enable mouse drag brush selection on coll cell
+  colBrushSelection?: boolean;
   // enable Command / Ctrl + click multi selection
   multiSelection?: boolean;
   // enable Shift + click multi selection

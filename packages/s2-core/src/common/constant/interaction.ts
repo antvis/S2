@@ -1,3 +1,5 @@
+import { values } from 'lodash';
+
 export enum InteractionName {
   CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
@@ -6,6 +8,8 @@ export enum InteractionName {
   ROW_TEXT_CLICK = 'rowTextClick',
   HOVER = 'hover',
   BRUSH_SELECTION = 'brushSelection',
+  ROW_BRUSH_SELECTION = 'rowBrushSelection',
+  COL_BRUSH_SELECTION = 'colBrushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   RANGE_SELECTION = 'rangeSelection',
@@ -82,6 +86,8 @@ export enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
+  ROW_BRUSH_SELECTION = 'rowBrushSelection',
+  COL_BRUSH_SELECTION = 'colBrushSelection',
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
 }

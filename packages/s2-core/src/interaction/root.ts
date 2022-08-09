@@ -40,6 +40,7 @@ import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection } from './brush-selection';
 import { BrushSelectionHeader } from './brush-selection-header';
+import { BrushSelectionRowHeader } from './brush-selection-row-header';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -355,6 +356,8 @@ export class RootInteraction {
     const {
       resize,
       brushSelection,
+      rowBrushSelection,
+      colBrushSelection,
       multiSelection,
       rangeSelection,
       selectedCellMove,
@@ -388,9 +391,18 @@ export class RootInteraction {
       },
       {
         key: InteractionName.BRUSH_SELECTION,
-        // interaction: BrushSelectionHeader,
         interaction: BrushSelection,
         enable: !isMobile() && brushSelection,
+      },
+      {
+        key: InteractionName.ROW_BRUSH_SELECTION,
+        interaction: BrushSelectionRowHeader,
+        enable: !isMobile() && rowBrushSelection,
+      },
+      {
+        key: InteractionName.COL_BRUSH_SELECTION,
+        interaction: BrushSelectionHeader,
+        enable: !isMobile() && colBrushSelection,
       },
       {
         key: InteractionName.COL_ROW_RESIZE,
@@ -499,6 +511,7 @@ export class RootInteraction {
     this.clearState();
     this.setState(interactionStateInfo);
     this.updateCells(this.getAllColHeaderCells());
+    this.updateCells(this.getAllRowHeaderCells());
     this.draw();
   }
 
