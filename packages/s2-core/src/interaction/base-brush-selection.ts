@@ -1,22 +1,19 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
-import { DataCell } from '../cell';
+import { cloneDeep, isNil, throttle } from 'lodash';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-  InterceptType,
-  S2Event,
   ScrollDirection,
 } from '../common/constant';
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
-  InteractionStateName,
 } from '../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   OriginalEvent,
+  S2CellType,
   ViewMeta,
 } from '../common/interface';
 import type { TableFacet } from '../facet';
@@ -35,15 +32,17 @@ import {
   updateRowColCells,
 } from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
-import { getActiveCellsTooltipData } from '../utils/tooltip';
 import type { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends BaseEvent implements BaseEventImplement {
-  public displayedDataCells: DataCell[] = [];
+export class BaseBrushSelection
+  extends BaseEvent
+  implements BaseEventImplement
+{
+  public displayedDataCells: S2CellType[] = [];
 
   public prepareSelectMaskShape: IShape;
 
@@ -51,7 +50,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public endBrushPoint: BrushPoint;
 
-  public brushRangeDataCells: DataCell[] = [];
+  public brushRangeDataCells: S2CellType[] = [];
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
@@ -67,11 +66,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.bindMouseUp();
   }
 
-  private getPrepareSelectMaskTheme() {
+  protected getPrepareSelectMaskTheme() {
     return this.spreadsheet.theme?.prepareSelectMask;
   }
 
-  private initPrepareSelectMaskShape() {
+  protected initPrepareSelectMaskShape() {
     const { foregroundGroup } = this.spreadsheet;
     if (!foregroundGroup) {
       return;
@@ -93,25 +92,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
+  protected setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
     this.brushSelectionStage = stage;
   }
 
-  private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
-      event?.preventDefault?.();
-      if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
-        return;
-      }
-      this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
-      this.initPrepareSelectMaskShape();
-      this.setDisplayedDataCells();
-      this.startBrushPoint = this.getBrushPoint(event);
-      this.resetScrollDelta();
-    });
-  }
-
-  private isPointInCanvas(point: { x: number; y: number }) {
+  // 默认是 Data cell 的绘制区
+  protected isPointInCanvas(point: { x: number; y: number }): boolean {
     const { height, width } = this.spreadsheet.facet.getCanvasHW();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
@@ -185,7 +171,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private autoScrollIntervalId = null;
 
-  private autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
+  protected autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   );
 
@@ -197,9 +183,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenRowRange) {
       min = frozenRowRange[1] + 1;
     }
-    if (yIndex < min) {
-      return null;
-    }
+    if (yIndex < min) return null;
 
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
@@ -222,9 +206,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenColRange) {
       min = frozenColRange[1] + 1;
     }
-    if (xIndex < min) {
-      return null;
-    }
+    if (xIndex < min) return null;
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
@@ -402,7 +384,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     );
   };
 
-  private handleScroll = throttle((x, y) => {
+  protected handleScroll = throttle((x, y) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
     ) {
@@ -438,7 +420,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
   }, 30);
 
-  private clearAutoScroll = () => {
+  protected clearAutoScroll = () => {
     if (this.autoScrollIntervalId) {
       clearInterval(this.autoScrollIntervalId);
       this.autoScrollIntervalId = null;
@@ -446,101 +428,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
   };
 
-  private renderPrepareSelected = (point: Point) => {
-    const { x, y } = point;
-    const target = this.spreadsheet.container.getShape(x, y);
-
-    const cell = this.spreadsheet.getCell(target);
-
-    if (!cell || !(cell instanceof DataCell)) {
-      return;
-    }
-    const { rowIndex, colIndex } = cell.getMeta();
-
-    this.endBrushPoint = {
-      x,
-      y,
-      rowIndex,
-      colIndex,
-    };
-
-    const { interaction } = this.spreadsheet;
-    interaction.addIntercepts([InterceptType.HOVER]);
-    interaction.clearStyleIndependent();
-    this.updatePrepareSelectMask();
-    this.showPrepareSelectedCells();
-  };
-
-  private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
-      if (
-        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
-      ) {
-        return;
-      }
-
-      this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
-
-      this.clearAutoScroll();
-      if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas.x - this.endBrushPoint.x;
-        const deltaY = pointInCanvas.y - this.endBrushPoint.y;
-        this.handleScroll(deltaX, deltaY);
-        return;
-      }
-
-      this.renderPrepareSelected(pointInCanvas);
-    });
-  }
-
-  private bindMouseUp() {
-    // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
-    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
-      if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
-        this.resetDrag();
-        return;
-      }
-      this.clearAutoScroll();
-
-      if (this.isValidBrushSelection()) {
-        this.spreadsheet.interaction.addIntercepts([
-          InterceptType.BRUSH_SELECTION,
-        ]);
-        this.updateSelectedCells();
-        this.spreadsheet.showTooltipWithInfo(
-          event,
-          getActiveCellsTooltipData(this.spreadsheet),
-        );
-      }
-      if (
-        this.spreadsheet.interaction.getCurrentStateName() ===
-        InteractionStateName.PREPARE_SELECT
-      ) {
-        this.spreadsheet.interaction.reset();
-      }
-
-      this.resetDrag();
-    });
-
-    // 刷选过程中右键弹出系统菜单时, 应该重置刷选, 防止系统菜单关闭后 mouse up 未相应依然是刷选状态
-    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, () => {
-      if (
-        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
-      ) {
-        return;
-      }
-      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
-      this.resetDrag();
-    });
-  }
-
-  private resetDrag() {
+  protected resetDrag() {
     this.hidePrepareSelectMaskShape();
     this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
   }
 
-  private isValidBrushSelection() {
+  protected isValidBrushSelection() {
     const { start, end } = this.getBrushRange();
     const isMovedEnoughDistance =
       end.x - start.x > this.brushSelectionMinimumMoveDistance ||
@@ -549,12 +442,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return isMovedEnoughDistance;
   }
 
-  private setDisplayedDataCells() {
+  protected setDisplayedDataCells() {
     this.displayedDataCells =
       this.spreadsheet.interaction.getPanelGroupAllDataCells();
   }
 
-  private updatePrepareSelectMask() {
+  protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
@@ -569,11 +462,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape?.hide();
   }
 
-  private resetScrollDelta() {
+  protected resetScrollDelta() {
     this.autoScrollConfig = cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
   }
 
-  private getBrushPoint(event: CanvasEvent): BrushPoint {
+  protected getBrushPoint(event: CanvasEvent): BrushPoint {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
@@ -638,41 +531,28 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private isInBrushRange(meta: ViewMeta) {
-    const { start, end } = this.getBrushRange();
-    const { rowIndex, colIndex } = meta;
-    return (
-      rowIndex >= start.rowIndex &&
-      rowIndex <= end.rowIndex &&
-      colIndex >= start.colIndex &&
-      colIndex <= end.colIndex
-    );
+  // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
+  protected getBrushRangeDataCells(): S2CellType[] {
+    return [] as S2CellType[];
   }
 
-  // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
-  private getBrushRangeDataCells(): DataCell[] {
-    this.setDisplayedDataCells();
-    return this.displayedDataCells.filter((cell) => {
-      const meta = cell.getMeta();
-      return this.isInBrushRange(meta);
-    });
+  protected isInBrushRange(meta: ViewMeta): boolean {
+    return false;
   }
 
   // 刷选过程中高亮的cell
-  private showPrepareSelectedCells = () => {
-    const brushRangeDataCells = this.getBrushRangeDataCells();
-    this.spreadsheet.interaction.changeState({
-      cells: brushRangeDataCells.map((item) => getCellMeta(item)),
-      stateName: InteractionStateName.PREPARE_SELECT,
-      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
-      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
-      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
-      force: true,
-    });
-    this.brushRangeDataCells = brushRangeDataCells;
-  };
+  protected showPrepareSelectedCells = () => {};
 
-  public getSelectedCellMetas = (range: BrushRange) => {
+  protected renderPrepareSelected = (point: Point) => {};
+
+  protected bindMouseDown() {}
+
+  protected bindMouseMove() {}
+
+  protected bindMouseUp() {}
+
+  public getSelectedCellMetas = (range: BrushRange) => {};
+  public getSelectedCellMetas1 = (range: BrushRange) => {
     const metas = [];
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
     const rowLeafNodes = this.spreadsheet.facet.layoutResult.rowLeafNodes ?? [];
@@ -704,9 +584,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
     return metas;
   };
-
   // 最终刷选的cell
-  private updateSelectedCells() {
+  private updateSelectedCells1() {
     const { interaction, options } = this.spreadsheet;
 
     const range = this.getBrushRange();
@@ -733,4 +612,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
   }
+}
+
 }

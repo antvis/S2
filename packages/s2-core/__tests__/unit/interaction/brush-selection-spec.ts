@@ -5,7 +5,7 @@ import { FrozenGroup } from '@/common/constant';
 import { RootInteraction } from '@/interaction/root';
 import {
   ScrollDirection,
-  BrushSelection,
+  DataCellBrushSelection,
   CellTypes,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
@@ -30,7 +30,7 @@ const MockRootInteraction =
 const MockDataCell = DataCell as unknown as jest.Mock<DataCell>;
 
 describe('Interaction Brush Selection Tests', () => {
-  let brushSelectionInstance: BrushSelection;
+  let brushSelectionInstance: DataCellBrushSelection;
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
@@ -123,7 +123,9 @@ describe('Interaction Brush Selection Tests', () => {
         end: 9,
       };
     };
-    brushSelectionInstance = new BrushSelection(mockSpreadSheetInstance);
+    brushSelectionInstance = new DataCellBrushSelection(
+      mockSpreadSheetInstance,
+    );
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();

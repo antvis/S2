@@ -3,7 +3,6 @@ import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
-  BrushSelection,
   CellTypes,
   CornerCellClick,
   DataCell,
@@ -24,7 +23,7 @@ import {
   SelectedCellMove,
   SpreadSheet,
   Node,
-  type S2CellType,
+  DataCellBrushSelection,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -548,7 +547,7 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.ROW_TEXT_CLICK}            | ${RowTextClick}
     ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
     ${InteractionName.HOVER}                     | ${HoverEvent}
-    ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
@@ -589,7 +588,7 @@ describe('RootInteraction Tests', () => {
 
   test.each`
     option                | name                                         | expected
-    ${`brushSelection`}   | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${`brushSelection`}   | ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
     ${`resize`}           | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${`multiSelection`}   | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${`rangeSelection`}   | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}

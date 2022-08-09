@@ -6,7 +6,7 @@ import {
   S2Event,
   DataCell,
   InteractionName,
-  BrushSelection,
+  BaseBrushSelection,
 } from '@/index';
 
 const data = getMockData(
@@ -107,7 +107,7 @@ describe('Brush selection scroll spec', () => {
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     const brushInteraction = s2.interaction.interactions.get(
       InteractionName.BRUSH_SELECTION,
-    ) as BrushSelection;
+    ) as BaseBrushSelection;
 
     const brushRange = brushInteraction.getBrushRange();
     const allCells = s2.interaction.getCells();
