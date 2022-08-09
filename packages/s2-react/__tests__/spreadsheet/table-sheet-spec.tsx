@@ -10,7 +10,6 @@ import {
   S2Event,
   type S2Options,
   SpreadSheet,
-  type S2WheelEvent,
   TableSheet,
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
@@ -255,9 +254,9 @@ describe('table sheet normal spec', () => {
       s2.facet.onWheel({
         deltaX: 0,
         deltaY: 0,
-        layerX: 0,
-        layerY: 0,
-      } as S2WheelEvent);
+        offsetX: 0,
+        offsetY: 0,
+      } as unknown as WheelEvent);
     });
   });
 });

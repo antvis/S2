@@ -42,9 +42,9 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type {
-  S2WheelEvent,
   ScrollOffset,
   CellScrollPosition,
+  CellScrollOffset,
 } from '../common/interface/scroll';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
@@ -200,9 +200,9 @@ export abstract class BaseFacet {
         ...originEvent,
         deltaX,
         deltaY,
-        layerX: x,
-        layerY: y,
-      } as unknown as S2WheelEvent);
+        offsetX: x,
+        offsetY: y,
+      } as unknown as WheelEvent);
     });
   };
 
@@ -712,36 +712,36 @@ export abstract class BaseFacet {
     return (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
   };
 
-  isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
+  isScrollOverThePanelArea = ({ offsetX, offsetY }: CellScrollOffset) => {
     return (
-      layerX > this.panelBBox.minX &&
-      layerX < this.panelBBox.maxX &&
-      layerY > this.panelBBox.minY &&
-      layerY < this.panelBBox.maxY
+      offsetX > this.panelBBox.minX &&
+      offsetX < this.panelBBox.maxX &&
+      offsetY > this.panelBBox.minY &&
+      offsetY < this.panelBBox.maxY
     );
   };
 
-  isScrollOverTheCornerArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
+  isScrollOverTheCornerArea = ({ offsetX, offsetY }: CellScrollOffset) => {
     return (
-      layerX > this.cornerBBox.minX &&
-      layerX < this.cornerBBox.maxX &&
-      layerY > this.cornerBBox.minY &&
-      layerY < this.cornerBBox.maxY + this.panelBBox.height
+      offsetX > this.cornerBBox.minX &&
+      offsetX < this.cornerBBox.maxX &&
+      offsetY > this.cornerBBox.minY &&
+      offsetY < this.cornerBBox.maxY + this.panelBBox.height
     );
   };
 
-  updateHorizontalRowScrollOffset = ({ offset, layerX, layerY }) => {
+  updateHorizontalRowScrollOffset = ({ offset, offsetX, offsetY }) => {
     // 在行头区域滚动时 才更新行头水平滚动条
-    if (this.isScrollOverTheCornerArea({ layerX, layerY })) {
+    if (this.isScrollOverTheCornerArea({ offsetX, offsetY })) {
       this.hRowScrollBar?.emitScrollChange(offset);
     }
   };
 
-  updateHorizontalScrollOffset = ({ offset, layerX, layerY }) => {
+  updateHorizontalScrollOffset = ({ offset, offsetX, offsetY }) => {
     // 1.行头没有滚动条 2.在数值区域滚动时 才更新数值区域水平滚动条
     if (
       !this.hRowScrollBar ||
-      this.isScrollOverThePanelArea({ layerX, layerY })
+      this.isScrollOverThePanelArea({ offsetX, offsetY })
     ) {
       this.hScrollBar?.emitScrollChange(offset);
     }
@@ -816,9 +816,9 @@ export abstract class BaseFacet {
   isScrollOverTheViewport = (
     deltaX: number,
     deltaY: number,
-    layerY: number,
+    offsetY: number,
   ) => {
-    const isScrollOverTheHeader = layerY <= this.cornerBBox.maxY;
+    const isScrollOverTheHeader = offsetY <= this.cornerBBox.maxY;
     // 光标在角头或列头时, 不触发表格自身滚动
     if (isScrollOverTheHeader) {
       return false;
@@ -854,7 +854,7 @@ export abstract class BaseFacet {
     2. none => 临近滚动区域不受到滚动链影响，而且默认的滚动到边界的表现也被阻止
     所以只要不为 `auto`, 或者表格内, 都需要阻止外部容器滚动
   */
-  private stopScrollChainingIfNeeded = (event: S2WheelEvent) => {
+  private stopScrollChainingIfNeeded = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
 
     if (interaction.overscrollBehavior !== 'auto') {
@@ -862,15 +862,15 @@ export abstract class BaseFacet {
     }
   };
 
-  private stopScrollChaining = (event: S2WheelEvent) => {
+  private stopScrollChaining = (event: WheelEvent) => {
     event?.preventDefault?.();
     // 移动端的 prevent 存在于 originalEvent上
     (event as unknown as GraphEvent)?.originalEvent?.preventDefault?.();
   };
 
-  onWheel = (event: S2WheelEvent) => {
+  onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
-    const { deltaX, deltaY, layerX, layerY } = event;
+    const { deltaX, deltaY, offsetX, offsetY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,
@@ -881,7 +881,7 @@ export abstract class BaseFacet {
     this.spreadsheet.interaction.clearHoverTimer();
 
     if (
-      !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
+      !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, offsetY)
     ) {
       this.stopScrollChainingIfNeeded(event);
       return;
@@ -905,13 +905,13 @@ export abstract class BaseFacet {
       if (optimizedDeltaX !== 0) {
         this.showHorizontalScrollBar();
         this.updateHorizontalRowScrollOffset({
-          layerX,
-          layerY,
+          offsetX,
+          offsetY,
           offset: optimizedDeltaX + hRowScrollX,
         });
         this.updateHorizontalScrollOffset({
-          layerX,
-          layerY,
+          offsetX,
+          offsetY,
           offset: optimizedDeltaX + currentScrollX,
         });
       }
