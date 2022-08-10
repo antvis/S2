@@ -21,9 +21,9 @@ import { BaseBrushSelection } from './base-brush-selection';
  * Panel area's brush selection interaction
  */
 export class RowBrushSelection extends BaseBrushSelection {
-  public displayedDataCells: RowCell[] = [];
+  public displayedCells: RowCell[] = [];
 
-  public brushRangeDataCells: RowCell[] = [];
+  public brushRangeCells: RowCell[] = [];
 
   protected bindMouseDown() {
     const mouseDown = (event: CanvasEvent) => {
@@ -33,7 +33,7 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
-      this.setDisplayedDataCells();
+      this.setDisplayedCells();
       this.startBrushPoint = this.getBrushPoint(event);
       this.resetScrollDelta();
     };
@@ -46,12 +46,12 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected isPointInCanvas(point: { x: number; y: number }) {
-    const { height, width } = this.spreadsheet.facet.getCanvasHW();
+    const { height: maxY } = this.spreadsheet.facet.getCanvasHW();
     // row
-    const { minX, height: minY } = this.spreadsheet.facet.cornerBBox;
+    const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
 
     return (
-      point.x > minX && point.x < width && point.y > minY && point.y < height
+      point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY
     );
   }
 
@@ -65,6 +65,7 @@ export class RowBrushSelection extends BaseBrushSelection {
       return;
     }
     const { rowIndex, colIndex, x: NodeX, y: NodeY } = cell.getMeta();
+    // console.log(point, 'point1111 render prepare');
 
     this.endBrushPoint = {
       x,
@@ -78,8 +79,10 @@ export class RowBrushSelection extends BaseBrushSelection {
     const { interaction } = this.spreadsheet;
     interaction.addIntercepts([InterceptType.HOVER]);
     interaction.clearStyleIndependent();
-    this.updatePrepareSelectMask();
-    this.showPrepareSelectedCells();
+    if (this.isValidBrushSelection()) {
+      this.showPrepareSelectedCells();
+      this.updatePrepareSelectMask();
+    }
   };
 
   protected bindMouseMove() {
@@ -94,6 +97,7 @@ export class RowBrushSelection extends BaseBrushSelection {
       const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
       this.clearAutoScroll();
+      // console.log(pointInCanvas, '////', this.isPointInCanvas(pointInCanvas));
       if (!this.isPointInCanvas(pointInCanvas)) {
         const deltaX = pointInCanvas.x - this.endBrushPoint?.x;
         const deltaY = pointInCanvas.y - this.endBrushPoint?.y;
@@ -101,6 +105,7 @@ export class RowBrushSelection extends BaseBrushSelection {
         return;
       }
 
+      // console.log(pointInCanvas, 'isPointInCanvas')
       this.renderPrepareSelected(pointInCanvas);
     });
   }
@@ -120,10 +125,10 @@ export class RowBrushSelection extends BaseBrushSelection {
         ]);
         this.updateSelectedCells();
         // todo-zc: 这里可以展示一个 圈选了多少项的
-        this.spreadsheet.showTooltipWithInfo(
-          event,
-          getActiveCellsTooltipData(this.spreadsheet),
-        );
+        // this.spreadsheet.showTooltipWithInfo(
+        //   event,
+        //   getActiveCellsTooltipData(this.spreadsheet),
+        // );
       }
       if (
         this.spreadsheet.interaction.getCurrentStateName() ===
@@ -147,9 +152,8 @@ export class RowBrushSelection extends BaseBrushSelection {
     });
   }
 
-  protected setDisplayedDataCells() {
-    this.displayedDataCells =
-      this.spreadsheet.interaction.getAllRowHeaderCells();
+  protected setDisplayedCells() {
+    this.displayedCells = this.spreadsheet.interaction.getAllRowHeaderCells();
   }
 
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
@@ -253,9 +257,9 @@ export class RowBrushSelection extends BaseBrushSelection {
   };
 
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
-  protected getBrushRangeDataCells(): RowCell[] {
-    this.setDisplayedDataCells();
-    return this.displayedDataCells.filter((cell) => {
+  protected getBrushRangeCells(): RowCell[] {
+    this.setDisplayedCells();
+    return this.displayedCells.filter((cell) => {
       const meta = cell.getMeta();
 
       return this.isInBrushRange(meta);
@@ -264,11 +268,11 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   // 刷选过程中高亮的cell
   protected showPrepareSelectedCells = () => {
-    this.brushRangeDataCells = this.getBrushRangeDataCells();
+    this.brushRangeCells = this.getBrushRangeCells();
 
     this.spreadsheet.interaction.changeHeaderState({
-      // interactedCells: this.brushRangeDataCells,
-      cells: map(this.brushRangeDataCells, (cell) => getCellMeta(cell)),
+      // interactedCells: this.brushRangeCells,
+      cells: map(this.brushRangeCells, (cell) => getCellMeta(cell)),
       stateName: InteractionStateName.PREPARE_SELECT,
       force: true,
     });
@@ -279,20 +283,17 @@ export class RowBrushSelection extends BaseBrushSelection {
     const { interaction } = this.spreadsheet;
 
     interaction.changeHeaderState({
-      cells: map(this.brushRangeDataCells, (cell) => getCellMeta(cell)),
+      cells: map(this.brushRangeCells, (cell) => getCellMeta(cell)),
       stateName: InteractionStateName.SELECTED,
     });
 
-    // todo-zc: emit header cell;
-    // this.spreadsheet.emit(
-    //   S2Event.DATA_CELL_BRUSH_SELECTION,
-    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //   // @ts-ignore
-    //   this.brushRangeDataCells,
-    // );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
+    this.spreadsheet.emit(
+      S2Event.ROW_CELL_BRUSH_SELECTION,
+      this.brushRangeCells,
+    );
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
     // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeDataCells)) {
+    if (isEmpty(this.brushRangeCells)) {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
   }
