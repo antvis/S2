@@ -595,6 +595,10 @@ export class BaseBrushSelection
     this.resetScrollDelta();
   }
 
+  protected addBrushIntercepts() {
+    this.spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+  }
+
   protected bindMouseUp() {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
@@ -605,15 +609,14 @@ export class BaseBrushSelection
       this.clearAutoScroll();
 
       if (this.isValidBrushSelection()) {
-        this.spreadsheet.interaction.addIntercepts([
-          InterceptType.BRUSH_SELECTION,
-        ]);
+        this.addBrushIntercepts();
         this.updateSelectedCells();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
+
       if (
         this.spreadsheet.interaction.getCurrentStateName() ===
         InteractionStateName.PREPARE_SELECT

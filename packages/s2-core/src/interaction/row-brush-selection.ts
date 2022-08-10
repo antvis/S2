@@ -1,6 +1,6 @@
 import type { Event as CanvasEvent, Point } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
-import { RowCell } from '../cell';
+import type { RowCell } from '../cell';
 import { InterceptType, S2Event } from '../common/constant';
 import {
   InteractionBrushSelectionStage,
@@ -46,7 +46,9 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
+        event.originalEvent,
+      );
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
@@ -102,5 +104,11 @@ export class RowBrushSelection extends BaseBrushSelection {
     if (isEmpty(this.brushRangeCells)) {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
+  }
+
+  protected addBrushIntercepts() {
+    this.spreadsheet.interaction.addIntercepts([
+      InterceptType.ROW_BRUSH_SELECTION,
+    ]);
   }
 }

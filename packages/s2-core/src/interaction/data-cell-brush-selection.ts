@@ -1,6 +1,6 @@
-import type { Event as CanvasEvent, Point } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
-import { DataCell } from '../cell';
+import type { DataCell } from '../cell/data-cell';
 import { InterceptType, S2Event } from '../common/constant';
 import {
   InteractionBrushSelectionStage,

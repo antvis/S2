@@ -110,4 +110,10 @@ export class ColBrushSelection extends BaseBrushSelection {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
   }
+
+  protected addBrushIntercepts() {
+    this.spreadsheet.interaction.addIntercepts([
+      InterceptType.COL_BRUSH_SELECTION,
+    ]);
+  }
 }

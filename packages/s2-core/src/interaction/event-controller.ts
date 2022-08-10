@@ -162,8 +162,12 @@ export class EventController {
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
 
-    if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
-      interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
+    if (this.getHasBrushSelectionIntercepts()) {
+      interaction.removeIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+      ]);
       return;
     }
 
@@ -345,12 +349,7 @@ export class EventController {
           break;
       }
 
-      if (
-        !this.spreadsheet.interaction.hasIntercepts([
-          InterceptType.HOVER,
-          InterceptType.BRUSH_SELECTION,
-        ])
-      ) {
+      if (!this.getHasBrushSelectionIntercepts()) {
         this.spreadsheet.emit(S2Event.GLOBAL_HOVER, event);
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -374,6 +373,23 @@ export class EventController {
       }
     }
   };
+
+  private getHasBrushSelectionIntercepts() {
+    return (
+      this.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+        InterceptType.BRUSH_SELECTION,
+      ]) ||
+      this.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+        InterceptType.ROW_BRUSH_SELECTION,
+      ]) ||
+      this.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+        InterceptType.COL_BRUSH_SELECTION,
+      ])
+    );
+  }
 
   private onCanvasMouseup = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {
