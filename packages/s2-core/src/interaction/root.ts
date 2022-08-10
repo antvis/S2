@@ -3,9 +3,9 @@ import { concat, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
+  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
-  INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
 } from '../common/constant';
@@ -17,7 +17,7 @@ import type {
   S2CellType,
   SelectHeaderCellInfo,
 } from '../common/interface';
-import { ColHeader, RowHeader, SeriesNumberHeader } from '../facet/header';
+import { ColHeader, RowHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -38,7 +38,6 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
-import { BaseBrushSelection } from './base-brush-selection';
 import { DataCellBrushSelection } from './data-cell-brush-selection';
 import { ColBrushSelection } from './col-brush-selection';
 import { RowBrushSelection } from './row-brush-selection';
@@ -486,33 +485,15 @@ export class RootInteraction {
 
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelGroupAllDataCells();
-    this.draw();
-  }
 
-  public changeHeaderState(interactionStateInfo: InteractionStateInfo) {
-    const { interaction } = this.spreadsheet;
-    const { cells, force, stateName } = interactionStateInfo;
-
-    if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
-      if (force) {
-        interaction.changeState({
-          cells: [],
-          stateName: InteractionStateName.UNSELECTED,
-        });
-      }
-      return;
+    const cellType = cells?.[0].type;
+    if (cellType === CellTypes.DATA_CELL) this.updatePanelGroupAllDataCells();
+    if (cellType === CellTypes.COL_CELL) {
+      this.updateCells(this.getAllColHeaderCells());
     }
-
-    // 之前是全选状态，需要清除格子的样式
-    if (this.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
-      this.clearStyleIndependent();
+    if (cellType === CellTypes.ROW_CELL) {
+      this.updateCells(this.getAllRowHeaderCells());
     }
-
-    this.clearState();
-    this.setState(interactionStateInfo);
-    this.updateCells(this.getAllRowHeaderCells());
-    this.updateCells(this.getAllColHeaderCells());
     this.draw();
   }
 

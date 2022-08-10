@@ -1,7 +1,10 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isNil, throttle } from 'lodash';
+import { cloneDeep, isNil, map, throttle } from 'lodash';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+  InteractionStateName,
+  InterceptType,
+  S2Event,
   ScrollDirection,
 } from '../common/constant';
 import {
@@ -23,7 +26,9 @@ import {
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from '../facet/utils';
+import type { Node } from '../facet/layout/node';
 import {
+  getCellMeta,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../utils/interaction/';
@@ -32,6 +37,8 @@ import {
   updateRowColCells,
 } from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
+import { getActiveCellsTooltipData } from '../utils';
+import { DataCell, RowCell, ColCell } from '../cell';
 import type { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 
@@ -495,43 +502,64 @@ export class BaseBrushSelection
     const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
-      this.endBrushPoint.rowIndex,
+      this.endBrushPoint?.rowIndex,
     );
     const maxRowIndex = Math.max(
       this.startBrushPoint.rowIndex,
-      this.endBrushPoint.rowIndex,
+      this.endBrushPoint?.rowIndex,
     );
     const minColIndex = Math.min(
       this.startBrushPoint.colIndex,
-      this.endBrushPoint.colIndex,
+      this.endBrushPoint?.colIndex,
     );
     const maxColIndex = Math.max(
       this.startBrushPoint.colIndex,
-      this.endBrushPoint.colIndex,
+      this.endBrushPoint?.colIndex,
     );
     const startXInView =
       this.startBrushPoint.x + this.startBrushPoint.scrollX - scrollX;
     const startYInView =
       this.startBrushPoint.y + this.startBrushPoint.scrollY - scrollY;
     // startBrushPoint 和 endBrushPoint 加上当前 offset
-    // console.log(this.endBrushPoint, 'end');
-    // console.log(this.startBrushPoint, 'start11');
-    const minX = Math.min(startXInView, this.endBrushPoint.x);
-    const maxX = Math.max(startXInView, this.endBrushPoint.x);
-    const minY = Math.min(startYInView, this.endBrushPoint.y);
-    const maxY = Math.max(startYInView, this.endBrushPoint.y);
+    const minX = Math.min(startXInView, this.endBrushPoint?.x);
+    const maxX = Math.max(startXInView, this.endBrushPoint?.x);
+    const minY = Math.min(startYInView, this.endBrushPoint?.y);
+    const maxY = Math.max(startYInView, this.endBrushPoint?.y);
+
+    const minNodeX = Math.min(
+      this.startBrushPoint?.NodeX,
+      this.endBrushPoint?.NodeX,
+    );
+    const maxNodeX = Math.max(
+      this.startBrushPoint?.NodeX,
+      this.endBrushPoint?.NodeX,
+    );
+    const minNodeY = Math.min(
+      this.startBrushPoint?.NodeY,
+      this.endBrushPoint?.NodeY,
+    );
+    const maxNodeY = Math.max(
+      this.startBrushPoint?.NodeY,
+      this.endBrushPoint?.NodeY,
+    );
+    // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
+    // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
     return {
       start: {
         rowIndex: minRowIndex,
         colIndex: minColIndex,
         x: minX,
         y: minY,
+        NodeX: minNodeX,
+        NodeY: minNodeY,
       },
       end: {
         rowIndex: maxRowIndex,
         colIndex: maxColIndex,
         x: maxX,
         y: maxY,
+        NodeX: maxNodeX,
+        NodeY: maxNodeY,
       },
       width: maxX - minX,
       height: maxY - minY,
@@ -539,18 +567,118 @@ export class BaseBrushSelection
   }
 
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
-  protected getBrushRangeDataCells(): S2CellType[] {
-    return [] as S2CellType[];
+  protected getBrushRangeCells(): S2CellType[] {
+    this.setDisplayedCells();
+    return this.displayedCells.filter((cell) => {
+      const meta = cell.getMeta();
+      return this.isInBrushRange(meta);
+    });
   }
 
-  protected isInBrushRange(meta: ViewMeta): boolean {
+  protected isInBrushRange(meta: ViewMeta | Node): boolean {
     return false;
   }
 
   // 刷选过程中高亮的cell
-  protected showPrepareSelectedCells = () => {};
+  protected showPrepareSelectedCells = () => {
+    this.brushRangeCells = this.getBrushRangeCells();
+    this.spreadsheet.interaction.changeState({
+      cells: map(this.brushRangeCells, (item) => getCellMeta(item)),
+      stateName: InteractionStateName.PREPARE_SELECT,
+      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
+      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
+      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+      force: true,
+    });
+  };
 
-  protected renderPrepareSelected = (point: Point) => {};
+  protected mouseDown(event: CanvasEvent) {
+    event?.preventDefault?.();
+    if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
+      return;
+    }
+    this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
+    this.initPrepareSelectMaskShape();
+    this.setDisplayedCells();
+    this.startBrushPoint = this.getBrushPoint(event);
+    this.resetScrollDelta();
+  }
+
+  protected bindMouseUp() {
+    // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
+      if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
+        this.resetDrag();
+        return;
+      }
+      this.clearAutoScroll();
+
+      if (this.isValidBrushSelection()) {
+        this.spreadsheet.interaction.addIntercepts([
+          InterceptType.BRUSH_SELECTION,
+        ]);
+        this.updateSelectedCells();
+        this.spreadsheet.showTooltipWithInfo(
+          event,
+          getActiveCellsTooltipData(this.spreadsheet),
+        );
+      }
+      if (
+        this.spreadsheet.interaction.getCurrentStateName() ===
+        InteractionStateName.PREPARE_SELECT
+      ) {
+        this.spreadsheet.interaction.reset();
+      }
+
+      this.resetDrag();
+    });
+
+    // 刷选过程中右键弹出系统菜单时, 应该重置刷选, 防止系统菜单关闭后 mouse up 未相应依然是刷选状态
+    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, () => {
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
+        return;
+      }
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+      this.resetDrag();
+    });
+  }
+
+  protected renderPrepareSelected = (point: Point) => {
+    const { x, y } = point;
+    const target = this.spreadsheet.container.getShape(x, y);
+
+    const cell = this.spreadsheet.getCell(target);
+    // 只有行头，列头，单元格可以刷选
+    const isBrushCellType =
+      cell instanceof DataCell ||
+      cell instanceof RowCell ||
+      cell instanceof ColCell;
+
+    if (!cell || !isBrushCellType) {
+      return;
+    }
+
+    const { rowIndex, colIndex, x: NodeX, y: NodeY } = cell.getMeta();
+
+    this.endBrushPoint = {
+      x,
+      y,
+      rowIndex,
+      colIndex,
+      NodeY,
+      NodeX,
+    };
+
+    const { interaction } = this.spreadsheet;
+    interaction.addIntercepts([InterceptType.HOVER]);
+    interaction.clearStyleIndependent();
+    if (this.isValidBrushSelection()) {
+      this.showPrepareSelectedCells();
+      this.updatePrepareSelectMask();
+    }
+  };
 
   protected bindMouseDown() {}
 
@@ -621,4 +749,5 @@ export class BaseBrushSelection
   }
 }
 
+  protected updateSelectedCells() {}
 }

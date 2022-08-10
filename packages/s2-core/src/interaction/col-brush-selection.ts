@@ -1,6 +1,6 @@
 import type { Event as CanvasEvent, Point } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
-import { RowCell } from '../cell';
+import type { ColCell } from '../cell/col-cell';
 import { InterceptType, S2Event } from '../common/constant';
 import {
   InteractionBrushSelectionStage,
@@ -14,13 +14,19 @@ import { BaseBrushSelection } from './base-brush-selection';
 /**
  * Panel area's brush selection interaction
  */
-export class RowBrushSelection extends BaseBrushSelection {
-  public displayedCells: RowCell[] = [];
+export class ColBrushSelection extends BaseBrushSelection {
+  public displayedCells: ColCell[] = [];
 
-  public brushRangeCells: RowCell[] = [];
+  public brushRangeCells: ColCell[] = [];
+
+  public bindEvents() {
+    this.bindMouseDown();
+    this.bindMouseMove();
+    this.bindMouseUp();
+  }
 
   protected bindMouseDown() {
-    [S2Event.ROW_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
+    [S2Event.COL_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
       this.spreadsheet.on(e, (event: CanvasEvent) => {
         super.mouseDown(event);
       });
@@ -28,17 +34,17 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected isPointInCanvas(point: { x: number; y: number }) {
-    // 获取行头的区域范围
-    const { height: maxY } = this.spreadsheet.facet.getCanvasHW();
-    const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
+    // 获取列头的区域范围
+    const { height, width } = this.spreadsheet.facet.getCanvasHW();
+    const { width: minX, minY } = this.spreadsheet.facet.cornerBBox;
 
     return (
-      point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY
+      point.x > minX && point.x < width && point.y > minY && point.y < height
     );
   }
 
   protected bindMouseMove() {
-    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -61,7 +67,7 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected setDisplayedCells() {
-    this.displayedCells = this.spreadsheet.interaction.getAllRowHeaderCells();
+    this.displayedCells = this.spreadsheet.interaction.getAllColHeaderCells();
   }
 
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
@@ -94,7 +100,7 @@ export class RowBrushSelection extends BaseBrushSelection {
     });
 
     this.spreadsheet.emit(
-      S2Event.ROW_CELL_BRUSH_SELECTION,
+      S2Event.COL_CELL_BRUSH_SELECTION,
       this.brushRangeCells,
     );
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
