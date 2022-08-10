@@ -1,13 +1,13 @@
 import { map } from 'lodash';
 import * as data from '../../data/mock-dataset.json';
 import {
-  RowBrushSelection,
+  ColBrushSelection,
   S2Event,
   SpreadSheet,
   RootInteraction,
   PivotSheet,
   InteractionBrushSelectionStage,
-  RowCell,
+  ColCell,
   type OriginalEvent,
   type S2DataConfig,
   Node,
@@ -17,52 +17,52 @@ import {
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
-jest.mock('@/cell/row-cell');
+jest.mock('@/cell/col-cell');
 
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
-const MockRowCell = RowCell as unknown as jest.Mock<RowCell>;
+const MockColCell = ColCell as unknown as jest.Mock<ColCell>;
 
-// RowHeader: start: { x: 0, y: 90}, end: {x: 200, y: 400}
-describe('Interaction Row Cell Brush Selection Tests', () => {
-  let brushSelectionInstance: RowBrushSelection;
+// ColHeader: start: { x: 200, y: 0}, end: {x: 600, y: 90}
+describe('Interaction Col Cell Brush Selection Tests', () => {
+  let brushSelectionInstance: ColBrushSelection;
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
-  let customY = 60;
-  const allRowHeaderCells = map(new Array(8), (a, i) => {
-    customY += 30;
+  let customX = 200 - 90;
+  const allColHeaderCells = map(new Array(4), (a, i) => {
+    customX += 90;
     return {
-      cellType: CellTypes.ROW_CELL,
+      cellType: CellTypes.COL_CELL,
       getMeta() {
         return {
-          colIndex: 0,
-          rowIndex: i,
-          x: 0,
-          y: customY,
+          colIndex: i,
+          rowIndex: 0,
+          x: customX,
+          y: 0,
         };
       },
-    } as RowCell;
+    };
   });
 
-  const startBrushRowCellMeta: Partial<Node> = {
+  const startBrushColCellMeta: Partial<Node> = {
     colIndex: 0,
     rowIndex: 1,
-    x: 0,
-    y: 90,
+    x: 200,
+    y: 0,
   };
-  const endBrushRowCellMeta: Partial<Node> = {
+  const endBrushColCellMeta: Partial<Node> = {
     colIndex: 4,
     rowIndex: 3,
-    x: 100,
-    y: 400,
+    x: 600,
+    y: 90,
   };
 
-  const startBrushRowCell = new MockRowCell();
-  startBrushRowCell.getMeta = () => startBrushRowCellMeta as Node;
+  const startBrushColCell = new MockColCell();
+  startBrushColCell.getMeta = () => startBrushColCellMeta as Node;
 
-  const endBrushRowCell = new MockRowCell();
-  endBrushRowCell.getMeta = () => endBrushRowCellMeta as Node;
+  const endBrushColCell = new MockColCell();
+  endBrushColCell.getMeta = () => endBrushColCellMeta as Node;
 
   beforeEach(() => {
     MockRootInteraction.mockClear();
@@ -74,18 +74,19 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         width: 600,
         height: 400,
         interaction: {
-          rowBrushSelection: true,
+          colBrushSelection: true,
         },
       },
     );
     mockSpreadSheetInstance.container.getShape = jest.fn();
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;
-    mockRootInteraction.getAllRowHeaderCells = () => allRowHeaderCells;
+    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushColCell) as any;
+    mockRootInteraction.getAllColHeaderCells = () =>
+      allColHeaderCells as unknown as ColCell[];
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
-    brushSelectionInstance = new RowBrushSelection(mockSpreadSheetInstance);
+    brushSelectionInstance = new ColBrushSelection(mockSpreadSheetInstance);
 
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
@@ -101,61 +102,61 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   };
 
   test('should get start brush point when mouse down', () => {
-    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, {
-      layerX: 10,
-      layerY: 260,
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
+      layerX: 210,
+      layerY: 60,
     });
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
-      NodeX: startBrushRowCellMeta.x,
-      NodeY: startBrushRowCellMeta.y,
-      colIndex: startBrushRowCellMeta.colIndex,
-      rowIndex: startBrushRowCellMeta.rowIndex,
+      NodeX: startBrushColCellMeta.x,
+      NodeY: startBrushColCellMeta.y,
+      colIndex: startBrushColCellMeta.colIndex,
+      rowIndex: startBrushColCellMeta.rowIndex,
       scrollX: 0,
       scrollY: 0,
-      x: 10,
-      y: 260,
+      x: 210,
+      y: 60,
     });
-    expect(mockSpreadSheetInstance.interaction.getAllRowHeaderCells()).toEqual(
-      allRowHeaderCells,
+    expect(mockSpreadSheetInstance.interaction.getAllColHeaderCells()).toEqual(
+      allColHeaderCells,
     );
   });
 
   test('should get end brush point when mouse up', () => {
-    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, {
-      layerX: 10,
-      layerY: 100,
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
+      layerX: 210,
+      layerY: 10,
     });
-    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
-      clientY: 330,
-      clientX: 160,
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
+      clientX: 330,
+      clientY: 60,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.endBrushPoint).toStrictEqual({
-      NodeX: endBrushRowCellMeta.x,
-      NodeY: endBrushRowCellMeta.y,
-      colIndex: endBrushRowCellMeta.colIndex,
-      rowIndex: endBrushRowCellMeta.rowIndex,
-      x: 160,
-      y: 330,
+      NodeX: endBrushColCellMeta.x,
+      NodeY: endBrushColCellMeta.y,
+      colIndex: endBrushColCellMeta.colIndex,
+      rowIndex: endBrushColCellMeta.rowIndex,
+      x: 330,
+      y: 60,
     });
   });
 
   test('should skip brush selection if mouse move less than valid distance', () => {
-    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, {
-      x: 10,
-      y: 90,
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
+      x: 200,
+      y: 0,
     });
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
-      clientY: 14,
-      clientX: 94,
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
+      clientX: 205,
+      clientY: 5,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
@@ -176,37 +177,39 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
     mockSpreadSheetInstance.on(
-      S2Event.ROW_CELL_BRUSH_SELECTION,
+      S2Event.COL_CELL_BRUSH_SELECTION,
       brushSelectionFn,
     );
 
     // ================== mouse down ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 90 });
+    emitEvent(S2Event.COL_CELL_MOUSE_DOWN, { x: 200, y: 0 });
 
-    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 200, clientY: 400 });
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, { clientX: 600, clientY: 90 });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
     );
 
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
-      x: 10,
-      y: 90,
-      width: 190,
-      height: 310,
+      x: 200,
+      y: 0,
+      width: 400,
+      height: 90,
     });
 
     // ================== mouse up ==================
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+
+    expect(brushSelectionInstance.isValidBrushSelection()).toBeTrue();
     // reset brush stage
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
     expect(brushSelectionInstance.brushRangeCells).toHaveLength(
-      allRowHeaderCells.length,
+      allColHeaderCells.length,
     );
     // emit event
     expect(selectedFn).toHaveBeenCalledTimes(1);
