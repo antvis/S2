@@ -35,16 +35,15 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   protected isPointInCanvas(point: { x: number; y: number }) {
     // 获取列头的区域范围
-    const { height, width } = this.spreadsheet.facet.getCanvasHW();
-    const { width: minX, minY } = this.spreadsheet.facet.cornerBBox;
-
+    const { width: maxX } = this.spreadsheet.facet.getCanvasHW();
+    const { width: minX, minY, maxY } = this.spreadsheet.facet.cornerBBox;
     return (
-      point.x > minX && point.x < width && point.y > minY && point.y < height
+      point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY
     );
   }
 
   protected bindMouseMove() {
-    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -52,7 +51,9 @@ export class ColBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
+        event.originalEvent,
+      );
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {

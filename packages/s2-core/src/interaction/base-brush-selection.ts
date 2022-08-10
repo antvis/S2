@@ -446,10 +446,6 @@ export class BaseBrushSelection
       end.x - start.x > this.brushSelectionMinimumMoveDistance ||
       end.y - start.y > this.brushSelectionMinimumMoveDistance;
 
-    // console.log(start)
-    // console.log('----', isMovedEnoughDistance);
-    // console.log(end);
-
     return isMovedEnoughDistance;
   }
 
@@ -460,7 +456,6 @@ export class BaseBrushSelection
 
   protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
-    // console.log(brushRange);
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
       y: brushRange.start.y,
@@ -575,10 +570,6 @@ export class BaseBrushSelection
     });
   }
 
-  protected isInBrushRange(meta: ViewMeta | Node): boolean {
-    return false;
-  }
-
   // 刷选过程中高亮的cell
   protected showPrepareSelectedCells = () => {
     this.brushRangeCells = this.getBrushRangeCells();
@@ -679,6 +670,11 @@ export class BaseBrushSelection
       this.updatePrepareSelectMask();
     }
   };
+
+  // 需要查看继承他的父类是如何定义的
+  protected isInBrushRange(meta: ViewMeta | Node): boolean {
+    return false;
+  }
 
   protected bindMouseDown() {}
 

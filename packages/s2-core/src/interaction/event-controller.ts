@@ -133,6 +133,7 @@ export class EventController {
     if (
       this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
+      // todo: 在copy header 时有问题
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
@@ -271,10 +272,7 @@ export class EventController {
 
       // 仅捕获在canvas之外触发的事件     https://github.com/antvis/S2/issues/1592
       const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
-        if (!this.spreadsheet.getCanvasElement()) {
-          return false;
-        }
-
+        if (!this.spreadsheet.getCanvasElement()) return false;
         if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
           event.clientX = mouseEvent.clientX;
           event.clientY = mouseEvent.clientY;
