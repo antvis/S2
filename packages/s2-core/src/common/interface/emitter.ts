@@ -1,5 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type { DataCell } from '../../cell/data-cell';
+import type { RowCell } from '../../cell/row-cell';
+import type { ColCell } from '../../cell/col-cell';
 import type { S2Event } from '../../common/constant';
 import type {
   CellMeta,
@@ -102,6 +104,7 @@ export interface EmitterType {
     data: RowCellCollapseTreeRowsType,
   ) => void;
   [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
+  [S2Event.ROW_CELL_BRUSH_SELECTION]: (cells: RowCell[]) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -111,6 +114,7 @@ export interface EmitterType {
   [S2Event.COL_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.COL_CELL_BRUSH_SELECTION]: (cells: ColCell[]) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
