@@ -9,6 +9,7 @@ export enum S2Event {
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
   ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
   ROW_CELL_SCROLL = 'row-cell:scroll',
+  ROW_CELL_BRUSH_SELECTION = 'row-cell:brush-selection',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
@@ -18,6 +19,7 @@ export enum S2Event {
   COL_CELL_MOUSE_DOWN = 'col-cell:mouse-down',
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
+  COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',

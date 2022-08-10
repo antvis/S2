@@ -15,9 +15,9 @@ import { BaseBrushSelection } from './base-brush-selection';
  * Panel area's brush selection interaction
  */
 export class DataCellBrushSelection extends BaseBrushSelection {
-  public displayedDataCells: DataCell[] = [];
+  public displayedCells: DataCell[] = [];
 
-  public brushRangeDataCells: DataCell[] = [];
+  public brushRangeCells: DataCell[] = [];
 
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
@@ -27,7 +27,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
-      this.setDisplayedDataCells();
+      this.setDisplayedCells();
       this.startBrushPoint = this.getBrushPoint(event);
       this.resetScrollDelta();
     });
@@ -90,6 +90,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       }
       this.clearAutoScroll();
 
+      // console.log(this.isValidBrushSelection(), 'is valid')
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
           InterceptType.BRUSH_SELECTION,
@@ -135,8 +136,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
   protected getBrushRangeDataCells(): DataCell[] {
-    this.setDisplayedDataCells();
-    return this.displayedDataCells.filter((cell) => {
+    this.setDisplayedCells();
+    return this.displayedCells.filter((cell) => {
       const meta = cell.getMeta();
       return this.isInBrushRange(meta);
     });
@@ -153,7 +154,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
       force: true,
     });
-    this.brushRangeDataCells = brushRangeDataCells;
+    this.brushRangeCells = brushRangeDataCells;
   };
 
   public getSelectedCellMetas = (range: BrushRange) => {
@@ -198,11 +199,11 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     });
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,
-      this.brushRangeDataCells,
+      this.brushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
     // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeDataCells)) {
+    if (isEmpty(this.brushRangeCells)) {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
   }

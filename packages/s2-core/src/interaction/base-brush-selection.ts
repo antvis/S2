@@ -42,7 +42,7 @@ export class BaseBrushSelection
   extends BaseEvent
   implements BaseEventImplement
 {
-  public displayedDataCells: S2CellType[] = [];
+  public displayedCells: S2CellType[] = [];
 
   public prepareSelectMaskShape: IShape;
 
@@ -50,7 +50,7 @@ export class BaseBrushSelection
 
   public endBrushPoint: BrushPoint;
 
-  public brushRangeDataCells: S2CellType[] = [];
+  public brushRangeCells: S2CellType[] = [];
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
@@ -134,8 +134,8 @@ export class BaseBrushSelection
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
     const { minX, minY, maxX, maxY } = facet.panelBBox;
-    let newX = this.endBrushPoint.x + x;
-    let newY = this.endBrushPoint.y + y;
+    let newX = this.endBrushPoint?.x + x;
+    let newY = this.endBrushPoint?.y + y;
     let needScrollForX = true;
     let needScrollForY = true;
     const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
@@ -433,22 +433,27 @@ export class BaseBrushSelection
     this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
   }
 
-  protected isValidBrushSelection() {
+  public isValidBrushSelection() {
     const { start, end } = this.getBrushRange();
     const isMovedEnoughDistance =
       end.x - start.x > this.brushSelectionMinimumMoveDistance ||
       end.y - start.y > this.brushSelectionMinimumMoveDistance;
 
+    // console.log(start)
+    // console.log('----', isMovedEnoughDistance);
+    // console.log(end);
+
     return isMovedEnoughDistance;
   }
 
-  protected setDisplayedDataCells() {
-    this.displayedDataCells =
+  protected setDisplayedCells() {
+    this.displayedCells =
       this.spreadsheet.interaction.getPanelGroupAllDataCells();
   }
 
   protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
+    // console.log(brushRange);
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
       y: brushRange.start.y,
@@ -509,6 +514,8 @@ export class BaseBrushSelection
     const startYInView =
       this.startBrushPoint.y + this.startBrushPoint.scrollY - scrollY;
     // startBrushPoint 和 endBrushPoint 加上当前 offset
+    // console.log(this.endBrushPoint, 'end');
+    // console.log(this.startBrushPoint, 'start11');
     const minX = Math.min(startXInView, this.endBrushPoint.x);
     const maxX = Math.max(startXInView, this.endBrushPoint.x);
     const minY = Math.min(startYInView, this.endBrushPoint.y);

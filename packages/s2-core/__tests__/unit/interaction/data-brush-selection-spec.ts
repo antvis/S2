@@ -29,7 +29,7 @@ const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
 const MockDataCell = DataCell as unknown as jest.Mock<DataCell>;
 
-describe('Interaction Brush Selection Tests', () => {
+describe('Interaction Data Cell Brush Selection Tests', () => {
   let brushSelectionInstance: DataCellBrushSelection;
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
@@ -210,7 +210,7 @@ describe('Interaction Brush Selection Tests', () => {
       rowIndex: 1,
       colIndex: 0,
     });
-    expect(brushSelectionInstance.displayedDataCells).toEqual(
+    expect(brushSelectionInstance.displayedCells).toEqual(
       panelGroupAllDataCells,
     );
   });
@@ -229,11 +229,8 @@ describe('Interaction Brush Selection Tests', () => {
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
-      ]),
-    ).toBeFalsy();
+
+    expect(brushSelectionInstance.isValidBrushSelection()).toBeFalsy();
 
     // 如果刷选距离过短, 则走单选的逻辑, 需要隐藏刷选提示框
     expect(
@@ -287,7 +284,7 @@ describe('Interaction Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
-    expect(brushSelectionInstance.brushRangeDataCells).toHaveLength(0);
+    expect(brushSelectionInstance.brushRangeCells).toHaveLength(0);
     expect(
       brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
         InterceptType.HOVER,
@@ -347,8 +344,8 @@ describe('Interaction Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
-    expect(brushSelectionInstance.brushRangeDataCells).toHaveLength(15);
-    brushSelectionInstance.brushRangeDataCells.forEach((cell) => {
+    expect(brushSelectionInstance.brushRangeCells).toHaveLength(15);
+    brushSelectionInstance.brushRangeCells.forEach((cell) => {
       const { rowIndex, colIndex } = cell.getMeta();
       expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex);
       expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex);
