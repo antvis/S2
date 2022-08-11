@@ -234,10 +234,10 @@ const getHeaderLabel = (val: string) => {
  * 当列头label存在数组情况，需要将其他层级补齐空格
  * eg [ ['数值', '环比'], '2021'] => [ ['数值', '环比'], ['2021', '']
  */
-const processColHeaders = (headers: any[][], arrayLength: number) => {
+const processColHeaders = (headers: any[][]) => {
   const result = headers.map((header) =>
     header.map((item) =>
-      isArray(item) ? item : [item, ...new Array(arrayLength - 1)],
+      isArray(item) ? item : [item, ...new Array(header[0].length - 1)],
     ),
   );
   return result;
@@ -408,7 +408,7 @@ export const copyData = (
     });
 
     if (arrayLength > 1) {
-      tempColHeader = processColHeaders(tempColHeader, arrayLength);
+      tempColHeader = processColHeaders(tempColHeader);
     }
 
     const colLevels = tempColHeader.map((colHeader) => colHeader.length);
