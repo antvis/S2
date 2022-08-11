@@ -152,6 +152,8 @@ export class TableSheet extends SpreadSheet {
   public destroy() {
     super.destroy();
     this.clearFrozenGroups();
+    this.off(S2Event.RANGE_SORT);
+    this.off(S2Event.RANGE_FILTER);
   }
 
   public onSortTooltipClick = ({ key }, meta) => {
