@@ -279,6 +279,15 @@ function MainLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
+  React.useEffect(() => {
+    console.log(
+      s2Ref.current?.facet.hRowScrollBar.thumbShape,
+      s2Ref.current?.facet.hRowScrollBar.thumbLen,
+    );
+    console.log(s2Ref.current?.facet.hScrollBar.getCanvasBBox());
+    console.log(s2Ref.current?.facet.vScrollBar.getCanvasBBox());
+  }, []);
+
   //  ================== Config ========================
 
   const mergedOptions: S2Options<React.ReactNode> = customMerge(
