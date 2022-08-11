@@ -15,6 +15,7 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
+  S2Event,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -961,6 +962,7 @@ function MainLayout() {
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
               onSelected={logHandler('onSelected')}
               onScroll={logHandler('onScroll')}
+              onRangeSort={logHandler('onRangeSort')}
               onRowCellScroll={logHandler('onRowCellScroll')}
               onLinkFieldJump={logHandler('onLinkFieldJump', () => {
                 window.open(

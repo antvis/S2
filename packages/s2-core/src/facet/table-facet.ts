@@ -86,49 +86,6 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, (sortParams) => {
-      let params = sortParams;
-      // 兼容之前 sortParams 为对象的用法
-      if (!Array.isArray(sortParams)) {
-        params = [sortParams];
-      }
-
-      const currentParams = s2.dataCfg.sortParams || [];
-
-      params = params.map((item: TableSortParam) => {
-        const newItem = {
-          ...item,
-          // 兼容之前 sortKey 的用法
-          sortFieldId: item.sortKey ?? item.sortFieldId,
-        };
-
-        const oldItem =
-          currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ??
-          {};
-        return {
-          ...oldItem,
-          ...newItem,
-        };
-      });
-
-      const oldConfigs = currentParams.filter((config) => {
-        const newItem = params.find(
-          (p) => p.sortFieldId === config.sortFieldId,
-        );
-        if (newItem) {
-          return false;
-        }
-        return true;
-      });
-
-      set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
-      s2.setDataCfg(s2.dataCfg);
-      s2.render(true);
-      s2.emit(
-        S2Event.RANGE_SORTED,
-        (s2.dataSet as TableDataSet).getDisplayDataSet(),
-      );
-    });
 
     s2.on(S2Event.RANGE_FILTER, (params) => {
       /** remove filter params on current key if passed an empty filterValues field */
@@ -179,7 +136,6 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.RANGE_SORT);
     this.spreadsheet.off(S2Event.RANGE_FILTER);
   }
 

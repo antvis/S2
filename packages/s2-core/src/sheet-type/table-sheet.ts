@@ -1,4 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { set } from 'lodash';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
@@ -16,6 +17,7 @@ import type {
   S2Options,
   SortParam,
   SpreadSheetFacetCfg,
+  TableSortParam,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
@@ -161,8 +163,38 @@ export class TableSheet extends SpreadSheet {
       sortFieldId: field,
       sortMethod: key as unknown as SortParam['sortMethod'],
     };
+
+    let params = [sortParam];
+
+    const currentParams = this.dataCfg.sortParams || [];
+
+    params = params.map((item: TableSortParam) => {
+      const newItem = {
+        ...item,
+        // 兼容之前 sortKey 的用法
+        sortFieldId: item.sortKey ?? item.sortFieldId,
+      };
+
+      const oldItem =
+        currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ?? {};
+      return {
+        ...oldItem,
+        ...newItem,
+      };
+    });
+
+    const oldConfigs = currentParams.filter((config) => {
+      const newItem = params.find((p) => p.sortFieldId === config.sortFieldId);
+      if (newItem) {
+        return false;
+      }
+      return true;
+    });
     // 触发排序事件
     this.emit(S2Event.RANGE_SORT, [sortParam]);
+    set(this.dataCfg, 'sortParams', [...oldConfigs, ...params]);
+    this.setDataCfg(this.dataCfg);
+    this.render(true);
   };
 
   public handleGroupSort(event: CanvasEvent, meta: Node) {
@@ -170,8 +202,11 @@ export class TableSheet extends SpreadSheet {
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
     const operator: TooltipOperatorOptions = {
-      onClick: (params: { key: string }) =>
-        this.onSortTooltipClick(params, meta),
+      onClick: (params: { key: string }) => {
+        this.onSortTooltipClick(params, meta);
+        this.emit(S2Event.RANGE_SORTED, event);
+      },
+
       menus: getTooltipOperatorTableSortMenus(),
     };
 
