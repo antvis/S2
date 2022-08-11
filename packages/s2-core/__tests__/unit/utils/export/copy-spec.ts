@@ -1,7 +1,6 @@
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
-import { map } from 'lodash';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 
 import {
@@ -187,12 +186,21 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, [
-      {
-        sortFieldId: 'number',
-        sortMethod: 'DESC' as SortMethodType,
+    const newDataCfg = assembleDataCfg({
+      meta: [],
+      fields: {
+        columns: ['province', 'city', 'type', 'sub_type', 'number'],
       },
-    ]);
+      data: testData,
+      sortParams: [
+        {
+          sortFieldId: 'number',
+          sortMethod: 'DESC' as SortMethodType,
+        },
+      ],
+    });
+    s2.setDataCfg(newDataCfg);
+    s2.render();
 
     const cell = s2.interaction
       .getAllCells()
