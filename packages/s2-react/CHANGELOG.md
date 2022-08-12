@@ -1,3 +1,25 @@
+# [@antv/s2-react-v1.24.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.23.0...@antv/s2-react-v1.24.0-alpha.1) (2022-08-12)
+
+
+### Bug Fixes
+
+* **scroll:** 修复滚动条显示越界 & 优化滚动性能 ([#1671](https://github.com/antvis/S2/issues/1671)) ([cfbccb9](https://github.com/antvis/S2/commit/cfbccb93aaa78edbcf1e7860b940a5431ead8b7a))
+* **scroll:** 修复滚动边界判断错误导致无法滚动 ([#1664](https://github.com/antvis/S2/issues/1664)) ([cf4b8b3](https://github.com/antvis/S2/commit/cf4b8b3e05fa7cf4d5386a3d4a1ad6d98c5179ce))
+* 修复明细表 onRaneSort 失效问题 ([#1678](https://github.com/antvis/S2/issues/1678)) ([3563f3c](https://github.com/antvis/S2/commit/3563f3c9a48998827722babb265e7889b7a86a20))
+* 修复趋势分析表对于不同个数同环比列头复制时，数据不对齐的问题 ([#1679](https://github.com/antvis/S2/issues/1679)) ([ba88dec](https://github.com/antvis/S2/commit/ba88dec2c2ef9506264c64ba069685c0bd9a4c67))
+
+
+### Features
+
+* 刷选时支持高亮所有对应的行列头cell ([#1680](https://github.com/antvis/S2/issues/1680)) ([c7fb53f](https://github.com/antvis/S2/commit/c7fb53f403608e5194d745408966cc9b18c92025))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
+
+
+### Reverts
+
+* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
+
 # [@antv/s2-react-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0...@antv/s2-react-v1.23.0) (2022-08-05)
 
 
