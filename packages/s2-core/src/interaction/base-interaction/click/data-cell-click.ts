@@ -18,6 +18,7 @@ import type {
 import {
   getCellMeta,
   getRowCellForSelectedCell,
+  updateRowColCells,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
@@ -55,8 +56,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       }
 
       interaction.addIntercepts([InterceptType.HOVER]);
+
       if (interaction.isSelectedCell(cell)) {
-        interaction.reset();
+        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用detail属性来判断是否是双击，双击时不触发选择态reset
+        if ((event.originalEvent as UIEvent)?.detail === 1) interaction.reset();
         return;
       }
 
@@ -67,29 +70,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
       if (options.interaction.selectedCellHighlight) {
-        this.updateRowColCells(meta);
+        updateRowColCells(meta);
       }
     });
-  }
-
-  public updateRowColCells(meta: ViewMeta) {
-    const { rowId, colId } = meta;
-    const { interaction } = this.spreadsheet;
-    updateAllColHeaderCellState(
-      colId,
-      interaction.getAllColHeaderCells(),
-      InteractionStateName.SELECTED,
-    );
-
-    if (rowId) {
-      const allRowHeaderCells = getRowCellForSelectedCell(
-        meta,
-        this.spreadsheet,
-      );
-      forEach(allRowHeaderCells, (cell: RowCell) => {
-        cell.updateByState(InteractionStateName.SELECTED);
-      });
-    }
   }
 
   private getTooltipOperator(

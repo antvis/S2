@@ -54,6 +54,23 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
+  test('should stay selected when firing double click', async () => {
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    await sleep(100);
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellInfo.mockCellMeta],
+      stateName: InteractionStateName.SELECTED,
+    });
+  });
+
   test('should emit cell selected event when cell clicked', () => {
     const selected = jest.fn();
     s2.on(S2Event.GLOBAL_SELECTED, selected);
