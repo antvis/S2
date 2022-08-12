@@ -1,3 +1,4 @@
+import type { SimpleBBox } from '@antv/g-canvas';
 import {
   clone,
   isArray,
@@ -7,7 +8,7 @@ import {
   isNumber,
   isString,
   memoize,
-  reverse,
+  size,
   toString,
   trim,
   values,
@@ -19,11 +20,13 @@ import type {
   Condition,
   MultiData,
   S2CellType,
+  SimpleDataItem,
   ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
-import { renderText } from '../utils/g-renders';
+import { renderIcon, renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
+import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 import { renderMiniChart } from './g-mini-charts';
 
 /**
@@ -551,15 +554,9 @@ export const drawObjectText = (
       renderText(
         cell,
         [],
-        curX,
-        curY,
-        getEllipsisText({
-          measureTextWidth,
-          text: curText,
-          maxWidth: avgWidth,
-          fontParam: curStyle,
-          placeholder: emptyPlaceholder,
-        }),
+        position.text.x,
+        position.text.y,
+        ellipsisText,
         curStyle,
       );
 
