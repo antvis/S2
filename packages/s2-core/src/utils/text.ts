@@ -25,7 +25,7 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
-import { renderRect, renderText } from '../utils/g-renders';
+import { renderIcon, renderRect, renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
 import { renderMiniChart } from './g-mini-charts';
 import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
@@ -456,6 +456,7 @@ export const drawObjectText = (
   const { valuesCfg } = options.style.cellCfg;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
   const textCondition = options?.conditions?.text?.[0];
+  const iconCondition = options?.conditions?.icon?.[0];
 
   if (!isArray(textValues)) {
     renderMiniChart(textValues, cell);
@@ -490,9 +491,14 @@ export const drawObjectText = (
 
   // 绘制指标
   const { cellStyle, textStyle } = getDrawStyle(cell);
-  const { textAlign } = textStyle;
 
   const iconStyle = cellStyle?.icon;
+  const iconCfg = iconCondition &&
+    iconCondition.mapping && {
+      size: iconStyle?.size,
+      margin: iconStyle?.margin,
+      position: iconCondition?.position,
+    };
 
   let curText: string | number;
 
@@ -542,14 +548,9 @@ export const drawObjectText = (
         contentBoxes[i][j],
         textStyle,
         actualTextWidth,
-        iconStyle,
-        0,
+        iconCfg,
+        iconCondition ? 1 : 0,
       );
-      renderRect(cell, {
-        ...contentBoxes[i][j],
-
-        stroke: 'red',
-      });
 
       renderText(
         cell,
@@ -559,6 +560,23 @@ export const drawObjectText = (
         ellipsisText,
         curStyle,
       );
+
+      if (iconCondition && useCondition) {
+        const attrs = iconCondition?.mapping(curText, {
+          rowIndex: i,
+          colIndex: j,
+          meta: cell?.getMeta() as ViewMeta,
+        });
+        if (attrs) {
+          renderIcon(cell, {
+            ...position.icon,
+            name: attrs.icon,
+            width: iconStyle?.size,
+            height: iconStyle?.size,
+            fill: attrs.fill,
+          });
+        }
+      }
     }
   }
 };

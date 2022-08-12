@@ -1,9 +1,5 @@
 import { isObject } from 'lodash';
-import {
-  DataCell,
-  drawObjectText,
-  drawObjecConditionIconShapes,
-} from '@antv/s2';
+import { DataCell, drawObjectText } from '@antv/s2';
 
 /**
  * Cell for panelGroup area
@@ -22,14 +18,6 @@ export class CustomDataCell extends DataCell {
       drawObjectText(this);
     } else {
       super.drawTextShape();
-    }
-  }
-
-  protected drawConditionIconShapes() {
-    if (isObject(this.getMeta().fieldValue)) {
-      drawObjecConditionIconShapes(this);
-    } else {
-      super.drawConditionIconShapes();
     }
   }
 }
