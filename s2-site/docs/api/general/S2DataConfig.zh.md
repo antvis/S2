@@ -13,7 +13,7 @@ redirect_from:
 | fields         | 维度指标       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计/小计数据       | [Data[]](#data) |    |      |
 | meta    | 字段元数据，可配置字段别名和数值格式化 | [Meta[]](#meta)  |  |       |
-| sortParams    | 排序参数配置 | [SortParams](#sortparams)  |  |       |
+| sortParams    | 排序参数配置 | [SortParam[]](#sortparam)  |  |       |
 
 ### Data
 
@@ -83,6 +83,6 @@ object **必选**,_default：null_
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
-`markdown:docs/common/sort-params.zh.md`
+`markdown:docs/common/sort-param.zh.md`
 
 `markdown:docs/common/custom/customTreeItem.zh.md`
