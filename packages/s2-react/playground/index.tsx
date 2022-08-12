@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
   customMerge,
@@ -59,6 +61,9 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+// @ts-ignore
+window.__g_instances__ = [];
 
 const { TabPane } = Tabs;
 
@@ -927,9 +932,10 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               getSpreadSheet={(s2) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 window.s2 = s2;
+                // @ts-ignore
+                window.__g_instances__ = [s2.container];
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
@@ -986,6 +992,10 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
+            getSpreadSheet={(s2) => {
+              // @ts-ignore
+              window.__g_instances__ = [s2.container];
+            }}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1018,6 +1028,10 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
+            getSpreadSheet={(s2) => {
+              // @ts-ignore
+              window.__g_instances__ = [s2.container];
+            }}
           />
         </TabPane>
       </Tabs>

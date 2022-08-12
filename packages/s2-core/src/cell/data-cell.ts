@@ -13,7 +13,6 @@ import type {
   Condition,
   Conditions,
   FormatResult,
-  Formatter,
   IconCfg,
   IconCondition,
   MappingResult,
