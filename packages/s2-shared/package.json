@@ -15,7 +15,7 @@
     "test:ci-coverage": "yarn test:coverage --maxWorkers=3"
   },
   "devDependencies": {
-    "@antv/s2": "*",
+    "@antv/s2": "^1.24.0-alpha.3",
     "lodash": "^4.17.21"
   }
 }
