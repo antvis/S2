@@ -154,6 +154,46 @@ describe('Interaction Brush Selection Tests', () => {
     ).toBeFalsy();
   });
 
+  test('should highlight relevant col&row header cell with selectedCellHighlight option toggled on', () => {
+    mockSpreadSheetInstance.setOptions({
+      interaction: { selectedCellHighlight: true },
+    });
+
+    brushSelectionInstance.getBrushRange = () => {
+      return {
+        start: {
+          rowIndex: 0,
+          colIndex: 0,
+          x: 0,
+          y: 0,
+        },
+        end: {
+          rowIndex: 5,
+          colIndex: 5,
+          x: 200,
+          y: 200,
+        },
+        width: 200,
+        height: 200,
+      };
+    };
+
+    (brushSelectionInstance as any).updateSelectedCells();
+
+    (mockRootInteraction.getAllColHeaderCells() || [])
+      .filter((cell, i) => i < 5)
+      .forEach((cell) => {
+        expect(cell.updateByState).toHaveBeenCalled();
+      });
+
+    mockRootInteraction.getAllCells();
+
+    (mockRootInteraction.getAllRowHeaderCells() || [])
+      .filter((cell, i) => i < 5)
+      .forEach((cell) => {
+        expect(cell.updateByState).toHaveBeenCalled();
+      });
+  });
   test('should get start brush point when mouse down', () => {
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
       layerX: 10,

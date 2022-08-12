@@ -164,7 +164,7 @@ const s2Options = {
 
 ### 单选后行列头高亮
 
-在鼠标选中单元格后时，高亮当前单元格对应的行列头单元格，利于快速定位单元格所在行列。默认关闭，可配置 `selectedCellHighlight` 开启：
+在鼠标选中单元格或刷选选中单元格时，高亮当前单元格对应的行列头单元格，利于快速定位单元格所在行列。默认关闭，可配置 `selectedCellHighlight` 开启：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600" />
 
