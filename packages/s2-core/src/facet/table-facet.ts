@@ -325,10 +325,7 @@ export class TableFacet extends BaseFacet {
       if (currentNode.level === 0) {
         currentNode.y = 0;
       } else {
-        const preLevelSample = colsHierarchy.sampleNodesForAllLevels.find(
-          (n) => n.level === currentNode.level - 1,
-        );
-        currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
+        currentNode.y = currentNode.parent?.y + currentNode.parent?.height ?? 0;
       }
       currentNode.height = this.getColNodeHeight(
         currentNode,

@@ -35,18 +35,10 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   }
 
   if (columnsTree) {
+    const tree = [...columnsTree];
     if (showSeriesNumber) {
-      generateHeaderNodes({
-        currentField: fields[0],
-        fields: [fields[0]],
-        fieldValues: [fieldValues[0]],
-        facetCfg,
-        hierarchy,
-        parentNode,
-        level: 0,
-        query: {},
-        addMeasureInTotalQuery: false,
-        addTotalMeasureInTotal: false,
+      tree.unshift({
+        name: fields[0],
       });
     }
     const fieldsMap = fields.reduce((prev, field) => {
@@ -54,7 +46,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
       return prev;
     }, {});
     DFSGenerateHeaderNodes(
-      getDisplayedColumnsTree(columnsTree, fieldsMap),
+      getDisplayedColumnsTree(tree, fieldsMap),
       params,
       0,
       null,

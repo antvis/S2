@@ -1,5 +1,5 @@
 import { includes, isBoolean } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
+import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
 import type {
@@ -161,7 +161,8 @@ export const DFSGenerateHeaderNodes = (
 
   columnsTree.forEach((column, i) => {
     const { name } = column;
-    const value = dataSet.getFieldName(name);
+    const value =
+      name === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(name);
     const currentParent = pNode || parentNode;
     generateHeaderNodes({
       currentField: name,
