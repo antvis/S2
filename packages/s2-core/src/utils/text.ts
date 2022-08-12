@@ -8,12 +8,10 @@ import {
   isString,
   memoize,
   reverse,
-  size,
   toString,
   trim,
   values,
 } from 'lodash';
-import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
@@ -21,14 +19,12 @@ import type {
   Condition,
   MultiData,
   S2CellType,
-  SimpleDataItem,
   ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
-import { renderIcon, renderRect, renderText } from '../utils/g-renders';
+import { renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
 import { renderMiniChart } from './g-mini-charts';
-import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 
 /**
  * 计算文本在画布中的宽度
@@ -555,9 +551,15 @@ export const drawObjectText = (
       renderText(
         cell,
         [],
-        position.text.x,
-        position.text.y,
-        ellipsisText,
+        curX,
+        curY,
+        getEllipsisText({
+          measureTextWidth,
+          text: curText,
+          maxWidth: avgWidth,
+          fontParam: curStyle,
+          placeholder: emptyPlaceholder,
+        }),
         curStyle,
       );
 

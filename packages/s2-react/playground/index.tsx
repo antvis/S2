@@ -932,10 +932,9 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               getSpreadSheet={(s2) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 window.s2 = s2;
-                // @ts-ignore
-                window.__g_instances__ = [s2.container];
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}

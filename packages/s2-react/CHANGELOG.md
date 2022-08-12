@@ -1,58 +1,45 @@
-# [@antv/s2-react-v1.22.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.3...@antv/s2-react-v1.22.0-alpha.4) (2022-07-21)
+# [@antv/s2-react-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0...@antv/s2-react-v1.23.0) (2022-08-05)
+
 
 ### Bug Fixes
 
-* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
+* **layout:** 修复 treeRowsWidth 配置不生效 close [#1622](https://github.com/antvis/S2/issues/1622) ([#1646](https://github.com/antvis/S2/issues/1646)) ([9e70d62](https://github.com/antvis/S2/commit/9e70d62549da5e14d40d373d23d8592763c550a3))
+* **pagination:** 分页配置未传 current 参数时表格渲染空白 ([#1633](https://github.com/antvis/S2/issues/1633)) ([1c65443](https://github.com/antvis/S2/commit/1c654437073071c1fb8b118018b3007922d198f4))
+* **strategysheet:** 修复趋势分析表列头格式化不生效 ([#1616](https://github.com/antvis/S2/issues/1616)) ([ca3cbb5](https://github.com/antvis/S2/commit/ca3cbb58da57d7989654bb982e6a508d0fd3a42a))
 
 
 ### Features
 
-* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
+* **interaction:** 宽高调整事件透出 resizedWidth/resizedHeight, 修复错误类型定义 ([#1638](https://github.com/antvis/S2/issues/1638)) ([fbf45df](https://github.com/antvis/S2/commit/fbf45dfffaf7b17409010c16c7f6a5bb73133197))
 
-# [@antv/s2-react-v1.22.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.2...@antv/s2-react-v1.22.0-alpha.3) (2022-07-20)
+# [@antv/s2-react-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0) (2022-07-22)
 
 
 ### Bug Fixes
 
+* **layout:** 修复 Firefox 浏览器部分 icon 渲染失败 close [#1571](https://github.com/antvis/S2/issues/1571) ([#1599](https://github.com/antvis/S2/issues/1599)) ([6b76c4e](https://github.com/antvis/S2/commit/6b76c4e2c80b88eeb63d7adfc6b48da7d0b3ea4c))
 * **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
-
-# [@antv/s2-react-v1.22.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0-alpha.1...@antv/s2-react-v1.22.0-alpha.2) (2022-07-18)
-
-
-### Bug Fixes
-
 * **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
+* **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
 * **strategysheet:** 修复趋势分析表错误的标题 ([#1556](https://github.com/antvis/S2/issues/1556)) ([d9ebb51](https://github.com/antvis/S2/commit/d9ebb51f39953ae5535c7c925cfdcef1fb9c2e0d))
 * 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
-
-
-### Features
-
-* 增加允许/禁用指标在行列维度中相互切换的能力 ([#1558](https://github.com/antvis/S2/issues/1558)) ([39f0f89](https://github.com/antvis/S2/commit/39f0f89cc999313d55077c06f72da13dab1f1316))
-
-# [@antv/s2-react-v1.22.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0...@antv/s2-react-v1.22.0-alpha.1) (2022-07-12)
-
-
-### Bug Fixes
-
 * 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
 
 
 ### Features
 
+* **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
 * **strategysheet:** 趋势分析表允许对行头和列头的 tooltip 做自定义 ([#1552](https://github.com/antvis/S2/issues/1552)) ([abfa98b](https://github.com/antvis/S2/commit/abfa98bca5e2528040e1cdfbde0f55e4e1298d0b))
 * **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 增加允许/禁用指标在行列维度中相互切换的能力 ([#1558](https://github.com/antvis/S2/issues/1558)) ([39f0f89](https://github.com/antvis/S2/commit/39f0f89cc999313d55077c06f72da13dab1f1316))
 
+# [@antv/s2-react-v1.21.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.20.0...@antv/s2-react-v1.21.0) (2022-07-08)
 
-### Reverts
-
-* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
-
-# [@antv/s2-react-v1.21.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.21.0-alpha.1...@antv/s2-react-v1.21.0-alpha.2) (2022-07-06)
 
 ### Bug Fixes
 
+* **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
+* **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
 * **strategysheet:** 修复趋势分析表无法自定义 Tooltip ([#1523](https://github.com/antvis/S2/issues/1523)) ([6b47b05](https://github.com/antvis/S2/commit/6b47b052560ba0a6e3d20236770ee97bca535c61))
 
 ### Features
