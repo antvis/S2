@@ -89,7 +89,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     'no-use-before-define': 0,
     '@typescript-eslint/no-use-before-define': [2],
-    'no-shadow': 0,
+    'no-shadow': 1,
     '@typescript-eslint/no-shadow': [1],
     'no-alert': 2,
     'no-caller': 2,
@@ -109,6 +109,9 @@ module.exports = {
     'max-statements-per-line': [2, { max: 1 }],
     'max-params': [1, 4],
     'no-unreachable': 2,
+    'no-useless-computed-key': 2,
+    'block-spacing': [2, 'always'],
+    'lines-between-class-members': [2, 'always'],
     eqeqeq: [
       2,
       'always',
