@@ -154,10 +154,10 @@ describe('Scroll Tests', () => {
     // 模拟在行头滚动
     jest
       .spyOn(s2.facet, 'isScrollOverTheCornerArea')
-      .mockImplementation(() => true);
+      .mockImplementationOnce(() => true);
     jest
       .spyOn(s2.facet, 'isScrollOverTheViewport')
-      .mockImplementation(() => true);
+      .mockImplementationOnce(() => true);
 
     const wheelEvent = new WheelEvent('wheel', {
       deltaX: position.scrollX,
@@ -224,11 +224,11 @@ describe('Scroll Tests', () => {
 
       const showHorizontalScrollBarSpy = jest
         .spyOn(s2.facet, 'showHorizontalScrollBar')
-        .mockImplementation(() => {});
+        .mockImplementationOnce(() => {});
 
       const showVerticalScrollBarSpy = jest
         .spyOn(s2.facet, 'showVerticalScrollBar')
-        .mockImplementation(() => {});
+        .mockImplementationOnce(() => {});
 
       // mock over the panel viewport
       s2.facet.cornerBBox.maxY = -9999;
@@ -236,7 +236,7 @@ describe('Scroll Tests', () => {
       s2.facet.panelBBox.minY = -9999;
       jest
         .spyOn(s2.facet, 'isScrollOverTheViewport')
-        .mockImplementation(() => true);
+        .mockImplementationOnce(() => true);
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
@@ -421,6 +421,89 @@ describe('Scroll Tests', () => {
     s2.render(false);
 
     expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+  });
+
+  // https://github.com/antvis/S2/issues/1659
+  test.each([
+    {
+      name: 'hRowScrollBar',
+      key: 'width',
+    },
+    {
+      name: 'hScrollBar',
+      key: 'width',
+    },
+    {
+      name: 'vScrollBar',
+      key: 'height',
+    },
+  ])('should render scroll bar real size by canvas BBox', ({ name, key }) => {
+    s2.changeSheetSize(200, 200); // 显示横/竖滚动条
+    s2.render(false);
+
+    const scrollBar = s2.facet[name];
+    expect(scrollBar.thumbShape.getBBox()[key]).toStrictEqual(
+      scrollBar.thumbLen,
+    );
+  });
+
+  test('should render scroll bar does not appear outside the canvas', () => {
+    s2.changeSheetSize(200, 200); // 显示横/竖滚动条
+    s2.render(false);
+
+    s2.updateScrollOffset({
+      offsetX: {
+        value: 999,
+      },
+      offsetY: {
+        value: 999,
+      },
+    });
+
+    const { hScrollBar, vScrollBar, cornerBBox, panelBBox } = s2.facet;
+    expect(
+      hScrollBar.thumbLen + hScrollBar.thumbOffset + cornerBBox.maxX,
+    ).toStrictEqual(panelBBox.maxX);
+    expect(
+      vScrollBar.thumbLen + vScrollBar.thumbOffset + panelBBox.minY,
+    ).toStrictEqual(panelBBox.maxY);
+  });
+
+  test('should trigger scroll if only contain row header scrollbar', async () => {
+    s2.setOptions({
+      frozenRowHeader: true,
+      style: {
+        layoutWidthType: 'compact',
+        rowCfg: {
+          width: 200,
+        },
+      },
+    });
+
+    const onRowCellScroll = jest.fn();
+
+    s2.changeSheetSize(400, 300);
+    s2.render(false);
+
+    jest
+      .spyOn(s2.facet, 'isScrollOverTheCornerArea')
+      .mockImplementationOnce(() => true);
+    jest
+      .spyOn(s2.facet, 'isScrollOverTheViewport')
+      .mockImplementationOnce(() => true);
+
+    s2.on(S2Event.ROW_CELL_SCROLL, onRowCellScroll);
+
+    const wheelEvent = new WheelEvent('wheel', {
+      deltaX: 20,
+      deltaY: 0,
+    });
+
+    canvas.dispatchEvent(wheelEvent);
+
+    await sleep(200);
+
+    expect(onRowCellScroll).toHaveBeenCalled();
   });
 
   describe('Scroll Overscroll Behavior Tests', () => {
