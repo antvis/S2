@@ -179,12 +179,6 @@ export class TableFacet extends BaseFacet {
     this.cornerBBox.maxY = height;
   }
 
-  public destroy() {
-    super.destroy();
-    this.spreadsheet.off(S2Event.RANGE_SORT);
-    this.spreadsheet.off(S2Event.RANGE_FILTER);
-  }
-
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet } = this.cfg;
 

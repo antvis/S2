@@ -1,6 +1,6 @@
 ---
-title: API
-order: 3
+title: SortParam
+order: 7
 ---
 
 `markdown:docs/common/sort-param.zh.md`

@@ -933,6 +933,7 @@ function MainLayout() {
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
+              onRangeSort={logHandler('onRangeSort')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
