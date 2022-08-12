@@ -1,10 +1,5 @@
 import EE from '@antv/event-emitter';
-import {
-  Canvas,
-  Event as CanvasEvent,
-  Group,
-  type IGroup,
-} from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -13,6 +8,8 @@ import {
   isEmpty,
   isFunction,
   isString,
+  memoize,
+  values,
 } from 'lodash';
 import { BaseCell } from '../cell';
 import {
@@ -681,4 +678,61 @@ export abstract class SpreadSheet extends EE {
       this.off(event);
     });
   }
+
+  /**
+   * 计算文本在画布中的宽度
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本宽度
+   */
+  public measureTextWidth = memoize(
+    (text: number | string = '', font: unknown): number => {
+      if (!font) {
+        return 0;
+      }
+
+      const ctx = this.getCanvasElement()?.getContext('2d');
+      const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
+        font as CSSStyleDeclaration;
+
+      ctx.font = [
+        fontStyle,
+        fontVariant,
+        fontWeight,
+        `${fontSize}px`,
+        fontFamily,
+      ]
+        .join(' ')
+        .trim();
+
+      return ctx.measureText(String(text)).width;
+    },
+    (text: any, font) => [text, ...values(font)].join(''),
+  );
+
+  /**
+   * 粗略计算文本在画布中的宽度
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本宽度
+   */
+  public measureTextWidthRoughly = (text: any, font: any = {}): number => {
+    const alphaWidth = this.measureTextWidth('a', font);
+    const chineseWidth = this.measureTextWidth('蚂', font);
+
+    let w = 0;
+    if (!text) {
+      return w;
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const char of text) {
+      const code = char.charCodeAt(0);
+
+      // /[\u0000-\u00ff]/
+      w += code >= 0 && code <= 255 ? alphaWidth : chineseWidth;
+    }
+
+    return w;
+  };
 }

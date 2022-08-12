@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
   customMerge,
@@ -14,6 +16,7 @@ import {
   type TooltipAutoAdjustBoundary,
   getLang,
   type InteractionOptions,
+  DEFAULT_STYLE,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -58,6 +61,9 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+// @ts-ignore
+window.__g_instances__ = [];
 
 const { TabPane } = Tabs;
 
@@ -770,11 +776,25 @@ function MainLayout() {
                 <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
-                  checked={mergedOptions.interaction.linkFields.length}
+                  checked={!!mergedOptions.interaction.linkFields.length}
                   onChange={(checked) => {
                     updateOptions({
                       interaction: {
                         linkFields: checked ? ['province', 'city'] : [],
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="隐藏列头"
+                  unCheckedChildren="显示列头"
+                  checked={mergedOptions.style?.colCfg?.height === 0}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        colCfg: {
+                          height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
+                        },
                       },
                     });
                   }}
@@ -887,6 +907,7 @@ function MainLayout() {
               ref={s2Ref}
               themeCfg={themeCfg}
               partDrillDown={partDrillDown}
+              showPagination={showPagination}
               header={{
                 title: (
                   <a href="https://github.com/antvis/S2">
@@ -910,8 +931,15 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
+              getSpreadSheet={(s2) => {
+                // @ts-ignore
+                window.s2 = s2;
+                // @ts-ignore
+                window.__g_instances__ = [s2.container];
+              }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
+              onRangeSort={logHandler('onRangeSort')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
@@ -934,8 +962,7 @@ function MainLayout() {
                 });
               }}
               onDataCellClick={logHandler('onDataCellClick')}
-              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
-              onLayoutResizeMouseUp={logHandler('onLayoutResizeMouseUp')}
+              onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}
               onLayoutColsHidden={logHandler('onLayoutColsHidden')}
               onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
@@ -952,7 +979,10 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
-            dataCfg={{ data: dataCustomTrees, fields: customTreeFields }}
+            dataCfg={{
+              data: dataCustomTrees,
+              fields: customTreeFields,
+            }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
           />
         </TabPane>
@@ -962,6 +992,10 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
+            getSpreadSheet={(s2) => {
+              // @ts-ignore
+              window.__g_instances__ = [s2.container];
+            }}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -994,6 +1028,10 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
+            getSpreadSheet={(s2) => {
+              // @ts-ignore
+              window.__g_instances__ = [s2.container];
+            }}
           />
         </TabPane>
       </Tabs>

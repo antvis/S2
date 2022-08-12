@@ -5,7 +5,7 @@ redirect_from:
   - /zh/docs/api
 ---
 
-数据映射，description
+表格数据配置
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | :------------- | :----------------- | :--------- | :----- | :--- |
@@ -13,7 +13,7 @@ redirect_from:
 | fields         | 维度指标       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计/小计数据       | [Data[]](#data) |    |      |
 | meta    | 字段元数据，可配置字段别名和数值格式化 | [Meta[]](#meta)  |  |       |
-| sortParams    | 排序参数配置 | [SortParams](#sortparams)  |  |       |
+| sortParams    | 排序参数配置 | [SortParam[]](#sortparam)  |  |       |
 
 ### Data
 
@@ -68,7 +68,7 @@ array object **必选**,_default：null_
 | field  | 字段 id | `string` | |    |
 | name | 字段名称 | `string`|  |   |
 | description | 字段描述，会显示在行头、列头、单元格对应的 tooltip 中 | `string`|  |   |
-| formatter | 格式化 <br/> 单元格、行头和列头支持格式化，角头不支持格式化。只有单元格存在第二个参数。 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | `(value: unknown, data?: Data | Data[]) => string` | | |
+| formatter | 格式化 <br/> 单元格、行头和列头支持格式化，角头不支持格式化。只有单元格存在第二个参数。 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | `(value: unknown, data?: Data | Data[], meta?: Node | ViewMeta) => string` | | |
 
 ### MultiData
 
@@ -83,6 +83,6 @@ object **必选**,_default：null_
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
-`markdown:docs/common/sort-params.zh.md`
+`markdown:docs/common/sort-param.zh.md`
 
 `markdown:docs/common/custom/customTreeItem.zh.md`

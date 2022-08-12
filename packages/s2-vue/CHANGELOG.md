@@ -1,6 +1,5 @@
 # [@antv/s2-vue-v1.2.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.1.0...@antv/s2-vue-v1.2.0-alpha.1) (2022-07-18)
 
-
 ### Bug Fixes
 
 * s2-vue 保持和react组件一致的tooltip summary渲染逻辑 ([#1576](https://github.com/antvis/S2/issues/1576)) ([32135f7](https://github.com/antvis/S2/commit/32135f7f5a3cb2be8183d313bccdfaef2d3ceebd))

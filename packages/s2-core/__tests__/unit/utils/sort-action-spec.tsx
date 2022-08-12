@@ -35,6 +35,16 @@ describe('Sort Action Test', () => {
       expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
     });
 
+    test('sort action with zero and number arr', () => {
+      const data1 = [1, 6, -2, 0];
+      expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
+      expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
+
+      const data2 = ['0', 0, 2, -2];
+      expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
+      expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
+    });
+
     test('sort action with string arr', () => {
       const data = ['a', 'c', 'b'];
       expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
@@ -47,6 +57,22 @@ describe('Sort Action Test', () => {
       const data2 = ['啊', '11', '2'];
       expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
       expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
+    });
+
+    test('object data sorted by key with zero', () => {
+      const data1 = [{ a: 1 }, { a: 0 }, { a: -3 }, { a: 2 }];
+      expect(sortAction(data1, 'ASC', 'a')).toEqual([
+        { a: -3 },
+        { a: 0 },
+        { a: 1 },
+        { a: 2 },
+      ]);
+      expect(sortAction(data1, 'DESC', 'a')).toEqual([
+        { a: 2 },
+        { a: 1 },
+        { a: 0 },
+        { a: -3 },
+      ]);
     });
 
     test('sort action with object arr', () => {
@@ -93,6 +119,7 @@ describe('Sort Action Test', () => {
           'a',
         ),
       ).toEqual([{ a: undefined }, { a: '-' }, { a: 2 }, { a: '3' }]);
+
       expect(
         sortAction(
           [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
@@ -194,8 +221,11 @@ describe('Sort By Func Tests', () => {
     expect(result).toEqual(originValues);
   });
 
-  test('should return sortFunc result', () => {
+  test('should return merged result', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
     const result = sortByFunc({
+      originValues,
       sortParam: {
         sortFieldId: 'city',
         sortFunc: () => ['浙江[&]杭州'],
@@ -207,7 +237,30 @@ describe('Sort By Func Tests', () => {
       } as unknown as PivotDataSet,
     });
 
-    expect(result).toEqual(['浙江[&]杭州']);
+    // sortFunc 返回的值在前，未返回的值在后
+    expect(result).toEqual(['浙江[&]杭州', '四川[&]成都', '四川[&]绵阳']);
+  });
+
+  test('should return merged result when sorting by ASC', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
+    const result = sortByFunc({
+      originValues,
+      sortParam: {
+        sortMethod: 'ASC',
+        sortFieldId: 'city',
+        sortFunc: () => ['浙江[&]杭州'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    // asc 升序时
+    // sortFunc 没返回的值在前，返回的值在后
+    expect(result).toEqual(['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州']);
   });
 
   test('should return fallback result', () => {

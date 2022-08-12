@@ -4,7 +4,6 @@ import {
   get,
   isArray,
   isEmpty,
-  isFunction,
   isNil,
   keys,
   last,
@@ -14,12 +13,10 @@ import {
   size,
 } from 'lodash';
 import {
+  DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
-  type CellCustomWidth,
-  type ColCfg,
   type IconTheme,
   type MultiData,
-  type RowCfg,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
@@ -32,12 +29,7 @@ import {
   getIndexRangeWithOffsets,
   getSubTotalNodeWidthOrHeightByLevel,
 } from '../utils/facet';
-import {
-  getCellWidth,
-  measureTextWidth,
-  measureTextWidthRoughly,
-  safeJsonParse,
-} from '../utils/text';
+import { getCellWidth, safeJsonParse } from '../utils/text';
 import { BaseFacet } from './base-facet';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
@@ -288,7 +280,7 @@ export class PivotFacet extends BaseFacet {
         colIconStyle,
       );
       const leafNodeRoughWidth =
-        measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+        this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
 
       // 采样 50 个 label，逐个计算找出最长的 label
       let maxDataLabel: string;
@@ -312,7 +304,8 @@ export class PivotFacet extends BaseFacet {
               cellData,
               filterDisplayDataItem,
             )}`;
-            const cellLabelWidth = measureTextWidthRoughly(cellLabel);
+            const cellLabelWidth =
+              this.spreadsheet.measureTextWidthRoughly(cellLabel);
 
             if (cellLabelWidth > maxDataLabelWidth) {
               maxDataLabel = cellLabel;
@@ -334,7 +327,7 @@ export class PivotFacet extends BaseFacet {
       );
 
       return (
-        measureTextWidth(maxLabel, colCellTextStyle) +
+        this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
         colCellStyle.padding?.left +
         colCellStyle.padding?.right +
         appendedWidth
@@ -729,8 +722,10 @@ export class PivotFacet extends BaseFacet {
     const { rows, dataSet, rowCfg, treeRowsWidth } = this.cfg;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    if (rowCfg?.treeRowsWidth) {
-      return rowCfg?.treeRowsWidth;
+    // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCfg.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
+    const currentTreeRowsWidth = treeRowsWidth ?? rowCfg?.treeRowsWidth;
+    if (currentTreeRowsWidth) {
+      return currentTreeRowsWidth;
     }
 
     // 2. 其次是自定义
@@ -747,14 +742,17 @@ export class PivotFacet extends BaseFacet {
       this.spreadsheet.theme.cornerCell;
     // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
     const maxLabelWidth =
-      measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
+      this.spreadsheet.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
       cornerIconStyle.size * 2 +
       cornerIconStyle.margin?.left +
       cornerIconStyle.margin?.right +
       this.rowCellTheme.padding?.left +
       this.rowCellTheme.padding?.right;
 
-    return Math.max(treeRowsWidth, maxLabelWidth);
+    return Math.max(
+      currentTreeRowsWidth ?? DEFAULT_TREE_ROW_WIDTH,
+      maxLabelWidth,
+    );
   }
 
   /**
@@ -801,7 +799,7 @@ export class PivotFacet extends BaseFacet {
       );
     const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
     const rowNodeWidth =
-      measureTextWidth(maxLabel, rowTextStyle) +
+      spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
       rowIconWidth +
       rowCellStyle.padding.left +
       rowCellStyle.padding.right;
@@ -814,7 +812,7 @@ export class PivotFacet extends BaseFacet {
       cornerIconStyle,
     );
     const fieldNameNodeWidth =
-      measureTextWidth(fieldName, cornerTextStyle) +
+      spreadsheet.measureTextWidth(fieldName, cornerTextStyle) +
       cornerIconWidth +
       cornerCellStyle.padding.left +
       cornerCellStyle.padding.right;

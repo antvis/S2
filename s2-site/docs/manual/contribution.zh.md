@@ -34,6 +34,8 @@ order: 7
 
 ## Pull Request
 
+> 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考)
+
 1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)

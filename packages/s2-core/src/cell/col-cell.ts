@@ -256,7 +256,13 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
-    if (!this.shouldDrawResizeAreaByType('colCellVertical', this)) {
+    // 隐藏列头时不绘制水平热区 https://github.com/antvis/S2/issues/1603
+    const isHiddenCol = this.spreadsheet.options.style?.colCfg?.height === 0;
+
+    if (
+      isHiddenCol ||
+      !this.shouldDrawResizeAreaByType('colCellVertical', this)
+    ) {
       return;
     }
 
@@ -349,7 +355,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { label, width, height, parent } = this.meta;
+    const { label, width, height } = this.meta;
 
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
@@ -368,7 +374,7 @@ export class ColCell extends HeaderCell {
           theme: resizeStyle,
           type: ResizeDirectionType.Horizontal,
           effect: ResizeAreaEffect.Cell,
-          id: parent.isTotals ? '' : label,
+          id: label,
           offsetX,
           offsetY,
           width,

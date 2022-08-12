@@ -424,7 +424,7 @@ fetch('../data/index-comparison.json')
         },
         {
           field: 'price',
-          name: '金额',
+          name: '销售量',
         },
         {
           field: 'uv',

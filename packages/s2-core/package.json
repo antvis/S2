@@ -69,13 +69,14 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "csstype": "^3.0.11",
+    "@testing-library/dom": "^8.16.0",
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-timer": "^3.0.0",
+    "csstype": "^3.0.11",
     "d3-dsv": "^1.1.1",
-    "tinycolor2": "^1.4.2",
     "inquirer": "^8.2.0",
-    "inquirer-autocomplete-prompt": "^2.0.0"
+    "inquirer-autocomplete-prompt": "^2.0.0",
+    "tinycolor2": "^1.4.2"
   },
   "sideEffects": [
     "*.css",

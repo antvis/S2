@@ -265,7 +265,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
   meta: [
     {
       field: 'date',
-      name: '时间',
+      name: '日期',
     },
   ],
   fields: {
@@ -395,6 +395,23 @@ export const StrategyOptions: S2Options = {
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
           };
+        },
+      },
+    ],
+    icon: [
+      {
+        position: 'right',
+        mapping(value, cellInfo) {
+          return isUpDataValue(value)
+            ? {
+                // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'CellUp',
+                fill: '#29A294',
+              }
+            : {
+                icon: 'CellDown',
+                fill: '#FF4D4F',
+              };
         },
       },
     ],

@@ -19,7 +19,11 @@ import type { DataItem } from './s2DataConfig';
 // 1. data cell 格式化
 // 2. copy/export
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
-export type Formatter = (v: unknown, data?: Data | Data[]) => string;
+export type Formatter = (
+  v: unknown,
+  data?: Data | Data[],
+  meta?: Node | ViewMeta,
+) => string;
 
 export interface FormatResult {
   formattedValue: string;
@@ -186,7 +190,7 @@ export interface Style {
   layoutWidthType?: LayoutWidthType;
   // 是否展示树状分层下的层级占位点
   showTreeLeafNodeAlignDot?: boolean;
-  // row cell's height in tree mode
+  // 树状结构下行头宽度
   treeRowsWidth?: number;
   // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
   hierarchyCollapse?: boolean;
@@ -303,7 +307,9 @@ export interface RowCfg {
   // specific some row field's width
   widthByField?: Record<string, number>;
   heightByField?: Record<string, number>;
-  // tree row width(拖拽产生的，无需主动设置)
+  /**
+   * @deprecated (已废弃, 请使用 style.treeRowsWidth 代替) tree row width(拖拽产生的，无需主动设置)
+   */
   treeRowsWidth?: number;
 }
 

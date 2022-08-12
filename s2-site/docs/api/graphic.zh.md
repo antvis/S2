@@ -5,7 +5,7 @@ redirect_from:
   - /en/docs/api
 ---
 
-S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图引擎。一些图形的样式配置，如单元格的 `fill`属性，`stroke`属性，以及绘制字体的`fontFamily`和`fontSize`等，都是直接透传 [AntV/G 的绘图属性](https://g.antv.vision/zh/docs/api/shape/attrs)。
+S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图引擎。一些图形的样式配置，如单元格的 `fill` 属性，`stroke` 属性，以及绘制字体的 `fontFamily` 和 `fontSize` 等，都是直接透传 [AntV/G 的绘图属性](https://g.antv.vision/zh/docs/api/shape/attrs)。
 
 这里对 S2 常用的绘图属性进行简单介绍：
 
@@ -13,9 +13,9 @@ S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图�
 
 | 属性名        | 类型            |    功能描述                                                                                                      |
 | ------------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
-| fill          | `string`          | 图形背景的填充颜色，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                                                               |
+| fill          | `string`          | 图形背景的填充颜色，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                                                               |
 | fillOpacity   | `number`          | 图形背景的填充透明度                                                                                             |
-| stroke        | `string`          | 图形描边，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                  |
+| stroke        | `string`          | 图形描边，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                  |
 | lineWidth     | `number`          | 图形描边宽度                                                                                               |
 | lineDash      | `[number,number]` | 图形描边的虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离 |
 | lineOpacity   | `number`          | 图形描边描边透明度                                                                                                   |
@@ -30,7 +30,7 @@ S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图�
 
 | 属性名        | 类型              | 功能描述                                                                                                   |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------ |
-| stroke        | `string`          | 线段颜色，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                |
+| stroke        | `string`          | 线段颜色，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                |
 | lineWidth     | `number`          | 线段宽度                                                                                                   |
 | lineDash      | `[number,number]` | 线段虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离|
 | opacity       | `number`          | 线段透明度                                                                                                 |
@@ -50,9 +50,9 @@ S2 使用 [AntV/G](https://g.antv.vision/zh/docs/guide/introduce) 作为绘图�
 | lineHeight    | `number`          | 文字的行高                                                                                                   |
 | textAlign     | `center` \| `left` \| `right` \| `start` \| `end`          | 设置文本内容的对齐方式 |
 | textBaseline  | `top` \| `middle` \| `bottom` \| `alphabetic` \| `hanging`          | 设置在绘制文本时使用的当前文本基线|
-| fill          | `string`          | 文字填充颜色，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                                             |
+| fill          | `string`          | 文字填充颜色，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                                             |
 | fillOpacity   | `number`          | 文字填充透明度                                                                                             |
-| stroke        | `string`          | 文字描边，支持 [渐变色配置](#配置渐变色) ，[纹理配置](#配置纹理)                                                                            |
+| stroke        | `string`          | 文字描边，支持 [渐变色配置](#配置渐变色） ，[纹理配置](#配置纹理)                                                                            |
 | lineWidth     | `number`          | 文字描边宽度                                                                                               |
 | lineDash      | `[number,number]` | 描边的虚线配置，第一个值为虚线每个分段的长度，第二个值为分段间隔的距离 |
 | lineOpacity   | `number`          | 描边透明度                                                                                                   |
@@ -71,7 +71,7 @@ S2 提供线性渐变，环形渐变两种形式
 
 <img alt="linear" src="https://gw.alipayobjects.com/zos/rmsportal/ieWkhtoHOijxweuNFWdz.png" width="600">
 
-* `l` 表示使用线性渐变，即*linear gradient*，绿色的字体为变量，可自定义
+* `l` 表示使用线性渐变，即 *linear gradient*，绿色的字体为变量，可自定义
 * 颜色变量可采用 16 进制或者 rgb(a) 形式
 
 示例：
@@ -89,7 +89,7 @@ fill: `l(0) 0:#95F0FF 1:#3A9DBF`,
 
 <img alt="radial" src="https://gw.alipayobjects.com/zos/rmsportal/qnvmbtSBGxQlcuVOWkdu.png" width="600">
 
-* `r` 表示使用放射状渐变，即*radial gradient*，绿色的字体为变量，可自定义
+* `r` 表示使用放射状渐变，即 *radial gradient*，绿色的字体为变量，可自定义
 * 圆的 `x`， `y`， `r` 值均为相对值，0 至 1 范围
 * 颜色变量可采用 16 进制或者 rgb(a) 形式
 
@@ -110,8 +110,8 @@ fill: 'r(0.5, 0.5, 1) 0:#ffffff 0.5:#1890ff';
 
 <img alt="radial" src="https://gw.alipayobjects.com/zos/rmsportal/NjtjUimlJtmvXljsETAJ.png" width="600">
 
-* `p`表示使用纹理，即*pattern*，绿色的字体为变量，可自定义
-* 重复方式有以下4种：
+* `p`表示使用纹理，即 *pattern*，绿色的字体为变量，可自定义
+* 重复方式有以下 4 种：
   * `a`: 该模式在水平和垂直方向重复
   * `x`: 该模式只在水平方向重复
   * `y`: 该模式只在垂直方向重复

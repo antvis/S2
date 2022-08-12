@@ -1,6 +1,5 @@
 # [@antv/s2-v1.24.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0-alpha.3...@antv/s2-v1.24.0-alpha.4) (2022-07-21)
 
-
 ### Bug Fixes
 
 * **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))

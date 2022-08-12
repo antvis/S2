@@ -1,20 +1,24 @@
-import { debounce } from 'lodash';
+import { debounce, isBoolean } from 'lodash';
 import { RESIZE_RENDER_DELAY } from '../constant/resize';
 import type { Adaptive, ResizeEffectParams } from '../interface';
 
 export const analyzeAdaptive = (
-  paramsContainer: HTMLElement,
+  defaultContainer: HTMLElement,
   adaptive?: Adaptive,
 ) => {
-  let container = paramsContainer;
-  let adaptiveWidth = true;
-  let adaptiveHeight = false;
-  if (typeof adaptive !== 'boolean') {
-    container = adaptive?.getContainer?.() || paramsContainer;
-    adaptiveWidth = adaptive?.width ?? true;
-    adaptiveHeight = adaptive?.height ?? true;
+  if (isBoolean(adaptive)) {
+    return {
+      container: defaultContainer,
+      adaptiveWidth: true,
+      adaptiveHeight: false,
+    };
   }
-  return { container, adaptiveWidth, adaptiveHeight };
+
+  return {
+    container: adaptive?.getContainer?.() || defaultContainer,
+    adaptiveWidth: adaptive?.width ?? true,
+    adaptiveHeight: adaptive?.height ?? true,
+  };
 };
 
 export const createResizeObserver = (params: ResizeEffectParams) => {

@@ -7,8 +7,12 @@ import { DataCell } from '@/cell';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
+
 describe('data cell formatter test', () => {
   const meta = {
+    fieldValue: 'fieldValue',
+    label: 'label',
+    value: 'value',
     data: {
       city: 'chengdu',
       value: 12,
@@ -27,18 +31,14 @@ describe('data cell formatter test', () => {
     s2.dataSet = dataSet;
   });
 
-  test('should pass complete data into formater', () => {
+  test('should pass complete data into formatter', () => {
     const formatter = jest.fn();
     jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dataCell = new DataCell(meta, s2);
 
-    expect(formatter).toHaveBeenCalledWith(undefined, {
-      city: 'chengdu',
-      value: 12,
-      [VALUE_FIELD]: 'value',
-      [EXTRA_FIELD]: 12,
-    });
+    expect(formatter).toHaveBeenCalledWith(meta.fieldValue, meta.data, meta);
   });
 
   test('should return correct formatted value', () => {

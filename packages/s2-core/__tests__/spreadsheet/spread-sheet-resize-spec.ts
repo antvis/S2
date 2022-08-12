@@ -91,6 +91,32 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
   });
 
+  // https://github.com/antvis/S2/issues/1603
+  test('should disable col cell resize area if col is hidden', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resize: {
+          colCellHorizontal: false,
+          colCellVertical: true,
+        },
+      },
+    } as S2Options);
+
+    s2.setOptions({
+      style: {
+        colCfg: {
+          height: 0,
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const group = s2.facet.foregroundGroup;
+
+    expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
+  });
+
   test('should disable col cell vertical direction resize area', () => {
     const s2 = renderSheet({
       interaction: {

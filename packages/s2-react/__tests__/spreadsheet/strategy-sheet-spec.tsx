@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { copyData, type PivotSheet } from '@antv/s2';
+import { copyData, SpreadSheet } from '@antv/s2';
 import {
   StrategySheetDataConfig,
   StrategyOptions,
@@ -21,7 +21,8 @@ describe('Spread Sheet Tests', () => {
     });
 
     test('should export correct data of strategy sheet', () => {
-      let s2Instance: PivotSheet;
+      let s2Instance: SpreadSheet;
+
       act(() => {
         ReactDOM.render(
           <SheetComponent
@@ -37,14 +38,14 @@ describe('Spread Sheet Tests', () => {
       });
 
       // 角头部分展示如下：
-      // ["", "","时间"]
+      // ["", "","日期"]
       // ["", "","数值"]
       const result = copyData(s2Instance, '\t');
 
       const rows = result.split('\n');
       const corner1 = rows[0].split('\t').slice(0, 3);
       const corner2 = rows[1].split('\t').slice(0, 3);
-      expect(corner1).toEqual(['', '', `"时间"`]);
+      expect(corner1).toEqual(['', '', `"日期"`]);
       expect(corner2).toEqual(['', '', `"数值"`]);
     });
   });

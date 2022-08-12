@@ -5,7 +5,7 @@ import type {
   ShapeAttrs,
 } from '@antv/g-canvas';
 import { clone, isEmpty, throttle } from 'lodash';
-import type { ResizeInteractionOptions, Style } from '../common';
+import type { ResizeInteractionOptions, ResizeParams, Style } from '../common';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
@@ -204,18 +204,17 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getDisAllowResizeInfo() {
     const resizeInfo = this.getResizeInfo();
     const { resize } = this.spreadsheet.options.interaction;
-    const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = Math.floor(end.x - start.x);
-    const resizedHeight = Math.floor(end.y - start.y);
 
-    const originalWidth = resizeInfo.width;
-    const originalHeight = resizeInfo.height;
-
-    const isDisabled = (resize as ResizeInteractionOptions)?.disable?.({
-      ...resizeInfo,
+    const {
+      width: originalWidth,
+      height: originalHeight,
       resizedWidth,
       resizedHeight,
-    });
+    } = resizeInfo;
+
+    const isDisabled = (resize as ResizeInteractionOptions)?.disable?.(
+      resizeInfo,
+    );
 
     const displayWidth = isDisabled ? originalWidth : resizedWidth;
     const displayHeight = isDisabled ? originalHeight : resizedHeight;
@@ -248,7 +247,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
+            treeRowsWidth: displayWidth,
             rowCfg: {
+              /**
+               * @deprecated 已废弃, 以 style.treeRowsWidth 为准, 保持兼容, 暂时保留
+               */
               treeRowsWidth: displayWidth,
             },
           },
@@ -468,10 +471,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       eventType: resizeEventType,
     } = this.getResizeDetail() || {};
 
-    const resizeDetail = {
+    const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style,
     };
+
     this.spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
     this.spreadsheet.emit(resizeEventType, resizeDetail);
 
@@ -492,7 +496,18 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeInfo(): ResizeInfo {
-    return this.getCellAppendInfo<ResizeInfo>(this.resizeTarget);
+    const defaultResizeInfo = this.getCellAppendInfo<ResizeInfo>(
+      this.resizeTarget,
+    );
+    const { start, end } = this.getResizeGuideLinePosition();
+    const resizedWidth = Math.floor(end.x - start.x);
+    const resizedHeight = Math.floor(end.y - start.y);
+
+    return {
+      ...defaultResizeInfo,
+      resizedWidth,
+      resizedHeight,
+    };
   }
 
   private render() {
