@@ -1,3 +1,4 @@
+import { forEach } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
@@ -7,7 +8,10 @@ import {
 } from '../../common/constant';
 import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import { getActiveHoverRowColCells } from './hover-event';
+import {
+  getActiveHoverRowColCells,
+  updateAllColHeaderCellState,
+} from './hover-event';
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
@@ -80,4 +84,21 @@ export function getRowCellForSelectedCell(
     interaction.getAllRowHeaderCells(),
     spreadsheet.isHierarchyTreeType(),
   );
+}
+
+export function updateRowColCells(meta: ViewMeta, spreadsheet: SpreadSheet) {
+  const { rowId, colId } = meta;
+  const { interaction } = spreadsheet;
+  updateAllColHeaderCellState(
+    colId,
+    interaction.getAllColHeaderCells(),
+    InteractionStateName.SELECTED,
+  );
+
+  if (rowId) {
+    const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
+    forEach(allRowHeaderCells, (cell: RowCell) => {
+      cell.updateByState(InteractionStateName.SELECTED);
+    });
+  }
 }

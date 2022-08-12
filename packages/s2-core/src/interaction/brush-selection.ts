@@ -30,7 +30,10 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../utils/interaction/';
-import { getCellMeta } from '../utils/interaction/select-event';
+import {
+  getCellMeta,
+  updateRowColCells,
+} from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
 import type { BaseEventImplement } from './base-event';
@@ -689,6 +692,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           rowIndex,
           id: `${rowId}-${colId}`,
           type: 'dataCell',
+          rowId,
+          colId,
         });
       }
     }
@@ -697,14 +702,22 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const { interaction, options } = this.spreadsheet;
 
     const range = this.getBrushRange();
 
+    const selectedCellMetas = this.getSelectedCellMetas(range);
     interaction.changeState({
-      cells: this.getSelectedCellMetas(range),
+      cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
     });
+
+    if (options.interaction.selectedCellHighlight) {
+      selectedCellMetas.forEach((meta) => {
+        updateRowColCells(meta, this.spreadsheet);
+      });
+    }
+
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       this.brushRangeDataCells,
