@@ -2,12 +2,16 @@ import { includes, isBoolean } from 'lodash';
 import { EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
-import type { HeaderNodesParams } from '../../facet/layout/interface';
+import type {
+  HeaderNodesParams,
+  TableHeaderParams,
+} from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
+import type { ColumnNode } from '@/common';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {
@@ -137,4 +141,44 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       });
     }
   }
+};
+
+/**
+ * 给定一个树形结构的表头，深度优先创建表头的 node
+ * @param columnsTree
+ * @param params
+ * @param pNode
+ * @param level
+ */
+export const DFSGenerateHeaderNodes = (
+  columnsTree: ColumnNode[],
+  params: TableHeaderParams,
+  level: number,
+  pNode?: Node,
+) => {
+  const { facetCfg, hierarchy, parentNode } = params;
+  const { dataSet } = facetCfg;
+
+  columnsTree.forEach((column, i) => {
+    const { name } = column;
+    const value = dataSet.getFieldName(name);
+    const currentParent = pNode || parentNode;
+    generateHeaderNodes({
+      currentField: name,
+      fields: [name],
+      fieldValues: [value],
+      facetCfg,
+      hierarchy,
+      parentNode: currentParent,
+      level,
+      query: {},
+      addMeasureInTotalQuery: false,
+      addTotalMeasureInTotal: false,
+    });
+    if (column.children && column.children.length) {
+      const generateNode = currentParent.children[i];
+      generateNode.isLeaf = false;
+      DFSGenerateHeaderNodes(column.children, params, level + 1, generateNode);
+    }
+  });
 };

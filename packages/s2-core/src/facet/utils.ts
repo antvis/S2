@@ -3,9 +3,14 @@ import { findIndex, isNil } from 'lodash';
 
 import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
-import type { Pagination, ScrollSpeedRatio } from '../common/interface';
+import type {
+  ColumnNode,
+  Pagination,
+  ScrollSpeedRatio,
+} from '../common/interface';
 import type { Indexes } from '../utils/indexes';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
+import type { Node } from './layout/node';
 import type { ViewCellHeights } from './layout/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
@@ -367,4 +372,97 @@ export const getCellRange = (
     start,
     end,
   };
+};
+
+/**
+ * 给定一个一层的 node 数组以及左右固定列的数量，计算出实际固定列（叶子节点）的数量
+ * @param nodes
+ * @param frozenColCount
+ * @param frozenTrailingColCount
+ * @returns {colCount, trailingColCount}
+ */
+export const getFrozenLeafNodesCount = (
+  nodes: Node[],
+  frozenColCount: number,
+  frozenTrailingColCount: number,
+): { colCount: number; trailingColCount: number } => {
+  let colCount = frozenColCount;
+  let trailingColCount = frozenTrailingColCount;
+  const getLeafNodesCount = (node) => {
+    if (node.isLeaf) {
+      return 1;
+    }
+    if (node.children) {
+      return node.children.reduce((pCount, item) => {
+        pCount += getLeafNodesCount(item);
+        return pCount;
+      }, 0);
+    }
+    return 0;
+  };
+  if (frozenColCount) {
+    colCount = nodes.slice(0, frozenColCount).reduce((count, node) => {
+      count += getLeafNodesCount(node);
+      return count;
+    }, 0);
+  }
+  if (frozenTrailingColCount) {
+    trailingColCount = nodes
+      .slice(nodes.length - frozenTrailingColCount)
+      .reduce((count, node) => {
+        count += getLeafNodesCount(node);
+        return count;
+      }, 0);
+  }
+  return { colCount, trailingColCount };
+};
+
+/**
+ * 根据列配置树和已显示的字段，返回深拷贝过的过滤掉隐藏列的配置结构
+ * @param columnsTree
+ * @param fieldsMap
+ * @returns {ColumnNode} 配置结构
+ */
+export const getDisplayedColumnsTree = (
+  columnsTree: ColumnNode[],
+  fieldsMap,
+): ColumnNode[] => {
+  return columnsTree.reduce((tree, column) => {
+    const copyColumn = { ...column };
+    // 分支节点显示
+    if (copyColumn.children) {
+      copyColumn.children = getDisplayedColumnsTree(
+        copyColumn.children,
+        fieldsMap,
+      );
+      tree.push(copyColumn);
+      return tree;
+    }
+    // 非分支节点判断是否显示
+    if (fieldsMap[copyColumn.name]) {
+      tree.push(copyColumn);
+    }
+    return tree;
+  }, []);
+};
+
+/**
+ * 明细表多级表头判断一个 node 是不是顶层节点
+ * @param node
+ * @returns {boolean}
+ */
+export const isTopLevelNode = (node: Node): boolean => {
+  return node.parent.id === 'root';
+};
+
+/**
+ * 明细表多级表头根据一个 node 返回其所属顶层节点
+ * @param node
+ * @returns {Node}
+ */
+export const getNodeRoot = (node: Node): Node => {
+  while (!isTopLevelNode(node)) {
+    node = node.parent;
+  }
+  return node;
 };

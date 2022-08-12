@@ -5,8 +5,14 @@ import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
+import type { AreaRange } from '../common/interface/scroll';
 import type { FormatResult, SortParam } from '../common/interface';
-import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
+import {
+  isFrozenCol,
+  isFrozenTrailingCol,
+  isTopLevelNode,
+  getNodeRoot,
+} from '../facet/utils';
 import { getContentArea } from '../utils/cell/cell';
 import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';
 import { renderRect } from '../utils/g-renders';
@@ -34,12 +40,16 @@ export class TableColCell extends ColCell {
 
   protected isFrozenCell() {
     const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
-    const { colIndex } = this.meta;
-    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+    const colNodes = this.spreadsheet.facet.layoutResult.colNodes.filter(
+      (node) => {
+        return isTopLevelNode(node);
+      },
+    );
+    const { colIndex } = getNodeRoot(this.meta);
 
     return (
       isFrozenCol(colIndex, frozenColCount) ||
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
+      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colNodes.length)
     );
   }
 
@@ -124,5 +134,12 @@ export class TableColCell extends ColCell {
       ...this.getCellArea(),
       fill: backgroundColor,
     });
+  }
+
+  protected handleViewport(viewport: AreaRange): AreaRange {
+    if (this.isFrozenCell()) {
+      viewport.start = 0;
+    }
+    return viewport;
   }
 }

@@ -92,12 +92,18 @@ export interface Fields {
   customTreeItems?: CustomTreeItem[];
   // columns fields
   columns?: string[];
+  columnsTree?: ColumnNode[];
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
+}
+
+export interface ColumnNode {
+  name: string;
+  children?: ColumnNode[];
 }
 
 export interface TotalsStatus {
