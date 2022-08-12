@@ -15,6 +15,9 @@ export interface CellScrollPosition {
 }
 
 export interface CellScrollOffset {
+  deltaX?: number;
+  deltaY?: number;
+  offset?: number;
   offsetX: number;
   offsetY: number;
 }
