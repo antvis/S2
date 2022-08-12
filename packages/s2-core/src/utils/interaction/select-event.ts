@@ -86,8 +86,8 @@ export function getRowCellForSelectedCell(
   );
 }
 
-export function updateRowColCells(meta: ViewMeta, spreadsheet: SpreadSheet) {
-  const { rowId, colId } = meta;
+export function updateRowColCells(meta: ViewMeta) {
+  const { rowId, colId, spreadsheet } = meta;
   const { interaction } = spreadsheet;
   updateAllColHeaderCellState(
     colId,

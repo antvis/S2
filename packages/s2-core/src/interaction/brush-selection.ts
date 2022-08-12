@@ -682,10 +682,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
         colIndex < range.end.colIndex + 1;
         colIndex++
       ) {
-        const colId = colLeafNodes[colIndex].id;
+        const colId = String(colLeafNodes[colIndex].id);
         let rowId = String(rowIndex);
         if (rowLeafNodes.length) {
-          rowId = rowLeafNodes[rowIndex].id;
+          rowId = String(rowLeafNodes[rowIndex].id);
         }
         metas.push({
           colIndex,
@@ -694,6 +694,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           type: 'dataCell',
           rowId,
           colId,
+          spreadsheet: this.spreadsheet,
         });
       }
     }
@@ -714,7 +715,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
     if (options.interaction.selectedCellHighlight) {
       selectedCellMetas.forEach((meta) => {
-        updateRowColCells(meta, this.spreadsheet);
+        updateRowColCells(meta);
       });
     }
 

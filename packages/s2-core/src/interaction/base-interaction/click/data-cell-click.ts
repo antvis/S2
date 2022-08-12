@@ -68,7 +68,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
       if (options.interaction.selectedCellHighlight) {
-        updateRowColCells(meta, this.spreadsheet);
+        updateRowColCells(meta);
       }
     });
   }
