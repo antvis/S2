@@ -78,6 +78,7 @@ const options: S2Options = {
   interaction: {
     enableCopy: true,
     hoverHighlight: false,
+    selectedCellHighlight: true,
     linkFields: ['order_id', 'customer_name'],
     hiddenColumnFields: ['order_date'],
     resize: {
@@ -97,7 +98,6 @@ const options: S2Options = {
 };
 
 describe('TableSheet normal spec', () => {
-
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
@@ -146,11 +146,10 @@ describe('TableSheet normal spec', () => {
     );
     await sleep(30);
 
+    const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
 
-    const firstColCell = s2.getColumnNodes()[1].belongsCell as any
-
-    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true)
-    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 })
+    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
+    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 });
 
     s2.destroy();
   });
@@ -161,32 +160,35 @@ describe('TableSheet normal spec', () => {
 
     await sleep(30);
 
-    const { x, width, top } = s2.getCanvasElement().getBoundingClientRect()
-    s2.getCanvasElement().dispatchEvent(new MouseEvent('mousedown', {
-      clientX: x + width - 1,
-      clientY: top + 25,
-    }))
+    const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
+    s2.getCanvasElement().dispatchEvent(
+      new MouseEvent('mousedown', {
+        clientX: x + width - 1,
+        clientY: top + 25,
+      }),
+    );
 
-
-    window.dispatchEvent(new MouseEvent('mousemove', {
-      clientX: x+ width + 100,
-      clientY: top + 25,
-
-    }))
+    window.dispatchEvent(
+      new MouseEvent('mousemove', {
+        clientX: x + width + 100,
+        clientY: top + 25,
+      }),
+    );
     await sleep(300);
 
-    window.dispatchEvent(new MouseEvent('mouseup', {
-      clientX: x + width + 100,
-      clientY: top + 25
-    }))
+    window.dispatchEvent(
+      new MouseEvent('mouseup', {
+        clientX: x + width + 100,
+        clientY: top + 25,
+      }),
+    );
 
     await sleep(300);
 
-    const columnNodes = s2.getColumnNodes()
-    const lastColumnCell = columnNodes[columnNodes.length - 1].belongsCell as ColCell
-    
-    expect(lastColumnCell.getMeta().width).toBe(199)
+    const columnNodes = s2.getColumnNodes();
+    const lastColumnCell = columnNodes[columnNodes.length - 1]
+      .belongsCell as ColCell;
+
+    expect(lastColumnCell.getMeta().width).toBe(199);
   });
-
-
 });

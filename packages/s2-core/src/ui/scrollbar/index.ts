@@ -90,10 +90,25 @@ export class ScrollBar extends Group {
     this.initScrollBar();
   }
 
-  getCoordinates = () => {
+  private getCoordinatesName = () => {
     const from = this.isHorizontal ? 'x1' : 'y1';
     const to = this.isHorizontal ? 'x2' : 'y2';
     return { from, to };
+  };
+
+  /**
+   * Antv/g 4.x 版本计算 bbox 有bug, 实际渲染的宽度会比给定的宽度大, 需要对其做修正
+   * 详情: https://github.com/antvis/S2/pull/1566/files#diff-3f08348041906ddf1e4f094bfe2ac32b35ff668918d3fbb952e9227ae462cc08R52
+   */
+  private getCoordinatesWithBBoxExtraPadding = () => {
+    const { size } = this.theme;
+    const startPadding = this.isHorizontal ? 0 : size / 2;
+    const endPadding = this.isHorizontal ? size : size / 2;
+
+    return {
+      start: this.thumbOffset + startPadding,
+      end: this.thumbOffset + this.thumbLen - endPadding,
+    };
   };
 
   /**
@@ -107,35 +122,6 @@ export class ScrollBar extends Group {
   };
 
   /**
-   * 更新滑道长度
-   * @param newTrackLen 新的滑块长度
-   */
-  public updateTrackLen = (newTrackLen: number) => {
-    // 如果更新后的 trackLen 没改变，无需执行后续逻辑
-    if (this.trackLen === newTrackLen) {
-      return;
-    }
-    // 更新滑道长度的时候，同时按比例更新滑块长度和 offset(增大视窗或者减小视窗的场景))
-    const thumbRate = this.thumbLen / this.trackLen;
-    const offsetRate = this.thumbOffset / this.trackLen;
-    const newThumbLen = newTrackLen * thumbRate;
-    const newOffset = newTrackLen * offsetRate;
-    this.scrollTargetMaxOffset =
-      this.scrollTargetMaxOffset + this.trackLen - newTrackLen;
-    this.trackLen = newTrackLen;
-
-    const coordinate = this.getCoordinates();
-    this.trackShape.attr(coordinate.to, newTrackLen);
-
-    this.updateThumbLen(newThumbLen);
-    this.updateThumbOffset(newOffset);
-    this.emitScrollChange(
-      (newOffset / (newTrackLen - newThumbLen)) * this.scrollTargetMaxOffset,
-      false,
-    );
-  };
-
-  /**
    * 更新滑块长度
    * @param newThumbLen 新的滑道长度
    */
@@ -145,7 +131,7 @@ export class ScrollBar extends Group {
       return;
     }
     this.thumbLen = newThumbLen;
-    const coordinate = this.getCoordinates();
+    const coordinate = this.getCoordinatesName();
     this.thumbShape.attr(coordinate.to, this.thumbOffset + newThumbLen);
     this.emitScrollChange(
       (this.thumbOffset / (this.trackLen - this.thumbLen)) *
@@ -167,10 +153,12 @@ export class ScrollBar extends Group {
 
     this.thumbOffset = newOffset;
 
-    const { from, to } = this.getCoordinates();
+    const { from, to } = this.getCoordinatesName();
+    const { start, end } = this.getCoordinatesWithBBoxExtraPadding();
+
     this.thumbShape.attr({
-      [from]: newOffset,
-      [to]: newOffset + this.thumbLen,
+      [from]: start,
+      [to]: end,
     });
 
     if (emitScrollChange) {
@@ -285,13 +273,15 @@ export class ScrollBar extends Group {
       cursor: 'default',
     };
 
+    const { start, end } = this.getCoordinatesWithBBoxExtraPadding();
+
     if (this.isHorizontal) {
       return group.addShape('line', {
         attrs: {
           ...baseAttrs,
-          x1: this.thumbOffset,
+          x1: start,
           y1: size / 2,
-          x2: this.thumbOffset + this.thumbLen,
+          x2: end,
           y2: size / 2,
         },
       });
@@ -300,9 +290,9 @@ export class ScrollBar extends Group {
       attrs: {
         ...baseAttrs,
         x1: size / 2,
-        y1: this.thumbOffset,
+        y1: start,
         x2: size / 2,
-        y2: this.thumbOffset + this.thumbLen,
+        y2: end,
       },
     });
   };
@@ -370,13 +360,10 @@ export class ScrollBar extends Group {
   };
 
   // 点击滑道的事件回调,移动滑块位置
-  private onTrackClick = (e: MouseEvent) => {
-    const containerDOM = this.get('canvas').get('container');
-    const rect = containerDOM.getBoundingClientRect();
-    const { clientX, clientY } = e;
+  private onTrackClick = (event: MouseEvent) => {
     const offset = this.isHorizontal
-      ? clientX - rect.left - this.position.x - this.thumbLen / 2
-      : clientY - rect.top - this.position.y - this.thumbLen / 2;
+      ? event.offsetX - this.position.x - this.thumbLen / 2
+      : event.offsetY - this.position.y - this.thumbLen / 2;
 
     const newOffset = this.validateRange(offset);
     this.updateThumbOffset(newOffset);
