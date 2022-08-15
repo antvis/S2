@@ -1,10 +1,9 @@
-import { find, get } from 'lodash';
+import { get } from 'lodash';
 import { CellTypes } from '../../common/constant';
-import type { HeaderActionIcon } from '../../common/interface/basic';
 import type { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
-import { shouldShowActionIcons } from './header-cell';
+import { getActionIconConfig } from './header-cell';
 
 export const getTableColIconsWidth = (
   ss: SpreadSheet,
@@ -19,11 +18,9 @@ export const getTableColIconsWidth = (
   if (ss.options.showDefaultHeaderActionIcon) {
     iconNums = 1;
   } else {
-    iconNums = (
-      find(ss.options.headerActionIcons, (headerActionIcon: HeaderActionIcon) =>
-        shouldShowActionIcons(headerActionIcon, meta, cellType),
-      )?.iconNames ?? []
-    ).length;
+    iconNums =
+      getActionIconConfig(ss.options.headerActionIcons, meta, cellType)
+        ?.iconNames.length ?? 0;
   }
 
   return (

@@ -242,9 +242,9 @@ export interface HeaderActionIcon {
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
-  defaultHide?: boolean;
-  // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
-  displayCondition?: (mete: Node) => boolean;
+  defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
+  // 是否展示当前 iconNames 配置的 icon
+  displayCondition?: (mete: Node, iconName: string) => boolean;
   // 点击后的执行函数
   action?: (headerActionIconProps: HeaderActionIconProps) => void;
 }
