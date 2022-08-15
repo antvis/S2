@@ -246,7 +246,9 @@ export class PivotDataSet extends BaseDataSet {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortByMeasure } = item;
       // 万物排序的前提
-      if (!sortFieldId) return;
+      if (!sortFieldId) {
+        return;
+      }
       const originValues = [...(this.sortedDimensionValues[sortFieldId] || [])];
       const result = handleSortAction({
         dataSet: this,

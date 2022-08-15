@@ -373,12 +373,16 @@ export const updateMergedCells = (
   mergedCellsGroup: IGroup,
 ) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
-  if (isEmpty(mergedCellsInfo)) return;
+  if (isEmpty(mergedCellsInfo)) {
+    return;
+  }
 
   // 可见区域的所有cells
   const allCells = sheet.interaction.getPanelGroupAllDataCells();
 
-  if (isEmpty(allCells)) return;
+  if (isEmpty(allCells)) {
+    return;
+  }
 
   // allVisibleTempMergedCells 所有可视区域的 mergedCell
   const allVisibleTempMergedCells: TempMergedCell[] = [];

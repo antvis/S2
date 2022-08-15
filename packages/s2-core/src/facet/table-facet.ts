@@ -469,7 +469,9 @@ export class TableFacet extends BaseFacet {
       },
 
       getCellOffsetY: (offset: number) => {
-        if (offset <= 0) return 0;
+        if (offset <= 0) {
+          return 0;
+        }
         if (this.rowOffsets) {
           return this.rowOffsets[offset];
         }
@@ -533,7 +535,9 @@ export class TableFacet extends BaseFacet {
   };
 
   public getTotalHeightForRange = (start: number, end: number) => {
-    if (start < 0 || end < 0) return 0;
+    if (start < 0 || end < 0) {
+      return 0;
+    }
 
     if (this.rowOffsets) {
       return this.rowOffsets[end + 1] - this.rowOffsets[start];

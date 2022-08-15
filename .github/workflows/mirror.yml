@@ -29,7 +29,7 @@ jobs:
           # 注意替换为你的 Gitee 仓库
           gitee-repo: antv-s2/antv-s2
 
-      - name: 🔊  Sync to gitee success notify
+      - name: 🔊 Sync to gitee success notify
         if: ${{ success() }}
         uses: zcong1993/actions-ding@master
         with:
@@ -40,13 +40,13 @@ jobs:
               "msgtype": "link",
               "link": {
                 "title": "✅ 同步国内镜像成功",
-                "text": "🔗 点击可跳转查看",
+                "text": "🔗 点击访问",
                 "messageUrl": "https://antv-s2.gitee.io/zh",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/eg5FNSoci/5706bbeb-7b75-4f4f-8fa5-2ac02dc99c4a.png"
               }
             }
 
-      - name: 🔊  Sync to gitee failed notify
+      - name: 🔊 Sync to gitee failed notify
         if: ${{ failure() }}
         uses: zcong1993/actions-ding@master
         with:
@@ -57,8 +57,8 @@ jobs:
               "msgtype": "link",
               "link": {
                 "title": "🚨 同步国内镜像失败",
-                "text": "🔗 请点击链接查看具体原因, 及时修复 🚑",
+                "text": "🔗 请点击链接查看具体原因 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/mirror.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/eg5FNSoci/5706bbeb-7b75-4f4f-8fa5-2ac02dc99c4a.png"
               }
             }

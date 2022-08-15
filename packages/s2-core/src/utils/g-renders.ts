@@ -54,7 +54,9 @@ export function renderText(
 ): IShape {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: IShape) => {
-      if (group.contain(shape)) group.removeChild(shape, true);
+      if (group.contain(shape)) {
+        group.removeChild(shape, true);
+      }
     });
   }
   return group?.addShape?.('text', {
