@@ -8,8 +8,8 @@
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------- | ------ | ---- | ---------------------------------------------------------- |
 | iconNames        | 已经注册的 icon 名称，或用户通过 customSVGIcons 注册的 icon 名称 | `string[]`                                              |        | ✓    |                                                            |
 | belongsCell      | 需要增加操作图标的单元格名称                                 | `string[]`                                              |        | ✓    | 角头：'cornerCell';<br>列头：'colCell';<br>行头：'rowCell' |
-| defaultHide      | false                                                        | `boolean`                                               | false  |      | true                                                       |
-| displayCondition | 展示的过滤条件，可以通过该回调函数用户自定义行列头哪些层级或单元格需要展示 icon。 所有返回值为 true 的单元格会展示 icon，反之则无 | `(mete: Node) => boolean;`                               |        |      |                                                            |
+| defaultHide      | 控制是否 hover 才展示 icon                                                        | `boolean \| (meta: Node, iconName: string) => boolean`                                                | false  |      | true                                                       |
+| displayCondition | 展示的过滤条件，可以通过该回调函数用户自定义行列头哪些层级或单元格需要展示 icon。 所有返回值为 true 的 icon 会展示给用户。 | `(mete: Node, iconName: string) => boolean;`                               |        |      |                                                            |
 | action           | icon 点击之后的执行函数                                      | `(headerActionIconProps: HeaderActionIconProps) => void;` |        |     |                                                            |
 
 ​
