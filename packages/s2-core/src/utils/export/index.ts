@@ -255,8 +255,10 @@ const getNodeFormatLabel = (node: Node) => {
 const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line = [];
   const getRowNodeFormatterLabel = (node: Node) => {
-    // node.id === ROOT_ID 时，为S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === ROOT_ID) return;
+    // node.id === ROOT_ID 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_ID) {
+      return;
+    }
     const formatterLabel = getNodeFormatLabel(node);
     line.unshift(formatterLabel);
     if (node?.parent) {
