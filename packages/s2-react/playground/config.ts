@@ -32,7 +32,7 @@ export const s2Options: S2Options = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
-    // 防止 mac 触摸板横向滚动触发浏览器返回
+    // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'contain',
   },
   tooltip: {
@@ -40,16 +40,14 @@ export const s2Options: S2Options = {
       trend: true,
     },
   },
-  hierarchyType: 'tree',
+  hierarchyType: 'grid',
   style: {
+    rowCfg: {
+      width: 200,
+    },
     cellCfg: {
       height: 50,
     },
-    // rowCfg: {
-    //   width: 300,
-    // },
-    // treeRowsWidth: 500,
-    hierarchyCollapse: false,
   },
 };
 

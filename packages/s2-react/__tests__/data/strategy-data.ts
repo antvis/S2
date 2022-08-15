@@ -239,6 +239,31 @@ export const StrategySheetDataConfig: S2DataConfig = {
     getMiniChartMockData(),
     {
       'measure-a': {
+        originalValues: [[377, '']],
+        values: [[377, '']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-c': {
+        originalValues: [[null, 324]],
+        values: [[null, 324]],
+      },
+      'measure-d': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-f': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      date: '2022',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
+    },
+
+    {
+      'measure-a': {
         originalValues: [[377, '', 0.02]],
         values: [[377, '', '0.02']],
       },
@@ -258,7 +283,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-      date: '2022',
+      date: '2022-10',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
   ],

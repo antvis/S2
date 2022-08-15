@@ -445,8 +445,9 @@ export class RootInteraction {
   }
 
   public clearState() {
-    clearState(this.spreadsheet);
-    this.draw();
+    if (clearState(this.spreadsheet)) {
+      this.draw();
+    }
   }
 
   public changeState(interactionStateInfo: InteractionStateInfo) {

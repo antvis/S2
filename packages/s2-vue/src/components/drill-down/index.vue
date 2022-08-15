@@ -67,14 +67,20 @@ export default defineComponent({
       if (getDrillFields) {
         getDrillFields(key as string[]);
       }
-      if (setDrillFields) setDrillFields(key as string[]);
+      if (setDrillFields) {
+        setDrillFields(key as string[]);
+      }
     };
 
     const handleClear = (e: { stopPropagation: () => void }) => {
       e.stopPropagation();
       selected.value = [];
-      if (getDrillFields) getDrillFields([]);
-      if (setDrillFields) setDrillFields([]);
+      if (getDrillFields) {
+        getDrillFields([]);
+      }
+      if (setDrillFields) {
+        setDrillFields([]);
+      }
     };
 
     return {

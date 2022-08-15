@@ -24,7 +24,7 @@ order: 0
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/zh/docs/api/components/header) |  |  |
 | getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
-| onRangeSort | 组内排序时触发回调事件 | (params: [SortParams](#sortparams) ) => void; |  |  |
+| onRangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellDoubleClick | 行头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -60,7 +60,7 @@ order: 0
 | onMergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onRangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParams](#sortparams) ) => void; |  |  |
+| onRangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: CanvasEvent ) => void; |  |  |
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
@@ -123,7 +123,7 @@ order: 0
 | :-- | :-- | :-- | :-- | :-: |
 | spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [S2Options](/zh/docs/api/general/S2Options)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
-| rangeSort | 组内排序时触发回调事件 | (params: [SortParams](#sortparams) ) => void; |  |  |
+| rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -160,7 +160,7 @@ order: 0
 | mergedCellsMouseDown | 合并单元格按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseUp | 合并单元格松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mergedCellsMouseMove | 合并单元格移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| rangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParams](#sortparams) ) => void; |  |  |
+| rangeSort | 组内排序时触发回调事件（暂只支持透视表） | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: CanvasEvent ) => void; |  |  |
 | rangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | rangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
@@ -209,7 +209,7 @@ order: 0
 | event | 事件 | [Event](#) |  |  |
 | viewMeta | 当前节点信息 | [Node](/zh/docs/api/basic-class/node) |  |  |
 
-`markdown:docs/common/sort-params.zh.md`
+`markdown:docs/common/sort-param.zh.md`
 
 ## CellScrollPosition
 
@@ -217,8 +217,8 @@ order: 0
 
 | 参数        | 说明         | 类型   | 默认值 | 必选 |
 | :---------- | :----------- | :----- | :----- | :--: |
-| scrollX     | 水平方向滚动偏移量  | `number` |        |      |
-| scrollY     | 垂直方向滚动偏移量  | `number` |        |      |
+| scrollX     | 水平方向滚动偏移量(相对滚动条轨道长度)  | `number` |        |      |
+| scrollY     | 垂直方向滚动偏移量(相对滚动条轨道长度)  | `number` |        |      |
 
 ## HiddenColumnsInfo
 

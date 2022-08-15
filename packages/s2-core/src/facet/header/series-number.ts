@@ -1,14 +1,9 @@
 import type { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import {
-  CellBorderPosition,
-  type Padding,
-  type ViewMeta,
-} from '../../common/interface';
+import { CellBorderPosition, type Padding } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import { getBorderPositionAndStyle } from '../../utils/cell/cell';
 import { renderLine, renderRect } from '../../utils/g-renders';
-import { measureTextWidth } from '../../utils/text';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
@@ -198,7 +193,10 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   private getTextPadding(text: string, cellWidth: number): Padding {
     const rowCellTheme = this.getStyle();
-    const textWidth = measureTextWidth(text, rowCellTheme.seriesText);
+    const textWidth = this.headerConfig.spreadsheet.measureTextWidth(
+      text,
+      rowCellTheme.seriesText,
+    );
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
       ...rowCellTheme.cell.padding,

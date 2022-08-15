@@ -51,19 +51,31 @@ s2.facet.xx()
 | getRealWidth | 获取实际渲染的宽度 | () => number |
 | getRealHeight | 获取实际渲染的高度 | () => number |
 | clearAllGroup | 清空所有 Group | () => void |
-| isScrollOverThePanelArea | 是否在数值区域滚动 | (options: { layerX: number, layerY: number }) => boolean |
-| isScrollOverTheCornerArea | 是否在角头区域滚动 | (options: { layerX: number, layerY: number }) => boolean |
-| isScrollToLeft | 是否滚动到了最左边 | (deltaX: number) => boolean |
-| isScrollToRight | 是否滚动到了最右边 | (deltaX: number) => boolean |
+| isScrollOverThePanelArea | 是否在数值区域滚动 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
+| isScrollOverTheCornerArea | 是否在角头区域滚动 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
+| isScrollToLeft | 是否滚动到了最左边 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
+| isScrollToRight | 是否滚动到了最右边 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
 | isScrollToTop | 是否滚动到了顶部 | (deltaY: number) => boolean |
 | isScrollToBottom | 是否滚动到了底部 |  (deltaY: number) => boolean|
 | isVerticalScrollOverTheViewport | 是否在数值单元格区域垂直滚动 | (deltaY: number) => boolean |
-| isHorizontalScrollOverTheViewport | 是否在数值单元格区域水平滚动 | (deltaX: number) => boolean |
-| isScrollOverTheViewport | 是否在数值单元格区域滚动 | (deltaX: number, deltaY: number, layerY: number) => boolean |
+| isHorizontalScrollOverTheViewport | 是否在数值单元格区域水平滚动 | (scrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
+| isScrollOverTheViewport | 是否在数值单元格区域滚动 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
 | cancelScrollFrame | 取消当前滚动帧 | () => void |
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
+
+### CellScrollOffset
+
+```ts
+export interface CellScrollOffset {
+  deltaX?: number;
+  deltaY?: number;
+  offset?: number;
+  offsetX: number;
+  offsetY: number;
+}
+```
 
 ### LayoutResult
 

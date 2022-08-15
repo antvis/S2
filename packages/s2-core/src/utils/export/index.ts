@@ -234,10 +234,10 @@ const getHeaderLabel = (val: string) => {
  * 当列头label存在数组情况，需要将其他层级补齐空格
  * eg [ ['数值', '环比'], '2021'] => [ ['数值', '环比'], ['2021', '']
  */
-const processColHeaders = (headers: any[][], arrayLength: number) => {
+const processColHeaders = (headers: any[][]) => {
   const result = headers.map((header) =>
     header.map((item) =>
-      isArray(item) ? item : [item, ...new Array(arrayLength - 1)],
+      isArray(item) ? item : [item, ...new Array(header[0].length - 1)],
     ),
   );
   return result;
@@ -255,8 +255,10 @@ const getNodeFormatLabel = (node: Node) => {
 const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line = [];
   const getRowNodeFormatterLabel = (node: Node) => {
-    // node.id === ROOT_ID 时，为S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === ROOT_ID) return;
+    // node.id === ROOT_ID 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_ID) {
+      return;
+    }
     const formatterLabel = getNodeFormatLabel(node);
     line.unshift(formatterLabel);
     if (node?.parent) {
@@ -408,7 +410,7 @@ export const copyData = (
     });
 
     if (arrayLength > 1) {
-      tempColHeader = processColHeaders(tempColHeader, arrayLength);
+      tempColHeader = processColHeaders(tempColHeader);
     }
 
     const colLevels = tempColHeader.map((colHeader) => colHeader.length);
