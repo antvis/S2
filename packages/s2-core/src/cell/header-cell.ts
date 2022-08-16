@@ -163,7 +163,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, iconName, defaultHide, action } = options;
+    const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
     const { icon: iconTheme, text: textTheme } = this.getStyle();
     // 未配置 icon 颜色, 默认使用文字颜色
     const actionIconColor = iconTheme?.fill || textTheme?.fill;
@@ -181,10 +181,25 @@ export abstract class HeaderCell extends BaseCell<Node> {
     icon.set('visible', !defaultHide);
     icon.on('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+      onHover?.({
+        hovering: true,
+        iconName,
+        meta: this.meta,
+        event,
+      });
+    });
+    icon.on('mouseleave', (event: CanvasEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
+      onHover?.({
+        hovering: false,
+        iconName,
+        meta: this.meta,
+        event,
+      });
     });
     icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      action?.({
+      (onClick || action)?.({
         iconName,
         meta: this.meta,
         event,
@@ -206,7 +221,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return;
     }
 
-    const { iconNames, action, defaultHide } = actionIconCfg;
+    const { iconNames, action, onClick, onHover, defaultHide } = actionIconCfg;
 
     const position = this.getIconPosition(iconNames.length);
 
@@ -229,6 +244,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
         y,
         defaultHide: iconDefaultHide,
         action,
+        onClick,
+        onHover,
       });
     });
   }

@@ -222,17 +222,26 @@ export interface CustomSVGIcon {
   svg: string;
 }
 
-export interface HeaderActionIconProps {
+export interface HeaderIconClickParams {
   iconName: string;
   meta: Node;
   event?: Event;
+}
+
+export type HeaderActionIconProps = HeaderIconClickParams;
+
+export interface HeaderIconHoverParams extends HeaderIconClickParams {
+  hovering: boolean;
 }
 
 export interface HeaderActionIconOptions {
   iconName: string;
   x: number;
   y: number;
-  action: (props: HeaderActionIconProps) => void;
+  /** @deprecated 使用 onClick 代替 */
+  action: (props: HeaderIconClickParams) => void;
+  onClick: (headerIconClickParams: HeaderIconClickParams) => void;
+  onHover: (headerIconHoverParams: HeaderIconHoverParams) => void;
   defaultHide?: boolean;
 }
 
@@ -245,8 +254,15 @@ export interface HeaderActionIcon {
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
   // 是否展示当前 iconNames 配置的 icon
   displayCondition?: (mete: Node, iconName: string) => boolean;
-  // 点击后的执行函数
-  action?: (headerActionIconProps: HeaderActionIconProps) => void;
+  /**
+   * 点击后的执行函数
+   * @deprecated 使用 onClick 代替
+   */
+  action?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // 点击回调函数
+  onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // hover 回调函数
+  onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
