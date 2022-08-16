@@ -6,7 +6,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { getActionIconConfig } from './header-cell';
 
 export const getTableColIconsWidth = (
-  ss: SpreadSheet,
+  s2: SpreadSheet,
   meta: Node,
   cellType: CellTypes,
   iconStyle: IconTheme,
@@ -15,11 +15,11 @@ export const getTableColIconsWidth = (
   const iconMargin = get(iconStyle, 'margin');
 
   let iconNums = 0;
-  if (ss.options.showDefaultHeaderActionIcon) {
+  if (s2.options.showDefaultHeaderActionIcon) {
     iconNums = 1;
   } else {
     iconNums =
-      getActionIconConfig(ss.options.headerActionIcons, meta, cellType)
+      getActionIconConfig(s2.options.headerActionIcons, meta, cellType)
         ?.iconNames.length ?? 0;
   }
 
@@ -30,13 +30,13 @@ export const getTableColIconsWidth = (
 };
 
 export const getExtraPaddingForExpandIcon = (
-  ss: SpreadSheet,
+  s2: SpreadSheet,
   field: string,
   style: DefaultCellTheme,
 ) => {
   const iconMarginLeft = style.icon.margin?.left || 0;
   const iconMarginRight = style.icon.margin?.right || 0;
-  const hiddenColumnsDetail = ss.store.get('hiddenColumnsDetail', []);
+  const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
 
   let hasPrevSiblingCell = false;
   let hasNextSiblingCell = false;
