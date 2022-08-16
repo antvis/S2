@@ -396,7 +396,7 @@ describe('Scroll Tests', () => {
     jest.spyOn(sheet.facet as any, 'dynamicRenderCell');
     jest.spyOn(sheet.facet as any, 'emitScrollEvent');
 
-    sheet.facet.startScroll(1, 1, true);
+    sheet.facet.startScroll(true);
 
     expect((sheet.facet as any).dynamicRenderCell).toHaveBeenCalledWith(true);
     expect((sheet.facet as any).emitScrollEvent).not.toBeCalled();

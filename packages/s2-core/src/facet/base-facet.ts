@@ -470,7 +470,7 @@ export abstract class BaseFacet {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
-      this.startScroll(adjustedScrollX, adjustedScrollY);
+      this.startScroll();
       if (elapsed > duration) {
         this.timer.stop();
         cb?.();
@@ -484,27 +484,23 @@ export abstract class BaseFacet {
       scrollY: offsetConfig.offsetY?.value || 0,
     });
     this.setScrollOffset({ scrollX, scrollY });
-    this.startScroll(scrollX, scrollY);
+    this.startScroll();
   };
 
   /**
    *
-   * @param newX 是否更新水平滚动条
-   * @param newY 是否更新纵向滚动条
    * @param passive 被动更新不触发S2Event.GLOBAL_SCROLL
    */
-  startScroll = (newX: number, newY: number, passive = false) => {
+  startScroll = (passive = false) => {
     const { scrollX, scrollY } = this.getScrollOffset();
-    if (newX !== undefined) {
-      this.hScrollBar?.onlyUpdateThumbOffset(
-        this.getScrollBarOffset(scrollX, this.hScrollBar),
-      );
-    }
-    if (newY !== undefined) {
-      this.vScrollBar?.onlyUpdateThumbOffset(
-        this.getScrollBarOffset(scrollY, this.vScrollBar),
-      );
-    }
+
+    this.hScrollBar?.onlyUpdateThumbOffset(
+      this.getScrollBarOffset(scrollX, this.hScrollBar),
+    );
+
+    this.vScrollBar?.onlyUpdateThumbOffset(
+      this.getScrollBarOffset(scrollY, this.vScrollBar),
+    );
     this.dynamicRenderCell(passive);
   };
 
@@ -1274,7 +1270,9 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-    if (!passive) this.emitScrollEvent({ scrollX, scrollY });
+    if (!passive) {
+      this.emitScrollEvent({ scrollX, scrollY });
+    }
     this.onAfterScroll();
   }
 
