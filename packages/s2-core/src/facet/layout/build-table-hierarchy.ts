@@ -1,21 +1,18 @@
-import { map } from 'lodash';
+import { DFSGenerateHeaderNodes } from '../../utils/layout/generate-header-nodes';
+import { getDisplayedColumnsTree, getLeafColumns } from '../utils';
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
-import { i18n } from '../../common/i18n';
-import {
-  generateHeaderNodes,
-  DFSGenerateHeaderNodes,
-} from '../../utils/layout/generate-header-nodes';
-import { getDisplayedColumnsTree } from '../utils';
 import type { TableHeaderParams } from '../layout/interface';
+import type { ColumnNode } from '../../common';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
-  const { facetCfg, hierarchy, parentNode } = params;
-  const { columns, columnsTree, spreadsheet, dataSet } = facetCfg;
+  const { facetCfg } = params;
+  const { columns, spreadsheet } = facetCfg;
 
   const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
   const showSeriesNumber = facetCfg?.showSeriesNumber;
-
-  const displayedColumns = columns.filter((column) => {
+  // 获取所有叶子结点
+  const leafs = getLeafColumns(columns, true);
+  const displayedColumns = leafs.filter((column) => {
     if (!hiddenColumnsDetail) {
       return true;
     }
@@ -27,43 +24,22 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   });
   const fields = [...displayedColumns];
 
-  const fieldValues = map(displayedColumns, (val) => dataSet.getFieldName(val));
-
+  const tree = [...columns];
+  const fieldsMap = {};
   if (showSeriesNumber) {
-    fields.unshift(SERIES_NUMBER_FIELD);
-    fieldValues.unshift(i18n('序号'));
+    tree.unshift({
+      name: SERIES_NUMBER_FIELD,
+    } as ColumnNode);
+    fieldsMap[SERIES_NUMBER_FIELD] = true;
   }
-
-  if (columnsTree) {
-    const tree = [...columnsTree];
-    if (showSeriesNumber) {
-      tree.unshift({
-        name: fields[0],
-      });
-    }
-    const fieldsMap = fields.reduce((prev, field) => {
-      prev[field] = true;
-      return prev;
-    }, {});
-    DFSGenerateHeaderNodes(
-      getDisplayedColumnsTree(tree, fieldsMap),
-      params,
-      0,
-      null,
-    );
-    return;
-  }
-
-  generateHeaderNodes({
-    currentField: fields[0],
-    fields,
-    fieldValues,
-    facetCfg,
-    hierarchy,
-    parentNode,
-    level: 0,
-    query: {},
-    addMeasureInTotalQuery: false,
-    addTotalMeasureInTotal: false,
-  });
+  fields.reduce((prev, field) => {
+    prev[field] = true;
+    return prev;
+  }, fieldsMap);
+  DFSGenerateHeaderNodes(
+    getDisplayedColumnsTree(tree, fieldsMap),
+    params,
+    0,
+    null,
+  );
 };

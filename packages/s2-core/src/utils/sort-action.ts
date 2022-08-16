@@ -19,6 +19,7 @@ import type { PivotDataSet } from '../data-set';
 import type { DataType, SortActionParams } from '../data-set/interface';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
+import { getLeafColumns } from '../facet/utils';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -171,7 +172,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
 
     result = getDimensionsWithParentPath(
       sortFieldId,
-      isInRows ? rows : columns,
+      isInRows ? rows : getLeafColumns(columns, true),
       dimensions,
     );
   } else {
@@ -223,7 +224,7 @@ const createTotalParams = (
     const realOriginValue = split(originValue, ID_SEPARATOR);
     const keys = fields?.rows?.includes(sortFieldId)
       ? fields.rows
-      : fields.columns;
+      : getLeafColumns(fields.columns, true);
 
     for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
       totalParams[keys[i]] = realOriginValue[i];
@@ -252,13 +253,13 @@ export const getSortByMeasureValues = (
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
   const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
-
+  const columns = getLeafColumns(fields.columns, true);
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
   if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = concat(fields.rows, fields.columns);
+    const rowColFields = concat(fields.rows, columns);
 
     return dataList.filter((dataItem) => {
       const dataItemKeys = new Set(keys(dataItem));
@@ -276,12 +277,10 @@ export const getSortByMeasureValues = (
    */
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
-  const sortFields = filterExtraField(
-    isSortFieldInRow ? fields.rows : fields.columns,
-  );
+  const sortFields = filterExtraField(isSortFieldInRow ? fields.rows : columns);
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraField(
-    isSortFieldInRow ? fields.columns : fields.rows,
+    isSortFieldInRow ? columns : fields.rows,
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];

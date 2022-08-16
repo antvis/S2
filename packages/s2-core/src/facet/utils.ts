@@ -5,6 +5,7 @@ import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
 import type {
   ColumnNode,
+  Columns,
   Pagination,
   ScrollSpeedRatio,
 } from '../common/interface';
@@ -424,10 +425,13 @@ export const getFrozenLeafNodesCount = (
  * @returns {ColumnNode} 配置结构
  */
 export const getDisplayedColumnsTree = (
-  columnsTree: ColumnNode[],
+  columnsTree: Array<ColumnNode | string>,
   fieldsMap,
 ): ColumnNode[] => {
   return columnsTree.reduce((tree, column) => {
+    if (typeof column === 'string') {
+      column = { name: column };
+    }
     const copyColumn = { ...column };
     // 分支节点显示
     if (copyColumn.children) {
@@ -465,4 +469,33 @@ export const getNodeRoot = (node: Node): Node => {
     node = node.parent;
   }
   return node;
+};
+
+/**
+ * 获取 columns 的所有叶子节点
+ * @param columns 列配置
+ * @param onlyName 是否只需要列名称
+ * @returns {Array} 叶子节点列组成的数组
+ */
+export const getLeafColumns = (columns: Columns, onlyName?: boolean) => {
+  const leafs = [];
+  const recursionFn = (list) => {
+    list.forEach((column) => {
+      if (typeof column === 'string' || !column.children) {
+        leafs.push(column);
+      } else {
+        recursionFn(column.children);
+      }
+    });
+  };
+  recursionFn(columns);
+  if (onlyName) {
+    return leafs.map((column) => {
+      if (typeof column === 'string') {
+        return column;
+      }
+      return column.name;
+    });
+  }
+  return leafs;
 };

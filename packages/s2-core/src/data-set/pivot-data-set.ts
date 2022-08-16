@@ -94,7 +94,7 @@ export class PivotDataSet extends BaseDataSet {
       const { rows, columns } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
-        columns,
+        columns: columns as string[],
         originData: this.originData,
         totalData: this.totalData,
         indexesData: this.indexesData,
@@ -153,7 +153,7 @@ export class PivotDataSet extends BaseDataSet {
       sortedDimensionValues,
     } = transformIndexesData({
       rows: nextRowFields,
-      columns,
+      columns: columns as string[],
       originData,
       totalData,
       indexesData: this.indexesData,
@@ -284,7 +284,10 @@ export class PivotDataSet extends BaseDataSet {
     let newRows = rows;
     if (valueInCols) {
       newColumns = this.isCustomMeasuresPosition(customValueOrder)
-        ? this.handleCustomMeasuresOrder(customValueOrder, newColumns)
+        ? this.handleCustomMeasuresOrder(
+            customValueOrder,
+            newColumns as string[],
+          )
         : uniq([...columns, EXTRA_FIELD]);
     } else {
       newRows = this.isCustomMeasuresPosition(customValueOrder)
@@ -334,7 +337,7 @@ export class PivotDataSet extends BaseDataSet {
       dimensions = rows;
     } else if (includes(columns, field)) {
       meta = this.colPivotMeta;
-      dimensions = columns;
+      dimensions = columns as string[];
     }
 
     if (!isEmpty(query)) {
@@ -421,7 +424,7 @@ export class PivotDataSet extends BaseDataSet {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
     const rowDimensionValues = getQueryDimValues(rows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    const colDimensionValues = getQueryDimValues(columns as string[], query);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -484,9 +487,9 @@ export class PivotDataSet extends BaseDataSet {
       ),
       isRowSubTotal: isTotals(rows, true),
       isColTotal: isTotals(
-        getDimensions(columns, this.spreadsheet.isValueInCols()),
+        getDimensions(columns as string[], this.spreadsheet.isValueInCols()),
       ),
-      isColSubTotal: isTotals(columns, true),
+      isColSubTotal: isTotals(columns as string[], true),
     };
   };
 
@@ -504,14 +507,14 @@ export class PivotDataSet extends BaseDataSet {
       ? rows.concat(drillDownFields)
       : rows;
     const rowDimensionValues = getQueryDimValues(totalRows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    const colDimensionValues = getQueryDimValues(columns as string[], query);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       careUndefined: true,
       isFirstCreate: true,
       rowFields: rows,
-      colFields: columns,
+      colFields: columns as string[],
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
@@ -527,7 +530,7 @@ export class PivotDataSet extends BaseDataSet {
       const rowKeys = getFieldKeysByDimensionValues(rowDimensionValues, rows);
       const colKeys = getFieldKeysByDimensionValues(
         colDimensionValues,
-        columns,
+        columns as string[],
       );
       if (isRow) {
         // 行总计

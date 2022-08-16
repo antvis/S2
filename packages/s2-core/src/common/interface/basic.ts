@@ -85,14 +85,15 @@ export interface Extra {
   remark: string;
 }
 
+export type Columns = Array<ColumnNode | string>;
+
 export interface Fields {
   // row fields
   rows?: string[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields
-  columns?: string[];
-  columnsTree?: ColumnNode[];
+  columns?: Columns;
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
@@ -103,7 +104,7 @@ export interface Fields {
 
 export interface ColumnNode {
   name: string;
-  children?: ColumnNode[];
+  children?: Columns;
 }
 
 export interface TotalsStatus {

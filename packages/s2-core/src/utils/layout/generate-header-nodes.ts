@@ -11,7 +11,7 @@ import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
-import type { ColumnNode } from '@/common';
+import type { Columns } from '@/common';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {
@@ -145,13 +145,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
 
 /**
  * 给定一个树形结构的表头，深度优先创建表头的 node
- * @param columnsTree
+ * @param columns
  * @param params
  * @param pNode
  * @param level
  */
 export const DFSGenerateHeaderNodes = (
-  columnsTree: ColumnNode[],
+  columns: Columns,
   params: TableHeaderParams,
   level: number,
   pNode?: Node,
@@ -159,7 +159,10 @@ export const DFSGenerateHeaderNodes = (
   const { facetCfg, hierarchy, parentNode } = params;
   const { dataSet } = facetCfg;
 
-  columnsTree.forEach((column, i) => {
+  columns.forEach((column, i) => {
+    if (typeof column === 'string') {
+      column = { name: column };
+    }
     const { name } = column;
     const value =
       name === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(name);
