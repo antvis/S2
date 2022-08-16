@@ -358,7 +358,7 @@ export class TableFacet extends BaseFacet {
   }
 
   /**
-   * Auto Auto Auto column no-leaf node's width and x coordinate
+   * Auto column no-leaf node's width and x coordinate
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
@@ -839,6 +839,24 @@ export class TableFacet extends BaseFacet {
     }
   };
 
+  getRealFrozenColumns = (
+    frozenColCount: number,
+    frozenTrailingColCount: number,
+  ) => {
+    let colCount = frozenColCount;
+    let trailingColCount = frozenTrailingColCount;
+    if (frozenColCount || frozenTrailingColCount) {
+      let nodes = this.layoutResult.colsHierarchy.getNodes();
+      nodes = nodes.filter((node) => isTopLevelNode(node));
+      ({ colCount, trailingColCount } = getFrozenLeafNodesCount(
+        nodes,
+        frozenColCount,
+        frozenTrailingColCount,
+      ));
+    }
+    return { colCount, trailingColCount };
+  };
+
   addCell = (cell: S2CellType<ViewMeta>) => {
     const {
       frozenRowCount,
@@ -849,20 +867,10 @@ export class TableFacet extends BaseFacet {
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
     const cellRange = this.getCellRange();
 
-    let colCount = frozenColCount;
-    let trailingColCount = frozenTrailingColCount;
-    if (
-      (frozenColCount || frozenTrailingColCount) &&
-      this.spreadsheet.dataCfg.fields.columnsTree
-    ) {
-      let nodes = this.layoutResult.colsHierarchy.getNodes();
-      nodes = nodes.filter((node) => isTopLevelNode(node));
-      ({ colCount, trailingColCount } = getFrozenLeafNodesCount(
-        nodes,
-        frozenColCount,
-        frozenTrailingColCount,
-      ));
-    }
+    const { colCount, trailingColCount } = this.getRealFrozenColumns(
+      frozenColCount,
+      frozenTrailingColCount,
+    );
 
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
@@ -1101,20 +1109,10 @@ export class TableFacet extends BaseFacet {
 
     this.panelScrollGroupIndexes = indexes;
 
-    let colCount = frozenColCount;
-    let trailingColCount = frozenTrailingColCount;
-    if (
-      (frozenColCount || frozenTrailingColCount) &&
-      this.spreadsheet.dataCfg.fields.columnsTree
-    ) {
-      let nodes = this.layoutResult.colsHierarchy.getNodes();
-      nodes = nodes.filter((node) => isTopLevelNode(node));
-      ({ colCount, trailingColCount } = getFrozenLeafNodesCount(
-        nodes,
-        frozenColCount,
-        frozenTrailingColCount,
-      ));
-    }
+    const { colCount, trailingColCount } = this.getRealFrozenColumns(
+      frozenColCount,
+      frozenTrailingColCount,
+    );
 
     return splitInViewIndexesWithFrozen(
       indexes,

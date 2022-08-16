@@ -402,7 +402,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (this.spreadsheet.isTableMode() && nodes.length) {
       const leafs = nodes[0].hierarchy.getLeaves();
       isEqualIndex = leafs.some((cell, i) => {
-        if (nodes.find((node) => node === cell)) {
+        if (nodes.some((node) => node === cell)) {
           return i === currentIndex;
         }
         return false;
