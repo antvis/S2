@@ -9,6 +9,7 @@ import { FrozenGroup } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
+import { getFrozenLeafNodesCount } from '@/facet/utils';
 import { DEFAULT_STYLE } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
@@ -565,4 +566,193 @@ describe('Custom Column Width Tests', () => {
       }
     },
   );
+});
+
+describe('Table Mode Facet With Column Grouping Test', () => {
+  const s2: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(s2);
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: s2,
+    dataSet,
+    ...assembleDataCfg().fields,
+    ...DEFAULT_STYLE,
+    columns: [
+      {
+        name: 'area',
+        children: ['province', 'city'],
+      },
+      {
+        name: 'all_type',
+        children: ['type', 'sub_type'],
+      },
+      'price',
+    ],
+  });
+  const { colCfg } = facet.cfg;
+
+  test('should get correct group', () => {
+    const leafNodes = facet.layoutResult.colLeafNodes;
+    expect(leafNodes[0].parent.field).toEqual('area');
+    expect(leafNodes[1].parent.field).toEqual('area');
+    expect(leafNodes[2].parent.field).toEqual('all_type');
+    expect(leafNodes[3].parent.field).toEqual('all_type');
+    expect(leafNodes[4].parent.id).toEqual('root');
+  });
+  test('should has correct col hierarchy', () => {
+    expect(facet.layoutResult.colNodes).toHaveLength(7);
+    expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
+    const nodes = facet.layoutResult.colNodes;
+    expect(nodes[0].y).toBe(0);
+    expect(nodes[0].height).toEqual(colCfg.height);
+    expect(nodes[1].y).toBe(colCfg.height);
+    expect(nodes[1].height).toEqual(colCfg.height);
+    expect(nodes[2].y).toBe(colCfg.height);
+    expect(nodes[2].height).toEqual(colCfg.height);
+
+    expect(nodes[3].y).toBe(0);
+    expect(nodes[3].height).toEqual(colCfg.height);
+    expect(nodes[4].y).toBe(colCfg.height);
+    expect(nodes[4].height).toEqual(colCfg.height);
+    expect(nodes[5].y).toBe(colCfg.height);
+    expect(nodes[5].height).toEqual(colCfg.height);
+
+    expect(nodes[6].y).toBe(0);
+    expect(nodes[6].height).toEqual(colCfg.height * 2);
+  });
+});
+
+describe('Table Mode Facet With Column Grouping Frozen Test', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: ss,
+    dataSet,
+    ...assembleDataCfg().fields,
+    ...assembleOptions({
+      frozenColCount: 1,
+      frozenRowCount: 2,
+      frozenTrailingColCount: 1,
+      frozenTrailingRowCount: 2,
+    }),
+    ...DEFAULT_STYLE,
+    columns: [
+      {
+        name: 'area',
+        children: ['province', 'city'],
+      },
+      'price',
+      {
+        name: 'all_type',
+        children: ['type', 'sub_type'],
+      },
+    ],
+  });
+
+  test('should get correct frozenInfo', () => {
+    facet.calculateFrozenGroupInfo();
+    expect(facet.frozenGroupInfo).toStrictEqual({
+      [FrozenGroup.FROZEN_COL]: {
+        range: [0, 0],
+        width: 240,
+      },
+      [FrozenGroup.FROZEN_ROW]: {
+        height: 60,
+        range: [0, 1],
+      },
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
+        range: [2, 2],
+        width: 240,
+      },
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+        height: 60,
+        range: [30, 31],
+      },
+    });
+  });
+
+  test('should get correct col layout with frozen col', () => {
+    const { width } = facet.spreadsheet.options;
+    const { frozenColCount } = facet.cfg;
+    const { colNodes } = facet.layoutResult;
+    const topLevelNodes = colNodes.filter((node) => node.parent.id === 'root');
+    let prevWidth = 0;
+    topLevelNodes.slice(0, frozenColCount).forEach((node) => {
+      expect(node.x).toBe(prevWidth);
+      prevWidth += node.width;
+    });
+  });
+
+  test('should get correct cell layout with frozenTrailingCol', () => {
+    const { width } = facet.spreadsheet.options;
+    const { frozenTrailingColCount } = facet.cfg;
+    const { colNodes, colLeafNodes, getCellMeta } = facet.layoutResult;
+    const topLevelNodes = colNodes.filter((node) => node.parent.id === 'root');
+    const { trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      0,
+      frozenTrailingColCount,
+    );
+    let prevWidth = 0;
+    colLeafNodes
+      .slice(-trailingColCount)
+      .reverse()
+      .forEach((node, index) => {
+        prevWidth += node.width;
+        expect(getCellMeta(1, colLeafNodes.length - 1 - index).x).toBe(
+          width - prevWidth,
+        );
+      });
+  });
+
+  test('should get correct cell layout with frozenTrailingRow', () => {
+    const { frozenTrailingRowCount, cellCfg } = facet.cfg;
+    const { getCellMeta } = facet.layoutResult;
+    const displayData = dataSet.getDisplayDataSet();
+    const panelBBox = facet.panelBBox;
+    let prevHeight = 0;
+    displayData
+      .slice(-frozenTrailingRowCount)
+      .reverse()
+      .forEach((_, idx) => {
+        prevHeight += cellCfg.height;
+        expect(getCellMeta(displayData.length - 1 - idx, 1).y).toBe(
+          panelBBox.maxY - prevHeight,
+        );
+      });
+  });
+
+  test('should get correct viewCellHeights result', () => {
+    const viewCellHeights = facet.getViewCellHeights();
+    expect(viewCellHeights.getIndexRange(0, 715)).toStrictEqual({
+      start: 0,
+      end: 23,
+    });
+    expect(viewCellHeights.getIndexRange(1110, 1500)).toStrictEqual({
+      start: 37,
+      end: 49,
+    });
+    expect(viewCellHeights.getIndexRange(0, 0)).toStrictEqual({
+      start: 0,
+      end: 0,
+    });
+
+    expect(viewCellHeights.getTotalHeight()).toBe(960);
+    expect(viewCellHeights.getTotalLength()).toBe(32);
+    expect(viewCellHeights.getCellOffsetY(0)).toBe(0);
+    expect(viewCellHeights.getCellOffsetY(7)).toBe(210);
+  });
+
+  test('should get correct indexes with row height gt canvas height', () => {
+    const originHeight = facet.panelBBox.viewportHeight;
+    facet.panelBBox.viewportHeight = 10;
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 0],
+      frozenCol: [0, 1, 2, 0],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 0],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+    // reset
+    facet.panelBBox.viewportHeight = originHeight;
+  });
 });
