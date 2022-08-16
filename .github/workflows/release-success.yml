@@ -51,7 +51,7 @@ jobs:
         run: |
           git add .
           git commit -m "chore: 🤖 更新 lock 和 changelog 文件" -n
-          git push origin chore-sync -f
+          git push origin chore-sync --no-verify -f
 
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
@@ -63,3 +63,21 @@ jobs:
       # 部署官网
       - name: Delpoy Site
         run: yarn site:deploy
+
+      # 失败通知
+      - name: 🔊 Delpoy failed notify
+        if: ${{ failure() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🚨 官网部署失败",
+                "text": "🔗 请点击链接查看具体原因, 尝试点击右上角 [Re-run all jobs] 重试, 或者手动部署 🚑",
+                "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+              }
+            }
