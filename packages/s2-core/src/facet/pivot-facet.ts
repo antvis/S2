@@ -519,7 +519,9 @@ export class PivotFacet extends BaseFacet {
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,
     );
-    if (!(grandTotalNode instanceof Node)) return;
+    if (!(grandTotalNode instanceof Node)) {
+      return;
+    }
     const grandTotalChildren = grandTotalNode.children;
     // 总计节点层级 (有且有两级)
     if (isRowHeader) {
@@ -558,7 +560,9 @@ export class PivotFacet extends BaseFacet {
       .getNodes()
       .filter((node: Node) => node.isSubTotals);
 
-    if (isEmpty(subTotalNodes)) return;
+    if (isEmpty(subTotalNodes)) {
+      return;
+    }
     const { maxLevel } = hierarchy;
     forEach(subTotalNodes, (subTotalNode: Node) => {
       const subTotalNodeChildren = subTotalNode.children;

@@ -197,7 +197,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenRowRange) {
       min = frozenRowRange[1] + 1;
     }
-    if (yIndex < min) return null;
+    if (yIndex < min) {
+      return null;
+    }
 
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
@@ -220,7 +222,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenColRange) {
       min = frozenColRange[1] + 1;
     }
-    if (xIndex < min) return null;
+    if (xIndex < min) {
+      return null;
+    }
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
