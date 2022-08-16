@@ -289,7 +289,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const stateInfo = interaction?.getState();
     const cells = interaction?.getCells();
 
-    if (!first(cells)) return;
+    if (!first(cells)) {
+      return;
+    }
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:

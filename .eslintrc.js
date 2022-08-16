@@ -109,6 +109,9 @@ module.exports = {
     'max-statements-per-line': [2, { max: 1 }],
     'max-params': [1, 4],
     'no-unreachable': 2,
+    'no-useless-computed-key': 2,
+    'block-spacing': [2, 'always'],
+    'lines-between-class-members': [2, 'always'],
     eqeqeq: [
       2,
       'always',
@@ -116,7 +119,7 @@ module.exports = {
         null: 'ignore',
       },
     ],
-    curly: [2, 'multi-line', 'consistent'],
+    curly: [2, 'all'],
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
   },

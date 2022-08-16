@@ -640,11 +640,11 @@ export default defineComponent({
       console.log('row cell click: ', params);
     };
     const onDataCellClick = (params: any) => {
-      console.log('data Cell Click: ', params)
-    }
+      console.log('data Cell Click: ', params);
+    };
     const onColCellClick = (params: any) => {
-      console.log('col cell click: ', params)
-    }
+      console.log('col cell click: ', params);
+    };
     const onGetSpreadsheet = (params: any) => {
       console.log('getSpreadsheet: ', params);
     };

@@ -298,7 +298,9 @@ export function transformIndexesData(params: Param) {
 }
 
 export function deleteMetaById(meta: PivotMeta, nodeId: string) {
-  if (!meta || !nodeId) return;
+  if (!meta || !nodeId) {
+    return;
+  }
   const paths = nodeId.split(ID_SEPARATOR);
   const deletePath = last(paths);
   let currentMeta = meta;
