@@ -24,6 +24,8 @@ import {
   SpreadSheet,
   Node,
   DataCellBrushSelection,
+  ColBrushSelection,
+  RowBrushSelection,
 } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -526,7 +528,7 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should get correctly default interaction size', () => {
-    expect(defaultInteractionSize).toEqual(11);
+    expect(defaultInteractionSize).toEqual(13);
   });
 
   test('should register default interaction', () => {
@@ -548,6 +550,8 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
     ${InteractionName.HOVER}                     | ${HoverEvent}
     ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
+    ${InteractionName.COL_BRUSH_SELECTION}       | ${ColBrushSelection}
+    ${InteractionName.ROW_BRUSH_SELECTION}       | ${RowBrushSelection}
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
@@ -587,14 +591,16 @@ describe('RootInteraction Tests', () => {
   });
 
   test.each`
-    option                | name                                         | expected
-    ${`brushSelection`}   | ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
-    ${`resize`}           | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
-    ${`multiSelection`}   | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
-    ${`rangeSelection`}   | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
-    ${`selectedCellMove`} | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
+    option                 | name                                         | expected
+    ${`brushSelection`}    | ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
+    ${`resize`}            | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${`multiSelection`}    | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${`rangeSelection`}    | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${`selectedCellMove`}  | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
+    ${`rowBrushSelection`} | ${InteractionName.ROW_BRUSH_SELECTION}       | ${RowBrushSelection}
+    ${`colBrushSelection`} | ${InteractionName.COL_BRUSH_SELECTION}       | ${ColBrushSelection}
   `(
-    'should disable interaction by options %o',
+    'should disable interaction by options $option',
     ({ option, name, expected }) => {
       mockSpreadSheetInstance.options = {
         interaction: {

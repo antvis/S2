@@ -466,7 +466,7 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells, force, stateName } = interactionStateInfo;
+    const { cells = [], force, stateName } = interactionStateInfo;
 
     if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
@@ -486,7 +486,7 @@ export class RootInteraction {
     this.clearState();
     this.setState(interactionStateInfo);
 
-    const cellType = cells?.[0].type;
+    const cellType = cells[0]?.type;
     if (cellType === CellTypes.DATA_CELL) this.updatePanelGroupAllDataCells();
     if (cellType === CellTypes.COL_CELL) {
       this.updateCells(this.getAllColHeaderCells());

@@ -183,6 +183,8 @@ describe('merge test', () => {
         },
         autoResetSheetStyle: true,
         brushSelection: true,
+        rowBrushSelection: false,
+        colBrushSelection: false,
         multiSelection: true,
         rangeSelection: true,
         resize: {
