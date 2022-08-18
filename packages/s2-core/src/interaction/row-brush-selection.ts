@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent, Point } from '@antv/g-canvas';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
 import type { RowCell } from '../cell';
 import { InterceptType, S2Event } from '../common/constant';
@@ -93,6 +93,9 @@ export class RowBrushSelection extends BaseBrushSelection {
     interaction.changeState({
       cells: map(this.brushRangeCells, (cell) => getCellMeta(cell)),
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllRowHeaderCells());
+      },
     });
 
     this.spreadsheet.emit(

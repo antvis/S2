@@ -464,9 +464,15 @@ export class RootInteraction {
     }
   }
 
+  // 改变 cell 交互状态后，进行了更新和重新绘制
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells = [], force, stateName } = interactionStateInfo;
+    const {
+      cells = [],
+      force,
+      stateName,
+      onUpdateCells,
+    } = interactionStateInfo;
 
     if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
@@ -486,13 +492,11 @@ export class RootInteraction {
     this.clearState();
     this.setState(interactionStateInfo);
 
-    const cellType = cells[0]?.type;
-    if (cellType === CellTypes.DATA_CELL) this.updatePanelGroupAllDataCells();
-    if (cellType === CellTypes.COL_CELL) {
-      this.updateCells(this.getAllColHeaderCells());
-    }
-    if (cellType === CellTypes.ROW_CELL) {
-      this.updateCells(this.getAllRowHeaderCells());
+    // 更新单元格
+    if (onUpdateCells) {
+      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
+    } else {
+      this.updatePanelGroupAllDataCells();
     }
     this.draw();
   }

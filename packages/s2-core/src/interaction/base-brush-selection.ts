@@ -1,6 +1,7 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { cloneDeep, isNil, map, throttle } from 'lodash';
 import {
+  CellTypes,
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InteractionStateName,
   InterceptType,
@@ -34,7 +35,7 @@ import {
 } from '../utils/interaction/';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { getActiveCellsTooltipData } from '../utils';
-import { DataCell, RowCell, ColCell } from '../cell';
+import { ColCell, DataCell, RowCell } from '../cell';
 import type { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 
@@ -573,6 +574,7 @@ export class BaseBrushSelection
   // 刷选过程中高亮的cell
   protected showPrepareSelectedCells = () => {
     this.brushRangeCells = this.getBrushRangeCells();
+    const cellType = this.brushRangeCells[0]?.cellType;
     this.spreadsheet.interaction.changeState({
       cells: map(this.brushRangeCells, (item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
@@ -580,6 +582,19 @@ export class BaseBrushSelection
       // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
       // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
       force: true,
+      onUpdateCells: (root, defaultOnUpdateCells) => {
+        switch (cellType) {
+          case CellTypes.COL_CELL:
+            root.updateCells(root.getAllColHeaderCells());
+            break;
+          case CellTypes.ROW_CELL:
+            root.updateCells(root.getAllRowHeaderCells());
+            break;
+          default:
+            defaultOnUpdateCells();
+            break;
+        }
+      },
     });
   };
 

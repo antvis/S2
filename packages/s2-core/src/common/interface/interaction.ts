@@ -17,6 +17,7 @@ import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
+import type { RootInteraction } from '../../interaction';
 import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
 
@@ -48,6 +49,11 @@ export interface InteractionStateInfo {
   nodes?: Node[];
   // for empty cells, updates are ignored, use `force` to skip ignore
   force?: boolean;
+  /** 交互行为改变后，会被更新和重绘的单元格回调 */
+  onUpdateCells?: (
+    root: RootInteraction,
+    defaultOnUpdateCells: () => void,
+  ) => void;
 }
 
 export interface SelectHeaderCellInfo {
