@@ -224,7 +224,7 @@ const s2Options = {
 
 #### 行头单元格圈选
 
-[//]: # (zc-todo: 动图）
+<img src="https://gw.alipayobjects.com/zos/antfincdn/1M9vUtedn/hangtoushuaxuan.gif" alt="preview" width="600" />
 
 ```ts
 const s2Options = {
@@ -235,6 +235,8 @@ const s2Options = {
 ```
 
 #### 列头单元格圈选
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/%24DEZUiWFW/lietoushuaxuan.gif" alt="preview" width="600" />
 
 ```ts
 const s2Options = {

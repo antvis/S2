@@ -32,10 +32,6 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../utils/interaction/';
-import {
-  getCellMeta,
-  updateRowColCells,
-} from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { getActiveCellsTooltipData } from '../utils';
 import { DataCell, RowCell, ColCell } from '../cell';
@@ -190,7 +186,9 @@ export class BaseBrushSelection
     if (frozenRowRange) {
       min = frozenRowRange[1] + 1;
     }
-    if (yIndex < min) return null;
+    if (yIndex < min) {
+      return null;
+    }
 
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
@@ -213,7 +211,9 @@ export class BaseBrushSelection
     if (frozenColRange) {
       min = frozenColRange[1] + 1;
     }
-    if (xIndex < min) return null;
+    if (xIndex < min) {
+      return null;
+    }
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
@@ -683,70 +683,7 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  protected bindMouseUp() {}
-
   public getSelectedCellMetas = (range: BrushRange) => {};
-  public getSelectedCellMetas1 = (range: BrushRange) => {
-    const metas = [];
-    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
-    const rowLeafNodes = this.spreadsheet.facet.layoutResult.rowLeafNodes ?? [];
-    for (
-      let rowIndex = range.start.rowIndex;
-      rowIndex < range.end.rowIndex + 1;
-      rowIndex++
-    ) {
-      for (
-        let colIndex = range.start.colIndex;
-        colIndex < range.end.colIndex + 1;
-        colIndex++
-      ) {
-        const colId = String(colLeafNodes[colIndex].id);
-        let rowId = String(rowIndex);
-        if (rowLeafNodes.length) {
-          rowId = String(rowLeafNodes[rowIndex].id);
-        }
-        metas.push({
-          colIndex,
-          rowIndex,
-          id: `${rowId}-${colId}`,
-          type: 'dataCell',
-          rowId,
-          colId,
-          spreadsheet: this.spreadsheet,
-        });
-      }
-    }
-    return metas;
-  };
-  // 最终刷选的cell
-  private updateSelectedCells1() {
-    const { interaction, options } = this.spreadsheet;
-
-    const range = this.getBrushRange();
-
-    const selectedCellMetas = this.getSelectedCellMetas(range);
-    interaction.changeState({
-      cells: selectedCellMetas,
-      stateName: InteractionStateName.SELECTED,
-    });
-
-    if (options.interaction.selectedCellHighlight) {
-      selectedCellMetas.forEach((meta) => {
-        updateRowColCells(meta);
-      });
-    }
-
-    this.spreadsheet.emit(
-      S2Event.DATA_CELL_BRUSH_SELECTION,
-      this.brushRangeDataCells,
-    );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeDataCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
-  }
-}
 
   protected updateSelectedCells() {}
 }
