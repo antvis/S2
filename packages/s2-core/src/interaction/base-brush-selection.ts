@@ -16,7 +16,6 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
-  OriginalEvent,
   S2CellType,
   ViewMeta,
 } from '../common/interface';
@@ -476,10 +475,9 @@ export class BaseBrushSelection
 
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
-    const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
-      x: event?.x ?? originalEvent?.layerX,
-      y: event?.y ?? originalEvent?.layerY,
+      x: event?.x,
+      y: event?.y,
     };
     const cell = this.spreadsheet.getCell(event.target);
     const { colIndex, rowIndex } = cell.getMeta();

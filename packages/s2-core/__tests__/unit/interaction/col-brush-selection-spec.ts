@@ -103,8 +103,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
   test('should get start brush point when mouse down', () => {
     emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
-      layerX: 210,
-      layerY: 60,
+      x: 210,
+      y: 60,
     });
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
@@ -125,8 +125,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
   test('should get end brush point when mouse up', () => {
     emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
-      layerX: 210,
-      layerY: 10,
+      x: 210,
+      y: 10,
     });
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
 
