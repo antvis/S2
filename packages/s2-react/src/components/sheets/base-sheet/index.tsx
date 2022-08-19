@@ -1,9 +1,4 @@
-import {
-  getSafetyDataConfig,
-  type S2Options,
-  S2_PREFIX_CLS,
-  SpreadSheet,
-} from '@antv/s2';
+import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
 import { get } from 'lodash';
 import React from 'react';
@@ -59,7 +54,7 @@ export const BaseSheet = React.forwardRef(
 
 BaseSheet.displayName = 'BaseSheet';
 BaseSheet.defaultProps = {
-  options: {} as S2Options,
+  options: {} as SheetComponentsProps['options'],
   adaptive: false,
   showPagination: false,
 };
