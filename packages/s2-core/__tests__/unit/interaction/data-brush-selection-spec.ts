@@ -1,16 +1,11 @@
 import { Group } from '@antv/g-canvas';
 import { range } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
-import { FrozenGroup } from '@/common/constant';
 import { RootInteraction } from '@/interaction/root';
 import {
-  ScrollDirection,
   DataCellBrushSelection,
   CellTypes,
-  getScrollOffsetForCol,
-  getScrollOffsetForRow,
   InteractionBrushSelectionStage,
-  InterceptType,
   Node,
   type OriginalEvent,
   PivotSheet,
@@ -18,7 +13,6 @@ import {
   SpreadSheet,
   type ViewMeta,
 } from '@/index';
-import type { TableFacet } from '@/facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
