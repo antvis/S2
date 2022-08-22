@@ -9,7 +9,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
     container = getContainer();
   });
 
-  test('should init rows with expandToRowLevel config', () => {
+  test('should init rows with rowExpandDepth config', () => {
     const s2 = new PivotSheet(
       container,
       {
@@ -26,7 +26,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         height: 200,
         hierarchyType: 'tree',
         style: {
-          expandToRowLevel: 0,
+          rowExpandDepth: 0,
         },
       },
     );
