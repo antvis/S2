@@ -7,36 +7,36 @@ import {
   InterceptType,
   S2Event,
   ScrollDirection,
-} from '../common/constant';
+} from '../../common/constant';
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
-} from '../common/constant/interaction';
+} from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
   S2CellType,
   ViewMeta,
-} from '../common/interface';
-import type { TableFacet } from '../facet';
+} from '../../common/interface';
+import type { TableFacet } from '../../facet';
 import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
-} from '../facet/utils';
-import type { Node } from '../facet/layout/node';
+} from '../../facet/utils';
+import type { Node } from '../../facet/layout/node';
 import {
   getCellMeta,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
-} from '../utils/interaction/';
-import { getValidFrozenOptions } from '../utils/layout/frozen';
-import { getActiveCellsTooltipData } from '../utils';
-import { ColCell, DataCell, RowCell } from '../cell';
-import type { BaseEventImplement } from './base-event';
-import { BaseEvent } from './base-interaction';
+} from '../../utils/interaction';
+import { getValidFrozenOptions } from '../../utils/layout/frozen';
+import { getActiveCellsTooltipData } from '../../utils';
+import { ColCell, DataCell, RowCell } from '../../cell';
+import type { BaseEventImplement } from '../base-event';
+import { BaseEvent } from '../base-interaction';
 
 /**
  * Panel area's brush selection interaction

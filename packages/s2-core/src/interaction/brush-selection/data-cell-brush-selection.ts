@@ -1,17 +1,17 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
-import type { DataCell } from '../cell/data-cell';
-import { InterceptType, S2Event } from '../common/constant';
+import type { DataCell } from '../../cell/data-cell';
+import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
-} from '../common/constant/interaction';
-import type { BrushRange, ViewMeta } from '../common/interface';
-import { updateRowColCells } from '../utils';
+} from '../../common/constant/interaction';
+import type { BrushRange, ViewMeta } from '../../common/interface';
+import { updateRowColCells } from '../../utils';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
- * Panel area's brush selection interaction
+ * Panel area's brush data cell selection interaction
  */
 export class DataCellBrushSelection extends BaseBrushSelection {
   public displayedCells: DataCell[] = [];

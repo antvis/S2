@@ -1,5 +1,5 @@
 import type { IElement } from '@antv/g-canvas';
-import { concat, find, forEach, isEmpty, isNil, map } from 'lodash';
+import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
@@ -10,6 +10,8 @@ import {
   S2Event,
 } from '../common/constant';
 import type {
+  BrushSelection,
+  BrushSelectionInfo,
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
@@ -38,9 +40,9 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
-import { DataCellBrushSelection } from './data-cell-brush-selection';
-import { ColBrushSelection } from './col-brush-selection';
-import { RowBrushSelection } from './row-brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
+import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { RowBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -352,16 +354,33 @@ export class RootInteraction {
     hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
+  private static getBrushSelectionInfo(
+    brushSelection?: boolean | BrushSelection,
+  ): BrushSelectionInfo {
+    if (isBoolean(brushSelection)) {
+      return {
+        dataBrushSelection: brushSelection,
+        rowBrushSelection: brushSelection,
+        colBrushSelection: brushSelection,
+      };
+    }
+    return {
+      dataBrushSelection: brushSelection?.data ?? false,
+      rowBrushSelection: brushSelection?.row ?? false,
+      colBrushSelection: brushSelection?.col ?? false,
+    };
+  }
+
   private getDefaultInteractions() {
     const {
       resize,
       brushSelection,
-      rowBrushSelection,
-      colBrushSelection,
       multiSelection,
       rangeSelection,
       selectedCellMove,
     } = this.spreadsheet.options.interaction;
+    const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
+      RootInteraction.getBrushSelectionInfo(brushSelection);
 
     return [
       {
@@ -392,7 +411,7 @@ export class RootInteraction {
       {
         key: InteractionName.BRUSH_SELECTION,
         interaction: DataCellBrushSelection,
-        enable: !isMobile() && brushSelection,
+        enable: !isMobile() && dataBrushSelection,
       },
       {
         key: InteractionName.ROW_BRUSH_SELECTION,

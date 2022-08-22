@@ -1,14 +1,14 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
-import type { RowCell } from '../cell';
-import { InterceptType, S2Event } from '../common/constant';
+import type { RowCell } from '../../cell';
+import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
-} from '../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../common/interface';
-import type { Node } from '../facet/layout/node';
-import { getCellMeta } from '../utils/interaction/select-event';
+} from '../../common/constant/interaction';
+import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
+import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -50,11 +50,7 @@ export class RowBrushSelection extends BaseBrushSelection {
         event.originalEvent,
       );
 
-      this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas.x - this.endBrushPoint?.x;
-        const deltaY = pointInCanvas.y - this.endBrushPoint?.y;
-        this.handleScroll(deltaX, deltaY);
         return;
       }
 

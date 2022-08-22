@@ -111,6 +111,18 @@ export interface HoverFocusOptions {
   duration?: number;
 }
 
+export interface BrushSelection {
+  data?: boolean;
+  row?: boolean;
+  col?: boolean;
+}
+
+export interface BrushSelectionInfo {
+  dataBrushSelection: boolean;
+  rowBrushSelection: boolean;
+  colBrushSelection: boolean;
+}
+
 export interface InteractionOptions {
   // record which row/col field need extra link info
   linkFields?: string[];
@@ -133,12 +145,8 @@ export interface InteractionOptions {
   scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
   resize?: boolean | ResizeInteractionOptions;
-  // enable mouse drag brush selection on data cell
-  brushSelection?: boolean;
-  // enable mouse drag brush selection on row cell
-  rowBrushSelection?: boolean;
-  // enable mouse drag brush selection on coll cell
-  colBrushSelection?: boolean;
+  // enable mouse drag brush selection on data cell, row cell, col cell
+  brushSelection?: boolean | BrushSelection;
   // enable Command / Ctrl + click multi selection
   multiSelection?: boolean;
   // enable Shift + click multi selection

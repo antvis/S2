@@ -1,18 +1,18 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
-import type { ColCell } from '../cell/col-cell';
-import { InterceptType, S2Event } from '../common/constant';
+import type { ColCell } from '../../cell/col-cell';
+import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
-} from '../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../common/interface';
-import type { Node } from '../facet/layout/node';
-import { getCellMeta } from '../utils/interaction/select-event';
+} from '../../common/constant/interaction';
+import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
+import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
- * Panel area's brush selection interaction
+ * Panel area's brush col cell selection interaction
  */
 export class ColBrushSelection extends BaseBrushSelection {
   public displayedCells: ColCell[] = [];
@@ -55,11 +55,7 @@ export class ColBrushSelection extends BaseBrushSelection {
         event.originalEvent,
       );
 
-      this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas.x - this.endBrushPoint?.x;
-        const deltaY = pointInCanvas.y - this.endBrushPoint?.y;
-        this.handleScroll(deltaX, deltaY);
         return;
       }
 
