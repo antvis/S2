@@ -194,6 +194,8 @@ export interface Style {
   treeRowsWidth?: number;
   // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
   hierarchyCollapse?: boolean;
+  // 树状分层模式下，行头默认展开到第几层
+  expandToRowLevel?: number;
   // row header in tree mode collapse some nodes
   collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
