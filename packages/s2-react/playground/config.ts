@@ -32,7 +32,7 @@ export const s2Options: S2Options = {
   showSeriesNumber: false,
   interaction: {
     enableCopy: true,
-    // 防止 mac 触摸板横向滚动触发浏览器返回
+    // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
     overscrollBehavior: 'contain',
   },
   tooltip: {
@@ -48,7 +48,6 @@ export const s2Options: S2Options = {
     cellCfg: {
       height: 50,
     },
-    hierarchyCollapse: false,
   },
 };
 

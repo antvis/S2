@@ -179,7 +179,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         frozenTrailingRowCount -
         1,
     ];
-    if (!cell) return;
+    if (!cell) {
+      return;
+    }
+
     switch (code) {
       case InteractionKeyboardKey.ARROW_RIGHT:
         if (cell.colIndex + 1 > maxCol) {

@@ -537,19 +537,25 @@ export abstract class BaseFacet {
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
       const { maxY } = this.getScrollbarPosition();
-      const thumbLen =
+      const { verticalBorderWidth } = this.spreadsheet.theme.splitLine;
+
+      const thumbSize =
         (this.cornerBBox.width * this.cornerBBox.width) /
         this.cornerBBox.originalWidth;
+
+      // 行头有分割线, 滚动条应该预留分割线的宽度
+      const displayThumbSize = thumbSize - verticalBorderWidth;
+
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: this.cornerBBox.width,
-        thumbLen,
+        thumbLen: displayThumbSize,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
           y: maxY,
         },
         thumbOffset:
-          (rowScrollX * (this.cornerBBox.width - thumbLen)) / maxOffset,
+          (rowScrollX * (this.cornerBBox.width - thumbSize)) / maxOffset,
         theme: this.scrollBarTheme,
         scrollTargetMaxOffset: maxOffset,
       });
@@ -594,7 +600,6 @@ export abstract class BaseFacet {
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
-
       const { maxY } = this.getScrollbarPosition();
       const finalWidth =
         width +
@@ -622,7 +627,6 @@ export abstract class BaseFacet {
         isHorizontal: true,
         trackLen: finalWidth,
         thumbLen,
-        // position: this.viewport.bl,
         position: finalPosition,
         thumbOffset: (scrollX * (finalWidth - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
@@ -730,14 +734,22 @@ export abstract class BaseFacet {
     );
   };
 
-  updateHorizontalRowScrollOffset = ({ offset, offsetX, offsetY }) => {
+  updateHorizontalRowScrollOffset = ({
+    offset,
+    offsetX,
+    offsetY,
+  }: CellScrollOffset) => {
     // 在行头区域滚动时 才更新行头水平滚动条
     if (this.isScrollOverTheCornerArea({ offsetX, offsetY })) {
       this.hRowScrollBar?.emitScrollChange(offset);
     }
   };
 
-  updateHorizontalScrollOffset = ({ offset, offsetX, offsetY }) => {
+  updateHorizontalScrollOffset = ({
+    offset,
+    offsetX,
+    offsetY,
+  }: CellScrollOffset) => {
     // 1.行头没有滚动条 2.在数值区域滚动时 才更新数值区域水平滚动条
     if (
       !this.hRowScrollBar ||
@@ -747,21 +759,24 @@ export abstract class BaseFacet {
     }
   };
 
-  isScrollToLeft = (deltaX: number) => {
-    if (!this.hScrollBar) {
+  isScrollToLeft = ({ deltaX, offsetX, offsetY }: CellScrollOffset) => {
+    if (!this.hScrollBar && !this.hRowScrollBar) {
       return true;
     }
 
     const isScrollRowHeaderToLeft =
-      !this.hRowScrollBar || this.hRowScrollBar.thumbOffset <= 0;
+      !this.hRowScrollBar ||
+      this.isScrollOverThePanelArea({ offsetY, offsetX }) ||
+      this.hRowScrollBar.thumbOffset <= 0;
 
-    const isScrollPanelToLeft = deltaX <= 0 && this.hScrollBar.thumbOffset <= 0;
+    const isScrollPanelToLeft =
+      !this.hScrollBar || this.hScrollBar.thumbOffset <= 0;
 
-    return isScrollPanelToLeft && isScrollRowHeaderToLeft;
+    return deltaX <= 0 && isScrollPanelToLeft && isScrollRowHeaderToLeft;
   };
 
-  isScrollToRight = (deltaX: number) => {
-    if (!this.hScrollBar) {
+  isScrollToRight = ({ deltaX, offsetX, offsetY }: CellScrollOffset) => {
+    if (!this.hScrollBar && !this.hRowScrollBar) {
       return true;
     }
 
@@ -771,10 +786,13 @@ export abstract class BaseFacet {
 
     const isScrollRowHeaderToRight =
       !this.hRowScrollBar ||
+      this.isScrollOverThePanelArea({ offsetY, offsetX }) ||
       this.hRowScrollBar.thumbOffset + this.hRowScrollBar.thumbLen >=
         this.cornerBBox.width;
 
     const isScrollPanelToRight =
+      (this.hRowScrollBar &&
+        this.isScrollOverTheCornerArea({ offsetX, offsetY })) ||
       this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >= viewportWidth;
 
     return deltaX >= 0 && isScrollPanelToRight && isScrollRowHeaderToRight;
@@ -802,8 +820,10 @@ export abstract class BaseFacet {
     return !this.isScrollToTop(deltaY) && !this.isScrollToBottom(deltaY);
   };
 
-  isHorizontalScrollOverTheViewport = (deltaX: number) => {
-    return !this.isScrollToLeft(deltaX) && !this.isScrollToRight(deltaX);
+  isHorizontalScrollOverTheViewport = (scrollOffset: CellScrollOffset) => {
+    return (
+      !this.isScrollToLeft(scrollOffset) && !this.isScrollToRight(scrollOffset)
+    );
   };
 
   /**
@@ -813,11 +833,8 @@ export abstract class BaseFacet {
       - 未滚动到顶部或底部: 当前表格滚动, 阻止外部容器滚动
       - 滚动到顶部或底部: 恢复外部容器滚动
   */
-  isScrollOverTheViewport = (
-    deltaX: number,
-    deltaY: number,
-    offsetY: number,
-  ) => {
+  isScrollOverTheViewport = (scrollOffset: CellScrollOffset) => {
+    const { deltaY, deltaX, offsetY } = scrollOffset;
     const isScrollOverTheHeader = offsetY <= this.cornerBBox.maxY;
     // 光标在角头或列头时, 不触发表格自身滚动
     if (isScrollOverTheHeader) {
@@ -827,7 +844,7 @@ export abstract class BaseFacet {
       return this.isVerticalScrollOverTheViewport(deltaY);
     }
     if (deltaX !== 0) {
-      return this.isHorizontalScrollOverTheViewport(deltaX);
+      return this.isHorizontalScrollOverTheViewport(scrollOffset);
     }
     return false;
   };
@@ -881,7 +898,12 @@ export abstract class BaseFacet {
     this.spreadsheet.interaction.clearHoverTimer();
 
     if (
-      !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, offsetY)
+      !this.isScrollOverTheViewport({
+        deltaX: optimizedDeltaX,
+        deltaY: optimizedDeltaY,
+        offsetX,
+        offsetY,
+      })
     ) {
       this.stopScrollChainingIfNeeded(event);
       return;
@@ -927,7 +949,7 @@ export abstract class BaseFacet {
   };
 
   protected clip(scrollX: number, scrollY: number) {
-    const isFrozenRowHeader = this.cfg.spreadsheet.isFrozenRowHeader();
+    const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {

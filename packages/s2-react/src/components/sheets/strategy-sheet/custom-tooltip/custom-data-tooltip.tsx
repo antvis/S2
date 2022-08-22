@@ -72,8 +72,8 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
                   </span>
                   <span
                     className={cls('derived-value-group', {
-                      ['derived-value-trend-up']: isUp,
-                      ['derived-value-trend-down']: isDown,
+                      'derived-value-trend-up': isUp,
+                      'derived-value-trend-down': isDown,
                     })}
                   >
                     {!isNormal && (

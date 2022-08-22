@@ -23,7 +23,7 @@ import {
   StrategySheetRowTooltip,
 } from './custom-tooltip';
 
-/* *
+/**
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
  * 2. 单指标时数值置于列头，且隐藏指标列头

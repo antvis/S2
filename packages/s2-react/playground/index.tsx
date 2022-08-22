@@ -817,6 +817,20 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
+                <Tooltip title="高亮选中单元格">
+                  <Switch
+                    checkedChildren="选中高亮开"
+                    unCheckedChildren="选中高亮关"
+                    checked={mergedOptions.interaction?.selectedCellHighlight}
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          selectedCellHighlight: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
                 <Tooltip title="高亮当前行列单元格">
                   <Switch
                     checkedChildren="hover十字器开"

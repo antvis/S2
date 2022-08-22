@@ -75,7 +75,9 @@ export class TableColCell extends ColCell {
 
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
-    if (!isFrozenCell) return super.getColResizeArea();
+    if (!isFrozenCell) {
+      return super.getColResizeArea();
+    }
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,

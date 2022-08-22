@@ -30,7 +30,10 @@ import {
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../utils/interaction/';
-import { getCellMeta } from '../utils/interaction/select-event';
+import {
+  getCellMeta,
+  updateRowColCells,
+} from '../utils/interaction/select-event';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { getActiveCellsTooltipData } from '../utils/tooltip';
 import type { BaseEventImplement } from './base-event';
@@ -194,7 +197,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenRowRange) {
       min = frozenRowRange[1] + 1;
     }
-    if (yIndex < min) return null;
+    if (yIndex < min) {
+      return null;
+    }
 
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
@@ -217,7 +222,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (frozenColRange) {
       min = frozenColRange[1] + 1;
     }
-    if (xIndex < min) return null;
+    if (xIndex < min) {
+      return null;
+    }
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
@@ -679,16 +686,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
         colIndex < range.end.colIndex + 1;
         colIndex++
       ) {
-        const colId = colLeafNodes[colIndex].id;
+        const colId = String(colLeafNodes[colIndex].id);
         let rowId = String(rowIndex);
         if (rowLeafNodes.length) {
-          rowId = rowLeafNodes[rowIndex].id;
+          rowId = String(rowLeafNodes[rowIndex].id);
         }
         metas.push({
           colIndex,
           rowIndex,
           id: `${rowId}-${colId}`,
           type: 'dataCell',
+          rowId,
+          colId,
+          spreadsheet: this.spreadsheet,
         });
       }
     }
@@ -697,14 +707,22 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const { interaction, options } = this.spreadsheet;
 
     const range = this.getBrushRange();
 
+    const selectedCellMetas = this.getSelectedCellMetas(range);
     interaction.changeState({
-      cells: this.getSelectedCellMetas(range),
+      cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
     });
+
+    if (options.interaction.selectedCellHighlight) {
+      selectedCellMetas.forEach((meta) => {
+        updateRowColCells(meta);
+      });
+    }
+
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       this.brushRangeDataCells,
