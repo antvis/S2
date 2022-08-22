@@ -133,7 +133,7 @@ export class TableFacet extends BaseFacet {
     );
   };
 
-  private onFilterHandler(params: FilterParam) {
+  private onFilterHandler = (params: FilterParam) => {
     const s2 = this.spreadsheet;
     const unFilter =
       !params.filteredValues || params.filteredValues.length === 0;
@@ -163,7 +163,7 @@ export class TableFacet extends BaseFacet {
       S2Event.RANGE_FILTERED,
       (s2.dataSet as TableDataSet).getDisplayDataSet(),
     );
-  }
+  };
 
   get dataCellTheme() {
     return this.spreadsheet.theme.dataCell.cell;
@@ -171,9 +171,9 @@ export class TableFacet extends BaseFacet {
 
   public destroy(): void {
     const s2 = this.spreadsheet;
-    super.destroy();
     s2.off(S2Event.RANGE_SORT, this.onSortHandler);
     s2.off(S2Event.RANGE_FILTER, this.onFilterHandler);
+    super.destroy();
   }
 
   protected calculateCornerBBox() {
