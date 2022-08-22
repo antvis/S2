@@ -1,4 +1,4 @@
-import { Group, type Point } from '@antv/g-canvas';
+import { Group, type Point } from '@antv/g-adapter';
 import type { SortParam } from '../../common/interface';
 import type { Node } from '../layout/node';
 import type { SpreadSheet } from '../../sheet-type';

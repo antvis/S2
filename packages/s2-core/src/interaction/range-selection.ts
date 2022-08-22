@@ -1,4 +1,4 @@
-import type { Event } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { inRange, isNil, range } from 'lodash';
 import { DataCell } from '../cell';
 import {

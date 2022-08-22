@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { Group, type IElement } from '@antv/g-canvas';
+import { Group, type IElement } from '@antv/g-adapter';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
 
 class MockDataCell extends Group {}
@@ -11,19 +11,19 @@ describe('getAllChildCells test', () => {
   });
 
   Array.from(new Array(10)).forEach(() => {
-    scrollGroup.add(new MockDataCell({}));
+    scrollGroup.appendChild(new MockDataCell({}));
   });
 
   const group = new Group({
     name: 'panelGroup',
   });
 
-  group.add(scrollGroup);
+  group.appendChild(scrollGroup);
   Array.from(new Array(5)).forEach(() => {
-    group.add(new MockDataCell({}));
+    group.appendChild(new MockDataCell({}));
   });
   Array.from(new Array(5)).forEach(() => {
-    group.add(new MockTableRowCell({}));
+    group.appendChild(new MockTableRowCell({}));
   });
 
   test('should return getAllChildCells of DataCell', () => {

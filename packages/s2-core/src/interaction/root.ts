@@ -1,4 +1,4 @@
-import type { IElement } from '@antv/g-canvas';
+import type { IElement } from '@antv/g-adapter';
 import { concat, find, forEach, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
@@ -487,7 +487,7 @@ export class RootInteraction {
 
   public addIntercepts(interceptTypes: InterceptType[] = []) {
     interceptTypes.forEach((interceptType) => {
-      this.intercepts.add(interceptType);
+      this.intercepts.appendChild(interceptType);
     });
   }
 

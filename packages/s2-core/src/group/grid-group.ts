@@ -1,5 +1,5 @@
-import type { IGroup } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
+import { Group } from '@antv/g-adapter';
 import {
   KEY_GROUP_GRID_GROUP,
   KEY_GROUP_PANEL_FROZEN_COL,

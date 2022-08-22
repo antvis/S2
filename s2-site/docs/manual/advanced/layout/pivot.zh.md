@@ -161,7 +161,7 @@ for (let i = 0; i < rowsHierarchy.getNodes().length; i++) {
 this.rowHeader = new RowHeader({
     width, 
     height, 
-    data: rowNodes // rowNodes 中的节点有坐标和尺寸信息，调用 g2 的 <Group>RowHeader.add(<Group>RowCell)
+    data: rowNodes // rowNodes 中的节点有坐标和尺寸信息，调用 g2 的 <Group>RowHeader.appendChild(<Group>RowCell)
 });
 this.colHeader = new ColHeader({
     width, 
@@ -173,7 +173,7 @@ this.cornerHeader = new CornerHeader({
     width: cornerWidth,
     height: cornerHeight,
 });
-this.foregroundGroup.add([this.rowHeader, this.colHeader, this.cornerHeader]);
+this.foregroundGroup.appendChild([this.rowHeader, this.colHeader, this.cornerHeader]);
 ```
 
 其次渲染单元格：

@@ -1,5 +1,5 @@
-import type { BBox, IShape, ShapeAttrs } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import type { BBox, IShape, ShapeAttrs } from '@antv/g-adapter';
+import { Group } from '@antv/g-adapter';
 import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {

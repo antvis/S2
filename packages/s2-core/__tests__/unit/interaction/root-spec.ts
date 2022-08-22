@@ -1,4 +1,4 @@
-import { Canvas, Group } from '@antv/g-canvas';
+import { Canvas, Group } from '@antv/g-adapter';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { Store } from '@/common/store';
 import {

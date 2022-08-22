@@ -1,5 +1,5 @@
 import { getContainer } from 'tests/util/helpers';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
 import { setLang, type LangType, type S2Options } from '@/common';

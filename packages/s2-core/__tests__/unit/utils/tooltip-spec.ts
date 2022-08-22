@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   createPivotSheet,
 } from 'tests/util/helpers';
-import type { BBox } from '@antv/g-canvas';
+import type { BBox } from '@antv/g-adapter';
 import { omit } from 'lodash';
 import {
   getAutoAdjustPosition,

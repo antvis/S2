@@ -1,5 +1,5 @@
-import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-adapter';
+import { Group } from '@antv/g-adapter';
 import { each, get } from 'lodash';
 import { MIN_SCROLL_BAR_HEIGHT } from '../../common/constant/scroll';
 import type { ScrollBarTheme } from '../../common/interface/theme';

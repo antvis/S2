@@ -1,4 +1,4 @@
-import type { SimpleBBox } from '@antv/g-canvas';
+import type { SimpleBBox } from '@antv/g-adapter';
 import type {
   InteractionStateName,
   CellTypes,

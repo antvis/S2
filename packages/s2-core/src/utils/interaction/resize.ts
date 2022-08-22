@@ -1,4 +1,4 @@
-import type { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
+import type { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-adapter';
 import {
   FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
   ResizeDirectionType,

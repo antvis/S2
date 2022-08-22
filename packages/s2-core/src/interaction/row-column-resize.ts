@@ -1,9 +1,4 @@
-import type {
-  Event as CanvasEvent,
-  IGroup,
-  IShape,
-  ShapeAttrs,
-} from '@antv/g-canvas';
+import type { GEvent, IGroup, IShape, ShapeAttrs } from '@antv/g-adapter';
 import { clone, isEmpty, throttle } from 'lodash';
 import type { ResizeInteractionOptions, ResizeParams, Style } from '../common';
 import {
@@ -369,7 +364,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private resizeMouseMove = (event: CanvasEvent) => {
+  private resizeMouseMove = (event: GEvent) => {
     if (!this.resizeReferenceGroup?.get('visible')) {
       return;
     }

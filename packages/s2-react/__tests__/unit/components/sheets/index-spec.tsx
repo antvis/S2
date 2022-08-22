@@ -8,7 +8,7 @@ import {
   CellTypes,
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';

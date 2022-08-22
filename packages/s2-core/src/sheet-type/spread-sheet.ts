@@ -1,5 +1,5 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
+import { Canvas, GEvent, type IGroup } from '@antv/g-adapter';
 import {
   forEach,
   forIn,
@@ -281,7 +281,7 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
+  public abstract handleGroupSort(event: GEvent, meta: Node): void;
 
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,
@@ -299,7 +299,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: CanvasEvent | MouseEvent,
+    event: GEvent | MouseEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
@@ -549,7 +549,7 @@ export abstract class SpreadSheet extends EE {
 
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
-    target: CanvasEvent['target'],
+    target: GEvent['target'],
   ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
@@ -564,7 +564,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target: CanvasEvent['target']) {
+  public getCellType(target: GEvent['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }
@@ -650,7 +650,7 @@ export abstract class SpreadSheet extends EE {
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
       s2: this,
     });
-    this.panelGroup.add(this.panelScrollGroup);
+    this.panelGroup.appendChild(this.panelScrollGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {

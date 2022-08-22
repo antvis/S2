@@ -1,7 +1,7 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
-import { Group, Shape, type ShapeAttrs } from '@antv/g-canvas';
+import { Group, Image as GImage, type ShapeAttrs } from '@antv/g-adapter';
 import { omit, clone } from 'lodash';
 import { getIcon } from './factory';
 
@@ -21,7 +21,9 @@ export class GuiIcon extends Group {
   static type = '__GUI_ICON__';
 
   // icon 对应的 GImage 对象
-  public iconImageShape: Shape.Image;
+  public iconImageShape: GImage;
+
+  cfg: GuiIconCfg;
 
   constructor(cfg: GuiIconCfg) {
     super(cfg);
@@ -87,13 +89,15 @@ export class GuiIcon extends Group {
   };
 
   private render() {
+    // TODO
+    return;
     const { name, fill } = this.cfg;
     const attrs = clone(this.cfg);
     const imageShapeAttrs: ShapeAttrs = {
       ...omit(attrs, 'fill'),
       type: GuiIcon.type,
     };
-    const image = new Shape.Image({
+    const image = new GImage({
       attrs: imageShapeAttrs,
     });
 

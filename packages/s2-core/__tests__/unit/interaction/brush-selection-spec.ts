@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g-adapter';
 import { range } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import { FrozenGroup } from '@/common/constant';

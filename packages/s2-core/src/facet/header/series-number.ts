@@ -1,4 +1,4 @@
-import type { Group, IGroup, IShape } from '@antv/g-canvas';
+import type { Group, IGroup, IShape } from '@antv/g-adapter';
 import { each } from 'lodash';
 import { CellBorderPosition, type Padding } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
@@ -101,7 +101,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         // 添加文本
         this.addText(group, cellData);
 
-        this.add(group);
+        this.appendChild(group);
 
         // 添加边框
         if (!isLeaf) {

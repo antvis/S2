@@ -1,4 +1,4 @@
-import type { BBox } from '@antv/g-canvas';
+import type { BBox } from '@antv/g-adapter';
 import type { LayoutResult } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { BaseFacet } from '../base-facet';

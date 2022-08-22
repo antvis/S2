@@ -1,6 +1,6 @@
 // 这里存放 emit 事件 透出的信息
 
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import type { Node } from '../../facet/layout/node';
 import type { S2CellType } from './interaction';
 

@@ -1,4 +1,4 @@
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';

@@ -1,5 +1,5 @@
-import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-adapter';
+import { Group } from '@antv/g-adapter';
 import {
   each,
   get,

@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   sleep,
 } from 'tests/util/helpers';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {

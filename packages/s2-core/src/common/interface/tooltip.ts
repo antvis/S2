@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType, SortParam } from '../../common/interface';
@@ -90,7 +90,7 @@ export type TooltipShowOptions<T = TooltipContentType> = {
         defaultTooltipShowOptions: TooltipShowOptions<T>,
       ) => T)
     | T;
-  event?: CanvasEvent | MouseEvent;
+  event?: GEvent | MouseEvent;
 };
 
 export type TooltipData = {
@@ -170,7 +170,7 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
 
 export interface TooltipPositionInfo {
   position: TooltipPosition;
-  event: CanvasEvent | MouseEvent;
+  event: GEvent | MouseEvent;
 }
 
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {

@@ -1,4 +1,4 @@
-import type { Group, IElement, IGroup } from '@antv/g-canvas';
+import type { Group, IElement, IGroup } from '@antv/g-adapter';
 import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
 import { TableDataCell } from '../cell';
 import {
@@ -795,7 +795,7 @@ export class TableFacet extends BaseFacet {
     viewMeta.isFrozenCorner = true;
     if (viewMeta) {
       const cell = this.cfg.dataCell(viewMeta);
-      group.add(cell);
+      group.appendChild(cell);
     }
   };
 
@@ -823,7 +823,7 @@ export class TableFacet extends BaseFacet {
 
     const group = FrozenCellGroupMap[frozenCellType];
     if (group) {
-      (this.spreadsheet[group] as Group).add(cell);
+      (this.spreadsheet[group] as Group).appendChild(cell);
     }
   };
 

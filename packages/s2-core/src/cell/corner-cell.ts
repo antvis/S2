@@ -1,4 +1,4 @@
-import type { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import type { IShape, Point, ShapeAttrs } from '@antv/g-adapter';
 import {
   cond,
   constant,

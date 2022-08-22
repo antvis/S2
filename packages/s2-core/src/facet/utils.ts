@@ -1,4 +1,4 @@
-import type { IGroup, SimpleBBox } from '@antv/g-canvas';
+import type { IGroup, SimpleBBox } from '@antv/g-adapter';
 import { findIndex, isNil } from 'lodash';
 
 import { FrozenCellType } from '../common/constant/frozen';

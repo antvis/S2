@@ -1,4 +1,4 @@
-import type { BBox, Group } from '@antv/g-canvas';
+import type { BBox, Group } from '@antv/g-adapter';
 import type {
   InteractionOptions,
   InteractionStateInfo,

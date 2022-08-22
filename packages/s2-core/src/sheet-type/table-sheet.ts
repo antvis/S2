@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
@@ -107,7 +107,7 @@ export class TableSheet extends SpreadSheet {
         name,
         ...commonParams,
       });
-      this.panelGroup.add(g);
+      this.panelGroup.appendChild(g);
       return g;
     });
   }
@@ -167,7 +167,7 @@ export class TableSheet extends SpreadSheet {
     this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
 
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
+  public handleGroupSort(event: GEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 

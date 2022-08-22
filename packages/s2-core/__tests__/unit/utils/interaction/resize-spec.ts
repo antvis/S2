@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g-adapter';
 import type { ResizeArea, ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -144,7 +144,7 @@ describe('Resize Utils Tests', () => {
   describe('#getResizeAreaGroupById()', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
       const group = getOrCreateResizeAreaGroupById(s2, 'id');
-      expect(group.add).toBeDefined();
+      expect(group.appendChild).toBeDefined();
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
     });
 

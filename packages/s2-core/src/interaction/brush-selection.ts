@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import type { GEvent, IShape, Point } from '@antv/g-adapter';
 import { cloneDeep, isEmpty, isNil, throttle } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -98,7 +98,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: GEvent) => {
       event?.preventDefault?.();
       if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
@@ -573,7 +573,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.autoScrollConfig = cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
   }
 
-  private getBrushPoint(event: CanvasEvent): BrushPoint {
+  private getBrushPoint(event: GEvent): BrushPoint {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {

@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import type { DataCell } from '../../cell/data-cell';
 import type { S2Event } from '../../common/constant';
 import type {
@@ -31,7 +31,7 @@ export type RowCellCollapseTreeRowsType = {
   node: Node;
 };
 
-type CanvasEventHandler = (event: CanvasEvent) => void;
+type CanvasEventHandler = (event: GEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;

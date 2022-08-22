@@ -1,4 +1,4 @@
-import { Group, type IElement } from '@antv/g-canvas';
+import { Group, type IElement } from '@antv/g-adapter';
 import { isEmpty } from 'lodash';
 
 export const getAllChildCells = <T extends IElement>(

@@ -1,4 +1,4 @@
-import type { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-adapter';
 import { get } from 'lodash';
 import { type CellMeta, CellTypes, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';

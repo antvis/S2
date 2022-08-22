@@ -1,8 +1,8 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import { get } from 'lodash';
-import type { ShapeAttrs } from '@antv/g-canvas';
+import type { ShapeAttrs } from '@antv/g-adapter';
 import type {
   TextBaseline,
   TextTheme,

@@ -1,6 +1,6 @@
-import type { IElement, IGroup } from '@antv/g-canvas';
+import type { IElement, IGroup } from '@antv/g-adapter';
 import type { Event as GraphEvent } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g-adapter';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
@@ -589,7 +589,7 @@ export abstract class BaseFacet {
         this.spreadsheet.emit(S2Event.ROW_CELL_SCROLL, position);
         this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
       });
-      this.foregroundGroup.add(this.hRowScrollBar);
+      this.foregroundGroup.appendChild(this.hRowScrollBar);
     }
   };
 
@@ -651,7 +651,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.hScrollBar);
+      this.foregroundGroup.appendChild(this.hScrollBar);
     }
   };
 
@@ -706,7 +706,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.vScrollBar);
+      this.foregroundGroup.appendChild(this.vScrollBar);
     }
   };
 
@@ -1004,7 +1004,7 @@ export abstract class BaseFacet {
   addCell = (cell: S2CellType<ViewMeta>) => {
     const { panelScrollGroup } = this.spreadsheet;
 
-    panelScrollGroup?.add(cell);
+    panelScrollGroup?.appendChild(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
@@ -1125,14 +1125,14 @@ export abstract class BaseFacet {
     this.centerFrame = this.getCenterFrame();
 
     if (this.rowIndexHeader) {
-      this.foregroundGroup.add(this.rowIndexHeader);
+      this.foregroundGroup.appendChild(this.rowIndexHeader);
     }
     if (this.rowHeader) {
-      this.foregroundGroup.add(this.rowHeader);
+      this.foregroundGroup.appendChild(this.rowHeader);
     }
-    this.foregroundGroup.add(this.columnHeader);
-    this.foregroundGroup.add(this.cornerHeader);
-    this.foregroundGroup.add(this.centerFrame);
+    this.foregroundGroup.appendChild(this.columnHeader);
+    this.foregroundGroup.appendChild(this.cornerHeader);
+    this.foregroundGroup.appendChild(this.centerFrame);
   }
 
   protected getRowHeader(): RowHeader {

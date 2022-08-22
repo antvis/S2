@@ -1,4 +1,4 @@
-import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { Event, ShapeAttrs } from '@antv/g-adapter';
 import type { CellTypes } from '../../common/constant';
 import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';

@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { clone, last } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -194,7 +194,7 @@ export class PivotSheet extends SpreadSheet {
     this.render();
   }
 
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
+  public handleGroupSort(event: GEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 

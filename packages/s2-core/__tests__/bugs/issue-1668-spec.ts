@@ -3,7 +3,7 @@
  * https://github.com/antvis/S2/issues/1668
  */
 
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-1668.json';
 import { type S2Options, KEY_GROUP_COL_RESIZE_AREA } from '@/index';

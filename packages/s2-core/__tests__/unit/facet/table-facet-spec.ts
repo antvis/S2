@@ -1,7 +1,7 @@
 /**
  * table mode pivot test.
  */
-import { Canvas } from '@antv/g-canvas';
+import { Canvas } from '@antv/g-adapter';
 import { merge } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';

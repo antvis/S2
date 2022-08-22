@@ -30,7 +30,7 @@ class CustomCornerHeader extends Group {
         img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
       },
     });
-    this.node.add(this.backgroundShape);
+    this.node.appendChild(this.backgroundShape);
   }
 
   initText() {
@@ -46,7 +46,7 @@ class CustomCornerHeader extends Group {
         stroke: 'black',
       },
     });
-    this.node.add(this.textShape);
+    this.node.appendChild(this.textShape);
   }
 }
 

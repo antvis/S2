@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import type { Canvas } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g-adapter';
 import {
   Store,
   type S2Options,

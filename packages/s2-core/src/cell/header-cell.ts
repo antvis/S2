@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent, IShape } from '@antv/g-canvas';
+import type { GEvent, IShape } from '@antv/g-adapter';
 import {
   find,
   first,
@@ -149,11 +149,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: icon.size,
       fill: text.fill,
     });
-    sortIcon.on('click', (event: CanvasEvent) => {
+    sortIcon.on('click', (event: GEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       this.spreadsheet.handleGroupSort(event, this.meta);
     });
-    this.add(sortIcon);
+    this.appendChild(sortIcon);
     this.actionIcons.push(sortIcon);
   }
 
@@ -179,7 +179,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
-    icon.on('mouseover', (event: CanvasEvent) => {
+    icon.on('mouseover', (event: GEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
       onHover?.({
         hovering: true,
@@ -188,7 +188,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         event,
       });
     });
-    icon.on('mouseleave', (event: CanvasEvent) => {
+    icon.on('mouseleave', (event: GEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER_OFF, event);
       onHover?.({
         hovering: false,
@@ -197,7 +197,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         event,
       });
     });
-    icon.on('click', (event: CanvasEvent) => {
+    icon.on('click', (event: GEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       (onClick || action)?.({
         iconName,
@@ -207,7 +207,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
 
     this.actionIcons.push(icon);
-    this.add(icon);
+    this.appendChild(icon);
   }
 
   protected drawActionIcons() {

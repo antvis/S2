@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas } from '@antv/g-canvas';
+import { Canvas } from '@antv/g-adapter';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';

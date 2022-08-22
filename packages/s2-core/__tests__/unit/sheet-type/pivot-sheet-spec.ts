@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { getContainer } from 'tests/util/helpers';
 import dataCfg from 'tests/data/simple-data.json';
-import { Canvas, Event as GEvent } from '@antv/g-canvas';
+import { Canvas, GEvent } from '@antv/g-adapter';
 import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
@@ -946,7 +946,7 @@ describe('PivotSheet Tests', () => {
       content: () => 'custom callback content',
     });
     s2.hideTooltip();
-    s2.tooltip.container.classList.add('destroy-test');
+    s2.tooltip.container.classList.appendChild('destroy-test');
     s2.interaction.addIntercepts([InterceptType.HOVER]);
     s2.interaction.interactions.set('test-interaction', null);
     s2.container.on('test-event', () => {});

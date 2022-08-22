@@ -1,4 +1,4 @@
-import type { ShapeAttrs } from '@antv/g-canvas';
+import type { ShapeAttrs } from '@antv/g-adapter';
 import type { InteractionStateName } from '../constant';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { generateStandardColors } from '../../utils/color';

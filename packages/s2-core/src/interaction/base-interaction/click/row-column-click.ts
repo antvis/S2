@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { difference } from 'lodash';
 import {
   CellTypes,
@@ -59,18 +59,18 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: GEvent) => {
       this.handleRowColClick(event);
     });
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: GEvent) => {
       this.handleRowColClick(event);
     });
   }
 
-  private handleRowColClick = (event: CanvasEvent) => {
+  private handleRowColClick = (event: GEvent) => {
     event.stopPropagation();
 
     if (this.isLinkFieldText(event.target)) {
@@ -94,7 +94,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     }
   };
 
-  private showTooltip(event: CanvasEvent) {
+  private showTooltip(event: GEvent) {
     const { operation, showTooltip } = getTooltipOptions(
       this.spreadsheet,
       event,
@@ -115,7 +115,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private getTooltipOperator(
-    event: CanvasEvent,
+    event: GEvent,
     operation: TooltipOperation,
   ): TooltipOperatorOptions {
     const cell = this.spreadsheet.getCell(event.target);

@@ -144,7 +144,7 @@ class CustomTableColCell extends TableColCell {
       height,
       fill: isFiltered ? '#873bf4' : 'rgb(67, 72, 91)',
     });
-    this.add(icon);
+    this.appendChild(icon);
 
     icon.on('click', () => {
       this.onIconClick?.({

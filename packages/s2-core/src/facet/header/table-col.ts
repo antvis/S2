@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,

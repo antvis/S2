@@ -1,7 +1,7 @@
 /**
  * pivot mode pivot test.
  */
-import { Canvas, Group } from '@antv/g-canvas';
+import { Canvas, Group } from '@antv/g-adapter';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
 import { DEFAULT_TREE_ROW_WIDTH } from './../../../src/common/constant/options';
@@ -38,7 +38,7 @@ jest.mock('@/sheet-type', () => {
   });
   const panelScrollGroup = new Group({}) as PanelScrollGroup;
   panelScrollGroup.update = () => {};
-  container.add(panelScrollGroup);
+  container.appendChild(panelScrollGroup);
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
       return {

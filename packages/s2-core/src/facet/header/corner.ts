@@ -1,4 +1,4 @@
-import type { Group, Point } from '@antv/g-canvas';
+import type { Group, Point } from '@antv/g-adapter';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
@@ -245,7 +245,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           this.headerConfig,
         );
       }
-      this.add(cell);
+      this.appendChild(cell);
     });
   }
 

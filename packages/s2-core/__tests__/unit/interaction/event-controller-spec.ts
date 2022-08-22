@@ -1,5 +1,5 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, type BBox, type CanvasCfg, Shape } from '@antv/g-canvas';
+import { Canvas, type BBox, Image } from '@antv/g-adapter';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
@@ -82,7 +82,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-    } as CanvasCfg);
+    });
     spreadsheet.facet = {
       panelBBox: {
         maxX: s2Options.width,
@@ -814,7 +814,7 @@ describe('Interaction Event Controller Tests', () => {
 
       const handler = jest.fn();
 
-      const image = new Shape.Image({
+      const image = new Image({
         name: 'test',
         attrs: {
           img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',

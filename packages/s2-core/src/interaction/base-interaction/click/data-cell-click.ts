@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
@@ -27,7 +27,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: GEvent) => {
       event.stopPropagation();
 
       const { interaction, options } = this.spreadsheet;
@@ -73,7 +73,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private getTooltipOperator(
-    event: CanvasEvent,
+    event: GEvent,
     meta: ViewMeta,
   ): TooltipOperatorOptions {
     const TOOLTIP_OPERATOR_TREND_MENU = getTooltipOperatorTrendMenu();
@@ -101,7 +101,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private showTooltip(event: CanvasEvent, meta: ViewMeta) {
+  private showTooltip(event: GEvent, meta: ViewMeta) {
     const {
       data,
       isTotals = false,
@@ -133,7 +133,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private emitLinkFieldClickEvent(event: CanvasEvent) {
+  private emitLinkFieldClickEvent(event: GEvent) {
     const { cellData } = this.getCellAppendInfo(event.target);
     const { valueField: key, data: record } = cellData;
 

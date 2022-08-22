@@ -68,7 +68,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        this.add(cell);
+        this.appendChild(cell);
       }
     });
   }

@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';

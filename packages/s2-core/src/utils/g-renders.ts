@@ -8,7 +8,7 @@ import type {
   ShapeAttrs,
   ShapeCfg,
   SimpleBBox,
-} from '@antv/g-canvas';
+} from '@antv/g-adapter';
 import { forEach, isEmpty, isFunction, set } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
@@ -104,7 +104,7 @@ export function updateStrokeOpacity(shape: IShape, opacity: number) {
 
 export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   const iconShape = new GuiIcon(iconCfg);
-  group?.add(iconShape);
+  group?.appendChild(iconShape);
   return iconShape;
 }
 
@@ -123,6 +123,6 @@ export function renderTreeIcon(
   if (isFunction(onClick)) {
     icon.on('click', onClick);
   }
-  group?.add(icon);
+  group?.appendChild(icon);
   return icon;
 }

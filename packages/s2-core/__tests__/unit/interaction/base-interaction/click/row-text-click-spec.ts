@@ -1,4 +1,4 @@
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { RowTextClick } from '@/interaction/base-interaction/click';
 import type { Data, S2DataConfig, S2Options } from '@/common/interface';

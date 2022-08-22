@@ -1,6 +1,6 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
 import { S2Event } from '@/common/constant';

@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/g-adapter';
 import { forEach, isBoolean, isEmpty } from 'lodash';
 import type { RowCell } from '../../cell';
 import { S2Event } from '../../common/constant';
@@ -61,7 +61,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    */
   private changeStateToHoverFocus(
     cell: S2CellType,
-    event: CanvasEvent,
+    event: GEvent,
     meta: ViewMeta,
   ) {
     const { interaction } = this.spreadsheet;
@@ -112,7 +112,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    * @description handle the row or column header hover state
    * @param event
    */
-  private handleHeaderHover(event: CanvasEvent) {
+  private handleHeaderHover(event: GEvent) {
     const cell = this.spreadsheet.getCell(event.target) as S2CellType;
     if (isEmpty(cell)) {
       return;
@@ -176,7 +176,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   }
 
   public bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: GEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) {
         return;
@@ -205,13 +205,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   }
 
   public bindRowCellHover() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: GEvent) => {
       this.handleHeaderHover(event);
     });
   }
 
   public bindColCellHover() {
-    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: GEvent) => {
       this.handleHeaderHover(event);
     });
   }

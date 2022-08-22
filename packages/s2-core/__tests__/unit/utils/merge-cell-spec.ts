@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {

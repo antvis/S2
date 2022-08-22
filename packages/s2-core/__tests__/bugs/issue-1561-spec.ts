@@ -5,7 +5,7 @@
  *
  */
 import { getContainer } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import dataCfg from '../data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';

@@ -1,4 +1,4 @@
-import type { Point, SimpleBBox } from '@antv/g-canvas';
+import type { Point, SimpleBBox } from '@antv/g-adapter';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,

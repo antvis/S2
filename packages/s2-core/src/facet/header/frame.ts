@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g-adapter';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 

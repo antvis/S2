@@ -1,10 +1,4 @@
-import {
-  Canvas,
-  Event as CanvasEvent,
-  Group,
-  type LooseObject,
-  Shape,
-} from '@antv/g-canvas';
+import { Canvas, GEvent, Group, Image } from '@antv/g-adapter';
 import { each, get, isEmpty, isNil } from 'lodash';
 import { GuiIcon } from '../common';
 import {
@@ -34,14 +28,14 @@ interface S2EventHandler {
 
 interface EventHandler {
   type: string;
-  handler: (event: CanvasEvent) => void;
+  handler: (event: GEvent) => void;
 }
 
 export class EventController {
   public spreadsheet: SpreadSheet;
 
   // 保存触发的元素
-  private target: LooseObject;
+  private target: EventTarget;
 
   public canvasEventHandlers: EventHandler[] = [];
 
@@ -124,8 +118,10 @@ export class EventController {
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
-  private isGuiIconShape = (target: LooseObject) => {
-    return target instanceof Shape.Image && target.attrs.type === GuiIcon.type;
+  private isGuiIconShape = (target: EventTarget) => {
+    return (
+      target instanceof Image && get(target, 'attrs.type') === GuiIcon.type
+    );
   };
 
   private onKeyboardCopy(event: KeyboardEvent) {
@@ -234,12 +230,12 @@ export class EventController {
     return false;
   }
 
-  private isResizeArea(event: CanvasEvent) {
+  private isResizeArea(event: GEvent) {
     const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
     return appendInfo?.isResizeArea;
   }
 
-  private activeResizeArea(event: CanvasEvent) {
+  private activeResizeArea(event: GEvent) {
     this.resetResizeArea();
     const resizeArea = event.target as Group;
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
@@ -261,7 +257,7 @@ export class EventController {
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
   }
 
-  private onCanvasMousedown = (event: CanvasEvent) => {
+  private onCanvasMousedown = (event: GEvent) => {
     this.target = event.target;
     // 点击时清除 hover focus 状态
     this.spreadsheet.interaction.clearHoverTimer();
@@ -316,7 +312,7 @@ export class EventController {
     }
   };
 
-  private onCanvasMousemove = (event: CanvasEvent) => {
+  private onCanvasMousemove = (event: GEvent) => {
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
@@ -377,7 +373,7 @@ export class EventController {
     }
   };
 
-  private onCanvasMouseup = (event: CanvasEvent) => {
+  private onCanvasMouseup = (event: GEvent) => {
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
@@ -443,11 +439,11 @@ export class EventController {
     }
   };
 
-  private onCanvasClick = (event: CanvasEvent) => {
+  private onCanvasClick = (event: GEvent) => {
     this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
   };
 
-  private onCanvasDoubleClick = (event: CanvasEvent) => {
+  private onCanvasDoubleClick = (event: GEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
@@ -482,7 +478,7 @@ export class EventController {
     }
   };
 
-  private onCanvasMouseout = (event: CanvasEvent) => {
+  private onCanvasMouseout = (event: GEvent) => {
     if (!this.isAutoResetSheetStyle || event?.shape) {
       return;
     }
@@ -493,7 +489,7 @@ export class EventController {
     }
   };
 
-  private onCanvasContextMenu = (event: CanvasEvent) => {
+  private onCanvasContextMenu = (event: GEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
@@ -532,10 +528,7 @@ export class EventController {
     this.clearAllEvents();
   }
 
-  private addCanvasEvent(
-    eventType: string,
-    handler: (ev: CanvasEvent) => void,
-  ) {
+  private addCanvasEvent(eventType: string, handler: (ev: GEvent) => void) {
     this.canvasContainer?.on(eventType, handler);
     this.canvasEventHandlers.push({ type: eventType, handler });
   }

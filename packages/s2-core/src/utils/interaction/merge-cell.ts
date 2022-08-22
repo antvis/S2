@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-adapter';
 import {
   differenceWith,
   filter,
@@ -418,6 +418,6 @@ export const updateMergedCells = (
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta }) => {
-    mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
+    mergedCellsGroup.appendChild(new MergedCell(sheet, cells, viewMeta));
   });
 };

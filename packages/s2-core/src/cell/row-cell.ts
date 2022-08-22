@@ -1,4 +1,4 @@
-import type { Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-adapter';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
 import {
