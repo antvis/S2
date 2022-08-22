@@ -16,6 +16,7 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
+  OnUpdateCells,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
@@ -40,6 +41,7 @@ import { BaseEvent } from '../base-interaction';
 
 /**
  * Panel area's brush selection interaction
+ * 只有 data cell 存在滚动刷选
  */
 export class BaseBrushSelection
   extends BaseEvent
@@ -520,21 +522,21 @@ export class BaseBrushSelection
     const minY = Math.min(startYInView, this.endBrushPoint?.y);
     const maxY = Math.max(startYInView, this.endBrushPoint?.y);
 
-    const minNodeX = Math.min(
-      this.startBrushPoint?.NodeX,
-      this.endBrushPoint?.NodeX,
+    const minHeaderX = Math.min(
+      this.startBrushPoint?.headerX,
+      this.endBrushPoint?.headerX,
     );
-    const maxNodeX = Math.max(
-      this.startBrushPoint?.NodeX,
-      this.endBrushPoint?.NodeX,
+    const maxHeaderX = Math.max(
+      this.startBrushPoint?.headerX,
+      this.endBrushPoint?.headerX,
     );
-    const minNodeY = Math.min(
-      this.startBrushPoint?.NodeY,
-      this.endBrushPoint?.NodeY,
+    const minHeaderY = Math.min(
+      this.startBrushPoint?.headerY,
+      this.endBrushPoint?.headerY,
     );
-    const maxNodeY = Math.max(
-      this.startBrushPoint?.NodeY,
-      this.endBrushPoint?.NodeY,
+    const maxHeaderY = Math.max(
+      this.startBrushPoint?.headerY,
+      this.endBrushPoint?.headerY,
     );
     // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
     // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
@@ -544,16 +546,16 @@ export class BaseBrushSelection
         colIndex: minColIndex,
         x: minX,
         y: minY,
-        NodeX: minNodeX,
-        NodeY: minNodeY,
+        headerX: minHeaderX,
+        headerY: minHeaderY,
       },
       end: {
         rowIndex: maxRowIndex,
         colIndex: maxColIndex,
         x: maxX,
         y: maxY,
-        NodeX: maxNodeX,
-        NodeY: maxNodeY,
+        headerX: maxHeaderX,
+        headerY: maxHeaderY,
       },
       width: maxX - minX,
       height: maxY - minY,
@@ -569,10 +571,13 @@ export class BaseBrushSelection
     });
   }
 
+  protected onUpdateCells: OnUpdateCells = (root, defaultOnUpdateCells) => {
+    return defaultOnUpdateCells();
+  };
+
   // 刷选过程中高亮的cell
-  protected showPrepareSelectedCells = () => {
+  private showPrepareSelectedCells = () => {
     this.brushRangeCells = this.getBrushRangeCells();
-    const cellType = this.brushRangeCells[0]?.cellType;
     this.spreadsheet.interaction.changeState({
       cells: map(this.brushRangeCells, (item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
@@ -580,19 +585,7 @@ export class BaseBrushSelection
       // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
       // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
       force: true,
-      onUpdateCells: (root, defaultOnUpdateCells) => {
-        switch (cellType) {
-          case CellTypes.COL_CELL:
-            root.updateCells(root.getAllColHeaderCells());
-            break;
-          case CellTypes.ROW_CELL:
-            root.updateCells(root.getAllRowHeaderCells());
-            break;
-          default:
-            defaultOnUpdateCells();
-            break;
-        }
-      },
+      onUpdateCells: this.onUpdateCells,
     });
   };
 
@@ -605,21 +598,23 @@ export class BaseBrushSelection
     this.initPrepareSelectMaskShape();
     this.setDisplayedCells();
     this.startBrushPoint = this.getBrushPoint(event);
-    this.resetScrollDelta();
   }
 
   protected addBrushIntercepts() {
     this.spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
   }
 
-  protected bindMouseUp() {
+  protected bindMouseUp(enableScroll = false) {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
         this.resetDrag();
         return;
       }
-      this.clearAutoScroll();
+
+      if (enableScroll) {
+        this.clearAutoScroll();
+      }
 
       if (this.isValidBrushSelection()) {
         this.addBrushIntercepts();
@@ -667,15 +662,15 @@ export class BaseBrushSelection
       return;
     }
 
-    const { rowIndex, colIndex, x: NodeX, y: NodeY } = cell.getMeta();
+    const { rowIndex, colIndex, x: headerX, y: headerY } = cell.getMeta();
 
     this.endBrushPoint = {
       x,
       y,
       rowIndex,
       colIndex,
-      NodeY,
-      NodeX,
+      headerY,
+      headerX,
     };
 
     const { interaction } = this.spreadsheet;

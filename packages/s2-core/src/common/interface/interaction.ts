@@ -37,7 +37,10 @@ export interface CellMeta {
   type: CellTypes;
   [key: string]: unknown;
 }
-
+export type OnUpdateCells = (
+  root: RootInteraction,
+  defaultOnUpdateCells: () => void,
+) => void;
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
@@ -50,10 +53,7 @@ export interface InteractionStateInfo {
   // for empty cells, updates are ignored, use `force` to skip ignore
   force?: boolean;
   /** 交互行为改变后，会被更新和重绘的单元格回调 */
-  onUpdateCells?: (
-    root: RootInteraction,
-    defaultOnUpdateCells: () => void,
-  ) => void;
+  onUpdateCells?: OnUpdateCells;
 }
 
 export interface SelectHeaderCellInfo {
@@ -78,8 +78,9 @@ export interface BrushPoint {
   y: number;
   scrollX?: number;
   scrollY?: number;
-  NodeX?: number;
-  NodeY?: number;
+  /** 用于标记 row cell 和 col cell 点的 x, y 坐标 */
+  headerX?: number;
+  headerY?: number;
 }
 
 export interface BrushRange {

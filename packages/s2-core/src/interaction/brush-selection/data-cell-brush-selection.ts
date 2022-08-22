@@ -21,6 +21,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
       super.mouseDown(event);
+      this.resetScrollDelta();
     });
   }
 
@@ -118,5 +119,9 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     if (isEmpty(this.brushRangeCells)) {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
+  }
+
+  protected bindMouseUp() {
+    super.bindMouseUp(true);
   }
 }

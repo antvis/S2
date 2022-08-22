@@ -9,6 +9,7 @@ import {
 import type { BrushPoint, ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
+import type { OnUpdateCells } from '../../common/interface';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -65,11 +66,11 @@ export class RowBrushSelection extends BaseBrushSelection {
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
     const cell = this.spreadsheet.getCell(event.target);
     const meta = cell.getMeta();
-    const { x: NodeX, y: NodeY } = meta;
+    const { x: headerX, y: headerY } = meta;
     return {
       ...super.getBrushPoint(event),
-      NodeX,
-      NodeY,
+      headerX,
+      headerY,
     };
   }
 
@@ -78,7 +79,10 @@ export class RowBrushSelection extends BaseBrushSelection {
     const { x = 0, y = 0 } = meta;
 
     return (
-      x >= start.NodeX && x <= end.NodeX && y >= start.NodeY && y <= end.NodeY
+      x >= start.headerX &&
+      x <= end.headerX &&
+      y >= start.headerY &&
+      y <= end.headerY
     );
   };
 
@@ -110,4 +114,8 @@ export class RowBrushSelection extends BaseBrushSelection {
       InterceptType.ROW_BRUSH_SELECTION,
     ]);
   }
+
+  protected onUpdateCells: OnUpdateCells = (root) => {
+    return root.updateCells(root.getAllRowHeaderCells());
+  };
 }
