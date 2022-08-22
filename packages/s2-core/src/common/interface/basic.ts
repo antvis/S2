@@ -204,14 +204,14 @@ export interface Style {
   device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination = {
+export type Pagination<T = unknown> = {
   // 每页数量
   pageSize: number;
   // 当前页
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-};
+} & T;
 
 export interface CustomSVGIcon {
   // icon 类型名

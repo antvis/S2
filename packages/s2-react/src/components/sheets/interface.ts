@@ -1,5 +1,6 @@
 import type { Node } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
+import type { PaginationProps as AntdPaginationProps } from 'antd';
 import type { DrillDownProps } from '../drill-down';
 import type { HeaderCfgProps } from '../header';
 
@@ -26,5 +27,6 @@ export interface PartDrillDown {
 
 export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
-  HeaderCfgProps
+  HeaderCfgProps,
+  AntdPaginationProps
 >;
