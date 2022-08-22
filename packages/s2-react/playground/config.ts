@@ -72,7 +72,7 @@ export const mockGridAnalysisOptions: S2Options = {
       width: 400,
       height: 100,
       valuesCfg: {
-        widthPercent: [40, 20, 20, 20],
+        widthPercent: [0.4, 0.2, 0.2, 0.2],
       },
     },
   },

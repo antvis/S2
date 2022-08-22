@@ -7,7 +7,6 @@ import {
   isNumber,
   isString,
   memoize,
-  reverse,
   size,
   toString,
   trim,
@@ -25,7 +24,7 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
-import { renderIcon, renderRect, renderText } from '../utils/g-renders';
+import { renderIcon, renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
 import { renderMiniChart } from './g-mini-charts';
 import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
@@ -399,7 +398,7 @@ export const getEmptyPlaceholder = (
 export const getContentAreaForMultiData = (
   box: SimpleBBox,
   textValues: SimpleDataItem[][],
-  widthPercent: number[],
+  widthPercent?: number[],
 ) => {
   const { x, y, width, height } = box;
   const avgHeight = height / size(textValues);
@@ -416,7 +415,7 @@ export const getContentAreaForMultiData = (
     totalWidth = 0;
     for (let j = 0; j < size(textValues[i]); j++) {
       avgWidth = !isEmpty(widthPercent)
-        ? width * (widthPercent[j] / 100)
+        ? width * widthPercent[j]
         : width / size(textValues[0]); // 指标个数相同，任取其一即可
 
       curX = calX(x, { left: 0, right: 0 }, totalWidth, 'left');
@@ -561,6 +560,7 @@ export const drawObjectText = (
         curStyle,
       );
 
+      // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
         const attrs = iconCondition?.mapping(curText, {
           rowIndex: i,
