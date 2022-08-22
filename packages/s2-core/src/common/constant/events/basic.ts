@@ -91,6 +91,7 @@ export enum S2Event {
   GLOBAL_MOUSE_MOVE = 'global:mouse-move',
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
+  GLOBAL_ACTION_ICON_HOVER_OFF = 'global:action-icon-hover-off',
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
   GLOBAL_CLICK = 'global:click',
   GLOBAL_DOUBLE_CLICK = 'global:double-click',
