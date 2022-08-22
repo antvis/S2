@@ -1,5 +1,5 @@
 import { map } from 'lodash';
-import * as data from '../../data/mock-dataset.json';
+import * as data from '../../../data/mock-dataset.json';
 import {
   RowBrushSelection,
   S2Event,
@@ -74,7 +74,9 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         width: 600,
         height: 400,
         interaction: {
-          rowBrushSelection: true,
+          brushSelection: {
+            row: true,
+          },
         },
       },
     );
@@ -108,8 +110,8 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
-      NodeX: startBrushRowCellMeta.x,
-      NodeY: startBrushRowCellMeta.y,
+      headerX: startBrushRowCellMeta.x,
+      headerY: startBrushRowCellMeta.y,
       colIndex: startBrushRowCellMeta.colIndex,
       rowIndex: startBrushRowCellMeta.rowIndex,
       scrollX: 0,
@@ -138,8 +140,8 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.endBrushPoint).toStrictEqual({
-      NodeX: endBrushRowCellMeta.x,
-      NodeY: endBrushRowCellMeta.y,
+      headerX: endBrushRowCellMeta.x,
+      headerY: endBrushRowCellMeta.y,
       colIndex: endBrushRowCellMeta.colIndex,
       rowIndex: endBrushRowCellMeta.rowIndex,
       x: 160,

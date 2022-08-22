@@ -121,6 +121,6 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected onUpdateCells: OnUpdateCells = (root) => {
-    return root.updateCells(root.getAllRowHeaderCells());
+    return root.updateCells(root.getAllColHeaderCells());
   };
 }

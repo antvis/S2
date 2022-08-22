@@ -50,18 +50,19 @@ import { PivotSheet, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
+  // 此事件默认打开，需要设置 options: { interaction: { brushSelection : { data: true } } }
   console.log('刷选的单元格：', cells) // cells: DataCell[]
   ...
 })
 
 s2.on(S2Event.ROW_BRUSH_SELECTION, (cells) => {
-  // 此事件默认关闭，需要设置 options: { interaction: { rowBrushSelection: true } }
+  // 此事件默认关闭，需要设置 options: { interaction: { brushSelection : { row: true } } }
   console.log('刷选的行头单元格：', cells) // cells: RowCell[]
 ...
 })
 
 s2.on(S2Event.COL_BRUSH_SELECTION, (cells) => {
-  // 此事件默认关闭，需要设置 options: { interaction: { colBrushSelection: true } }
+  // 此事件默认关闭，需要设置 options: { interaction: { brushSelection : { col: true } } }
   console.log('刷选的列头单元格：', cells) // cells: ColCell[] 
 ...
 })
@@ -229,7 +230,9 @@ const s2Options = {
 ```ts
 const s2Options = {
   interaction: {
-    rowBrushSelection: true // 默认false 
+    brushSelection:  {
+        row: true // 默认 false 
+    }
   }
 };
 ```
@@ -241,7 +244,9 @@ const s2Options = {
 ```ts
 const s2Options = {
   interaction: {
-    colBrushSelection: true // 默认false 
+    brushSelection:  {
+        col: true // 默认 false 
+    }
   }
 };
 ```

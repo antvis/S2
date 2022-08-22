@@ -354,7 +354,7 @@ export class RootInteraction {
     hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
-  private static getBrushSelectionInfo(
+  private getBrushSelectionInfo(
     brushSelection?: boolean | BrushSelection,
   ): BrushSelectionInfo {
     if (isBoolean(brushSelection)) {
@@ -380,7 +380,7 @@ export class RootInteraction {
       selectedCellMove,
     } = this.spreadsheet.options.interaction;
     const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
-      RootInteraction.getBrushSelectionInfo(brushSelection);
+      this.getBrushSelectionInfo(brushSelection);
 
     return [
       {

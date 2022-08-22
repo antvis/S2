@@ -7,6 +7,7 @@ export enum InteractionName {
   ROW_COLUMN_CLICK = 'rowColumnClick',
   ROW_TEXT_CLICK = 'rowTextClick',
   HOVER = 'hover',
+  // options brushSelection 控制 BRUSH_SELECTION, ROW_BRUSH_SELECTION,COL_BRUSH_SELECTION
   BRUSH_SELECTION = 'brushSelection',
   ROW_BRUSH_SELECTION = 'rowBrushSelection',
   COL_BRUSH_SELECTION = 'colBrushSelection',

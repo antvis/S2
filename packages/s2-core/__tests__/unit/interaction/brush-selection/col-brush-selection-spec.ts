@@ -1,5 +1,5 @@
 import { map } from 'lodash';
-import * as data from '../../data/mock-dataset.json';
+import * as data from '../../../data/mock-dataset.json';
 import {
   ColBrushSelection,
   S2Event,
@@ -74,7 +74,9 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
         width: 600,
         height: 400,
         interaction: {
-          colBrushSelection: true,
+          brushSelection: {
+            col: true,
+          },
         },
       },
     );
@@ -109,8 +111,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
-      NodeX: startBrushColCellMeta.x,
-      NodeY: startBrushColCellMeta.y,
+      headerX: startBrushColCellMeta.x,
+      headerY: startBrushColCellMeta.y,
       colIndex: startBrushColCellMeta.colIndex,
       rowIndex: startBrushColCellMeta.rowIndex,
       scrollX: 0,
@@ -139,8 +141,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.endBrushPoint).toStrictEqual({
-      NodeX: endBrushColCellMeta.x,
-      NodeY: endBrushColCellMeta.y,
+      headerX: endBrushColCellMeta.x,
+      headerY: endBrushColCellMeta.y,
       colIndex: endBrushColCellMeta.colIndex,
       rowIndex: endBrushColCellMeta.rowIndex,
       x: 330,

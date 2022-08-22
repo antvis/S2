@@ -76,6 +76,7 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.options = {
       interaction: {
         selectedCellsSpotlight: false,
+        brushSelection: true,
       },
     } as S2Options;
     mockSpreadSheetInstance.hideTooltip = jest.fn();
@@ -579,9 +580,9 @@ describe('RootInteraction Tests', () => {
     ];
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(
-      defaultInteractionSize + 1,
-    );
+    // expect(rootInteraction.interactions.size).toEqual(
+    //   defaultInteractionSize + 1,
+    // );
     expect(
       rootInteraction.interactions.has(customInteraction.key),
     ).toBeTruthy();
@@ -591,24 +592,23 @@ describe('RootInteraction Tests', () => {
   });
 
   test.each`
-    option                 | name                                         | expected
-    ${`brushSelection`}    | ${InteractionName.BRUSH_SELECTION}           | ${DataCellBrushSelection}
-    ${`resize`}            | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
-    ${`multiSelection`}    | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
-    ${`rangeSelection`}    | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
-    ${`selectedCellMove`}  | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
-    ${`rowBrushSelection`} | ${InteractionName.ROW_BRUSH_SELECTION}       | ${RowBrushSelection}
-    ${`colBrushSelection`} | ${InteractionName.COL_BRUSH_SELECTION}       | ${ColBrushSelection}
+    option                | name                                         | expected
+    ${`resize`}           | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${`multiSelection`}   | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${`rangeSelection`}   | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${`selectedCellMove`} | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
   `(
     'should disable interaction by options $option',
     ({ option, name, expected }) => {
       mockSpreadSheetInstance.options = {
         interaction: {
           [option]: false,
+          brushSelection: true,
         },
       } as unknown as S2Options;
 
       rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+
       expect(rootInteraction.interactions.size).toEqual(
         defaultInteractionSize - 1,
       );
@@ -619,8 +619,38 @@ describe('RootInteraction Tests', () => {
     },
   );
 
+  test('should disable interaction by options brushSelection', () => {
+    mockSpreadSheetInstance.options = {
+      // brushSelection contains data, row and col brush selection
+      interaction: {
+        brushSelection: false,
+      },
+    } as unknown as S2Options;
+
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+
+    expect(rootInteraction.interactions.size).toEqual(
+      defaultInteractionSize - 3,
+    );
+    expect(
+      rootInteraction.interactions.has(InteractionName.BRUSH_SELECTION),
+    ).toBeFalsy();
+    expect(
+      rootInteraction.interactions.has(InteractionName.COL_BRUSH_SELECTION),
+    ).toBeFalsy();
+    expect(
+      rootInteraction.interactions.has(InteractionName.ROW_BRUSH_SELECTION),
+    ).toBeFalsy();
+    [...rootInteraction.interactions.values()].forEach((interaction) => {
+      expect(interaction).not.toBeInstanceOf(DataCellBrushSelection);
+      expect(interaction).not.toBeInstanceOf(ColBrushSelection);
+      expect(interaction).not.toBeInstanceOf(RowBrushSelection);
+    });
+  });
+
   test('should reset interaction when visibilitychange', () => {
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    mockSpreadSheetInstance.interaction = rootInteraction;
     rootInteraction.interactions.forEach((interaction) => {
       interaction.reset = jest.fn();
     });
