@@ -5,6 +5,14 @@
   },
   "demos": [
     {
+      "filename": "row-expand-depth.ts",
+      "title": {
+        "zh": "行头默认层级展开 - 透视表",
+        "en": "Row Depth Expand"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif"
+    },
+    {
       "filename": "pivot-link-jump.ts",
       "title": {
         "zh": "链接跳转 - 透视表",
