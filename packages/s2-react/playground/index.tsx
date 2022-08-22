@@ -873,12 +873,12 @@ function MainLayout() {
                 <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
                   <Select
                     style={{ width: 180 }}
-                    defaultValue={mergedOptions.style.expandToRowLevel}
+                    defaultValue={mergedOptions.style.rowExpandDepth}
                     placeholder="默认行头展开层级"
                     onChange={(level) => {
                       updateOptions({
                         style: {
-                          expandToRowLevel: level,
+                          rowExpandDepth: level,
                         },
                       });
                     }}

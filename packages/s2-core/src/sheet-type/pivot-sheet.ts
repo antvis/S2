@@ -157,7 +157,7 @@ export class PivotSheet extends SpreadSheet {
       style: {
         hierarchyCollapse: !isCollapsed,
         collapsedRows: null,
-        expandToRowLevel: null,
+        rowExpandDepth: null,
       },
     };
     this.setOptions(options);
