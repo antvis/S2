@@ -870,6 +870,24 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
+                <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
+                  <Select
+                    style={{ width: 180 }}
+                    defaultValue={mergedOptions.style.rowExpandDepth}
+                    placeholder="默认行头展开层级"
+                    onChange={(level) => {
+                      updateOptions({
+                        style: {
+                          rowExpandDepth: level,
+                        },
+                      });
+                    }}
+                  >
+                    <Select.Option value={0}>第一级</Select.Option>
+                    <Select.Option value={1}>第二级</Select.Option>
+                    <Select.Option value={2}>第三级</Select.Option>
+                  </Select>
+                </Tooltip>
                 <Tooltip
                   title={
                     <>

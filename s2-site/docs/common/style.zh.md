@@ -13,6 +13,7 @@ object **必选**,_default：null_ 功能描述：样式设置
 | showTreeLeafNodeAlignDot | `boolean` |  |  false  | 树状模式下叶子节点是否显示层级占位点 |
 | treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 （优先级大于 `rowCfg.width` 和 `rowCfg.treeRowsWidth （已废弃）`) |
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
+| rowExpandDepth | `number` |  |    | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）。 |
 | collapsedRows | `Record<string, boolean>` |  |  | 树状模式下行头自定义折叠、收起状态（透视表使用）。<br> key 值的生成需遵守指定的规则：'root[&] 行头维度值'。 [查看 demo](/zh/examples/basic/pivot#tree) |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
 | colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
