@@ -36,7 +36,7 @@ function createRadioGroup(s2) {
 }
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/e254339f-46df-4be0-81b0-a3b1e26b39ff.json',
 )
   .then((res) => res.json())
   .then((dataCfg) => {
@@ -51,19 +51,7 @@ fetch(
       },
     };
 
-    const s2 = new PivotSheet(
-      container,
-      {
-        ...dataCfg,
-        fields: {
-          rows: ['province', 'city', 'type', 'sub_type'],
-          columns: [],
-          values: ['number'],
-          valueInCols: true,
-        },
-      },
-      s2Options,
-    );
+    const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();
 
