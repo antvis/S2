@@ -176,6 +176,7 @@ export class RowCell extends HeaderCell {
 
     // in mobile, we use this cell
     if (isMobile()) {
+      // TODO: 移动端收拾
       this.gm = new GM(this, {
         gestures: ['Tap'],
       });

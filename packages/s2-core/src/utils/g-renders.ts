@@ -2,16 +2,11 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
-import type {
-  Group,
-  IShape,
-  ShapeAttrs,
-  ShapeCfg,
-  SimpleBBox,
-} from '@antv/g-adapter';
+import type { Group, IShape, ShapeAttrs, ShapeCfg } from '@antv/g-adapter';
 import { forEach, isEmpty, isFunction, set } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
+import type { SimpleBBox } from '../common/interface/g-adapter';
 
 export function renderRect(
   group: Group,

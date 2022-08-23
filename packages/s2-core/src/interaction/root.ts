@@ -487,7 +487,7 @@ export class RootInteraction {
 
   public addIntercepts(interceptTypes: InterceptType[] = []) {
     interceptTypes.forEach((interceptType) => {
-      this.intercepts.appendChild(interceptType);
+      this.intercepts.add(interceptType);
     });
   }
 

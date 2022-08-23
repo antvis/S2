@@ -1,5 +1,5 @@
-import type { SimpleBBox } from '@antv/g-adapter';
 import { merge } from 'lodash';
+import type { SimpleBBox } from '../../common/interface/g-adapter';
 import type {
   AreaRange,
   CellTheme,

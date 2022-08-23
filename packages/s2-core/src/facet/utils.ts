@@ -1,5 +1,6 @@
-import type { IGroup, SimpleBBox } from '@antv/g-adapter';
+import type { IGroup } from '@antv/g-adapter';
 import { findIndex, isNil } from 'lodash';
+import type { SimpleBBox } from '../common/interface/g-adapter';
 
 import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';

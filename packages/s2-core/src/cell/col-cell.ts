@@ -1,4 +1,4 @@
-import type { Point, SimpleBBox } from '@antv/g-adapter';
+import type { Point } from '@antv/g-adapter';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,
@@ -30,6 +30,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import type { SimpleBBox } from '../common/interface/g-adapter';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 

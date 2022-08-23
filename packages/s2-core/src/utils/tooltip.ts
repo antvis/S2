@@ -155,7 +155,7 @@ export const setTooltipContainerStyle = (
 
   if (className.length) {
     const classList = className.filter(Boolean);
-    container.classList.appendChild(...classList);
+    container.classList.add(...classList);
   }
 
   container.classList.toggle(TOOLTIP_CONTAINER_SHOW_CLS, visible);

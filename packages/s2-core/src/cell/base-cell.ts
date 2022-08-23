@@ -1,4 +1,4 @@
-import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-adapter';
+import type { BBox, IShape, Point } from '@antv/g-adapter';
 import { Group } from '@antv/g-adapter';
 import {
   each,
@@ -10,6 +10,7 @@ import {
   keys,
   pickBy,
 } from 'lodash';
+import type { SimpleBBox } from '../common/interface/g-adapter';
 import {
   CellTypes,
   InteractionStateName,
