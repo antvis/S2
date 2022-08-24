@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v1.3.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.3.0-alpha.1...@antv/s2-vue-v1.3.0-alpha.2) (2022-08-24)
+
+
+### Bug Fixes
+
+* **pagination:** 透传组件分页参数 & 修复国际化不生效 close [#1697](https://github.com/antvis/S2/issues/1697) ([#1698](https://github.com/antvis/S2/issues/1698)) ([be334fc](https://github.com/antvis/S2/commit/be334fcef6a11d08358f007eba805cbd380560d5))
+
 # [@antv/s2-vue-v1.3.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.2.1...@antv/s2-vue-v1.3.0-alpha.1) (2022-08-12)
 
 
