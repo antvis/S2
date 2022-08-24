@@ -10,13 +10,13 @@ fetch(
       fields: {
         columns: [
           {
-            name: 'area',
+            key: 'area',
             children: ['province', 'city']
           },
           'type',
           {
-            name: 'money',
-            children: ['price', 'cost']
+            key: 'money',
+            children: [{ key: 'price'}, 'cost']
           }
         ]
       },
