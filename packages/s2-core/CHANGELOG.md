@@ -1,3 +1,36 @@
+# [@antv/s2-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-v1.26.0...@antv/s2-v1.27.0) (2022-08-22)
+
+
+### Features
+
+* actionIcons支持细粒度展示控制 ([#1689](https://github.com/antvis/S2/issues/1689)) ([8029511](https://github.com/antvis/S2/commit/80295113965a77f0e1756c7d0f32c95ec7550834))
+
+# [@antv/s2-v1.26.0](https://github.com/antvis/S2/compare/@antv/s2-v1.25.0...@antv/s2-v1.26.0) (2022-08-15)
+
+
+### Bug Fixes
+
+* **interaction:** 优化resetSheetStyle性能 ([#1653](https://github.com/antvis/S2/issues/1653)) ([972afc6](https://github.com/antvis/S2/commit/972afc6c4cfc5192db753c1488f4ed852254ae13))
+* **resize:** 修复总计列存在子节点时无法调整宽度 ([#1675](https://github.com/antvis/S2/issues/1675)) ([62f3459](https://github.com/antvis/S2/commit/62f3459bdccba72f40404a9ccdd5572202bbfcee))
+* **scroll:** 修复滚动条显示越界 & 优化滚动性能 ([#1671](https://github.com/antvis/S2/issues/1671)) ([cfbccb9](https://github.com/antvis/S2/commit/cfbccb93aaa78edbcf1e7860b940a5431ead8b7a))
+* **scroll:** 修复滚动边界判断错误导致无法滚动 ([#1664](https://github.com/antvis/S2/issues/1664)) ([cf4b8b3](https://github.com/antvis/S2/commit/cf4b8b3e05fa7cf4d5386a3d4a1ad6d98c5179ce))
+* 修复明细表 onRaneSort 失效问题 ([#1678](https://github.com/antvis/S2/issues/1678)) ([3563f3c](https://github.com/antvis/S2/commit/3563f3c9a48998827722babb265e7889b7a86a20))
+* 修复趋势分析表对于不同个数同环比列头复制时，数据不对齐的问题 ([#1679](https://github.com/antvis/S2/issues/1679)) ([ba88dec](https://github.com/antvis/S2/commit/ba88dec2c2ef9506264c64ba069685c0bd9a4c67))
+* 修复选中态的描边宽度样式问题 ([#1654](https://github.com/antvis/S2/issues/1654)) ([577cd84](https://github.com/antvis/S2/commit/577cd84bebe3351bf93b8f1a33c298b7cde66b11))
+* 双击时不取消datacell 选中态 ([#1682](https://github.com/antvis/S2/issues/1682)) ([779940b](https://github.com/antvis/S2/commit/779940b149d2c7b6d18f7e9ec5a1652e3b559273))
+* 链接字段高亮下划线过长 ([#1652](https://github.com/antvis/S2/issues/1652)) ([4a79470](https://github.com/antvis/S2/commit/4a794704a48147a91379666c7530c60d9f4644e8))
+
+
+### Features
+
+* 刷选时支持高亮所有对应的行列头cell ([#1680](https://github.com/antvis/S2/issues/1680)) ([c7fb53f](https://github.com/antvis/S2/commit/c7fb53f403608e5194d745408966cc9b18c92025))
+* 明细表行头单元格支持拖拽 ([#1655](https://github.com/antvis/S2/issues/1655)) ([ab470cb](https://github.com/antvis/S2/commit/ab470cb43eb1ed0d0162b3bed48e568ecaf42cb2))
+
+
+### Performance Improvements
+
+* 优化生成grid模式时性能问题 ([#1686](https://github.com/antvis/S2/issues/1686)) ([a4f52e6](https://github.com/antvis/S2/commit/a4f52e677ee30a7987614846fa061541d4170a97))
+
 # [@antv/s2-v1.25.0](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0...@antv/s2-v1.25.0) (2022-08-05)
 
 

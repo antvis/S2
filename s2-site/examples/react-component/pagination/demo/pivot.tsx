@@ -12,17 +12,14 @@ fetch(
       width: 600,
       height: 480,
       pagination: {
+        // API: https://ant.design/components/pagination-cn/#API
         pageSize: 4,
         current: 1,
       },
     };
 
     ReactDOM.render(
-      <SheetComponent
-        dataCfg={dataCfg}
-        options={s2Options}
-        showPagination={true}
-      />,
+      <SheetComponent dataCfg={dataCfg} options={s2Options} showPagination />,
       document.getElementById('container'),
     );
   });

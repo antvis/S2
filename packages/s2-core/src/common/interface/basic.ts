@@ -201,6 +201,8 @@ export interface Style {
   treeRowsWidth?: number;
   // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
   hierarchyCollapse?: boolean;
+  // 树状分层模式下，行头默认展开到第几层
+  rowExpandDepth?: number;
   // row header in tree mode collapse some nodes
   collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
@@ -211,14 +213,14 @@ export interface Style {
   device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination = {
+export type Pagination<T = unknown> = {
   // 每页数量
   pageSize: number;
   // 当前页
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-};
+} & T;
 
 export interface CustomSVGIcon {
   // icon 类型名
@@ -229,17 +231,26 @@ export interface CustomSVGIcon {
   svg: string;
 }
 
-export interface HeaderActionIconProps {
+export interface HeaderIconClickParams {
   iconName: string;
   meta: Node;
   event?: Event;
+}
+
+export type HeaderActionIconProps = HeaderIconClickParams;
+
+export interface HeaderIconHoverParams extends HeaderIconClickParams {
+  hovering: boolean;
 }
 
 export interface HeaderActionIconOptions {
   iconName: string;
   x: number;
   y: number;
-  action: (props: HeaderActionIconProps) => void;
+  /** @deprecated 使用 onClick 代替 */
+  action: (props: HeaderIconClickParams) => void;
+  onClick: (headerIconClickParams: HeaderIconClickParams) => void;
+  onHover: (headerIconHoverParams: HeaderIconHoverParams) => void;
   defaultHide?: boolean;
 }
 
@@ -249,11 +260,18 @@ export interface HeaderActionIcon {
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
-  defaultHide?: boolean;
-  // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
-  displayCondition?: (mete: Node) => boolean;
-  // 点击后的执行函数
-  action?: (headerActionIconProps: HeaderActionIconProps) => void;
+  defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
+  // 是否展示当前 iconNames 配置的 icon
+  displayCondition?: (mete: Node, iconName: string) => boolean;
+  /**
+   * 点击后的执行函数
+   * @deprecated 使用 onClick 代替
+   */
+  action?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // 点击回调函数
+  onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // hover 回调函数
+  onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义

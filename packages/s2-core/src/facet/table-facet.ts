@@ -14,6 +14,7 @@ import {
 import { FrozenCellGroupMap } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
+  FilterParam,
   LayoutResult,
   ResizeInteractionOptions,
   S2CellType,
@@ -88,85 +89,93 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, (sortParams) => {
-      let params = sortParams;
-      // 兼容之前 sortParams 为对象的用法
-      if (!Array.isArray(sortParams)) {
-        params = [sortParams];
-      }
-
-      const currentParams = s2.dataCfg.sortParams || [];
-
-      params = params.map((item: TableSortParam) => {
-        const newItem = {
-          ...item,
-          // 兼容之前 sortKey 的用法
-          sortFieldId: item.sortKey ?? item.sortFieldId,
-        };
-
-        const oldItem =
-          currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ??
-          {};
-        return {
-          ...oldItem,
-          ...newItem,
-        };
-      });
-
-      const oldConfigs = currentParams.filter((config) => {
-        const newItem = params.find(
-          (p) => p.sortFieldId === config.sortFieldId,
-        );
-        if (newItem) {
-          return false;
-        }
-        return true;
-      });
-
-      set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
-      s2.setDataCfg(s2.dataCfg);
-      s2.render(true);
-      s2.emit(
-        S2Event.RANGE_SORTED,
-        (s2.dataSet as TableDataSet).getDisplayDataSet(),
-      );
-    });
-
-    s2.on(S2Event.RANGE_FILTER, (params) => {
-      /** remove filter params on current key if passed an empty filterValues field */
-      const unFilter =
-        !params.filteredValues || params.filteredValues.length === 0;
-
-      const oldConfig = s2.dataCfg.filterParams || [];
-      // check whether filter condition already exists on column, if so, modify it instead.
-      const oldIndex = oldConfig.findIndex(
-        (item) => item.filterKey === params.filterKey,
-      );
-
-      if (oldIndex !== -1) {
-        if (unFilter) {
-          // remove filter params on current key if passed an empty filterValues field
-          oldConfig.splice(oldIndex);
-        } else {
-          // if filter with same key already exists, replace it
-          oldConfig[oldIndex] = params;
-        }
-      } else {
-        oldConfig.push(params);
-      }
-
-      set(s2.dataCfg, 'filterParams', oldConfig);
-
-      s2.render(true);
-      s2.emit(
-        S2Event.RANGE_FILTERED,
-        (s2.dataSet as TableDataSet).getDisplayDataSet(),
-      );
-    });
+    s2.on(S2Event.RANGE_SORT, this.onSortHandler);
+    s2.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
+
+  private onSortHandler = (sortParams) => {
+    const s2 = this.spreadsheet;
+    let params = sortParams;
+    // 兼容之前 sortParams 为对象的用法
+    if (!Array.isArray(sortParams)) {
+      params = [sortParams];
+    }
+
+    const currentParams = s2.dataCfg.sortParams || [];
+
+    params = params.map((item: TableSortParam) => {
+      const newItem = {
+        ...item,
+        // 兼容之前 sortKey 的用法
+        sortFieldId: item.sortKey ?? item.sortFieldId,
+      };
+
+      const oldItem =
+        currentParams.find((p) => p.sortFieldId === newItem.sortFieldId) ?? {};
+      return {
+        ...oldItem,
+        ...newItem,
+      };
+    });
+
+    const oldConfigs = currentParams.filter((config) => {
+      const newItem = params.find((p) => p.sortFieldId === config.sortFieldId);
+      if (newItem) {
+        return false;
+      }
+      return true;
+    });
+
+    set(s2.dataCfg, 'sortParams', [...oldConfigs, ...params]);
+    s2.setDataCfg(s2.dataCfg);
+    s2.render(true);
+    s2.emit(
+      S2Event.RANGE_SORTED,
+      (s2.dataSet as TableDataSet).getDisplayDataSet(),
+    );
+  };
+
+  private onFilterHandler = (params: FilterParam) => {
+    const s2 = this.spreadsheet;
+    const unFilter =
+      !params.filteredValues || params.filteredValues.length === 0;
+
+    const oldConfig = s2.dataCfg.filterParams || [];
+    // check whether filter condition already exists on column, if so, modify it instead.
+    const oldIndex = oldConfig.findIndex(
+      (item) => item.filterKey === params.filterKey,
+    );
+
+    if (oldIndex !== -1) {
+      if (unFilter) {
+        // remove filter params on current key if passed an empty filterValues field
+        oldConfig.splice(oldIndex);
+      } else {
+        // if filter with same key already exists, replace it
+        oldConfig[oldIndex] = params;
+      }
+    } else {
+      oldConfig.push(params);
+    }
+
+    set(s2.dataCfg, 'filterParams', oldConfig);
+
+    s2.render(true);
+    s2.emit(
+      S2Event.RANGE_FILTERED,
+      (s2.dataSet as TableDataSet).getDisplayDataSet(),
+    );
+  };
 
   get dataCellTheme() {
     return this.spreadsheet.theme.dataCell.cell;
+  }
+
+  public destroy(): void {
+    const s2 = this.spreadsheet;
+    s2.off(S2Event.RANGE_SORT, this.onSortHandler);
+    s2.off(S2Event.RANGE_FILTER, this.onFilterHandler);
+    super.destroy();
   }
 
   protected calculateCornerBBox() {
