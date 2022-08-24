@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
+import type { RowCell } from '@antv/s2';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -32,13 +34,13 @@ describe('Row Cell Tests', () => {
         });
         s2.render();
 
-        const provinceCell = s2.facet.rowHeader.getChildByIndex(0);
-        const { minX, maxX } = provinceCell.linkFieldShape.getBBox();
+        const provinceCell = s2.facet.rowHeader.getChildByIndex(0) as RowCell;
+        const { minX, maxX } = (provinceCell as any).linkFieldShape.getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;
         expect(
-          Math.abs(linkLength - provinceCell.actualTextWidth),
+          Math.abs(linkLength - _.get(provinceCell, 'actualTextWidth')),
         ).toBeLessThanOrEqual(2);
 
         // link shape 的中点坐标与 text 中点对齐
