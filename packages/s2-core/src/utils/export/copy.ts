@@ -240,7 +240,10 @@ export const processCopyData = (
  * @return { CellMeta[][] }
  */
 export const getSelectedCellsMeta = (cells: CellMeta[]) => {
-  if (!cells?.length) return [];
+  if (!cells?.length) {
+    return [];
+  }
+
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
     { row: 0, col: 0 },

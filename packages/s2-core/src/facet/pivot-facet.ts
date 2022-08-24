@@ -7,6 +7,7 @@ import {
   isNil,
   keys,
   last,
+  map,
   maxBy,
   merge,
   reduce,
@@ -22,9 +23,8 @@ import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, ViewMeta } from '../common/interface';
-import type { HeaderActionIcon } from '../common/interface/basic';
 import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
-import { shouldShowActionIcons } from '../utils/cell/header-cell';
+import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
   getIndexRangeWithOffsets,
   getSubTotalNodeWidthOrHeightByLevel,
@@ -365,18 +365,14 @@ export class PivotFacet extends BaseFacet {
     if (useDefaultIcon) {
       iconCount = 1;
     } else {
-      const customIcons = find(
-        this.spreadsheet.options.headerActionIcons,
-        (headerActionIcon: HeaderActionIcon) =>
-          shouldShowActionIcons(
-            {
-              ...headerActionIcon,
-              // ignore condition func when layout calc
-              displayCondition: () => true,
-            },
-            null,
-            cellType,
-          ),
+      const customIcons = getActionIconConfig(
+        map(this.spreadsheet.options.headerActionIcons, (iconCfg) => ({
+          ...iconCfg,
+          // ignore condition func when layout calc
+          displayCondition: () => true,
+        })),
+        null,
+        cellType,
       );
 
       iconCount = customIcons?.iconNames.length ?? 0;
@@ -519,7 +515,9 @@ export class PivotFacet extends BaseFacet {
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,
     );
-    if (!(grandTotalNode instanceof Node)) return;
+    if (!(grandTotalNode instanceof Node)) {
+      return;
+    }
     const grandTotalChildren = grandTotalNode.children;
     // 总计节点层级 (有且有两级)
     if (isRowHeader) {
@@ -558,7 +556,9 @@ export class PivotFacet extends BaseFacet {
       .getNodes()
       .filter((node: Node) => node.isSubTotals);
 
-    if (isEmpty(subTotalNodes)) return;
+    if (isEmpty(subTotalNodes)) {
+      return;
+    }
     const { maxLevel } = hierarchy;
     forEach(subTotalNodes, (subTotalNode: Node) => {
       const subTotalNodeChildren = subTotalNode.children;

@@ -153,7 +153,9 @@ export const buildHeaderHierarchy = (
   }
 
   const getLeafNodes = () => {
-    if (!isRowHeader) return hierarchy.getLeaves();
+    if (!isRowHeader) {
+      return hierarchy.getLeaves();
+    }
     return spreadsheet.isHierarchyTreeType()
       ? hierarchy.getNodes()
       : hierarchy.getLeaves();

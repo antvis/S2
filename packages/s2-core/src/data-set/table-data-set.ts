@@ -24,7 +24,9 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getStartRows() {
     const { frozenRowCount } = this.spreadsheet.options || {};
-    if (!frozenRowCount) return [];
+    if (!frozenRowCount) {
+      return [];
+    }
     const { displayData } = this;
     return displayData.slice(0, frozenRowCount);
   }
@@ -36,7 +38,9 @@ export class TableDataSet extends BaseDataSet {
   protected getEndRows() {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
     // 没有冻结行时返回空数组
-    if (!frozenTrailingRowCount) return [];
+    if (!frozenTrailingRowCount) {
+      return [];
+    }
     const { displayData } = this;
 
     return displayData.slice(-frozenTrailingRowCount);
@@ -78,7 +82,9 @@ export class TableDataSet extends BaseDataSet {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortFunc, sortMethod, query } = item;
       // 排序的前提
-      if (!sortFieldId) return;
+      if (!sortFieldId) {
+        return;
+      }
 
       let data = this.getMovableRows();
 

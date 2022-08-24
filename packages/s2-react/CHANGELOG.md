@@ -1,25 +1,3 @@
-# [@antv/s2-react-v1.24.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.23.0...@antv/s2-react-v1.24.0-alpha.1) (2022-08-12)
-
-
-### Bug Fixes
-
-* **scroll:** 修复滚动条显示越界 & 优化滚动性能 ([#1671](https://github.com/antvis/S2/issues/1671)) ([cfbccb9](https://github.com/antvis/S2/commit/cfbccb93aaa78edbcf1e7860b940a5431ead8b7a))
-* **scroll:** 修复滚动边界判断错误导致无法滚动 ([#1664](https://github.com/antvis/S2/issues/1664)) ([cf4b8b3](https://github.com/antvis/S2/commit/cf4b8b3e05fa7cf4d5386a3d4a1ad6d98c5179ce))
-* 修复明细表 onRaneSort 失效问题 ([#1678](https://github.com/antvis/S2/issues/1678)) ([3563f3c](https://github.com/antvis/S2/commit/3563f3c9a48998827722babb265e7889b7a86a20))
-* 修复趋势分析表对于不同个数同环比列头复制时，数据不对齐的问题 ([#1679](https://github.com/antvis/S2/issues/1679)) ([ba88dec](https://github.com/antvis/S2/commit/ba88dec2c2ef9506264c64ba069685c0bd9a4c67))
-
-
-### Features
-
-* 刷选时支持高亮所有对应的行列头cell ([#1680](https://github.com/antvis/S2/issues/1680)) ([c7fb53f](https://github.com/antvis/S2/commit/c7fb53f403608e5194d745408966cc9b18c92025))
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
-* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
-
-
-### Reverts
-
-* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
-
 # [@antv/s2-react-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.22.0...@antv/s2-react-v1.23.0) (2022-08-05)
 
 
@@ -63,22 +41,19 @@
 * **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
 * **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
 * **strategysheet:** 修复趋势分析表无法自定义 Tooltip ([#1523](https://github.com/antvis/S2/issues/1523)) ([6b47b05](https://github.com/antvis/S2/commit/6b47b052560ba0a6e3d20236770ee97bca535c61))
+* **theme:** 修复调整序号列后色板丢失 close [#1538](https://github.com/antvis/S2/issues/1538) ([#1543](https://github.com/antvis/S2/issues/1543)) ([6678848](https://github.com/antvis/S2/commit/6678848094c5c707a5586b33117bfd0b968fc302))
+* 优化 mini 图坐标计算逻辑 ([#1534](https://github.com/antvis/S2/issues/1534)) ([88a61e0](https://github.com/antvis/S2/commit/88a61e08b70750401d86e99dd5a6d320a1390da8))
+* 趋势分析表 conditions 增加容错能力 ([#1537](https://github.com/antvis/S2/issues/1537)) ([4770c9a](https://github.com/antvis/S2/commit/4770c9af5025f2318ca4c9d02f8217ada83fd00c))
+
 
 ### Features
 
+* **strategysheet:** 趋势分析表 Tooltip 增加 label 属性用于自定义标题 ([#1540](https://github.com/antvis/S2/issues/1540)) ([b44ffe3](https://github.com/antvis/S2/commit/b44ffe3dd03bc23dfbf8ba8828dc5e1b90a50310))
+* 基础表、趋势分析表tooltip新增显示字段说明功能 ([#1541](https://github.com/antvis/S2/issues/1541)) ([3a9f3cb](https://github.com/antvis/S2/commit/3a9f3cb2f22aeb14b15b8d3fe79f107ff8f04516))
 * 支持 绘制 mini 柱状图 ([#1505](https://github.com/antvis/S2/issues/1505)) ([24a6ca6](https://github.com/antvis/S2/commit/24a6ca643e3b1154e4093c15216b218ef02cf3df))
 
-# [@antv/s2-react-v1.21.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.20.0...@antv/s2-react-v1.21.0-alpha.1) (2022-06-29)
-
-### Bug Fixes
-
-* **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
-
-### Features
-
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
-
 # [@antv/s2-react-v1.20.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.19.0...@antv/s2-react-v1.20.0) (2022-06-24)
+
 
 ### Bug Fixes
 

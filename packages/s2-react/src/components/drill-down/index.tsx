@@ -67,13 +67,19 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     if (getDrillFields) {
       getDrillFields([...key]);
     }
-    if (setDrillFields) setDrillFields([...key]);
+    if (setDrillFields) {
+      setDrillFields([...key]);
+    }
   };
 
   const handleClear = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
-    if (getDrillFields) getDrillFields([]);
-    if (setDrillFields) setDrillFields([]);
+    if (getDrillFields) {
+      getDrillFields([]);
+    }
+    if (setDrillFields) {
+      setDrillFields([]);
+    }
   };
 
   useEffect(() => {

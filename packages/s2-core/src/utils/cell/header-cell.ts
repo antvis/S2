@@ -1,4 +1,4 @@
-import { isEmpty, isEqual } from 'lodash';
+import { find, isEmpty, isEqual } from 'lodash';
 import { CellTypes, EXTRA_FIELD } from '../../common/constant';
 import type {
   FormatResult,
@@ -26,7 +26,43 @@ export const shouldShowActionIcons = (
     // 没有展示条件参数默认全展示
     return true;
   }
-  return displayCondition(meta);
+
+  // 有任意 iconName 命中展示，则使用当前 headerActionIcon config
+  return iconNames.some((iconName) => displayCondition(meta, iconName));
+};
+
+/**
+ * 返回可用的 icon 配置
+ * @param actionIconCfgList icon 配置列表
+ * @param meta 单元格 meta
+ * @param cellType 单元格类型
+ * @returns icon 配置
+ */
+export const getActionIconConfig = (
+  actionIconCfgList: HeaderActionIcon[],
+  meta: Node,
+  cellType: CellTypes,
+): HeaderActionIcon | undefined => {
+  const iconConfig = find(actionIconCfgList, (cfg) =>
+    shouldShowActionIcons(cfg, meta, cellType),
+  );
+
+  if (!iconConfig) {
+    return;
+  }
+
+  // 使用配置的 displayCondition 进一步筛选需要展示的 icon
+  let nextIconNames = iconConfig.iconNames;
+  if (iconConfig.displayCondition) {
+    nextIconNames = nextIconNames.filter((iconName) =>
+      iconConfig.displayCondition(meta, iconName),
+    );
+  }
+
+  return {
+    ...iconConfig,
+    iconNames: nextIconNames,
+  };
 };
 
 /**

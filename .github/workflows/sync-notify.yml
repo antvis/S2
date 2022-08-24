@@ -21,8 +21,8 @@ jobs:
               "msgtype": "link",
               "link": {
                 "title": "✅ 同步 S2 Lock 和 Changelog 成功",
-                "text": "📢 请发布值班合并该 PR 后, 安装 S2 最新版本, 本地运行官网, 检查无误后部署 (根目录运行: `yarn site:deploy`)",
-                "messageUrl": "https://github.com/antvis/S2/actions/workflows/sync-site-lock-changelog-with-pr.yml",
+                "text": "📢 请发布值班合并该 PR 后, 访问官网查看是否有异常)",
+                "messageUrl": "https://s2.antv.vision",
                 "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
               }
             }
