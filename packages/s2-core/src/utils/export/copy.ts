@@ -12,6 +12,7 @@ import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
+import { getLeafColumnsWithKey } from '../../facet/utils';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -279,7 +280,7 @@ const processTableColSelected = (
 ): Copyable => {
   const selectedFiled = selectedCols.length
     ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
-    : spreadsheet.dataCfg.fields.columns;
+    : getLeafColumnsWithKey(spreadsheet.dataCfg.fields.columns);
 
   const dataMatrix = displayData.map((row) => {
     return selectedFiled.map((filed) => convertString(row[filed]));

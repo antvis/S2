@@ -163,15 +163,15 @@ export const DFSGenerateHeaderNodes = (
 
   columns.forEach((column, i) => {
     if (typeof column === 'string') {
-      column = { name: column };
+      column = { key: column };
     }
-    const { name } = column;
+    const { key } = column;
     const value =
-      name === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(name);
+      key === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(key);
     const currentParent = pNode || parentNode;
     generateHeaderNodes({
-      currentField: name,
-      fields: [name],
+      currentField: key,
+      fields: [key],
       fieldValues: [value],
       facetCfg,
       hierarchy,

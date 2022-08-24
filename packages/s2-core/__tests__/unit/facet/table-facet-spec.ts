@@ -578,11 +578,11 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     ...DEFAULT_STYLE,
     columns: [
       {
-        name: 'area',
+        key: 'area',
         children: ['province', 'city'],
       },
       {
-        name: 'all_type',
+        key: 'all_type',
         children: ['type', 'sub_type'],
       },
       'price',
@@ -637,12 +637,12 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     ...DEFAULT_STYLE,
     columns: [
       {
-        name: 'area',
+        key: 'area',
         children: ['province', 'city'],
       },
       'price',
       {
-        name: 'all_type',
+        key: 'all_type',
         children: ['type', 'sub_type'],
       },
     ],

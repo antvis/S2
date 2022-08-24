@@ -103,7 +103,7 @@ export interface Fields {
 }
 
 export interface ColumnNode {
-  name: string;
+  key: string;
   children?: Columns;
 }
 

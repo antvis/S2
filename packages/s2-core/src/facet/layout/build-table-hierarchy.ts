@@ -1,5 +1,5 @@
 import { DFSGenerateHeaderNodes } from '../../utils/layout/generate-header-nodes';
-import { getDisplayedColumnsTree, getLeafColumns } from '../utils';
+import { getDisplayedColumnsTree, getLeafColumnsWithKey } from '../utils';
 import { SERIES_NUMBER_FIELD } from '../../common/constant';
 import type { TableHeaderParams } from '../layout/interface';
 import type { ColumnNode } from '../../common';
@@ -11,7 +11,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
   const showSeriesNumber = facetCfg?.showSeriesNumber;
   // 获取所有叶子结点
-  const leafs = getLeafColumns(columns, true);
+  const leafs = getLeafColumnsWithKey(columns);
   const displayedColumns = leafs.filter((column) => {
     if (!hiddenColumnsDetail) {
       return true;
@@ -28,7 +28,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   const fieldsMap = {};
   if (showSeriesNumber) {
     tree.unshift({
-      name: SERIES_NUMBER_FIELD,
+      key: SERIES_NUMBER_FIELD,
     } as ColumnNode);
     fieldsMap[SERIES_NUMBER_FIELD] = true;
   }

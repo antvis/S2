@@ -430,7 +430,7 @@ export const getDisplayedColumnsTree = (
 ): ColumnNode[] => {
   return columnsTree.reduce((tree, column) => {
     if (typeof column === 'string') {
-      column = { name: column };
+      column = { key: column };
     }
     const copyColumn = { ...column };
     // 分支节点显示
@@ -443,7 +443,7 @@ export const getDisplayedColumnsTree = (
       return tree;
     }
     // 非分支节点判断是否显示
-    if (fieldsMap[copyColumn.name]) {
+    if (fieldsMap[copyColumn.key]) {
       tree.push(copyColumn);
     }
     return tree;
@@ -474,11 +474,10 @@ export const getNodeRoot = (node: Node): Node => {
 /**
  * 获取 columns 的所有叶子节点
  * @param columns 列配置
- * @param onlyName 是否只需要列名称
  * @returns {Array} 叶子节点列组成的数组
  */
-export const getLeafColumns = (columns: Columns, onlyName?: boolean) => {
-  const leafs = [];
+export const getLeafColumns = (columns: Columns): Columns => {
+  const leafs: Columns = [];
   const recursionFn = (list) => {
     list.forEach((column) => {
       if (typeof column === 'string' || !column.children) {
@@ -489,13 +488,20 @@ export const getLeafColumns = (columns: Columns, onlyName?: boolean) => {
     });
   };
   recursionFn(columns);
-  if (onlyName) {
-    return leafs.map((column) => {
-      if (typeof column === 'string') {
-        return column;
-      }
-      return column.name;
-    });
-  }
   return leafs;
+};
+
+/**
+ * 获取 columns 的所有叶子节点的 key
+ * @param columns 列配置
+ * @returns {Array<string>} 叶子节点列的key组成的数组
+ */
+export const getLeafColumnsWithKey = (columns: Columns): string[] => {
+  const leafs = getLeafColumns(columns);
+  return leafs.map((column) => {
+    if (typeof column === 'string') {
+      return column;
+    }
+    return column.key;
+  });
 };

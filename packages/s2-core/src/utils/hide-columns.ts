@@ -1,6 +1,6 @@
 import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
 import { ID_SEPARATOR, S2Event } from '../common/constant';
-import { getLeafColumns } from '../facet/utils';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import type { HiddenColumnsInfo } from '../common/interface/store';
 import type { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
@@ -197,7 +197,7 @@ export const hideColumnsByThunkGroup = (
   }
 
   const columns = getColumns(spreadsheet);
-  const leafs = getLeafColumns(columns, true);
+  const leafs = getLeafColumnsWithKey(columns);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
     leafs,
     hiddenColumnFields,
