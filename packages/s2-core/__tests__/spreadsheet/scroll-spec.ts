@@ -387,6 +387,21 @@ describe('Scroll Tests', () => {
     },
   );
 
+  test('should not trigger scroll event on passive renders', () => {
+    const sheet = new PivotSheet(getContainer(), mockDataConfig, {
+      ...s2Options,
+    });
+    sheet.render();
+
+    jest.spyOn(sheet.facet as any, 'dynamicRenderCell');
+    jest.spyOn(sheet.facet as any, 'emitScrollEvent');
+
+    sheet.facet.startScroll(true);
+
+    expect((sheet.facet as any).dynamicRenderCell).toHaveBeenCalledWith(true);
+    expect((sheet.facet as any).emitScrollEvent).not.toBeCalled();
+  });
+
   test('should render correct scroll position', () => {
     s2.setOptions({
       interaction: {
