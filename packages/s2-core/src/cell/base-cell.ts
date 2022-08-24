@@ -233,13 +233,23 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const device = this.spreadsheet.options.style.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
-      const { minX, maxY }: BBox = this.textShape.getBBox();
+      const textStyle = this.getTextStyle();
+      const position = this.getTextPosition();
+
+      let startX = position.x; // 默认居左，其他align方式需要调整
+      if (textStyle.textAlign === 'center') {
+        startX -= this.actualTextWidth / 2;
+      } else if (textStyle.textAlign === 'right') {
+        startX -= this.actualTextWidth;
+      }
+
+      const { maxY }: BBox = this.textShape.getBBox();
       this.linkFieldShape = renderLine(
         this,
         {
-          x1: minX,
+          x1: startX,
           y1: maxY + 1,
-          x2: minX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
+          x2: startX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
           y2: maxY + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
