@@ -1,3 +1,29 @@
+# [@antv/s2-v1.28.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.27.0...@antv/s2-v1.28.0-alpha.1) (2022-08-24)
+
+
+### Bug Fixes
+
+* body样式影响measureTextWidth测量结果 ([af578a8](https://github.com/antvis/S2/commit/af578a876d6d0ec811c72e1608b3ed8e4c248931))
+* import remove alias ([4b75925](https://github.com/antvis/S2/commit/4b759251cb1af519f2feedff6179dc49a56792e7))
+* **pagination:** 透传组件分页参数 & 修复国际化不生效 close [#1697](https://github.com/antvis/S2/issues/1697) ([#1698](https://github.com/antvis/S2/issues/1698)) ([be334fc](https://github.com/antvis/S2/commit/be334fcef6a11d08358f007eba805cbd380560d5))
+* **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
+* tablefacet销毁时off事件 ([#1704](https://github.com/antvis/S2/issues/1704)) ([9067538](https://github.com/antvis/S2/commit/906753878612b790dcd6c0f9298d0049c48d2b8d))
+* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
+* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 修复条件格式 ([e41d31b](https://github.com/antvis/S2/commit/e41d31baa5749956ea07e3057c97578f149ada12))
+* 列头text未适配left/right对齐方式 ([cad4ed7](https://github.com/antvis/S2/commit/cad4ed7c0e1778625d83fdf194e0813e797fffaf))
+* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
+
+
+### Features
+
+* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+* 在树状模式下，增加默认展开层级的配置 ([#1703](https://github.com/antvis/S2/issues/1703)) ([bb1aaf1](https://github.com/antvis/S2/commit/bb1aaf1f5266ec6d6d76c3f7a97e236f4a3c15d3))
+* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
+
 # [@antv/s2-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-v1.26.0...@antv/s2-v1.27.0) (2022-08-22)
 
 
