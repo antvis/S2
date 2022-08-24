@@ -580,9 +580,9 @@ describe('RootInteraction Tests', () => {
     ];
 
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    // expect(rootInteraction.interactions.size).toEqual(
-    //   defaultInteractionSize + 1,
-    // );
+    expect(rootInteraction.interactions.size).toEqual(
+      defaultInteractionSize + 1,
+    );
     expect(
       rootInteraction.interactions.has(customInteraction.key),
     ).toBeTruthy();

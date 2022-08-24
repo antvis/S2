@@ -19,15 +19,15 @@ order: 0
 
 ## 内置交互
 
-| 名称         | 事件名                                                        | 描述                                                                                                                    |
-|:-----------| :------------------------------------------------------------ |:----------------------------------------------------------------------------------------------------------------------|
+| 名称         | 事件名                                                           | 描述                                                                                                                    |
+|:-----------|:--------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | 单选         | `S2Event.GLOBAL_SELECTED`                                     | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                                 |
 | 多选         | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                     |
 | 行/列头快捷多选   | `S2Event.GLOBAL_SELECTED`                                     | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                                            |
 | 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                       | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                                                 |
-| 刷选         | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                                                        |
-| 行头刷选       | `S2Event.ROW_CELL_BRUSH_SELECTION`  | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息                                                         |
-| 列头刷选       | `S2Event.COL_CELL_BRUSH_SELECTION`  | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息(仅支持透视表)                                                 |
+| 刷选         | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` |  批量选中刷选范围内的数值单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                              |
+| 行头刷选       | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息(仅支持透视表)          |
+| 列头刷选       | `S2Event.COL_CELL_BRUSH_SELECTION`  `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息(仅支持透视表)              |
 | 区间快捷多选     | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                           |
 | 悬停         | `S2Event.GLOBAL_HOVER`                                        | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](/zh/docs/manual/advanced/interaction/basic#行列联动高亮)，可设置 `hoverHighlight: false` 关闭 |
 | 复制         | `S2Event.GLOBAL_COPIED`                                       | 复制选中的单元格数据                                                                                                            |
@@ -45,34 +45,34 @@ order: 0
 [查看完整事件列表](/zh/docs/api/general/S2Event)
 
 ```ts
-import { PivotSheet, S2Event } from '@antv/s2';
+import { ColCell, DataCell, PivotSheet, RowCell, S2Event } from '@antv/s2';
 
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
-s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells) => {
-  // 此事件默认打开，需要设置 options: { interaction: { brushSelection : { data: true } } }
-  console.log('刷选的单元格：', cells) // cells: DataCell[]
-  ...
-})
-
-s2.on(S2Event.ROW_BRUSH_SELECTION, (cells) => {
-  // 此事件默认关闭，需要设置 options: { interaction: { brushSelection : { row: true } } }
-  console.log('刷选的行头单元格：', cells) // cells: RowCell[]
+s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells: DataCell[]) => {
+  // 此事件默认打开，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值单元格刷选
+  console.log('刷选的单元格', cells)
 ...
 })
 
-s2.on(S2Event.COL_BRUSH_SELECTION, (cells) => {
-  // 此事件默认关闭，需要设置 options: { interaction: { brushSelection : { col: true } } }
-  console.log('刷选的列头单元格：', cells) // cells: ColCell[] 
+s2.on(S2Event.ROW_BRUSH_SELECTION, (cells: RowCell[]) => {
+  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值行头单元格刷选
+  console.log('刷选的行头单元格：', cells)
+...
+})
+
+s2.on(S2Event.COL_BRUSH_SELECTION, (cells: ColCell[]) => {
+  // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值列头单元格刷选
+  console.log('刷选的列头单元格：', cells) 
 ...
 })
 
 s2.on(S2Event.COL_CELL_HOVER, (event) => {
-  ...
+...
 })
 
 s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
-  ...
+...
 })
 ```
 
