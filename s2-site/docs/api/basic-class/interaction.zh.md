@@ -85,6 +85,8 @@ enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
+  ROW_BRUSH_SELECTION = 'rowBrushSelection',
+  COL_BRUSH_SELECTION = 'colBrushSelection',
   MULTI_SELECTION = 'multiSelection',
 }
 ```

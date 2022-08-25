@@ -147,6 +147,12 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: otherColors?.results ?? basicColors[2],
@@ -234,6 +240,12 @@ export const getTheme = (
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
             opacity: 0.3,
+          },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
           },
           // -------------- searchResult -------------------
           searchResult: {

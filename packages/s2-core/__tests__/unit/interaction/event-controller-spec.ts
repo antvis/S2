@@ -19,7 +19,7 @@ import type { BaseFacet } from '@/facet';
 
 const MOCK_COPY_DATA = 'data';
 
-jest.mock('@/interaction/brush-selection');
+jest.mock('@/interaction/brush-selection/data-cell-brush-selection.ts');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 jest.mock('@/interaction/base-interaction/hover');
