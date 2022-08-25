@@ -193,6 +193,8 @@ export interface BaseSheetComponentProps<
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;
   onScroll?: (position: CellScrollPosition) => void;
+
+  // ============== Auto 自动生成的 ================
 }
 
 // useResize 参数

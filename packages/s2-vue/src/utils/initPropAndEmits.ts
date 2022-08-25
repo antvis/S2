@@ -176,6 +176,7 @@ export const initBaseSheetEmits = () => {
     'doubleClick',
     'scroll',
     'hover',
+    // ============== Auto 自动生成的 ================
   ];
   return keys as unknown as BaseSheetInitEmits;
 };
