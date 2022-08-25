@@ -112,7 +112,7 @@ function insertCommonInterface(eventName, eventHookName) {
   insertEventIntoFile(reactPath, `${commonInterfaceTemplate}`);
 }
 
-const terminalQuestion = async () => {
+const syncEvent = async () => {
   const { eventName } = await readInputLine('请输入事件名称：');
   const { eventHookName } = await readListLine(
     '请选择使用 useCellEvent （将事件中传输的event 转为cell返回）\n' +
@@ -123,7 +123,7 @@ const terminalQuestion = async () => {
   insertReactUseEvent(eventName, eventHookName);
   insertCommonInterface(eventName, eventHookName);
 
-  console.warn('插入完成! ⚠️ 注意自己检查生成结果和格式化一下');
+  console.warn(`✅${eventName}插入完成!  ⚠️ 注意自己检查生成结果和格式化一下`);
 }
 
-terminalQuestion()
+await syncEvent()
