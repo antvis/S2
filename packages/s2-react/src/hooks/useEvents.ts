@@ -217,4 +217,14 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
   useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
   // ============== Auto 自动生成的 ================
+  useS2Event(
+    S2Event.ROW_CELL_BRUSH_SELECTION,
+    props.onRowCellBrushSelection,
+    s2,
+  );
+  useS2Event(
+    S2Event.COL_CELL_BRUSH_SELECTION,
+    props.onColCellBrushSelection,
+    s2,
+  );
 }

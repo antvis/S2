@@ -316,5 +316,17 @@ export const useEvents = (
     useS2Event(s2Ref, emit, S2Event.GLOBAL_SCROLL, 'scroll');
 
     // ============== Auto 自动生成的 ================
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.ROW_CELL_BRUSH_SELECTION,
+      'rowCellBrushSelection',
+    );
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.COL_CELL_BRUSH_SELECTION,
+      'colCellBrushSelection',
+    );
   });
 };

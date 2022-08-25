@@ -177,6 +177,8 @@ export const initBaseSheetEmits = () => {
     'scroll',
     'hover',
     // ============== Auto 自动生成的 ================
+    'rowCellBrushSelection',
+    'colCellBrushSelection',
   ];
   return keys as unknown as BaseSheetInitEmits;
 };

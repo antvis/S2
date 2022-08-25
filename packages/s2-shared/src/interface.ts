@@ -195,6 +195,8 @@ export interface BaseSheetComponentProps<
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================
+  onRowCellBrushSelection?: (event: GEvent) => void;
+  onColCellBrushSelection?: (event: GEvent) => void;
 }
 
 // useResize 参数

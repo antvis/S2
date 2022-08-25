@@ -1,8 +1,6 @@
 /**
- * 1. 让用户运行脚本时就输入事件名称 COL_CELL_HOVER
- * 2. 向 packages/s2-react/src/hooks/useEvents.ts （on + _ + low） 和 packages/s2-vue/src/hooks/useEvents.ts (eventName: 直接小写)注入事件名称
- * 3. 需要注入到最后一个反 } 之前。
- * 4. 存在 useS2Event 和 useCellEvent 两类事件
+ * 将在core 层 S2Event 已经定义的事件，同步到 vue 和 react 中
+ * ！注意自己检查生成结果和格式化一下
  */
 
 import { default as inquirer } from 'inquirer';
@@ -67,7 +65,7 @@ const readInputLine = (question) => {
     type: 'input',
     message: question,
     name: 'eventName',
-    default: 'MOUSE_BRUSH_SELECTION'
+    default: 'COL_CELL_BRUSH_SELECTION'
   });
 }
 
@@ -124,6 +122,8 @@ const terminalQuestion = async () => {
   insertVueInterface(eventName);
   insertReactUseEvent(eventName, eventHookName);
   insertCommonInterface(eventName, eventHookName);
+
+  console.warn('插入完成! ⚠️ 注意自己检查生成结果和格式化一下');
 }
 
 terminalQuestion()
