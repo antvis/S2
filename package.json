@@ -24,7 +24,7 @@
     "core:watch": " yarn workspace @antv/s2 watch",
     "core:build": "yarn workspace @antv/s2 build",
     "core:test": "yarn workspace @antv/s2 test",
-    "core:sync-event": "yarn workspace @antv/s2 sync-even",
+    "core:sync-event": "yarn workspace @antv/s2 sync-event",
     "react:start": "yarn workspace @antv/s2-react test:live",
     "react:playground": "yarn workspace @antv/s2-react start",
     "react:build": "yarn workspace @antv/s2-react build",
