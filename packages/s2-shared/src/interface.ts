@@ -41,15 +41,16 @@ export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 export interface BaseSheetComponentProps<
   PartialDrillDown = unknown,
   Header = unknown,
+  Pagination = unknown,
 > {
   sheetType?: SheetType;
   spreadsheet?: (
     container: S2MountContainer,
     dataCfg: S2DataConfig,
-    options: S2Options,
+    options: S2Options<Element | string, Pagination>,
   ) => SpreadSheet;
   dataCfg: S2DataConfig;
-  options?: S2Options;
+  options?: S2Options<Element | string, Pagination>;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
   adaptive?: Adaptive;
@@ -140,6 +141,7 @@ export interface BaseSheetComponentProps<
   }) => void;
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
+  onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
   onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
   onLayoutColsExpanded?: (node: Node) => void;
@@ -177,12 +179,16 @@ export interface BaseSheetComponentProps<
   onKeyBoardUp?: (event: KeyboardEvent) => void;
   onCopied?: (copyData: string) => void;
   onActionIconHover?: (event: GEvent) => void;
+  onActionIconHoverOff?: (event: GEvent) => void;
   onActionIconClick?: (event: GEvent) => void;
   onContextMenu?: (event: GEvent) => void;
   onClick?: (event: GEvent) => void;
+  onHover?: (event: GEvent) => void;
   onDoubleClick?: (event: GEvent) => void;
   onMouseHover?: (event: GEvent) => void;
   onMouseUp?: (event: MouseEvent) => void;
+  onMouseDown?: (event: MouseEvent) => void;
+  onMouseMove?: (event: MouseEvent) => void;
   onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;

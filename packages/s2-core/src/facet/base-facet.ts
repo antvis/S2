@@ -470,7 +470,7 @@ export abstract class BaseFacet {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
-      this.startScroll(adjustedScrollX, adjustedScrollY);
+      this.startScroll();
       if (elapsed > duration) {
         this.timer.stop();
         cb?.();
@@ -484,22 +484,24 @@ export abstract class BaseFacet {
       scrollY: offsetConfig.offsetY?.value || 0,
     });
     this.setScrollOffset({ scrollX, scrollY });
-    this.startScroll(scrollX, scrollY);
+    this.startScroll();
   };
 
-  startScroll = (newX: number, newY: number) => {
+  /**
+   *
+   * @param skipSrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
+   */
+  startScroll = (skipSrollEvent = false) => {
     const { scrollX, scrollY } = this.getScrollOffset();
-    if (newX !== undefined) {
-      this.hScrollBar?.onlyUpdateThumbOffset(
-        this.getScrollBarOffset(scrollX, this.hScrollBar),
-      );
-    }
-    if (newY !== undefined) {
-      this.vScrollBar?.onlyUpdateThumbOffset(
-        this.getScrollBarOffset(scrollY, this.vScrollBar),
-      );
-    }
-    this.dynamicRenderCell();
+
+    this.hScrollBar?.onlyUpdateThumbOffset(
+      this.getScrollBarOffset(scrollX, this.hScrollBar),
+    );
+
+    this.vScrollBar?.onlyUpdateThumbOffset(
+      this.getScrollBarOffset(scrollY, this.vScrollBar),
+    );
+    this.dynamicRenderCell(skipSrollEvent);
   };
 
   getRendererHeight = () => {
@@ -1243,11 +1245,12 @@ export abstract class BaseFacet {
   }
 
   /**
-   * When scroll behavior happened, only render one time in a period,
-   * but render immediately in initiate
+   *
+   * @param skipSrollEvent: 如true则不触发GLOBAL_SCROLL事件
+   * During scroll behavior, first call to this method fires immediately and then on interval.
    * @protected
    */
-  protected dynamicRenderCell() {
+  protected dynamicRenderCell(skipSrollEvent?: boolean) {
     const {
       scrollX,
       scrollY: originalScrollY,
@@ -1267,7 +1270,9 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-    this.emitScrollEvent({ scrollX, scrollY });
+    if (!skipSrollEvent) {
+      this.emitScrollEvent({ scrollX, scrollY });
+    }
     this.onAfterScroll();
   }
 

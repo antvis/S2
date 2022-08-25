@@ -194,6 +194,8 @@ export interface Style {
   treeRowsWidth?: number;
   // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
   hierarchyCollapse?: boolean;
+  // 树状分层模式下，行头默认展开到第几层
+  rowExpandDepth?: number;
   // row header in tree mode collapse some nodes
   collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
@@ -204,14 +206,14 @@ export interface Style {
   device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination = {
+export type Pagination<T = unknown> = {
   // 每页数量
   pageSize: number;
   // 当前页
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-};
+} & T;
 
 export interface CustomSVGIcon {
   // icon 类型名

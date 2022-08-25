@@ -1,3 +1,10 @@
+# [@antv/s2-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-v1.26.0...@antv/s2-v1.27.0) (2022-08-22)
+
+
+### Features
+
+* actionIcons支持细粒度展示控制 ([#1689](https://github.com/antvis/S2/issues/1689)) ([8029511](https://github.com/antvis/S2/commit/80295113965a77f0e1756c7d0f32c95ec7550834))
+
 # [@antv/s2-v1.26.0](https://github.com/antvis/S2/compare/@antv/s2-v1.25.0...@antv/s2-v1.26.0) (2022-08-15)
 
 

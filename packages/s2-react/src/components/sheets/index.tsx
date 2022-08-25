@@ -1,5 +1,9 @@
 import type { SpreadSheet } from '@antv/s2';
 import React from 'react';
+import zhCN from 'antd/es/locale/zh_CN';
+import enUS from 'antd/es/locale/en_US';
+import { getLang } from '@antv/s2';
+import { ConfigProvider } from 'antd';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
@@ -35,7 +39,13 @@ const Sheet = React.forwardRef(
       }
     }, [sheetType, sheetProps]);
 
-    return <React.StrictMode>{CurrentSheet}</React.StrictMode>;
+    const locale = getLang() === 'zh_CN' ? zhCN : enUS;
+
+    return (
+      <React.StrictMode>
+        <ConfigProvider locale={locale}>{CurrentSheet}</ConfigProvider>
+      </React.StrictMode>
+    );
   },
 );
 

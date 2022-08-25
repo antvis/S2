@@ -1,15 +1,17 @@
 import type { IElement } from '@antv/g-canvas';
-import { concat, find, forEach, isEmpty, isNil, map } from 'lodash';
+import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
+  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
-  INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
 } from '../common/constant';
 import type {
+  BrushSelection,
+  BrushSelectionInfo,
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
@@ -17,7 +19,7 @@ import type {
   S2CellType,
   SelectHeaderCellInfo,
 } from '../common/interface';
-import { ColHeader, RowHeader, SeriesNumberHeader } from '../facet/header';
+import { ColHeader, RowHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
 import type { SpreadSheet } from '../sheet-type';
 import { getAllChildCells } from '../utils/get-all-child-cells';
@@ -38,7 +40,9 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
-import { BrushSelection } from './brush-selection';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
+import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { RowBrushSelection } from './brush-selection/row-brush-selection';
 import { DataCellMultiSelection } from './data-cell-multi-selection';
 import { RowColumnResize } from './row-column-resize';
 
@@ -350,6 +354,23 @@ export class RootInteraction {
     hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
+  private getBrushSelectionInfo(
+    brushSelection?: boolean | BrushSelection,
+  ): BrushSelectionInfo {
+    if (isBoolean(brushSelection)) {
+      return {
+        dataBrushSelection: brushSelection,
+        rowBrushSelection: brushSelection,
+        colBrushSelection: brushSelection,
+      };
+    }
+    return {
+      dataBrushSelection: brushSelection?.data ?? false,
+      rowBrushSelection: brushSelection?.row ?? false,
+      colBrushSelection: brushSelection?.col ?? false,
+    };
+  }
+
   private getDefaultInteractions() {
     const {
       resize,
@@ -358,6 +379,8 @@ export class RootInteraction {
       rangeSelection,
       selectedCellMove,
     } = this.spreadsheet.options.interaction;
+    const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
+      this.getBrushSelectionInfo(brushSelection);
 
     return [
       {
@@ -387,8 +410,18 @@ export class RootInteraction {
       },
       {
         key: InteractionName.BRUSH_SELECTION,
-        interaction: BrushSelection,
-        enable: !isMobile() && brushSelection,
+        interaction: DataCellBrushSelection,
+        enable: !isMobile() && dataBrushSelection,
+      },
+      {
+        key: InteractionName.ROW_BRUSH_SELECTION,
+        interaction: RowBrushSelection,
+        enable: !isMobile() && rowBrushSelection,
+      },
+      {
+        key: InteractionName.COL_BRUSH_SELECTION,
+        interaction: ColBrushSelection,
+        enable: !isMobile() && colBrushSelection,
       },
       {
         key: InteractionName.COL_ROW_RESIZE,
@@ -450,9 +483,15 @@ export class RootInteraction {
     }
   }
 
+  // 改变 cell 交互状态后，进行了更新和重新绘制
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells, force, stateName } = interactionStateInfo;
+    const {
+      cells = [],
+      force,
+      stateName,
+      onUpdateCells,
+    } = interactionStateInfo;
 
     if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
@@ -471,7 +510,13 @@ export class RootInteraction {
 
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelGroupAllDataCells();
+
+    // 更新单元格
+    if (onUpdateCells) {
+      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
+    } else {
+      this.updatePanelGroupAllDataCells();
+    }
     this.draw();
   }
 
