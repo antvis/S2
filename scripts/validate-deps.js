@@ -39,7 +39,7 @@ function bootstrap() {
     },
   );
 
-  console.log('\r\n');
+  console.log('\n');
 
   const isValidDevDepVersion = versionStatus.every(({ pass }) => pass);
 
@@ -48,13 +48,13 @@ function bootstrap() {
       .filter(({ pass }) => !pass)
       .forEach(({ name }) => {
         console.error(
-          `⛑ 请将 ${name} 下的 devDependencies @antv/s2 版本修改为: ${corePkg.version} \r\n`,
+          `⛑ 请将 ${name} 下的 devDependencies @antv/s2 版本修改为: ${corePkg.version} \n`,
         );
       });
     process.exit(1);
   }
 
-  console.log('✅ 发布版本 version 检查通过 \r\n');
+  console.log('✅ 发布版本 version 检查通过 \n');
   process.exit(0);
 }
 
