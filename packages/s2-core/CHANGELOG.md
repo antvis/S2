@@ -1,3 +1,18 @@
+# [@antv/s2-v1.28.0](https://github.com/antvis/S2/compare/@antv/s2-v1.27.0...@antv/s2-v1.28.0) (2022-08-29)
+
+
+### Bug Fixes
+
+* **pagination:** 透传组件分页参数 & 修复国际化不生效 close [#1697](https://github.com/antvis/S2/issues/1697) ([#1698](https://github.com/antvis/S2/issues/1698)) ([be334fc](https://github.com/antvis/S2/commit/be334fcef6a11d08358f007eba805cbd380560d5))
+* tablefacet销毁时off事件 ([#1704](https://github.com/antvis/S2/issues/1704)) ([9067538](https://github.com/antvis/S2/commit/906753878612b790dcd6c0f9298d0049c48d2b8d))
+* text居中居右时link绘制错位 ([#1706](https://github.com/antvis/S2/issues/1706)) ([da9af7a](https://github.com/antvis/S2/commit/da9af7a605af72a0d3b477e502aad790f17a942a))
+
+
+### Features
+
+* 在树状模式下，增加默认展开层级的配置 ([#1703](https://github.com/antvis/S2/issues/1703)) ([bb1aaf1](https://github.com/antvis/S2/commit/bb1aaf1f5266ec6d6d76c3f7a97e236f4a3c15d3))
+* 实现行头和列头的圈选功能 ([#1699](https://github.com/antvis/S2/issues/1699)) ([9aeb744](https://github.com/antvis/S2/commit/9aeb744f9eb1b7145894a12058d9ceb48602dc9f))
+
 # [@antv/s2-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-v1.26.0...@antv/s2-v1.27.0) (2022-08-22)
 
 
