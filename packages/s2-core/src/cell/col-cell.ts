@@ -49,6 +49,8 @@ export class ColCell extends HeaderCell {
     this.drawBackgroundShape();
     // interactive background shape
     this.drawInteractiveBgShape();
+    // interactive cell border shape
+    this.drawInteractiveBorderShape();
     // draw text
     this.drawTextShape();
     // draw action icons
@@ -83,6 +85,21 @@ export class ColCell extends HeaderCell {
           visible: false,
         },
       ),
+    );
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 2;
+
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
+        visible: false,
+      }),
     );
   }
 

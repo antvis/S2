@@ -24,6 +24,7 @@
     "core:watch": " yarn workspace @antv/s2 watch",
     "core:build": "yarn workspace @antv/s2 build",
     "core:test": "yarn workspace @antv/s2 test",
+    "core:sync-event": "yarn workspace @antv/s2 sync-event",
     "react:start": "yarn workspace @antv/s2-react test:live",
     "react:playground": "yarn workspace @antv/s2-react start",
     "react:build": "yarn workspace @antv/s2-react build",
@@ -66,7 +67,8 @@
     "lint:fix-docs": "yarn lint:docs --fix && yarn lint:fix-word",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && lerna run changelog --stream",
     "update:deps": "yarn upgrade-interactive",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "validate:deps": "node ./scripts/validate-deps.js"
   },
   "commitlint": {
     "extends": [
