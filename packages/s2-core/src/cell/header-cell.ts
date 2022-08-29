@@ -66,6 +66,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.hasDefaultHiddenIcon = false;
   }
 
+  protected getInteractiveBorderShapeStyle(border: number) {
+    const { x, y, height, width } = this.getCellArea();
+    return {
+      x: x + border,
+      y: y + border,
+      width: width - border * 2,
+      height: height - border * 2,
+    };
+  }
+
   protected getFormattedFieldValue(): FormatResult {
     const { label } = this.meta;
 

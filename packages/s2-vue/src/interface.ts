@@ -4,6 +4,7 @@ import type {
   PartDrillDown,
 } from '@antv/s2-shared';
 import type { PropType } from 'vue';
+import type { PaginationProps } from 'ant-design-vue';
 import type { UnionToIntersection } from '@vue/shared';
 
 // 这个是vue中的类型，但是vue没有export
@@ -77,11 +78,14 @@ type GetInitEmits<T> = {
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
 
+export type SheetComponentProps = BaseSheetComponentProps<
+  PartDrillDown,
+  unknown,
+  PaginationProps
+>;
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
-export type BaseSheetInitProps = GetInitProps<
-  BaseSheetComponentProps<PartDrillDown>
->;
+export type BaseSheetInitProps = GetInitProps<SheetComponentProps>;
 export type BaseSheetInitEmits = GetInitEmits<BaseSheetComponentProps>;
 export type BaseDrillDownProps = GetInitProps<BaseDrillDownComponentProps>;
 export type BaseDrillDownEmitKeys = GetEmitKeys<BaseDrillDownComponentProps>;

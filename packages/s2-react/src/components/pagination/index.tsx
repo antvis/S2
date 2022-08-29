@@ -1,10 +1,11 @@
 import React from 'react';
-import { Pagination as AntDPagination } from 'antd';
+import { Pagination as AntdPagination } from 'antd';
 import { isEmpty } from 'lodash';
-import { i18n, S2_PREFIX_CLS, type Pagination } from '@antv/s2';
+import { i18n, S2_PREFIX_CLS } from '@antv/s2';
+import type { SheetComponentsProps } from '../sheets/interface';
 
 export interface S2PaginationProps {
-  pagination: Pagination;
+  pagination: SheetComponentsProps['options']['pagination'];
   current: number;
   total: number;
   pageSize?: number;
@@ -36,21 +37,24 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
 
   return (
     <div className={PRE_CLASS}>
-      <AntDPagination
+      <AntdPagination
         defaultCurrent={1}
         current={current}
         total={total}
         pageSize={pageSize}
         showSizeChanger
+        size="small"
+        showQuickJumper={showQuickJumper}
+        {...pagination}
         onShowSizeChange={(current, size) => {
           onShowSizeChange(size);
           setPageSize(size);
+          pagination.onShowSizeChange?.(current, size);
         }}
-        size={'small'}
-        showQuickJumper={showQuickJumper}
-        onChange={(page) => {
+        onChange={(page, pageSize) => {
           onChange(page);
           setCurrent(page);
+          pagination.onChange?.(page, pageSize);
         }}
       />
       <span
