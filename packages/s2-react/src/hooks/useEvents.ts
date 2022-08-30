@@ -1,4 +1,5 @@
 import {
+  type EmitterType,
   getBaseCellData,
   GEvent,
   S2Event,
@@ -31,7 +32,7 @@ export const useS2Event = (
   s2: SpreadSheet,
 ) => {
   React.useEffect(() => {
-    const handlerFn = (args: unknown) => {
+    const handlerFn: EmitterType[S2Event] = (args) => {
       handler?.(args);
     };
     s2?.on(eventName, handlerFn);
@@ -215,4 +216,15 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_RESET, props.onReset, s2);
   useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
   useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
+  // ============== Auto 自动生成的 ================
+  useS2Event(
+    S2Event.ROW_CELL_BRUSH_SELECTION,
+    props.onRowCellBrushSelection,
+    s2,
+  );
+  useS2Event(
+    S2Event.COL_CELL_BRUSH_SELECTION,
+    props.onColCellBrushSelection,
+    s2,
+  );
 }
