@@ -14,7 +14,6 @@ export function getMockPivotMeta() {
     rows: fields.rows,
     columns: fields.columns,
     values: fields.values,
-    valueInCols: fields.valueInCols,
     originData: data,
     indexesData: rawIndexesData,
     totalData,

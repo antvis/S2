@@ -92,12 +92,11 @@ export class PivotDataSet extends BaseDataSet {
       .concat(splitTotal(dataCfg.data, dataCfg.fields))
       .concat(this.totalData);
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, values, valueInCols } = this.fields;
+      const { rows, columns, values } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
         columns,
         values,
-        valueInCols,
         originData: this.originData,
         totalData: this.totalData,
         indexesData: this.indexesData,

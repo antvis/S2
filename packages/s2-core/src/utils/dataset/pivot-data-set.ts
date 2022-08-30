@@ -141,7 +141,6 @@ export function getDataPath(params: DataPathParams) {
     rows,
     columns,
     values,
-    valueInCols,
     rowDimensionValues,
     colDimensionValues,
     careUndefined,
@@ -170,10 +169,8 @@ export function getDataPath(params: DataPathParams) {
     dimensions: string[],
     dimensionValues: string[],
     pivotMeta: PivotMeta,
-    appendExtra: boolean,
   ): number[] => {
     let currentMeta = pivotMeta;
-    dimensionValues = dimensionValues.filter((v) => v !== EXTRA_FIELD);
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
@@ -182,9 +179,7 @@ export function getDataPath(params: DataPathParams) {
           level: currentMeta.size,
           childField: dimensions?.[i + 1],
           children:
-            i === dimensionValues.length - 1 && appendExtra
-              ? appendValues()
-              : new Map(),
+            dimensions?.[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
         });
         onCreate?.({
           dimension: dimensions?.[i],
@@ -207,13 +202,8 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta, !valueInCols);
-  const colPath = getPath(
-    columns,
-    colDimensionValues,
-    colPivotMeta,
-    valueInCols,
-  );
+  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta);
+  const colPath = getPath(columns, colDimensionValues, colPivotMeta);
   const result = rowPath.concat(...colPath);
 
   return result;
@@ -227,7 +217,6 @@ export function transformIndexesData(params: Param) {
     rows,
     columns,
     values,
-    valueInCols,
     originData = [],
     indexesData = [],
     totalData = [],
@@ -285,7 +274,6 @@ export function transformIndexesData(params: Param) {
       rows,
       columns,
       values,
-      valueInCols,
     });
     paths.push(path);
     set(indexesData, path, data);
