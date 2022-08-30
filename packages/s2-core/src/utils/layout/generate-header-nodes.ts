@@ -11,7 +11,7 @@ import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
-import type { Columns } from '@/common';
+import type { Columns } from '../../common';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {

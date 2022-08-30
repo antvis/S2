@@ -13,7 +13,6 @@ import type {
   Condition,
   Conditions,
   FormatResult,
-  Formatter,
   IconCfg,
   IconCondition,
   MappingResult,
@@ -34,8 +33,6 @@ import {
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
-import type { BaseHeader } from '@/facet/header/base';
-import type { ColHeaderConfig } from '@/facet/header/col';
 
 /**
  * DataCell for panelGroup area
