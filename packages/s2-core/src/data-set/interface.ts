@@ -19,12 +19,9 @@ export type SortedDimensionValues = Record<string, string[]>;
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
-  // first create data path
-  isFirstCreate?: boolean;
   // callback when pivot map create node
-  onFirstCreate?: (params: {
-    // 是否是行头字段
-    isRow: boolean;
+  createIfNotExist?: boolean;
+  onCreate?: (params: {
     // 维度 id，如 city
     dimension: string;
     // 维度数组 ['四川省', '成都市']
@@ -32,11 +29,12 @@ export type DataPathParams = {
   }) => void;
   // use for multiple data queries（path contains undefined）
   careUndefined?: boolean;
-  // use in row tree mode to append fields information
-  rowFields?: string[];
-  colFields?: string[];
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
+  // use in row tree mode to append fields information
+  rows?: string[];
+  columns?: string[];
+  values?: string[];
 };
 
 export interface CellDataParams {

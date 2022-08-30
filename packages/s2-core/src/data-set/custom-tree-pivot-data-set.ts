@@ -20,10 +20,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
-      isFirstCreate: true,
       careUndefined: true,
-      rowFields: rows,
-      colFields: columns,
     });
     const data = get(this.indexesData, path);
     return data;
@@ -35,10 +32,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
 
-    const { rows, columns } = this.fields;
+    const { rows, columns, values } = this.fields;
     const { indexesData } = transformIndexesData({
       rows,
       columns,
+      values,
       originData: this.originData,
       totalData: [], // 自定义目录树没有 totalData 概念
       indexesData: this.indexesData,

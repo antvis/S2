@@ -35,13 +35,14 @@ describe('PivotDataSet util test', () => {
   });
 
   test('for transformIndexesData function', () => {
-    const { rows, columns } = dataCfg.fields;
+    const { rows, columns, values } = dataCfg.fields;
     const sortedDimensionValues = {};
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
     const result = transformIndexesData({
       rows,
       columns,
+      values,
       originData: dataCfg.data,
       totalData: [],
       indexesData: [],
@@ -96,6 +97,7 @@ describe('PivotDataSet util test', () => {
     const colDimensionValues = ['家具', '桌子'];
     const rows = ['province', 'city'];
     const columns = ['type', 'sub_type'];
+    const values = ['value'];
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
 
@@ -104,15 +106,16 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
+      createIfNotExist: true,
       careUndefined: false,
-      rowFields: rows,
-      colFields: columns,
+      rows,
+      columns,
+      values,
     });
     expect(result).toEqual([0, 0, 0, 0]);
   });
 
-  test('for getDataPath function when not isFirstCreate and without rowFields or colFields', () => {
+  test('for getDataPath function when not createIfNotExist and without rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
@@ -123,14 +126,13 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: false,
       careUndefined: false,
     });
     expect(rowPivotMeta.size).toEqual(0);
     expect(colPivotMeta.size).toEqual(0);
   });
 
-  test('for getDataPath function when isFirstCreate and without rowFields or colFields', () => {
+  test('for getDataPath function when createIfNotExist and without rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
@@ -141,14 +143,14 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
+      createIfNotExist: true,
       careUndefined: false,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
   });
 
-  test('for getDataPath function when isFirstCreate and with rowFields or colFields', () => {
+  test('for getDataPath function when createIfNotExist and with rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rows = ['province', 'city'];
@@ -161,10 +163,10 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
+      createIfNotExist: true,
       careUndefined: false,
-      rowFields: rows,
-      colFields: columns,
+      rows,
+      columns,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toEqual('city');
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toEqual(

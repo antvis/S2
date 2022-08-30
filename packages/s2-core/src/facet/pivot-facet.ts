@@ -96,17 +96,10 @@ export class PivotFacet extends BaseFacet {
         rowNode: row,
         isTotals,
       });
-      let valueField: string;
+      const valueField: string = dataQuery[EXTRA_FIELD];
       let fieldValue = null;
       if (!isEmpty(data)) {
-        valueField = get(data, [EXTRA_FIELD], '');
-        fieldValue = get(data, [VALUE_FIELD], null);
-        if (isTotals) {
-          valueField = get(dataQuery, [EXTRA_FIELD], '');
-          fieldValue = get(data, valueField, null);
-        }
-      } else {
-        valueField = get(dataQuery, [EXTRA_FIELD], '');
+        fieldValue = get(data, [valueField], null);
       }
 
       return {

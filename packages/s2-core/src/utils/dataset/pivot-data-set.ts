@@ -1,13 +1,5 @@
-import {
-  forEach,
-  intersection,
-  isUndefined,
-  keys,
-  last,
-  reduce,
-  set,
-} from 'lodash';
-import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import { forEach, intersection, isUndefined, last, reduce, set } from 'lodash';
+import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
   DataType,
@@ -18,12 +10,17 @@ import type {
 interface Param {
   rows: string[];
   columns: string[];
+  values: string[];
   originData: DataType[];
   indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
+}
+
+function filterExtraDimension(dimensions: string[] = []) {
+  return dimensions.filter((d) => d !== EXTRA_FIELD);
 }
 /**
  * Transform from origin single data to correct dimension values
@@ -44,7 +41,7 @@ export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
 ): string[] {
-  return dimensions.map((dimension) => {
+  return filterExtraDimension(dimensions).map((dimension) => {
     const dimensionValue = record[dimension];
 
     // 保证 undefined 之外的数据都为 string 类型
@@ -52,6 +49,21 @@ export function transformDimensionsValues(
       return dimensionValue;
     }
     return `${dimensionValue}`;
+  });
+}
+
+/**
+ * 获取查询结果中的纬度值
+ * @param dimensions [province, city]
+ * @param query { province: '四川省', city: '成都市', type: '办公用品' }
+ * @returns ['四川省', '成都市']
+ */
+export function getQueryDimValues(
+  dimensions: string[],
+  query: DataType,
+): string[] {
+  return filterExtraDimension(dimensions).map((d) => {
+    return query[d];
   });
 }
 
@@ -123,118 +135,86 @@ export function getDimensionsWithParentPath(
  */
 export function getDataPath(params: DataPathParams) {
   const {
+    rows,
+    columns,
+    values,
     rowDimensionValues,
     colDimensionValues,
     careUndefined,
-    isFirstCreate,
-    onFirstCreate,
-    rowFields,
-    colFields,
+    createIfNotExist,
+    onCreate,
     rowPivotMeta,
     colPivotMeta,
   } = params;
+
+  // TODO: extract as a layout hook
+  const appendValues = () => {
+    const map = new Map();
+    values?.forEach((v, idx) => {
+      map.set(v, {
+        level: idx,
+        children: new Map(),
+      });
+    });
+    return map;
+  };
 
   // 根据行、列维度值生成对应的 path路径，有两个情况
   // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
   // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
   const getPath = (
+    dimensions: string[],
     dimensionValues: string[],
-    isRow = true,
-    rowMeta: PivotMeta,
-    colMeta: PivotMeta,
+    pivotMeta: PivotMeta,
   ): number[] => {
-    let currentMeta = isRow ? rowMeta : colMeta;
-    const fields = isRow ? rowFields : colFields;
+    let currentMeta = pivotMeta;
+    dimensionValues = dimensionValues.filter((v) => v !== EXTRA_FIELD);
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
-      if (!currentMeta.has(value)) {
-        if (isFirstCreate) {
-          currentMeta.set(value, {
-            level: currentMeta.size,
-            children: new Map(),
-          });
-          onFirstCreate?.({
-            isRow,
-            dimension: fields?.[i],
-            dimensionPath: dimensionValues.slice(0, i + 1),
-          });
-        } else {
-          const meta = currentMeta.get(value);
-          if (meta) {
-            path.push(meta.level);
-          }
-          if (!careUndefined) {
-            break;
-          }
-        }
+      if (!currentMeta.has(value) && createIfNotExist) {
+        currentMeta.set(value, {
+          level: currentMeta.size,
+          childField: dimensions?.[i + 1],
+          children:
+            i === dimensionValues.length - 1 ? appendValues() : new Map(),
+        });
+        onCreate?.({
+          dimension: dimensions?.[i],
+          dimensionPath: dimensionValues.slice(0, i + 1),
+        });
       }
+
       const meta = currentMeta.get(value);
+
       if (isUndefined(value) && careUndefined) {
         path.push(value);
       } else {
         path.push(meta?.level);
       }
+
       if (meta) {
-        if (isFirstCreate) {
-          // mark the child field
-          // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
-          meta.childField = fields?.[i + 1];
-        }
         currentMeta = meta?.children;
       }
     }
     return path;
   };
 
-  const rowPath = getPath(rowDimensionValues, true, rowPivotMeta, colPivotMeta);
-  const colPath = getPath(
-    colDimensionValues,
-    false,
-    rowPivotMeta,
-    colPivotMeta,
-  );
+  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta);
+  const colPath = getPath(columns, colDimensionValues, colPivotMeta);
   const result = rowPath.concat(...colPath);
 
   return result;
 }
 
 /**
- * 获取查询结果中的纬度值
- * @param dimensions [province, city]
- * @param query { province: '四川省', city: '成都市', type: '办公用品' }
- * @returns ['四川省', '成都市']
- */
-export function getQueryDimValues(
-  dimensions: string[],
-  query: DataType,
-): string[] {
-  return reduce(
-    dimensions,
-    (res: string[], dimension: string) => {
-      // push undefined when not exist
-      res.push(query[dimension]);
-      return res;
-    },
-    [],
-  );
-}
-
-/**
- * 转换原始数据为二维数组数据
- * @param rows
- * @param columns
- * @param originData
- * @param indexesData
- * @param totalData
- * @param sortedDimensionValues
- * @param rowPivotMeta
- * @param colPivotMeta
+ * 转换原始数据为多维数组数据
  */
 export function transformIndexesData(params: Param) {
   const {
     rows,
     columns,
+    values,
     originData = [],
     indexesData = [],
     totalData = [],
@@ -252,8 +232,16 @@ export function transformIndexesData(params: Param) {
   /**
    * 在 PivotMap 创建新节点时，填充 sortedDimensionValues 维度数据
    */
-  const onFirstCreate = ({ isRow, dimension, dimensionPath }) => {
-    if (!isRow && repeatedDimensionSet.has(dimension)) {
+  const onFirstCreate = ({
+    dimension,
+    dimensionPath,
+  }: {
+    // 维度 id，如 city
+    dimension: string;
+    // 维度数组 ['四川省', '成都市']
+    dimensionPath: string[];
+  }) => {
+    if (repeatedDimensionSet.has(dimension)) {
       // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
       // 所有重复字段的维度值无需再加入到 sortedDimensionValues
       return;
@@ -278,11 +266,12 @@ export function transformIndexesData(params: Param) {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
-      onFirstCreate,
+      createIfNotExist: true,
+      onCreate: onFirstCreate,
       careUndefined: totalData?.length > 0,
-      rowFields: rows,
-      colFields: columns,
+      rows,
+      columns,
+      values,
     });
     paths.push(path);
     set(indexesData, path, data);

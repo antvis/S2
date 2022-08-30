@@ -91,10 +91,11 @@ export class PivotDataSet extends BaseDataSet {
       .concat(splitTotal(dataCfg.data, dataCfg.fields))
       .concat(this.totalData);
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns } = this.fields;
+      const { rows, columns, values } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
         columns,
+        values,
         originData: this.originData,
         totalData: this.totalData,
         indexesData: this.indexesData,
@@ -119,19 +120,16 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns, values: dataValues } = this.fields;
+    const { columns, values } = this.fields;
     const currentRowFields = Node.getFieldPath(rowNode, true);
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
 
-    // 1、通过values在data中注入额外的维度信息，并分离`明细数据`&`汇总数据`
-    const transformedData = this.standardTransform(drillDownData, dataValues);
-
-    const totalData = splitTotal(transformedData, {
-      columns: this.fields.columns,
+    const totalData = splitTotal(drillDownData, {
       rows: nextRowFields,
+      columns: this.fields.columns,
     });
-    const originData = difference(transformedData, totalData);
+    const originData = difference(drillDownData, totalData);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
@@ -154,6 +152,7 @@ export class PivotDataSet extends BaseDataSet {
     } = transformIndexesData({
       rows: nextRowFields,
       columns,
+      values,
       originData,
       totalData,
       indexesData: this.indexesData,
@@ -260,25 +259,6 @@ export class PivotDataSet extends BaseDataSet {
     });
   };
 
-  protected standardTransform(originData: Data[], fieldsValues: string[]) {
-    if (isEmpty(fieldsValues)) {
-      return originData;
-    }
-    const transformedData = [];
-    forEach(fieldsValues, (value) => {
-      forEach(originData, (dataItem) => {
-        if (has(dataItem, value)) {
-          transformedData.push({
-            ...dataItem,
-            [EXTRA_FIELD]: value,
-            [VALUE_FIELD]: dataItem[value],
-          });
-        }
-      });
-    });
-    return transformedData;
-  }
-
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols, customValueOrder } = fields;
@@ -310,11 +290,8 @@ export class PivotDataSet extends BaseDataSet {
     };
     const newMeta: Meta[] = [...meta, extraFieldMeta];
 
-    const newData = this.standardTransform(data, values);
-    const newTotalData = this.standardTransform(totalData, values);
-
     return {
-      data: newData,
+      data,
       meta: newMeta,
       fields: {
         ...fields,
@@ -322,7 +299,7 @@ export class PivotDataSet extends BaseDataSet {
         columns: newColumns,
         values,
       },
-      totalData: newTotalData,
+      totalData,
       sortParams,
     };
   }
@@ -407,7 +384,7 @@ export class PivotDataSet extends BaseDataSet {
   public getCellData(params: CellDataParams): DataType {
     const { query, rowNode, isTotals = false } = params || {};
 
-    const { columns, rows: originRows } = this.fields;
+    const { rows: originRows, columns } = this.fields;
     let rows = originRows;
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
@@ -511,9 +488,6 @@ export class PivotDataSet extends BaseDataSet {
       rowDimensionValues,
       colDimensionValues,
       careUndefined: true,
-      isFirstCreate: true,
-      rowFields: rows,
-      colFields: columns,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
