@@ -32,11 +32,12 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
 
-    const { rows, columns, values } = this.fields;
+    const { rows, columns, values, valueInCols } = this.fields;
     const { indexesData } = transformIndexesData({
       rows,
       columns,
       values,
+      valueInCols,
       originData: this.originData,
       totalData: [], // 自定义目录树没有 totalData 概念
       indexesData: this.indexesData,

@@ -48,6 +48,7 @@ import {
   splitTotal,
 } from '../utils/data-set-operate';
 import {
+  assembleExtraValueField,
   deleteMetaById,
   getDataPath,
   getDimensionsWithoutPathPre,
@@ -91,11 +92,12 @@ export class PivotDataSet extends BaseDataSet {
       .concat(splitTotal(dataCfg.data, dataCfg.fields))
       .concat(this.totalData);
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      const { rows, columns, values } = this.fields;
+      const { rows, columns, values, valueInCols } = this.fields;
       const { indexesData } = transformIndexesData({
         rows,
         columns,
         values,
+        valueInCols,
         originData: this.originData,
         totalData: this.totalData,
         indexesData: this.indexesData,
@@ -409,7 +411,8 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    const data = get(this.indexesData, path);
+    let data = get(this.indexesData, path);
+    data = assembleExtraValueField(data, query[EXTRA_FIELD]);
     if (data) {
       // 如果已经有数据则取已有数据
       return data;

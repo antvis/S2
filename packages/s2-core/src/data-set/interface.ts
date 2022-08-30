@@ -1,4 +1,4 @@
-import type { SortParam } from '../common/interface';
+import type { BaseFields, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
@@ -31,11 +31,7 @@ export type DataPathParams = {
   careUndefined?: boolean;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
-  // use in row tree mode to append fields information
-  rows?: string[];
-  columns?: string[];
-  values?: string[];
-};
+} & BaseFields;
 
 export interface CellDataParams {
   // search query

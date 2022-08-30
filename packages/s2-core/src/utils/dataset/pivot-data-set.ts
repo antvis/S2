@@ -1,16 +1,22 @@
 import { forEach, intersection, isUndefined, last, reduce, set } from 'lodash';
-import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import {
+  EXTRA_FIELD,
+  ID_SEPARATOR,
+  ROOT_ID,
+  VALUE_FIELD,
+} from '../../common/constant';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
+import type { BaseFields } from '@/common';
 
-interface Param {
-  rows: string[];
-  columns: string[];
-  values: string[];
+function filterExtraDimension(dimensions: string[] = []) {
+  return dimensions.filter((d) => d !== EXTRA_FIELD);
+}
+interface Param extends BaseFields {
   originData: DataType[];
   indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
@@ -19,9 +25,6 @@ interface Param {
   colPivotMeta?: PivotMeta;
 }
 
-function filterExtraDimension(dimensions: string[] = []) {
-  return dimensions.filter((d) => d !== EXTRA_FIELD);
-}
 /**
  * Transform from origin single data to correct dimension values
  * data: {
@@ -138,6 +141,7 @@ export function getDataPath(params: DataPathParams) {
     rows,
     columns,
     values,
+    valueInCols,
     rowDimensionValues,
     colDimensionValues,
     careUndefined,
@@ -166,6 +170,7 @@ export function getDataPath(params: DataPathParams) {
     dimensions: string[],
     dimensionValues: string[],
     pivotMeta: PivotMeta,
+    appendExtra: boolean,
   ): number[] => {
     let currentMeta = pivotMeta;
     dimensionValues = dimensionValues.filter((v) => v !== EXTRA_FIELD);
@@ -177,7 +182,9 @@ export function getDataPath(params: DataPathParams) {
           level: currentMeta.size,
           childField: dimensions?.[i + 1],
           children:
-            i === dimensionValues.length - 1 ? appendValues() : new Map(),
+            i === dimensionValues.length - 1 && appendExtra
+              ? appendValues()
+              : new Map(),
         });
         onCreate?.({
           dimension: dimensions?.[i],
@@ -200,8 +207,13 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta);
-  const colPath = getPath(columns, colDimensionValues, colPivotMeta);
+  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta, !valueInCols);
+  const colPath = getPath(
+    columns,
+    colDimensionValues,
+    colPivotMeta,
+    valueInCols,
+  );
   const result = rowPath.concat(...colPath);
 
   return result;
@@ -215,6 +227,7 @@ export function transformIndexesData(params: Param) {
     rows,
     columns,
     values,
+    valueInCols,
     originData = [],
     indexesData = [],
     totalData = [],
@@ -272,6 +285,7 @@ export function transformIndexesData(params: Param) {
       rows,
       columns,
       values,
+      valueInCols,
     });
     paths.push(path);
     set(indexesData, path, data);
@@ -308,4 +322,18 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     // exit iteration early when pathMeta not exists
     return idx === 0 && path === ROOT_ID;
   });
+}
+
+export function assembleExtraValueField(
+  data: Record<string, any>,
+  extraField: string,
+) {
+  if (data) {
+    return {
+      ...data,
+      [EXTRA_FIELD]: extraField,
+      [VALUE_FIELD]: data[extraField],
+    };
+  }
+  return data;
 }

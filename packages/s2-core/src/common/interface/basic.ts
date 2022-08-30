@@ -85,17 +85,21 @@ export interface Extra {
   remark: string;
 }
 
-export interface Fields {
+export interface BaseFields {
   // row fields
   rows?: string[];
-  // custom tree data(only use in row header in pivot mode)
-  customTreeItems?: CustomTreeItem[];
   // columns fields
   columns?: string[];
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
+}
+
+export interface Fields extends BaseFields {
+  // custom tree data(only use in row header in pivot mode)
+  customTreeItems?: CustomTreeItem[];
+
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
 }
