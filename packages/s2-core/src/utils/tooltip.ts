@@ -467,6 +467,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const name = getSummaryName(spreadsheet, field, options?.isTotals);
+    // TODO: getShowValue 完全没有被使用到，应该可以删除
     let value: number | string = getShowValue?.(selected, VALUE_FIELD);
 
     if (isTableMode) {
