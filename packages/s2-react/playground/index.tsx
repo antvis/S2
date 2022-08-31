@@ -264,6 +264,10 @@ function MainLayout() {
 
   //  ================== Hooks ========================
 
+  React.useEffect(() => {
+    console.log(s2Ref.current?.facet.layoutResult);
+  }, [sheetType]);
+
   useUpdateEffect(() => {
     switch (sheetType) {
       case 'table':
@@ -791,6 +795,16 @@ function MainLayout() {
                           height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
                         },
                       },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="自定义序号文本"
+                  unCheckedChildren="默认序号文本"
+                  checked={mergedOptions.seriesNumberText === '自定义序号文本'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      seriesNumberText: checked ? '自定义序号文本' : '序号',
                     });
                   }}
                 />

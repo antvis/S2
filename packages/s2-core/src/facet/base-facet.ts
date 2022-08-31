@@ -1179,26 +1179,26 @@ export abstract class BaseFacet {
 
   protected getCornerHeader(): CornerHeader {
     if (!this.cornerHeader) {
-      return CornerHeader.getCornerHeader(
-        this.panelBBox,
-        this.cornerBBox,
-        this.getSeriesNumberWidth(),
-        this.cfg,
-        this.layoutResult,
-        this.spreadsheet,
-      );
+      return CornerHeader.getCornerHeader({
+        panelBBox: this.panelBBox,
+        cornerBBox: this.cornerBBox,
+        seriesNumberWidth: this.getSeriesNumberWidth(),
+        facetCfg: this.cfg,
+        layoutResult: this.layoutResult,
+        spreadsheet: this.spreadsheet,
+      });
     }
     return this.cornerHeader;
   }
 
   protected getSeriesNumberHeader(): SeriesNumberHeader {
-    return SeriesNumberHeader.getSeriesNumberHeader(
-      this.panelBBox,
-      this.getSeriesNumberWidth(),
-      this.layoutResult.rowsHierarchy.getNodes(0),
-      this.spreadsheet,
-      this.cornerBBox.width,
-    );
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      panelBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      spreadsheet: this.spreadsheet,
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      cornerWidth: this.cornerBBox.width,
+    });
   }
 
   protected getCenterFrame(): Frame {
@@ -1246,11 +1246,11 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent: 如true则不触发GLOBAL_SCROLL事件
+   * @param skipScrollEvent: 如true则不触发GLOBAL_SCROLL事件
    * During scroll behavior, first call to this method fires immediately and then on interval.
    * @protected
    */
-  protected dynamicRenderCell(skipSrollEvent?: boolean) {
+  protected dynamicRenderCell(skipScrollEvent?: boolean) {
     const {
       scrollX,
       scrollY: originalScrollY,
@@ -1270,7 +1270,7 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-    if (!skipSrollEvent) {
+    if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY });
     }
     this.onAfterScroll();

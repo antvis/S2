@@ -16,9 +16,11 @@ import type {
   LayoutHierarchy,
 } from '../../common/interface/hooks';
 import type { BaseDataSet } from '../../data-set';
-import type { ColHeaderConfig } from '../../facet/header/col';
-import type { CornerHeaderConfig } from '../../facet/header/corner';
-import type { RowHeaderConfig } from '../../facet/header/row';
+import type {
+  ColHeaderConfig,
+  CornerHeaderConfig,
+  RowHeaderConfig,
+} from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type {
   CustomSVGIcon,
@@ -50,6 +52,8 @@ export interface S2BasicOptions<T = Element | string, P = unknown> {
   pagination?: Pagination<P>;
   // freeze row header
   frozenRowHeader?: boolean;
+  // custom series number text
+  seriesNumberText?: string;
   // show series Number
   showSeriesNumber?: boolean;
   // if show the default header actionIcons

@@ -8,7 +8,8 @@ import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
-import { BaseHeader, type BaseHeaderConfig } from './base';
+import { BaseHeader } from './base';
+import type { BaseHeaderConfig } from './interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
@@ -17,21 +18,23 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   /**
    * Get seriesNumber header by config
-   * @param viewportBBox
-   * @param seriesNumberWidth
-   * @param leafNodes
-   * @param spreadsheet
-   * @param cornerWidth
    */
+  public static getSeriesNumberHeader(options: {
+    panelBBox: PanelBBox;
+    seriesNumberWidth: number;
+    leafNodes: Node[];
+    spreadsheet: SpreadSheet;
+    cornerWidth: number;
+  }): SeriesNumberHeader {
+    const {
+      panelBBox,
+      seriesNumberWidth,
+      leafNodes,
+      spreadsheet,
+      cornerWidth,
+    } = options;
 
-  public static getSeriesNumberHeader(
-    viewportBBox: PanelBBox,
-    seriesNumberWidth: number,
-    leafNodes: Node[],
-    spreadsheet: SpreadSheet,
-    cornerWidth: number,
-  ): SeriesNumberHeader {
-    const { height, viewportHeight } = viewportBBox;
+    const { height, viewportHeight } = panelBBox;
     const seriesNodes: Node[] = [];
     const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
     leafNodes.forEach((node: Node): void => {
@@ -55,7 +58,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       height,
       viewportWidth: cornerWidth,
       viewportHeight,
-      position: { x: 0, y: viewportBBox.y },
+      position: { x: 0, y: panelBBox.y },
       data: seriesNodes,
       spreadsheet,
     });

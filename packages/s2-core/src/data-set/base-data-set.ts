@@ -66,8 +66,8 @@ export abstract class BaseDataSet {
    * 获得字段名称
    * @param field
    */
-  public getFieldName(field: string): string {
-    return get(this.getFieldMeta(field, this.meta), 'name', field);
+  public getFieldName(field: string, defaultValue: string = field): string {
+    return get(this.getFieldMeta(field, this.meta), 'name', defaultValue);
   }
 
   /**

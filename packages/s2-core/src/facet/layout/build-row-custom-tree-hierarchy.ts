@@ -13,7 +13,7 @@ import { layoutHierarchy } from './layout-hooks';
  * 3、是否展开和收起完全由 customTreeItem.collapsed 来控制（默认都展开）
  * @param params
  */
-export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
+export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
   const {
     facetCfg,
     customTreeItems = [],
@@ -22,9 +22,10 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     hierarchy,
   } = params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
-  for (const customTreeItem of customTreeItems) {
+
+  customTreeItems.forEach((customTreeItem) => {
     const { key, title, collapsed, children, ...rest } = customTreeItem;
-    // query只与值本身有关，不会涉及到parent节点
+    // query只与值本身有关，不会涉及到 parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
     const uniqueId = generateId(parentNode.id, title);
@@ -47,15 +48,16 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       query: valueQuery,
       spreadsheet,
       extra: rest,
+      isLeaf: isEmpty(children),
     });
 
     if (level > hierarchy.maxLevel) {
       hierarchy.maxLevel = level;
+      hierarchy.sampleNodesForAllLevels.push(node);
+      hierarchy.sampleNodeForLastLevel = node;
+      hierarchy.maxLevel = level;
     }
 
-    if (isEmpty(children)) {
-      node.isLeaf = true;
-    }
     const expandCurrentNode = layoutHierarchy(
       facetCfg,
       parentNode,
@@ -65,7 +67,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
 
     // go recursive
     if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
-      buildRowCustomTreeHierarchy({
+      buildCustomTreeHierarchy({
         facetCfg,
         parentNode: node,
         level: level + 1,
@@ -73,5 +75,5 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
         customTreeItems: children,
       });
     }
-  }
+  });
 };

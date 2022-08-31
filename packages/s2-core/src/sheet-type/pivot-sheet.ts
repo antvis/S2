@@ -29,11 +29,12 @@ export class PivotSheet extends SpreadSheet {
     if (dataSet) {
       return dataSet(this);
     }
-    const realDataSet =
-      hierarchyType === 'customTree'
-        ? new CustomTreePivotDataSet(this)
-        : new PivotDataSet(this);
-    return realDataSet;
+
+    if (hierarchyType === 'customTree') {
+      return new CustomTreePivotDataSet(this);
+    }
+
+    return new PivotDataSet(this);
   }
 
   /**
@@ -167,7 +168,9 @@ export class PivotSheet extends SpreadSheet {
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
     const ifHideMeasureColumn = this.options.style.colCfg.hideMeasureColumn;
-    const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
+    const sortFieldId = this.isValueInCols()
+      ? last(rows as string[])
+      : last(columns as string[]);
     const { query, value } = meta;
     const sortQuery = clone(query);
     let sortValue = value;

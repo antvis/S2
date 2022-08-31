@@ -12,6 +12,7 @@ import {
 import {
   CellTypes,
   EXTRA_FIELD,
+  getDefaultCornerText,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -20,7 +21,6 @@ import {
 import { CellBorderPosition } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
-import type { CornerHeaderConfig } from '../facet/header/corner';
 import {
   getBorderPositionAndStyle,
   getTextPosition,
@@ -39,7 +39,7 @@ import {
 } from '../utils/interaction/resize';
 import { isIPhoneX } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
-import { i18n } from './../common/i18n';
+import type { CornerHeaderConfig } from '../facet/header/interface';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -373,7 +373,7 @@ export class CornerCell extends HeaderCell {
 
   protected getCornerText(): string {
     if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText || i18n('指标');
+      return this.spreadsheet.options?.cornerText ?? getDefaultCornerText();
     }
 
     const { formattedValue } = this.getFormattedFieldValue();

@@ -379,6 +379,10 @@ export const getSelectedCellsData = (
    *  - 3.3 如果选中的含有小计, 并且有总计, 数据参与计算也没有意义, 如何处理?
    */
   const isBelongTotalCell = (cellMeta: ViewMeta) => {
+    if (!cellMeta) {
+      return false;
+    }
+
     const targetCellMeta = targetCell?.getMeta();
     // target: 当前点击的单元格类型
     const isTargetTotalCell = targetCellMeta?.isTotals;

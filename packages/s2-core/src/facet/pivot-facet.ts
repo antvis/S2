@@ -177,10 +177,12 @@ export class PivotFacet extends BaseFacet {
     const { spreadsheet } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
+
+    colsHierarchy.sampleNodesForAllLevels.forEach((levelSample) => {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
-    }
+    });
+
     let currentCollIndex = 0;
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
@@ -400,19 +402,15 @@ export class PivotFacet extends BaseFacet {
   ) {
     const { cellCfg, spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
-    const heightByField = get(
-      spreadsheet,
-      'options.style.rowCfg.heightByField',
-      {},
-    );
+    const heightByField = spreadsheet.options.style.rowCfg?.heightByField;
 
-    const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels ?? [];
+    const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
 
     // 1、calculate first node's width in every level
     if (isTree) {
       rowsHierarchy.width = this.getTreeRowHeaderWidth();
     } else {
-      for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
+      sampleNodeByLevel.forEach((levelSample) => {
         levelSample.width = this.calculateGridRowNodesWidth(
           levelSample,
           colLeafNodes,
@@ -423,7 +421,7 @@ export class PivotFacet extends BaseFacet {
           width: 0,
         };
         levelSample.x = preLevelSample?.x + preLevelSample?.width;
-      }
+      });
     }
 
     // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf),
@@ -440,7 +438,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          (heightByField[currentNode.id] ?? cellCfg.height) +
+          (heightByField?.[currentNode.id] ?? cellCfg.height) +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;
@@ -736,7 +734,7 @@ export class PivotFacet extends BaseFacet {
 
     // 3. 然后是计算 (+ icon province/city/level)
     const treeHeaderLabel = rows
-      .map((key: string): string => dataSet.getFieldName(key))
+      .map((key) => dataSet.getFieldName(key))
       .join('/');
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell;
