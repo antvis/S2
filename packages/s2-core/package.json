@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-  "version": "1.27.0",
+  "version": "1.28.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -51,6 +51,7 @@
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
+    "sync-event": "node ./scripts/sync-event.mjs",
     "test": "jest --passWithNoTests",
     "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",

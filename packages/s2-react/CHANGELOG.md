@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.25.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.24.0...@antv/s2-react-v1.25.0) (2022-08-29)
+
+
+### Bug Fixes
+
+* **pagination:** 透传组件分页参数 & 修复国际化不生效 close [#1697](https://github.com/antvis/S2/issues/1697) ([#1698](https://github.com/antvis/S2/issues/1698)) ([be334fc](https://github.com/antvis/S2/commit/be334fcef6a11d08358f007eba805cbd380560d5))
+
+
+### Features
+
+* 在树状模式下，增加默认展开层级的配置 ([#1703](https://github.com/antvis/S2/issues/1703)) ([bb1aaf1](https://github.com/antvis/S2/commit/bb1aaf1f5266ec6d6d76c3f7a97e236f4a3c15d3))
+
 # [@antv/s2-react-v1.24.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.23.0...@antv/s2-react-v1.24.0) (2022-08-15)
 
 
