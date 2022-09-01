@@ -6,6 +6,7 @@ import type {
 import type { PropType } from 'vue';
 import type { PaginationProps } from 'ant-design-vue';
 import type { UnionToIntersection } from '@vue/shared';
+import type { TooltipContentType, S2Options, Pagination } from '@antv/s2';
 
 // 这个是vue中的类型，但是vue没有export
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
@@ -78,10 +79,14 @@ type GetInitEmits<T> = {
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
 
+export type SheetComponentOptions = S2Options<
+  TooltipContentType,
+  Pagination & PaginationProps
+>;
 export type SheetComponentProps = BaseSheetComponentProps<
   PartDrillDown,
   unknown,
-  PaginationProps
+  SheetComponentOptions
 >;
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
