@@ -1,51 +1,69 @@
 import React from 'react';
 import { S2Event, SpreadSheet } from '@antv/s2';
-import { useLatest } from 'ahooks';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
+import { useUpdateEffect } from 'ahooks';
 import type { SheetComponentsProps } from '../components';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
 export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
-  const { options } = props;
-  const [total, setTotal] = React.useState<number>(0);
-  const paginationRef = useLatest(options.pagination);
-  const [current, setCurrent] = React.useState<number>(
-    options.pagination?.current || DEFAULT_PAGE_NUMBER,
-  );
-  const [pageSize, setPageSize] = React.useState<number>(
-    options.pagination?.pageSize || DEFAULT_PAGE_SIZE,
-  );
+  const {
+    options: { pagination: paginationCfg },
+    showPagination,
+  } = props;
+  const [pagination, setPagination] = React.useState({
+    total: 0,
+    current: paginationCfg?.current || DEFAULT_PAGE_NUMBER,
+    pageSize: paginationCfg?.pageSize || DEFAULT_PAGE_SIZE,
+  });
+
+  const onShowSizeChange = (current: number, pageSize: number) => {
+    const outerOnShowSizeChange =
+      get(showPagination, 'onShowSizeChange') ??
+      paginationCfg?.onShowSizeChange;
+    outerOnShowSizeChange?.(current, pageSize);
+  };
+
+  const onChange = (current: number, pageSize: number) => {
+    setPagination({ ...pagination, current, pageSize });
+
+    const outerOnChange =
+      get(showPagination, 'onChange') ?? paginationCfg?.onChange;
+    outerOnChange?.(current, pageSize);
+  };
 
   // sync state.pagination -> s2.pagination
-  React.useEffect(() => {
-    if (!s2 || isEmpty(paginationRef.current)) {
+  useUpdateEffect(() => {
+    if (!s2 || isEmpty(paginationCfg)) {
       return;
     }
 
     s2.updatePagination({
-      current,
-      pageSize,
+      current: pagination.current,
+      pageSize: pagination.pageSize,
     });
     s2.render(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageSize, current, s2]);
+  }, [pagination.current, pagination.pageSize, s2]);
 
   // sync props.pagination -> state.pagination
-  React.useEffect(() => {
-    setCurrent(options?.pagination?.current || DEFAULT_PAGE_NUMBER);
-    setPageSize(options?.pagination?.pageSize || DEFAULT_PAGE_SIZE);
-    setTotal(s2?.facet?.viewCellHeights.getTotalLength() ?? 0);
-  }, [options.pagination, s2]);
+  useUpdateEffect(() => {
+    setPagination({
+      total: s2?.facet?.viewCellHeights.getTotalLength() ?? 0,
+      current: paginationCfg?.current || DEFAULT_PAGE_NUMBER,
+      pageSize: paginationCfg?.pageSize || DEFAULT_PAGE_SIZE,
+    });
+  }, [paginationCfg, s2]);
 
   // sync layout result total -> state.total
-  React.useEffect(() => {
-    if (!s2 || isEmpty(paginationRef.current)) {
+  useUpdateEffect(() => {
+    if (!s2 || isEmpty(paginationCfg)) {
       return;
     }
 
-    const totalUpdateCallback = (data) => setTotal(data.total);
+    const totalUpdateCallback = (data) =>
+      setPagination({ ...pagination, total: data.total });
     s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
     return () => {
       s2.off(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
@@ -54,11 +72,9 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
   }, [s2]);
 
   return {
-    total,
-    current,
-    pageSize,
-    setTotal,
-    setCurrent,
-    setPageSize,
+    showPagination: Boolean(showPagination),
+    pagination: { ...paginationCfg, ...pagination },
+    onShowSizeChange,
+    onChange,
   };
 };
