@@ -23,6 +23,7 @@ import type {
   S2MountContainer,
   CellMeta,
   TooltipContentType,
+  Pagination,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -42,7 +43,7 @@ export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 export interface BaseSheetComponentProps<
   PartialDrillDown = unknown,
   Header = unknown,
-  Options = S2Options<TooltipContentType, any>,
+  Options = S2Options<TooltipContentType, Pagination>,
 > {
   sheetType?: SheetType;
   spreadsheet?: (

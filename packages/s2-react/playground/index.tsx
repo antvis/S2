@@ -44,7 +44,7 @@ import reactPkg from '../package.json';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
-  SheetComponentsProps,
+  SheetComponentOptions,
 } from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
@@ -284,7 +284,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: SheetComponentsProps['options'] = customMerge(
+  const mergedOptions: SheetComponentOptions = customMerge(
     {},
     {
       pagination: showPagination && {
