@@ -41,7 +41,11 @@ import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import type {
+  PartDrillDown,
+  PartDrillDownInfo,
+  SheetComponentsProps,
+} from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
@@ -153,9 +157,8 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
-  const [dataCfg, setDataCfg] =
-    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
+    React.useState<S2Options<React.ReactNode>>(defaultOptions);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -281,7 +284,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: S2Options<React.ReactNode> = customMerge(
+  const mergedOptions: SheetComponentsProps['options'] = customMerge(
     {},
     {
       pagination: showPagination && {
