@@ -7,7 +7,6 @@ import {
   type HeaderActionIconProps,
   Node,
   type S2DataConfig,
-  type S2Options,
   SpreadSheet,
   type TargetCellInfo,
   type ThemeCfg,
@@ -157,7 +156,7 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<S2Options<React.ReactNode>>(defaultOptions);
+    React.useState<SheetComponentOptions>(defaultOptions);
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
@@ -169,7 +168,7 @@ function MainLayout() {
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
-  const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
+  const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
     setOptions(customMerge(options, newOptions));
   };
 

@@ -96,4 +96,5 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
   },
 };
 
-export const defaultOptions = getBaseSheetComponentOptions(s2Options);
+export const defaultOptions =
+  getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);
