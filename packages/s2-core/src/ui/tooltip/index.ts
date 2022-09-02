@@ -38,11 +38,11 @@ export class BaseTooltip {
   public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
     const { position, options, content, event } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
-    const container = this.getContainer();
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
     this.visible = true;
     this.options = showOptions as unknown as TooltipShowOptions;
+    const container = this.getContainer();
 
     this.renderContent<T>(content as T);
 
