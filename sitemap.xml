@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 <url> <loc>https://s2.antv.vision/en/docs/api/graphic</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/zh/docs/api/graphic</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/common/browser</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/common/browser</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/common/conditions</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/common/conditions</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/common/custom-tooltip</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/zh/docs/api/graphic</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/common/custom-tooltip</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/common/export</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/common/export</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -151,6 +151,9 @@
 <url> <loc>https://s2.antv.vision/en/docs/manual/basic/analysis/switcher</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/basic/analysis/switcher</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/basic/analysis/vue</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/en/docs/manual/basic/theme</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/zh/docs/manual/basic/theme</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/zh/docs/manual/basic/i18n</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/basic/analysis/vue</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/basic/sheet-type/pivot-mode</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/basic/sheet-type/pivot-mode</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -162,9 +165,6 @@
 <url> <loc>https://s2.antv.vision/zh/docs/manual/basic/sort/basic</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/basic/sort/custom</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/basic/sort/custom</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/en/docs/manual/basic/theme</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/zh/docs/manual/basic/theme</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/zh/docs/manual/basic/i18n</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/examples/gallery</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/examples/gallery</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/examples/analysis/conditions/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
