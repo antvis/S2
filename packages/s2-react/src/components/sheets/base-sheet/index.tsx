@@ -48,7 +48,6 @@ export const BaseSheet = React.forwardRef<
               />
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-            <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
             {pagination.showPagination && (
               <S2Pagination
                 pagination={pagination.pagination}
