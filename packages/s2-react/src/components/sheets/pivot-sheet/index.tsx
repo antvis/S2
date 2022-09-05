@@ -10,7 +10,7 @@ import {
 import { BaseSheet } from '../base-sheet';
 import { usePivotSheetUpdate } from '../../../hooks';
 import { DrillDown } from '../../drill-down';
-import type { SheetComponentsProps } from '../interface';
+import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -49,8 +49,10 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
 
     /** 基于 props.options 来构造新的 options 传递给 base-sheet */
     const options = React.useMemo(() => {
-      return buildDrillDownOptions(pivotOptions, partDrillDown, (params) =>
-        onDrillDownIconClick.current(params),
+      return buildDrillDownOptions<SheetComponentOptions>(
+        pivotOptions,
+        partDrillDown,
+        (params) => onDrillDownIconClick.current(params),
       );
     }, [pivotOptions, partDrillDown, onDrillDownIconClick]);
 

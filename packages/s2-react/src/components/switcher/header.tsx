@@ -1,6 +1,7 @@
 import React from 'react';
-import type { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
+import type { SheetComponentOptions } from '../sheets/interface';
 import {
   generateSheetConfig,
   generateSwitcherFields,
@@ -8,7 +9,7 @@ import {
   getSheetType,
 } from './headerUtil';
 import type { SwitcherResult } from './interface';
-import { Switcher, type SwitcherProps } from '.';
+import { Switcher, type SwitcherProps } from './';
 import './index.less';
 
 type SwitcherBasicCfg = Pick<
@@ -29,7 +30,7 @@ export interface SwitcherCfgProps extends SwitcherBasicCfg {
 export interface SwitcherHeaderProps extends SwitcherBasicCfg {
   sheet: SpreadSheet;
   dataCfg: S2DataConfig;
-  options: S2Options;
+  options: SheetComponentOptions;
 }
 
 export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({

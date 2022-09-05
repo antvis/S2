@@ -41,6 +41,7 @@ export type OnUpdateCells = (
   root: RootInteraction,
   defaultOnUpdateCells: () => void,
 ) => void;
+
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;

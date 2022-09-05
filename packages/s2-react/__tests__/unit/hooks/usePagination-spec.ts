@@ -45,47 +45,37 @@ describe('usePagination tests', () => {
       usePagination(null, propsWithoutPagination),
     );
 
-    expect(result.current.total).toEqual(0);
-    expect(result.current.current).toEqual(1);
-    expect(result.current.pageSize).toEqual(10);
+    expect(result.current.pagination).toEqual({
+      total: 0,
+      current: 1,
+      pageSize: 10,
+    });
   });
 
   test('should update pagination', () => {
     const { result } = renderHook(() => usePagination(s2, props));
-    expect(result.current.current).toEqual(1);
-    expect(result.current.pageSize).toEqual(5);
+
+    expect(result.current.pagination.current).toEqual(1);
+    expect(result.current.pagination.pageSize).toEqual(5);
 
     act(() => {
-      result.current.setCurrent(2);
-      result.current.setPageSize(15);
-      result.current.setTotal(10); // won't change total
+      result.current.onChange(2, 15);
     });
-    expect(result.current.current).toEqual(2);
-    expect(result.current.pageSize).toEqual(15);
-    expect(result.current.total).toEqual(2); // 浙江-杭州、浙江-义乌
-
-    act(() => {
-      result.current.setTotal(10);
-    });
-    expect(result.current.total).toEqual(10);
+    expect(result.current.pagination.current).toEqual(2);
+    expect(result.current.pagination.pageSize).toEqual(15);
   });
 
   test('should update total after render with new data', () => {
-    let paginationProps = { ...props };
-    const { result, rerender } = renderHook(() =>
-      usePagination(s2, paginationProps),
-    );
+    const { result, rerender } = renderHook(() => usePagination(s2, props));
 
-    expect(result.current.total).toBe(2); // 浙江-杭州、浙江-义乌
+    expect(result.current.pagination.total).toBe(0);
 
     act(() => {
-      result.current.setTotal(0);
-
       // 触发内部更新
-      paginationProps = cloneDeep(props);
+      s2 = cloneDeep(s2);
       rerender();
     });
-    expect(result.current.total).toBe(2); // 浙江-杭州、浙江-义乌
+    expect(result.current.pagination.total).toBe(2);
 
     act(() => {
       const newData = [
@@ -103,6 +93,6 @@ describe('usePagination tests', () => {
       });
       s2.render();
     });
-    expect(result.current.total).toBe(3);
+    expect(result.current.pagination.total).toBe(3);
   });
 });
