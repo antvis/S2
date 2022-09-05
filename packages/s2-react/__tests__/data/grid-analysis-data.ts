@@ -1,5 +1,4 @@
-import { S2DataConfig } from '@antv/s2';
-import { SheetComponentOptions } from '../../src';
+import type { S2DataConfig } from '@antv/s2';
 
 export const mockGridAnalysisDataCfg: S2DataConfig = {
   fields: {
