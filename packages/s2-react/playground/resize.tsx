@@ -2,7 +2,7 @@ import { customMerge, type ThemeCfg, ResizeType } from '@antv/s2';
 import { Checkbox, Switch } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React from 'react';
-import { SheetComponentOptions } from '../src/components';
+import type { SheetComponentOptions } from '../src/components';
 
 const RESIZE_CONFIG: Array<{
   label: string;
