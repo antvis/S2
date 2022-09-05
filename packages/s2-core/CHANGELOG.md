@@ -1,3 +1,16 @@
+# [@antv/s2-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-v1.28.0...@antv/s2-v1.29.0) (2022-09-05)
+
+
+### Bug Fixes
+
+* **types:** 修复严格模式下 S2Options 类型报错 ([#1723](https://github.com/antvis/S2/issues/1723)) ([ef55f55](https://github.com/antvis/S2/commit/ef55f559f940614b19f76fbc5c941e114f220461))
+* 修复tooltip 点击空白无法消失的问题 ([#1729](https://github.com/antvis/S2/issues/1729)) ([baa7245](https://github.com/antvis/S2/commit/baa72454702f34ccd9dc5957e8574b8e38087c62))
+
+
+### Features
+
+* 导出组件层CustomTooltip类 ([#1726](https://github.com/antvis/S2/issues/1726)) ([46270ab](https://github.com/antvis/S2/commit/46270ab0ae6e42cf92dcf77c0a35a70e07b9b10c))
+
 # [@antv/s2-v1.28.0](https://github.com/antvis/S2/compare/@antv/s2-v1.27.0...@antv/s2-v1.28.0) (2022-08-29)
 
 
