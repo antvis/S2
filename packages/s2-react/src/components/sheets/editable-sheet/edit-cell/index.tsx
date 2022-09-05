@@ -93,7 +93,9 @@ function EditCellComponent(
     spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
 
-    if (onChange) onChange(spreadsheet.dataSet.originData);
+    if (onChange) {
+      onChange(spreadsheet.dataSet.originData);
+    }
 
     resolver(true);
   };

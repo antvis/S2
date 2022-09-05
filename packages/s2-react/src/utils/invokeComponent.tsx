@@ -47,7 +47,9 @@ export default function invokeComponent<P>(
     if (unmountResult && div.parentNode) {
       div.parentNode.removeChild(div);
 
-      if (onCleanup) onCleanup();
+      if (onCleanup) {
+        onCleanup();
+      }
     }
   }
 
