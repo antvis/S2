@@ -1,4 +1,7 @@
-export const mockGridAnalysisDataCfg = {
+import { S2DataConfig } from '@antv/s2';
+import { SheetComponentOptions } from '../../src';
+
+export const mockGridAnalysisDataCfg: S2DataConfig = {
   fields: {
     rows: ['level'],
     columns: ['group'],
@@ -118,14 +121,4 @@ export const mockGridAnalysisDataCfg = {
       },
     },
   ],
-};
-export const mockTabularOptions = {
-  width: 800,
-  height: 600,
-  style: {
-    cellCfg: {
-      width: 400,
-      height: 300,
-    },
-  },
 };

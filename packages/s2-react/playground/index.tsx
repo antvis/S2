@@ -9,7 +9,6 @@ import {
   type HeaderActionIconProps,
   Node,
   type S2DataConfig,
-  type S2Options,
   SpreadSheet,
   type TargetCellInfo,
   type ThemeCfg,
@@ -43,7 +42,11 @@ import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import type {
+  PartDrillDown,
+  PartDrillDownInfo,
+  SheetComponentOptions,
+} from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
@@ -158,9 +161,8 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
-  const [dataCfg, setDataCfg] =
-    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
+    React.useState<SheetComponentOptions>(defaultOptions);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -171,7 +173,7 @@ function MainLayout() {
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
-  const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
+  const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
     setOptions(customMerge(options, newOptions));
   };
 
@@ -286,7 +288,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: S2Options<React.ReactNode> = customMerge(
+  const mergedOptions: SheetComponentOptions = customMerge(
     {},
     {
       pagination: showPagination && {

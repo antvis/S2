@@ -1,6 +1,5 @@
 import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
-import { get } from 'lodash';
 import React from 'react';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
 import { getSheetComponentOptions } from '../../../utils';
@@ -12,7 +11,7 @@ import './index.less';
 
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { dataCfg, options, header, showPagination } = props;
+    const { dataCfg, options, header } = props;
     const { s2Ref, loading, containerRef, pagination, wrapperRef } =
       useSpreadSheet(props);
 
@@ -37,12 +36,11 @@ export const BaseSheet = React.forwardRef(
               />
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-            {showPagination && (
+            {pagination.showPagination && (
               <S2Pagination
-                {...pagination}
-                pagination={options.pagination}
-                onChange={get(showPagination, 'onChange')}
-                onShowSizeChange={get(showPagination, 'onShowSizeChange')}
+                pagination={pagination.pagination}
+                onChange={pagination.onChange}
+                onShowSizeChange={pagination.onShowSizeChange}
               />
             )}
           </div>

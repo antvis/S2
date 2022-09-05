@@ -1,10 +1,6 @@
-import {
-  EXTRA_COLUMN_FIELD,
-  isUpDataValue,
-  type S2DataConfig,
-  type S2Options,
-} from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
+import { SheetComponentOptions } from '../../src';
 
 const getKPIMockData = () => {
   return {
@@ -380,7 +376,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
   },
 };
 
-export const StrategyOptions: S2Options = {
+export const StrategyOptions: SheetComponentOptions = {
   width: 800,
   height: 800,
   cornerText: '指标',

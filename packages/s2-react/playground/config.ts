@@ -1,5 +1,5 @@
 import { isUpDataValue } from '@antv/s2';
-import type { S2DataConfig, S2Options } from '@antv/s2';
+import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import {
@@ -8,6 +8,7 @@ import {
   meta,
   fields,
 } from '../__tests__/data/mock-dataset.json';
+import { SheetComponentOptions } from '../src/components';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -25,7 +26,7 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
-export const s2Options: S2Options = {
+export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 400,
@@ -63,7 +64,7 @@ export const sliderOptions: SliderSingleProps = {
   },
 };
 
-export const mockGridAnalysisOptions: S2Options = {
+export const mockGridAnalysisOptions: SheetComponentOptions = {
   width: 1600,
   height: 600,
   style: {
@@ -95,5 +96,5 @@ export const mockGridAnalysisOptions: S2Options = {
   },
 };
 
-export const defaultOptions: S2Options =
-  getBaseSheetComponentOptions(s2Options);
+export const defaultOptions =
+  getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);
