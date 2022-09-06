@@ -65,9 +65,6 @@ import {
 import './index.less';
 import { ResizeConfig } from './resize';
 
-// @ts-ignore
-window.__g_instances__ = [];
-
 const { TabPane } = Tabs;
 
 const fieldMap = {
@@ -134,6 +131,13 @@ const partDrillDown: PartDrillDown = {
         drillData: drillDownData,
       });
     }),
+};
+
+const getSpreadSheet = (s2: SpreadSheet) => {
+  // @ts-ignore
+  window.s2 = s2;
+  // @ts-ignore
+  window.g_instances = [s2.container];
 };
 
 const CustomTooltip = () => (
@@ -965,12 +969,7 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              getSpreadSheet={(s2) => {
-                // @ts-ignore
-                window.s2 = s2;
-                // @ts-ignore
-                window.__g_instances__ = [s2.container];
-              }}
+              getSpreadSheet={(s2) => getSpreadSheet(s2)}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
@@ -1028,10 +1027,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            getSpreadSheet={(s2) => {
-              // @ts-ignore
-              window.__g_instances__ = [s2.container];
-            }}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1064,10 +1060,7 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            getSpreadSheet={(s2) => {
-              // @ts-ignore
-              window.__g_instances__ = [s2.container];
-            }}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
           />
         </TabPane>
       </Tabs>
