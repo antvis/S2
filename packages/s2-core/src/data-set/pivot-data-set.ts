@@ -27,7 +27,6 @@ import {
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
-  Data,
   Formatter,
   Meta,
   PartDrillDownDataCache,

@@ -11,7 +11,7 @@ import type {
   LayoutResult,
   SortParams,
   DataCell,
-  Data,
+  RawData,
   GEvent,
   HiddenColumnsInfo,
   CollapsedRowsType,
@@ -193,7 +193,7 @@ export interface BaseSheetComponentProps<
   onMouseMove?: (event: MouseEvent) => void;
   onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;
-  onLinkFieldJump?: (data: { key: string; record: Data }) => void;
+  onLinkFieldJump?: (data: { key: string; record: RawData }) => void;
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================

@@ -1,5 +1,10 @@
 import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
-import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
+import type {
+  RawData,
+  Fields,
+  Totals,
+  TotalsStatus,
+} from '../common/interface';
 
 export const getListBySorted = (
   list: string[],
@@ -107,19 +112,19 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
  * @param data
  * @returns
  */
-export const isTotalData = (ids: string[], data: Data): boolean => {
+export const isTotalData = (ids: string[], data: RawData): boolean => {
   return !every(ids, (id) => data[id]);
 };
 
 /**
  * split total data from origin list data.
  */
-export function splitTotal(rawData: Data[], fields: Fields): Data[] {
+export function splitTotal(rawData: RawData[], fields: Fields): RawData[] {
   const { rows, columns } = fields;
 
   return reduce(
     rawData,
-    (result: Data[], data: Data) => {
+    (result: RawData[], data: RawData) => {
       if (isTotalData([].concat(rows).concat(columns), data)) {
         result.push(data);
       }

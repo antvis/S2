@@ -3,12 +3,12 @@ import type {
   FilterDataItemCallback,
   MappingDataItemCallback,
 } from '@/common/interface/basic';
-import type { Data, MultiData } from '@/common/interface/s2DataConfig';
+import type { RawData, MultiData } from '@/common/interface/s2DataConfig';
 import { handleDataItem } from '@/utils/cell/data-cell';
 
 describe('Display Data Item Callback Test', () => {
   test('should return origin data value when there is no callback', () => {
-    const data: Data = {
+    const data: RawData = {
       city: '成都',
       price: 20,
       [EXTRA_FIELD]: 'price',
@@ -18,7 +18,7 @@ describe('Display Data Item Callback Test', () => {
   });
 
   test('should return filter data value when there is filter callback with multiple data item', () => {
-    const data: Data = {
+    const data: RawData = {
       city: '成都',
       price: {
         values: [[12, 0.2, -0.3]],
@@ -42,7 +42,7 @@ describe('Display Data Item Callback Test', () => {
   });
 
   test('should return mapped data item  when there is mapping callback with multiple data item', () => {
-    const data: Data = {
+    const data: RawData = {
       city: '成都',
       price: {
         values: [[12, 0.2, -0.3]],

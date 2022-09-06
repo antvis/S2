@@ -23,8 +23,6 @@ import {
   mapKeys,
   noop,
   pick,
-  includes,
-  matches,
 } from 'lodash';
 import {
   CellTypes,
@@ -33,7 +31,6 @@ import {
   VALUE_FIELD,
 } from '../common/constant';
 import {
-  TOOLTIP_CONTAINER_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
@@ -41,7 +38,7 @@ import {
 import { i18n } from '../common/i18n';
 import type {
   AutoAdjustPositionOptions,
-  Data,
+  RawData,
   LayoutResult,
   ListItem,
   Tooltip,
@@ -173,7 +170,7 @@ export const getFriendlyVal = (val: any): number | string => {
 export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
-  return (v: unknown, data?: Data) => {
+  return (v: unknown, data?: RawData) => {
     return getFriendlyVal(formatter(v, data));
   };
 };

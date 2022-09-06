@@ -4,14 +4,14 @@ import type {
   Meta,
   SortParams,
 } from '../../common/interface';
-import type { MiniChartTypes } from '../constant';
+import type { EXTRA_FIELD, MiniChartTypes, VALUE_FIELD } from '../constant';
 
 export interface BaseChartData {
   type: MiniChartTypes;
-  data: Data[];
+  data: RawData[];
   encode?: {
-    x: keyof Data;
-    y: keyof Data;
+    x: keyof RawData;
+    y: keyof RawData;
   };
 }
 
@@ -48,7 +48,14 @@ export type SimpleDataItem = string | number;
 
 export type DataItem = SimpleDataItem | MultiData;
 
-export type Data = Record<string, DataItem>;
+export type RawData = Record<string, DataItem>;
+
+export type ExtraData = {
+  [EXTRA_FIELD]: string;
+  [VALUE_FIELD]: string | DataItem;
+};
+
+export type Data = RawData & ExtraData;
 
 export interface CustomTreeItem {
   key: string;
@@ -61,9 +68,9 @@ export interface CustomTreeItem {
 
 export interface S2DataConfig {
   // origin detail data
-  data: Data[];
+  data: RawData[];
   // total data(grandTotal, subTotal)
-  totalData?: Data[];
+  totalData?: RawData[];
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys meta info

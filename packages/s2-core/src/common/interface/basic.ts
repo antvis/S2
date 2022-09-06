@@ -1,6 +1,10 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellTypes } from '../../common/constant';
-import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
+import type {
+  CustomTreeItem,
+  RawData,
+  ResizeInfo,
+} from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
@@ -21,7 +25,7 @@ import type { DataItem } from './s2DataConfig';
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
 export type Formatter = (
   v: unknown,
-  data?: Data | Data[],
+  data?: RawData | RawData[],
   meta?: Node | ViewMeta,
 ) => string;
 
