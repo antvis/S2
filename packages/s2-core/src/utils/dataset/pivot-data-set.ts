@@ -1,18 +1,12 @@
 import { forEach, intersection, isUndefined, last, set } from 'lodash';
-import {
-  EXTRA_FIELD,
-  ID_SEPARATOR,
-  ROOT_ID,
-  VALUE_FIELD,
-} from '../../common/constant';
-import type { BaseFields, Data, RawData } from '../../common/interface';
+import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import type { BaseFields } from '../../common/interface';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
-import { CellData } from './cell-data';
 
 function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
