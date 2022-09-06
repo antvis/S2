@@ -96,11 +96,9 @@ export class PivotFacet extends BaseFacet {
         rowNode: row,
         isTotals,
       });
+
       const valueField: string = dataQuery[EXTRA_FIELD];
-      let fieldValue = null;
-      if (!isEmpty(data)) {
-        fieldValue = get(data, [valueField], null);
-      }
+      const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
         spreadsheet,

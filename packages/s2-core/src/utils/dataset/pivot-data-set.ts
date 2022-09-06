@@ -5,13 +5,14 @@ import {
   ROOT_ID,
   VALUE_FIELD,
 } from '../../common/constant';
-import type { BaseFields } from '../../common/interface';
+import type { BaseFields, Data, RawData } from '../../common/interface';
 import type {
   DataPathParams,
   DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
+import { CellData } from './cell-data';
 
 function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
@@ -310,18 +311,4 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     // exit iteration early when pathMeta not exists
     return idx === 0 && path === ROOT_ID;
   });
-}
-
-export function assembleExtraValueField(
-  data: Record<string, any>,
-  extraField: string,
-) {
-  if (data) {
-    return {
-      ...data,
-      [EXTRA_FIELD]: extraField,
-      [VALUE_FIELD]: data[extraField],
-    };
-  }
-  return data;
 }

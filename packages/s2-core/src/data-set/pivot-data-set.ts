@@ -18,6 +18,7 @@ import {
   unset,
   values,
 } from 'lodash';
+import { CellData } from '../utils/dataset/cell-data';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
@@ -47,7 +48,6 @@ import {
   splitTotal,
 } from '../utils/data-set-operate';
 import {
-  assembleExtraValueField,
   deleteMetaById,
   getDataPath,
   getDimensionsWithoutPathPre,
@@ -409,14 +409,16 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    let data = get(this.indexesData, path);
-    data = assembleExtraValueField(data, query[EXTRA_FIELD]);
-    if (data) {
+
+    const rawData = get(this.indexesData, path);
+    if (rawData) {
       // 如果已经有数据则取已有数据
-      return data;
+      return new CellData(rawData, query[EXTRA_FIELD]);
     }
 
-    return isTotals ? this.getTotalValue(query) : data;
+    if (isTotals) {
+      return this.getTotalValue(query);
+    }
   }
 
   getCustomData = (path: number[]) => {
