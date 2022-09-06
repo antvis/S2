@@ -974,7 +974,9 @@ function MainLayout() {
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
-              onDestroy={logHandler('onDestroy')}
+              onDestroy={logHandler('onDestroy', () => {
+                clearInterval(scrollTimer.current);
+              })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={(cellInfo) => {

@@ -30,14 +30,18 @@ export const useS2Event = (
   eventName: S2Event,
   handler: (args: unknown) => void,
   s2: SpreadSheet,
+  emitBeforeOff = false,
 ) => {
   React.useEffect(() => {
-    const handlerFn: EmitterType[S2Event] = (args) => {
+    const handlerFn: EmitterType[S2Event] = (args: unknown[]) => {
       handler?.(args);
     };
     s2?.on(eventName, handlerFn);
 
     return () => {
+      if (emitBeforeOff) {
+        s2?.emit(eventName);
+      }
       s2?.off(eventName, handlerFn);
     };
   }, [s2, handler, eventName]);
@@ -160,10 +164,9 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   );
   useS2Event(S2Event.LAYOUT_COLS_EXPANDED, props.onLayoutColsExpanded, s2);
   useS2Event(S2Event.LAYOUT_COLS_HIDDEN, props.onLayoutColsHidden, s2);
-
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);
-  useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2);
+  useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2, true);
 
   // ============== Resize ====================
   useS2Event(S2Event.LAYOUT_RESIZE, props.onLayoutResize, s2);

@@ -1,6 +1,6 @@
 import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
-import { SheetComponentOptions } from '../../src';
+import type { SheetComponentOptions } from '../../src';
 
 const getKPIMockData = () => {
   return {

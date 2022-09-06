@@ -69,7 +69,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   React.useEffect(() => {
     buildSpreadSheet();
     return () => {
-      s2Ref.current.destroy();
+      s2Ref.current.destroy?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

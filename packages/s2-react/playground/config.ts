@@ -8,7 +8,7 @@ import {
   meta,
   fields,
 } from '../__tests__/data/mock-dataset.json';
-import { SheetComponentOptions } from '../src/components';
+import type { SheetComponentOptions } from '../src/components';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
