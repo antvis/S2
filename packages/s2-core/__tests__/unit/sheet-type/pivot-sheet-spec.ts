@@ -1118,4 +1118,13 @@ describe('PivotSheet Tests', () => {
       sheet.destroy();
     });
   });
+
+  test('should emit destroy event', () => {
+    const onDestroy = jest.fn();
+    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    s2.destroy();
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
+  });
 });
