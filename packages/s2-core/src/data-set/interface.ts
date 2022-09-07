@@ -27,8 +27,6 @@ export type DataPathParams = {
     // 维度数组 ['四川省', '成都市']
     dimensionPath: string[];
   }) => void;
-  // use for multiple data queries（path contains undefined）
-  careUndefined?: boolean;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 } & BaseFields;

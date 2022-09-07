@@ -405,8 +405,6 @@ export class PivotDataSet extends BaseDataSet {
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined:
-        isTotals || isTotalData([].concat(originRows).concat(columns), query),
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
@@ -482,7 +480,6 @@ export class PivotDataSet extends BaseDataSet {
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined: true,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });

@@ -99,7 +99,6 @@ export function getDataPath(params: DataPathParams) {
     values,
     rowDimensionValues,
     colDimensionValues,
-    careUndefined,
     createIfNotExist,
     onCreate,
     rowPivotMeta,
@@ -118,9 +117,9 @@ export function getDataPath(params: DataPathParams) {
     return map;
   };
 
-  // 根据行、列维度值生成对应的 path路径，有两个情况
-  // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
-  // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
+  // 根据行、列维度值生成对应的 path路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
+  // 如果是汇总格子: path = [0,0,0,0] path中会存在 0的值（这里在indexesData里面会映射）
+  // 如果是明细格子: path = [1,1,1] 数字均不为0
   const getPath = (
     dimensions: string[],
     dimensionValues: string[],
@@ -130,9 +129,11 @@ export function getDataPath(params: DataPathParams) {
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
+      const isTotal = value === TOTAL_VALUE;
+
       if (!currentMeta.has(value) && createIfNotExist) {
         currentMeta.set(value, {
-          level: currentMeta.size,
+          level: isTotal ? 0 : currentMeta.size + 1,
           childField: dimensions?.[i + 1],
           children:
             dimensions?.[i + 1] === EXTRA_FIELD ? appendValues() : new Map(),
@@ -144,12 +145,7 @@ export function getDataPath(params: DataPathParams) {
       }
 
       const meta = currentMeta.get(value);
-
-      if (isUndefined(value) && careUndefined) {
-        path.push(value);
-      } else {
-        path.push(meta?.level);
-      }
+      path.push(meta?.level);
 
       if (meta) {
         currentMeta = meta?.children;
@@ -239,7 +235,6 @@ export function transformIndexesData(params: Param) {
       colPivotMeta,
       createIfNotExist: true,
       onCreate: onFirstCreate,
-      careUndefined: totalData?.length > 0,
       rows,
       columns,
       values,
