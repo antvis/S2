@@ -1,4 +1,5 @@
-import { every, filter, get, has, isUndefined, keys, reduce } from 'lodash';
+import { every, get, has, isUndefined, keys, reduce } from 'lodash';
+import { TOTAL_VALUE } from '../common/constant/basic';
 import type {
   RawData,
   Fields,
@@ -32,8 +33,8 @@ export const getListBySorted = (
   });
 };
 
-export const filterUndefined = (values: string[]) => {
-  return filter(values, (t) => !isUndefined(t) && t !== 'undefined');
+export const filterTotal = (values: string[] = []) => {
+  return values.filter((v) => v !== TOTAL_VALUE);
 };
 
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>

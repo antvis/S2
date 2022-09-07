@@ -37,14 +37,13 @@ import type {
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
-  filterUndefined,
+  filterTotal,
   flatten as customFlatten,
   flattenDeep as customFlattenDeep,
   getAggregationAndCalcFuncByQuery,
   getFieldKeysByDimensionValues,
   getListBySorted,
   isEveryUndefined,
-  isTotalData,
   splitTotal,
 } from '../utils/data-set-operate';
 import {
@@ -343,16 +342,16 @@ export class PivotDataSet extends BaseDataSet {
       if (isEmpty(sortedMeta)) {
         return [];
       }
-      return filterUndefined(getListBySorted([...meta.keys()], sortedMeta));
+      return filterTotal(getListBySorted([...meta.keys()], sortedMeta));
     }
 
     if (this.sortedDimensionValues[field]) {
-      return filterUndefined(
+      return filterTotal(
         getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
       );
     }
 
-    return filterUndefined([...meta.keys()]);
+    return filterTotal([...meta.keys()]);
   }
 
   getTotalValue(query: DataType) {
