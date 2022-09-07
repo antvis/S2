@@ -5,6 +5,7 @@ import {
   isUpDataValue,
   getCellWidth,
   getEmptyPlaceholder,
+  getContentAreaForMultiData,
 } from '@/utils/text';
 
 const isHD = window.devicePixelRatio >= 2;
@@ -158,5 +159,111 @@ describe('Text Utils Tests', () => {
     });
 
     expect(placeholder).toEqual('test');
+  });
+
+  test('should get correct content area for multiData without widthPercent', () => {
+    const box = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+
+    const multiData = [
+      [0, 1],
+      [20, 30],
+    ];
+
+    const boxes = getContentAreaForMultiData(box, multiData);
+
+    expect(boxes).toEqual([
+      [
+        {
+          x: 0,
+          y: 0,
+          width: 50,
+          height: 50,
+        },
+        {
+          x: 50,
+          y: 0,
+          width: 50,
+          height: 50,
+        },
+      ],
+      [
+        {
+          x: 0,
+          y: 50,
+          width: 50,
+          height: 50,
+        },
+        {
+          x: 50,
+          y: 50,
+          width: 50,
+          height: 50,
+        },
+      ],
+    ]);
+  });
+
+  test('should get correct content area for multiData with widthPercent', () => {
+    const box = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    };
+
+    const multiData = [
+      [0, 1, 2],
+      [20, 30, 40],
+    ];
+
+    const boxes = getContentAreaForMultiData(box, multiData, [0.4, 0.2, 0.4]);
+
+    expect(boxes).toEqual([
+      [
+        {
+          x: 0,
+          y: 0,
+          width: 40,
+          height: 50,
+        },
+        {
+          x: 40,
+          y: 0,
+          width: 20,
+          height: 50,
+        },
+        {
+          x: 60,
+          y: 0,
+          width: 40,
+          height: 50,
+        },
+      ],
+      [
+        {
+          x: 0,
+          y: 50,
+          width: 40,
+          height: 50,
+        },
+        {
+          x: 40,
+          y: 50,
+          width: 20,
+          height: 50,
+        },
+        {
+          x: 60,
+          y: 50,
+          width: 40,
+          height: 50,
+        },
+      ],
+    ]);
   });
 });
