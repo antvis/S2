@@ -1,4 +1,4 @@
-import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
+import { every, filter, get, has, isUndefined, keys, reduce } from 'lodash';
 import type {
   RawData,
   Fields,
@@ -113,7 +113,7 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
  * @returns
  */
 export const isTotalData = (ids: string[], data: RawData): boolean => {
-  return !every(ids, (id) => id in data);
+  return !every(ids, (id) => has(data, id));
 };
 
 /**

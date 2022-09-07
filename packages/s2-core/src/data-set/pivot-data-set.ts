@@ -49,9 +49,10 @@ import {
 } from '../utils/data-set-operate';
 import {
   deleteMetaById,
+  filterExtraDimension,
   getDataPath,
   getDimensionsWithoutPathPre,
-  getQueryDimValues,
+  transformDimensionsValues,
   transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
@@ -399,8 +400,8 @@ export class PivotDataSet extends BaseDataSet {
     if (!isTotals || isDrillDown) {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
-    const rowDimensionValues = getQueryDimValues(rows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    const rowDimensionValues = transformDimensionsValues(query, rows);
+    const colDimensionValues = transformDimensionsValues(query, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -454,20 +455,11 @@ export class PivotDataSet extends BaseDataSet {
       }
       return every(dimensions, (item) => !has(query, item));
     };
-    const getDimensions = (dimensions: string[], hasExtra: boolean) => {
-      return hasExtra
-        ? dimensions.filter((item) => item !== EXTRA_FIELD)
-        : dimensions;
-    };
 
     return {
-      isRowTotal: isTotals(
-        getDimensions(rows, !this.spreadsheet.isValueInCols()),
-      ),
+      isRowTotal: isTotals(filterExtraDimension(rows)),
       isRowSubTotal: isTotals(rows, true),
-      isColTotal: isTotals(
-        getDimensions(columns, this.spreadsheet.isValueInCols()),
-      ),
+      isColTotal: isTotals(filterExtraDimension(columns)),
       isColSubTotal: isTotals(columns, true),
     };
   };
@@ -485,8 +477,8 @@ export class PivotDataSet extends BaseDataSet {
     const totalRows = !isEmpty(drillDownFields)
       ? rows.concat(drillDownFields)
       : rows;
-    const rowDimensionValues = getQueryDimValues(totalRows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    const rowDimensionValues = transformDimensionsValues(query, totalRows);
+    const colDimensionValues = transformDimensionsValues(query, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,

@@ -1,5 +1,10 @@
-import { forEach, intersection, isUndefined, last, set } from 'lodash';
-import { EXTRA_FIELD, ID_SEPARATOR, ROOT_ID } from '../../common/constant';
+import { forEach, has, intersection, isUndefined, last, set } from 'lodash';
+import {
+  EXTRA_FIELD,
+  ID_SEPARATOR,
+  ROOT_ID,
+  TOTAL_VALUE,
+} from '../../common/constant';
 import type { BaseFields } from '../../common/interface';
 import type {
   DataPathParams,
@@ -8,60 +13,16 @@ import type {
   SortedDimensionValues,
 } from '../../data-set/interface';
 
-function filterExtraDimension(dimensions: string[] = []) {
+export function filterExtraDimension(dimensions: string[] = []) {
   return dimensions.filter((d) => d !== EXTRA_FIELD);
 }
-interface Param extends BaseFields {
-  originData: DataType[];
-  indexesData: DataType[][] | DataType[];
-  totalData?: DataType[];
-  sortedDimensionValues: SortedDimensionValues;
-  rowPivotMeta?: PivotMeta;
-  colPivotMeta?: PivotMeta;
-}
 
-/**
- * Transform from origin single data to correct dimension values
- * data: {
- *  price: 16,
- *  province: '辽宁省',
- *  city: '芜湖市',
- *  category: '家具',
- *  subCategory: '椅子',
- * }
- * dimensions: [province, city]
- * return [辽宁省, 芜湖市]
- *
- * @param record
- * @param dimensions
- */
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
 ): string[] {
   return filterExtraDimension(dimensions).map((dimension) => {
-    const dimensionValue = record[dimension];
-
-    // 保证 undefined 之外的数据都为 string 类型
-    if (dimensionValue === undefined) {
-      return dimensionValue;
-    }
-    return `${dimensionValue}`;
-  });
-}
-
-/**
- * 获取查询结果中的纬度值
- * @param dimensions [province, city]
- * @param query { province: '四川省', city: '成都市', type: '办公用品' }
- * @returns ['四川省', '成都市']
- */
-export function getQueryDimValues(
-  dimensions: string[],
-  query: DataType,
-): string[] {
-  return filterExtraDimension(dimensions).map((d) => {
-    return query[d];
+    return !has(record, dimension) ? TOTAL_VALUE : String(record[dimension]);
   });
 }
 
@@ -204,6 +165,15 @@ export function getDataPath(params: DataPathParams) {
   return result;
 }
 
+interface Param extends BaseFields {
+  originData: DataType[];
+  indexesData: DataType[][] | DataType[];
+  totalData?: DataType[];
+  sortedDimensionValues: SortedDimensionValues;
+  rowPivotMeta?: PivotMeta;
+  colPivotMeta?: PivotMeta;
+}
+
 /**
  * 转换原始数据为多维数组数据
  */
@@ -256,6 +226,10 @@ export function transformIndexesData(params: Param) {
 
   const allData = originData.concat(totalData);
   allData.forEach((data) => {
+    // 空数据没有意义，直接跳过，而不是在后面 getMultiData 再来 compact
+    if (!data) {
+      return;
+    }
     const rowDimensionValues = transformDimensionsValues(data, rows);
     const colDimensionValues = transformDimensionsValues(data, columns);
     const path = getDataPath({

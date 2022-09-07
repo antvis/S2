@@ -3,7 +3,7 @@ import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 import type { S2DataConfig } from '../common/interface';
 import {
   getDataPath,
-  getQueryDimValues,
+  transformDimensionsValues,
   transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import type { CellDataParams, DataType } from './interface';
@@ -13,8 +13,8 @@ export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {
     const { query } = params;
     const { columns, rows } = this.fields;
-    const rowDimensionValues = getQueryDimValues(rows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    const rowDimensionValues = transformDimensionsValues(query, rows);
+    const colDimensionValues = transformDimensionsValues(query, columns);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
