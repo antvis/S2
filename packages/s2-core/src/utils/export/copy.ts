@@ -1,4 +1,4 @@
-import { map, zip, escape } from 'lodash';
+import { map, zip, escape, forEach, max, filter } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -12,6 +12,7 @@ import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
+import type { ColCell, RowCell } from '../../cell';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -102,11 +103,16 @@ export const convertString = (v: string) => {
 /**
  * 根据 id 计算出行头或者列头展示的文本数组
  * 将 id : root[&]家具[&]桌子[&]price"
- * 转换为 List: ['四川省', '成都市']
+ * reverseInterceptionLevel 不传, 转换为 List: ['家具', '桌子', 'price']
+ * reverseInterceptionLevel = 1, 转换为 List: ['桌子', 'price']
  * @param headerId
+ * @param reverseInterceptionLevel 逆向拦截层级
  */
-const getHeaderList = (headerId: string) => {
+const getHeaderList = (headerId: string, reverseInterceptionLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
+  if (reverseInterceptionLevel) {
+    return headerList.slice(reverseInterceptionLevel);
+  }
   headerList.shift(); // 去除 root
   return headerList;
 };
@@ -523,12 +529,42 @@ const getDataWithHeaderMatrix = (
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
-export const getSelectedData = (spreadsheet: SpreadSheet): string => {
-  const interaction = spreadsheet.interaction;
-  const { copyWithHeader } = spreadsheet.options.interaction;
+function getBrushHeaderCopyable(
+  interactedCells: RowCell[] | ColCell[],
+  cells?: CellMeta[],
+): Copyable {
+  const allLevel = [];
+  const isRow = cells[0].type === CellTypes.ROW_CELL;
 
-  const cells = interaction.getState().cells || [];
+  forEach(interactedCells, (cell: RowCell | ColCell) => {
+    const level = cell.getMeta().level;
+    if (allLevel.includes(level)) {
+      return;
+    }
+    allLevel.push(level);
+  });
+  allLevel.sort();
+  const maxLevel = max(allLevel) ?? 0;
+  const lastLevelCells = filter(interactedCells, (cell: RowCell | ColCell) => {
+    return cell.getMeta().level === maxLevel;
+  });
+  const cellMetaMatrix = map(lastLevelCells, (cell: RowCell | ColCell) => {
+    const cellId = cell.getMeta().id;
+    return getHeaderList(cellId, allLevel.length - 1);
+  });
+  // console.log(cellMetaMatrix, 'cellMetaMatrix');
+  return [
+    matrixPlainTextTransformer(cellMetaMatrix),
+    matrixHtmlTransformer(cellMetaMatrix),
+  ];
+}
+
+function getDataCellCopyable(
+  spreadsheet: SpreadSheet,
+  cells: CellMeta[],
+): Copyable {
   let data: Copyable;
+
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
   const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
 
@@ -538,7 +574,10 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     // 树状模式透视表之后实现
     return;
   }
-  if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
+  if (
+    spreadsheet.interaction.getCurrentStateName() ===
+    InteractionStateName.ALL_SELECTED
+  ) {
     data = processColSelected(displayData, spreadsheet, []);
   } else if (selectedCols.length) {
     data = processColSelected(displayData, spreadsheet, selectedCols);
@@ -551,7 +590,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
-    if (copyWithHeader) {
+    if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData,
@@ -560,6 +599,28 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     } else {
       data = processCopyData(displayData, selectedCellsMeta, spreadsheet);
     }
+  }
+  return data;
+}
+
+export const getSelectedData = (spreadsheet: SpreadSheet): string => {
+  const interaction = spreadsheet.interaction;
+  const cells = interaction.getState().cells || [];
+  let data: Copyable;
+  // 通过判断当前存在交互的单元格，来区分圈选行/列头 还是 点选行/列头
+  const interactedCells = interaction.getInteractedCells() ?? [];
+  const isBrushHeader =
+    interactedCells.filter((cell) => cell.cellType === CellTypes.DATA_CELL)
+      .length === 0;
+
+  // 行列头圈选复制 和 单元格复制不同
+  if (isBrushHeader) {
+    data = getBrushHeaderCopyable(
+      interactedCells as RowCell[] | ColCell[],
+      cells,
+    );
+  } else {
+    data = getDataCellCopyable(spreadsheet, cells);
   }
 
   if (data) {
