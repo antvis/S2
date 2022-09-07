@@ -103,15 +103,16 @@ export const convertString = (v: string) => {
 /**
  * 根据 id 计算出行头或者列头展示的文本数组
  * 将 id : root[&]家具[&]桌子[&]price"
- * reverseInterceptionLevel 不传, 转换为 List: ['家具', '桌子', 'price']
- * reverseInterceptionLevel = 1, 转换为 List: ['桌子', 'price']
+ * startLevel 不传, 转换为 List: ['家具', '桌子', 'price']
+ * startLevel = 2, 转换为 List: ['桌子', 'price']
  * @param headerId
- * @param reverseInterceptionLevel 逆向拦截层级
+ * @param startLevel 层级
  */
-const getHeaderList = (headerId: string, reverseInterceptionLevel?: number) => {
+const getHeaderList = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
-  if (reverseInterceptionLevel) {
-    return headerList.slice(reverseInterceptionLevel);
+  if (startLevel) {
+    // console.log(headerList.slice(headerList.length - startLevel), 'headerList');
+    return headerList.slice(headerList.length - startLevel);
   }
   headerList.shift(); // 去除 root
   return headerList;
@@ -534,8 +535,7 @@ function getBrushHeaderCopyable(
   cells?: CellMeta[],
 ): Copyable {
   const allLevel = [];
-  const isRow = cells[0].type === CellTypes.ROW_CELL;
-
+  // 获取圈选的层级有哪些
   forEach(interactedCells, (cell: RowCell | ColCell) => {
     const level = cell.getMeta().level;
     if (allLevel.includes(level)) {
@@ -543,15 +543,26 @@ function getBrushHeaderCopyable(
     }
     allLevel.push(level);
   });
-  allLevel.sort();
+
   const maxLevel = max(allLevel) ?? 0;
-  const lastLevelCells = filter(interactedCells, (cell: RowCell | ColCell) => {
-    return cell.getMeta().level === maxLevel;
-  });
-  const cellMetaMatrix = map(lastLevelCells, (cell: RowCell | ColCell) => {
-    const cellId = cell.getMeta().id;
-    return getHeaderList(cellId, allLevel.length - 1);
-  });
+  // 获取最后一层（最接近 dataCell）的数据
+  const lastLevelCells = filter(
+    interactedCells,
+    (cell: RowCell | ColCell) => cell.getMeta().level === maxLevel,
+  );
+
+  const isCol = cells[0].type === CellTypes.COL_CELL;
+  let cellMetaMatrix: string[][] = map(
+    lastLevelCells,
+    (cell: RowCell | ColCell) => {
+      const cellId = cell.getMeta().id;
+      return getHeaderList(cellId, allLevel.length);
+    },
+  );
+  // 如果是列头，需要转置
+  if (isCol) {
+    cellMetaMatrix = zip(...cellMetaMatrix);
+  }
   // console.log(cellMetaMatrix, 'cellMetaMatrix');
   return [
     matrixPlainTextTransformer(cellMetaMatrix),
