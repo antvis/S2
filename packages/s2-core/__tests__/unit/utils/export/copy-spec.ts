@@ -57,7 +57,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual(undefined);
+    expect(getSelectedData(s2)).toEqual('');
   });
 
   it('should copy normal data', () => {
@@ -280,7 +280,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual(undefined);
+    expect(getSelectedData(s2)).toEqual('');
   });
 
   it('should copy normal data in grid mode', () => {
@@ -697,3 +697,8 @@ describe('List Table getCopyData', () => {
     expect(data.length).toBe(2);
   });
 });
+
+// describe.only('Pivot Table getBrushHeaderCopyable', () => {
+//
+//
+// })

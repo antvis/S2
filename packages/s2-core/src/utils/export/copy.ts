@@ -1,4 +1,4 @@
-import { map, zip, escape, forEach, max, filter } from 'lodash';
+import { escape, every, filter, forEach, isEmpty, map, max, zip } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -152,7 +152,7 @@ function pickDataFromCopyable(
   }
   return (
     ([].concat(copyable) as CopyableItem[])
-      .filter((item) => item.type === type)
+      .filter((item) => item?.type === type)
       .map((item) => item.content)[0] || ''
   );
 }
@@ -545,12 +545,14 @@ function getBrushHeaderCopyable(
   });
 
   const maxLevel = max(allLevel) ?? 0;
-  // 获取最后一层（最接近 dataCell）的数据
+  // 获取最后一层的 cell
   const lastLevelCells = filter(
     interactedCells,
     (cell: RowCell | ColCell) => cell.getMeta().level === maxLevel,
   );
 
+  // console.log('lastLevelCells', lastLevelCells);
+  // 拼接选中行列头的内容矩阵
   const isCol = cells[0].type === CellTypes.COL_CELL;
   let cellMetaMatrix: string[][] = map(
     lastLevelCells,
@@ -620,9 +622,14 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   let data: Copyable;
   // 通过判断当前存在交互的单元格，来区分圈选行/列头 还是 点选行/列头
   const interactedCells = interaction.getInteractedCells() ?? [];
-  const isBrushHeader =
-    interactedCells.filter((cell) => cell.cellType === CellTypes.DATA_CELL)
-      .length === 0;
+  const isBrushHeader = isEmpty(interactedCells)
+    ? false
+    : every(interactedCells, (cell) => {
+        return (
+          cell.cellType === CellTypes.ROW_CELL ||
+          cell.cellType === CellTypes.COL_CELL
+        );
+      });
 
   // 行列头圈选复制 和 单元格复制不同
   if (isBrushHeader) {
