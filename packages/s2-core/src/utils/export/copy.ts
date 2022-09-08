@@ -539,51 +539,67 @@ const getDataWithHeaderMatrix = (
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
-function getBrushHeaderCopyable(
-  interactedCells: RowCell[] | ColCell[],
-  cells?: CellMeta[],
-): Copyable {
-  const allLevel = [];
-  // 获取圈选的层级有哪些
+function getAllLevels(interactedCells: RowCell[] | ColCell[]) {
+  const allLevels = new Set<number>();
   forEach(interactedCells, (cell: RowCell | ColCell) => {
     const level = cell.getMeta().level;
-    if (allLevel.includes(level)) {
+    if (allLevels.has(level)) {
       return;
     }
-    allLevel.push(level);
+    allLevels.add(level);
   });
+  return allLevels;
+}
 
-  const maxLevel = max(allLevel) ?? 0;
-  // 获取最后一层的 cell
-  const lastLevelCells = filter(interactedCells, (cell: RowCell | ColCell) => {
+function getLastLevelCells(
+  interactedCells: RowCell[] | ColCell[],
+  maxLevel: number,
+) {
+  return filter(interactedCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
     const isLastLevel = meta.level === maxLevel;
     const isLastTotal = meta.isTotals && isEmpty(meta.children);
     return isLastLevel || isLastTotal;
   });
+}
+
+function getCellMatrix(
+  lastLevelCells: Array<RowCell | ColCell>,
+  maxLevel: number,
+  allLevel: Set<number>,
+) {
+  return map(lastLevelCells, (cell: RowCell | ColCell) => {
+    const meta = cell.getMeta();
+    const { id, label, isTotals, level } = meta;
+    let cellId = id;
+    // 为总计小计补齐高度
+    if (isTotals && level !== maxLevel) {
+      cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
+    }
+    return getHeaderList(cellId, allLevel.size);
+  });
+}
+
+function getBrushHeaderCopyable(
+  interactedCells: RowCell[] | ColCell[],
+): Copyable {
+  // 获取圈选的层级有哪些
+  const allLevels = getAllLevels(interactedCells);
+  const maxLevel = max(Array.from(allLevels)) ?? 0;
+  // 获取最后一层的 cell
+  const lastLevelCells = getLastLevelCells(interactedCells, maxLevel);
 
   // 拼接选中行列头的内容矩阵
-  const isCol = cells[0].type === CellTypes.COL_CELL;
-  let cellMetaMatrix: string[][] = map(
-    lastLevelCells,
-    (cell: RowCell | ColCell) => {
-      const meta = cell.getMeta();
-      const { id, label, isTotals, level } = meta;
-      let cellId = id;
-      // 为总计小计补齐高度
-      if (isTotals && level !== maxLevel) {
-        cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
-      }
-      return getHeaderList(cellId, allLevel.length);
-    },
-  );
+  const isCol = interactedCells[0].cellType === CellTypes.COL_CELL;
+  let cellMatrix = getCellMatrix(lastLevelCells, maxLevel, allLevels);
+
   // 如果是列头，需要转置
   if (isCol) {
-    cellMetaMatrix = zip(...cellMetaMatrix);
+    cellMatrix = zip(...cellMatrix);
   }
   return [
-    matrixPlainTextTransformer(cellMetaMatrix),
-    matrixHtmlTransformer(cellMetaMatrix),
+    matrixPlainTextTransformer(cellMatrix),
+    matrixHtmlTransformer(cellMatrix),
   ];
 }
 
@@ -648,10 +664,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
 
   // 行列头圈选复制 和 单元格复制不同
   if (isBrushHeader) {
-    data = getBrushHeaderCopyable(
-      interactedCells as RowCell[] | ColCell[],
-      cells,
-    );
+    data = getBrushHeaderCopyable(interactedCells as RowCell[] | ColCell[]);
   } else {
     data = getDataCellCopyable(spreadsheet, cells);
   }
