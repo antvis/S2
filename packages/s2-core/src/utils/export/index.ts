@@ -212,7 +212,7 @@ const processValueInRow = (
     }
 
     // 如果本身格子的数据是 null， 但是一个格子又需要绘制多个指标时，需要使用placeholder填充
-    if (isNil(fieldValue) && placeholder.length > 0) {
+    if (isNil(fieldValue) && placeholder.length > 1) {
       tempCells.push(...placeholder);
       return tempCells;
     }
