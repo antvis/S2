@@ -698,7 +698,221 @@ describe('List Table getCopyData', () => {
   });
 });
 
-// describe.only('Pivot Table getBrushHeaderCopyable', () => {
-//
-//
-// })
+describe('Pivot Table getBrushHeaderCopyable', () => {
+  const dataCfg = assembleDataCfg({
+    meta: [],
+    fields: {
+      columns: ['type', 'sub_type'],
+      rows: ['province', 'city'],
+      values: ['number'],
+    },
+  });
+  const options = assembleOptions({
+    hierarchyType: 'grid',
+    interaction: {
+      enableCopy: true,
+      brushSelection: true,
+    },
+  });
+
+  const s2 = new PivotSheet(getContainer(), dataCfg, options);
+  beforeEach(() => {
+    s2.render();
+  });
+
+  test('should copy all row data in grid mode', () => {
+    const cells = s2.interaction.getAllRowHeaderCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllRowHeaderCells());
+      },
+    });
+    // 行头高度
+    expect(getSelectedData(s2).split('\n').length).toBe(8);
+    // 行头第一个 值
+    expect(getSelectedData(s2).split('\n')[0].split('\t')[0]).toEqual('浙江省');
+    // 行头最后一个 值
+    expect(getSelectedData(s2).split('\n')[7].split('\t')[1]).toEqual('乐山市');
+  });
+
+  test('should copy all col data in grid mode', () => {
+    const cells = s2.interaction.getAllColHeaderCells();
+
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllColHeaderCells());
+      },
+    });
+    // 列头高度
+    expect(getSelectedData(s2).split('\n').length).toBe(3);
+    // 列头第一个 值
+    expect(getSelectedData(s2).split('\n')[0].split('\t')[0]).toEqual('家具');
+    // 列头最后一个 值
+    expect(getSelectedData(s2).split('\n')[2].split('\t')[3]).toEqual('number');
+  });
+
+  test('should copy selection row data in grid mode', () => {
+    const ss = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: [],
+          rows: ['province', 'city', 'type', 'sub_type'],
+          values: ['number'],
+        },
+      }),
+      options,
+    );
+    ss.render();
+
+    // ["家具	桌子
+    //     ", "家具	沙发
+    //     ", "办公用品	笔
+    //     ", "办公用品	纸张
+    //     ", "家具	桌子
+    //     ", "家具	沙发"]
+    const cells = ss.interaction.getAllRowHeaderCells().filter((c) => {
+      const meta = c.getMeta();
+      return (meta.level === 2 || meta.level === 3) && meta.y < 180;
+    });
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllRowHeaderCells());
+      },
+    });
+
+    expect(getSelectedData(ss).split('\n').length).toBe(6);
+    expect(getSelectedData(ss).split('\n')[5].split('\t')[1]).toEqual('沙发');
+
+    // 圈选行头前两列 中 y < 180 的区域
+    const cells2 = ss.interaction.getAllRowHeaderCells().filter((c) => {
+      const meta = c.getMeta();
+      return (meta.level === 0 || meta.level === 1) && meta.y < 180;
+    });
+    ss.interaction.changeState({
+      cells: map(cells2, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllRowHeaderCells());
+      },
+    });
+
+    expect(getSelectedData(ss).split('\n').length).toBe(2);
+    expect(getSelectedData(ss).split('\n')[1].split('\t')[1]).toEqual('绍兴市');
+  });
+
+  test('should copy selection col data in grid mode', () => {
+    const ss = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type'],
+          rows: [],
+          values: ['number'],
+        },
+      }),
+      options,
+    );
+    ss.render();
+
+    // ["桌子	沙发	笔	纸张	桌子",
+    // "number	number	number	number	number"]
+    const cells = ss.interaction.getAllColHeaderCells().filter((c) => {
+      const meta = c.getMeta();
+      return (meta.level === 3 || meta.level === 4) && meta.x < 480;
+    });
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllColHeaderCells());
+      },
+    });
+    expect(getSelectedData(ss).split('\n').length).toBe(2);
+    expect(getSelectedData(ss).split('\n')[1].split('\t').length).toBe(5);
+    expect(getSelectedData(ss).split('\n')[0].split('\t')[3]).toEqual('纸张');
+
+    // ["浙江省	杭州市
+    //     ", "浙江省	绍兴市"]
+    const cells2 = ss.interaction.getAllColHeaderCells().filter((c) => {
+      const meta = c.getMeta();
+      return (meta.level === 0 || meta.level === 1) && meta.x < 480;
+    });
+    ss.interaction.changeState({
+      cells: map(cells2, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllColHeaderCells());
+      },
+    });
+    expect(getSelectedData(ss).split('\n').length).toBe(2);
+    expect(getSelectedData(ss).split('\n')[1].split('\t')[1]).toBe('绍兴市');
+  });
+
+  test('should copy row total data in grid mode', () => {
+    const ss = new PivotSheet(
+      getContainer(),
+      dataCfg,
+      assembleOptions({
+        hierarchyType: 'grid',
+        interaction: {
+          enableCopy: true,
+          brushSelection: true,
+        },
+        totals: TOTALS_OPTIONS,
+      }),
+    );
+    ss.render();
+
+    const cells = ss.interaction.getAllRowHeaderCells();
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllRowHeaderCells());
+      },
+    });
+
+    expect(getSelectedData(ss).split('\n').length).toBe(11);
+    expect(getSelectedData(ss).split('\n')[9].split('\t')[1]).toContain('小计');
+    expect(getSelectedData(ss).split('\n')[10].split('\t')[1]).toEqual('总计');
+  });
+
+  test('should copy col total data in grid mode', () => {
+    const ss = new PivotSheet(
+      getContainer(),
+      dataCfg,
+      assembleOptions({
+        hierarchyType: 'grid',
+        interaction: {
+          enableCopy: true,
+          brushSelection: true,
+        },
+        totals: TOTALS_OPTIONS,
+      }),
+    );
+    ss.render();
+
+    const cells = ss.interaction.getAllColHeaderCells();
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+      onUpdateCells: (root) => {
+        root.updateCells(root.getAllColHeaderCells());
+      },
+    });
+
+    expect(getSelectedData(ss).split('\n').length).toBe(3);
+    expect(getSelectedData(ss).split('\n')[1].split('\t')[2]).toEqual('小计');
+    expect(getSelectedData(ss).split('\n')[2].split('\t')[2]).toEqual('小计');
+  });
+});
