@@ -18,7 +18,10 @@ import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
 import type { DataType, SortActionParams } from '../data-set/interface';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
-import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
+import {
+  filterExtraDimension,
+  getDimensionsWithParentPath,
+} from '../utils/dataset/pivot-data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -234,9 +237,6 @@ const createTotalParams = (
   return totalParams;
 };
 
-const filterExtraField = (fields: string[]) =>
-  fields.filter((field) => field !== EXTRA_FIELD);
-
 /**
  * 获取 “按数值排序” 的排序参考数据
  *
@@ -276,11 +276,11 @@ export const getSortByMeasureValues = (
    */
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
-  const sortFields = filterExtraField(
+  const sortFields = filterExtraDimension(
     isSortFieldInRow ? fields.rows : fields.columns,
   );
   // 与排序交叉的另一侧全部字段
-  const oppositeFields = filterExtraField(
+  const oppositeFields = filterExtraDimension(
     isSortFieldInRow ? fields.columns : fields.rows,
   );
 
