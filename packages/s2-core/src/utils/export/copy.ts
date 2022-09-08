@@ -1,4 +1,14 @@
-import { escape, every, filter, forEach, isEmpty, map, max, zip } from 'lodash';
+import {
+  escape,
+  every,
+  filter,
+  forEach,
+  isEmpty,
+  map,
+  max,
+  repeat,
+  zip,
+} from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -104,14 +114,13 @@ export const convertString = (v: string) => {
  * 根据 id 计算出行头或者列头展示的文本数组
  * 将 id : root[&]家具[&]桌子[&]price"
  * startLevel 不传, 转换为 List: ['家具', '桌子', 'price']
- * startLevel = 2, 转换为 List: ['桌子', 'price']
+ * startLevel = 1, 转换为 List: ['家具', '桌子', 'price']
  * @param headerId
  * @param startLevel 层级
  */
 const getHeaderList = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
   if (startLevel) {
-    // console.log(headerList.slice(headerList.length - startLevel), 'headerList');
     return headerList.slice(headerList.length - startLevel);
   }
   headerList.shift(); // 去除 root
@@ -546,18 +555,25 @@ function getBrushHeaderCopyable(
 
   const maxLevel = max(allLevel) ?? 0;
   // 获取最后一层的 cell
-  const lastLevelCells = filter(
-    interactedCells,
-    (cell: RowCell | ColCell) => cell.getMeta().level === maxLevel,
-  );
+  const lastLevelCells = filter(interactedCells, (cell: RowCell | ColCell) => {
+    const meta = cell.getMeta();
+    const isLastLevel = meta.level === maxLevel;
+    const isLastTotal = meta.isTotals && isEmpty(meta.children);
+    return isLastLevel || isLastTotal;
+  });
 
-  // console.log('lastLevelCells', lastLevelCells);
   // 拼接选中行列头的内容矩阵
   const isCol = cells[0].type === CellTypes.COL_CELL;
   let cellMetaMatrix: string[][] = map(
     lastLevelCells,
     (cell: RowCell | ColCell) => {
-      const cellId = cell.getMeta().id;
+      const meta = cell.getMeta();
+      const { id, label, isTotals, level } = meta;
+      let cellId = id;
+      // 为总计小计补齐高度
+      if (isTotals && level !== maxLevel) {
+        cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
+      }
       return getHeaderList(cellId, allLevel.length);
     },
   );
@@ -565,7 +581,6 @@ function getBrushHeaderCopyable(
   if (isCol) {
     cellMetaMatrix = zip(...cellMetaMatrix);
   }
-  // console.log(cellMetaMatrix, 'cellMetaMatrix');
   return [
     matrixPlainTextTransformer(cellMetaMatrix),
     matrixHtmlTransformer(cellMetaMatrix),
