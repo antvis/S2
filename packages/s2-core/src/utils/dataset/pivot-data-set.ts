@@ -6,10 +6,9 @@ import {
   TOTAL_VALUE,
   MULTI_VALUE,
 } from '../../common/constant';
-import type { BaseFields } from '../../common/interface';
+import type { BaseFields, Data, RawData } from '../../common/interface';
 import type {
   DataPathParams,
-  DataType,
   PivotMeta,
   SortedDimensionValues,
 } from '../../data-set/interface';
@@ -19,7 +18,7 @@ export function filterExtraDimension(dimensions: string[] = []) {
 }
 
 export function transformDimensionsValues(
-  record: DataType,
+  record: RawData,
   dimensions: string[],
   placeholder: string = TOTAL_VALUE,
 ): string[] {
@@ -68,7 +67,7 @@ export function getDimensionsWithoutPathPre(dimensions: string[]) {
 export function getDimensionsWithParentPath(
   field: string,
   defaultDimensions: string[],
-  dimensions: DataType[],
+  dimensions: Data[],
 ) {
   const measure = defaultDimensions.slice(
     0,
@@ -174,9 +173,9 @@ export function getDataPath(params: DataPathParams) {
 }
 
 interface Param extends BaseFields {
-  originData: DataType[];
-  indexesData: DataType[][] | DataType[];
-  totalData?: DataType[];
+  originData: RawData[];
+  indexesData: RawData[][] | RawData[];
+  totalData?: RawData[];
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;

@@ -10,10 +10,12 @@ import {
   min,
 } from 'lodash';
 import type {
+  Data,
   Fields,
   FilterParam,
   Formatter,
   Meta,
+  RawData,
   S2DataConfig,
   SortParams,
 } from '../common/interface';
@@ -23,8 +25,8 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import type { TotalSelectionsOfMultiData } from './interface';
-import type { CellDataParams, DataType } from './index';
+import type { Query, TotalSelectionsOfMultiData } from './interface';
+import type { CellDataParams } from './index';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -34,13 +36,13 @@ export abstract class BaseDataSet {
   public meta: Meta[];
 
   // origin data
-  public originData: DataType[];
+  public originData: RawData[];
 
   // total data
-  public totalData: DataType[];
+  public totalData: RawData[];
 
   // multidimensional array to indexes data
-  public indexesData: DataType[][] | DataType[];
+  public indexesData: RawData[][] | RawData[];
 
   // 高级排序, 组内排序
   public sortParams: SortParams;
@@ -54,7 +56,7 @@ export abstract class BaseDataSet {
     this.spreadsheet = spreadsheet;
   }
 
-  protected displayData: DataType[];
+  protected displayData: RawData[];
 
   /**
    * 查找字段信息
@@ -151,14 +153,14 @@ export abstract class BaseDataSet {
    * @param field current dimensions
    * @param query dimension value query
    */
-  public abstract getDimensionValues(field: string, query?: DataType): string[];
+  public abstract getDimensionValues(field: string, query?: Query): string[];
 
   /**
    * In most cases, this function to get the specific
    * cross data cell data
    * @param params
    */
-  public abstract getCellData(params: CellDataParams): DataType;
+  public abstract getCellData(params: CellDataParams): Data;
 
   /**
    * To get a row or column cells data;
@@ -169,10 +171,10 @@ export abstract class BaseDataSet {
    * @param drillDownFields
    */
   public abstract getMultiData(
-    query: DataType,
-    drillDownFields?: string[],
+    query: Query,
     totals?: TotalSelectionsOfMultiData,
-  ): DataType[];
+    drillDownFields?: string[],
+  ): Data[];
 
   public moreThanOneValue() {
     return this.fields?.values?.length > 1;

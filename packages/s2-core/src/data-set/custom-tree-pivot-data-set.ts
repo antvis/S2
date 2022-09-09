@@ -1,16 +1,17 @@
 import { forEach, get, has, intersection, isEmpty, keys, uniq } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
-import type { S2DataConfig } from '../common/interface';
+import type { Data, S2DataConfig } from '../common/interface';
 import {
   getDataPath,
   transformDimensionsValues,
   transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
-import type { CellDataParams, DataType } from './interface';
+import { CellData } from './cell-data';
+import type { CellDataParams } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  getCellData(params: CellDataParams): DataType {
+  getCellData(params: CellDataParams): Data {
     const { query } = params;
     const { columns, rows } = this.fields;
     const rowDimensionValues = transformDimensionsValues(query, rows);
@@ -21,8 +22,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    const data = get(this.indexesData, path);
-    return data;
+
+    const rawData = get(this.indexesData, path);
+    if (rawData) {
+      return new CellData(rawData, query[EXTRA_FIELD]) as unknown as Data;
+    }
   }
 
   setDataCfg(dataCfg: S2DataConfig) {

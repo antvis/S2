@@ -1,8 +1,6 @@
-import type { BaseFields, SortParam } from '../common/interface';
+import type { BaseFields, Data, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
-// TODO add object data value
-export type DataType = Record<string, any>;
 
 export type Query = Record<string, any>;
 
@@ -45,7 +43,7 @@ export type DataPathParams = {
 
 export interface CellDataParams {
   // search query
-  query: DataType;
+  query: Query;
   isTotals?: boolean;
   // use in part drill-down
   rowNode?: Node;
@@ -57,7 +55,7 @@ export interface SortActionParams {
   dataSet?: BaseDataSet;
   sortParam?: SortParam;
   originValues?: string[];
-  measureValues?: string[] | DataType[];
+  measureValues?: string[] | Data[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }

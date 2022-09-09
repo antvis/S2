@@ -3,14 +3,15 @@ import {
   DataSelectType,
   DEFAULT_TOTAL_SELECTIONS,
 } from '../common/constant/total';
-import type { TotalSelectionsOfMultiData } from '..';
 import { TOTAL_VALUE } from '../common/constant/basic';
 import type {
   RawData,
   Fields,
   Totals,
   TotalsStatus,
+  FlattingIndexesData,
 } from '../common/interface';
+import type { TotalSelectionsOfMultiData } from '../data-set/interface';
 import { customMerge } from './merge';
 
 export const getListBySorted = (
@@ -135,7 +136,7 @@ export function getTotalSelection(totals = {} as TotalSelectionsOfMultiData) {
 }
 
 export function flattenIndexesData(
-  data: RawData[][] | RawData[] | RawData,
+  data: FlattingIndexesData,
   selectType: DataSelectType = DataSelectType.All,
 ) {
   if (!isArray(data)) {

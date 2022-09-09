@@ -2,6 +2,7 @@ import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellTypes } from '../../common/constant';
 import type {
   CustomTreeItem,
+  Data,
   RawData,
   ResizeInfo,
 } from '../../common/interface';
@@ -10,7 +11,7 @@ import type {
   S2BasicOptions,
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
-import type { BaseDataSet, DataType } from '../../data-set';
+import type { BaseDataSet, Query } from '../../data-set';
 import type { Frame } from '../../facet/header';
 import type { BaseHeaderConfig } from '../../facet/header/base';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
@@ -124,7 +125,7 @@ export enum Aggregation {
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
-  calcFunc?: (query: DataType, arr: DataType[]) => number;
+  calcFunc?: (query: Query, arr: Data[]) => number;
 }
 
 export interface Total {
@@ -189,7 +190,7 @@ export interface SortParam extends Sort {
 export interface FilterParam {
   filterKey: string;
   filteredValues?: unknown[];
-  customFilter?: (row: DataType) => boolean;
+  customFilter?: (row: Query) => boolean;
 }
 
 export type SortParams = SortParam[];

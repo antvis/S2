@@ -15,7 +15,6 @@ import type {
   GEvent,
   HiddenColumnsInfo,
   CollapsedRowsType,
-  DataType,
   ResizeInfo,
   S2CellType,
   TooltipOperatorOptions,
@@ -24,6 +23,7 @@ import type {
   CellMeta,
   TooltipContentType,
   Pagination,
+  Data,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -131,7 +131,7 @@ export interface BaseSheetComponentProps<
     filterKey: string;
     filteredValues: string[];
   }) => void;
-  onRangeFiltered?: (data: DataType[]) => void;
+  onRangeFiltered?: (data: Data[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;

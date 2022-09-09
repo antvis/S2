@@ -27,10 +27,13 @@ import {
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
+  Data,
+  FlattingIndexesData,
   Formatter,
   Meta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
+  RawData,
   S2DataConfig,
   ViewMeta,
 } from '../common/interface';
@@ -59,7 +62,6 @@ import { CellData } from './cell-data';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
-  DataType,
   PivotMeta,
   Query,
   SortedDimensionValues,
@@ -120,7 +122,7 @@ export class PivotDataSet extends BaseDataSet {
    */
   public transformDrillDownData(
     extraRowField: string,
-    drillDownData: DataType[],
+    drillDownData: RawData[],
     rowNode: Node,
   ) {
     const { columns, values } = this.fields;
@@ -307,7 +309,7 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
-  public getDimensionValues(field: string, query?: DataType): string[] {
+  public getDimensionValues(field: string, query?: Query): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
     let dimensions: string[] = [];
@@ -357,7 +359,7 @@ export class PivotDataSet extends BaseDataSet {
     return filterTotal([...meta.keys()]);
   }
 
-  getTotalValue(query: DataType) {
+  getTotalValue(query: Query) {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         this.getTotalStatus(query),
@@ -380,11 +382,11 @@ export class PivotDataSet extends BaseDataSet {
         ...query,
         [VALUE_FIELD]: totalValue,
         [query[EXTRA_FIELD]]: totalValue,
-      };
+      } as Data;
     }
   }
 
-  public getCellData(params: CellDataParams): DataType {
+  public getCellData(params: CellDataParams): Data {
     const { query, rowNode, isTotals = false } = params || {};
 
     const { rows: originRows, columns } = this.fields;
@@ -414,7 +416,7 @@ export class PivotDataSet extends BaseDataSet {
     const rawData = get(this.indexesData, path);
     if (rawData) {
       // 如果已经有数据则取已有数据
-      return new CellData(rawData, query[EXTRA_FIELD]);
+      return new CellData(rawData, query[EXTRA_FIELD]) as unknown as Data;
     }
 
     if (isTotals) {
@@ -422,7 +424,7 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  public getTotalStatus = (query: DataType) => {
+  public getTotalStatus = (query: Query) => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
       if (isSubTotal) {
@@ -504,10 +506,10 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getMultiData(
-    query: DataType,
-    drillDownFields?: string[],
+    query: Query,
     totals?: TotalSelectionsOfMultiData,
-  ): DataType[] {
+    drillDownFields?: string[],
+  ): Data[] {
     const { path, rows, columns } = this.getMultiDataQueryPath(
       query,
       drillDownFields,
@@ -520,19 +522,22 @@ export class PivotDataSet extends BaseDataSet {
     );
 
     let hadMultiField = false;
-    let result: DataType | DataType[] | DataType[][] = this.indexesData;
+    let result: FlattingIndexesData = this.indexesData;
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
       if (hadMultiField) {
         if (shouldQueryMultiData(current)) {
-          result = flattenIndexesData(result, selectTypes[i]);
+          result = flattenIndexesData(
+            result,
+            selectTypes[i],
+          ) as FlattingIndexesData;
         } else {
           result = map(result, (item) => item[current]);
         }
       } else if (shouldQueryMultiData(current)) {
         hadMultiField = true;
-        result = [result];
+        result = [result] as FlattingIndexesData;
         i--;
       } else {
         result = result?.[current];
@@ -541,9 +546,9 @@ export class PivotDataSet extends BaseDataSet {
 
     const extraFields = this.getQueryExtraFields(query);
 
-    return flatMap(result, (item) =>
+    return flatMap(result as RawData[], (item) =>
       CellData.getCellDataList(item, extraFields),
-    );
+    ) as unknown as Data[];
   }
 
   public getFieldFormatter(field: string, cellMeta?: ViewMeta): Formatter {

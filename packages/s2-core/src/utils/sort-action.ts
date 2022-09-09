@@ -14,9 +14,9 @@ import {
   uniq,
 } from 'lodash';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
-import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type { Data, Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
-import type { DataType, SortActionParams } from '../data-set/interface';
+import type { SortActionParams } from '../data-set/interface';
 import { getListBySorted, sortByItems } from '../utils/data-set-operate';
 import {
   filterExtraDimension,
@@ -27,7 +27,7 @@ export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
-const canTobeNumber = (a?: string | number) => !isNaN(Number(a));
+const canToBeNumber = (a?: string | number) => !isNaN(Number(a));
 
 /**
  * 执行排序
@@ -36,20 +36,20 @@ const canTobeNumber = (a?: string | number) => !isNaN(Number(a));
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
  */
 export const sortAction = (
-  list: Array<string | number | DataType>,
+  list: Array<string | number | Data>,
   sortMethod?: SortMethod,
   key?: string,
 ) => {
   const sort = isAscSort(sortMethod) ? 1 : -1;
   const specialValues = ['-', undefined];
   return list?.sort(
-    (pre: string | number | DataType, next: string | number | DataType) => {
+    (pre: string | number | Data, next: string | number | Data) => {
       let a = pre as string | number;
       let b = next as string | number;
       if (key) {
         a = pre[key] as string | number;
         b = next[key] as string | number;
-        if (canTobeNumber(a) && canTobeNumber(b)) {
+        if (canToBeNumber(a) && canToBeNumber(b)) {
           return (Number(a) - Number(b)) * sort;
         }
         if (a && specialValues?.includes(a?.toString())) {
@@ -170,12 +170,12 @@ export const sortByMethod = (params: SortActionParams): string[] => {
       measureValues,
       sortMethod,
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-    ) as Record<string, DataType>[];
+    ) as unknown as Record<string, Data>[];
 
     result = getDimensionsWithParentPath(
       sortFieldId,
       isInRows ? rows : columns,
-      dimensions,
+      dimensions as unknown as Data[],
     );
   } else {
     result = map(sortAction(measureValues, sortMethod)) as string[];
@@ -245,12 +245,11 @@ const createTotalParams = (
  * cols：type、subType
  * vals：price、account
  */
-export const getSortByMeasureValues = (
-  params: SortActionParams,
-): DataType[] => {
+export const getSortByMeasureValues = (params: SortActionParams): Data[] => {
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+
   const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
 
   /**

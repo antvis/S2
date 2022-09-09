@@ -7,8 +7,8 @@ import {
   ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
+  type Data,
 } from '../../common';
-import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
@@ -59,7 +59,7 @@ const getFormat = (colIndex: number, spreadsheet: SpreadSheet) => {
 
 const getValueFromMeta = (
   meta: CellMeta,
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
 ) => {
   if (spreadsheet.isPivotMode()) {
@@ -84,7 +84,7 @@ const getValueFromMeta = (
 
 const format = (
   meta: CellMeta,
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
 ) => {
   const formatter = getFormat(meta.colIndex, spreadsheet);
@@ -223,7 +223,7 @@ const assembleMatrix = (
 };
 
 export const processCopyData = (
-  displayData: DataType[],
+  displayData: Data[],
   cells: CellMeta[][],
   spreadsheet: SpreadSheet,
 ): Copyable => {
@@ -273,7 +273,7 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
 };
 
 const processTableColSelected = (
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
@@ -282,7 +282,7 @@ const processTableColSelected = (
     : spreadsheet.dataCfg.fields.columns;
 
   const dataMatrix = displayData.map((row) => {
-    return selectedFiled.map((filed) => convertString(row[filed]));
+    return selectedFiled.map((filed) => convertString(row[filed] as string));
   });
 
   return [
@@ -371,7 +371,7 @@ const processPivotColSelected = (
   return getPivotCopyData(spreadsheet, allRowLeafNodes, colNodes);
 };
 const processColSelected = (
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
@@ -382,13 +382,13 @@ const processColSelected = (
 };
 
 const processTableRowSelected = (
-  displayData: DataType[],
+  displayData: Data[],
   selectedRows: CellMeta[],
 ): Copyable => {
   const selectedIndex = selectedRows.map((e) => e.rowIndex);
   const matrix = displayData
     .filter((e, i) => selectedIndex.includes(i))
-    .map((e) => Object.keys(e).map((key) => convertString(e[key])));
+    .map((e) => Object.keys(e).map((key) => convertString(e[key] as string)));
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
@@ -410,7 +410,7 @@ const processPivotRowSelected = (
 };
 
 const processRowSelected = (
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ): Copyable => {
@@ -446,7 +446,7 @@ export function getCopyData(
   const cells = spreadsheet.interaction.getState().cells || [];
   if (copyType === CopyType.ALL) {
     return pickDataFromCopyable(
-      processColSelected(displayData, spreadsheet, []),
+      processColSelected(displayData as Data[], spreadsheet, []),
       copyFormat,
     );
   }
@@ -466,7 +466,7 @@ export function getCopyData(
         type: CellTypes.COL_CELL,
       }));
     return pickDataFromCopyable(
-      processColSelected(displayData, spreadsheet, colNodes),
+      processColSelected(displayData as Data[], spreadsheet, colNodes),
       copyFormat,
     );
   }
@@ -486,7 +486,7 @@ export function getCopyData(
       };
     });
     return pickDataFromCopyable(
-      processRowSelected(displayData, spreadsheet, rowNodes),
+      processRowSelected(displayData as Data[], spreadsheet, rowNodes),
       copyFormat,
     );
   }
@@ -501,7 +501,7 @@ export function getCopyData(
  */
 const getDataWithHeaderMatrix = (
   cellMetaMatrix: CellMeta[][],
-  displayData: DataType[],
+  displayData: Data[],
   spreadsheet: SpreadSheet,
 ): Copyable => {
   const colMatrix = zip(
@@ -539,11 +539,11 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     return;
   }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
-    data = processColSelected(displayData, spreadsheet, []);
+    data = processColSelected(displayData as Data[], spreadsheet, []);
   } else if (selectedCols.length) {
-    data = processColSelected(displayData, spreadsheet, selectedCols);
+    data = processColSelected(displayData as Data[], spreadsheet, selectedCols);
   } else if (selectedRows.length) {
-    data = processRowSelected(displayData, spreadsheet, selectedRows);
+    data = processRowSelected(displayData as Data[], spreadsheet, selectedRows);
   } else {
     if (!cells.length) {
       return;
@@ -554,11 +554,15 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     if (copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
-        displayData,
+        displayData as Data[],
         spreadsheet,
       );
     } else {
-      data = processCopyData(displayData, selectedCellsMeta, spreadsheet);
+      data = processCopyData(
+        displayData as Data[],
+        selectedCellsMeta,
+        spreadsheet,
+      );
     }
   }
 

@@ -82,3 +82,5 @@ export interface S2DataConfig {
   // extra config
   [key: string]: unknown;
 }
+
+export type FlattingIndexesData = RawData[][] | RawData[] | RawData;
