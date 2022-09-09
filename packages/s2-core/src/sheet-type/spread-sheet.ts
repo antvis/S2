@@ -40,6 +40,7 @@ import type {
   S2Options,
   S2RenderOptions,
   S2Theme,
+  SortMethod,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -735,4 +736,26 @@ export abstract class SpreadSheet extends EE {
 
     return w;
   };
+
+  public updateSortMethodMap(
+    nodeId: string,
+    sortMethod: SortMethod,
+    replace = false,
+  ) {
+    const lastSortMethodMap = !replace && this.store.get('sortMethodMap');
+
+    this.store.set('sortMethodMap', {
+      ...lastSortMethodMap,
+      [nodeId]: sortMethod,
+    });
+  }
+
+  public getMenuDefaultSelectedKeys(nodeId: string): string[] {
+    const sortMethodMap = this.store.get('sortMethodMap');
+    if (!sortMethodMap) {
+      return [];
+    }
+    const selectedSortMethod = get(sortMethodMap, nodeId);
+    return [selectedSortMethod];
+  }
 }
