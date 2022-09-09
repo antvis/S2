@@ -27,7 +27,6 @@ import {
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
-  Data,
   FlattingIndexesData,
   Formatter,
   Meta,
@@ -378,15 +377,14 @@ export class PivotDataSet extends BaseDataSet {
         totalValue = calcAction(data, VALUE_FIELD);
       }
 
-      return {
-        ...query,
-        [VALUE_FIELD]: totalValue,
-        [query[EXTRA_FIELD]]: totalValue,
-      } as Data;
+      return new CellData(
+        { ...query, [query[EXTRA_FIELD]]: totalValue },
+        query[EXTRA_FIELD],
+      );
     }
   }
 
-  public getCellData(params: CellDataParams): Data {
+  public getCellData(params: CellDataParams) {
     const { query, rowNode, isTotals = false } = params || {};
 
     const { rows: originRows, columns } = this.fields;
@@ -416,7 +414,7 @@ export class PivotDataSet extends BaseDataSet {
     const rawData = get(this.indexesData, path);
     if (rawData) {
       // 如果已经有数据则取已有数据
-      return new CellData(rawData, query[EXTRA_FIELD]) as unknown as Data;
+      return new CellData(rawData, query[EXTRA_FIELD]);
     }
 
     if (isTotals) {
@@ -509,7 +507,7 @@ export class PivotDataSet extends BaseDataSet {
     query: Query,
     totals?: TotalSelectionsOfMultiData,
     drillDownFields?: string[],
-  ): Data[] {
+  ) {
     const { path, rows, columns } = this.getMultiDataQueryPath(
       query,
       drillDownFields,
@@ -548,7 +546,7 @@ export class PivotDataSet extends BaseDataSet {
 
     return flatMap(result as RawData[], (item) =>
       CellData.getCellDataList(item, extraFields),
-    ) as unknown as Data[];
+    );
   }
 
   public getFieldFormatter(field: string, cellMeta?: ViewMeta): Formatter {

@@ -13,9 +13,11 @@ import {
   reduce,
   size,
 } from 'lodash';
+import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
+  type Data,
   type IconTheme,
   type MultiData,
 } from '../common';
@@ -279,7 +281,7 @@ export class PivotFacet extends BaseFacet {
       for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
         const rowNode = rowLeafNodes[index];
         if (rowNode) {
-          const cellData = dataSet.getCellData({
+          const cellData = (dataSet as PivotDataSet).getCellData({
             query: { ...col.query, ...rowNode.query },
             rowNode,
             isTotals:
@@ -292,7 +294,7 @@ export class PivotFacet extends BaseFacet {
           if (cellData) {
             // 总小计格子不一定有数据
             const cellLabel = `${handleDataItem(
-              cellData,
+              cellData as unknown as Data,
               filterDisplayDataItem,
             )}`;
             const cellLabelWidth =

@@ -26,6 +26,7 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
+import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
 
 export abstract class BaseDataSet {
@@ -160,7 +161,9 @@ export abstract class BaseDataSet {
    * cross data cell data
    * @param params
    */
-  public abstract getCellData(params: CellDataParams): Data;
+  public abstract getCellData(
+    params: CellDataParams,
+  ): Data | CellData | undefined;
 
   /**
    * To get a row or column cells data;
@@ -174,7 +177,7 @@ export abstract class BaseDataSet {
     query: Query,
     totals?: TotalSelectionsOfMultiData,
     drillDownFields?: string[],
-  ): Data[];
+  ): Data[] | CellData[];
 
   public moreThanOneValue() {
     return this.fields?.values?.length > 1;

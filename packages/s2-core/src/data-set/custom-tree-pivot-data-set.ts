@@ -11,7 +11,7 @@ import type { CellDataParams } from './interface';
 import { PivotDataSet } from './pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
-  getCellData(params: CellDataParams): Data {
+  getCellData(params: CellDataParams) {
     const { query } = params;
     const { columns, rows } = this.fields;
     const rowDimensionValues = transformDimensionsValues(query, rows);
@@ -25,7 +25,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
 
     const rawData = get(this.indexesData, path);
     if (rawData) {
-      return new CellData(rawData, query[EXTRA_FIELD]) as unknown as Data;
+      return new CellData(rawData, query[EXTRA_FIELD]);
     }
   }
 
