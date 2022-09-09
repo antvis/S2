@@ -12,6 +12,10 @@ export class CellData {
     return this.raw;
   }
 
+  getValueByKey(key: string) {
+    return this.raw[key];
+  }
+
   get [EXTRA_FIELD]() {
     return this.extraField;
   }

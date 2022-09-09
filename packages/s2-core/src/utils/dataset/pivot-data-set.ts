@@ -1,4 +1,5 @@
 import { forEach, has, intersection, last, set } from 'lodash';
+import type { CellData } from '../../data-set/cell-data';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
@@ -6,7 +7,7 @@ import {
   TOTAL_VALUE,
   MULTI_VALUE,
 } from '../../common/constant';
-import type { BaseFields, Data, RawData } from '../../common/interface';
+import type { BaseFields, RawData } from '../../common/interface';
 import type {
   DataPathParams,
   PivotMeta,
@@ -67,15 +68,17 @@ export function getDimensionsWithoutPathPre(dimensions: string[]) {
 export function getDimensionsWithParentPath(
   field: string,
   defaultDimensions: string[],
-  dimensions: Data[],
+  dimensions: CellData[],
 ) {
   const measure = defaultDimensions.slice(
     0,
     defaultDimensions.indexOf(field) + 1,
   );
   return dimensions
-    .map((item) => measure.map((i) => item[i]).join(`${ID_SEPARATOR}`))
-    ?.filter((item) => item);
+    .map((item) =>
+      measure.map((i) => item.getValueByKey(i)).join(`${ID_SEPARATOR}`),
+    )
+    ?.filter(Boolean);
 }
 
 /**

@@ -1,6 +1,7 @@
-import type { BaseFields, Data, SortParam } from '../common/interface';
+import type { BaseFields, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
-import type { BaseDataSet } from './base-data-set';
+import type { CellData } from './cell-data';
+import type { PivotDataSet } from './pivot-data-set';
 
 export type Query = Record<string, any>;
 
@@ -53,10 +54,10 @@ export interface CellDataParams {
 }
 
 export interface SortActionParams {
-  dataSet?: BaseDataSet;
+  dataSet?: PivotDataSet;
   sortParam?: SortParam;
   originValues?: string[];
-  measureValues?: string[] | Data[];
+  measureValues?: string[] | CellData[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }

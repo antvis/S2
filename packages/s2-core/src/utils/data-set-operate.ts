@@ -13,6 +13,7 @@ import type {
 } from '../common/interface';
 import type { TotalSelectionsOfMultiData } from '../data-set/interface';
 import { customMerge } from './merge';
+import { filterExtraDimension } from './dataset/pivot-data-set';
 
 export const getListBySorted = (
   list: string[],
@@ -75,7 +76,7 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
  * @returns
  */
 export const isTotalData = (ids: string[], data: RawData): boolean => {
-  return !every(ids, (id) => has(data, id));
+  return !every(filterExtraDimension(ids), (id) => has(data, id));
 };
 
 /**

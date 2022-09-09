@@ -13,11 +13,19 @@ import {
   toUpper,
   uniq,
 } from 'lodash';
+import type { CellData } from '../data-set/cell-data';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
-import type { Data, Fields, SortMethod, SortParam } from '../common/interface';
+import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
-import type { SortActionParams } from '../data-set/interface';
-import { getListBySorted, sortByItems } from '../utils/data-set-operate';
+import type {
+  SortActionParams,
+  TotalSelectionsOfMultiData,
+} from '../data-set/interface';
+import {
+  getListBySorted,
+  isTotalData,
+  sortByItems,
+} from '../utils/data-set-operate';
 import {
   filterExtraDimension,
   getDimensionsWithParentPath,
@@ -35,41 +43,39 @@ const canToBeNumber = (a?: string | number) => !isNaN(Number(a));
  * @param sortMethod - 升、降序
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
  */
-export const sortAction = (
-  list: Array<string | number | Data>,
+const sortAction = (
+  list: string[] | CellData[],
   sortMethod?: SortMethod,
   key?: string,
 ) => {
   const sort = isAscSort(sortMethod) ? 1 : -1;
   const specialValues = ['-', undefined];
-  return list?.sort(
-    (pre: string | number | Data, next: string | number | Data) => {
-      let a = pre as string | number;
-      let b = next as string | number;
-      if (key) {
-        a = pre[key] as string | number;
-        b = next[key] as string | number;
-        if (canToBeNumber(a) && canToBeNumber(b)) {
-          return (Number(a) - Number(b)) * sort;
-        }
-        if (a && specialValues?.includes(a?.toString())) {
-          return -sort;
-        }
-        if (Number(a) && specialValues?.includes(b?.toString())) {
-          return sort;
-        }
+  return list?.sort((pre, next) => {
+    let a = pre as string;
+    let b = next as string;
+    if (key) {
+      a = (pre as CellData).getValueByKey(key) as string;
+      b = (next as CellData).getValueByKey(key) as string;
+      if (canToBeNumber(a) && canToBeNumber(b)) {
+        return (Number(a) - Number(b)) * sort;
       }
-      // 没有参数 key 时，需要理解成按字典序（首字母）进行排序，用于排维度值的。（我也不理解为啥要把这两个逻辑写在一起，很容易误解
-      if (!isNil(a) && !isNil(b)) {
-        // 数据健全兼容，用户数据不全时，能够展示.
-        return a.toString().localeCompare(b.toString(), 'zh') * sort;
+      if (a && specialValues?.includes(a?.toString())) {
+        return -sort;
       }
-      if (a) {
+      if (Number(a) && specialValues?.includes(b?.toString())) {
         return sort;
       }
-      return -sort;
-    },
-  );
+    }
+    // 没有参数 key 时，需要理解成按字典序（首字母）进行排序，用于排维度值的。（我也不理解为啥要把这两个逻辑写在一起，很容易误解
+    if (!isNil(a) && !isNil(b)) {
+      // 数据健全兼容，用户数据不全时，能够展示.
+      return a.toString().localeCompare(b.toString(), 'zh') * sort;
+    }
+    if (a) {
+      return sort;
+    }
+    return -sort;
+  });
 };
 
 const mergeDataWhenASC = (
@@ -84,7 +90,7 @@ const mergeDataWhenASC = (
   return [...new Set([...sortedValues, ...originValues])];
 };
 
-export const sortByCustom = (params: SortActionParams): string[] => {
+const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
@@ -125,7 +131,7 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   return getListBySorted(originValues, sortedIdWithPre);
 };
 
-export const sortByFunc = (params: SortActionParams): string[] => {
+const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam, dataSet } = params;
   const { sortFunc, sortFieldId, sortMethod } = sortParam;
 
@@ -158,7 +164,7 @@ export const sortByFunc = (params: SortActionParams): string[] => {
   return mergeDataWhenASC(sortResult, originValues, isAscSort(sortMethod));
 };
 
-export const sortByMethod = (params: SortActionParams): string[] => {
+const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
   const { rows, columns } = dataSet.fields;
@@ -170,21 +176,21 @@ export const sortByMethod = (params: SortActionParams): string[] => {
       measureValues,
       sortMethod,
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-    ) as unknown as Record<string, Data>[];
+    );
 
     result = getDimensionsWithParentPath(
       sortFieldId,
       isInRows ? rows : columns,
-      dimensions as unknown as Data[],
+      dimensions as CellData[],
     );
   } else {
-    result = map(sortAction(measureValues, sortMethod)) as string[];
+    result = sortAction(measureValues, sortMethod) as string[];
   }
 
   return mergeDataWhenASC(result, originValues, isAscSort(sortMethod));
 };
 
-export const processSort = (params: SortActionParams): string[] => {
+const processSort = (params: SortActionParams): string[] => {
   const { sortParam, originValues, measureValues, dataSet } = params;
   const { sortFunc, sortMethod, sortBy } = sortParam;
 
@@ -245,25 +251,30 @@ const createTotalParams = (
  * cols：type、subType
  * vals：price、account
  */
-export const getSortByMeasureValues = (params: SortActionParams): Data[] => {
+export const getSortByMeasureValues = (
+  params: SortActionParams,
+): CellData[] => {
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
 
-  const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
+  // TODO: 下面逻辑可以采用新的 getMultiData 参数简化过滤逻辑
+  // 拼接 totalSelection 参数
+  const dataList = (dataSet as PivotDataSet).getMultiData(query); // 按 query 查出所有数据
 
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
   if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = concat(fields.rows, fields.columns);
+    const rowColFields = filterExtraDimension(
+      concat(fields.rows, fields.columns),
+    );
 
     return dataList.filter((dataItem) => {
-      const dataItemKeys = new Set(keys(dataItem));
       // 过滤出包含所有行列维度的数据
       // 若缺失任意 field，则是汇总数据，需要过滤掉
-      return rowColFields.every((field) => dataItemKeys.has(field));
+      return !isTotalData(rowColFields, dataItem.getOrigin());
     });
   }
 
@@ -290,7 +301,7 @@ export const getSortByMeasureValues = (params: SortActionParams): Data[] => {
   });
 
   const totalDataList = dataList.filter((dataItem) => {
-    const dataItemKeys = new Set(keys(dataItem));
+    const dataItemKeys = new Set(keys(dataItem.getOrigin()));
     if (!dataItemKeys.has(sortFieldId)) {
       // 若排序数据中都不含被排序字段，则过滤
       // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
