@@ -479,17 +479,21 @@ export class PivotDataSet extends BaseDataSet {
   ) {
     const getTotalSelectTypes = (
       dimensions: string[],
-      { totalOnly, includeDimensions }: TotalSelection,
+      { grandTotalOnly, subTotalOnly, totalDimensions }: TotalSelection,
     ) => {
-      return dimensions.map((d) => {
+      return dimensions.map((d, idx) => {
         let type = DataSelectType.DetailOnly;
         if (
-          includeDimensions === true ||
-          includes(includeDimensions as string[], d)
+          totalDimensions === true ||
+          includes(totalDimensions as string[], d)
         ) {
           type = DataSelectType.All;
         }
-        if (type === DataSelectType.All && totalOnly) {
+        // 如果当前可以选择总计/小计数据，则进一步根据 grandTotalOnly 以及 subTotalOnly 收缩范围
+        if (
+          type === DataSelectType.All &&
+          ((idx === 0 && grandTotalOnly) || (idx !== 0 && subTotalOnly))
+        ) {
           type = DataSelectType.TotalOnly;
         }
         return type;

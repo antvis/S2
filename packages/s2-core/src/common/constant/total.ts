@@ -2,12 +2,14 @@ import type { TotalSelectionsOfMultiData } from '../../data-set/interface';
 
 export const DEFAULT_TOTAL_SELECTIONS: TotalSelectionsOfMultiData = {
   row: {
-    totalOnly: false,
-    includeDimensions: true,
+    grandTotalOnly: false,
+    subTotalOnly: false,
+    totalDimensions: true,
   },
   column: {
-    totalOnly: false,
-    includeDimensions: true,
+    grandTotalOnly: false,
+    subTotalOnly: false,
+    totalDimensions: true,
   },
 };
 

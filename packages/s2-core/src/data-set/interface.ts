@@ -5,8 +5,9 @@ import type { BaseDataSet } from './base-data-set';
 export type Query = Record<string, any>;
 
 export type TotalSelection = {
-  totalOnly?: boolean;
-  includeDimensions?: boolean | string[];
+  grandTotalOnly?: boolean;
+  subTotalOnly?: boolean;
+  totalDimensions?: boolean | string[];
 };
 
 export type TotalSelectionsOfMultiData = {
