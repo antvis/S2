@@ -756,6 +756,6 @@ export abstract class SpreadSheet extends EE {
       return [];
     }
     const selectedSortMethod = get(sortMethodMap, nodeId);
-    return [selectedSortMethod];
+    return selectedSortMethod ? [selectedSortMethod] : [];
   }
 }

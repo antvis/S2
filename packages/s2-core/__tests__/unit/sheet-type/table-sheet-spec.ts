@@ -41,7 +41,11 @@ describe('TableSheet Tests', () => {
         .spyOn(s2, 'showTooltipWithInfo')
         .mockImplementation(() => {});
 
-      const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
+      const nodeMeta = new Node({
+        id: '1',
+        key: '1',
+        value: 'testValue',
+      });
 
       s2.handleGroupSort(
         {
@@ -59,7 +63,7 @@ describe('TableSheet Tests', () => {
       expect(s2.store.get('sortMethodMap')).toEqual({
         city: 'asc',
       });
-      expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
+      expect(s2.getMenuDefaultSelectedKeys('city')).toEqual(['asc']);
       expect(s2.dataCfg.sortParams).toEqual([
         {
           sortFieldId: 'city',
