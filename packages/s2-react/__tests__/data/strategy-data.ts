@@ -419,6 +419,23 @@ export const StrategyOptions: SheetComponentOptions = {
         },
       },
     ],
+    icon: [
+      {
+        position: 'right',
+        mapping(value, cellInfo) {
+          return isUpDataValue(value)
+            ? {
+                // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'CellUp',
+                fill: '#29A294',
+              }
+            : {
+                icon: 'CellDown',
+                fill: '#FF4D4F',
+              };
+        },
+      },
+    ],
   },
   style: {
     cellCfg: {
