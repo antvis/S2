@@ -1,9 +1,10 @@
-import { forEach, has, intersection, isUndefined, last, set } from 'lodash';
+import { forEach, has, intersection, last, set } from 'lodash';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
   ROOT_ID,
   TOTAL_VALUE,
+  MULTI_VALUE,
 } from '../../common/constant';
 import type { BaseFields } from '../../common/interface';
 import type {
@@ -20,10 +21,15 @@ export function filterExtraDimension(dimensions: string[] = []) {
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
+  placeholder: string = TOTAL_VALUE,
 ): string[] {
   return filterExtraDimension(dimensions).map((dimension) => {
-    return !has(record, dimension) ? TOTAL_VALUE : String(record[dimension]);
+    return !has(record, dimension) ? placeholder : String(record[dimension]);
   });
+}
+
+export function shouldQueryMultiData(pathValue: string | number) {
+  return pathValue === MULTI_VALUE;
 }
 
 /**
@@ -145,7 +151,13 @@ export function getDataPath(params: DataPathParams) {
       }
 
       const meta = currentMeta.get(value);
-      path.push(meta?.level);
+
+      // 只出现在 getMultiData 中， 使用特殊的 value 指明当前复合选择
+      if (value === MULTI_VALUE) {
+        path.push(value);
+      } else {
+        path.push(meta?.level);
+      }
 
       if (meta) {
         currentMeta = meta?.children;

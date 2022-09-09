@@ -4,6 +4,18 @@ import type { BaseDataSet } from './base-data-set';
 // TODO add object data value
 export type DataType = Record<string, any>;
 
+export type Query = Record<string, any>;
+
+export type TotalSelection = {
+  totalOnly?: boolean;
+  includeDimensions?: boolean | string[];
+};
+
+export type TotalSelectionsOfMultiData = {
+  row?: TotalSelection;
+  column?: TotalSelection;
+};
+
 export type PivotMetaValue = {
   // field level index
   level: number;

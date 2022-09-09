@@ -23,6 +23,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
+import type { TotalSelectionsOfMultiData } from './interface';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -169,9 +170,8 @@ export abstract class BaseDataSet {
    */
   public abstract getMultiData(
     query: DataType,
-    isTotals?: boolean,
-    isRow?: boolean,
     drillDownFields?: string[],
+    totals?: TotalSelectionsOfMultiData,
   ): DataType[];
 
   public moreThanOneValue() {

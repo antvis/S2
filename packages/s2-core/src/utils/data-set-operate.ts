@@ -1,4 +1,9 @@
-import { every, get, has, isUndefined, keys, reduce } from 'lodash';
+import { every, flatMap, has, isArray, reduce } from 'lodash';
+import {
+  DataSelectType,
+  DEFAULT_TOTAL_SELECTIONS,
+} from '../common/constant/total';
+import type { TotalSelectionsOfMultiData } from '..';
 import { TOTAL_VALUE } from '../common/constant/basic';
 import type {
   RawData,
@@ -6,6 +11,7 @@ import type {
   Totals,
   TotalsStatus,
 } from '../common/interface';
+import { customMerge } from './merge';
 
 export const getListBySorted = (
   list: string[],
@@ -35,52 +41,6 @@ export const getListBySorted = (
 
 export const filterTotal = (values: string[] = []) => {
   return values.filter((v) => v !== TOTAL_VALUE);
-};
-
-export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
-  keys(data)?.reduce((pre, next) => {
-    const item = get(data, next);
-    if (Array.isArray(item)) {
-      pre = pre.concat(flattenDeep(item));
-    } else {
-      pre?.push(item);
-    }
-
-    return pre;
-  }, []);
-
-export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
-  const result = [];
-
-  if (Array.isArray(data)) {
-    // 总计小计在数组里面，以 undefine作为key, 直接forEach的话会漏掉总计小计
-    const containsTotal = 'undefined' in data;
-    const itemLength = data.length + (containsTotal ? 1 : 0);
-
-    let i = 0;
-    while (i < itemLength) {
-      // eslint-disable-next-line dot-notation
-      const current = i === data.length ? data['undefined'] : data[i];
-      i++;
-
-      if (current && 'undefined' in current) {
-        keys(current).forEach((ki) => {
-          result.push(current[ki]);
-        });
-      } else if (Array.isArray(current)) {
-        result.push(...current);
-      } else {
-        result.push(current);
-      }
-    }
-  } else {
-    result.push(data);
-  }
-  return result;
-};
-
-export const isEveryUndefined = (data: string[] | undefined[]) => {
-  return data?.every((item) => isUndefined(item));
 };
 
 export const getFieldKeysByDimensionValues = (
@@ -168,4 +128,26 @@ export function getAggregationAndCalcFuncByQuery(
     getCalcTotals(rowCalcTotals, isRowTotal) ||
     getCalcTotals(rowCalcSubTotals, isRowSubTotal)
   );
+}
+
+export function getTotalSelection(totals = {} as TotalSelectionsOfMultiData) {
+  return customMerge(DEFAULT_TOTAL_SELECTIONS, totals);
+}
+
+export function flattenIndexesData(
+  data: RawData[][] | RawData[] | RawData,
+  selectType: DataSelectType = DataSelectType.All,
+) {
+  if (!isArray(data)) {
+    return [data];
+  }
+  return flatMap(data, (dimensionData) => {
+    if (!isArray(dimensionData)) {
+      return [dimensionData];
+    }
+    // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
+    const startIdx = selectType === DataSelectType.DetailOnly ? 1 : 0;
+    const length = selectType === DataSelectType.TotalOnly ? 1 : undefined;
+    return dimensionData.slice(startIdx, length).filter(Boolean);
+  });
 }

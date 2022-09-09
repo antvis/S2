@@ -1,11 +1,11 @@
 import {
-  compact,
   difference,
   each,
   every,
   filter,
   find,
   first,
+  flatMap,
   forEach,
   get,
   has,
@@ -13,16 +13,15 @@ import {
   isEmpty,
   isNumber,
   isUndefined,
-  keys,
+  map,
   uniq,
   unset,
-  values,
 } from 'lodash';
-import { CellData } from '../utils/dataset/cell-data';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
   TOTAL_VALUE,
+  MULTI_VALUE,
   VALUE_FIELD,
 } from '../common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
@@ -38,12 +37,10 @@ import type {
 import { Node } from '../facet/layout/node';
 import {
   filterTotal,
-  flatten as customFlatten,
-  flattenDeep as customFlattenDeep,
+  flattenIndexesData,
   getAggregationAndCalcFuncByQuery,
-  getFieldKeysByDimensionValues,
   getListBySorted,
-  isEveryUndefined,
+  getTotalSelection,
   splitTotal,
 } from '../utils/data-set-operate';
 import {
@@ -51,17 +48,23 @@ import {
   filterExtraDimension,
   getDataPath,
   getDimensionsWithoutPathPre,
+  shouldQueryMultiData,
   transformDimensionsValues,
   transformIndexesData,
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
+import { DataSelectType } from '../common/constant/total';
+import { CellData } from './cell-data';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
   DataType,
   PivotMeta,
+  Query,
   SortedDimensionValues,
+  TotalSelection,
+  TotalSelectionsOfMultiData,
 } from './interface';
 
 export class PivotDataSet extends BaseDataSet {
@@ -419,30 +422,6 @@ export class PivotDataSet extends BaseDataSet {
     }
   }
 
-  getCustomData = (path: number[]) => {
-    let hadUndefined = false;
-    let currentData: DataType | DataType[] | DataType[][] = this.indexesData;
-
-    for (let i = 0; i < path.length; i++) {
-      const current = path[i];
-      if (hadUndefined) {
-        if (isUndefined(current)) {
-          currentData = customFlatten(currentData) as [];
-        } else {
-          currentData = values(currentData)?.map(
-            (d) => d && get(d, current),
-          ) as [];
-        }
-      } else if (isUndefined(current)) {
-        hadUndefined = true;
-      } else {
-        currentData = currentData?.[current];
-      }
-    }
-
-    return currentData;
-  };
-
   public getTotalStatus = (query: DataType) => {
     const { columns, rows } = this.fields;
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
@@ -461,80 +440,110 @@ export class PivotDataSet extends BaseDataSet {
     };
   };
 
-  public getMultiData(
-    query: DataType,
-    isTotals?: boolean,
-    isRow?: boolean,
-    drillDownFields?: string[],
-  ): DataType[] {
-    if (isEmpty(query)) {
-      return compact(customFlattenDeep(this.indexesData));
-    }
-    const { rows, columns, values: valueList } = this.fields;
+  protected getMultiDataQueryPath(query: Query, drillDownFields?: string[]) {
+    const { rows, columns } = this.fields;
     const totalRows = !isEmpty(drillDownFields)
       ? rows.concat(drillDownFields)
       : rows;
-    const rowDimensionValues = transformDimensionsValues(query, totalRows);
-    const colDimensionValues = transformDimensionsValues(query, columns);
-    const path = getDataPath({
+
+    const rowDimensionValues = transformDimensionsValues(
+      query,
+      totalRows,
+      MULTI_VALUE,
+    );
+
+    const colDimensionValues = transformDimensionsValues(
+      query,
+      columns,
+      MULTI_VALUE,
+    );
+
+    const path: (string | number)[] = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    const currentData = this.getCustomData(path);
-    let result = compact(customFlatten(currentData));
-    if (isTotals) {
-      // 总计/小计（行/列）
-      // need filter extra data
-      // grand total =>  {$$extra$$: 'price'}
-      // sub total => {$$extra$$: 'price', category: 'xxxx'}
-      // [undefined, undefined, "price"] => [category]
-      let fieldKeys = [];
-      const rowKeys = getFieldKeysByDimensionValues(rowDimensionValues, rows);
-      const colKeys = getFieldKeysByDimensionValues(
-        colDimensionValues,
-        columns,
-      );
-      if (isRow) {
-        // 行总计
-        fieldKeys = rowKeys;
-      } else {
-        // 只有一个值，此时为列总计
-        const isCol = keys(query)?.length === 1 && has(query, EXTRA_FIELD);
+    return { path, rows: totalRows, columns };
+  }
 
-        if (isCol) {
-          fieldKeys = colKeys;
-        } else {
-          const getTotalStatus = (dimensions: string[]) => {
-            return isEveryUndefined(
-              dimensions?.filter((item) => !valueList?.includes(item)),
-            );
-          };
-          const isRowTotal = getTotalStatus(colDimensionValues);
-          const isColTotal = getTotalStatus(rowDimensionValues);
+  protected getQueryExtraFields(query: Query) {
+    const { values } = this.fields;
+    return query[EXTRA_FIELD] ? [query[EXTRA_FIELD]] : values;
+  }
 
-          if (isRowTotal) {
-            // 行小计
-            fieldKeys = rowKeys;
-          } else if (isColTotal) {
-            // 列小计
-            fieldKeys = colKeys;
-          } else {
-            // 行小计+列 or 列小计+行
-            fieldKeys = [...rowKeys, ...colKeys];
-          }
+  protected getTotalSelectionByDimensions(
+    rows: string[],
+    columns: string[],
+    totals?: TotalSelectionsOfMultiData,
+  ) {
+    const getTotalSelectTypes = (
+      dimensions: string[],
+      { totalOnly, includeDimensions }: TotalSelection,
+    ) => {
+      return dimensions.map((d) => {
+        let type = DataSelectType.DetailOnly;
+        if (
+          includeDimensions === true ||
+          includes(includeDimensions as string[], d)
+        ) {
+          type = DataSelectType.All;
         }
+        if (type === DataSelectType.All && totalOnly) {
+          type = DataSelectType.TotalOnly;
+        }
+        return type;
+      });
+    };
+
+    totals = getTotalSelection(totals);
+
+    const rowSelectTypes = getTotalSelectTypes(rows, totals.row);
+    const columnSelectTypes = getTotalSelectTypes(columns, totals.column);
+    return rowSelectTypes.concat(columnSelectTypes);
+  }
+
+  public getMultiData(
+    query: DataType,
+    drillDownFields?: string[],
+    totals?: TotalSelectionsOfMultiData,
+  ): DataType[] {
+    const { path, rows, columns } = this.getMultiDataQueryPath(
+      query,
+      drillDownFields,
+    );
+
+    const selectTypes = this.getTotalSelectionByDimensions(
+      rows,
+      columns,
+      totals,
+    );
+
+    let hadMultiField = false;
+    let result: DataType | DataType[] | DataType[][] = this.indexesData;
+
+    for (let i = 0; i < path.length; i++) {
+      const current = path[i];
+      if (hadMultiField) {
+        if (shouldQueryMultiData(current)) {
+          result = flattenIndexesData(result, selectTypes[i]);
+        } else {
+          result = map(result, (item) => item[current]);
+        }
+      } else if (shouldQueryMultiData(current)) {
+        hadMultiField = true;
+        result = [result];
+        i--;
+      } else {
+        result = result?.[current];
       }
-      result = result.filter(
-        (r) =>
-          !fieldKeys?.find(
-            (item) => item !== EXTRA_FIELD && keys(r)?.includes(item),
-          ),
-      );
     }
 
-    return result || [];
+    const extraFields = this.getQueryExtraFields(query);
+
+    return flatMap(result, (item) =>
+      CellData.getCellDataList(item, extraFields),
+    );
   }
 
   public getFieldFormatter(field: string, cellMeta?: ViewMeta): Formatter {
