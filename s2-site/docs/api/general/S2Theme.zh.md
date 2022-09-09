@@ -3,6 +3,20 @@ title: S2Theme
 order: 2
 ---
 
+主题配置
+
+```ts
+// 统一设置主题 Schema, 色板，名称
+s2.setThemeCfg({
+  theme: {},
+  palette: {},
+  name: "default"
+})
+
+// 单独设置主题 Schema
+s2.setTheme({})
+```
+
 ## ThemeCfg
 
 <description> **optional** _object_ </description>
