@@ -1,10 +1,6 @@
-import {
-  EXTRA_COLUMN_FIELD,
-  isUpDataValue,
-  type S2DataConfig,
-  type S2Options,
-} from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
+import type { SheetComponentOptions } from '../../src';
 
 const getKPIMockData = () => {
   return {
@@ -380,7 +376,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
   },
 };
 
-export const StrategyOptions: S2Options = {
+export const StrategyOptions: SheetComponentOptions = {
   width: 800,
   height: 800,
   cornerText: '指标',
@@ -420,6 +416,23 @@ export const StrategyOptions: S2Options = {
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
           };
+        },
+      },
+    ],
+    icon: [
+      {
+        position: 'right',
+        mapping(value, cellInfo) {
+          return isUpDataValue(value)
+            ? {
+                // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'CellUp',
+                fill: '#29A294',
+              }
+            : {
+                icon: 'CellDown',
+                fill: '#FF4D4F',
+              };
         },
       },
     ],

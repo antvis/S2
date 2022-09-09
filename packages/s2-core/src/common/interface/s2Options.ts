@@ -29,9 +29,9 @@ import type {
 } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
-import type { Tooltip } from './tooltip';
+import type { Tooltip, TooltipContentType } from './tooltip';
 
-export interface S2BasicOptions<T = Element | string, P = unknown> {
+export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // canvas's width
   width?: number;
   // canvas's height
@@ -49,7 +49,7 @@ export interface S2BasicOptions<T = Element | string, P = unknown> {
   // interaction configs
   interaction?: InteractionOptions;
   // pagination config
-  pagination?: Pagination<P>;
+  pagination?: P;
   // freeze row header
   frozenRowHeader?: boolean;
   // custom series number text
@@ -123,7 +123,7 @@ export interface S2TableSheetOptions {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface S2PivotSheetOptions {}
 
-export interface S2Options<T = Element | string, P = unknown>
+export interface S2Options<T = TooltipContentType, P = Pagination>
   extends S2BasicOptions<T, P>,
     S2TableSheetOptions,
     S2PivotSheetOptions {
