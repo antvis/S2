@@ -443,7 +443,7 @@ export class PivotDataSet extends BaseDataSet {
   protected getMultiDataQueryPath(query: Query, drillDownFields?: string[]) {
     const { rows, columns } = this.fields;
     const totalRows = !isEmpty(drillDownFields)
-      ? rows.concat(drillDownFields)
+      ? uniq(rows.concat(drillDownFields))
       : rows;
 
     const rowDimensionValues = transformDimensionsValues(

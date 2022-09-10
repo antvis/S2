@@ -13,7 +13,7 @@ export class CellData {
   }
 
   getValueByKey(key: string) {
-    return this.raw[key];
+    return this.raw?.[key];
   }
 
   get [EXTRA_FIELD]() {
@@ -21,6 +21,6 @@ export class CellData {
   }
 
   get [VALUE_FIELD]() {
-    return this.raw[this.extraField];
+    return this.raw?.[this.extraField];
   }
 }
