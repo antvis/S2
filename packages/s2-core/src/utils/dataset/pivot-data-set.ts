@@ -162,6 +162,9 @@ export function getDataPath(params: DataPathParams) {
       }
 
       if (meta) {
+        if (createIfNotExist) {
+          meta.childField = dimensions?.[i + 1];
+        }
         currentMeta = meta?.children;
       }
     }

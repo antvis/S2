@@ -10,6 +10,7 @@ import {
   get,
   has,
   includes,
+  isArray,
   isEmpty,
   isNumber,
   isUndefined,
@@ -544,6 +545,11 @@ export class PivotDataSet extends BaseDataSet {
       } else {
         result = result?.[current];
       }
+    }
+
+    // 如果每一个维度都是被指定好的，那么最终获取的数据就是单个的
+    if (!isArray(result)) {
+      result = [result];
     }
 
     const extraFields = this.getQueryExtraFields(query);
