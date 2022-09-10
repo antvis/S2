@@ -408,11 +408,11 @@ describe('Tooltip Utils Tests', () => {
     };
 
     const defaultTooltipData: TooltipData = {
+      name: null,
       details: null,
       headInfo: null,
       infos: undefined,
       interpretation: undefined,
-      name: undefined,
       summaries: [],
       tips: undefined,
       description: undefined,

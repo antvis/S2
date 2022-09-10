@@ -1,11 +1,10 @@
+import { CellData } from '@/data-set/cell-data';
 import {
   isNotNumber,
   getDataSumByField,
   getDataExtremumByField,
   getDataAvgByField,
 } from '@/utils/number-calculate';
-import { CellData } from '@/data-set/cell-data';
-
 describe('Number Calculate Test', () => {
   describe('isNotNumber', () => {
     test('should return correct result', () => {

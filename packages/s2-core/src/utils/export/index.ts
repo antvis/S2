@@ -20,6 +20,7 @@ import {
   CornerNodeType,
   type MultiData,
   type ViewMeta,
+  type ViewMetaData,
 } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -158,7 +159,7 @@ const processValueInDetail = (
     } else {
       tempRows = columns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
-        return getCsvString(mainFormatter(record[v], record));
+        return getCsvString(mainFormatter(record[v], record as ViewMetaData));
       });
     }
     if (sheetInstance.options.showSeriesNumber) {

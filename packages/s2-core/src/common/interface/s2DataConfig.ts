@@ -1,10 +1,9 @@
 import type {
-  Fields,
-  FilterParam,
-  Meta,
-  SortParams,
-} from '../../common/interface';
-import type { EXTRA_FIELD, MiniChartTypes, VALUE_FIELD } from '../constant';
+  EXTRA_FIELD,
+  MiniChartTypes,
+  VALUE_FIELD,
+} from '../constant/basic';
+import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {
   type: MiniChartTypes;

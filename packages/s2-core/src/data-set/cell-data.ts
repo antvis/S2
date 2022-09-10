@@ -1,3 +1,4 @@
+import type { ViewMetaData } from '../common/interface/basic';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant/basic';
 import type { RawData } from '../common/interface/s2DataConfig';
 
@@ -13,6 +14,12 @@ export class CellData {
   }
 
   getValueByKey(key: string) {
+    if (key === EXTRA_FIELD) {
+      return this[EXTRA_FIELD];
+    }
+    if (key === VALUE_FIELD) {
+      return this[VALUE_FIELD];
+    }
     return this.raw?.[key];
   }
 
@@ -24,3 +31,13 @@ export class CellData {
     return this.raw?.[this.extraField];
   }
 }
+
+export const getFieldValueOfViewMetaData = (
+  data: ViewMetaData,
+  key: string,
+) => {
+  if (data instanceof CellData) {
+    return data.getValueByKey(key);
+  }
+  return data[key];
+};

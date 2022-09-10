@@ -1,11 +1,7 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
-import type {
-  CustomTreeItem,
-  RawData,
-  ResizeInfo,
-} from '../../common/interface';
+import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
@@ -26,7 +22,7 @@ import type { DataItem } from './s2DataConfig';
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
 export type Formatter = (
   v: unknown,
-  data?: RawData | RawData[],
+  data?: ViewMetaData | ViewMetaData[],
   meta?: Node | ViewMeta,
 ) => string;
 
@@ -405,6 +401,8 @@ export interface SpreadSheetFacetCfg
   meta?: Meta[];
 }
 
+export type ViewMetaData = Data | CellData;
+
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
   // cell's unique id
@@ -418,7 +416,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: Record<string, any>;
+  data: ViewMetaData;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)
@@ -430,9 +428,9 @@ export interface ViewMeta {
   // subTotals or grandTotals
   isTotals?: boolean;
   // cell's row query condition
-  rowQuery?: Record<string, any>;
+  rowQuery?: Query;
   // cell's col query condition
-  colQuery?: Record<string, any>;
+  colQuery?: Query;
   // rowId of cell
   rowId?: string;
   colId?: string;
@@ -440,7 +438,7 @@ export interface ViewMeta {
   isFrozenCorner?: boolean;
   label?: string;
   value?: string | number;
-  query?: Record<string, any>;
+  query?: Query;
   [key: string]: unknown;
 }
 

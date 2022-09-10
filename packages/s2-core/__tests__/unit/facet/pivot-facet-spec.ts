@@ -17,7 +17,7 @@ import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import type { ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
-import { VALUE_FIELD } from '@/common';
+import type { CellData } from '@/data-set/cell-data';
 
 jest.mock('@/interaction/root');
 
@@ -183,10 +183,16 @@ describe('Pivot Mode Facet Test', () => {
     const { getCellMeta } = facet.layoutResult;
 
     test('should get correct cell meta', () => {
-      expect(getCellMeta(0, 1)?.data?.getValueByKey('number')).toBe(5343);
-      expect(getCellMeta(1, 1)?.data?.getValueByKey('number')).toBe(632);
+      expect(
+        (getCellMeta(0, 1)?.data as CellData)?.getValueByKey('number'),
+      ).toBe(5343);
+      expect(
+        (getCellMeta(1, 1)?.data as CellData)?.getValueByKey('number'),
+      ).toBe(632);
 
-      expect(getCellMeta(1)?.data?.getValueByKey('number')).toBe(2367);
+      expect((getCellMeta(1)?.data as CellData)?.getValueByKey('number')).toBe(
+        2367,
+      );
     });
   });
 

@@ -1,7 +1,6 @@
 import Decimal from 'decimal.js';
-import type { CellData } from '../data-set/cell-data';
-import { Aggregation } from '../common/interface';
-import { EXTRA_FIELD } from '..';
+import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { Aggregation, type ViewMetaData } from '../common/interface';
 
 export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
@@ -24,7 +23,7 @@ export const canConvertToNumber = (a?: string | number) => !isNotNumber(a);
  * @returns 经过 Decimal 包装后的值数组
  */
 const processFieldValues = (
-  data: CellData[],
+  data: ViewMetaData[],
   field: string,
   filterIllegalValue = false,
 ) => {
@@ -33,10 +32,9 @@ const processFieldValues = (
   }
 
   return data.reduce<Array<Decimal>>((resultArr, item) => {
-    const fieldValue =
-      field === EXTRA_FIELD
-        ? item?.[EXTRA_FIELD]
-        : (item?.getValueByKey(field) as string | number);
+    const fieldValue = getFieldValueOfViewMetaData(item, field) as
+      | string
+      | number;
 
     const notNumber = isNotNumber(fieldValue);
 
@@ -58,7 +56,10 @@ const processFieldValues = (
  * @param field 值字段
  * @returns 算术和
  */
-export const getDataSumByField = (data: CellData[], field: string): number => {
+export const getDataSumByField = (
+  data: ViewMetaData[],
+  field: string,
+): number => {
   const fieldValues = processFieldValues(data, field);
   if (!fieldValues.length) {
     return 0;
@@ -76,7 +77,7 @@ export const getDataSumByField = (data: CellData[], field: string): number => {
  */
 export const getDataExtremumByField = (
   method: 'min' | 'max',
-  data: CellData[],
+  data: ViewMetaData[],
   field: string,
 ): number => {
   // 防止预处理时默认值 0 影响极值结果，处理时需过滤非法值
@@ -94,7 +95,10 @@ export const getDataExtremumByField = (
  * @param field 值字段
  * @returns 算术平均值
  */
-export const getDataAvgByField = (data: CellData[], field: string): number => {
+export const getDataAvgByField = (
+  data: ViewMetaData[],
+  field: string,
+): number => {
   const fieldValues = processFieldValues(data, field);
   if (!fieldValues?.length) {
     return 0;
@@ -109,7 +113,7 @@ export const getDataAvgByField = (data: CellData[], field: string): number => {
  * totals 计算方法集合
  */
 export const calcActionByType: {
-  [type in Aggregation]: (data: CellData[], field: string) => number;
+  [type in Aggregation]: (data: ViewMetaData[], field: string) => number;
 } = {
   [Aggregation.SUM]: getDataSumByField,
   [Aggregation.MIN]: (data, field) =>

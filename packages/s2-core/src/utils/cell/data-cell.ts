@@ -5,11 +5,11 @@ import type {
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
-  Data,
+  ViewMetaData,
 } from '../../common/interface';
 
 export const handleDataItem = (
-  data: Data,
+  data: ViewMetaData,
   callback?: FilterDataItemCallback | MappingDataItemCallback,
 ) => {
   return callback
