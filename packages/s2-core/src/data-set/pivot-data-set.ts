@@ -481,7 +481,7 @@ export class PivotDataSet extends BaseDataSet {
       dimensions: string[],
       { grandTotalOnly, subTotalOnly, totalDimensions }: TotalSelection,
     ) => {
-      return dimensions.map((d, idx) => {
+      return filterExtraDimension(dimensions).map((d, idx) => {
         let type = DataSelectType.DetailOnly;
         if (
           totalDimensions === true ||
