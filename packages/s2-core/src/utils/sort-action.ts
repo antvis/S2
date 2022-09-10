@@ -39,7 +39,7 @@ export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
  */
 export const sortAction = (
-  list: number[] | string[] | CellData[],
+  list: (number | string)[] | CellData[],
   sortMethod?: SortMethod,
   key?: string,
 ) => {

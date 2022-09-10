@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js';
-import { get } from 'lodash';
 import type { CellData } from '../data-set/cell-data';
 import { Aggregation } from '../common/interface';
+import { EXTRA_FIELD } from '..';
 
 export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
@@ -33,7 +33,11 @@ const processFieldValues = (
   }
 
   return data.reduce<Array<Decimal>>((resultArr, item) => {
-    const fieldValue = get(item, field) as string | number;
+    const fieldValue =
+      field === EXTRA_FIELD
+        ? item?.[EXTRA_FIELD]
+        : (item?.getValueByKey(field) as string | number);
+
     const notNumber = isNotNumber(fieldValue);
 
     if (filterIllegalValue && notNumber) {

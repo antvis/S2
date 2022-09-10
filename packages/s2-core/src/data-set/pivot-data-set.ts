@@ -386,7 +386,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getCellData(params: CellDataParams) {
-    const { query, rowNode, isTotals = false } = params || {};
+    const { query = {}, rowNode, isTotals = false } = params || {};
 
     const { rows: originRows, columns } = this.fields;
     let rows = originRows;
@@ -509,7 +509,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getMultiData(
-    query: Query,
+    query: Query = {},
     totals?: TotalSelectionsOfMultiData,
     drillDownFields?: string[],
   ) {

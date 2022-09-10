@@ -4,6 +4,7 @@ import {
   getDataExtremumByField,
   getDataAvgByField,
 } from '@/utils/number-calculate';
+import { CellData } from '@/data-set/cell-data';
 
 describe('Number Calculate Test', () => {
   describe('isNotNumber', () => {
@@ -30,24 +31,30 @@ describe('Number Calculate Test', () => {
     test('should return correct sum of data list by field', () => {
       expect(getDataSumByField([], 'price')).toEqual(0);
       const data = [
-        { price: 1 },
-        { price: '1' },
-        { price: '1e7' },
-        { price: '' },
-        { price: null },
-        { price: '-' },
-        { type: '笔' },
+        new CellData({ price: 1 }, 'price'),
+        new CellData({ price: '1' }, 'price'),
+        new CellData({ price: '1e7' }, 'price'),
+        new CellData({ price: '' }, 'price'),
+        new CellData({ price: null }, 'price'),
+        new CellData({ price: '-' }, 'price'),
+        new CellData({ type: '笔' }, 'price'),
       ];
       expect(getDataSumByField(data, 'price')).toEqual(10000002);
       expect(
         getDataSumByField(
           [
-            {
-              price: 0.1,
-            },
-            {
-              price: 0.2,
-            },
+            new CellData(
+              {
+                price: 0.1,
+              },
+              'price',
+            ),
+            new CellData(
+              {
+                price: 0.2,
+              },
+              'price',
+            ),
           ],
           'price',
         ),
@@ -61,18 +68,21 @@ describe('Number Calculate Test', () => {
       expect(
         getDataExtremumByField(
           'min',
-          [{ price: null }, { price: '' }],
+          [
+            new CellData({ price: null }, 'price'),
+            new CellData({ price: '' }, 'price'),
+          ],
           'price',
         ),
       ).toBeUndefined();
       const data = [
-        { price: 1 },
-        { price: '1' },
-        { price: '' },
-        { price: null },
-        { price: '-' },
-        { type: 'antv' },
-        { price: '0.001' },
+        new CellData({ price: 1 }, 'price'),
+        new CellData({ price: '1' }, 'price'),
+        new CellData({ price: '' }, 'price'),
+        new CellData({ price: null }, 'price'),
+        new CellData({ price: '-' }, 'price'),
+        new CellData({ type: 'antv' }, 'price'),
+        new CellData({ price: '0.001' }, 'price'),
       ];
       expect(getDataExtremumByField('min', data, 'price')).toEqual(0.001);
     });
@@ -82,18 +92,21 @@ describe('Number Calculate Test', () => {
       expect(
         getDataExtremumByField(
           'max',
-          [{ price: null }, { price: '' }],
+          [
+            new CellData({ price: null }, 'price'),
+            new CellData({ price: '' }, 'price'),
+          ],
           'price',
         ),
       ).toBeUndefined();
       const data = [
-        { price: -1 },
-        { price: '-2' },
-        { price: '' },
-        { price: null },
-        { price: '-' },
-        { type: 'antv' },
-        { price: '-0.001' },
+        new CellData({ price: -1 }, 'price'),
+        new CellData({ price: '-2' }, 'price'),
+        new CellData({ price: '' }, 'price'),
+        new CellData({ price: null }, 'price'),
+        new CellData({ price: '-' }, 'price'),
+        new CellData({ type: 'antv' }, 'price'),
+        new CellData({ price: '-0.001' }, 'price'),
       ];
       expect(getDataExtremumByField('max', data, 'price')).toEqual(-0.001);
     });
@@ -103,14 +116,14 @@ describe('Number Calculate Test', () => {
     test('should return correct avg of data list by field', () => {
       expect(getDataAvgByField([], 'price')).toEqual(0);
       const data = [
-        { price: 3.5 },
-        { price: '2.5' },
-        { price: -3 },
-        { price: 30e2 },
-        { price: '' },
-        { price: null },
-        { price: '-' },
-        { type: '笔' },
+        new CellData({ price: 3.5 }, 'price'),
+        new CellData({ price: '2.5' }, 'price'),
+        new CellData({ price: -3 }, 'price'),
+        new CellData({ price: 30e2 }, 'price'),
+        new CellData({ price: '' }, 'price'),
+        new CellData({ price: null }, 'price'),
+        new CellData({ price: '-' }, 'price'),
+        new CellData({ type: '笔' }, 'price'),
       ];
       expect(getDataAvgByField(data, 'price')).toEqual(375.375);
     });

@@ -43,6 +43,7 @@ import type {
   ListItem,
   Tooltip,
   ViewMeta,
+  Data,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -267,7 +268,7 @@ export const getDetailList = (
   if (activeData) {
     const { isTotals } = options;
     const field = activeData[EXTRA_FIELD];
-    const value = activeData[field];
+    const value = activeData[VALUE_FIELD];
     const valItem = [];
     if (isTotals) {
       // total/subtotal
@@ -275,7 +276,7 @@ export const getDetailList = (
         getListItem(spreadsheet, {
           data: activeData,
           field,
-          valueField: get(activeData, VALUE_FIELD),
+          valueField: activeData[VALUE_FIELD],
         }),
       );
     }
@@ -289,7 +290,7 @@ export const getDetailList = (
       spreadsheet.getTooltipDataItemMappingCallback()
     ) {
       const mappedResult = handleDataItem(
-        activeData,
+        activeData as Data,
         spreadsheet.getTooltipDataItemMappingCallback(),
       ) as Record<string, string | number>;
 
