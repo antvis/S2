@@ -11,7 +11,6 @@ import type {
   LayoutResult,
   SortParams,
   DataCell,
-  RawData,
   GEvent,
   HiddenColumnsInfo,
   CollapsedRowsType,
@@ -20,10 +19,10 @@ import type {
   TooltipOperatorOptions,
   S2RenderOptions,
   S2MountContainer,
-  CellMeta,
   TooltipContentType,
   Pagination,
-  Data,
+  ViewMetaData,
+  RawData,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -102,7 +101,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
-  onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellSelectMove?: (metas: ViewMetaData[]) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -131,7 +130,7 @@ export interface BaseSheetComponentProps<
     filterKey: string;
     filteredValues: string[];
   }) => void;
-  onRangeFiltered?: (data: Data[]) => void;
+  onRangeFiltered?: (data: ViewMetaData[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;

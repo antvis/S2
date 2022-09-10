@@ -17,7 +17,6 @@ import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
-  type Data,
   type IconTheme,
   type MultiData,
 } from '../common';
@@ -294,7 +293,7 @@ export class PivotFacet extends BaseFacet {
           if (cellData) {
             // 总小计格子不一定有数据
             const cellLabel = `${handleDataItem(
-              cellData as unknown as Data,
+              cellData,
               filterDisplayDataItem,
             )}`;
             const cellLabelWidth =

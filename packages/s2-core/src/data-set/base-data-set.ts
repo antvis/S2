@@ -18,6 +18,7 @@ import type {
   RawData,
   S2DataConfig,
   SortParams,
+  ViewMetaData,
 } from '../common/interface';
 import type { ValueRange } from '../common/interface/condition';
 import type { SpreadSheet } from '../sheet-type';
@@ -161,9 +162,7 @@ export abstract class BaseDataSet {
    * cross data cell data
    * @param params
    */
-  public abstract getCellData(
-    params: CellDataParams,
-  ): Data | CellData | undefined;
+  public abstract getCellData(params: CellDataParams): ViewMetaData | undefined;
 
   /**
    * To get a row or column cells data;
