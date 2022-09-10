@@ -1,64 +1,43 @@
 import { set, keys } from 'lodash';
 import {
-  flattenDeep as customFlattenDeep,
-  flatten as customFlatten,
   getListBySorted,
   getAggregationAndCalcFuncByQuery,
+  flattenIndexesData,
 } from '@/utils/data-set-operate';
 import { Aggregation } from '@/common/interface';
+import { DataSelectType } from '@/common/constant/total';
 
 describe('Data Set Operate Test', () => {
   const data = [];
-  describe('Dataset Operate Test That Data Has No undefined', () => {
+  describe('flatten test', () => {
     beforeEach(() => {
       const paths = [
         [0, 0],
         [0, 1],
+        [0, 2],
         [1, 0],
         [1, 1],
+        [1, 2],
       ];
       paths.forEach((item, index) => {
         set(data, [...item], [index, index + 1]);
       });
     });
 
-    it('test custom flattenDeep', () => {
-      expect(keys(customFlattenDeep(data))).toBeArrayOfSize(8);
+    test('flatten out all data with all select type', () => {
+      expect(flattenIndexesData(data, DataSelectType.All)).toBeArrayOfSize(6);
     });
 
-    it('test custom flatten', () => {
-      expect(keys(customFlatten(data))).toBeArrayOfSize(4);
-    });
-  });
-
-  describe('Dataset Operate Test That Data Has undefined', () => {
-    beforeEach(() => {
-      const paths = [
-        [0, 0],
-        [0, 1],
-        [1, 0],
-        [1, 1],
-        [undefined, undefined],
-        [0, undefined],
-      ];
-      paths.forEach((item, index) => {
-        set(data, [...item], [index, index + 1]);
-      });
+    test('flatten out total data with total only type', () => {
+      expect(
+        flattenIndexesData(data, DataSelectType.TotalOnly),
+      ).toBeArrayOfSize(2);
     });
 
-    it('test custom flattenDeep', () => {
-      expect(keys(customFlattenDeep(data))).toBeArrayOfSize(11);
-    });
-
-    it('test custom flatten', () => {
-      expect(keys(customFlatten(data))).toBeArrayOfSize(6);
-    });
-  });
-
-  describe('CustomFlatten Tests', () => {
-    it('should handle data contains nil', () => {
-      const result = customFlatten([undefined, null, [1, 2]]);
-      expect(result).toBeArrayOfSize(4);
+    test('flatten out detail data with detail only type', () => {
+      expect(
+        flattenIndexesData(data, DataSelectType.DetailOnly),
+      ).toBeArrayOfSize(4);
     });
   });
 

@@ -1,8 +1,8 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type {
   CustomTreeItem,
-  Data,
   RawData,
   ResizeInfo,
 } from '../../common/interface';
@@ -125,7 +125,7 @@ export enum Aggregation {
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
-  calcFunc?: (query: Query, arr: Data[]) => number;
+  calcFunc?: (query: Query, arr: CellData[]) => number;
 }
 
 export interface Total {

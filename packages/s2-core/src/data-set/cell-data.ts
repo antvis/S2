@@ -1,4 +1,4 @@
-import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant/basic';
 import type { RawData } from '../common/interface/s2DataConfig';
 
 export class CellData {

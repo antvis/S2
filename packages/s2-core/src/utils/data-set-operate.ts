@@ -69,34 +69,6 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
   return arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
 };
 
-/**
- * 判断是普通单元格数据还是总计或小计
- * @param ids
- * @param data
- * @returns
- */
-export const isTotalData = (ids: string[], data: RawData): boolean => {
-  return !every(filterExtraDimension(ids), (id) => has(data, id));
-};
-
-/**
- * split total data from origin list data.
- */
-export function splitTotal(rawData: RawData[], fields: Fields): RawData[] {
-  const { rows, columns } = fields;
-
-  return reduce(
-    rawData,
-    (result: RawData[], data: RawData) => {
-      if (isTotalData([].concat(rows).concat(columns), data)) {
-        result.push(data);
-      }
-      return result;
-    },
-    [],
-  );
-}
-
 export function getAggregationAndCalcFuncByQuery(
   totalsStatus: TotalsStatus,
   totalsOptions: Totals,
@@ -129,6 +101,34 @@ export function getAggregationAndCalcFuncByQuery(
     getCalcTotals(colCalcSubTotals, isColSubTotal) ||
     getCalcTotals(rowCalcTotals, isRowTotal) ||
     getCalcTotals(rowCalcSubTotals, isRowSubTotal)
+  );
+}
+
+/**
+ * 判断是普通单元格数据还是总计或小计
+ * @param ids
+ * @param data
+ * @returns
+ */
+export function isTotalData(ids: string[], data: RawData): boolean {
+  return !every(filterExtraDimension(ids), (id) => has(data, id));
+}
+
+/**
+ * split total data from origin list data.
+ */
+export function splitTotal(rawData: RawData[], fields: Fields): RawData[] {
+  const { rows, columns } = fields;
+
+  return reduce(
+    rawData,
+    (result: RawData[], data: RawData) => {
+      if (isTotalData([].concat(rows).concat(columns), data)) {
+        result.push(data);
+      }
+      return result;
+    },
+    [],
   );
 }
 

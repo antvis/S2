@@ -9,6 +9,7 @@ import {
   getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
 import type { S2DataConfig } from '@/common/interface';
+import { CellData } from '@/data-set/cell-data';
 
 describe('PivotDataSet util test', () => {
   const dataCfg: S2DataConfig = assembleDataCfg({
@@ -50,7 +51,7 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
     });
-    expect(result.indexesData).toHaveLength(2);
+    expect(result.indexesData).toHaveLength(3);
     expect(result.paths).toHaveLength(32);
     expect(get(result.indexesData, result.paths[0])).toEqual({
       city: '杭州市',
@@ -107,12 +108,11 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       createIfNotExist: true,
-      careUndefined: false,
       rows,
       columns,
       values,
     });
-    expect(result).toEqual([0, 0, 0, 0]);
+    expect(result).toEqual([1, 1, 1, 1]);
   });
 
   test('for getDataPath function when not createIfNotExist and without rows or columns', () => {
@@ -126,7 +126,6 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      careUndefined: false,
     });
     expect(rowPivotMeta.size).toEqual(0);
     expect(colPivotMeta.size).toEqual(0);
@@ -144,7 +143,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       createIfNotExist: true,
-      careUndefined: false,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
@@ -164,7 +162,6 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
       createIfNotExist: true,
-      careUndefined: false,
       rows,
       columns,
     });
@@ -187,13 +184,16 @@ describe('PivotDataSet util test', () => {
     const field = 'city';
     const defaultDimensions = ['province', 'city'];
     const dimensions = [
-      {
-        province: '辽宁省',
-        city: '芜湖市',
-        category: '家具',
-        subCategory: '椅子',
-        price: '',
-      },
+      new CellData(
+        {
+          province: '辽宁省',
+          city: '芜湖市',
+          category: '家具',
+          subCategory: '椅子',
+          price: '',
+        },
+        'price',
+      ),
     ];
     const result = getDimensionsWithParentPath(
       field,

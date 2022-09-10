@@ -5,7 +5,6 @@ import {
   includes,
   indexOf,
   isEmpty,
-  isNaN,
   isNil,
   keys,
   map,
@@ -17,10 +16,7 @@ import type { CellData } from '../data-set/cell-data';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet } from '../data-set';
-import type {
-  SortActionParams,
-  TotalSelectionsOfMultiData,
-} from '../data-set/interface';
+import type { SortActionParams } from '../data-set/interface';
 import {
   getListBySorted,
   isTotalData,
@@ -30,12 +26,11 @@ import {
   filterExtraDimension,
   getDimensionsWithParentPath,
 } from '../utils/dataset/pivot-data-set';
+import { canConvertToNumber } from './number-calculate';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
-
-const canToBeNumber = (a?: string | number) => !isNaN(Number(a));
 
 /**
  * 执行排序
@@ -43,20 +38,20 @@ const canToBeNumber = (a?: string | number) => !isNaN(Number(a));
  * @param sortMethod - 升、降序
  * @param key - 根据key数值排序，如果有key代表根据维度值排序，故按数字排，如果没有按照字典排
  */
-const sortAction = (
-  list: string[] | CellData[],
+export const sortAction = (
+  list: number[] | string[] | CellData[],
   sortMethod?: SortMethod,
   key?: string,
 ) => {
   const sort = isAscSort(sortMethod) ? 1 : -1;
   const specialValues = ['-', undefined];
   return list?.sort((pre, next) => {
-    let a = pre as string;
-    let b = next as string;
+    let a = pre as string | number;
+    let b = next as string | number;
     if (key) {
-      a = (pre as CellData).getValueByKey(key) as string;
-      b = (next as CellData).getValueByKey(key) as string;
-      if (canToBeNumber(a) && canToBeNumber(b)) {
+      a = (pre as CellData).getValueByKey(key) as string | number;
+      b = (next as CellData).getValueByKey(key) as string | number;
+      if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
       }
       if (a && specialValues?.includes(a?.toString())) {
@@ -90,7 +85,7 @@ const mergeDataWhenASC = (
   return [...new Set([...sortedValues, ...originValues])];
 };
 
-const sortByCustom = (params: SortActionParams): string[] => {
+export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
@@ -131,7 +126,7 @@ const sortByCustom = (params: SortActionParams): string[] => {
   return getListBySorted(originValues, sortedIdWithPre);
 };
 
-const sortByFunc = (params: SortActionParams): string[] => {
+export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam, dataSet } = params;
   const { sortFunc, sortFieldId, sortMethod } = sortParam;
 

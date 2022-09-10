@@ -5,6 +5,7 @@ import {
 } from 'tests/util/helpers';
 import type { BBox } from '@antv/g-canvas';
 import { omit } from 'lodash';
+import { CellData } from '@/data-set/cell-data';
 import {
   getAutoAdjustPosition,
   setTooltipContainerStyle,
@@ -13,7 +14,6 @@ import {
 } from '@/utils/tooltip';
 import {
   CellTypes,
-  EXTRA_FIELD,
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
@@ -24,7 +24,6 @@ import {
   TOOLTIP_POSITION_OFFSET,
   type Total,
   type Totals,
-  VALUE_FIELD,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
 } from '@/index';
@@ -424,14 +423,15 @@ describe('Tooltip Utils Tests', () => {
       isTotalCell = false,
       extraField?: Record<string, unknown>,
     ) => {
-      return {
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: value,
-        number: value,
-        province: '浙江省',
-        ...(isTotalCell ? {} : { city: '杭州市' }),
-        ...extraField,
-      };
+      return new CellData(
+        {
+          number: value,
+          province: '浙江省',
+          ...(isTotalCell ? {} : { city: '杭州市' }),
+          ...extraField,
+        },
+        'number',
+      );
     };
 
     const createTotalsPivotSheet = (totals: Totals) =>
