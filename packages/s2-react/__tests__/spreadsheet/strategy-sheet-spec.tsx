@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { copyData, SpreadSheet } from '@antv/s2';
+import { copyData, type SpreadSheet } from '@antv/s2';
 import {
   StrategySheetDataConfig,
   StrategyOptions,
@@ -49,8 +49,8 @@ describe('Strategy Sheet Export Tests', () => {
 
   test('should export correct data for multi different cycle compare data', () => {
     // 列头部分不同粒度的列头包含不同的同环比个数
-    // 2022 包含 [数值，环比]
-    // 2022-10 包含 [数值，环比，同比]
+    // 2022-09 包含 [数值，环比，同比]
+    // 2022-10 包含 [数值，环比]
     // 它们都应和各自的列头数值一栏对齐
     const result = copyData(s2Instance, '\t');
 
@@ -59,11 +59,22 @@ describe('Strategy Sheet Export Tests', () => {
     const col2: string[] = rows[1].split('\t').slice(3);
 
     expect(col1.length).toEqual(col2.length);
-    // 2022 对齐其数值
-    const idx1 = col1.findIndex((col) => col === `"2022"`);
+    // 2022-09 对齐其数值
+    const idx1 = col1.findIndex((col) => col === `"2022-09"`);
     expect(col2[idx1]).toEqual(`"数值"`);
     // 2022-10 对齐其数值
     const idx2 = col1.findIndex((col) => col === `"2022-10"`);
     expect(col2[idx2]).toEqual(`"数值"`);
+  });
+
+  test('should export correct data for empty cell', () => {
+    // 2022-09 包含 [数值，环比，同比], 但是数值均为空
+    // 对应数据应该空三格
+    const result = copyData(s2Instance, '\t');
+
+    const rows = result.split('\n');
+    // 自定义节点A - 指标A
+    const detailRow: string[] = rows[3].split('\t').slice(0, 5);
+    expect(detailRow).toEqual([`"自定义节点A"`, `"指标A"`, '', '', '']);
   });
 });
