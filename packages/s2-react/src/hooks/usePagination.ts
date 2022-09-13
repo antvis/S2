@@ -62,14 +62,14 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
       return;
     }
 
-    const totalUpdateCallback = (data) =>
-      setPagination({ ...pagination, total: data.total });
+    const totalUpdateCallback = (data) => {
+      setPagination((prev) => ({ ...prev, total: data.total }));
+    };
     s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
     return () => {
       s2.off(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [s2]);
+  }, [paginationCfg, s2]);
 
   return {
     showPagination: Boolean(showPagination),

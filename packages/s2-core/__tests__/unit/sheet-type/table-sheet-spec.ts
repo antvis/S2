@@ -2,7 +2,7 @@ import { getContainer } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
-import { setLang, type LangType, type S2Options } from '@/common';
+import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
 
 describe('TableSheet Tests', () => {
@@ -180,5 +180,14 @@ describe('TableSheet Tests', () => {
         sheet.destroy();
       },
     );
+  });
+
+  test('should emit destroy event', () => {
+    const onDestroy = jest.fn();
+    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    s2.destroy();
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 });

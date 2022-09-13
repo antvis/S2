@@ -196,8 +196,36 @@ const getMiniChartMockData = () => {
 };
 
 export const StrategySheetDataConfig: S2DataConfig = {
+  // 普通数值+同环比数据
   data: [
-    // 普通数值+同环比数据
+    {
+      date: '2022-09',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+    },
+    {
+      'measure-a': {
+        originalValues: [[377, '']],
+        values: [[377, '']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-c': {
+        originalValues: [[null, 324]],
+        values: [[null, 324]],
+      },
+      'measure-d': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-f': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      date: '2022-10',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
+    },
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
@@ -226,9 +254,10 @@ export const StrategySheetDataConfig: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-      date: '2021',
+      date: '2022-11',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
+
     // 净增目标完成度子弹图数据
     getKPIMockData(),
     // 趋势图数据
@@ -256,31 +285,6 @@ export const StrategySheetDataConfig: S2DataConfig = {
       },
       date: '2022',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
-    },
-
-    {
-      'measure-a': {
-        originalValues: [[377, '', 0.02]],
-        values: [[377, '', '0.02']],
-      },
-      'measure-b': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-c': {
-        originalValues: [[null, 324, 0.02]],
-        values: [[null, 324, '0.02']],
-      },
-      'measure-d': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-f': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      date: '2022-10',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
   ],
   meta: [
@@ -416,6 +420,23 @@ export const StrategyOptions: SheetComponentOptions = {
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
           };
+        },
+      },
+    ],
+    icon: [
+      {
+        position: 'right',
+        mapping(value, cellInfo) {
+          return isUpDataValue(value)
+            ? {
+                // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'CellUp',
+                fill: '#29A294',
+              }
+            : {
+                icon: 'CellDown',
+                fill: '#FF4D4F',
+              };
         },
       },
     ],
