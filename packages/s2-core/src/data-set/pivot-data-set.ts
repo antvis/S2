@@ -526,7 +526,10 @@ export class PivotDataSet extends BaseDataSet {
 
     let hadMultiField = false;
     let result: FlattingIndexesData = this.indexesData;
-
+    // TODO: 原本的展开逻辑在有下钻的情况下,应该是有问题的,
+    // 因为下钻数据是放在原本的明细数据里面, 在对象里面添加了 1,2,3 这样的属性值来储存下钻数据
+    // 由于对下钻整体的逻辑还不是很清楚，这里只是对原来的逻辑进行效率优化
+    // 后续如果需要进行下钻优化，这里也需要同时处理
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
       if (hadMultiField) {
