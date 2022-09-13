@@ -107,7 +107,7 @@ export function getDataPath(params: DataPathParams) {
     values,
     rowDimensionValues,
     colDimensionValues,
-    createIfNotExist,
+    shouldCreateOrUpdate,
     onCreate,
     rowPivotMeta,
     colPivotMeta,
@@ -139,7 +139,7 @@ export function getDataPath(params: DataPathParams) {
       const value = dimensionValues[i];
       const isTotal = value === TOTAL_VALUE;
 
-      if (!currentMeta.has(value) && createIfNotExist) {
+      if (shouldCreateOrUpdate && !currentMeta.has(value)) {
         currentMeta.set(value, {
           level: isTotal ? 0 : currentMeta.size + 1,
           childField: dimensions?.[i + 1],
@@ -162,7 +162,7 @@ export function getDataPath(params: DataPathParams) {
       }
 
       if (meta) {
-        if (createIfNotExist) {
+        if (shouldCreateOrUpdate && meta.childField !== dimensions?.[i + i]) {
           meta.childField = dimensions?.[i + 1];
         }
         currentMeta = meta?.children;
@@ -250,7 +250,7 @@ export function transformIndexesData(params: Param) {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      createIfNotExist: true,
+      shouldCreateOrUpdate: true,
       onCreate: onFirstCreate,
       rows,
       columns,

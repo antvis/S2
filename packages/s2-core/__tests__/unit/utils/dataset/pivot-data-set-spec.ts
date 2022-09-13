@@ -107,7 +107,7 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      createIfNotExist: true,
+      shouldCreateOrUpdate: true,
       rows,
       columns,
       values,
@@ -142,7 +142,7 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      createIfNotExist: true,
+      shouldCreateOrUpdate: true,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
@@ -161,7 +161,7 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      createIfNotExist: true,
+      shouldCreateOrUpdate: true,
       rows,
       columns,
     });

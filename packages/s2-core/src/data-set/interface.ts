@@ -31,8 +31,8 @@ export type SortedDimensionValues = Record<string, string[]>;
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
+  shouldCreateOrUpdate?: boolean;
   // callback when pivot map create node
-  createIfNotExist?: boolean;
   onCreate?: (params: {
     // 维度 id，如 city
     dimension: string;
