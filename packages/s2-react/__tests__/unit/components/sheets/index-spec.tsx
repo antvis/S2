@@ -164,18 +164,18 @@ describe('<SheetComponent/> Tests', () => {
     test('should render correctly KPI bullet column measure text', () => {
       renderStrategySheet(
         {
-          width: 600,
+          width: 6000,
           height: 600,
         },
         StrategySheetDataConfig,
       );
 
-      // 当前测试数据, 第二列是子弹图
+      // 当前测试数据, 第 4 列是子弹图
       const dataCell = s2.interaction
         .getPanelGroupAllDataCells()
         .filter((cell) => {
           const meta = cell.getMeta();
-          return meta.colIndex === 1 && meta.fieldValue;
+          return meta.colIndex === 3 && meta.fieldValue;
         });
 
       const bulletMeasureTextList = dataCell.map((cell) => {
