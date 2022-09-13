@@ -1,3 +1,12 @@
+# [@antv/s2-react-v1.26.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.26.0...@antv/s2-react-v1.26.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* 修复表格 onDestroy 卸载事件无法触发 ([#1733](https://github.com/antvis/S2/issues/1733)) ([2195f1a](https://github.com/antvis/S2/commit/2195f1aec681085ec32ee1446b780e00af901c47))
+* 修复趋势分析表多列头情况下，单元格数据为空引起的复制数据偏移问题 ([#1743](https://github.com/antvis/S2/issues/1743)) ([52ff51c](https://github.com/antvis/S2/commit/52ff51ccb350998eb01330a346c7abfc1e8ba579))
+* 修复闭包导致的pagination被错误重置的问题 ([#1739](https://github.com/antvis/S2/issues/1739)) ([6cfad06](https://github.com/antvis/S2/commit/6cfad06f73d49c8f57a966a145846e383130351f))
+
 # [@antv/s2-react-v1.26.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.25.0...@antv/s2-react-v1.26.0) (2022-09-05)
 
 
