@@ -122,11 +122,11 @@ const defaultPartDrillDownDisplayCondition = (meta: Node) => {
  * @param callback 下钻点击事件
  * @returns 新 options
  */
-export const buildDrillDownOptions = (
-  options: S2Options,
+export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
+  options: T,
   partDrillDown: PartDrillDown,
   callback: ActionIconCallback,
-): S2Options => {
+): T => {
   const nextHeaderIcons = options.headerActionIcons?.length
     ? [...options.headerActionIcons]
     : [];

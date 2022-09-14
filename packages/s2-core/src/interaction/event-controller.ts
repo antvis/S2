@@ -133,6 +133,7 @@ export class EventController {
     if (
       this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
+      // todo: 在copy header 时有问题
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
@@ -161,8 +162,18 @@ export class EventController {
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
 
-    if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
-      interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
+    if (
+      interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+      ])
+    ) {
+      interaction.removeIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+      ]);
       return;
     }
 
@@ -274,7 +285,6 @@ export class EventController {
         if (!this.spreadsheet.getCanvasElement()) {
           return false;
         }
-
         if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
           event.clientX = mouseEvent.clientX;
           event.clientY = mouseEvent.clientY;
@@ -347,12 +357,7 @@ export class EventController {
           break;
       }
 
-      if (
-        !this.spreadsheet.interaction.hasIntercepts([
-          InterceptType.HOVER,
-          InterceptType.BRUSH_SELECTION,
-        ])
-      ) {
+      if (!this.hasBrushSelectionIntercepts()) {
         this.spreadsheet.emit(S2Event.GLOBAL_HOVER, event);
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -376,6 +381,15 @@ export class EventController {
       }
     }
   };
+
+  private hasBrushSelectionIntercepts() {
+    return this.spreadsheet.interaction.hasIntercepts([
+      InterceptType.HOVER,
+      InterceptType.BRUSH_SELECTION,
+      InterceptType.ROW_BRUSH_SELECTION,
+      InterceptType.COL_BRUSH_SELECTION,
+    ]);
+  }
 
   private onCanvasMouseup = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {

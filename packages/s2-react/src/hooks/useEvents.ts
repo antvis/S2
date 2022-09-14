@@ -1,4 +1,5 @@
 import {
+  type EmitterType,
   getBaseCellData,
   GEvent,
   S2Event,
@@ -29,14 +30,18 @@ export const useS2Event = (
   eventName: S2Event,
   handler: (args: unknown) => void,
   s2: SpreadSheet,
+  emitBeforeOff = false,
 ) => {
   React.useEffect(() => {
-    const handlerFn = (args: unknown) => {
+    const handlerFn: EmitterType[S2Event] = (args: unknown[]) => {
       handler?.(args);
     };
     s2?.on(eventName, handlerFn);
 
     return () => {
+      if (emitBeforeOff) {
+        s2?.emit(eventName);
+      }
       s2?.off(eventName, handlerFn);
     };
   }, [s2, handler, eventName]);
@@ -159,10 +164,9 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   );
   useS2Event(S2Event.LAYOUT_COLS_EXPANDED, props.onLayoutColsExpanded, s2);
   useS2Event(S2Event.LAYOUT_COLS_HIDDEN, props.onLayoutColsHidden, s2);
-
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);
-  useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2);
+  useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2, true);
 
   // ============== Resize ====================
   useS2Event(S2Event.LAYOUT_RESIZE, props.onLayoutResize, s2);
@@ -215,4 +219,15 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_RESET, props.onReset, s2);
   useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
   useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
+  // ============== Auto 自动生成的 ================
+  useS2Event(
+    S2Event.ROW_CELL_BRUSH_SELECTION,
+    props.onRowCellBrushSelection,
+    s2,
+  );
+  useS2Event(
+    S2Event.COL_CELL_BRUSH_SELECTION,
+    props.onColCellBrushSelection,
+    s2,
+  );
 }

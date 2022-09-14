@@ -19,7 +19,7 @@ import type { BaseFacet } from '@/facet';
 
 const MOCK_COPY_DATA = 'data';
 
-jest.mock('@/interaction/brush-selection');
+jest.mock('@/interaction/brush-selection/data-cell-brush-selection.ts');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 jest.mock('@/interaction/base-interaction/hover');
@@ -438,6 +438,38 @@ describe('Interaction Event Controller Tests', () => {
     expect(containsMock).toHaveBeenCalled();
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  test('should reset if current mouse not on the canvas container', () => {
+    const containsMock = jest
+      .spyOn(HTMLElement.prototype, 'contains')
+      .mockImplementation(() => true);
+    spreadsheet.hideTooltip = jest.fn();
+    const reset = jest.fn().mockImplementation(() => {
+      spreadsheet.hideTooltip();
+    });
+    spreadsheet.tooltip.show = jest.fn();
+
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+    spreadsheet.tooltip.show({
+      position: {
+        x: 100,
+        y: 100,
+      },
+      content: 'test style reset',
+    });
+    spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+    window.dispatchEvent(
+      new MouseEvent('click', {
+        clientX: 1000,
+        clientY: 1000,
+      } as MouseEventInit),
+    );
+
+    expect(containsMock).toHaveBeenCalled();
+    expect(reset).toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+    expect(spreadsheet.hideTooltip).toHaveBeenCalled();
   });
 
   test('should reset if current mouse outside the canvas container', () => {

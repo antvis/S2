@@ -1,11 +1,12 @@
 import React from 'react';
 import { PageHeader, type PageHeaderProps } from 'antd';
 import cx from 'classnames';
-import type { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { Export, type ExportCfgProps } from '../export';
 import { AdvancedSort, type AdvancedSortCfgProps } from '../advanced-sort';
 import { type SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
+import type { SheetComponentOptions } from '../sheets/interface';
 
 export interface HeaderCfgProps extends PageHeaderProps {
   width?: React.CSSProperties['width'];
@@ -17,7 +18,7 @@ export interface HeaderCfgProps extends PageHeaderProps {
 
 export interface HeaderProps extends HeaderCfgProps {
   dataCfg?: S2DataConfig;
-  options?: S2Options;
+  options?: SheetComponentOptions;
   sheet: SpreadSheet;
 }
 

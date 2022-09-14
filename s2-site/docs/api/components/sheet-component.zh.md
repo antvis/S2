@@ -14,9 +14,9 @@ order: 0
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: | --- | --- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |
-| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [S2Options](/zh/docs/api/general/S2Options)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
-| options | 透视表属性配置项 | [S2Options](/zh/docs/api/general/S2Options) |  | ✓ |
+| options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/zh/docs/api/components/drill-down) |  |  |
 | adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
@@ -96,6 +96,25 @@ order: 0
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: ColCell[]) => void; |  |  |
+| onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
+
+## SheetComponentOptions
+
+React 组件 的 `options` 继承于 [S2Options](/zh/docs/api/general/S2Options) , 有两点不同
+
+- tooltip 的 content 从 `Element | string` 变为了 `ReactNode`, 即可以是任意的 `jsx` 元素
+- 分页配置从 S2 的分页配置 变为了 `antd` 的分页配置，即支持对 `antd` 分页组件 的 api 透传
+
+```ts
+import type { Pagination, S2Options } from '@antv/s2';
+import type { PaginationProps as AntdPaginationProps } from 'antd';
+
+type SheetComponentOptions = S2Options<
+  React.ReactNode,
+  Pagination & AntdPaginationProps
+>;
+```
 
 # Vue 表组件
 
@@ -108,11 +127,11 @@ order: 0
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot | table` | `pivot` |  |
-| dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
-| options | 透视表属性配置项 | [S2Options](/zh/docs/api/general/S2Options) |  | ✓ |
+| dataCfg | 透视表数据映射配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
+| options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
 | adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` |  |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
-| themeCfg | 自定义透视表主题样式 | [ThemeCfg](/zh/docs/api/general/S2Theme) |  |  |
+| themeCfg | 自定义表格主题样式 | [ThemeCfg](/zh/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 
 ## events
@@ -121,7 +140,7 @@ order: 0
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
-| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [S2Options](/zh/docs/api/general/S2Options)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -196,6 +215,24 @@ order: 0
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| colCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: ColCell[]) => void; |  |  |
+| rowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
+
+## SheetComponentOptions
+
+Vue 组件 的 `options` 继承于 [S2Options](/zh/docs/api/general/S2Options) , 有一点不同
+
+- 分页配置从 S2 的分页配置 变为了 `antd-vue` 的分页配置，即支持对 `antd-vue` 分页组件 的 api 透传
+
+```ts
+import type { Pagination, S2Options } from '@antv/s2';
+import type { PaginationProps } from 'ant-design-vue';
+
+type SheetComponentOptions = S2Options<
+  Element | string,
+  Pagination & PaginationProps
+>;
+```
 
 # 公共对象
 
@@ -217,8 +254,8 @@ order: 0
 
 | 参数        | 说明         | 类型   | 默认值 | 必选 |
 | :---------- | :----------- | :----- | :----- | :--: |
-| scrollX     | 水平方向滚动偏移量(相对滚动条轨道长度)  | `number` |        |      |
-| scrollY     | 垂直方向滚动偏移量(相对滚动条轨道长度)  | `number` |        |      |
+| scrollX     | 水平方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
+| scrollY     | 垂直方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
 
 ## HiddenColumnsInfo
 
@@ -227,7 +264,7 @@ order: 0
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
 | hideColumnNodes | 当前隐藏的节点信息 | [Node](/zh/docs/api/basic-class/node)[] |  |  |
-| displaySiblingNode | 展示的相邻节点信息 | {prev:[Node](/zh/docs/api/basic-class/node);next: [Node](/zh/docs/api/basic-class/node);} |  |  |
+| displaySiblingNode | 展示的相邻节点信息 | { prev:[Node](/zh/docs/api/basic-class/node);next: [Node](/zh/docs/api/basic-class/node) } |  |  |
 
 ## ResizeParams
 
@@ -244,7 +281,7 @@ order: 0
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
-| theme | resize 热区配置 | [ResizeArea](#resizearea) |  |  |
+| theme | resize 热区配置 | [ResizeArea](/zh/docs/api/general/S2Theme#resizearea) |  |  |
 | type | resize 方向 | `Horizontal` \| `Vertical` |  |  |
 | offsetX | 横向偏移量 | `number` |  |  |
 | offsetY | 纵向偏移量 | `number` |  |  |
@@ -252,7 +289,7 @@ order: 0
 | height | 拖拽 | `number` |  |  |
 | size | 热区尺寸 | `number` |  |  |
 | effect | 拖拽更改影响的区域 | `Field` \| `Cell` \| `Tree` \| `Series` |  |  |
-| isResizeArea | 是否属于 resize 热区 | [style](/zh/docs/api/general/S2Options#style) |  |  |
+| isResizeArea | 是否属于 resize 热区 | `boolean` |  |  |
 | id | 字段 id | `string` |  |  |
 | meta | resize 热区对应单元格节点信息 | [Node](/zh/docs/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |

@@ -1,4 +1,3 @@
-import type { SimpleBBox } from '@antv/g-canvas';
 import {
   clone,
   isArray,
@@ -13,6 +12,7 @@ import {
   trim,
   values,
 } from 'lodash';
+import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import type {
@@ -26,8 +26,8 @@ import type {
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
 import { getOffscreenCanvas } from './canvas';
-import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 import { renderMiniChart } from './g-mini-charts';
+import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 
 /**
  * 计算文本在画布中的宽度
@@ -398,7 +398,7 @@ export const getEmptyPlaceholder = (
 export const getContentAreaForMultiData = (
   box: SimpleBBox,
   textValues: SimpleDataItem[][],
-  widthPercent: number[],
+  widthPercent?: number[],
 ) => {
   const { x, y, width, height } = box;
   const avgHeight = height / size(textValues);
@@ -415,7 +415,7 @@ export const getContentAreaForMultiData = (
     totalWidth = 0;
     for (let j = 0; j < size(textValues[i]); j++) {
       avgWidth = !isEmpty(widthPercent)
-        ? width * (widthPercent[j] / 100)
+        ? width * widthPercent[j]
         : width / size(textValues[0]); // 指标个数相同，任取其一即可
 
       curX = calX(x, { left: 0, right: 0 }, totalWidth, 'left');
@@ -560,6 +560,7 @@ export const drawObjectText = (
         curStyle,
       );
 
+      // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
         const attrs = iconCondition?.mapping(curText, {
           rowIndex: i,
