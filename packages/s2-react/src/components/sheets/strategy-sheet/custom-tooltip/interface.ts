@@ -9,4 +9,5 @@ export interface CustomTooltipProps {
         cell: S2CellType<Node | ViewMeta>,
         defaultLabel: React.ReactNode,
       ) => React.ReactNode);
+  showOriginalValue?: boolean;
 }

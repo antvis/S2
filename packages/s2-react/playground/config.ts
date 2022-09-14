@@ -54,7 +54,13 @@ export const pivotSheetDataCfg: S2DataConfig = {
             key: 'a-1-2',
             title: '自定义行节点2',
             description: '自定义行节点2描述',
-            children: [],
+            // children: [
+            //   {
+            //     key: 'a-1-2-1',
+            //     title: '行节点指标2-指标1',
+            //     description: '行节点指标2-指标1描述',
+            //   },
+            // ],
           },
         ],
       },
@@ -135,14 +141,14 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   hierarchyType: 'grid',
-  style: {
-    rowCfg: {
-      width: 200,
-    },
-    cellCfg: {
-      height: 50,
-    },
-  },
+  // style: {
+  //   rowCfg: {
+  //     width: 200,
+  //   },
+  //   cellCfg: {
+  //     height: 50,
+  //   },
+  // },
 };
 
 export const sliderOptions: SliderSingleProps = {
