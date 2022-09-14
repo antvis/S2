@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { debounce, set } from 'lodash';
 import { MIN_DEVICE_PIXEL_RATIO } from '../../common/constant/options';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
@@ -86,7 +86,7 @@ export class HdAdapter {
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
-    const lastRatio = container.get('pixelRatio');
+    const lastRatio = container.getConfig().devicePixelRatio;
 
     if (lastRatio === ratio || !canvas) {
       return;
@@ -100,8 +100,9 @@ export class HdAdapter {
       MIN_DEVICE_PIXEL_RATIO,
     );
 
-    container.set('pixelRatio', pixelRatio);
-    container.changeSize(width!, height!);
+    // TODO: 待沧东跟进render后修改 dpr 的需求；目前用lodash先绕过检查；
+    set(container, 'devicePixelRatio', pixelRatio);
+    container.resize(width!, height!);
 
     this.spreadsheet.render(false);
   };

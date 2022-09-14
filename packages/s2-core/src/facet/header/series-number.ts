@@ -3,7 +3,7 @@ import { each } from 'lodash';
 import { CellBorderPosition, type Padding } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import { getBorderPositionAndStyle } from '../../utils/cell/cell';
-import { renderLine, renderRect } from '../../utils/g-renders';
+import { renderLine, renderRect, renderText } from '../../utils/g-renders';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';

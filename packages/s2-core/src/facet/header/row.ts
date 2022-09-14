@@ -1,3 +1,4 @@
+import { Rect } from '@antv/g';
 import type { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell/row-cell';
@@ -60,7 +61,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        this.add(cell as S2CellType);
+
+        if (cell) {
+          this.appendChild(cell);
+        }
       }
     });
   }
@@ -89,9 +93,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       seriesNumberWidth,
     } = this.headerConfig;
 
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
         x: scrollX - seriesNumberWidth,
         y: scrollY,
