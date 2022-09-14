@@ -26,6 +26,7 @@ const s2Options = {
     cellCfg: {
       valuesCfg: {
         originalValueField: 'originalValues',
+        showOriginalValue: true,
         conditions: {
           text: {
             field: 'number',
@@ -59,7 +60,7 @@ import '@antv/s2-react/dist/style.min.css';
 
 ReactDOM.render(
   <SheetComponent
-    dataCfg={dataCfg}
+    dataCfg={s2DataCfg}
     options={s2Options}
     sheetType="strategy"
   />,
@@ -105,6 +106,13 @@ object **必选**,_default：null_
 
 趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (row)`, `列头 (col)`, `数值 (data)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105), 同时可以在 `@antv/s2-react` 包中进行单独引入
 
+| 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
+| :------------- | :----------------- | :--------- | :----- | :--- |
+| cell           | 当前单元格 | `S2CellType`   |  ✓   |
+| defaultTooltipShowOptions | 默认 tooltip 展示配置 | `TooltipShowOptions<ReactNode>`  |  |      |
+| label        | 标题    | `ReactNode | (cell: S2CellType, defaultLabel: ReactNode) => React.ReactNode` |    |      |
+| showOriginalValue      | 是否显示原始值      | `boolean` | `false`   |      |
+
 ```ts
 import { StrategySheetRowTooltip, StrategySheetColTooltip, StrategySheetDataTooltip } from '@antv/s2-react'
 
@@ -130,3 +138,13 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/dosQkhLBp/fbe5a635-60ad-4e55-9a23-858842b977ac.png" width="600"  alt="preview" />
+
+### 显示原始数据
+
+开启 `showOriginalValue` 后，会读取当前 Tooltip 对应的 `originalValues` 数据（如有）, 将原始数据一同展示，即 `展示值（原始值）`
+
+```ts
+<StrategySheetDataTooltip cell={cell} showOriginalValue />
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/%242tkorO2F/27504d9d-0d92-4fc4-9296-44eaf55ef613.png" width="600"  alt="preview" />
