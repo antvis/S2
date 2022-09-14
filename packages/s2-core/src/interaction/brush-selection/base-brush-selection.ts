@@ -84,7 +84,7 @@ export class BaseBrushSelection
     if (!foregroundGroup) {
       return;
     }
-    foregroundGroup.removeChild(this.prepareSelectMaskShape);
+    this.prepareSelectMaskShape?.remove(true);
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     this.prepareSelectMaskShape = foregroundGroup.appendChild(
       new Rect({

@@ -29,7 +29,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   protected bindMouseMove() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
       if (
-        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+        this.brushSelectionStage ===
+          InteractionBrushSelectionStage.UN_DRAGGED ||
+        // TODO: renderPrepareSelected 变异步 api 了, this.endBrushPoint 赋值为空
+        !this.endBrushPoint
       ) {
         return;
       }

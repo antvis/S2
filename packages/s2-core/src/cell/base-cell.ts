@@ -310,7 +310,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           : (this[shapeName] as DisplayObject);
 
         // stateShape 默认 visible 为 false
-        if (isStateShape && shape.getAttribute('visibility') !== 'visible') {
+        if (isStateShape && shape.parsedStyle.visibility !== 'visible') {
           shape.setAttribute('visibility', 'visible');
         }
 

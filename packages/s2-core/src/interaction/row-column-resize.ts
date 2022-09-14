@@ -26,8 +26,8 @@ import type {
   ResizeInfo,
   ResizePosition,
 } from '../common/interface/resize';
+import { CustomRect } from '../engine';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
-import { CustomRect } from '@/engine';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeTarget: Group;
@@ -384,7 +384,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private resizeMouseMove = (event: CanvasEvent) => {
-    if (this.resizeReferenceGroup?.getAttribute('visibility') === 'hidden') {
+    if (this.resizeReferenceGroup?.parsedStyle.visibility !== 'visible') {
       return;
     }
     event?.preventDefault?.();

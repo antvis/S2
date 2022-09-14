@@ -26,10 +26,7 @@ import type { TextTheme } from '../common/interface/theme';
 export function renderRect(group: Group, style: RectStyleProps): DisplayObject {
   return group?.appendChild(
     new Rect({
-      style: {
-        zIndex: 1,
-        ...style,
-      },
+      style,
     }),
   );
 }
