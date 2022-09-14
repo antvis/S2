@@ -24,8 +24,8 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   afterEach(() => {
-    // ReactDOM.unmountComponentAtNode(container);
-    // container.remove();
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
   });
 
   describe('Render Tests', () => {
