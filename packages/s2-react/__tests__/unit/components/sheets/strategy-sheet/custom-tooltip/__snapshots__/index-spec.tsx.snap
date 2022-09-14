@@ -18,37 +18,8 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test data label',
   component: [Function: StrategySheetDataTooltip] {
     [length]: 1,
-    [name]: 'StrategySheetDataTooltip'
-  }
-} 1`] = `
-<span
-  class="header-label"
->
-  test data label
-</span>
-`;
-
-exports[`StrategySheet Tooltip Tests should render tooltip with {
-  label: 'test data label',
-  component: [Function: StrategySheetDataTooltip] {
-    [length]: 1,
     [name]: 'StrategySheetDataTooltip',
     defaultProps: { showOriginalValue: false }
-  }
-} 1`] = `
-<span
-  class="header-label"
->
-  test data label
-</span>
-`;
-
-exports[`StrategySheet Tooltip Tests should render tooltip with {
-  label: 'test data label',
-  component: [Function: StrategySheetDataTooltip] {
-    [length]: 1,
-    [name]: 'StrategySheetDataTooltip',
-    defaultProps: { showOriginalValue: true }
   }
 } 1`] = `
 <span
