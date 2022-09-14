@@ -528,6 +528,7 @@
 ### Features
 
 * 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+
 * # 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
 
 # [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
@@ -535,9 +536,11 @@
 ### Features
 
 * 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+
 * # 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
 
-- **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+* **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+
 * 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
 * 修复趋势分析表 label 文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
 * 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))
