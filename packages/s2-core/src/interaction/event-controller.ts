@@ -20,6 +20,7 @@ import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
+import { GuiIcon } from '..';
 
 interface EventListener {
   target: EventTarget;
@@ -126,7 +127,7 @@ export class EventController {
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
   private isGuiIconShape = (target: CanvasEvent['target']) => {
-    return target instanceof CustomImage;
+    return target instanceof CustomImage && target.imgType === GuiIcon.type;
   };
 
   private onKeyboardCopy(event: KeyboardEvent) {
