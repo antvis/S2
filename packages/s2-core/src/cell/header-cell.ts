@@ -350,7 +350,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       const visibleActionIcons: GuiIcon[] = [];
       forEach(this.actionIcons, (icon) => {
         // 仅存储当前不可见的 icon
-        if (icon.getAttribute('visibility') !== 'visible') {
+        if (icon.parsedStyle.visibility !== 'visible') {
           icon.setAttribute('visibility', 'visible');
           visibleActionIcons.push(icon);
         }
