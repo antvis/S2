@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { DisplayObject, PointLike } from '@antv/g';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import { BaseCell } from '../cell/base-cell';
 import {
@@ -236,7 +236,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  protected getTextPosition(): Point {
+  protected getTextPosition(): PointLike {
     return this.getTextAndIconPosition().text;
   }
 
@@ -290,18 +290,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { x, y, height, width } = this.getCellArea();
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(
-        this,
-        {
-          x: x + margin,
-          y: y + margin,
-          width: width - margin * 2,
-          height: height - margin * 2,
-        },
-        {
-          visible: false,
-        },
-      ),
+      renderRect(this, {
+        x: x + margin,
+        y: y + margin,
+        width: width - margin * 2,
+        height: height - margin * 2,
+        visibility: 'hidden',
+      }),
     );
   }
 
@@ -311,15 +306,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-        },
-        {
-          visible: false,
-        },
-      ),
+      renderRect(this, {
+        ...this.getCellArea(),
+        visibility: 'hidden',
+      }),
     );
   }
 
@@ -393,7 +383,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         );
 
         updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
+          this.conditionIconShape as unknown as DisplayObject,
           SHAPE_STYLE_MAP.opacity,
           stateStyles.opacity,
         );
@@ -411,7 +401,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
+      this.conditionIconShape as unknown as DisplayObject,
       SHAPE_STYLE_MAP.opacity,
       1,
     );

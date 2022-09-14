@@ -1,4 +1,4 @@
-import type { Group, Point } from '@antv/g-canvas';
+import { Rect, type Group, type PointLike } from '@antv/g';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
@@ -92,7 +92,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   public static getCornerNodes(
-    position: Point,
+    position: PointLike,
     width: number,
     height: number,
     rows: string[],
@@ -245,7 +245,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           this.headerConfig,
         );
       }
-      this.add(cell);
+      this.appendChild(cell);
     });
   }
 
@@ -256,9 +256,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected clip(): void {
     const { width, height, scrollX } = this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         x: scrollX,
         y: 0,
         width,

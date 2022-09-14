@@ -13,6 +13,7 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { CustomRect } from '../engine';
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
     super.drawTextShape();
@@ -79,23 +80,29 @@ export class TableDataCell extends DataCell {
       yOffset -= isFrozenRow ? paginationSy : scrollY;
     }
 
-    resizeArea.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: String(this.meta.rowIndex),
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX: x,
-          offsetY: yOffset,
-          width,
-          height,
-          meta: this.meta,
-        }),
-        x,
-        y: yOffset + height - resizeStyle.size / 2,
-        width,
-      },
+    const attrs = getResizeAreaAttrs({
+      id: String(this.meta.rowIndex),
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      effect: ResizeAreaEffect.Cell,
+      offsetX: x,
+      offsetY: yOffset,
+      width,
+      height,
+      meta: this.meta,
     });
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x,
+            y: yOffset + height - resizeStyle.size / 2,
+            width,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 }

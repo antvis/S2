@@ -1,12 +1,13 @@
-import type { IGroup } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { updateMergedCells } from '../utils/interaction/merge-cell';
 import type { GridInfo } from '../common/interface';
+
 import type { MergedCell } from './../cell/merged-cell';
 import { KEY_GROUP_MERGED_CELLS } from './../common/constant/basic';
 import { GridGroup } from './grid-group';
 
 export class PanelScrollGroup extends GridGroup {
-  protected mergedCellsGroup: IGroup;
+  protected mergedCellsGroup: Group;
 
   constructor(cfg) {
     super(cfg);
@@ -14,13 +15,15 @@ export class PanelScrollGroup extends GridGroup {
   }
 
   protected initMergedCellsGroup() {
-    if (this.mergedCellsGroup && this.findById(KEY_GROUP_MERGED_CELLS)) {
+    if (this.mergedCellsGroup && this.getElementById(KEY_GROUP_MERGED_CELLS)) {
       return;
     }
 
-    this.mergedCellsGroup = this.addGroup({
-      id: KEY_GROUP_MERGED_CELLS,
-    });
+    this.mergedCellsGroup = this.appendChild(
+      new Group({
+        id: KEY_GROUP_MERGED_CELLS,
+      }),
+    );
   }
 
   updateMergedCells() {
@@ -30,7 +33,7 @@ export class PanelScrollGroup extends GridGroup {
   }
 
   addMergeCell(mergeCell: MergedCell) {
-    this.mergedCellsGroup?.add(mergeCell);
+    this.mergedCellsGroup?.appendChild(mergeCell);
   }
 
   update(gridInfo: GridInfo) {

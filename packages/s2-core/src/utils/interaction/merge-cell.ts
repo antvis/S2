@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import {
   differenceWith,
   filter,
@@ -370,7 +370,7 @@ export const differenceTempMergedCells = (
  */
 export const updateMergedCells = (
   sheet: SpreadSheet,
-  mergedCellsGroup: IGroup,
+  mergedCellsGroup: Group,
 ) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) {
@@ -393,8 +393,7 @@ export const updateMergedCells = (
     }
   });
   // 获取 oldTempMergedCells 便用后续进行 diff 操作
-  const oldMergedCells =
-    mergedCellsGroup.getChildren() as unknown as MergedCell[];
+  const oldMergedCells = mergedCellsGroup.children as MergedCell[];
 
   const oldTempMergedCells: TempMergedCell[] =
     MergedCellConvertTempMergedCells(oldMergedCells);
@@ -418,6 +417,6 @@ export const updateMergedCells = (
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta }) => {
-    mergedCellsGroup.add(new MergedCell(sheet, cells, viewMeta));
+    mergedCellsGroup.appendChild(new MergedCell(sheet, cells, viewMeta));
   });
 };

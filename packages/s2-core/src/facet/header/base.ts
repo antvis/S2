@@ -1,4 +1,4 @@
-import { Group, type Point } from '@antv/g-canvas';
+import { Group, type PointLike } from '@antv/g';
 import type { SortParam } from '../../common/interface';
 import type { Node } from '../layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -24,7 +24,7 @@ export interface BaseHeaderConfig {
   // group's container's height
   viewportHeight: number;
   // group's top-left point
-  position: Point;
+  position: PointLike;
   // group's all nodes
   data: Node[];
   // spreadsheet entrance instance
@@ -43,7 +43,8 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected headerConfig: T;
 
   protected constructor(cfg: T) {
-    super(cfg);
+    // TODO: 修改为不传递 cfg 到 group
+    super();
     this.headerConfig = cfg;
   }
 
@@ -52,9 +53,9 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type 当前重绘的header类型
    */
   protected clearResizeAreaGroup(type: string) {
-    const foregroundGroup = this.get('parent');
-    const resizerGroup = foregroundGroup?.findById(type);
-    resizerGroup?.clear();
+    const foregroundGroup = this.parentNode as Group;
+    const resizerGroup = foregroundGroup?.getElementById<Group>(type);
+    resizerGroup?.removeChildren();
   }
 
   // start render header
@@ -103,7 +104,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected abstract clip();
 
   public clear() {
-    super.clear();
+    super.removeChildren();
   }
 
   /**

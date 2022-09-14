@@ -1,4 +1,4 @@
-import type { Group, IElement, IGroup } from '@antv/g-canvas';
+import { Group, Rect } from '@antv/g';
 import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
 import { TableDataCell } from '../cell';
 import {
@@ -600,13 +600,17 @@ export class TableFacet extends BaseFacet {
     );
 
     // remove previous splitline group
-    this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
+    this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
 
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
-    const splitLineGroup = this.foregroundGroup.addGroup({
-      id: KEY_GROUP_FROZEN_SPLIT_LINE,
-      zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-    });
+    const splitLineGroup = this.foregroundGroup.appendChild(
+      new Group({
+        id: KEY_GROUP_FROZEN_SPLIT_LINE,
+        style: {
+          zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+        },
+      }),
+    );
 
     const verticalBorderStyle = {
       lineWidth: style?.verticalBorderWidth,
@@ -644,15 +648,17 @@ export class TableFacet extends BaseFacet {
       );
 
       if (style.showShadow && scrollX > 0) {
-        splitLineGroup.addShape('rect', {
-          attrs: {
-            x,
-            y: cornerHeight,
-            width: style.shadowWidth,
-            height,
-            fill: this.getShadowFill(0),
-          },
-        });
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x,
+              y: cornerHeight,
+              width: style.shadowWidth,
+              height,
+              fill: this.getShadowFill(0),
+            },
+          }),
+        );
       }
     }
 
@@ -678,15 +684,17 @@ export class TableFacet extends BaseFacet {
       );
 
       if (style.showShadow && relativeScrollY > 0) {
-        splitLineGroup.addShape('rect', {
-          attrs: {
-            x: 0,
-            y,
-            width,
-            height: style.shadowWidth,
-            fill: this.getShadowFill(90),
-          },
-        });
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x: 0,
+              y,
+              width,
+              height: style.shadowWidth,
+              fill: this.getShadowFill(90),
+            },
+          }),
+        );
       }
     }
 
@@ -714,15 +722,17 @@ export class TableFacet extends BaseFacet {
       );
 
       if (style.showShadow && Math.floor(scrollX) < Math.floor(maxScrollX)) {
-        splitLineGroup.addShape('rect', {
-          attrs: {
-            x: x - style.shadowWidth,
-            y: cornerHeight,
-            width: style.shadowWidth,
-            height,
-            fill: this.getShadowFill(180),
-          },
-        });
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x: x - style.shadowWidth,
+              y: cornerHeight,
+              width: style.shadowWidth,
+              height,
+              fill: this.getShadowFill(180),
+            },
+          }),
+        );
       }
     }
 
@@ -748,18 +758,21 @@ export class TableFacet extends BaseFacet {
       );
 
       if (style.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
-        splitLineGroup.addShape('rect', {
-          attrs: {
-            x: 0,
-            y: y - style.shadowWidth,
-            width,
-            height: style.shadowWidth,
-            fill: this.getShadowFill(270),
-          },
-        });
+        splitLineGroup.appendChild(
+          new Rect({
+            style: {
+              x: 0,
+              y: y - style.shadowWidth,
+              width,
+              height: style.shadowWidth,
+              fill: this.getShadowFill(270),
+            },
+          }),
+        );
       }
     }
-    this.foregroundGroup.sort();
+    // TODO: g5.0 没有这个排序方法，好像也没啥用
+    // this.foregroundGroup.sort();
   };
 
   protected renderFrozenPanelCornerGroup = () => {
@@ -799,12 +812,12 @@ export class TableFacet extends BaseFacet {
     });
   };
 
-  addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
+  addFrozenCell = (colIndex: number, rowIndex: number, group: Group) => {
     const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
     viewMeta.isFrozenCorner = true;
     if (viewMeta) {
       const cell = this.cfg.dataCell(viewMeta);
-      group.add(cell);
+      group.appendChild(cell);
     }
   };
 
@@ -832,16 +845,15 @@ export class TableFacet extends BaseFacet {
 
     const group = FrozenCellGroupMap[frozenCellType];
     if (group) {
-      (this.spreadsheet[group] as Group).add(cell);
+      (this.spreadsheet[group] as Group).appendChild(cell);
     }
   };
 
   public init() {
     super.init();
     const { width, height } = this.panelBBox;
-    this.spreadsheet.panelGroup.setClip({
-      type: 'rect',
-      attrs: {
+    this.spreadsheet.panelGroup.style.clipPath = new Rect({
+      style: {
         x: 0,
         y: this.cornerBBox.height,
         width,
@@ -881,18 +893,20 @@ export class TableFacet extends BaseFacet {
       return;
     }
 
-    const rowResizeGroup = foregroundGroup.findById(KEY_GROUP_ROW_RESIZE_AREA);
-    const rowResizeFrozenGroup = foregroundGroup.findById(
+    const rowResizeGroup = foregroundGroup.getElementById<Group>(
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+    const rowResizeFrozenGroup = foregroundGroup.getElementById<Group>(
       KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
     );
     if (rowResizeGroup) {
-      rowResizeGroup.set('children', []);
+      rowResizeGroup.removeChildren();
     }
     if (rowResizeFrozenGroup) {
-      rowResizeFrozenGroup.set('children', []);
+      rowResizeFrozenGroup.removeChildren();
     }
     const allCells = getAllChildCells<TableDataCell>(
-      this.panelGroup.getChildren() as IElement[],
+      this.panelGroup.children as TableDataCell[],
       TableDataCell,
     ).filter((cell: TableDataCell) => cell.shouldDrawResizeArea());
 
@@ -1091,9 +1105,8 @@ export class TableFacet extends BaseFacet {
       frozenRowGroupHeight -
       frozenTrailingRowGroupHeight;
 
-    panelScrollGroup.setClip({
-      type: 'rect',
-      attrs: {
+    panelScrollGroup.style.clipPath = new Rect({
+      style: {
         x: scrollX + frozenColGroupWidth,
         y: scrollY + frozenRowGroupHeight,
         width: panelScrollGroupWidth,
@@ -1101,9 +1114,8 @@ export class TableFacet extends BaseFacet {
       },
     });
 
-    frozenRowGroup.setClip({
-      type: 'rect',
-      attrs: {
+    frozenRowGroup.style.clipPath = new Rect({
+      style: {
         x: scrollX + frozenColGroupWidth,
         y: paginationScrollY,
         width: panelScrollGroupWidth,
@@ -1111,11 +1123,10 @@ export class TableFacet extends BaseFacet {
       },
     });
 
-    frozenTrailingRowGroup.setClip({
-      type: 'rect',
-      attrs: {
+    frozenTrailingRowGroup.style.clipPath = new Rect({
+      style: {
         x: scrollX + frozenColGroupWidth,
-        y: frozenTrailingRowGroup.getBBox().minY,
+        y: frozenTrailingRowGroup.getBBox().top,
         width: panelScrollGroupWidth,
         height: frozenTrailingRowGroupHeight,
       },
@@ -1126,32 +1137,30 @@ export class TableFacet extends BaseFacet {
       height: panelScrollGroupHeight,
     };
 
-    frozenColGroup.setClip({
-      type: 'rect',
-      attrs: {
+    frozenColGroup.style.clipPath = new Rect({
+      style: {
         ...colClipArea,
         x: 0,
         width: frozenColGroupWidth,
       },
     });
 
-    frozenTrailingColGroup.setClip({
-      type: 'rect',
-      attrs: {
+    frozenTrailingColGroup.style.clipPath = new Rect({
+      style: {
         ...colClipArea,
-        x: frozenTrailingColBBox.minX,
+        x: frozenTrailingColBBox.left,
         width: frozenTrailingColBBox.width,
       },
     });
 
-    const rowResizeGroup = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_ROW_RESIZE_AREA,
-    );
+    const rowResizeGroup =
+      this.spreadsheet.foregroundGroup.getElementById<Group>(
+        KEY_GROUP_ROW_RESIZE_AREA,
+      );
 
     if (rowResizeGroup) {
-      rowResizeGroup.setClip({
-        type: 'rect',
-        attrs: {
+      rowResizeGroup.style.clipPath = new Rect({
+        style: {
           x: 0,
           y: frozenRowGroupHeight + this.cornerBBox.height,
           width: colLeafNodes?.[0]?.width ?? 0,
@@ -1181,11 +1190,11 @@ export class TableFacet extends BaseFacet {
         cols = this.gridInfo.cols;
         rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
         if (key === FrozenGroup.FROZEN_TRAILING_ROW) {
-          const { minY } = this.spreadsheet.frozenTrailingRowGroup.getBBox();
+          const { top } = this.spreadsheet.frozenTrailingRowGroup.getBBox();
           rows = getFrozenRowsForGrid(
             rowMin,
             rowMax,
-            Math.ceil(minY),
+            Math.ceil(top),
             this.viewCellHeights,
           );
         }

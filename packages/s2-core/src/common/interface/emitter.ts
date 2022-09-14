@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type { DataCell } from '../../cell/data-cell';
 import type { RowCell } from '../../cell/row-cell';
 import type { ColCell } from '../../cell/col-cell';

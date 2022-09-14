@@ -1,4 +1,4 @@
-import type { Event } from '@antv/g-canvas';
+import type { FederatedPointerEvent as Event } from '@antv/g';
 import { get } from 'lodash';
 import { type CellMeta, CellTypes, type ViewMeta } from '../common';
 import { InteractionKeyboardKey, S2Event } from '../common/constant';

@@ -1,5 +1,6 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
+import { Canvas, FederatedPointerEvent as CanvasEvent, Group } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -100,10 +101,10 @@ export abstract class SpreadSheet extends EE {
   public container: Canvas;
 
   // the background group, render bgColor...
-  public backgroundGroup: IGroup;
+  public backgroundGroup: Group;
 
   // facet cell area group, it contains all cross-tab's cell
-  public panelGroup: IGroup;
+  public panelGroup: Group;
 
   public panelScrollGroup: PanelScrollGroup;
 
@@ -120,7 +121,7 @@ export abstract class SpreadSheet extends EE {
   public frozenBottomGroup: FrozenGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
-  public foregroundGroup: IGroup;
+  public foregroundGroup: Group;
 
   public interaction: RootInteraction;
 
@@ -464,8 +465,8 @@ export abstract class SpreadSheet extends EE {
     height: number = this.options.height,
   ) {
     const canvas = this.getCanvasElement();
-    const containerWidth = this.container.get('width');
-    const containerHeight = this.container.get('height');
+    const { width: containerWidth, height: containerHeight } =
+      this.container.getConfig();
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
@@ -476,14 +477,16 @@ export abstract class SpreadSheet extends EE {
 
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
-    this.container.changeSize(width, height);
+    this.container.resize(width, height);
   }
 
   /**
    * 获取 <canvas/> HTML元素
    */
   public getCanvasElement(): HTMLCanvasElement {
-    return this.container.get('el') as HTMLCanvasElement;
+    return this.container
+      .getContextService()
+      .getDomElement() as HTMLCanvasElement;
   }
 
   public getLayoutWidthType(): LayoutWidthType {
@@ -608,6 +611,7 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups(dom: S2MountContainer) {
+    // TODO: supportCSSTransform g5.0 不支持
     const { width, height, supportCSSTransform, devicePixelRatio } =
       this.options;
     // base canvas group
@@ -615,24 +619,29 @@ export abstract class SpreadSheet extends EE {
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
-      localRefresh: false,
-      supportCSSTransform,
       pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      renderer: new Renderer(),
     });
 
     // the main three layer groups
-    this.backgroundGroup = this.container.addGroup({
-      name: KEY_GROUP_BACK_GROUND,
-      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.panelGroup = this.container.addGroup({
-      name: KEY_GROUP_PANEL_GROUND,
-      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.foregroundGroup = this.container.addGroup({
-      name: KEY_GROUP_FORE_GROUND,
-      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
+    this.backgroundGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_BACK_GROUND,
+        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
+    this.panelGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_GROUND,
+        zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
+      }),
+    );
+    this.foregroundGroup = this.container.appendChild(
+      new Group({
+        name: KEY_GROUP_FORE_GROUND,
+        zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
+      }),
+    );
     this.initPanelGroupChildren();
     this.updateContainerStyle();
   }
@@ -651,7 +660,7 @@ export abstract class SpreadSheet extends EE {
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
       s2: this,
     });
-    this.panelGroup.add(this.panelScrollGroup);
+    this.panelGroup.appendChild(this.panelScrollGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {

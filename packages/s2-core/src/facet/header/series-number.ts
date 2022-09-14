@@ -1,4 +1,4 @@
-import type { Group, IGroup, IShape } from '@antv/g-canvas';
+import { Group, type DisplayObject, Rect } from '@antv/g';
 import { each } from 'lodash';
 import { CellBorderPosition, type Padding } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
@@ -11,9 +11,9 @@ import { translateGroup } from '../utils';
 import { BaseHeader, type BaseHeaderConfig } from './base';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  private backgroundShape: IShape;
+  private backgroundShape: DisplayObject;
 
-  private leftBorderShape: IShape;
+  private leftBorderShape: DisplayObject;
 
   /**
    * Get seriesNumber header by config
@@ -67,9 +67,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   public clip(): void {
     const { width, viewportHeight, scrollY } = this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
+    this.style.clipPath = new Rect({
+      style: {
         x: 0,
         y: scrollY,
         width,
@@ -85,7 +84,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       this.addBackGround();
     }
 
-    const borderGroup = this.addGroup();
+    const borderGroup = this.appendChild(new Group());
     each(data, (cellData) => {
       const { y, height: cellHeight, isLeaf } = cellData;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
@@ -96,12 +95,12 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       );
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
-        const group = this.addGroup();
+        const group = this.appendChild(new Group());
 
         // 添加文本
         this.addText(group, cellData);
 
-        this.add(group);
+        this.appendChild(group);
 
         // 添加边框
         if (!isLeaf) {
@@ -151,7 +150,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
   }
 
-  private addBorder(group: IGroup, cellData) {
+  private addBorder(group: Group, cellData) {
     const cellTheme = this.getStyle().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
@@ -164,7 +163,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     return this.headerConfig.spreadsheet.theme.rowCell;
   }
 
-  private addText(group: IGroup, cellData: Node) {
+  private addText(group: Group, cellData: Node) {
     const { scrollY, viewportHeight: height } = this.headerConfig;
     const textStyle = {
       ...this.getStyle().seriesText,

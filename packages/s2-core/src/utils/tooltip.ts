@@ -2,7 +2,7 @@
  * 获取tooltip中需要显示的数据项
  */
 
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type * as CSS from 'csstype';
 import {
   assign,

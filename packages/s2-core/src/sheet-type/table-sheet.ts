@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
@@ -108,7 +108,7 @@ export class TableSheet extends SpreadSheet {
         name,
         ...commonParams,
       });
-      this.panelGroup.add(g);
+      this.panelGroup.appendChild(g);
       return g;
     });
   }
@@ -142,12 +142,12 @@ export class TableSheet extends SpreadSheet {
   }
 
   protected clearFrozenGroups() {
-    this.frozenRowGroup.set('children', []);
-    this.frozenColGroup.set('children', []);
-    this.frozenTrailingRowGroup.set('children', []);
-    this.frozenTrailingColGroup.set('children', []);
-    this.frozenTopGroup.set('children', []);
-    this.frozenBottomGroup.set('children', []);
+    this.frozenRowGroup.removeChildren();
+    this.frozenColGroup.removeChildren();
+    this.frozenTrailingRowGroup.removeChildren();
+    this.frozenTrailingColGroup.removeChildren();
+    this.frozenTopGroup.removeChildren();
+    this.frozenBottomGroup.removeChildren();
   }
 
   public destroy() {

@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group, Line, Rect } from '@antv/g';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 
@@ -6,7 +6,9 @@ export class Frame extends Group {
   declare cfg: FrameConfig;
 
   constructor(cfg: FrameConfig) {
-    super(cfg);
+    // TODO: cfg 不再挂到 group 上
+    super();
+    this.cfg = cfg;
     this.render();
   }
 
@@ -23,7 +25,7 @@ export class Frame extends Group {
    * 渲染
    */
   public render(): void {
-    this.clear();
+    this.removeChildren();
     this.layout();
   }
 
@@ -56,17 +58,19 @@ export class Frame extends Group {
     const x = position.x + width;
     const y1 = position.y;
     const y2 = position.y + height + viewportHeight;
-    this.addShape('line', {
-      attrs: {
-        x1: x,
-        y1,
-        x2: x,
-        y2,
-        stroke: splitLine.verticalBorderColor,
-        lineWidth: splitLine.verticalBorderWidth,
-        opacity: splitLine.verticalBorderColorOpacity,
-      },
-    });
+    this.appendChild(
+      new Line({
+        style: {
+          x1: x,
+          y1,
+          x2: x,
+          y2,
+          stroke: splitLine.verticalBorderColor,
+          lineWidth: splitLine.verticalBorderWidth,
+          opacity: splitLine.verticalBorderColorOpacity,
+        },
+      }),
+    );
   }
 
   private addCornerBottomBorder() {
@@ -85,17 +89,19 @@ export class Frame extends Group {
     const x2 =
       x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
     const y = position.y + height - 1;
-    this.addShape('line', {
-      attrs: {
-        x1,
-        y1: y,
-        x2,
-        y2: y,
-        stroke: splitLine.horizontalBorderColor,
-        lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.horizontalBorderColorOpacity,
-      },
-    });
+    this.appendChild(
+      new Line({
+        style: {
+          x1,
+          y1: y,
+          x2,
+          y2: y,
+          stroke: splitLine.horizontalBorderColor,
+          lineWidth: splitLine.horizontalBorderWidth,
+          opacity: splitLine.horizontalBorderColorOpacity,
+        },
+      }),
+    );
   }
 
   private addSplitLineShadow() {
@@ -125,15 +131,17 @@ export class Frame extends Group {
     const splitLine = spreadsheet.theme?.splitLine;
     const x = position.x + width;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
-        x,
-        y,
-        width: splitLine.shadowWidth,
-        height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x,
+          y,
+          width: splitLine.shadowWidth,
+          height: viewportHeight + height,
+          fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
+        },
+      }),
+    );
   }
 
   private addSplitLineRightShadow() {
@@ -152,14 +160,16 @@ export class Frame extends Group {
     const splitLine = spreadsheet.theme?.splitLine;
     const x = position.x + width + viewportWidth - splitLine.shadowWidth;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
-        x,
-        y,
-        width: splitLine.shadowWidth,
-        height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x,
+          y,
+          width: splitLine.shadowWidth,
+          height: viewportHeight + height,
+          fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
+        },
+      }),
+    );
   }
 }

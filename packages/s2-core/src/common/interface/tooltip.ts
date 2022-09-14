@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType, SortParam } from '../../common/interface';
