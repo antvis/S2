@@ -1,4 +1,4 @@
-import type { Event } from '@antv/g-canvas';
+import type { FederatedPointerEvent as Event } from '@antv/g';
 import { isEmpty } from 'lodash';
 import type { DataCell } from '../cell';
 import {

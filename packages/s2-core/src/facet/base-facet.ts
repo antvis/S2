@@ -1,6 +1,4 @@
-import type { IElement, IGroup } from '@antv/g-canvas';
-import type { Event as GraphEvent } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
+import { Group, type FederatedPointerEvent as GraphEvent, Rect } from '@antv/g';
 import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
@@ -94,10 +92,10 @@ export abstract class BaseFacet {
   public panelBBox: PanelBBox;
 
   // background (useless now)
-  public backgroundGroup: IGroup;
+  public backgroundGroup: Group;
 
   // render viewport cell
-  public panelGroup: IGroup;
+  public panelGroup: Group;
 
   public panelScrollGroup: PanelScrollGroup;
 
@@ -114,7 +112,7 @@ export abstract class BaseFacet {
   public frozenBottomGroup: FrozenGroup;
 
   // render header/corner/scrollbar/resize
-  public foregroundGroup: IGroup;
+  public foregroundGroup: Group;
 
   public cfg: SpreadSheetFacetCfg;
 
@@ -216,6 +214,7 @@ export abstract class BaseFacet {
   }
 
   hideScrollBar = () => {
+    // TODO: 替换为新方法
     this.hRowScrollBar?.hide();
     this.hScrollBar?.hide();
     this.vScrollBar?.hide();
@@ -249,6 +248,7 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForMobile = () => {
+    // TODO: 移动端滚动事件？是否替换其他手势库
     // mock wheel event fo mobile
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
@@ -401,15 +401,16 @@ export abstract class BaseFacet {
   clipPanelGroup = () => {
     const { width, height } = this.panelBBox;
 
-    this.panelScrollGroup?.setClip({
-      type: 'rect',
-      attrs: {
-        x: 0,
-        y: this.cornerBBox.height,
-        width,
-        height,
-      },
-    });
+    if (this.panelScrollGroup) {
+      this.panelScrollGroup.style.clipPath = new Rect({
+        style: {
+          x: 0,
+          y: this.cornerBBox.height,
+          width,
+          height,
+        },
+      });
+    }
   };
 
   calculateCellWidthHeight = () => {
@@ -493,17 +494,18 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup() {
-    const children = this.panelGroup.getChildren() || [];
+    const children = this.panelGroup.children;
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
       if (child instanceof Group) {
-        child.set('children', []);
+        child.removeChildren();
       } else {
         children[i].remove();
       }
     }
-    this.foregroundGroup.set('children', []);
-    this.backgroundGroup.set('children', []);
+
+    this.foregroundGroup.removeChildren();
+    this.backgroundGroup.removeChildren();
   }
 
   scrollWithAnimation = (
@@ -621,7 +623,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(
+      this.hRowScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset }: ScrollChangeParams) => {
           const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
@@ -653,7 +655,7 @@ export abstract class BaseFacet {
           this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
         },
       );
-      this.foregroundGroup.add(this.hRowScrollBar);
+      this.foregroundGroup.appendChild(this.hRowScrollBar);
     }
   };
 
@@ -697,7 +699,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hScrollBar.on(
+      this.hScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset, updateThumbOffset }: ScrollChangeParams) => {
           const newScrollX = this.getValidScrollBarOffset(offset, maxOffset);
@@ -715,7 +717,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.hScrollBar);
+      this.foregroundGroup.appendChild(this.hScrollBar);
     }
   };
 
@@ -754,7 +756,7 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.vScrollBar.on(
+      this.vScrollBar.addEventListener(
         ScrollType.ScrollChange,
         ({ offset, updateThumbOffset }: ScrollChangeParams) => {
           const newScrollY = this.getValidScrollBarOffset(offset, maxOffset);
@@ -770,7 +772,7 @@ export abstract class BaseFacet {
         },
       );
 
-      this.foregroundGroup.add(this.vScrollBar);
+      this.foregroundGroup.appendChild(this.vScrollBar);
     }
   };
 
@@ -1014,15 +1016,17 @@ export abstract class BaseFacet {
 
   protected clip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-    this.panelScrollGroup?.setClip({
-      type: 'rect',
-      attrs: {
-        x: isFrozenRowHeader ? scrollX : 0,
-        y: scrollY,
-        width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
-        height: this.panelBBox.height,
-      },
-    });
+
+    if (this.panelScrollGroup) {
+      this.panelScrollGroup.style.clipPath = new Rect({
+        style: {
+          x: isFrozenRowHeader ? scrollX : 0,
+          y: scrollY,
+          width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
+          height: this.panelBBox.height,
+        },
+      });
+    }
   }
 
   /**
@@ -1066,7 +1070,7 @@ export abstract class BaseFacet {
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
-    this.panelScrollGroup?.add(cell);
+    this.panelScrollGroup?.appendChild(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
@@ -1083,23 +1087,20 @@ export abstract class BaseFacet {
       each(add, ([i, j]) => {
         const viewMeta = this.layoutResult.getCellMeta(j, i);
         if (viewMeta) {
-          const cell = this.cfg.dataCell?.(viewMeta);
+          const cell = this.cfg.dataCell?.(viewMeta)!;
           // mark cell for removing
-          cell?.set('name', `${i}-${j}`);
-          this.addCell(cell!);
+          cell.name = `${i}-${j}`;
+          this.addCell(cell);
         }
       });
       const allCells = getAllChildCells(
-        this.panelGroup.getChildren() as IElement[],
+        this.panelGroup.children,
         DataCell,
-      );
+      ) as DataCell[];
       // remove cell from panelCell
       each(remove, ([i, j]) => {
-        const findOne = find(
-          allCells,
-          (cell) => cell.get('name') === `${i}-${j}`,
-        );
-        findOne?.remove(true);
+        const findOne = find(allCells, (cell) => cell.name === `${i}-${j}`);
+        findOne?.remove();
       });
 
       DebuggerUtil.getInstance().logger(
@@ -1133,16 +1134,18 @@ export abstract class BaseFacet {
     const { width, height } = this.getCanvasSize();
     const { color, opacity } = this.spreadsheet.theme.background!;
 
-    this.backgroundGroup.addShape('rect', {
-      attrs: {
-        fill: color,
-        opacity,
-        x: 0,
-        y: 0,
-        width,
-        height,
-      },
-    });
+    this.backgroundGroup.appendChild(
+      new Rect({
+        style: {
+          fill: color,
+          opacity,
+          x: 0,
+          y: 0,
+          width,
+          height,
+        },
+      }),
+    );
   }
 
   /**
@@ -1188,14 +1191,14 @@ export abstract class BaseFacet {
     this.centerFrame = this.getCenterFrame();
 
     if (this.rowIndexHeader) {
-      this.foregroundGroup.add(this.rowIndexHeader);
+      this.foregroundGroup.appendChild(this.rowIndexHeader);
     }
     if (this.rowHeader) {
-      this.foregroundGroup.add(this.rowHeader);
+      this.foregroundGroup.appendChild(this.rowHeader);
     }
-    this.foregroundGroup.add(this.columnHeader);
-    this.foregroundGroup.add(this.cornerHeader);
-    this.foregroundGroup.add(this.centerFrame);
+    this.foregroundGroup.appendChild(this.columnHeader);
+    this.foregroundGroup.appendChild(this.cornerHeader);
+    this.foregroundGroup.appendChild(this.centerFrame);
   }
 
   protected getRowHeader(): RowHeader | null {

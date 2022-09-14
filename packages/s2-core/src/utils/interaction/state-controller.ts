@@ -20,7 +20,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
     return false;
   }
   forEach(activeIcons, (icon) => {
-    icon.set('visible', false);
+    icon.setAttribute('visibility', 'hidden');
   });
   spreadsheet.store.set('visibleActionIcons', []);
 

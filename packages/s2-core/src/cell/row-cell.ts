@@ -1,4 +1,4 @@
-import type { Point } from '@antv/g-canvas';
+import type { PointLike } from '@antv/g';
 import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
 import {
@@ -23,6 +23,7 @@ import {
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
+import { CustomRect } from '../engine';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -150,6 +151,7 @@ export class RowCell extends HeaderCell {
 
     // in mobile, we use this cell
     if (isMobile()) {
+      // TODO: 移动端是否可以生效？
       this.gm = new GM(this, {
         gestures: ['Tap'],
       });
@@ -175,8 +177,8 @@ export class RowCell extends HeaderCell {
     const { fill, fontSize } = this.getTextStyle();
     const r = size! / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      x: x + size! / 2, // 和收起展开 icon 保持居中对齐
-      y: textY + (fontSize! - r) / 2,
+      cx: x + size! / 2, // 和收起展开 icon 保持居中对齐
+      cy: textY + (fontSize! - r) / 2,
       r,
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
@@ -260,24 +262,30 @@ export class RowCell extends HeaderCell {
       ? headerWidth - seriesNumberWidth - (x - scrollX)
       : width;
 
-    resizeArea?.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: this.meta.id,
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX,
-          offsetY,
-          width,
-          height,
-          meta: this.meta,
-        }),
-        x: offsetX,
-        y: offsetY + height - resizeStyle.size!,
-        width: resizeAreaWidth,
-      },
+    const attrs = getResizeAreaAttrs({
+      id: this.meta.id,
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      effect: ResizeAreaEffect.Cell,
+      offsetX,
+      offsetY,
+      width,
+      height,
+      meta: this.meta,
     });
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x: offsetX,
+            y: offsetY + height - resizeStyle.size! / 2,
+            width: resizeAreaWidth,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 
   protected getContentIndent() {
@@ -386,7 +394,7 @@ export class RowCell extends HeaderCell {
     };
   }
 
-  protected getTextPosition(): Point {
+  protected getTextPosition(): PointLike {
     const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
 

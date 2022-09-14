@@ -1,4 +1,4 @@
-import type { Event } from '@antv/g-canvas';
+import type { FederatedPointerEvent as Event } from '@antv/g';
 import { InterceptType, S2Event } from '../../../common/constant';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 

@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,

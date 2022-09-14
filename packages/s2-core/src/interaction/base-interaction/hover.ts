@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { forEach, isBoolean, isEmpty } from 'lodash';
 import { S2Event } from '../../common/constant';
 import {

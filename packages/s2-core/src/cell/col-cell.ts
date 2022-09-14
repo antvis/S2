@@ -1,5 +1,6 @@
-import type { Point } from '@antv/g-canvas';
+import type { Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
+import { CustomRect } from '../engine';
 import {
   CellTypes,
   SPLIT_LINE_WIDTH,
@@ -33,7 +34,7 @@ export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
 
   /** 文字绘制起始坐标 */
-  protected textPosition: Point;
+  protected textPosition: PointLike;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -70,7 +71,7 @@ export class ColCell extends HeaderCell {
     return width - this.getActionIconsWidth();
   }
 
-  protected getIconPosition(): Point {
+  protected getIconPosition(): PointLike {
     if (this.meta.isLeaf) {
       return super.getIconPosition(this.getActionIconsCount());
     }
@@ -137,7 +138,7 @@ export class ColCell extends HeaderCell {
     return false;
   }
 
-  protected getTextPosition(): Point {
+  protected getTextPosition(): PointLike {
     const { isLeaf } = this.meta;
     const {
       width,
@@ -221,7 +222,7 @@ export class ColCell extends HeaderCell {
     return this.meta.key;
   }
 
-  protected getColResizeArea() {
+  protected getColResizeArea(): Group {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_COL_RESIZE_AREA,
@@ -254,7 +255,7 @@ export class ColCell extends HeaderCell {
     const resizeAreaName = this.getHorizontalResizeAreaName();
 
     const existedHorizontalResizeArea = resizeArea?.find(
-      (element) => element.attrs.name === resizeAreaName,
+      (element) => element.name === resizeAreaName,
     );
 
     // 如果已经绘制当前列高调整热区热区，则不再绘制
@@ -267,25 +268,31 @@ export class ColCell extends HeaderCell {
       Frame.getVerticalBorderWidth(this.spreadsheet) +
       headerWidth;
     // 列高调整热区
-    resizeArea?.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          id: this.getColResizeAreaKey(),
-          effect: ResizeAreaEffect.Field,
-          offsetX: 0,
-          offsetY: y,
-          width: resizeAreaWidth,
-          height,
-          meta: this.meta,
-        }),
-        name: resizeAreaName,
-        x: 0,
-        y: y + height - resizeStyle.size!,
-        width: resizeAreaWidth,
-      },
+    const attrs = getResizeAreaAttrs({
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      id: this.getColResizeAreaKey(),
+      effect: ResizeAreaEffect.Field,
+      offsetX: 0,
+      offsetY: y,
+      width: resizeAreaWidth,
+      height,
+      meta: this.meta,
     });
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          name: resizeAreaName,
+          style: {
+            ...attrs.style,
+            x: 0,
+            y: y + height - resizeStyle.size! / 2,
+            width: resizeAreaWidth,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 
   protected shouldAddVerticalResizeArea() {
@@ -351,24 +358,30 @@ export class ColCell extends HeaderCell {
 
     // 列宽调整热区
     // 基准线是根据container坐标来的，因此把热区画在container
-    resizeArea?.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          theme: resizeStyle,
-          type: ResizeDirectionType.Horizontal,
-          effect: ResizeAreaEffect.Cell,
-          id: label,
-          offsetX,
-          offsetY,
-          width,
-          height,
-          meta: this.meta,
-        }),
-        x: offsetX + width - resizeStyle.size!,
-        y: offsetY,
-        height,
-      },
+    const attrs = getResizeAreaAttrs({
+      theme: resizeStyle,
+      type: ResizeDirectionType.Horizontal,
+      effect: ResizeAreaEffect.Cell,
+      id: label,
+      offsetX,
+      offsetY,
+      width,
+      height,
+      meta: this.meta,
     });
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x: offsetX + width - resizeStyle.size! / 2,
+            y: offsetY,
+            height,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 
   // 绘制热区
@@ -439,7 +452,7 @@ export class ColCell extends HeaderCell {
       name: 'ExpandColIcon',
       cursor: 'pointer',
     });
-    icon.on('click', () => {
+    icon.addEventListener('click', () => {
       this.spreadsheet.emit(S2Event.LAYOUT_COLS_EXPANDED, this.meta);
     });
   }

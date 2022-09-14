@@ -1,4 +1,4 @@
-import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { FederatedPointerEvent as Event } from '@antv/g';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type {
@@ -474,12 +474,6 @@ export interface OffsetConfig {
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   isLinkFieldText?: boolean;
   cellData?: T;
-}
-
-export interface CellAttrs<T extends Record<string, unknown> = Node>
-  extends ShapeAttrs {
-  text?: string;
-  appendInfo?: CellAppendInfo<T>;
 }
 
 export type S2MountContainer = string | Element;
