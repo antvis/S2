@@ -1,4 +1,4 @@
-import { Group } from '@antv/g';
+import { Group, Rect } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,

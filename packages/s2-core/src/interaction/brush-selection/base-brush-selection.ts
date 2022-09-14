@@ -652,9 +652,13 @@ export class BaseBrushSelection
     });
   }
 
-  protected renderPrepareSelected = (point: PointLike) => {
+  protected renderPrepareSelected = async (point: PointLike) => {
     const { x, y } = point;
-    const target = this.spreadsheet.container.getShape(x, y);
+    // TODO: 5.0 x、y返回的正确否，且他是一个异步的方法
+    const target = await this.spreadsheet.container.document.elementFromPoint(
+      x,
+      y,
+    );
 
     const cell = this.spreadsheet.getCell(target);
     // 只有行头，列头，单元格可以刷选

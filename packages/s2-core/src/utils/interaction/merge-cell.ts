@@ -34,13 +34,13 @@ export const getRectangleEdges = (
   width: number,
   height: number,
 ) => {
-  const topLeft = [x, y];
+  const topLeft: [number, number] = [x, y];
 
-  const topRight = [x + width, y];
+  const topRight: [number, number] = [x + width, y];
 
-  const bottomRight = [x + width, y + height];
+  const bottomRight: [number, number] = [x + width, y + height];
 
-  const bottomLeft = [x, y + height];
+  const bottomLeft: [number, number] = [x, y + height];
 
   return [
     [topLeft, topRight],
@@ -54,8 +54,8 @@ export const getRectangleEdges = (
  * return the edges without overlapping edges
  * @param edges the collection of edges
  */
-export const unique = (edges: number[][][]) => {
-  const result: number[][][] = [];
+export const unique = (edges: [number, number][][]) => {
+  const result: [number, number][][] = [];
   forEach(edges, (edge) => {
     const reverseEdge = [edge[1], edge[0]];
     if (!JSON.stringify(edges).includes(JSON.stringify(reverseEdge))) {
@@ -72,9 +72,9 @@ export const unique = (edges: number[][][]) => {
  * @param edges the collection of edges
  */
 export const getNextEdge = (
-  curEdge: number[][],
-  edges: number[][][],
-): number[][] => {
+  curEdge: [number, number][],
+  edges: [number, number][][],
+): [number, number][] => {
   return find(edges, (edge) => isEqual(edge[0], curEdge[1]));
 };
 
@@ -83,7 +83,7 @@ export const getNextEdge = (
  * @param cells the collection of information of cells which needed be merged
  */
 export const getPolygonPoints = (cells: S2CellType[]) => {
-  let allEdges: number[][][] = [];
+  let allEdges: [number, number][][] = [];
 
   cells.forEach((cell) => {
     const meta = cell.getMeta();
@@ -92,10 +92,10 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   });
   allEdges = unique(allEdges);
 
-  let allPoints: number[][] = [];
+  let allPoints: [number, number][] = [];
   const startEdge = allEdges[0];
   let curEdge = startEdge;
-  let nextEdge: number[][] = [];
+  let nextEdge: [number, number][] = [];
 
   while (!isEqual(startEdge, nextEdge)) {
     allPoints = allPoints.concat(curEdge);

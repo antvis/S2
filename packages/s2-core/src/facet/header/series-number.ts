@@ -1,9 +1,9 @@
-import { Group, type DisplayObject, Rect } from '@antv/g';
+import { Group, type DisplayObject, Rect, Text } from '@antv/g';
 import { each } from 'lodash';
 import { CellBorderPosition, type Padding } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type/index';
 import { getBorderPositionAndStyle } from '../../utils/cell/cell';
-import { renderLine, renderRect } from '../../utils/g-renders';
+import { renderLine, renderRect, renderText } from '../../utils/g-renders';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
@@ -179,15 +179,17 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       textStyle.fontSize,
     );
 
-    group.addShape('text', {
-      attrs: {
-        x: x + padding.left,
-        y: textY,
-        text: label,
-        ...textStyle,
-        cursor: 'pointer',
-      },
-    });
+    group.appendChild(
+      new Text({
+        style: {
+          x: x + padding.left,
+          y: textY,
+          text: label,
+          ...textStyle,
+          cursor: 'pointer',
+        },
+      }),
+    );
   }
 
   private getTextPadding(text: string, cellWidth: number): Padding {

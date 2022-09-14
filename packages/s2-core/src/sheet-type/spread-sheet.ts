@@ -1,5 +1,10 @@
 import EE from '@antv/event-emitter';
-import { Canvas, FederatedPointerEvent as CanvasEvent, Group } from '@antv/g';
+import {
+  Canvas,
+  DisplayObject,
+  FederatedPointerEvent as CanvasEvent,
+  Group,
+} from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
   forEach,
@@ -555,6 +560,7 @@ export abstract class SpreadSheet extends EE {
   public getCell<T extends S2CellType = S2CellType>(
     target: CanvasEvent['target'],
   ): T {
+    // TODO: 5.0 用 composedPath 来替换本方法
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
@@ -562,7 +568,7 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as T;
       }
-      parent = parent.get?.('parent');
+      parent = (parent as DisplayObject)?.parentNode;
     }
     return null;
   }
