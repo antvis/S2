@@ -107,7 +107,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
       }
       return [positionX, positionY];
     },
-  ) as unknown as number[][];
+  ) as unknown as [number, number][];
 
   return {
     points,
@@ -140,8 +140,8 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
 
   for (let i = 0; i < points.length; i++) {
     renderCircle(cell, {
-      x: points[i][0],
-      y: points[i][1],
+      cx: points[i][0],
+      cy: points[i][1],
       r: point?.size,
       fill: point?.fill,
       fillOpacity: point?.opacity,
@@ -336,7 +336,8 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     width: bulletWidth,
     height: progressBar.height,
     fill: backgroundColor,
-    textBaseline: dataCellStyle.text.textBaseline,
+    // TODO: 这个应该不需要的吧，g5.0
+    // textBaseline: dataCellStyle.text.textBaseline,
   });
 
   // 2. 进度条

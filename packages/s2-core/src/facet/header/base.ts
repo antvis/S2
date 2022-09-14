@@ -16,6 +16,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     this.headerConfig = cfg;
   }
 
+  public getHeaderConfig() {
+    return this.headerConfig;
+  }
+
   /**
    * 清空热区，为重绘做准备，防止热区重复渲染
    * @param type 当前重绘的header类型

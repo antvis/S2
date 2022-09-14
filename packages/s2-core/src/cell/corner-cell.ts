@@ -304,12 +304,12 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getIconPosition(): PointLike {
-    const textCfg = this.textShapes?.[0]?.cfg.attrs;
+    const textX = this.textShapes?.[0]?.getAttribute('x');
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle()!.icon!;
 
     const iconX =
-      textCfg?.x +
+      textX +
       cond([
         [matches('center'), constant(this.actualTextWidth / 2)],
         [matches('right'), constant(0)],
