@@ -29,6 +29,21 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
 `;
 
 exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test data label',
+  component: [Function: StrategySheetDataTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetDataTooltip',
+    defaultProps: { showOriginalValue: true }
+  }
+} 1`] = `
+<span
+  class="header-label"
+>
+  test data label
+</span>
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test row label',
   component: [Function: StrategySheetRowTooltip] {
     [length]: 1,

@@ -42,14 +42,14 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   hierarchyType: 'grid',
-  style: {
-    rowCfg: {
-      width: 200,
-    },
-    cellCfg: {
-      height: 50,
-    },
-  },
+  // style: {
+  //   rowCfg: {
+  //     width: 200,
+  //   },
+  //   cellCfg: {
+  //     height: 50,
+  //   },
+  // },
 };
 
 export const sliderOptions: SliderSingleProps = {
