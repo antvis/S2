@@ -6,6 +6,8 @@ import {
   type S2DataConfig,
   customMerge,
   CellTypes,
+  S2Event,
+  S2CellType,
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
@@ -22,8 +24,8 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(container);
-    container.remove();
+    // ReactDOM.unmountComponentAtNode(container);
+    // container.remove();
   });
 
   describe('Render Tests', () => {

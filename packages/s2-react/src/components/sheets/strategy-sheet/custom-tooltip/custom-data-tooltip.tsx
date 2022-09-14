@@ -19,7 +19,7 @@ import './index.less';
 export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   cell,
   label,
-  showOriginalValue,
+  showOriginalValue: showOriginalValueFromTooltip,
 }) => {
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
@@ -49,6 +49,8 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   ) || [value];
 
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
+  const showOriginalValue =
+    valuesCfg?.showOriginalValue || showOriginalValueFromTooltip;
 
   return (
     <div className={cls(tooltipCls(), tooltipCls('data'))}>

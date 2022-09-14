@@ -26,6 +26,7 @@ const s2Options = {
     cellCfg: {
       valuesCfg: {
         originalValueField: 'originalValues',
+        showOriginalValue: true,
         conditions: {
           text: {
             field: 'number',
