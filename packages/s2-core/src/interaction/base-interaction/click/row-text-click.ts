@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { InterceptType, S2Event } from '../../../common/constant';
 import type { RawData } from '../../../common/interface';
 import { getFieldValueOfViewMetaData } from '../../../data-set/cell-data';

@@ -1,4 +1,4 @@
-import type { ShapeAttrs } from '@antv/g-canvas';
+import type { LineStyleProps } from '@antv/g';
 import type { InteractionStateName } from '../constant';
 import type { CellTypes } from '../../common/constant/interaction';
 
@@ -181,7 +181,7 @@ export interface ScrollBarTheme {
   /* 滚动条 hover 态尺寸 */
   hoverSize?: number;
   /** 指定如何绘制每一条线段末端，lineCap?: 'butt' | 'round' | 'square'; */
-  lineCap?: ShapeAttrs['lineCap'];
+  lineCap?: LineStyleProps['lineCap'];
 }
 
 export interface SplitLine {

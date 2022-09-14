@@ -14,6 +14,7 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { CustomRect } from '../engine';
 import { BaseCell } from './base-cell';
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
@@ -104,24 +105,30 @@ export class TableDataCell extends DataCell {
     const resizeWidth =
       headerWidth + Frame.getVerticalBorderWidth(this.spreadsheet);
 
-    resizeArea.addShape('rect', {
+    const attrs = getResizeAreaAttrs({
       id: String(this.meta.rowIndex),
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: String(this.meta.rowIndex),
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX: 0,
-          offsetY,
-          width: resizeWidth,
-          height,
-          meta: this.meta,
-        }),
-        x: 0,
-        y: offsetY + height - resizeStyle!.size!,
-        width: resizeWidth,
-      },
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      effect: ResizeAreaEffect.Cell,
+      offsetX: 0,
+      offsetY,
+      width: resizeWidth,
+      height,
+      meta: this.meta,
     });
+
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x: 0,
+            y: offsetY + height - resizeStyle!.size!,
+            width: resizeWidth,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 }

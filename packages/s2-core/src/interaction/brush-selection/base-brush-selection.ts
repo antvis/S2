@@ -1,4 +1,9 @@
-import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import {
+  type FederatedPointerEvent as CanvasEvent,
+  type DisplayObject,
+  type PointLike,
+  Rect,
+} from '@antv/g';
 import { cloneDeep, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
@@ -48,7 +53,7 @@ export class BaseBrushSelection
 {
   public displayedCells: S2CellType[] = [];
 
-  public prepareSelectMaskShape: IShape;
+  public prepareSelectMaskShape: DisplayObject;
 
   public startBrushPoint: BrushPoint;
 
@@ -81,19 +86,21 @@ export class BaseBrushSelection
     }
     foregroundGroup.removeChild(this.prepareSelectMaskShape);
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
-    this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
-      visible: false,
-      attrs: {
-        width: 0,
-        height: 0,
-        x: 0,
-        y: 0,
-        fill: prepareSelectMaskTheme?.backgroundColor,
-        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
-        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-      },
-      capture: false,
-    });
+    this.prepareSelectMaskShape = foregroundGroup.appendChild(
+      new Rect({
+        style: {
+          width: 0,
+          height: 0,
+          x: 0,
+          y: 0,
+          fill: prepareSelectMaskTheme?.backgroundColor,
+          fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        },
+      }),
+    );
   }
 
   protected setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
@@ -466,11 +473,11 @@ export class BaseBrushSelection
       width: brushRange.width,
       height: brushRange.height,
     });
-    this.prepareSelectMaskShape.show();
+    this.prepareSelectMaskShape.setAttribute('visibility', 'visible');
   }
 
   public hidePrepareSelectMaskShape() {
-    this.prepareSelectMaskShape?.hide();
+    this.prepareSelectMaskShape?.setAttribute('visibility', 'hidden');
   }
 
   protected resetScrollDelta() {
@@ -479,7 +486,7 @@ export class BaseBrushSelection
 
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
     const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
-    const point: Point = {
+    const point: PointLike = {
       x: event?.x,
       y: event?.y,
     };
@@ -650,7 +657,7 @@ export class BaseBrushSelection
     });
   }
 
-  protected renderPrepareSelected = (point: Point) => {
+  protected renderPrepareSelected = (point: PointLike) => {
     const { x, y } = point;
     const target = this.spreadsheet.container.getShape(x, y);
 

@@ -1,5 +1,6 @@
-import type { IGroup, SimpleBBox } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import { findIndex, isNil } from 'lodash';
+import type { SimpleBBox } from '../engine';
 
 import { FrozenCellType } from '../common/constant/frozen';
 import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
@@ -113,26 +114,29 @@ export const optimizeScrollXY = (
 };
 
 export const translateGroup = (
-  group: IGroup,
+  group: Group,
   scrollX: number,
   scrollY: number,
 ) => {
-  const matrix = group?.getMatrix();
-  const preX = matrix?.[6] ?? 0;
-  const preY = matrix?.[7] ?? 0;
-  group?.translate(scrollX - preX, scrollY - preY);
+  if (group) {
+    // TODO: 可能是本地 getLocalPosition
+    const [preX, preY] = group.getPosition();
+    group.translate(scrollX - preX, scrollY - preY);
+  }
 };
 
-export const translateGroupX = (group: IGroup, scrollX: number) => {
-  const matrix = group?.getMatrix();
-  const preX = matrix?.[6] ?? 0;
-  group?.translate(scrollX - preX, 0);
+export const translateGroupX = (group: Group, scrollX: number) => {
+  if (group) {
+    const [preX] = group.getPosition();
+    group.translate(scrollX - preX, 0);
+  }
 };
 
-export const translateGroupY = (group: IGroup, scrollY: number) => {
-  const matrix = group?.getMatrix();
-  const preY = matrix?.[7] ?? 0;
-  group?.translate(0, scrollY - preY);
+export const translateGroupY = (group: Group, scrollY: number) => {
+  if (group) {
+    const [, preY] = group.getPosition();
+    group?.translate(0, scrollY - preY);
+  }
 };
 
 /**

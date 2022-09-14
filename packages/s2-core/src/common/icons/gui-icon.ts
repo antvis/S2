@@ -1,8 +1,9 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
-import { Group, Shape, type ShapeAttrs } from '@antv/g-canvas';
+import { Group, type ImageStyleProps } from '@antv/g';
 import { omit, clone } from 'lodash';
+import { CustomImage } from '../../engine';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
@@ -10,8 +11,9 @@ const STYLE_PLACEHOLDER = '<svg';
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
-export interface GuiIconCfg extends ShapeAttrs {
+export interface GuiIconCfg extends Omit<ImageStyleProps, 'fill'> {
   readonly name: string;
+  readonly fill?: string;
 }
 
 /**
@@ -21,10 +23,14 @@ export class GuiIcon extends Group {
   static type = '__GUI_ICON__';
 
   // icon 对应的 GImage 对象
-  public iconImageShape: Shape.Image;
+  public iconImageShape: CustomImage;
+
+  private cfg: GuiIconCfg;
 
   constructor(cfg: GuiIconCfg) {
-    super(cfg);
+    // TODO: 可能不需要透传 cfg 到 group
+    super({ name: cfg.name, style: cfg });
+    this.cfg = cfg;
     this.render();
   }
 
@@ -89,12 +95,9 @@ export class GuiIcon extends Group {
   private render() {
     const { name, fill } = this.cfg;
     const attrs = clone(this.cfg);
-    const imageShapeAttrs: ShapeAttrs = {
+    const image = new CustomImage(GuiIcon.type, {
       ...omit(attrs, 'fill'),
       type: GuiIcon.type,
-    };
-    const image = new Shape.Image({
-      attrs: imageShapeAttrs,
     });
 
     const cacheKey = `${name}-${fill}`;
@@ -102,12 +105,12 @@ export class GuiIcon extends Group {
     if (img) {
       // already in cache
       image.attr('img', img);
-      this.addShape('image', image);
+      this.appendChild(image);
     } else {
       this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
           image.attr('img', value);
-          this.addShape('image', image);
+          this.appendChild(image);
         })
         .catch((err: Event) => {
           // eslint-disable-next-line no-console

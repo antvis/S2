@@ -1,4 +1,3 @@
-import type { IElement } from '@antv/g-canvas';
 import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
 import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
@@ -204,29 +203,28 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     return getAllChildCells(
-      this.spreadsheet.facet?.panelGroup?.getChildren() as IElement[],
+      this.spreadsheet.facet.panelGroup?.children as DataCell[],
       DataCell,
     );
   }
 
   public getAllRowHeaderCells(): RowCell[] {
-    const children =
-      this.spreadsheet.facet?.foregroundGroup?.getChildren() || [];
+    const children = this.spreadsheet.facet?.foregroundGroup?.children || [];
     const rowHeader = children.find((group) => group instanceof RowHeader);
-    const headerChildren = rowHeader?.cfg?.children || [];
+    // TODO: 不用从 cfg 取 children 了吧
+    const headerChildren = rowHeader?.children || [];
 
-    return getAllChildCells<RowCell>(headerChildren, RowCell).filter(
+    return getAllChildCells(headerChildren as RowCell[], RowCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     );
   }
 
   public getAllColHeaderCells(): ColCell[] {
-    const children =
-      this.spreadsheet.facet?.foregroundGroup?.getChildren() || [];
+    const children = this.spreadsheet.facet?.foregroundGroup?.children || [];
     const colHeader = children.find((group) => group instanceof ColHeader);
-    const headerChildren = colHeader?.cfg?.children || [];
+    const headerChildren = colHeader?.children || [];
 
-    return getAllChildCells<ColCell>(headerChildren, ColCell).filter(
+    return getAllChildCells(headerChildren as ColCell[], ColCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     );
   }
@@ -481,7 +479,7 @@ export class RootInteraction {
   }
 
   public draw() {
-    this.spreadsheet.container.draw();
+    this.spreadsheet.container.render();
   }
 
   public clearState() {

@@ -1,4 +1,5 @@
-import type { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
+import { Group, type RectStyleProps } from '@antv/g';
+import type { SimpleBBox } from '../../engine';
 import {
   FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
   ResizeDirectionType,
@@ -8,7 +9,10 @@ import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 
 export const getResizeAreaAttrs = (
   options: Omit<ResizeInfo, 'size'>,
-): ShapeAttrs => {
+): {
+  style: RectStyleProps;
+  appendInfo: ResizeInfo;
+} => {
   const {
     type,
     id,
@@ -22,11 +26,13 @@ export const getResizeAreaAttrs = (
   const height = type === ResizeDirectionType.Vertical ? theme.size : undefined;
 
   return {
-    fill: theme.background,
-    fillOpacity: theme.backgroundOpacity,
-    cursor: `${type}-resize`,
-    width,
-    height,
+    style: {
+      fill: theme.background,
+      fillOpacity: theme.backgroundOpacity,
+      cursor: `${type}-resize`,
+      width,
+      height,
+    },
     appendInfo: {
       ...otherOptions,
       isResizeArea: true,
@@ -42,21 +48,22 @@ export const getResizeAreaAttrs = (
 export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
-): IGroup | undefined => {
+): Group | undefined => {
   if (!spreadsheet.facet?.foregroundGroup) {
     return;
   }
 
-  const existedResizeArea = spreadsheet.facet.foregroundGroup.findById(
-    id,
-  ) as IGroup;
+  const existedResizeArea =
+    spreadsheet.facet.foregroundGroup.getElementById<Group>(id);
 
   return (
     existedResizeArea ||
-    spreadsheet.facet.foregroundGroup.addGroup({
-      id,
-      zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
-    })
+    spreadsheet.facet.foregroundGroup.appendChild(
+      new Group({
+        id,
+        style: { zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX },
+      }),
+    )
   );
 };
 

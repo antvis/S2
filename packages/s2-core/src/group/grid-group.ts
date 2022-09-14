@@ -1,5 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { KEY_GROUP_GRID_GROUP, SQUARE_LINE_CAP } from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
@@ -10,11 +9,15 @@ export class GridGroup extends Group {
   protected s2: SpreadSheet;
 
   constructor(cfg: GridGroupConstructorParameters) {
-    super(cfg);
-    this.s2 = cfg.s2;
+    const { name, s2, ...rest } = cfg;
+    super({
+      name,
+      style: rest,
+    });
+    this.s2 = s2;
   }
 
-  protected gridGroup: IGroup;
+  protected gridGroup: Group;
 
   protected gridInfo: GridInfo = {
     cols: [],
@@ -27,13 +30,15 @@ export class GridGroup extends Group {
 
     const style = theme.dataCell!.cell;
 
-    if (!this.gridGroup || !this.findById(id)) {
-      this.gridGroup = this.addGroup({
-        id,
-      });
+    if (!this.gridGroup || !this.getElementById(id)) {
+      this.gridGroup = this.appendChild(
+        new Group({
+          id,
+        }),
+      );
     }
 
-    this.gridGroup.clear();
+    this.gridGroup.removeChildren();
 
     const verticalBorderWidth = style?.verticalBorderWidth;
 
@@ -47,12 +52,12 @@ export class GridGroup extends Group {
     const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
     this.gridInfo.cols.forEach((x) => {
       renderLine(
-        this.gridGroup as Group,
+        this.gridGroup,
         {
           x1: x - halfVerticalBorderWidthBorderWidth,
           x2: x - halfVerticalBorderWidthBorderWidth,
-          y1: Math.ceil(bbox.minY + halfVerticalBorderWidthBorderWidth),
-          y2: Math.floor(bbox.maxY - halfVerticalBorderWidthBorderWidth),
+          y1: Math.ceil(bbox.top + halfVerticalBorderWidthBorderWidth),
+          y2: Math.floor(bbox.bottom - halfVerticalBorderWidthBorderWidth),
         },
         {
           stroke: style!.verticalBorderColor,
@@ -67,10 +72,10 @@ export class GridGroup extends Group {
     const halfHorizontalBorderWidth = horizontalBorderWidth! / 2;
     this.gridInfo.rows.forEach((y) => {
       renderLine(
-        this.gridGroup as Group,
+        this.gridGroup,
         {
-          x1: Math.ceil(bbox.minX + halfHorizontalBorderWidth),
-          x2: Math.floor(bbox.maxX - halfHorizontalBorderWidth),
+          x1: Math.ceil(bbox.left + halfHorizontalBorderWidth),
+          x2: Math.floor(bbox.right - halfHorizontalBorderWidth),
           y1: y - halfHorizontalBorderWidth,
           y2: y - halfHorizontalBorderWidth,
         },

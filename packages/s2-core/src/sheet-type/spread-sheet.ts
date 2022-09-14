@@ -1,5 +1,6 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent } from '@antv/g-canvas';
+import { Canvas, FederatedPointerEvent as CanvasEvent } from '@antv/g';
+import { Renderer } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -449,8 +450,8 @@ export abstract class SpreadSheet extends EE {
     height: number = this.options.height!,
   ) {
     const canvas = this.getCanvasElement();
-    const containerWidth = this.container.get('width');
-    const containerHeight = this.container.get('height');
+    const { width: containerWidth, height: containerHeight } =
+      this.container.getConfig();
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
@@ -461,14 +462,16 @@ export abstract class SpreadSheet extends EE {
 
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
-    this.container.changeSize(width, height);
+    this.container.resize(width, height);
   }
 
   /**
    * 获取 <canvas/> HTML元素
    */
   public getCanvasElement(): HTMLCanvasElement {
-    return this.container.get('el') as HTMLCanvasElement;
+    return this.container
+      .getContextService()
+      .getDomElement() as HTMLCanvasElement;
   }
 
   public getLayoutWidthType(): LayoutWidthType {
@@ -593,16 +596,20 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    const { width, height, supportCSSTransform, devicePixelRatio } =
-      this.options;
+    // TODO: supportCSSTransform g5.0 不支持
+    const {
+      width,
+      height,
+      supportCSSTransform,
+      devicePixelRatio = 1,
+    } = this.options;
     // base canvas group
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
-      width: width!,
-      height: height!,
-      localRefresh: false,
-      supportCSSTransform,
-      pixelRatio: Math.max(devicePixelRatio!, MIN_DEVICE_PIXEL_RATIO),
+      width,
+      height,
+      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      renderer: new Renderer(),
     });
 
     this.updateContainerStyle();

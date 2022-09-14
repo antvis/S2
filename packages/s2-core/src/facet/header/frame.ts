@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group, Rect } from '@antv/g';
 import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
@@ -8,7 +8,9 @@ export class Frame extends Group {
   declare cfg: FrameConfig;
 
   constructor(cfg: FrameConfig) {
-    super(cfg);
+    // TODO: cfg 不再挂到 group 上
+    super();
+    this.cfg = cfg;
     this.render();
   }
 
@@ -25,7 +27,7 @@ export class Frame extends Group {
    * 渲染
    */
   public render(): void {
-    this.clear();
+    this.removeChildren();
     this.layout();
   }
 
@@ -215,15 +217,17 @@ export class Frame extends Group {
     const x =
       position.x + cornerWidth + Frame.getVerticalBorderWidth(spreadsheet)!;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
-        x,
-        y,
-        width: shadowWidth,
-        height: cornerHeight + horizontalBorderWidth! + viewportHeight,
-        fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x,
+          y,
+          width: shadowWidth!,
+          height: cornerHeight + horizontalBorderWidth! + viewportHeight,
+          fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
+        },
+      }),
+    );
   }
 
   private addSplitLineRightShadow() {
@@ -248,14 +252,16 @@ export class Frame extends Group {
       viewportWidth -
       shadowWidth!;
     const y = position.y;
-    this.addShape('rect', {
-      attrs: {
-        x,
-        y,
-        width: shadowWidth,
-        height: cornerHeight + horizontalBorderWidth! + viewportHeight,
-        fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
-      },
-    });
+    this.appendChild(
+      new Rect({
+        style: {
+          x,
+          y,
+          width: shadowWidth!,
+          height: cornerHeight + horizontalBorderWidth! + viewportHeight,
+          fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
+        },
+      }),
+    );
   }
 }

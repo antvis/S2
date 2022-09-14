@@ -1,9 +1,10 @@
-import type {
-  Event as CanvasEvent,
-  IGroup,
-  IShape,
-  ShapeAttrs,
-} from '@antv/g-canvas';
+import {
+  type FederatedPointerEvent as CanvasEvent,
+  Group,
+  type DisplayObject,
+  type PathStyleProps,
+  Path,
+} from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
   ResizeInteractionOptions,
@@ -31,13 +32,14 @@ import type {
   ResizePosition,
 } from '../common/interface/resize';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
+import { CustomRect } from '@/engine';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
-  private resizeTarget: IGroup | null;
+  private resizeTarget: Group | null;
 
   private cursorType: string;
 
-  public resizeReferenceGroup: IGroup | null;
+  public resizeReferenceGroup: Group | null;
 
   public resizeStartPosition: ResizePosition = {};
 
@@ -52,48 +54,56 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
     this.resizeReferenceGroup =
-      this.spreadsheet.facet.foregroundGroup.addGroup();
+      this.spreadsheet.facet.foregroundGroup.appendChild(new Group());
 
     const { width, height } = this.spreadsheet.options;
     const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();
-    const attrs: ShapeAttrs = {
+    const style: PathStyleProps = {
       path: '',
       lineDash: guideLineDash,
       stroke: guideLineColor,
       lineWidth: size,
     };
     // 起始参考线
-    this.resizeReferenceGroup.addShape('path', {
-      id: RESIZE_START_GUIDE_LINE_ID,
-      attrs,
-    });
+    this.resizeReferenceGroup.appendChild(
+      new Path({
+        id: RESIZE_START_GUIDE_LINE_ID,
+        style,
+      }),
+    );
     // 结束参考线
-    this.resizeReferenceGroup.addShape('path', {
-      id: RESIZE_END_GUIDE_LINE_ID,
-      attrs,
-    });
+    this.resizeReferenceGroup.appendChild(
+      new Path({
+        id: RESIZE_END_GUIDE_LINE_ID,
+        style,
+      }),
+    );
     // Resize 蒙层
-    this.resizeReferenceGroup.addShape('rect', {
-      id: RESIZE_MASK_ID,
-      attrs: {
-        appendInfo: {
+    this.resizeReferenceGroup.appendChild(
+      new CustomRect(
+        {
+          id: RESIZE_MASK_ID,
+          style: {
+            x: 0,
+            y: 0,
+            width,
+            height,
+            fill: 'transparent',
+          },
+        },
+        {
           isResizeArea: true,
           isResizeMask: true,
         },
-        x: 0,
-        y: 0,
-        width,
-        height,
-        fill: 'transparent',
-      },
-    });
+      ),
+    );
   }
 
   private getResizeAreaTheme() {
     return this.spreadsheet.theme.resizeArea!;
   }
 
-  private setResizeTarget(target: IGroup) {
+  private setResizeTarget(target: Group) {
     this.resizeTarget = target;
   }
 
@@ -110,11 +120,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private getResizeShapes(): IShape[] {
-    return (this.resizeReferenceGroup?.getChildren() as IShape[]) || [];
+  private getResizeShapes(): DisplayObject[] {
+    return (this.resizeReferenceGroup?.children || []) as DisplayObject[];
   }
 
   private setResizeMaskCursor(cursor: string) {
+    // TODO: 是否改成 getById?
     const [, , resizeMask] = this.getResizeShapes();
     resizeMask?.attr('cursor', cursor);
   }
@@ -167,8 +178,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
-      const shape = event.target as IGroup;
-      const originalEvent = event.originalEvent as MouseEvent;
+      const shape = event.target as Group;
+      // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
+      const originalEvent = event.originalEvent as unknown as MouseEvent;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
       this.spreadsheet.store.set('resized', false);
 
@@ -194,24 +206,24 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   // 将 SVG 的 path 转成更可读的坐标对象
   private getResizeGuideLinePosition(): ResizeGuideLinePosition {
-    const [startGuideLineShape, endGuideLineShape] =
-      this.resizeReferenceGroup?.getChildren() || [];
-    const startGuideLinePath: ResizeGuideLinePath[] =
-      startGuideLineShape?.attr('path') || [];
-    const endGuideLinePath: ResizeGuideLinePath[] =
-      endGuideLineShape?.attr('path') || [];
+    // TODO: 是否用 id 来索引图形
+    const [startGuideLineShape, endGuideLineShape] = (this.resizeReferenceGroup
+      ?.children || []) as [Path, Path];
+    const startGuideLinePath = startGuideLineShape?.attr('path') || [];
+    const endGuideLinePath = endGuideLineShape?.attr('path') || [];
 
+    // TODO: 查看 path 取值是否正常
     const [, startX = 0, startY = 0] = startGuideLinePath[0] || [];
     const [, endX = 0, endY = 0] = endGuideLinePath[0] || [];
 
     return {
       start: {
-        x: startX,
-        y: startY,
+        x: +startX,
+        y: +startY,
       },
       end: {
-        x: endX,
-        y: endY,
+        x: +endX,
+        y: +endY,
       },
     };
   }
@@ -378,11 +390,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private showResizeGroup() {
     this.initResizeGroup();
-    this.resizeReferenceGroup?.set('visible', true);
+    this.resizeReferenceGroup?.setAttribute('visibility', 'visible');
   }
 
   private hideResizeGroup() {
-    this.resizeReferenceGroup?.set('visible', false);
+    this.resizeReferenceGroup?.setAttribute('visibility', 'hidden');
   }
 
   private bindMouseUp() {
@@ -392,7 +404,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
       if (
         !this.resizeReferenceGroup ||
-        isEmpty(this.resizeReferenceGroup?.getChildren())
+        isEmpty(this.resizeReferenceGroup?.children)
       ) {
         return;
       }
@@ -403,15 +415,16 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private resizeMouseMove(event: CanvasEvent) {
-    if (!this.resizeReferenceGroup?.get('visible')) {
+    if (this.resizeReferenceGroup?.getAttribute('visibility') === 'hidden') {
       return;
     }
     event?.preventDefault?.();
 
-    const originalEvent = event.originalEvent as MouseEvent;
+    // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
+    const originalEvent = event.originalEvent as unknown as MouseEvent;
     const resizeInfo = this.getResizeInfo();
     const resizeShapes =
-      (this.resizeReferenceGroup.getChildren() as IShape[]) || [];
+      (this.resizeReferenceGroup?.children as DisplayObject[]) || [];
 
     if (isEmpty(resizeShapes)) {
       return;
@@ -442,7 +455,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
   }
 
-  private updateResizeGuideLineTheme(endGuideLineShape: IShape) {
+  private updateResizeGuideLineTheme(endGuideLineShape: DisplayObject) {
     const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
     const { isDisabled } = this.getDisAllowResizeInfo();
     endGuideLineShape.attr(

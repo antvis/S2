@@ -1,12 +1,12 @@
 import {
-  Canvas,
-  Event as CanvasEvent,
-  Group,
-  type LooseObject,
-  Shape,
-} from '@antv/g-canvas';
-import { each, get, isEmpty, isNil } from 'lodash';
-import { GuiIcon } from '../common';
+  type Canvas,
+  type FederatedPointerEvent as CanvasEvent,
+  type Group,
+  DisplayObject,
+  type FederatedEvent,
+} from '@antv/g';
+import { each, isEmpty, isNil } from 'lodash';
+import { CustomImage } from '../engine';
 import {
   CellTypes,
   InteractionKeyboardKey,
@@ -15,10 +15,11 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type { EmitterType, ResizeInfo } from '../common/interface';
+import type { EmitterType } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
+import { getAppendInfo } from '../utils/interaction/common';
 
 interface EventListener {
   target: EventTarget;
@@ -41,7 +42,7 @@ export class EventController {
   public spreadsheet: SpreadSheet;
 
   // 保存触发的元素
-  private target: LooseObject;
+  private target: CanvasEvent['target'];
 
   public canvasEventHandlers: EventHandler[] = [];
 
@@ -104,8 +105,8 @@ export class EventController {
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
-  private isGuiIconShape = (target: LooseObject) => {
-    return target instanceof Shape.Image && target.attrs.type === GuiIcon.type;
+  private isGuiIconShape = (target: CanvasEvent['target']) => {
+    return target instanceof CustomImage;
   };
 
   private onKeyboardCopy(event: KeyboardEvent) {
@@ -226,7 +227,8 @@ export class EventController {
   }
 
   private isResizeArea(event: CanvasEvent) {
-    const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+    // TODO: resize 是否能取到属性
+    const appendInfo = getAppendInfo(event.target as DisplayObject);
     return appendInfo?.isResizeArea;
   }
 
@@ -270,9 +272,11 @@ export class EventController {
           return false;
         }
         if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
-          event.clientX = mouseEvent.clientX;
-          event.clientY = mouseEvent.clientY;
-          event.originalEvent = mouseEvent;
+          // TODO: resize 逻辑，可以不用覆盖 event 的方式传递？后三行都要改
+          event.client.x = mouseEvent.clientX;
+          event.client.y = mouseEvent.clientY;
+          event.originalEvent =
+            mouseEvent as unknown as FederatedEvent<MouseEvent>;
           this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
         }
       };
@@ -481,7 +485,8 @@ export class EventController {
   };
 
   private onCanvasMouseout = (event: CanvasEvent) => {
-    if (!this.isAutoResetSheetStyle || event?.shape) {
+    // TODO: if 第二个条件是判断有 event?.shape，g5没有这个属性了
+    if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
       return;
     }
     const { interaction } = this.spreadsheet;
@@ -575,7 +580,7 @@ export class EventController {
 
   public clearAllEvents() {
     each(this.canvasEventHandlers, ({ type, handler }) => {
-      this.canvasContainer?.off(type, handler);
+      this.canvasContainer?.removeEventListener(type, handler);
     });
     each(this.s2EventHandlers, ({ type, handler }) => {
       this.spreadsheet.off(type, handler);
