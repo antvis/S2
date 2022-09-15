@@ -409,9 +409,7 @@ export const getContentAreaForMultiData = (
   let avgWidth: number;
   let totalWidth = 0;
 
-  const percents = map(widthPercent, (item) =>
-    Number(item) < 1 ? Number(item) : Number(item) / 100,
-  );
+  const percents = map(widthPercent, (item) => (item > 1 ? item / 100 : item));
 
   for (let i = 0; i < size(textValues); i++) {
     curY = y + avgHeight * i;
