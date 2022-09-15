@@ -18,7 +18,8 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test data label',
   component: [Function: StrategySheetDataTooltip] {
     [length]: 1,
-    [name]: 'StrategySheetDataTooltip'
+    [name]: 'StrategySheetDataTooltip',
+    defaultProps: { showOriginalValue: false }
   }
 } 1`] = `
 <span

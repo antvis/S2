@@ -28,7 +28,7 @@ object **必选**,_default：null_ 功能描述：数值单元格配置
 | ------- | ------------ | ------ | ------ | ---- |
 | width   | 单元格宽度   | `number` |    96 | - |
 | height  | 单元格高度   | `number` |    30 | - |
-| valuesCfg  | 单元格配置   | `{ originalValueField?: string, widthPercent?: number[] }` |   | - |
+| valuesCfg  | 单元格配置   | `{ originalValueField?: string, widthPercent?: number[], showOriginalValue?: boolean }` |   | - |
 
 ## ColCfg
 
