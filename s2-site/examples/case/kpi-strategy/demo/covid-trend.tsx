@@ -55,11 +55,11 @@ fetch(
                 ? {
                     // icon 用于指定图标条件格式所使用的 icon 类型
                     icon: 'CellUp',
-                    fill: '#29A294',
+                    fill: '#FF4D4F',
                   }
                 : {
                     icon: 'CellDown',
-                    fill: '#FF4D4F',
+                    fill: '#29A294',
                   };
             },
           },

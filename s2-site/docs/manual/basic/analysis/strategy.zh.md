@@ -20,30 +20,34 @@ order: 9
 const s2Options = {
   width: 600,
   height: 480,
-  cornerText: '指标层级', // 角头对应行头的 label 名
-  hierarchyType: 'customTree', // 必须指定类型
-  style: {  // 染色逻辑，区分指标和副指标
+  cornerText: '指标层级',
+  hierarchyType: 'customTree',
+  conditions: {
+    text: [
+      {
+        field: 'number',
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          if (
+            meta?.fieldValue?.values[0][0] === value ||
+            !value ||
+            !meta?.fieldValue
+          ) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: value > 0 ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+  },
+  style: {
     cellCfg: {
       valuesCfg: {
         originalValueField: 'originalValues',
-        showOriginalValue: true,
-        conditions: {
-          text: {
-            field: 'number',
-            mapping: (value, cellInfo) => {
-              const { meta } = cellInfo;
-
-              if (meta.fieldValue.values[0][0] === value || !value) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: value > 0 ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
       },
     },
   },
