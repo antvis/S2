@@ -6,7 +6,9 @@ import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 // 数据来源：https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_1&city=%E5%9B%9B%E5%B7%9D-%E5%9B%9B%E5%B7%9D
-fetch('../data/chengdu-covid-trend.json')
+fetch(
+  'https://gw.alipayobjects.com/os/antfincdn/AaxWQTWBO/sichuan-covid-trend.json',
+)
   .then((res) => res.json())
   .then((s2DataCfg) => {
     const s2Options = {
