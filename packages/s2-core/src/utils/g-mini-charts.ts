@@ -248,7 +248,12 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     spreadsheet.measureTextWidth(measurePercent, dataCellStyle),
   );
 
-  const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
+  const widthPercent =
+    progressBar?.widthPercent > 1
+      ? progressBar?.widthPercent / 100
+      : progressBar?.widthPercent;
+
+  const bulletWidth = widthPercent * width - measurePercentWidth;
   const measureWidth = width - bulletWidth;
 
   const padding = dataCellStyle.cell.padding;
