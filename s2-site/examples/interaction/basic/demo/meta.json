@@ -28,6 +28,14 @@
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif"
     },
+    {
+      "filename": "brush-header.ts",
+      "title": {
+        "zh": "行列头圈选",
+        "en": "Brush Row and Column Header"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2wKjHcOGD/quanxuanbiaotougongneng.gif"
+    },
 
     {
       "filename": "resize.ts",
