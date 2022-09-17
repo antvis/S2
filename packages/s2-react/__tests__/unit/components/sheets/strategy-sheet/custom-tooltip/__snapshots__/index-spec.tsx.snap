@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StrategySheet Tooltip Tests should render custom derived value 1`] = `
+Array [
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+]
+`;
+
 exports[`StrategySheet Tooltip Tests should render tooltip with {
   label: 'test col label',
   component: [Function: StrategySheetColTooltip] {
