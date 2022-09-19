@@ -30,12 +30,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   ) => {
     return (
       operator && (
-        <TooltipOperator
-          onClick={operator.onClick}
-          menus={operator.menus}
-          onlyMenu={onlyMenu}
-          cell={cell}
-        />
+        <TooltipOperator {...operator} onlyMenu={onlyMenu} cell={cell} />
       )
     );
   };

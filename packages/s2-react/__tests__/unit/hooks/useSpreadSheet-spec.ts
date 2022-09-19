@@ -1,5 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, type S2DataConfig, type S2Options } from '@antv/s2';
+import {
+  PivotSheet,
+  S2Event,
+  type S2DataConfig,
+  type S2Options,
+} from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { cloneDeep } from 'lodash';
@@ -87,5 +92,34 @@ describe('useSpreadSheet tests', () => {
     // });
 
     // expect(s2.store.get('initColumnLeafNodes')).toEqual([]);
+  });
+
+  test('should destroy sheet after unmount component', () => {
+    const onDestroyFromProps = jest.fn();
+    const onDestroyFromS2Event = jest.fn();
+
+    const { result, unmount } = renderHook(() =>
+      useSpreadSheet({
+        ...getConfig(),
+        sheetType: 'pivot',
+        onDestroy: onDestroyFromProps,
+      }),
+    );
+
+    const s2 = result.current.s2Ref.current;
+
+    s2.on(S2Event.LAYOUT_DESTROY, onDestroyFromS2Event);
+
+    const destroySpy = jest
+      .spyOn(s2, 'destroy')
+      .mockImplementationOnce(() => {});
+
+    act(() => {
+      unmount();
+    });
+
+    expect(destroySpy).toHaveBeenCalledTimes(1);
+    expect(onDestroyFromProps).toHaveBeenCalledTimes(1);
+    expect(onDestroyFromS2Event).toHaveBeenCalledTimes(1);
   });
 });

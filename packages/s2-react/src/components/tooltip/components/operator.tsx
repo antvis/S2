@@ -13,7 +13,13 @@ interface TooltipOperatorProps extends BaseTooltipOperatorProps {
 
 export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
   (props) => {
-    const { menus, onlyMenu, onClick: onMenuClick, cell } = props;
+    const {
+      menus,
+      onlyMenu,
+      onClick: onMenuClick,
+      cell,
+      defaultSelectedKeys,
+    } = props;
 
     const renderTitle = (menu: TooltipOperatorMenu) => {
       return (
@@ -60,6 +66,7 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
           <Menu
             className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
             onClick={onMenuClick}
+            defaultSelectedKeys={defaultSelectedKeys}
           >
             {map(menus, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
           </Menu>
@@ -73,6 +80,7 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
             className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
             onClick={onMenuClick}
             key={key}
+            defaultSelectedKeys={defaultSelectedKeys}
           >
             {map(children, (subMenu: TooltipOperatorMenu) =>
               renderMenu(subMenu),

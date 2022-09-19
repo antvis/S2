@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
   customMerge,
@@ -129,6 +131,13 @@ const partDrillDown: PartDrillDown = {
         drillData: drillDownData,
       });
     }),
+};
+
+const getSpreadSheet = (s2: SpreadSheet) => {
+  // @ts-ignore
+  window.s2 = s2;
+  // @ts-ignore
+  window.g_instances = [s2.container];
 };
 
 const CustomTooltip = () => (
@@ -960,15 +969,13 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              getSpreadSheet={(s2) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                window.s2 = s2;
-              }}
+              getSpreadSheet={(s2) => getSpreadSheet(s2)}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
-              onDestroy={logHandler('onDestroy')}
+              onDestroy={logHandler('onDestroy', () => {
+                clearInterval(scrollTimer.current);
+              })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={(cellInfo) => {
@@ -1020,6 +1027,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1052,6 +1060,7 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
           />
         </TabPane>
         <TabPane tab="编辑表" key="editable">

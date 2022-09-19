@@ -1,3 +1,38 @@
+# [@antv/s2-react-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.26.1...@antv/s2-react-v1.27.0) (2022-09-16)
+
+
+### Bug Fixes
+
+* 修复多指标单元格展示错误 ([#1754](https://github.com/antvis/S2/issues/1754)) ([228e101](https://github.com/antvis/S2/commit/228e101e37ab341886427dbbc7d7f3858e778dc5))
+
+
+### Features
+
+* **strategysheet:** 趋势分析表 tooltip 支持显示原始值 ([#1750](https://github.com/antvis/S2/issues/1750)) ([e757b99](https://github.com/antvis/S2/commit/e757b999a85a15d53dfa72bde2805b6b193dcd62))
+
+# [@antv/s2-react-v1.26.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.26.0...@antv/s2-react-v1.26.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* 修复表格 onDestroy 卸载事件无法触发 ([#1733](https://github.com/antvis/S2/issues/1733)) ([2195f1a](https://github.com/antvis/S2/commit/2195f1aec681085ec32ee1446b780e00af901c47))
+* 修复趋势分析表多列头情况下，单元格数据为空引起的复制数据偏移问题 ([#1743](https://github.com/antvis/S2/issues/1743)) ([52ff51c](https://github.com/antvis/S2/commit/52ff51ccb350998eb01330a346c7abfc1e8ba579))
+* 修复闭包导致的pagination被错误重置的问题 ([#1739](https://github.com/antvis/S2/issues/1739)) ([6cfad06](https://github.com/antvis/S2/commit/6cfad06f73d49c8f57a966a145846e383130351f))
+
+# [@antv/s2-react-v1.26.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.25.0...@antv/s2-react-v1.26.0) (2022-09-05)
+
+
+### Bug Fixes
+
+* **types:** 修复严格模式下 S2Options 类型报错 ([#1723](https://github.com/antvis/S2/issues/1723)) ([ef55f55](https://github.com/antvis/S2/commit/ef55f559f940614b19f76fbc5c941e114f220461))
+* 修复 pagination 组件属性透传问题, 简化 usePagination 逻辑 ([#1722](https://github.com/antvis/S2/issues/1722)) ([287753d](https://github.com/antvis/S2/commit/287753d9b960031ee49b08747144a71056a5e503))
+* 修复tooltip 点击空白无法消失的问题 ([#1729](https://github.com/antvis/S2/issues/1729)) ([baa7245](https://github.com/antvis/S2/commit/baa72454702f34ccd9dc5957e8574b8e38087c62))
+
+
+### Features
+
+* 导出组件层CustomTooltip类 ([#1726](https://github.com/antvis/S2/issues/1726)) ([46270ab](https://github.com/antvis/S2/commit/46270ab0ae6e42cf92dcf77c0a35a70e07b9b10c))
+
 # [@antv/s2-react-v1.25.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.24.0...@antv/s2-react-v1.25.0) (2022-08-29)
 
 

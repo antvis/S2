@@ -847,6 +847,7 @@ describe('PivotSheet Tests', () => {
               { key: 'none', text: groupNoneText },
             ],
             onClick: expect.anything(),
+            defaultSelectedKeys: [],
           },
         },
       );
@@ -883,6 +884,10 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'asc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
 
     s2.groupSortByMethod('desc', nodeMeta);
 
@@ -895,6 +900,10 @@ describe('PivotSheet Tests', () => {
       },
     ]);
 
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'desc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['desc']);
     expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
     expect(renderSpy).toHaveBeenCalledTimes(2);
 
@@ -921,6 +930,7 @@ describe('PivotSheet Tests', () => {
         sortMethod: 'asc',
       },
     ]);
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
   });
 
   test('should destroy sheet', () => {
@@ -1117,5 +1127,14 @@ describe('PivotSheet Tests', () => {
 
       sheet.destroy();
     });
+  });
+
+  test('should emit destroy event', () => {
+    const onDestroy = jest.fn();
+    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    s2.destroy();
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 });
