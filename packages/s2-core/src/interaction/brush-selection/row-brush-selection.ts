@@ -91,7 +91,7 @@ export class RowBrushSelection extends BaseBrushSelection {
     const { interaction } = this.spreadsheet;
 
     interaction.changeState({
-      cells: map(this.brushRangeCells, (cell) => getCellMeta(cell)),
+      cells: map(this.brushRangeCells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: (root) => {
         root.updateCells(root.getAllRowHeaderCells());
