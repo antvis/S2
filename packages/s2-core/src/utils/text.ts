@@ -458,7 +458,7 @@ export const drawObjectText = (
   const iconCondition = options?.conditions?.icon?.[0];
 
   if (!isArray(textValues)) {
-    renderMiniChart(textValues, cell);
+    renderMiniChart(cell, textValues);
     return;
   }
 

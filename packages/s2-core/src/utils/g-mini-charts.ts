@@ -11,6 +11,7 @@ import type {
   S2CellType,
 } from '../common/interface';
 import type { RangeColors } from '../common/interface/theme';
+import type { DataCell } from '..';
 import {
   renderCircle,
   renderPolyline,
@@ -19,6 +20,8 @@ import {
   renderText,
 } from '../utils/g-renders';
 import { CellTypes, MiniChartTypes } from '../common/constant';
+import { parseNumberWithPrecision } from '../utils/formatter';
+import { getIntervalScale } from '../utils/condition/condition';
 import { getEllipsisText } from './text';
 
 interface FractionDigitsOptions {
@@ -221,6 +224,63 @@ export const transformRatioToPercent = (
   return formatter.format(value);
 };
 
+// ========================= 条件格式柱图相关 ==============================
+
+/**
+ *  绘制单元格内的 条件格式 柱图
+ */
+export const drawInterval = (cell: DataCell) => {
+  // TODO 行头单元格也支持条件格式后，这里的cell 类型可以开放为 S2CellType
+  if (isEmpty(cell)) {
+    return;
+  }
+
+  const { x, y, height, width } = cell.getCellArea();
+
+  const intervalCondition = cell.findFieldCondition(
+    cell.cellOnditions?.interval,
+  );
+
+  if (intervalCondition && intervalCondition.mapping) {
+    const attrs = cell.mappingValue(intervalCondition);
+    if (!attrs) {
+      return;
+    }
+
+    const valueRange = attrs.isCompare ? attrs : cell.valueRangeByField;
+
+    const minValue = parseNumberWithPrecision(valueRange.minValue);
+    const maxValue = parseNumberWithPrecision(valueRange.maxValue);
+
+    const fieldValue = parseNumberWithPrecision(
+      cell.getMeta().fieldValue as number,
+    );
+    // 对于超出设定范围的值不予显示
+    if (fieldValue < minValue || fieldValue > maxValue) {
+      return;
+    }
+    const barChartHeight =
+      cell.getStyle().miniChart.interval?.height ??
+      cell.getStyle().cell.miniBarChartHeight;
+    const barChartFillColor =
+      cell.getStyle().miniChart.interval?.fill ??
+      cell.getStyle().cell.miniBarChartFillColor;
+
+    const getScale = getIntervalScale(minValue, maxValue);
+    const { zeroScale, scale: intervalScale } = getScale(fieldValue);
+
+    const fill = attrs.fill ?? barChartFillColor;
+
+    return renderRect(cell, {
+      x: x + width * zeroScale,
+      y: y + height / 2 - barChartHeight / 2,
+      width: width * intervalScale,
+      height: barChartHeight,
+      fill,
+    });
+  }
+};
+
 /**
  *  绘制单元格内的 mini子弹图
  */
@@ -303,7 +363,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
         comparativeMeasure.height,
     },
     {
-      stroke: comparativeMeasure.color,
+      stroke: comparativeMeasure?.fill || comparativeMeasure?.color,
       lineWidth: comparativeMeasure.width,
       opacity: comparativeMeasure?.opacity,
     },
@@ -325,7 +385,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 };
 
-export const renderMiniChart = (data: MiniChartData, cell: S2CellType) => {
+export const renderMiniChart = (cell: S2CellType, data?: MiniChartData) => {
   switch (data?.type) {
     case MiniChartTypes.Line:
       drawLine(data, cell);
