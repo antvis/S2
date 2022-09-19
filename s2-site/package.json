@@ -36,7 +36,7 @@
   "dependencies": {
     "@antv/g-canvas": "^0.5.12",
     "@antv/gatsby-theme-antv": "1.1.18-beta.0",
-    "@antv/s2": "1.29.1",
+    "@antv/s2": "1.30.0",
     "@antv/s2-react": "1.26.1",
     "copy-to-clipboard": "^3.3.1",
     "gatsby": "^2.24.2",
