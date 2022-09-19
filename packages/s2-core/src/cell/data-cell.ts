@@ -50,7 +50,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected conditionIconShape: GuiIcon;
 
-  public get cellOnditions() {
+  public get cellConditions() {
     return this.conditions;
   }
 

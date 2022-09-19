@@ -238,7 +238,7 @@ export const drawInterval = (cell: DataCell) => {
   const { x, y, height, width } = cell.getCellArea();
 
   const intervalCondition = cell.findFieldCondition(
-    cell.cellOnditions?.interval,
+    cell.cellConditions?.interval,
   );
 
   if (intervalCondition && intervalCondition.mapping) {
