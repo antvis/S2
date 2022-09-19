@@ -8,7 +8,7 @@ import React, {
 import { Input } from 'antd';
 import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import _ from 'lodash';
+import { pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import invokeComponent, {
@@ -62,7 +62,7 @@ function EditCellComponent(
   } = useMemo(() => {
     const scroll = spreadsheet.facet.getScrollOffset();
 
-    const cellMeta = _.pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
+    const cellMeta = pick(cell.getMeta(), ['x', 'y', 'width', 'height']);
 
     cellMeta.x -= scroll.scrollX || 0;
     cellMeta.y -=
