@@ -304,19 +304,22 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   // 所以子弹图需要为数值预留宽度
   // 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
   const measurePercent = transformRatioToPercent(measure, 2);
-  const measurePercentWidth = Math.ceil(
-    spreadsheet.measureTextWidth(measurePercent, dataCellStyle),
-  );
-
-  const bulletWidth = progressBar.widthPercent * width - measurePercentWidth;
-  const measureWidth = width - bulletWidth;
+  const widthPercent =
+    progressBar?.widthPercent > 1
+      ? progressBar?.widthPercent / 100
+      : progressBar?.widthPercent;
 
   const padding = dataCellStyle.cell.padding;
+  const contentWidth = width - padding.left - padding.right;
+
+  // 子弹图先占位(bulletWidth)，剩下空间给文字(measureWidth)
+  const bulletWidth = widthPercent * contentWidth;
+  const measureWidth = contentWidth - bulletWidth;
 
   // TODO 先支持默认右对齐
   // 绘制子弹图
   // 1. 背景
-  const positionX = x + width - padding.right - padding.left - bulletWidth;
+  const positionX = x + width - padding.right - bulletWidth;
   const positionY = y + height / 2 - progressBar.height / 2;
 
   renderRect(cell, {
@@ -378,7 +381,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     getEllipsisText({
       measureTextWidth: spreadsheet.measureTextWidth,
       text: measurePercent,
-      maxWidth: measureWidth,
+      maxWidth: measureWidth - padding.right,
       fontParam: dataCellStyle.text,
     }),
     dataCellStyle.text,

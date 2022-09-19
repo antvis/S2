@@ -6,6 +6,7 @@ import {
   isNil,
   isNumber,
   isString,
+  map,
   memoize,
   size,
   toString,
@@ -408,14 +409,16 @@ export const getContentAreaForMultiData = (
   let avgWidth: number;
   let totalWidth = 0;
 
+  const percents = map(widthPercent, (item) => (item > 1 ? item / 100 : item));
+
   for (let i = 0; i < size(textValues); i++) {
     curY = y + avgHeight * i;
     const rows: SimpleBBox[] = [];
     curX = x;
     totalWidth = 0;
     for (let j = 0; j < size(textValues[i]); j++) {
-      avgWidth = !isEmpty(widthPercent)
-        ? width * widthPercent[j]
+      avgWidth = !isEmpty(percents)
+        ? width * percents[j]
         : width / size(textValues[0]); // 指标个数相同，任取其一即可
 
       curX = calX(x, { left: 0, right: 0 }, totalWidth, 'left');

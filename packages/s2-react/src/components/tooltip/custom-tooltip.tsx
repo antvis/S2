@@ -24,6 +24,8 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
+    // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
+    this.unmountComponentAtNode();
     ReactDOM.render(
       <TooltipComponent {...tooltipProps} content={content} />,
       this.container,
@@ -32,6 +34,10 @@ export class CustomTooltip extends BaseTooltip {
 
   destroy() {
     super.destroy();
+    this.unmountComponentAtNode();
+  }
+
+  private unmountComponentAtNode() {
     if (this.container) {
       ReactDOM.unmountComponentAtNode(this.container);
     }

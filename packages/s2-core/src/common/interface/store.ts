@@ -3,6 +3,7 @@ import type {
   InteractionOptions,
   InteractionStateInfo,
   S2CellType,
+  SortMethod,
   SortParam,
   ViewMeta,
 } from '../interface';
@@ -88,5 +89,9 @@ export interface StoreKey {
   // last click cell
   lastClickedCell: S2CellType<ViewMeta>;
   initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
+
+  // 排序方式
+  sortMethodMap: Record<string, SortMethod>;
+
   [key: string]: unknown;
 }

@@ -89,7 +89,7 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
       width: 400,
       height: 100,
       valuesCfg: {
-        widthPercent: [0.4, 0.2, 0.2, 0.2],
+        widthPercent: [40, 0.2, 0.2, 0.2],
       },
     },
   },

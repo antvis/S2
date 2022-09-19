@@ -378,7 +378,7 @@ export const getTheme = (
         // ------------- bullet graph -----------------
         bullet: {
           progressBar: {
-            widthPercent: 0.75,
+            widthPercent: 0.6,
             height: 10,
             innerHeight: 6,
           },
