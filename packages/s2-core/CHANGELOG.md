@@ -1,3 +1,18 @@
+# [@antv/s2-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-v1.29.1...@antv/s2-v1.30.0) (2022-09-16)
+
+
+### Bug Fixes
+
+* 修复合并单元格条件格式不生效问题 close [#1751](https://github.com/antvis/S2/issues/1751) ([#1753](https://github.com/antvis/S2/issues/1753)) ([50570cd](https://github.com/antvis/S2/commit/50570cdd717cd152d8090aa737ce722621a844aa))
+* 修复多指标单元格展示错误 ([#1754](https://github.com/antvis/S2/issues/1754)) ([228e101](https://github.com/antvis/S2/commit/228e101e37ab341886427dbbc7d7f3858e778dc5))
+* 子弹图左侧文字未对齐 ([#1759](https://github.com/antvis/S2/issues/1759)) ([d061d47](https://github.com/antvis/S2/commit/d061d47d5bff271aa77c1c00551985110eac0405))
+
+
+### Features
+
+* **strategysheet:** 趋势分析表 tooltip 支持显示原始值 ([#1750](https://github.com/antvis/S2/issues/1750)) ([e757b99](https://github.com/antvis/S2/commit/e757b999a85a15d53dfa72bde2805b6b193dcd62))
+* 圈选复制行列头功能 ([#1742](https://github.com/antvis/S2/issues/1742)) ([5a0a942](https://github.com/antvis/S2/commit/5a0a94206edf5e6da64a1869ad3871ed203fb08c))
+
 # [@antv/s2-v1.29.1](https://github.com/antvis/S2/compare/@antv/s2-v1.29.0...@antv/s2-v1.29.1) (2022-09-13)
 
 
