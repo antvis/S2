@@ -742,8 +742,7 @@ export abstract class SpreadSheet extends EE {
     sortMethod: SortMethod,
     replace = false,
   ) {
-    const lastSortMethodMap = !replace && this.store.get('sortMethodMap');
-
+    const lastSortMethodMap = !replace ? this.store.get('sortMethodMap') : null;
     this.store.set('sortMethodMap', {
       ...lastSortMethodMap,
       [nodeId]: sortMethod,
@@ -752,9 +751,6 @@ export abstract class SpreadSheet extends EE {
 
   public getMenuDefaultSelectedKeys(nodeId: string): string[] {
     const sortMethodMap = this.store.get('sortMethodMap');
-    if (!sortMethodMap) {
-      return [];
-    }
     const selectedSortMethod = get(sortMethodMap, nodeId);
     return selectedSortMethod ? [selectedSortMethod] : [];
   }
