@@ -14,6 +14,7 @@ import {
 } from '../common/constant';
 import type {
   S2Options,
+  SortMethod,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
@@ -156,13 +157,16 @@ export class TableSheet extends SpreadSheet {
     this.off(S2Event.RANGE_FILTER);
   }
 
-  public onSortTooltipClick = ({ key }, meta) => {
+  // TODO: 好迷的写法, 拿到 key 又硬要写成 {key: key} 然后又解构一次, 不确定有没有被外面调用, 暂时不动
+  public onSortTooltipClick = ({ key }: { key: SortMethod }, meta: Node) => {
     const { field } = meta;
 
     const sortParam: SortParam = {
       sortFieldId: field,
-      sortMethod: key as unknown as SortParam['sortMethod'],
+      sortMethod: key,
     };
+
+    this.updateSortMethodMap(meta.id, key);
     // 触发排序事件
     this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
@@ -171,10 +175,14 @@ export class TableSheet extends SpreadSheet {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
+    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const operator: TooltipOperatorOptions = {
-      onClick: (params: { key: string }) =>
-        this.onSortTooltipClick(params, meta),
+      onClick: ({ key }) => {
+        const sortMethod = key as unknown as SortMethod;
+        this.onSortTooltipClick({ key: sortMethod }, meta);
+      },
       menus: getTooltipOperatorTableSortMenus(),
+      defaultSelectedKeys,
     };
 
     this.showTooltipWithInfo(event, [], {
