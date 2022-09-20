@@ -1,4 +1,9 @@
-import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
+import {
+  type Data,
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type S2DataConfig,
+} from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 
@@ -259,9 +264,9 @@ export const StrategySheetDataConfig: S2DataConfig = {
     },
 
     // 净增目标完成度子弹图数据
-    getKPIMockData(),
+    getKPIMockData() as unknown as Data,
     // 趋势图数据
-    getMiniChartMockData(),
+    getMiniChartMockData() as unknown as Data,
     {
       'measure-a': {
         originalValues: [[377, '']],
