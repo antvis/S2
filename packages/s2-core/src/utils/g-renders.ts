@@ -72,7 +72,7 @@ export function renderText(
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: DisplayObject) => {
       if (group.contains(shape)) {
-        group.removeChild(shape, true);
+        group.removeChild(shape);
       }
     });
   }

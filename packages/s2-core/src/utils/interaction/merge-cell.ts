@@ -312,7 +312,7 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
     sheet.setOptions({
       mergedCellsInfo: newMergedCellsInfo,
     });
-    removedCells.remove(true);
+    removedCells.remove();
   }
 };
 
