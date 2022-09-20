@@ -310,7 +310,7 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
     sheet.setOptions({
       mergedCellsInfo: newMergedCellsInfo,
     });
-    removedCells.remove(true);
+    removedCells.remove();
   }
 };
 
@@ -413,7 +413,7 @@ export const updateMergedCells = (
     const oldMergedCell = find(oldMergedCells, (mergedCell) => {
       return isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id);
     });
-    oldMergedCell?.remove(true);
+    oldMergedCell?.remove();
   });
   // add new MergedCells
   forEach(addTempMergedCells, ({ cells, viewMeta }) => {

@@ -1042,7 +1042,7 @@ export abstract class BaseFacet {
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(allCells, (cell) => cell.name === `${i}-${j}`);
-        findOne?.remove(true);
+        findOne?.remove();
       });
 
       DebuggerUtil.getInstance().logger(
