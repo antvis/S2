@@ -59,7 +59,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   public clear() {
     this.scrollGroup?.removeChildren();
-    this.background?.remove(true);
+    this.background?.remove();
   }
 
   protected getCellInstance(

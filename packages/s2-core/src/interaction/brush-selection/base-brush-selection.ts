@@ -84,7 +84,7 @@ export class BaseBrushSelection
     if (!foregroundGroup) {
       return;
     }
-    this.prepareSelectMaskShape?.remove(true);
+    this.prepareSelectMaskShape?.remove();
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     this.prepareSelectMaskShape = foregroundGroup.appendChild(
       new Rect({
@@ -657,10 +657,10 @@ export class BaseBrushSelection
     });
   }
 
-  protected renderPrepareSelected = async (point: PointLike) => {
+  protected renderPrepareSelected = (point: PointLike) => {
     const { x, y } = point;
     // TODO: 5.0 x、y返回的正确否，且他是一个异步的方法
-    const target = await this.spreadsheet.container.document.elementFromPoint(
+    const target = this.spreadsheet.container.document.elementFromPointSync(
       x,
       y,
     );
