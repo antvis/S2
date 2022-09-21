@@ -23,12 +23,27 @@ import {
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
+  private clickTimer: number;
+
+  private clickCount = 0;
+
   public bindEvents() {
     this.bindDataCellClick();
   }
 
+  // TODO: 抽公共逻辑
+  private countClick() {
+    window.clearTimeout(this.clickTimer);
+    this.clickTimer = window.setTimeout(() => {
+      this.clickCount = 0;
+    }, 200);
+    this.clickCount++;
+  }
+
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
+      this.countClick();
+
       event.stopPropagation();
 
       const { interaction, options } = this.spreadsheet;
@@ -53,8 +68,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
 
       if (interaction.isSelectedCell(cell)) {
-        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail属性来判断是否是双击，双击时不触发选择态reset
-        if ((event.originalEvent as UIEvent)?.detail === 1) {
+        // 双击时不触发选择态reset
+        // g5.0 mouseup 底层监听的是 pointerup，detail为0，需自行判断是否双击
+        if (this.clickCount <= 1) {
           interaction.reset();
         }
         return;
