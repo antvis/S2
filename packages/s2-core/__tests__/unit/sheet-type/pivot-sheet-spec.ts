@@ -847,6 +847,7 @@ describe('PivotSheet Tests', () => {
               { key: 'none', text: groupNoneText },
             ],
             onClick: expect.anything(),
+            defaultSelectedKeys: [],
           },
         },
       );
@@ -883,6 +884,10 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'asc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
 
     s2.groupSortByMethod('desc', nodeMeta);
 
@@ -895,6 +900,10 @@ describe('PivotSheet Tests', () => {
       },
     ]);
 
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'desc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['desc']);
     expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
     expect(renderSpy).toHaveBeenCalledTimes(2);
 
@@ -921,6 +930,7 @@ describe('PivotSheet Tests', () => {
         sortMethod: 'asc',
       },
     ]);
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
   });
 
   test('should destroy sheet', () => {

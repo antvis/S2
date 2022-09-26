@@ -66,6 +66,7 @@ export const createFakeSpreadSheet = () => {
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
   s2.showTooltipWithInfo = jest.fn();
+  s2.isTableMode = jest.fn();
 
   return s2;
 };

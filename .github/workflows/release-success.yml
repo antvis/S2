@@ -39,7 +39,7 @@ jobs:
       - name: Sleep 5m
         uses: juliangruber/sleep-action@v1
         with:
-          time: 5m
+          time: 20m
 
       - name: Install dependencies
         run: yarn

@@ -1,4 +1,14 @@
-import { map, zip, escape } from 'lodash';
+import {
+  escape,
+  every,
+  filter,
+  forEach,
+  isEmpty,
+  map,
+  max,
+  repeat,
+  zip,
+} from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -12,6 +22,7 @@ import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
+import type { ColCell, RowCell } from '../../cell';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -102,11 +113,16 @@ export const convertString = (v: string) => {
 /**
  * 根据 id 计算出行头或者列头展示的文本数组
  * 将 id : root[&]家具[&]桌子[&]price"
- * 转换为 List: ['四川省', '成都市']
+ * startLevel 不传, 转换为 List: ['家具', '桌子', 'price']
+ * startLevel = 1, 转换为 List: ['家具', '桌子', 'price']
  * @param headerId
+ * @param startLevel 层级
  */
-const getHeaderList = (headerId: string) => {
+const getHeaderList = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(ID_SEPARATOR);
+  if (startLevel) {
+    return headerList.slice(headerList.length - startLevel);
+  }
   headerList.shift(); // 去除 root
   return headerList;
 };
@@ -145,7 +161,7 @@ function pickDataFromCopyable(
   }
   return (
     ([].concat(copyable) as CopyableItem[])
-      .filter((item) => item.type === type)
+      .filter((item) => item?.type === type)
       .map((item) => item.content)[0] || ''
   );
 }
@@ -523,12 +539,76 @@ const getDataWithHeaderMatrix = (
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
-export const getSelectedData = (spreadsheet: SpreadSheet): string => {
-  const interaction = spreadsheet.interaction;
-  const { copyWithHeader } = spreadsheet.options.interaction;
+function getAllLevels(interactedCells: RowCell[] | ColCell[]) {
+  const allLevels = new Set<number>();
+  forEach(interactedCells, (cell: RowCell | ColCell) => {
+    const level = cell.getMeta().level;
+    if (allLevels.has(level)) {
+      return;
+    }
+    allLevels.add(level);
+  });
+  return allLevels;
+}
 
-  const cells = interaction.getState().cells || [];
+function getLastLevelCells(
+  interactedCells: RowCell[] | ColCell[],
+  maxLevel: number,
+) {
+  return filter(interactedCells, (cell: RowCell | ColCell) => {
+    const meta = cell.getMeta();
+    const isLastLevel = meta.level === maxLevel;
+    const isLastTotal = meta.isTotals && isEmpty(meta.children);
+    return isLastLevel || isLastTotal;
+  });
+}
+
+function getCellMatrix(
+  lastLevelCells: Array<RowCell | ColCell>,
+  maxLevel: number,
+  allLevel: Set<number>,
+) {
+  return map(lastLevelCells, (cell: RowCell | ColCell) => {
+    const meta = cell.getMeta();
+    const { id, label, isTotals, level } = meta;
+    let cellId = id;
+    // 为总计小计补齐高度
+    if (isTotals && level !== maxLevel) {
+      cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
+    }
+    return getHeaderList(cellId, allLevel.size);
+  });
+}
+
+function getBrushHeaderCopyable(
+  interactedCells: RowCell[] | ColCell[],
+): Copyable {
+  // 获取圈选的层级有哪些
+  const allLevels = getAllLevels(interactedCells);
+  const maxLevel = max(Array.from(allLevels)) ?? 0;
+  // 获取最后一层的 cell
+  const lastLevelCells = getLastLevelCells(interactedCells, maxLevel);
+
+  // 拼接选中行列头的内容矩阵
+  const isCol = interactedCells[0].cellType === CellTypes.COL_CELL;
+  let cellMatrix = getCellMatrix(lastLevelCells, maxLevel, allLevels);
+
+  // 如果是列头，需要转置
+  if (isCol) {
+    cellMatrix = zip(...cellMatrix);
+  }
+  return [
+    matrixPlainTextTransformer(cellMatrix),
+    matrixHtmlTransformer(cellMatrix),
+  ];
+}
+
+function getDataCellCopyable(
+  spreadsheet: SpreadSheet,
+  cells: CellMeta[],
+): Copyable {
   let data: Copyable;
+
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
   const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
 
@@ -538,7 +618,10 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     // 树状模式透视表之后实现
     return;
   }
-  if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
+  if (
+    spreadsheet.interaction.getCurrentStateName() ===
+    InteractionStateName.ALL_SELECTED
+  ) {
     data = processColSelected(displayData, spreadsheet, []);
   } else if (selectedCols.length) {
     data = processColSelected(displayData, spreadsheet, selectedCols);
@@ -551,7 +634,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
-    if (copyWithHeader) {
+    if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData,
@@ -560,6 +643,30 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
     } else {
       data = processCopyData(displayData, selectedCellsMeta, spreadsheet);
     }
+  }
+  return data;
+}
+
+export const getSelectedData = (spreadsheet: SpreadSheet): string => {
+  const interaction = spreadsheet.interaction;
+  const cells = interaction.getState().cells || [];
+  let data: Copyable;
+  // 通过判断当前存在交互的单元格，来区分圈选行/列头 还是 点选行/列头
+  const interactedCells = interaction.getInteractedCells() ?? [];
+  const isBrushHeader = isEmpty(interactedCells)
+    ? false
+    : every(interactedCells, (cell) => {
+        return (
+          cell.cellType === CellTypes.ROW_CELL ||
+          cell.cellType === CellTypes.COL_CELL
+        );
+      });
+
+  // 行列头圈选复制 和 单元格复制不同
+  if (isBrushHeader) {
+    data = getBrushHeaderCopyable(interactedCells as RowCell[] | ColCell[]);
+  } else {
+    data = getDataCellCopyable(spreadsheet, cells);
   }
 
   if (data) {

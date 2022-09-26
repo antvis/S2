@@ -221,7 +221,7 @@ describe('Text Utils Tests', () => {
       [20, 30, 40],
     ];
 
-    const boxes = getContentAreaForMultiData(box, multiData, [0.4, 0.2, 0.4]);
+    const boxes = getContentAreaForMultiData(box, multiData, [40, 0.2, 0.4]);
 
     expect(boxes).toEqual([
       [

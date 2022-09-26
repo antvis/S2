@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { createMockCellInfo } from '../../../../../util/helpers';
+import ReactDOM from 'react-dom';
+import { createMockCellInfo, getContainer } from '../../../../../util/helpers';
 import {
   StrategySheetColTooltip,
   StrategySheetDataTooltip,
@@ -29,12 +30,13 @@ describe('StrategySheet Tooltip Tests', () => {
     expect(screen.getByText(label)).toMatchSnapshot();
   });
 
-  test('should hidden original value', () => {
-    const originalValues = [1.1, 2.2, 3.3];
+  test('should show original value', () => {
+    // [数值, 衍生指标1, 衍生指标2]
+    const originalValues = [1.1, 0.02, 0.03];
 
     jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => ({
       fieldValue: {
-        values: ['1', '2', '3'],
+        values: ['1222', '2%', '3%'],
         originalValues,
       },
       spreadsheet: {
@@ -49,15 +51,30 @@ describe('StrategySheet Tooltip Tests', () => {
         },
       },
     }));
+
+    const container = getContainer();
+
+    ReactDOM.render(
+      <StrategySheetDataTooltip
+        cell={mockCellInfo.mockCell}
+        showOriginalValue
+      />,
+      container,
+    );
+
+    expect(
+      container.querySelector('.s2-strategy-sheet-tooltip-original-value'),
+    ).toBeDefined();
+  });
+
+  test('should render custom derived value', () => {
     render(
       <StrategySheetDataTooltip
         cell={mockCellInfo.mockCell}
-        showOriginalValue={false}
+        renderDerivedValue={() => 'customDerivedValue'}
       />,
     );
-
-    originalValues.forEach((value) => {
-      expect(screen.getByText(value)).not.toBeDefined();
-    });
+    expect(screen.getAllByText('customDerivedValue')).toHaveLength(3);
+    expect(screen.getAllByText('customDerivedValue')).toMatchSnapshot();
   });
 });

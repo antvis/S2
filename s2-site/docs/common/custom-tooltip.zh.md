@@ -88,6 +88,7 @@ object **可选**,_default：null_ 功能描述： tooltip 操作栏配置
 | ------- | -------------------------------------------- | :---: | ------ | ------------------------------------------------------------------------------------------ |
 | menus   | [TooltipOperatorMenu[]](#tooltipoperatormenu)  |     |        | 操作项列表  |
 | onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
+| defaultSelectedKeys   | `string[]`  |     |        | 初始选中的菜单项 key 数组，透传 `antd` `Menu` 组件的 [defaultSelectedKeys](https://ant.design/components/menu-cn/#Menu)  |
 
 ##### TooltipOperatorMenu
 
