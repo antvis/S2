@@ -1,4 +1,6 @@
-export const customTreeFields = {
+import type { S2DataConfig } from '@antv/s2';
+
+export const customTreeFields: S2DataConfig['fields'] = {
   rows: [],
   columns: ['type', 'sub_type'],
   values: [

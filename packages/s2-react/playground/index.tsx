@@ -49,7 +49,7 @@ import type {
 } from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
+import { customTreeData } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   StrategySheetDataConfig,
@@ -1029,7 +1029,7 @@ function MainLayout() {
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
             dataCfg={{
-              data: dataCustomTrees,
+              data: customTreeData,
               fields: customTreeFields,
             }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}

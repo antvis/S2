@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last } from 'lodash';
+import { clone, isString, last } from 'lodash';
 import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
@@ -17,6 +17,7 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import { PivotDataSet } from '../data-set';
+import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
@@ -31,6 +32,13 @@ export class PivotSheet extends SpreadSheet {
 
     if (hierarchyType === 'customTree') {
       return new CustomTreePivotDataSet(this);
+    }
+
+    const isCustomTreeFields = this.dataCfg.fields.rows.some(
+      (field) => !isString(field),
+    );
+    if (isCustomTreeFields) {
+      return new CustomGridPivotDataSet(this);
     }
 
     return new PivotDataSet(this);

@@ -9,6 +9,8 @@ import {
   fields,
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { customTreeData } from '../__tests__/data/data-custom-trees';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -20,7 +22,7 @@ export const tableSheetDataCfg: S2DataConfig = {
 };
 
 export const pivotSheetDataCfg: S2DataConfig = {
-  data,
+  data: customTreeData,
   totalData,
   meta: [
     ...meta,
@@ -39,88 +41,91 @@ export const pivotSheetDataCfg: S2DataConfig = {
   ],
   fields: {
     ...fields,
-    rows: [
-      {
-        key: 'a-1',
-        title: '自定义行节点1',
-        description: '自定义行节点1描述',
-        children: [
-          {
-            key: 'a-1-1',
-            title: '行指标1',
-            description: '行指标1描述',
-          },
-          {
-            key: 'a-1-2',
-            title: '自定义行节点2',
-            description: '自定义行节点2描述',
-            // children: [
-            //   {
-            //     key: 'a-1-2-1',
-            //     title: '行节点指标2-指标1',
-            //     description: '行节点指标2-指标1描述',
-            //   },
-            // ],
-          },
-        ],
-      },
-      {
-        key: 'a-2',
-        title: '自定义行节点2',
-        description: '自定义行节点2描述',
-        children: [
-          {
-            key: 'a-2-1',
-            title: '行指标2',
-            description: '行指标2描述',
-          },
-          {
-            key: 'a-2-2',
-            title: '自定义行节点2-2',
-            description: '自定义行节点2描述',
-            children: [],
-          },
-        ],
-      },
-    ],
-    columns: [
-      {
-        key: 'b-1',
-        title: '自定义列节点1',
-        description: '自定义列节点1描述',
-        children: [
-          {
-            key: 'b-1-1',
-            title: '自定义列节点2',
-            description: '自定义列节点2描述',
-            children: [],
-          },
-          {
-            key: 'b-1-2',
-            title: '自定义列节点3',
-            description: '自定义列节点3描述',
-          },
-        ],
-      },
-      {
-        key: 'b-2',
-        title: '自定义列节点2',
-        description: '自定义列节点2描述',
-        children: [
-          {
-            key: 'b-2-1',
-            title: '自定义列节点2-1',
-            description: '自定义列节点2-1描述',
-            children: [],
-          },
-          {
-            key: 'b-2-2',
-            title: '自定义列节点2-2',
-            description: '自定义列节点2-2描述',
-          },
-        ],
-      },
-    ],
+    rows: customTreeFields.customTreeItems,
+    values: customTreeFields.values,
+    columns: customTreeFields.columns,
+    // rows: [
+    //   {
+    //     key: 'a-1',
+    //     title: '自定义行节点1',
+    //     description: '自定义行节点1描述',
+    //     children: [
+    //       {
+    //         key: 'a-1-1',
+    //         title: '行指标1',
+    //         description: '行指标1描述',
+    //       },
+    //       {
+    //         key: 'a-1-2',
+    //         title: '自定义行节点2',
+    //         description: '自定义行节点2描述',
+    //         children: [
+    //           {
+    //             key: 'a-1-2-1',
+    //             title: '行节点指标2-指标1',
+    //             description: '行节点指标2-指标1描述',
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     key: 'a-2',
+    //     title: '自定义行节点2',
+    //     description: '自定义行节点2描述',
+    //     children: [
+    //       {
+    //         key: 'a-2-1',
+    //         title: '行指标2',
+    //         description: '行指标2描述',
+    //       },
+    //       {
+    //         key: 'a-2-2',
+    //         title: '自定义行节点2-2',
+    //         description: '自定义行节点2描述',
+    //         children: [],
+    //       },
+    //     ],
+    //   },
+    // ],
+    // columns: [
+    //   {
+    //     key: 'b-1',
+    //     title: '自定义列节点1',
+    //     description: '自定义列节点1描述',
+    //     children: [
+    //       {
+    //         key: 'b-1-1',
+    //         title: '自定义列节点2',
+    //         description: '自定义列节点2描述',
+    //         children: [],
+    //       },
+    //       {
+    //         key: 'b-1-2',
+    //         title: '自定义列节点3',
+    //         description: '自定义列节点3描述',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     key: 'b-2',
+    //     title: '自定义列节点2',
+    //     description: '自定义列节点2描述',
+    //     children: [
+    //       {
+    //         key: 'b-2-1',
+    //         title: '自定义列节点2-1',
+    //         description: '自定义列节点2-1描述',
+    //         children: [],
+    //       },
+    //       {
+    //         key: 'b-2-2',
+    //         title: '自定义列节点2-2',
+    //         description: '自定义列节点2-2描述',
+    //       },
+    //     ],
+    //   },
+    // ],
   },
 };
 
