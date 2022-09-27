@@ -151,6 +151,71 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(ss)).toEqual('浙江省元');
   });
 
+  // https://github.com/antvis/S2/issues/1770
+  it('should copy format data with row header selected', () => {
+    const ss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => v + '_formatted' }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+    ss.render();
+
+    const cell = ss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[1];
+
+    ss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const data = getSelectedData(ss);
+    expect(data).toBe('2367\t浙江省_formatted\t绍兴市\t家具\t桌子');
+  });
+
+  // https://github.com/antvis/S2/issues/1770
+  it('should copy format data with col header selected', () => {
+    const ss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'city', formatter: (v) => v + '_formatted' }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+      }),
+    );
+    ss.render();
+
+    const cell = ss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[1];
+
+    ss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const data = getSelectedData(ss);
+    expect(data.split('_formatted').length).toEqual(33);
+  });
+
   it('should copy correct data with data filtered', () => {
     s2.setOptions({
       interaction: {
