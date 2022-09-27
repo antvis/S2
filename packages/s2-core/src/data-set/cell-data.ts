@@ -14,11 +14,8 @@ export class CellData {
   }
 
   getValueByKey(key: string) {
-    if (key === EXTRA_FIELD) {
-      return this[EXTRA_FIELD];
-    }
-    if (key === VALUE_FIELD) {
-      return this[VALUE_FIELD];
+    if (key === VALUE_FIELD || key === EXTRA_FIELD) {
+      return this[key];
     }
     return this.raw?.[key];
   }
