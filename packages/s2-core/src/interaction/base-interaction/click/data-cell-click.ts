@@ -112,13 +112,13 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     } = meta;
     const currentCellMeta = data;
     const showSingleTips = this.spreadsheet.isTableMode();
-    const cellData: TooltipData = showSingleTips
-      ? {
+    const cellData = showSingleTips
+      ? ({
           ...currentCellMeta,
           value: value || fieldValue,
           valueField: field || valueField,
-        }
-      : currentCellMeta;
+        } as TooltipData)
+      : (currentCellMeta as TooltipData);
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },
     ];

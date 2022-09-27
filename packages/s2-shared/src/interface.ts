@@ -11,19 +11,18 @@ import type {
   LayoutResult,
   SortParams,
   DataCell,
-  Data,
   GEvent,
   HiddenColumnsInfo,
   CollapsedRowsType,
-  DataType,
   ResizeInfo,
   S2CellType,
   TooltipOperatorOptions,
   S2RenderOptions,
   S2MountContainer,
-  CellMeta,
   TooltipContentType,
   Pagination,
+  ViewMetaData,
+  RawData,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -102,7 +101,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
-  onDataCellSelectMove?: (metas: CellMeta[]) => void;
+  onDataCellSelectMove?: (metas: ViewMetaData[]) => void;
 
   // ============== Corner Cell ====================
   onCornerCellHover?: (data: TargetCellInfo) => void;
@@ -131,7 +130,7 @@ export interface BaseSheetComponentProps<
     filterKey: string;
     filteredValues: string[];
   }) => void;
-  onRangeFiltered?: (data: DataType[]) => void;
+  onRangeFiltered?: (data: ViewMetaData[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
@@ -193,7 +192,7 @@ export interface BaseSheetComponentProps<
   onMouseMove?: (event: MouseEvent) => void;
   onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;
-  onLinkFieldJump?: (data: { key: string; record: Data }) => void;
+  onLinkFieldJump?: (data: { key: string; record: RawData }) => void;
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================

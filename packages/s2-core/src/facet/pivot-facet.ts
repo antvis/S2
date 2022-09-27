@@ -13,6 +13,7 @@ import {
   reduce,
   size,
 } from 'lodash';
+import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
@@ -96,18 +97,9 @@ export class PivotFacet extends BaseFacet {
         rowNode: row,
         isTotals,
       });
-      let valueField: string;
-      let fieldValue = null;
-      if (!isEmpty(data)) {
-        valueField = get(data, [EXTRA_FIELD], '');
-        fieldValue = get(data, [VALUE_FIELD], null);
-        if (isTotals) {
-          valueField = get(dataQuery, [EXTRA_FIELD], '');
-          fieldValue = get(data, valueField, null);
-        }
-      } else {
-        valueField = get(dataQuery, [EXTRA_FIELD], '');
-      }
+
+      const valueField: string = dataQuery[EXTRA_FIELD];
+      const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
         spreadsheet,
@@ -288,7 +280,7 @@ export class PivotFacet extends BaseFacet {
       for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
         const rowNode = rowLeafNodes[index];
         if (rowNode) {
-          const cellData = dataSet.getCellData({
+          const cellData = (dataSet as PivotDataSet).getCellData({
             query: { ...col.query, ...rowNode.query },
             rowNode,
             isTotals:

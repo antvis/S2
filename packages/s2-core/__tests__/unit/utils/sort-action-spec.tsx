@@ -15,7 +15,8 @@ import {
   VALUE_FIELD,
 } from '@/common';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { BaseDataSet, PivotDataSet, type SortActionParams } from '@/data-set';
+import { PivotDataSet, type SortActionParams } from '@/data-set';
+import { CellData } from '@/data-set/cell-data';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -26,10 +27,6 @@ describe('Sort Action Test', () => {
     });
 
     test('sort action with number-string and number arr', () => {
-      const data1 = ['11', '3', 2];
-      expect(sortAction(data1, 'ASC')).toEqual(['11', 2, '3']);
-      expect(sortAction(data1, 'DESC')).toEqual(['3', 2, '11']);
-
       const data2 = ['11', '3', '2'];
       expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '3']);
       expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
@@ -59,77 +56,74 @@ describe('Sort Action Test', () => {
       expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
     });
 
-    test('object data sorted by key with zero', () => {
-      const data1 = [{ a: 1 }, { a: 0 }, { a: -3 }, { a: 2 }];
-      expect(sortAction(data1, 'ASC', 'a')).toEqual([
-        { a: -3 },
-        { a: 0 },
-        { a: 1 },
-        { a: 2 },
-      ]);
-      expect(sortAction(data1, 'DESC', 'a')).toEqual([
-        { a: 2 },
-        { a: 1 },
-        { a: 0 },
-        { a: -3 },
-      ]);
-    });
-
     test('sort action with object arr', () => {
-      const data1 = [{ a: 1 }, { a: 3 }, { a: 2 }];
-      expect(sortAction(data1, 'ASC', 'a')).toEqual([
-        { a: 1 },
-        { a: 2 },
-        { a: 3 },
-      ]);
-      expect(sortAction(data1, 'DESC', 'a')).toEqual([
-        { a: 3 },
-        { a: 2 },
-        { a: 1 },
-      ]);
+      function createCellData(list) {
+        return list.map((a) => new CellData({ a }, 'a'));
+      }
 
-      const data2 = [{ a: '11' }, { a: '3' }, { a: 2 }];
-      expect(sortAction(data2, 'ASC', 'a')).toEqual([
-        { a: 2 },
-        { a: '3' },
-        { a: '11' },
-      ]);
-      expect(sortAction(data2, 'DESC', 'a')).toEqual([
-        { a: '11' },
-        { a: '3' },
-        { a: 2 },
-      ]);
+      function unwrapCellData(cellDataList: CellData[]) {
+        return cellDataList.map((cell) => cell[VALUE_FIELD]);
+      }
 
-      const data3 = [{ a: '-' }, { a: '3' }, { a: 2 }];
-      expect(sortAction(data3, 'ASC', 'a')).toEqual([
-        { a: '-' },
-        { a: 2 },
-        { a: '3' },
-      ]);
-      expect(sortAction(data3, 'DESC', 'a')).toEqual([
-        { a: '3' },
-        { a: 2 },
-        { a: '-' },
-      ]);
+      const data1 = createCellData([1, 0, -3, 2]);
 
       expect(
-        sortAction(
-          [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
-          'ASC',
-          'a',
-        ),
-      ).toEqual([{ a: undefined }, { a: '-' }, { a: 2 }, { a: '3' }]);
+        unwrapCellData(sortAction(data1, 'ASC', 'a') as CellData[]),
+      ).toEqual([-3, 0, 1, 2]);
+      expect(
+        unwrapCellData(sortAction(data1, 'DESC', 'a') as CellData[]),
+      ).toEqual([2, 1, 0, -3]);
+
+      const data2 = createCellData([1, 3, 2]);
+      expect(
+        unwrapCellData(sortAction(data2, 'ASC', 'a') as CellData[]),
+      ).toEqual([1, 2, 3]);
+      expect(
+        unwrapCellData(sortAction(data2, 'DESC', 'a') as CellData[]),
+      ).toEqual([3, 2, 1]);
+
+      const data3 = createCellData(['11', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data3, 'ASC', 'a') as CellData[]),
+      ).toEqual([2, '3', '11']);
+      expect(
+        unwrapCellData(sortAction(data3, 'DESC', 'a') as CellData[]),
+      ).toEqual(['11', '3', 2]);
+
+      const data4 = createCellData(['-', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data4, 'ASC', 'a') as CellData[]),
+      ).toEqual(['-', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data4, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, '-']);
 
       expect(
-        sortAction(
-          [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
-          'DESC',
-          'a',
+        unwrapCellData(
+          sortAction(
+            createCellData(['-', 2, '3', undefined]),
+            'ASC',
+            'a',
+          ) as CellData[],
         ),
-      ).toEqual([{ a: '3' }, { a: 2 }, { a: '-' }, { a: undefined }]);
-      expect(sortAction([{ a: '' }, { a: '3' }, { a: 2 }], 'ASC', 'a')).toEqual(
-        [{ a: '' }, { a: 2 }, { a: '3' }],
-      );
+      ).toEqual([undefined, '-', 2, '3']);
+      expect(
+        unwrapCellData(
+          sortAction(
+            createCellData(['-', 2, '3', undefined]),
+            'DESC',
+            'a',
+          ) as CellData[],
+        ),
+      ).toEqual(['3', 2, '-', undefined]);
+
+      const data6 = createCellData(['', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data6, 'ASC', 'a') as CellData[]),
+      ).toEqual(['', 2, '3']);
+      expect(
+        unwrapCellData(sortAction(data6, 'DESC', 'a') as CellData[]),
+      ).toEqual(['3', 2, '']);
     });
   });
 });
@@ -293,7 +287,7 @@ describe('Sort By Func Tests', () => {
 });
 
 describe('GetSortByMeasureValues Tests', () => {
-  let s2: SpreadSheet;
+  let s2: PivotSheet;
 
   beforeEach(() => {
     const dataCfg: S2DataConfig = {
@@ -351,28 +345,30 @@ describe('GetSortByMeasureValues Tests', () => {
     };
 
     const measureValues = getSortByMeasureValues({
-      dataSet: s2.dataSet,
+      dataSet: s2.dataSet as PivotDataSet,
       sortParam,
       originValues: ['纸张', '笔'],
     });
 
     expect(measureValues).toEqual([
-      {
-        province: '吉林',
-        city: '长春',
-        type: '笔',
-        price: '10',
-        [EXTRA_FIELD]: 'price',
-        [VALUE_FIELD]: '10',
-      },
-      {
-        province: '吉林',
-        city: '白山',
-        type: '笔',
-        price: '9',
-        [EXTRA_FIELD]: 'price',
-        [VALUE_FIELD]: '9',
-      },
+      new CellData(
+        {
+          province: '吉林',
+          city: '长春',
+          type: '笔',
+          price: '10',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '白山',
+          type: '笔',
+          price: '9',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -389,26 +385,28 @@ describe('GetSortByMeasureValues Tests', () => {
     // query 限定了 type
     // 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
     const measureValues = getSortByMeasureValues({
-      dataSet: s2.dataSet,
+      dataSet: s2.dataSet as PivotDataSet,
       sortParam,
       originValues: ['纸张', '笔'],
     });
 
     expect(measureValues).toEqual([
-      {
-        province: '浙江',
-        type: '笔',
-        price: '199',
-        $$extra$$: 'price',
-        $$value$$: '199',
-      },
-      {
-        province: '吉林',
-        type: '笔',
-        price: '188',
-        $$extra$$: 'price',
-        $$value$$: '188',
-      },
+      new CellData(
+        {
+          province: '浙江',
+          type: '笔',
+          price: '199',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          type: '笔',
+          price: '188',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -425,24 +423,26 @@ describe('GetSortByMeasureValues Tests', () => {
     // query 为限定任何列维度
     // 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
     const measureValues = getSortByMeasureValues({
-      dataSet: s2.dataSet,
+      dataSet: s2.dataSet as PivotDataSet,
       sortParam,
       originValues: ['纸张', '笔'],
     });
 
     expect(measureValues).toEqual([
-      {
-        province: '浙江',
-        price: '777',
-        $$extra$$: 'price',
-        $$value$$: '777',
-      },
-      {
-        province: '吉林',
-        price: '888',
-        $$extra$$: 'price',
-        $$value$$: '888',
-      },
+      new CellData(
+        {
+          province: '浙江',
+          price: '777',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          price: '888',
+        },
+        'price',
+      ),
     ]);
   });
 });
@@ -498,18 +498,22 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     };
     const measureValues = getSortByMeasureValues(params);
     expect(measureValues).toEqual([
-      {
-        $$extra$$: 'price',
-        $$value$$: 41.5,
-        price: 41.5,
-        type: '纸张',
-      },
-      {
-        $$extra$$: 'price',
-        $$value$$: 37,
-        price: 37,
-        type: '笔',
-      },
+      new CellData(
+        {
+          price: 41.5,
+          type: '纸张',
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          price: 37,
+          type: '笔',
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -529,18 +533,22 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     };
     const measureValues = getSortByMeasureValues(params);
     expect(measureValues).toEqual([
-      {
-        $$extra$$: 'price',
-        $$value$$: 33,
-        price: 33,
-        province: '吉林',
-      },
-      {
-        $$extra$$: 'price',
-        $$value$$: 45.5,
-        price: 45.5,
-        province: '浙江',
-      },
+      new CellData(
+        {
+          price: 33,
+          province: '吉林',
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          price: 45.5,
+          province: '浙江',
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -568,38 +576,42 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     };
     const measureValues = getSortByMeasureValues(params);
     expect(measureValues).toEqual([
-      {
-        province: '浙江',
-        city: '杭州',
-        type: '笔',
-        price: '1',
-        $$extra$$: 'price',
-        $$value$$: '1',
-      },
-      {
-        province: '浙江',
-        city: '舟山',
-        type: '笔',
-        price: '17',
-        $$extra$$: 'price',
-        $$value$$: '17',
-      },
-      {
-        province: '吉林',
-        city: '长春',
-        type: '笔',
-        price: '10',
-        $$extra$$: 'price',
-        $$value$$: '10',
-      },
-      {
-        province: '吉林',
-        city: '白山',
-        type: '笔',
-        price: '9',
-        $$extra$$: 'price',
-        $$value$$: '9',
-      },
+      new CellData(
+        {
+          province: '浙江',
+          city: '杭州',
+          type: '笔',
+          price: '1',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '浙江',
+          city: '舟山',
+          type: '笔',
+          price: '17',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '长春',
+          type: '笔',
+          price: '10',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '白山',
+          type: '笔',
+          price: '9',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -626,34 +638,42 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     };
     const measureValues = getSortByMeasureValues(params);
     expect(measureValues).toEqual([
-      {
-        $$extra$$: 'price',
-        province: '浙江',
-        city: '杭州',
-        $$value$$: 3,
-        price: 3,
-      },
-      {
-        $$extra$$: 'price',
-        province: '浙江',
-        city: '舟山',
-        $$value$$: 42.5,
-        price: 42.5,
-      },
-      {
-        $$extra$$: 'price',
-        province: '吉林',
-        city: '长春',
-        $$value$$: 13,
-        price: 13,
-      },
-      {
-        $$extra$$: 'price',
-        province: '吉林',
-        city: '白山',
-        $$value$$: 20,
-        price: 20,
-      },
+      new CellData(
+        {
+          province: '浙江',
+          city: '杭州',
+          price: 3,
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '浙江',
+          city: '舟山',
+          price: 42.5,
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '长春',
+          price: 13,
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '白山',
+          price: 20,
+          [EXTRA_FIELD]: 'price',
+        },
+        'price',
+      ),
     ]);
   });
 
@@ -680,38 +700,42 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     };
     const measureValues = getSortByMeasureValues(params);
     expect(measureValues).toEqual([
-      {
-        province: '浙江',
-        city: '杭州',
-        type: '纸张',
-        price: '2',
-        $$extra$$: 'price',
-        $$value$$: '2',
-      },
-      {
-        province: '浙江',
-        city: '舟山',
-        type: '纸张',
-        price: '25.5',
-        $$extra$$: 'price',
-        $$value$$: '25.5',
-      },
-      {
-        province: '吉林',
-        city: '长春',
-        type: '纸张',
-        price: '3',
-        $$extra$$: 'price',
-        $$value$$: '3',
-      },
-      {
-        province: '吉林',
-        city: '白山',
-        type: '纸张',
-        price: '11',
-        $$extra$$: 'price',
-        $$value$$: '11',
-      },
+      new CellData(
+        {
+          province: '浙江',
+          city: '杭州',
+          price: '2',
+          type: '纸张',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '浙江',
+          city: '舟山',
+          type: '纸张',
+          price: '25.5',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '长春',
+          type: '纸张',
+          price: '3',
+        },
+        'price',
+      ),
+      new CellData(
+        {
+          province: '吉林',
+          city: '白山',
+          type: '纸张',
+          price: '11',
+        },
+        'price',
+      ),
     ]);
   });
 });

@@ -5,7 +5,6 @@ import {
   EXTRA_FIELD,
   InterceptType,
   S2Event,
-  getTooltipOperatorTableSortMenus,
   getTooltipOperatorSortMenus,
 } from '../common/constant';
 import type {
