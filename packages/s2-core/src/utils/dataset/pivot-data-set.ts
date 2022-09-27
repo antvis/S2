@@ -162,7 +162,7 @@ export function getDataPath(params: DataPathParams) {
       }
 
       if (meta) {
-        if (shouldCreateOrUpdate && meta.childField !== dimensions?.[i + i]) {
+        if (shouldCreateOrUpdate && meta.childField !== dimensions?.[i + 1]) {
           meta.childField = dimensions?.[i + 1];
         }
         currentMeta = meta?.children;
