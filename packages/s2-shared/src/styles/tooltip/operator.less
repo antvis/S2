@@ -1,7 +1,14 @@
 @tooltip-prefix-cls: antv-s2-tooltip-operator;
+@tooltip-menu-item-text-color: rgba(0, 0, 0, 0.65);
+
+.with-menu-item-color() {
+  &:not(.ant-menu-item-active) {
+    color: @tooltip-menu-item-text-color;
+  }
+}
 
 .@{tooltip-prefix-cls} {
-  color: rgba(0, 0, 0, 0.65);
+  color: @tooltip-menu-item-text-color;
   font-size: 12px;
   line-height: 32px;
   background: #f9f9f9;
@@ -17,7 +24,7 @@
   &-menus.ant-menu-vertical.ant-menu {
     font-size: 12px;
     line-height: 32px;
-    color: rgba(0, 0, 0, 0.65);
+    color: @tooltip-menu-item-text-color;
     border: 0;
     margin: 0 -12px;
 
@@ -33,7 +40,7 @@
       height: 30px;
 
       .ant-menu-submenu-arrow {
-        color: rgba(0, 0, 0, 0.65);
+        color: @tooltip-menu-item-text-color;
       }
     }
   }
@@ -42,10 +49,11 @@
   &-menus.ant-menu-vertical {
     .ant-dropdown-menu-item,
     .ant-menu-item {
+      .with-menu-item-color();
+
       font-size: 12px;
       line-height: 32px;
       padding: 0 12px;
-      color: rgba(0, 0, 0, 0.65);
       border: 0;
       margin: 0;
     }
@@ -55,10 +63,11 @@
     .ant-menu-submenu,
     .ant-menu-submenu-vertical {
       .ant-menu-submenu-title {
+        .with-menu-item-color();
+
         padding: 0 12px;
         font-size: 12px;
         line-height: 32px;
-        color: rgba(0, 0, 0, 0.65);
         margin: 0;
 
         .ant-dropdown-menu-title-content,
@@ -72,10 +81,11 @@
   &-submenu-popup {
     .ant-dropdown-menu-item,
     .ant-menu-item {
+      .with-menu-item-color();
+
       font-size: 12px;
       line-height: 32px;
       padding: 0 12px;
-      color: rgba(0, 0, 0, 0.65);
     }
 
     .ant-menu-vertical .ant-menu-item {

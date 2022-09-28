@@ -321,6 +321,8 @@ export interface CellCfg {
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
     widthPercent?: number[];
+    // 是否显示原始值
+    showOriginalValue?: boolean;
   };
 }
 

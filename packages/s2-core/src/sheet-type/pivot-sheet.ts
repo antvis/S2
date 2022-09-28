@@ -185,11 +185,15 @@ export class PivotSheet extends SpreadSheet {
     const prevSortParams = this.dataCfg.sortParams.filter(
       (item) => item?.sortFieldId !== sortFieldId,
     );
+
+    this.updateSortMethodMap(meta.id, sortMethod, true);
+
+    const sortParams: SortParam[] = [...prevSortParams, sortParam];
     // 触发排序事件
-    this.emit(S2Event.RANGE_SORT, [...prevSortParams, sortParam]);
+    this.emit(S2Event.RANGE_SORT, sortParams);
     this.setDataCfg({
       ...this.dataCfg,
-      sortParams: [...prevSortParams, sortParam],
+      sortParams,
     });
     this.render();
   }
@@ -198,12 +202,16 @@ export class PivotSheet extends SpreadSheet {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
 
+    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
+
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
-        this.groupSortByMethod(key as unknown as SortMethod, meta);
+        const sortMethod = key as unknown as SortMethod;
+        this.groupSortByMethod(sortMethod, meta);
         this.emit(S2Event.RANGE_SORTED, event);
       },
       menus: getTooltipOperatorSortMenus(),
+      defaultSelectedKeys,
     };
 
     this.showTooltipWithInfo(event, [], {

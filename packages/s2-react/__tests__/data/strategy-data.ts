@@ -1,4 +1,9 @@
-import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
+import {
+  type Data,
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type S2DataConfig,
+} from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 
@@ -196,8 +201,36 @@ const getMiniChartMockData = () => {
 };
 
 export const StrategySheetDataConfig: S2DataConfig = {
+  // 普通数值+同环比数据
   data: [
-    // 普通数值+同环比数据
+    {
+      date: '2022-09',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+    },
+    {
+      'measure-a': {
+        originalValues: [[377, '']],
+        values: [[377, '']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-c': {
+        originalValues: [[null, 324]],
+        values: [[null, 324]],
+      },
+      'measure-d': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-f': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      date: '2022-10',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
+    },
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
@@ -226,13 +259,14 @@ export const StrategySheetDataConfig: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-      date: '2021',
+      date: '2022-11',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
+
     // 净增目标完成度子弹图数据
-    getKPIMockData(),
+    getKPIMockData() as unknown as Data,
     // 趋势图数据
-    getMiniChartMockData(),
+    getMiniChartMockData() as unknown as Data,
     {
       'measure-a': {
         originalValues: [[377, '']],
@@ -256,31 +290,6 @@ export const StrategySheetDataConfig: S2DataConfig = {
       },
       date: '2022',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
-    },
-
-    {
-      'measure-a': {
-        originalValues: [[377, '', 0.02]],
-        values: [[377, '', '0.02']],
-      },
-      'measure-b': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-c': {
-        originalValues: [[null, 324, 0.02]],
-        values: [[null, 324, '0.02']],
-      },
-      'measure-d': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      'measure-f': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
-      },
-      date: '2022-10',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
   ],
   meta: [

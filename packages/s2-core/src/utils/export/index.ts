@@ -5,6 +5,8 @@ import {
   get,
   isArray,
   isEmpty,
+  isFunction,
+  isNil,
   isObject,
   last,
   max,
@@ -198,6 +200,7 @@ const processValueInCol = (
 const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: SpreadSheet,
+  placeholder: string[],
   isFormat?: boolean,
 ) => {
   let tempCells = [];
@@ -206,6 +209,12 @@ const processValueInRow = (
     const { fieldValue, valueField, data } = viewMeta;
     if (isObject(fieldValue)) {
       tempCells = processObjectValueInRow(fieldValue, isFormat);
+      return tempCells;
+    }
+
+    // 如果本身格子的数据是 null， 但是一个格子又需要绘制多个指标时，需要使用placeholder填充
+    if (isNil(fieldValue) && placeholder.length > 1) {
+      tempCells.push(...placeholder);
       return tempCells;
     }
     // The main measure.
@@ -217,7 +226,7 @@ const processValueInRow = (
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCells.push(sheetInstance.options.placeholder);
+    tempCells.push(...placeholder);
   }
   return tempCells.join('    ');
 };
@@ -229,6 +238,20 @@ const getHeaderLabel = (val: string) => {
     return label;
   }
   return val;
+};
+
+const getPlaceholder = (
+  viewMeta: ViewMeta,
+  leafNode: Node,
+  sheetInstance: SpreadSheet,
+) => {
+  const label = getHeaderLabel(leafNode.label);
+  const labelLength = isArray(label) ? label.length : 1;
+  const placeholder = sheetInstance.options.placeholder;
+  const placeholderStr = isFunction(placeholder)
+    ? placeholder(viewMeta)
+    : placeholder;
+  return Array(labelLength).fill(placeholderStr);
 };
 
 /**
@@ -356,9 +379,11 @@ export const copyData = (
           );
         } else {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          const placeholder = getPlaceholder(viewMeta, colNode, sheetInstance);
           const lintItem = processValueInRow(
             viewMeta,
             sheetInstance,
+            placeholder,
             isFormatData,
           );
           if (isArray(lintItem)) {
@@ -451,7 +476,7 @@ export const copyData = (
         // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
 
         const copiedRows = rows.slice(0, maxRowDepth);
-        // 在趋势分析表中，行头只有一个 extra的维度，但是有有个层级
+        // 在趋势分析表中，行头只有一个 extra的维度，但是有多个层级
         if (copiedRows.length < maxRowDepth) {
           copiedRows.unshift(
             ...Array(maxRowDepth - copiedRows.length).fill(''),

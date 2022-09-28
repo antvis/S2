@@ -38,7 +38,10 @@ fetch(
       style: {
         cellCfg: {
           valuesCfg: {
+            // 非必填: 指定原始字段, 用于 导出和 tooltip 展示
             originalValueField: 'originalValues',
+            // 非必填: 是否显示原始值
+            showOriginalValue: true,
           },
         },
       },
