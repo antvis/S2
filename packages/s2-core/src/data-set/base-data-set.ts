@@ -14,9 +14,12 @@ import type {
   FilterParam,
   Formatter,
   Meta,
+  S2CellType,
   S2DataConfig,
   SortParams,
+  ViewMeta,
 } from '../common/interface';
+import type { Node } from '../facet/layout/node';
 import type { ValueRange } from '../common/interface/condition';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -59,7 +62,7 @@ export abstract class BaseDataSet {
    * 查找字段信息
    */
   public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
-    return find(this.meta || meta, (m: Meta) => m.field === field);
+    return find(this.meta || meta, { field });
   });
 
   /**
@@ -69,6 +72,35 @@ export abstract class BaseDataSet {
   public getFieldName(field: string, defaultValue: string = field): string {
     return get(this.getFieldMeta(field, this.meta), 'name', defaultValue);
   }
+
+  public getCustomRowFieldName(cell: S2CellType<ViewMeta | Node>): string {
+    if (!cell) {
+      return;
+    }
+    const meta = cell.getMeta?.();
+    const row = find(this.spreadsheet.getRowNodes(), {
+      rowIndex: meta?.rowIndex,
+    });
+    return row?.label || this.getFieldName(row?.field);
+  }
+
+  public getCustomRowFieldDescription = (
+    cell: S2CellType<ViewMeta | Node>,
+  ): string => {
+    if (!cell) {
+      return;
+    }
+
+    const meta = cell.getMeta?.();
+    if (meta.isTotals) {
+      return;
+    }
+
+    const row = find(this.spreadsheet.getRowNodes(), {
+      rowIndex: meta?.rowIndex,
+    });
+    return row?.extra?.description || this.getFieldDescription(row?.field);
+  };
 
   /**
    * 获得字段格式方法

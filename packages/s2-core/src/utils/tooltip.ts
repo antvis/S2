@@ -185,19 +185,26 @@ export const getListItem = (
     field,
     valueField,
     useCompleteDataForFormatter = true,
+    targetCell,
   }: {
     data: TooltipDataItem;
     field: string;
     valueField?: string;
     useCompleteDataForFormatter?: boolean;
+    targetCell?: S2CellType;
   },
 ): ListItem => {
-  const name = spreadsheet?.dataSet?.getFieldName(field);
+  const name =
+    spreadsheet?.dataSet.getCustomRowFieldName(targetCell) ||
+    spreadsheet?.dataSet?.getFieldName(field);
+
   const formatter = getFieldFormatter(spreadsheet, field);
+
   // 暂时对 object 类型 data 不作处理，上层通过自定义 tooltip 的方式去自行定制
   const dataValue = isObject(data[field])
     ? JSON.stringify(data[field])
     : data[field];
+
   const value = formatter(
     valueField || dataValue,
     useCompleteDataForFormatter ? data : undefined,
@@ -242,8 +249,8 @@ export const getHeadInfo = (
   let colList = [];
   let rowList = [];
   if (activeData) {
-    const colFields = spreadsheet?.dataSet?.fields?.columns;
-    const rowFields = spreadsheet?.dataSet?.fields?.rows;
+    const colFields = spreadsheet?.dataSet?.fields?.columns as string[];
+    const rowFields = spreadsheet?.dataSet?.fields?.rows as string[];
     colList = getFieldList(spreadsheet, colFields, activeData);
     rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
@@ -266,6 +273,7 @@ export const getDetailList = (
   spreadsheet: SpreadSheet,
   activeData: TooltipDataItem,
   options: TooltipOptions,
+  targetCell: S2CellType,
 ): ListItem[] => {
   if (activeData) {
     const { isTotals } = options;
@@ -279,6 +287,7 @@ export const getDetailList = (
           data: activeData,
           field,
           valueField: get(activeData, VALUE_FIELD),
+          targetCell,
         }),
       );
     }
@@ -298,11 +307,17 @@ export const getDetailList = (
 
       forEach(mappedResult, (_, key) => {
         valItem.push(
-          getListItem(spreadsheet, { data: mappedResult, field: key }),
+          getListItem(spreadsheet, {
+            data: mappedResult,
+            field: key,
+            targetCell,
+          }),
         );
       });
     } else {
-      valItem.push(getListItem(spreadsheet, { data: activeData, field }));
+      valItem.push(
+        getListItem(spreadsheet, { data: activeData, field, targetCell }),
+      );
     }
 
     return valItem;
@@ -497,25 +512,6 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   return summaries;
 };
 
-export const getDescription = (targetCell: S2CellType): string => {
-  if (!targetCell) {
-    return;
-  }
-
-  const meta = targetCell.getMeta();
-
-  if (meta.isTotals) {
-    return;
-  }
-
-  const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
-    field: meta.field || meta.value || meta.valueField,
-  });
-  const field = currentMeta?.field;
-
-  return meta.spreadsheet.dataSet.getFieldDescription(field);
-};
-
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const {
     spreadsheet,
@@ -529,7 +525,8 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   let headInfo = null;
   let details = null;
 
-  const description = getDescription(targetCell);
+  const description =
+    spreadsheet.dataSet.getCustomRowFieldDescription(targetCell);
   const firstCellInfo = cellInfos[0] || {};
 
   if (!options?.hideSummary) {
@@ -557,7 +554,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     firstCellInfo.name = cellName || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
-    details = getDetailList(spreadsheet, firstCellInfo, options);
+    details = getDetailList(spreadsheet, firstCellInfo, options, targetCell);
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
   return {

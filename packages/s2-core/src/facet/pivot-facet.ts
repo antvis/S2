@@ -447,7 +447,10 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
-      this.adjustRowLeafNodesWidth(layoutResult);
+      this.adjustRowLeafNodesWidth(
+        rowLeafNodes,
+        rowsHierarchy.sampleNodeForLastLevel,
+      );
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
         this.adjustTotalNodesCoordinate(rowsHierarchy, true);
@@ -464,13 +467,10 @@ export class PivotFacet extends BaseFacet {
    * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 b    |
    * -------------------------------------------------
    */
-  private adjustRowLeafNodesWidth(layoutResult: Partial<LayoutResult>) {
-    const { rowsHierarchy, rowLeafNodes } = layoutResult;
-    const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel;
-
+  private adjustRowLeafNodesWidth(rowLeafNodes: Node[], lastLevelNode: Node) {
     rowLeafNodes.forEach((node) => {
-      if (node.level < sampleNodeForLastLevel.level) {
-        const levelDiff = sampleNodeForLastLevel.level - node.level;
+      if (node.level < lastLevelNode.level) {
+        const levelDiff = lastLevelNode.level - node.level;
         node.width += node.width * levelDiff;
       }
     });

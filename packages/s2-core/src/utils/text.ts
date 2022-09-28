@@ -393,7 +393,7 @@ export const getEmptyPlaceholder = (
  * |  text icon  |  text icon  |  text icon  |
  * --------------------------------------------
  * @param box SimpleBBox 整体绘制内容包围盒
- * @param texts  SimpleDataItem[][] 指标集合
+ * @param textValues  SimpleDataItem[][] 指标集合
  * @param widthPercent number[] 每行指标的宽度百分比
  */
 export const getContentAreaForMultiData = (
