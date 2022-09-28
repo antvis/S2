@@ -61,11 +61,6 @@ export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
 };
 
 export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
-  // https://developer.mozilla.org/en-US/docs/Web/API/ClipboardItem
-  if (!ClipboardItem) {
-    return copyToClipboardByExecCommand(data);
-  }
-
   return navigator.clipboard
     .write([
       new ClipboardItem(
@@ -97,7 +92,7 @@ export const copyToClipboard = (
     copyableItem = data;
   }
 
-  if (!navigator.clipboard || sync) {
+  if (!navigator.clipboard || sync || !window.ClipboardItem) {
     return copyToClipboardByExecCommand(copyableItem);
   }
   return copyToClipboardByClipboard(copyableItem);
