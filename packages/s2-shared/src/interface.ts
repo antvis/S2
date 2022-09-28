@@ -34,7 +34,12 @@ export type Adaptive =
       getContainer?: () => HTMLElement;
     };
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
+export type SheetType =
+  | 'pivot'
+  | 'table'
+  | 'gridAnalysis'
+  | 'strategy'
+  | 'editable';
 
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;

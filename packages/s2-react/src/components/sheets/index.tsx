@@ -4,6 +4,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
 import { getLang } from '@antv/s2';
 import { ConfigProvider } from 'antd';
+import { EditableSheet } from './editable-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
@@ -34,6 +35,8 @@ const Sheet = React.forwardRef(
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':
           return <StrategySheet {...sheetProps} />;
+        case 'editable':
+          return <EditableSheet {...sheetProps} />;
         default:
           return <PivotSheet {...sheetProps} />;
       }

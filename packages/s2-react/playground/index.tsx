@@ -1070,6 +1070,15 @@ function MainLayout() {
             getSpreadSheet={(s2) => getSpreadSheet(s2)}
           />
         </TabPane>
+        <TabPane tab="编辑表" key="editable">
+          <SheetComponent
+            sheetType="editable"
+            dataCfg={tableSheetDataCfg}
+            options={mergedOptions}
+            ref={s2Ref}
+            themeCfg={themeCfg}
+          ></SheetComponent>
+        </TabPane>
       </Tabs>
     </div>
   );
