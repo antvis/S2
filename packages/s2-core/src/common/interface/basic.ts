@@ -87,11 +87,11 @@ export interface Extra {
 
 export interface Fields {
   // row fields
-  rows?: string[] | CustomTreeItem[];
+  rows?: (string | CustomTreeItem)[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields
-  columns?: string[] | CustomTreeItem[];
+  columns?: (string | CustomTreeItem)[];
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet

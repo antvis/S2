@@ -55,12 +55,13 @@ export class PivotFacet extends BaseFacet {
       });
 
     // 2、calculate all related nodes coordinate
-    this.calculateNodesCoordinate(
+    this.calculateNodesCoordinate({
       rowLeafNodes,
       rowsHierarchy,
       colLeafNodes,
       colsHierarchy,
-    );
+    });
+
     const { dataSet, spreadsheet } = this.cfg;
 
     const getCellMeta = (rowIndex?: number, colIndex?: number): ViewMeta => {
@@ -143,19 +144,9 @@ export class PivotFacet extends BaseFacet {
     return layoutDataPosition(this.cfg, layoutResult);
   }
 
-  private calculateNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
-    colLeafNodes: Node[],
-    colsHierarchy: Hierarchy,
-  ) {
-    this.calculateRowNodesCoordinate(rowLeafNodes, rowsHierarchy, colLeafNodes);
-    this.calculateColNodesCoordinate(
-      colLeafNodes,
-      colsHierarchy,
-      rowLeafNodes,
-      rowsHierarchy.width,
-    );
+  private calculateNodesCoordinate(layoutResult: Partial<LayoutResult>) {
+    this.calculateRowNodesCoordinate(layoutResult);
+    this.calculateColNodesCoordinate(layoutResult);
   }
 
   /**
@@ -163,18 +154,11 @@ export class PivotFacet extends BaseFacet {
    * height, width, x, y
    * colsHierarchy's height
    * colsHierarchy's width
-   * @param colLeafNodes
-   * @param colsHierarchy
-   * @param rowLeafNodes
-   * @param rowHeaderWidth
    */
-  private calculateColNodesCoordinate(
-    colLeafNodes: Node[],
-    colsHierarchy: Hierarchy,
-    rowLeafNodes: Node[],
-    rowHeaderWidth: number,
-  ) {
-    const { spreadsheet } = this.cfg;
+  private calculateColNodesCoordinate(layoutResult: Partial<LayoutResult>) {
+    const { rowLeafNodes, colLeafNodes, rowsHierarchy, colsHierarchy } =
+      layoutResult;
+
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
 
@@ -194,7 +178,7 @@ export class PivotFacet extends BaseFacet {
           currentNode,
           colLeafNodes,
           rowLeafNodes,
-          rowHeaderWidth,
+          rowsHierarchy.width,
         );
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
@@ -211,8 +195,10 @@ export class PivotFacet extends BaseFacet {
       currentNode.height = this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
     }
+
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
-    if (!isEmpty(spreadsheet.options.totals?.col)) {
+
+    if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
     }
@@ -392,14 +378,9 @@ export class PivotFacet extends BaseFacet {
    * height, width, x, y
    * rowHierarchy's height
    * rowHierarchy's width
-   * @param rowLeafNodes
-   * @param rowsHierarchy
    */
-  private calculateRowNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
-    colLeafNodes: Node[],
-  ) {
+  private calculateRowNodesCoordinate(layoutResult: Partial<LayoutResult>) {
+    const { rowsHierarchy, rowLeafNodes, colLeafNodes } = layoutResult;
     const { cellCfg, spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
     const heightByField = spreadsheet.options.style.rowCfg?.heightByField;
@@ -466,12 +447,33 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
+      this.adjustRowLeafNodesWidth(layoutResult);
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
         this.adjustTotalNodesCoordinate(rowsHierarchy, true);
         this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
       }
     }
+  }
+
+  /**
+   * @description 自定义行头时, 叶子节点层级不定, 需要自动对齐其宽度, 填充空白
+   * -------------------------------------------------
+   * |  自定义节点 a-1  |  自定义节点 a-1-1              |
+   * |-------------   |-------------|----------------|
+   * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 b    |
+   * -------------------------------------------------
+   */
+  private adjustRowLeafNodesWidth(layoutResult: Partial<LayoutResult>) {
+    const { rowsHierarchy, rowLeafNodes } = layoutResult;
+    const sampleNodeForLastLevel = rowsHierarchy.sampleNodeForLastLevel;
+
+    rowLeafNodes.forEach((node) => {
+      if (node.level < sampleNodeForLastLevel.level) {
+        const levelDiff = sampleNodeForLastLevel.level - node.level;
+        node.width += node.width * levelDiff;
+      }
+    });
   }
 
   /**
@@ -734,7 +736,7 @@ export class PivotFacet extends BaseFacet {
 
     // 3. 然后是计算 (+ icon province/city/level)
     const treeHeaderLabel = rows
-      .map((key) => dataSet.getFieldName(key))
+      .map((key) => dataSet.getFieldName(key as string))
       .join('/');
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell;

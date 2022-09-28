@@ -91,5 +91,5 @@ export interface CustomTreeHeaderParams {
   parentNode: Node;
   level: number;
   hierarchy: Hierarchy;
-  customTreeItems: CustomTreeItem[];
+  tree: CustomTreeItem[];
 }

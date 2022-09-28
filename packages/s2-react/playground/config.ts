@@ -2,14 +2,9 @@ import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import {
-  data,
-  totalData,
-  meta,
-  fields,
-} from '../__tests__/data/mock-dataset.json';
+import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { customGridFields } from '../__tests__/data/custom-grid-fields';
 import { customTreeData } from '../__tests__/data/data-custom-trees';
 
 export const tableSheetDataCfg: S2DataConfig = {
@@ -40,10 +35,7 @@ export const pivotSheetDataCfg: S2DataConfig = {
     },
   ],
   fields: {
-    ...fields,
-    rows: customTreeFields.customTreeItems,
-    values: customTreeFields.values,
-    columns: customTreeFields.columns,
+    ...customGridFields,
     // rows: [
     //   {
     //     key: 'a-1',
@@ -146,14 +138,6 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   hierarchyType: 'grid',
-  // style: {
-  //   rowCfg: {
-  //     width: 200,
-  //   },
-  //   cellCfg: {
-  //     height: 50,
-  //   },
-  // },
 };
 
 export const sliderOptions: SliderSingleProps = {

@@ -1,17 +1,8 @@
 import type { S2DataConfig } from '@antv/s2';
 
-export const customTreeFields: S2DataConfig['fields'] = {
-  rows: [],
+export const customGridFields: S2DataConfig['fields'] = {
   columns: ['type', 'sub_type'],
-  values: [
-    'measure-a',
-    'measure-b',
-    'measure-c',
-    'measure-d',
-    'measure-e',
-    'measure-f',
-  ],
-  customTreeItems: [
+  rows: [
     {
       key: 'custom-node-1',
       title: '自定义节点A',
@@ -67,6 +58,14 @@ export const customTreeFields: S2DataConfig['fields'] = {
         },
       ],
     },
+  ],
+  values: [
+    'measure-a',
+    'measure-b',
+    'measure-c',
+    'measure-d',
+    'measure-e',
+    'measure-f',
   ],
   valueInCols: false,
 };

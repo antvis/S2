@@ -1,5 +1,5 @@
 import { filter, isString } from 'lodash';
-import { EXTRA_FIELD, type CustomTreeItem } from '../../common';
+import { EXTRA_FIELD, type CustomTreeItem, type Fields } from '../../common';
 import type { SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
@@ -19,7 +19,7 @@ interface HeaderParams {
   rootNode: Node;
   spreadsheet: SpreadSheet;
   facetCfg: SpreadSheetFacetCfg;
-  fields: string[] | CustomTreeItem[];
+  fields: Fields['rows'] | Fields['columns'];
   isRowHeader: boolean;
   isCustomTreeFields: boolean;
 }
@@ -40,7 +40,7 @@ const handleCustomTreeHierarchy = (params: HeaderParams) => {
 
   // custom tree header
   buildCustomTreeHierarchy({
-    customTreeItems,
+    tree: customTreeItems,
     facetCfg,
     level: 0,
     parentNode: rootNode,

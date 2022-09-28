@@ -14,28 +14,28 @@ import { layoutHierarchy } from './layout-hooks';
  * @param params
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
-  const {
-    facetCfg,
-    customTreeItems = [],
-    level,
-    parentNode,
-    hierarchy,
-  } = params;
-  const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
+  const { facetCfg, tree = [], level, parentNode, hierarchy } = params;
+  const { spreadsheet, collapsedRows, hierarchyCollapse, hierarchyType } =
+    facetCfg;
 
-  customTreeItems.forEach((customTreeItem) => {
+  tree.forEach((customTreeItem) => {
     const { key, title, collapsed, children, ...rest } = customTreeItem;
     // query只与值本身有关，不会涉及到 parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
-    const uniqueId = generateId(parentNode.id, title);
+    const nodeId = generateId(parentNode.id, title);
+
     const defaultCollapsed = collapsed ?? false;
-    const isCollapsedRow = get(collapsedRows, uniqueId);
+    const isCollapsedRow = get(collapsedRows, nodeId);
     const isCollapsed =
       isCollapsedRow ?? (hierarchyCollapse || defaultCollapsed);
 
+    // 平铺模式没有折叠状态
+    const isCollapsedNode = hierarchyType !== 'grid' && isCollapsed;
+    const isLeaf = isEmpty(children);
+
     const node = new Node({
-      id: uniqueId,
+      id: nodeId,
       key,
       label: title,
       value: title,
@@ -43,12 +43,12 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       parent: parentNode,
       field: key,
       isTotals: false, // 自定义行头不会存在总计概念
-      isCollapsed,
+      isCollapsed: isCollapsedNode,
       hierarchy,
       query: valueQuery,
       spreadsheet,
       extra: rest,
-      isLeaf: isEmpty(children),
+      isLeaf,
     });
 
     if (level > hierarchy.maxLevel) {
@@ -65,14 +65,13 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hierarchy,
     );
 
-    // go recursive
     if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
       buildCustomTreeHierarchy({
         facetCfg,
         parentNode: node,
         level: level + 1,
         hierarchy,
-        customTreeItems: children,
+        tree: children,
       });
     }
   });
