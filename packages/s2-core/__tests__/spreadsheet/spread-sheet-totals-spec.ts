@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { getContainer } from 'tests/util/helpers';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
-import { flatMap, merge } from 'lodash';
+import { flatMap, get, merge } from 'lodash';
 import { PivotSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
+import { DataCell } from '@/cell';
 
 describe('Spreadsheet Totals Tests', () => {
   let spreadsheet: PivotSheet;
@@ -127,5 +129,49 @@ describe('Spreadsheet Totals Tests', () => {
     expect(findSubTotalNode(rowNodes, '四川省', 'city')).toBeUndefined();
     expect(findSubTotalNode(colNodes, '家具', 'sub_type')).toBeUndefined();
     expect(findSubTotalNode(colNodes, '办公用品', 'sub_type')).toBeDefined();
+  });
+
+  test('should render acutual row subtotal data in tree mode with row subtotal close', () => {
+    spreadsheet.setOptions({
+      hierarchyType: 'tree',
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: false,
+          subTotalsDimensions: ['province', 'city'],
+        },
+      },
+    });
+    spreadsheet.render();
+
+    const grandTotal = spreadsheet.panelScrollGroup
+      .getChildren()
+      .find(
+        (child) =>
+          child instanceof DataCell &&
+          get(child, 'meta.rowId') === 'root[&]总计',
+      ) as DataCell;
+    // @ts-ignore
+    expect(grandTotal.textShape.attr('text')).toEqual('26193');
+
+    const rowSubtotal1 = spreadsheet.panelScrollGroup
+      .getChildren()
+      .find(
+        (child) =>
+          child instanceof DataCell &&
+          get(child, 'meta.rowId') === 'root[&]浙江省',
+      ) as DataCell;
+    // @ts-ignore
+    expect(rowSubtotal1.textShape.attr('text')).toEqual('-');
+
+    const rowSubtotal2 = spreadsheet.panelScrollGroup
+      .getChildren()
+      .find(
+        (child) =>
+          child instanceof DataCell &&
+          get(child, 'meta.rowId') === 'root[&]浙江省',
+      ) as DataCell;
+    // @ts-ignore
+    expect(rowSubtotal2.textShape.attr('text')).toEqual('-');
   });
 });
