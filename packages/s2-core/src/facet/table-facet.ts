@@ -54,6 +54,8 @@ import {
   translateGroup,
   translateGroupX,
   translateGroupY,
+  getFrozenLeafNodesCount,
+  isTopLevelNode,
 } from './utils';
 
 export class TableFacet extends BaseFacet {
@@ -278,11 +280,23 @@ export class TableFacet extends BaseFacet {
     return cellCfg?.width;
   }
 
-  private getColNodeHeight() {
+  private getColNodeHeight(col: Node, totalHeight?: number) {
     const { colCfg } = this.cfg;
     // 明细表所有列节点高度保持一致
     const userDragHeight = values(colCfg?.heightByField)[0];
-    return userDragHeight || colCfg?.height;
+    const height = userDragHeight || colCfg.height;
+    if (!totalHeight) {
+      return height;
+    }
+    // 如果传递了总高，则需要根据层级情况获得高度
+    if (col.children && col.children.length) {
+      return height;
+    }
+    while (col.parent) {
+      totalHeight -= isTopLevelNode(col) ? 0 : height;
+      col = col.parent;
+    }
+    return totalHeight;
   }
 
   private calculateColNodesCoordinate(
@@ -292,58 +306,85 @@ export class TableFacet extends BaseFacet {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.height = this.getColNodeHeight();
+      levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
-    const { frozenTrailingColCount } = getValidFrozenOptions(
-      this.spreadsheet?.options,
-      allNodes.length,
-    );
-
-    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
-
-    const nodes = [];
+    const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
+    let currentCollIndex = 0;
+    let current1stLevelCollIndex = 0;
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
+      if (currentNode.isLeaf) {
+        currentNode.colIndex = currentCollIndex;
+        currentCollIndex += 1;
+        currentNode.x = preLeafNode.x + preLeafNode.width;
+        currentNode.width = this.calculateColLeafNodesWidth(
+          currentNode,
+          adaptiveColWitdth,
+        );
+        colsHierarchy.width += currentNode.width;
+        preLeafNode = currentNode;
+      }
+      if (isTopLevelNode(currentNode)) {
+        currentNode.colIndex = current1stLevelCollIndex;
+        current1stLevelCollIndex += 1;
+      }
 
-      currentNode.colIndex = i;
-      currentNode.x = preLeafNode.x + preLeafNode.width;
-      currentNode.width = this.calculateColLeafNodesWidth(
+      if (currentNode.level === 0) {
+        currentNode.y = 0;
+      } else {
+        currentNode.y = currentNode.parent?.y + currentNode.parent?.height ?? 0;
+      }
+      currentNode.height = this.getColNodeHeight(
         currentNode,
-        adaptiveColWidth,
+        colsHierarchy.height,
       );
-      preLeafNode = currentNode;
-      currentNode.y = 0;
-
-      currentNode.height = this.getColNodeHeight();
-
-      nodes.push(currentNode);
-
       layoutCoordinate(this.cfg, null, currentNode);
-
-      colsHierarchy.width += currentNode.width;
     }
-
+    const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
+    const { frozenTrailingColCount } = getValidFrozenOptions(
+      this.spreadsheet?.options,
+      topLevelNodes.length,
+    );
     preLeafNode = Node.blankNode();
-
     const canvasW = this.getCanvasHW().width;
-
     if (frozenTrailingColCount > 0) {
-      for (let i = 1; i <= allNodes.length; i++) {
-        const currentNode = allNodes[allNodes.length - i];
-
-        if (
-          currentNode.colIndex >=
-          colLeafNodes.length - frozenTrailingColCount
-        ) {
-          if (currentNode.colIndex === allNodes.length - 1) {
-            currentNode.x = canvasW - currentNode.width;
-          } else {
-            currentNode.x = preLeafNode.x - currentNode.width;
-          }
-          preLeafNode = currentNode;
+      const { trailingColCount: realFrozenTrailingColCount } =
+        getFrozenLeafNodesCount(topLevelNodes, 0, frozenTrailingColCount);
+      const leafNodes = allNodes.filter((node) => node.isLeaf);
+      for (let i = 1; i <= realFrozenTrailingColCount; i++) {
+        const currentNode = leafNodes[leafNodes.length - i];
+        if (i === 1) {
+          currentNode.x = canvasW - currentNode.width;
+        } else {
+          currentNode.x = preLeafNode.x - currentNode.width;
         }
+        preLeafNode = currentNode;
+      }
+    }
+    this.autoCalculateColNodeWidthAndX(colLeafNodes);
+  }
+
+  /**
+   * Auto column no-leaf node's width and x coordinate
+   * @param colLeafNodes
+   */
+  private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
+    let prevColParent = null;
+    const leafNodes = colLeafNodes.slice(0);
+    while (leafNodes.length) {
+      const node = leafNodes.shift();
+      const parent = node.parent;
+      if (prevColParent !== parent && parent) {
+        leafNodes.push(parent);
+        // parent's x = first child's x
+        parent.x = parent.children[0].x;
+        // parent's width = all children's width
+        parent.width = parent.children
+          .map((value: Node) => value.width)
+          .reduce((sum, current) => sum + current, 0);
+        prevColParent = parent;
       }
     }
   }
@@ -573,7 +614,9 @@ export class TableFacet extends BaseFacet {
       viewportHeight,
     } = this.panelBBox;
     const { height: cornerHeight } = this.cornerBBox;
-    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const colLeafNodes = this.layoutResult.colNodes.filter((node) => {
+      return isTopLevelNode(node);
+    });
     const cellRange = this.getCellRange();
     const dataLength = cellRange.end - cellRange.start;
     const {
@@ -691,14 +734,13 @@ export class TableFacet extends BaseFacet {
     }
 
     if (frozenTrailingColCount > 0) {
-      const width = colLeafNodes.reduceRight((prev, item, idx) => {
-        if (idx >= colLeafNodes.length - frozenTrailingColCount) {
-          return prev + item.width;
-        }
-        return prev;
-      }, 0);
-
-      const x = panelWidth - width;
+      // const width = colLeafNodes.reduceRight((prev, item, idx) => {
+      //   if (idx >= colLeafNodes.length - frozenTrailingColCount) {
+      //     return prev + item.width;
+      //   }
+      //   return prev;
+      // }, 0);
+      const { x } = colLeafNodes[colLeafNodes.length - frozenTrailingColCount];
       const height = frozenTrailingRowCount ? panelHeight : viewportHeight;
       renderLine(
         splitLineGroup as Group,
@@ -763,7 +805,9 @@ export class TableFacet extends BaseFacet {
   };
 
   protected renderFrozenPanelCornerGroup = () => {
-    const colLength = this.layoutResult.colLeafNodes.length;
+    const colLength = this.layoutResult.colNodes.filter((node) => {
+      return isTopLevelNode(node);
+    }).length;
     const cellRange = this.getCellRange();
 
     const {
@@ -808,6 +852,24 @@ export class TableFacet extends BaseFacet {
     }
   };
 
+  getRealFrozenColumns = (
+    frozenColCount: number,
+    frozenTrailingColCount: number,
+  ) => {
+    let colCount = frozenColCount;
+    let trailingColCount = frozenTrailingColCount;
+    if (frozenColCount || frozenTrailingColCount) {
+      let nodes = this.layoutResult.colsHierarchy.getNodes();
+      nodes = nodes.filter((node) => isTopLevelNode(node));
+      ({ colCount, trailingColCount } = getFrozenLeafNodesCount(
+        nodes,
+        frozenColCount,
+        frozenTrailingColCount,
+      ));
+    }
+    return { colCount, trailingColCount };
+  };
+
   addCell = (cell: S2CellType<ViewMeta>) => {
     const {
       frozenRowCount,
@@ -818,13 +880,18 @@ export class TableFacet extends BaseFacet {
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
     const cellRange = this.getCellRange();
 
+    const { colCount, trailingColCount } = this.getRealFrozenColumns(
+      frozenColCount,
+      frozenTrailingColCount,
+    );
+
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
       {
         frozenRowCount,
-        frozenColCount,
+        frozenColCount: colCount,
         frozenTrailingRowCount,
-        frozenTrailingColCount,
+        frozenTrailingColCount: trailingColCount,
       },
       colLength,
       cellRange,
@@ -927,7 +994,9 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.getFrozenOptions();
 
-    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const colLeafNodes = this.layoutResult.colNodes.filter((node) => {
+      return isTopLevelNode(node);
+    });
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
     const { frozenCol, frozenTrailingCol, frozenRow, frozenTrailingRow } =
@@ -1053,12 +1122,17 @@ export class TableFacet extends BaseFacet {
 
     this.panelScrollGroupIndexes = indexes;
 
+    const { colCount, trailingColCount } = this.getRealFrozenColumns(
+      frozenColCount,
+      frozenTrailingColCount,
+    );
+
     return splitInViewIndexesWithFrozen(
       indexes,
       {
-        frozenColCount,
+        frozenColCount: colCount,
         frozenRowCount,
-        frozenTrailingColCount,
+        frozenTrailingColCount: trailingColCount,
         frozenTrailingRowCount,
       },
       colLength,
@@ -1191,7 +1265,10 @@ export class TableFacet extends BaseFacet {
         }
       } else {
         const [colMin, colMax] = this.frozenGroupInfo[key].range;
-        cols = getColsForGrid(colMin, colMax, this.layoutResult.colLeafNodes);
+        const nodes = this.layoutResult.colNodes.filter((node) =>
+          isTopLevelNode(node),
+        );
+        cols = getColsForGrid(colMin, colMax, nodes);
         rows = this.gridInfo.rows;
       }
 
