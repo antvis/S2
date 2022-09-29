@@ -29,7 +29,7 @@ import {
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { drawInterval } from '..';
+import { drawInterval } from '../utils/g-mini-charts';
 
 /**
  * DataCell for panelGroup area
