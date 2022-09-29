@@ -222,9 +222,8 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected shouldHideRowSubtotalData() {
-    const { row = {} } = this.spreadsheet.options.totals;
+    const { row = {} } = this.spreadsheet.options.totals ?? {};
     const { rowIndex } = this.meta;
-
     const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
     // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
