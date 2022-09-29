@@ -85,19 +85,26 @@ export interface Extra {
   remark: string;
 }
 
+export type Columns = Array<ColumnNode | string>;
+
 export interface Fields {
   // row fields
   rows?: string[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields
-  columns?: string[];
+  columns?: Columns;
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
+}
+
+export interface ColumnNode {
+  key: string;
+  children?: Columns;
 }
 
 export interface TotalsStatus {

@@ -355,9 +355,21 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find(
-      (cell) => get(cell, indexType) === currentIndex,
-    );
+    let isEqualIndex = false;
+    // 明细表模式多级表头计算索引换一种策略
+    if (this.spreadsheet.isTableMode() && nodes.length) {
+      const leafs = nodes[0].hierarchy.getLeaves();
+      isEqualIndex = leafs.some((cell, i) => {
+        if (nodes.some((node) => node === cell)) {
+          return i === currentIndex;
+        }
+        return false;
+      });
+    } else {
+      isEqualIndex = [...nodes, ...cells].some(
+        (cell) => get(cell, indexType) === currentIndex,
+      );
+    }
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {

@@ -10,7 +10,12 @@ import {
 import type { SpreadSheet } from '../../sheet-type';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
-import { isFrozenCol, isFrozenTrailingCol } from '../utils';
+import {
+  isFrozenCol,
+  isFrozenTrailingCol,
+  isTopLevelNode,
+  getNodeRoot,
+} from '../utils';
 import { ColHeader, type ColHeaderConfig } from './col';
 
 /**
@@ -77,7 +82,12 @@ export class TableColHeader extends ColHeader {
   protected getCellGroup(node: Node) {
     const { spreadsheet } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
+    const colLength = spreadsheet?.facet?.layoutResult.colNodes.filter(
+      (cell) => {
+        return isTopLevelNode(cell);
+      },
+    ).length;
+    node = getNodeRoot(node);
 
     if (isFrozenCol(node.colIndex, frozenColCount)) {
       return this.frozenColGroup;
@@ -93,6 +103,8 @@ export class TableColHeader extends ColHeader {
     const { spreadsheet } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
+
+    item = getNodeRoot(item);
 
     if (
       isFrozenCol(item.colIndex, frozenColCount) ||

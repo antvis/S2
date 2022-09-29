@@ -66,7 +66,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerOriginalWidth,
       cornerOriginalHeight,
       cfg.rows,
-      cfg.columns,
+      cfg.columns as string[],
       layoutResult.rowsHierarchy,
       layoutResult.colsHierarchy,
       cfg.dataSet,
@@ -85,7 +85,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
       rows: cfg.rows,
-      columns: cfg.columns,
+      columns: cfg.columns as string[],
       seriesNumberWidth,
       spreadsheet: s2,
     });

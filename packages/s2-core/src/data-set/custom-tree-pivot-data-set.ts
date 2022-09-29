@@ -14,7 +14,8 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     const { query } = params;
     const { columns, rows } = this.fields;
     const rowDimensionValues = getQueryDimValues(rows, query);
-    const colDimensionValues = getQueryDimValues(columns, query);
+    // 透视表下columns只支持简单结构
+    const colDimensionValues = getQueryDimValues(columns as string[], query);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -23,7 +24,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       isFirstCreate: true,
       careUndefined: true,
       rowFields: rows,
-      colFields: columns,
+      colFields: columns as string[],
     });
     const data = get(this.indexesData, path);
     return data;
@@ -38,7 +39,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     const { rows, columns } = this.fields;
     const { indexesData } = transformIndexesData({
       rows,
-      columns,
+      columns: columns as string[],
       originData: this.originData,
       totalData: [], // 自定义目录树没有 totalData 概念
       indexesData: this.indexesData,

@@ -24,6 +24,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
 
+
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
     return false;
