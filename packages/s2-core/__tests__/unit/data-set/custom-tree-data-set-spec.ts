@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { customTreeItems } from 'tests/data/custom-tree-items';
 import { dataCustomTrees } from 'tests/data/data-custom-trees';
 import type { S2DataConfig } from '@/common/interface';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD } from '@/common/constant';
 import { PivotSheet } from '@/sheet-type';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 
@@ -27,7 +27,6 @@ describe('Custom Tree Dataset Test', () => {
   const dataCfg: S2DataConfig = {
     meta: [],
     data: dataCustomTrees,
-    totalData: [],
     fields: {
       rows: [],
       columns: ['type', 'sub_type'],

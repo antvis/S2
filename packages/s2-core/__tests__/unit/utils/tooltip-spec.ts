@@ -439,7 +439,7 @@ describe('Tooltip Utils Tests', () => {
         {
           totals,
         },
-        { useSimpleData: false },
+        { useSimpleData: false, useTotalData: true },
       );
 
     let s2: SpreadSheet;

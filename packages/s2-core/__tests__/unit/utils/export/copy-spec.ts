@@ -190,6 +190,7 @@ describe('List Table Core Data Process', () => {
       getContainer(),
       assembleDataCfg({
         meta: [{ field: 'city', formatter: (v) => v + '_formatted' }],
+        data: originalData,
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },

@@ -157,11 +157,24 @@ export const createMockCellInfo = (
 
 export const createPivotSheet = (
   s2Options: S2Options,
-  { useSimpleData } = { useSimpleData: true },
+  {
+    useSimpleData,
+    useTotalData,
+  }: { useSimpleData: boolean; useTotalData?: boolean } = {
+    useSimpleData: true,
+    useTotalData: true,
+  },
 ) => {
   return new PivotSheet(
     getContainer(),
-    useSimpleData ? simpleDataConfig : dataConfig,
+    useSimpleData
+      ? simpleDataConfig
+      : {
+          ...dataConfig,
+          data: useTotalData
+            ? dataConfig.data.concat(dataConfig.totalData as any)
+            : dataConfig.data,
+        },
     s2Options,
   );
 };

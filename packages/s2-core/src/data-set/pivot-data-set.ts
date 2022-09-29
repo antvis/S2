@@ -1,5 +1,5 @@
 import {
-  difference,
+  compact,
   each,
   every,
   filter,
@@ -44,7 +44,6 @@ import {
   getAggregationAndCalcFuncByQuery,
   getListBySorted,
   getTotalSelection,
-  splitTotal,
 } from '../utils/data-set-operate';
 import {
   deleteMetaById,
@@ -545,7 +544,7 @@ export class PivotDataSet extends BaseDataSet {
 
     const extraFields = this.getQueryExtraFields(query);
 
-    return flatMap(result as RawData[], (item) =>
+    return flatMap(compact(result as RawData[]), (item) =>
       CellData.getCellDataList(item, extraFields),
     );
   }

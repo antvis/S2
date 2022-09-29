@@ -2,11 +2,11 @@
  * table mode data-set test.
  */
 import { orderBy, uniq } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
 import type { S2DataConfig } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
-
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
@@ -19,6 +19,7 @@ describe('Table Mode Dataset Test', () => {
     fields: {
       columns: ['province', 'city', 'type', 'sub_type', 'number'],
     },
+    data,
   };
   beforeEach(() => {
     MockTableSheet.mockClear();

@@ -5,7 +5,7 @@ import { flattenDeep, get, size, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 
@@ -13,7 +13,7 @@ describe('Pivot Table Core Data Process', () => {
   const s2 = new PivotSheet(
     getContainer(),
     assembleDataCfg({
-      totalData: [],
+      data,
     }),
     assembleOptions({}),
   );
