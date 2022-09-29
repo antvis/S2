@@ -167,5 +167,18 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
   },
 };
 
+export const customTreeOptions: SheetComponentOptions = {
+  width: 600,
+  height: 480,
+  hierarchyType: 'customTree',
+  cornerText: '指标',
+};
+
+export const customRowGridOptions: SheetComponentOptions = {
+  width: 600,
+  height: 480,
+  hierarchyType: 'grid',
+};
+
 export const defaultOptions =
   getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);

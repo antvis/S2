@@ -59,20 +59,24 @@ export abstract class BaseDataSet {
   protected displayData: DataType[];
 
   /**
-   * 查找字段信息
+   * 获取字段信息
    */
   public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
     return find(this.meta || meta, { field });
   });
 
   /**
-   * 获得字段名称
+   * 获取字段名称
    * @param field
    */
   public getFieldName(field: string, defaultValue: string = field): string {
     return get(this.getFieldMeta(field, this.meta), 'name', defaultValue);
   }
 
+  /**
+   * 获取自定义单元格字段名称
+   * @param cell
+   */
   public getCustomRowFieldName(cell: S2CellType<ViewMeta | Node>): string {
     if (!cell) {
       return;
@@ -81,9 +85,13 @@ export abstract class BaseDataSet {
     const row = find(this.spreadsheet.getRowNodes(), {
       rowIndex: meta?.rowIndex,
     });
-    return this.getFieldName(row?.field) || row?.label;
+    return row?.label || this.getFieldName(row?.field);
   }
 
+  /**
+   * 获取自定义单元格字段描述
+   * @param cell
+   */
   public getCustomRowFieldDescription = (
     cell: S2CellType<ViewMeta | Node>,
   ): string => {

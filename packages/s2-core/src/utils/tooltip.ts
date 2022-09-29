@@ -23,8 +23,9 @@ import {
   mapKeys,
   noop,
   pick,
-  includes,
-  matches,
+  groupBy,
+  flatMap,
+  sumBy,
 } from 'lodash';
 import {
   CellTypes,
@@ -33,7 +34,6 @@ import {
   VALUE_FIELD,
 } from '../common/constant';
 import {
-  TOOLTIP_CONTAINER_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
@@ -458,6 +458,29 @@ export const getSelectedCellsData = (
     });
 };
 
+export const getCustomFieldsSummaries = (
+  summaries: TooltipSummaryOptions[],
+): TooltipSummaryOptions[] => {
+  const customFieldGroup = groupBy(summaries, 'name');
+  return Object.keys(customFieldGroup).map((name) => {
+    const cellsData = customFieldGroup[name];
+    const selectedData = flatMap(
+      cellsData,
+      (cellData) => cellData.selectedData,
+    );
+    const value = sumBy(
+      cellsData.filter((item) => isNumber(item.value)),
+      'value',
+    );
+
+    return {
+      name,
+      selectedData,
+      value,
+    };
+  });
+};
+
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const { spreadsheet, getShowValue, targetCell, options = {} } = params;
   const summaries: TooltipSummaryOptions[] = [];
@@ -485,7 +508,9 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   });
 
   mapKeys(summary, (selected, field) => {
-    const name = getSummaryName(spreadsheet, field, options?.isTotals);
+    const name =
+      spreadsheet?.dataSet.getCustomRowFieldName(targetCell) ||
+      getSummaryName(spreadsheet, field, options?.isTotals);
     let value: number | string = getShowValue?.(selected, VALUE_FIELD);
 
     if (isTableMode) {
@@ -509,7 +534,11 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     });
   });
 
-  return summaries;
+  if (!spreadsheet.isCustomRowFields()) {
+    return summaries;
+  }
+
+  return getCustomFieldsSummaries(summaries);
 };
 
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {

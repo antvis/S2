@@ -56,6 +56,8 @@ import {
   StrategyOptions,
 } from '../__tests__/data/strategy-data';
 import {
+  customRowGridOptions,
+  customTreeOptions,
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetCustomGridDataCfg,
@@ -1033,13 +1035,13 @@ function MainLayout() {
               data: customTreeData,
               fields: customTreeFields,
             }}
-            options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
+            options={customTreeOptions}
           />
         </TabPane>
         <TabPane tab="自定义行头" key="customRowGrid">
           <SheetComponent
             dataCfg={pivotSheetCustomGridDataCfg}
-            options={{ width: 600, height: 480, hierarchyType: 'grid' }}
+            options={customRowGridOptions}
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
@@ -1074,7 +1076,7 @@ function MainLayout() {
                 />
               ),
             }}
-        />
+          />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
           <SheetComponent
