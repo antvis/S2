@@ -1,4 +1,10 @@
-import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
+import type {
+  IElement,
+  IGroup,
+  IShape,
+  ShapeAttrs,
+  Event as GEvent,
+} from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { each, get } from 'lodash';
 import { MIN_SCROLL_BAR_HEIGHT } from '../../common/constant/scroll';
@@ -147,6 +153,7 @@ export class ScrollBar extends Group {
   public updateThumbOffset = (offset: number, emitScrollChange = true) => {
     const newOffset = this.validateRange(offset);
     const isNotChanged = this.thumbOffset === newOffset && newOffset !== 0;
+
     if (isNotChanged) {
       return;
     }
@@ -360,10 +367,10 @@ export class ScrollBar extends Group {
   };
 
   // 点击滑道的事件回调,移动滑块位置
-  private onTrackClick = (event: MouseEvent) => {
+  private onTrackClick = (event: GEvent) => {
     const offset = this.isHorizontal
-      ? event.offsetX - this.position.x - this.thumbLen / 2
-      : event.offsetY - this.position.y - this.thumbLen / 2;
+      ? event.x - this.position.x - this.thumbLen / 2
+      : event.y - this.position.y - this.thumbLen / 2;
 
     const newOffset = this.validateRange(offset);
     this.updateThumbOffset(newOffset);

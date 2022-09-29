@@ -1,4 +1,4 @@
-import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
+import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
 import type { S2Theme, ThemeCfg } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
@@ -353,9 +353,6 @@ export const getTheme = (
             borderWidth: 1,
           },
         },
-        // TODO 全部收敛到 miniChart 里
-        miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
-        miniBarChartFillColor: basicColors[7],
       },
       // ------------- mini chart ---------------
       miniChart: {
@@ -388,7 +385,7 @@ export const getTheme = (
           comparativeMeasure: {
             width: 1,
             height: 12,
-            color: basicColors[13],
+            fill: basicColors[13],
             opacity: 0.25,
           },
           rangeColors: {
@@ -397,6 +394,11 @@ export const getTheme = (
             bad: semanticColors.red,
           },
           backgroundColor: '#E9E9E9',
+        },
+        // ------------ interval bar graph -----------------
+        interval: {
+          height: INTERVAL_BAR_HEIGHT,
+          fill: basicColors[7],
         },
       },
       icon: {
