@@ -30,6 +30,7 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   CustomSVGIcon,
   EmitterType,
+  Fields,
   InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
@@ -242,6 +243,14 @@ export abstract class SpreadSheet extends EE {
    * Check if is pivot mode
    */
   public abstract isPivotMode(): boolean;
+
+  public abstract isCustomFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean;
+
+  public abstract isCustomRowFields(): boolean;
+
+  public abstract isCustomColumnFields(): boolean;
 
   /**
    * tree type must be in strategy mode

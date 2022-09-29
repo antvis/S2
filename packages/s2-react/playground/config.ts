@@ -2,7 +2,12 @@ import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
+import {
+  data,
+  fields,
+  totalData,
+  meta,
+} from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 import { customGridFields } from '../__tests__/data/custom-grid-fields';
 import { customGridData } from '../__tests__/data/data-custom-grid';
@@ -16,25 +21,21 @@ export const tableSheetDataCfg: S2DataConfig = {
   },
 };
 
-export const pivotSheetDataCfg: S2DataConfig = {
+export const pivotSheetCustomGridDataCfg: S2DataConfig = {
   data: customGridData,
-  totalData,
   meta: [
+    ...meta,
     {
       field: 'a-1',
       name: '层级1',
     },
     {
-      field: 'a-2',
+      field: 'a-1-1',
       name: '层级2',
     },
     {
-      field: 'a-3',
+      field: 'measure-1',
       name: '层级3',
-    },
-    {
-      field: 'measure-4',
-      name: '指标4自定义名字',
     },
   ],
   fields: {
@@ -78,6 +79,13 @@ export const pivotSheetDataCfg: S2DataConfig = {
     //   },
     // ],
   },
+};
+
+export const pivotSheetDataCfg: S2DataConfig = {
+  data,
+  totalData,
+  meta,
+  fields,
 };
 
 export const s2Options: SheetComponentOptions = {

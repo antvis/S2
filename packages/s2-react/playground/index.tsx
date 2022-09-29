@@ -58,6 +58,7 @@ import {
 import {
   defaultOptions,
   mockGridAnalysisOptions,
+  pivotSheetCustomGridDataCfg,
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
@@ -1033,6 +1034,12 @@ function MainLayout() {
               fields: customTreeFields,
             }}
             options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
+          />
+        </TabPane>
+        <TabPane tab="自定义行头" key="customRowGrid">
+          <SheetComponent
+            dataCfg={pivotSheetCustomGridDataCfg}
+            options={{ width: 600, height: 480, hierarchyType: 'grid' }}
           />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">

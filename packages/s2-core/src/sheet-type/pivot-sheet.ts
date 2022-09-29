@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, isString, last } from 'lodash';
+import { clone, isString, last, some } from 'lodash';
 import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
@@ -8,6 +8,7 @@ import {
   getTooltipOperatorSortMenus,
 } from '../common/constant';
 import type {
+  Fields,
   RowCellCollapseTreeRowsType,
   S2Options,
   SortMethod,
@@ -24,6 +25,29 @@ import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
+  public isCustomFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean {
+    const { fields } = this.dataCfg;
+
+    if (!fieldType) {
+      return some(
+        [...fields?.rows, ...fields?.columns],
+        (field) => !isString(field),
+      );
+    }
+
+    return some(fields?.[fieldType], (field) => !isString(field));
+  }
+
+  public isCustomRowFields(): boolean {
+    return this.isCustomFields('rows');
+  }
+
+  public isCustomColumnFields(): boolean {
+    return this.isCustomFields('columns');
+  }
+
   public getDataSet(options: S2Options) {
     const { dataSet, hierarchyType } = options;
     if (dataSet) {
@@ -34,10 +58,7 @@ export class PivotSheet extends SpreadSheet {
       return new CustomTreePivotDataSet(this);
     }
 
-    const isCustomTreeFields = this.dataCfg.fields.rows.some(
-      (field) => !isString(field),
-    );
-    if (isCustomTreeFields) {
+    if (this.isCustomRowFields()) {
       return new CustomGridPivotDataSet(this);
     }
 

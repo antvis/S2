@@ -92,16 +92,15 @@ export const customGridFields: S2DataConfig['fields'] = {
           ],
           collapsed: false,
         },
+        {
+          key: 'measure-5',
+          title: '指标5',
+          description: '指标5描述',
+          children: [],
+        },
       ],
     },
   ],
-  values: [
-    'measure-1',
-    'measure-2',
-    'measure-3',
-    'measure-4',
-    'measure-5',
-    'measure-6',
-  ],
+  values: ['measure-1', 'measure-2', 'measure-3', 'measure-4', 'measure-5'],
   valueInCols: false,
 };

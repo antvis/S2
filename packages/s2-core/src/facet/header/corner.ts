@@ -9,6 +9,7 @@ import type { CornerBBox } from '../bbox/cornerBBox';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
+import { getDefaultCornerText } from './../../common/constant/basic';
 import { BaseHeader } from './base';
 import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
 
@@ -72,22 +73,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   public static getTreeCornerText(options: BaseCornerOptions) {
-    const { spreadsheet, facetCfg, layoutResult } = options;
+    const { spreadsheet, facetCfg } = options;
     const { dataSet, rows } = facetCfg;
-    const { rowsHierarchy } = layoutResult;
     const { cornerText: defaultCornerText } = spreadsheet.options;
 
     if (defaultCornerText) {
       return defaultCornerText;
-    }
-
-    const a = true;
-
-    if (a) {
-      const customTreeLabel = rowsHierarchy.sampleNodesForAllLevels
-        .map((node) => node.label)
-        .join('/');
-      return customTreeLabel;
     }
 
     const drillDownFieldInLevel = spreadsheet.store.get(
@@ -102,7 +93,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
 
-    return treeLabel;
+    if (treeLabel) {
+      return treeLabel;
+    }
+
+    return getDefaultCornerText();
   }
 
   public static getCornerNodes(
@@ -164,11 +159,16 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNodes.push(cornerNode);
       } else {
         const rowNodes = rowsHierarchy.sampleNodesForAllLevels || [];
+        const isCustomRow = true;
+
         // spreadsheet type grid mode
         rowNodes.forEach((rowNode) => {
-          const originalField = rows[rowNode.level] as CustomTreeItem;
-          const field = (originalField?.key ?? originalField) as string;
-          const value = dataSet.getFieldName(field, originalField?.title);
+          // 自定义行头直接取采样的行头 key 值即可, 可通过 s2DataCfg.meta.name 自定义名称
+          const field = isCustomRow
+            ? rowNode.key
+            : (rows[rowNode.level] as string);
+
+          const value = dataSet.getFieldName(field);
 
           const cornerNode: Node = new Node({
             key: field,

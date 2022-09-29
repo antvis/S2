@@ -27,6 +27,18 @@ import { FrozenGroup } from '../group/frozen-group';
 import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
+  public isCustomRowFields() {
+    return false;
+  }
+
+  public isCustomColumnFields() {
+    return false;
+  }
+
+  public isCustomFields() {
+    return false;
+  }
+
   public getDataSet(options: S2Options) {
     const { dataSet } = options;
     if (dataSet) {

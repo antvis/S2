@@ -1,4 +1,4 @@
-import { filter, isString } from 'lodash';
+import { filter } from 'lodash';
 import { EXTRA_FIELD, type CustomTreeItem, type Fields } from '../../common';
 import type { SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotDataSet } from '../../data-set';
@@ -156,7 +156,9 @@ export const buildHeaderHierarchy = (
   const rootNode = Node.rootNode();
   const hierarchy = new Hierarchy();
   const fields = isRowHeader ? rows : columns;
-  const isCustomTreeFields = fields.some((field) => !isString(field));
+  const isCustomTreeFields = spreadsheet.isCustomFields(
+    isRowHeader ? 'rows' : 'columns',
+  );
 
   const headerParams: HeaderParams = {
     isValueInCols,

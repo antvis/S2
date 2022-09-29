@@ -81,7 +81,7 @@ export abstract class BaseDataSet {
     const row = find(this.spreadsheet.getRowNodes(), {
       rowIndex: meta?.rowIndex,
     });
-    return row?.label || this.getFieldName(row?.field);
+    return this.getFieldName(row?.field) || row?.label;
   }
 
   public getCustomRowFieldDescription = (
@@ -99,7 +99,7 @@ export abstract class BaseDataSet {
     const row = find(this.spreadsheet.getRowNodes(), {
       rowIndex: meta?.rowIndex,
     });
-    return row?.extra?.description || this.getFieldDescription(row?.field);
+    return this.getFieldDescription(row?.field) || row?.extra?.description;
   };
 
   /**
