@@ -5,7 +5,7 @@ import type { SliderSingleProps } from 'antd';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 import { customGridFields } from '../__tests__/data/custom-grid-fields';
-import { customTreeData } from '../__tests__/data/data-custom-trees';
+import { customGridData } from '../__tests__/data/data-custom-grid';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -17,69 +17,28 @@ export const tableSheetDataCfg: S2DataConfig = {
 };
 
 export const pivotSheetDataCfg: S2DataConfig = {
-  data: customTreeData,
+  data: customGridData,
   totalData,
   meta: [
-    ...meta,
-    // {
-    //   field: 'custom-column-node-1',
-    //   name: 'test',
-    // },
     {
-      field: 'custom-row-node-1',
+      field: 'a-1',
       name: '层级1',
     },
     {
-      field: 'row-measure-1',
+      field: 'a-2',
       name: '层级2',
+    },
+    {
+      field: 'a-3',
+      name: '层级3',
+    },
+    {
+      field: 'measure-4',
+      name: '指标4自定义名字',
     },
   ],
   fields: {
     ...customGridFields,
-    // rows: [
-    //   {
-    //     key: 'a-1',
-    //     title: '自定义行节点1',
-    //     description: '自定义行节点1描述',
-    //     children: [
-    //       {
-    //         key: 'a-1-1',
-    //         title: '行指标1',
-    //         description: '行指标1描述',
-    //       },
-    //       {
-    //         key: 'a-1-2',
-    //         title: '自定义行节点2',
-    //         description: '自定义行节点2描述',
-    //         children: [
-    //           {
-    //             key: 'a-1-2-1',
-    //             title: '行节点指标2-指标1',
-    //             description: '行节点指标2-指标1描述',
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     key: 'a-2',
-    //     title: '自定义行节点2',
-    //     description: '自定义行节点2描述',
-    //     children: [
-    //       {
-    //         key: 'a-2-1',
-    //         title: '行指标2',
-    //         description: '行指标2描述',
-    //       },
-    //       {
-    //         key: 'a-2-2',
-    //         title: '自定义行节点2-2',
-    //         description: '自定义行节点2描述',
-    //         children: [],
-    //       },
-    //     ],
-    //   },
-    // ],
     // columns: [
     //   {
     //     key: 'b-1',

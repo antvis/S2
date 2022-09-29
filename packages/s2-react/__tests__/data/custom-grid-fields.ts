@@ -4,53 +4,89 @@ export const customGridFields: S2DataConfig['fields'] = {
   columns: ['type', 'sub_type'],
   rows: [
     {
-      key: 'custom-node-1',
-      title: '自定义节点A',
+      key: 'a-1',
+      title: '自定义节点 a-1',
+      description: 'a-1 描述',
       children: [
         {
-          key: 'measure-a',
-          title: '指标A',
+          key: 'a-1-1',
+          title: '自定义节点 a-1-1',
+          description: 'a-1-1 描述',
           children: [
             {
-              key: 'measure-b',
-              title: '指标B',
+              key: 'measure-1',
+              title: '指标1',
+              description: '指标1描述',
               children: [],
             },
             {
-              key: 'custom-node-2',
-              title: '自定义节点B',
+              key: 'a-1-1-1',
+              title: '自定义节点 a-1-1-1',
+              description: 'a-1-1-1 描述',
               children: [],
             },
             {
-              key: 'measure-c',
-              title: '指标C',
+              key: 'measure-2',
+              title: '指标2',
+              description: '指标2描述',
               children: [],
             },
           ],
         },
         {
-          key: 'custom-node-5',
-          title: '自定义节点E',
+          key: 'a-1-2',
+          title: '自定义节点 a-1-2',
+          description: 'a-1-2 描述',
           children: [],
         },
       ],
     },
     {
-      key: 'measure-e',
-      title: '指标E',
+      key: 'a-2',
+      title: '自定义节点 a-2',
       children: [
         {
-          key: 'custom-node-3',
-          title: '自定义节点C',
+          key: 'a-2-1',
+          title: '自定义节点 a-2-1',
+          description: 'a-2-1 描述',
           children: [],
         },
         {
-          key: 'custom-node-4',
-          title: '自定义节点D',
+          key: 'a-2-2',
+          title: '自定义节点 a-2-2',
+          description: 'a-1-2 描述',
           children: [
             {
-              key: 'measure-f',
-              title: '指标F',
+              key: 'measure-3',
+              title: '指标3',
+              description: '指标3描述',
+              children: [],
+            },
+          ],
+          collapsed: false,
+        },
+      ],
+    },
+    {
+      key: 'a-3',
+      title: '自定义节点 a-3',
+      description: 'a-3 描述',
+      children: [
+        {
+          key: 'a-3-1',
+          title: '自定义节点 a-3-1',
+          description: 'a-3-1 描述',
+          children: [],
+        },
+        {
+          key: 'a-3-2',
+          title: '自定义节点 a-3-2',
+          description: 'a-3-2 描述',
+          children: [
+            {
+              key: 'measure-4',
+              title: '指标4',
+              description: '指标4描述',
               children: [],
             },
           ],
@@ -60,12 +96,12 @@ export const customGridFields: S2DataConfig['fields'] = {
     },
   ],
   values: [
-    'measure-a',
-    'measure-b',
-    'measure-c',
-    'measure-d',
-    'measure-e',
-    'measure-f',
+    'measure-1',
+    'measure-2',
+    'measure-3',
+    'measure-4',
+    'measure-5',
+    'measure-6',
   ],
   valueInCols: false,
 };
