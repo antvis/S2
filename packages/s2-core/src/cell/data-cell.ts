@@ -22,17 +22,14 @@ import type {
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
-import {
-  getIconPositionCfg,
-  getIntervalScale,
-} from '../utils/condition/condition';
-import { parseNumberWithPrecision } from '../utils/formatter';
+import { getIconPositionCfg } from '../utils/condition/condition';
 import {
   renderIcon,
   renderLine,
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { drawInterval } from '../utils/g-mini-charts';
 
 /**
  * DataCell for panelGroup area
@@ -53,8 +50,16 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected conditionIconShape: GuiIcon;
 
+  public get cellConditions() {
+    return this.conditions;
+  }
+
   public get cellType() {
     return CellTypes.DATA_CELL;
+  }
+
+  public get valueRangeByField() {
+    return this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
   }
 
   protected handleByStateName(
@@ -263,47 +268,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawConditionIntervalShape() {
-    const { x, y, height, width } = this.getCellArea();
-
-    const intervalCondition = this.findFieldCondition(
-      this.conditions?.interval,
-    );
-
-    if (intervalCondition && intervalCondition.mapping) {
-      const attrs = this.mappingValue(intervalCondition);
-      if (!attrs) {
-        return;
-      }
-
-      const valueRange = attrs.isCompare
-        ? attrs
-        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const minValue = parseNumberWithPrecision(valueRange.minValue);
-      const maxValue = parseNumberWithPrecision(valueRange.maxValue);
-
-      const fieldValue = parseNumberWithPrecision(
-        this.meta.fieldValue as number,
-      );
-      // 对于超出设定范围的值不予显示
-      if (fieldValue < minValue || fieldValue > maxValue) {
-        return;
-      }
-      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
-      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
-
-      const getScale = getIntervalScale(minValue, maxValue);
-      const { zeroScale, scale } = getScale(fieldValue);
-
-      const fill = attrs.fill ?? barChartFillColor;
-
-      this.conditionIntervalShape = renderRect(this, {
-        x: x + width * zeroScale,
-        y: y + height / 2 - barChartHeight / 2,
-        width: width * scale,
-        height: barChartHeight,
-        fill,
-      });
-    }
+    this.conditionIntervalShape = drawInterval(this);
   }
 
   public getBackgroundColor() {
@@ -312,11 +277,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
 
-    if (
-      this.spreadsheet.isPivotMode() &&
-      crossBackgroundColor &&
-      this.meta.rowIndex % 2 === 0
-    ) {
+    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
@@ -438,7 +399,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  protected findFieldCondition(conditions: Condition[]): Condition {
+  public findFieldCondition(conditions: Condition[]): Condition {
     return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
@@ -450,7 +411,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  protected mappingValue(condition: Condition): MappingResult {
+  public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, this.meta.data);
   }

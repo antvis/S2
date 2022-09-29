@@ -24,9 +24,15 @@ s2.store.set('key', value) // 存储
 | originalDataCfg | 原始数据配置 | [S2DataConfig](/zh/docs/api/general/S2DataConfig)|
 | panelBBox | 可视区域包裹盒模型 | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox) |
 | activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.vision/zh/docs/api/group) |
-| valueRanges | ? | [ValueRanges](#ValueRanges) |
+| valueRanges | 条件格式值区间 | [ValueRanges](#valueranges) |
 | initColumnLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/zh/docs/api/basic-class/node)|
 | hiddenColumnsDetail | 隐藏的列头详情 | [HiddenColumnsInfo[]](#hiddencolumnsinfo) |
+| lastRenderedColumnFields | 上一次渲染的列头配置 | `string[]` |
+| resized | 是否手动调整过宽高 | `boolean` |
+| visibleActionIcons | hover 显示的 icon 缓存 | `GuiIcon[]` |
+| lastClickedCell | 上一次点击的单元格 | `S2CellType<ViewMeta>` |
+| initOverscrollBehavior | 初始滚动链状态 | `'auto' | 'none' | 'contain'` |
+| sortMethodMap | 排序方式 | `Record<string, SortMethod>` |
 | [key: string] | 其他任意字段 | `unknown` |
 
 ## HiddenColumnsInfo
@@ -49,4 +55,15 @@ interface PartDrillDownInfo {
   // 下钻字段
   drillField: string;
 }
+```
+
+## ValueRanges
+
+```ts
+export interface ValueRange {
+  minValue?: number;
+  maxValue?: number;
+}
+
+export type ValueRanges = Record<string, ValueRange>;
 ```

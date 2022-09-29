@@ -328,10 +328,10 @@
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@1.29.1":
-  version "1.29.1"
-  resolved "https://registry.npmmirror.com/@antv/s2/-/s2-1.29.1.tgz#dd8dbcd6181d010411555c20d8f9dd3335137944"
-  integrity sha512-7orx+waw6HVbuHyOP0LX4qvgrhYdsI8p1rUJ7qcPtJsdlzNJq6icfMCiVZvRoxj1+LFPef4eGV9VaI+6OW9DJw==
+"@antv/s2@1.30.0":
+  version "1.30.0"
+  resolved "https://registry.npmmirror.com/@antv/s2/-/s2-1.30.0.tgz#43e983f8fe86c3009939c0573c523b334a76d0dd"
+  integrity sha512-YeKIrK0Fmrg2E2D9NDXxbV0sGt1CVROPWZOiiCsMxaRboicCySb5XPiEqO1XJbH64A+vCY7A29hUgLdWjspX3A==
   dependencies:
     "@antv/event-emitter" "^0.1.3"
     "@antv/g-canvas" "^0.5.12"

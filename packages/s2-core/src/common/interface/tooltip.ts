@@ -18,6 +18,7 @@ export interface TooltipOperatorMenu {
 export interface TooltipOperatorOptions {
   onClick?: (...args: unknown[]) => void;
   menus?: TooltipOperatorMenu[];
+  defaultSelectedKeys?: string[];
 }
 
 export interface TooltipPosition {

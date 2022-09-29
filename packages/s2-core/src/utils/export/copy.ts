@@ -288,18 +288,29 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   });
   return twoDimDataArray;
 };
-
 const processTableColSelected = (
-  displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
-  const selectedFiled = selectedCols.length
-    ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
-    : getLeafColumnsWithKey(spreadsheet.dataCfg.fields.columns);
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
+  const selectedFields = selectedCols.length
+    ? selectedCols.map((e) => ({
+        field: getColNodeField(spreadsheet, e.id),
+        formatter: getFormat(e.colIndex, spreadsheet),
+      }))
+    : spreadsheet.dataCfg.fields.columns
+        .map((cName) =>
+          spreadsheet.getColumnNodes().find((n) => n.field === cName),
+        )
+        .map((node) => ({
+          field: getColNodeField(spreadsheet, node.id),
+          formatter: getFormat(node.colIndex, spreadsheet),
+        }));
 
   const dataMatrix = displayData.map((row) => {
-    return selectedFiled.map((filed) => convertString(row[filed]));
+    return selectedFields.map(({ field, formatter }) =>
+      convertString(formatter(row[field])),
+    );
   });
 
   return [
@@ -395,17 +406,27 @@ const processColSelected = (
   if (spreadsheet.isPivotMode()) {
     return processPivotColSelected(spreadsheet, selectedCols);
   }
-  return processTableColSelected(displayData, spreadsheet, selectedCols);
+  return processTableColSelected(spreadsheet, selectedCols);
 };
 
 const processTableRowSelected = (
-  displayData: DataType[],
+  spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ): Copyable => {
-  const selectedIndex = selectedRows.map((e) => e.rowIndex);
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const matrix = displayData
-    .filter((e, i) => selectedIndex.includes(i))
-    .map((e) => Object.keys(e).map((key) => convertString(e[key])));
+    .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
+    .map((entry) => {
+      return Object.keys(entry)
+        .map((cName) =>
+          spreadsheet.getColumnNodes().find((n) => n.field === cName),
+        )
+        .map((node) =>
+          convertString(
+            getFormat(node.colIndex, spreadsheet)(entry[node.field]),
+          ),
+        );
+    });
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
@@ -434,7 +455,7 @@ const processRowSelected = (
   if (spreadsheet.isPivotMode()) {
     return processPivotRowSelected(spreadsheet, selectedRows);
   }
-  return processTableRowSelected(displayData, selectedRows);
+  return processTableRowSelected(spreadsheet, selectedRows);
 };
 
 export function getCopyData(
