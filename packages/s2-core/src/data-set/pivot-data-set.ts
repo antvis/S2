@@ -91,10 +91,7 @@ export class PivotDataSet extends BaseDataSet {
     this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
-    // total data in raw data scene.
-    this.totalData = []
-      .concat(splitTotal(dataCfg.data, dataCfg.fields))
-      .concat(this.totalData);
+
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns, values } = this.fields;
       const { indexesData } = transformIndexesData({
@@ -102,7 +99,6 @@ export class PivotDataSet extends BaseDataSet {
         columns,
         values,
         originData: this.originData,
-        totalData: this.totalData,
         indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
@@ -130,12 +126,6 @@ export class PivotDataSet extends BaseDataSet {
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
 
-    const totalData = splitTotal(drillDownData, {
-      rows: nextRowFields,
-      columns: this.fields.columns,
-    });
-    const originData = difference(drillDownData, totalData);
-
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
@@ -158,8 +148,7 @@ export class PivotDataSet extends BaseDataSet {
       rows: nextRowFields,
       columns,
       values,
-      originData,
-      totalData,
+      originData: drillDownData,
       indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
@@ -265,7 +254,7 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
+    const { data, meta = [], fields, sortParams = [] } = dataCfg;
     const { columns, rows, values, valueInCols, customValueOrder } = fields;
     let newColumns = columns;
     let newRows = rows;
@@ -304,7 +293,6 @@ export class PivotDataSet extends BaseDataSet {
         columns: newColumns,
         values,
       },
-      totalData,
       sortParams,
     };
   }

@@ -114,24 +114,6 @@ export function isTotalData(ids: string[], data: RawData): boolean {
   return !every(filterExtraDimension(ids), (id) => has(data, id));
 }
 
-/**
- * split total data from origin list data.
- */
-export function splitTotal(rawData: RawData[], fields: Fields): RawData[] {
-  const { rows, columns } = fields;
-
-  return reduce(
-    rawData,
-    (result: RawData[], data: RawData) => {
-      if (isTotalData([].concat(rows).concat(columns), data)) {
-        result.push(data);
-      }
-      return result;
-    },
-    [],
-  );
-}
-
 export function getTotalSelection(totals = {} as TotalSelectionsOfMultiData) {
   return customMerge(DEFAULT_TOTAL_SELECTIONS, totals);
 }
