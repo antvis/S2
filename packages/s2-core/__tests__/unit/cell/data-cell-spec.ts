@@ -4,6 +4,7 @@ import type { Formatter, ViewMeta } from '@/common';
 import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { DataCell } from '@/cell';
+import type { PivotFacet } from '@/facet';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -28,7 +29,14 @@ describe('data cell formatter test', () => {
 
     s2 = new MockPivotSheet(container);
     const dataSet: PivotDataSet = new MockPivotDataSet(s2);
+
     s2.dataSet = dataSet;
+
+    s2.facet = {
+      layoutResult: {
+        rowLeafNodes: [],
+      },
+    } as PivotFacet;
   });
 
   test('should pass complete data into formatter', () => {

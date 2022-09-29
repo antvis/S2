@@ -1,7 +1,7 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { find, get, head, isEmpty } from 'lodash';
+import { find, head, isEmpty } from 'lodash';
 import { InterceptType, S2Event } from '../../../common/constant';
-import type { CellAppendInfo, Data } from '../../../common/interface';
+import type { RawData } from '../../../common/interface';
 import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
@@ -34,16 +34,16 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getRowData = (cellData: Node): Data => {
+  private getRowData = (cellData: Node): RawData => {
     let node = cellData;
-    const nodeData: Data = {};
+    const nodeData: RawData = {};
     while (node.parent) {
       nodeData[node.key] = node.value;
       node = node.parent;
     }
     const rowIndex = this.getRowIndex(cellData);
     const originalRowData = this.getOriginalRowData(cellData, rowIndex);
-    const rowData: Data = {
+    const rowData: RawData = {
       ...originalRowData,
       ...nodeData,
       rowIndex,
@@ -68,7 +68,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
 
     const currentRowData = find(
       this.spreadsheet.dataCfg.data,
-      (row: Data, index: number) =>
+      (row: RawData, index: number) =>
         row[cellData.key] === cellData.value && index === dataIndex,
     );
     return currentRowData;

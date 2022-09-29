@@ -1,7 +1,7 @@
 import type { Event as GEvent } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { RowTextClick } from '@/interaction/base-interaction/click';
-import type { Data, S2DataConfig, S2Options } from '@/common/interface';
+import type { RawData, S2DataConfig, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
 
@@ -13,7 +13,7 @@ describe('Interaction Row Text Click Tests', () => {
   let rowTextClick: RowTextClick;
   let s2: SpreadSheet;
 
-  const data: Data[] = [
+  const data: RawData[] = [
     {
       'key-0': 'value1',
       'key-1': 'value2',

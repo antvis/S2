@@ -1,8 +1,6 @@
 import Decimal from 'decimal.js';
-import { get } from 'lodash';
-import { Aggregation } from '../common/interface';
-
-type DataItem = Record<string, any>;
+import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import { Aggregation, type ViewMetaData } from '../common/interface';
 
 export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
@@ -14,6 +12,8 @@ export const isNotNumber = (value: unknown) => {
   return true;
 };
 
+export const canConvertToNumber = (a?: string | number) => !isNotNumber(a);
+
 /**
  * 预处理原始数据为 Decimal 对象数组
  * 所有不能转为 number 的数据默认为 0
@@ -23,7 +23,7 @@ export const isNotNumber = (value: unknown) => {
  * @returns 经过 Decimal 包装后的值数组
  */
 const processFieldValues = (
-  data: DataItem[],
+  data: ViewMetaData[],
   field: string,
   filterIllegalValue = false,
 ) => {
@@ -32,7 +32,10 @@ const processFieldValues = (
   }
 
   return data.reduce<Array<Decimal>>((resultArr, item) => {
-    const fieldValue = get(item, field);
+    const fieldValue = getFieldValueOfViewMetaData(item, field) as
+      | string
+      | number;
+
     const notNumber = isNotNumber(fieldValue);
 
     if (filterIllegalValue && notNumber) {
@@ -53,7 +56,10 @@ const processFieldValues = (
  * @param field 值字段
  * @returns 算术和
  */
-export const getDataSumByField = (data: DataItem[], field: string): number => {
+export const getDataSumByField = (
+  data: ViewMetaData[],
+  field: string,
+): number => {
   const fieldValues = processFieldValues(data, field);
   if (!fieldValues.length) {
     return 0;
@@ -71,7 +77,7 @@ export const getDataSumByField = (data: DataItem[], field: string): number => {
  */
 export const getDataExtremumByField = (
   method: 'min' | 'max',
-  data: DataItem[],
+  data: ViewMetaData[],
   field: string,
 ): number => {
   // 防止预处理时默认值 0 影响极值结果，处理时需过滤非法值
@@ -89,7 +95,10 @@ export const getDataExtremumByField = (
  * @param field 值字段
  * @returns 算术平均值
  */
-export const getDataAvgByField = (data: DataItem[], field: string): number => {
+export const getDataAvgByField = (
+  data: ViewMetaData[],
+  field: string,
+): number => {
   const fieldValues = processFieldValues(data, field);
   if (!fieldValues?.length) {
     return 0;
@@ -104,7 +113,7 @@ export const getDataAvgByField = (data: DataItem[], field: string): number => {
  * totals 计算方法集合
  */
 export const calcActionByType: {
-  [type in Aggregation]: (data: DataItem[], field: string) => number;
+  [type in Aggregation]: (data: ViewMetaData[], field: string) => number;
 } = {
   [Aggregation.SUM]: getDataSumByField,
   [Aggregation.MIN]: (data, field) =>

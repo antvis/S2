@@ -1,9 +1,20 @@
-import type { CustomHeaderFields, SortParam } from '../common/interface';
+import type { BaseFields, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
-import type { BaseDataSet } from './base-data-set';
+import type { CellData } from './cell-data';
+import type { PivotDataSet } from './pivot-data-set';
 
-// TODO add object data value
-export type DataType = Record<string, any>;
+export type Query = Record<string, any>;
+
+export type TotalSelection = {
+  grandTotalOnly?: boolean;
+  subTotalOnly?: boolean;
+  totalDimensions?: boolean | string[];
+};
+
+export type TotalSelectionsOfMultiData = {
+  row?: TotalSelection;
+  column?: TotalSelection;
+};
 
 export type PivotMetaValue = {
   // field level index
@@ -20,29 +31,21 @@ export type SortedDimensionValues = Record<string, string[]>;
 export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
-  // first create data path
-  isFirstCreate?: boolean;
+  shouldCreateOrUpdate?: boolean;
   // callback when pivot map create node
-  onFirstCreate?: (params: {
-    // 是否是行头字段
-    isRow: boolean;
+  onCreate?: (params: {
     // 维度 id，如 city
     dimension: string;
     // 维度数组 ['四川省', '成都市']
     dimensionPath: string[];
   }) => void;
-  // use for multiple data queries（path contains undefined）
-  careUndefined?: boolean;
-  // use in row tree mode to append fields information
-  rowFields?: CustomHeaderFields;
-  colFields?: CustomHeaderFields;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
-};
+} & BaseFields;
 
 export interface CellDataParams {
   // search query
-  query: DataType;
+  query: Query;
   isTotals?: boolean;
   // use in part drill-down
   rowNode?: Node;
@@ -51,10 +54,10 @@ export interface CellDataParams {
 }
 
 export interface SortActionParams {
-  dataSet?: BaseDataSet;
+  dataSet?: PivotDataSet;
   sortParam?: SortParam;
   originValues?: string[];
-  measureValues?: string[] | DataType[];
+  measureValues?: string[] | CellData[];
   sortByValues?: string[];
   isSortByMeasure?: boolean;
 }

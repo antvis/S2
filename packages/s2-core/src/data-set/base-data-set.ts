@@ -10,14 +10,17 @@ import {
   min,
 } from 'lodash';
 import type {
+  Data,
   Fields,
   FilterParam,
   Formatter,
   Meta,
   S2CellType,
+  ViewMeta,
+  RawData,
   S2DataConfig,
   SortParams,
-  ViewMeta,
+  ViewMetaData,
 } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { ValueRange } from '../common/interface/condition';
@@ -27,7 +30,9 @@ import {
   setValueRangeState,
 } from '../utils/condition/state-controller';
 import { CellTypes } from '../common';
-import type { CellDataParams, DataType } from './index';
+import type { Query, TotalSelectionsOfMultiData } from './interface';
+import type { CellData } from './cell-data';
+import type { CellDataParams } from './index';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -37,13 +42,13 @@ export abstract class BaseDataSet {
   public meta: Meta[];
 
   // origin data
-  public originData: DataType[];
+  public originData: RawData[];
 
   // total data
-  public totalData: DataType[];
+  public totalData: RawData[];
 
   // multidimensional array to indexes data
-  public indexesData: DataType[][] | DataType[];
+  public indexesData: RawData[][] | RawData[];
 
   // 高级排序, 组内排序
   public sortParams: SortParams;
@@ -57,7 +62,7 @@ export abstract class BaseDataSet {
     this.spreadsheet = spreadsheet;
   }
 
-  protected displayData: DataType[];
+  protected displayData: RawData[];
 
   /**
    * 获取字段信息
@@ -208,14 +213,14 @@ export abstract class BaseDataSet {
    * @param field current dimensions
    * @param query dimension value query
    */
-  public abstract getDimensionValues(field: string, query?: DataType): string[];
+  public abstract getDimensionValues(field: string, query?: Query): string[];
 
   /**
    * In most cases, this function to get the specific
    * cross data cell data
    * @param params
    */
-  public abstract getCellData(params: CellDataParams): DataType;
+  public abstract getCellData(params: CellDataParams): ViewMetaData | undefined;
 
   /**
    * To get a row or column cells data;
@@ -226,11 +231,10 @@ export abstract class BaseDataSet {
    * @param drillDownFields
    */
   public abstract getMultiData(
-    query: DataType,
-    isTotals?: boolean,
-    isRow?: boolean,
+    query: Query,
+    totals?: TotalSelectionsOfMultiData,
     drillDownFields?: string[],
-  ): DataType[];
+  ): Data[] | CellData[];
 
   public moreThanOneValue() {
     return this.fields?.values?.length > 1;

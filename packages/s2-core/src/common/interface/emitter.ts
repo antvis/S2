@@ -16,7 +16,7 @@ import type {
   SortParams,
   Style,
 } from '../../common/interface/basic';
-import type { Data } from '../../common/interface/s2DataConfig';
+import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
 
@@ -43,7 +43,7 @@ type ResizeHandler = (data: {
   seriesNumberWidth?: number;
 }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
-type SortedHandler = (rangeData: Data[]) => any;
+type SortedHandler = (rangeData: RawData[]) => any;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -72,12 +72,12 @@ export interface EmitterType {
 
   /** ================ Filter ================  */
   [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
-  [S2Event.RANGE_FILTERED]: (data: Data[]) => any;
+  [S2Event.RANGE_FILTERED]: (data: RawData[]) => any;
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
     key: string;
-    record: Data;
+    record: RawData;
   }) => void;
 
   /** ================ Date Cell ================  */
