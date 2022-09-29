@@ -789,13 +789,13 @@ export abstract class BaseFacet {
     const isScrollRowHeaderToRight =
       !this.hRowScrollBar ||
       this.isScrollOverThePanelArea({ offsetY, offsetX }) ||
-      this.hRowScrollBar.thumbOffset + this.hRowScrollBar.thumbLen >=
+      this.hRowScrollBar?.thumbOffset + this.hRowScrollBar?.thumbLen >=
         this.cornerBBox.width;
 
     const isScrollPanelToRight =
       (this.hRowScrollBar &&
         this.isScrollOverTheCornerArea({ offsetX, offsetY })) ||
-      this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >= viewportWidth;
+      this.hScrollBar?.thumbOffset + this.hScrollBar?.thumbLen >= viewportWidth;
 
     return deltaX >= 0 && isScrollPanelToRight && isScrollRowHeaderToRight;
   };

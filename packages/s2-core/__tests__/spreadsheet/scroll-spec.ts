@@ -676,4 +676,39 @@ describe('Scroll Tests', () => {
       },
     );
   });
+
+  // https://github.com/antvis/S2/issues/1784
+  test('should not throw error if scroll over the data cell area and not exist scroll bar', async () => {
+    // rowCell 显示滚动条, dataCell 无滚动条, 然后在 dataCell 区域滚动
+    s2.setOptions({
+      style: {
+        rowCfg: {
+          width: 200,
+        },
+        cellCfg: {
+          width: 30,
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementationOnce(() => {});
+
+    // dataCell 区域滚动
+    const wheelEvent = new WheelEvent('wheel', {
+      deltaX: 20,
+      deltaY: 0,
+      clientX: 225,
+      clientY: 1019,
+    });
+
+    canvas.dispatchEvent(wheelEvent);
+
+    await sleep(500);
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
 });

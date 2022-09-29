@@ -104,6 +104,22 @@ export const s2Options: SheetComponentOptions = {
       trend: true,
     },
   },
+  conditions: {
+    interval: [
+      {
+        field: 'number',
+        mapping() {
+          return {
+            fill: '#80BFFF',
+            // 自定义柱状图范围
+            isCompare: true,
+            maxValue: 8000,
+            minValue: 300,
+          };
+        },
+      },
+    ],
+  },
   hierarchyType: 'grid',
 };
 
