@@ -236,7 +236,7 @@ export function transformIndexesData(params: Param) {
   };
 
   originData.forEach((data) => {
-    // 空数据没有意义，直接跳过，而不是在后面 getMultiData 再来 compact
+    // 空数据没有意义，直接跳过
     if (!data) {
       return;
     }
