@@ -198,6 +198,11 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get text condition's fill result
     let fill = textStyle.fill;
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { ...textStyle, fill };
+    }
+
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
       fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
@@ -267,6 +272,9 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected drawConditionIconShapes() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
@@ -291,6 +299,9 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawConditionIntervalShape() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
     this.conditionIntervalShape = drawInterval(this);
   }
 
@@ -304,6 +315,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
+    }
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { backgroundColor, backgroundColorOpacity };
     }
 
     // get background condition fill color
