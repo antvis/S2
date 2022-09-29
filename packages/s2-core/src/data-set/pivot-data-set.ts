@@ -27,7 +27,9 @@ import {
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
+  CustomHeaderFields,
   Data,
+  Fields,
   Formatter,
   Meta,
   PartDrillDownDataCache,
@@ -330,7 +332,7 @@ export class PivotDataSet extends BaseDataSet {
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
-    let dimensions: string[] = [];
+    let dimensions: CustomHeaderFields = [];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
@@ -343,7 +345,7 @@ export class PivotDataSet extends BaseDataSet {
       let sortedMeta = [];
       const dimensionValuePath = [];
       for (const dimension of dimensions) {
-        const value = get(query, dimension);
+        const value = get(query, dimension as string);
         dimensionValuePath.push(`${value}`);
         const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
         if (meta.has(value) && !isUndefined(value)) {
@@ -482,13 +484,13 @@ export class PivotDataSet extends BaseDataSet {
 
     return {
       isRowTotal: isTotals(
-        getDimensions(rows, !this.spreadsheet.isValueInCols()),
+        getDimensions(rows as string[], !this.spreadsheet.isValueInCols()),
       ),
-      isRowSubTotal: isTotals(rows, true),
+      isRowSubTotal: isTotals(rows as string[], true),
       isColTotal: isTotals(
-        getDimensions(columns, this.spreadsheet.isValueInCols()),
+        getDimensions(columns as string[], this.spreadsheet.isValueInCols()),
       ),
-      isColSubTotal: isTotals(columns, true),
+      isColSubTotal: isTotals(columns as string[], true),
     };
   };
 
@@ -600,7 +602,7 @@ export class PivotDataSet extends BaseDataSet {
    */
   private handleCustomMeasuresOrder(
     customValueOrder: number,
-    fields: string[],
+    fields: CustomHeaderFields,
   ) {
     const newFields = uniq([...fields]);
     if (fields.length >= customValueOrder) {

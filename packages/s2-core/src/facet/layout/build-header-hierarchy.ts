@@ -1,5 +1,9 @@
 import { filter } from 'lodash';
-import { EXTRA_FIELD, type CustomTreeItem, type Fields } from '../../common';
+import {
+  EXTRA_FIELD,
+  type CustomHeaderFields,
+  type CustomTreeItem,
+} from '../../common';
 import type { SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
@@ -19,7 +23,7 @@ interface HeaderParams {
   rootNode: Node;
   spreadsheet: SpreadSheet;
   facetCfg: SpreadSheetFacetCfg;
-  fields: Fields['rows'] | Fields['columns'];
+  fields: CustomHeaderFields;
   isRowHeader: boolean;
   isCustomTreeFields: boolean;
 }

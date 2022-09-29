@@ -15,7 +15,6 @@ import type {
   TextTheme,
 } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
-import type { ColHeaderConfig } from '../facet/header/col';
 import {
   adjustColHeaderScrollingTextPosition,
   adjustColHeaderScrollingViewport,
@@ -30,6 +29,7 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
+import type { ColHeaderConfig } from '../facet/header';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 

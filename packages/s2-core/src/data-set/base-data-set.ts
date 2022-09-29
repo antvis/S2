@@ -26,6 +26,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
+import { CellTypes } from '../common';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -82,10 +83,17 @@ export abstract class BaseDataSet {
       return;
     }
     const meta = cell.getMeta?.();
-    const row = find(this.spreadsheet.getRowNodes(), {
-      rowIndex: meta?.rowIndex,
-    });
-    return row?.label || this.getFieldName(row?.field);
+
+    // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
+    if (cell.cellType === CellTypes.DATA_CELL) {
+      const row = find(this.spreadsheet.getRowNodes(), {
+        rowIndex: meta?.rowIndex,
+      });
+      return row?.label || this.getFieldName(row?.field);
+    }
+
+    // 行/列头单元格, 取节点本身标题
+    return meta?.label || this.getFieldName(meta.field);
   }
 
   /**
@@ -104,10 +112,20 @@ export abstract class BaseDataSet {
       return;
     }
 
-    const row = find(this.spreadsheet.getRowNodes(), {
-      rowIndex: meta?.rowIndex,
-    });
-    return this.getFieldDescription(row?.field) || row?.extra?.description;
+    // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格描述
+    if (cell.cellType === CellTypes.DATA_CELL) {
+      const row = find(this.spreadsheet.getRowNodes(), {
+        rowIndex: meta?.rowIndex,
+      });
+      return (
+        row?.description ||
+        row?.extra?.description ||
+        this.getFieldDescription(row?.field)
+      );
+    }
+
+    // 行/列头单元格, 取节点本身描述
+    return meta?.extra?.description || this.getFieldDescription(meta?.field);
   };
 
   /**

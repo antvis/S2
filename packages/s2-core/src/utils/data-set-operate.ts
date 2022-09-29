@@ -1,5 +1,11 @@
 import { every, filter, get, isUndefined, keys, reduce } from 'lodash';
-import type { Data, Fields, Totals, TotalsStatus } from '../common/interface';
+import type {
+  CustomHeaderFields,
+  Data,
+  Fields,
+  Totals,
+  TotalsStatus,
+} from '../common/interface';
 
 export const getListBySorted = (
   list: string[],
@@ -79,7 +85,7 @@ export const isEveryUndefined = (data: string[] | undefined[]) => {
 
 export const getFieldKeysByDimensionValues = (
   dimensionValues: string[] | undefined[],
-  dimensions: string[] | undefined[],
+  dimensions: CustomHeaderFields,
 ) => {
   const result = [];
   dimensionValues?.forEach((item, index) => {

@@ -24,7 +24,7 @@ import type {
   HeaderActionIconOptions,
   SortParam,
 } from '../common/interface';
-import type { BaseHeaderConfig } from '../facet/header/base';
+import type { BaseHeaderConfig } from '../facet/header';
 import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';

@@ -1,6 +1,7 @@
-import type { SortParam } from '../common/interface';
+import type { CustomHeaderFields, SortParam } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import type { BaseDataSet } from './base-data-set';
+
 // TODO add object data value
 export type DataType = Record<string, any>;
 
@@ -33,8 +34,8 @@ export type DataPathParams = {
   // use for multiple data queries（path contains undefined）
   careUndefined?: boolean;
   // use in row tree mode to append fields information
-  rowFields?: string[];
-  colFields?: string[];
+  rowFields?: CustomHeaderFields;
+  colFields?: CustomHeaderFields;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 };

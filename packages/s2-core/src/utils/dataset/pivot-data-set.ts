@@ -1,12 +1,5 @@
-import {
-  forEach,
-  intersection,
-  isUndefined,
-  keys,
-  last,
-  reduce,
-  set,
-} from 'lodash';
+import { forEach, intersection, isUndefined, last, reduce, set } from 'lodash';
+import type { CustomHeaderFields, CustomTreeItem } from '../../common';
 import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import type {
   DataPathParams,
@@ -16,8 +9,8 @@ import type {
 } from '../../data-set/interface';
 
 interface Param {
-  rows: string[];
-  columns: string[];
+  rows: CustomHeaderFields;
+  columns: CustomHeaderFields;
   originData: DataType[];
   indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
@@ -42,10 +35,10 @@ interface Param {
  */
 export function transformDimensionsValues(
   record: DataType,
-  dimensions: string[],
+  dimensions: (string | CustomTreeItem)[],
 ): string[] {
   return dimensions.map((dimension) => {
-    const dimensionValue = record[dimension];
+    const dimensionValue = record[dimension as string];
 
     // 保证 undefined 之外的数据都为 string 类型
     if (dimensionValue === undefined) {
@@ -156,7 +149,7 @@ export function getDataPath(params: DataPathParams) {
           });
           onFirstCreate?.({
             isRow,
-            dimension: fields?.[i],
+            dimension: fields?.[i] as string,
             dimensionPath: dimensionValues.slice(0, i + 1),
           });
         } else {
@@ -179,7 +172,7 @@ export function getDataPath(params: DataPathParams) {
         if (isFirstCreate) {
           // mark the child field
           // NOTE: should take more care when reset meta.childField to undefined, the meta info is shared with brother nodes.
-          meta.childField = fields?.[i + 1];
+          meta.childField = fields?.[i + 1] as string;
         }
         currentMeta = meta?.children;
       }
@@ -206,7 +199,7 @@ export function getDataPath(params: DataPathParams) {
  * @returns ['四川省', '成都市']
  */
 export function getQueryDimValues(
-  dimensions: string[],
+  dimensions: CustomHeaderFields,
   query: DataType,
 ): string[] {
   return reduce(

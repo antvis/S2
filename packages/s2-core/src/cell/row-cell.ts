@@ -13,7 +13,7 @@ import {
   type TextTheme,
   type ViewMeta,
 } from '../common/interface';
-import type { RowHeaderConfig } from '../facet/header/row';
+import type { RowHeaderConfig } from '../facet/header';
 import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,

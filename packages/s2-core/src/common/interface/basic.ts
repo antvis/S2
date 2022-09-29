@@ -7,8 +7,7 @@ import type {
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
 import type { BaseDataSet, DataType } from '../../data-set';
-import type { Frame } from '../../facet/header';
-import type { BaseHeaderConfig } from '../../facet/header/base';
+import type { BaseHeaderConfig, Frame } from '../../facet/header';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -85,13 +84,15 @@ export interface Extra {
   remark: string;
 }
 
+export type CustomHeaderFields = (string | CustomTreeItem)[];
+
 export interface Fields {
   // row fields
-  rows?: (string | CustomTreeItem)[];
+  rows?: CustomHeaderFields;
+  // columns fields
+  columns?: CustomHeaderFields;
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
-  // columns fields
-  columns?: (string | CustomTreeItem)[];
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet

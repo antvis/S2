@@ -169,9 +169,10 @@ export const sortByMethod = (params: SortActionParams): string[] => {
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
     ) as Record<string, DataType>[];
 
+    const fields = isInRows ? rows : columns;
     result = getDimensionsWithParentPath(
       sortFieldId,
-      isInRows ? rows : columns,
+      fields as string[],
       dimensions,
     );
   } else {
@@ -221,12 +222,12 @@ const createTotalParams = (
   if (isMultipleDimensionValue) {
     // 获取行/列小计时，需要将所有行/列维度的值作为 params
     const realOriginValue = split(originValue, ID_SEPARATOR);
-    const keys = fields?.rows?.includes(sortFieldId)
-      ? fields.rows
-      : fields.columns;
+    const currentFields = (
+      fields?.rows?.includes(sortFieldId) ? fields.rows : fields.columns
+    ) as string[];
 
-    for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
-      totalParams[keys[i]] = realOriginValue[i];
+    for (let i = 0; i <= indexOf(currentFields, sortFieldId); i++) {
+      totalParams[currentFields[i]] = realOriginValue[i];
     }
   } else {
     totalParams[sortFieldId] = originValue;
@@ -264,7 +265,7 @@ export const getSortByMeasureValues = (
       const dataItemKeys = new Set(keys(dataItem));
       // 过滤出包含所有行列维度的数据
       // 若缺失任意 field，则是汇总数据，需要过滤掉
-      return rowColFields.every((field) => dataItemKeys.has(field));
+      return rowColFields.every((field: string) => dataItemKeys.has(field));
     });
   }
 
@@ -277,11 +278,11 @@ export const getSortByMeasureValues = (
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
   const sortFields = filterExtraField(
-    isSortFieldInRow ? fields.rows : fields.columns,
+    (isSortFieldInRow ? fields.rows : fields.columns) as string[],
   );
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraField(
-    isSortFieldInRow ? fields.columns : fields.rows,
+    (isSortFieldInRow ? fields.columns : fields.rows) as string[],
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
