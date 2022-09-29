@@ -5,5 +5,6 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "paths": {}
-  }
+  },
+  "exclude": ["playground"]
 }

@@ -127,7 +127,7 @@ export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
   partDrillDown: PartDrillDown,
   callback: ActionIconCallback,
 ): T => {
-  const nextHeaderIcons = options.headerActionIcons?.length
+  const nextHeaderIcons = options?.headerActionIcons?.length
     ? [...options.headerActionIcons]
     : [];
 

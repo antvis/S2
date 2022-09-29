@@ -1053,7 +1053,7 @@ function MainLayout() {
                 />
               ),
             }}
-          />
+        />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
           <SheetComponent
@@ -1062,6 +1062,15 @@ function MainLayout() {
             options={mockGridAnalysisOptions}
             getSpreadSheet={(s2) => getSpreadSheet(s2)}
           />
+        </TabPane>
+        <TabPane tab="编辑表" key="editable">
+          <SheetComponent
+            sheetType="editable"
+            dataCfg={tableSheetDataCfg}
+            options={mergedOptions}
+            ref={s2Ref}
+            themeCfg={themeCfg}
+          ></SheetComponent>
         </TabPane>
       </Tabs>
     </div>

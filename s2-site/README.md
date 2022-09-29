@@ -1,10 +1,10 @@
 # 开发
 
 ```bash
-// 安装依赖
+# 安装依赖
 yarn
 
-// 调试
+# 调试
 yarn site:start
 ```
 
