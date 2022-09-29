@@ -414,8 +414,10 @@ export class PivotFacet extends BaseFacet {
       // in tree type, all nodes treat as leaf
       const isLeaf = isTree || (!isTree && currentNode.isLeaf);
       if (isLeaf) {
-        // leaf node
-        currentNode.rowIndex ??= i;
+        // 1. 普通树状结构, 叶子节点各占一行, 2. 自定义树状结构 (平铺模式)
+        const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
+
+        currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
