@@ -162,7 +162,13 @@ export class EventController {
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
 
-    if (this.hasBrushSelectionIntercepts()) {
+    if (
+      interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+      ])
+    ) {
       interaction.removeIntercepts([
         InterceptType.BRUSH_SELECTION,
         InterceptType.ROW_BRUSH_SELECTION,

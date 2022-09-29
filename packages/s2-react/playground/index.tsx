@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-console */
 import {
   customMerge,
@@ -7,7 +9,6 @@ import {
   type HeaderActionIconProps,
   Node,
   type S2DataConfig,
-  type S2Options,
   SpreadSheet,
   type TargetCellInfo,
   type ThemeCfg,
@@ -41,7 +42,11 @@ import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import type { PartDrillDown, PartDrillDownInfo } from '../src';
+import type {
+  PartDrillDown,
+  PartDrillDownInfo,
+  SheetComponentOptions,
+} from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
@@ -59,6 +64,9 @@ import {
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
+
+// @ts-ignore
+window.__g_instances__ = [];
 
 const { TabPane } = Tabs;
 
@@ -128,6 +136,13 @@ const partDrillDown: PartDrillDown = {
     }),
 };
 
+const getSpreadSheet = (s2: SpreadSheet) => {
+  // @ts-ignore
+  window.s2 = s2;
+  // @ts-ignore
+  window.g_instances = [s2.container];
+};
+
 const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
@@ -153,9 +168,8 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
-  const [dataCfg, setDataCfg] =
-    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
+    React.useState<SheetComponentOptions>(defaultOptions);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -166,7 +180,7 @@ function MainLayout() {
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
-  const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
+  const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
     setOptions(customMerge(options, newOptions));
   };
 
@@ -281,7 +295,7 @@ function MainLayout() {
 
   //  ================== Config ========================
 
-  const mergedOptions: S2Options<React.ReactNode> = customMerge(
+  const mergedOptions: SheetComponentOptions = customMerge(
     {},
     {
       pagination: showPagination && {
@@ -958,15 +972,13 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              getSpreadSheet={(s2) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                window.s2 = s2;
-              }}
+              getSpreadSheet={(s2) => getSpreadSheet(s2)}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
-              onDestroy={logHandler('onDestroy')}
+              onDestroy={logHandler('onDestroy', () => {
+                clearInterval(scrollTimer.current);
+              })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={(cellInfo) => {
@@ -1018,6 +1030,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1050,6 +1063,7 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
+            getSpreadSheet={(s2) => getSpreadSheet(s2)}
           />
         </TabPane>
       </Tabs>

@@ -21,7 +21,14 @@ const s2Options = {
 
 使用快捷键 `command/ctrl + c` 即可复制选中区域（局部复制）
 
+- 复制单元格内容
 ![复制](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*oL8_S5zBKSYAAAAAAAAAAAAAARQnAQ)
+
+- 复制行头内容
+![复制行头](https://gw.alipayobjects.com/zos/antfincdn/XO1VOY%26kZ/1da2946a-5396-41f1-8b59-2e482c8127a5.png)
+
+- 复制列头内容
+![复制列头](https://gw.alipayobjects.com/zos/antfincdn/j8nJMIDrj/86a234b0-ce16-4a64-b06c-e8c5e631b597.png)
 
 **copyWithHeader**: 复制数据是否带表头信息，默认为 `false`
 

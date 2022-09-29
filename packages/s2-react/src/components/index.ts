@@ -10,6 +10,7 @@ export {
 } from './advanced-sort';
 export { DrillDown, type DrillDownProps, type DataSet } from './drill-down';
 export { TooltipComponent } from './tooltip';
+export { CustomTooltip } from './tooltip/custom-tooltip';
 export type { TooltipRenderProps } from './tooltip/interface';
 export { Switcher, type SwitcherProps } from './switcher';
 export * from './sheets';

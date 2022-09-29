@@ -38,7 +38,7 @@
     "build:esm": "lerna run build:esm --include-dependencies --stream",
     "build:umd": "lerna run build:umd --include-dependencies --stream",
     "bundle:size": "lerna run bundle:size --stream",
-    "release": "lerna exec --concurrency 1 -- npx --no-install semantic-release",
+    "release": "lerna exec --ignore @antv/s2-shared --concurrency 1 -- npx --no-install semantic-release",
     "prepublish:manual": "yarn build",
     "publish:manual": "lerna publish",
     "test": "lerna run test --stream",

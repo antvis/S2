@@ -213,14 +213,14 @@ export interface Style {
   device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination<T = unknown> = {
+export interface Pagination {
   // 每页数量
   pageSize: number;
   // 当前页
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-} & T;
+}
 
 export interface CustomSVGIcon {
   // icon 类型名
@@ -323,6 +323,8 @@ export interface CellCfg {
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
     widthPercent?: number[];
+    // 是否显示原始值
+    showOriginalValue?: boolean;
   };
 }
 
