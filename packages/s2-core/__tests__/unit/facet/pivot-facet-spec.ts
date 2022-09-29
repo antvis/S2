@@ -63,6 +63,9 @@ jest.mock('@/sheet-type', () => {
         isHierarchyTreeType: jest.fn(),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
+          layoutResult: {
+            rowLeafNodes: [],
+          },
         },
         getCanvasElement: () => container.get('el'),
         hideTooltip: jest.fn(),
