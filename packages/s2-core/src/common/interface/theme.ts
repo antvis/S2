@@ -135,9 +135,9 @@ export interface CellTheme {
   padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
-  /* 单元格内条件格式-迷你条形图高度 */
+  /* @deprecated 已废弃， 请用 miniChartTheme.interval.height代替 */
   miniBarChartHeight?: number;
-  /* 单元格内条件格式-迷你条形图默认填充颜色 */
+  /* @deprecated 已废弃， 请用 miniChartTheme.interval.fill 代替 */
   miniBarChartFillColor?: string;
 }
 
@@ -295,7 +295,8 @@ export interface BulletTheme {
   comparativeMeasure: {
     width: number;
     height: number;
-    color?: string;
+    fill?: string;
+    color?: string; // @deprecated 已废弃, 请使用 fill 代替 */
     opacity?: number;
   };
 
@@ -330,9 +331,17 @@ export interface BarTheme {
   opacity?: number;
 }
 
+/* 条件格式柱图样式配置 */
+
+export interface IntervalTheme {
+  height: number;
+  fill: string;
+}
+
 /* 迷你图样式 */
 export interface MiniChartTheme {
   line?: LineTheme;
   bar?: BarTheme;
   bullet?: BulletTheme;
+  interval?: IntervalTheme;
 }
