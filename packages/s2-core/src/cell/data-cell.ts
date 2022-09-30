@@ -179,13 +179,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
       this.drawConditionIconShapes();
       this.drawTextShape();
     }
-
+    this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
