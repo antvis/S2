@@ -92,7 +92,7 @@ export const copyToClipboard = (
     copyableItem = data;
   }
 
-  if (!navigator.clipboard || sync) {
+  if (!navigator.clipboard || !window.ClipboardItem || sync) {
     return copyToClipboardByExecCommand(copyableItem);
   }
   return copyToClipboardByClipboard(copyableItem);

@@ -53,6 +53,7 @@ describe('StrategySheet Tooltip Tests', () => {
     }));
 
     const container = getContainer();
+
     ReactDOM.render(
       <StrategySheetDataTooltip
         cell={mockCellInfo.mockCell}
@@ -64,8 +65,16 @@ describe('StrategySheet Tooltip Tests', () => {
     expect(
       container.querySelector('.s2-strategy-sheet-tooltip-original-value'),
     ).toBeDefined();
-    expect([
-      ...container.querySelectorAll('.derived-value-original'),
-    ]).toHaveLength(3);
+  });
+
+  test('should render custom derived value', () => {
+    render(
+      <StrategySheetDataTooltip
+        cell={mockCellInfo.mockCell}
+        renderDerivedValue={() => 'customDerivedValue'}
+      />,
+    );
+    expect(screen.getAllByText('customDerivedValue')).toHaveLength(3);
+    expect(screen.getAllByText('customDerivedValue')).toMatchSnapshot();
   });
 });

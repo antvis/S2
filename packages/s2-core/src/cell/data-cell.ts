@@ -22,17 +22,15 @@ import type {
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
-import {
-  getIconPositionCfg,
-  getIntervalScale,
-} from '../utils/condition/condition';
-import { parseNumberWithPrecision } from '../utils/formatter';
+import { getIconPositionCfg } from '../utils/condition/condition';
 import {
   renderIcon,
   renderLine,
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
+import { drawInterval } from '../utils/g-mini-charts';
 
 /**
  * DataCell for panelGroup area
@@ -53,8 +51,16 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected conditionIconShape: GuiIcon;
 
+  public get cellConditions() {
+    return this.conditions;
+  }
+
   public get cellType() {
     return CellTypes.DATA_CELL;
+  }
+
+  public get valueRangeByField() {
+    return this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
   }
 
   protected handleByStateName(
@@ -192,6 +198,11 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get text condition's fill result
     let fill = textStyle.fill;
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { ...textStyle, fill };
+    }
+
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
       fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
@@ -215,7 +226,29 @@ export class DataCell extends BaseCell<ViewMeta> {
     return iconCfg;
   }
 
+  protected shouldHideRowSubtotalData() {
+    const { row = {} } = this.spreadsheet.options.totals ?? {};
+    const { rowIndex } = this.meta;
+    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
+    // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
+    // 不过能否查到实际的数据，都不应该展示
+    return (
+      this.spreadsheet.options.hierarchyType === 'tree' &&
+      !row.showSubTotals &&
+      isRowSubTotal
+    );
+  }
+
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -239,6 +272,9 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected drawConditionIconShapes() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
@@ -263,47 +299,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawConditionIntervalShape() {
-    const { x, y, height, width } = this.getCellArea();
-
-    const intervalCondition = this.findFieldCondition(
-      this.conditions?.interval,
-    );
-
-    if (intervalCondition && intervalCondition.mapping) {
-      const attrs = this.mappingValue(intervalCondition);
-      if (!attrs) {
-        return;
-      }
-
-      const valueRange = attrs.isCompare
-        ? attrs
-        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const minValue = parseNumberWithPrecision(valueRange.minValue);
-      const maxValue = parseNumberWithPrecision(valueRange.maxValue);
-
-      const fieldValue = parseNumberWithPrecision(
-        this.meta.fieldValue as number,
-      );
-      // 对于超出设定范围的值不予显示
-      if (fieldValue < minValue || fieldValue > maxValue) {
-        return;
-      }
-      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
-      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
-
-      const getScale = getIntervalScale(minValue, maxValue);
-      const { zeroScale, scale } = getScale(fieldValue);
-
-      const fill = attrs.fill ?? barChartFillColor;
-
-      this.conditionIntervalShape = renderRect(this, {
-        x: x + width * zeroScale,
-        y: y + height / 2 - barChartHeight / 2,
-        width: width * scale,
-        height: barChartHeight,
-        fill,
-      });
+    if (this.shouldHideRowSubtotalData()) {
+      return;
     }
+    this.conditionIntervalShape = drawInterval(this);
   }
 
   public getBackgroundColor() {
@@ -312,14 +311,14 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
 
-    if (
-      this.spreadsheet.isPivotMode() &&
-      crossBackgroundColor &&
-      this.meta.rowIndex % 2 === 0
-    ) {
+    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
+    }
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { backgroundColor, backgroundColorOpacity };
     }
 
     // get background condition fill color
@@ -426,7 +425,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  protected findFieldCondition(conditions: Condition[]): Condition {
+  public findFieldCondition(conditions: Condition[]): Condition {
     return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
@@ -438,7 +437,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  protected mappingValue(condition: Condition): MappingResult {
+  public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, this.meta.data);
   }

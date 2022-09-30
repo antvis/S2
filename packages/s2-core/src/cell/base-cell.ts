@@ -176,7 +176,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return resize[type];
   }
 
-  protected getCellArea() {
+  public getCellArea() {
     const { x, y, height, width } = this.meta;
     return { x, y, height, width };
   }

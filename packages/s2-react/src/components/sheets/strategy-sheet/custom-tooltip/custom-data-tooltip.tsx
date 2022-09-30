@@ -5,10 +5,9 @@ import {
   type MultiData,
   type SimpleDataItem,
   type ViewMeta,
-  transformRatioToPercent,
 } from '@antv/s2';
 import cls from 'classnames';
-import { first, get, includes, isEmpty, isFunction, isNil } from 'lodash';
+import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
 import { getLeafColNode, getRowName, getRowDescription } from '../utils';
@@ -20,6 +19,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   cell,
   label,
   showOriginalValue: showOriginalValueFromTooltip,
+  renderDerivedValue,
 }) => {
   const meta = cell.getMeta() as ViewMeta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
@@ -67,18 +67,13 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
-            {derivedValues.map((derivedValue, i) => {
+            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
               const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
-              const originalDerivedValue = derivedOriginalValues[i];
-              const isRatioLike = includes(derivedValue as string, '%');
-              const displayOriginalDerivedValue = isRatioLike
-                ? transformRatioToPercent(originalDerivedValue as string, {
-                    min: 1,
-                    max: 1,
-                  })
-                : originalDerivedValue;
+              const originalDerivedValue = derivedOriginalValues[
+                i
+              ] as SimpleDataItem;
 
               return (
                 <li className="derived-value-item" key={i}>
@@ -94,12 +89,13 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
                     {!isNormal && (
                       <span className="derived-value-trend-icon"></span>
                     )}
-                    <span className="derived-value-content">
-                      {derivedValue ?? emptyPlaceholder}
-                    </span>
-                    {showOriginalValue && (
-                      <span className="derived-value-original">
-                        ({displayOriginalDerivedValue ?? emptyPlaceholder})
+                    {renderDerivedValue?.(
+                      derivedValue,
+                      originalDerivedValue,
+                      cell,
+                    ) ?? (
+                      <span className="derived-value-content">
+                        {derivedValue ?? emptyPlaceholder}
                       </span>
                     )}
                   </span>
