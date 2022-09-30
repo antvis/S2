@@ -311,7 +311,7 @@ export class TableFacet extends BaseFacet {
     }
     const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
     let currentCollIndex = 0;
-    let current1stLevelCollIndex = 0;
+    const current1stLevelCollIndex = 0;
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
@@ -325,10 +325,6 @@ export class TableFacet extends BaseFacet {
         );
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
-      }
-      if (isTopLevelNode(currentNode)) {
-        currentNode.colIndex = current1stLevelCollIndex;
-        current1stLevelCollIndex += 1;
       }
 
       if (currentNode.level === 0) {
@@ -805,9 +801,9 @@ export class TableFacet extends BaseFacet {
   };
 
   protected renderFrozenPanelCornerGroup = () => {
-    const colLength = this.layoutResult.colNodes.filter((node) => {
+    const topLevelNodes = this.layoutResult.colNodes.filter((node) => {
       return isTopLevelNode(node);
-    }).length;
+    });
     const cellRange = this.getCellRange();
 
     const {
@@ -817,18 +813,24 @@ export class TableFacet extends BaseFacet {
       frozenTrailingColCount,
     } = getValidFrozenOptions(
       this.spreadsheet.options,
-      colLength,
+      topLevelNodes.length,
       cellRange.end - cellRange.start + 1,
+    );
+
+    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      frozenColCount,
+      frozenTrailingColCount,
     );
 
     const result = calculateFrozenCornerCells(
       {
         frozenRowCount,
-        frozenColCount,
+        frozenColCount: colCount,
         frozenTrailingRowCount,
-        frozenTrailingColCount,
+        frozenTrailingColCount: trailingColCount,
       },
-      colLength,
+      this.layoutResult.colLeafNodes.length,
       cellRange,
     );
 

@@ -14,7 +14,8 @@ import {
   isFrozenCol,
   isFrozenTrailingCol,
   isTopLevelNode,
-  getNodeRoot,
+  getFrozenLeafNodesCount,
+  getLeftLeafNode,
 } from '../utils';
 import { ColHeader, type ColHeaderConfig } from './col';
 
@@ -82,20 +83,28 @@ export class TableColHeader extends ColHeader {
   protected getCellGroup(node: Node) {
     const { spreadsheet } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet?.layoutResult.colNodes.filter(
+    const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
       (cell) => {
         return isTopLevelNode(cell);
       },
-    ).length;
-    node = getNodeRoot(node);
-
-    if (isFrozenCol(node.colIndex, frozenColCount)) {
+    );
+    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      frozenColCount,
+      frozenTrailingColCount,
+    );
+    if (isFrozenCol(getLeftLeafNode(node).colIndex, colCount)) {
       return this.frozenColGroup;
     }
-    if (isFrozenTrailingCol(node.colIndex, frozenTrailingColCount, colLength)) {
+    if (
+      isFrozenTrailingCol(
+        getLeftLeafNode(node).colIndex,
+        trailingColCount,
+        spreadsheet?.facet?.layoutResult.colLeafNodes.length,
+      )
+    ) {
       return this.frozenTrailingColGroup;
     }
-
     return this.scrollGroup;
   }
 
@@ -103,12 +112,24 @@ export class TableColHeader extends ColHeader {
     const { spreadsheet } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
-
-    item = getNodeRoot(item);
-
+    const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
+      (cell) => {
+        return isTopLevelNode(cell);
+      },
+    );
+    // item = getNodeRoot(item);
+    const { colCount, trailingColCount } = getFrozenLeafNodesCount(
+      topLevelNodes,
+      frozenColCount,
+      frozenTrailingColCount,
+    );
     if (
-      isFrozenCol(item.colIndex, frozenColCount) ||
-      isFrozenTrailingCol(item.colIndex, frozenTrailingColCount, colLength)
+      isFrozenCol(getLeftLeafNode(item).colIndex, colCount) ||
+      isFrozenTrailingCol(
+        getLeftLeafNode(item).colIndex,
+        trailingColCount,
+        colLength,
+      )
     ) {
       return true;
     }
