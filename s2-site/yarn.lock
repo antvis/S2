@@ -211,10 +211,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@1.1.18-beta.0":
-  version "1.1.18-beta.0"
-  resolved "https://registry.npmmirror.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.18-beta.0.tgz#ba9728ae811a51d0c3da821955356d0d6a891812"
-  integrity sha512-84t5P4qBI+lxUIbJIsCe3hwFyFD3LShb5/ozk29qTJr3j5o/B4mEKx7CA1FOW8mQ+eOt6n12J6bK6FqFx74EyA==
+"@antv/gatsby-theme-antv@1.1.18-beta.1":
+  version "1.1.18-beta.1"
+  resolved "https://registry.npmmirror.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.18-beta.1.tgz#1f64f28495a42af73e8170de29a8be255f912fed"
+  integrity sha512-wHt/cTRbs9hc2OXQblOkLIesFzZUBVvmi0S8Qj9KHYlIIbffEGbCviFFJQzIszmquWctoW+Ij/zbSfJiagq7wg==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@docsearch/js" "^3.0.0"
@@ -318,17 +318,17 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@1.26.1":
-  version "1.26.1"
-  resolved "https://registry.npmmirror.com/@antv/s2-react/-/s2-react-1.26.1.tgz#e122c69148345a21441264e61745907eda68c412"
-  integrity sha512-7C4rYEQumuxiezr/yIthmNb0QuBtnyU6nb/G8HatIToijOy+Jv8JwIf5DZCPcxo1Nak1E2XeQ4Rogb5uwsX86A==
+"@antv/s2-react@^1.27.0":
+  version "1.27.0"
+  resolved "https://registry.npmmirror.com/@antv/s2-react/-/s2-react-1.27.0.tgz#be4d7d016da261b8c170611fb3548579c9717acd"
+  integrity sha512-YKgXsf7vPwunuMhOs6rrvDVLw+lbz1KdL9Hzy/c+aGUs1s2rtth6323zFgQnGsGyoIBdZVj+pLEjb9vybzZWjw==
   dependencies:
     ahooks "^3.1.13"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@1.30.0":
+"@antv/s2@^1.30.0":
   version "1.30.0"
   resolved "https://registry.npmmirror.com/@antv/s2/-/s2-1.30.0.tgz#43e983f8fe86c3009939c0573c523b334a76d0dd"
   integrity sha512-YeKIrK0Fmrg2E2D9NDXxbV0sGt1CVROPWZOiiCsMxaRboicCySb5XPiEqO1XJbH64A+vCY7A29hUgLdWjspX3A==

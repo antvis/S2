@@ -573,6 +573,7 @@ function MainLayout() {
                       !s2Ref.current.facet.vScrollBar
                     ) {
                       clearInterval(scrollTimer.current);
+                      s2Ref.current.destroy();
                       return;
                     }
                     scrollTimer.current = setInterval(() => {
@@ -1053,7 +1054,7 @@ function MainLayout() {
                 />
               ),
             }}
-        />
+          />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
           <SheetComponent
