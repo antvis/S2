@@ -11,7 +11,7 @@ export const customGridData = [
   },
   {
     'measure-1': 11,
-    'measure-2': 22,
+    'measure-2': 8,
     'measure-3': 32,
     'measure-4': 43,
     'measure-5': 45,

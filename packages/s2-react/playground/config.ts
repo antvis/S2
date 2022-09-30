@@ -2,6 +2,8 @@ import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
+import { customGridFields } from '@antv/s2/__tests__/data/custom-grid-fields';
+import { customGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import {
   data,
   fields,
@@ -9,8 +11,6 @@ import {
   meta,
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
-import { customGridFields } from '../__tests__/data/custom-grid-fields';
-import { customGridData } from '../__tests__/data/data-custom-grid';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
