@@ -29,7 +29,6 @@ import {
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
-import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 
 /**
@@ -39,7 +38,7 @@ import { drawInterval } from '../utils/g-mini-charts';
  * |interval      text| icon  |
  * |                  |       |
  * ----------------------------
- * There are four conditions(]{@see BaseCell.conditions}) to determine how to render
+ * There are four conditions({@see BaseCell.conditions}) to determine how to render
  * 1、background color
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
@@ -180,10 +179,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawConditionIntervalShape();
+    if (!this.shouldHideRowSubtotalData()) {
+      this.drawConditionIntervalShape();
+      this.drawTextShape();
+      this.drawConditionIconShapes();
+    }
     this.drawInteractiveBorderShape();
-    this.drawTextShape();
-    this.drawConditionIconShapes();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -198,11 +199,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get text condition's fill result
     let fill = textStyle.fill;
-
-    if (this.shouldHideRowSubtotalData()) {
-      return { ...textStyle, fill };
-    }
-
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
       fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
@@ -241,14 +237,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    if (this.shouldHideRowSubtotalData()) {
-      return {
-        value: null,
-        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
-        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
-        formattedValue: EMPTY_PLACEHOLDER,
-      };
-    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -272,9 +260,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected drawConditionIconShapes() {
-    if (this.shouldHideRowSubtotalData()) {
-      return;
-    }
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
@@ -299,9 +284,6 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawConditionIntervalShape() {
-    if (this.shouldHideRowSubtotalData()) {
-      return;
-    }
     this.conditionIntervalShape = drawInterval(this);
   }
 
