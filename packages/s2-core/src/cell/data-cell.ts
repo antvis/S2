@@ -29,6 +29,7 @@ import {
   renderRect,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 
 /**
@@ -197,6 +198,11 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get text condition's fill result
     let fill = textStyle.fill;
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { ...textStyle, fill };
+    }
+
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
       fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
@@ -220,7 +226,29 @@ export class DataCell extends BaseCell<ViewMeta> {
     return iconCfg;
   }
 
+  protected shouldHideRowSubtotalData() {
+    const { row = {} } = this.spreadsheet.options.totals ?? {};
+    const { rowIndex } = this.meta;
+    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
+    // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
+    // 不过能否查到实际的数据，都不应该展示
+    return (
+      this.spreadsheet.options.hierarchyType === 'tree' &&
+      !row.showSubTotals &&
+      isRowSubTotal
+    );
+  }
+
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -244,6 +272,9 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected drawConditionIconShapes() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
@@ -268,6 +299,9 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawConditionIntervalShape() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
     this.conditionIntervalShape = drawInterval(this);
   }
 
@@ -281,6 +315,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
+    }
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { backgroundColor, backgroundColorOpacity };
     }
 
     // get background condition fill color
