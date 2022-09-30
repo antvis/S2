@@ -181,8 +181,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawInteractiveBgShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
-      this.drawConditionIconShapes();
       this.drawTextShape();
+      this.drawConditionIconShapes();
     }
     this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
