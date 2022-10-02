@@ -162,7 +162,7 @@ describe('Spreadsheet Totals Tests', () => {
           get(child, 'meta.rowId') === 'root[&]浙江省',
       ) as DataCell;
     // @ts-ignore
-    expect(rowSubtotal1.textShape.attr('text')).toEqual('-');
+    expect(rowSubtotal1.textShape).toBeUndefined();
 
     const rowSubtotal2 = spreadsheet.panelScrollGroup
       .getChildren()
@@ -172,6 +172,6 @@ describe('Spreadsheet Totals Tests', () => {
           get(child, 'meta.rowId') === 'root[&]浙江省',
       ) as DataCell;
     // @ts-ignore
-    expect(rowSubtotal2.textShape.attr('text')).toEqual('-');
+    expect(rowSubtotal2.textShape).toBeUndefined();
   });
 });
