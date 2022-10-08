@@ -3,7 +3,6 @@
 /* eslint-disable no-console */
 import {
   customMerge,
-  type RawData,
   generatePalette,
   getPalette,
   type HeaderActionIconProps,
@@ -16,7 +15,6 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
-  type PivotDataSet,
   type S2Options,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
@@ -39,16 +37,12 @@ import {
   Tooltip,
 } from 'antd';
 import 'antd/dist/antd.min.css';
-import { debounce, forEach, random } from 'lodash';
+import { debounce } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import type {
-  PartDrillDown,
-  PartDrillDownInfo,
-  SheetComponentOptions,
-} from '../src';
+import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { customTreeData } from '../__tests__/data/data-custom-trees';
@@ -67,79 +61,11 @@ import {
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
+import { partDrillDown } from './drilldown';
 import './index.less';
 import { ResizeConfig } from './resize';
 
 const { TabPane } = Tabs;
-
-const fieldMap = {
-  channel: ['物美', '华联'],
-  sex: ['男', '女'],
-};
-
-const partDrillDown: PartDrillDown = {
-  drillConfig: {
-    dataSet: [
-      {
-        name: '销售渠道',
-        value: 'channel',
-        type: 'text',
-      },
-      {
-        name: '客户性别',
-        value: 'sex',
-        type: 'text',
-      },
-    ],
-    extra: <div>test</div>,
-  },
-  // drillItemsNum: 1,
-  fetchData: (meta, drillFields) =>
-    new Promise<PartDrillDownInfo>((resolve) => {
-      // 弹窗 -> 选择 -> 请求数据
-      const preDrillDownfield =
-        meta.spreadsheet.store.get('drillDownNode')?.field;
-      const dataSet = meta.spreadsheet.dataSet as PivotDataSet;
-      const field = drillFields[0];
-
-      const rowData = dataSet
-        .getMultiData(meta.query, {}, [preDrillDownfield])
-        .filter(
-          (item) =>
-            item.getValueByKey('type') && item.getValueByKey('sub_type'),
-        );
-      console.log('rowData: ', rowData);
-
-      const drillDownData: RawData[] = [];
-      forEach(rowData, (data: RawData) => {
-        const { number, sub_type: subType, type } = data.getOrigin();
-        const number0 = random(50, number);
-        const number1 = number - number0;
-        const dataItem0 = {
-          ...meta.query,
-          number: number0,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field][0],
-        };
-        drillDownData.push(dataItem0);
-        const dataItem1 = {
-          ...meta.query,
-          number: number1,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field][1],
-        };
-
-        drillDownData.push(dataItem1);
-      });
-      console.log(drillDownData);
-      resolve({
-        drillField: field,
-        drillData: drillDownData,
-      });
-    }),
-};
 
 const getSpreadSheet = (s2: SpreadSheet) => {
   // @ts-ignore

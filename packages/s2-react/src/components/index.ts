@@ -8,7 +8,11 @@ export {
   type AdvancedSortProps,
   type AdvancedSortCfgProps,
 } from './advanced-sort';
-export { DrillDown, type DrillDownProps, type DataSet } from './drill-down';
+export {
+  DrillDown,
+  type DrillDownProps,
+  type DrillDownDataSet as DataSet,
+} from './drill-down';
 export { TooltipComponent } from './tooltip';
 export { CustomTooltip } from './tooltip/custom-tooltip';
 export type { TooltipRenderProps } from './tooltip/interface';

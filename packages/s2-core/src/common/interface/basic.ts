@@ -1,4 +1,5 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { PartDrillDownInfo } from '@antv/s2-shared';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
@@ -490,15 +491,11 @@ export interface OriginalEvent extends Event {
 }
 
 // 用于和下钻组件进行交互联动
-export interface PartDrillDownDataCache {
+export interface PartDrillDownDataCache extends PartDrillDownInfo {
   // 执行下钻的行头id
   rowId: string;
   // 下钻的行头level
   drillLevel: number;
-  // 下钻的维度
-  drillField: string;
-  // 下钻的数据
-  drillData: Record<string, string | number>[];
 }
 
 export interface PartDrillDownFieldInLevel {

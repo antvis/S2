@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { DataType, S2DataConfig, S2Options, Node } from '@antv/s2';
+import type { DataType, S2DataConfig, S2Options } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
