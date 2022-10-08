@@ -188,6 +188,10 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, null, currentNode);
     }
 
+    this.adjustColLeafNodesHeight(
+      colLeafNodes,
+      colsHierarchy.sampleNodeForLastLevel,
+    );
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
 
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
@@ -458,16 +462,34 @@ export class PivotFacet extends BaseFacet {
    * -------------------------------------------------
    * |  自定义节点 a-1  |  自定义节点 a-1-1              |
    * |-------------   |-------------|----------------|
-   * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 b    |
+   * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
    * -------------------------------------------------
    */
   private adjustRowLeafNodesWidth(rowLeafNodes: Node[], lastLevelNode: Node) {
-    rowLeafNodes.forEach((node) => {
-      if (node.level < lastLevelNode.level) {
-        const levelDiff = lastLevelNode.level - node.level;
-        node.width += node.width * levelDiff;
-      }
-    });
+    this.adjustLeafNodesSize('width')(rowLeafNodes, lastLevelNode);
+  }
+
+  /**
+   * @description 自定义列头时, 叶子节点层级不定, 需要自动对齐其高度, 填充空白
+   * ---------------------------------------------------------------------
+   * |                       自定义节点 a-1                                  |
+   * |                 自定义节点 a-1-1              |                       |
+   * |-------------|-------------|-----------------|   自定义节点 a-1-2      |
+   * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2 |                        |
+   * ----------------------------------------------------------------------
+   */
+  private adjustColLeafNodesHeight(colLeafNodes: Node[], lastLevelNode: Node) {
+    this.adjustLeafNodesSize('height')(colLeafNodes, lastLevelNode);
+  }
+
+  private adjustLeafNodesSize(type: 'width' | 'height') {
+    return (leafNodes: Node[], lastLevelNode: Node) =>
+      leafNodes.forEach((node) => {
+        if (node.level < lastLevelNode.level) {
+          const levelDiff = lastLevelNode.level - node.level;
+          node[type] += node[type] * levelDiff;
+        }
+      });
   }
 
   /**

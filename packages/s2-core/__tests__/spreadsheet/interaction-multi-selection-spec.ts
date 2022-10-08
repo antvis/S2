@@ -1,7 +1,5 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
-import { size, sumBy } from 'lodash';
-import { getTooltipData, mergeCellInfo } from '../../src/utils/tooltip';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
@@ -9,11 +7,7 @@ import {
   getTestTooltipData,
 } from '../util/interaction';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type {
-  S2CellType,
-  S2Options,
-  TooltipSummaryOptions,
-} from '@/common/interface';
+import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,

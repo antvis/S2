@@ -2,7 +2,10 @@ import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import { customGridFields } from '@antv/s2/__tests__/data/custom-grid-fields';
+import {
+  customRowGridFields,
+  customColGridFields,
+} from '@antv/s2/__tests__/data/custom-grid-fields';
 import { customGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import {
   data,
@@ -21,7 +24,10 @@ export const tableSheetDataCfg: S2DataConfig = {
   },
 };
 
-export const pivotSheetCustomGridDataCfg: S2DataConfig = {
+/**
+ * 平铺模式-自定义行头
+ */
+export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
   data: customGridData,
   meta: [
     ...meta,
@@ -38,47 +44,16 @@ export const pivotSheetCustomGridDataCfg: S2DataConfig = {
       name: '层级3',
     },
   ],
-  fields: {
-    ...customGridFields,
-    // columns: [
-    //   {
-    //     key: 'b-1',
-    //     title: '自定义列节点1',
-    //     description: '自定义列节点1描述',
-    //     children: [
-    //       {
-    //         key: 'b-1-1',
-    //         title: '自定义列节点2',
-    //         description: '自定义列节点2描述',
-    //         children: [],
-    //       },
-    //       {
-    //         key: 'b-1-2',
-    //         title: '自定义列节点3',
-    //         description: '自定义列节点3描述',
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     key: 'b-2',
-    //     title: '自定义列节点2',
-    //     description: '自定义列节点2描述',
-    //     children: [
-    //       {
-    //         key: 'b-2-1',
-    //         title: '自定义列节点2-1',
-    //         description: '自定义列节点2-1描述',
-    //         children: [],
-    //       },
-    //       {
-    //         key: 'b-2-2',
-    //         title: '自定义列节点2-2',
-    //         description: '自定义列节点2-2描述',
-    //       },
-    //     ],
-    //   },
-    // ],
-  },
+  fields: customRowGridFields,
+};
+
+/**
+ * 平铺模式-自定义列头
+ */
+export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
+  data: customGridData,
+  meta: [...meta],
+  fields: customColGridFields,
 };
 
 export const pivotSheetDataCfg: S2DataConfig = {
@@ -172,12 +147,6 @@ export const customTreeOptions: SheetComponentOptions = {
   height: 480,
   hierarchyType: 'customTree',
   cornerText: '指标',
-};
-
-export const customRowGridOptions: SheetComponentOptions = {
-  width: 600,
-  height: 480,
-  hierarchyType: 'grid',
 };
 
 export const defaultOptions =

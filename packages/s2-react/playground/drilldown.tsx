@@ -4,7 +4,7 @@ import { forEach, random } from 'lodash';
 import React from 'react';
 import type { PartDrillDown } from '../src/components/sheets/interface';
 
-const fieldMap: Record<string, string[]> = {
+const DrillDownFieldMap: Record<string, string[]> = {
   channel: ['物美', '华联'],
   sex: ['男', '女'],
 };
@@ -51,7 +51,7 @@ export const partDrillDown: PartDrillDown = {
           number: number0,
           sub_type: subType,
           type,
-          [field]: fieldMap[field][0],
+          [field]: DrillDownFieldMap[field][0],
         };
         drillDownData.push(dataItem0);
         const dataItem1: RawData = {
@@ -59,7 +59,7 @@ export const partDrillDown: PartDrillDown = {
           number: number1,
           sub_type: subType,
           type,
-          [field]: fieldMap[field][1],
+          [field]: DrillDownFieldMap[field][1],
         };
 
         drillDownData.push(dataItem1);

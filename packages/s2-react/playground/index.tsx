@@ -52,18 +52,17 @@ import {
   StrategyOptions,
 } from '../__tests__/data/strategy-data';
 import {
-  customRowGridOptions,
   customTreeOptions,
   defaultOptions,
   mockGridAnalysisOptions,
-  pivotSheetCustomGridDataCfg,
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
 import { partDrillDown } from './drilldown';
 import './index.less';
-import { ResizeConfig } from './resize';
+import { ResizeConfig } from './Resize';
+import { CustomGrid } from './CustomGrid';
 
 const { TabPane } = Tabs;
 
@@ -972,11 +971,8 @@ function MainLayout() {
             options={customTreeOptions}
           />
         </TabPane>
-        <TabPane tab="自定义行头" key="customRowGrid">
-          <SheetComponent
-            dataCfg={pivotSheetCustomGridDataCfg}
-            options={customRowGridOptions}
-          />
+        <TabPane tab="自定义行头" key="customGrid">
+          <CustomGrid />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
           <SheetComponent
