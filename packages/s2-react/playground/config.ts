@@ -14,6 +14,8 @@ import {
   meta,
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { customTreeData } from '../__tests__/data/data-custom-trees';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -52,7 +54,17 @@ export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
  */
 export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
   data: customGridData,
-  meta: [...meta],
+  meta: [
+    ...meta,
+    {
+      field: 'a-1',
+      name: '层级1',
+    },
+    {
+      field: 'a-1-1',
+      name: '层级2',
+    },
+  ],
   fields: customColGridFields,
 };
 
@@ -140,6 +152,12 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
       },
     ],
   },
+};
+
+export const customTreeDataCfg: S2DataConfig = {
+  meta,
+  data: customTreeData,
+  fields: customTreeFields,
 };
 
 export const customTreeOptions: SheetComponentOptions = {

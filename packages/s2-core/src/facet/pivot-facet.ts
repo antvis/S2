@@ -472,10 +472,11 @@ export class PivotFacet extends BaseFacet {
   /**
    * @description 自定义列头时, 叶子节点层级不定, 需要自动对齐其高度, 填充空白
    * ---------------------------------------------------------------------
-   * |                       自定义节点 a-1                                  |
-   * |                 自定义节点 a-1-1              |                       |
-   * |-------------|-------------|-----------------|   自定义节点 a-1-2      |
-   * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2 |                        |
+   * |                       自定义节点 a-1                                   |
+   * |----------------------------------------------------------------------|
+   * |                 自定义节点 a-1-1               |                       |
+   * |-------------|-------------|------------------|   自定义节点 a-1-2      |
+   * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
    * ----------------------------------------------------------------------
    */
   private adjustColLeafNodesHeight(colLeafNodes: Node[], lastLevelNode: Node) {
@@ -483,13 +484,14 @@ export class PivotFacet extends BaseFacet {
   }
 
   private adjustLeafNodesSize(type: 'width' | 'height') {
-    return (leafNodes: Node[], lastLevelNode: Node) =>
+    return (leafNodes: Node[], lastLevelNode: Node) => {
       leafNodes.forEach((node) => {
         if (node.level < lastLevelNode.level) {
           const levelDiff = lastLevelNode.level - node.level;
           node[type] += node[type] * levelDiff;
         }
       });
+    };
   }
 
   /**

@@ -44,8 +44,6 @@ import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { customTreeData } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   StrategySheetDataConfig,
@@ -53,13 +51,14 @@ import {
 } from '../__tests__/data/strategy-data';
 import {
   customTreeOptions,
+  customTreeDataCfg,
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
-import { partDrillDown } from './drilldown';
+import { partDrillDown } from './drill-down';
 import './index.less';
 import { ResizeConfig } from './Resize';
 import { CustomGrid } from './CustomGrid';
@@ -964,10 +963,7 @@ function MainLayout() {
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
-            dataCfg={{
-              data: customTreeData,
-              fields: customTreeFields,
-            }}
+            dataCfg={customTreeDataCfg}
             options={customTreeOptions}
           />
         </TabPane>

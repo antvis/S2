@@ -511,6 +511,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     const name =
       spreadsheet?.dataSet.getCustomRowFieldName(targetCell) ||
       getSummaryName(spreadsheet, field, options?.isTotals);
+
     let value: number | string;
 
     if (isTableMode) {
@@ -527,6 +528,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
         currentFormatter?.(dataSum, selected) ??
         parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems;
     }
+
     summaries.push({
       selectedData: selected,
       name,
@@ -534,11 +536,11 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     });
   });
 
-  if (!spreadsheet.isCustomRowFields()) {
-    return summaries;
+  if (spreadsheet.isCustomFields()) {
+    return getCustomFieldsSummaries(summaries);
   }
 
-  return getCustomFieldsSummaries(summaries);
+  return summaries;
 };
 
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {

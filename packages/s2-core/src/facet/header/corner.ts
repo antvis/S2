@@ -3,7 +3,7 @@ import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
-import type { CustomTreeItem, S2CellType } from '../../common/interface';
+import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
 import type { CornerBBox } from '../bbox/cornerBBox';
 import type { PanelBBox } from '../bbox/panelBBox';
@@ -159,7 +159,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNodes.push(cornerNode);
       } else {
         const rowNodes = rowsHierarchy.sampleNodesForAllLevels || [];
-        const isCustomRow = true;
+        const isCustomRow = spreadsheet.isCustomRowFields();
 
         // spreadsheet type grid mode
         rowNodes.forEach((rowNode) => {
@@ -190,13 +190,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     const columnNodes = colsHierarchy.sampleNodesForAllLevels || [];
+    const isCustomColumn = spreadsheet.isCustomColumnFields();
 
     columnNodes.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
-        const originalField = columns[colNode.level] as CustomTreeItem;
-        const field = (originalField?.key ?? originalField) as string;
-        const value = dataSet.getFieldName(field, originalField?.title);
+        const field = isCustomColumn
+          ? colNode.key
+          : (columns[colNode.level] as string);
+        const value = dataSet.getFieldName(field);
 
         const cNode = new Node({
           key: field,
