@@ -214,6 +214,12 @@ export class RowCell extends HeaderCell {
     });
   }
 
+  protected isBolderText() {
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals, level } = this.meta;
+    return (!isLeaf && level === 0) || isTotals;
+  }
+
   // draw text
   protected drawTextShape() {
     super.drawTextShape();

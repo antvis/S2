@@ -46,6 +46,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected hasDefaultHiddenIcon: boolean;
 
+  protected abstract isBolderText(): boolean;
+
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
@@ -182,8 +184,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
     const { icon: iconTheme, text: textTheme } = this.getStyle();
     const fill = this.getTextConditionFill(textTheme);
-    // 文本条件格式颜色优先
-    const actionIconColor = fill || iconTheme?.fill;
+    // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
+    const actionIconColor = iconTheme?.fill || fill;
 
     const icon = new GuiIcon({
       name: iconName,
@@ -330,12 +332,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
-  }
-
-  protected isBolderText() {
-    // 非叶子节点、小计总计，均为粗体
-    const { isLeaf, isTotals, level } = this.meta;
-    return (!isLeaf && level === 0) || isTotals;
   }
 
   protected getTextStyle(): TextTheme {

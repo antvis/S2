@@ -43,6 +43,11 @@ export class CornerCell extends HeaderCell {
 
   protected textShapes: IShape[] = [];
 
+  protected isBolderText() {
+    const { cornerType } = this.meta;
+    return cornerType === CornerNodeType.Col;
+  }
+
   /* 角头 label 类型 */
   public cornerType: CornerNodeType;
 
@@ -324,10 +329,8 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const { cornerType } = this.meta;
     const { text, bolderText } = this.getStyle();
-    const cornerTextStyle =
-      cornerType === CornerNodeType.Col ? text : bolderText;
+    const cornerTextStyle = this.isBolderText() ? text : bolderText;
     const fill = this.getTextConditionFill(cornerTextStyle);
 
     return {

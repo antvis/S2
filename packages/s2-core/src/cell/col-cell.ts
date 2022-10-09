@@ -155,6 +155,15 @@ export class ColCell extends HeaderCell {
     };
   }
 
+  protected isBolderText() {
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals } = this.meta;
+    if (isTotals || !isLeaf) {
+      return true;
+    }
+    return false;
+  }
+
   protected getTextPosition(): Point {
     const { isLeaf } = this.meta;
     const { width, scrollContainsRowHeader, cornerWidth, scrollX } =

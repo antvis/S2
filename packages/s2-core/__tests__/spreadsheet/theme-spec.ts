@@ -448,8 +448,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
-
-        expect(textOfRowCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
         expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
         expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
