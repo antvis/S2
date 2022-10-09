@@ -33,6 +33,7 @@ import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
+import { renderRect } from '../utils/g-renders';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -266,6 +267,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
   }
 
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    });
+  }
+
   protected isSortCell() {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
     const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
@@ -339,6 +351,20 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const fill = this.getTextConditionFill(style);
 
     return { ...style, fill };
+  }
+
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
+    let fill = backgroundColor;
+    // get background condition fill color
+    const bgCondition = this.findFieldCondition(this.conditions?.background);
+    if (bgCondition && bgCondition.mapping) {
+      const attrs = this.mappingValue(bgCondition);
+      if (attrs) {
+        fill = attrs.fill;
+      }
+    }
+    return { backgroundColor: fill, backgroundColorOpacity };
   }
 
   public toggleActionIcon(id: string) {

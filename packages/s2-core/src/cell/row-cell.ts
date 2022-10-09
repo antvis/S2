@@ -8,11 +8,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
-  type TextTheme,
-  type ViewMeta,
-} from '../common/interface';
+import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
@@ -71,16 +67,6 @@ export class RowCell extends HeaderCell {
     // 绘制 action icons
     this.drawActionIcons();
     this.update();
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    });
   }
 
   /**

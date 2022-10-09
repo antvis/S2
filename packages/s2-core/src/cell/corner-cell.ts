@@ -1,4 +1,4 @@
-import type { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import type { IShape, Point } from '@antv/g-canvas';
 import {
   cond,
   constant,
@@ -27,12 +27,7 @@ import {
   getVerticalPosition,
 } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-  renderTreeIcon,
-} from '../utils/g-renders';
+import { renderLine, renderText, renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
@@ -186,18 +181,6 @@ export class CornerCell extends HeaderCell {
         );
       },
     );
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-
-    const attrs: ShapeAttrs = {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    };
-
-    this.backgroundShape = renderRect(this, attrs);
   }
 
   /**

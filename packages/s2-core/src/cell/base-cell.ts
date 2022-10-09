@@ -2,7 +2,6 @@ import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import {
   each,
-  fill,
   get,
   includes,
   isBoolean,

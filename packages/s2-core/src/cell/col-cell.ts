@@ -9,11 +9,7 @@ import {
   S2Event,
 } from '../common/constant';
 import { CellBorderPosition } from '../common/interface';
-import type {
-  DefaultCellTheme,
-  IconTheme,
-  TextTheme,
-} from '../common/interface';
+import type { DefaultCellTheme, IconTheme } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import type { ColHeaderConfig } from '../facet/header/col';
 import {
@@ -63,15 +59,6 @@ export class ColCell extends HeaderCell {
     this.drawResizeArea();
     this.addExpandColumnIconShapes();
     this.update();
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    });
   }
 
   // 交互使用的背景色
