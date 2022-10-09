@@ -2,6 +2,7 @@ import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import {
   each,
+  fill,
   get,
   includes,
   isBoolean,
@@ -384,5 +385,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         });
       }
     }
+  }
+
+  public getTextConditionFill(textStyle: TextTheme) {
+    // get text condition's fill result
+    let fillResult = textStyle.fill;
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+    if (textCondition?.mapping) {
+      fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    }
+    return fillResult;
   }
 }

@@ -26,6 +26,7 @@ import type {
   HeaderActionIconOptions,
   MappingResult,
   SortParam,
+  TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header/base';
 import type { Node } from '../facet/layout/node';
@@ -153,6 +154,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
 
     const { icon, text } = this.getStyle();
+    const fill = this.getTextConditionFill(text);
     const { sortParam } = this.headerConfig;
     const position = this.getIconPosition();
     const sortIcon = new GuiIcon({
@@ -160,7 +162,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       ...position,
       width: icon.size,
       height: icon.size,
-      fill: text.fill,
+      fill,
     });
     sortIcon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
@@ -178,8 +180,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected addActionIcon(options: HeaderActionIconOptions) {
     const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
     const { icon: iconTheme, text: textTheme } = this.getStyle();
-    // 未配置 icon 颜色, 默认使用文字颜色
-    const actionIconColor = iconTheme?.fill || textTheme?.fill;
+    const fill = this.getTextConditionFill(textTheme);
+    // 文本条件格式颜色优先
+    const actionIconColor = fill || iconTheme?.fill;
 
     const icon = new GuiIcon({
       name: iconName,
@@ -315,6 +318,27 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
+  }
+
+  protected isBolderText() {
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals, level } = this.meta;
+    return (!isLeaf && level === 0) || isTotals;
+  }
+
+  protected getTextStyle(): TextTheme {
+    const { text, bolderText, measureText } = this.getStyle();
+    let style: TextTheme;
+    if (this.isMeasureField()) {
+      style = measureText || text;
+    } else if (this.isBolderText()) {
+      style = bolderText;
+    } else {
+      style = text;
+    }
+    const fill = this.getTextConditionFill(style);
+
+    return { ...style, fill };
   }
 
   public toggleActionIcon(id: string) {

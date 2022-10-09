@@ -376,26 +376,6 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected isBolderText() {
-    // 非叶子节点、小计总计，均为粗体
-    const { isLeaf, isTotals, level } = this.meta;
-    return (!isLeaf && level === 0) || isTotals;
-  }
-
-  protected getTextStyle(): TextTheme {
-    const { text, bolderText, measureText } = this.getStyle();
-    let style: TextTheme;
-    if (this.isMeasureField()) {
-      style = measureText || text;
-    } else if (this.isBolderText()) {
-      style = bolderText;
-    } else {
-      style = text;
-    }
-
-    return { ...style, textBaseline: 'top' };
-  }
-
   protected getIconPosition() {
     // 不同 textAlign 下，对应的文字绘制点 x 不同
     const { x, y, textAlign } = this.textShape.cfg.attrs;

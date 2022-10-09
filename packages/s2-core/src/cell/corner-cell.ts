@@ -345,10 +345,11 @@ export class CornerCell extends HeaderCell {
     const { text, bolderText } = this.getStyle();
     const cornerTextStyle =
       cornerType === CornerNodeType.Col ? text : bolderText;
+    const fill = this.getTextConditionFill(cornerTextStyle);
 
     return {
       ...cornerTextStyle,
-      textBaseline: 'middle',
+      fill,
     };
   }
 

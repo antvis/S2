@@ -105,21 +105,6 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  protected getTextStyle(): TextTheme {
-    const { isLeaf, isTotals } = this.meta;
-    const { text, bolderText, measureText } = this.getStyle();
-
-    if (this.isMeasureField()) {
-      return measureText || text;
-    }
-
-    if (isTotals || !isLeaf) {
-      return bolderText;
-    }
-
-    return text;
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
     return width - this.getActionIconsWidth();

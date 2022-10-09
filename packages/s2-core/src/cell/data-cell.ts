@@ -179,12 +179,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    // get text condition's fill result
-    let fill = textStyle.fill;
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-    if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
-    }
+    const fill = this.getTextConditionFill(textStyle);
 
     return { ...textStyle, fill };
   }
