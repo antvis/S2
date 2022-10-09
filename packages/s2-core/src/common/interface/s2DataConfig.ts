@@ -56,13 +56,13 @@ export type ExtraData = {
 
 export type Data = RawData & ExtraData;
 
-export interface CustomTreeItem {
+export interface CustomTreeNode {
   key: string;
   title: string;
   // 是否收起（默认都展开）
   collapsed?: boolean;
   description?: string;
-  children?: CustomTreeItem[];
+  children?: CustomTreeNode[];
 }
 
 export interface S2DataConfig {

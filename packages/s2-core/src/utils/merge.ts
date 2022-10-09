@@ -43,10 +43,7 @@ export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
   mergedDataCfg.fields = uniqueFields(mergedDataCfg.fields);
 
   // 自定义树和数值为空的场景, 关闭 数值置于列头
-  if (
-    !isEmpty(mergedDataCfg.fields.customTreeItems) ||
-    isEmpty(mergedDataCfg.fields.values)
-  ) {
+  if (isEmpty(mergedDataCfg.fields.values)) {
     mergedDataCfg.fields.valueInCols = false;
   }
   return mergedDataCfg;

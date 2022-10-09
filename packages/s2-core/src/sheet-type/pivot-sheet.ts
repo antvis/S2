@@ -19,7 +19,6 @@ import type {
 } from '../common/interface';
 import { PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
-import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
@@ -49,13 +48,9 @@ export class PivotSheet extends SpreadSheet {
   }
 
   public getDataSet(options: S2Options) {
-    const { dataSet, hierarchyType } = options;
+    const { dataSet } = options;
     if (dataSet) {
       return dataSet(this);
-    }
-
-    if (hierarchyType === 'customTree') {
-      return new CustomTreePivotDataSet(this);
     }
 
     if (this.isCustomRowFields()) {
@@ -65,27 +60,16 @@ export class PivotSheet extends SpreadSheet {
     return new PivotDataSet(this);
   }
 
-  /**
-   * Check if is pivot mode
-   */
   public isPivotMode(): boolean {
     return true;
   }
 
-  /**
-   * Check if is pivot mode
-   */
   public isTableMode(): boolean {
     return false;
   }
 
-  /**
-   * tree type must be in strategy mode
-   */
   public isHierarchyTreeType(): boolean {
-    const type = this.options.hierarchyType;
-    // custom tree and tree!!!
-    return type === 'tree' || type === 'customTree';
+    return this.options.hierarchyType === 'tree';
   }
 
   /**

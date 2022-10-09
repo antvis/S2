@@ -6,7 +6,7 @@ import {
   customRowGridFields,
   customColGridFields,
 } from '@antv/s2/__tests__/data/custom-grid-fields';
-import { customGridData } from '@antv/s2/__tests__/data/data-custom-grid';
+import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import {
   data,
   fields,
@@ -14,8 +14,6 @@ import {
   meta,
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { customTreeData } from '../__tests__/data/data-custom-trees';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -30,7 +28,7 @@ export const tableSheetDataCfg: S2DataConfig = {
  * 平铺模式-自定义行头
  */
 export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
-  data: customGridData,
+  data: CustomGridData,
   meta: [
     ...meta,
     {
@@ -53,7 +51,7 @@ export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
  * 平铺模式-自定义列头
  */
 export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
-  data: customGridData,
+  data: CustomGridData,
   meta: [
     ...meta,
     {
@@ -152,19 +150,6 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
       },
     ],
   },
-};
-
-export const customTreeDataCfg: S2DataConfig = {
-  meta,
-  data: customTreeData,
-  fields: customTreeFields,
-};
-
-export const customTreeOptions: SheetComponentOptions = {
-  width: 600,
-  height: 480,
-  hierarchyType: 'customTree',
-  cornerText: '指标',
 };
 
 export const defaultOptions =

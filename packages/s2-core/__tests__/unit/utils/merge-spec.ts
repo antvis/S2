@@ -35,7 +35,6 @@ describe('merge test', () => {
         rows: [],
         columns: [],
         values: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -51,7 +50,6 @@ describe('merge test', () => {
           rows: ['province', 'city', 'city'],
           columns: ['type', 'type'],
           values: ['count', 'cost', 'cost'],
-          customTreeItems: [],
           valueInCols: false,
         },
       }),
@@ -62,7 +60,6 @@ describe('merge test', () => {
         rows: ['province', 'city'],
         columns: ['type'],
         values: ['count', 'cost'],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -71,9 +68,9 @@ describe('merge test', () => {
     });
   });
 
-  test('should cancel valueInCols if customTreeItems is not empty by get safety data config', () => {
+  test('should cancel valueInCols if custom rows is not empty by get safety data config', () => {
     const fields: Partial<S2DataConfig['fields']> = {
-      customTreeItems: [{ key: '1', title: 'test' }],
+      rows: [{ key: '1', title: 'test' }],
       valueInCols: true,
     };
     expect(
@@ -112,7 +109,6 @@ describe('merge test', () => {
         ...fields,
         rows: [],
         columns: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -140,7 +136,6 @@ describe('merge test', () => {
         ...fields,
         rows: [],
         columns: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -260,7 +255,6 @@ describe('merge test', () => {
       rows: ['test'],
       columns: [],
       values: ['value'],
-      customTreeItems: [],
       valueInCols: true,
     });
   });

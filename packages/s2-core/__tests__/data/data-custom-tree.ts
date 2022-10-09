@@ -1,4 +1,4 @@
-export const dataCustomTrees = [
+export const CustomTreeData = [
   {
     type: '家具',
     sub_type: '桌子',

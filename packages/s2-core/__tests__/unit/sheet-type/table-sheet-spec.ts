@@ -201,6 +201,16 @@ describe('TableSheet Tests', () => {
     );
   });
 
+  test('should get normal header fields status', () => {
+    expect(s2.isCustomRowFields()).toBeFalsy();
+    expect(s2.isCustomColumnFields()).toBeFalsy();
+  });
+
+  test('should get table mode', () => {
+    expect(s2.isPivotMode()).toBeFalsy();
+    expect(s2.isTableMode()).toBeTruthy();
+  });
+
   test('should emit destroy event', () => {
     const onDestroy = jest.fn();
     s2.on(S2Event.LAYOUT_DESTROY, onDestroy);

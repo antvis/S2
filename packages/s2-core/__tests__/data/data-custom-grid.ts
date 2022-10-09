@@ -1,4 +1,4 @@
-export const customGridData = [
+export const CustomGridData = [
   {
     'measure-1': 13,
     'measure-2': 2,

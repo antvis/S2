@@ -50,8 +50,6 @@ import {
   StrategyOptions,
 } from '../__tests__/data/strategy-data';
 import {
-  customTreeOptions,
-  customTreeDataCfg,
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
@@ -62,6 +60,7 @@ import { partDrillDown } from './drill-down';
 import './index.less';
 import { ResizeConfig } from './Resize';
 import { CustomGrid } from './CustomGrid';
+import { CustomTree } from './CustomTree';
 
 const { TabPane } = Tabs;
 
@@ -962,10 +961,7 @@ function MainLayout() {
           )}
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
-          <SheetComponent
-            dataCfg={customTreeDataCfg}
-            options={customTreeOptions}
-          />
+          <CustomTree />
         </TabPane>
         <TabPane tab="自定义行头" key="customGrid">
           <CustomGrid />

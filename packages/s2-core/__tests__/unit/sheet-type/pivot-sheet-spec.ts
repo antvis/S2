@@ -619,6 +619,26 @@ describe('PivotSheet Tests', () => {
     expect(s2.isValueInCols()).toBeTruthy();
   });
 
+  test('should get normal header fields status', () => {
+    expect(s2.isCustomRowFields()).toBeFalsy();
+    expect(s2.isCustomColumnFields()).toBeFalsy();
+  });
+
+  test('should get custom header fields status', () => {
+    const newDataCfg: S2DataConfig = {
+      fields: {
+        rows: [{ key: '1', title: '1' }],
+        columns: [{ key: '2', title: '2' }],
+      },
+      data: [],
+    };
+    s2.setDataCfg(newDataCfg);
+
+    expect(s2.isCustomFields()).toBeTruthy();
+    expect(s2.isCustomRowFields()).toBeTruthy();
+    expect(s2.isCustomColumnFields()).toBeTruthy();
+  });
+
   test('should rebuild hidden columns detail by status', () => {
     // 重新更新, 但是没有隐藏列信息
     s2.render(false, { reBuildHiddenColumnsDetail: true });

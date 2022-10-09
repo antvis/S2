@@ -90,29 +90,6 @@ describe('<SheetComponent/> Tests', () => {
       expect(s2.options.tooltip.data.content).toEqual(content);
     });
 
-    test('should replace hierarchyType with "customTree" when rows is empty and contains custom tree items', () => {
-      const s2Options: SheetComponentsProps['options'] = {
-        hierarchyType: 'grid',
-      };
-
-      const s2DataConfig: S2DataConfig = {
-        data: [],
-        fields: {
-          rows: [],
-          customTreeItems: [
-            {
-              key: '1',
-              title: '1',
-            },
-          ],
-        },
-      };
-
-      renderStrategySheet(s2Options, s2DataConfig);
-
-      expect(s2.options.hierarchyType).toEqual('customTree');
-    });
-
     test('should hideMeasureColumn if only one value field', () => {
       const s2Options: SheetComponentsProps['options'] = {
         hierarchyType: 'grid',

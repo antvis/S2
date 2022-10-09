@@ -2,7 +2,7 @@ import { filter } from 'lodash';
 import {
   EXTRA_FIELD,
   type CustomHeaderFields,
-  type CustomTreeItem,
+  type CustomTreeNode,
 } from '../../common';
 import type { SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotDataSet } from '../../data-set';
@@ -35,16 +35,11 @@ const handleCustomTreeHierarchy = (params: HeaderParams) => {
   const withoutExtraFields = filter(
     fields,
     (field) => field !== EXTRA_FIELD,
-  ) as CustomTreeItem[];
-
-  const customTreeItems =
-    facetCfg.hierarchyType === 'customTree'
-      ? facetCfg.dataSet.fields.customTreeItems
-      : withoutExtraFields;
+  ) as CustomTreeNode[];
 
   // custom tree header
   buildCustomTreeHierarchy({
-    tree: customTreeItems,
+    tree: withoutExtraFields,
     facetCfg,
     level: 0,
     parentNode: rootNode,
@@ -154,7 +149,7 @@ export const buildHeaderHierarchy = (
 ): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
   const { spreadsheet, rows = [], columns = [] } = facetCfg;
-  const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
+  const isValueInCols = spreadsheet.isValueInCols();
   const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = facetCfg.dataSet.moreThanOneValue();
   const rootNode = Node.rootNode();

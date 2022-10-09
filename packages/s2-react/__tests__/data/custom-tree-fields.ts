@@ -1,7 +1,6 @@
 import type { S2DataConfig } from '@antv/s2';
 
 export const customTreeFields: S2DataConfig['fields'] = {
-  rows: [],
   columns: ['type', 'sub_type'],
   values: [
     'measure-a',
@@ -11,10 +10,11 @@ export const customTreeFields: S2DataConfig['fields'] = {
     'measure-e',
     'measure-f',
   ],
-  customTreeItems: [
+  rows: [
     {
       key: 'custom-node-1',
       title: '自定义节点A',
+      collapsed: false,
       children: [
         {
           key: 'measure-a',

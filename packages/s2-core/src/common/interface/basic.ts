@@ -2,7 +2,7 @@ import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { PartDrillDownInfo } from '@antv/s2-shared';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
-import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
+import type { CustomTreeNode, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
@@ -86,7 +86,7 @@ export interface Extra {
   remark: string;
 }
 
-export type CustomHeaderFields = (string | CustomTreeItem)[];
+export type CustomHeaderFields = (string | CustomTreeNode)[];
 
 export interface BaseFields {
   // row fields
@@ -100,9 +100,6 @@ export interface BaseFields {
 }
 
 export interface Fields extends BaseFields {
-  // custom tree data(only use in row header in pivot mode)
-  customTreeItems?: CustomTreeItem[];
-
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
 }

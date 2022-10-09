@@ -1,4 +1,4 @@
-import { customGridData } from 'tests/data/data-custom-grid';
+import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
 import {
   customColGridSimpleFields,
@@ -25,7 +25,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
   let s2: SpreadSheet;
 
   const baseDataConfig = {
-    data: customGridData,
+    data: CustomGridData,
     meta: [
       {
         field: 'type',

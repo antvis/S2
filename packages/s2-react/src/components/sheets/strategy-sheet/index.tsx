@@ -40,26 +40,11 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       S2Options<React.ReactNode>
     >(() => {
       if (isEmpty(dataCfg)) {
-        return {};
-      }
-      let hideMeasureColumn = false;
-      let hierarchyType: S2Options['hierarchyType'] = 'tree';
-
-      // 根据 dataConfig 切换 hierarchyType
-      if (
-        isEmpty(dataCfg?.fields?.rows) &&
-        !isEmpty(dataCfg?.fields?.customTreeItems)
-      ) {
-        hierarchyType = 'customTree';
+        return null;
       }
 
       // 单指标非自定义树结构隐藏指标列
-      if (
-        size(dataCfg?.fields?.values) === 1 &&
-        options.hierarchyType !== 'customTree'
-      ) {
-        hideMeasureColumn = true;
-      }
+      const hideMeasureColumn = size(dataCfg?.fields?.values) === 1;
 
       const getContent =
         (cellType: 'row' | 'col' | 'data') =>
@@ -79,6 +64,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         };
 
       return {
+        hierarchyType: 'tree',
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
         colCell: (
@@ -88,7 +74,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         ) => new CustomColCell(node, spreadsheet, headerConfig),
         dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
         showDefaultHeaderActionIcon: false,
-        hierarchyType,
         style: {
           colCfg: {
             hideMeasureColumn,
@@ -139,7 +124,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           },
         },
       };
-    }, [dataCfg, options.hierarchyType, options.tooltip]);
+    }, [dataCfg, options.tooltip]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields: Partial<S2DataConfig> = {

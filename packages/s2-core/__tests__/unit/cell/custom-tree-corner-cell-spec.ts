@@ -2,8 +2,8 @@
  * custom-tree mode.
  */
 import { get } from 'lodash';
-import { customTreeItems } from 'tests/data/custom-tree-items';
-import { dataCustomTrees } from 'tests/data/data-custom-trees';
+import { customTreeNodes } from 'tests/data/custom-tree-nodes';
+import { CustomTreeData } from 'tests/data/data-custom-tree';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { CornerCell, type S2Options } from '@/index';
@@ -19,13 +19,12 @@ describe('test for corner text', () => {
   ];
   const dataCfg: S2DataConfig = {
     meta: [],
-    data: dataCustomTrees,
+    data: CustomTreeData,
     totalData: [],
     fields: {
-      rows: [],
+      rows: customTreeNodes,
       columns: ['type', 'sub_type'],
       values,
-      customTreeItems,
       valueInCols: false,
     },
   };
@@ -33,7 +32,7 @@ describe('test for corner text', () => {
   const options: S2Options = {
     width: 600,
     height: 480,
-    hierarchyType: 'customTree',
+    hierarchyType: 'tree',
   };
   const container = document.createElement('div');
 

@@ -51,7 +51,6 @@ object **必选**,_default：null_
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | :------------- | :----------------- | :--------- | :----- | :--- |
 | rows           | 行维度 （可自定义行头，查看 [例子](#TODO))        | `string[]` \| [CustomTreeItem[]](#customtreeitem) | `[]`   |      |
-| customTreeItems | 自定义行头目录树        | [CustomTreeItem[]](#customtreeitem) |  |      |
 | columns        | 列维度 （可自定义列头，查看 [例子](#TODO))        | `string[]` \| [CustomTreeItem[]](#customtreeitem) | `[]`   |      |
 | values         | 指标维度       | `string[]` | `[]`   |      |
 | valueInCols    | 指标维度是否在列头   | `boolean`  | `true` |      |

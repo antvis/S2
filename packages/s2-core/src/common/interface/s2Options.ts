@@ -39,7 +39,7 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // debug info for developer
   debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  hierarchyType?: 'grid' | 'tree' | 'customTree';
+  hierarchyType?: 'grid' | 'tree';
   // conditions config
   conditions?: Conditions;
   // total config

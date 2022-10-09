@@ -1,6 +1,6 @@
-import type { CustomTreeItem, S2DataConfig } from '@antv/s2';
+import type { CustomTreeNode, S2DataConfig } from '@antv/s2';
 
-const headerFields: CustomTreeItem[] = [
+const headerFields: CustomTreeNode[] = [
   {
     key: 'a-1',
     title: '自定义节点 a-1',
