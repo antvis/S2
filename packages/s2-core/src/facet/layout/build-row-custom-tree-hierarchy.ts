@@ -10,15 +10,27 @@ import { layoutHierarchy } from './layout-hooks';
  * 1、渲染的节点由传入的数据结构决定, 不管是平铺,还是树状, 本质上都是树状结构
  * 2、没有总计小计的概念
  * 3、是否展开和收起完全由 customTreeNode.collapsed 来控制（默认都展开）
+ * 4、支持行头/列头自定义
+ * 5、支持隐藏列头
  * @param params
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
   const { facetCfg, tree = [], level, parentNode, hierarchy } = params;
-  const { spreadsheet, collapsedRows, hierarchyCollapse, hierarchyType } =
-    facetCfg;
+  const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
+
+  const hiddenColumnsDetail =
+    spreadsheet.store.get('hiddenColumnsDetail') || [];
 
   tree.forEach((treeNode) => {
     const { key, title, collapsed, children, ...rest } = treeNode;
+
+    const isHiddenNode = hiddenColumnsDetail.some(({ hideColumnNodes }) =>
+      hideColumnNodes.find((hideNode) => hideNode.key === key),
+    );
+    if (isHiddenNode) {
+      return;
+    }
+
     // query只与值本身有关，不会涉及到 parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
@@ -29,8 +41,8 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const isCollapsed =
       isCollapsedRow ?? (hierarchyCollapse || defaultCollapsed);
 
-    // 平铺模式没有折叠状态
-    const isCollapsedNode = hierarchyType !== 'grid' && isCollapsed;
+    // TODO: 平铺模式支持 折叠/展开
+    const isCollapsedNode = spreadsheet.isHierarchyTreeType() && isCollapsed;
     const isLeaf = isEmpty(children);
 
     const node = new Node({

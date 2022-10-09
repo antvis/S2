@@ -32,14 +32,14 @@ const handleCustomTreeHierarchy = (params: HeaderParams) => {
   const { facetCfg, rootNode, hierarchy, fields } = params;
 
   // 自定义行/列 需要去除额外添加的 EXTRA_FIELD 虚拟数值字段, 即不参与布局, 只用于定位数据
-  const withoutExtraFields = filter(
+  const withoutExtraFieldsTree = filter(
     fields,
     (field) => field !== EXTRA_FIELD,
   ) as CustomTreeNode[];
 
   // custom tree header
   buildCustomTreeHierarchy({
-    tree: withoutExtraFields,
+    tree: withoutExtraFieldsTree,
     facetCfg,
     level: 0,
     parentNode: rootNode,
