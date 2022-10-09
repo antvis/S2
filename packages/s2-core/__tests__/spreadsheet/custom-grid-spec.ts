@@ -66,7 +66,6 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should disable valueInCols', () => {
-      expect(s2.dataCfg.fields.valueInCols).toBeFalsy();
       expect(s2.dataSet.fields.valueInCols).toBeFalsy();
     });
 
@@ -176,8 +175,8 @@ describe('SpreadSheet Custom Grid Tests', () => {
       { key: 'a-1-1', count: 4, sum: 34 },
       { key: 'measure-1', count: 2, sum: 24 },
       { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: 0 },
-      { key: 'a-1-2', count: 2, sum: 0 },
+      { key: 'a-1-2', count: 2, sum: null },
+      { key: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
       ({ key, count, sum }) => {
@@ -359,8 +358,8 @@ describe('SpreadSheet Custom Grid Tests', () => {
       { key: 'a-1-1', count: 4, sum: 34 },
       { key: 'measure-1', count: 2, sum: 24 },
       { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: 0 },
-      { key: 'a-1-2', count: 2, sum: 0 },
+      { key: 'a-1-2', count: 2, sum: null },
+      { key: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
       ({ key, count, sum }) => {

@@ -39,7 +39,7 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
               `${TOOLTIP_PREFIX_CLS}-bold`,
             )}
           >
-            {value}
+            {value ?? '-'}
           </span>
         </div>
       );

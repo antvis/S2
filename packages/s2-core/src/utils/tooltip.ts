@@ -467,10 +467,11 @@ export const getCustomFieldsSummaries = (
       cellsData,
       (cellData) => cellData.selectedData,
     );
-    const value = sumBy(
-      cellsData.filter((item) => isNumber(item.value)),
-      'value',
-    );
+
+    const validCellsData = cellsData.filter((item) => isNumber(item.value));
+    const value = isEmpty(validCellsData)
+      ? null
+      : sumBy(validCellsData, 'value');
 
     return {
       name,

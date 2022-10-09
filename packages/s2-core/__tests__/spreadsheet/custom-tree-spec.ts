@@ -62,7 +62,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   test('should disable valueInCols', () => {
@@ -166,7 +166,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     // 选中单元格本身
     expect(s2.interaction.getActiveCells()).toHaveLength(1);
     // 高亮子节点
-    expectHighlightActiveNodes(s2, []);
+    expectHighlightActiveNodes(s2, ['root[&]自定义节点 a-1']);
 
     // 取消选中 a - 1
     s2.interaction.selectHeaderCell({
@@ -176,12 +176,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test.each([
-    { key: 'a-1', count: 2, sum: 0 },
-    { key: 'a-1-1', count: 2, sum: 0 },
+    { key: 'a-1', count: 2, sum: null },
+    { key: 'a-1-1', count: 2, sum: null },
     { key: 'measure-1', count: 2, sum: 24 },
     { key: 'measure-2', count: 2, sum: 10 },
-    { key: 'a-1-2', count: 2, sum: 0 },
-    { key: 'a-1-2', count: 2, sum: 0 },
+    { key: 'a-1-2', count: 2, sum: null },
+    { key: 'a-1-2', count: 2, sum: null },
   ])('should get selected cell summary infos for %o', ({ key, count, sum }) => {
     const rowNode = s2.getRowNodes().find((node) => node.field === key);
 
@@ -229,6 +229,36 @@ describe('SpreadSheet Custom Tree Tests', () => {
         label: '类型',
       },
     ]);
+  });
+
+  test('should render custom corner text', () => {
+    s2.setOptions({
+      cornerText: '测试',
+    });
+
+    s2.render();
+
+    const cornerCellLabels = (s2.facet as any)
+      .getCornerHeader()
+      .getChildren()
+      .map((cell: HeaderCell) => cell.getActualText());
+
+    expect(cornerCellLabels).toEqual(['测试', '类型']);
+  });
+
+  test('should render custom tree row node width', () => {
+    s2.setOptions({
+      style: {
+        treeRowsWidth: 50,
+      },
+    });
+
+    s2.render();
+
+    const { rowNodes, rowsHierarchy } = s2.facet.layoutResult;
+
+    expect(rowsHierarchy.width).toEqual(50);
+    expect(rowNodes.every((node) => node.width === 50)).toBeTruthy();
   });
 
   test('should collapse node', () => {
