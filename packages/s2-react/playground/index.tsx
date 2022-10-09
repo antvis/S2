@@ -573,7 +573,6 @@ function MainLayout() {
                       !s2Ref.current.facet.vScrollBar
                     ) {
                       clearInterval(scrollTimer.current);
-                      s2Ref.current.destroy();
                       return;
                     }
                     scrollTimer.current = setInterval(() => {
