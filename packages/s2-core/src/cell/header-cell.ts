@@ -1,6 +1,7 @@
 import type { Event as CanvasEvent, IShape } from '@antv/g-canvas';
 import {
   find,
+  findLast,
   first,
   forEach,
   get,
@@ -20,8 +21,10 @@ import { InteractionStateName } from '../common/constant/interaction';
 import { GuiIcon } from '../common/icons';
 import type {
   CellMeta,
+  Condition,
   FormatResult,
   HeaderActionIconOptions,
+  MappingResult,
   SortParam,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header/base';
@@ -364,5 +367,18 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public isMeasureField() {
     return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
+  }
+
+  public mappingValue(condition: Condition): MappingResult {
+    const value = this.getMeta().label;
+    return condition?.mapping(value, this.meta);
+  }
+
+  public findFieldCondition(conditions: Condition[]): Condition {
+    return findLast(conditions, (item) => {
+      return item.field instanceof RegExp
+        ? item.field.test(this.meta.field)
+        : item.field === this.meta.field;
+    });
   }
 }

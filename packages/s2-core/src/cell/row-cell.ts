@@ -58,6 +58,8 @@ export class RowCell extends HeaderCell {
     this.drawInteractiveBorderShape();
     // 绘制单元格文本
     this.drawTextShape();
+    // 绘制字段标记 -- icon
+    this.drawConditionIconShapes();
     // 绘制树状模式收起展开的 icon
     this.drawTreeIcon();
     // 绘制树状模式下子节点层级占位圆点

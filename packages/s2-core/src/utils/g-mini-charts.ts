@@ -11,7 +11,7 @@ import type {
   S2CellType,
 } from '../common/interface';
 import type { RangeColors } from '../common/interface/theme';
-import type { DataCell } from '..';
+import type { BaseCell } from '../cell/base-cell';
 import {
   renderCircle,
   renderPolyline,
@@ -22,7 +22,9 @@ import {
 import { CellTypes, MiniChartTypes } from '../common/constant';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import { getIntervalScale } from '../utils/condition/condition';
+import type { DataCell } from '..';
 import { getEllipsisText } from './text';
+import type { HeaderCell } from '@/cell/header-cell';
 
 interface FractionDigitsOptions {
   min: number;
@@ -230,7 +232,6 @@ export const transformRatioToPercent = (
  *  绘制单元格内的 条件格式 柱图
  */
 export const drawInterval = (cell: DataCell) => {
-  // TODO 行头单元格也支持条件格式后，这里的cell 类型可以开放为 S2CellType
   if (isEmpty(cell)) {
     return;
   }

@@ -53,6 +53,8 @@ export class ColCell extends HeaderCell {
     this.drawInteractiveBorderShape();
     // draw text
     this.drawTextShape();
+    // 绘制字段标记 -- icon
+    this.drawConditionIconShapes();
     // draw action icons
     this.drawActionIcons();
     // draw borders
