@@ -11,6 +11,7 @@ import {
   setTooltipContainerStyle,
   getTooltipOptions,
   getTooltipData,
+  getCustomFieldsSummaries,
 } from '@/utils/tooltip';
 import {
   CellTypes,
@@ -784,5 +785,113 @@ describe('Tooltip Utils Tests', () => {
     expect(container.className).toEqual(
       `visible ${TOOLTIP_CONTAINER_HIDE_CLS}`,
     );
+  });
+
+  test('should get custom fields summaries of custom tree', () => {
+    const mockData = [
+      {
+        selectedData: [
+          {
+            raw: {
+              'measure-1': 13,
+              'measure-2': 2,
+              'measure-3': 3,
+              'measure-4': 4,
+              'measure-5': 5,
+              'measure-6': 6,
+              type: '家具',
+              sub_type: '桌子',
+            },
+            extraField: 'measure-1',
+          },
+          {
+            raw: {
+              'measure-1': 11,
+              'measure-2': 8,
+              'measure-3': 32,
+              'measure-4': 43,
+              'measure-5': 45,
+              'measure-6': 65,
+              type: '家具',
+              sub_type: '椅子',
+            },
+            extraField: 'measure-1',
+          },
+        ],
+        name: '自定义节点 a-1-1',
+        value: 24,
+      },
+      {
+        selectedData: [
+          {
+            raw: {
+              'measure-1': 13,
+              'measure-2': 2,
+              'measure-3': 3,
+              'measure-4': 4,
+              'measure-5': 5,
+              'measure-6': 6,
+              type: '家具',
+              sub_type: '桌子',
+            },
+            extraField: 'a-1-1-1',
+          },
+          {
+            raw: {
+              'measure-1': 11,
+              'measure-2': 8,
+              'measure-3': 32,
+              'measure-4': 43,
+              'measure-5': 45,
+              'measure-6': 65,
+              type: '家具',
+              sub_type: '椅子',
+            },
+            extraField: 'a-1-1-1',
+          },
+        ],
+        name: '自定义节点 a-1-1',
+        value: '-',
+      },
+      {
+        selectedData: [
+          {
+            raw: {
+              'measure-1': 13,
+              'measure-2': 2,
+              'measure-3': 3,
+              'measure-4': 4,
+              'measure-5': 5,
+              'measure-6': 6,
+              type: '家具',
+              sub_type: '桌子',
+            },
+            extraField: 'measure-2',
+          },
+          {
+            raw: {
+              'measure-1': 11,
+              'measure-2': 8,
+              'measure-3': 32,
+              'measure-4': 43,
+              'measure-5': 45,
+              'measure-6': 65,
+              type: '家具',
+              sub_type: '椅子',
+            },
+            extraField: 'measure-2',
+          },
+        ],
+        name: '自定义节点 a-1-1',
+        value: 10,
+      },
+    ];
+
+    const summaries = getCustomFieldsSummaries(mockData);
+    const summary = summaries[0];
+
+    expect(summaries).toHaveLength(1);
+    expect(summary.value).toEqual(34);
+    expect(summary.name).toEqual('自定义节点 a-1-1');
   });
 });

@@ -6,6 +6,7 @@ import { Canvas } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
+import type { BaseDataSet } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
@@ -64,16 +65,22 @@ export const createFakeSpreadSheet = () => {
     height: DEFAULT_OPTIONS.height,
     container,
   });
-  s2.facet = {} as BaseFacet;
-  s2.facet.panelBBox = {
-    maxX: s2.options.width,
-    maxY: s2.options.height,
-  } as PanelBBox;
+  s2.facet = {
+    panelBBox: {
+      maxX: s2.options.width,
+      maxY: s2.options.height,
+    },
+  } as BaseFacet;
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {
     container: {} as HTMLElement,
   } as BaseTooltip;
+  s2.dataSet = {
+    getFieldDescription: jest.fn(),
+    getCustomRowFieldDescription: jest.fn(),
+  } as unknown as BaseDataSet;
+
   s2.getCellType = jest.fn();
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
@@ -84,6 +91,7 @@ export const createFakeSpreadSheet = () => {
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
   s2.getCanvasElement = () => s2.container.get('el');
+  s2.isCustomFields = jest.fn(() => false);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
@@ -132,6 +140,7 @@ export const createMockCellInfo = (
       },
       dataSet: {
         getFieldDescription: jest.fn(),
+        getCustomRowFieldDescription: jest.fn(),
       },
     } as unknown as SpreadSheet,
   };
