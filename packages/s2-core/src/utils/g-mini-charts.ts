@@ -11,7 +11,6 @@ import type {
   S2CellType,
 } from '../common/interface';
 import type { RangeColors } from '../common/interface/theme';
-import type { BaseCell } from '../cell/base-cell';
 import {
   renderCircle,
   renderPolyline,
@@ -24,7 +23,6 @@ import { parseNumberWithPrecision } from '../utils/formatter';
 import { getIntervalScale } from '../utils/condition/condition';
 import type { DataCell } from '..';
 import { getEllipsisText } from './text';
-import type { HeaderCell } from '@/cell/header-cell';
 
 interface FractionDigitsOptions {
   min: number;

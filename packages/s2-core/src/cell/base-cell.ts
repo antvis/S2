@@ -45,7 +45,7 @@ import {
 } from '../utils/g-renders';
 import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
-import type { GuiIcon } from '@/common/icons/gui-icon';
+import type { GuiIcon } from '../common/icons/gui-icon';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
