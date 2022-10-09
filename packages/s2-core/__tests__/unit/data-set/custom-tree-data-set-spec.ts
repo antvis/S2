@@ -27,7 +27,6 @@ describe('Custom Tree Dataset Test', () => {
   const dataCfg: S2DataConfig = {
     meta: [],
     data: CustomTreeData,
-    totalData: [],
     fields: {
       rows: customTreeNodes,
       columns: ['type', 'sub_type'],

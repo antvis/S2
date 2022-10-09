@@ -7,8 +7,10 @@ import {
   data as drillDownData,
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
+import { data } from 'tests/data/mock-dataset.json';
+
 import type { ViewMeta, SortMethod } from '@/common/interface';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -29,7 +31,7 @@ const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
   const dataCfg: S2DataConfig = assembleDataCfg({
-    totalData: [],
+    data,
     meta: [],
   });
 

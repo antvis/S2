@@ -30,7 +30,6 @@ describe('merge test', () => {
   test('should get safety data config', () => {
     expect(getSafetyDataConfig(null)).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         rows: [],
         columns: [],
@@ -55,7 +54,6 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
@@ -79,7 +77,6 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         ...fields,
         rows: [],
@@ -104,7 +101,6 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         ...fields,
         rows: [],
@@ -131,7 +127,6 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [{ value: 1 }, { value: 2 }],
-      totalData: [],
       fields: {
         ...fields,
         rows: [],

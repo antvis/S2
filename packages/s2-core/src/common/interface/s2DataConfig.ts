@@ -68,8 +68,6 @@ export interface CustomTreeNode {
 export interface S2DataConfig {
   // origin detail data
   data: RawData[];
-  // total data(grandTotal, subTotal)
-  totalData?: RawData[];
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys meta info

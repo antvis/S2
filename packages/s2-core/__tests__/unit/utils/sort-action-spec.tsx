@@ -14,7 +14,7 @@ import {
   type S2DataConfig,
   VALUE_FIELD,
 } from '@/common';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet, type SortActionParams } from '@/data-set';
 import { CellData } from '@/data-set/cell-data';
 
@@ -293,7 +293,7 @@ describe('GetSortByMeasureValues Tests', () => {
     const dataCfg: S2DataConfig = {
       ...sortData,
       // 补充一些总、小计数据
-      totalData: [
+      data: sortData.data.concat([
         {
           province: '浙江',
           price: '777',
@@ -312,7 +312,7 @@ describe('GetSortByMeasureValues Tests', () => {
           type: '笔',
           price: '188',
         },
-      ],
+      ] as any),
     };
     s2 = new PivotSheet(getContainer(), dataCfg, {
       totals: {

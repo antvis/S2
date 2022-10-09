@@ -1,5 +1,6 @@
 import { assembleDataCfg } from 'tests/util';
 import { get } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import {
   deleteMetaById,
   transformIndexesData,
@@ -13,7 +14,7 @@ import { CellData } from '@/data-set/cell-data';
 
 describe('PivotDataSet util test', () => {
   const dataCfg: S2DataConfig = assembleDataCfg({
-    totalData: [],
+    data,
     meta: [],
   });
 
@@ -45,7 +46,6 @@ describe('PivotDataSet util test', () => {
       columns,
       values,
       originData: dataCfg.data,
-      totalData: [],
       indexesData: [],
       sortedDimensionValues,
       rowPivotMeta,
