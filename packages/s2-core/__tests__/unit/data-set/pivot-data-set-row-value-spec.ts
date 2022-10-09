@@ -2,8 +2,9 @@
  * pivot mode data-set test when value in row.
  */
 import { get, keys } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -17,12 +18,12 @@ const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
 describe('Pivot Mode Test When Value In Row', () => {
   let dataSet: PivotDataSet;
   const dataCfg: S2DataConfig = assembleDataCfg({
-    totalData: [],
     meta: [],
     fields: {
       ...assembleDataCfg({}).fields,
       valueInCols: false,
     },
+    data,
   });
 
   beforeEach(() => {

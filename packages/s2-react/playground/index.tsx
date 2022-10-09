@@ -17,6 +17,8 @@ import {
   type InteractionOptions,
   DEFAULT_STYLE,
   type PivotDataSet,
+  type CellData,
+  type S2Options,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -107,10 +109,10 @@ const partDrillDown: PartDrillDown = {
       console.log('rowData: ', rowData);
 
       const drillDownData: RawData[] = [];
-      forEach(rowData, (data: RawData) => {
+      forEach(rowData, (data: CellData) => {
         const { number, sub_type: subType, type } = data.getOrigin();
-        const number0 = random(50, number);
-        const number1 = number - number0;
+        const number0 = random(50);
+        const number1 = (number as number) - number0;
         const dataItem0 = {
           ...meta.query,
           number: number0,
@@ -132,7 +134,7 @@ const partDrillDown: PartDrillDown = {
       console.log(drillDownData);
       resolve({
         drillField: field,
-        drillData: drillDownData,
+        drillData: drillDownData as Record<string, string | number>[],
       });
     }),
 };
@@ -943,7 +945,7 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg}
+              dataCfg={dataCfg as S2DataConfig}
               options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}

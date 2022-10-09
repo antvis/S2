@@ -1,3 +1,4 @@
+import { data as originData } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
@@ -18,6 +19,7 @@ describe('TableSheet Export Test', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
+        data: originData,
       }),
       assembleOptions({
         showSeriesNumber: true,
@@ -52,6 +54,7 @@ describe('TableSheet Export Test', () => {
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
+        data: originData,
       }),
       assembleOptions({
         showSeriesNumber: false,

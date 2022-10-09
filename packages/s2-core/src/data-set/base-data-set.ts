@@ -40,9 +40,6 @@ export abstract class BaseDataSet {
   // origin data
   public originData: RawData[];
 
-  // total data
-  public totalData: RawData[];
-
   // multidimensional array to indexes data
   public indexesData: RawData[][] | RawData[];
 
@@ -93,12 +90,11 @@ export abstract class BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, totalData, sortParams, filterParams } =
+    const { fields, meta, data, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
-    this.totalData = totalData;
     this.sortParams = sortParams;
     this.filterParams = filterParams;
     this.displayData = this.originData;

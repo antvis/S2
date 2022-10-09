@@ -90,7 +90,6 @@ describe('Spreadsheet Totals Tests', () => {
       (item.province === '浙江省' || item.city === '成都市') &&
       (item.type === '办公用品' || item.sub_type === '桌子');
     anotherDataCfg.data = anotherDataCfg.data.filter(filterCond);
-    anotherDataCfg.totalData = anotherDataCfg.totalData.filter(filterCond);
 
     spreadsheet.setDataCfg(anotherDataCfg);
     spreadsheet.setOptions({

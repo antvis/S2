@@ -3,6 +3,7 @@
  */
 import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
+import * as mockData from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { type S2DataConfig, Aggregation } from '@/common/interface';
@@ -249,7 +250,7 @@ describe('Pivot Dataset Total Test', () => {
         };
         dataCfg = assembleDataCfg({
           meta: [],
-          totalData: [],
+          data: mockData.data,
         });
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);
@@ -370,7 +371,6 @@ describe('Pivot Dataset Total Test', () => {
           dataCfg = assembleDataCfg({
             ...multiDataCfg,
             meta: [],
-            totalData: [],
           });
           dataSet = new PivotDataSet(mockSheet);
           dataSet.setDataCfg(dataCfg);
@@ -448,7 +448,7 @@ describe('Pivot Dataset Total Test', () => {
         };
         dataCfg = assembleDataCfg({
           meta: [],
-          totalData: [],
+          data: mockData.data,
         });
         dataSet = new PivotDataSet(mockSheet);
         dataSet.setDataCfg(dataCfg);

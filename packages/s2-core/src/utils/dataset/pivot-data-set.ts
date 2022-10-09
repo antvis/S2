@@ -181,7 +181,6 @@ export function getDataPath(params: DataPathParams) {
 interface Param extends BaseFields {
   originData: RawData[];
   indexesData: RawData[][] | RawData[];
-  totalData?: RawData[];
   sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
@@ -197,7 +196,6 @@ export function transformIndexesData(params: Param) {
     values,
     originData = [],
     indexesData = [],
-    totalData = [],
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
@@ -237,9 +235,8 @@ export function transformIndexesData(params: Param) {
     );
   };
 
-  const allData = originData.concat(totalData);
-  allData.forEach((data) => {
-    // 空数据没有意义，直接跳过，而不是在后面 getMultiData 再来 compact
+  originData.forEach((data) => {
+    // 空数据没有意义，直接跳过
     if (!data) {
       return;
     }
