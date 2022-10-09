@@ -311,7 +311,6 @@ export class TableFacet extends BaseFacet {
     }
     const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
     let currentCollIndex = 0;
-    const current1stLevelCollIndex = 0;
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];

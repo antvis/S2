@@ -117,7 +117,6 @@ export class TableColHeader extends ColHeader {
         return isTopLevelNode(cell);
       },
     );
-    // item = getNodeRoot(item);
     const { colCount, trailingColCount } = getFrozenLeafNodesCount(
       topLevelNodes,
       frozenColCount,
