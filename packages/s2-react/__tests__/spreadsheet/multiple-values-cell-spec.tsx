@@ -86,7 +86,6 @@ const getOptions = (): S2Options => {
     showSeriesNumber: true,
     frozenRowHeader: false,
     conditions: {
-      text: [],
       interval: [
         {
           field: 'price',
