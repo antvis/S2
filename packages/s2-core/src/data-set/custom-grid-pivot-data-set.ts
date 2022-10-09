@@ -1,4 +1,3 @@
-import { EXTRA_FIELD } from '../common/constant';
 import type { S2DataConfig } from '../common/interface';
 import { CustomTreePivotDataSet } from './custom-tree-pivot-data-set';
 
@@ -9,7 +8,6 @@ export class CustomGridPivotDataSet extends CustomTreePivotDataSet {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
-        rows: [...dataCfg.fields.rows, EXTRA_FIELD],
         valueInCols,
       },
     };
