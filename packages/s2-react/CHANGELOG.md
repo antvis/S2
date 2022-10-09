@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.28.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.27.0...@antv/s2-react-v1.28.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **sort:** 修复 tooltip 中排序菜单未记住上一次选中状态 close [#1716](https://github.com/antvis/S2/issues/1716) ([#1746](https://github.com/antvis/S2/issues/1746)) ([67e09c4](https://github.com/antvis/S2/commit/67e09c43b6508cbd141dc47fedbebfbc247cbb3f))
+
+
+### Features
+
+* **strategysheet:** 支持自定义衍生指标 ([#1762](https://github.com/antvis/S2/issues/1762)) ([97e5124](https://github.com/antvis/S2/commit/97e512404bd5d171c581a53c92d130ef15e9e907))
+* 初版编辑表 ([#1629](https://github.com/antvis/S2/issues/1629)) ([e7bd849](https://github.com/antvis/S2/commit/e7bd84935fe8dcabc8daf853953dc93680a9b448))
+
 # [@antv/s2-react-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.26.1...@antv/s2-react-v1.27.0) (2022-09-16)
 
 

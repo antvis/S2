@@ -38,7 +38,7 @@ import { drawInterval } from '../utils/g-mini-charts';
  * |interval      text| icon  |
  * |                  |       |
  * ----------------------------
- * There are four conditions(]{@see BaseCell.conditions}) to determine how to render
+ * There are four conditions({@see BaseCell.conditions}) to determine how to render
  * 1、background color
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
@@ -179,10 +179,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawConditionIntervalShape();
+    if (!this.shouldHideRowSubtotalData()) {
+      this.drawConditionIntervalShape();
+      this.drawTextShape();
+      this.drawConditionIconShapes();
+    }
     this.drawInteractiveBorderShape();
-    this.drawTextShape();
-    this.drawConditionIconShapes();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -218,6 +220,20 @@ export class DataCell extends BaseCell<ViewMeta> {
         position: getIconPositionCfg(iconCondition),
       };
     return iconCfg;
+  }
+
+  protected shouldHideRowSubtotalData() {
+    const { row = {} } = this.spreadsheet.options.totals ?? {};
+    const { rowIndex } = this.meta;
+    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
+    // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
+    // 不过能否查到实际的数据，都不应该展示
+    return (
+      this.spreadsheet.options.hierarchyType === 'tree' &&
+      !row.showSubTotals &&
+      isRowSubTotal
+    );
   }
 
   protected getFormattedFieldValue(): FormatResult {
@@ -281,6 +297,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
+    }
+
+    if (this.shouldHideRowSubtotalData()) {
+      return { backgroundColor, backgroundColorOpacity };
     }
 
     // get background condition fill color
