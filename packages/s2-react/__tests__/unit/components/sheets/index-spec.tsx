@@ -12,7 +12,6 @@ import type { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
-import { StrategyDataSet } from '../../../../src/components/sheets/strategy-sheet/custom-data-set';
 
 describe('<SheetComponent/> Tests', () => {
   let s2: SpreadSheet;
