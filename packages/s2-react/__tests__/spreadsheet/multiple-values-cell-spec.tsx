@@ -114,6 +114,7 @@ const getOptions = (): S2Options => {
           },
         },
       ],
+      text: [],
     },
     headerActionIcons: [
       {
@@ -237,7 +238,6 @@ describe('spreadsheet multiple values cell spec', () => {
 
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
-
     expect(icon).toHaveLength(1);
     expect(text).toHaveLength(0);
 
