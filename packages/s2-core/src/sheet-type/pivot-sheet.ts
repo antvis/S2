@@ -17,7 +17,7 @@ import type {
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
-import { PivotDataSet } from '../data-set';
+import { CustomTreePivotDataSet, PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';

@@ -19,7 +19,7 @@ const s2Options: S2Options = {
   height: 400,
   hierarchyType: 'tree',
   style: {
-    treeRowsWidth: 200,
+    treeRowsWidth: 400,
   },
 };
 
@@ -89,37 +89,37 @@ describe('SpreadSheet Custom Tree Tests', () => {
         description: 'a-1 描述',
         height: 30,
         label: '自定义节点 a-1',
-        width: 200,
+        width: 400,
       },
       {
         description: 'a-1-1 描述',
         height: 30,
         label: '自定义节点 a-1-1',
-        width: 200,
+        width: 400,
       },
       {
         description: '指标1描述',
         height: 30,
         label: '指标1',
-        width: 200,
+        width: 400,
       },
       {
         description: '指标2描述',
         height: 30,
         label: '指标2',
-        width: 200,
+        width: 400,
       },
       {
         description: 'a-1-2 描述',
         height: 30,
         label: '自定义节点 a-1-2',
-        width: 200,
+        width: 400,
       },
       {
         description: 'a-2 描述',
         height: 30,
         label: '自定义节点 a-2',
-        width: 200,
+        width: 400,
       },
     ]);
   });
@@ -211,7 +211,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
     const cornerCellLabels = getCornerCellLabels();
 
-    expect(cornerCellLabels).toEqual(['自定义节点 a-1/自定义节点 a-2', 'type']);
+    expect(cornerCellLabels).toEqual([
+      '自定义节点 a-1/自定义节点 a-2/数值',
+      'type',
+    ]);
   });
 
   test('should render custom corner text by meta formatter', () => {
@@ -232,7 +235,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.render();
     const cornerCellLabels = getCornerCellLabels();
 
-    expect(cornerCellLabels).toEqual(['文本1/文本2', 'type']);
+    expect(cornerCellLabels).toEqual(['文本1/文本2/数值', 'type']);
   });
 
   test('should render custom corner text by cornerText options', () => {

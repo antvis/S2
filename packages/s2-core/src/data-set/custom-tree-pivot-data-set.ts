@@ -39,8 +39,12 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     // 1、rows配置必须是空，需要额外添加 $$extra$$ 定位数据（标记指标的id）
     // 2、要有配置 fields.rowCustomTree(行头结构)
     // 3、values 不需要参与计算，默认就在行头结构中
+    const updatedDataCfg = super.processDataCfg(dataCfg);
+    const meta = this.processMeta(updatedDataCfg.meta);
+
     return {
       ...dataCfg,
+      meta,
       fields: {
         ...dataCfg.fields,
         rows: [EXTRA_FIELD],

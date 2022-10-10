@@ -81,7 +81,7 @@ export abstract class BaseDataSet {
     defaultValue?: string,
   ): string {
     const realField = isString(field) ? field : field?.key;
-    const realDefaultValue = isString(field) ? undefined : field?.title;
+    const realDefaultValue = isString(field) ? field : field?.title;
 
     return get(
       this.getFieldMeta(realField, this.meta),

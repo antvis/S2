@@ -75,6 +75,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   public static getTreeCornerText(options: BaseCornerOptions) {
     const { spreadsheet, facetCfg } = options;
     const { dataSet, rows } = facetCfg;
+
     const { cornerText: defaultCornerText } = spreadsheet.options;
 
     if (defaultCornerText) {

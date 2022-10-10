@@ -86,37 +86,37 @@ describe('SpreadSheet Custom Grid Tests', () => {
           description: 'a-1 描述',
           height: 90,
           label: '自定义节点 a-1',
-          width: 150,
+          width: 120,
         },
         {
           description: 'a-1-1 描述',
           height: 60,
           label: '自定义节点 a-1-1',
-          width: 150,
+          width: 120,
         },
         {
           description: '指标1描述',
           height: 30,
           label: '指标1',
-          width: 150,
+          width: 120,
         },
         {
           description: '指标2描述',
           height: 30,
           label: '指标2',
-          width: 150,
+          width: 120,
         },
         {
           description: 'a-1-2 描述',
           height: 30,
           label: '自定义节点 a-1-2',
-          width: 300,
+          width: 240,
         },
         {
           description: 'a-2 描述',
           height: 30,
           label: '自定义节点 a-2',
-          width: 450,
+          width: 360,
         },
       ]);
     });

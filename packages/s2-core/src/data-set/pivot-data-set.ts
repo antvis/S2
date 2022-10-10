@@ -268,6 +268,22 @@ export class PivotDataSet extends BaseDataSet {
         : uniq([...rows, EXTRA_FIELD]);
     }
 
+    const newMeta: Meta[] = this.processMeta(meta);
+
+    return {
+      data,
+      meta: newMeta,
+      fields: {
+        ...fields,
+        rows: newRows,
+        columns: newColumns,
+        values,
+      },
+      sortParams,
+    };
+  }
+
+  public processMeta(meta: Meta[]) {
     const valueFormatter = (value: string) => {
       const currentMeta = find(meta, ({ field }: Meta) => field === value);
       return get(currentMeta, 'name', value);
@@ -282,19 +298,8 @@ export class PivotDataSet extends BaseDataSet {
       name: extraFieldName,
       formatter: (value: string) => valueFormatter(value),
     };
-    const newMeta: Meta[] = [...meta, extraFieldMeta];
 
-    return {
-      data,
-      meta: newMeta,
-      fields: {
-        ...fields,
-        rows: newRows,
-        columns: newColumns,
-        values,
-      },
-      sortParams,
-    };
+    return [...meta, extraFieldMeta];
   }
 
   public getDimensionValues(field: string, query?: Query): string[] {
