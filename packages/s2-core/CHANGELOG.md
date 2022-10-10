@@ -1,3 +1,20 @@
+# [@antv/s2-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-v1.30.0...@antv/s2-v1.31.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* clipbardItem不存在时不报错 ([#1791](https://github.com/antvis/S2/issues/1791)) ([e7261ff](https://github.com/antvis/S2/commit/e7261ff1e8b44019fe75204a2adccade505c16d5))
+* **scroll:** 修复点击滚动条滑道区域表格渲染空白 close [#1764](https://github.com/antvis/S2/issues/1764) [#1780](https://github.com/antvis/S2/issues/1780) ([#1785](https://github.com/antvis/S2/issues/1785)) ([41166be](https://github.com/antvis/S2/commit/41166be08065ebdea3db7202eec141b850bcaae3))
+* **sort:** 修复 tooltip 中排序菜单未记住上一次选中状态 close [#1716](https://github.com/antvis/S2/issues/1716) ([#1746](https://github.com/antvis/S2/issues/1746)) ([67e09c4](https://github.com/antvis/S2/commit/67e09c43b6508cbd141dc47fedbebfbc247cbb3f))
+* table formatter with header selected ([#1786](https://github.com/antvis/S2/issues/1786)) ([71a7a3b](https://github.com/antvis/S2/commit/71a7a3b9c2f07b754c1aced0b82eea90249044c0))
+* 将依赖检查移动到外层 ([#1792](https://github.com/antvis/S2/issues/1792)) ([0a8e4ed](https://github.com/antvis/S2/commit/0a8e4edb55a81f0dfdcefbcb6ef38d5642ca179b))
+* 明细表奇数行背景色不生效修复 ([#1795](https://github.com/antvis/S2/issues/1795)) ([f1bd3ec](https://github.com/antvis/S2/commit/f1bd3ecdce0318bb11739f0f58bbec0755403994))
+
+
+### Features
+
+* 树状结构下, 行小计数据显示配置规则 ([#1797](https://github.com/antvis/S2/issues/1797)) ([68a397d](https://github.com/antvis/S2/commit/68a397d0c296399e35e2ab8362b789e771ffcb99))
+
 # [@antv/s2-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-v1.29.1...@antv/s2-v1.30.0) (2022-09-16)
 
 
