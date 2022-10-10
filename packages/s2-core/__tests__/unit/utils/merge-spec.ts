@@ -67,8 +67,10 @@ describe('merge test', () => {
   });
 
   test('should cancel valueInCols if custom rows is not empty by get safety data config', () => {
+    const rows = [{ key: '1', title: 'test' }];
     const fields: Partial<S2DataConfig['fields']> = {
-      rows: [{ key: '1', title: 'test' }],
+      rows,
+      values: ['1'],
       valueInCols: true,
     };
     expect(
@@ -79,9 +81,9 @@ describe('merge test', () => {
       data: [],
       fields: {
         ...fields,
-        rows: [],
+        rows,
         columns: [],
-        values: [],
+        values: ['1'],
         valueInCols: false,
       },
       meta: [],

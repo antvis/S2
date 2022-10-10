@@ -80,42 +80,43 @@ describe('SpreadSheet Custom Grid Tests', () => {
         height: node.height,
         description: node.extra.description,
       }));
+
       expect(rowNodes).toEqual([
         {
           description: 'a-1 描述',
           height: 90,
           label: '自定义节点 a-1',
-          width: 120,
+          width: 150,
         },
         {
           description: 'a-1-1 描述',
           height: 60,
           label: '自定义节点 a-1-1',
-          width: 120,
+          width: 150,
         },
         {
           description: '指标1描述',
           height: 30,
           label: '指标1',
-          width: 120,
+          width: 150,
         },
         {
           description: '指标2描述',
           height: 30,
           label: '指标2',
-          width: 120,
+          width: 150,
         },
         {
           description: 'a-1-2 描述',
           height: 30,
           label: '自定义节点 a-1-2',
-          width: 240,
+          width: 300,
         },
         {
           description: 'a-2 描述',
           height: 30,
           label: '自定义节点 a-2',
-          width: 360,
+          width: 450,
         },
       ]);
     });
@@ -410,6 +411,31 @@ describe('SpreadSheet Custom Grid Tests', () => {
           label: '层级2',
         },
       ]);
+    });
+
+    test('should hide columns', () => {
+      const hiddenColumns = [
+        'root[&]自定义节点 a-1[&]自定义节点 a-1-1[&]指标2',
+      ];
+
+      s2.interaction.hideColumns(hiddenColumns);
+
+      const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
+      const [measureDetail] = hiddenColumnsDetail;
+
+      expect(s2.options.interaction.hiddenColumnFields).toEqual(hiddenColumns);
+      expect(s2.getColumnNodes().map((node) => node.field)).toEqual([
+        'a-1',
+        'a-1-1',
+        'measure-1',
+        'a-1-2',
+        'a-2',
+      ]);
+      expect(hiddenColumnsDetail).toHaveLength(1);
+      expect(measureDetail.displaySiblingNode.prev.field).toEqual('measure-1');
+      expect(measureDetail.displaySiblingNode.next.field).toEqual('a-1-2');
+      expect(measureDetail.hideColumnNodes).toHaveLength(1);
+      expect(measureDetail.hideColumnNodes[0].field).toEqual('measure-2');
     });
   });
 });

@@ -49,6 +49,8 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        isValueInCols: jest.fn(),
+        isCustomFields: jest.fn(),
       };
     }),
   };

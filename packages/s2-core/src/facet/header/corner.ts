@@ -1,5 +1,5 @@
 import type { Group, Point } from '@antv/g-canvas';
-import { includes, isEmpty } from 'lodash';
+import { includes, isEmpty, isString } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
@@ -88,9 +88,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const drillFields = drillDownFieldInLevel.map((field) => field.drillField);
 
     // 角头过滤下钻的维度
-    const treeLabel = (rows as string[])
+    const treeLabel = rows
       .filter((value) => !includes(drillFields, value))
-      .map((key: string): string => dataSet.getFieldName(key))
+      .map((field): string => {
+        const isCustomField = !isString(field);
+        const key = isCustomField ? field.key : field;
+        const defaultValue = isCustomField ? field.title : '';
+        return dataSet.getFieldName(key, defaultValue);
+      })
       .join('/');
 
     if (treeLabel) {

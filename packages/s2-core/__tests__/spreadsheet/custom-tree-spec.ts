@@ -26,6 +26,13 @@ const s2Options: S2Options = {
 describe('SpreadSheet Custom Tree Tests', () => {
   let s2: SpreadSheet;
 
+  const getCornerCellLabels = () => {
+    return (s2.facet as any)
+      .getCornerHeader()
+      .getChildren()
+      .map((cell: HeaderCell) => cell.getActualText());
+  };
+
   const customRowDataCfg: S2DataConfig = {
     data: CustomGridData,
     meta: [
@@ -42,12 +49,8 @@ describe('SpreadSheet Custom Tree Tests', () => {
         name: '层级1',
       },
       {
-        field: 'a-1-1',
+        field: 'a-2',
         name: '层级2',
-      },
-      {
-        field: 'measure-1',
-        name: '层级3',
       },
     ],
     fields: {
@@ -198,40 +201,41 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expect(getSelectedSum(tooltipData.summaries)).toEqual(sum);
   });
 
-  test('should render custom format corner text', () => {
-    const cornerCellLabels = (s2.facet as any)
-      .getCornerHeader()
-      .getChildren()
-      .map((cell: HeaderCell) => {
-        const label = cell.getActualText();
-        const meta = cell.getMeta();
-        return {
-          label,
-          field: meta.field,
-        };
-      });
+  test('should render custom corner text by default title', () => {
+    s2.setDataCfg({
+      ...customRowDataCfg,
+      meta: [],
+    });
 
-    expect(cornerCellLabels).toEqual([
-      {
-        field: 'a-1',
-        label: '层级1',
-      },
-      {
-        field: 'a-1-1',
-        label: '层级2',
-      },
-      {
-        field: 'measure-1',
-        label: '层级3',
-      },
-      {
-        field: 'type',
-        label: '类型',
-      },
-    ]);
+    s2.render();
+
+    const cornerCellLabels = getCornerCellLabels();
+
+    expect(cornerCellLabels).toEqual(['自定义节点 a-1/自定义节点 a-2', 'type']);
   });
 
-  test('should render custom corner text', () => {
+  test('should render custom corner text by meta formatter', () => {
+    s2.setDataCfg({
+      ...customRowDataCfg,
+      meta: [
+        {
+          field: 'a-1',
+          name: '文本1',
+        },
+        {
+          field: 'a-2',
+          name: '文本2',
+        },
+      ],
+    });
+
+    s2.render();
+    const cornerCellLabels = getCornerCellLabels();
+
+    expect(cornerCellLabels).toEqual(['文本1/文本2', 'type']);
+  });
+
+  test('should render custom corner text by cornerText options', () => {
     s2.setOptions({
       cornerText: '测试',
     });

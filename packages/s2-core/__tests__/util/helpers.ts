@@ -92,6 +92,8 @@ export const createFakeSpreadSheet = () => {
   s2.isHierarchyTreeType = jest.fn();
   s2.getCanvasElement = () => s2.container.get('el');
   s2.isCustomFields = jest.fn(() => false);
+  s2.isCustomRowFields = jest.fn(() => false);
+  s2.isCustomColumnFields = jest.fn(() => false);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
