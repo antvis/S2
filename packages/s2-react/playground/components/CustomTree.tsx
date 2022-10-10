@@ -15,7 +15,7 @@ export const customTreeOptions: SheetComponentOptions = {
   width: 600,
   height: 480,
   hierarchyType: 'tree',
-  cornerText: '指标',
+  // cornerText: '指标',
 };
 
 export const CustomTree = () => {

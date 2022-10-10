@@ -4,6 +4,7 @@ import {
   get,
   identity,
   isNil,
+  isString,
   map,
   max,
   memoize,
@@ -29,7 +30,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import { CellTypes } from '../common';
+import { CellTypes, type CustomTreeNode } from '../common';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -64,16 +65,29 @@ export abstract class BaseDataSet {
   /**
    * 获取字段信息
    */
-  public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
-    return find(this.meta || meta, { field });
-  });
+  public getFieldMeta = memoize(
+    (field: string | CustomTreeNode, meta?: Meta[]): Meta => {
+      const realField = isString(field) ? field : field?.key;
+      return find(this.meta || meta, { field: realField });
+    },
+  );
 
   /**
    * 获取字段名称
    * @param field
    */
-  public getFieldName(field: string, defaultValue: string = field): string {
-    return get(this.getFieldMeta(field, this.meta), 'name', defaultValue);
+  public getFieldName(
+    field: string | CustomTreeNode,
+    defaultValue?: string,
+  ): string {
+    const realField = isString(field) ? field : field?.key;
+    const realDefaultValue = isString(field) ? undefined : field?.title;
+
+    return get(
+      this.getFieldMeta(realField, this.meta),
+      'name',
+      defaultValue ?? realDefaultValue,
+    );
   }
 
   /**
@@ -130,16 +144,18 @@ export abstract class BaseDataSet {
    * 获得字段格式方法
    * @param field
    */
-  public getFieldFormatter(field: string): Formatter {
-    return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
+  public getFieldFormatter(field: string | CustomTreeNode): Formatter {
+    const realField = isString(field) ? field : field?.key;
+    return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
   }
 
   /**
    * 获得字段描述
    * @param field
    */
-  public getFieldDescription(field: string): string {
-    return get(this.getFieldMeta(field, this.meta), 'description');
+  public getFieldDescription(field: string | CustomTreeNode): string {
+    const realField = isString(field) ? field : field?.key;
+    return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {

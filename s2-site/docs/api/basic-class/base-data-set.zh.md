@@ -18,10 +18,10 @@ s2.dataSet.xx()
 | indexesData | 多维索引数据 | () => [DataType[]](#datatype)  |
 | sortParams | 排序配置 | () => [SortParams](/zh/docs/api/general/S2DataConfig#sortparams) |
 | spreadsheet | 表格实例 | () => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |
-| getFieldMeta | 获取字段元数据信息 | (field: string, meta?: [Meta[]](/zh/docs/api/general/S2DataConfig#meta)) => [Meta](/zh/docs/api/general/S2DataConfig#meta) |
-| getFieldName | 获取字段名 | `(field: string, defaultValue?: string) => string` |
-| getFieldFormatter | 获取字段格式化函数 | (field: string) => [Formatter](#formatter) |
-| getFieldDescription | 获取字段描述 | `(field: string) => string` |
+| getFieldMeta | 获取字段元数据信息 | (field: string | CustomTreeNode, meta?: [Meta[]](/zh/docs/api/general/S2DataConfig#meta)) => [Meta](/zh/docs/api/general/S2DataConfig#meta) |
+| getFieldName | 获取字段名 | `(field: string | CustomTreeNode, defaultValue?: string) => string` |
+| getFieldFormatter | 获取字段格式化函数 | (field: string | CustomTreeNode) => [Formatter](#formatter) |
+| getFieldDescription | 获取字段描述 | `(field: string | CustomTreeNode) => string` |
 | setDataCfg | 设置数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig)) => void |
 | getDisplayDataSet | 获取当前显示的数据集 | () => [DataType[]](#datatype)  |
 | getDimensionValues | 获取维值 | (filed: string, query?: [DataType](#datatype) ) => string[] |

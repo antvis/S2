@@ -12,7 +12,7 @@ fetch(
       width: 600,
       height: 480,
       cornerText: '指标层级',
-      hierarchyType: 'customTree',
+      hierarchyType: 'tree',
       conditions: {
         text: [
           {

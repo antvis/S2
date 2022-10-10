@@ -219,13 +219,51 @@ describe('<SheetComponent/> Tests', () => {
         StrategySheetDataConfig,
       );
 
-      const rowNodes = s2.facet.layoutResult.rowNodes;
+      const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => ({
+        field: node.field,
+        title: node.title,
+      }));
       expect(rowNodes).toStrictEqual([
-        '0.25%',
-        '-82.61%',
-        '1073.92%',
-        '50.00%',
-        '9.78%',
+        {
+          field: 'custom-node-1',
+          label: '自定义节点A',
+        },
+        {
+          field: 'measure-a',
+          label: '指标A',
+        },
+        {
+          field: 'measure-b',
+          label: '指标B',
+        },
+        {
+          field: 'custom-node-2',
+          label: '自定义节点B',
+        },
+        {
+          field: 'measure-c',
+          label: '指标C',
+        },
+        {
+          field: 'measure-d',
+          label: '指标D',
+        },
+        {
+          field: 'custom-node-5',
+          label: '自定义节点E',
+        },
+        {
+          field: 'measure-e',
+          label: '指标E',
+        },
+        {
+          field: 'custom-node-3',
+          label: '自定义节点C',
+        },
+        {
+          field: 'custom-node-4',
+          label: '自定义节点D',
+        },
       ]);
     });
   });

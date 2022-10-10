@@ -759,7 +759,7 @@ export class PivotFacet extends BaseFacet {
 
     // 3. 然后是计算 (+ icon province/city/level)
     const treeHeaderLabel = rows
-      .map((key) => dataSet.getFieldName(key as string))
+      .map((field) => dataSet.getFieldName(field))
       .join('/');
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell;

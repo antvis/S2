@@ -14,7 +14,6 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
-import type { PanelBBox } from '@/facet/bbox/panelBBox';
 import type { BaseFacet } from '@/facet';
 
 export const parseCSV = (csv: string, header?: string[]) => {
@@ -188,6 +187,9 @@ export const createPivotSheet = (
             ? dataConfig.data.concat(dataConfig.totalData as any)
             : dataConfig.data,
         },
-    s2Options,
+    {
+      ...s2Options,
+      debug: false,
+    },
   );
 };

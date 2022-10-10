@@ -90,12 +90,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     // 角头过滤下钻的维度
     const treeLabel = rows
       .filter((value) => !includes(drillFields, value))
-      .map((field): string => {
-        const isCustomField = !isString(field);
-        const key = isCustomField ? field.key : field;
-        const defaultValue = isCustomField ? field.title : '';
-        return dataSet.getFieldName(key, defaultValue);
-      })
+      .map((field): string => dataSet.getFieldName(field))
       .join('/');
 
     if (treeLabel) {

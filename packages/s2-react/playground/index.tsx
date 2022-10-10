@@ -972,7 +972,9 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            getSpreadSheet={(s2) => getSpreadSheet(s2)}
+            getSpreadSheet={(s2) => {
+              getSpreadSheet(s2);
+            }}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
