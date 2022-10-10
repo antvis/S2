@@ -23,6 +23,7 @@ import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
@@ -253,6 +254,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
