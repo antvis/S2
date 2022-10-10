@@ -58,9 +58,9 @@ import {
 } from './config';
 import { partDrillDown } from './drill-down';
 import './index.less';
-import { ResizeConfig } from './Resize';
-import { CustomGrid } from './CustomGrid';
-import { CustomTree } from './CustomTree';
+import { ResizeConfig } from './components/ResizeConfig';
+import { CustomGrid } from './components/CustomGrid';
+import { CustomTree } from './components/CustomTree';
 
 const { TabPane } = Tabs;
 

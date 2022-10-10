@@ -1,9 +1,9 @@
 import type { S2DataConfig } from '@antv/s2';
 import React from 'react';
-import { SheetComponent, type SheetComponentOptions } from '../src';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { customTreeData } from '../__tests__/data/data-custom-trees';
-import { meta } from '../__tests__/data/mock-dataset.json';
+import { SheetComponent, type SheetComponentOptions } from '../../src';
+import { customTreeFields } from '../../__tests__/data/custom-tree-fields';
+import { customTreeData } from '../../__tests__/data/data-custom-trees';
+import { meta } from '../../__tests__/data/mock-dataset.json';
 
 export const customTreeDataCfg: S2DataConfig = {
   meta,

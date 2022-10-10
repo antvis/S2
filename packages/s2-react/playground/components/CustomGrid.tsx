@@ -1,10 +1,10 @@
 import { Radio, Space } from 'antd';
 import React from 'react';
-import { SheetComponent, type SheetComponentOptions } from '../src';
+import { SheetComponent, type SheetComponentOptions } from '../../src';
 import {
   pivotSheetCustomColGridDataCfg,
   pivotSheetCustomRowGridDataCfg,
-} from './config';
+} from '../config';
 
 export const customRowGridOptions: SheetComponentOptions = {
   width: 1000,
