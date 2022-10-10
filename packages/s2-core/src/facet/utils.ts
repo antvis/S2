@@ -505,3 +505,16 @@ export const getLeafColumnsWithKey = (columns: Columns): string[] => {
     return column.key;
   });
 };
+
+/**
+ * 获取一个 node 的最左叶子节点，找不到则返回自身
+ * @param node
+ * @returns {Node}
+ */
+export const getLeftLeafNode = (node: Node) => {
+  const firstNode = node.children[0];
+  if (!firstNode) {
+    return node;
+  }
+  return firstNode.isLeaf ? firstNode : getLeftLeafNode(firstNode);
+};
