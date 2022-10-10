@@ -81,12 +81,6 @@ describe('<SheetComponent/> Tests', () => {
       });
     };
 
-    test('should get strategy data set', () => {
-      renderStrategySheet();
-
-      expect(s2.dataSet).toBeInstanceOf(StrategyDataSet);
-    });
-
     test('should overwrite strategy sheet tooltip data cell content', () => {
       const content = 'custom';
 
@@ -186,29 +180,37 @@ describe('<SheetComponent/> Tests', () => {
       ]);
     });
 
-    test('should format corner date field', () => {
-      renderStrategySheet(
-        {
-          width: 600,
-          height: 600,
-        },
-        {
-          ...StrategySheetDataConfig,
-          meta: [
-            {
-              field: 'date',
-              name: '日期',
-            },
-          ],
-        },
-      );
+    test.each([{ isCustomCornerText: true }, { isCustomCornerText: false }])(
+      'should format corner date field',
+      ({ isCustomCornerText }) => {
+        renderStrategySheet(
+          {
+            width: 600,
+            height: 600,
+            cornerText: isCustomCornerText ? '测试' : undefined,
+          },
+          {
+            ...StrategySheetDataConfig,
+            meta: [
+              {
+                field: 'date',
+                name: '日期',
+              },
+            ],
+          },
+        );
 
-      const textList = s2.facet.cornerHeader
-        .getChildren()
-        .map((element) => (element as any).actualText);
+        const textList = s2.facet.cornerHeader
+          .getChildren()
+          .map((element) => (element as any).actualText);
 
-      expect(textList).toEqual(['数值', '日期']);
-    });
+        const cornerText = isCustomCornerText
+          ? '测试'
+          : '自定义节点A/指标E/数值';
+
+        expect(textList).toEqual([cornerText, '日期']);
+      },
+    );
 
     test('should render correctly row nodes', () => {
       renderStrategySheet(
@@ -221,7 +223,7 @@ describe('<SheetComponent/> Tests', () => {
 
       const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => ({
         field: node.field,
-        title: node.title,
+        label: node.label,
       }));
       expect(rowNodes).toStrictEqual([
         {
