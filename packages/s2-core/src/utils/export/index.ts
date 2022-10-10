@@ -8,6 +8,7 @@ import {
   isFunction,
   isNil,
   isObject,
+  isString,
   last,
   max,
   size,
@@ -480,7 +481,8 @@ export const copyData = (
         }
         // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
 
-        const copiedRows = rows.slice(0, maxRowDepth);
+        const withoutCustomFieldRows = rows.filter((field) => isString(field));
+        const copiedRows = withoutCustomFieldRows.slice(0, maxRowDepth);
         // 在趋势分析表中，行头只有一个 extra的维度，但是有多个层级
         if (copiedRows.length < maxRowDepth) {
           copiedRows.unshift(

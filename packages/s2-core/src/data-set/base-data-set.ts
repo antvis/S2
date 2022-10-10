@@ -67,7 +67,8 @@ export abstract class BaseDataSet {
    */
   public getFieldMeta = memoize(
     (field: string | CustomTreeNode, meta?: Meta[]): Meta => {
-      const realField = isString(field) ? field : field?.key;
+      const realField =
+        (isString(field) ? field : field?.key) || (field as string);
       return find(this.meta || meta, { field: realField });
     },
   );
@@ -80,8 +81,9 @@ export abstract class BaseDataSet {
     field: string | CustomTreeNode,
     defaultValue?: string,
   ): string {
-    const realField = isString(field) ? field : field?.key;
-    const realDefaultValue = isString(field) ? field : field?.title;
+    const realField = (isString(field) ? field : field?.key) || field;
+    const realDefaultValue =
+      (isString(field) ? field : field?.title) || (field as string);
 
     return get(
       this.getFieldMeta(realField, this.meta),
