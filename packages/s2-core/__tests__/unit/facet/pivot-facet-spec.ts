@@ -109,8 +109,9 @@ describe('Pivot Mode Facet Test', () => {
   s2.dataSet = dataSet;
   s2.interaction = new RootInteraction(s2);
   s2.isValueInCols = jest.fn();
-  s2.isCustomFields = jest.fn();
+  s2.isCustomHeaderFields = jest.fn();
   s2.isCustomColumnFields = jest.fn();
+  s2.isCustomRowFields = jest.fn();
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,

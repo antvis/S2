@@ -1,4 +1,4 @@
-import { Radio, Space } from 'antd';
+import { Radio, Space, Switch } from 'antd';
 import React from 'react';
 import { SheetComponent, type SheetComponentOptions } from '../../src';
 import {
@@ -22,11 +22,18 @@ export const CustomGrid = () => {
   const [customType, setCustomType] = React.useState<CustomType>(
     CustomType.Col,
   );
+  const [hierarchyType, setHierarchyType] =
+    React.useState<SheetComponentOptions['hierarchyType']>('grid');
 
   const dataCfg =
     customType === CustomType.Row
       ? pivotSheetCustomRowGridDataCfg
       : pivotSheetCustomColGridDataCfg;
+
+  const options: SheetComponentOptions = {
+    ...customRowGridOptions,
+    hierarchyType,
+  };
 
   return (
     <>
@@ -41,9 +48,17 @@ export const CustomGrid = () => {
           <Radio.Button value={CustomType.Col}>自定义列头</Radio.Button>
           <Radio.Button value={CustomType.All}>自定义行头和列头</Radio.Button>
         </Radio.Group>
+        <Switch
+          checkedChildren="树状模式"
+          unCheckedChildren="平铺模式"
+          checked={hierarchyType === 'tree'}
+          onChange={(checked) => {
+            setHierarchyType(checked ? 'tree' : 'grid');
+          }}
+        />
       </Space>
 
-      <SheetComponent dataCfg={dataCfg} options={customRowGridOptions} />
+      <SheetComponent dataCfg={dataCfg} options={options} />
     </>
   );
 };

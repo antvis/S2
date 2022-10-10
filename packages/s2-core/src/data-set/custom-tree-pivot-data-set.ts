@@ -43,7 +43,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
-        rows: [...dataCfg.fields.rows, EXTRA_FIELD],
+        rows: [EXTRA_FIELD],
         valueInCols: false,
       },
     };

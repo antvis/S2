@@ -24,7 +24,7 @@ import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
-  public isCustomFields(
+  public isCustomHeaderFields(
     fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
   ): boolean {
     const { fields } = this.dataCfg;
@@ -40,15 +40,15 @@ export class PivotSheet extends SpreadSheet {
   }
 
   public isCustomRowFields(): boolean {
-    return this.isCustomFields('rows');
+    return this.isCustomHeaderFields('rows');
   }
 
   public isCustomColumnFields(): boolean {
-    return this.isCustomFields('columns');
+    return this.isCustomHeaderFields('columns');
   }
 
-  public getDataSet(options: S2Options) {
-    const { dataSet } = options;
+  public getDataSet() {
+    const { dataSet } = this.options;
     if (dataSet) {
       return dataSet(this);
     }
@@ -179,19 +179,19 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
-    const ifHideMeasureColumn = this.options.style.colCfg.hideMeasureColumn;
-    const sortFieldId = this.isValueInCols()
-      ? last(rows as string[])
-      : last(columns as string[]);
+    const { hideMeasureColumn } = this.options.style.colCfg;
+    const sortField = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
     const sortQuery = clone(query);
+
     let sortValue = value;
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
-    if (ifHideMeasureColumn && this.isValueInCols()) {
+    if (hideMeasureColumn && this.isValueInCols()) {
       sortValue = this.dataSet.fields.values[0];
       sortQuery[EXTRA_FIELD] = sortValue;
     }
 
+    const sortFieldId = isString(sortField) ? sortField : sortField.key;
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,
@@ -199,7 +199,7 @@ export class PivotSheet extends SpreadSheet {
       query: sortQuery,
     };
     const prevSortParams = this.dataCfg.sortParams.filter(
-      (item) => item?.sortFieldId !== sortFieldId,
+      (item) => item?.sortFieldId !== sortField,
     );
 
     this.updateSortMethodMap(meta.id, sortMethod, true);

@@ -1,12 +1,12 @@
 import {
-  CustomTreePivotDataSet,
+  CustomGridPivotDataSet,
   type S2DataConfig,
   EXTRA_FIELD,
   type Meta,
   i18n,
 } from '@antv/s2';
 
-export class StrategyDataSet extends CustomTreePivotDataSet {
+export class StrategyDataSet extends CustomGridPivotDataSet {
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const updatedDataCfg = super.processDataCfg(dataCfg);
 

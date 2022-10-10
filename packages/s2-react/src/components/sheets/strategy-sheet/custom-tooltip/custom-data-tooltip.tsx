@@ -25,7 +25,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   const { spreadsheet } = meta;
   const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const rowDescription = spreadsheet.dataSet.getCustomRowFieldDescription(cell);
+  const rowDescription = spreadsheet.dataSet.getCustomFieldDescription(cell);
   const defaultRowName = spreadsheet.dataSet.getCustomRowFieldName(cell);
   const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
   const rowName = customLabel ?? defaultRowName;

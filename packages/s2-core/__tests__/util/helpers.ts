@@ -78,7 +78,7 @@ export const createFakeSpreadSheet = () => {
   } as BaseTooltip;
   s2.dataSet = {
     getFieldDescription: jest.fn(),
-    getCustomRowFieldDescription: jest.fn(),
+    getCustomFieldDescription: jest.fn(),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();
@@ -91,7 +91,7 @@ export const createFakeSpreadSheet = () => {
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
   s2.getCanvasElement = () => s2.container.get('el');
-  s2.isCustomFields = jest.fn(() => false);
+  s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
 

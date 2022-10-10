@@ -35,12 +35,12 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  public isCustomFields() {
+  public isCustomHeaderFields() {
     return false;
   }
 
-  public getDataSet(options: S2Options) {
-    const { dataSet } = options;
+  public getDataSet() {
+    const { dataSet } = this.options;
     if (dataSet) {
       return dataSet(this);
     }

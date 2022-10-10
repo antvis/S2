@@ -149,7 +149,7 @@ export abstract class SpreadSheet extends EE {
     super();
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
-    this.dataSet = this.getDataSet(this.options);
+    this.dataSet = this.getDataSet();
 
     this.setDebug();
     this.initTooltip();
@@ -237,14 +237,14 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract bindEvents(): void;
 
-  public abstract getDataSet(options: S2Options): BaseDataSet;
+  public abstract getDataSet(): BaseDataSet;
 
   /**
    * Check if is pivot mode
    */
   public abstract isPivotMode(): boolean;
 
-  public abstract isCustomFields(
+  public abstract isCustomHeaderFields(
     fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
   ): boolean;
 
@@ -391,8 +391,9 @@ export abstract class SpreadSheet extends EE {
     const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
       options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+
     if (reBuildDataSet) {
-      this.dataSet = this.getDataSet(this.options);
+      this.dataSet = this.getDataSet();
     }
     if (reloadData) {
       this.clearDrillDownData('', true);

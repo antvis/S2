@@ -9,7 +9,7 @@ import { createFakeSpreadSheet } from '../../../util/helpers';
 describe('Corner Tests', () => {
   let s2: SpreadSheet;
 
-  function createCornerNode(s2: SpreadSheet) {
+  function createCornerNode() {
     const cornerNodes = CornerHeader.getCornerNodes({
       position: {
         x: 0,
@@ -38,13 +38,13 @@ describe('Corner Tests', () => {
   });
 
   test('should get default series number text', () => {
-    const cornerNode = createCornerNode(s2);
+    const cornerNode = createCornerNode();
     expect(cornerNode.label).toEqual('序号');
   });
 
   test('should get custom series number text', () => {
     s2.options.seriesNumberText = 'test';
-    const cornerNode = createCornerNode(s2);
+    const cornerNode = createCornerNode();
     expect(cornerNode.label).toEqual('test');
   });
 });

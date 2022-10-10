@@ -50,7 +50,7 @@ jest.mock('@/sheet-type', () => {
           clearHoverTimer: jest.fn(),
         },
         isValueInCols: jest.fn(),
-        isCustomFields: jest.fn(),
+        isCustomHeaderFields: jest.fn(),
       };
     }),
   };

@@ -155,7 +155,7 @@ export const buildHeaderHierarchy = (
   const rootNode = Node.rootNode();
   const hierarchy = new Hierarchy();
   const fields = isRowHeader ? rows : columns;
-  const isCustomTreeFields = spreadsheet.isCustomFields(
+  const isCustomTreeFields = spreadsheet.isCustomHeaderFields(
     isRowHeader ? 'rows' : 'columns',
   );
 

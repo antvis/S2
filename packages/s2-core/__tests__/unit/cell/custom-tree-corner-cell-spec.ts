@@ -43,7 +43,7 @@ describe('test for corner text', () => {
       mockSheet,
       'facet.cornerBBox.facet.cornerHeader.cfg.children',
     ).filter((v) => v instanceof CornerCell);
-    expect(cornerCells[0].actualText).toEqual('指标');
+    expect(cornerCells[0].actualText).toEqual('自定义节点A/指标E');
     expect(cornerCells[1].actualText).toEqual('type');
   });
 

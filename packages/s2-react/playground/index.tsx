@@ -963,7 +963,7 @@ function MainLayout() {
         <TabPane tab="自定义目录树" key="customTree">
           <CustomTree />
         </TabPane>
-        <TabPane tab="自定义行头" key="customGrid">
+        <TabPane tab="自定义行列头" key="customGrid">
           <CustomGrid />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">

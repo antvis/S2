@@ -3,6 +3,7 @@ import { getContainer } from 'tests/util/helpers';
 import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep, get, last } from 'lodash';
+import { PivotDataSet } from '../../../src/data-set';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -620,23 +621,13 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should get normal header fields status', () => {
+    expect(s2.isCustomHeaderFields()).toBeFalsy();
     expect(s2.isCustomRowFields()).toBeFalsy();
     expect(s2.isCustomColumnFields()).toBeFalsy();
   });
 
-  test('should get custom header fields status', () => {
-    const newDataCfg: S2DataConfig = {
-      fields: {
-        rows: [{ key: '1', title: '1' }],
-        columns: [{ key: '2', title: '2' }],
-      },
-      data: [],
-    };
-    s2.setDataCfg(newDataCfg);
-
-    expect(s2.isCustomFields()).toBeTruthy();
-    expect(s2.isCustomRowFields()).toBeTruthy();
-    expect(s2.isCustomColumnFields()).toBeTruthy();
+  test('should get data set', () => {
+    expect(s2.getDataSet()).toBeInstanceOf(PivotDataSet);
   });
 
   test('should rebuild hidden columns detail by status', () => {
@@ -1156,5 +1147,21 @@ describe('PivotSheet Tests', () => {
     s2.destroy();
 
     expect(onDestroy).toHaveBeenCalledTimes(1);
+  });
+
+  test('should get custom header fields status', () => {
+    const newDataCfg: S2DataConfig = {
+      fields: {
+        rows: [{ key: '1', title: '1' }],
+        columns: [{ key: '2', title: '2' }],
+      },
+      data: [],
+    };
+    s2.setDataCfg(newDataCfg);
+    s2.render();
+
+    expect(s2.isCustomHeaderFields()).toBeTruthy();
+    expect(s2.isCustomRowFields()).toBeTruthy();
+    expect(s2.isCustomColumnFields()).toBeTruthy();
   });
 });

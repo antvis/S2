@@ -416,7 +416,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          (heightByField?.[currentNode.id] ?? cellCfg.height) +
+          (heightByField?.[currentNode.id] ?? cellCfg?.height) +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;
@@ -465,6 +465,9 @@ export class PivotFacet extends BaseFacet {
    * -------------------------------------------------
    */
   private adjustRowLeafNodesWidth(rowLeafNodes: Node[], lastLevelNode: Node) {
+    if (!this.spreadsheet.isCustomRowFields()) {
+      return;
+    }
     this.adjustLeafNodesSize('width')(rowLeafNodes, lastLevelNode);
   }
 
@@ -479,6 +482,9 @@ export class PivotFacet extends BaseFacet {
    * ----------------------------------------------------------------------
    */
   private adjustColLeafNodesHeight(colLeafNodes: Node[], lastLevelNode: Node) {
+    if (!this.spreadsheet.isCustomColumnFields()) {
+      return;
+    }
     this.adjustLeafNodesSize('height')(colLeafNodes, lastLevelNode);
   }
 

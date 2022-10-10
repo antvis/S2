@@ -6,14 +6,13 @@ import {
   type S2DataConfig,
   customMerge,
   CellTypes,
-  S2Event,
-  S2CellType,
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
+import { StrategyDataSet } from '../../../../src/components/sheets/strategy-sheet/custom-data-set';
 
 describe('<SheetComponent/> Tests', () => {
   let s2: SpreadSheet;
@@ -29,7 +28,15 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   describe('Render Tests', () => {
-    test.each(['pivot', 'table', 'strategy', 'gridAnalysis'] as SheetType[])(
+    const sheetTypes: SheetType[] = [
+      'pivot',
+      'table',
+      'strategy',
+      'gridAnalysis',
+      'editable',
+    ];
+
+    test.each(sheetTypes)(
       'should render successfully for %s sheet',
       (sheetType) => {
         function render() {
@@ -50,7 +57,7 @@ describe('<SheetComponent/> Tests', () => {
 
   describe('<StrategySheet/> Tests', () => {
     const renderStrategySheet = (
-      options: SheetComponentsProps['options'] | null,
+      options?: SheetComponentsProps['options'] | null,
       dataCfg?: S2DataConfig,
     ) => {
       act(() => {
@@ -73,6 +80,12 @@ describe('<SheetComponent/> Tests', () => {
         );
       });
     };
+
+    test('should get strategy data set', () => {
+      renderStrategySheet();
+
+      expect(s2.dataSet).toBeInstanceOf(StrategyDataSet);
+    });
 
     test('should overwrite strategy sheet tooltip data cell content', () => {
       const content = 'custom';
@@ -195,6 +208,25 @@ describe('<SheetComponent/> Tests', () => {
         .map((element) => (element as any).actualText);
 
       expect(textList).toEqual(['数值', '日期']);
+    });
+
+    test('should render correctly row nodes', () => {
+      renderStrategySheet(
+        {
+          width: 6000,
+          height: 600,
+        },
+        StrategySheetDataConfig,
+      );
+
+      const rowNodes = s2.facet.layoutResult.rowNodes;
+      expect(rowNodes).toStrictEqual([
+        '0.25%',
+        '-82.61%',
+        '1073.92%',
+        '50.00%',
+        '9.78%',
+      ]);
     });
   });
 });

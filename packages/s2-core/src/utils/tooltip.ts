@@ -509,9 +509,9 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   });
 
   mapKeys(summary, (selected, field) => {
-    const name =
-      spreadsheet?.dataSet.getCustomRowFieldName(targetCell) ||
-      getSummaryName(spreadsheet, field, options?.isTotals);
+    const name = spreadsheet.isCustomHeaderFields()
+      ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell)
+      : getSummaryName(spreadsheet, field, options?.isTotals);
 
     let value: number | string;
 
@@ -537,7 +537,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     });
   });
 
-  if (spreadsheet.isCustomFields()) {
+  if (spreadsheet.isCustomHeaderFields()) {
     return getCustomFieldsSummaries(summaries);
   }
 
@@ -552,8 +552,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   let headInfo = null;
   let details = null;
 
-  const description =
-    spreadsheet.dataSet.getCustomRowFieldDescription(targetCell);
+  const description = spreadsheet.dataSet.getCustomFieldDescription(targetCell);
 
   const firstCellInfo = (cellInfos[0] || {}) as ViewMetaData;
 

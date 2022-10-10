@@ -102,7 +102,7 @@ export abstract class BaseDataSet {
    * 获取自定义单元格字段描述
    * @param cell
    */
-  public getCustomRowFieldDescription = (
+  public getCustomFieldDescription = (
     cell: S2CellType<ViewMeta | Node>,
   ): string => {
     if (!cell) {
@@ -114,16 +114,12 @@ export abstract class BaseDataSet {
       return;
     }
 
-    // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格描述
+    // 数值单元格
     if (cell.cellType === CellTypes.DATA_CELL) {
-      const row = find(this.spreadsheet.getRowNodes(), {
-        rowIndex: meta?.rowIndex,
+      const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
+        field: meta.field || meta.value || meta.valueField,
       });
-      return (
-        row?.description ||
-        row?.extra?.description ||
-        this.getFieldDescription(row?.field)
-      );
+      return this.getFieldDescription(currentMeta?.field);
     }
 
     // 行/列头单元格, 取节点本身描述

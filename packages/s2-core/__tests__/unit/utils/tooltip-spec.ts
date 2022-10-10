@@ -569,7 +569,7 @@ describe('Tooltip Utils Tests', () => {
     );
 
     test.each([{ isTotalCell: true }, { isTotalCell: false }])(
-      'should get %o row cell summary data info',
+      'should get row cell summary data info for %o',
       ({ isTotalCell }) => {
         s2 = createTotalsPivotSheet({
           row: rowTotalOptions,
@@ -610,6 +610,31 @@ describe('Tooltip Utils Tests', () => {
               ],
             },
           ],
+        });
+
+        s2.destroy();
+      },
+    );
+
+    test.each([{ isTotalCell: true }, { isTotalCell: false }])(
+      'should get col cell summary data info for %o',
+      ({ isTotalCell }) => {
+        s2 = createTotalsPivotSheet({
+          col: colTotalOptions,
+        });
+        s2.render();
+
+        const colCell = s2.interaction.getAllColHeaderCells().find((cell) => {
+          const meta = cell.getMeta();
+          return isTotalCell ? meta.isTotals : !meta.isTotals;
+        });
+
+        const tooltipData = getMockTooltipData(colCell);
+
+        expect(tooltipData).toStrictEqual({
+          ...defaultTooltipData,
+          description: isTotalCell ? undefined : '类别说明。。',
+          summaries: expect.anything(),
         });
 
         s2.destroy();

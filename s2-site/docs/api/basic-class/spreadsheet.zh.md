@@ -20,10 +20,10 @@ s2.xx()
 | options | 表格配置 | [S2Options](/zh/docs/api/general/S2Options) |
 | dataSet | 表格数据集 （字段，数据，排序） | [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |
 | facet | 当前可视渲染区域 | [BaseFacet](/zh/docs/api/basic-class/base-facet) |
-| tooltip | tooltip | [BaseTooltip](/zh/docs/api/basic-class/base-tooltip) |
+| tooltip | 提示信息 | [BaseTooltip](/zh/docs/api/basic-class/base-tooltip) |
 | container | g-canvas 实例 | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |
 | backgroundGroup | 背景颜色区域 group | [Group](https://g.antv.vision/zh/docs/api/group) |
-| foregroundGroup | 背景颜色区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
+| foregroundGroup | 前景颜色区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | panelGroup | 可视范围单元格区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | panelScrollGroup | 可视范围单元格滚动区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | frozenRowGroup | 行头冻结区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
@@ -36,9 +36,12 @@ s2.xx()
 | hdAdapter | 高清适配 | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |
 | on | 事件订阅 | (event: [S2Event](/zh/docs/manual/advanced/interaction/basic), listener: () => void) => void |
 | emit | 事件发布 | (event: [S2Event](/zh/docs/manual/advanced/interaction/basic), ...args: any[]) => void |
-| getDataSet | 获取数据集 | (options: [S2Options](/zh/docs/api/general/S2Options)) => [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |
+| getDataSet | 获取数据集 | () => [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |
 | isPivotMode | 是否是透视表 | `() => boolean` |
 | isHierarchyTreeType | 是否是树状结构 | `() => boolean` |
+| isCustomHeaderFields | 是否是自定义行/列头 | `(type: 'rows' | 'columns') => boolean` |
+| isCustomRowFields | 是否是自定义行头 | `() => boolean` |
+| isCustomColumnsFields | 是否是自定义列头 | `() => boolean` |
 | isScrollContainsRowHeader | 是否是包含行头的滚动 | `() => boolean` |
 | isFrozenRowHeader | 是否是冻结行头状态 | `() => boolean` |
 | isTableMode | 是否是明细表 | `() => boolean` |
