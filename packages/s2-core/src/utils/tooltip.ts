@@ -532,7 +532,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
     summaries.push({
       selectedData: selected,
-      name,
+      name: name || '',
       value,
     });
   });
