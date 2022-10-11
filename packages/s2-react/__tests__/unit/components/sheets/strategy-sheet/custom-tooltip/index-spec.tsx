@@ -35,20 +35,10 @@ describe('StrategySheet Tooltip Tests', () => {
     const originalValues = [1.1, 0.02, 0.03];
 
     jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => ({
+      ...mockCellInfo.mockCellMeta,
       fieldValue: {
         values: ['1222', '2%', '3%'],
         originalValues,
-      },
-      spreadsheet: {
-        options: {
-          style: {},
-        },
-        getRowNodes: jest.fn(),
-        getColumnNodes: jest.fn(),
-        dataSet: {
-          getFieldDescription: jest.fn(),
-          getFieldName: jest.fn(),
-        },
       },
     }));
 
