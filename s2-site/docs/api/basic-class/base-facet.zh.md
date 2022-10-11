@@ -6,7 +6,7 @@ order: 7
 功能描述：当前可视渲染区域。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/base-facet.ts)
 
 ```ts
-s2.facet.xx()
+s2.facet
 ```
 
 | 参数 | 说明 | 类型 |

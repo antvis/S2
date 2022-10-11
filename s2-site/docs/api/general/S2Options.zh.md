@@ -10,7 +10,7 @@ order: 1
 | width | `number` |    | 600  | 表格宽度 |
 | height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
-| hierarchyType | `grid` \| `tree` \| `customTree` |    | `grid` | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 customTree: 自定义树状结构 |
+| hierarchyType | `grid` \| `tree` |    | `grid` | 行头的展示方式，grid：平铺网格结构， tree： 树状结构|
 | conditions | [Conditions](#conditions) |  |    | 条件模式配置 |
 | totals | [Totals](#totals) |  |    | 小计总计配置 |
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 配置 |
@@ -154,10 +154,11 @@ MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string,
 ```ts
 export interface MultiData {
   label?: string;
-  values: (string | number)[][];
+  values: SimpleData[][];
+  originalValues?: SimpleData[][]
 }
 
-export type SimpleDataItem = string | number;
+export type SimpleData = string | number;
 
 export type DataItem = SimpleDataItem | MultiData;
 ```
@@ -172,7 +173,7 @@ export type DataItem = SimpleDataItem | MultiData;
 | rowsHierarchy |   行的结构信息 | [Hierarchy](#hierarchy) |  | ✓ |
 | rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
 | colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
-| getViewMeta |  获取交叉出 [x,y] 对应坐标的信息 | `(rowIndex: number, colIndex: number) => ViewMeta` | | |
+| getViewMeta |  获取交叉出 [x,y] 对应坐标的信息 | (rowIndex: `number`, colIndex: `number`) => [ViewMeta](#viewmeta) | | |
 | spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | |  |
 
 ## DataSet

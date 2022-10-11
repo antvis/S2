@@ -7,8 +7,6 @@ order: 1
 
 ```ts
 const s2 = new PivotSheet()
-
-s2.xx()
 ```
 
 | 参数 | 说明 | 类型 |

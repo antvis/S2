@@ -53,10 +53,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
         name: '层级2',
       },
     ],
-    fields: {
-      rows: customRowGridSimpleFields.rows,
-      columns: ['type', 'sub_type'],
-    },
+    fields: customRowGridSimpleFields,
   };
 
   beforeEach(() => {

@@ -8,11 +8,18 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
+    const s2DataCfg = {
+      ...dataCfg,
+      fields: {
+        ...dataCfg.fields,
+        rows: dataCfg.customTreeItems,
+      },
+    };
+
     const s2Options = {
       width: 600,
       height: 480,
       cornerText: '指标层级',
-      hierarchyType: 'tree',
       conditions: {
         text: [
           {
@@ -49,9 +56,9 @@ fetch(
 
     ReactDOM.render(
       <SheetComponent
-        dataCfg={dataCfg}
-        options={s2Options}
         sheetType="strategy"
+        dataCfg={s2DataCfg}
+        options={s2Options}
       />,
       document.getElementById('container'),
     );

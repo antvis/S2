@@ -7,27 +7,42 @@ order: 9
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png" width="600"  alt="preview" />
 
-如图所示，该类表格的表形态特点在于可以在同一个数据单元格和列头单元格内展示多个指标数据，用于需要关注时间趋势下的数据指标，查看同环比等场景。行头可以自定义层级结构。因此有此类分析需求时，可以直接使用该组件。
+如图所示，该类表格的表形态特点在于可以在**同一个数据单元格**和**列头单元格内**展示多个指标数据，用于需要**关注时间趋势下的数据指标**，**查看同环比**等场景。行头可以 [自定义层级结构](/zh/docs/manual/advanced/custom/custom-tree)。因此有此类分析需求时，可以直接使用该组件。
+
+## 前提
+
+趋势分析表组件使用了 S2 提供的各种能力进行融合，所以建议在阅读本章前，请确保你已经阅读过以下章节：
+
+- [基本概念](/zh/docs/manual/basic/base-concept)
+- [字段标记](/zh/docs/manual/basic/conditions/)
+- [自定义行列头](/zh/docs/manual/advanced/custom/custom-tree)
 
 ## 快速上手
 
-### [DataConfig](https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json)
+### s2DataConfig
+
+[查看详情](https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json)
+
+#### s2Options
 
 <details>
-<summary>点击查看趋势分析表 options 配置</summary>
+<summary>查看详情</summary>
 
 ```js
 const s2Options = {
   width: 600,
   height: 480,
+  // 角头文本
   cornerText: '指标层级',
-  hierarchyType: 'customTree',
+  // 条件格式
   conditions: {
+    // 同环比数值映射规则
     text: [
       {
         field: 'number',
         mapping: (value, cellInfo) => {
           const { meta } = cellInfo;
+          // 红涨绿跌
           if (
             meta?.fieldValue?.values[0][0] === value ||
             !value ||
@@ -47,6 +62,7 @@ const s2Options = {
   style: {
     cellCfg: {
       valuesCfg: {
+        // 原始数据字段，用于原始数据导出和 tooltip 展示
         originalValueField: 'originalValues',
       },
     },
@@ -64,9 +80,9 @@ import '@antv/s2-react/dist/style.min.css';
 
 ReactDOM.render(
   <SheetComponent
-    dataCfg={s2DataCfg}
-    options={s2Options}
     sheetType="strategy"
+    dataCfg={s2DataConfig}
+    options={s2Options}
   />,
   document.getElementById('container'),
 );
@@ -79,32 +95,56 @@ ReactDOM.render(
 
 ### S2DataConfig 配置
 
-主要用到 `S2DataConfig` `MultiData` 和 `CustomTreeItem` 这两个配置项
+- 数据源：[MultiData](/zh/docs/api/general/S2DataConfig#multidata) 配置项，一个单元格对应多条数据，分为原始数据和格式化数据
 
-### MultiData
+```ts
+const data = {
+  "measure-a": {
+    values: ["1", "2"],
+    originalValues: [1, 2]
+  }
+}
+```
 
-object **必选**,_default：null_
+- 行头层级结构：[自定义层级结构](/zh/docs/manual/advanced/custom/custom-tree)
 
-功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/zh/examples/react-component/sheet#strategy)
+```ts
+const fields = {
+  rows: [
+    {
+      key: 'a-1',
+      title: '节点 1',
+      children: []
+    }
+  ]
+}
+```
 
-| 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
-| :------------- | :----------------- | :--------- | :----- | :--- |
-| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
-| originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
-| label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
-| [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
+- 虚拟列：趋势分析表存在同环比指标时，会通过虚拟列来显示对应的同环比指标名称，此时，表格会显示两级列头
 
- ⚠️ 注意项
+```ts
+import { EXTRA_COLUMN_FIELD } from '@antv/s2'
 
-* 如果不涉及到原始数据复制导出类需求，可不提供 `originalValues`
-* 列头指标顺序和单元格指标展示顺序一一对应
+const fields = {
+  columns: ['date', EXTRA_COLUMN_FIELD]
+}
+```
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<img src="https://gw.alipayobjects.com/zos/antfincdn/SsDx1wGE%24/119a04f5-daac-43ca-9773-c8a66547280c.png" width="600"  alt="preview" />
+
+⚠️ 注意项：
+
+- 如果不涉及到原始数据复制导出类需求，可不声明 `originalValues`
+- 当只有单指标，（即没有同环比） 时，可不配置虚拟列 (`EXTRA_COLUMN_FIELD`)
+- 列头指标顺序和单元格指标展示顺序一一对应
 
 ### S2Options 配置
 
-* 必须指定 `hierarchyType: 'customTree'`
-* 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+- 趋势分析表会将行头布局强制置为树状模式，即 `hierarchyType: 'tree'`
+- 可通过 `options.cornerText` 自定义角头文本
+- 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+
+`markdown:docs/common/custom/customTreeNode.zh.md`
 
 ## Tooltip
 
@@ -114,10 +154,10 @@ object **必选**,_default：null_
 | :------------- | :----------------- | :--------- | :----- | :--- |
 | cell           | 当前单元格 | `S2CellType`   |  ✓   |
 | defaultTooltipShowOptions | 默认 tooltip 展示配置 | `TooltipShowOptions<ReactNode>`  |  |      |
-| label        | 标题    | `ReactNode | (cell: S2CellType, defaultLabel: ReactNode) => React.ReactNode` |    |      |
+| label        | 标题    | `ReactNode | (cell: S2CellType, defaultLabel: ReactNode) => ReactNode` |    |      |
 | showOriginalValue      | 是否显示原始数值 （如有）      | `boolean` | `false`   |      |
 
-```ts
+```tsx
 import { StrategySheetRowTooltip, StrategySheetColTooltip, StrategySheetDataTooltip } from '@antv/s2-react'
 
 const s2Options = {
@@ -157,9 +197,9 @@ const s2Options = {
 
 可以通过 `renderDerivedValue` 在自定义同环比数值，比如替换成原始值
 
-* `currentValue`: 当前值
-* `originalValue`: 原始值
-* `cell`: 当前 Tooltip 对应的单元格信息
+- `currentValue`: 当前值
+- `originalValue`: 原始值
+- `cell`: 当前 Tooltip 对应的单元格信息
 
 ```tsx
 <StrategySheetDataTooltip

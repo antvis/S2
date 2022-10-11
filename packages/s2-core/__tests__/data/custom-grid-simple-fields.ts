@@ -45,10 +45,12 @@ export const customRowGridSimpleFields: S2DataConfig['fields'] = {
   columns: ['type', 'sub_type'],
   rows: headerFields,
   values: ['measure-1', 'measure-2'],
+  valueInCols: false,
 };
 
 export const customColGridSimpleFields: S2DataConfig['fields'] = {
   rows: ['type', 'sub_type'],
   columns: headerFields,
   values: ['measure-1', 'measure-2'],
+  valueInCols: true,
 };

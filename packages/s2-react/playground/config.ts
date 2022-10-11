@@ -1,19 +1,14 @@
-import { isUpDataValue } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
+import { isUpDataValue } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import {
-  customRowGridFields,
-  customColGridFields,
-} from '@antv/s2/__tests__/data/custom-grid-fields';
-import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
+import type { SheetComponentOptions } from '../src/components';
 import {
   data,
   fields,
-  totalData,
   meta,
+  totalData,
 } from '../__tests__/data/mock-dataset.json';
-import type { SheetComponentOptions } from '../src/components';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -22,48 +17,6 @@ export const tableSheetDataCfg: S2DataConfig = {
   fields: {
     columns: ['province', 'city', 'type', 'sub_type', 'number'],
   },
-};
-
-/**
- * 平铺模式-自定义行头
- */
-export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
-  data: CustomGridData,
-  meta: [
-    ...meta,
-    {
-      field: 'a-1',
-      name: '层级1',
-    },
-    {
-      field: 'a-1-1',
-      name: '层级2',
-    },
-    {
-      field: 'measure-1',
-      name: '层级3',
-    },
-  ],
-  fields: customRowGridFields,
-};
-
-/**
- * 平铺模式-自定义列头
- */
-export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
-  data: CustomGridData,
-  meta: [
-    ...meta,
-    {
-      field: 'a-1',
-      name: '层级1',
-    },
-    {
-      field: 'a-1-1',
-      name: '层级2',
-    },
-  ],
-  fields: customColGridFields,
 };
 
 export const pivotSheetDataCfg: S2DataConfig = {

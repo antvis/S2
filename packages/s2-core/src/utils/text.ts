@@ -21,7 +21,7 @@ import type {
   Condition,
   MultiData,
   S2CellType,
-  SimpleDataItem,
+  SimpleData,
   ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
@@ -398,7 +398,7 @@ export const getEmptyPlaceholder = (
  */
 export const getContentAreaForMultiData = (
   box: SimpleBBox,
-  textValues: SimpleDataItem[][],
+  textValues: SimpleData[][],
   widthPercent?: number[],
 ) => {
   const { x, y, width, height } = box;

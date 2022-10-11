@@ -35,7 +35,7 @@ export type MiniChartData = BaseChartData | BulletValue;
         ],
       }
  */
-export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
+export interface MultiData<T = SimpleData[][] | MiniChartData> {
   values: T;
   originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
@@ -43,9 +43,9 @@ export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
   [key: string]: unknown;
 }
 
-export type SimpleDataItem = string | number;
+export type SimpleData = string | number;
 
-export type DataItem = SimpleDataItem | MultiData;
+export type DataItem = SimpleData | MultiData;
 
 export type RawData = Record<string, DataItem>;
 

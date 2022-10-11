@@ -3,7 +3,7 @@ import {
   getEmptyPlaceholder,
   isUpDataValue,
   type MultiData,
-  type SimpleDataItem,
+  type SimpleData,
   type ViewMeta,
 } from '@antv/s2';
 import cls from 'classnames';
@@ -23,7 +23,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
 }) => {
   const meta = cell.getMeta() as ViewMeta;
   const { spreadsheet } = meta;
-  const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
+  const metaFieldValue = meta?.fieldValue as MultiData<SimpleData[][]>;
 
   const rowDescription = spreadsheet.dataSet.getCustomFieldDescription(cell);
   const defaultRowName = spreadsheet.dataSet.getCustomRowFieldName(cell);
@@ -46,7 +46,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
     metaFieldValue,
   ];
   const [originalValue, ...derivedOriginalValues] = first(
-    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleDataItem[][],
+    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleData[][],
   ) || [value];
 
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
@@ -68,13 +68,13 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
-            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
+            {derivedValues.map((derivedValue: SimpleData, i) => {
               const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
               const originalDerivedValue = derivedOriginalValues[
                 i
-              ] as SimpleDataItem;
+              ] as SimpleData;
 
               return (
                 <li className="derived-value-item" key={i}>
