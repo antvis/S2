@@ -1,5 +1,5 @@
 import type { Group, Point } from '@antv/g-canvas';
-import { includes, isEmpty, isString } from 'lodash';
+import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';

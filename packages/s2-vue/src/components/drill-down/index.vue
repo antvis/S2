@@ -140,5 +140,5 @@ export default defineComponent({
 </template>
 
 <style lang="less" scoped>
-@import '@antv/s2-shared/src/styles/drilldown.less';
+@import '@antv/s2-shared/src/styles/drill-down.less';
 </style>

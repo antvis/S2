@@ -1,8 +1,12 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
-import type { PartDrillDownInfo } from '@antv/s2-shared';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
-import type { CustomTreeNode, Data, ResizeInfo } from '../../common/interface';
+import type {
+  CustomTreeNode,
+  Data,
+  RawData,
+  ResizeInfo,
+} from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
@@ -488,11 +492,14 @@ export interface OriginalEvent extends Event {
 }
 
 // 用于和下钻组件进行交互联动
-export interface PartDrillDownDataCache extends PartDrillDownInfo {
+export interface PartDrillDownDataCache {
   // 执行下钻的行头id
   rowId: string;
   // 下钻的行头level
   drillLevel: number;
+  drillField: string;
+  // 下钻的数据
+  drillData: RawData[];
 }
 
 export interface PartDrillDownFieldInLevel {
