@@ -3,10 +3,6 @@ import {
   customColGridFields,
   customRowGridFields,
 } from '@antv/s2/__tests__/data/custom-grid-fields';
-import {
-  customRowGridSimpleFields,
-  customColGridSimpleFields,
-} from '@antv/s2/__tests__/data/custom-grid-simple-fields';
 import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import { Radio, Space, Switch } from 'antd';
 import React from 'react';
@@ -41,7 +37,7 @@ export const pivotSheetCustomRowGridDataCfg: S2DataConfig = {
       name: '层级3',
     },
   ],
-  fields: customRowGridSimpleFields,
+  fields: customRowGridFields,
 };
 
 /**
@@ -60,7 +56,7 @@ export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
       name: '层级2',
     },
   ],
-  fields: customColGridSimpleFields,
+  fields: customColGridFields,
 };
 
 enum CustomType {
@@ -97,7 +93,9 @@ export const CustomGrid = () => {
         >
           <Radio.Button value={CustomType.Row}>自定义行头</Radio.Button>
           <Radio.Button value={CustomType.Col}>自定义列头</Radio.Button>
-          <Radio.Button value={CustomType.All}>自定义行头和列头</Radio.Button>
+          <Radio.Button value={CustomType.All} disabled>
+            TODO: 自定义行头和列头
+          </Radio.Button>
         </Radio.Group>
         <Switch
           checkedChildren="树状模式"
