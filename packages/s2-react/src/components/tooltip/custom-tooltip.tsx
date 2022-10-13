@@ -24,8 +24,10 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
-    // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
-    this.unmountComponentAtNode();
+    if (showOptions.options?.forceRender) {
+      this.unmountComponentAtNode();
+    }
+
     ReactDOM.render(
       <TooltipComponent {...tooltipProps} content={content} />,
       this.container,
