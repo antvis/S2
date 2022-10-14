@@ -1,3 +1,17 @@
+# [@antv/s2-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-v1.31.1...@antv/s2-v1.32.0) (2022-10-14)
+
+
+### Bug Fixes
+
+* data-cell文字无法交互 ([#1822](https://github.com/antvis/S2/issues/1822)) ([1ede665](https://github.com/antvis/S2/commit/1ede6657598fd58f4360f054418a579684f9b116))
+* **tooltip:** tooltip 显示时不应该强制清空 dom ([#1816](https://github.com/antvis/S2/issues/1816)) ([98c95d8](https://github.com/antvis/S2/commit/98c95d8ab11df26a9618921d36bb9ce732495fcd))
+* 带行头复制报错修复 ([#1812](https://github.com/antvis/S2/issues/1812)) ([0558ed3](https://github.com/antvis/S2/commit/0558ed35580f54abe01f9637a4f1ad4745cf0328))
+
+
+### Features
+
+* ✨ 表头单元格支持字段标记 ([#1809](https://github.com/antvis/S2/issues/1809)) ([307c5f9](https://github.com/antvis/S2/commit/307c5f9227351e57dca3f1d061ddca6be52c734d))
+
 # [@antv/s2-v1.31.1](https://github.com/antvis/S2/compare/@antv/s2-v1.31.0...@antv/s2-v1.31.1) (2022-10-14)
 
 
