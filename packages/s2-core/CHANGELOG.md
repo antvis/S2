@@ -1,3 +1,10 @@
+# [@antv/s2-v1.31.1](https://github.com/antvis/S2/compare/@antv/s2-v1.31.0...@antv/s2-v1.31.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* data-cell文字无法交互 ([89faca0](https://github.com/antvis/S2/commit/89faca03f5a5282ae4d67114d6f7daed8f59660a))
+
 # [@antv/s2-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-v1.30.0...@antv/s2-v1.31.0) (2022-10-02)
 
 
