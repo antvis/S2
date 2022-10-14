@@ -16,6 +16,7 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
+  S2Event,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -1009,6 +1010,9 @@ function MainLayout() {
                   'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
                 );
               })}
+              onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}
+              onColCellBrushSelection={logHandler('onColCellBrushSelection')}
+              onRowCellBrushSelection={logHandler('onRowCellBrushSelection')}
             />
           )}
         </TabPane>

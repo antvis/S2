@@ -35,7 +35,12 @@ export type Adaptive =
       getContainer?: () => HTMLElement;
     };
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy' | 'editable';
+export type SheetType =
+  | 'pivot'
+  | 'table'
+  | 'gridAnalysis'
+  | 'strategy'
+  | 'editable';
 
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
@@ -101,7 +106,9 @@ export interface BaseSheetComponentProps<
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
-  onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
+  onDataCellBrushSelection?: (
+    brushRangeDataCells: (DataCell | CellMeta)[],
+  ) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
 
   // ============== Corner Cell ====================
@@ -191,7 +198,7 @@ export interface BaseSheetComponentProps<
   onMouseUp?: (event: MouseEvent) => void;
   onMouseDown?: (event: MouseEvent) => void;
   onMouseMove?: (event: MouseEvent) => void;
-  onSelected?: (cells: DataCell[]) => void;
+  onSelected?: (cells: (DataCell | CellMeta)[]) => void;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;
   onScroll?: (position: CellScrollPosition) => void;
