@@ -161,12 +161,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected initCell() {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
+    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
-    this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
