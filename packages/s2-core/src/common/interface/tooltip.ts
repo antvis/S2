@@ -37,15 +37,18 @@ export interface SortQuery {
 }
 
 export interface TooltipOptions {
+  // 隐藏汇总
   hideSummary?: boolean;
-  // button action on the top
+  // 顶部操作项
   operator?: TooltipOperatorOptions;
   enterable?: boolean;
-  // totals or not
+  // 是否是小计
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
   enableFormat?: boolean;
+  // 是否强制清空 dom
+  forceRender?: boolean;
 }
 
 export interface TooltipSummaryOptions {

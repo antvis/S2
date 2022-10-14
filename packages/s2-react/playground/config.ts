@@ -42,6 +42,7 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   conditions: {
+    text: [],
     interval: [
       {
         field: 'number',

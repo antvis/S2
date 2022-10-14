@@ -420,6 +420,7 @@ const processTableRowSelected = (
         .map((cName) =>
           spreadsheet.getColumnNodes().find((n) => n.field === cName),
         )
+        .filter(Boolean) // 过滤掉空值，如行头cell
         .map((node) =>
           convertString(
             getFormat(node.colIndex, spreadsheet)(entry[node.field]),
