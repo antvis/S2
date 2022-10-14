@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.28.0...@antv/s2-react-v1.29.0) (2022-10-14)
+
+
+### Bug Fixes
+
+* **tooltip:** tooltip 显示时不应该强制清空 dom ([#1816](https://github.com/antvis/S2/issues/1816)) ([98c95d8](https://github.com/antvis/S2/commit/98c95d8ab11df26a9618921d36bb9ce732495fcd))
+
+
+### Features
+
+* ✨ 表头单元格支持字段标记 ([#1809](https://github.com/antvis/S2/issues/1809)) ([307c5f9](https://github.com/antvis/S2/commit/307c5f9227351e57dca3f1d061ddca6be52c734d))
+
 # [@antv/s2-react-v1.28.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.27.0...@antv/s2-react-v1.28.0) (2022-10-02)
 
 
