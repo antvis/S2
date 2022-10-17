@@ -73,6 +73,10 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // custom device pixel ratio, default "window.devicePixelRatio"
   devicePixelRatio?: number;
 
+  /** ***********Mobile Options Config**************** */
+  // use mobile options and mobile components
+  useMobileTooltip?: boolean;
+
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   dataCell?: DataCellCallback;

@@ -103,3 +103,19 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   supportCSSTransform: false,
   devicePixelRatio: window.devicePixelRatio,
 };
+
+const mobileWidth = document.documentElement.clientWidth;
+export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
+  width: mobileWidth - 40,
+  height: 380,
+  style: {
+    layoutWidthType: LayoutWidthTypes.ColAdaptive,
+  },
+  tooltip: {
+    showTooltip: false,
+  },
+  interaction: {
+    hoverHighlight: false,
+    hoverFocus: false,
+  },
+};
