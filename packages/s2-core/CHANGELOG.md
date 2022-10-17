@@ -1,4 +1,43 @@
 # [@antv/s2-v1.31.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.30.0...@antv/s2-v1.31.0-alpha.1) (2022-09-17)
+# [@antv/s2-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-v1.31.1...@antv/s2-v1.32.0) (2022-10-14)
+
+
+### Bug Fixes
+
+* data-cell文字无法交互 ([#1822](https://github.com/antvis/S2/issues/1822)) ([1ede665](https://github.com/antvis/S2/commit/1ede6657598fd58f4360f054418a579684f9b116))
+* **tooltip:** tooltip 显示时不应该强制清空 dom ([#1816](https://github.com/antvis/S2/issues/1816)) ([98c95d8](https://github.com/antvis/S2/commit/98c95d8ab11df26a9618921d36bb9ce732495fcd))
+* 带行头复制报错修复 ([#1812](https://github.com/antvis/S2/issues/1812)) ([0558ed3](https://github.com/antvis/S2/commit/0558ed35580f54abe01f9637a4f1ad4745cf0328))
+
+
+### Features
+
+* ✨ 表头单元格支持字段标记 ([#1809](https://github.com/antvis/S2/issues/1809)) ([307c5f9](https://github.com/antvis/S2/commit/307c5f9227351e57dca3f1d061ddca6be52c734d))
+
+# [@antv/s2-v1.31.1](https://github.com/antvis/S2/compare/@antv/s2-v1.31.0...@antv/s2-v1.31.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* data-cell文字无法交互 ([89faca0](https://github.com/antvis/S2/commit/89faca03f5a5282ae4d67114d6f7daed8f59660a))
+
+# [@antv/s2-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-v1.30.0...@antv/s2-v1.31.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* clipbardItem不存在时不报错 ([#1791](https://github.com/antvis/S2/issues/1791)) ([e7261ff](https://github.com/antvis/S2/commit/e7261ff1e8b44019fe75204a2adccade505c16d5))
+* **scroll:** 修复点击滚动条滑道区域表格渲染空白 close [#1764](https://github.com/antvis/S2/issues/1764) [#1780](https://github.com/antvis/S2/issues/1780) ([#1785](https://github.com/antvis/S2/issues/1785)) ([41166be](https://github.com/antvis/S2/commit/41166be08065ebdea3db7202eec141b850bcaae3))
+* **sort:** 修复 tooltip 中排序菜单未记住上一次选中状态 close [#1716](https://github.com/antvis/S2/issues/1716) ([#1746](https://github.com/antvis/S2/issues/1746)) ([67e09c4](https://github.com/antvis/S2/commit/67e09c43b6508cbd141dc47fedbebfbc247cbb3f))
+* table formatter with header selected ([#1786](https://github.com/antvis/S2/issues/1786)) ([71a7a3b](https://github.com/antvis/S2/commit/71a7a3b9c2f07b754c1aced0b82eea90249044c0))
+* 将依赖检查移动到外层 ([#1792](https://github.com/antvis/S2/issues/1792)) ([0a8e4ed](https://github.com/antvis/S2/commit/0a8e4edb55a81f0dfdcefbcb6ef38d5642ca179b))
+* 明细表奇数行背景色不生效修复 ([#1795](https://github.com/antvis/S2/issues/1795)) ([f1bd3ec](https://github.com/antvis/S2/commit/f1bd3ecdce0318bb11739f0f58bbec0755403994))
+
+
+### Features
+
+* 树状结构下, 行小计数据显示配置规则 ([#1797](https://github.com/antvis/S2/issues/1797)) ([68a397d](https://github.com/antvis/S2/commit/68a397d0c296399e35e2ab8362b789e771ffcb99))
+
+# [@antv/s2-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-v1.29.1...@antv/s2-v1.30.0) (2022-09-16)
 
 
 ### Bug Fixes
@@ -219,7 +258,7 @@
 * **tooltip:** 支持设置多个 class 类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
 * 当前只能复制数值可带表头复制 ([#1590](https://github.com/antvis/S2/issues/1590)) ([b2ff70e](https://github.com/antvis/S2/commit/b2ff70e11d3abaab318aec9acc4bc4e2ac8c4114)), closes [#1583](https://github.com/antvis/S2/issues/1583)
 
->>>>>>>>> Temporary merge branch 2
+
 
 # [@antv/s2-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0) (2022-07-08)
 

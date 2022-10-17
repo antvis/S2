@@ -24,7 +24,6 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
 
-
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
     return false;
@@ -421,6 +420,7 @@ const processTableRowSelected = (
         .map((cName) =>
           spreadsheet.getColumnNodes().find((n) => n.field === cName),
         )
+        .filter(Boolean) // 过滤掉空值，如行头cell
         .map((node) =>
           convertString(
             getFormat(node.colIndex, spreadsheet)(entry[node.field]),

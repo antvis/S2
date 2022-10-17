@@ -6,12 +6,10 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import type { GuiIcon } from '../common/icons';
 import { CellBorderPosition } from '../common/interface';
 import type {
   CellMeta,
   Condition,
-  Conditions,
   FormatResult,
   IconCfg,
   IconCondition,
@@ -39,22 +37,12 @@ import { drawInterval } from '../utils/g-mini-charts';
  * |interval      text| icon  |
  * |                  |       |
  * ----------------------------
- * There are four conditions(]{@see BaseCell.conditions}) to determine how to render
+ * There are four conditions({@see BaseCell.conditions}) to determine how to render
  * 1、background color
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  protected conditions: Conditions;
-
-  protected conditionIntervalShape: IShape;
-
-  protected conditionIconShape: GuiIcon;
-
-  public get cellConditions() {
-    return this.conditions;
-  }
-
   public get cellType() {
     return CellTypes.DATA_CELL;
   }
@@ -177,13 +165,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawConditionIntervalShape();
     this.drawInteractiveBorderShape();
-    this.drawTextShape();
-    this.drawConditionIconShapes();
+    if (!this.shouldHideRowSubtotalData()) {
+      this.drawConditionIntervalShape();
+      this.drawTextShape();
+      this.drawConditionIconShapes();
+    }
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -196,17 +185,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    // get text condition's fill result
-    let fill = textStyle.fill;
-
-    if (this.shouldHideRowSubtotalData()) {
-      return { ...textStyle, fill };
-    }
-
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-    if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
-    }
+    const fill = this.getTextConditionFill(textStyle);
 
     return { ...textStyle, fill };
   }
@@ -271,7 +250,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return this.getTextAndIconPosition().text;
   }
 
-  protected drawConditionIconShapes() {
+  public drawConditionIconShapes() {
     if (this.shouldHideRowSubtotalData()) {
       return;
     }

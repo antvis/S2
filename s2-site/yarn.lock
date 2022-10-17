@@ -28,7 +28,7 @@
 
 "@algolia/cache-in-memory@4.13.1":
   version "4.13.1"
-  resolved "https://registry.npmmirror.com/@algolia/cache-in-memory/-/cache-in-memory-4.13.1.tgz#c19baa67b4597e1a93e987350613ab3b88768832"
+  resolved "https://registry.npmmirror.com/@algolia/cache-in-memory/-/ache-in-memory-4.13.1.tgz#c19baa67b4597e1a93e987350613ab3b88768832"
   integrity sha512-pZzybCDGApfA/nutsFK1P0Sbsq6fYJU3DwIvyKg4pURerlJM4qZbB9bfLRef0FkzfQu7W11E4cVLCIOWmyZeuQ==
   dependencies:
     "@algolia/cache-common" "4.13.1"
@@ -211,10 +211,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@1.1.18-beta.0":
-  version "1.1.18-beta.0"
-  resolved "https://registry.npmmirror.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.18-beta.0.tgz#ba9728ae811a51d0c3da821955356d0d6a891812"
-  integrity sha512-84t5P4qBI+lxUIbJIsCe3hwFyFD3LShb5/ozk29qTJr3j5o/B4mEKx7CA1FOW8mQ+eOt6n12J6bK6FqFx74EyA==
+"@antv/gatsby-theme-antv@1.1.18-beta.1":
+  version "1.1.18-beta.1"
+  resolved "https://registry.npmmirror.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.18-beta.1.tgz#1f64f28495a42af73e8170de29a8be255f912fed"
+  integrity sha512-wHt/cTRbs9hc2OXQblOkLIesFzZUBVvmi0S8Qj9KHYlIIbffEGbCviFFJQzIszmquWctoW+Ij/zbSfJiagq7wg==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@docsearch/js" "^3.0.0"
@@ -318,20 +318,20 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@1.26.1":
-  version "1.26.1"
-  resolved "https://registry.npmmirror.com/@antv/s2-react/-/s2-react-1.26.1.tgz#e122c69148345a21441264e61745907eda68c412"
-  integrity sha512-7C4rYEQumuxiezr/yIthmNb0QuBtnyU6nb/G8HatIToijOy+Jv8JwIf5DZCPcxo1Nak1E2XeQ4Rogb5uwsX86A==
+"@antv/s2-react@^1.28.0":
+  version "1.28.0"
+  resolved "https://registry.npmmirror.com/@antv/s2-react/-/s2-react-1.28.0.tgz#c3ff553856d510312edf4e23eebb16b11d1ef23c"
+  integrity sha512-FaXqYeS4xopY4yKV22uqrHlNSt3uRQNWzAyNRj6gnpAZbNk3mnUaoId+ezilgfo4geCBLtyKnOWsVKZCTG8UMg==
   dependencies:
     ahooks "^3.1.13"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@1.30.0":
-  version "1.30.0"
-  resolved "https://registry.npmmirror.com/@antv/s2/-/s2-1.30.0.tgz#43e983f8fe86c3009939c0573c523b334a76d0dd"
-  integrity sha512-YeKIrK0Fmrg2E2D9NDXxbV0sGt1CVROPWZOiiCsMxaRboicCySb5XPiEqO1XJbH64A+vCY7A29hUgLdWjspX3A==
+"@antv/s2@^1.31.0":
+  version "1.31.0"
+  resolved "https://registry.npmmirror.com/@antv/s2/-/s2-1.31.0.tgz#fc44504934aee228f8835804dc0b8061c7c7b9b3"
+  integrity sha512-IcSRPVQx50HCJyFjx/+8ZwFMFOkk1uJY3DjSDlZhRHmC5D6bPuujOPsb71h3DXsTwhWT3N6/iBaYWw5OFSMC7Q==
   dependencies:
     "@antv/event-emitter" "^0.1.3"
     "@antv/g-canvas" "^0.5.12"
