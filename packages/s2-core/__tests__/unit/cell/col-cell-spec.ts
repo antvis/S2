@@ -1,8 +1,10 @@
-import _ from 'lodash';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { get, set } from 'lodash';
+import { createPivotSheet } from 'tests/util/helpers';
 import type { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import type { Formatter, TextAlign } from '@/common';
+import { EXTRA_FIELD, type Formatter, type TextAlign } from '@/common';
 import { ColCell } from '@/cell';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
@@ -55,9 +57,9 @@ describe('Col Cell Tests', () => {
         });
 
         const colCell = new ColCell(node, s2, { ...headerConfig });
-        _.set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
+        set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
-        const getTextPosition = _.get(colCell, 'getTextPosition').bind(colCell);
+        const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
         expect(getTextPosition()).toEqual({
           x: textX,
           y: 15,
@@ -95,9 +97,9 @@ describe('Col Cell Tests', () => {
         });
 
         const colCell = new ColCell(node, s2, { ...headerConfig });
-        _.set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
+        set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
-        const getIconPosition = _.get(colCell, 'getIconPosition').bind(colCell);
+        const getIconPosition = get(colCell, 'getIconPosition').bind(colCell);
         expect(getIconPosition()).toEqual({
           x: iconX,
           y: 10,
@@ -134,6 +136,83 @@ describe('Col Cell Tests', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       expect(colCell.textShape.attr('text')).toEqual('test');
+    });
+  });
+
+  describe('Condition Tests', () => {
+    const s2 = createPivotSheet({
+      conditions: {
+        text: [
+          {
+            field: EXTRA_FIELD,
+            mapping() {
+              return {
+                fill: '#5083F5',
+              };
+            },
+          },
+        ],
+      },
+    });
+    test('should draw right condition text shape', () => {
+      s2.render();
+      const colCell = s2.facet.columnHeader
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(1);
+
+      expect(get(colCell, 'textShape.attrs.fill')).toEqual('#5083F5');
+    });
+
+    test('should draw right condition icon shape', () => {
+      s2.setOptions({
+        conditions: {
+          icon: [
+            {
+              field: 'type',
+              mapping(field) {
+                if (field === '笔') {
+                  return {
+                    icon: 'CellUp',
+                    fill: 'red',
+                  };
+                }
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+
+      const colCell = s2.facet.columnHeader
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(0);
+      expect(get(colCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
+      expect(get(colCell, 'conditionIconShape.cfg.fill')).toEqual('red');
+    });
+
+    test('should draw right condition background shape', () => {
+      s2.setOptions({
+        conditions: {
+          background: [
+            {
+              field: EXTRA_FIELD,
+              mapping() {
+                return {
+                  fill: '#F7B46F',
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+      const colCell = s2.facet.columnHeader
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(1);
+      expect(get(colCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
     });
   });
 });

@@ -6,12 +6,10 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import type { GuiIcon } from '../common/icons';
 import { CellBorderPosition } from '../common/interface';
 import type {
   CellMeta,
   Condition,
-  Conditions,
   FormatResult,
   IconCfg,
   IconCondition,
@@ -23,12 +21,7 @@ import type {
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import {
-  renderIcon,
-  renderLine,
-  renderRect,
-  updateShapeAttr,
-} from '../utils/g-renders';
+import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
 
 /**
@@ -44,16 +37,6 @@ import { drawInterval } from '../utils/g-mini-charts';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  protected conditions: Conditions;
-
-  protected conditionIntervalShape: IShape;
-
-  protected conditionIconShape: GuiIcon;
-
-  public get cellConditions() {
-    return this.conditions;
-  }
-
   public get cellType() {
     return CellTypes.DATA_CELL;
   }
@@ -176,15 +159,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
+    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
-    this.drawInteractiveBorderShape();
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
@@ -197,12 +179,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    // get text condition's fill result
-    let fill = textStyle.fill;
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-    if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
-    }
+    const fill = this.getTextConditionFill(textStyle);
 
     return { ...textStyle, fill };
   }
@@ -220,6 +197,10 @@ export class DataCell extends BaseCell<ViewMeta> {
         position: getIconPositionCfg(iconCondition),
       };
     return iconCfg;
+  }
+
+  protected drawConditionIntervalShape() {
+    this.conditionIntervalShape = drawInterval(this);
   }
 
   protected shouldHideRowSubtotalData() {
@@ -257,34 +238,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
-  }
-
-  protected drawConditionIconShapes() {
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
-    if (iconCondition && iconCondition.mapping) {
-      const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
-      const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon)) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs.icon,
-          width: size,
-          height: size,
-          fill: attrs.fill,
-        });
-      }
-    }
-  }
-
-  /**
-   * Draw interval condition shape
-   * @protected
-   */
-  protected drawConditionIntervalShape() {
-    this.conditionIntervalShape = drawInterval(this);
   }
 
   public getBackgroundColor() {
