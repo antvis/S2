@@ -153,25 +153,6 @@ describe('Spreadsheet Totals Tests', () => {
       ) as DataCell;
     // @ts-ignore
     expect(grandTotal.textShape.attr('text')).toEqual('26193');
-
-    const rowSubtotal1 = spreadsheet.panelScrollGroup
-      .getChildren()
-      .find(
-        (child) =>
-          child instanceof DataCell &&
-          get(child, 'meta.rowId') === 'root[&]浙江省',
-      ) as DataCell;
-    // @ts-ignore
-    expect(rowSubtotal1.textShape.attr('text')).toEqual('-');
-
-    const rowSubtotal2 = spreadsheet.panelScrollGroup
-      .getChildren()
-      .find(
-        (child) =>
-          child instanceof DataCell &&
-          get(child, 'meta.rowId') === 'root[&]浙江省',
-      ) as DataCell;
-    // @ts-ignore
-    expect(rowSubtotal2.textShape.attr('text')).toEqual('-');
+    
   });
 });
