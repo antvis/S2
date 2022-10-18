@@ -56,7 +56,7 @@ export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
 };
 
 export const getSafetyOptions = (options: Partial<S2Options>) => {
-  if (options?.useMobileTooltip) {
+  if (options?.useMobileOption) {
     return customMerge(DEFAULT_OPTIONS, DEFAULT_MOBILE_OPTIONS, options);
   }
   return customMerge(DEFAULT_OPTIONS, options);

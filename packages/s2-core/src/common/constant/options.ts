@@ -111,9 +111,6 @@ export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
   style: {
     layoutWidthType: LayoutWidthTypes.ColAdaptive,
   },
-  tooltip: {
-    showTooltip: false,
-  },
   interaction: {
     hoverHighlight: false,
     hoverFocus: false,
