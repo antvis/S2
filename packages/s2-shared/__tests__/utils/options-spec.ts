@@ -1,4 +1,9 @@
-import { DEFAULT_STYLE, HOVER_FOCUS_DURATION } from '@antv/s2';
+import {
+  DEFAULT_STYLE,
+  HOVER_FOCUS_DURATION,
+  LayoutWidthTypes,
+  type S2Options,
+} from '@antv/s2';
 import { getBaseSheetComponentOptions } from '../../src';
 
 describe('Options Tests', () => {
@@ -97,5 +102,15 @@ describe('Options Tests', () => {
         ],
       },
     });
+  });
+
+  test('should get mobile options', () => {
+    const options = getBaseSheetComponentOptions({
+      useMobileOption: true,
+    }) as S2Options;
+
+    expect(options.useMobileOption).toEqual(true);
+    expect(options.height).toEqual(380);
+    expect(options.style.layoutWidthType).toEqual(LayoutWidthTypes.ColAdaptive);
   });
 });
