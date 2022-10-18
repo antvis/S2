@@ -27,6 +27,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     sheetType,
     onSheetUpdate = identity,
   } = props;
+
   /** 保存重渲 effect 的 deps */
   const updatePrevDepsRef = React.useRef<
     [S2DataConfig, SheetComponentOptions, ThemeCfg]
@@ -63,6 +64,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     forceUpdate();
 
     props.getSpreadSheet?.(s2Ref.current);
+    props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
   // init
@@ -71,7 +73,6 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     return () => {
       s2Ref.current.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 重渲 effect：dataCfg, options or theme changed

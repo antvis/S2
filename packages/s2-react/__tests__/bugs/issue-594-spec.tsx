@@ -54,7 +54,7 @@ function MainLayout(
         dataCfg={mockDataConfig}
         options={{ width: 200, height: 200 }}
         themeCfg={{ name: 'default' }}
-        getSpreadSheet={(instance) => {
+        onMounted={(instance) => {
           s2 = instance;
         }}
         ref={s2Ref}

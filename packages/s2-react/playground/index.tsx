@@ -16,6 +16,7 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
+  S2Event,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -133,7 +134,7 @@ const partDrillDown: PartDrillDown = {
     }),
 };
 
-const getSpreadSheet = (s2: SpreadSheet) => {
+const onSheetLoad = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
@@ -266,8 +267,8 @@ function MainLayout() {
     }
   };
 
-  const getColumnOptions = (sheetType: SheetType) => {
-    if (sheetType === 'table') {
+  const getColumnOptions = (type: SheetType) => {
+    if (type === 'table') {
       return dataCfg.fields.columns;
     }
     return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
@@ -288,6 +289,13 @@ function MainLayout() {
     }
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sheetType]);
+
+  React.useEffect(() => {
+    console.log('@ref', s2Ref.current);
+    s2Ref.current?.on(S2Event.GLOBAL_CLICK, () => {
+      console.log(1);
+    });
   }, [sheetType]);
 
   //  ================== Config ========================
@@ -969,7 +977,7 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              getSpreadSheet={(s2) => getSpreadSheet(s2)}
+              onMounted={onSheetLoad}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
@@ -1027,7 +1035,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            getSpreadSheet={(s2) => getSpreadSheet(s2)}
+            onMounted={onSheetLoad}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1060,7 +1068,8 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            getSpreadSheet={(s2) => getSpreadSheet(s2)}
+            ref={s2Ref}
+            onMounted={onSheetLoad}
           />
         </TabPane>
         <TabPane tab="编辑表" key="editable">
@@ -1070,7 +1079,8 @@ function MainLayout() {
             options={mergedOptions}
             ref={s2Ref}
             themeCfg={themeCfg}
-          ></SheetComponent>
+            onMounted={onSheetLoad}
+          />
         </TabPane>
       </Tabs>
     </div>

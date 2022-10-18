@@ -35,8 +35,8 @@ const Sheet = React.forwardRef(
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':
           return <StrategySheet {...sheetProps} />;
-        case 'editable': 
-          return <EditableSheet {...sheetProps}/>
+        case 'editable':
+          return <EditableSheet {...sheetProps} />;
         default:
           return <PivotSheet {...sheetProps} />;
       }

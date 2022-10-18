@@ -60,7 +60,7 @@
     "lint:style": "stylelint packages/**/*.less --syntax less",
     "lint:docs": "markdownlint '**/*.md'",
     "lint:word": "case-police '**/*.md'",
-    "lint:fix-word": "yarn lint:words --fix",
+    "lint:fix-word": "yarn lint:word --fix",
     "lint:fix": "yarn lint:fix-script && yarn lint:fix-style && yarn lint:fix-docs && yarn lint:fix-word",
     "lint:fix-script": "yarn lint:script --fix",
     "lint:fix-style": "yarn lint:style --fix",
