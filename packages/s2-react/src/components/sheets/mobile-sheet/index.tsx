@@ -1,6 +1,6 @@
 import React from 'react';
-import { customMerge, DeviceType } from '@antv/s2';
 import type { SpreadSheet } from '@antv/s2';
+import { getMobileSheetComponentOptions } from '@antv/s2-shared';
 import { SheetComponent } from '../index';
 import type { SheetComponentsProps } from '../interface';
 
@@ -10,10 +10,7 @@ export const MobileSheet = React.forwardRef(
       <>
         <SheetComponent
           {...props}
-          options={customMerge(
-            { useMobileOption: true, device: DeviceType.MOBILE },
-            props.options,
-          )}
+          options={getMobileSheetComponentOptions(props.options)}
           ref={ref}
         />
       </>

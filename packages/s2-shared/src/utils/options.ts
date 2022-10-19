@@ -9,19 +9,19 @@ import { SHEET_COMPONENT_DEFAULT_OPTIONS } from '../constant/option';
 export const getBaseSheetComponentOptions = <Options = S2Options>(
   ...options: Partial<Options>[]
 ): Options => {
-  const useMobileOption = options.some(
-    (option: Partial<S2Options>) => option?.useMobileOption,
-  );
-  if (useMobileOption) {
-    return customMerge(
-      DEFAULT_OPTIONS,
-      DEFAULT_MOBILE_OPTIONS,
-      SHEET_COMPONENT_DEFAULT_OPTIONS,
-      ...options,
-    );
-  }
   return customMerge(
     DEFAULT_OPTIONS,
+    SHEET_COMPONENT_DEFAULT_OPTIONS,
+    ...options,
+  );
+};
+
+export const getMobileSheetComponentOptions = <Options = S2Options>(
+  ...options: Partial<Options>[]
+): Options => {
+  return customMerge(
+    DEFAULT_OPTIONS,
+    DEFAULT_MOBILE_OPTIONS,
     SHEET_COMPONENT_DEFAULT_OPTIONS,
     ...options,
   );

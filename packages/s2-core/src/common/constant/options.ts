@@ -106,6 +106,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
 };
 
 const mobileWidth = document.documentElement.clientWidth;
+
 export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
   width: mobileWidth - 40,
   height: 380,

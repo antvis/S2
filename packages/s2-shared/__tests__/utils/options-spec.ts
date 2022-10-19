@@ -1,10 +1,14 @@
 import {
   DEFAULT_STYLE,
+  DeviceType,
   HOVER_FOCUS_DURATION,
   LayoutWidthTypes,
-  type S2Options,
 } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '../../src';
+import { pick } from 'lodash';
+import {
+  getBaseSheetComponentOptions,
+  getMobileSheetComponentOptions,
+} from '../../src';
 
 describe('Options Tests', () => {
   test('should get safety options', () => {
@@ -105,12 +109,29 @@ describe('Options Tests', () => {
   });
 
   test('should get mobile options', () => {
-    const options = getBaseSheetComponentOptions({
-      useMobileOption: true,
-    }) as S2Options;
+    const options = pick(getMobileSheetComponentOptions(), [
+      'height',
+      'style',
+      'interaction',
+    ]);
 
-    expect(options.useMobileOption).toEqual(true);
-    expect(options.height).toEqual(380);
-    expect(options.style.layoutWidthType).toEqual(LayoutWidthTypes.ColAdaptive);
+    expect(options).toStrictEqual({
+      height: 380,
+      style: {
+        layoutWidthType: LayoutWidthTypes.ColAdaptive,
+      },
+      interaction: {
+        hoverHighlight: false,
+        hoverFocus: false,
+        brushSelection: {
+          data: false,
+          row: false,
+          col: false,
+        },
+        multiSelection: false,
+        rangeSelection: false,
+      },
+      device: DeviceType.MOBILE,
+    });
   });
 });

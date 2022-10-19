@@ -76,8 +76,6 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   /** ***********Mobile Options Config**************** */
   // use mobile options and mobile components
   device?: DeviceType;
-  useMobileOption?: boolean;
-  // mobileSort?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
