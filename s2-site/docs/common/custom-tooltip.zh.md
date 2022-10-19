@@ -73,12 +73,14 @@ object **必选**,_default：null_ 功能描述： tooltip 部分配置
 
 | 参数           | 类型                                              | 必选  | 默认值 | 功能描述                     |
 | -------------- | ------------------------------------------------- | :---: | ------ | ---------------------------- |
-| hideSummary    | `boolean`                                         |       |        | 是否隐藏所选项统计信息       |
+| hideSummary    | `boolean`                                         |       |     `false`    | 是否隐藏所选项统计信息       |
 | operator       | [TooltipOperatorOptions](#tooltipoperatoroptions) |       |        | 操作栏配置                   |
-| onlyMenu       | `boolean`                                         |       |        | tooltip 是否只展示操作菜单项 |
-| enterable      | `boolean`                                         |       |        | 是否可进入 tooltip 组件      |
-| isTotals       | `boolean`                                         |       |        | 是否是 总计/小计 单元格      |
-| showSingleTips | `boolean`                                         |       |        | 是否显示单元格提示信息       |
+| onlyMenu       | `boolean`                                         |       |      `false`   | tooltip 是否只展示操作菜单项 |
+| enterable      | `boolean`                                         |       |      `false`   | 是否可进入 tooltip 组件      |
+| isTotals       | `boolean`                                         |       |      `false`   | 是否是 总计/小计 单元格      |
+| showSingleTips | `boolean`                                         |       |     `false`    | 是否显示单元格提示信息       |
+| enableFormat | `boolean`                                         |       |     `false`    | 是否开启格式化       |
+| forceRender | `boolean`                                         |       |    `false`    | 是否强制清空 dom       |
 
 #### TooltipOperatorOptions
 
