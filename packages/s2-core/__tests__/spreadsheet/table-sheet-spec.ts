@@ -1,10 +1,11 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
-  TableSheet,
-  type S2Options,
-  type S2DataConfig,
-  ResizeType,
   ColCell,
+  DeviceType,
+  ResizeType,
+  type S2DataConfig,
+  type S2Options,
+  TableSheet,
 } from '@/index';
 
 const data = getMockData(
@@ -73,7 +74,7 @@ const options: S2Options = {
     cellCfg: {
       height: 32,
     },
-    device: 'pc',
+    device: DeviceType.PC,
   },
   interaction: {
     enableCopy: true,

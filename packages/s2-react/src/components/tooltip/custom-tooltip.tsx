@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Drawer } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
+import { MOBILE_DRAWER_WIDTH } from '../../common/constant/options';
 import type { TooltipRenderProps } from './interface';
 import { TooltipComponent } from './index';
 
@@ -37,23 +38,15 @@ export class CustomTooltip extends BaseTooltip {
           visible={this.visible}
           closeIcon={<LeftOutlined />}
           placement="right"
-          width={300}
+          width={MOBILE_DRAWER_WIDTH}
           onClose={() => {
             this.hide();
           }}
         >
-          <TooltipComponent
-            {...tooltipProps}
-            content={content}
-            visible={this.visible}
-          />
+          <TooltipComponent {...tooltipProps} content={content} />
         </Drawer>
       ) : (
-        <TooltipComponent
-          {...tooltipProps}
-          content={content}
-          visible={this.visible}
-        />
+        <TooltipComponent {...tooltipProps} content={content} />
       ),
       this.container,
     );
