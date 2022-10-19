@@ -300,10 +300,12 @@ export class PivotFacet extends BaseFacet {
 
           if (cellData) {
             // 总小计格子不一定有数据
-            const cellLabel = `${handleDataItem(
-              cellData,
-              filterDisplayDataItem,
-            )}`;
+            const valueData = handleDataItem(cellData, filterDisplayDataItem);
+            const formattedValue =
+              this.spreadsheet.dataSet.getFieldFormatter(
+                cellData[EXTRA_FIELD],
+              )?.(valueData) ?? valueData;
+            const cellLabel = `${formattedValue}`;
             const cellLabelWidth =
               this.spreadsheet.measureTextWidthRoughly(cellLabel);
 
