@@ -541,7 +541,7 @@ tooltip: {
 
 ```tsx
 <SheetComponent
-  getSpreadSheet={(instance) => {
+  onMounted={(instance) => {
     instance.showTooltip = (tooltipOptions) => {
       // 可自定义这里的 tooltipOptions
       instance.tooltip.show(tooltipOptions);

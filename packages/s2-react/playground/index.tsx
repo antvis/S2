@@ -134,7 +134,7 @@ const partDrillDown: PartDrillDown = {
     }),
 };
 
-const getSpreadSheet = (s2: SpreadSheet) => {
+const onSheetMounted = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
@@ -267,8 +267,8 @@ function MainLayout() {
     }
   };
 
-  const getColumnOptions = (sheetType: SheetType) => {
-    if (sheetType === 'table') {
+  const getColumnOptions = (type: SheetType) => {
+    if (type === 'table') {
       return dataCfg.fields.columns;
     }
     return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
@@ -970,7 +970,8 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              getSpreadSheet={(s2) => getSpreadSheet(s2)}
+              onMounted={onSheetMounted}
+              getSpreadSheet={logHandler('getSpreadSheet')}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
@@ -1031,7 +1032,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            getSpreadSheet={(s2) => getSpreadSheet(s2)}
+            onMounted={onSheetMounted}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1064,7 +1065,8 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            getSpreadSheet={(s2) => getSpreadSheet(s2)}
+            ref={s2Ref}
+            onMounted={onSheetMounted}
           />
         </TabPane>
         <TabPane tab="编辑表" key="editable">
@@ -1074,7 +1076,8 @@ function MainLayout() {
             options={mergedOptions}
             ref={s2Ref}
             themeCfg={themeCfg}
-          ></SheetComponent>
+            onMounted={onSheetMounted}
+          />
         </TabPane>
       </Tabs>
     </div>
