@@ -3,7 +3,7 @@ import type {
   FilterDataItemCallback,
   MappingDataItemCallback,
 } from '@/common/interface/basic';
-import type { Data, MultiData } from '@/common/interface/s2DataConfig';
+import type { MultiData, Data } from '@/common/interface/s2DataConfig';
 import { handleDataItem } from '@/utils/cell/data-cell';
 
 describe('Display Data Item Callback Test', () => {

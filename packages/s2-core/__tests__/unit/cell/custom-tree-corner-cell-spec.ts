@@ -20,7 +20,6 @@ describe('test for corner text', () => {
   const dataCfg: S2DataConfig = {
     meta: [],
     data: dataCustomTrees,
-    totalData: [],
     fields: {
       rows: [],
       columns: ['type', 'sub_type'],

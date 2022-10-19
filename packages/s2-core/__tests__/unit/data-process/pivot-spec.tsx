@@ -5,7 +5,7 @@ import { flattenDeep, get, size, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 
@@ -13,7 +13,7 @@ describe('Pivot Table Core Data Process', () => {
   const s2 = new PivotSheet(
     getContainer(),
     assembleDataCfg({
-      totalData: [],
+      data,
     }),
     assembleOptions({}),
   );
@@ -42,51 +42,45 @@ describe('Pivot Table Core Data Process', () => {
 
     test('should get correct indexes data', () => {
       const indexesData = ds.indexesData;
-      expect(flattenDeep(indexesData)).toHaveLength(data.length);
-      expect(get(indexesData, '0.0.0.0.0')).toEqual({
+
+      expect(flattenDeep(indexesData).filter(Boolean)).toHaveLength(
+        data.length,
+      );
+
+      expect(get(indexesData, '1.1.1.1')).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
-        [VALUE_FIELD]: 7789,
-        [EXTRA_FIELD]: 'number',
       }); // 左上角
-      expect(get(indexesData, '0.0.1.1.0')).toEqual({
+      expect(get(indexesData, '1.1.2.2')).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '办公用品',
         sub_type: '纸张',
         number: 1343,
-        [VALUE_FIELD]: 1343,
-        [EXTRA_FIELD]: 'number',
       }); // 右上角
-      expect(get(indexesData, '1.3.0.0.0')).toEqual({
+      expect(get(indexesData, '2.4.1.1')).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '家具',
         sub_type: '桌子',
         number: 2330,
-        [VALUE_FIELD]: 2330,
-        [EXTRA_FIELD]: 'number',
       }); // 左下角
-      expect(get(indexesData, '1.3.1.1.0')).toEqual({
+      expect(get(indexesData, '2.4.2.2')).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '办公用品',
         sub_type: '纸张',
         number: 352,
-        [VALUE_FIELD]: 352,
-        [EXTRA_FIELD]: 'number',
       }); // 右下角
-      expect(get(indexesData, '0.3.1.0.0')).toEqual({
+      expect(get(indexesData, '1.4.2.1')).toEqual({
         province: '浙江省',
         city: '舟山市',
         type: '办公用品',
         sub_type: '笔',
         number: 1432,
-        [VALUE_FIELD]: 1432,
-        [EXTRA_FIELD]: 'number',
       }); // 中间
     });
   });

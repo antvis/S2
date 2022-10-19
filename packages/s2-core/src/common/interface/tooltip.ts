@@ -117,10 +117,6 @@ export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
   targetCell: S2CellType;
-  getShowValue?: (
-    selectedData: TooltipDataItem[],
-    valueField: string,
-  ) => string | number; // 自定义value
 };
 
 export type TooltipIconProps = {

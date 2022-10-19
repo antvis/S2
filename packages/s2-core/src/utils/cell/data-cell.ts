@@ -2,14 +2,14 @@ import { isEqual } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
 import type {
   CellMeta,
-  Data,
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
+  ViewMetaData,
 } from '../../common/interface';
 
 export const handleDataItem = (
-  data: Data,
+  data: ViewMetaData,
   callback?: FilterDataItemCallback | MappingDataItemCallback,
 ) => {
   return callback
