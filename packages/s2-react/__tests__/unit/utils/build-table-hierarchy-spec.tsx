@@ -17,7 +17,7 @@ import { SheetComponent } from '@/components';
 
 let spreadsheetIns: SpreadSheet;
 
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -61,7 +61,7 @@ function MainLayout(props) {
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

@@ -69,6 +69,7 @@ export interface BaseSheetComponentProps<
       };
   themeCfg?: ThemeCfg;
   header?: Header;
+  /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
   /** 底表 render callback */
   onSheetUpdate?: SheetUpdateCallback;
@@ -158,6 +159,7 @@ export interface BaseSheetComponentProps<
   }) => void;
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
+  onMounted?: (spreadsheet: SpreadSheet) => void;
   onDestroy?: () => void;
 
   // ============== Resize ====================

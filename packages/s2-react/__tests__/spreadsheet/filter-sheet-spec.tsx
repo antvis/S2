@@ -18,7 +18,7 @@ const data = getMockData('../data/tableau-supermarket.csv');
 
 let spreadSheet: SpreadSheet;
 
-const getSpreadSheet =
+const onMounted =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
     const s2 = new TableSheet(dom, dataCfg, options);
@@ -125,7 +125,7 @@ function MainLayout() {
         adaptive={false}
         options={options}
         sheetType={'table'}
-        spreadsheet={getSpreadSheet(s2Ref)}
+        spreadsheet={onMounted(s2Ref)}
       />
     </Space>
   );

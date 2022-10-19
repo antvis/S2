@@ -20,7 +20,7 @@ import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components';
 
 let sheet: SpreadSheet;
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -222,7 +222,7 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

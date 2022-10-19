@@ -11,7 +11,8 @@ import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
-import invokeComponent, {
+import {
+  invokeComponent,
   type InvokeComponentProps,
 } from '../../../../utils/invokeComponent';
 import './index.less';
