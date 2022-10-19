@@ -11,7 +11,7 @@ import {
   getCellMeta,
   isMultiSelectionKey,
 } from '../utils/interaction/select-event';
-import { getActiveCellsTooltipData } from '../utils/tooltip';
+import { getCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
@@ -96,7 +96,7 @@ export class DataCellMultiSelection
         );
         this.spreadsheet.showTooltipWithInfo(
           event,
-          getActiveCellsTooltipData(this.spreadsheet),
+          getCellsTooltipData(this.spreadsheet),
         );
       }
     });
