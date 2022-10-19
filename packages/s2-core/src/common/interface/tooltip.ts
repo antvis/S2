@@ -26,26 +26,25 @@ export interface TooltipPosition {
   y: number;
 }
 
-export type ListItem = {
+export type TooltipDetailListItem = {
   name: string;
   value: string | number;
   icon?: Element | string;
 };
 
-export interface SortQuery {
-  [key: string]: string;
-}
-
 export interface TooltipOptions {
+  // 隐藏汇总
   hideSummary?: boolean;
-  // button action on the top
+  // 顶部操作项
   operator?: TooltipOperatorOptions;
   enterable?: boolean;
-  // totals or not
+  // 是否是小计
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
   enableFormat?: boolean;
+  // 是否强制清空 dom
+  forceRender?: boolean;
 }
 
 export interface TooltipSummaryOptions {
@@ -62,7 +61,9 @@ export interface TooltipNameTipsOptions {
 export interface TooltipOperationOptions {
   plot: SpreadSheet;
   sortFieldId: string;
-  sortQuery: SortQuery;
+  sortQuery: {
+    [key: string]: string;
+  };
 }
 
 export interface TooltipOperationState {
@@ -70,7 +71,7 @@ export interface TooltipOperationState {
 }
 
 export type TooltipDetailProps = {
-  list: ListItem[];
+  list: TooltipDetailListItem[];
 };
 
 export type TooltipInterpretationOptions = {
@@ -96,7 +97,7 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
-  details?: ListItem[];
+  details?: TooltipDetailListItem[];
   headInfo?: TooltipHeadInfo;
   name?: string;
   tips?: string;
@@ -108,8 +109,8 @@ export type TooltipData = {
 };
 
 export type TooltipHeadInfo = {
-  rows: ListItem[];
-  cols: ListItem[];
+  rows: TooltipDetailListItem[];
+  cols: TooltipDetailListItem[];
 };
 
 export type TooltipDataParams = {

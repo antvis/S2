@@ -37,6 +37,7 @@ export interface CellMeta {
   type: CellTypes;
   [key: string]: unknown;
 }
+
 export type OnUpdateCells = (
   root: RootInteraction,
   defaultOnUpdateCells: () => void,

@@ -5,6 +5,7 @@ import {
   get,
   includes,
   isBoolean,
+  isEmpty,
   isFunction,
   isNumber,
   keys,
@@ -26,15 +27,25 @@ import type {
   S2Theme,
   StateShapeLayer,
   TextTheme,
+  Conditions,
+  Condition,
+  MappingResult,
+  IconCondition,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getContentArea,
   getTextAndFollowingIconPosition,
 } from '../utils/cell/cell';
-import { renderLine, renderText, updateShapeAttr } from '../utils/g-renders';
+import {
+  renderIcon,
+  renderLine,
+  renderText,
+  updateShapeAttr,
+} from '../utils/g-renders';
 import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
+import type { GuiIcon } from '../common/icons/gui-icon';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -61,6 +72,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
 
+  protected conditions: Conditions;
+
+  protected conditionIntervalShape: IShape;
+
+  protected conditionIconShape: GuiIcon;
+
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, IShape>();
 
@@ -73,6 +90,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.meta = meta;
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
+    this.conditions = this.spreadsheet.options.conditions;
     this.handleRestOptions(...restOptions);
     this.initCell();
   }
@@ -144,6 +162,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected abstract getMaxTextWidth(): number;
 
   protected abstract getTextPosition(): Point;
+
+  protected abstract findFieldCondition(conditions: Condition[]): Condition;
+
+  protected abstract mappingValue(condition: Condition): MappingResult;
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -338,5 +360,39 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public getTextShape() {
     return this.textShape;
+  }
+
+  public get cellConditions() {
+    return this.conditions;
+  }
+
+  public drawConditionIconShapes() {
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+    if (iconCondition && iconCondition.mapping) {
+      const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
+      const { size } = this.theme.dataCell.icon;
+      if (!isEmpty(attrs?.icon)) {
+        this.conditionIconShape = renderIcon(this, {
+          ...position,
+          name: attrs.icon,
+          width: size,
+          height: size,
+          fill: attrs.fill,
+        });
+      }
+    }
+  }
+
+  public getTextConditionFill(textStyle: TextTheme) {
+    // get text condition's fill result
+    let fillResult = textStyle.fill;
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+    if (textCondition?.mapping) {
+      fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    }
+    return fillResult;
   }
 }

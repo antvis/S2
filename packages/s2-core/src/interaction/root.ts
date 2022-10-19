@@ -12,6 +12,7 @@ import {
 import type {
   BrushSelection,
   BrushSelectionInfo,
+  CellMeta,
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
@@ -166,13 +167,13 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells() {
+  public getCells(): CellMeta[] {
     const currentState = this.getState();
     return currentState?.cells || [];
   }
 
   // 获取 cells 中在可视区域内的实例列表
-  public getActiveCells() {
+  public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
     const allCells = this.getAllCells();
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序

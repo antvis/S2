@@ -64,7 +64,11 @@ export const createFakeSpreadSheet = () => {
     height: DEFAULT_OPTIONS.height,
     container,
   });
-  s2.facet = {} as BaseFacet;
+  s2.facet = {
+    layoutResult: {
+      getCellMeta: jest.fn(),
+    },
+  } as unknown as BaseFacet;
   s2.facet.panelBBox = {
     maxX: s2.options.width,
     maxY: s2.options.height,
@@ -131,6 +135,11 @@ export const createMockCellInfo = (
       dataSet: {
         getFieldDescription: jest.fn(),
       },
+      facet: {
+        layoutResult: {
+          getCellMeta: jest.fn(),
+        },
+      } as unknown as BaseFacet,
     } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, [

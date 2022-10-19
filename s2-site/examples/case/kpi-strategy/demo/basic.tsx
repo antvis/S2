@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { merge } from 'lodash';
-import { DataCell, CornerCell, measureTextWidth } from '@antv/s2';
+import { DataCell, measureTextWidth } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -161,7 +161,7 @@ class KpiStrategyDataCell extends DataCell {
 
 fetch('../data/kpi-strategy.json')
   .then((res) => res.json())
-  .then(({ data, totalData }) => {
+  .then(({ data }) => {
     const s2DataConfig = {
       fields: {
         rows: ['type', 'subType'],
@@ -188,7 +188,6 @@ fetch('../data/kpi-strategy.json')
         },
       ],
       data,
-      totalData,
     };
 
     const s2Options = {
@@ -199,6 +198,11 @@ fetch('../data/kpi-strategy.json')
         operation: {
           trend: true,
           hiddenColumns: true,
+        },
+      },
+      totals: {
+        row: {
+          showSubTotals: true,
         },
       },
       interaction: {
