@@ -1,6 +1,6 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, range } from 'lodash';
-import type { DataCell } from '../../cell/data-cell';
+import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   CellTypes,
@@ -115,9 +115,14 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       });
     }
 
-    const selectedCellsLike = this.getScrollBrushRangeCells(selectedCellMetas);
-    this.spreadsheet.emit(S2Event.DATA_CELL_BRUSH_SELECTION, selectedCellsLike);
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, selectedCellsLike);
+    const scrollBrushRangeCells =
+      this.getScrollBrushRangeCells(selectedCellMetas);
+
+    this.spreadsheet.emit(
+      S2Event.DATA_CELL_BRUSH_SELECTION,
+      scrollBrushRangeCells,
+    );
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
 
     // 未刷选到有效格子, 允许 hover
     if (isEmpty(this.brushRangeCells)) {
@@ -128,7 +133,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   /**
    * @name 获取刷选 (含滚动后不再可视范围内) 的单元格
    * @description DataCell 存在滚动刷选, 由于按需加载的特性, 非可视范围内的单元格已被注销
-   * 所以获取到的是 可视范围 (DataCell) + 非可视范围 (DataCellMeta) 的组合
+   * 如果在可视范围, 直接返回 DataCell, 非可视范围, 由于实例已被销毁, 构造实例后返回
    */
   private getScrollBrushRangeCells(selectedCellMetas: CellMeta[]) {
     return selectedCellMetas.map((meta) => {
@@ -137,7 +142,15 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         return visibleCellMeta?.id === meta.id;
       });
 
-      return visibleCell ?? meta;
+      if (visibleCell) {
+        return visibleCell;
+      }
+
+      const viewMeta = this.spreadsheet.facet.layoutResult.getCellMeta(
+        meta.rowIndex,
+        meta.colIndex,
+      );
+      return new DataCell(viewMeta, this.spreadsheet);
     });
   }
 

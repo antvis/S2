@@ -42,7 +42,7 @@ type ResizeHandler = (data: {
   style?: Style;
   seriesNumberWidth?: number;
 }) => void;
-type SelectedHandler = (cells: (S2CellType | CellMeta)[]) => void;
+type SelectedHandler = (cells: S2CellType[]) => void;
 type SortedHandler = (rangeData: Data[]) => any;
 
 export interface EmitterType {

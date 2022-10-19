@@ -106,9 +106,7 @@ export interface BaseSheetComponentProps<
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
-  onDataCellBrushSelection?: (
-    brushRangeDataCells: (DataCell | CellMeta)[],
-  ) => void;
+  onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: CellMeta[]) => void;
 
   // ============== Corner Cell ====================
@@ -198,7 +196,7 @@ export interface BaseSheetComponentProps<
   onMouseUp?: (event: MouseEvent) => void;
   onMouseDown?: (event: MouseEvent) => void;
   onMouseMove?: (event: MouseEvent) => void;
-  onSelected?: (cells: (DataCell | CellMeta)[]) => void;
+  onSelected?: (cells: S2CellType[]) => void;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;
   onScroll?: (position: CellScrollPosition) => void;

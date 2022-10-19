@@ -46,7 +46,7 @@ order: 0
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: ([DataCell](/zh/docs/api/basic-class/base-cell) \| [ViewMeta](/zh/docs/api/basic-class/base-cell#viewmeta))[] ) => void |  |  |
+| onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: ([DataCell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -92,7 +92,7 @@ order: 0
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| onSelected | 单元格选中事件 | (cells: ( [Cell](/zh/docs/api/basic-class/base-cell) \| [ViewMeta](/zh/docs/api/basic-class/base-cell#viewmeta))[] ) => void |  |  |
+| onSelected | 单元格选中事件 | (cells: ( [Cell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
@@ -165,7 +165,7 @@ type SheetComponentOptions = S2Options<
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellTrendIconClick | 数值趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/zh/docs/api/basic-class/base-cell) \| [ViewMeta](/zh/docs/api/basic-class/base-cell#viewmeta))[] ) => void |  |  |
+| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
