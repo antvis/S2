@@ -1,6 +1,8 @@
-import { BaseTooltip, SpreadSheet } from '@antv/s2';
+import { BaseTooltip, isMobile, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Drawer } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 import type { TooltipRenderProps } from './interface';
 import { TooltipComponent } from './index';
 
@@ -14,9 +16,9 @@ export class CustomTooltip extends BaseTooltip {
     const { content: contentFromOptions } = this.spreadsheet.options.tooltip;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
-    const cell = this.spreadsheet.getCell(showOptions.event?.target);
+    const cell = this.spreadsheet.getCell(showOptions?.event?.target);
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
-    const content = showOptions.content ?? contentFromOptions;
+    const content = showOptions?.content ?? contentFromOptions;
 
     const tooltipProps: TooltipRenderProps = {
       ...showOptions,
@@ -24,14 +26,44 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
-    if (showOptions.options?.forceRender) {
+    if (showOptions?.options?.forceRender) {
       this.unmountComponentAtNode();
     }
 
     ReactDOM.render(
-      <TooltipComponent {...tooltipProps} content={content} />,
+      isMobile(this.spreadsheet.options?.device) ? (
+        <Drawer
+          title={cell?.getActualText()}
+          visible={this.visible}
+          closeIcon={<LeftOutlined />}
+          placement="right"
+          width={300}
+          onClose={() => {
+            this.hide();
+          }}
+        >
+          <TooltipComponent
+            {...tooltipProps}
+            content={content}
+            visible={this.visible}
+          />
+        </Drawer>
+      ) : (
+        <TooltipComponent
+          {...tooltipProps}
+          content={content}
+          visible={this.visible}
+        />
+      ),
       this.container,
     );
+  }
+
+  hide() {
+    super.hide();
+    if (this.container) {
+      this.renderContent();
+    }
   }
 
   destroy() {
