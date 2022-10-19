@@ -75,6 +75,7 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
 
   /** ***********Mobile Options Config**************** */
   // use mobile options and mobile components
+  device?: DeviceType;
   useMobileOption?: boolean;
   // mobileSort?: boolean;
 
@@ -111,6 +112,11 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 }
 
+// 设备，pc || mobile
+export enum DeviceType {
+  PC = 'pc',
+  MOBILE = 'mobile',
+}
 // Table sheet options
 export interface S2TableSheetOptions {
   // frozen row & cols
