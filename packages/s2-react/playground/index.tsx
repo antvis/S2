@@ -134,7 +134,7 @@ const partDrillDown: PartDrillDown = {
     }),
 };
 
-const onSheetLoad = (s2: SpreadSheet) => {
+const onSheetMounted = (s2: SpreadSheet) => {
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
@@ -289,13 +289,6 @@ function MainLayout() {
     }
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sheetType]);
-
-  React.useEffect(() => {
-    console.log('@ref', s2Ref.current);
-    s2Ref.current?.on(S2Event.GLOBAL_CLICK, () => {
-      console.log(1);
-    });
   }, [sheetType]);
 
   //  ================== Config ========================
@@ -977,7 +970,8 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              onMounted={onSheetLoad}
+              onMounted={onSheetMounted}
+              getSpreadSheet={logHandler('getSpreadSheet')}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
@@ -1035,7 +1029,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={StrategyOptions}
             onRowCellClick={logHandler('onRowCellClick')}
-            onMounted={onSheetLoad}
+            onMounted={onSheetMounted}
             header={{
               title: '趋势分析表',
               description: '支持子弹图',
@@ -1069,7 +1063,7 @@ function MainLayout() {
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
             ref={s2Ref}
-            onMounted={onSheetLoad}
+            onMounted={onSheetMounted}
           />
         </TabPane>
         <TabPane tab="编辑表" key="editable">
@@ -1079,7 +1073,7 @@ function MainLayout() {
             options={mergedOptions}
             ref={s2Ref}
             themeCfg={themeCfg}
-            onMounted={onSheetLoad}
+            onMounted={onSheetMounted}
           />
         </TabPane>
       </Tabs>

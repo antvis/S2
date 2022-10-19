@@ -66,6 +66,9 @@ describe('<SheetComponent/> Tests', () => {
         onMountedRef = instance;
       });
       const onDestroy = jest.fn();
+      const warnSpy = jest
+        .spyOn(console, 'warn')
+        .mockImplementationOnce(() => {});
 
       act(() => {
         ReactDOM.render(
@@ -85,6 +88,9 @@ describe('<SheetComponent/> Tests', () => {
       expect(onMounted).toHaveBeenCalledWith(onMountedRef);
       expect(onMountedRef).toEqual(getSpreadSheetRef);
       expect(onDestroy).not.toHaveBeenCalled();
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+      );
 
       act(() => {
         ReactDOM.unmountComponentAtNode(container);
