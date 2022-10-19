@@ -28,6 +28,7 @@ order: 5
 | errorText | 操作失败文案 | `string` |  |  |
 | fileName | 自定义下载文件名 | `string` | `sheet` |  |
 | syncCopy | 同步复制数据 （默认异步） | `boolean` | `false` |  |
+| dropdown | 下拉菜单配置，透传给 `antd` 的 `Dropdown` 组件 | [DropdownProps](https://ant.design/components/dropdown-cn/#API) | | |
 
 `markdown:docs/common/export.zh.md`
 
