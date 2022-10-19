@@ -18,7 +18,7 @@ fetch(
       <SheetComponent
         dataCfg={dataCfg}
         options={s2Options}
-        getSpreadSheet={(instance) => {
+        onMounted={(instance) => {
           instance.showTooltip = (tooltipOptions) => {
             const { position, data = {}, options } = tooltipOptions;
             const name = `${data.name} - 测试`; // 只有单元格中文案被省略才显示

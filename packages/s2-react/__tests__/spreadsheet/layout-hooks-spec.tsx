@@ -19,7 +19,7 @@ import { SheetComponent } from '@/components';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let innerSS: SpreadSheet;
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -190,7 +190,7 @@ const MainLayout = ({ options, dataCfg }) => {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

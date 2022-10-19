@@ -1,12 +1,12 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { DataType, S2DataConfig, S2Options, Node } from '@antv/s2';
+import type { DataType, S2DataConfig, S2Options } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
   SheetType,
 } from '@antv/s2-shared';
-import { defineComponent, onMounted, reactive, ref, shallowRef } from 'vue';
+import { defineComponent, reactive, ref, shallowRef } from 'vue';
 import { forEach, random } from 'lodash';
 import { SheetComponent } from '../src';
 
@@ -645,8 +645,8 @@ export default defineComponent({
     const onColCellClick = (params: any) => {
       console.log('col cell click: ', params);
     };
-    const onGetSpreadsheet = (params: any) => {
-      console.log('getSpreadsheet: ', params);
+    const onMounted = (params: any) => {
+      console.log('onMounted: ', params);
     };
 
     const handlePageChange = (current: number) =>
@@ -662,8 +662,9 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      console.log('s2 instance:', s2.value?.instance);
+      console.log('onMounted', s2.value?.instance);
     });
+
     return {
       sheetType,
       s2,
@@ -675,7 +676,7 @@ export default defineComponent({
       onRowCellClick,
       onDataCellClick,
       onColCellClick,
-      onGetSpreadsheet,
+      onMounted,
       togglePagination,
       partDrillDown,
       showPagination: {
@@ -734,7 +735,7 @@ export default defineComponent({
     :showPagination="showPagination"
     :partDrillDown="partDrillDown"
     @rowCellClick="onRowCellClick"
-    @getSpreadSheet="onGetSpreadsheet"
+    @mounted="onMounted"
     @dataCellClick="onDataCellClick"
     @colCellClick="onColCellClick"
   />

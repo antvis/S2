@@ -34,7 +34,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': [
-      1,
+      2,
       {
         endOfLine: 'lf',
         semi: true,
@@ -74,6 +74,7 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
       },
     ],
+    'react/sort-comp': 2,
     'react/display-name': 0,
     'react/prop-types': 0,
     'react/state-in-constructor': 0,
