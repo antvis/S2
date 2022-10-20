@@ -382,6 +382,51 @@ describe('SpreadSheet Custom Grid Tests', () => {
       ]);
     });
 
+    test('should calc correctly leaf nodes width after column resized', () => {
+      s2.setOptions({
+        style: {
+          colCfg: {
+            heightByField: {
+              'a-1-1': 40,
+            },
+          },
+        },
+      });
+      s2.render(false);
+
+      const colNodes = s2.getColumnNodes().map((node) => ({
+        label: node.label,
+        height: node.height,
+      }));
+
+      expect(colNodes).toEqual([
+        {
+          height: 30,
+          label: '自定义节点 a-1',
+        },
+        {
+          height: 40,
+          label: '自定义节点 a-1-1',
+        },
+        {
+          height: 30,
+          label: '指标1',
+        },
+        {
+          height: 30,
+          label: '指标2',
+        },
+        {
+          height: 70,
+          label: '自定义节点 a-1-2',
+        },
+        {
+          height: 100,
+          label: '自定义节点 a-2',
+        },
+      ]);
+    });
+
     test('should select custom col header cell', () => {
       // a-1
       const colNode = s2.getColumnNodes()[0];

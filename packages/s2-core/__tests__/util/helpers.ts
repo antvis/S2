@@ -127,12 +127,14 @@ export function getGradient(
 
 export const createMockCellInfo = (
   cellId: string,
-  { colIndex = 0, rowIndex = 0 } = {},
+  { colIndex = 0, rowIndex = 0, level = 0 } = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
+    field: cellId,
     colIndex,
     rowIndex,
+    level,
     type: undefined,
     x: 0,
     y: 0,

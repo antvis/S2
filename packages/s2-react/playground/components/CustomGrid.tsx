@@ -60,14 +60,15 @@ export const pivotSheetCustomColGridDataCfg: S2DataConfig = {
 };
 
 enum CustomType {
-  Row,
-  Col,
-  All,
+  Row = 'row',
+  Col = 'col',
+  All = 'all',
 }
 
 export const CustomGrid = () => {
   const [customType, setCustomType] = React.useState<CustomType>(
-    CustomType.Row,
+    (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
+      CustomType.Row,
   );
   const [hierarchyType, setHierarchyType] =
     React.useState<SheetComponentOptions['hierarchyType']>('grid');

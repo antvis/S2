@@ -181,7 +181,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.y = 0;
       } else {
         const preLevelSample = colsHierarchy.sampleNodesForAllLevels.find(
-          (n) => n.level === currentNode.level - 1,
+          (node) => node.level === currentNode.level - 1,
         );
         currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
       }
@@ -328,9 +328,9 @@ export class PivotFacet extends BaseFacet {
     return this.getAdaptGridColWidth(colLeafNodes, rowHeaderWidth);
   }
 
-  private getColNodeHeight(col: Node) {
+  private getColNodeHeight(colNode: Node): number {
     const { colCfg } = this.cfg;
-    const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
+    const userDraggedHeight = colCfg?.heightByField?.[colNode?.field];
     return userDraggedHeight || colCfg.height;
   }
 
