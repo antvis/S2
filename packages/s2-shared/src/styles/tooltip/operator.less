@@ -1,5 +1,8 @@
 @tooltip-prefix-cls: antv-s2-tooltip-operator;
+@tooltip-mobile-prefix-cls: antv-s2-tooltip-mobile-operator;
 @tooltip-menu-item-text-color: rgba(0, 0, 0, 0.65);
+// 统一将 font-size 设置为 14px (chrome 显示的 minimum font-size: 14px)
+@tooltip-menu-font-size: 14px;
 
 .with-menu-item-color() {
   &:not(.ant-menu-item-active) {
@@ -9,7 +12,7 @@
 
 .@{tooltip-prefix-cls} {
   color: @tooltip-menu-item-text-color;
-  font-size: 12px;
+  font-size: @tooltip-menu-font-size;
   line-height: 32px;
   background: #f9f9f9;
   padding: 0 12px;
@@ -22,7 +25,7 @@
   }
 
   &-menus.ant-menu-vertical.ant-menu {
-    font-size: 12px;
+    font-size: @tooltip-menu-font-size;
     line-height: 32px;
     color: @tooltip-menu-item-text-color;
     border: 0;
@@ -51,7 +54,7 @@
     .ant-menu-item {
       .with-menu-item-color();
 
-      font-size: 12px;
+      font-size: @tooltip-menu-font-size;
       line-height: 32px;
       padding: 0 12px;
       border: 0;
@@ -66,7 +69,7 @@
         .with-menu-item-color();
 
         padding: 0 12px;
-        font-size: 12px;
+        font-size: @tooltip-menu-font-size;
         line-height: 32px;
         margin: 0;
 
@@ -83,7 +86,7 @@
     .ant-menu-item {
       .with-menu-item-color();
 
-      font-size: 12px;
+      font-size: @tooltip-menu-font-size;
       line-height: 32px;
       padding: 0 12px;
     }
@@ -104,8 +107,56 @@
     margin-right: 4px;
 
     svg {
-      width: 12px;
-      height: 12px;
+      width: @tooltip-menu-font-size;
+      height: @tooltip-menu-font-size;
+    }
+  }
+}
+
+// mobile style
+@media only screen and (max-device-width: 480px) {
+  .@{tooltip-prefix-cls} {
+    &-menus.ant-menu-vertical.ant-menu {
+      font-size: @tooltip-menu-font-size;
+
+      .ant-menu-item {
+        height: 36px;
+      }
+    }
+
+    &-menus.ant-dropdown-menu-vertical,
+    &-menus.ant-menu-vertical {
+      .ant-dropdown-menu-item,
+      .ant-menu-item {
+        line-height: 36px;
+      }
+
+      .ant-dropdown-menu-submenu,
+      .ant-dropdown-menu-submenu-vertical,
+      .ant-menu-submenu,
+      .ant-menu-submenu-vertical {
+        .ant-menu-submenu-title {
+          .with-menu-item-color();
+
+          font-size: @tooltip-menu-font-size;
+        }
+      }
+    }
+
+    &-submenu-popup {
+      .ant-dropdown-menu-item,
+      .ant-menu-item {
+        .with-menu-item-color();
+
+        font-size: @tooltip-menu-font-size;
+      }
+    }
+
+    &-icon {
+      svg {
+        width: @tooltip-menu-font-size;
+        height: @tooltip-menu-font-size;
+      }
     }
   }
 }
