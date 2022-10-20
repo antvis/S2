@@ -1,6 +1,7 @@
 import type { Event as CanvasEvent, IShape } from '@antv/g-canvas';
 import {
   find,
+  findLast,
   first,
   forEach,
   get,
@@ -20,15 +21,19 @@ import { InteractionStateName } from '../common/constant/interaction';
 import { GuiIcon } from '../common/icons';
 import type {
   CellMeta,
+  Condition,
   FormatResult,
   HeaderActionIconOptions,
+  MappingResult,
   SortParam,
+  TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header';
 import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
+import { renderRect } from '../utils/g-renders';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -40,6 +45,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected actionIcons: GuiIcon[];
 
   protected hasDefaultHiddenIcon: boolean;
+
+  protected abstract isBolderText(): boolean;
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
@@ -150,6 +157,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
 
     const { icon, text } = this.getStyle();
+    const fill = this.getTextConditionFill(text);
     const { sortParam } = this.headerConfig;
     const position = this.getIconPosition();
     const sortIcon = new GuiIcon({
@@ -157,7 +165,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       ...position,
       width: icon.size,
       height: icon.size,
-      fill: text.fill,
+      fill,
     });
     sortIcon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
@@ -175,8 +183,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected addActionIcon(options: HeaderActionIconOptions) {
     const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
     const { icon: iconTheme, text: textTheme } = this.getStyle();
-    // 未配置 icon 颜色, 默认使用文字颜色
-    const actionIconColor = iconTheme?.fill || textTheme?.fill;
+    const fill = this.getTextConditionFill(textTheme);
+    // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
+    const actionIconColor = iconTheme?.fill || fill;
 
     const icon = new GuiIcon({
       name: iconName,
@@ -260,6 +269,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
   }
 
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    });
+  }
+
   protected isSortCell() {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
     const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
@@ -314,6 +334,35 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
+  protected getTextStyle(): TextTheme {
+    const { text, bolderText, measureText } = this.getStyle();
+    let style: TextTheme;
+    if (this.isMeasureField()) {
+      style = measureText || text;
+    } else if (this.isBolderText()) {
+      style = bolderText;
+    } else {
+      style = text;
+    }
+    const fill = this.getTextConditionFill(style);
+
+    return { ...style, fill };
+  }
+
+  public getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
+    let fill = backgroundColor;
+    // get background condition fill color
+    const bgCondition = this.findFieldCondition(this.conditions?.background);
+    if (bgCondition && bgCondition.mapping) {
+      const attrs = this.mappingValue(bgCondition);
+      if (attrs) {
+        fill = attrs.fill;
+      }
+    }
+    return { backgroundColor: fill, backgroundColorOpacity };
+  }
+
   public toggleActionIcon(id: string) {
     if (this.getMeta().id === id) {
       const visibleActionIcons: GuiIcon[] = [];
@@ -364,5 +413,18 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public isMeasureField() {
     return [EXTRA_FIELD, EXTRA_COLUMN_FIELD].includes(this.meta.field);
+  }
+
+  public mappingValue(condition: Condition): MappingResult {
+    const value = this.getMeta().label;
+    return condition?.mapping(value, this.meta);
+  }
+
+  public findFieldCondition(conditions: Condition[]): Condition {
+    return findLast(conditions, (item) => {
+      return item.field instanceof RegExp
+        ? item.field.test(this.meta.field)
+        : item.field === this.meta.field;
+    });
   }
 }

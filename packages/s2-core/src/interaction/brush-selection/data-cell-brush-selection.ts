@@ -1,12 +1,13 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isEmpty } from 'lodash';
-import type { DataCell } from '../../cell/data-cell';
+import { isEmpty, range } from 'lodash';
+import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
+  CellTypes,
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushRange, ViewMeta } from '../../common/interface';
+import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { updateRowColCells } from '../../utils';
 import { BaseBrushSelection } from './base-brush-selection';
 
@@ -59,36 +60,40 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     );
   }
 
-  public getSelectedCellMetas = (range: BrushRange) => {
-    const metas = [];
-    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
-    const rowLeafNodes = this.spreadsheet.facet.layoutResult.rowLeafNodes ?? [];
-    for (
-      let rowIndex = range.start.rowIndex;
-      rowIndex < range.end.rowIndex + 1;
-      rowIndex++
-    ) {
-      for (
-        let colIndex = range.start.colIndex;
-        colIndex < range.end.colIndex + 1;
-        colIndex++
-      ) {
+  public getSelectedCellMetas = (brushRange: BrushRange): CellMeta[] => {
+    const metas: CellMeta[] = [];
+    const { rowLeafNodes = [], colLeafNodes = [] } =
+      this.spreadsheet.facet.layoutResult;
+
+    const rowIndexRange = range(
+      brushRange.start.rowIndex,
+      brushRange.end.rowIndex + 1,
+    );
+
+    const colIndexRange = range(
+      brushRange.start.colIndex,
+      brushRange.end.colIndex + 1,
+    );
+
+    rowIndexRange.forEach((rowIndex) => {
+      colIndexRange.forEach((colIndex) => {
         const colId = String(colLeafNodes[colIndex].id);
-        let rowId = String(rowIndex);
-        if (rowLeafNodes.length) {
-          rowId = String(rowLeafNodes[rowIndex].id);
-        }
+        const rowId = isEmpty(rowLeafNodes)
+          ? String(rowIndex)
+          : String(rowLeafNodes[rowIndex].id);
+
         metas.push({
           colIndex,
           rowIndex,
           id: `${rowId}-${colId}`,
-          type: 'dataCell',
+          type: CellTypes.DATA_CELL,
           rowId,
           colId,
           spreadsheet: this.spreadsheet,
         });
-      }
-    }
+      });
+    });
+
     return metas;
   };
 
@@ -96,8 +101,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   protected updateSelectedCells() {
     const { interaction, options } = this.spreadsheet;
 
-    const range = this.getBrushRange();
-    const selectedCellMetas = this.getSelectedCellMetas(range);
+    const brushRange = this.getBrushRange();
+    const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     interaction.changeState({
       cells: selectedCellMetas,
@@ -106,19 +111,47 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
     if (options.interaction.selectedCellHighlight) {
       selectedCellMetas.forEach((meta) => {
-        updateRowColCells(meta);
+        updateRowColCells(meta as unknown as ViewMeta);
       });
     }
 
+    const scrollBrushRangeCells =
+      this.getScrollBrushRangeCells(selectedCellMetas);
+
     this.spreadsheet.emit(
       S2Event.DATA_CELL_BRUSH_SELECTION,
-      this.brushRangeCells,
+      scrollBrushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
+
     // 未刷选到有效格子, 允许 hover
     if (isEmpty(this.brushRangeCells)) {
       interaction.removeIntercepts([InterceptType.HOVER]);
     }
+  }
+
+  /**
+   * @name 获取刷选 (含滚动后不再可视范围内) 的单元格
+   * @description DataCell 存在滚动刷选, 由于按需加载的特性, 非可视范围内的单元格已被注销
+   * 如果在可视范围, 直接返回 DataCell, 非可视范围, 由于实例已被销毁, 构造实例后返回
+   */
+  private getScrollBrushRangeCells(selectedCellMetas: CellMeta[]) {
+    return selectedCellMetas.map((meta) => {
+      const visibleCell = this.brushRangeCells.find((cell) => {
+        const visibleCellMeta = cell.getMeta();
+        return visibleCellMeta?.id === meta.id;
+      });
+
+      if (visibleCell) {
+        return visibleCell;
+      }
+
+      const viewMeta = this.spreadsheet.facet.layoutResult.getCellMeta(
+        meta.rowIndex,
+        meta.colIndex,
+      );
+      return new DataCell(viewMeta, this.spreadsheet);
+    });
   }
 
   protected bindMouseUp() {

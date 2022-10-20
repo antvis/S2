@@ -69,7 +69,10 @@ export const createFakeSpreadSheet = () => {
       maxX: s2.options.width,
       maxY: s2.options.height,
     },
-  } as BaseFacet;
+    layoutResult: {
+      getCellMeta: jest.fn(),
+    },
+  } as unknown as BaseFacet;
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {
@@ -143,6 +146,11 @@ export const createMockCellInfo = (
         getFieldDescription: jest.fn(),
         getCustomRowFieldDescription: jest.fn(),
       },
+      facet: {
+        layoutResult: {
+          getCellMeta: jest.fn(),
+        },
+      } as unknown as BaseFacet,
     } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, [

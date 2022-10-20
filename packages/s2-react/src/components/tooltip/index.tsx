@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 import React from 'react';
 import { getTooltipDefaultOptions } from '@antv/s2';
 import type {
-  ListItem,
+  TooltipDetailListItem,
   TooltipOperatorOptions,
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
@@ -54,7 +54,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     );
   };
 
-  const renderDetail = (details: ListItem[]) => {
+  const renderDetail = (details: TooltipDetailListItem[]) => {
     return !isEmpty(details) && <TooltipDetail list={details} />;
   };
 

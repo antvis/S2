@@ -1,14 +1,8 @@
 import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
-import { get } from 'lodash';
-import React, {
-  useEffect,
-  useState,
-  type MutableRefObject,
-  type PropsWithChildren,
-} from 'react';
+import React from 'react';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
-import SpreadSheetContext from '../../../utils/SpreadSheetContext';
+import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
@@ -18,20 +12,24 @@ import './index.less';
 
 export const BaseSheet = React.forwardRef<
   SpreadSheet,
-  PropsWithChildren<SheetComponentsProps>
+  React.PropsWithChildren<SheetComponentsProps>
 >((props, ref) => {
   const { dataCfg, options, header } = props;
   const { s2Ref, loading, containerRef, pagination, wrapperRef } =
     useSpreadSheet(props);
-  const [contextVal, setContextVal] = useState<SpreadSheet>(s2Ref.current);
+
+  const [contextVal, setContextVal] = React.useState<SpreadSheet>(
+    s2Ref.current,
+  );
 
   // 同步实例
-  useEffect(() => {
+  React.useEffect(() => {
     if (ref) {
-      (ref as MutableRefObject<SpreadSheet>).current = s2Ref.current;
+      (ref as React.MutableRefObject<SpreadSheet>).current = s2Ref.current;
     }
   }, [ref, s2Ref]);
-  useEffect(() => setContextVal(s2Ref.current), [s2Ref.current]);
+
+  React.useEffect(() => setContextVal(s2Ref.current), [setContextVal, s2Ref]);
 
   return (
     <React.StrictMode>

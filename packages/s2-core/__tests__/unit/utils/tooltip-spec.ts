@@ -6,6 +6,7 @@ import {
 import type { BBox } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { CellData } from '@/data-set/cell-data';
+import type { CellMeta } from '@/common/interface/interaction';
 import {
   getAutoAdjustPosition,
   setTooltipContainerStyle,
@@ -516,12 +517,16 @@ describe('Tooltip Utils Tests', () => {
               })
               .slice(0, count);
 
+        const selectedCellMetas = selectedCells.map((cell) =>
+          cell.getMeta(),
+        ) as unknown as CellMeta[];
+
         jest
-          .spyOn(s2.interaction, 'getActiveCells')
-          .mockImplementationOnce(() => selectedCells);
+          .spyOn(s2.interaction, 'getCells')
+          .mockImplementationOnce(() => selectedCellMetas);
 
         const tooltipData = getTooltipData({
-          cellInfos: [selectedCells],
+          cellInfos: [selectedCellMetas],
           options: {
             showSingleTips: false,
           },

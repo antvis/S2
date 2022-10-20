@@ -9,11 +9,7 @@ import {
   S2Event,
 } from '../common/constant';
 import { CellBorderPosition } from '../common/interface';
-import type {
-  DefaultCellTheme,
-  IconTheme,
-  TextTheme,
-} from '../common/interface';
+import type { DefaultCellTheme, IconTheme } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import {
   adjustColHeaderScrollingTextPosition,
@@ -53,6 +49,8 @@ export class ColCell extends HeaderCell {
     this.drawInteractiveBorderShape();
     // draw text
     this.drawTextShape();
+    // 绘制字段标记 -- icon
+    this.drawConditionIconShapes();
     // draw action icons
     this.drawActionIcons();
     // draw borders
@@ -61,15 +59,6 @@ export class ColCell extends HeaderCell {
     this.drawResizeArea();
     this.addExpandColumnIconShapes();
     this.update();
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    });
   }
 
   // 交互使用的背景色
@@ -101,21 +90,6 @@ export class ColCell extends HeaderCell {
         visible: false,
       }),
     );
-  }
-
-  protected getTextStyle(): TextTheme {
-    const { isLeaf, isTotals } = this.meta;
-    const { text, bolderText, measureText } = this.getStyle();
-
-    if (this.isMeasureField()) {
-      return measureText || text;
-    }
-
-    if (isTotals || !isLeaf) {
-      return bolderText;
-    }
-
-    return text;
   }
 
   protected getMaxTextWidth(): number {
@@ -179,6 +153,15 @@ export class ColCell extends HeaderCell {
       x: textX + this.actualTextWidth / 2 + iconMarginLeft,
       y,
     };
+  }
+
+  protected isBolderText() {
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals } = this.meta;
+    if (isTotals || !isLeaf) {
+      return true;
+    }
+    return false;
   }
 
   protected getTextPosition(): Point {

@@ -54,7 +54,16 @@ describe('TableSheet Tests', () => {
         } as GEvent,
         nodeMeta,
       );
-      expect(showTooltipWithInfoSpy).toHaveBeenCalledTimes(1);
+
+      expect(showTooltipWithInfoSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        [],
+        {
+          operator: expect.anything(),
+          onlyMenu: true,
+          forceRender: true,
+        },
+      );
 
       s2.onSortTooltipClick({ key: 'asc' }, {
         id: 'city',
@@ -185,6 +194,7 @@ describe('TableSheet Tests', () => {
           expect.anything(),
           expect.anything(),
           {
+            forceRender: true,
             onlyMenu: true,
             operator: {
               menus: [

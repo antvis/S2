@@ -200,6 +200,7 @@ export class TableSheet extends SpreadSheet {
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyMenu: true,
+      forceRender: true,
     });
   }
 }

@@ -23,7 +23,7 @@ order: 0
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/zh/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/zh/docs/api/components/header) |  |  |
-| getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| getSpreadSheet | 获取表实例 (1.29.0 已废弃，请使用 `onMounted`) [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | onRangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -31,7 +31,7 @@ order: 0
 | onRowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onRowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: number;isCollapsed: boolean;node: Node;}) => void |  |  |
+| onRowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/zh/docs/api/basic-class/node)}) => void |  |  |
 | onRowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -46,7 +46,7 @@ order: 0
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| onDataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: ([DataCell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -73,6 +73,7 @@ order: 0
 | onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
+| onMounted | 表格加载完成事件，可拿到表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | onDestroy | 表格销毁事件 | () => void; |  |  |
 | onLayoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | onLayoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -92,7 +93,7 @@ order: 0
 | onContextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onMouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | onMouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| onSelected | 单元格选中事件 | (cells: S2Cell[]) => void |  |  |
+| onSelected | 单元格选中事件 | (cells: ( [Cell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
@@ -141,7 +142,7 @@ type SheetComponentOptions = S2Options<
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
 | spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
-| getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| getSpreadSheet | 获取表实例 (1.4.0 已废弃，请使用 `load`) [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -150,7 +151,7 @@ type SheetComponentOptions = S2Options<
 | rowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: number;isCollapsed: boolean;node: Node;}) => void |  |  |
+| rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/zh/docs/api/basic-class/node)}) => void |  |  |
 | rowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -165,7 +166,7 @@ type SheetComponentOptions = S2Options<
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellTrendIconClick | 数值趋势图 icon 点击事件 | (meta: [ViewMeta](/zh/docs/api/basic-class/node)) => void |  |  |
-| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: DataCell[]) => void |  |  |
+| dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | cornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -192,6 +193,7 @@ type SheetComponentOptions = S2Options<
 | layoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |
 | afterRender | render 完成的事件 | () => void; |  |  |
+| mounted | 表格加载完成事件，可拿到表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | destroy | 表格销毁事件 | () => void; |  |  |
 | layoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
 | layoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; |  |  |
@@ -211,7 +213,7 @@ type SheetComponentOptions = S2Options<
 | contextMenu | 右键单元格单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | mouseHover | 表格鼠标悬停事件 | (event: CanvasEvent) => void |  |  |
 | mouseUp | 表格鼠标松开事件 | (event: CanvasEvent) => void |  |  |
-| selected | 单元格选中事件 | (cells: S2Cell[]) => void |  |  |
+| selected | 单元格选中事件 | ( cells: ([Cell](/zh/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | reset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | linkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/zh/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | scroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |

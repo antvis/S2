@@ -6,6 +6,8 @@ import {
   type S2DataConfig,
   customMerge,
   CellTypes,
+  PivotSheet,
+  TableSheet,
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
@@ -52,6 +54,86 @@ describe('<SheetComponent/> Tests', () => {
         expect(render).not.toThrowError();
       },
     );
+
+    test.each(sheetTypes)(
+      'should render and destroy for %s sheet',
+      (sheetType) => {
+        let getSpreadSheetRef: SpreadSheet;
+        let onMountedRef: SpreadSheet;
+
+        const getSpreadSheet = jest.fn((instance) => {
+          getSpreadSheetRef = instance;
+        });
+        const onMounted = jest.fn((instance) => {
+          onMountedRef = instance;
+        });
+        const onDestroy = jest.fn();
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
+
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+              getSpreadSheet={getSpreadSheet}
+              onMounted={onMounted}
+              onDestroy={onDestroy}
+            />,
+            container,
+          );
+        });
+
+        expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
+        expect(onMounted).toHaveBeenCalledWith(onMountedRef);
+        expect(onMountedRef).toEqual(getSpreadSheetRef);
+        expect(onDestroy).not.toHaveBeenCalled();
+        expect(warnSpy).toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+        );
+
+        act(() => {
+          ReactDOM.unmountComponentAtNode(container);
+        });
+
+        expect(onDestroy).toHaveBeenCalledTimes(1);
+      },
+    );
+
+    test('should get latest instance after sheet type changed', () => {
+      let s2: SpreadSheet;
+
+      function Component({
+        sheetType,
+      }: Pick<SheetComponentsProps, 'sheetType'>) {
+        const onMounted = jest.fn((instance) => {
+          s2 = instance;
+        });
+
+        return (
+          <SheetComponent
+            sheetType={sheetType}
+            options={{ width: 200, height: 200 }}
+            dataCfg={null as unknown as S2DataConfig}
+            onMounted={onMounted}
+          />
+        );
+      }
+
+      act(() => {
+        ReactDOM.render(<Component sheetType={'pivot'} />, container);
+      });
+
+      expect(s2).toBeInstanceOf(PivotSheet);
+
+      act(() => {
+        ReactDOM.render(<Component sheetType={'table'} />, container);
+      });
+
+      expect(s2).toBeInstanceOf(TableSheet);
+    });
   });
 
   describe('<StrategySheet/> Tests', () => {
@@ -71,7 +153,7 @@ describe('<SheetComponent/> Tests', () => {
               options,
             )}
             dataCfg={dataCfg as S2DataConfig}
-            getSpreadSheet={(instance) => {
+            onMounted={(instance) => {
               s2 = instance;
             }}
           />,
