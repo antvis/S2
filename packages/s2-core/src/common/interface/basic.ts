@@ -90,7 +90,9 @@ export interface Extra {
   remark: string;
 }
 
-export type CustomHeaderFields = (string | CustomTreeNode)[];
+export type CustomHeaderField = string | CustomTreeNode;
+
+export type CustomHeaderFields = CustomHeaderField[];
 
 export interface BaseFields {
   // row fields

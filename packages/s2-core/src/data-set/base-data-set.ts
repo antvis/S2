@@ -30,7 +30,12 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import { CellTypes, type CustomTreeNode } from '../common';
+import {
+  CellTypes,
+  type CustomHeaderField,
+  type CustomHeaderFields,
+  type CustomTreeNode,
+} from '../common';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -62,13 +67,17 @@ export abstract class BaseDataSet {
 
   protected displayData: RawData[];
 
+  private getField = (field: CustomHeaderField): string => {
+    const realField = isString(field) ? field : field?.key;
+    return realField || (field as string);
+  };
+
   /**
    * 获取字段信息
    */
   public getFieldMeta = memoize(
     (field: string | CustomTreeNode, meta?: Meta[]): Meta => {
-      const realField =
-        (isString(field) ? field : field?.key) || (field as string);
+      const realField = this.getField(field);
       return find(this.meta || meta, { field: realField });
     },
   );
@@ -81,7 +90,7 @@ export abstract class BaseDataSet {
     field: string | CustomTreeNode,
     defaultValue?: string,
   ): string {
-    const realField = (isString(field) ? field : field?.key) || field;
+    const realField = this.getField(field);
     const realDefaultValue =
       (isString(field) ? field : field?.title) || (field as string);
 
@@ -147,7 +156,7 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldFormatter(field: string | CustomTreeNode): Formatter {
-    const realField = isString(field) ? field : field?.key;
+    const realField = this.getField(field);
     return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
   }
 
@@ -156,7 +165,7 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldDescription(field: string | CustomTreeNode): string {
-    const realField = isString(field) ? field : field?.key;
+    const realField = this.getField(field);
     return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
