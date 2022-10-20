@@ -62,7 +62,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      s2.destroy();
+      // s2.destroy();
     });
 
     test('should disable valueInCols', () => {
@@ -142,6 +142,59 @@ describe('SpreadSheet Custom Grid Tests', () => {
         {
           label: '自定义节点 a-2',
           rowIndex: 3,
+        },
+      ]);
+    });
+
+    test('should calc correctly leaf nodes width after row resized', () => {
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            widthByField: {
+              'a-1-1': 40,
+            },
+          },
+        },
+      });
+      s2.render(false);
+
+      const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
+        field: node.field,
+        width: node.width,
+      }));
+
+      const colLeafNodes = s2.getColumnLeafNodes().map((node) => ({
+        field: node.field,
+        width: node.width,
+      }));
+
+      expect(rowLeafNodes).toEqual([
+        {
+          field: 'measure-1',
+          width: 120,
+        },
+        {
+          field: 'measure-2',
+          width: 120,
+        },
+        {
+          field: 'a-1-2',
+          width: 160,
+        },
+        {
+          field: 'a-2',
+          width: 280,
+        },
+      ]);
+
+      expect(colLeafNodes).toEqual([
+        {
+          field: 'sub_type',
+          width: 160,
+        },
+        {
+          field: 'sub_type',
+          width: 160,
         },
       ]);
     });

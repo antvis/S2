@@ -149,7 +149,12 @@ export abstract class BaseFacet {
     return isFunction(width) ? width?.(node) : width;
   }
 
-  protected getCellDraggedWidth(node: Node): number {
+  protected getRowCellDraggedWidth(node: Node): number {
+    const { rowCfg } = this.cfg;
+    return rowCfg?.widthByField?.[node.field];
+  }
+
+  protected getColCellDraggedWidth(node: Node): number {
     const { colCfg } = this.cfg;
     return get(colCfg?.widthByFieldValue, `${node.value}`, node.width);
   }

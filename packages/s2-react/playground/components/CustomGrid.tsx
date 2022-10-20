@@ -67,7 +67,7 @@ enum CustomType {
 
 export const CustomGrid = () => {
   const [customType, setCustomType] = React.useState<CustomType>(
-    CustomType.Col,
+    CustomType.Row,
   );
   const [hierarchyType, setHierarchyType] =
     React.useState<SheetComponentOptions['hierarchyType']>('grid');

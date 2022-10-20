@@ -102,7 +102,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeShapes(): IShape[] {
-    return this.resizeReferenceGroup?.get('children') || [];
+    return (this.resizeReferenceGroup?.getChildren() as IShape[]) || [];
   }
 
   private setResizeMaskCursor(cursor: string) {

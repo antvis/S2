@@ -12,6 +12,7 @@ import {
   merge,
   reduce,
   size,
+  sumBy,
 } from 'lodash';
 import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
@@ -36,6 +37,7 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
+import type { AdjustLeafNodesParams } from './interface';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {
@@ -187,10 +189,10 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, null, currentNode);
     }
 
-    this.adjustColLeafNodesHeight(
-      colLeafNodes,
-      colsHierarchy.sampleNodeForLastLevel,
-    );
+    this.adjustColLeafNodesHeight({
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    });
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
 
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
@@ -230,7 +232,7 @@ export class PivotFacet extends BaseFacet {
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
 
-    const cellDraggedWidth = this.getCellDraggedWidth(col);
+    const cellDraggedWidth = this.getColCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
     if (cellDraggedWidth) {
@@ -444,10 +446,10 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
-      this.adjustRowLeafNodesWidth(
-        rowLeafNodes,
-        rowsHierarchy.sampleNodeForLastLevel,
-      );
+      this.adjustRowLeafNodesWidth({
+        leafNodes: rowLeafNodes,
+        hierarchy: rowsHierarchy,
+      });
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals?.row)) {
         this.adjustTotalNodesCoordinate(rowsHierarchy, true);
@@ -464,11 +466,11 @@ export class PivotFacet extends BaseFacet {
    * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
    * -------------------------------------------------
    */
-  private adjustRowLeafNodesWidth(rowLeafNodes: Node[], lastLevelNode: Node) {
+  private adjustRowLeafNodesWidth(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomRowFields()) {
       return;
     }
-    this.adjustLeafNodesSize('width')(rowLeafNodes, lastLevelNode);
+    this.adjustLeafNodesSize('width')(params);
   }
 
   /**
@@ -481,19 +483,26 @@ export class PivotFacet extends BaseFacet {
    * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
    * ----------------------------------------------------------------------
    */
-  private adjustColLeafNodesHeight(colLeafNodes: Node[], lastLevelNode: Node) {
+  private adjustColLeafNodesHeight(params: AdjustLeafNodesParams) {
     if (!this.spreadsheet.isCustomColumnFields()) {
       return;
     }
-    this.adjustLeafNodesSize('height')(colLeafNodes, lastLevelNode);
+    this.adjustLeafNodesSize('height')(params);
   }
 
   private adjustLeafNodesSize(type: 'width' | 'height') {
-    return (leafNodes: Node[], lastLevelNode: Node) => {
+    return ({ leafNodes, hierarchy }: AdjustLeafNodesParams) => {
+      const { sampleNodeForLastLevel, sampleNodesForAllLevels } = hierarchy;
+
       leafNodes.forEach((node) => {
-        if (node.level < lastLevelNode.level) {
-          const levelDiff = lastLevelNode.level - node.level;
-          node[type] += node[type] * levelDiff;
+        if (node.level < sampleNodeForLastLevel.level) {
+          const leafNodeSize = sumBy(sampleNodesForAllLevels, (sampleNode) => {
+            if (sampleNode.level < node.level) {
+              return 0;
+            }
+            return sampleNode[type];
+          });
+          node[type] = leafNodeSize;
         }
       });
     };
@@ -631,7 +640,7 @@ export class PivotFacet extends BaseFacet {
   private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCfg, spreadsheet } = this.cfg;
 
-    const cellDraggedWidth = get(rowCfg, `widthByField.${node.key}`);
+    const cellDraggedWidth = this.getRowCellDraggedWidth(node);
 
     if (cellDraggedWidth) {
       return cellDraggedWidth;

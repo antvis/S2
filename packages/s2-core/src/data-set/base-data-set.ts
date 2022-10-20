@@ -30,12 +30,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import {
-  CellTypes,
-  type CustomHeaderField,
-  type CustomHeaderFields,
-  type CustomTreeNode,
-} from '../common';
+import { CellTypes, type CustomHeaderField } from '../common';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -76,7 +71,7 @@ export abstract class BaseDataSet {
    * 获取字段信息
    */
   public getFieldMeta = memoize(
-    (field: string | CustomTreeNode, meta?: Meta[]): Meta => {
+    (field: CustomHeaderField, meta?: Meta[]): Meta => {
       const realField = this.getField(field);
       return find(this.meta || meta, { field: realField });
     },
@@ -86,10 +81,7 @@ export abstract class BaseDataSet {
    * 获取字段名称
    * @param field
    */
-  public getFieldName(
-    field: string | CustomTreeNode,
-    defaultValue?: string,
-  ): string {
+  public getFieldName(field: CustomHeaderField, defaultValue?: string): string {
     const realField = this.getField(field);
     const realDefaultValue =
       (isString(field) ? field : field?.title) || (field as string);
@@ -155,7 +147,7 @@ export abstract class BaseDataSet {
    * 获得字段格式方法
    * @param field
    */
-  public getFieldFormatter(field: string | CustomTreeNode): Formatter {
+  public getFieldFormatter(field: CustomHeaderField): Formatter {
     const realField = this.getField(field);
     return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
   }
@@ -164,7 +156,7 @@ export abstract class BaseDataSet {
    * 获得字段描述
    * @param field
    */
-  public getFieldDescription(field: string | CustomTreeNode): string {
+  public getFieldDescription(field: CustomHeaderField): string {
     const realField = this.getField(field);
     return get(this.getFieldMeta(realField, this.meta), 'description');
   }
