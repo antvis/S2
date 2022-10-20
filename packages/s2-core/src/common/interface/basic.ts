@@ -1,4 +1,5 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
@@ -6,7 +7,7 @@ import type {
   S2BasicOptions,
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
-import type { BaseDataSet, DataType } from '../../data-set';
+import type { BaseDataSet, Query } from '../../data-set';
 import type { Frame } from '../../facet/header';
 import type { BaseHeaderConfig } from '../../facet/header/base';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
@@ -22,7 +23,7 @@ import type { DataItem } from './s2DataConfig';
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
 export type Formatter = (
   v: unknown,
-  data?: Data | Data[],
+  data?: ViewMetaData | ViewMetaData[],
   meta?: Node | ViewMeta,
 ) => string;
 
@@ -86,17 +87,21 @@ export interface Extra {
   remark: string;
 }
 
-export interface Fields {
+export interface BaseFields {
   // row fields
   rows?: string[];
-  // custom tree data(only use in row header in pivot mode)
-  customTreeItems?: CustomTreeItem[];
   // columns fields
   columns?: string[];
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
+}
+
+export interface Fields extends BaseFields {
+  // custom tree data(only use in row header in pivot mode)
+  customTreeItems?: CustomTreeItem[];
+
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
 }
@@ -117,7 +122,7 @@ export enum Aggregation {
 
 export interface CalcTotals {
   aggregation?: Aggregation; // 聚合方式
-  calcFunc?: (query: DataType, arr: DataType[]) => number;
+  calcFunc?: (query: Query, arr: CellData[]) => number;
 }
 
 export interface Total {
@@ -182,7 +187,7 @@ export interface SortParam extends Sort {
 export interface FilterParam {
   filterKey: string;
   filteredValues?: unknown[];
-  customFilter?: (row: DataType) => boolean;
+  customFilter?: (row: Query) => boolean;
 }
 
 export type SortParams = SortParam[];
@@ -402,6 +407,8 @@ export interface SpreadSheetFacetCfg
   meta?: Meta[];
 }
 
+export type ViewMetaData = Data | CellData;
+
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
   // cell's unique id
@@ -415,7 +422,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: Record<string, any>;
+  data: ViewMetaData;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)
@@ -427,9 +434,9 @@ export interface ViewMeta {
   // subTotals or grandTotals
   isTotals?: boolean;
   // cell's row query condition
-  rowQuery?: Record<string, any>;
+  rowQuery?: Query;
   // cell's col query condition
-  colQuery?: Record<string, any>;
+  colQuery?: Query;
   // rowId of cell
   rowId?: string;
   colId?: string;
@@ -437,7 +444,7 @@ export interface ViewMeta {
   isFrozenCorner?: boolean;
   label?: string;
   value?: string | number;
-  query?: Record<string, any>;
+  query?: Query;
   [key: string]: unknown;
 }
 

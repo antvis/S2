@@ -1,13 +1,10 @@
 import { each, orderBy, filter, includes, isFunction } from 'lodash';
 import { isAscSort, isDescSort } from '..';
-import type { S2DataConfig } from '../common/interface';
-import type { CellDataParams, DataType } from './interface';
+import type { S2DataConfig, RawData, Data } from '../common/interface';
+import type { CellDataParams, Query } from './interface';
 import { BaseDataSet } from './base-data-set';
 
 export class TableDataSet extends BaseDataSet {
-  // data that goes into canvas (aka sorted & filtered)
-  protected declare displayData: DataType[];
-
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;
   }
@@ -50,7 +47,7 @@ export class TableDataSet extends BaseDataSet {
    * 返回可移动的非冻结行
    * @returns
    */
-  protected getMovableRows(): DataType[] {
+  protected getMovableRows(): RawData[] {
     const { displayData } = this;
     const { frozenTrailingRowCount, frozenRowCount } =
       this.spreadsheet.options || {};
@@ -62,7 +59,7 @@ export class TableDataSet extends BaseDataSet {
 
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
-      const defaultFilterFunc = (row: DataType) =>
+      const defaultFilterFunc = (row: Query) =>
         row[filterKey] && !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
@@ -116,12 +113,12 @@ export class TableDataSet extends BaseDataSet {
         sortedData = sortFunc({
           ...item,
           data,
-        }) as DataType[];
+        }) as RawData[];
       } else if (sortBy && !isFunction(sortBy)) {
         const reversedSortBy = [...sortBy].reverse();
         sortedData = data.sort((a, b) => {
-          const idxA = reversedSortBy.indexOf(a[sortFieldId]);
-          const idxB = reversedSortBy.indexOf(b[sortFieldId]);
+          const idxA = reversedSortBy.indexOf(a[sortFieldId] as string);
+          const idxB = reversedSortBy.indexOf(b[sortFieldId] as string);
 
           return idxB - idxA;
         });
@@ -147,11 +144,11 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getDimensionValues(field: string, query?: DataType): string[] {
+  public getDimensionValues(field: string, query?: Query): string[] {
     return [];
   }
 
-  public getCellData({ query }: CellDataParams): DataType {
+  public getCellData({ query }: CellDataParams): Data {
     if (this.displayData.length === 0 && query.rowIndex === 0) {
       return;
     }
@@ -159,12 +156,12 @@ export class TableDataSet extends BaseDataSet {
     const rowData = this.displayData[query.rowIndex];
 
     if (!('col' in query)) {
-      return rowData;
+      return rowData as Data;
     }
-    return rowData[query.col];
+    return rowData[query.col] as unknown as Data;
   }
 
-  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return this.displayData;
+  public getMultiData(): Data[] {
+    return this.displayData as Data[];
   }
 }

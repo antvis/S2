@@ -25,8 +25,7 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
         valueInCols: true,
       },
       meta,
-      data,
-      totalData,
+      data: data.concat(totalData as any),
     },
     ...dataCfg,
   );

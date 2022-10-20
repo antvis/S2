@@ -9,13 +9,13 @@ export function getMockPivotMeta() {
   const rawRowPivotMeta = new Map();
   const rawColPivotMeta = new Map();
   const rawIndexesData = [];
-  const { fields, data, totalData } = assembleDataCfg();
+  const { fields, data } = assembleDataCfg();
   return transformIndexesData({
     rows: fields.rows,
     columns: fields.columns,
+    values: fields.values,
     originData: data,
     indexesData: rawIndexesData,
-    totalData,
     sortedDimensionValues,
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,

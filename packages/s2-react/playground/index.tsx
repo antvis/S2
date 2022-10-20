@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import {
   customMerge,
-  type DataType,
+  type RawData,
   generatePalette,
   getPalette,
   type HeaderActionIconProps,
@@ -16,7 +16,9 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
-  S2Event,
+  type PivotDataSet,
+  type CellData,
+  type S2Options,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -95,19 +97,22 @@ const partDrillDown: PartDrillDown = {
       // 弹窗 -> 选择 -> 请求数据
       const preDrillDownfield =
         meta.spreadsheet.store.get('drillDownNode')?.field;
-      const dataSet = meta.spreadsheet.dataSet;
+      const dataSet = meta.spreadsheet.dataSet as PivotDataSet;
       const field = drillFields[0];
-      const rowDatas = dataSet
-        .getMultiData(meta.query, true, true, [preDrillDownfield])
+
+      const rowData = dataSet
+        .getMultiData(meta.query, {}, [preDrillDownfield])
         .filter(
-          (item) => item.sub_type && item.type && item[preDrillDownfield],
+          (item) =>
+            item.getValueByKey('type') && item.getValueByKey('sub_type'),
         );
-      console.log(rowDatas);
-      const drillDownData: DataType[] = [];
-      forEach(rowDatas, (data: DataType) => {
-        const { number, sub_type: subType, type } = data;
-        const number0 = random(50, number);
-        const number1 = number - number0;
+      console.log('rowData: ', rowData);
+
+      const drillDownData: RawData[] = [];
+      forEach(rowData, (data: CellData) => {
+        const { number, sub_type: subType, type } = data.getOrigin();
+        const number0 = random(50);
+        const number1 = (number as number) - number0;
         const dataItem0 = {
           ...meta.query,
           number: number0,
@@ -129,7 +134,7 @@ const partDrillDown: PartDrillDown = {
       console.log(drillDownData);
       resolve({
         drillField: field,
-        drillData: drillDownData,
+        drillData: drillDownData as Record<string, string | number>[],
       });
     }),
 };
@@ -166,8 +171,9 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<SheetComponentOptions>(defaultOptions);
-  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
+    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
+  const [dataCfg, setDataCfg] =
+    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -176,7 +182,7 @@ function MainLayout() {
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet>();
   const scrollTimer = React.useRef<NodeJS.Timer>();
-
+  // window.s2 = s2Ref;
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
     setOptions(customMerge(options, newOptions));
@@ -939,7 +945,7 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg}
+              dataCfg={dataCfg as S2DataConfig}
               options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}
@@ -968,7 +974,9 @@ function MainLayout() {
                 ),
                 switcherCfg: { open: true },
                 exportCfg: { open: true },
-                advancedSortCfg: { open: true },
+                advancedSortCfg: {
+                  open: true,
+                },
               }}
               onMounted={onSheetMounted}
               getSpreadSheet={logHandler('getSpreadSheet')}

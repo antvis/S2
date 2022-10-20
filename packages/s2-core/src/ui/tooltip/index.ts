@@ -1,8 +1,5 @@
 import { isNil } from 'lodash';
-import {
-  TOOLTIP_CONTAINER_CLS,
-  TOOLTIP_PREFIX_CLS,
-} from '../../common/constant/tooltip';
+import { TOOLTIP_CONTAINER_CLS } from '../../common/constant/tooltip';
 import type {
   TooltipContentType,
   TooltipPosition,

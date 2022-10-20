@@ -2,8 +2,14 @@
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
-export const TOTAL_VALUE = '$$total$$';
+
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
+
+export const TOTAL_VALUE = '$$total$$';
+export const MULTI_VALUE = '$$multi$$';
+
+export const NULL_SYMBOL_ID = '$$null$$';
+export const UNDEFINED_SYMBOL_ID = '$$undefined$$';
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 

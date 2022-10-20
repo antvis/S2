@@ -1,5 +1,6 @@
 import { assembleDataCfg } from 'tests/util';
 import { get } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import {
   deleteMetaById,
   transformIndexesData,
@@ -9,10 +10,11 @@ import {
   getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
 import type { S2DataConfig } from '@/common/interface';
+import { CellData } from '@/data-set/cell-data';
 
 describe('PivotDataSet util test', () => {
   const dataCfg: S2DataConfig = assembleDataCfg({
-    totalData: [],
+    data,
     meta: [],
   });
 
@@ -35,21 +37,21 @@ describe('PivotDataSet util test', () => {
   });
 
   test('for transformIndexesData function', () => {
-    const { rows, columns } = dataCfg.fields;
+    const { rows, columns, values } = dataCfg.fields;
     const sortedDimensionValues = {};
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
     const result = transformIndexesData({
       rows,
       columns,
+      values,
       originData: dataCfg.data,
-      totalData: [],
       indexesData: [],
       sortedDimensionValues,
       rowPivotMeta,
       colPivotMeta,
     });
-    expect(result.indexesData).toHaveLength(2);
+    expect(result.indexesData).toHaveLength(3);
     expect(result.paths).toHaveLength(32);
     expect(get(result.indexesData, result.paths[0])).toEqual({
       city: '杭州市',
@@ -96,6 +98,7 @@ describe('PivotDataSet util test', () => {
     const colDimensionValues = ['家具', '桌子'];
     const rows = ['province', 'city'];
     const columns = ['type', 'sub_type'];
+    const values = ['value'];
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
 
@@ -104,15 +107,15 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
-      careUndefined: false,
-      rowFields: rows,
-      colFields: columns,
+      shouldCreateOrUpdate: true,
+      rows,
+      columns,
+      values,
     });
-    expect(result).toEqual([0, 0, 0, 0]);
+    expect(result).toEqual([1, 1, 1, 1]);
   });
 
-  test('for getDataPath function when not isFirstCreate and without rowFields or colFields', () => {
+  test('for getDataPath function when not createIfNotExist and without rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
@@ -123,14 +126,12 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: false,
-      careUndefined: false,
     });
     expect(rowPivotMeta.size).toEqual(0);
     expect(colPivotMeta.size).toEqual(0);
   });
 
-  test('for getDataPath function when isFirstCreate and without rowFields or colFields', () => {
+  test('for getDataPath function when createIfNotExist and without rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rowPivotMeta = new Map();
@@ -141,14 +142,13 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
-      careUndefined: false,
+      shouldCreateOrUpdate: true,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toBeUndefined();
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toBeUndefined();
   });
 
-  test('for getDataPath function when isFirstCreate and with rowFields or colFields', () => {
+  test('for getDataPath function when createIfNotExist and with rows or columns', () => {
     const rowDimensionValues = ['浙江省', '杭州市'];
     const colDimensionValues = ['家具', '桌子'];
     const rows = ['province', 'city'];
@@ -161,10 +161,9 @@ describe('PivotDataSet util test', () => {
       colDimensionValues,
       rowPivotMeta,
       colPivotMeta,
-      isFirstCreate: true,
-      careUndefined: false,
-      rowFields: rows,
-      colFields: columns,
+      shouldCreateOrUpdate: true,
+      rows,
+      columns,
     });
     expect(rowPivotMeta.get(rowDimensionValues[0]).childField).toEqual('city');
     expect(colPivotMeta.get(colDimensionValues[0]).childField).toEqual(
@@ -185,13 +184,16 @@ describe('PivotDataSet util test', () => {
     const field = 'city';
     const defaultDimensions = ['province', 'city'];
     const dimensions = [
-      {
-        province: '辽宁省',
-        city: '芜湖市',
-        category: '家具',
-        subCategory: '椅子',
-        price: '',
-      },
+      new CellData(
+        {
+          province: '辽宁省',
+          city: '芜湖市',
+          category: '家具',
+          subCategory: '椅子',
+          price: '',
+        },
+        'price',
+      ),
     ];
     const result = getDimensionsWithParentPath(
       field,
