@@ -6,6 +6,7 @@ import type {
 } from '../../common/interface';
 
 export const TOOLTIP_PREFIX_CLS = `${S2_PREFIX_CLS}-tooltip`;
+export const MOBILE_TOOLTIP_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-mobile`;
 
 export const TOOLTIP_CONTAINER_CLS = `${TOOLTIP_PREFIX_CLS}-container`;
 export const TOOLTIP_CONTAINER_SHOW_CLS = `${TOOLTIP_CONTAINER_CLS}-show`;
