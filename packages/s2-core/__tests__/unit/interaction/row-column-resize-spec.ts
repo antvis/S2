@@ -544,9 +544,9 @@ describe('Interaction Row Column Resize Tests', () => {
       .spyOn(s2, 'getColumnNodes')
       .mockImplementationOnce(() => [
         createMockCellInfo('test-a', { level: 0 })
-          .mockCellMeta as unknown as Node,
+          .mockCellViewMeta as unknown as Node,
         createMockCellInfo('test-b', { level: 0 })
-          .mockCellMeta as unknown as Node,
+          .mockCellViewMeta as unknown as Node,
       ]);
 
     const resizeInfo = emitResize(

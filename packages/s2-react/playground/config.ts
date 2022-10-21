@@ -1,5 +1,4 @@
 import type { S2DataConfig } from '@antv/s2';
-import { isUpDataValue } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import type { SheetComponentOptions } from '../src/components';
@@ -76,38 +75,6 @@ export const sliderOptions: SliderSingleProps = {
     1: '1 (默认)',
     2: '2',
     10: '10',
-  },
-};
-
-export const mockGridAnalysisOptions: SheetComponentOptions = {
-  width: 1600,
-  height: 600,
-  style: {
-    layoutWidthType: 'colAdaptive',
-    cellCfg: {
-      width: 400,
-      height: 100,
-      valuesCfg: {
-        widthPercent: [40, 0.2, 0.2, 0.2],
-      },
-    },
-  },
-  conditions: {
-    text: [
-      {
-        mapping: (value, cellInfo) => {
-          const { colIndex } = cellInfo;
-          if (colIndex <= 1) {
-            return {
-              fill: '#000',
-            };
-          }
-          return {
-            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-          };
-        },
-      },
-    ],
   },
 };
 

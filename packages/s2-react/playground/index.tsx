@@ -3,19 +3,19 @@
 /* eslint-disable no-console */
 import {
   customMerge,
+  DEFAULT_STYLE,
   generatePalette,
+  getLang,
   getPalette,
-  type HeaderActionIconProps,
   Node,
-  type S2DataConfig,
   SpreadSheet,
+  type HeaderActionIconProps,
+  type InteractionOptions,
+  type S2DataConfig,
+  type S2Options,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  getLang,
-  type InteractionOptions,
-  DEFAULT_STYLE,
-  type S2Options,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -27,7 +27,6 @@ import {
   Input,
   Popover,
   Radio,
-  type RadioChangeEvent,
   Select,
   Slider,
   Space,
@@ -35,6 +34,7 @@ import {
   Tabs,
   Tag,
   Tooltip,
+  type RadioChangeEvent,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce } from 'lodash';
@@ -44,23 +44,19 @@ import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
 import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
-import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import {
-  StrategySheetDataConfig,
-  StrategyOptions,
-} from '../__tests__/data/strategy-data';
+import { CustomGrid } from './components/CustomGrid';
+import { CustomTree } from './components/CustomTree';
+import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { ResizeConfig } from './components/ResizeConfig';
+import { StrategySheet } from './components/StrategySheet';
 import {
   defaultOptions,
-  mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
 import { partDrillDown } from './drill-down';
 import './index.less';
-import { ResizeConfig } from './components/ResizeConfig';
-import { CustomGrid } from './components/CustomGrid';
-import { CustomTree } from './components/CustomTree';
 
 const { TabPane } = Tabs;
 
@@ -99,15 +95,12 @@ function MainLayout() {
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
-  const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
-    StrategySheetDataConfig,
-  );
   const [columnOptions, setColumnOptions] = React.useState([]);
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet>();
   const scrollTimer = React.useRef<NodeJS.Timer>();
-  // window.s2 = s2Ref;
+
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<SheetComponentOptions>) => {
     setOptions(customMerge(options, newOptions));
@@ -917,10 +910,10 @@ function MainLayout() {
                   open: true,
                 },
               }}
-              onMounted={onSheetMounted}
               getSpreadSheet={logHandler('getSpreadSheet')}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
+              onMounted={onSheetMounted}
               onRangeSort={logHandler('onRangeSort')}
               onDestroy={logHandler('onDestroy', () => {
                 clearInterval(scrollTimer.current);
@@ -971,47 +964,14 @@ function MainLayout() {
           <CustomGrid />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <SheetComponent
-            sheetType="strategy"
-            dataCfg={strategyDataCfg}
-            options={StrategyOptions}
+          <StrategySheet
             onRowCellClick={logHandler('onRowCellClick')}
             onMounted={onSheetMounted}
-            header={{
-              title: '趋势分析表',
-              description: '支持子弹图',
-              switcherCfg: { open: true },
-              exportCfg: { open: true },
-              extra: (
-                <Switch
-                  checkedChildren="单列头"
-                  unCheckedChildren="多列头"
-                  checked={strategyDataCfg.fields.columns.length === 1}
-                  onChange={(checked) => {
-                    setStrategyDataCfg(
-                      customMerge(StrategySheetDataConfig, {
-                        fields: {
-                          columns: StrategySheetDataConfig.fields.columns.slice(
-                            0,
-                            checked ? 1 : 2,
-                          ),
-                        },
-                      }),
-                    );
-                  }}
-                />
-              ),
-            }}
+            ref={s2Ref}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
-          <SheetComponent
-            sheetType="gridAnalysis"
-            dataCfg={mockGridAnalysisDataCfg}
-            options={mockGridAnalysisOptions}
-            ref={s2Ref}
-            onMounted={onSheetMounted}
-          />
+          <GridAnalysisSheet ref={s2Ref} onMounted={onSheetMounted} />
         </TabPane>
         <TabPane tab="编辑表" key="editable">
           <SheetComponent

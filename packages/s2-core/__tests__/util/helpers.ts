@@ -160,6 +160,8 @@ export const createMockCellInfo = (
     'y',
     'update',
     'spreadsheet',
+    'level',
+    'field',
   ]);
   const mockCell = {
     ...mockCellViewMeta,
@@ -174,6 +176,7 @@ export const createMockCellInfo = (
   return {
     mockCell,
     mockCellMeta,
+    mockCellViewMeta,
   };
 };
 

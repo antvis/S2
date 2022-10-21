@@ -89,6 +89,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         indexesData,
         sortedDimensionValues,
         moreThanOneValue: jest.fn(),
+        getField: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
