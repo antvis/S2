@@ -74,6 +74,9 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+        enableFrozenHeaders() {
+          return true;
+        },
       };
     }),
   };
@@ -268,14 +271,6 @@ describe('Pivot Mode Facet Test', () => {
       expect(backgroundGroup.cfg.children).toHaveLength(1);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();
-    });
-
-    test('get cell after render', () => {
-      const { panelScrollGroup } = s2.facet;
-      const sampleDataCell = get(panelScrollGroup, 'cfg.children[0]');
-      expect(panelScrollGroup.cfg.children).toHaveLength(32);
-      expect(panelScrollGroup.cfg.visible).toBeTrue();
-      expect(get(sampleDataCell, 'meta.data.raw.number')).toBe(7789);
     });
   });
 

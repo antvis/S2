@@ -89,7 +89,6 @@ describe('RootInteraction Tests', () => {
     rootInteraction.getPanelGroupAllDataCells = () => panelGroupAllDataCells;
     rootInteraction.getAllColHeaderCells = () => [];
     rootInteraction.getAllRowHeaderCells = () => [];
-    mockSpreadSheetInstance.facet.panelGroup = new Group('');
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 

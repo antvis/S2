@@ -64,11 +64,23 @@ export const createFakeSpreadSheet = () => {
     height: DEFAULT_OPTIONS.height,
     container,
   });
-  s2.facet = {} as BaseFacet;
-  s2.facet.panelBBox = {
-    maxX: s2.options.width,
-    maxY: s2.options.height,
-  } as PanelBBox;
+  s2.facet = {
+    panelBBox: {
+      maxX: s2.options.width,
+      maxY: s2.options.height,
+    } as PanelBBox,
+    panelGroup: {
+      getChildren() {
+        return [];
+      },
+    },
+    foregroundGroup: {
+      getChildren() {
+        return [];
+      },
+    },
+  } as BaseFacet;
+
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {

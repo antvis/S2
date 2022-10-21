@@ -42,7 +42,7 @@ export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
 ): IGroup => {
-  if (!spreadsheet.facet.foregroundGroup) {
+  if (!spreadsheet.facet?.foregroundGroup) {
     return;
   }
 

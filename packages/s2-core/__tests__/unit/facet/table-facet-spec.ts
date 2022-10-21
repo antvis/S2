@@ -49,6 +49,9 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        enableFrozenHeaders() {
+          return false;
+        },
       };
     }),
   };
