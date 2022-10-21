@@ -271,7 +271,7 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('get cell after render', () => {
-      const { panelScrollGroup } = s2;
+      const { panelScrollGroup } = s2.facet;
       const sampleDataCell = get(panelScrollGroup, 'cfg.children[0]');
       expect(panelScrollGroup.cfg.children).toHaveLength(32);
       expect(panelScrollGroup.cfg.visible).toBeTrue();

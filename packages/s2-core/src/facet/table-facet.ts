@@ -1,17 +1,24 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
 import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
+import { FrozenGroup } from '../group/frozen-group';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-  FrozenGroup,
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   KEY_GROUP_FROZEN_SPLIT_LINE,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM,
+  KEY_GROUP_PANEL_FROZEN_COL,
+  KEY_GROUP_PANEL_FROZEN_ROW,
+  KEY_GROUP_PANEL_FROZEN_TOP,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   KEY_GROUP_ROW_RESIZE_AREA,
   LayoutWidthTypes,
+  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   SERIES_NUMBER_FIELD,
 } from '../common/constant';
-import { FrozenCellGroupMap } from '../common/constant/frozen';
+import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
   FilterParam,
@@ -60,23 +67,23 @@ export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
 
   public frozenGroupInfo: Record<
-    FrozenGroup,
+    FrozenGroupType,
     {
       width?: number;
       height?: number;
       range?: number[];
     }
   > = {
-    [FrozenGroup.FROZEN_COL]: {
+    [FrozenGroupType.FROZEN_COL]: {
       width: 0,
     },
-    [FrozenGroup.FROZEN_ROW]: {
+    [FrozenGroupType.FROZEN_ROW]: {
       height: 0,
     },
-    [FrozenGroup.FROZEN_TRAILING_ROW]: {
+    [FrozenGroupType.FROZEN_TRAILING_ROW]: {
       height: 0,
     },
-    [FrozenGroup.FROZEN_TRAILING_COL]: {
+    [FrozenGroupType.FROZEN_TRAILING_COL]: {
       width: 0,
     },
   };
@@ -89,6 +96,36 @@ export class TableFacet extends BaseFacet {
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, this.onSortHandler);
     s2.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+  }
+
+  protected override initPanelGroups(): void {
+    super.initPanelGroups();
+    const commonParams = {
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+      s2: this.spreadsheet,
+    };
+    [
+      this.frozenRowGroup,
+      this.frozenColGroup,
+      this.frozenTrailingRowGroup,
+      this.frozenTrailingColGroup,
+      this.frozenTopGroup,
+      this.frozenBottomGroup,
+    ] = [
+      KEY_GROUP_PANEL_FROZEN_ROW,
+      KEY_GROUP_PANEL_FROZEN_COL,
+      KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+      KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+      KEY_GROUP_PANEL_FROZEN_TOP,
+      KEY_GROUP_PANEL_FROZEN_BOTTOM,
+    ].map((name) => {
+      const g = new FrozenGroup({
+        name,
+        ...commonParams,
+      });
+      this.panelGroup.add(g);
+      return g;
+    });
   }
 
   private onSortHandler = (sortParams) => {
@@ -169,11 +206,21 @@ export class TableFacet extends BaseFacet {
     return this.spreadsheet.theme.dataCell.cell;
   }
 
+  override clearAllGroup() {
+    super.clearAllGroup();
+    this.frozenRowGroup.set('children', []);
+    this.frozenColGroup.set('children', []);
+    this.frozenTrailingRowGroup.set('children', []);
+    this.frozenTrailingColGroup.set('children', []);
+    this.frozenTopGroup.set('children', []);
+    this.frozenBottomGroup.set('children', []);
+  }
+
   public destroy(): void {
+    super.destroy();
     const s2 = this.spreadsheet;
     s2.off(S2Event.RANGE_SORT, this.onSortHandler);
     s2.off(S2Event.RANGE_FILTER, this.onFilterHandler);
-    super.destroy();
   }
 
   protected calculateCornerBBox() {
@@ -522,22 +569,22 @@ export class TableFacet extends BaseFacet {
     const paginationScrollY = this.getPaginationScrollY();
 
     translateGroup(
-      this.spreadsheet.frozenRowGroup,
+      this.frozenRowGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - paginationScrollY,
     );
     translateGroup(
-      this.spreadsheet.frozenColGroup,
+      this.frozenColGroup,
       this.cornerBBox.width,
       this.cornerBBox.height - scrollY - paginationScrollY,
     );
     translateGroup(
-      this.spreadsheet.frozenTrailingColGroup,
+      this.frozenTrailingColGroup,
       this.cornerBBox.width,
       this.cornerBBox.height - scrollY - paginationScrollY,
     );
     translateGroup(
-      this.spreadsheet.frozenTopGroup,
+      this.frozenTopGroup,
       this.cornerBBox.width,
       this.cornerBBox.height - paginationScrollY,
     );
@@ -839,7 +886,7 @@ export class TableFacet extends BaseFacet {
   public init() {
     super.init();
     const { width, height } = this.panelBBox;
-    this.spreadsheet.panelGroup.setClip({
+    this.panelGroup.setClip({
       type: 'rect',
       attrs: {
         x: 0,
@@ -871,7 +918,7 @@ export class TableFacet extends BaseFacet {
   }
 
   protected updateRowResizeArea() {
-    const { foregroundGroup, options } = this.spreadsheet;
+    const { options } = this.spreadsheet;
     const resize = get(options, 'interaction.resize');
 
     const shouldDrawResize = isBoolean(resize)
@@ -881,8 +928,10 @@ export class TableFacet extends BaseFacet {
       return;
     }
 
-    const rowResizeGroup = foregroundGroup.findById(KEY_GROUP_ROW_RESIZE_AREA);
-    const rowResizeFrozenGroup = foregroundGroup.findById(
+    const rowResizeGroup = this.foregroundGroup.findById(
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+    const rowResizeFrozenGroup = this.foregroundGroup.findById(
       KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
     );
     if (rowResizeGroup) {
@@ -990,7 +1039,7 @@ export class TableFacet extends BaseFacet {
       frozenTrailingColGroup,
       frozenRowGroup,
       frozenTrailingRowGroup,
-    } = this.spreadsheet;
+    } = this;
     [frozenRowGroup, frozenTrailingRowGroup].forEach((g) => {
       translateGroupX(g, this.cornerBBox.width - scrollX);
     });
@@ -1076,7 +1125,7 @@ export class TableFacet extends BaseFacet {
       frozenTrailingColGroup,
       frozenTrailingRowGroup,
       panelScrollGroup,
-    } = this.spreadsheet;
+    } = this;
     const frozenColGroupWidth = frozenColGroup.getBBox().width;
     const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
     const frozenTrailingColBBox = frozenTrailingColGroup.getBBox();
@@ -1144,7 +1193,7 @@ export class TableFacet extends BaseFacet {
       },
     });
 
-    const rowResizeGroup = this.spreadsheet.foregroundGroup.findById(
+    const rowResizeGroup = this.foregroundGroup.findById(
       KEY_GROUP_ROW_RESIZE_AREA,
     );
 
@@ -1164,10 +1213,10 @@ export class TableFacet extends BaseFacet {
   public updatePanelScrollGroup() {
     super.updatePanelScrollGroup();
     [
-      FrozenGroup.FROZEN_COL,
-      FrozenGroup.FROZEN_ROW,
-      FrozenGroup.FROZEN_TRAILING_COL,
-      FrozenGroup.FROZEN_TRAILING_ROW,
+      FrozenGroupType.FROZEN_COL,
+      FrozenGroupType.FROZEN_ROW,
+      FrozenGroupType.FROZEN_TRAILING_COL,
+      FrozenGroupType.FROZEN_TRAILING_ROW,
     ].forEach((key) => {
       if (!this.frozenGroupInfo[key].range) {
         return;
@@ -1180,8 +1229,8 @@ export class TableFacet extends BaseFacet {
         const [rowMin, rowMax] = this.frozenGroupInfo[key].range;
         cols = this.gridInfo.cols;
         rows = getRowsForGrid(rowMin, rowMax, this.viewCellHeights);
-        if (key === FrozenGroup.FROZEN_TRAILING_ROW) {
-          const { minY } = this.spreadsheet.frozenTrailingRowGroup.getBBox();
+        if (key === FrozenGroupType.FROZEN_TRAILING_ROW) {
+          const { minY } = this.frozenTrailingRowGroup.getBBox();
           rows = getFrozenRowsForGrid(
             rowMin,
             rowMax,
@@ -1195,7 +1244,7 @@ export class TableFacet extends BaseFacet {
         rows = this.gridInfo.rows;
       }
 
-      this.spreadsheet[`${key}Group`].updateGrid(
+      this[`${key}Group`].updateGrid(
         {
           cols,
           rows,

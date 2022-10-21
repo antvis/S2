@@ -86,12 +86,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     );
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.foregroundGroup = new Group('');
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
+    mockSpreadSheetInstance.facet.foregroundGroup = new Group('');
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
     ).map((_, idx) => {
