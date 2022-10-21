@@ -29,7 +29,7 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   describe('Render Tests', () => {
-    const sheets: SheetType[] = [
+    const sheetTypes: SheetType[] = [
       'pivot',
       'table',
       'strategy',
@@ -37,7 +37,7 @@ describe('<SheetComponent/> Tests', () => {
       'editable',
     ];
 
-    test.each(sheets)(
+    test.each(sheetTypes)(
       'should render successfully for %s sheet',
       (sheetType) => {
         function render() {
@@ -55,49 +55,76 @@ describe('<SheetComponent/> Tests', () => {
       },
     );
 
-    test.each(sheets)('should render and destroy for %s sheet', (sheetType) => {
-      let getSpreadSheetRef: SpreadSheet;
-      let onMountedRef: SpreadSheet;
+    test.each(sheetTypes)(
+      'should not throw getSpreadSheet deprecated warning for %s sheet',
+      (sheetType) => {
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
 
-      const getSpreadSheet = jest.fn((instance) => {
-        getSpreadSheetRef = instance;
-      });
-      const onMounted = jest.fn((instance) => {
-        onMountedRef = instance;
-      });
-      const onDestroy = jest.fn();
-      const warnSpy = jest
-        .spyOn(console, 'warn')
-        .mockImplementationOnce(() => {});
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+            />,
+            container,
+          );
+        });
 
-      act(() => {
-        ReactDOM.render(
-          <SheetComponent
-            sheetType={sheetType}
-            options={{ width: 200, height: 200 }}
-            dataCfg={null as unknown as S2DataConfig}
-            getSpreadSheet={getSpreadSheet}
-            onMounted={onMounted}
-            onDestroy={onDestroy}
-          />,
-          container,
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
         );
-      });
+      },
+    );
 
-      expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
-      expect(onMounted).toHaveBeenCalledWith(onMountedRef);
-      expect(onMountedRef).toEqual(getSpreadSheetRef);
-      expect(onDestroy).not.toHaveBeenCalled();
-      expect(warnSpy).toHaveBeenCalledWith(
-        '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
-      );
+    test.each(sheetTypes)(
+      'should render and destroy for %s sheet',
+      (sheetType) => {
+        let getSpreadSheetRef: SpreadSheet;
+        let onMountedRef: SpreadSheet;
 
-      act(() => {
-        ReactDOM.unmountComponentAtNode(container);
-      });
+        const getSpreadSheet = jest.fn((instance) => {
+          getSpreadSheetRef = instance;
+        });
+        const onMounted = jest.fn((instance) => {
+          onMountedRef = instance;
+        });
+        const onDestroy = jest.fn();
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-    });
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+              getSpreadSheet={getSpreadSheet}
+              onMounted={onMounted}
+              onDestroy={onDestroy}
+            />,
+            container,
+          );
+        });
+
+        expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
+        expect(onMounted).toHaveBeenCalledWith(onMountedRef);
+        expect(onMountedRef).toEqual(getSpreadSheetRef);
+        expect(onDestroy).not.toHaveBeenCalled();
+        expect(warnSpy).toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+        );
+
+        act(() => {
+          ReactDOM.unmountComponentAtNode(container);
+        });
+
+        expect(onDestroy).toHaveBeenCalledTimes(1);
+      },
+    );
 
     test('should get latest instance after sheet type changed', () => {
       let s2: SpreadSheet;
