@@ -40,10 +40,11 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     // 2、要有配置 fields.rowCustomTree(行头结构)
     // 3、values 不需要参与计算，默认就在行头结构中
 
+    const updatedDataCfg = super.processDataCfg(dataCfg);
     return {
-      ...dataCfg,
+      ...updatedDataCfg,
       fields: {
-        ...dataCfg.fields,
+        ...updatedDataCfg.fields,
         rows: [EXTRA_FIELD],
         valueInCols: false,
       },

@@ -3,7 +3,6 @@ import {
   type ColHeaderConfig,
   customMerge,
   Node,
-  type S2DataConfig,
   type S2Options,
   SpreadSheet,
   type ViewMeta,
@@ -126,16 +125,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       };
     }, [dataCfg, options.tooltip]);
 
-    const s2DataCfg = React.useMemo<S2DataConfig>(() => {
-      const defaultFields: Partial<S2DataConfig> = {
-        fields: {
-          // 多指标数值挂行头，单指标挂列头
-          valueInCols: size(dataCfg?.fields?.values) <= 1,
-        },
-      };
-      return customMerge(dataCfg, defaultFields);
-    }, [dataCfg]);
-
     const s2Options = React.useMemo<S2Options>(() => {
       return customMerge(options, strategySheetOptions);
     }, [options, strategySheetOptions]);
@@ -144,7 +133,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       <BaseSheet
         options={s2Options}
         themeCfg={themeCfg}
-        dataCfg={s2DataCfg}
+        dataCfg={dataCfg}
         ref={s2Ref}
         {...restProps}
       />

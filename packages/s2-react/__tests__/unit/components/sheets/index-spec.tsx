@@ -262,7 +262,7 @@ describe('<SheetComponent/> Tests', () => {
     });
 
     test.each([{ isCustomCornerText: true }, { isCustomCornerText: false }])(
-      'should format corner date field',
+      'should format corner date field for %o',
       ({ isCustomCornerText }) => {
         renderStrategySheet(
           {
