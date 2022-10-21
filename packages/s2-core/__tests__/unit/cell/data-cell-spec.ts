@@ -7,6 +7,7 @@ import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { DataCell } from '@/cell';
 import type { PivotFacet } from '@/facet';
+import { DEFAULT_FONT_COLOR, REVERSE_FONT_COLOR } from '@/common';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -54,11 +55,15 @@ describe('Data Cell Tests', () => {
     test('should return correct formatted value', () => {
       const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
-
+      // @ts-ignore
       const dataCell = new DataCell(meta, s2);
 
-      // @ts-ignore
-      expect(dataCell.textShape.attr('text')).toEqual('120');
+      expect(dataCell.getTextShape().attr('text')).toEqual('120');
+    });
+
+    test('should get correct text fill color', () => {
+      const dataCell = new DataCell(meta, s2);
+      expect(dataCell.getTextShape().attr('fill')).toEqual(DEFAULT_FONT_COLOR);
     });
   });
   describe('Condition Tests', () => {
@@ -118,7 +123,7 @@ describe('Data Cell Tests', () => {
               field: 'cost',
               mapping() {
                 return {
-                  fill: '#F7B46F',
+                  fill: '#fffae6',
                 };
               },
             },
@@ -130,7 +135,8 @@ describe('Data Cell Tests', () => {
         .getChildByIndex(0)
         // @ts-ignore
         .getChildByIndex(2);
-      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
+      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#fffae6');
+      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
     });
 
     test('should draw condition interval shape', () => {
@@ -168,6 +174,30 @@ describe('Data Cell Tests', () => {
       expect(get(dataCell, 'conditionIntervalShape.attrs.width')).toEqual(
         cellWidth,
       );
+    });
+
+    test('should draw right condition text font color when background color brightness is low', () => {
+      s2.setOptions({
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping() {
+                return {
+                  fill: '#000000',
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+      const dataCell = s2.facet.panelGroup
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(2);
+      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(REVERSE_FONT_COLOR);
+      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
     });
   });
 });

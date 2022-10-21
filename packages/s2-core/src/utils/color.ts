@@ -1,13 +1,10 @@
 import tinycolor from 'tinycolor2';
 import type { Palette, PaletteMeta } from '../common/interface/theme';
-
-/**
- * 亮度范围 0~255
- * @see https://github.com/bgrins/TinyColor#getbrightness
- */
-export const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
-export const DEFAULT_FONT_COLOR = '#000000';
-export const REVERSE_FONT_COLOR = '#FFFFFF';
+import {
+  DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
+  REVERSE_FONT_COLOR,
+} from '../common';
 
 /** S2 标准色板 mix 规则 */
 const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
