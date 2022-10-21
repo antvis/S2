@@ -879,7 +879,7 @@ export class TableFacet extends BaseFacet {
 
     const group = FrozenCellGroupMap[frozenCellType];
     if (group) {
-      (this.spreadsheet[group] as Group).add(cell);
+      (this[group] as Group).add(cell);
     }
   };
 
