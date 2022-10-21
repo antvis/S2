@@ -185,22 +185,6 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   private getDefaultTextFill(textStyle: TextTheme) {
-    const { backgroundColor, intelligentReverseTextColor } =
-      this.getBackgroundColor();
-
-    if(!intelligentReverseTextColor) {
-      return textStyle.fill
-    }
-
-    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
-    const isMoreThanThreshold = tinycolor(backgroundColor).getBrightness() <=
-        FONT_COLOR_BRIGHTNESS_THRESHOLD
-    if (isMoreThanThreshold && textStyle.fill === DEFAULT_FONT_COLOR) {
-      return REVERSE_FONT_COLOR;
-    }
-
-    return textStyle.fill
-  }
     let textFill = textStyle.fill;
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
