@@ -1,4 +1,4 @@
-import { isArray, isEmpty, mergeWith, uniq, isEqual } from 'lodash';
+import { isArray, isEmpty, mergeWith, uniq, isEqual, forEach } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import { DEFAULT_OPTIONS } from '../common/constant/options';
 import type { S2DataConfig, S2Options, Fields } from '../common/interface';
@@ -31,6 +31,24 @@ const uniqueFields = (fields: Fields) => {
     ...fields,
     ...result,
   };
+};
+
+/**
+ * 当用户将 DataCfg 的属性设置为 undefined 时，使用默认值
+ * @param dataCfg
+ */
+export const dataCfgPatch = (
+  dataCfg: Partial<S2DataConfig>,
+): Partial<S2DataConfig> => {
+  const newDataCfg = {};
+  forEach(dataCfg, (value, key) => {
+    if (value === undefined) {
+      newDataCfg[key] = DEFAULT_DATA_CONFIG[key];
+    } else {
+      newDataCfg[key] = value;
+    }
+  });
+  return newDataCfg;
 };
 
 export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {

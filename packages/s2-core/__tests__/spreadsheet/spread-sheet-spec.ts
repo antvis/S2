@@ -272,4 +272,65 @@ describe('SpreadSheet Tests', () => {
       expect(container.querySelectorAll('canvas')).toHaveLength(1);
     });
   });
+
+  describe('Sheet Config Change Tests', () => {
+    let container: HTMLElement;
+
+    beforeAll(() => {
+      container = getContainer();
+    });
+
+    afterAll(() => {
+      container?.remove();
+    });
+
+    test('should update total Data when user change totalData config', () => {
+      const totalData = [
+        {
+          province: '浙江',
+          type: '笔',
+          price: 3,
+          cost: 6,
+        },
+      ];
+      const s2 = new PivotSheet(
+        container,
+        { ...mockDataConfig, totalData },
+        s2Options,
+      );
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([
+        {
+          $$extra$$: 'price',
+          $$value$$: 3,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+        {
+          $$extra$$: 'cost',
+          $$value$$: 6,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ]);
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+
+      // 改变 totalData 为 undefined 再次渲染
+      s2.setDataCfg({ ...mockDataConfig, totalData: undefined });
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([]);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual([]);
+      s2.destroy();
+    });
+  });
 });

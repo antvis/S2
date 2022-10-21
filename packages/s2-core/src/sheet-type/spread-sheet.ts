@@ -66,6 +66,7 @@ import {
   customMerge,
   getSafetyDataConfig,
   getSafetyOptions,
+  dataCfgPatch,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
@@ -362,7 +363,8 @@ export abstract class SpreadSheet extends EE {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     this.store.set('originalDataCfg', dataCfg);
-    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    const newDataCfg = dataCfgPatch(dataCfg);
+    this.dataCfg = getSafetyDataConfig(this.dataCfg, newDataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
