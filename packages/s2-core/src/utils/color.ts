@@ -5,7 +5,9 @@ import type { Palette, PaletteMeta } from '../common/interface/theme';
  * 亮度范围 0~255
  * @see https://github.com/bgrins/TinyColor#getbrightness
  */
-const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
+export const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
+export const DEFAULT_FONT_COLOR = '#000000';
+export const REVERSE_FONT_COLOR = '#FFFFFF';
 
 /** S2 标准色板 mix 规则 */
 const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
@@ -83,8 +85,8 @@ export const generatePalette = (paletteMeta: PaletteMeta) => {
     basicColors[fontColorIndex] =
       tinycolor(basicColors[bgColorIndex]).getBrightness() >
       FONT_COLOR_BRIGHTNESS_THRESHOLD
-        ? '#000000'
-        : '#FFFFFF';
+        ? DEFAULT_FONT_COLOR
+        : REVERSE_FONT_COLOR;
   });
 
   return {
