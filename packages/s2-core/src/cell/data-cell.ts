@@ -25,10 +25,10 @@ import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
-  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
-} from '../utils';
+} from '../common';
 
 /**
  * DataCell for panelGroup area
@@ -186,12 +186,14 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   private getDefaultTextFill(textStyle: TextTheme) {
     let textFill = textStyle.fill;
-    const { backgroundColor } = this.getBackgroundColor();
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
       tinycolor(backgroundColor).getBrightness() <=
         FONT_COLOR_BRIGHTNESS_THRESHOLD &&
-      textStyle.fill === DEFAULT_FONT_COLOR
+      textStyle.fill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
     ) {
       textFill = REVERSE_FONT_COLOR;
     }
@@ -287,13 +289,19 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);
+    let intelligentReverseTextColor = false;
     if (bgCondition && bgCondition.mapping) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
+        intelligentReverseTextColor = attrs.intelligentReverseTextColor;
       }
     }
-    return { backgroundColor, backgroundColorOpacity };
+    return {
+      backgroundColor,
+      backgroundColorOpacity,
+      intelligentReverseTextColor,
+    };
   }
 
   /**

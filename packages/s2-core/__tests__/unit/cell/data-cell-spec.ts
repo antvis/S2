@@ -176,7 +176,32 @@ describe('Data Cell Tests', () => {
       );
     });
 
-    test('should draw right condition text font color when background color brightness is low', () => {
+    test('should draw REVERSE_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is true', () => {
+      s2.setOptions({
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping() {
+                return {
+                  fill: '#000000',
+                  intelligentReverseTextColor: true,
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+      const dataCell = s2.facet.panelGroup
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(2);
+      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(REVERSE_FONT_COLOR);
+      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
+    });
+
+    test('should draw DEFAULT_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is false', () => {
       s2.setOptions({
         conditions: {
           background: [
@@ -196,8 +221,33 @@ describe('Data Cell Tests', () => {
         .getChildByIndex(0)
         // @ts-ignore
         .getChildByIndex(2);
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(REVERSE_FONT_COLOR);
+      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
+    });
+
+    test('should draw DEFAULT_FONT_COLOR on text when background high brightness is and intelligentReverseTextColor is true', () => {
+      s2.setOptions({
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping() {
+                return {
+                  fill: '#ffffff',
+                  intelligentReverseTextColor: true,
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+      const dataCell = s2.facet.panelGroup
+        .getChildByIndex(0)
+        // @ts-ignore
+        .getChildByIndex(2);
+      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
+      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
     });
   });
 });
