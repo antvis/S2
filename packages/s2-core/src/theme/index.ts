@@ -25,7 +25,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: isWindows() ? 'bold' : 700,
         fill: basicColors[0],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
@@ -34,7 +34,7 @@ export const getTheme = (
       text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: isWindows() ? 'bold' : 700,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'right',
@@ -93,7 +93,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: isWindows() ? 'bold' : 700,
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
@@ -189,7 +189,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: isWindows() ? 'bold' : 700,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -275,7 +275,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: isWindows() ? 'bold' : 700,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
