@@ -564,7 +564,7 @@ export class TableFacet extends BaseFacet {
     };
   }
 
-  protected initFrozenGroupPosition = () => {
+  protected translateFrozenGroups = () => {
     const { scrollY, scrollX } = this.getScrollOffset();
     const paginationScrollY = this.getPaginationScrollY();
 
@@ -837,7 +837,7 @@ export class TableFacet extends BaseFacet {
 
     Object.keys(result).forEach((key) => {
       const cells = result[key];
-      const group = this.spreadsheet[FrozenCellGroupMap[key]];
+      const group = this[FrozenCellGroupMap[key]];
       if (group) {
         cells.forEach((cell) => {
           this.addFrozenCell(cell.x, cell.y, group);
@@ -951,10 +951,10 @@ export class TableFacet extends BaseFacet {
   }
 
   public render() {
+    super.render();
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
-    super.render();
-    this.initFrozenGroupPosition();
+    this.translateFrozenGroups();
   }
 
   private getFrozenOptions = () => {
