@@ -1,4 +1,4 @@
-import type { S2DataConfig } from '@antv/s2';
+import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import {
   customColGridFields,
   customRowGridFields,
@@ -6,7 +6,11 @@ import {
 import { CustomGridData } from '@antv/s2/__tests__/data/data-custom-grid';
 import { Radio, Space, Switch } from 'antd';
 import React from 'react';
-import { SheetComponent, type SheetComponentOptions } from '../../src';
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentsProps,
+} from '../../src';
 import { meta } from '../../__tests__/data/mock-dataset.json';
 
 export const customRowGridOptions: SheetComponentOptions = {
@@ -65,7 +69,9 @@ enum CustomType {
   All = 'all',
 }
 
-export const CustomGrid = () => {
+export const CustomGrid: React.FC<
+  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
+> = React.forwardRef((props, ref) => {
   const [customType, setCustomType] = React.useState<CustomType>(
     (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
       CustomType.Row,
@@ -108,7 +114,12 @@ export const CustomGrid = () => {
         />
       </Space>
 
-      <SheetComponent dataCfg={dataCfg} options={options} />
+      <SheetComponent
+        {...props}
+        dataCfg={dataCfg}
+        options={options}
+        ref={ref}
+      />
     </>
   );
-};
+});

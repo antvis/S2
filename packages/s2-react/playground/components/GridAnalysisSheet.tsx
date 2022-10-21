@@ -41,13 +41,14 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
 
 export const GridAnalysisSheet: React.FC<
   Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = (props) => {
+> = React.forwardRef((props, ref) => {
   return (
     <SheetComponent
       {...props}
       sheetType="gridAnalysis"
       dataCfg={mockGridAnalysisDataCfg}
       options={mockGridAnalysisOptions}
+      ref={ref}
     />
   );
-};
+});

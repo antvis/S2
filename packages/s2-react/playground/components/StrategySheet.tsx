@@ -12,7 +12,7 @@ import {
 
 export const StrategySheet: React.FC<
   Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = (props) => {
+> = React.forwardRef((props, ref) => {
   const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
     StrategySheetDataConfig,
   );
@@ -20,6 +20,7 @@ export const StrategySheet: React.FC<
   return (
     <SheetComponent
       {...props}
+      ref={ref}
       sheetType="strategy"
       dataCfg={strategyDataCfg}
       options={StrategyOptions}
@@ -50,4 +51,4 @@ export const StrategySheet: React.FC<
       }}
     />
   );
-};
+});

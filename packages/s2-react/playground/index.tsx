@@ -61,6 +61,7 @@ import './index.less';
 const { TabPane } = Tabs;
 
 const onSheetMounted = (s2: SpreadSheet) => {
+  console.log('onSheetMounted: ', s2);
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
@@ -199,10 +200,6 @@ function MainLayout() {
   };
 
   //  ================== Hooks ========================
-
-  React.useEffect(() => {
-    console.log(s2Ref.current?.facet.layoutResult);
-  }, [sheetType]);
 
   useUpdateEffect(() => {
     switch (sheetType) {
@@ -910,11 +907,10 @@ function MainLayout() {
                   open: true,
                 },
               }}
-              getSpreadSheet={logHandler('getSpreadSheet')}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
-              onMounted={onSheetMounted}
               onRangeSort={logHandler('onRangeSort')}
+              onMounted={onSheetMounted}
               onDestroy={logHandler('onDestroy', () => {
                 clearInterval(scrollTimer.current);
               })}
@@ -958,10 +954,10 @@ function MainLayout() {
           )}
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
-          <CustomTree />
+          <CustomTree ref={s2Ref} onMounted={onSheetMounted} />
         </TabPane>
         <TabPane tab="自定义行列头" key="customGrid">
-          <CustomGrid />
+          <CustomGrid ref={s2Ref} onMounted={onSheetMounted} />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
           <StrategySheet
