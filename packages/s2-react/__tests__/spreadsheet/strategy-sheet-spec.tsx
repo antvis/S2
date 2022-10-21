@@ -18,7 +18,7 @@ describe('Strategy Sheet Export Tests', () => {
     act(() => {
       ReactDOM.render(
         <SheetComponent
-          getSpreadSheet={(s2) => {
+          onMounted={(s2) => {
             s2Instance = s2;
           }}
           sheetType="strategy"

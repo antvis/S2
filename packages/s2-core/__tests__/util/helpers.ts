@@ -79,7 +79,10 @@ export const createFakeSpreadSheet = () => {
         return [];
       },
     },
-  } as BaseFacet;
+    layoutResult: {
+      getCellMeta: jest.fn(),
+    },
+  } as unknown as BaseFacet;
 
   s2.container.draw = jest.fn();
   s2.store = new Store();
@@ -143,6 +146,11 @@ export const createMockCellInfo = (
       dataSet: {
         getFieldDescription: jest.fn(),
       },
+      facet: {
+        layoutResult: {
+          getCellMeta: jest.fn(),
+        },
+      } as unknown as BaseFacet,
     } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, [

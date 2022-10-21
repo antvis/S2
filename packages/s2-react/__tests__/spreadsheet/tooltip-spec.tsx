@@ -35,7 +35,7 @@ function MainLayout() {
       dataCfg={mockDataConfig}
       options={s2Options}
       themeCfg={{ name: 'default' }}
-      getSpreadSheet={(instance) => {
+      onMounted={(instance) => {
         s2 = instance;
       }}
     />
@@ -179,7 +179,7 @@ describe('SheetComponent Tooltip Tests', () => {
 
     document
       .querySelector('.ant-dropdown-trigger')
-      .dispatchEvent(new Event('click'));
+      ?.dispatchEvent(new Event('click'));
 
     expect(errorSpy).not.toThrowError(
       'Uncaught Error: React.Children.only expected to receive a single React element child.',
@@ -187,4 +187,23 @@ describe('SheetComponent Tooltip Tests', () => {
 
     errorSpy.mockRestore();
   });
+
+  test.each([{ forceRender: true }, { forceRender: false }])(
+    'should not unmount component after show tooltip and %o',
+    async ({ forceRender }) => {
+      await sleep(1000);
+
+      const unmountComponentAtNodeSpy = jest
+        .spyOn(ReactDOM, 'unmountComponentAtNode')
+        .mockImplementationOnce(() => true);
+
+      s2.showTooltip({ position: { x: 0, y: 0 }, options: { forceRender } });
+      s2.showTooltipWithInfo({} as MouseEvent, [], { forceRender });
+      s2.hideTooltip();
+
+      expect(unmountComponentAtNodeSpy).toHaveBeenCalledTimes(
+        forceRender ? 2 : 0,
+      );
+    },
+  );
 });

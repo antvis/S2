@@ -8,11 +8,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import {
-  CellBorderPosition,
-  type TextTheme,
-  type ViewMeta,
-} from '../common/interface';
+import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
@@ -58,6 +54,8 @@ export class RowCell extends HeaderCell {
     this.drawInteractiveBorderShape();
     // 绘制单元格文本
     this.drawTextShape();
+    // 绘制字段标记 -- icon
+    this.drawConditionIconShapes();
     // 绘制树状模式收起展开的 icon
     this.drawTreeIcon();
     // 绘制树状模式下子节点层级占位圆点
@@ -69,16 +67,6 @@ export class RowCell extends HeaderCell {
     // 绘制 action icons
     this.drawActionIcons();
     this.update();
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    });
   }
 
   /**
@@ -224,6 +212,12 @@ export class RowCell extends HeaderCell {
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
     });
+  }
+
+  protected isBolderText() {
+    // 非叶子节点、小计总计，均为粗体
+    const { isLeaf, isTotals, level } = this.meta;
+    return (!isLeaf && level === 0) || isTotals;
   }
 
   // draw text
@@ -376,26 +370,6 @@ export class RowCell extends HeaderCell {
       get(this.meta, 'parent.children'),
       (cell: ViewMeta) => !cell.isLeaf,
     );
-  }
-
-  protected isBolderText() {
-    // 非叶子节点、小计总计，均为粗体
-    const { isLeaf, isTotals, level } = this.meta;
-    return (!isLeaf && level === 0) || isTotals;
-  }
-
-  protected getTextStyle(): TextTheme {
-    const { text, bolderText, measureText } = this.getStyle();
-    let style: TextTheme;
-    if (this.isMeasureField()) {
-      style = measureText || text;
-    } else if (this.isBolderText()) {
-      style = bolderText;
-    } else {
-      style = text;
-    }
-
-    return { ...style, textBaseline: 'top' };
   }
 
   protected getIconPosition() {

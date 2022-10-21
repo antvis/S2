@@ -7,6 +7,8 @@ redirect_from:
 
 表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
+如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/zh/docs/api/components/sheet-component)
+
 ```ts
 s2.on(S2Event.ROW_CELL_CLICK, () => {
   ...
@@ -26,7 +28,7 @@ s2.on(S2Event.ROW_CELL_CLICK, () => {
 | 鼠标移动     | `S2Event.ROW_CELL_MOUSE_MOVE`         | 行头单元格鼠标移动         |
 | 鼠标松开     | `S2Event.ROW_CELL_MOUSE_UP`           | 行头单元格鼠标松开         |
 | 滚动         | `S2Event.ROW_CELL_SCROLL`            | 行头单元格滚动         |
-| 行头刷选     | `S2Event.ROW_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息(仅支持透视表)    |
+| 行头刷选     | `S2Event.ROW_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表）    |
 
 ### 列头
 
@@ -39,7 +41,7 @@ s2.on(S2Event.ROW_CELL_CLICK, () => {
 | 鼠标按下 | `S2Event.COL_CELL_MOUSE_DOWN`   | 列头单元格鼠标按下 |
 | 鼠标移动 | `S2Event.COL_CELL_MOUSE_MOVE`   | 列头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.COL_CELL_MOUSE_UP`     | 列头单元格鼠标松开 |
-| 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息(仅支持透视表) |
+| 列头刷选 | `S2Event.COL_CELL_BRUSH_SELECTION` | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） |
 
 ### 数值单元格
 
@@ -67,11 +69,12 @@ s2.on(S2Event.ROW_CELL_CLICK, () => {
 | 鼠标移动 | `S2Event.CORNER_CELL_MOUSE_MOVE`   | 角头单元格鼠标移动 |
 | 鼠标松开 | `S2Event.CORNER_CELL_MOUSE_UP`     | 角头单元格鼠标松开 |
 
-### 布局
+### 宽高拖拽调整
 
 | 名称                     | 事件名                             | 描述                                        |
 | :----------------------- | :--------------------------------- | :------------------------------------------ |
 | 单元格调整               | `S2Event.LAYOUT_RESIZE`            | 单元格宽高发生改变                          |
+| 序号列宽度改变            | `S2Event.LAYOUT_RESIZE_SERIES_WIDTH`            | 序号列宽度改变                          |
 | 调整单元格大小时鼠标按下 | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN` | 调整单元格大小鼠标按下，目前仅 行/列 头有效 |
 | 调整单元格大小时鼠标移动 | `S2Event.LAYOUT_RESIZE_MOUSE_MOVE` | 调整单元格大小鼠标移动，目前仅 行/列 头有效 |
 | 调整单元格大小时鼠标松开 | `S2Event.LAYOUT_RESIZE_MOUSE_UP`   | 调整单元格大小鼠标松开，目前仅 行/列 头有效 |
@@ -80,9 +83,21 @@ s2.on(S2Event.ROW_CELL_CLICK, () => {
 | 列头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_WIDTH`  |                                             |
 | 列头高度改变             | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |                                             |
 | 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` | 树状模式下，单元格宽度发生改变时触发        |
+
+### 布局
+
+| 名称                     | 事件名                             | 描述                                        |
+| :----------------------- | :--------------------------------- | :------------------------------------------ |
+| 表头布局完成                 | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                  |
+| 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
+| 分页                 | `S2Event.LAYOUT_PAGINATION`       | 分页事件           |
+| 收起行头                 | `S2Event.LAYOUT_COLLAPSE_ROWS`       |     树状模式下收起行头的事件回调           |
+| 收起行头后                 | `S2Event.LAYOUT_AFTER_COLLAPSE_ROWS`       | 树状模式下收起行头后的事件回调              |
 | 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发                  |
 | 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发                  |
-| 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
+| 开始渲染                 | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()`                   |
+| 渲染完成                 | `S2Event.LAYOUT_AFTER_RENDER`       | render 完成的事件，即 `s2.render()`                  |
+| 表格销毁                 | `S2Event.LAYOUT_DESTROY`       | 表格销毁后或 调用 `s2.destroy()` 触发                  |
 
 ### 全局
 

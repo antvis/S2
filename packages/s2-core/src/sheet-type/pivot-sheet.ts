@@ -221,6 +221,8 @@ export class PivotSheet extends SpreadSheet {
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyMenu: true,
+      // 确保 tooltip 内容更新 https://github.com/antvis/S2/issues/1716
+      forceRender: true,
     });
   }
 }

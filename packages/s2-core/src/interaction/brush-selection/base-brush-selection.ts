@@ -34,7 +34,7 @@ import {
   getScrollOffsetForRow,
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
-import { getActiveCellsTooltipData } from '../../utils';
+import { getCellsTooltipData } from '../../utils';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
@@ -393,7 +393,7 @@ export class BaseBrushSelection
     );
   };
 
-  protected handleScroll = throttle((x, y) => {
+  protected handleScroll = throttle((x: number, y: number) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
     ) {
@@ -619,10 +619,9 @@ export class BaseBrushSelection
       if (this.isValidBrushSelection()) {
         this.addBrushIntercepts();
         this.updateSelectedCells();
-        this.spreadsheet.showTooltipWithInfo(
-          event,
-          getActiveCellsTooltipData(this.spreadsheet),
-        );
+
+        const tooltipData = getCellsTooltipData(this.spreadsheet);
+        this.spreadsheet.showTooltipWithInfo(event, tooltipData);
       }
 
       if (

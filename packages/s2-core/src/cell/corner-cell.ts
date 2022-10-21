@@ -1,4 +1,4 @@
-import type { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import type { IShape, Point } from '@antv/g-canvas';
 import {
   cond,
   constant,
@@ -27,12 +27,7 @@ import {
   getVerticalPosition,
 } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-  renderTreeIcon,
-} from '../utils/g-renders';
+import { renderLine, renderText, renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
@@ -47,6 +42,11 @@ export class CornerCell extends HeaderCell {
   protected declare headerConfig: CornerHeaderConfig;
 
   protected textShapes: IShape[] = [];
+
+  protected isBolderText() {
+    const { cornerType } = this.meta;
+    return cornerType === CornerNodeType.Col;
+  }
 
   /* 角头 label 类型 */
   public cornerType: CornerNodeType;
@@ -63,6 +63,7 @@ export class CornerCell extends HeaderCell {
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
+    this.drawConditionIconShapes();
     this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
@@ -185,18 +186,6 @@ export class CornerCell extends HeaderCell {
         );
       },
     );
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
-
-    const attrs: ShapeAttrs = {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
-    };
-
-    this.backgroundShape = renderRect(this, attrs);
   }
 
   /**
@@ -344,14 +333,13 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const { cornerType } = this.meta;
     const { text, bolderText } = this.getStyle();
-    const cornerTextStyle =
-      cornerType === CornerNodeType.Col ? text : bolderText;
+    const cornerTextStyle = this.isBolderText() ? text : bolderText;
+    const fill = this.getTextConditionFill(cornerTextStyle);
 
     return {
       ...cornerTextStyle,
-      textBaseline: 'middle',
+      fill,
     };
   }
 

@@ -38,7 +38,7 @@ describe('Data Cell Border Tests', () => {
 
     // @ts-ignore
     const meta = dataCell.getCellArea();
-    const borderBbox = dataCell.getChildByIndex(3).getBBox();
+    const borderBbox = dataCell.getChildByIndex(2).getBBox();
 
     expect(meta.x).toEqual(borderBbox.x - borderWidth / 2);
     expect(meta.y).toEqual(borderBbox.y - borderWidth / 2);

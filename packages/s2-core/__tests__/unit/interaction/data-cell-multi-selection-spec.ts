@@ -1,8 +1,7 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
-import { omit } from 'lodash';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
-import type { CellMeta, S2Options, ViewMeta } from '@/common/interface';
+import type { CellMeta, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
@@ -17,31 +16,8 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
   let dataCellMultiSelection: DataCellMultiSelection;
   let s2: SpreadSheet;
 
-  const createMockCell = (
-    cellId: string,
-    { colIndex = 0, rowIndex = 0 } = {},
-  ) => {
-    const mockCellViewMeta: Partial<ViewMeta> = {
-      id: cellId,
-      colIndex,
-      rowIndex,
-      type: undefined,
-    };
-    const mockCellMeta = omit(mockCellViewMeta, 'update');
-    const mockCell = {
-      ...mockCellViewMeta,
-      getMeta: () => mockCellViewMeta,
-      hideInteractionShape: jest.fn(),
-    };
-
-    return {
-      mockCell,
-      mockCellMeta,
-    };
-  };
-
   beforeEach(() => {
-    const mockCell = createMockCell('testId1').mockCell as any;
+    const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
     s2.dataCfg = {
@@ -102,10 +78,13 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         cells: [],
         stateName: InteractionStateName.SELECTED,
       });
-      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
+      const mockCellA = createMockCellInfo('testId2', {
+        rowIndex: 0,
+        colIndex: 0,
+      });
       s2.interaction.getCells = () => [mockCellA.mockCellMeta as CellMeta];
 
-      const mockCellB = createMockCell('testId3', {
+      const mockCellB = createMockCellInfo('testId3', {
         rowIndex: 1,
         colIndex: 1,
       });
@@ -150,8 +129,11 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         key,
       } as KeyboardEvent);
 
-      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
-      const mockCellB = createMockCell('testId3', {
+      const mockCellA = createMockCellInfo('testId2', {
+        rowIndex: 0,
+        colIndex: 0,
+      });
+      const mockCellB = createMockCellInfo('testId3', {
         rowIndex: 1,
         colIndex: 1,
       });
@@ -193,7 +175,10 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         cells: [],
         stateName: InteractionStateName.SELECTED,
       });
-      const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
+      const mockCellA = createMockCellInfo('testId2', {
+        rowIndex: 0,
+        colIndex: 0,
+      });
 
       s2.interaction.getCells = () => [mockCellA.mockCellMeta] as CellMeta[];
 
@@ -217,7 +202,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       cells: [],
       stateName: InteractionStateName.SELECTED,
     });
-    const mockCell00 = createMockCell('0-0', { rowIndex: 0, colIndex: 0 });
+    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
 
     s2.getCell = () => mockCell00.mockCell as any;
 

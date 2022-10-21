@@ -842,6 +842,7 @@ describe('PivotSheet Tests', () => {
         expect.anything(),
         {
           onlyMenu: true,
+          forceRender: true,
           operator: {
             menus: [
               { icon: 'groupAsc', key: 'asc', text: groupAscText },
@@ -862,7 +863,9 @@ describe('PivotSheet Tests', () => {
 
     const showTooltipWithInfoSpy = jest
       .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation(() => {});
+      .mockImplementation((event, data, options) => ({
+        forceRender: options.forceRender,
+      }));
 
     const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
 
@@ -873,7 +876,7 @@ describe('PivotSheet Tests', () => {
       nodeMeta,
     );
 
-    expect(showTooltipWithInfoSpy).toHaveBeenCalledTimes(1);
+    expect(showTooltipWithInfoSpy).toHaveReturnedWith({ forceRender: true });
 
     s2.groupSortByMethod('asc', nodeMeta);
 
