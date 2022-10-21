@@ -36,6 +36,34 @@ describe('Col width Test in grid mode', () => {
     expect(colLeafNodes[0].width).toBe(200);
   });
 
+  test('get correct width in layoutWidthType adaptive mode when enable seriesnumber', () => {
+    s2.setOptions({
+      showSeriesNumber: true,
+    });
+    s2.render();
+    const { colLeafNodes } = s2.facet.layoutResult;
+    expect(colLeafNodes[0].width).toBe(180);
+  });
+
+  test('get correct width in layoutWidthType adaptive tree mode', () => {
+    s2.setOptions({
+      hierarchyType: 'tree',
+    });
+    s2.render();
+    const { colLeafNodes } = s2.facet.layoutResult;
+    expect(colLeafNodes[0].width).toBe(340);
+  });
+
+  test('get correct width in layoutWidthType adaptive tree mode when enable seriesnumber', () => {
+    s2.setOptions({
+      hierarchyType: 'tree',
+      showSeriesNumber: true,
+    });
+    s2.render();
+    const { colLeafNodes } = s2.facet.layoutResult;
+    expect(colLeafNodes[0].width).toBe(300);
+  });
+
   test('get correct width in layoutWidthType compact mode', () => {
     s2.setOptions({
       style: {
