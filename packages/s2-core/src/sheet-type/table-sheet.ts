@@ -28,6 +28,21 @@ export class TableSheet extends SpreadSheet {
     return new TableDataSet(this);
   }
 
+  public enableFrozenHeaders(): boolean {
+    const {
+      frozenRowCount,
+      frozenTrailingRowCount,
+      frozenColCount,
+      frozenTrailingColCount,
+    } = this.options;
+    return (
+      frozenRowCount > 0 ||
+      frozenTrailingRowCount > 0 ||
+      frozenColCount > 0 ||
+      frozenTrailingColCount > 0
+    );
+  }
+
   /**
    * Check if is pivot mode
    */

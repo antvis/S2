@@ -203,6 +203,11 @@ export abstract class SpreadSheet extends EE {
   public abstract getDataSet(options: S2Options): BaseDataSet;
 
   /**
+   * 是否开启冻结行列头效果
+   */
+  public abstract enableFrozenHeaders(): boolean;
+
+  /**
    * Check if is pivot mode
    */
   public abstract isPivotMode(): boolean;

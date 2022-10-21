@@ -35,6 +35,10 @@ export class PivotSheet extends SpreadSheet {
     return realDataSet;
   }
 
+  public enableFrozenHeaders(): boolean {
+    return false;
+  }
+
   /**
    * Check if is pivot mode
    */
