@@ -175,4 +175,15 @@ describe('table sheet filter spec', () => {
       filteredValues: ['消费者'],
     });
   });
+
+  test('falsy/nullish data should not be filtered with irrelavent filter params', () => {
+    spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
+      expect(data.length).toStrictEqual(468);
+    });
+
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'express_type',
+      filteredValues: ['消费者'],
+    });
+  });
 });
