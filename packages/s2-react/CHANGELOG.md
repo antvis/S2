@@ -1,3 +1,23 @@
+# [@antv/s2-react-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.29.0...@antv/s2-react-v1.30.0) (2022-10-24)
+
+
+### Bug Fixes
+
+* customFilter执行时不再执行defaultFilter ([#1814](https://github.com/antvis/S2/issues/1814)) ([21710b2](https://github.com/antvis/S2/commit/21710b260dc41039e832d48d673a63dc21c60454))
+* **interaction:** 修复滚动刷选 onDataCellBrushSelection 未透出正确的单元格 close [#1817](https://github.com/antvis/S2/issues/1817) ([#1825](https://github.com/antvis/S2/issues/1825)) ([5866ba1](https://github.com/antvis/S2/commit/5866ba1d33daa144a18f2771f77785c524fe67c3))
+* 修复 SheetComponent 未使用 getSpreadSheet 也会报 warning 的问题 ([#1843](https://github.com/antvis/S2/issues/1843)) ([47765b8](https://github.com/antvis/S2/commit/47765b8eca7cdfe580ad341a7b4da9cfc4097b24))
+* 修复open属性冲突的问题 close [#1736](https://github.com/antvis/S2/issues/1736) ([#1831](https://github.com/antvis/S2/issues/1831)) ([71b19b9](https://github.com/antvis/S2/commit/71b19b9377ea94527bdb32d7e293a58bf0cedce4))
+
+
+### Features
+
+* 组件层新增 onMounted 事件 ([#1830](https://github.com/antvis/S2/issues/1830)) ([0758160](https://github.com/antvis/S2/commit/0758160833c6be06c96dc851cab4605dd709e8ad))
+
+
+### Reverts
+
+* Revert "chore(release): 🔖@antv/s2@1.32.0 @antv/s2-react@1.29.0 @antv/s2-vue@1…" (#1846) ([7b0bcea](https://github.com/antvis/S2/commit/7b0bceab42acf8dae4a437f86148207848502c8b)), closes [#1846](https://github.com/antvis/S2/issues/1846) [#1844](https://github.com/antvis/S2/issues/1844)
+
 # [@antv/s2-react-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.28.0...@antv/s2-react-v1.29.0) (2022-10-14)
 
 
