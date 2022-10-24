@@ -4,7 +4,7 @@ import {
   DEFAULT_FONT_COLOR,
   FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
-} from '../common';
+} from '../common/constant/condition';
 
 /** S2 标准色板 mix 规则 */
 const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];

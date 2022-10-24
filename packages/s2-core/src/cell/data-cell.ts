@@ -28,7 +28,7 @@ import {
   DEFAULT_FONT_COLOR,
   FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
-} from '../common';
+} from '../common/constant/condition';
 
 /**
  * DataCell for panelGroup area

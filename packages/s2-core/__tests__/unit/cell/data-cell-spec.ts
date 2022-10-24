@@ -7,7 +7,10 @@ import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { DataCell } from '@/cell';
 import type { PivotFacet } from '@/facet';
-import { DEFAULT_FONT_COLOR, REVERSE_FONT_COLOR } from '@/common';
+import {
+  DEFAULT_FONT_COLOR,
+  REVERSE_FONT_COLOR,
+} from '@/common/constant/condition';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
