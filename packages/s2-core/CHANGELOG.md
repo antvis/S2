@@ -1,3 +1,25 @@
+# [@antv/s2-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-v1.32.0...@antv/s2-v1.33.0) (2022-10-24)
+
+
+### Bug Fixes
+
+* bold字体对应数字字重不正确 ([#1841](https://github.com/antvis/S2/issues/1841)) ([abe1607](https://github.com/antvis/S2/commit/abe16074ae7924190e2aa4c2f1bf64bad0151328))
+* customFilter执行时不再执行defaultFilter ([#1814](https://github.com/antvis/S2/issues/1814)) ([21710b2](https://github.com/antvis/S2/commit/21710b260dc41039e832d48d673a63dc21c60454))
+* **interaction:** 修复滚动刷选 onDataCellBrushSelection 未透出正确的单元格 close [#1817](https://github.com/antvis/S2/issues/1817) ([#1825](https://github.com/antvis/S2/issues/1825)) ([5866ba1](https://github.com/antvis/S2/commit/5866ba1d33daa144a18f2771f77785c524fe67c3))
+* **theme:** 获取标准色时增加容错和兜底 ([#1847](https://github.com/antvis/S2/issues/1847)) ([6e61b0c](https://github.com/antvis/S2/commit/6e61b0c69aee3389397b433bc63c227f42376f1a))
+* 紧凑模式下节点宽度计算错误 ([#1834](https://github.com/antvis/S2/issues/1834)) ([7f2f2b3](https://github.com/antvis/S2/commit/7f2f2b3b699eb8dbc8b43ce12f4b3a32888b17e5))
+* 自适应模式节点宽度计算错误 ([#1839](https://github.com/antvis/S2/issues/1839)) ([7bdceb2](https://github.com/antvis/S2/commit/7bdceb251f1d418025e99209145b67a9bf2ef786))
+
+
+### Features
+
+* 在背景字段标记中添加 文本智能反色 ([#1842](https://github.com/antvis/S2/issues/1842)) ([80cbf20](https://github.com/antvis/S2/commit/80cbf2060ac530e0edeae1f7adef7a56303f8723))
+
+
+### Reverts
+
+* Revert "chore(release): 🔖@antv/s2@1.32.0 @antv/s2-react@1.29.0 @antv/s2-vue@1…" (#1846) ([7b0bcea](https://github.com/antvis/S2/commit/7b0bceab42acf8dae4a437f86148207848502c8b)), closes [#1846](https://github.com/antvis/S2/issues/1846) [#1844](https://github.com/antvis/S2/issues/1844)
+
 # [@antv/s2-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-v1.31.1...@antv/s2-v1.32.0) (2022-10-14)
 
 
