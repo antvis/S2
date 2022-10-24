@@ -79,7 +79,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: IShape | undefined;
+  protected conditionIntervalShape: DisplayObject | undefined;
 
   protected conditionIconShape: GuiIcon;
 
