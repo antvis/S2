@@ -15,14 +15,37 @@ fetch(
       },
       conditions: {
         icon: [
+          // 行头
           {
-            field: 'number',
-            position: 'right',
-            mapping(fieldValue, data) {
+            field: 'city',
+            mapping() {
               return {
                 // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'Trend',
+                fill: '#DB6BCF',
+              };
+            },
+          },
+          // 列头
+          {
+            field: 'sub_type',
+            mapping(fieldValue) {
+              if (fieldValue !== '子类别') {
+                return {
+                  icon: 'CellDown',
+                  fill: '#025DF4',
+                };
+              }
+            },
+          },
+          // 配置数据单元格
+          {
+            field: 'number',
+            position: 'left',
+            mapping() {
+              return {
                 icon: 'CellUp',
-                fill: '#30BF78',
+                fill: '#2498D1',
               };
             },
           },
