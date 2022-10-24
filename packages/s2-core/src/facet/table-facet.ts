@@ -951,10 +951,10 @@ export class TableFacet extends BaseFacet {
   }
 
   public render() {
-    super.render();
     this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     this.translateFrozenGroups();
+    super.render();
   }
 
   private getFrozenOptions = () => {
