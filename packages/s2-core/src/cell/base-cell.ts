@@ -76,7 +76,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: IShape;
+  protected conditionIntervalShape: DisplayObject;
 
   protected conditionIconShape: GuiIcon;
 
