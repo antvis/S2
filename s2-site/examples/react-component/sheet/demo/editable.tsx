@@ -1,16 +1,10 @@
-import { TableSheet } from '@antv/s2';
-
 import { SheetComponent } from '@antv/s2-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-fetch(
-  '../../../../examples/data/basic-table-mode.json',
-)
+fetch('../../examples/data/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    const container = document.getElementById('container');
-
     const s2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
@@ -51,7 +45,11 @@ fetch(
     };
 
     ReactDOM.render(
-      React.createElement(SheetComponent, { dataCfg: s2DataConfig, options: s2Options }),
-      container,
+      <SheetComponent
+        dataCfg={s2DataConfig}
+        options={s2Options}
+        sheetType="editable"
+      />,
+      document.getElementById('container'),
     );
   });
