@@ -1,5 +1,9 @@
+import { toUpper } from 'lodash';
 import tinycolor from 'tinycolor2';
 import type { Palette, PaletteMeta } from '../common/interface/theme';
+
+const WHITE_COLOR = '#FFFFFF';
+const BLACK_COLOR = '#000000';
 
 /**
  * 亮度范围 0~255
@@ -44,18 +48,23 @@ const FONT_COLOR_RELATIONS: Array<{
  * @param brandColor 主题色
  * @returns 标准色卡
  */
-export const generateStandardColors = (brandColor: string) => {
-  const standardColors = [];
+export const generateStandardColors = (brandColor: string): string[] => {
+  const standardColors: string[] = [];
 
   for (let index = 0; index < 11; index++) {
     const mixPercent = STANDARD_COLOR_MIX_PERCENT[index];
     standardColors.push(
       mixPercent === 0
-        ? brandColor.toUpperCase()
-        : tinycolor
-            .mix(brandColor, index < 5 ? '#FFFFFF' : '#000000', mixPercent)
-            .toHexString()
-            .toUpperCase(),
+        ? toUpper(brandColor)
+        : toUpper(
+            tinycolor
+              .mix(
+                brandColor,
+                index < 5 ? WHITE_COLOR : BLACK_COLOR,
+                mixPercent,
+              )
+              .toHexString(),
+          ),
     );
   }
 
@@ -64,13 +73,15 @@ export const generateStandardColors = (brandColor: string) => {
 
 /**
  * 根据 S2 内置色板及自选主题色生成新色板
- * @param palette 参考色板
+ * @param paletteMeta @PaletteMeta
  * @returns 新色板
  */
-export const generatePalette = (paletteMeta: PaletteMeta) => {
-  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill('#FFFFFF');
-  const { basicColorRelations } = paletteMeta;
-  const standardColors = generateStandardColors(paletteMeta.brandColor);
+export const generatePalette = (
+  paletteMeta: PaletteMeta = {} as PaletteMeta,
+): Palette => {
+  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill(WHITE_COLOR);
+  const { basicColorRelations = [], brandColor } = paletteMeta;
+  const standardColors = generateStandardColors(brandColor);
 
   // 使用标准色填充 basicColors
   basicColorRelations.forEach((relation) => {
@@ -83,8 +94,8 @@ export const generatePalette = (paletteMeta: PaletteMeta) => {
     basicColors[fontColorIndex] =
       tinycolor(basicColors[bgColorIndex]).getBrightness() >
       FONT_COLOR_BRIGHTNESS_THRESHOLD
-        ? '#000000'
-        : '#FFFFFF';
+        ? BLACK_COLOR
+        : WHITE_COLOR;
   });
 
   return {
