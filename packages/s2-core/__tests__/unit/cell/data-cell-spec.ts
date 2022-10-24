@@ -58,7 +58,6 @@ describe('Data Cell Tests', () => {
     test('should return correct formatted value', () => {
       const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
-      // @ts-ignore
       const dataCell = new DataCell(meta, s2);
 
       expect(dataCell.getTextShape().attr('text')).toEqual('120');

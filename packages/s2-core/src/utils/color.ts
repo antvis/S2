@@ -7,6 +7,8 @@ import {
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 
+const WHITE_COLOR = '#FFFFFF';
+const BLACK_COLOR = '#000000';
 
 /** S2 标准色板 mix 规则 */
 const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
@@ -57,7 +59,7 @@ export const generateStandardColors = (brandColor: string): string[] => {
             tinycolor
               .mix(
                 brandColor,
-                index < 5 ? DEFAULT_FONT_COLOR : REVERSE_FONT_COLOR,
+                index < 5 ? WHITE_COLOR : BLACK_COLOR,
                 mixPercent,
               )
               .toHexString(),
@@ -76,7 +78,9 @@ export const generateStandardColors = (brandColor: string): string[] => {
 export const generatePalette = (
   paletteMeta: PaletteMeta = {} as PaletteMeta,
 ): Palette => {
-  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill(DEFAULT_FONT_COLOR);
+  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill(
+    REVERSE_FONT_COLOR,
+  );
   const { basicColorRelations = [], brandColor } = paletteMeta;
   const standardColors = generateStandardColors(brandColor);
 
