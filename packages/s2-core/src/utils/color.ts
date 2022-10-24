@@ -1,15 +1,14 @@
 import { toUpper } from 'lodash';
 import tinycolor from 'tinycolor2';
 import type { Palette, PaletteMeta } from '../common/interface/theme';
+import {
+  DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
+  REVERSE_FONT_COLOR,
+} from '../common/constant/condition';
 
 const WHITE_COLOR = '#FFFFFF';
 const BLACK_COLOR = '#000000';
-
-/**
- * 亮度范围 0~255
- * @see https://github.com/bgrins/TinyColor#getbrightness
- */
-const FONT_COLOR_BRIGHTNESS_THRESHOLD = 220;
 
 /** S2 标准色板 mix 规则 */
 const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
@@ -79,7 +78,9 @@ export const generateStandardColors = (brandColor: string): string[] => {
 export const generatePalette = (
   paletteMeta: PaletteMeta = {} as PaletteMeta,
 ): Palette => {
-  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill(WHITE_COLOR);
+  const basicColors = Array.from(Array(BASIC_COLOR_COUNT)).fill(
+    REVERSE_FONT_COLOR,
+  );
   const { basicColorRelations = [], brandColor } = paletteMeta;
   const standardColors = generateStandardColors(brandColor);
 
@@ -94,8 +95,8 @@ export const generatePalette = (
     basicColors[fontColorIndex] =
       tinycolor(basicColors[bgColorIndex]).getBrightness() >
       FONT_COLOR_BRIGHTNESS_THRESHOLD
-        ? BLACK_COLOR
-        : WHITE_COLOR;
+        ? DEFAULT_FONT_COLOR
+        : REVERSE_FONT_COLOR;
   });
 
   return {

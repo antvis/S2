@@ -132,7 +132,7 @@ const s2Options = {
 
 <playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#bidirectional-interval)。
 
 ### 渐变柱状图
 
@@ -141,4 +141,14 @@ const s2Options = {
 `price` 字段使用渐变色：
 <playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#gradient-interval)。
+
+### 开启文字智能反色
+
+通过显示指定 `background` 字段标记中的 `mapping` 函数返回值  `intelligentReverseTextColor` 属性值为 `true`。
+当标记背景颜色较暗时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
+优先级： `background condition` 的 `intelligentReverseTextColor` < `text condition` 的 `fill`
+
+<playground path="analysis/conditions/demo/intelligent-background.ts" rid='intelligentReverseTextColor'></playground>
+
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#intelligent-background)。
