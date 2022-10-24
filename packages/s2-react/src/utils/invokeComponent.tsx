@@ -1,7 +1,7 @@
 import type { SpreadSheet } from '@antv/s2';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import SpreadSheetContext from './SpreadSheetContext';
+import { SpreadSheetContext } from './SpreadSheetContext';
 
 export type InvokeComponentProps<P> = {
   onCancel: any;
@@ -15,7 +15,7 @@ export type InvokeComponentProps<P> = {
  * @param params
  * @returns
  */
-export default function invokeComponent<P>(
+export function invokeComponent<P>(
   Component: React.ComponentType<InvokeComponentProps<P>>,
   params: P,
   spreadsheet: SpreadSheet,

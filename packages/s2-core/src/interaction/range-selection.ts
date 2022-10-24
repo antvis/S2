@@ -11,7 +11,7 @@ import {
 import type { S2CellType, ViewMeta } from '../common/interface';
 import type { Node } from '../facet/layout/node';
 import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
-import { getActiveCellsTooltipData } from '../utils/tooltip';
+import { getCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RangeSelection extends BaseEvent implements BaseEventImplement {
@@ -111,7 +111,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       });
       this.spreadsheet.showTooltipWithInfo(
         event,
-        getActiveCellsTooltipData(this.spreadsheet),
+        getCellsTooltipData(this.spreadsheet),
       );
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,

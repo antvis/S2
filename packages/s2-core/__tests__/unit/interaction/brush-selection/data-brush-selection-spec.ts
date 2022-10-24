@@ -12,7 +12,13 @@ import {
   S2Event,
   SpreadSheet,
   type ViewMeta,
+  InterceptType,
+  ScrollDirection,
+  getScrollOffsetForCol,
+  FrozenGroup,
+  getScrollOffsetForRow,
 } from '@/index';
+import type { TableFacet } from '@/facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -209,415 +215,415 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       panelGroupAllDataCells,
     );
   });
-  //
-  // test('should skip brush selection if mouse not dragged', () => {
-  //   emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-  //     x: 10,
-  //     y: 20,
-  //   });
-  //   emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-  //     clientX: 12,
-  //     clientY: 22,
-  //   });
-  //   emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
-  //
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.UN_DRAGGED,
-  //   );
-  //
-  //   expect(brushSelectionInstance.isValidBrushSelection()).toBeFalsy();
-  //
-  //   // 如果刷选距离过短, 则走单选的逻辑, 需要隐藏刷选提示框
-  //   expect(
-  //     brushSelectionInstance.hidePrepareSelectMaskShape,
-  //   ).toHaveBeenCalled();
-  // });
-  //
-  // // https://github.com/antvis/S2/issues/852
-  // test('should clear brush selection state when mouse down and context menu clicked', () => {
-  //   const globalMouseUp = jest.fn();
-  //   mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
-  //
-  //   emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-  //     x: 10,
-  //     y: 20,
-  //   });
-  //   emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-  //     clientX: 12,
-  //     clientY: 22,
-  //   });
-  //
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.DRAGGED,
-  //   );
-  //
-  //   emitEvent(S2Event.GLOBAL_CONTEXT_MENU, {});
-  //
-  //   expect(globalMouseUp).not.toHaveBeenCalled();
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.UN_DRAGGED,
-  //   );
-  //   expect(
-  //     brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-  //       InterceptType.HOVER,
-  //     ]),
-  //   ).toBeFalsy();
-  //   expect(
-  //     brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-  //       InterceptType.BRUSH_SELECTION,
-  //     ]),
-  //   ).toBeFalsy();
-  //   expect(
-  //     brushSelectionInstance.hidePrepareSelectMaskShape,
-  //   ).toHaveReturnedTimes(1);
-  // });
-  //
-  // test('should skip brush selection if mouse move less than valid distance', () => {
-  //   emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {});
-  //
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.UN_DRAGGED,
-  //   );
-  //   expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
-  //   expect(brushSelectionInstance.brushRangeCells).toHaveLength(0);
-  //   expect(
-  //     brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-  //       InterceptType.HOVER,
-  //     ]),
-  //   ).toBeFalsy();
-  // });
-  //
-  // test('should get brush selection range cells', () => {
-  //   const selectedFn = jest.fn();
-  //   const brushSelectionFn = jest.fn();
-  //
-  //   mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-  //
-  //   mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
-  //   mockSpreadSheetInstance.on(
-  //     S2Event.DATA_CELL_BRUSH_SELECTION,
-  //     brushSelectionFn,
-  //   );
-  //
-  //   // ================== mouse down ==================
-  //   emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
-  //
-  //   mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
-  //   // ================== mouse move ==================
-  //   emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-  //     clientX: 100,
-  //     clientY: 200,
-  //   });
-  //
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.DRAGGED,
-  //   );
-  //   // get end brush point
-  //   expect(brushSelectionInstance.endBrushPoint).toEqual({
-  //     ...endBrushDataCellMeta,
-  //     x: 100,
-  //     y: 200,
-  //   });
-  //   // show prepare brush selection mask
-  //   expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
-  //     x: 10,
-  //     y: 20,
-  //     width: 90,
-  //     height: 180,
-  //   });
-  //
-  //   // ================== mouse up ==================
-  //   emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
-  //   // hide prepare mask
-  //   expect(
-  //     brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
-  //   ).toBeFalsy();
-  //   // show tooltip
-  //   expect(mockSpreadSheetInstance.showTooltipWithInfo).toHaveBeenCalled();
-  //   // reset brush stage
-  //   expect(brushSelectionInstance.brushSelectionStage).toEqual(
-  //     InteractionBrushSelectionStage.UN_DRAGGED,
-  //   );
-  //   // get brush range selected cells
-  //   expect(brushSelectionInstance.brushRangeCells).toHaveLength(15);
-  //   brushSelectionInstance.brushRangeCells.forEach((cell) => {
-  //     const { rowIndex, colIndex } = cell.getMeta();
-  //     expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex);
-  //     expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex);
-  //     expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex);
-  //     expect(colIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.colIndex);
-  //   });
-  //   // emit event
-  //   expect(selectedFn).toHaveBeenCalledTimes(1);
-  //   expect(brushSelectionFn).toHaveBeenCalledTimes(1);
-  // });
-  //
-  // test('should get correct formatted brush point', () => {
-  //   const EXTRA_PIXEL = 2;
-  //   const VSCROLLBAR_WIDTH = 5;
-  //   const { width, height } = mockSpreadSheetInstance.facet.getCanvasHW();
-  //   const minX = 10;
-  //   const minY = 10;
-  //   const maxY = height + 10;
-  //   const maxX = width + 10;
-  //   mockSpreadSheetInstance.facet.panelBBox = {
-  //     minX,
-  //     minY,
-  //     maxY,
-  //     maxX,
-  //   } as any;
-  //   brushSelectionInstance.endBrushPoint = {
-  //     x: maxX - 10,
-  //     y: maxY - 10,
-  //     scrollX: 0,
-  //     colIndex: 0,
-  //     rowIndex: 0,
-  //   };
-  //   mockSpreadSheetInstance.facet.vScrollBar = {
-  //     getBBox: () =>
-  //       ({
-  //         width: VSCROLLBAR_WIDTH,
-  //       } as any),
-  //   } as any;
-  //   let result = brushSelectionInstance.formatBrushPointForScroll({
-  //     x: 20,
-  //     y: 20,
-  //   });
-  //
-  //   expect(result).toStrictEqual({
-  //     x: {
-  //       needScroll: true,
-  //       value: maxX - VSCROLLBAR_WIDTH - EXTRA_PIXEL,
-  //     },
-  //     y: {
-  //       needScroll: true,
-  //       value: maxY - EXTRA_PIXEL,
-  //     },
-  //   });
-  //
-  //   brushSelectionInstance.endBrushPoint = {
-  //     x: maxX - 10,
-  //     y: maxY - 10,
-  //     scrollX: 0,
-  //     colIndex: 0,
-  //     rowIndex: 0,
-  //   };
-  //
-  //   result = brushSelectionInstance.formatBrushPointForScroll({
-  //     x: 1,
-  //     y: 1,
-  //   });
-  //
-  //   expect(result).toStrictEqual({
-  //     x: {
-  //       needScroll: false,
-  //       value: maxX - 10 + 1,
-  //     },
-  //     y: {
-  //       needScroll: false,
-  //       value: maxY - 10 + 1,
-  //     },
-  //   });
-  //
-  //   brushSelectionInstance.endBrushPoint = {
-  //     x: minX + 10,
-  //     y: minY + 10,
-  //     scrollX: 0,
-  //     colIndex: 0,
-  //     rowIndex: 0,
-  //   };
-  //
-  //   result = brushSelectionInstance.formatBrushPointForScroll({
-  //     x: -20,
-  //     y: -20,
-  //   });
-  //
-  //   expect(result).toStrictEqual({
-  //     x: {
-  //       needScroll: true,
-  //       value: minX + EXTRA_PIXEL,
-  //     },
-  //     y: {
-  //       needScroll: true,
-  //       value: minY + EXTRA_PIXEL,
-  //     },
-  //   });
-  // });
-  //
-  // test('should get correct selected cell metas', () => {
-  //   expect(
-  //     brushSelectionInstance.getSelectedCellMetas({
-  //       start: {
-  //         colIndex: 0,
-  //         rowIndex: 0,
-  //       },
-  //       end: {
-  //         colIndex: 9,
-  //         rowIndex: 9,
-  //       },
-  //     } as any).length,
-  //   ).toBe(100);
-  // });
-  //
-  // test('should get correct adjusted frozen rowIndex and colIndex', () => {
-  //   const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
-  //     brushSelectionInstance;
-  //   mockSpreadSheetInstance.setOptions({
-  //     frozenColCount: 1,
-  //     frozenRowCount: 1,
-  //     frozenTrailingColCount: 1,
-  //     frozenTrailingRowCount: 1,
-  //   });
-  //   mockSpreadSheetInstance.dataSet.getDisplayDataSet = () => {
-  //     return Array.from(new Array(10)).map(() => {
-  //       return {};
-  //     });
-  //   };
-  //   (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
-  //     1, 8, 1, 8,
-  //   ];
-  //
-  //   expect(adjustNextColIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-  //   expect(adjustNextColIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-  //   expect(adjustNextColIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
-  //
-  //   expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
-  //   expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
-  //   expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
-  // });
-  //
-  // test('should get correct scroll offset for row and col', () => {
-  //   const { facet } = mockSpreadSheetInstance;
-  //   expect(
-  //     getScrollOffsetForCol(
-  //       7,
-  //       ScrollDirection.LEADING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(700);
-  //   expect(
-  //     getScrollOffsetForCol(
-  //       7,
-  //       ScrollDirection.TRAILING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(200);
-  //
-  //   (facet as TableFacet).frozenGroupInfo = {
-  //     [FrozenGroup.FROZEN_COL]: {
-  //       width: 100,
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_COL]: {
-  //       width: 100,
-  //     },
-  //     [FrozenGroup.FROZEN_ROW]: {
-  //       height: 0,
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_ROW]: {
-  //       height: 0,
-  //     },
-  //   };
-  //
-  //   expect(
-  //     getScrollOffsetForCol(
-  //       7,
-  //       ScrollDirection.LEADING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(600);
-  //   expect(
-  //     getScrollOffsetForCol(
-  //       7,
-  //       ScrollDirection.TRAILING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(300);
-  //
-  //   facet.panelBBox = {
-  //     height: facet.getCanvasHW().height,
-  //   } as any;
-  //
-  //   facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);
-  //
-  //   expect(
-  //     getScrollOffsetForRow(
-  //       7,
-  //       ScrollDirection.LEADING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(700);
-  //   expect(
-  //     getScrollOffsetForRow(
-  //       7,
-  //       ScrollDirection.TRAILING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(320);
-  //
-  //   (facet as TableFacet).frozenGroupInfo = {
-  //     [FrozenGroup.FROZEN_COL]: {
-  //       width: 0,
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_COL]: {
-  //       width: 0,
-  //     },
-  //     [FrozenGroup.FROZEN_ROW]: {
-  //       height: 100,
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_ROW]: {
-  //       height: 100,
-  //     },
-  //   };
-  //   expect(
-  //     getScrollOffsetForRow(
-  //       7,
-  //       ScrollDirection.LEADING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(600);
-  //   expect(
-  //     getScrollOffsetForRow(
-  //       7,
-  //       ScrollDirection.TRAILING,
-  //       mockSpreadSheetInstance,
-  //     ),
-  //   ).toBe(420);
-  // });
-  //
-  // test('should get valid x and y index', () => {
-  //   const { validateXIndex, validateYIndex } = brushSelectionInstance;
-  //   expect(validateXIndex(-1)).toBe(null);
-  //   expect(validateXIndex(1)).toBe(1);
-  //   expect(validateXIndex(10)).toBe(null);
-  //   expect(validateXIndex(9)).toBe(9);
-  //
-  //   expect(validateYIndex(-1)).toBe(null);
-  //   expect(validateYIndex(1)).toBe(1);
-  //   expect(validateYIndex(10)).toBe(null);
-  //   expect(validateYIndex(9)).toBe(9);
-  //
-  //   (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
-  //     [FrozenGroup.FROZEN_COL]: {
-  //       range: [0, 1],
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_COL]: {
-  //       range: [8, 9],
-  //     },
-  //     [FrozenGroup.FROZEN_ROW]: {
-  //       range: [0, 1],
-  //     },
-  //     [FrozenGroup.FROZEN_TRAILING_ROW]: {
-  //       range: [8, 9],
-  //     },
-  //   };
-  //
-  //   expect(validateXIndex(1)).toBe(null);
-  //   expect(validateXIndex(2)).toBe(2);
-  //   expect(validateXIndex(8)).toBe(null);
-  //   expect(validateXIndex(7)).toBe(7);
-  //   expect(validateXIndex(1)).toBe(null);
-  //   expect(validateXIndex(2)).toBe(2);
-  //   expect(validateXIndex(8)).toBe(null);
-  //   expect(validateXIndex(7)).toBe(7);
-  // });
+
+  test('should skip brush selection if mouse not dragged', () => {
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
+      x: 10,
+      y: 20,
+    });
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 12,
+      clientY: 22,
+    });
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+
+    expect(brushSelectionInstance.isValidBrushSelection()).toBeFalsy();
+
+    // 如果刷选距离过短, 则走单选的逻辑, 需要隐藏刷选提示框
+    expect(
+      brushSelectionInstance.hidePrepareSelectMaskShape,
+    ).toHaveBeenCalled();
+  });
+
+  // https://github.com/antvis/S2/issues/852
+  test('should clear brush selection state when mouse down and context menu clicked', () => {
+    const globalMouseUp = jest.fn();
+    mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
+
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
+      x: 10,
+      y: 20,
+    });
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 12,
+      clientY: 22,
+    });
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.DRAGGED,
+    );
+
+    emitEvent(S2Event.GLOBAL_CONTEXT_MENU, {});
+
+    expect(globalMouseUp).not.toHaveBeenCalled();
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    expect(
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+      ]),
+    ).toBeFalsy();
+    expect(
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+      ]),
+    ).toBeFalsy();
+    expect(
+      brushSelectionInstance.hidePrepareSelectMaskShape,
+    ).toHaveReturnedTimes(1);
+  });
+
+  test('should skip brush selection if mouse move less than valid distance', () => {
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {});
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
+    expect(brushSelectionInstance.brushRangeCells).toHaveLength(0);
+    expect(
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+      ]),
+    ).toBeFalsy();
+  });
+
+  test('should get brush selection range cells', () => {
+    const selectedFn = jest.fn();
+    const brushSelectionFn = jest.fn();
+
+    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
+
+    mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
+    mockSpreadSheetInstance.on(
+      S2Event.DATA_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
+
+    // ================== mouse down ==================
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { x: 10, y: 20 });
+
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
+    // ================== mouse move ==================
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 100,
+      clientY: 200,
+    });
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.DRAGGED,
+    );
+    // get end brush point
+    expect(brushSelectionInstance.endBrushPoint).toEqual({
+      ...endBrushDataCellMeta,
+      x: 100,
+      y: 200,
+    });
+    // show prepare brush selection mask
+    expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
+      x: 10,
+      y: 20,
+      width: 90,
+      height: 180,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // hide prepare mask
+    expect(
+      brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
+    ).toBeFalsy();
+    // show tooltip
+    expect(mockSpreadSheetInstance.showTooltipWithInfo).toHaveBeenCalled();
+    // reset brush stage
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    // get brush range selected cells
+    expect(brushSelectionInstance.brushRangeCells).toHaveLength(15);
+    brushSelectionInstance.brushRangeCells.forEach((cell) => {
+      const { rowIndex, colIndex } = cell.getMeta();
+      expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex);
+      expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex);
+      expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex);
+      expect(colIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.colIndex);
+    });
+    // emit event
+    expect(selectedFn).toHaveBeenCalledTimes(1);
+    expect(brushSelectionFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('should get correct formatted brush point', () => {
+    const EXTRA_PIXEL = 2;
+    const VSCROLLBAR_WIDTH = 5;
+    const { width, height } = mockSpreadSheetInstance.facet.getCanvasHW();
+    const minX = 10;
+    const minY = 10;
+    const maxY = height + 10;
+    const maxX = width + 10;
+    mockSpreadSheetInstance.facet.panelBBox = {
+      minX,
+      minY,
+      maxY,
+      maxX,
+    } as any;
+    brushSelectionInstance.endBrushPoint = {
+      x: maxX - 10,
+      y: maxY - 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+    mockSpreadSheetInstance.facet.vScrollBar = {
+      getBBox: () =>
+        ({
+          width: VSCROLLBAR_WIDTH,
+        } as any),
+    } as any;
+    let result = brushSelectionInstance.formatBrushPointForScroll({
+      x: 20,
+      y: 20,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: true,
+        value: maxX - VSCROLLBAR_WIDTH - EXTRA_PIXEL,
+      },
+      y: {
+        needScroll: true,
+        value: maxY - EXTRA_PIXEL,
+      },
+    });
+
+    brushSelectionInstance.endBrushPoint = {
+      x: maxX - 10,
+      y: maxY - 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+
+    result = brushSelectionInstance.formatBrushPointForScroll({
+      x: 1,
+      y: 1,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: false,
+        value: maxX - 10 + 1,
+      },
+      y: {
+        needScroll: false,
+        value: maxY - 10 + 1,
+      },
+    });
+
+    brushSelectionInstance.endBrushPoint = {
+      x: minX + 10,
+      y: minY + 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+
+    result = brushSelectionInstance.formatBrushPointForScroll({
+      x: -20,
+      y: -20,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: true,
+        value: minX + EXTRA_PIXEL,
+      },
+      y: {
+        needScroll: true,
+        value: minY + EXTRA_PIXEL,
+      },
+    });
+  });
+
+  test('should get correct selected cell metas', () => {
+    expect(
+      brushSelectionInstance.getSelectedCellMetas({
+        start: {
+          colIndex: 0,
+          rowIndex: 0,
+        },
+        end: {
+          colIndex: 9,
+          rowIndex: 9,
+        },
+      } as any).length,
+    ).toBe(100);
+  });
+
+  test('should get correct adjusted frozen rowIndex and colIndex', () => {
+    const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
+      brushSelectionInstance;
+    mockSpreadSheetInstance.setOptions({
+      frozenColCount: 1,
+      frozenRowCount: 1,
+      frozenTrailingColCount: 1,
+      frozenTrailingRowCount: 1,
+    });
+    mockSpreadSheetInstance.dataSet.getDisplayDataSet = () => {
+      return Array.from(new Array(10)).map(() => {
+        return {};
+      });
+    };
+    (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
+      1, 8, 1, 8,
+    ];
+
+    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
+    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
+    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+
+    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
+    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
+    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
+  });
+
+  test('should get correct scroll offset for row and col', () => {
+    const { facet } = mockSpreadSheetInstance;
+    expect(
+      getScrollOffsetForCol(
+        7,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(700);
+    expect(
+      getScrollOffsetForCol(
+        7,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(200);
+
+    (facet as TableFacet).frozenGroupInfo = {
+      [FrozenGroup.FROZEN_COL]: {
+        width: 100,
+      },
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
+        width: 100,
+      },
+      [FrozenGroup.FROZEN_ROW]: {
+        height: 0,
+      },
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+        height: 0,
+      },
+    };
+
+    expect(
+      getScrollOffsetForCol(
+        7,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(600);
+    expect(
+      getScrollOffsetForCol(
+        7,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(300);
+
+    facet.panelBBox = {
+      height: facet.getCanvasHW().height,
+    } as any;
+
+    facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);
+
+    expect(
+      getScrollOffsetForRow(
+        7,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(700);
+    expect(
+      getScrollOffsetForRow(
+        7,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(320);
+
+    (facet as TableFacet).frozenGroupInfo = {
+      [FrozenGroup.FROZEN_COL]: {
+        width: 0,
+      },
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
+        width: 0,
+      },
+      [FrozenGroup.FROZEN_ROW]: {
+        height: 100,
+      },
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+        height: 100,
+      },
+    };
+    expect(
+      getScrollOffsetForRow(
+        7,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(600);
+    expect(
+      getScrollOffsetForRow(
+        7,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
+      ),
+    ).toBe(420);
+  });
+
+  test('should get valid x and y index', () => {
+    const { validateXIndex, validateYIndex } = brushSelectionInstance;
+    expect(validateXIndex(-1)).toBe(null);
+    expect(validateXIndex(1)).toBe(1);
+    expect(validateXIndex(10)).toBe(null);
+    expect(validateXIndex(9)).toBe(9);
+
+    expect(validateYIndex(-1)).toBe(null);
+    expect(validateYIndex(1)).toBe(1);
+    expect(validateYIndex(10)).toBe(null);
+    expect(validateYIndex(9)).toBe(9);
+
+    (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
+      [FrozenGroup.FROZEN_COL]: {
+        range: [0, 1],
+      },
+      [FrozenGroup.FROZEN_TRAILING_COL]: {
+        range: [8, 9],
+      },
+      [FrozenGroup.FROZEN_ROW]: {
+        range: [0, 1],
+      },
+      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+        range: [8, 9],
+      },
+    };
+
+    expect(validateXIndex(1)).toBe(null);
+    expect(validateXIndex(2)).toBe(2);
+    expect(validateXIndex(8)).toBe(null);
+    expect(validateXIndex(7)).toBe(7);
+    expect(validateXIndex(1)).toBe(null);
+    expect(validateXIndex(2)).toBe(2);
+    expect(validateXIndex(8)).toBe(null);
+    expect(validateXIndex(7)).toBe(7);
+  });
 });

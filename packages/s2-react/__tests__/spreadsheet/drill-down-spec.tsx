@@ -73,7 +73,7 @@ describe('Spread Sheet Drill Down Tests', () => {
         <SheetComponent
           options={s2Options}
           dataCfg={mockDataConfig}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2Instance = instance;
           }}
           partDrillDown={partDrillDownParams}
@@ -105,7 +105,7 @@ describe('Spread Sheet Drill Down Tests', () => {
             ],
           }}
           dataCfg={mockDataConfig}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2Instance = instance;
           }}
           partDrillDown={partDrillDownParams}
@@ -134,7 +134,7 @@ describe('Spread Sheet Drill Down Tests', () => {
               values: [],
             },
           })}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2 = instance;
           }}
           partDrillDown={partDrillDownParams}
@@ -160,7 +160,7 @@ describe('Spread Sheet Drill Down Tests', () => {
         <SheetComponent
           options={s2Options}
           dataCfg={mockDataConfig}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2 = instance;
           }}
           partDrillDown={{

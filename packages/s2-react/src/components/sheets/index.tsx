@@ -18,11 +18,11 @@ const Sheet = React.forwardRef(
     const sheetProps = React.useMemo<SheetComponentsProps>(() => {
       return {
         ...props,
-        getSpreadSheet: (instance) => {
+        onMounted: (instance) => {
           if (ref) {
             ref.current = instance;
           }
-          props.getSpreadSheet?.(instance);
+          props.onMounted?.(instance);
         },
       };
     }, [props, ref]);
@@ -35,8 +35,8 @@ const Sheet = React.forwardRef(
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':
           return <StrategySheet {...sheetProps} />;
-        case 'editable': 
-          return <EditableSheet {...sheetProps}/>
+        case 'editable':
+          return <EditableSheet {...sheetProps} />;
         default:
           return <PivotSheet {...sheetProps} />;
       }
