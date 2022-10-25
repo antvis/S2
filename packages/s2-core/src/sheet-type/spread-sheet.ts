@@ -601,7 +601,6 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initContainer(dom: S2MountContainer) {
-    // TODO: supportCSSTransform g5.0 不支持
     const {
       width,
       height,
@@ -615,6 +614,7 @@ export abstract class SpreadSheet extends EE {
       height,
       pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
       renderer: new Renderer(),
+      supportCSSTransform,
     });
 
     this.updateContainerStyle();
