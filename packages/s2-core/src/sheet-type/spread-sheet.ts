@@ -19,6 +19,7 @@ import { registerIcon } from '../common/icons/factory';
 import type {
   CustomSVGIcon,
   EmitterType,
+  Fields,
   InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
@@ -112,7 +113,7 @@ export abstract class SpreadSheet extends EE {
     super();
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
-    this.dataSet = this.getDataSet(this.options);
+    this.dataSet = this.getDataSet();
 
     this.setDebug();
     this.initTooltip();
@@ -200,7 +201,7 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract bindEvents(): void;
 
-  public abstract getDataSet(options: S2Options): BaseDataSet;
+  public abstract getDataSet(): BaseDataSet;
 
   /**
    * 是否开启冻结行列头效果
@@ -211,6 +212,14 @@ export abstract class SpreadSheet extends EE {
    * Check if is pivot mode
    */
   public abstract isPivotMode(): boolean;
+
+  public abstract isCustomHeaderFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean;
+
+  public abstract isCustomRowFields(): boolean;
+
+  public abstract isCustomColumnFields(): boolean;
 
   /**
    * tree type must be in strategy mode
@@ -351,8 +360,9 @@ export abstract class SpreadSheet extends EE {
     const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
       options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+
     if (reBuildDataSet) {
-      this.dataSet = this.getDataSet(this.options);
+      this.dataSet = this.getDataSet();
     }
     if (reloadData) {
       this.clearDrillDownData('', true);

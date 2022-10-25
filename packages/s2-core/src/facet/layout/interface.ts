@@ -1,5 +1,5 @@
 import type {
-  CustomTreeItem,
+  CustomTreeNode,
   SpreadSheetFacetCfg,
 } from '../../common/interface';
 import type { PivotMeta } from '../../data-set/interface';
@@ -91,5 +91,5 @@ export interface CustomTreeHeaderParams {
   parentNode: Node;
   level: number;
   hierarchy: Hierarchy;
-  customTreeItems: CustomTreeItem[];
+  tree: CustomTreeNode[];
 }

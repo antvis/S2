@@ -1,15 +1,19 @@
 import type { Event, ShapeAttrs } from '@antv/g-canvas';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
-import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
+import type {
+  CustomTreeNode,
+  Data,
+  RawData,
+  ResizeInfo,
+} from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
 import type {
   S2BasicOptions,
   S2TableSheetOptions,
 } from '../../common/interface/s2Options';
 import type { BaseDataSet, Query } from '../../data-set';
-import type { Frame } from '../../facet/header';
-import type { BaseHeaderConfig } from '../../facet/header/base';
+import type { BaseHeaderConfig, Frame } from '../../facet/header';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -86,11 +90,15 @@ export interface Extra {
   remark: string;
 }
 
+export type CustomHeaderField = string | CustomTreeNode;
+
+export type CustomHeaderFields = CustomHeaderField[];
+
 export interface BaseFields {
   // row fields
-  rows?: string[];
+  rows?: CustomHeaderFields;
   // columns fields
-  columns?: string[];
+  columns?: CustomHeaderFields;
   // value fields
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
@@ -98,9 +106,6 @@ export interface BaseFields {
 }
 
 export interface Fields extends BaseFields {
-  // custom tree data(only use in row header in pivot mode)
-  customTreeItems?: CustomTreeItem[];
-
   // the order of the measure values in rows or cols, only works for PivotSheet
   customValueOrder?: number;
 }
@@ -494,10 +499,9 @@ export interface PartDrillDownDataCache {
   rowId: string;
   // 下钻的行头level
   drillLevel: number;
-  // 下钻的维度
   drillField: string;
   // 下钻的数据
-  drillData: Record<string, string | number>[];
+  drillData: RawData[];
 }
 
 export interface PartDrillDownFieldInLevel {

@@ -522,6 +522,32 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName('not-found-field')).toEqual(
         'not-found-field',
       );
+      // 异常情况
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(dataSet.getFieldName(['1'])).toEqual(['1']);
+    });
+
+    test('should return correct field meta', () => {
+      expect(dataSet.getFieldMeta('price')).toStrictEqual({
+        description: '价格描述',
+        field: 'price',
+        name: '价格',
+      });
+      expect(dataSet.getFieldMeta('cost')).toStrictEqual({
+        field: 'cost',
+        name: '成本',
+        description: '成本描述',
+      });
+      expect(dataSet.getFieldMeta('')).toBeUndefined();
+      expect(dataSet.getFieldMeta('not-found-field')).toBeUndefined();
+    });
+
+    test('should return correct custom field name', () => {
+      expect(dataSet.getFieldName({ key: '1', title: '测试' })).toStrictEqual(
+        '测试',
+      );
+      expect(dataSet.getFieldName(null)).toBeNull();
     });
 
     test('should return correct field description', () => {

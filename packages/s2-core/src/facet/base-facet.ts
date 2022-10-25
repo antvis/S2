@@ -203,7 +203,12 @@ export abstract class BaseFacet {
     return isFunction(width) ? width?.(node) : width;
   }
 
-  protected getCellDraggedWidth(node: Node): number {
+  protected getRowCellDraggedWidth(node: Node): number {
+    const { rowCfg } = this.cfg;
+    return rowCfg?.widthByField?.[node.field];
+  }
+
+  protected getColCellDraggedWidth(node: Node): number {
     const { colCfg } = this.cfg;
     return get(colCfg?.widthByFieldValue, `${node.value}`, node.width);
   }
@@ -1229,26 +1234,26 @@ export abstract class BaseFacet {
 
   protected getCornerHeader(): CornerHeader {
     if (!this.cornerHeader) {
-      return CornerHeader.getCornerHeader(
-        this.panelBBox,
-        this.cornerBBox,
-        this.getSeriesNumberWidth(),
-        this.cfg,
-        this.layoutResult,
-        this.spreadsheet,
-      );
+      return CornerHeader.getCornerHeader({
+        panelBBox: this.panelBBox,
+        cornerBBox: this.cornerBBox,
+        seriesNumberWidth: this.getSeriesNumberWidth(),
+        facetCfg: this.cfg,
+        layoutResult: this.layoutResult,
+        spreadsheet: this.spreadsheet,
+      });
     }
     return this.cornerHeader;
   }
 
   protected getSeriesNumberHeader(): SeriesNumberHeader {
-    return SeriesNumberHeader.getSeriesNumberHeader(
-      this.panelBBox,
-      this.getSeriesNumberWidth(),
-      this.layoutResult.rowsHierarchy.getNodes(0),
-      this.spreadsheet,
-      this.cornerBBox.width,
-    );
+    return SeriesNumberHeader.getSeriesNumberHeader({
+      panelBBox: this.panelBBox,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      spreadsheet: this.spreadsheet,
+      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      cornerWidth: this.cornerBBox.width,
+    });
   }
 
   protected getCenterFrame(): Frame {

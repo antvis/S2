@@ -195,7 +195,7 @@ export const hideColumnsByThunkGroup = (
     hideColumns(spreadsheet, hiddenColumnFields, true);
   }
 
-  const columns = getColumns(spreadsheet);
+  const columns = getColumns(spreadsheet) as string[];
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
     columns,
     hiddenColumnFields,

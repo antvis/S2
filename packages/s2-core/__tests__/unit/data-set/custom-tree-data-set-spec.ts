@@ -2,8 +2,8 @@
  * custom-tree mode base data-set test.
  */
 import { get } from 'lodash';
-import { customTreeItems } from 'tests/data/custom-tree-items';
-import { dataCustomTrees } from 'tests/data/data-custom-trees';
+import { customTreeNodes } from 'tests/data/custom-tree-nodes';
+import { CustomTreeData } from 'tests/data/data-custom-tree';
 import type { S2DataConfig } from '@/common/interface';
 import { EXTRA_FIELD } from '@/common/constant';
 import { PivotSheet } from '@/sheet-type';
@@ -26,12 +26,11 @@ describe('Custom Tree Dataset Test', () => {
   ];
   const dataCfg: S2DataConfig = {
     meta: [],
-    data: dataCustomTrees,
+    data: CustomTreeData,
     fields: {
-      rows: [],
+      rows: customTreeNodes,
       columns: ['type', 'sub_type'],
       values,
-      customTreeItems,
       valueInCols: false,
     },
   };

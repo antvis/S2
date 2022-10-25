@@ -54,7 +54,7 @@ export default defineComponent({
       :class="`${TOOLTIP_PREFIX_CLS}-summary-item`"
     >
       <span :class="`${TOOLTIP_PREFIX_CLS}-summary-key`">
-        {{ summary.name }} {{ i18n('总和') }}
+        {{ summary.name }} ({{ i18n('总和') }})
       </span>
       <span
         :class="`${TOOLTIP_PREFIX_CLS}-summary-val ${TOOLTIP_PREFIX_CLS}-bold`"

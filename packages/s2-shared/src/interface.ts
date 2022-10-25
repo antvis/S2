@@ -45,7 +45,7 @@ export type SheetType =
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
 export interface BaseSheetComponentProps<
-  PartialDrillDown = unknown,
+  PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
 > {
@@ -245,14 +245,14 @@ export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
 
 export interface PartDrillDownInfo {
   // The data of drill down
-  drillData: Record<string, string | number>[];
+  drillData: RawData[];
   // The field of drill down
   drillField: string;
 }
 
-export interface PartDrillDown {
+export interface PartDrillDown<T = BaseDrillDownComponentProps> {
   // The configuration of drill down
-  drillConfig: BaseDrillDownComponentProps;
+  drillConfig: T;
   // The numbers of drill down result
   drillItemsNum?: number;
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;

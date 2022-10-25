@@ -173,9 +173,10 @@ const sortByMethod = (params: SortActionParams): string[] => {
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
     );
 
+    const fields = isInRows ? rows : columns;
     result = getDimensionsWithParentPath(
       sortFieldId,
-      isInRows ? rows : columns,
+      fields as string[],
       dimensions as CellData[],
     );
   } else {
@@ -225,12 +226,12 @@ const createTotalParams = (
   if (isMultipleDimensionValue) {
     // 获取行/列小计时，需要将所有行/列维度的值作为 params
     const realOriginValue = split(originValue, ID_SEPARATOR);
-    const keys = fields?.rows?.includes(sortFieldId)
-      ? fields.rows
-      : fields.columns;
+    const currentFields = (
+      fields?.rows?.includes(sortFieldId) ? fields.rows : fields.columns
+    ) as string[];
 
-    for (let i = 0; i <= indexOf(keys, sortFieldId); i++) {
-      totalParams[keys[i]] = realOriginValue[i];
+    for (let i = 0; i <= indexOf(currentFields, sortFieldId); i++) {
+      totalParams[currentFields[i]] = realOriginValue[i];
     }
   } else {
     totalParams[sortFieldId] = originValue;
@@ -263,7 +264,7 @@ export const getSortByMeasureValues = (
    */
   if (sortByMeasure !== TOTAL_VALUE) {
     const rowColFields = filterExtraDimension(
-      concat(fields.rows, fields.columns),
+      concat(fields.rows, fields.columns) as string[],
     );
 
     return dataList.filter((dataItem) => {
@@ -282,11 +283,11 @@ export const getSortByMeasureValues = (
   const isSortFieldInRow = includes(fields.rows, sortFieldId);
   // 排序字段所在一侧的全部字段
   const sortFields = filterExtraDimension(
-    isSortFieldInRow ? fields.rows : fields.columns,
+    (isSortFieldInRow ? fields.rows : fields.columns) as string[],
   );
   // 与排序交叉的另一侧全部字段
   const oppositeFields = filterExtraDimension(
-    isSortFieldInRow ? fields.columns : fields.rows,
+    (isSortFieldInRow ? fields.columns : fields.rows) as string[],
   );
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];

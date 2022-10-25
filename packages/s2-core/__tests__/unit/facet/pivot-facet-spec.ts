@@ -92,6 +92,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         indexesData,
         sortedDimensionValues,
         moreThanOneValue: jest.fn(),
+        getField: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
@@ -111,6 +112,10 @@ describe('Pivot Mode Facet Test', () => {
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
   s2.dataSet = dataSet;
   s2.interaction = new RootInteraction(s2);
+  s2.isValueInCols = jest.fn();
+  s2.isCustomHeaderFields = jest.fn();
+  s2.isCustomColumnFields = jest.fn();
+  s2.isCustomRowFields = jest.fn();
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,

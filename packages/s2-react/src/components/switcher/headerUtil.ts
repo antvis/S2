@@ -45,12 +45,12 @@ export const generateSwitcherFields = (
     if (isEmpty(values)) {
       return config;
     }
-    const items = map(values, (id) => {
+    const items = map(values, (id: string) => {
       const target = find(meta, ['field', id]);
       return {
         id,
         displayName: target?.name,
-        checked: !hiddenColumnFields.includes(id),
+        checked: !hiddenColumnFields.includes(id as string),
       };
     });
 

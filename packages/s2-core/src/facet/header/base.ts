@@ -1,37 +1,5 @@
-import { Group, type Point } from '@antv/g-canvas';
-import type { SortParam } from '../../common/interface';
-import type { Node } from '../layout/node';
-import type { SpreadSheet } from '../../sheet-type';
-
-/**
- * Base header config interface
- */
-export interface BaseHeaderConfig {
-  // group's scroll x value
-  scrollX?: number;
-  // group's scroll y value
-  scrollY?: number;
-  // group's width
-  width: number;
-  // group's height
-  height: number;
-  // group's original width without clip
-  originalWidth?: number;
-  // group's original height without clip
-  originalHeight?: number;
-  // group's container's width
-  viewportWidth: number;
-  // group's container's height
-  viewportHeight: number;
-  // group's top-left point
-  position: Point;
-  // group's all nodes
-  data: Node[];
-  // spreadsheet entrance instance
-  spreadsheet: SpreadSheet;
-  // leaf node sort params
-  sortParam?: SortParam;
-}
+import { Group } from '@antv/g-canvas';
+import type { BaseHeaderConfig } from './interface';
 
 /**
  * New Base Header for all headers(cornerHeader, rowHeader, colHeader)

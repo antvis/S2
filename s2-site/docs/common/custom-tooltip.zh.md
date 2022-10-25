@@ -13,7 +13,7 @@ object **必选**,_default：null_ 功能描述： tooltip 显示配置
 | data      | [TooltipData](#tooltipdata)                                                 |       |        | tooltip 数据        |
 | cellInfos | `Record<string, any>`                                                       |       |        | 单元格信息          |
 | options   | [TooltipOptions](#tooltipoptions)                                           |       |        | tooltip 部分配置    |
-| content   | `React.ReactNode | string` \| `(cell, defaultTooltipShowOptions: TooltipShowOptions) => React.ReactNode | string` |       |        | 自定义 tooltip 内容 |
+| content   | `React.ReactNode | string` \| (cell, defaultTooltipShowOptions: [TooltipShowOptions](#tooltipshowoptions)) => React.ReactNode | string |       |        | 自定义 tooltip 内容 |
 | event     | `Event`                                                                     |       |        | 当前事件 Event      |
 
 ### TooltipPosition

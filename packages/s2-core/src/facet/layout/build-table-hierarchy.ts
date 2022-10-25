@@ -21,9 +21,11 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
       });
     });
   });
-  const fields = [...displayedColumns];
+  const fields = [...displayedColumns] as string[];
 
-  const fieldValues = map(displayedColumns, (val) => dataSet.getFieldName(val));
+  const fieldValues = map(displayedColumns, (field: string) =>
+    dataSet.getFieldName(field),
+  );
 
   if (showSeriesNumber) {
     fields.unshift(SERIES_NUMBER_FIELD);
@@ -31,7 +33,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   }
 
   generateHeaderNodes({
-    currentField: fields[0],
+    currentField: fields[0] as string,
     fields,
     fieldValues,
     facetCfg,

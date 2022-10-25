@@ -3,34 +3,15 @@ import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
-import type {
-  LayoutResult,
-  S2CellType,
-  S2Options,
-  SpreadSheetFacetCfg,
-} from '../../common/interface';
+import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
-import type { BaseDataSet } from '../../data-set';
-import type { SpreadSheet } from '../../sheet-type';
 import type { CornerBBox } from '../bbox/cornerBBox';
 import type { PanelBBox } from '../bbox/panelBBox';
-import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { BaseHeader, type BaseHeaderConfig } from './base';
-
-export interface CornerHeaderConfig extends BaseHeaderConfig {
-  // header's hierarchy type
-  hierarchyType: S2Options['hierarchyType'];
-  // the hierarchy collapse or not
-  hierarchyCollapse: boolean;
-  // rows fields
-  rows: string[];
-  // column fields
-  columns: string[];
-  // series number width
-  seriesNumberWidth: number;
-}
+import { getDefaultCornerText } from './../../common/constant/basic';
+import { BaseHeader } from './base';
+import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
 
 /**
  * Corner Header for SpreadSheet
@@ -38,21 +19,21 @@ export interface CornerHeaderConfig extends BaseHeaderConfig {
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   /**
    * Get corner Header by config
-   * @param panelBBox
-   * @param cornerBBox
-   * @param seriesNumberWidth
-   * @param cfg
-   * @param layoutResult
-   * @param s2 spreadsheet
    */
   public static getCornerHeader(
-    panelBBox: PanelBBox,
-    cornerBBox: CornerBBox,
-    seriesNumberWidth: number,
-    cfg: SpreadSheetFacetCfg,
-    layoutResult: LayoutResult,
-    s2: SpreadSheet,
+    options: BaseCornerOptions & {
+      panelBBox: PanelBBox;
+      cornerBBox: CornerBBox;
+    },
   ) {
+    const {
+      panelBBox,
+      cornerBBox,
+      seriesNumberWidth,
+      facetCfg,
+      layoutResult,
+      spreadsheet,
+    } = options;
     const { width, height } = panelBBox;
     const {
       originalWidth: cornerOriginalWidth,
@@ -61,18 +42,18 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       height: cornerHeight,
     } = cornerBBox;
 
-    const cornerNodes = this.getCornerNodes(
-      { x: cornerBBox.x, y: cornerBBox.y },
-      cornerOriginalWidth,
-      cornerOriginalHeight,
-      cfg.rows,
-      cfg.columns,
-      layoutResult.rowsHierarchy,
-      layoutResult.colsHierarchy,
-      cfg.dataSet,
+    const cornerNodes = this.getCornerNodes({
+      position: {
+        x: cornerBBox.x,
+        y: cornerBBox.y,
+      },
+      width: cornerOriginalWidth,
+      height: cornerOriginalHeight,
+      facetCfg,
+      layoutResult,
       seriesNumberWidth,
-      s2,
-    );
+      spreadsheet,
+    });
     return new CornerHeader({
       data: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
@@ -82,103 +63,148 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       originalWidth: cornerOriginalWidth,
       viewportWidth: width,
       viewportHeight: height,
-      hierarchyType: cfg.hierarchyType, // 是否为树状布局
-      hierarchyCollapse: cfg.hierarchyCollapse,
-      rows: cfg.rows,
-      columns: cfg.columns,
+      hierarchyType: facetCfg.hierarchyType, // 是否为树状布局
+      hierarchyCollapse: facetCfg.hierarchyCollapse,
+      rows: facetCfg.rows,
+      columns: facetCfg.columns,
       seriesNumberWidth,
-      spreadsheet: s2,
+      spreadsheet,
     });
   }
 
+  public static getTreeCornerText(options: BaseCornerOptions) {
+    const { spreadsheet, facetCfg } = options;
+    const { dataSet, rows } = facetCfg;
+
+    const { cornerText: defaultCornerText } = spreadsheet.options;
+
+    if (defaultCornerText) {
+      return defaultCornerText;
+    }
+
+    const drillDownFieldInLevel = spreadsheet.store.get(
+      'drillDownFieldInLevel',
+      [],
+    );
+    const drillFields = drillDownFieldInLevel.map((field) => field.drillField);
+
+    // 角头过滤下钻的维度
+    const treeLabel = rows
+      .filter((value) => !includes(drillFields, value))
+      .map((field): string => dataSet.getFieldName(field))
+      .join('/');
+
+    if (treeLabel) {
+      return treeLabel;
+    }
+
+    return getDefaultCornerText();
+  }
+
   public static getCornerNodes(
-    position: Point,
-    width: number,
-    height: number,
-    rows: string[],
-    columns: string[],
-    rowsHierarchy: Hierarchy,
-    colsHierarchy: Hierarchy,
-    dataSet: BaseDataSet,
-    seriesNumberWidth: number,
-    s2: SpreadSheet,
+    options: BaseCornerOptions & {
+      position: Point;
+      width: number;
+      height: number;
+    },
   ): Node[] {
+    const {
+      position,
+      width,
+      facetCfg,
+      layoutResult,
+      seriesNumberWidth,
+      spreadsheet,
+    } = options;
+    const { rowsHierarchy, colsHierarchy } = layoutResult;
+    const { rows, columns, dataSet } = facetCfg;
     const cornerNodes: Node[] = [];
+    const leafNode = colsHierarchy?.sampleNodeForLastLevel;
     // check if show series number node
     // spreadsheet must have at least one node in last level
-    if (seriesNumberWidth && colsHierarchy?.sampleNodeForLastLevel) {
+    if (seriesNumberWidth && leafNode) {
       const sNode: Node = new Node({
         id: '',
         key: KEY_SERIES_NUMBER_NODE, // mark series node
-        value: i18n('序号'),
+        value: spreadsheet.options.seriesNumberText ?? i18n('序号'),
       });
       sNode.x = position?.x;
       // different type different y
-      sNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+      sNode.y = leafNode?.y;
       sNode.width = seriesNumberWidth;
       // different type different height
-      sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+      sNode.height = leafNode?.height;
       sNode.isPivotMode = true;
       sNode.cornerType = CornerNodeType.Series;
       cornerNodes.push(sNode);
     }
 
     // spreadsheet type tree mode
-    if (colsHierarchy?.sampleNodeForLastLevel) {
-      if (s2.isHierarchyTreeType()) {
-        const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
-        const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
-
-        const cNode: Node = new Node({
+    if (leafNode) {
+      if (spreadsheet.isHierarchyTreeType()) {
+        const cornerText = this.getTreeCornerText(options);
+        const cornerNode: Node = new Node({
           key: '',
           id: '',
-          // 角头过滤下钻的维度
-          value: rows
-            .filter((value) => !includes(drillFields, value))
-            .map((key: string): string => dataSet.getFieldName(key))
-            .join('/'),
+          value: cornerText,
         });
-        cNode.x = position.x + seriesNumberWidth;
-        cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+        cornerNode.x = position.x + seriesNumberWidth;
+        cornerNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
         // cNode should subtract series width
-        cNode.width = width - seriesNumberWidth;
-        cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
-        cNode.seriesNumberWidth = seriesNumberWidth;
-        cNode.isPivotMode = true;
-        cNode.spreadsheet = s2;
-        cNode.cornerType = CornerNodeType.Row;
-        cornerNodes.push(cNode);
+        cornerNode.width = width - seriesNumberWidth;
+        cornerNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+        cornerNode.seriesNumberWidth = seriesNumberWidth;
+        cornerNode.isPivotMode = true;
+        cornerNode.spreadsheet = spreadsheet;
+        cornerNode.cornerType = CornerNodeType.Row;
+        cornerNodes.push(cornerNode);
       } else {
+        const rowNodes = rowsHierarchy.sampleNodesForAllLevels || [];
+        const isCustomRow = spreadsheet.isCustomRowFields();
+
         // spreadsheet type grid mode
-        rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-          const field = rows[rowNode.level];
-          const cNode: Node = new Node({
+        rowNodes.forEach((rowNode) => {
+          // 自定义行头直接取采样的行头 key 值即可, 可通过 s2DataCfg.meta.name 自定义名称
+          const field = isCustomRow
+            ? rowNode.key
+            : (rows[rowNode.level] as string);
+
+          const value = dataSet.getFieldName(field);
+
+          const cornerNode: Node = new Node({
             key: field,
             id: '',
-            value: dataSet.getFieldName(field),
+            value,
           });
 
-          cNode.x = rowNode.x + seriesNumberWidth;
-          cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = rowNode.width;
-          cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
-          cNode.field = field;
-          cNode.isPivotMode = true;
-          cNode.cornerType = CornerNodeType.Row;
-          cNode.spreadsheet = s2;
-          cornerNodes.push(cNode);
+          cornerNode.x = rowNode.x + seriesNumberWidth;
+          cornerNode.y = leafNode?.y;
+          cornerNode.width = rowNode.width;
+          cornerNode.height = leafNode?.height;
+          cornerNode.field = field;
+          cornerNode.isPivotMode = true;
+          cornerNode.cornerType = CornerNodeType.Row;
+          cornerNode.spreadsheet = spreadsheet;
+          cornerNodes.push(cornerNode);
         });
       }
     }
 
-    colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
+    const columnNodes = colsHierarchy.sampleNodesForAllLevels || [];
+    const isCustomColumn = spreadsheet.isCustomColumnFields();
+
+    columnNodes.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
-        const field = columns[colNode.level];
-        const cNode: Node = new Node({
+        const field = isCustomColumn
+          ? colNode.key
+          : (columns[colNode.level] as string);
+        const value = dataSet.getFieldName(field);
+
+        const cNode = new Node({
           key: field,
           id: '',
-          value: dataSet.getFieldName(field),
+          value,
         });
         cNode.x = position.x;
         cNode.y = colNode.y;
@@ -187,7 +213,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
-        cNode.spreadsheet = s2;
+        cNode.spreadsheet = spreadsheet;
         cornerNodes.push(cNode);
       }
     });

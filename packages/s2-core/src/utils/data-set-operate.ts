@@ -10,6 +10,7 @@ import type {
   Totals,
   TotalsStatus,
   FlattingIndexesData,
+  CustomHeaderFields,
 } from '../common/interface';
 import type { TotalSelectionsOfMultiData } from '../data-set/interface';
 import { customMerge } from './merge';
@@ -47,7 +48,7 @@ export const filterTotal = (values: string[] = []) => {
 
 export const getFieldKeysByDimensionValues = (
   dimensionValues: string[] | undefined[],
-  dimensions: string[] | undefined[],
+  dimensions: CustomHeaderFields,
 ) => {
   const result = [];
   dimensionValues?.forEach((item, index) => {

@@ -52,6 +52,8 @@ jest.mock('@/sheet-type', () => {
         enableFrozenHeaders() {
           return false;
         },
+        isValueInCols: jest.fn(),
+        isCustomHeaderFields: jest.fn(),
       };
     }),
   };

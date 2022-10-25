@@ -309,7 +309,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
       'measure-e',
       'measure-f',
     ],
-    customTreeItems: [
+    rows: [
       {
         key: 'custom-node-1',
         title: '自定义节点A',
