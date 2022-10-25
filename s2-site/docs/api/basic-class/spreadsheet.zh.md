@@ -49,8 +49,8 @@ s2.xx()
 | hideTooltip | 隐藏 tooltip | `() => void` |
 | destroyTooltip | 销毁 tooltip | `() => void` |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`) | `() => void` |
-| setDataCfg | 更新数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig) ) => void |
-| setOptions | 更新表格配置 | (options: [S2Options](/zh/docs/api/general/S2Options)) => void |
+| setDataCfg | 更新数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig), reset?: boolean ) => void |
+| setOptions | 更新表格配置 | (options: [S2Options](/zh/docs/api/general/S2Options), reset?: boolean) => void |
 | render | 重新渲染表格，如果 `reloadData` = true, 则会重新计算数据，`reBuildDataSet` = true, 重新构建数据集，`reBuildHiddenColumnsDetail` = true 重新构建隐藏列信息 | `(reloadData?: boolean, { reBuildDataSet?: boolean; reBuildHiddenColumnsDetail?: boolean }) => void` |
 | destroy | 销毁表格 | `() => void` |
 | setThemeCfg | 更新主题配置 （含主题 schema, 色板，主题名） | (themeCfg: [ThemeCfg](/zh/docs/api/general/S2Theme/#themecfg)) => void |

@@ -22,7 +22,7 @@ s2.dataSet.xx()
 | getFieldName | 获取字段名 | `() => string` |
 | getFieldFormatter | 获取字段格式化函数 | `() => (v: string) => unknown` |
 | getFieldDescription | 获取字段描述 | `() => string` |
-| setDataCfg | 设置数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig)) => void |
+| setDataCfg | 设置数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig), reset?: boolean) => void |
 | getDisplayDataSet | 获取当前显示的数据集 | () => [DataType[]](#datatype)  |
 | getDimensionValues | 获取维值 | (filed: string, query?: [DataType](#datatype) ) => string[] |
 | getCellData | 获取单个的单元格数据 | (params: [CellDataParams](#celldataparams)) => [DataType[]](#datatype) |
