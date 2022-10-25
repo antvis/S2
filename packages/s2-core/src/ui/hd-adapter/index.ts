@@ -100,8 +100,8 @@ export class HdAdapter {
       MIN_DEVICE_PIXEL_RATIO,
     );
 
-    // TODO: 待沧东跟进render后修改 dpr 的需求；目前用lodash先绕过检查；
-    set(container, 'devicePixelRatio', pixelRatio);
+    // https://github.com/antvis/G/issues/1143
+    container.getConfig().devicePixelRatio = pixelRatio;
     container.resize(width!, height!);
 
     this.spreadsheet.render(false);
