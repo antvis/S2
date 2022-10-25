@@ -33,24 +33,6 @@ const uniqueFields = (fields: Fields) => {
   };
 };
 
-/**
- * 当用户将 DataCfg 的属性设置为 undefined 时，使用默认值
- * @param dataCfg
- */
-export const dataCfgPatch = (
-  dataCfg: Partial<S2DataConfig>,
-): Partial<S2DataConfig> => {
-  const newDataCfg = {};
-  forEach(dataCfg, (value, key) => {
-    if (value === undefined) {
-      newDataCfg[key] = DEFAULT_DATA_CONFIG[key];
-    } else {
-      newDataCfg[key] = value;
-    }
-  });
-  return newDataCfg;
-};
-
 export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
   const result = customMerge(
     DEFAULT_DATA_CONFIG,
