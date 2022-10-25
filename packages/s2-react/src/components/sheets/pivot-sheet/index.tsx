@@ -75,7 +75,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       } else {
         // 执行下钻
         handleDrillDown({
-          rows: dataCfg.fields.rows,
+          rows: dataCfg.fields.rows as string[],
           drillFields,
           fetchData: partDrillDown?.fetchData,
           drillItemsNum: partDrillDown?.drillItemsNum,

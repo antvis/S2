@@ -1,4 +1,4 @@
-export const dataCustomTrees = [
+export const customTreeData = [
   {
     'measure-a': 13,
     'measure-b': 2,

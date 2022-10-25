@@ -171,8 +171,12 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const rowPath = getPath(rows, rowDimensionValues, rowPivotMeta);
-  const colPath = getPath(columns, colDimensionValues, colPivotMeta);
+  const rowPath = getPath(rows as string[], rowDimensionValues, rowPivotMeta);
+  const colPath = getPath(
+    columns as string[],
+    colDimensionValues,
+    colPivotMeta,
+  );
   const result = rowPath.concat(...colPath);
 
   return result;
@@ -240,8 +244,14 @@ export function transformIndexesData(params: Param) {
     if (!data) {
       return;
     }
-    const rowDimensionValues = transformDimensionsValues(data, rows);
-    const colDimensionValues = transformDimensionsValues(data, columns);
+    const rowDimensionValues = transformDimensionsValues(
+      data,
+      rows as string[],
+    );
+    const colDimensionValues = transformDimensionsValues(
+      data,
+      columns as string[],
+    );
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,

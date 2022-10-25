@@ -31,7 +31,7 @@ export default defineComponent({
       } else {
         // 执行下钻
         handleDrillDown({
-          rows: dataCfg.value?.fields.rows ?? [],
+          rows: (dataCfg.value?.fields.rows as string[]) ?? [],
           drillFields: fields,
           fetchData: partDrillDown.value?.fetchData,
           drillItemsNum: partDrillDown.value?.drillItemsNum,

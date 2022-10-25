@@ -355,7 +355,7 @@ export class TableFacet extends BaseFacet {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
 
-    const cellDraggedWidth = this.getCellDraggedWidth(col);
+    const cellDraggedWidth = this.getColCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
     if (cellDraggedWidth) {

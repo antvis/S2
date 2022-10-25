@@ -5,7 +5,12 @@ import type {
   ShapeAttrs,
 } from '@antv/g-canvas';
 import { clone, isEmpty, throttle } from 'lodash';
-import type { ResizeInteractionOptions, ResizeParams, Style } from '../common';
+import type {
+  ResizeInteractionOptions,
+  ResizeParams,
+  RowCfg,
+  Style,
+} from '../common';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
@@ -102,7 +107,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeShapes(): IShape[] {
-    return this.resizeReferenceGroup?.get('children') || [];
+    return (this.resizeReferenceGroup?.getChildren() as IShape[]) || [];
   }
 
   private setResizeMaskCursor(cursor: string) {
@@ -301,12 +306,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
             colCfg: {
-              heightByField: {
-                [resizeInfo.id]: displayHeight,
-              },
+              heightByField: this.getHeightByField(resizeInfo, displayHeight),
             },
           },
         };
+
       case ResizeAreaEffect.Cell:
         if (
           heightByField[String(resizeInfo.id)] ||
@@ -331,9 +335,30 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: rowCellStyle,
         };
+
       default:
         return null;
     }
+  }
+
+  private getHeightByField(
+    resizeInfo: ResizeInfo,
+    displayHeight: number,
+  ): RowCfg['heightByField'] {
+    // 如果是自定义列头, 给同一 level 的字段设置高度
+    if (this.spreadsheet.isCustomColumnFields()) {
+      return this.spreadsheet
+        .getColumnNodes()
+        .filter((node) => node.level === resizeInfo.meta?.level)
+        .reduce<RowCfg['heightByField']>((result, node) => {
+          result[node.field] = displayHeight;
+          return result;
+        }, {});
+    }
+
+    return {
+      [resizeInfo.id]: displayHeight,
+    };
   }
 
   private getResizeDetail() {

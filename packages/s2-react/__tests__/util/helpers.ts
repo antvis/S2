@@ -115,6 +115,8 @@ export const createMockCellInfo = (
       },
       dataSet: {
         getFieldDescription: jest.fn(),
+        getCustomFieldDescription: jest.fn(),
+        getCustomRowFieldName: jest.fn(),
         getFieldName: jest.fn(),
       },
     } as unknown as SpreadSheet,

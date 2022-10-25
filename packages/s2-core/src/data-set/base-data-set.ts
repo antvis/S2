@@ -4,6 +4,7 @@ import {
   get,
   identity,
   isNil,
+  isString,
   map,
   max,
   memoize,
@@ -15,17 +16,21 @@ import type {
   FilterParam,
   Formatter,
   Meta,
+  S2CellType,
+  ViewMeta,
   RawData,
   S2DataConfig,
   SortParams,
   ViewMetaData,
 } from '../common/interface';
+import type { Node } from '../facet/layout/node';
 import type { ValueRange } from '../common/interface/condition';
 import type { SpreadSheet } from '../sheet-type';
 import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
+import { CellTypes, type CustomHeaderField } from '../common';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -57,35 +62,103 @@ export abstract class BaseDataSet {
 
   protected displayData: RawData[];
 
-  /**
-   * 查找字段信息
-   */
-  public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
-    return find(this.meta || meta, (m: Meta) => m.field === field);
-  });
+  private getField = (field: CustomHeaderField): string => {
+    const realField = isString(field) ? field : field?.key;
+    return realField || (field as string);
+  };
 
   /**
-   * 获得字段名称
+   * 获取字段信息
+   */
+  public getFieldMeta = memoize(
+    (field: CustomHeaderField, meta?: Meta[]): Meta => {
+      const realField = this.getField(field);
+      return find(this.meta || meta, { field: realField });
+    },
+  );
+
+  /**
+   * 获取字段名称
    * @param field
    */
-  public getFieldName(field: string): string {
-    return get(this.getFieldMeta(field, this.meta), 'name', field);
+  public getFieldName(field: CustomHeaderField, defaultValue?: string): string {
+    const realField = this.getField(field);
+    const realDefaultValue =
+      (isString(field) ? field : field?.title) || (field as string);
+
+    return get(
+      this.getFieldMeta(realField, this.meta),
+      'name',
+      defaultValue ?? realDefaultValue,
+    );
   }
+
+  /**
+   * 获取自定义单元格字段名称
+   * @param cell
+   */
+  public getCustomRowFieldName(cell: S2CellType<ViewMeta | Node>): string {
+    if (!cell) {
+      return;
+    }
+    const meta = cell.getMeta?.();
+
+    // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
+    if (cell.cellType === CellTypes.DATA_CELL) {
+      const row = find(this.spreadsheet.getRowNodes(), {
+        rowIndex: meta?.rowIndex,
+      });
+      return row?.label || this.getFieldName(row?.field);
+    }
+
+    // 行/列头单元格, 取节点本身标题
+    return meta?.label || this.getFieldName(meta.field);
+  }
+
+  /**
+   * 获取自定义单元格字段描述
+   * @param cell
+   */
+  public getCustomFieldDescription = (
+    cell: S2CellType<ViewMeta | Node>,
+  ): string => {
+    if (!cell) {
+      return;
+    }
+
+    const meta = cell.getMeta?.();
+    if (meta.isTotals) {
+      return;
+    }
+
+    // 数值单元格
+    if (cell.cellType === CellTypes.DATA_CELL) {
+      const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
+        field: meta.field || meta.value || meta.valueField,
+      });
+      return this.getFieldDescription(currentMeta?.field);
+    }
+
+    // 行/列头单元格, 取节点本身描述
+    return meta?.extra?.description || this.getFieldDescription(meta?.field);
+  };
 
   /**
    * 获得字段格式方法
    * @param field
    */
-  public getFieldFormatter(field: string): Formatter {
-    return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
+  public getFieldFormatter(field: CustomHeaderField): Formatter {
+    const realField = this.getField(field);
+    return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
   }
 
   /**
    * 获得字段描述
    * @param field
    */
-  public getFieldDescription(field: string): string {
-    return get(this.getFieldMeta(field, this.meta), 'description');
+  public getFieldDescription(field: CustomHeaderField): string {
+    const realField = this.getField(field);
+    return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {

@@ -10,7 +10,7 @@ import { customMerge } from '@/utils';
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   customMerge(
     DEFAULT_OPTIONS,
-    { debug: true, width: 600, height: 600 },
+    { debug: false, width: 600, height: 600 },
     ...options,
   );
 
