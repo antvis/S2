@@ -1,4 +1,5 @@
 import { Group } from '@antv/g-canvas';
+import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
 
@@ -51,51 +52,69 @@ export class Frame extends Group {
     if (!isPivotMode) {
       return;
     }
-    const { width, height, viewportHeight, position, spreadsheet } = cfg;
-    const splitLine = spreadsheet.theme?.splitLine;
-    const x = position.x + width;
+    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
+      cfg;
+    const {
+      verticalBorderWidth,
+      verticalBorderColor,
+      verticalBorderColorOpacity,
+      horizontalBorderWidth,
+    } = spreadsheet.theme?.splitLine;
+    const x = position.x + cornerWidth + Math.floor(horizontalBorderWidth / 2);
     const y1 = position.y;
-    const y2 = position.y + height + viewportHeight;
-    this.addShape('line', {
-      attrs: {
-        x1: x,
-        y1,
-        x2: x,
-        y2,
-        stroke: splitLine.verticalBorderColor,
-        lineWidth: splitLine.verticalBorderWidth,
-        opacity: splitLine.verticalBorderColorOpacity,
+    const y2 =
+      position.y + cornerHeight + horizontalBorderWidth + viewportHeight;
+    renderLine(
+      this,
+      { x1: x, y1, x2: x, y2 },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: verticalBorderColorOpacity,
       },
-    });
+    );
   }
 
   private addCornerBottomBorder() {
     const cfg = this.cfg;
     const {
-      width,
-      height,
+      cornerWidth,
+      cornerHeight,
       viewportWidth,
       position,
       scrollX,
       scrollContainsRowHeader,
       spreadsheet,
     } = cfg;
-    const splitLine = spreadsheet.theme?.splitLine;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+      verticalBorderWidth,
+    } = spreadsheet.theme?.splitLine;
     const x1 = position.x;
     const x2 =
-      x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
-    const y = position.y + height - 1;
-    this.addShape('line', {
-      attrs: {
+      x1 +
+      cornerWidth +
+      verticalBorderWidth +
+      viewportWidth +
+      (scrollContainsRowHeader ? scrollX : 0);
+    const y = position.y + cornerHeight + Math.floor(horizontalBorderWidth / 2);
+
+    renderLine(
+      this,
+      {
         x1,
         y1: y,
         x2,
         y2: y,
-        stroke: splitLine.horizontalBorderColor,
-        lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.horizontalBorderColorOpacity,
       },
-    });
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        opacity: horizontalBorderColorOpacity,
+      },
+    );
   }
 
   private addSplitLineShadow() {
@@ -121,17 +140,23 @@ export class Frame extends Group {
       return;
     }
 
-    const { width, height, viewportHeight, position, spreadsheet } = this.cfg;
-    const splitLine = spreadsheet.theme?.splitLine;
-    const x = position.x + width;
+    const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
+      this.cfg;
+    const {
+      shadowColors,
+      shadowWidth,
+      verticalBorderWidth,
+      horizontalBorderWidth,
+    } = spreadsheet.theme?.splitLine;
+    const x = position.x + cornerWidth + verticalBorderWidth;
     const y = position.y;
     this.addShape('rect', {
       attrs: {
         x,
         y,
-        width: splitLine.shadowWidth,
-        height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
+        width: shadowWidth,
+        height: cornerHeight + horizontalBorderWidth + viewportHeight,
+        fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
       },
     });
   }
@@ -142,23 +167,33 @@ export class Frame extends Group {
     }
 
     const {
-      width,
-      height,
+      cornerWidth,
+      cornerHeight,
       viewportHeight,
       viewportWidth,
       position,
       spreadsheet,
     } = this.cfg;
-    const splitLine = spreadsheet.theme?.splitLine;
-    const x = position.x + width + viewportWidth - splitLine.shadowWidth;
+    const {
+      shadowColors,
+      shadowWidth,
+      verticalBorderWidth,
+      horizontalBorderWidth,
+    } = spreadsheet.theme?.splitLine;
+    const x =
+      position.x +
+      cornerWidth +
+      verticalBorderWidth +
+      viewportWidth -
+      shadowWidth;
     const y = position.y;
     this.addShape('rect', {
       attrs: {
         x,
         y,
-        width: splitLine.shadowWidth,
-        height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
+        width: shadowWidth,
+        height: cornerHeight + horizontalBorderWidth + viewportHeight,
+        fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
       },
     });
   }
