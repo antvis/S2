@@ -1,5 +1,5 @@
 import { getPalette } from '@/utils';
-import { generatePalette } from '@/utils/color';
+import { generatePalette, generateStandardColors } from '@/utils/color';
 
 const expectThemeColor = '#F1535F';
 const expectThemePalette = [
@@ -20,7 +20,7 @@ const expectThemePalette = [
   '#000000',
 ];
 
-describe('color test', () => {
+describe('Theme Color Tests', () => {
   test('should generate palette', () => {
     const colorfulPalette = getPalette('colorful');
     const palette = generatePalette({
@@ -45,5 +45,37 @@ describe('color test', () => {
       brandColor: '#000000',
     });
     expect(blackTextPalette.basicColors[0]).toEqual('#FFFFFF');
+  });
+
+  test('should not throw error when receive empty palette meta', () => {
+    function renderEmptyPalette() {
+      generatePalette();
+    }
+    expect(renderEmptyPalette).not.toThrowError();
+  });
+
+  test('should not throw error when receive empty brand color', () => {
+    function renderStandardColors() {
+      generateStandardColors(undefined);
+    }
+    expect(renderStandardColors).not.toThrowError();
+  });
+
+  test('should get standard color if brand color is empty', () => {
+    const colors = [
+      '#F2F2F2',
+      '#D9D9D9',
+      '#BFBFBF',
+      '#4D4D4D',
+      '#262626',
+      '',
+      '#000000',
+      '#000000',
+      '#000000',
+      '#000000',
+      '#000000',
+    ];
+    expect(generateStandardColors(undefined)).toEqual(colors);
+    expect(generateStandardColors('')).toEqual(colors);
   });
 });

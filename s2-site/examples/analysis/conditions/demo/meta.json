@@ -75,6 +75,14 @@
         "en": "Bidirectional interval"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
+    },
+    {
+      "filename": "intelligent-background.ts",
+      "title": {
+        "zh": "开启文字智能反色",
+        "en": "Intelligent background"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
     }
   ]
 }
