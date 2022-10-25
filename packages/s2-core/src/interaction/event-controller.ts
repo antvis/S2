@@ -72,9 +72,9 @@ export class EventController {
     // canvas events
     this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
-    this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
+    this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
-    this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
+    this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
@@ -111,14 +111,14 @@ export class EventController {
     );
     this.addDomEventListener(
       window,
-      OriginEventType.MOUSE_UP,
+      OriginEventType.POINTER_UP,
       (event: MouseEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
     this.addDomEventListener(
       window,
-      OriginEventType.MOUSE_MOVE,
+      OriginEventType.POINTER_MOVE,
       (event: MouseEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
       },

@@ -10,4 +10,12 @@ export enum OriginEventType {
   HOVER = 'hover',
   DOUBLE_CLICK = 'dblclick',
   CONTEXT_MENU = 'contextmenu',
+  POINTER_DOWN = 'pointerdown',
+  POINTER_MOVE = 'pointermove',
+  POINTER_OUT = 'pointerout',
+  POINTER_LEAVE = 'pointerleave',
+  POINTER_UP = 'pointerup',
+  POINTER_CANCEL = 'pointercancel',
+  POINTER_ENTER = 'pointerenter',
+  POINTER_OVER = 'pointerover',
 }
