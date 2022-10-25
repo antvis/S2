@@ -1034,8 +1034,8 @@ export abstract class BaseFacet {
   ) {
     translateGroup(
       this.panelScrollGroup,
-      this.cornerBBox.width - scrollX,
-      this.cornerBBox.height - scrollY,
+      this.panelBBox.x - scrollX,
+      this.panelBBox.y - scrollY,
     );
     this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
