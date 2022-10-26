@@ -40,5 +40,3 @@ describe('MobileSheet Tests', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
-
-describe('Mobile Component Tests', () => {});
