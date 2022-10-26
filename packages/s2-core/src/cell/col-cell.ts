@@ -69,15 +69,9 @@ export class ColCell extends HeaderCell {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getBBoxByType(),
-        },
-        {
-          visible: false,
-        },
-      ),
+      renderRect(this, this.getBBoxByType(), {
+        visible: false,
+      }),
     );
   }
 
@@ -85,13 +79,11 @@ export class ColCell extends HeaderCell {
    * 绘制hover悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 2;
-
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
-        visible: false,
+      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
+        visible: true,
+        fill: 'cyan',
       }),
     );
   }
@@ -271,6 +263,7 @@ export class ColCell extends HeaderCell {
     }
 
     const { cornerWidth, viewportWidth: headerWidth } = this.headerConfig;
+    const { verticalBorderWidth } = this.spreadsheet.theme.splitLine;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
@@ -289,7 +282,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const resizeAreaWidth = cornerWidth + headerWidth;
+    const resizeAreaWidth = cornerWidth + verticalBorderWidth + headerWidth;
     // 列高调整热区
     resizeArea.addShape('rect', {
       attrs: {
@@ -306,7 +299,7 @@ export class ColCell extends HeaderCell {
         }),
         name: resizeAreaName,
         x: 0,
-        y: y + height - resizeStyle.size / 2,
+        y: y + height - resizeStyle.size,
         width: resizeAreaWidth,
       },
     });
@@ -326,7 +319,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size / 2,
+      x: x + width - resizeStyle.size,
       y,
       width: resizeStyle.size,
       height,
@@ -388,7 +381,7 @@ export class ColCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size / 2,
+        x: offsetX + width - resizeStyle.size,
         y: offsetY,
         height,
       },
@@ -399,38 +392,6 @@ export class ColCell extends HeaderCell {
   protected drawResizeArea() {
     this.drawHorizontalResizeArea();
     this.drawVerticalResizeArea();
-  }
-
-  protected drawHorizontalBorder() {
-    const { position, style } = getBorderPositionAndStyle(
-      CellBorderPosition.TOP,
-      this.meta as SimpleBBox,
-      this.theme.colCell.cell,
-    );
-
-    renderLine(this, position, style);
-  }
-
-  protected drawVerticalBorder(dir: CellBorderPosition) {
-    const { position, style } = getBorderPositionAndStyle(
-      dir,
-      this.meta as SimpleBBox,
-      this.theme.colCell.cell,
-    );
-    renderLine(this, position, style);
-  }
-
-  protected drawBorders() {
-    const { options, isTableMode } = this.spreadsheet;
-    if (
-      this.meta.colIndex === 0 &&
-      isTableMode() &&
-      !options.showSeriesNumber
-    ) {
-      this.drawVerticalBorder(CellBorderPosition.LEFT);
-    }
-    this.drawHorizontalBorder();
-    this.drawVerticalBorder(CellBorderPosition.RIGHT);
   }
 
   protected hasHiddenColumnCell() {

@@ -36,6 +36,7 @@ import {
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
+  getBorderPositionAndStyle,
   getCellBoxByType,
   getTextAndFollowingIconPosition,
 } from '../utils/cell/cell';
@@ -220,6 +221,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
   }
 
+  protected drawBorders() {
+    this.getBorderPositions().forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        this.getBBoxByType(),
+        this.getStyle().cell,
+      );
+      renderLine(this, position, style);
+    });
+  }
+
   protected getIconPosition(iconCount = 1) {
     return this.getTextAndIconPosition(iconCount).icon;
   }
@@ -337,17 +349,16 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
-  protected getInteractiveBorderShapeStyle<T>(style: T & number) {
-    const { x, y, height, width } = this.getBBoxByType();
+  protected getInteractiveBorderShapeStyle<T>(borderSize: T & number) {
+    const { x, y, height, width } = this.getBBoxByType(CellBox.PADDING_BOX);
 
-    const { horizontalBorderWidth, verticalBorderWidth } =
-      this.theme.dataCell.cell;
+    const halfSize = Math.floor(borderSize / 2);
 
     return {
-      x: x + verticalBorderWidth / 2 + style / 2,
-      y: y + horizontalBorderWidth / 2 + style / 2,
-      width: width - verticalBorderWidth - style,
-      height: height - horizontalBorderWidth - style,
+      x: x + halfSize,
+      y: y + halfSize,
+      width: width - borderSize,
+      height: height - borderSize,
     };
   }
 

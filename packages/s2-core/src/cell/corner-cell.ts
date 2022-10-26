@@ -69,7 +69,7 @@ export class CornerCell extends HeaderCell {
     this.drawCellText();
     this.drawConditionIconShapes();
     this.drawActionIcons();
-    this.drawBorderShape();
+    this.drawBorders();
     this.drawResizeArea();
   }
 
@@ -190,21 +190,6 @@ export class CornerCell extends HeaderCell {
         );
       },
     );
-  }
-
-  /**
-   * Render cell horizontalBorder border
-   * @protected
-   */
-  protected drawBorderShape() {
-    this.getBorderPositions().forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        this.getBBoxByType(),
-        this.getStyle().cell,
-      );
-      renderLine(this, position, style);
-    });
   }
 
   protected isLastRowCornerCell() {
