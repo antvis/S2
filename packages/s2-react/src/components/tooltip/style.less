@@ -13,4 +13,25 @@
   .ant-drawer-body {
     padding: 16px;
   }
+
+  .antv-s2-tooltip-operator {
+    > .ant-menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      justify-content: space-between;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+
+      .ant-menu-item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #f0f0f0;
+        border-radius: 2px;
+      }
+    }
+  }
 }
