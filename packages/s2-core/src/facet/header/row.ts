@@ -85,21 +85,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const {
-      width,
-      viewportHeight,
-      scrollX = 0,
-      scrollY = 0,
-      seriesNumberWidth,
-    } = this.headerConfig;
+    const { width, height, viewportHeight } = this.headerConfig;
 
     this.style.clipPath = new Rect({
       style: {
-        // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
-        x: scrollX - seriesNumberWidth,
-        y: scrollY,
+        x: 0,
+        y: 0,
         width,
-        height: viewportHeight,
+        height: height + viewportHeight,
       },
     });
   }

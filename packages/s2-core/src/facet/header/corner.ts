@@ -281,10 +281,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected clip(): void {
-    const { width, height, scrollX } = this.headerConfig;
+    const { width, height } = this.headerConfig;
     this.style.clipPath = new Rect({
       style: {
-        x: scrollX,
+        x: 0,
         y: 0,
         width,
         height,
