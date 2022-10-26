@@ -44,14 +44,13 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
-    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
+    const { height, spreadsheet } = this.headerConfig;
 
     this.scrollGroup.style.clipPath = new Rect({
       style: {
-        x: isFrozenRowHeader ? scrollX : 0,
+        x: 0,
         y: 0,
-        width: isFrozenRowHeader ? width : width + scrollX,
+        width: spreadsheet.options.width!,
         height,
       },
     });
