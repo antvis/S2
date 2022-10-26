@@ -1105,15 +1105,6 @@ export class TableFacet extends BaseFacet {
       frozenRowGroupHeight -
       frozenTrailingRowGroupHeight;
 
-    panelScrollGroup.style.clipPath = new Rect({
-      style: {
-        x: scrollX + frozenColGroupWidth,
-        y: scrollY + frozenRowGroupHeight,
-        width: panelScrollGroupWidth,
-        height: panelScrollGroupHeight,
-      },
-    });
-
     frozenRowGroup.style.clipPath = new Rect({
       style: {
         x: scrollX + frozenColGroupWidth,

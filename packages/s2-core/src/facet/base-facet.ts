@@ -341,18 +341,6 @@ export abstract class BaseFacet {
     this.foregroundGroup = this.spreadsheet.foregroundGroup;
     this.backgroundGroup = this.spreadsheet.backgroundGroup;
     this.panelGroup = this.spreadsheet.panelGroup;
-    const { width, height } = this.panelBBox;
-
-    if (this.spreadsheet.panelScrollGroup) {
-      this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
-        style: {
-          x: 0,
-          y: this.cornerBBox.height,
-          width,
-          height,
-        },
-      });
-    }
   };
 
   calculateCellWidthHeight = () => {
@@ -954,21 +942,6 @@ export abstract class BaseFacet {
     });
   };
 
-  protected clip(scrollX: number, scrollY: number) {
-    const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-
-    if (this.spreadsheet.panelScrollGroup) {
-      this.spreadsheet.panelScrollGroup.style.clipPath = new Rect({
-        style: {
-          x: isFrozenRowHeader ? scrollX : 0,
-          y: scrollY,
-          width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
-          height: this.panelBBox.height,
-        },
-      });
-    }
-  }
-
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
    * according to new scroll offset
@@ -1274,7 +1247,7 @@ export abstract class BaseFacet {
     this.realCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
-    this.clip(scrollX, scrollY);
+
     if (!skipSrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY });
     }
