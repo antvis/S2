@@ -1,8 +1,4 @@
-@tooltip-prefix-cls: antv-s2-tooltip-operator;
-@tooltip-mobile-prefix-cls: antv-s2-tooltip-mobile-operator;
-@tooltip-menu-item-text-color: rgba(0, 0, 0, 0.65);
-// 统一将 font-size 设置为 14px (chrome 显示的 minimum font-size: 14px)
-@tooltip-menu-font-size: 14px;
+@import '../variables.less';
 
 .with-menu-item-color() {
   &:not(.ant-menu-item-active) {
@@ -10,7 +6,7 @@
   }
 }
 
-.@{tooltip-prefix-cls} {
+.@{tooltip-operator-cls-prefix} {
   color: @tooltip-menu-item-text-color;
   font-size: @tooltip-menu-font-size;
   line-height: 32px;
@@ -115,7 +111,7 @@
 
 // mobile style
 @media only screen and (max-device-width: 480px) {
-  .@{tooltip-prefix-cls} {
+  .@{tooltip-operator-cls-prefix} {
     &-menus.ant-menu-vertical.ant-menu {
       font-size: @tooltip-menu-font-size;
 

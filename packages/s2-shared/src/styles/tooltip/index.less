@@ -1,6 +1,6 @@
-@tooltip-prefix-cls: antv-s2-tooltip;
+@import '../variables.less';
 
-.@{tooltip-prefix-cls} {
+.@{tooltip-cls-prefix} {
   &-tips,
   &-name {
     padding: 12px;
@@ -64,19 +64,19 @@
     overflow: hidden;
     padding: 12px;
 
-    & + .@{tooltip-prefix-cls}-head-info-list {
+    & + .@{tooltip-cls-prefix}-head-info-list {
       border-top: 1px solid #e9e9e9;
     }
 
-    .@{tooltip-prefix-cls}-interpretation-head {
+    .@{tooltip-cls-prefix}-interpretation-head {
       margin-bottom: 12px;
 
-      .@{tooltip-prefix-cls}-interpretation-icon {
+      .@{tooltip-cls-prefix}-interpretation-icon {
         width: 14px;
         height: 14px;
       }
 
-      .@{tooltip-prefix-cls}-interpretation-name {
+      .@{tooltip-cls-prefix}-interpretation-name {
         color: #000;
       }
     }
@@ -105,7 +105,7 @@
   &-detail-list {
     padding: 2px 12px 8px;
 
-    .@{tooltip-prefix-cls}-detail-item {
+    .@{tooltip-cls-prefix}-detail-item {
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
       margin: 4px 0;

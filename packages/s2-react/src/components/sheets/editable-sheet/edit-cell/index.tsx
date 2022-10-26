@@ -6,11 +6,17 @@ import React, {
   useCallback,
 } from 'react';
 import { Input } from 'antd';
-import { BaseCell, S2Event, SpreadSheet, type ViewMeta } from '@antv/s2';
+import {
+  BaseCell,
+  S2Event,
+  S2_PREFIX_CLS,
+  SpreadSheet,
+  type ViewMeta,
+} from '@antv/s2';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
-import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
+import { useSpreadSheetRef } from '../../../../context/SpreadSheetContext';
 import {
   invokeComponent,
   type InvokeComponentProps,
@@ -31,6 +37,8 @@ type onChangeProps = {
   trigger?: number;
   CustomComponent?: React.FunctionComponent<CustomProps>;
 };
+
+const EDIT_CELL_CLASS = `${S2_PREFIX_CLS}-edit-cell`;
 
 function EditCellComponent(
   props: InvokeComponentProps<{ event: CanvasEvent } & onChangeProps>,
@@ -72,7 +80,7 @@ function EditCellComponent(
 
     return cellMeta;
   }, [cell, spreadsheet]);
-  const [inputVal, setinputVal] = useState(cell.getMeta().fieldValue);
+  const [inputVal, setInputVal] = useState(cell.getMeta().fieldValue);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -119,7 +127,7 @@ function EditCellComponent(
   }, []);
 
   const changeValue = (val: string) => {
-    setinputVal(val);
+    setInputVal(val);
   };
 
   return (
@@ -148,11 +156,11 @@ function EditCellComponent(
         <Input.TextArea
           required
           style={styleProps}
-          className={'s2-edit-cell'}
-          value={inputVal as any}
+          className={EDIT_CELL_CLASS}
+          value={inputVal as string}
           ref={inputRef}
           onChange={(e) => {
-            setinputVal(e.target.value);
+            setInputVal(e.target.value);
           }}
           onBlur={onSave}
           onKeyDown={onKeyDown}
