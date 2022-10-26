@@ -66,13 +66,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public clip(): void {
-    const { width, viewportHeight, scrollY } = this.headerConfig;
+    const { width, height, viewportHeight } = this.headerConfig;
     this.style.clipPath = new Rect({
       style: {
         x: 0,
-        y: scrollY,
+        y: 0,
         width,
-        height: viewportHeight,
+        height: height + viewportHeight,
       },
     });
   }
