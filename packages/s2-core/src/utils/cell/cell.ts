@@ -1,37 +1,84 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
-import type {
-  AreaRange,
-  CellTheme,
-  IconCfg,
-  Padding,
-  TextAlign,
-  TextAlignCfg,
-  TextBaseline,
+import {
+  CellBox,
+  type AreaRange,
+  type CellTheme,
+  type IconCfg,
+  type Padding,
+  type TextAlign,
+  type TextAlignCfg,
+  type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
 
 /**
- * -----------------------------
- * |           padding         |
- * |  |---------------------|  |
- * |  |                     |  |
- * |  |                     |  |
- * |  |---------------------|  |
- * |           padding         |
- * -----------------------------
+ * 类似 background-clip 属性，分为：
+ * borderBox: 整个 cell 的范围
+ * paddingBox: cell 去除 border 的范围
+ * contentBox: cell 去除 (border + padding) 的范围
+ * -------------------------------
+ * |b|           padding         |
+ * |o|  |---------------------|  |
+ * |r|  |                     |  |
+ * |d|  |                     |  |
+ * |e|  |---------------------|  |
+ * |r|           padding         |
+ * -------------------------------
+ * -------border-bottom-----------
+ * -------------------------------
  */
-export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
-  const { x, y, width, height } = bbox;
+export const getCellBoxByType = (
+  bbox: SimpleBBox,
+  borderPositions: CellBorderPosition[],
+  cellStyle: CellTheme,
+  boxType: CellBox,
+) => {
+  if (boxType === CellBox.BORDER_BOX) {
+    return bbox;
+  }
 
-  const contentWidth: number = width - padding?.left - padding?.right;
-  const contentHeight: number = height - padding?.top - padding?.bottom;
+  let { x, y, width, height } = bbox;
+  const { padding, horizontalBorderWidth, verticalBorderWidth } = cellStyle;
+
+  borderPositions.forEach((position) => {
+    const borderWidth = [
+      CellBorderPosition.BOTTOM,
+      CellBorderPosition.TOP,
+    ].includes(position)
+      ? verticalBorderWidth
+      : horizontalBorderWidth;
+
+    switch (position) {
+      case CellBorderPosition.TOP:
+        x += borderWidth;
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.BOTTOM:
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.LEFT:
+        y += borderWidth;
+        width -= borderWidth;
+        break;
+      default:
+        width -= borderWidth;
+        break;
+    }
+
+    if (boxType === CellBox.CONTENT_BOX) {
+      x += padding?.left;
+      y += padding?.top;
+      width -= padding?.left + padding?.right;
+      height -= padding?.top + padding?.bottom;
+    }
+  });
 
   return {
-    x: x + padding?.left,
-    y: y + padding?.top,
-    width: contentWidth,
-    height: contentHeight,
+    x,
+    y,
+    width,
+    height,
   };
 };
 

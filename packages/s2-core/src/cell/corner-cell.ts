@@ -18,7 +18,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import {
@@ -55,6 +55,10 @@ export class CornerCell extends HeaderCell {
     return CellTypes.CORNER_CELL;
   }
 
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.TOP, CellBorderPosition.LEFT];
+  }
+
   public update() {}
 
   protected initCell() {
@@ -70,8 +74,8 @@ export class CornerCell extends HeaderCell {
   }
 
   protected drawCellText() {
-    const { x } = this.getContentArea();
-    const { y, height } = this.getCellArea();
+    const { x } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { y, height } = this.getBBoxByType(CellBox.PADDING_BOX);
 
     const textStyle = this.getTextStyle();
     const cornerText = this.getCornerText();
@@ -166,7 +170,7 @@ export class CornerCell extends HeaderCell {
 
     const { size } = this.getStyle().icon;
     const { textBaseline, fill } = this.getTextStyle();
-    const area = this.getContentArea();
+    const area = this.getBBoxByType(CellBox.CONTENT_BOX);
 
     this.treeIcon = renderTreeIcon(
       this,
@@ -193,10 +197,10 @@ export class CornerCell extends HeaderCell {
    * @protected
    */
   protected drawBorderShape() {
-    [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
+    this.getBorderPositions().forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
-        this.getCellArea(),
+        this.getBBoxByType(),
         this.getStyle().cell,
       );
       renderLine(this, position, style);
@@ -319,7 +323,7 @@ export class CornerCell extends HeaderCell {
       margin.left;
 
     const iconY = getVerticalPosition(
-      this.getContentArea(),
+      this.getBBoxByType(CellBox.CONTENT_BOX),
       textBaseline,
       size,
     );
@@ -344,7 +348,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 

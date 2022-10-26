@@ -6,7 +6,7 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellBox } from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -39,6 +39,10 @@ import { drawInterval } from '../utils/g-mini-charts';
 export class DataCell extends BaseCell<ViewMeta> {
   public get cellType() {
     return CellTypes.DATA_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT];
   }
 
   public get valueRangeByField() {
@@ -232,7 +236,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
@@ -275,7 +279,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
+      ...this.getBBoxByType(),
       fill,
       fillOpacity,
     });
@@ -287,7 +291,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawInteractiveBorderShape() {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
-    const { x, y, height, width } = this.getCellArea();
+    const { x, y, height, width } = this.getBBoxByType(CellBox.PADDING_BOX);
     this.stateShapes.set(
       'interactiveBorderShape',
       renderRect(
@@ -314,7 +318,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       renderRect(
         this,
         {
-          ...this.getCellArea(),
+          ...this.getBBoxByType(),
         },
         {
           visible: false,
@@ -345,10 +349,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @protected
    */
   protected drawBorderShape() {
-    [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
+    this.getBorderPositions().forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
-        this.getCellArea(),
+        this.getBBoxByType(),
         this.getStyle().cell,
       );
 
@@ -420,7 +424,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawLeftBorder() {
     const { position, style } = getBorderPositionAndStyle(
       CellBorderPosition.LEFT,
-      this.getCellArea(),
+      this.getBBoxByType(),
       this.getStyle().cell,
     );
     renderLine(this, position, style);

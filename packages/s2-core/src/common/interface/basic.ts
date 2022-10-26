@@ -44,6 +44,12 @@ export enum CellBorderPosition {
   RIGHT = 'RIGHT',
 }
 
+export enum CellBox {
+  BORDER_BOX = 'borderBox',
+  PADDING_BOX = 'paddingBox',
+  CONTENT_BOX = 'contentBox',
+}
+
 /**
  * 布局类型：
  * adaptive: 行列等宽，均分整个 canvas 画布宽度

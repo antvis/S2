@@ -451,7 +451,7 @@ export const drawObjectText = (
     y,
     height: totalTextHeight,
     width: totalTextWidth,
-  } = cell.getContentArea();
+  } = cell.getBBoxByType(CellBox.CONTENT_BOX);
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { values: textValues } = text;
   const { options, measureTextWidth } = cell.getMeta().spreadsheet;

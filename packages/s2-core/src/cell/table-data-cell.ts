@@ -45,7 +45,7 @@ export class TableDataCell extends DataCell {
     if (!this.shouldDrawResizeArea()) {
       return;
     }
-    const { x, y, width, height } = this.getCellArea();
+    const { x, y, width, height } = this.getBBoxByType();
     const rowIndex = this.meta.rowIndex;
     const resizeStyle = this.getResizeAreaStyle();
     const { frozenRowCount, frozenTrailingRowCount } = this.spreadsheet.options;

@@ -17,24 +17,26 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type {
-  CellThemes,
-  DefaultCellTheme,
-  FormatResult,
-  ResizeInteractionOptions,
-  ResizeArea,
-  S2CellType,
-  S2Theme,
-  StateShapeLayer,
-  TextTheme,
-  Conditions,
-  Condition,
-  MappingResult,
-  IconCondition,
+import {
+  type CellThemes,
+  type DefaultCellTheme,
+  type FormatResult,
+  type ResizeInteractionOptions,
+  type ResizeArea,
+  type S2CellType,
+  type S2Theme,
+  type StateShapeLayer,
+  type TextTheme,
+  type Conditions,
+  type Condition,
+  type MappingResult,
+  type IconCondition,
+  type CellBorderPosition,
+  CellBox,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
-  getContentArea,
+  getCellBoxByType,
   getTextAndFollowingIconPosition,
 } from '../utils/cell/cell';
 import {
@@ -111,7 +113,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
-      this.getContentArea(),
+      this.getBBoxByType(CellBox.CONTENT_BOX),
       textStyle,
       this.actualTextWidth,
       iconCfg,
@@ -154,6 +156,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * Update cell's selected state
    */
   public abstract update(): void;
+
+  protected abstract getBorderPositions(): CellBorderPosition[];
 
   protected abstract getTextStyle(): TextTheme;
 
@@ -198,17 +202,22 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return resize[type];
   }
 
-  public getCellArea() {
-    const { x, y, height, width } = this.meta;
-    return { x, y, height, width };
-  }
+  public getBBoxByType(type = CellBox.BORDER_BOX) {
+    const bbox: SimpleBBox = {
+      x: this.meta.x,
+      y: this.meta.y,
+      height: this.meta.height,
+      width: this.meta.width,
+    };
 
-  // get content area that exclude padding
-  public getContentArea() {
     const cellStyle = (this.getStyle() ||
       this.theme.dataCell) as DefaultCellTheme;
-    const { padding } = cellStyle?.cell;
-    return getContentArea(this.getCellArea(), padding);
+    return getCellBoxByType(
+      bbox,
+      this.getBorderPositions(),
+      cellStyle?.cell,
+      type,
+    );
   }
 
   protected getIconPosition(iconCount = 1) {
@@ -329,7 +338,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected getInteractiveBorderShapeStyle<T>(style: T & number) {
-    const { x, y, height, width } = this.getCellArea();
+    const { x, y, height, width } = this.getBBoxByType();
 
     const { horizontalBorderWidth, verticalBorderWidth } =
       this.theme.dataCell.cell;

@@ -234,7 +234,7 @@ export const drawInterval = (cell: DataCell) => {
     return;
   }
 
-  const { x, y, height, width } = cell.getCellArea();
+  const { x, y, height, width } = cell.getBBoxByType();
 
   const intervalCondition = cell.findFieldCondition(
     cell.cellConditions?.interval,

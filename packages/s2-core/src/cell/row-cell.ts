@@ -9,7 +9,11 @@ import {
   S2Event,
 } from '../common/constant';
 import type { RowHeaderConfig } from '../facet/header';
-import { CellBorderPosition, type ViewMeta } from '../common/interface';
+import {
+  CellBorderPosition,
+  CellBox,
+  type ViewMeta,
+} from '../common/interface';
 import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
@@ -37,6 +41,10 @@ export class RowCell extends HeaderCell {
 
   public get cellType() {
     return CellTypes.ROW_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT];
   }
 
   public destroy(): void {
@@ -91,7 +99,7 @@ export class RowCell extends HeaderCell {
       renderRect(
         this,
         {
-          ...this.getCellArea(),
+          ...this.getBBoxByType(),
         },
         {
           visible: false,
@@ -130,7 +138,7 @@ export class RowCell extends HeaderCell {
     }
 
     const { isCollapsed, id, hierarchy } = this.meta;
-    const { x } = this.getContentArea();
+    const { x } = this.getBBoxByType(CellBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
     const { size } = this.getStyle().icon;
 
@@ -234,17 +242,17 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawRectBorder() {
-    const { x } = this.getCellArea();
+    const { x } = this.getBBoxByType();
 
     const contentIndent = this.getContentIndent();
     const finalX = this.spreadsheet.isHierarchyTreeType()
       ? x
       : x + contentIndent;
-    [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT].forEach((type) => {
+    this.getBorderPositions().forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
         {
-          ...this.getCellArea(),
+          ...this.getBBoxByType(),
           x: finalX,
         },
         this.getStyle().cell,
@@ -261,7 +269,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const { x, y, width, height } = this.getCellArea();
+    const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
@@ -421,12 +429,12 @@ export class RowCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextArea() {
-    const content = this.getContentArea();
+    const content = this.getBBoxByType(CellBox.CONTENT_BOX);
     const textIndent = this.getTextIndent();
     return {
       ...content,

@@ -74,7 +74,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getInteractiveBorderShapeStyle(border: number) {
-    const { x, y, height, width } = this.getCellArea();
+    const { x, y, height, width } = this.getBBoxByType();
     return {
       x: x + border,
       y: y + border,
@@ -274,7 +274,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
+      ...this.getBBoxByType(),
       fill: backgroundColor,
       fillOpacity: backgroundColorOpacity,
     });

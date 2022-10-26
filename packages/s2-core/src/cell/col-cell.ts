@@ -8,7 +8,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellBox } from '../common/interface';
 import type { DefaultCellTheme, IconTheme } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import {
@@ -37,6 +37,10 @@ export class ColCell extends HeaderCell {
 
   public get cellType() {
     return CellTypes.COL_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.TOP, CellBorderPosition.RIGHT];
   }
 
   protected initCell() {
@@ -68,7 +72,7 @@ export class ColCell extends HeaderCell {
       renderRect(
         this,
         {
-          ...this.getCellArea(),
+          ...this.getBBoxByType(),
         },
         {
           visible: false,
@@ -93,7 +97,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
     return width - this.getActionIconsWidth();
   }
 
@@ -170,7 +174,7 @@ export class ColCell extends HeaderCell {
       this.headerConfig;
 
     const textStyle = this.getTextStyle();
-    const contentBox = this.getContentArea();
+    const contentBox = this.getBBoxByType(CellBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
@@ -505,7 +509,7 @@ export class ColCell extends HeaderCell {
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
   protected getExpandColumnIconConfig() {
     const { size } = this.getExpandIconTheme();
-    const { x, y, width, height } = this.getCellArea();
+    const { x, y, width, height } = this.getBBoxByType();
 
     const baseIconX = x - size;
     const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;

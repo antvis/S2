@@ -16,7 +16,7 @@ export class TableCornerCell extends TableColCell {
   protected drawLeftBorder() {
     const { position, style } = getBorderPositionAndStyle(
       CellBorderPosition.LEFT,
-      this.getCellArea(),
+      this.getBBoxByType(),
       this.getStyle().cell,
     );
     renderLine(this, position, style);
