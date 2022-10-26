@@ -192,7 +192,7 @@ export const handleDrillDown = (params: DrillDownParams) => {
     if (!isEmpty(drillData)) {
       // 缓存到表实例中
       const drillLevel = meta.level + 1;
-      const newDrillDownData = {
+      const newDrillDownData: PartDrillDownDataCache = {
         rowId: meta.id,
         drillLevel,
         drillData,

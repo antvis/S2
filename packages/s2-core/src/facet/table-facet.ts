@@ -272,7 +272,7 @@ export class TableFacet extends BaseFacet {
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
-      const canvasW = this.getCanvasHW().width - seriesNumberWidth;
+      const canvasW = this.getCanvasSize().width - seriesNumberWidth;
       return Math.max(cellCfg?.width, canvasW / Math.max(1, colHeaderColSize));
     }
     return cellCfg?.width;
@@ -327,7 +327,7 @@ export class TableFacet extends BaseFacet {
 
     preLeafNode = Node.blankNode();
 
-    const canvasW = this.getCanvasHW().width;
+    const canvasW = this.getCanvasSize().width;
 
     if (frozenTrailingColCount > 0) {
       for (let i = 1; i <= allNodes.length; i++) {
@@ -355,7 +355,7 @@ export class TableFacet extends BaseFacet {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
 
-    const cellDraggedWidth = this.getCellDraggedWidth(col);
+    const cellDraggedWidth = this.getColCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
     if (cellDraggedWidth) {

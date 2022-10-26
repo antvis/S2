@@ -31,14 +31,17 @@ function MainLayout({ sheetType, adaptive }: Partial<SheetComponentsProps>) {
 }
 
 describe('SheetComponent Correct Render Tests', () => {
-  test.each([
+  const sheets: Array<{ sheetType: SheetType; adaptive: boolean }> = [
     { sheetType: 'pivot', adaptive: false },
     { sheetType: 'table', adaptive: false },
     { sheetType: 'gridAnalysis', adaptive: false },
+    { sheetType: 'editable', adaptive: false },
     { sheetType: 'pivot', adaptive: true },
     { sheetType: 'table', adaptive: true },
     { sheetType: 'gridAnalysis', adaptive: true },
-  ] as Array<{ sheetType: SheetType; adaptive: boolean }>)(
+    { sheetType: 'editable', adaptive: true },
+  ];
+  test.each(sheets)(
     'should correct render %o with empty options',
     ({ sheetType, adaptive }) => {
       function render() {

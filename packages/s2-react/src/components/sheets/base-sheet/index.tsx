@@ -6,7 +6,10 @@ import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';
-import type { SheetComponentsProps } from '../../sheets/interface';
+import type {
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '../../sheets/interface';
 
 import './index.less';
 
@@ -63,7 +66,7 @@ export const BaseSheet = React.forwardRef<
 
 BaseSheet.displayName = 'BaseSheet';
 BaseSheet.defaultProps = {
-  options: {} as SheetComponentsProps['options'],
+  options: {} as SheetComponentOptions,
   adaptive: false,
   showPagination: false,
 };

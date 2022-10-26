@@ -3,14 +3,14 @@ import {
   getEmptyPlaceholder,
   isUpDataValue,
   type MultiData,
-  type SimpleDataItem,
+  type SimpleData,
   type ViewMeta,
 } from '@antv/s2';
 import cls from 'classnames';
 import { first, get, isEmpty, isFunction, isNil } from 'lodash';
 import React from 'react';
 import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
-import { getLeafColNode, getRowName, getRowDescription } from '../utils';
+import { getLeafColNode } from '../utils';
 import type { CustomTooltipProps } from './interface';
 
 import './index.less';
@@ -22,10 +22,11 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   renderDerivedValue,
 }) => {
   const meta = cell.getMeta() as ViewMeta;
-  const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
+  const { spreadsheet } = meta;
+  const metaFieldValue = meta?.fieldValue as MultiData<SimpleData[][]>;
 
-  const rowDescription = getRowDescription(meta);
-  const defaultRowName = getRowName(meta);
+  const rowDescription = spreadsheet.dataSet.getCustomFieldDescription(cell);
+  const defaultRowName = spreadsheet.dataSet.getCustomRowFieldName(cell);
   const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
   const rowName = customLabel ?? defaultRowName;
   const leftColNode = getLeafColNode(meta);
@@ -38,14 +39,14 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
     }
   }, [leftColNode?.value]);
 
-  const { placeholder, style } = meta.spreadsheet.options;
+  const { placeholder, style } = spreadsheet.options;
   const valuesCfg = style.cellCfg?.valuesCfg;
 
   const [value, ...derivedValues] = first(metaFieldValue?.values) || [
     metaFieldValue,
   ];
   const [originalValue, ...derivedOriginalValues] = first(
-    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleDataItem[][],
+    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleData[][],
   ) || [value];
 
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
@@ -67,13 +68,13 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
-            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
+            {derivedValues.map((derivedValue: SimpleData, i) => {
               const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
               const originalDerivedValue = derivedOriginalValues[
                 i
-              ] as SimpleDataItem;
+              ] as SimpleData;
 
               return (
                 <li className="derived-value-item" key={i}>

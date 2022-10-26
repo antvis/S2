@@ -12,13 +12,14 @@ import {
   TextIcon,
 } from '../icons/index';
 
-import '@antv/s2-shared/src/styles/drilldown.less';
+import '@antv/s2-shared/src/styles/drill-down.less';
 
-export interface DataSet extends BaseDataSet {
+export interface DrillDownDataSet extends BaseDataSet {
   icon?: React.ReactNode;
 }
 
-export interface DrillDownProps extends BaseDrillDownComponentProps<DataSet> {
+export interface DrillDownProps
+  extends BaseDrillDownComponentProps<DrillDownDataSet> {
   extra?: ReactNode;
 }
 
@@ -42,13 +43,13 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   };
 
   const getOptions = () => {
-    return dataSet.map((val: DataSet) => {
+    return dataSet.map((val: DrillDownDataSet) => {
       val.disabled = !!(disabledFields && disabledFields.includes(val.value));
       return val;
     });
   };
 
-  const [options, setOptions] = useState<DataSet[]>(getOptions());
+  const [options, setOptions] = useState<DrillDownDataSet[]>(getOptions());
 
   const handleSearch = (e: any) => {
     const { value } = e.target;

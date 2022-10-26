@@ -8,8 +8,8 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
+import type { RowHeaderConfig } from '../facet/header';
 import { CellBorderPosition, type ViewMeta } from '../common/interface';
-import type { RowHeaderConfig } from '../facet/header/row';
 import {
   getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,

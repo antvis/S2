@@ -36,7 +36,7 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
           className={`${TOOLTIP_PREFIX_CLS}-summary-item`}
         >
           <span className={`${TOOLTIP_PREFIX_CLS}-summary-key`}>
-            {name}（{i18n('总和')})
+            {name}({i18n('总和')})
           </span>
           <span
             className={cls(
@@ -44,7 +44,7 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
               `${TOOLTIP_PREFIX_CLS}-bold`,
             )}
           >
-            {value}
+            {value ?? '-'}
           </span>
         </div>
       );

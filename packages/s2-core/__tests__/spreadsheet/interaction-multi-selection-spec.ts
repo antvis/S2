@@ -1,13 +1,13 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
-import { size, sumBy } from 'lodash';
-import { getTooltipData, mergeCellInfo } from '../../src/utils/tooltip';
+import {
+  expectHighlightActiveNodes,
+  getSelectedCount,
+  getSelectedSum,
+  getTestTooltipData,
+} from '../util/interaction';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import type {
-  S2CellType,
-  S2Options,
-  TooltipSummaryOptions,
-} from '@/common/interface';
+import type { S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   width: 600,
@@ -19,33 +19,6 @@ const s2Options: S2Options = {
 
 describe('Interaction Multi Selection Tests', () => {
   let s2: SpreadSheet;
-
-  const expectNodes = (ids: string[] = []) => {
-    const state = s2.interaction.getState();
-    const nodeIds = state.nodes.map((node) => node.id);
-    expect(nodeIds).toEqual(ids);
-  };
-
-  const getSelectedCount = (summaries: TooltipSummaryOptions[]) => {
-    return sumBy(summaries, (item) => size(item?.selectedData));
-  };
-
-  const getSelectedSum = (summaries: TooltipSummaryOptions[]) => {
-    return sumBy(summaries, 'value');
-  };
-
-  const getTestTooltipData = (cell: S2CellType) => {
-    const cellInfos = mergeCellInfo(s2.interaction.getActiveCells());
-
-    return getTooltipData({
-      spreadsheet: s2,
-      cellInfos,
-      targetCell: cell,
-      options: {
-        showSingleTips: true,
-      },
-    });
-  };
 
   beforeEach(() => {
     jest
@@ -88,7 +61,7 @@ describe('Interaction Multi Selection Tests', () => {
         });
       });
 
-    expectNodes(['root[&]笔[&]price', 'root[&]笔[&]cost']);
+    expectHighlightActiveNodes(s2, ['root[&]笔[&]price', 'root[&]笔[&]cost']);
 
     // 取消选中
     s2.interaction.selectHeaderCell({
@@ -120,9 +93,12 @@ describe('Interaction Multi Selection Tests', () => {
       cell: rowRootCell,
     });
 
-    expectNodes(['root[&]中国[&]浙江[&]义乌', 'root[&]中国[&]浙江[&]杭州']);
+    expectHighlightActiveNodes(s2, [
+      'root[&]中国[&]浙江[&]义乌',
+      'root[&]中国[&]浙江[&]杭州',
+    ]);
 
-    const tooltipData = getTestTooltipData(rowRootCell);
+    const tooltipData = getTestTooltipData(s2, rowRootCell);
 
     expect(getSelectedCount(tooltipData.summaries)).toEqual(4);
     expect(getSelectedSum(tooltipData.summaries)).toEqual(6);
@@ -150,9 +126,12 @@ describe('Interaction Multi Selection Tests', () => {
       cell: colRootCell,
     });
 
-    expectNodes(['root[&]中国[&]浙江[&]price', 'root[&]中国[&]浙江[&]cost']);
+    expectHighlightActiveNodes(s2, [
+      'root[&]中国[&]浙江[&]price',
+      'root[&]中国[&]浙江[&]cost',
+    ]);
 
-    const tooltipData = getTestTooltipData(colRootCell);
+    const tooltipData = getTestTooltipData(s2, colRootCell);
 
     expect(getSelectedCount(tooltipData.summaries)).toEqual(4);
     expect(getSelectedSum(tooltipData.summaries)).toEqual(6);

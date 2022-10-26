@@ -13,7 +13,7 @@ order: 0
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: | --- | --- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 <br/> 5. `editable`: 编辑表 | `pivot | table | gridAnalysis | strategy | editable` | `pivot` |  |
 | spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |

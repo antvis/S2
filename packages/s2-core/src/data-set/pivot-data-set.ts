@@ -28,6 +28,7 @@ import {
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '../common/debug';
 import { i18n } from '../common/i18n';
 import type {
+  CustomHeaderFields,
   FlattingIndexesData,
   Formatter,
   Meta,
@@ -267,21 +268,7 @@ export class PivotDataSet extends BaseDataSet {
         : uniq([...rows, EXTRA_FIELD]);
     }
 
-    const valueFormatter = (value: string) => {
-      const currentMeta = find(meta, ({ field }: Meta) => field === value);
-      return get(currentMeta, 'name', value);
-    };
-
-    // 虚拟列字段，为文本分类字段
-    const extraFieldName =
-      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
-
-    const extraFieldMeta: Meta = {
-      field: EXTRA_FIELD,
-      name: extraFieldName,
-      formatter: (value: string) => valueFormatter(value),
-    };
-    const newMeta: Meta[] = [...meta, extraFieldMeta];
+    const newMeta: Meta[] = this.processMeta(meta);
 
     return {
       data,
@@ -296,10 +283,29 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
+  public processMeta(meta: Meta[]) {
+    const valueFormatter = (value: string) => {
+      const currentMeta = find(meta, ({ field }: Meta) => field === value);
+      return get(currentMeta, 'name', value);
+    };
+
+    // 虚拟列字段，为文本分类字段
+    const extraFieldName =
+      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
+
+    const extraFieldMeta: Meta = {
+      field: EXTRA_FIELD,
+      name: extraFieldName,
+      formatter: (value: string) => valueFormatter(value),
+    };
+
+    return [...meta, extraFieldMeta];
+  }
+
   public getDimensionValues(field: string, query?: Query): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
-    let dimensions: string[] = [];
+    let dimensions: CustomHeaderFields = [];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
@@ -312,7 +318,7 @@ export class PivotDataSet extends BaseDataSet {
       let sortedMeta = [];
       const dimensionValuePath = [];
       for (const dimension of dimensions) {
-        const value = get(query, dimension);
+        const value = get(query, dimension as string);
         dimensionValuePath.push(`${value}`);
         const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
         if (meta.has(value) && !isUndefined(value)) {
@@ -390,8 +396,14 @@ export class PivotDataSet extends BaseDataSet {
     if (!isTotals || isDrillDown) {
       rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
-    const rowDimensionValues = transformDimensionsValues(query, rows);
-    const colDimensionValues = transformDimensionsValues(query, columns);
+    const rowDimensionValues = transformDimensionsValues(
+      query,
+      rows as string[],
+    );
+    const colDimensionValues = transformDimensionsValues(
+      query,
+      columns as string[],
+    );
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -421,10 +433,10 @@ export class PivotDataSet extends BaseDataSet {
     };
 
     return {
-      isRowTotal: isTotals(filterExtraDimension(rows)),
-      isRowSubTotal: isTotals(rows, true),
-      isColTotal: isTotals(filterExtraDimension(columns)),
-      isColSubTotal: isTotals(columns, true),
+      isRowTotal: isTotals(filterExtraDimension(rows as string[])),
+      isRowSubTotal: isTotals(rows as string[], true),
+      isColTotal: isTotals(filterExtraDimension(columns as string[])),
+      isColSubTotal: isTotals(columns as string[], true),
     };
   };
 
@@ -436,13 +448,13 @@ export class PivotDataSet extends BaseDataSet {
 
     const rowDimensionValues = transformDimensionsValues(
       query,
-      totalRows,
+      totalRows as string[],
       MULTI_VALUE,
     );
 
     const colDimensionValues = transformDimensionsValues(
       query,
-      columns,
+      columns as string[],
       MULTI_VALUE,
     );
 
@@ -506,8 +518,8 @@ export class PivotDataSet extends BaseDataSet {
     );
 
     const selectTypes = this.getTotalSelectionByDimensions(
-      rows,
-      columns,
+      rows as string[],
+      columns as string[],
       totals,
     );
 
@@ -577,7 +589,7 @@ export class PivotDataSet extends BaseDataSet {
    */
   private handleCustomMeasuresOrder(
     customValueOrder: number,
-    fields: string[],
+    fields: CustomHeaderFields,
   ) {
     const newFields = uniq([...fields]);
     if (fields.length >= customValueOrder) {

@@ -29,7 +29,7 @@ describe('<SheetComponent/> Tests', () => {
   });
 
   describe('Render Tests', () => {
-    const sheets: SheetType[] = [
+    const sheetTypes: SheetType[] = [
       'pivot',
       'table',
       'strategy',
@@ -37,7 +37,7 @@ describe('<SheetComponent/> Tests', () => {
       'editable',
     ];
 
-    test.each(sheets)(
+    test.each(sheetTypes)(
       'should render successfully for %s sheet',
       (sheetType) => {
         function render() {
@@ -55,49 +55,76 @@ describe('<SheetComponent/> Tests', () => {
       },
     );
 
-    test.each(sheets)('should render and destroy for %s sheet', (sheetType) => {
-      let getSpreadSheetRef: SpreadSheet;
-      let onMountedRef: SpreadSheet;
+    test.each(sheetTypes)(
+      'should not throw getSpreadSheet deprecated warning for %s sheet',
+      (sheetType) => {
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
 
-      const getSpreadSheet = jest.fn((instance) => {
-        getSpreadSheetRef = instance;
-      });
-      const onMounted = jest.fn((instance) => {
-        onMountedRef = instance;
-      });
-      const onDestroy = jest.fn();
-      const warnSpy = jest
-        .spyOn(console, 'warn')
-        .mockImplementationOnce(() => {});
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+            />,
+            container,
+          );
+        });
 
-      act(() => {
-        ReactDOM.render(
-          <SheetComponent
-            sheetType={sheetType}
-            options={{ width: 200, height: 200 }}
-            dataCfg={null as unknown as S2DataConfig}
-            getSpreadSheet={getSpreadSheet}
-            onMounted={onMounted}
-            onDestroy={onDestroy}
-          />,
-          container,
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
         );
-      });
+      },
+    );
 
-      expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
-      expect(onMounted).toHaveBeenCalledWith(onMountedRef);
-      expect(onMountedRef).toEqual(getSpreadSheetRef);
-      expect(onDestroy).not.toHaveBeenCalled();
-      expect(warnSpy).toHaveBeenCalledWith(
-        '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
-      );
+    test.each(sheetTypes)(
+      'should render and destroy for %s sheet',
+      (sheetType) => {
+        let getSpreadSheetRef: SpreadSheet;
+        let onMountedRef: SpreadSheet;
 
-      act(() => {
-        ReactDOM.unmountComponentAtNode(container);
-      });
+        const getSpreadSheet = jest.fn((instance) => {
+          getSpreadSheetRef = instance;
+        });
+        const onMounted = jest.fn((instance) => {
+          onMountedRef = instance;
+        });
+        const onDestroy = jest.fn();
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
 
-      expect(onDestroy).toHaveBeenCalledTimes(1);
-    });
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+              getSpreadSheet={getSpreadSheet}
+              onMounted={onMounted}
+              onDestroy={onDestroy}
+            />,
+            container,
+          );
+        });
+
+        expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
+        expect(onMounted).toHaveBeenCalledWith(onMountedRef);
+        expect(onMountedRef).toEqual(getSpreadSheetRef);
+        expect(onDestroy).not.toHaveBeenCalled();
+        expect(warnSpy).toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+        );
+
+        act(() => {
+          ReactDOM.unmountComponentAtNode(container);
+        });
+
+        expect(onDestroy).toHaveBeenCalledTimes(1);
+      },
+    );
 
     test('should get latest instance after sheet type changed', () => {
       let s2: SpreadSheet;
@@ -135,7 +162,7 @@ describe('<SheetComponent/> Tests', () => {
 
   describe('<StrategySheet/> Tests', () => {
     const renderStrategySheet = (
-      options: SheetComponentsProps['options'] | null,
+      options?: SheetComponentsProps['options'] | null,
       dataCfg?: S2DataConfig,
     ) => {
       act(() => {
@@ -173,29 +200,6 @@ describe('<SheetComponent/> Tests', () => {
       renderStrategySheet(s2Options);
 
       expect(s2.options.tooltip.data.content).toEqual(content);
-    });
-
-    test('should replace hierarchyType with "customTree" when rows is empty and contains custom tree items', () => {
-      const s2Options: SheetComponentsProps['options'] = {
-        hierarchyType: 'grid',
-      };
-
-      const s2DataConfig: S2DataConfig = {
-        data: [],
-        fields: {
-          rows: [],
-          customTreeItems: [
-            {
-              key: '1',
-              title: '1',
-            },
-          ],
-        },
-      };
-
-      renderStrategySheet(s2Options, s2DataConfig);
-
-      expect(s2.options.hierarchyType).toEqual('customTree');
     });
 
     test('should hideMeasureColumn if only one value field', () => {
@@ -281,28 +285,93 @@ describe('<SheetComponent/> Tests', () => {
       ]);
     });
 
-    test('should format corner date field', () => {
+    test.each([{ isCustomCornerText: true }, { isCustomCornerText: false }])(
+      'should format corner date field for %o',
+      ({ isCustomCornerText }) => {
+        renderStrategySheet(
+          {
+            width: 600,
+            height: 600,
+            cornerText: isCustomCornerText ? '测试' : undefined,
+          },
+          {
+            ...StrategySheetDataConfig,
+            meta: [
+              {
+                field: 'date',
+                name: '日期',
+              },
+            ],
+          },
+        );
+
+        const textList = s2.facet.cornerHeader
+          .getChildren()
+          .map((element) => (element as any).actualText);
+
+        const cornerText = isCustomCornerText
+          ? '测试'
+          : '自定义节点A/指标E/数值';
+
+        expect(textList).toEqual([cornerText, '日期']);
+      },
+    );
+
+    test('should render correctly row nodes', () => {
       renderStrategySheet(
         {
-          width: 600,
+          width: 6000,
           height: 600,
         },
-        {
-          ...StrategySheetDataConfig,
-          meta: [
-            {
-              field: 'date',
-              name: '日期',
-            },
-          ],
-        },
+        StrategySheetDataConfig,
       );
 
-      const textList = s2.facet.cornerHeader
-        .getChildren()
-        .map((element) => (element as any).actualText);
-
-      expect(textList).toEqual(['数值', '日期']);
+      const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => ({
+        field: node.field,
+        label: node.label,
+      }));
+      expect(rowNodes).toStrictEqual([
+        {
+          field: 'custom-node-1',
+          label: '自定义节点A',
+        },
+        {
+          field: 'measure-a',
+          label: '指标A',
+        },
+        {
+          field: 'measure-b',
+          label: '指标B',
+        },
+        {
+          field: 'custom-node-2',
+          label: '自定义节点B',
+        },
+        {
+          field: 'measure-c',
+          label: '指标C',
+        },
+        {
+          field: 'measure-d',
+          label: '指标D',
+        },
+        {
+          field: 'custom-node-5',
+          label: '自定义节点E',
+        },
+        {
+          field: 'measure-e',
+          label: '指标E',
+        },
+        {
+          field: 'custom-node-3',
+          label: '自定义节点C',
+        },
+        {
+          field: 'custom-node-4',
+          label: '自定义节点D',
+        },
+      ]);
     });
   });
 });

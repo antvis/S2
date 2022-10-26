@@ -2,28 +2,22 @@ import {
   CustomTreePivotDataSet,
   type S2DataConfig,
   EXTRA_FIELD,
-  type Meta,
-  i18n,
 } from '@antv/s2';
+import { size } from 'lodash';
 
 export class StrategyDataSet extends CustomTreePivotDataSet {
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const updatedDataCfg = super.processDataCfg(dataCfg);
-
-    const { meta } = updatedDataCfg;
-
-    const extraFieldName =
-      this.spreadsheet?.options?.cornerExtraFieldText || i18n('数值');
-
-    const extraFieldMeta: Meta = {
-      field: EXTRA_FIELD,
-      name: extraFieldName,
-    };
-    const newMeta: Meta[] = [...meta, extraFieldMeta];
+    // 多指标数值挂行头，单指标挂列头
+    const valueInCols = size(updatedDataCfg?.fields?.values) <= 1;
 
     return {
       ...updatedDataCfg,
-      meta: newMeta,
+      fields: {
+        ...updatedDataCfg.fields,
+        rows: [...dataCfg.fields.rows, EXTRA_FIELD],
+        valueInCols,
+      },
     };
   }
 }

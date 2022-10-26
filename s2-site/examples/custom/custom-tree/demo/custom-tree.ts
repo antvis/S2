@@ -8,7 +8,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: [],
+        rows: res.customTreeItem,
         columns: ['type', 'sub_type'],
         values: [
           'measure-a',
@@ -18,7 +18,6 @@ fetch(
           'measure-e',
           'measure-f',
         ],
-        customTreeItems: res.customTreeItem,
         valueInCols: false,
       },
       data: res.data,
@@ -26,7 +25,7 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      hierarchyType: 'customTree',
+      hierarchyType: 'tree',
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
     s2.render();

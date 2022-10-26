@@ -6,6 +6,7 @@ import { Canvas } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
+import type { BaseDataSet } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
@@ -13,7 +14,6 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
-import type { PanelBBox } from '@/facet/bbox/panelBBox';
 import type { BaseFacet } from '@/facet';
 
 export const parseCSV = (csv: string, header?: string[]) => {
@@ -65,19 +65,24 @@ export const createFakeSpreadSheet = () => {
     container,
   });
   s2.facet = {
+    panelBBox: {
+      maxX: s2.options.width,
+      maxY: s2.options.height,
+    },
     layoutResult: {
       getCellMeta: jest.fn(),
     },
   } as unknown as BaseFacet;
-  s2.facet.panelBBox = {
-    maxX: s2.options.width,
-    maxY: s2.options.height,
-  } as PanelBBox;
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {
     container: {} as HTMLElement,
   } as BaseTooltip;
+  s2.dataSet = {
+    getFieldDescription: jest.fn(),
+    getCustomFieldDescription: jest.fn(),
+  } as unknown as BaseDataSet;
+
   s2.getCellType = jest.fn();
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
@@ -85,7 +90,12 @@ export const createFakeSpreadSheet = () => {
   s2.showTooltipWithInfo = jest.fn();
   s2.isTableMode = jest.fn();
   s2.isPivotMode = jest.fn();
+  s2.getCell = jest.fn();
+  s2.isHierarchyTreeType = jest.fn();
   s2.getCanvasElement = () => s2.container.get('el');
+  s2.isCustomHeaderFields = jest.fn(() => false);
+  s2.isCustomRowFields = jest.fn(() => false);
+  s2.isCustomColumnFields = jest.fn(() => false);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
@@ -117,12 +127,14 @@ export function getGradient(
 
 export const createMockCellInfo = (
   cellId: string,
-  { colIndex = 0, rowIndex = 0 } = {},
+  { colIndex = 0, rowIndex = 0, level = 0 } = {},
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
+    field: cellId,
     colIndex,
     rowIndex,
+    level,
     type: undefined,
     x: 0,
     y: 0,
@@ -134,6 +146,7 @@ export const createMockCellInfo = (
       },
       dataSet: {
         getFieldDescription: jest.fn(),
+        getCustomRowFieldDescription: jest.fn(),
       },
       facet: {
         layoutResult: {
@@ -147,6 +160,8 @@ export const createMockCellInfo = (
     'y',
     'update',
     'spreadsheet',
+    'level',
+    'field',
   ]);
   const mockCell = {
     ...mockCellViewMeta,
@@ -161,6 +176,7 @@ export const createMockCellInfo = (
   return {
     mockCell,
     mockCellMeta,
+    mockCellViewMeta,
   };
 };
 
@@ -184,6 +200,9 @@ export const createPivotSheet = (
             ? dataConfig.data.concat(dataConfig.totalData as any)
             : dataConfig.data,
         },
-    s2Options,
+    {
+      ...s2Options,
+      debug: false,
+    },
   );
 };

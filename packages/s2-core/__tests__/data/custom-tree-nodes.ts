@@ -1,4 +1,4 @@
-export const customTreeItems = [
+export const customTreeNodes = [
   {
     title: '自定义节点A',
     key: 'custom-node-1',

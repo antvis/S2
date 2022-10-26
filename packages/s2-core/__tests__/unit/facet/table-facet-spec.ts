@@ -49,6 +49,8 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        isValueInCols: jest.fn(),
+        isCustomHeaderFields: jest.fn(),
       };
     }),
   };
@@ -118,7 +120,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
       const colHeaderColSize = colLeafNodes.length;
-      const canvasW = facet.getCanvasHW().width;
+      const canvasW = facet.getCanvasSize().width;
       const adaptiveWith = Math.max(
         cellCfg.width,
         canvasW / Math.max(1, colHeaderColSize),
@@ -149,7 +151,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - 1;
-      const canvasW = facet.getCanvasHW().width - seriesNumberWidth;
+      const canvasW = facet.getCanvasSize().width - seriesNumberWidth;
       const adaptiveWith = Math.max(
         cellCfg.width,
         canvasW / Math.max(1, colHeaderColSize),

@@ -1,6 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
 import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
+import { TableDataSet } from '../../../src/data-set';
 import { TableSheet } from '@/sheet-type';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';
@@ -209,6 +210,21 @@ describe('TableSheet Tests', () => {
         sheet.destroy();
       },
     );
+  });
+
+  test('should get normal header fields status', () => {
+    expect(s2.isCustomHeaderFields()).toBeFalsy();
+    expect(s2.isCustomRowFields()).toBeFalsy();
+    expect(s2.isCustomColumnFields()).toBeFalsy();
+  });
+
+  test('should get table mode', () => {
+    expect(s2.isPivotMode()).toBeFalsy();
+    expect(s2.isTableMode()).toBeTruthy();
+  });
+
+  test('should get data set', () => {
+    expect(s2.getDataSet()).toBeInstanceOf(TableDataSet);
   });
 
   test('should emit destroy event', () => {

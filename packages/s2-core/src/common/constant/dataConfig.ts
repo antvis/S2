@@ -6,7 +6,6 @@ export const DEFAULT_DATA_CONFIG: Readonly<S2DataConfig> = {
     rows: [],
     columns: [],
     values: [],
-    customTreeItems: [],
     valueInCols: true,
   },
   meta: [],

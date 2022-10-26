@@ -1,4 +1,4 @@
-import { isArray, isEmpty, mergeWith, uniq, isEqual } from 'lodash';
+import { isArray, isEmpty, mergeWith, uniq, isEqual, isString } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import {
   DEFAULT_MOBILE_OPTIONS,
@@ -37,22 +37,25 @@ const uniqueFields = (fields: Fields) => {
 };
 
 export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
-  const result = customMerge(
+  const mergedDataCfg = customMerge(
     DEFAULT_DATA_CONFIG,
     ...dataConfig,
   ) as S2DataConfig;
 
   // fields 去重
-  result.fields = uniqueFields(result.fields);
+  mergedDataCfg.fields = uniqueFields(mergedDataCfg.fields);
 
   // 自定义树和数值为空的场景, 关闭 数值置于列头
-  if (
-    !isEmpty(result.fields.customTreeItems) ||
-    isEmpty(result.fields.values)
-  ) {
-    result.fields.valueInCols = false;
+  const isCustomRows = mergedDataCfg.fields.rows.some(
+    (field) => !isString(field),
+  );
+  const isEmptyValues = isEmpty(mergedDataCfg.fields.values);
+
+  if (isCustomRows || isEmptyValues) {
+    mergedDataCfg.fields.valueInCols = false;
   }
-  return result;
+
+  return mergedDataCfg;
 };
 
 export const getSafetyOptions = (options: Partial<S2Options>) => {

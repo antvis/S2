@@ -24,6 +24,11 @@ const hideMeasureColumn = (
 };
 
 const getIsEqualValueLeafNode = (spreadsheet: SpreadSheet) => {
+  // 没有隐藏列, 则无需再做后面的计算
+  if (isEmpty(spreadsheet.options.interaction.hiddenColumnFields)) {
+    return false;
+  }
+
   const leafNodes = spreadsheet.getColumnLeafNodes();
   const values = new Set();
   for (let i = 0; i < leafNodes.length; i++) {

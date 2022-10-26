@@ -251,19 +251,19 @@ export class RootInteraction {
   };
 
   public getCellChildrenNodes = (cell: S2CellType): Node[] => {
-    const meta = cell?.getMeta?.() as Node;
+    const selectNode = cell?.getMeta?.() as Node;
     const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
 
     // 树状模式的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     if (isHierarchyTree && isRowCell) {
-      return Node.getAllLeaveNodes(meta).filter(
-        (node) => node.rowIndex === meta.rowIndex,
+      return Node.getAllLeaveNodes(selectNode).filter(
+        (node) => node.rowIndex === selectNode.rowIndex,
       );
     }
 
     // 平铺模式 或 树状模式的列头点击遍历所有子节点
-    return Node.getAllChildrenNodes(meta);
+    return Node.getAllChildrenNodes(selectNode);
   };
 
   public selectHeaderCell = (
@@ -313,7 +313,11 @@ export class RootInteraction {
     }
 
     // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算
-    const needCalcNodes = childrenNodes.filter((node) => node?.isLeaf);
+    const leafNodes = childrenNodes.filter((node) => node?.isLeaf);
+    const needCalcNodes = isEmpty(leafNodes)
+      ? [cell.getMeta() as Node]
+      : leafNodes;
+
     // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
