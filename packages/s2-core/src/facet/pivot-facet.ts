@@ -672,7 +672,7 @@ export class PivotFacet extends BaseFacet {
     rowLeafNodes: Node[],
   ): number {
     // tree row width = [config width, canvas / 2]
-    const canvasW = this.getCanvasHW().width;
+    const canvasW = this.getCanvasSize().width;
     const availableWidth = canvasW - this.getSeriesNumberWidth();
     const rowHeaderWidth = Math.min(
       availableWidth / 2,
@@ -739,7 +739,7 @@ export class PivotFacet extends BaseFacet {
     const { rows, cellCfg } = this.cfg;
     const rowHeaderColSize = rows.length;
     const colHeaderColSize = colLeafNodes.length;
-    const { width } = this.getCanvasHW();
+    const { width } = this.getCanvasSize();
     const availableWidth = width - this.getSeriesNumberWidth();
 
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);

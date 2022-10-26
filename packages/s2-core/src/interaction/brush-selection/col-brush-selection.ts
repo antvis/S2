@@ -36,7 +36,7 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   protected isPointInCanvas(point: { x: number; y: number }) {
     // 获取列头的区域范围
-    const { width: maxX } = this.spreadsheet.facet.getCanvasHW();
+    const { width: maxX } = this.spreadsheet.facet.getCanvasSize();
     const { width: minX, minY, maxY } = this.spreadsheet.facet.cornerBBox;
     return (
       point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY

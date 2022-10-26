@@ -272,7 +272,7 @@ export class TableFacet extends BaseFacet {
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
-      const canvasW = this.getCanvasHW().width - seriesNumberWidth;
+      const canvasW = this.getCanvasSize().width - seriesNumberWidth;
       return Math.max(cellCfg?.width, canvasW / Math.max(1, colHeaderColSize));
     }
     return cellCfg?.width;
@@ -327,7 +327,7 @@ export class TableFacet extends BaseFacet {
 
     preLeafNode = Node.blankNode();
 
-    const canvasW = this.getCanvasHW().width;
+    const canvasW = this.getCanvasSize().width;
 
     if (frozenTrailingColCount > 0) {
       for (let i = 1; i <= allNodes.length; i++) {
