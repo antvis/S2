@@ -46,19 +46,19 @@ export const getCellBoxByType = (
       CellBorderPosition.BOTTOM,
       CellBorderPosition.TOP,
     ].includes(position)
-      ? verticalBorderWidth
-      : horizontalBorderWidth;
+      ? horizontalBorderWidth
+      : verticalBorderWidth;
 
     switch (position) {
       case CellBorderPosition.TOP:
-        x += borderWidth;
+        y += borderWidth;
         height -= borderWidth;
         break;
       case CellBorderPosition.BOTTOM:
         height -= borderWidth;
         break;
       case CellBorderPosition.LEFT:
-        y += borderWidth;
+        x += borderWidth;
         width -= borderWidth;
         break;
       default:
@@ -302,10 +302,10 @@ export const getTextAreaRange = (
 
 export const getBorderPositionAndStyle = (
   position: CellBorderPosition,
-  contentBox: SimpleBBox,
+  bbox: SimpleBBox,
   style: CellTheme,
 ) => {
-  const { x, y, width, height } = contentBox;
+  const { x, y, width, height } = bbox;
   const {
     horizontalBorderWidth,
     horizontalBorderColorOpacity,
@@ -314,12 +314,26 @@ export const getBorderPositionAndStyle = (
     verticalBorderColor,
     verticalBorderColorOpacity,
   } = style;
-  let x1;
-  let y1;
-  let x2;
-  let y2;
-  let borderStyle;
 
+  const borderStyle = [
+    CellBorderPosition.TOP,
+    CellBorderPosition.BOTTOM,
+  ].includes(position)
+    ? {
+        lineWidth: horizontalBorderWidth,
+        stroke: horizontalBorderColor,
+        strokeOpacity: horizontalBorderColorOpacity,
+      }
+    : {
+        lineWidth: verticalBorderWidth,
+        stroke: verticalBorderColor,
+        strokeOpacity: verticalBorderColorOpacity,
+      };
+
+  let x1: number;
+  let y1: number;
+  let x2: number;
+  let y2: number;
   // horizontal
   if (
     position === CellBorderPosition.TOP ||
@@ -328,19 +342,14 @@ export const getBorderPositionAndStyle = (
     let yPosition = y;
     if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
-      yPosition = y + verticalBorderWidth / 2;
+      yPosition = y + Math.floor(horizontalBorderWidth / 2);
     } else {
-      yPosition = y + height - verticalBorderWidth / 2;
+      yPosition = y + height - Math.floor(horizontalBorderWidth / 2);
     }
     y1 = yPosition;
     y2 = yPosition;
     x1 = x;
     x2 = x + width;
-    borderStyle = {
-      lineWidth: horizontalBorderWidth,
-      stroke: horizontalBorderColor,
-      strokeOpacity: horizontalBorderColorOpacity,
-    };
   }
 
   // vertical
@@ -350,19 +359,14 @@ export const getBorderPositionAndStyle = (
   ) {
     let xPosition = x;
     if (position === CellBorderPosition.LEFT) {
-      xPosition = x + horizontalBorderWidth / 2;
+      xPosition = x + Math.floor(verticalBorderWidth / 2);
     } else {
-      xPosition = x + width - horizontalBorderWidth / 2;
+      xPosition = x + width - Math.floor(verticalBorderWidth / 2);
     }
     x1 = xPosition;
     x2 = xPosition;
     y1 = y;
     y2 = y + height;
-    borderStyle = {
-      lineWidth: verticalBorderWidth,
-      stroke: verticalBorderColor,
-      strokeOpacity: verticalBorderColorOpacity,
-    };
   }
 
   return {

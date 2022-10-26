@@ -39,6 +39,9 @@ import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
+  /* 角头 label 类型 */
+  public cornerType: CornerNodeType;
+
   protected declare headerConfig: CornerHeaderConfig;
 
   protected textShapes: IShape[] = [];
@@ -47,9 +50,6 @@ export class CornerCell extends HeaderCell {
     const { cornerType } = this.meta;
     return cornerType === CornerNodeType.Col;
   }
-
-  /* 角头 label 类型 */
-  public cornerType: CornerNodeType;
 
   public get cellType() {
     return CellTypes.CORNER_CELL;
@@ -251,10 +251,11 @@ export class CornerCell extends HeaderCell {
       width: headerWidth,
       height: headerHeight,
     } = this.headerConfig;
-    const { x, y, width, height, field, cornerType } = this.meta;
+    const { x, y, width, height } = this.getBBoxByType();
+    const { field, cornerType } = this.meta;
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size / 2,
+      x: x + width - resizeStyle.size,
       y,
       width: resizeStyle.size,
       height,
@@ -294,7 +295,7 @@ export class CornerCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size / 2,
+        x: offsetX + width - resizeStyle.size,
         y: offsetY,
         height: this.isLastRowCornerCell() ? headerHeight : height,
       },
