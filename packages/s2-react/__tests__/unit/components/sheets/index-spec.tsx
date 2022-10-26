@@ -56,6 +56,30 @@ describe('<SheetComponent/> Tests', () => {
     );
 
     test.each(sheetTypes)(
+      'should not throw getSpreadSheet deprecated warning for %s sheet',
+      (sheetType) => {
+        const warnSpy = jest
+          .spyOn(console, 'warn')
+          .mockImplementationOnce(() => {});
+
+        act(() => {
+          ReactDOM.render(
+            <SheetComponent
+              sheetType={sheetType}
+              options={{ width: 200, height: 200 }}
+              dataCfg={null as unknown as S2DataConfig}
+            />,
+            container,
+          );
+        });
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+        );
+      },
+    );
+
+    test.each(sheetTypes)(
       'should render and destroy for %s sheet',
       (sheetType) => {
         let getSpreadSheetRef: SpreadSheet;

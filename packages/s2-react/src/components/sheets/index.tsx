@@ -18,11 +18,11 @@ const Sheet = React.forwardRef(
     const sheetProps = React.useMemo<SheetComponentsProps>(() => {
       return {
         ...props,
-        getSpreadSheet: (instance) => {
+        onMounted: (instance) => {
           if (ref) {
             ref.current = instance;
           }
-          props.getSpreadSheet?.(instance);
+          props.onMounted?.(instance);
         },
       };
     }, [props, ref]);
