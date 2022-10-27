@@ -1,0 +1,40 @@
+{
+  "title": {
+    "zh": "表格组件",
+    "en": "Sheet Component"
+  },
+  "demos": [
+    {
+      "filename": "pivot.tsx",
+      "title": {
+        "zh": "透视表组件",
+        "en": "PivotSheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/J%246aXMmj26/da7d9c24-2958-4d4c-a38f-4ff0dcb22891.png"
+    },
+    {
+      "filename": "table.tsx",
+      "title": {
+        "zh": "明细表组件",
+        "en": "TableSheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png"
+    },
+    {
+      "filename": "strategy.tsx",
+      "title": {
+        "zh": "趋势分析表组件",
+        "en": "StrategySheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/detasbG55j/5f1c0072-0761-463c-ac44-2fe7b300d041.png"
+    },
+    {
+      "filename": "strategy-mini-chart.tsx",
+      "title": {
+        "zh": "mini 图表组件",
+        "en": "StrategySheet with mini chart"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}
