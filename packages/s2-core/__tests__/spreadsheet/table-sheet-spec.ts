@@ -100,9 +100,9 @@ const options: S2Options = {
 describe('TableSheet normal spec', () => {
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
-    s2.render();
-
     const onScrollFinish = jest.fn();
+
+    s2.render();
     s2.facet.scrollWithAnimation(
       {
         offsetX: {
