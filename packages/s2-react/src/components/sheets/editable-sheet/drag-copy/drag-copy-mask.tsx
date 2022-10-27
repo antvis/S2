@@ -6,15 +6,15 @@
 import React, { useState, useEffect } from 'react';
 import { S2Event, TableSheet, DataCell, InteractionStateName } from '@antv/s2';
 import type { Point } from '@antv/g-canvas';
-import _, { throttle } from 'lodash';
+import { throttle, pick, get } from 'lodash';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
-import './DragCopyMask.less';
+import './drag-copy-mask.less';
 
 type DragCopyProps = {
   onCopyFinished?: () => void;
 };
 
-function DragCopyMask({ onCopyFinished }: DragCopyProps) {
+export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   const spreadsheet = useSpreadSheetRef();
 
   const [startCell, setstartCell] = useState<DataCell>();
@@ -23,7 +23,7 @@ function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   const [dragPoint, setDragPoint] = useState<Point>();
 
   const isInCell = (point: Point, cellTarget) => {
-    const cellMeta = _.pick(cellTarget.getMeta(), [
+    const cellMeta = pick(cellTarget.getMeta(), [
       'x',
       'y',
       'width',
@@ -52,9 +52,7 @@ function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
   /** 判断当前位置是否在表格可视区域内 */
   const judgePointInView = (point: Point) => {
-    const rect = (
-      spreadsheet?.container.cfg.el as HTMLElement
-    ).getBoundingClientRect();
+    const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
     const { frozenRow } = (spreadsheet.facet as any).frozenGroupInfo;
     const viewMinX = rect.x;
     const viewMaxX = rect.x + rect.width;
@@ -69,9 +67,7 @@ function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   };
 
   const getCurrentHoverCell = (event: MouseEvent) => {
-    const rect = (
-      spreadsheet?.container.cfg.el as HTMLElement
-    ).getBoundingClientRect();
+    const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
     const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
 
     return allCelles.find((v) =>
@@ -178,12 +174,12 @@ function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   }, [startCell]);
 
   const dragMouseDown = (event: MouseEvent) => {
-    if (_.get(event, 'target.id') !== 'spreadsheet-drag-copy-point') {
+    if (get(event, 'target.id') !== 'spreadsheet-drag-copy-point') {
       return;
     }
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
-    const { top, left } = _.get(event, 'target.style', {});
+    const { top, left } = get(event, 'target.style', {});
     const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
     const targetCell = allCelles.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),
@@ -216,5 +212,3 @@ function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     ></div>
   );
 }
-
-export default DragCopyMask;

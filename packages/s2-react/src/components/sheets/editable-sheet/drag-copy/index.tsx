@@ -5,18 +5,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { S2Event } from '@antv/s2';
-import _ from 'lodash';
+import { isEqual, pick } from 'lodash';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
-import './DragCopyPoint.less';
-import DragCopyMask from './DragCopyMask';
+import './drag-copy-point.less';
+import { DragCopyMask } from './drag-copy-mask';
 
 export type DragCopyProps = {
-  onChange?: (val: any[]) => void;
+  onChange?: (val) => void;
 };
 
-function DragCopyPoint(props: DragCopyProps) {
+export function DragCopyPoint(props: DragCopyProps) {
   const spreadsheet = useSpreadSheetRef();
 
   const [scroll, setScroll] = useState<any>({
@@ -33,16 +33,15 @@ function DragCopyPoint(props: DragCopyProps) {
       const newScroll = spreadsheet.facet.getScrollOffset();
       const { frozenCol, frozenRow } = (spreadsheet.facet as any)
         .frozenGroupInfo;
-      const rect = (
-        spreadsheet?.container.cfg.el as HTMLElement
-      ).getBoundingClientRect();
+      const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
       const cellMate = cell?.getMeta();
-      if (!_.isEqual(newScroll, scroll)) {
+      if (!isEqual(newScroll, scroll)) {
         // 超出可视区域隐藏point
         if (cellMate) {
           // 确定点位
           const pointX = cellMate.width + cellMate.x;
           const pointY = cellMate.height + cellMate.y;
+          // 计算点位的偏移量
           const pointWidth = pointX - newScroll.scrollX - rect.width + 4;
           let overflow = true;
           if (
@@ -103,7 +102,7 @@ function DragCopyPoint(props: DragCopyProps) {
     }
 
     if (spreadsheet && cell) {
-      const cellMeta = _.pick(cell.getMeta(), [
+      const cellMeta = pick(cell.getMeta(), [
         'x',
         'y',
         'width',
@@ -149,5 +148,3 @@ function DragCopyPoint(props: DragCopyProps) {
     </div>
   );
 }
-
-export default DragCopyPoint;
