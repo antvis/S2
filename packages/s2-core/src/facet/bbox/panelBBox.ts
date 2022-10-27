@@ -15,7 +15,10 @@ export class PanelBBox extends BaseBBox {
     const { horizontalBorderWidth, verticalBorderWidth } =
       this.spreadsheet.theme.splitLine;
 
-    this.x = cornerPosition.x + verticalBorderWidth;
+    this.x =
+      cornerPosition.x +
+      (this.spreadsheet.isPivotMode() ? verticalBorderWidth : 0);
+
     this.y = cornerPosition.y + horizontalBorderWidth;
     this.minX = this.x;
     this.minY = this.y;

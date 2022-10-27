@@ -21,13 +21,9 @@ import {
 import { CellBorderPosition, CellBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
-import {
-  getBorderPositionAndStyle,
-  getTextPosition,
-  getVerticalPosition,
-} from '../utils/cell/cell';
+import { getTextPosition, getVerticalPosition } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import { renderLine, renderText, renderTreeIcon } from '../utils/g-renders';
+import { renderText, renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,

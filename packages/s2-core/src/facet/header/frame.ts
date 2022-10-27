@@ -85,6 +85,7 @@ export class Frame extends Group {
       scrollX,
       scrollContainsRowHeader,
       spreadsheet,
+      isPivotMode,
     } = cfg;
     const {
       horizontalBorderColor,
@@ -96,7 +97,7 @@ export class Frame extends Group {
     const x2 =
       x1 +
       cornerWidth +
-      verticalBorderWidth +
+      (isPivotMode ? verticalBorderWidth : 0) + // 明细表不需要绘制纵向分割线，所以不需要计算它的宽度
       viewportWidth +
       (scrollContainsRowHeader ? scrollX : 0);
     const y = position.y + cornerHeight + horizontalBorderWidth / 2;

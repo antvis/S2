@@ -2,6 +2,7 @@ import type { Point } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,
+  EXPAND_COLUMN_SPLIT_LINE_WIDTH,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
@@ -258,7 +259,10 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const resizeAreaWidth = cornerWidth + verticalBorderWidth + headerWidth;
+    const resizeAreaWidth =
+      cornerWidth +
+      (this.spreadsheet.isPivotMode() ? verticalBorderWidth : 0) +
+      headerWidth;
     // 列高调整热区
     resizeArea.addShape('rect', {
       attrs: {
@@ -399,13 +403,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected addExpandColumnSplitLine() {
-    const { x, y, width, height } = this.meta;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-    } = this.theme.splitLine;
-    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
+    const { x, y, width, height } = this.getBBoxByType();
+    const { horizontalBorderColor, horizontalBorderColorOpacity } =
+      this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width : x;
 
     renderLine(
       this,
@@ -417,7 +418,7 @@ export class ColCell extends HeaderCell {
       },
       {
         stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
+        lineWidth: EXPAND_COLUMN_SPLIT_LINE_WIDTH,
         strokeOpacity: horizontalBorderColorOpacity,
       },
     );

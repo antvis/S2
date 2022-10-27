@@ -1,19 +1,12 @@
 import { find } from 'lodash';
-import type { Group, SimpleBBox } from '@antv/g-canvas';
+import type { Group } from '@antv/g-canvas';
 import { ColCell } from '../cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
-import type {
-  CellBox,
-  DefaultCellTheme,
-  FormatResult,
-  SortParam,
-} from '../common/interface';
+import type { FormatResult, SortParam } from '../common/interface';
 import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
-import { getCellBoxByType } from '../utils/cell/cell';
-import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';
 import { renderRect } from '../utils/g-renders';
 import { getOrCreateResizeAreaGroupById } from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
@@ -100,41 +93,6 @@ export class TableColCell extends ColCell {
   protected getTextStyle() {
     const style = this.getStyle();
     return style?.bolderText;
-  }
-
-  public override getBBoxByType(type?: CellBox): SimpleBBox {
-    const bbox: SimpleBBox = {
-      x: this.meta.x,
-      y: this.meta.y,
-      height: this.meta.height,
-      width: this.meta.width,
-    };
-
-    const cellStyle = this.getStyle()?.cell || this.theme.dataCell.cell;
-
-    const newPadding = { ...cellStyle.padding };
-    const extraPadding = getExtraPaddingForExpandIcon(
-      this.spreadsheet,
-      this.meta.field,
-      this.getStyle(),
-    );
-
-    if (extraPadding.left) {
-      newPadding.left = (newPadding.left || 0) + extraPadding.left;
-    }
-    if (extraPadding.right) {
-      newPadding.right = (newPadding.right || 0) + extraPadding.right;
-    }
-
-    return getCellBoxByType(
-      bbox,
-      this.getBorderPositions(),
-      {
-        ...cellStyle,
-        padding: newPadding,
-      },
-      type,
-    );
   }
 
   protected getHorizontalResizeAreaName() {
