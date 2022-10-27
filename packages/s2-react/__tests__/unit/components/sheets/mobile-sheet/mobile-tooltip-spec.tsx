@@ -1,6 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
-import { BaseTooltip } from '@antv/s2/src';
 import { MobileSheetComponent } from '../../../../../src/components/sheets/mobile-sheet';
 import { SheetComponent } from '../../../../../src/components/sheets';
 import { CustomTooltip } from '../../../../../src';

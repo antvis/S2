@@ -1,4 +1,10 @@
-import { BaseTooltip, getTooltipOperatorSortMenus, S2CellType } from '@antv/s2';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import {
+  BaseTooltip,
+  getTooltipOperatorSortMenus,
+  type S2CellType,
+  type TooltipOperatorMenu,
+} from '@antv/s2';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { CustomTooltip, TooltipComponent } from '../../../../src';
@@ -7,7 +13,6 @@ import { TooltipOperator } from '../../../../src/components/tooltip/components/o
 import { TooltipDetail } from '../../../../src/components/tooltip/components/detail';
 import { TooltipHead } from '../../../../src/components/tooltip/components/head-info';
 import { TooltipSummary } from '../../../../src/components/tooltip/components/summary';
-import * as mockDataConfig from '../../../data/simple-data.json';
 
 describe('Tooltip Component Tests', () => {
   // https://github.com/antvis/S2/issues/1716
@@ -72,10 +77,10 @@ describe('Tooltip Common Components Tests', () => {
       <TooltipOperator
         menus={menus}
         key={'tooltipOperator'}
-        cell={mockCell}
+        cell={mockCell as unknown as S2CellType}
         onlyMenu={true}
         onClick={mockMenuClick}
-        defaultSelectedKeys={menus[0].key}
+        defaultSelectedKeys={[menus[0].key]}
       />,
     );
 
@@ -94,10 +99,14 @@ describe('Tooltip Common Components Tests', () => {
         icon: 'EyeOutlined',
         onClick: 'ƒ onClick() {}',
       },
-    ];
+    ] as unknown as TooltipOperatorMenu[];
 
     const { asFragment, getByText, container } = render(
-      <TooltipOperator onlyMenu={false} menus={hiddenMenus} cell={jest.fn()} />,
+      <TooltipOperator
+        onlyMenu={false}
+        menus={hiddenMenus}
+        cell={jest.fn() as unknown as S2CellType}
+      />,
     );
 
     expect(asFragment()).toMatchSnapshot();

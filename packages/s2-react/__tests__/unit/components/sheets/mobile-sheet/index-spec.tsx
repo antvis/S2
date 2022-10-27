@@ -1,6 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { DEFAULT_MOBILE_OPTIONS, DeviceType } from '@antv/s2/src';
 import { pick } from 'lodash';
 import * as mockDataConfig from '../../../../data/simple-data.json';
