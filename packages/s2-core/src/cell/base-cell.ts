@@ -43,6 +43,7 @@ import {
 import {
   renderIcon,
   renderLine,
+  renderRect,
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
@@ -230,6 +231,46 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       );
       renderLine(this, position, style);
     });
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
+        visible: false,
+      }),
+    );
+  }
+
+  protected abstract getBackgroundColor(): {
+    backgroundColor: string;
+    backgroundColorOpacity: number;
+  };
+
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getBBoxByType(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    });
+  }
+
+  /**
+   * 交互使用的背景色
+   */
+  protected drawInteractiveBgShape() {
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, this.getBBoxByType(), {
+        visible: false,
+      }),
+    );
   }
 
   protected getIconPosition(iconCount = 1) {

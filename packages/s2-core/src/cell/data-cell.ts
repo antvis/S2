@@ -21,7 +21,7 @@ import type {
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { renderLine, updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
 
 /**
@@ -165,14 +165,15 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected initCell() {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
+    }
+
+    this.drawInteractiveBorderShape();
+
+    if (!this.shouldHideRowSubtotalData()) {
       this.drawTextShape();
       this.drawConditionIconShapes();
-    }
-    if (this.meta.isFrozenCorner) {
-      this.drawBorderShape();
     }
     this.update();
   }
@@ -269,62 +270,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       }
     }
     return { backgroundColor, backgroundColorOpacity };
-  }
-
-  /**
-   * Draw cell background
-   */
-  protected drawBackgroundShape() {
-    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
-      this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getBBoxByType(),
-      fill,
-      fillOpacity,
-    });
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 1;
-    const { x, y, height, width } = this.getBBoxByType(CellBox.PADDING_BOX);
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(
-        this,
-        {
-          x: x + margin,
-          y: y + margin,
-          width: width - margin * 2,
-          height: height - margin * 2,
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
-  }
-
-  /**
-   * Draw interactive color
-   */
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getBBoxByType(),
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
   }
 
   // dataCell根据state 改变当前样式，

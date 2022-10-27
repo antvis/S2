@@ -15,7 +15,7 @@ import {
   type ViewMeta,
 } from '../common/interface';
 import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
-import { renderCircle, renderRect, renderTreeIcon } from '../utils/g-renders';
+import { renderCircle, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
   getOrCreateResizeAreaGroupById,
@@ -67,28 +67,6 @@ export class RowCell extends HeaderCell {
     // 绘制 action icons
     this.drawActionIcons();
     this.update();
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
-        visible: false,
-      }),
-    );
-  }
-
-  // 交互使用的背景色
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(this, this.getBBoxByType(), {
-        visible: false,
-      }),
-    );
   }
 
   protected showTreeIcon() {

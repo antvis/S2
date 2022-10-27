@@ -33,7 +33,6 @@ import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
-import { renderRect } from '../utils/g-renders';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -256,17 +255,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
         onClick,
         onHover,
       });
-    });
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } =
-      this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getBBoxByType(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
     });
   }
 

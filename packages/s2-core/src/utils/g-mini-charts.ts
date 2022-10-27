@@ -4,11 +4,12 @@
  */
 
 import { get, isEmpty, map, max, min } from 'lodash';
-import type {
-  BaseChartData,
-  BulletValue,
-  MiniChartData,
-  S2CellType,
+import {
+  CellBox,
+  type BaseChartData,
+  type BulletValue,
+  type MiniChartData,
+  type S2CellType,
 } from '../common/interface';
 import type { RangeColors } from '../common/interface/theme';
 import {
@@ -234,7 +235,7 @@ export const drawInterval = (cell: DataCell) => {
     return;
   }
 
-  const { x, y, height, width } = cell.getBBoxByType();
+  const { x, y, height, width } = cell.getBBoxByType(CellBox.PADDING_BOX);
 
   const intervalCondition = cell.findFieldCondition(
     cell.cellConditions?.interval,

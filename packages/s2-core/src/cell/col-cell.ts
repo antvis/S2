@@ -64,28 +64,6 @@ export class ColCell extends HeaderCell {
     this.update();
   }
 
-  // 交互使用的背景色
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(this, this.getBBoxByType(), {
-        visible: false,
-      }),
-    );
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
-        visible: false,
-      }),
-    );
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
     return width - this.getActionIconsWidth();
