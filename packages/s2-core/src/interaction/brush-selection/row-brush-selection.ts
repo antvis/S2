@@ -30,7 +30,7 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   protected isPointInCanvas(point: { x: number; y: number }) {
     // 获取行头的区域范围
-    const { height: maxY } = this.spreadsheet.facet.getCanvasHW();
+    const { height: maxY } = this.spreadsheet.facet.getCanvasSize();
     const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
 
     return (

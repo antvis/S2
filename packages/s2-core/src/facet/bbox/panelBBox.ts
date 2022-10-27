@@ -45,6 +45,10 @@ export class PanelBBox extends BaseBBox {
       return;
     }
 
+    if (!this.spreadsheet.enableFrozenHeaders()) {
+      return;
+    }
+
     const { frozenTrailingColCount, frozenTrailingRowCount } =
       this.spreadsheet.options;
     if (frozenTrailingColCount > 0) {

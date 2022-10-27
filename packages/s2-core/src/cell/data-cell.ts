@@ -1,5 +1,6 @@
 import type { IShape, Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -23,6 +24,11 @@ import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
+import {
+  DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
+  REVERSE_FONT_COLOR,
+} from '../common/constant/condition';
 
 /**
  * DataCell for panelGroup area
@@ -178,13 +184,42 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.update();
   }
 
+  /**
+   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
+   * @param textStyle
+   * @private
+   */
+  private getDefaultTextFill(textStyle: TextTheme) {
+    let textFill = textStyle.fill;
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
+
+    const isMoreThanThreshold =
+      tinycolor(backgroundColor).getBrightness() <=
+      FONT_COLOR_BRIGHTNESS_THRESHOLD;
+
+    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    if (
+      isMoreThanThreshold &&
+      textStyle.fill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
+    ) {
+      textFill = REVERSE_FONT_COLOR;
+    }
+    return textFill;
+  }
+
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
     const textStyle = isTotals
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    const fill = this.getTextConditionFill(textStyle);
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill({
+      ...textStyle,
+      fill: this.getDefaultTextFill(textStyle),
+    });
 
     return { ...textStyle, fill };
   }
@@ -263,13 +298,19 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);
+    let intelligentReverseTextColor = false;
     if (bgCondition && bgCondition.mapping) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
+        intelligentReverseTextColor = attrs.intelligentReverseTextColor;
       }
     }
-    return { backgroundColor, backgroundColorOpacity };
+    return {
+      backgroundColor,
+      backgroundColorOpacity,
+      intelligentReverseTextColor,
+    };
   }
 
   // dataCell根据state 改变当前样式，

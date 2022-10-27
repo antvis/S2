@@ -361,7 +361,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   test('should get correct formatted brush point', () => {
     const EXTRA_PIXEL = 2;
     const VSCROLLBAR_WIDTH = 5;
-    const { width, height } = mockSpreadSheetInstance.facet.getCanvasHW();
+    const { width, height } = mockSpreadSheetInstance.facet.getCanvasSize();
     const minX = 10;
     const minY = 10;
     const maxY = height + 10;
@@ -540,7 +540,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     ).toBe(300);
 
     facet.panelBBox = {
-      height: facet.getCanvasHW().height,
+      height: facet.getCanvasSize().height,
     } as any;
 
     facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);

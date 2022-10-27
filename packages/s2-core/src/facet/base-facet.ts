@@ -306,7 +306,7 @@ export abstract class BaseFacet {
       : 0;
   }
 
-  public getCanvasHW(): { width: number; height: number } {
+  public getCanvasSize() {
     return {
       width: this.cfg.width,
       height: this.cfg.height,
@@ -715,7 +715,7 @@ export abstract class BaseFacet {
 
   private getScrollbarPosition = () => {
     const { maxX, maxY } = this.panelBBox;
-    const { width, height } = this.getCanvasHW();
+    const { width, height } = this.getCanvasSize();
     const isContentMode =
       this.spreadsheet.options.interaction.scrollbarPosition ===
       ScrollbarPositionType.CONTENT;
@@ -1124,7 +1124,7 @@ export abstract class BaseFacet {
   }
 
   protected renderBackground() {
-    const { width, height } = this.getCanvasHW();
+    const { width, height } = this.getCanvasSize();
     const { color, opacity } = this.spreadsheet.theme.background;
 
     this.backgroundGroup.addShape('rect', {

@@ -103,7 +103,7 @@ export class BaseBrushSelection
 
   // 默认是 Data cell 的绘制区
   protected isPointInCanvas(point: { x: number; y: number }): boolean {
-    const { height, width } = this.spreadsheet.facet.getCanvasHW();
+    const { height, width } = this.spreadsheet.facet.getCanvasSize();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
     return (

@@ -356,7 +356,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         expectTextAlign({
           textAlign,
-          fontWight: 500,
+          fontWight: 700,
           customNodes: isRowCell ? rowTotalNodes : colTotalNodes,
         });
       },

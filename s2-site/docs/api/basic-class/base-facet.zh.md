@@ -64,6 +64,7 @@ s2.facet
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
+| getCanvasSize | 获取画布宽高 | `{width: number, height: number}` |
 
 ### CellScrollOffset
 
