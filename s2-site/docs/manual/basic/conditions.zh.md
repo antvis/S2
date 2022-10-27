@@ -5,10 +5,10 @@ order: 4
 
 S2 自带字段标记特性。用户可以根据业务语义设置不同的渲染逻辑，实现重点数据的标记和分析。字段标记类型包括：
 
-* 文本 (text) 字段标记
-* 背景 (background) 字段标记
-* 柱状图 (interval) 字段标记
-* 图标 (icon) 字段标记
+* 文本 (text) 字段标记 （所有单元格类型）
+* 背景 (background) 字段标记 （所有单元格类型）
+* 柱状图 (interval) 字段标记 （仅支持数据单元格）
+* 图标 (icon) 字段标记 （目前支持透视表数据单元格、行头和列头单元格）
 
 下图直观展示了四种字段标记的形态：
 
@@ -58,8 +58,8 @@ const s2Options = {
 
 `field` 用于指定将字段标记应用于哪些字段上，其取值范围会因表的形态不同而不同：
 
-* 对于透视表，`field` 取值范围或正则匹配范围是 `values`
-* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`
+* 对于透视表，`field` 取值范围或正则匹配范围是 `values`，作用范围为行头、列头、角头和数据单元格
+* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`，作用范围为数据单元格
 
 <table
   style="width: 100%; outline: none; border-collapse: collapse;"
@@ -111,7 +111,7 @@ const s2Options = {
 
 ### 自定义图标位置
 
-通过设置 `icon` 字段标记中的 `position` 属性，可以设置图标位于文本的左侧还是右侧。
+通过设置 `icon` 字段标记中的 `position` 属性，可以设置图标位于文本的左侧还是右侧。（目前表头单元格暂不支持切换）
 
 `price` 字段的图标位于文本右侧，`cost` 字段的图标位于文本左侧：
 
@@ -132,7 +132,7 @@ const s2Options = {
 
 <playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#bidirectional-interval)。
 
 ### 渐变柱状图
 
@@ -141,4 +141,14 @@ const s2Options = {
 `price` 字段使用渐变色：
 <playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#gradient-interval)。
+
+### 开启文字智能反色
+
+通过显示指定 `background` 字段标记中的 `mapping` 函数返回值  `intelligentReverseTextColor` 属性值为 `true`。
+当标记背景颜色较暗时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
+优先级： `background condition` 的 `intelligentReverseTextColor` < `text condition` 的 `fill`
+
+<playground path="analysis/conditions/demo/intelligent-background.ts" rid='intelligentReverseTextColor'></playground>
+
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#intelligent-background)。
