@@ -352,7 +352,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected getInteractiveBorderShapeStyle<T>(borderSize: T & number) {
     const { x, y, height, width } = this.getBBoxByType(CellBox.PADDING_BOX);
 
-    const halfSize = Math.floor(borderSize / 2);
+    const halfSize = borderSize / 2;
 
     return {
       x: x + halfSize,

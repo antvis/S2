@@ -14,16 +14,8 @@ import {
   CellBox,
   type ViewMeta,
 } from '../common/interface';
-import {
-  getBorderPositionAndStyle,
-  getTextAndFollowingIconPosition,
-} from '../utils/cell/cell';
-import {
-  renderCircle,
-  renderLine,
-  renderRect,
-  renderTreeIcon,
-} from '../utils/g-renders';
+import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
+import { renderCircle, renderRect, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
   getOrCreateResizeAreaGroupById,
@@ -69,7 +61,7 @@ export class RowCell extends HeaderCell {
     // 绘制树状模式下子节点层级占位圆点
     this.drawTreeLeafNodeAlignDot();
     // 绘制单元格边框
-    this.drawRectBorder();
+    this.drawBorders();
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     // 绘制 action icons
@@ -81,12 +73,9 @@ export class RowCell extends HeaderCell {
    * 绘制hover悬停，刷选的外框
    */
   protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 2;
-
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
+      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
         visible: false,
       }),
     );
@@ -96,15 +85,9 @@ export class RowCell extends HeaderCell {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getBBoxByType(),
-        },
-        {
-          visible: false,
-        },
-      ),
+      renderRect(this, this.getBBoxByType(), {
+        visible: false,
+      }),
     );
   }
 
@@ -241,26 +224,6 @@ export class RowCell extends HeaderCell {
     super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
   }
 
-  protected drawRectBorder() {
-    const { x } = this.getBBoxByType();
-
-    const contentIndent = this.getContentIndent();
-    const finalX = this.spreadsheet.isHierarchyTreeType()
-      ? x
-      : x + contentIndent;
-    this.getBorderPositions().forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        {
-          ...this.getBBoxByType(),
-          x: finalX,
-        },
-        this.getStyle().cell,
-      );
-      renderLine(this, position, style);
-    });
-  }
-
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
@@ -291,7 +254,7 @@ export class RowCell extends HeaderCell {
 
     const resizeAreaBBox = {
       x,
-      y: y + height - resizeStyle.size / 2,
+      y: y + height - resizeStyle.size,
       width,
       height: resizeStyle.size,
     };
@@ -333,7 +296,7 @@ export class RowCell extends HeaderCell {
           meta: this.meta,
         }),
         x: offsetX,
-        y: offsetY + height - resizeStyle.size / 2,
+        y: offsetY + height - resizeStyle.size,
         width: resizeAreaWidth,
       },
     });

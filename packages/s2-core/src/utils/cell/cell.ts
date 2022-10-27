@@ -342,9 +342,9 @@ export const getBorderPositionAndStyle = (
     let yPosition = y;
     if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
-      yPosition = y + Math.floor(horizontalBorderWidth / 2);
+      yPosition = y + horizontalBorderWidth / 2;
     } else {
-      yPosition = y + height - Math.floor(horizontalBorderWidth / 2);
+      yPosition = y + height - horizontalBorderWidth / 2;
     }
     y1 = yPosition;
     y2 = yPosition;
@@ -359,9 +359,9 @@ export const getBorderPositionAndStyle = (
   ) {
     let xPosition = x;
     if (position === CellBorderPosition.LEFT) {
-      xPosition = x + Math.floor(verticalBorderWidth / 2);
+      xPosition = x + verticalBorderWidth / 2;
     } else {
-      xPosition = x + width - Math.floor(verticalBorderWidth / 2);
+      xPosition = x + width - verticalBorderWidth / 2;
     }
     x1 = xPosition;
     x2 = xPosition;

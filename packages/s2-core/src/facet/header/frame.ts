@@ -60,7 +60,7 @@ export class Frame extends Group {
       verticalBorderColorOpacity,
       horizontalBorderWidth,
     } = spreadsheet.theme?.splitLine;
-    const x = position.x + cornerWidth + Math.floor(horizontalBorderWidth / 2);
+    const x = position.x + cornerWidth + horizontalBorderWidth / 2;
     const y1 = position.y;
     const y2 =
       position.y + cornerHeight + horizontalBorderWidth + viewportHeight;
@@ -99,7 +99,7 @@ export class Frame extends Group {
       verticalBorderWidth +
       viewportWidth +
       (scrollContainsRowHeader ? scrollX : 0);
-    const y = position.y + cornerHeight + Math.floor(horizontalBorderWidth / 2);
+    const y = position.y + cornerHeight + horizontalBorderWidth / 2;
 
     renderLine(
       this,

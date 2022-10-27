@@ -140,7 +140,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     // resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被clip
     // 后续计算 resized 尺寸时，需要把收缩的部分加回来
-    const halfSize = Math.floor(size / 2);
+    const halfSize = size / 2;
     if (type === ResizeDirectionType.Horizontal) {
       startResizeGuideLineShape.attr('path', [
         ['M', offsetX + halfSize, offsetY],

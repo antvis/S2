@@ -1,4 +1,4 @@
-import type { Point, SimpleBBox } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,
@@ -14,7 +14,6 @@ import type { AreaRange } from '../common/interface/scroll';
 import {
   adjustColHeaderScrollingTextPosition,
   adjustColHeaderScrollingViewport,
-  getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
   getTextAreaRange,
 } from '../utils/cell/cell';
@@ -82,8 +81,7 @@ export class ColCell extends HeaderCell {
     this.stateShapes.set(
       'interactiveBorderShape',
       renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
-        visible: true,
-        fill: 'cyan',
+        visible: false,
       }),
     );
   }
