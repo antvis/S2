@@ -17,6 +17,7 @@ import {
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   SERIES_NUMBER_FIELD,
+  SPLIT_LINE_WIDTH,
 } from '../common/constant';
 import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
@@ -666,13 +667,13 @@ export class TableFacet extends BaseFacet {
     });
 
     const verticalBorderStyle = {
-      lineWidth: style?.verticalBorderWidth,
+      lineWidth: SPLIT_LINE_WIDTH,
       stroke: style?.verticalBorderColor,
       opacity: style?.verticalBorderColorOpacity,
     };
 
     const horizontalBorderStyle = {
-      lineWidth: style?.horizontalBorderWidth,
+      lineWidth: SPLIT_LINE_WIDTH,
       stroke: style?.horizontalBorderColor,
       opacity: style?.horizontalBorderColorOpacity,
     };

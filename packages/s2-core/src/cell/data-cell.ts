@@ -19,10 +19,10 @@ import type {
   ViewMeta,
   ViewMetaIndexType,
 } from '../common/interface';
-import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
+import { getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import { renderLine, updateShapeAttr } from '../utils/g-renders';
+import { updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
@@ -181,6 +181,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
+    this.drawBorders();
     this.update();
   }
 
@@ -331,20 +332,9 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Render cell border controlled by verticalBorder & horizontalBorder
-   * @protected
+   * 预留给明细表使用，透视表数据格不需要绘制 border， 已经交由 grid 处理
    */
-  protected drawBorderShape() {
-    this.getBorderPositions().forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        this.getBBoxByType(),
-        this.getStyle().cell,
-      );
-
-      renderLine(this, position, style);
-    });
-  }
+  protected override drawBorders(): void {}
 
   /**
    * Find current field related condition
@@ -405,14 +395,5 @@ export class DataCell extends BaseCell<ViewMeta> {
       SHAPE_STYLE_MAP.opacity,
       1,
     );
-  }
-
-  protected drawLeftBorder() {
-    const { position, style } = getBorderPositionAndStyle(
-      CellBorderPosition.LEFT,
-      this.getBBoxByType(),
-      this.getStyle().cell,
-    );
-    renderLine(this, position, style);
   }
 }

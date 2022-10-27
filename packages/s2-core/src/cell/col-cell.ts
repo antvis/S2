@@ -2,7 +2,7 @@ import type { Point } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,
-  EXPAND_COLUMN_SPLIT_LINE_WIDTH,
+  SPLIT_LINE_WIDTH,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
@@ -417,7 +417,7 @@ export class ColCell extends HeaderCell {
       },
       {
         stroke: horizontalBorderColor,
-        lineWidth: EXPAND_COLUMN_SPLIT_LINE_WIDTH,
+        lineWidth: SPLIT_LINE_WIDTH,
         strokeOpacity: horizontalBorderColorOpacity,
       },
     );

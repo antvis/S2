@@ -15,7 +15,7 @@ export enum LayoutWidthTypes {
   Compact = 'compact',
 }
 
-export const EXPAND_COLUMN_SPLIT_LINE_WIDTH = 1;
+export const SPLIT_LINE_WIDTH = 1;
 
 export const DEFAULT_TREE_ROW_WIDTH = 120;
 
@@ -26,7 +26,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
   collapsedCols: {},
   cellCfg: {
     width: 96,
-    height: 30,
+    height: 60,
   },
   rowCfg: {
     width: null,
@@ -34,7 +34,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     heightByField: {},
   },
   colCfg: {
-    height: 30,
+    height: 80,
     widthByFieldValue: {},
     heightByField: {},
   },
