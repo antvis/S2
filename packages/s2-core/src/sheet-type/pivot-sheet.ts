@@ -17,7 +17,7 @@ import type {
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
-import { CustomTreePivotDataSet, PivotDataSet } from '../data-set';
+import { PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
@@ -60,6 +60,13 @@ export class PivotSheet extends SpreadSheet {
     return new PivotDataSet(this);
   }
 
+  public enableFrozenHeaders(): boolean {
+    return false;
+  }
+
+  /**
+   * Check if is pivot mode
+   */
   public isPivotMode(): boolean {
     return true;
   }

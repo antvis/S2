@@ -2,13 +2,6 @@ import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
-  KEY_GROUP_PANEL_FROZEN_BOTTOM,
-  KEY_GROUP_PANEL_FROZEN_COL,
-  KEY_GROUP_PANEL_FROZEN_ROW,
-  KEY_GROUP_PANEL_FROZEN_TOP,
-  KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-  KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
@@ -23,7 +16,6 @@ import type {
 import { TableDataSet } from '../data-set';
 import { TableFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
-import { FrozenGroup } from '../group/frozen-group';
 import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
@@ -46,6 +38,21 @@ export class TableSheet extends SpreadSheet {
     }
 
     return new TableDataSet(this);
+  }
+
+  public enableFrozenHeaders(): boolean {
+    const {
+      frozenRowCount,
+      frozenTrailingRowCount,
+      frozenColCount,
+      frozenTrailingColCount,
+    } = this.options;
+    return (
+      frozenRowCount > 0 ||
+      frozenTrailingRowCount > 0 ||
+      frozenColCount > 0 ||
+      frozenTrailingColCount > 0
+    );
   }
 
   /**
@@ -95,36 +102,6 @@ export class TableSheet extends SpreadSheet {
 
   protected bindEvents() {}
 
-  protected initPanelGroupChildren(): void {
-    super.initPanelGroupChildren();
-    const commonParams = {
-      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-      s2: this,
-    };
-    [
-      this.frozenRowGroup,
-      this.frozenColGroup,
-      this.frozenTrailingRowGroup,
-      this.frozenTrailingColGroup,
-      this.frozenTopGroup,
-      this.frozenBottomGroup,
-    ] = [
-      KEY_GROUP_PANEL_FROZEN_ROW,
-      KEY_GROUP_PANEL_FROZEN_COL,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-      KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-      KEY_GROUP_PANEL_FROZEN_TOP,
-      KEY_GROUP_PANEL_FROZEN_BOTTOM,
-    ].map((name) => {
-      const g = new FrozenGroup({
-        name,
-        ...commonParams,
-      });
-      this.panelGroup.add(g);
-      return g;
-    });
-  }
-
   protected getFacetCfgFromDataSetAndOptions(): SpreadSheetFacetCfg {
     const { fields, meta } = this.dataSet;
     const { style, dataCell } = this.options;
@@ -153,18 +130,8 @@ export class TableSheet extends SpreadSheet {
     this.facet.render();
   }
 
-  protected clearFrozenGroups() {
-    this.frozenRowGroup.set('children', []);
-    this.frozenColGroup.set('children', []);
-    this.frozenTrailingRowGroup.set('children', []);
-    this.frozenTrailingColGroup.set('children', []);
-    this.frozenTopGroup.set('children', []);
-    this.frozenBottomGroup.set('children', []);
-  }
-
   public destroy() {
     super.destroy();
-    this.clearFrozenGroups();
     this.off(S2Event.RANGE_SORT);
     this.off(S2Event.RANGE_FILTER);
   }

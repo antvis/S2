@@ -15,7 +15,7 @@ import {
   InterceptType,
   ScrollDirection,
   getScrollOffsetForCol,
-  FrozenGroup,
+  FrozenGroupType,
   getScrollOffsetForRow,
 } from '@/index';
 import type { TableFacet } from '@/facet';
@@ -92,12 +92,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     );
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.foregroundGroup = new Group('');
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
+    mockSpreadSheetInstance.facet.foregroundGroup = new Group('');
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
     ).map((_, idx) => {
@@ -510,16 +510,16 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     ).toBe(200);
 
     (facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         width: 100,
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         width: 100,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         height: 0,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 0,
       },
     };
@@ -561,16 +561,16 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     ).toBe(320);
 
     (facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         width: 0,
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         width: 0,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         height: 100,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 100,
       },
     };
@@ -603,16 +603,16 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(validateYIndex(9)).toBe(9);
 
     (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         range: [0, 1],
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         range: [8, 9],
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         range: [0, 1],
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         range: [8, 9],
       },
     };

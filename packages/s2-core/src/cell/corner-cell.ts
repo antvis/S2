@@ -236,6 +236,10 @@ export class CornerCell extends HeaderCell {
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
 
+    if (!resizeArea) {
+      return;
+    }
+
     const {
       position,
       scrollX,

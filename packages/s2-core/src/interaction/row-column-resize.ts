@@ -49,7 +49,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (this.resizeReferenceGroup) {
       return;
     }
-    this.resizeReferenceGroup = this.spreadsheet.foregroundGroup.addGroup();
+    this.resizeReferenceGroup =
+      this.spreadsheet.facet.foregroundGroup.addGroup();
 
     const { width, height } = this.spreadsheet.options;
     const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();

@@ -17,12 +17,20 @@ import {
 } from 'lodash';
 import { DataCell } from '../cell';
 import {
+  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   InterceptType,
+  KEY_GROUP_BACK_GROUND,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_GROUP_FORE_GROUND,
+  KEY_GROUP_PANEL_GROUND,
+  KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
+  PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
+  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
@@ -54,6 +62,8 @@ import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
+import { PanelScrollGroup } from '../group/panel-scroll-group';
+import type { FrozenGroup } from '../group/frozen-group';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -87,6 +97,20 @@ export abstract class BaseFacet {
 
   // render viewport cell
   public panelGroup: IGroup;
+
+  public panelScrollGroup: PanelScrollGroup;
+
+  public frozenRowGroup: FrozenGroup;
+
+  public frozenColGroup: FrozenGroup;
+
+  public frozenTrailingRowGroup: FrozenGroup;
+
+  public frozenTrailingColGroup: FrozenGroup;
+
+  public frozenTopGroup: FrozenGroup;
+
+  public frozenBottomGroup: FrozenGroup;
 
   // render header/corner/scrollbar/resize
   public foregroundGroup: IGroup;
@@ -143,6 +167,36 @@ export abstract class BaseFacet {
     this.cfg = cfg;
     this.spreadsheet = cfg.spreadsheet;
     this.init();
+  }
+
+  protected initGroups() {
+    const container = this.spreadsheet.container;
+    // the main three layer groups
+    this.backgroundGroup = container.addGroup({
+      name: KEY_GROUP_BACK_GROUND,
+      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+    });
+
+    this.initPanelGroups();
+    this.foregroundGroup = container.addGroup({
+      name: KEY_GROUP_FORE_GROUND,
+      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
+    });
+  }
+
+  protected initPanelGroups() {
+    const container = this.spreadsheet.container;
+
+    this.panelGroup = container.addGroup({
+      name: KEY_GROUP_PANEL_GROUND,
+      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
+    });
+    this.panelScrollGroup = new PanelScrollGroup({
+      name: KEY_GROUP_PANEL_SCROLL,
+      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+      s2: this.spreadsheet,
+    });
+    this.panelGroup.add(this.panelScrollGroup);
   }
 
   protected getCellCustomWidth(node: Node, width: CellCustomWidth) {
@@ -343,12 +397,9 @@ export abstract class BaseFacet {
   };
 
   clipPanelGroup = () => {
-    this.foregroundGroup = this.spreadsheet.foregroundGroup;
-    this.backgroundGroup = this.spreadsheet.backgroundGroup;
-    this.panelGroup = this.spreadsheet.panelGroup;
     const { width, height } = this.panelBBox;
 
-    this.spreadsheet.panelScrollGroup?.setClip({
+    this.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
         x: 0,
@@ -438,7 +489,7 @@ export abstract class BaseFacet {
     return heights.getTotalHeight();
   };
 
-  clearAllGroup = () => {
+  clearAllGroup() {
     const children = this.panelGroup.getChildren() || [];
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
@@ -450,7 +501,7 @@ export abstract class BaseFacet {
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
-  };
+  }
 
   scrollWithAnimation = (
     offsetConfig: OffsetConfig = {},
@@ -957,7 +1008,7 @@ export abstract class BaseFacet {
 
   protected clip(scrollX: number, scrollY: number) {
     const isFrozenRowHeader = this.spreadsheet.isFrozenRowHeader();
-    this.spreadsheet.panelScrollGroup?.setClip({
+    this.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
         x: isFrozenRowHeader ? scrollX : 0,
@@ -982,7 +1033,7 @@ export abstract class BaseFacet {
     hRowScroll: number,
   ) {
     translateGroup(
-      this.spreadsheet.panelScrollGroup,
+      this.panelScrollGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
@@ -1009,9 +1060,7 @@ export abstract class BaseFacet {
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
-    const { panelScrollGroup } = this.spreadsheet;
-
-    panelScrollGroup?.add(cell);
+    this.panelScrollGroup?.add(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
@@ -1055,6 +1104,7 @@ export abstract class BaseFacet {
   };
 
   protected init() {
+    this.initGroups();
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
@@ -1246,7 +1296,7 @@ export abstract class BaseFacet {
 
   public updatePanelScrollGroup() {
     this.gridInfo = this.getGridInfo();
-    this.spreadsheet.panelScrollGroup.update(this.gridInfo);
+    this.panelScrollGroup.update(this.gridInfo);
   }
 
   /**

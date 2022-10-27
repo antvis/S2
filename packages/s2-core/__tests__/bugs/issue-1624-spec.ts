@@ -28,7 +28,7 @@ describe('Data Cell Border Tests', () => {
   s2.render();
 
   test('should draw correct data cell border when hover focus', async () => {
-    const dataCell = s2.panelScrollGroup.getChildren()[0] as DataCell;
+    const dataCell = s2.facet.panelScrollGroup.getChildren()[0] as DataCell;
 
     s2.emit(S2Event.DATA_CELL_HOVER, {
       target: dataCell,

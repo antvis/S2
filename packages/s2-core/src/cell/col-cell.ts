@@ -270,6 +270,9 @@ export class ColCell extends HeaderCell {
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
+    if (!resizeArea) {
+      return;
+    }
 
     const resizeAreaName = this.getHorizontalResizeAreaName();
 
@@ -360,7 +363,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    if (!this.shouldAddVerticalResizeArea()) {
+    if (!resizeArea || !this.shouldAddVerticalResizeArea()) {
       return;
     }
 
