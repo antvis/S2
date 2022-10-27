@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.30.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.29.0...@antv/s2-react-v1.30.0-alpha.1) (2022-10-27)
+
+
+### Features
+
+* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
+* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
+
+
+### Reverts
+
+* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
+
 # [@antv/s2-react-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.28.0...@antv/s2-react-v1.29.0) (2022-10-14)
 
 
