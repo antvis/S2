@@ -18,10 +18,10 @@ export class Hierarchy {
   public maxLevel = -1;
 
   // each level's first node
-  public sampleNodesForAllLevels?: Node[] = [];
+  public sampleNodesForAllLevels: Node[] = [];
 
   // last level's first node
-  public sampleNodeForLastLevel?: Node = null;
+  public sampleNodeForLastLevel: Node = null;
 
   // all nodes in this hierarchy
   private allNodesWithoutRoot: Node[] = [];

@@ -8,6 +8,7 @@ import type {
   Pagination,
   Style,
   Totals,
+  ViewMeta,
 } from '../../common/interface/basic';
 import type {
   LayoutArrange,
@@ -68,7 +69,7 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // the collection of row id and column id of cells which to be merged
   mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
-  placeholder?: ((meta: Record<string, any>) => string) | string;
+  placeholder?: ((meta: ViewMeta) => string) | string;
   // custom corner text
   cornerText?: string;
   // custom virtual extra field text

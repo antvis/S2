@@ -1,6 +1,6 @@
 import type { SpreadSheet } from '@antv/s2';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { SpreadSheetContext } from './SpreadSheetContext';
 
 export type InvokeComponentProps<P> = {

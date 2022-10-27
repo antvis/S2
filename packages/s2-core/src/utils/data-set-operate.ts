@@ -1,4 +1,4 @@
-import { every, flatMap, has, isArray, reduce } from 'lodash';
+import { every, flatMap, has, isArray } from 'lodash';
 import {
   DataSelectType,
   DEFAULT_TOTAL_SELECTIONS,
@@ -6,11 +6,11 @@ import {
 import { TOTAL_VALUE } from '../common/constant/basic';
 import type {
   RawData,
-  Fields,
   Totals,
   TotalsStatus,
   FlattingIndexesData,
   CustomHeaderFields,
+  CalcTotals,
 } from '../common/interface';
 import type { TotalSelectionsOfMultiData } from '../data-set/interface';
 import { customMerge } from './merge';
@@ -50,11 +50,11 @@ export const getFieldKeysByDimensionValues = (
   dimensionValues: string[] | undefined[],
   dimensions: CustomHeaderFields,
 ) => {
-  const result = [];
+  const result: string[] = [];
   dimensionValues?.forEach((item, index) => {
     if (item === undefined) {
       if (dimensions[index]) {
-        result.push(dimensions[index]);
+        result.push(dimensions[index] as string);
       }
     }
   });
@@ -72,7 +72,7 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
 
 export function getAggregationAndCalcFuncByQuery(
   totalsStatus: TotalsStatus,
-  totalsOptions: Totals,
+  totalsOptions?: Totals,
 ) {
   const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
   const { row, col } = totalsOptions || {};
@@ -84,13 +84,11 @@ export function getAggregationAndCalcFuncByQuery(
     calcTotals: colCalcTotals = {},
     calcSubTotals: colCalcSubTotals = {},
   } = col || {};
-  const getCalcTotals = (dimensionTotals, totalType) => {
-    if (
-      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
-      totalType
-    ) {
+
+  const getCalcTotals = (dimensionTotals: CalcTotals, isTotal: boolean) => {
+    if ((dimensionTotals.aggregation || dimensionTotals.calcFunc) && isTotal) {
       return {
-        aggregation: dimensionTotals.aggregation,
+        aggregation: dimensionTotals.aggregation!,
         calcFunc: dimensionTotals.calcFunc,
       };
     }

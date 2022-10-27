@@ -31,9 +31,9 @@ export const isXYInRange = (
   return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
 };
 
-export const allIndexes = (indexes: Indexes) => {
+export const allIndexes = (indexes: Indexes): [number, number][] => {
   const [minI, maxI, minJ, maxJ] = indexes;
-  const r = [];
+  const r: [number, number][] = [];
 
   for (let i = minI; i <= maxI; i += 1) {
     for (let j = minJ; j <= maxJ; j += 1) {
@@ -53,8 +53,8 @@ export const diffIndexes = (
   sourceIndexes: Indexes,
   targetIndexes: Indexes,
 ): Diff => {
-  const add = [];
-  const remove = [];
+  const add: Diff['add'] = [];
+  const remove: Diff['remove'] = [];
 
   // source 为空
   if (isEmpty(sourceIndexes)) {
@@ -105,13 +105,13 @@ export const diffPanelIndexes = (
   sourceIndexes: PanelIndexes,
   targetIndexes: PanelIndexes,
 ): Diff => {
-  const allAdd = [];
-  const allRemove = [];
+  const allAdd: Diff['add'] = [];
+  const allRemove: Diff['remove'] = [];
 
   Object.keys(targetIndexes).forEach((key) => {
     const { add, remove } = diffIndexes(
-      sourceIndexes?.[key] || [],
-      targetIndexes[key],
+      sourceIndexes?.[key as keyof PanelIndexes] || ([] as unknown as Indexes),
+      targetIndexes[key as keyof PanelIndexes]!,
     );
     allAdd.push(...add);
     allRemove.push(...remove);

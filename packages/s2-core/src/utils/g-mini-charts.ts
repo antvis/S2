@@ -39,10 +39,10 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const { cell: cellStyle, miniChart } = dataCellStyle;
   const measures = [];
   const encodedData = map(data, (item) => {
-    measures.push(item?.[encode.y]);
+    measures.push(item?.[encode!.y]);
     return {
-      x: item[encode.x],
-      y: item[encode.y],
+      x: item[encode!.x],
+      y: item[encode!.y],
     };
   });
   const maxMeasure = max(measures);

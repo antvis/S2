@@ -21,6 +21,7 @@ import type {
   Condition,
   MultiData,
   S2CellType,
+  S2Options,
   SimpleData,
   ViewMeta,
 } from '../common/interface';
@@ -44,11 +45,17 @@ export const measureTextWidth = memoize(
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
     // copy G 里面的处理逻辑
-    ctx.font = [fontStyle, fontVariant, fontWeight, `${fontSize}px`, fontFamily]
+    ctx!.font = [
+      fontStyle,
+      fontVariant,
+      fontWeight,
+      `${fontSize}px`,
+      fontFamily,
+    ]
       .join(' ')
       .trim();
 
-    return ctx.measureText(`${text}`).width;
+    return ctx!.measureText(`${text}`).width;
   },
   (text: any, font) => [text, ...values(font)].join(''),
 );
@@ -67,7 +74,7 @@ export const getEllipsisTextInner = (
   measureTextWidth: (text: number | string, font: unknown) => number,
   text: any,
   maxWidth: number,
-  font: CSSStyleDeclaration,
+  font: TextTheme,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
   const DOT_WIDTH = measureTextWidth('...', font);
@@ -196,11 +203,11 @@ export const getEllipsisText = ({
   measureTextWidth: (text: number | string, font: unknown) => number;
   text: string | number;
   maxWidth: number;
-  fontParam?: unknown;
+  fontParam?: TextTheme;
   priorityParam?: string[];
   placeholder?: string;
 }) => {
-  let font = {};
+  let font: TextTheme = {} as TextTheme;
   const empty = placeholder ?? EMPTY_PLACEHOLDER;
   // [null, undefined, ''] will return empty
   const finalText = isNil(text) || text === '' ? empty : `${text}`;
@@ -208,25 +215,20 @@ export const getEllipsisText = ({
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
-    font = fontParam || {};
+    font = fontParam || ({} as TextTheme);
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(
-      measureTextWidth,
-      finalText,
-      maxWidth,
-      font as CSSStyleDeclaration,
-    );
+    return getEllipsisTextInner(measureTextWidth, finalText, maxWidth, font);
   }
 
-  const leftSubTexts = [];
+  const leftSubTexts: string[] = [];
   let subTexts = [finalText];
   priority.forEach((priorityItem) => {
     subTexts.forEach((tempSubText, index) => {
       // 处理 leftText
       let startIdx = -1;
       const matched = tempSubText.match(new RegExp(priorityItem));
-      if (matched) {
+      if (matched?.index) {
         const matchedText = matched[0];
         startIdx = matched.index;
         leftSubTexts.push(matchedText);
@@ -268,7 +270,7 @@ export const getEllipsisText = ({
           measureTextWidth,
           subText,
           remainWidth,
-          font as CSSStyleDeclaration,
+          font,
         );
         result = result.replace(subText, ellipsis);
         remainWidth = 0;
@@ -297,7 +299,7 @@ export const isUpDataValue = (value: number | string): boolean => {
 /**
  * 根据单元格对齐方式计算文本的 x 坐标
  * @param x 单元格的 x 坐标
- * @param paddingRight
+ * @param padding @Padding
  * @param extraWidth 额外的宽度
  * @param textAlign 文本对齐方式
  */
@@ -307,7 +309,7 @@ const calX = (
   extraWidth?: number,
   textAlign = 'left',
 ) => {
-  const { right, left } = padding;
+  const { right = 0, left = 0 } = padding;
   const extra = extraWidth || 0;
   if (textAlign === 'left') {
     return x + right / 2 + extra;
@@ -331,13 +333,13 @@ const getDrawStyle = (cell: S2CellType) => {
     isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
   );
 
-  let textStyle: TextTheme;
+  let textStyle: TextTheme | undefined;
   if (isMeasureField) {
-    textStyle = cellStyle.measureText;
+    textStyle = cellStyle?.measureText;
   } else if (isTotals) {
-    textStyle = cellStyle.bolderText;
+    textStyle = cellStyle?.bolderText;
   } else {
-    textStyle = cellStyle.text;
+    textStyle = cellStyle?.text;
   }
 
   return {
@@ -361,10 +363,10 @@ const getCurrentTextStyle = ({
   colIndex: number;
   meta: ViewMeta;
   data: string | number;
-  textStyle: TextTheme;
+  textStyle?: TextTheme;
   textCondition?: Condition;
 }) => {
-  let fill = textStyle.fill;
+  let fill = textStyle?.fill;
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
       rowIndex,
@@ -379,8 +381,8 @@ const getCurrentTextStyle = ({
  * 获取自定义空值占位符
  */
 export const getEmptyPlaceholder = (
-  meta: Record<string, any>,
-  placeHolder: ((meta: Record<string, any>) => string) | string,
+  meta: ViewMeta,
+  placeHolder: S2Options['placeholder'],
 ) => {
   return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
 };
@@ -452,10 +454,10 @@ export const drawObjectText = (
     height: totalTextHeight,
     width: totalTextWidth,
   } = cell.getContentArea();
-  const text = multiData || (cell.getMeta().fieldValue as MultiData);
+  const meta = cell.getMeta() as ViewMeta;
+  const text = multiData || (meta.fieldValue as MultiData);
   const { values: textValues } = text;
-  const { options, measureTextWidth } = cell.getMeta().spreadsheet;
-  const { valuesCfg } = options.style.cellCfg;
+  const { options, measureTextWidth } = meta.spreadsheet;
   // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
   const textCondition = options?.conditions?.text?.[0];
   const iconCondition = options?.conditions?.icon?.[0];
@@ -465,13 +467,13 @@ export const drawObjectText = (
     return;
   }
 
-  const widthPercent = valuesCfg?.widthPercent;
+  const widthPercent = options.style?.cellCfg?.valuesCfg?.widthPercent;
 
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
     const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-    const labelStyle = dataCellStyle.bolderText;
+    const labelStyle = dataCellStyle!.bolderText!;
     // TODO 把padding计算在内
     // const { padding } = dataCellStyle.cell;
     labelHeight = totalTextHeight / (textValues.length + 1);
@@ -524,18 +526,14 @@ export const drawObjectText = (
         ? getCurrentTextStyle({
             rowIndex: i,
             colIndex: j,
-            meta: cell?.getMeta() as ViewMeta,
+            meta,
             data: curText,
             textStyle,
             textCondition,
           })
         : textStyle;
-      const { placeholder } = cell?.getMeta().spreadsheet.options;
-      const emptyPlaceholder = getEmptyPlaceholder(
-        cell?.getMeta(),
-        placeholder,
-      );
 
+      const emptyPlaceholder = getEmptyPlaceholder(meta, options.placeholder);
       const maxTextWidth = getMaxTextWidth(contentBoxes[i][j].width, iconStyle);
       const ellipsisText = getEllipsisText({
         measureTextWidth,
@@ -548,7 +546,7 @@ export const drawObjectText = (
 
       const position = getTextAndFollowingIconPosition(
         contentBoxes[i][j],
-        textStyle,
+        textStyle!,
         actualTextWidth,
         iconCfg,
         iconCondition ? 1 : 0,
@@ -560,7 +558,7 @@ export const drawObjectText = (
         position.text.x,
         position.text.y,
         ellipsisText,
-        curStyle,
+        curStyle!,
       );
 
       // 绘制条件格式的 icon
@@ -573,7 +571,7 @@ export const drawObjectText = (
         if (attrs) {
           renderIcon(cell, {
             ...position.icon,
-            name: attrs.icon,
+            name: attrs.icon!,
             width: iconStyle?.size,
             height: iconStyle?.size,
             fill: attrs.fill,
@@ -588,9 +586,7 @@ export const drawObjectText = (
  * 根据 cellCfg 配置获取当前单元格宽度
  */
 export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
-  const { width } = cellCfg;
-  const cellWidth = width;
-  return cellWidth * labelSize;
+  return cellCfg.width! * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {

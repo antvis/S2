@@ -41,7 +41,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { width, height, scrollX, spreadsheet } = this.headerConfig;
+    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
     this.scrollGroup.setClip({
@@ -68,17 +68,17 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return new ColCell(item, spreadsheet, headerConfig);
   }
 
-  protected getCellGroup(node: Node) {
+  protected getCellGroup() {
     return this.scrollGroup;
   }
 
   protected isColCellInRect(item: Node): boolean {
-    const { spreadsheet, cornerWidth, width, scrollX } = this.headerConfig;
+    const { spreadsheet, cornerWidth, width, scrollX = 0 } = this.headerConfig;
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
       width + scrollX > item.x &&
-      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
+      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
         item.x + item.width
     );
   }
@@ -97,14 +97,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
         item.belongsCell = cell;
 
-        const group = this.getCellGroup(item);
+        const group = this.getCellGroup();
         group.add(cell);
       }
     });
   }
 
   protected offset() {
-    const { position, scrollX } = this.headerConfig;
+    const { position, scrollX = 0 } = this.headerConfig;
     // 暂时不考虑移动y
     translateGroupX(this.scrollGroup, position.x - scrollX);
   }

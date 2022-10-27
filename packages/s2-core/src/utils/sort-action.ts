@@ -15,7 +15,7 @@ import {
 import type { CellData } from '../data-set/cell-data';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
-import type { PivotDataSet } from '../data-set';
+import type { PivotDataSet, Query } from '../data-set';
 import type { SortActionParams } from '../data-set/interface';
 import {
   getListBySorted,
@@ -28,9 +28,11 @@ import {
 } from '../utils/dataset/pivot-data-set';
 import { canConvertToNumber } from './number-calculate';
 
-export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
+export const isAscSort = (sortMethod: SortMethod) =>
+  toUpper(sortMethod) === 'ASC';
 
-export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
+export const isDescSort = (sortMethod: SortMethod) =>
+  toUpper(sortMethod) === 'DESC';
 
 /**
  * 执行排序
@@ -43,7 +45,7 @@ export const sortAction = (
   sortMethod?: SortMethod,
   key?: string,
 ) => {
-  const sort = isAscSort(sortMethod) ? 1 : -1;
+  const sort = isAscSort(sortMethod!) ? 1 : -1;
   const specialValues = ['-', undefined];
   return list?.sort((pre, next) => {
     let a = pre as string | number;
@@ -86,7 +88,7 @@ const mergeDataWhenASC = (
 };
 
 export const sortByCustom = (params: SortActionParams): string[] => {
-  const { sortByValues, originValues } = params;
+  const { sortByValues = [], originValues = [] } = params;
 
   // 从 originValues 中过滤出所有包含 sortByValue 的 id
   const idWithPre = originValues.filter((originItem) =>
@@ -127,12 +129,12 @@ export const sortByCustom = (params: SortActionParams): string[] => {
 };
 
 export const sortByFunc = (params: SortActionParams): string[] => {
-  const { originValues, measureValues, sortParam, dataSet } = params;
-  const { sortFunc, sortFieldId, sortMethod } = sortParam;
+  const { originValues = [], measureValues, sortParam, dataSet } = params;
+  const { sortFunc, sortFieldId, sortMethod } = sortParam!;
 
-  const sortResult = sortFunc({
+  const sortResult = sortFunc?.({
     data: measureValues,
-    ...sortParam,
+    ...sortParam!,
   }) as string[];
 
   if (!sortResult?.length) {
@@ -140,8 +142,8 @@ export const sortByFunc = (params: SortActionParams): string[] => {
   }
 
   if (
-    (dataSet.fields.rows.indexOf(sortFieldId) > 0 ||
-      dataSet.fields.columns.indexOf(sortFieldId) > 0) &&
+    (dataSet!.fields.rows!.indexOf(sortFieldId) > 0 ||
+      dataSet!.fields.columns!.indexOf(sortFieldId) > 0) &&
     !includes(sortResult[0], ID_SEPARATOR)
   ) {
     /**
@@ -156,21 +158,21 @@ export const sortByFunc = (params: SortActionParams): string[] => {
   }
 
   // 用户返回的 sortResult 可能是不全的，需要用原始数据补全
-  return mergeDataWhenASC(sortResult, originValues, isAscSort(sortMethod));
+  return mergeDataWhenASC(sortResult, originValues, isAscSort(sortMethod!));
 };
 
 const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
-  const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
-  const { rows, columns } = dataSet.fields;
-  const isInRows = rows.includes(sortFieldId);
+  const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam!;
+  const { rows, columns } = dataSet!.fields;
+  const isInRows = rows?.includes(sortFieldId);
   let result;
 
   if (sortByMeasure) {
     const dimensions = sortAction(
-      measureValues,
+      measureValues!,
       sortMethod,
-      sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
+      sortByMeasure === TOTAL_VALUE ? query?.[EXTRA_FIELD] : sortByMeasure,
     );
 
     const fields = isInRows ? rows : columns;
@@ -180,15 +182,15 @@ const sortByMethod = (params: SortActionParams): string[] => {
       dimensions as CellData[],
     );
   } else {
-    result = sortAction(measureValues, sortMethod) as string[];
+    result = sortAction(measureValues!, sortMethod) as string[];
   }
 
-  return mergeDataWhenASC(result, originValues, isAscSort(sortMethod));
+  return mergeDataWhenASC(result, originValues!, isAscSort(sortMethod!));
 };
 
 const processSort = (params: SortActionParams): string[] => {
-  const { sortParam, originValues, measureValues, dataSet } = params;
-  const { sortFunc, sortMethod, sortBy } = sortParam;
+  const { sortParam, originValues = [], measureValues, dataSet } = params;
+  const { sortFunc, sortMethod, sortBy } = sortParam!;
 
   let result = originValues;
   const sortActionParams = {
@@ -202,7 +204,7 @@ const processSort = (params: SortActionParams): string[] => {
   } else if (sortBy) {
     // 自定义列表
     result = sortByCustom({ sortByValues: sortBy, originValues });
-  } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
+  } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
   }
@@ -220,7 +222,7 @@ const createTotalParams = (
   fields: Fields,
   sortFieldId: string,
 ) => {
-  const totalParams = {};
+  const totalParams: Query = {};
   const isMultipleDimensionValue = includes(originValue, ID_SEPARATOR);
 
   if (isMultipleDimensionValue) {
@@ -251,8 +253,8 @@ export const getSortByMeasureValues = (
   params: SortActionParams,
 ): CellData[] => {
   const { dataSet, sortParam, originValues } = params;
-  const { fields } = dataSet;
-  const { sortByMeasure, query, sortFieldId } = sortParam;
+  const { fields } = dataSet!;
+  const { sortByMeasure, query, sortFieldId } = sortParam!;
 
   // TODO: 下面逻辑可以采用新的 getMultiData 参数简化过滤逻辑
   // 拼接 totalSelection 参数

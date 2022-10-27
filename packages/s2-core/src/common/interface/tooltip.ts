@@ -48,8 +48,8 @@ export interface TooltipOptions {
 }
 
 export interface TooltipSummaryOptions {
-  name: string;
-  value: number | string;
+  name: string | null;
+  value: number | string | undefined | null;
   selectedData: TooltipDataItem[];
 }
 
@@ -98,13 +98,13 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
   details?: TooltipDetailListItem[];
-  headInfo?: TooltipHeadInfo;
-  name?: string;
+  headInfo?: TooltipHeadInfo | null;
+  name?: string | null;
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;
-  colIndex?: number;
-  rowIndex?: number;
+  colIndex?: number | null;
+  rowIndex?: number | null;
   description?: string;
 };
 
@@ -116,7 +116,7 @@ export type TooltipHeadInfo = {
 export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
-  targetCell: S2CellType;
+  targetCell?: S2CellType | undefined | null;
 };
 
 export type TooltipIconProps = {

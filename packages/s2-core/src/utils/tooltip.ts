@@ -10,7 +10,6 @@ import {
   concat,
   every,
   filter,
-  find,
   forEach,
   get,
   isEmpty,
@@ -64,6 +63,7 @@ import type {
 } from '../common/interface/tooltip';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import type { Node as S2Node } from '../facet/layout/node';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -103,10 +103,10 @@ export const getAutoAdjustPosition = ({
 
   const maxWidth = isAdjustBodyBoundary
     ? viewportWidth
-    : Math.min(width, maxX) + canvasOffsetLeft;
+    : Math.min(width!, maxX) + canvasOffsetLeft;
   const maxHeight = isAdjustBodyBoundary
     ? viewportHeight
-    : Math.min(height, maxY) + canvasOffsetTop;
+    : Math.min(height!, maxY) + canvasOffsetTop;
 
   if (x + tooltipWidth >= maxWidth) {
     x = maxWidth - tooltipWidth;
@@ -195,7 +195,7 @@ export const getListItem = (
   },
 ): TooltipDetailListItem => {
   const name =
-    spreadsheet?.dataSet.getCustomRowFieldName(targetCell) ||
+    spreadsheet?.dataSet.getCustomRowFieldName(targetCell!) ||
     spreadsheet?.dataSet?.getFieldName(field);
 
   const formatter = getFieldFormatter(spreadsheet, field);
@@ -219,19 +219,18 @@ export const getFieldList = (
   fields: string[],
   activeData: ViewMetaData,
 ): TooltipDetailListItem[] => {
-  const currFields = filter(
+  const currentFields = filter(
     concat([], fields),
     (field) =>
       field !== EXTRA_FIELD && getFieldValueOfViewMetaData(activeData, field),
   );
-  const fieldList = map(currFields, (field: string): TooltipDetailListItem => {
+  return map(currentFields, (field: string) => {
     return getListItem(spreadsheet, {
       data: activeData,
       field,
       useCompleteDataForFormatter: false,
     });
-  });
-  return fieldList;
+  }) as unknown as TooltipDetailListItem[];
 };
 
 /**
@@ -245,8 +244,8 @@ export const getHeadInfo = (
   options?: TooltipOptions,
 ): TooltipHeadInfo => {
   const { isTotals } = options || {};
-  let colList = [];
-  let rowList = [];
+  let colList: TooltipDetailListItem[] = [];
+  let rowList: TooltipDetailListItem[] = [];
   if (activeData) {
     const colFields = spreadsheet?.dataSet?.fields?.columns as string[];
     const rowFields = spreadsheet?.dataSet?.fields?.rows as string[];
@@ -256,7 +255,7 @@ export const getHeadInfo = (
 
   // 此时是总计-总计
   if (isEmpty(colList) && isEmpty(rowList) && isTotals) {
-    colList = [{ value: i18n('总计') }];
+    colList = [{ value: i18n('总计') }] as TooltipDetailListItem[];
   }
 
   return { cols: colList, rows: rowList };
@@ -274,59 +273,61 @@ export const getTooltipDetailList = (
   options: TooltipOptions,
   targetCell: S2CellType,
 ): TooltipDetailListItem[] => {
-  if (activeData) {
-    const { isTotals } = options;
-    const field = activeData[EXTRA_FIELD] as string;
-    const value = activeData[VALUE_FIELD];
-    const valItem = [];
-    if (isTotals) {
-      // total/subtotal
-      valItem.push(
+  if (!activeData) {
+    return [];
+  }
+  const { isTotals } = options;
+  const field = activeData[EXTRA_FIELD] as string;
+  const value = activeData[VALUE_FIELD];
+  const detailList: TooltipDetailListItem[] = [];
+
+  if (isTotals) {
+    // total/subtotal
+    detailList.push(
+      getListItem(spreadsheet, {
+        data: activeData,
+        field,
+        targetCell,
+        valueField: activeData[VALUE_FIELD] as string,
+      }),
+    );
+  }
+  // the value hangs at the head of the column, match the displayed fields according to the metric itself
+  // 1、multiple derivative indicators
+  // 2、only one column scene
+  // 3、the clicked cell belongs to the derived index column
+  // tooltip need to show all derivative indicators
+  else if (
+    isMultiDataItem(value) &&
+    spreadsheet.getTooltipDataItemMappingCallback()
+  ) {
+    const mappedResult = handleDataItem(
+      activeData,
+      spreadsheet.getTooltipDataItemMappingCallback(),
+    ) as ViewMetaData;
+
+    forEach(mappedResult, (_, key) => {
+      detailList.push(
         getListItem(spreadsheet, {
-          data: activeData,
-          field,
+          data: mappedResult,
+          field: key,
           targetCell,
-          valueField: activeData[VALUE_FIELD] as string,
         }),
       );
-    }
-    // the value hangs at the head of the column, match the displayed fields according to the metric itself
-    // 1、multiple derivative indicators
-    // 2、only one column scene
-    // 3、the clicked cell belongs to the derived index column
-    // tooltip need to show all derivative indicators
-    else if (
-      isMultiDataItem(value) &&
-      spreadsheet.getTooltipDataItemMappingCallback()
-    ) {
-      const mappedResult = handleDataItem(
-        activeData,
-        spreadsheet.getTooltipDataItemMappingCallback(),
-      ) as ViewMetaData;
-
-      forEach(mappedResult, (_, key) => {
-        valItem.push(
-          getListItem(spreadsheet, {
-            data: mappedResult,
-            field: key,
-            targetCell,
-          }),
-        );
-      });
-    } else {
-      valItem.push(
-        getListItem(spreadsheet, { data: activeData, field, targetCell }),
-      );
-    }
-
-    return valItem;
+    });
+  } else {
+    detailList.push(
+      getListItem(spreadsheet, { data: activeData, field, targetCell }),
+    );
   }
+
+  return detailList;
 };
 
 export const getSummaryName = (
   spreadsheet: SpreadSheet,
   currentField: string,
-  isTotals: boolean,
+  isTotals?: boolean,
 ): string => {
   if (isTotals) {
     return i18n('总计');
@@ -336,9 +337,13 @@ export const getSummaryName = (
   return name && name !== 'undefined' ? name : '';
 };
 
-const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
-  const selectedIndexes = [];
-  forEach(leafNodes, (leaf, index) => {
+const getRowOrColSelectedIndexes = (
+  nodes: S2Node[],
+  leafNodes: S2Node[],
+  isRow = true,
+) => {
+  const selectedIndexes: number[][] = [];
+  forEach(leafNodes, (_, index) => {
     forEach(nodes, (item) => {
       if (!isRow && item.colIndex !== -1) {
         selectedIndexes.push([index, item.colIndex]);
@@ -501,7 +506,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   // 拿到选择的所有 dataCell的数据
   const selectedCellsData = getSelectedCellsData(
     spreadsheet,
-    targetCell,
+    targetCell!,
     options.showSingleTips,
   );
 
@@ -516,16 +521,19 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const name = spreadsheet.isCustomHeaderFields()
-      ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell)
+      ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell!)
       : getSummaryName(spreadsheet, field, options?.isTotals);
 
-    let value: number | string;
+    let value: number | string | undefined;
 
     if (isTableMode) {
       value = '';
     } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       const { placeholder } = spreadsheet.options;
-      const emptyPlaceholder = getEmptyPlaceholder(summary, placeholder);
+      const emptyPlaceholder = getEmptyPlaceholder(
+        summary as ViewMeta,
+        placeholder,
+      );
       // 如果选中的单元格都无数据，则显示"-" 或 options 里配置的占位符
       value = emptyPlaceholder;
     } else {
@@ -553,12 +561,14 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const { spreadsheet, cellInfos = [], options = {}, targetCell } = params;
 
-  let name = null;
-  let summaries: TooltipSummaryOptions[] = null;
-  let headInfo: TooltipHeadInfo = null;
-  let details: TooltipDetailListItem[] = null;
+  let name: string | null = null;
+  let summaries: TooltipSummaryOptions[] = [];
+  let headInfo: TooltipHeadInfo | null = null;
+  let details: TooltipDetailListItem[] = [];
 
-  const description = spreadsheet.dataSet.getCustomFieldDescription(targetCell);
+  const description = spreadsheet.dataSet.getCustomFieldDescription(
+    targetCell!,
+  );
 
   const firstCellInfo = (cellInfos[0] || {}) as ViewMetaData;
 
@@ -579,7 +589,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     ) as string;
 
     const currentFormatter = getFieldFormatter(spreadsheet, valueField);
-    const formattedValue = currentFormatter(value);
+    const formattedValue = currentFormatter(value) as string;
     const cellName = options.enableFormat
       ? spreadsheet.dataSet.getFieldName(value) || formattedValue
       : spreadsheet.dataSet.getFieldName(valueField);
@@ -591,7 +601,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       spreadsheet,
       firstCellInfo,
       options,
-      targetCell,
+      targetCell!,
     );
   }
   const { interpretation, infos, tips } = (firstCellInfo || {}) as TooltipData;
@@ -660,7 +670,7 @@ export const getTooltipOptionsByCellType = (
   cellTooltipConfig: Tooltip = {},
   cellType: CellTypes,
 ): Tooltip => {
-  const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
+  const getOptionsByCell = (cellConfig?: BaseTooltipConfig) => {
     return customMerge(cellTooltipConfig, cellConfig);
   };
 
@@ -685,12 +695,12 @@ export const getTooltipOptionsByCellType = (
 export const getTooltipOptions = (
   spreadsheet: SpreadSheet,
   event: CanvasEvent | MouseEvent | Event,
-): Tooltip => {
+): Tooltip | null => {
   if (!event || !spreadsheet) {
-    return;
+    return null;
   }
   const cellType = spreadsheet.getCellType?.(event?.target);
-  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
+  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType!);
 };
 
 export const getTooltipVisibleOperator = (
@@ -732,7 +742,7 @@ export const verifyTheElementInTooltip = (
       result = true;
       break;
     }
-    currentNode = currentNode.parentElement;
+    currentNode = currentNode.parentElement!;
   }
   return result;
 };

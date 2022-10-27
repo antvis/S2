@@ -28,6 +28,7 @@ import { DebuggerUtil } from '../common/debug';
 import { i18n } from '../common/i18n';
 import { registerIcon } from '../common/icons/factory';
 import type {
+  CellEventTarget,
   CustomSVGIcon,
   EmitterType,
   Fields,
@@ -163,7 +164,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private setOverscrollBehavior() {
-    const { overscrollBehavior } = this.options.interaction;
+    const { overscrollBehavior } = this.options.interaction!;
     // 行内样式 + css 样式
     const initOverscrollBehavior = window
       .getComputedStyle(document.body)
@@ -188,7 +189,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private setDebug() {
-    DebuggerUtil.getInstance().setDebug(this.options.debug);
+    DebuggerUtil.getInstance().setDebug(this.options.debug!);
   }
 
   private initTheme() {
@@ -299,7 +300,7 @@ export abstract class SpreadSheet extends EE {
     const { content, event } = showOptions;
     const cell = this.getCell(event?.target);
     const displayContent = isFunction(content)
-      ? content(cell, showOptions)
+      ? content(cell!, showOptions)
       : content;
 
     this.tooltip.show?.({
@@ -560,8 +561,8 @@ export abstract class SpreadSheet extends EE {
 
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
-    target: CanvasEvent['target'],
-  ): T {
+    target: CellEventTarget,
+  ): T | null {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
@@ -575,7 +576,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target: CanvasEvent['target']) {
+  public getCellType(target: CellEventTarget) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }

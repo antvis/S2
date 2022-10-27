@@ -108,11 +108,14 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': [1, 4],
+    'max-params': ['error', 4],
     'no-unreachable': 2,
     'no-useless-computed-key': 2,
     'block-spacing': [2, 'always'],
     'lines-between-class-members': [2, 'always'],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 2,
+    '@typescript-eslint/no-non-null-asserted-optional-chain': 0,
     eqeqeq: [
       2,
       'always',
@@ -130,10 +133,11 @@ module.exports = {
       parser: 'vue-eslint-parser',
     },
     {
-      files: ['*.tsx'],
+      files: ['*.tsx', '*.ts'],
       rules: {
         'react-hooks/exhaustive-deps': 1,
         'react-hooks/rules-of-hooks': 2,
+        'import/no-default-export': 2,
       },
     },
   ],

@@ -1,7 +1,7 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { cloneDeep, isNil, map, throttle } from 'lodash';
+import { ColCell, DataCell, RowCell } from '../../cell';
 import {
-  CellTypes,
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InteractionStateName,
   InterceptType,
@@ -21,21 +21,20 @@ import type {
   ViewMeta,
 } from '../../common/interface';
 import type { TableFacet } from '../../facet';
+import type { Node } from '../../facet/layout/node';
 import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from '../../facet/utils';
-import type { Node } from '../../facet/layout/node';
+import { getCellsTooltipData } from '../../utils';
 import {
   getCellMeta,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
-import { getCellsTooltipData } from '../../utils';
-import { ColCell, DataCell, RowCell } from '../../cell';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
 
@@ -174,7 +173,7 @@ export class BaseBrushSelection
     };
   };
 
-  private autoScrollIntervalId = null;
+  private autoScrollIntervalId: ReturnType<typeof setInterval> | null = null;
 
   protected autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
@@ -182,7 +181,7 @@ export class BaseBrushSelection
 
   public validateYIndex = (yIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenInfo = (facet as TableFacet).frozenGroupInfo;
+    const frozenInfo = (facet as unknown as TableFacet).frozenGroupInfo;
     let min = 0;
     const frozenRowRange = frozenInfo?.frozenRow?.range;
     if (frozenRowRange) {
@@ -206,7 +205,7 @@ export class BaseBrushSelection
 
   public validateXIndex = (xIndex: number) => {
     const { facet } = this.spreadsheet;
-    const frozenInfo = (facet as TableFacet).frozenGroupInfo;
+    const frozenInfo = (facet as unknown as TableFacet).frozenGroupInfo;
 
     let min = 0;
     const frozenColRange = frozenInfo?.frozenCol?.range;
@@ -241,19 +240,20 @@ export class BaseBrushSelection
       colLength,
       dataLength,
     );
-    const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
+    const panelIndexes = (facet as unknown as TableFacet)
+      .panelScrollGroupIndexes;
     if (
-      frozenTrailingColCount > 0 &&
+      frozenTrailingColCount! > 0 &&
       dir === ScrollDirection.TRAILING &&
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)
+      isFrozenTrailingCol(colIndex, frozenTrailingColCount!, colLength)
     ) {
       return panelIndexes[1];
     }
 
     if (
-      frozenColCount > 0 &&
+      frozenColCount! > 0 &&
       dir === ScrollDirection.LEADING &&
-      isFrozenCol(colIndex, frozenColCount)
+      isFrozenCol(colIndex, frozenColCount!)
     ) {
       return panelIndexes[0];
     }
@@ -273,19 +273,20 @@ export class BaseBrushSelection
       colLength,
       dataLength,
     );
-    const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
+    const panelIndexes = (facet as unknown as TableFacet)
+      .panelScrollGroupIndexes;
     if (
-      frozenTrailingRowCount > 0 &&
+      frozenTrailingRowCount! > 0 &&
       dir === ScrollDirection.TRAILING &&
-      isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
+      isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount!)
     ) {
       return panelIndexes[3];
     }
 
     if (
-      frozenRowCount > 0 &&
+      frozenRowCount! > 0 &&
       dir === ScrollDirection.LEADING &&
-      isFrozenRow(rowIndex, cellRange.start, frozenRowCount)
+      isFrozenRow(rowIndex, cellRange.start, frozenRowCount!)
     ) {
       return panelIndexes[2];
     }
@@ -293,7 +294,8 @@ export class BaseBrushSelection
   };
 
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
-    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollX = 0, scrollY = 0 } =
+      this.spreadsheet.facet.getScrollOffset();
 
     let x = 0;
     let y = 0;
@@ -370,11 +372,11 @@ export class BaseBrushSelection
     }
 
     if (config.y.scroll) {
-      offsetCfg.offsetY.value += deltaY;
+      offsetCfg.offsetY.value! += deltaY;
     }
     if (config.x.scroll) {
-      offsetCfg.offsetX.value += deltaX;
-      if (offsetCfg.offsetX.value < 0) {
+      offsetCfg.offsetX.value! += deltaX;
+      if (offsetCfg.offsetX.value! < 0) {
         offsetCfg.offsetX.value = 0;
       }
     }
@@ -482,7 +484,7 @@ export class BaseBrushSelection
       y: event?.y,
     };
     const cell = this.spreadsheet.getCell(event.target);
-    const { colIndex, rowIndex } = cell.getMeta();
+    const { colIndex, rowIndex } = cell!.getMeta();
 
     return {
       ...point,
@@ -495,7 +497,8 @@ export class BaseBrushSelection
 
   // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
   public getBrushRange(): BrushRange {
-    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollX = 0, scrollY = 0 } =
+      this.spreadsheet.facet.getScrollOffset();
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
       this.endBrushPoint?.rowIndex,
@@ -513,9 +516,10 @@ export class BaseBrushSelection
       this.endBrushPoint?.colIndex,
     );
     const startXInView =
-      this.startBrushPoint.x + this.startBrushPoint.scrollX - scrollX;
+      this.startBrushPoint.x + this.startBrushPoint.scrollX! - scrollX;
     const startYInView =
-      this.startBrushPoint.y + this.startBrushPoint.scrollY - scrollY;
+      this.startBrushPoint.y + this.startBrushPoint.scrollY! - scrollY;
+
     // startBrushPoint 和 endBrushPoint 加上当前 offset
     const minX = Math.min(startXInView, this.endBrushPoint?.x);
     const maxX = Math.max(startXInView, this.endBrushPoint?.x);
@@ -523,20 +527,20 @@ export class BaseBrushSelection
     const maxY = Math.max(startYInView, this.endBrushPoint?.y);
 
     const minHeaderX = Math.min(
-      this.startBrushPoint?.headerX,
-      this.endBrushPoint?.headerX,
+      this.startBrushPoint?.headerX!,
+      this.endBrushPoint?.headerX!,
     );
     const maxHeaderX = Math.max(
-      this.startBrushPoint?.headerX,
-      this.endBrushPoint?.headerX,
+      this.startBrushPoint?.headerX!,
+      this.endBrushPoint?.headerX!,
     );
     const minHeaderY = Math.min(
-      this.startBrushPoint?.headerY,
-      this.endBrushPoint?.headerY,
+      this.startBrushPoint?.headerY!,
+      this.endBrushPoint?.headerY!,
     );
     const maxHeaderY = Math.max(
-      this.startBrushPoint?.headerY,
-      this.endBrushPoint?.headerY,
+      this.startBrushPoint?.headerY!,
+      this.endBrushPoint?.headerY!,
     );
     // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
     // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
@@ -682,7 +686,7 @@ export class BaseBrushSelection
   };
 
   // 需要查看继承他的父类是如何定义的
-  protected isInBrushRange(meta: ViewMeta | Node): boolean {
+  protected isInBrushRange(): boolean {
     return false;
   }
 
@@ -690,7 +694,7 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  public getSelectedCellMetas = (range: BrushRange) => {};
+  public getSelectedCellMetas = () => {};
 
   protected updateSelectedCells() {}
 }

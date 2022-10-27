@@ -79,7 +79,7 @@ export const getDataExtremumByField = (
   method: 'min' | 'max',
   data: ViewMetaData[],
   field: string,
-): number => {
+): number | undefined => {
   // 防止预处理时默认值 0 影响极值结果，处理时需过滤非法值
   const fieldValues = processFieldValues(data, field, true);
   if (!fieldValues?.length) {
@@ -113,7 +113,10 @@ export const getDataAvgByField = (
  * totals 计算方法集合
  */
 export const calcActionByType: {
-  [type in Aggregation]: (data: ViewMetaData[], field: string) => number;
+  [type in Aggregation]: (
+    data: ViewMetaData[],
+    field: string,
+  ) => number | undefined;
 } = {
   [Aggregation.SUM]: getDataSumByField,
   [Aggregation.MIN]: (data, field) =>

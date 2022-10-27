@@ -180,12 +180,12 @@ export interface Sort {
 }
 
 export interface SortFuncParam extends Sort {
-  data: Array<string | Record<string, any>>;
+  data: Array<string | Record<string, any>> | undefined;
 }
 
 export interface SortParam extends Sort {
   /** 自定义func */
-  sortFunc?: (v: SortFuncParam) => Array<string | Record<string, any>>;
+  sortFunc?: (param: SortFuncParam) => Array<string | Record<string, any>>;
 }
 
 export interface FilterParam {

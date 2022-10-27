@@ -54,7 +54,7 @@ export type ExtraData = {
   [VALUE_FIELD]: string | DataItem;
 };
 
-export type Data = RawData & ExtraData;
+export type Data = (RawData & ExtraData) | undefined;
 
 export interface CustomTreeNode {
   key: string;

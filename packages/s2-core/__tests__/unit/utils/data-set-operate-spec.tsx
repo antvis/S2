@@ -1,14 +1,14 @@
-import { set, keys } from 'lodash';
+import { set } from 'lodash';
 import {
   getListBySorted,
   getAggregationAndCalcFuncByQuery,
   flattenIndexesData,
 } from '@/utils/data-set-operate';
-import { Aggregation } from '@/common/interface';
+import { Aggregation, type FlattingIndexesData } from '@/common/interface';
 import { DataSelectType } from '@/common/constant/total';
 
 describe('Data Set Operate Test', () => {
-  const data = [];
+  const data: FlattingIndexesData = [];
   describe('flatten test', () => {
     beforeEach(() => {
       const paths = [
@@ -42,7 +42,7 @@ describe('Data Set Operate Test', () => {
   });
 
   describe('Dataset Operate Test GetListBySorted', () => {
-    let list = [];
+    let list: string[] = [];
     beforeEach(() => {
       list = ['浙江省', '四川省'];
     });
@@ -110,7 +110,7 @@ describe('Data Set Operate Test', () => {
             isColSubTotal: false,
           },
           totalsOptions,
-        ).toString(),
+        )!.toString(),
       ).toEqual(
         { aggregation: undefined, calcFunc: () => 'colTotals' }.toString(),
       );
@@ -124,7 +124,7 @@ describe('Data Set Operate Test', () => {
             isColSubTotal: true,
           },
           totalsOptions,
-        ).toString(),
+        )!.toString(),
       ).toEqual(
         {
           aggregation: undefined,
@@ -141,7 +141,7 @@ describe('Data Set Operate Test', () => {
             isColSubTotal: false,
           },
           totalsOptions,
-        ).toString(),
+        )!.toString(),
       ).toEqual(
         {
           aggregation: undefined,
@@ -158,7 +158,7 @@ describe('Data Set Operate Test', () => {
             isColSubTotal: false,
           },
           totalsOptions,
-        ).toString(),
+        )!.toString(),
       ).toEqual(
         {
           aggregation: undefined,
@@ -175,7 +175,7 @@ describe('Data Set Operate Test', () => {
             isColSubTotal: true,
           },
           totalsOptions,
-        ).toString(),
+        )!.toString(),
       ).toEqual(
         {
           aggregation: undefined,

@@ -6,7 +6,6 @@ import {
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
-  TOOLTIP_PREFIX_CLS,
 } from '@/common';
 
 jest.mock('@/interaction/event-controller');
@@ -354,7 +353,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should set custom container style', () => {
-    s2.options.tooltip.style = {
+    s2.options.tooltip!.style = {
       fontSize: '20px',
       color: 'red',
     };
@@ -372,7 +371,7 @@ describe('Tooltip Tests', () => {
   });
 
   test('should set custom container class name', () => {
-    s2.options.tooltip.className = 'custom';
+    s2.options.tooltip!.className = 'custom';
 
     tooltip = new BaseTooltip(s2);
 
@@ -388,7 +387,7 @@ describe('Tooltip Tests', () => {
 
   test('should set custom container class name list', () => {
     const classList = ['custom1', 'custom2'];
-    s2.options.tooltip.className = classList;
+    s2.options.tooltip!.className = classList;
 
     tooltip = new BaseTooltip(s2);
 
