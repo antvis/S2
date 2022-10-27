@@ -222,6 +222,32 @@ import 'antd/dist/antd.min.css';
 
 ​📊 查看 [React 版本透视表 demo](/zh/examples/react-component/sheet#pivot)。
 
+#### 表格移动端组件使用
+
+```ts
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { MobileSheet } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
+const container = document.getElementById('container');
+
+ReactDOM.render(
+  <MobileSheet
+    dataCfg={s2DataConfig}
+  />,
+  document.getElementById('container'),
+);
+
+```
+
+#### 注意事项
+
+使用移动端组件 `MobileSheet`, 将会被内置移动专用的 `options`,并且移动端存在专门的组件，与 PC 端的组件有所不同。
+详情可点击 xxx todo-zc: 进行查看。
+
+​📊 查看 [React 版本透视表移动端 demo](/zh/examples/react-component/sheet#mobile-pivot)。
+
 ### `Vue3` 版本
 
 `S2` 同时也提供了开箱即用的 `Vue3` 版本表格组件，帮助开发者快速满足业务看数分析需求。
