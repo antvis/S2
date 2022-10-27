@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MobileSheet Tests get mobile default fragment 1`] = `
+<DocumentFragment>
+  <div
+    class="ant-spin-nested-loading antv-s2-spin"
+  >
+    <div
+      class="ant-spin-container"
+    >
+      <div
+        class="antv-s2-wrapper"
+      >
+        <div
+          class="antv-s2-container"
+        >
+          <canvas
+            height="600"
+            style="width: 300px; height: 300px; display: block;"
+            width="600"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

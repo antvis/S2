@@ -19,6 +19,10 @@ export class CustomTooltip extends BaseTooltip {
     super(spreadsheet);
   }
 
+  private isMobileType() {
+    return isMobile(this.spreadsheet.options?.device);
+  }
+
   renderContent() {
     // 配置级 s2.options.tooltip.content = ''
     const { content: contentFromOptions } = this.spreadsheet.options.tooltip;
@@ -28,7 +32,6 @@ export class CustomTooltip extends BaseTooltip {
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
     const content = showOptions?.content ?? contentFromOptions;
 
-    const isMobileType = isMobile(this.spreadsheet.options?.device);
     const tooltipProps: TooltipRenderProps = {
       ...showOptions,
       cell,
@@ -40,7 +43,7 @@ export class CustomTooltip extends BaseTooltip {
     }
 
     ReactDOM.render(
-      isMobileType ? (
+      this.isMobileType() ? (
         <Drawer
           className={`${MOBILE_TOOLTIP_PREFIX_CLS}-drawer`}
           title={cell?.getActualText()}
@@ -52,7 +55,7 @@ export class CustomTooltip extends BaseTooltip {
             this.hide();
           }}
         >
-          <TooltipContext.Provider value={isMobileType}>
+          <TooltipContext.Provider value={this.isMobileType()}>
             <TooltipComponent {...tooltipProps} content={content} />
           </TooltipContext.Provider>
         </Drawer>
@@ -65,7 +68,7 @@ export class CustomTooltip extends BaseTooltip {
 
   hide() {
     super.hide();
-    if (this.container) {
+    if (this.container && this.isMobileType()) {
       this.renderContent();
     }
   }
