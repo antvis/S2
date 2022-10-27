@@ -1,17 +1,16 @@
 import type {
-  Fields,
-  FilterParam,
-  Meta,
-  SortParams,
-} from '../../common/interface';
-import type { MiniChartTypes } from '../constant';
+  EXTRA_FIELD,
+  MiniChartTypes,
+  VALUE_FIELD,
+} from '../constant/basic';
+import type { Fields, FilterParam, Meta, SortParams } from './basic';
 
 export interface BaseChartData {
   type: MiniChartTypes;
-  data: Data[];
+  data: RawData[];
   encode?: {
-    x: keyof Data;
-    y: keyof Data;
+    x: keyof RawData;
+    y: keyof RawData;
   };
 }
 
@@ -36,7 +35,7 @@ export type MiniChartData = BaseChartData | BulletValue;
         ],
       }
  */
-export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
+export interface MultiData<T = SimpleData[][] | MiniChartData> {
   values: T;
   originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
@@ -44,26 +43,31 @@ export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
   [key: string]: unknown;
 }
 
-export type SimpleDataItem = string | number;
+export type SimpleData = string | number;
 
-export type DataItem = SimpleDataItem | MultiData;
+export type DataItem = SimpleData | MultiData;
 
-export type Data = Record<string, DataItem>;
+export type RawData = Record<string, DataItem>;
 
-export interface CustomTreeItem {
+export type ExtraData = {
+  [EXTRA_FIELD]: string;
+  [VALUE_FIELD]: string | DataItem;
+};
+
+export type Data = RawData & ExtraData;
+
+export interface CustomTreeNode {
   key: string;
   title: string;
   // 是否收起（默认都展开）
   collapsed?: boolean;
   description?: string;
-  children?: CustomTreeItem[];
+  children?: CustomTreeNode[];
 }
 
 export interface S2DataConfig {
   // origin detail data
-  data: Data[];
-  // total data(grandTotal, subTotal)
-  totalData?: Data[];
+  data: RawData[];
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys meta info
@@ -75,3 +79,5 @@ export interface S2DataConfig {
   // extra config
   [key: string]: unknown;
 }
+
+export type FlattingIndexesData = RawData[][] | RawData[] | RawData;

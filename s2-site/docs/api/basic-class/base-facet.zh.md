@@ -6,7 +6,7 @@ order: 7
 功能描述：当前可视渲染区域。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/base-facet.ts)
 
 ```ts
-s2.facet.xx()
+s2.facet
 ```
 
 | 参数 | 说明 | 类型 |
@@ -64,6 +64,7 @@ s2.facet.xx()
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
+| getCanvasSize | 获取画布宽高 | `{width: number, height: number}` |
 
 ### CellScrollOffset
 

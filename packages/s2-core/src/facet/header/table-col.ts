@@ -11,7 +11,8 @@ import type { SpreadSheet } from '../../sheet-type';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
 import { isFrozenCol, isFrozenTrailingCol } from '../utils';
-import { ColHeader, type ColHeaderConfig } from './col';
+import { ColHeader } from './col';
+import type { ColHeaderConfig } from './interface';
 
 /**
  * Column Header for SpreadSheet
@@ -58,7 +59,7 @@ export class TableColHeader extends ColHeader {
     this.frozenTrailingColGroup?.clear();
     this.frozenColGroup?.clear();
     // 额外清除冻结列的 Resizer Area
-    const resizerArea = spreadsheet?.foregroundGroup.findById(
+    const resizerArea = spreadsheet.facet?.foregroundGroup.findById(
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
     ) as unknown as IGroup;
     resizerArea?.clear();

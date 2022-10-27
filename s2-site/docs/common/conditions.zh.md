@@ -11,25 +11,25 @@ order: 2
 
 | 参数       | 说明 | 类型            | 默认值 | 必选  |
 | ---------- | ---------- | ---------------  | ------ | ---- |
-| text       | 文本字段标记   | `Condition[]`     | - |            |
-| background | 背景字段标记   | `Condition[]`    | -      |            |
-| interval   | 柱状图字段标记 | `Condition[]`     | -      |            |
-| icon       | 图标字段标记   | `IconCondition[]` | -  |            |
+| text       | 文本字段标记   | [Condition](#condition)[]     | - |            |
+| background | 背景字段标记   | [Condition](#condition)[]     | -      |            |
+| interval   | 柱状图字段标记 | [Condition](#condition)[]   | -      |            |
+| icon       | 图标字段标记   | [IconCondition](#iconcondition) | -  |            |
 
 ### Condition
 
-类型：`object`，**必选**，默认值：`undefined`
+类型：`object`，**必选**
 
 <description>功能描述： 配置条件格式。包括文本 (text)，背景 (background)，柱状图 (interval)。</description>
 
 | 参数      | 说明                                | 类型         | 默认值      | 必选  |
 |---------|-----------------------------------|------------|----------|-----|
-| field   | 1. 字段 ID <br /> 2. 使用正则表达式匹配字段 ID | `string`\  | `RegExp` |     | ✓          |
-| mapping | 作用映射函数​                           | `function` |          | ✓   |
+| field   | 1. 字段 id <br /> 2. 使用正则表达式匹配字段 id | `string` \| `RegExp` |     | ✓          |
+| mapping | 映射函数                           | [MappingFunction](#mappingfunction) |          | ✓   |
 
-#### mapping
+#### MappingFunction
 
-```typescript
+```ts
 type MappingFunction = (
   fieldValue: number | string | null,
   data: Record<string, any>
@@ -97,7 +97,7 @@ const options = {
 | -------- | ------------ | -------- | ------- | ----  |
 | field    | 字段 ID       | `string`   |                | ✓    |
 | position | icon 相较于文字的位置 | `left` \| `right`   | `right` |         |
-| mapping  | 作用映射函数​ | `function` |                 | ✓    |
+| mapping  | 映射函数 | [MappingFunction](#mappingfunction) |                 | ✓    |
 
 **icon condition 用法示例：**
 

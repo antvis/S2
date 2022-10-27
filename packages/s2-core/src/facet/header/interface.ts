@@ -1,64 +1,74 @@
-import type { Formatter, SortParam } from '../../common/interface';
+import type { Point } from '@antv/g-canvas';
+import type {
+  LayoutResult,
+  S2Options,
+  SortParam,
+  SpreadSheetFacetCfg,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type { Hierarchy } from '../layout/hierarchy';
+import type { Node } from '../layout/node';
 
-export interface CornerData {
-  x: number;
-  y: number;
+/**
+ * Base header config interface
+ */
+export interface BaseHeaderConfig {
+  // group's scroll x value
+  scrollX?: number;
+  // group's scroll y value
+  scrollY?: number;
+  // group's width
   width: number;
+  // group's height
   height: number;
-  /** 字段展示 */
-  label: string;
-  /** 字段id */
-  field: string;
+  // group's original width without clip
+  originalWidth?: number;
+  // group's original height without clip
+  originalHeight?: number;
+  // group's container's width
+  viewportWidth: number;
+  // group's container's height
+  viewportHeight: number;
+  // group's top-left point
+  position: Point;
+  // group's all nodes
+  data: Node[];
+  // spreadsheet entrance instance
+  spreadsheet: SpreadSheet;
+  // leaf node sort params
+  sortParam?: SortParam;
 }
 
-export interface Cfg {
-  // 布局数据
-  data: Hierarchy[] | CornerData[];
-
-  // 绘制起点
-  position: {
-    x: number;
-    y: number;
-  };
-
-  // 组件宽高
-  width: number;
-  height: number;
-
-  // 视窗宽高
-  viewportWidth: number;
-  viewportHeight: number;
-
-  // 滚动距离
-  scrollX?: number;
-  scrollY?: number;
-  hScrollX?: number;
-
-  // 角边宽度
+export interface ColHeaderConfig extends BaseHeaderConfig {
+  // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
-
-  // 布局方式，tree 或 grid
-  hierarchyType?: string;
-
-  // 枚举值的别名格式化，目前仅仅用于列头的虚拟列字段，后续可扩展
-  formatter?: (f: string) => Formatter;
-
-  /** 列维度字段 */
-  cols?: string[];
-
-  // 点击需要跳转链接的字段
-  linkFields?: string[];
-
-  // 有行号时，行号这一列的宽度
-  seriesNumberWidth?: number;
-
-  // 排序参数，目前只有列头上会传入
-  sortParam?: SortParam;
-
-  // 是否配置了rowHeader滚动条包含
   scrollContainsRowHeader?: boolean;
+}
 
-  spreadsheet?: SpreadSheet;
+export interface CornerHeaderConfig extends BaseHeaderConfig {
+  // header's hierarchy type
+  hierarchyType: S2Options['hierarchyType'];
+  // the hierarchy collapse or not
+  hierarchyCollapse: boolean;
+  // rows fields
+  rows: SpreadSheetFacetCfg['rows'];
+  // column fields
+  columns: SpreadSheetFacetCfg['columns'];
+  // series number width
+  seriesNumberWidth: number;
+}
+
+export interface BaseCornerOptions {
+  seriesNumberWidth: number;
+  facetCfg: SpreadSheetFacetCfg;
+  layoutResult: LayoutResult;
+  spreadsheet: SpreadSheet;
+}
+
+export interface RowHeaderConfig extends BaseHeaderConfig {
+  // type of hierarchy
+  hierarchyType: S2Options['hierarchyType'];
+  // field ids that click to navigate
+  linkFields: string[];
+  // series number group's width, will be 0 when not exists
+  seriesNumberWidth: number;
 }

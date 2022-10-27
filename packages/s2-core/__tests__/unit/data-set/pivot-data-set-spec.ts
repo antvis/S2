@@ -7,8 +7,10 @@ import {
   data as drillDownData,
   totalData as drillDownTotalData,
 } from 'tests/data/mock-drill-down-dataset.json';
+import { data } from 'tests/data/mock-dataset.json';
+
 import type { ViewMeta, SortMethod } from '@/common/interface';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -29,7 +31,7 @@ const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
   const dataCfg: S2DataConfig = assembleDataCfg({
-    totalData: [],
+    data,
     meta: [],
   });
 
@@ -59,14 +61,14 @@ describe('Pivot Dataset Test', () => {
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
-      expect(rowPivotMeta.get('浙江省').level).toEqual(0);
+      expect(rowPivotMeta.get('浙江省').level).toEqual(1);
       expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
       ]);
-      expect(rowPivotMeta.get('四川省').level).toEqual(1);
+      expect(rowPivotMeta.get('四川省').level).toEqual(2);
       expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
         '成都市',
         '绵阳市',
@@ -79,7 +81,7 @@ describe('Pivot Dataset Test', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(0);
+      expect(colPivotMeta.get('家具').level).toEqual(1);
       expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
         '桌子',
         '沙发',
@@ -87,7 +89,7 @@ describe('Pivot Dataset Test', () => {
       expect([
         ...colPivotMeta.get('家具').children.get('桌子').children.keys(),
       ]).toEqual(['number']);
-      expect(colPivotMeta.get('办公用品').level).toEqual(1);
+      expect(colPivotMeta.get('办公用品').level).toEqual(2);
       expect([...colPivotMeta.get('办公用品').children.keys()]).toEqual([
         '笔',
         '纸张',
@@ -96,32 +98,26 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
-      expect(get(indexesData, '0.0.0.0.0')).toEqual({
+      expect(get(indexesData, '1.1.1.1')).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
         number: 7789,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 7789,
       });
-      expect(get(indexesData, '0.1.1.0.0')).toEqual({
+      expect(get(indexesData, '1.2.2.1')).toEqual({
         province: '浙江省',
         city: '绍兴市',
         type: '办公用品',
         sub_type: '笔',
         number: 1304,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 1304,
       });
-      expect(get(indexesData, '1.0.0.1.0')).toEqual({
+      expect(get(indexesData, '2.1.1.2')).toEqual({
         province: '四川省',
         city: '成都市',
         type: '家具',
         sub_type: '沙发',
         number: 2451,
-        [EXTRA_FIELD]: 'number',
-        [VALUE_FIELD]: 2451,
       });
     });
 
@@ -132,7 +128,6 @@ describe('Pivot Dataset Test', () => {
         'city',
         'type',
         'sub_type',
-        EXTRA_FIELD,
       ]);
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues.province),
@@ -154,102 +149,132 @@ describe('Pivot Dataset Test', () => {
       expect(
         getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
       ).toEqual(['桌子', '沙发', '笔', '纸张']);
-      expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
-      ).toEqual(['number', 'number', 'number', 'number']);
     });
   });
 
   describe('test for query data', () => {
     test('getCellData function', () => {
-      expect(
-        dataSet.getCellData({
-          query: {
-            province: '浙江省',
-            city: '杭州市',
-            type: '家具',
-            sub_type: '桌子',
-            [EXTRA_FIELD]: 'number',
-          },
-          isTotals: true,
-        }),
-      ).toContainEntries([[VALUE_FIELD, 7789]]);
-      expect(
-        dataSet.getCellData({
-          query: {
-            province: '四川省',
-            city: '乐山市',
-            type: '办公用品',
-            sub_type: '纸张',
-            [EXTRA_FIELD]: 'number',
-          },
-          isTotals: true,
-        }),
-      ).toContainEntries([[VALUE_FIELD, 352]]);
-    });
-    test('getMultiData function should not make any side effect on rowPivotMeta', () => {
-      const specialQuery = {
-        province: '浙江省',
-        city: '杭州市',
-        type: '家具',
-        sub_type: '桌子',
-        [EXTRA_FIELD]: 'number',
-      };
-      dataSet.getMultiData(specialQuery);
-      expect(
-        dataSet.rowPivotMeta.get(specialQuery.province).childField,
-      ).toEqual('city');
-    });
-    test('getMultiData function should not make any side effect on colPivotMeta', () => {
-      const specialQuery = {
-        type: '家具',
-        sub_type: '桌子',
-        [EXTRA_FIELD]: 'number',
-      };
-      dataSet.getMultiData(specialQuery);
-      expect(dataSet.colPivotMeta.get(specialQuery.type).childField).toEqual(
-        'sub_type',
-      );
-    });
-    test('getMultiData function', () => {
-      const specialQuery = {
-        province: '浙江省',
-        city: '杭州市',
-        type: '家具',
-        sub_type: '桌子',
-        [EXTRA_FIELD]: 'number',
-      };
-      expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
-      expect(dataSet.getMultiData(specialQuery)[0]).toContainEntries([
-        [VALUE_FIELD, 7789],
-      ]);
-      expect(
-        dataSet.getMultiData({
+      const cell1 = dataSet.getCellData({
+        query: {
           province: '浙江省',
+          city: '杭州市',
           type: '家具',
           sub_type: '桌子',
           [EXTRA_FIELD]: 'number',
-        }),
-      ).toHaveLength(4);
-      expect(
-        dataSet.getMultiData({
-          type: '家具',
-          sub_type: '桌子',
+        },
+        isTotals: true,
+      });
+      expect(cell1.getOrigin()).toContainEntries([['number', 7789]]);
+
+      const cell2 = dataSet.getCellData({
+        query: {
+          province: '四川省',
+          city: '乐山市',
+          type: '办公用品',
+          sub_type: '纸张',
           [EXTRA_FIELD]: 'number',
-        }),
-      ).toHaveLength(8);
-      expect(
-        dataSet.getMultiData({
-          type: '家具',
-          [EXTRA_FIELD]: 'number',
-        }),
-      ).toHaveLength(16);
-      expect(
-        dataSet.getMultiData({
-          [EXTRA_FIELD]: 'number',
-        }),
-      ).toHaveLength(32);
+        },
+        isTotals: true,
+      });
+      expect(cell2.getOrigin()).toContainEntries([['number', 352]]);
     });
+
+    describe('getMultiData function', () => {
+      beforeEach(() => {
+        dataSet.setDataCfg(assembleDataCfg());
+      });
+      test('get single data when specific every dimensions', () => {
+        const specialQuery = {
+          province: '浙江省',
+          city: '杭州市',
+          type: '家具',
+          sub_type: '桌子',
+          [EXTRA_FIELD]: 'number',
+        };
+        expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
+        expect(
+          dataSet.getMultiData(specialQuery)[0].getOrigin(),
+        ).toContainEntries([['number', 7789]]);
+      });
+
+      test('should get all detail data when child dimension is not specified', () => {
+        expect(
+          dataSet.getMultiData(
+            {
+              province: '浙江省',
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            {
+              row: { totalDimensions: false },
+              column: { totalDimensions: false },
+            },
+          ),
+        ).toHaveLength(4);
+
+        expect(
+          dataSet.getMultiData(
+            {
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            {
+              row: { totalDimensions: false },
+              column: { totalDimensions: false },
+            },
+          ),
+        ).toHaveLength(8);
+
+        expect(
+          dataSet.getMultiData(
+            {
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            {
+              row: { totalDimensions: false },
+              column: { totalDimensions: false },
+            },
+          ),
+        ).toHaveLength(16);
+
+        expect(
+          dataSet.getMultiData(
+            {
+              [EXTRA_FIELD]: 'number',
+            },
+            {
+              row: { totalDimensions: false },
+              column: { totalDimensions: false },
+            },
+          ),
+        ).toHaveLength(32);
+      });
+
+      test('should only query grand total data', () => {
+        expect(
+          dataSet.getMultiData(
+            { [EXTRA_FIELD]: 'number' },
+            { row: { grandTotalOnly: true }, column: { grandTotalOnly: true } },
+          ),
+        ).toHaveLength(1);
+      });
+
+      test('should query all grand total and sub total data in columns for all cities', () => {
+        expect(
+          dataSet.getMultiData(
+            { [EXTRA_FIELD]: 'number' },
+            {
+              row: { totalDimensions: false },
+              column: { grandTotalOnly: false, subTotalOnly: true },
+            },
+          ),
+        ).toHaveLength(24);
+      });
+    });
+
     test('getDimensionValues function', () => {
       // without query
       expect(dataSet.getDimensionValues('province')).toEqual([
@@ -273,12 +298,7 @@ describe('Pivot Dataset Test', () => {
         '笔',
         '纸张',
       ]);
-      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual([
-        'number',
-        'number',
-        'number',
-        'number',
-      ]);
+
       expect(dataSet.getDimensionValues('empty')).toEqual([]);
       // with query
       expect(
@@ -444,7 +464,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
-      expect(cellData.number).toEqual(110);
+      expect(cellData.getValueByKey('number')).toEqual(110);
     });
 
     test('clearDrillDownData function with totalData', () => {
@@ -502,6 +522,32 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName('not-found-field')).toEqual(
         'not-found-field',
       );
+      // 异常情况
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      expect(dataSet.getFieldName(['1'])).toEqual(['1']);
+    });
+
+    test('should return correct field meta', () => {
+      expect(dataSet.getFieldMeta('price')).toStrictEqual({
+        description: '价格描述',
+        field: 'price',
+        name: '价格',
+      });
+      expect(dataSet.getFieldMeta('cost')).toStrictEqual({
+        field: 'cost',
+        name: '成本',
+        description: '成本描述',
+      });
+      expect(dataSet.getFieldMeta('')).toBeUndefined();
+      expect(dataSet.getFieldMeta('not-found-field')).toBeUndefined();
+    });
+
+    test('should return correct custom field name', () => {
+      expect(dataSet.getFieldName({ key: '1', title: '测试' })).toStrictEqual(
+        '测试',
+      );
+      expect(dataSet.getFieldName(null)).toBeNull();
     });
 
     test('should return correct field description', () => {

@@ -51,7 +51,7 @@ interface HiddenColumnsInfo {
 ```ts
 interface PartDrillDownInfo {
   // 下钻数据
-  drillData: Record<string, string | number>[];
+  drillData: RawData[];
   // 下钻字段
   drillField: string;
 }

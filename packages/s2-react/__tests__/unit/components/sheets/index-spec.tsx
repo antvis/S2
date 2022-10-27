@@ -162,7 +162,7 @@ describe('<SheetComponent/> Tests', () => {
 
   describe('<StrategySheet/> Tests', () => {
     const renderStrategySheet = (
-      options: SheetComponentsProps['options'] | null,
+      options?: SheetComponentsProps['options'] | null,
       dataCfg?: S2DataConfig,
     ) => {
       act(() => {
@@ -200,29 +200,6 @@ describe('<SheetComponent/> Tests', () => {
       renderStrategySheet(s2Options);
 
       expect(s2.options.tooltip.data.content).toEqual(content);
-    });
-
-    test('should replace hierarchyType with "customTree" when rows is empty and contains custom tree items', () => {
-      const s2Options: SheetComponentsProps['options'] = {
-        hierarchyType: 'grid',
-      };
-
-      const s2DataConfig: S2DataConfig = {
-        data: [],
-        fields: {
-          rows: [],
-          customTreeItems: [
-            {
-              key: '1',
-              title: '1',
-            },
-          ],
-        },
-      };
-
-      renderStrategySheet(s2Options, s2DataConfig);
-
-      expect(s2.options.hierarchyType).toEqual('customTree');
     });
 
     test('should hideMeasureColumn if only one value field', () => {
@@ -308,28 +285,93 @@ describe('<SheetComponent/> Tests', () => {
       ]);
     });
 
-    test('should format corner date field', () => {
+    test.each([{ isCustomCornerText: true }, { isCustomCornerText: false }])(
+      'should format corner date field for %o',
+      ({ isCustomCornerText }) => {
+        renderStrategySheet(
+          {
+            width: 600,
+            height: 600,
+            cornerText: isCustomCornerText ? '测试' : undefined,
+          },
+          {
+            ...StrategySheetDataConfig,
+            meta: [
+              {
+                field: 'date',
+                name: '日期',
+              },
+            ],
+          },
+        );
+
+        const textList = s2.facet.cornerHeader
+          .getChildren()
+          .map((element) => (element as any).actualText);
+
+        const cornerText = isCustomCornerText
+          ? '测试'
+          : '自定义节点A/指标E/数值';
+
+        expect(textList).toEqual([cornerText, '日期']);
+      },
+    );
+
+    test('should render correctly row nodes', () => {
       renderStrategySheet(
         {
-          width: 600,
+          width: 6000,
           height: 600,
         },
-        {
-          ...StrategySheetDataConfig,
-          meta: [
-            {
-              field: 'date',
-              name: '日期',
-            },
-          ],
-        },
+        StrategySheetDataConfig,
       );
 
-      const textList = s2.facet.cornerHeader
-        .getChildren()
-        .map((element) => (element as any).actualText);
-
-      expect(textList).toEqual(['数值', '日期']);
+      const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => ({
+        field: node.field,
+        label: node.label,
+      }));
+      expect(rowNodes).toStrictEqual([
+        {
+          field: 'custom-node-1',
+          label: '自定义节点A',
+        },
+        {
+          field: 'measure-a',
+          label: '指标A',
+        },
+        {
+          field: 'measure-b',
+          label: '指标B',
+        },
+        {
+          field: 'custom-node-2',
+          label: '自定义节点B',
+        },
+        {
+          field: 'measure-c',
+          label: '指标C',
+        },
+        {
+          field: 'measure-d',
+          label: '指标D',
+        },
+        {
+          field: 'custom-node-5',
+          label: '自定义节点E',
+        },
+        {
+          field: 'measure-e',
+          label: '指标E',
+        },
+        {
+          field: 'custom-node-3',
+          label: '自定义节点C',
+        },
+        {
+          field: 'custom-node-4',
+          label: '自定义节点D',
+        },
+      ]);
     });
   });
 });

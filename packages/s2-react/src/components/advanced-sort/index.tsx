@@ -199,11 +199,11 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     }
     const { fields = {} } = sheet.dataCfg || {};
     const { rows = [], columns = [] } = fields;
-    return map([...rows, ...columns], (item) => {
+    return map([...rows, ...columns], (field: string) => {
       return {
-        field: item,
-        name: sheet.dataSet.getFieldName(item),
-        list: sheet.dataSet.getDimensionValues(item),
+        field,
+        name: sheet.dataSet.getFieldName(field),
+        list: sheet.dataSet.getDimensionValues(field),
       };
     });
   };

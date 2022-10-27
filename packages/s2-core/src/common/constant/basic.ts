@@ -1,9 +1,17 @@
+import { i18n } from '../i18n';
+
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
-export const TOTAL_VALUE = '$$total$$';
+
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
+
+export const TOTAL_VALUE = '$$total$$';
+export const MULTI_VALUE = '$$multi$$';
+
+export const NULL_SYMBOL_ID = '$$null$$';
+export const UNDEFINED_SYMBOL_ID = '$$undefined$$';
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
@@ -89,3 +97,7 @@ export enum MiniChartTypes {
 
 // 线条 linecap 样式
 export const SQUARE_LINE_CAP = 'square';
+
+export const getDefaultSeriesNumberText = () => i18n('序号');
+
+export const getDefaultCornerText = () => i18n('指标');

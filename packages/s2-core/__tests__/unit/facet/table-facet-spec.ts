@@ -5,7 +5,7 @@ import { Canvas } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
-import { FrozenGroup } from '@/common/constant';
+import { FrozenGroupType } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
@@ -49,6 +49,11 @@ jest.mock('@/sheet-type', () => {
         interaction: {
           clearHoverTimer: jest.fn(),
         },
+        enableFrozenHeaders() {
+          return false;
+        },
+        isValueInCols: jest.fn(),
+        isCustomHeaderFields: jest.fn(),
       };
     }),
   };
@@ -118,7 +123,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
       const colHeaderColSize = colLeafNodes.length;
-      const canvasW = facet.getCanvasHW().width;
+      const canvasW = facet.getCanvasSize().width;
       const adaptiveWith = Math.max(
         cellCfg.width,
         canvasW / Math.max(1, colHeaderColSize),
@@ -149,7 +154,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - 1;
-      const canvasW = facet.getCanvasHW().width - seriesNumberWidth;
+      const canvasW = facet.getCanvasSize().width - seriesNumberWidth;
       const adaptiveWith = Math.max(
         cellCfg.width,
         canvasW / Math.max(1, colHeaderColSize),
@@ -300,19 +305,19 @@ describe('Table Mode Facet With Frozen Test', () => {
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
     expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         range: [0, 1],
         width: 240,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         height: 60,
         range: [0, 1],
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         range: [3, 4],
         width: 240,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 60,
         range: [30, 31],
       },

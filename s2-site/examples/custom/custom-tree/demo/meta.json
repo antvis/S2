@@ -5,6 +5,14 @@
   },
   "demos": [
     {
+      "filename": "custom-header.ts",
+      "title": {
+        "zh": "自定义行列头",
+        "en": "custom header"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png"
+    },
+    {
       "filename": "custom-tree.ts",
       "title": {
         "zh": "自定义目录树",

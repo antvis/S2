@@ -98,7 +98,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
 
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellMeta],
-        nodes: [],
+        nodes: [mockCellViewMeta],
         stateName: InteractionStateName.SELECTED,
       });
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();

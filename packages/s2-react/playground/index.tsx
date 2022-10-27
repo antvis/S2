@@ -3,20 +3,19 @@
 /* eslint-disable no-console */
 import {
   customMerge,
-  type DataType,
+  DEFAULT_STYLE,
   generatePalette,
+  getLang,
   getPalette,
-  type HeaderActionIconProps,
   Node,
-  type S2DataConfig,
   SpreadSheet,
+  type HeaderActionIconProps,
+  type InteractionOptions,
+  type S2DataConfig,
+  type S2Options,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  getLang,
-  type InteractionOptions,
-  DEFAULT_STYLE,
-  S2Event,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -28,7 +27,6 @@ import {
   Input,
   Popover,
   Radio,
-  type RadioChangeEvent,
   Select,
   Slider,
   Space,
@@ -36,103 +34,31 @@ import {
   Tabs,
   Tag,
   Tooltip,
+  type RadioChangeEvent,
 } from 'antd';
 import 'antd/dist/antd.min.css';
-import { debounce, forEach, random } from 'lodash';
+import { debounce } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
 import reactPkg from '../package.json';
-import type {
-  PartDrillDown,
-  PartDrillDownInfo,
-  SheetComponentOptions,
-} from '../src';
+import type { SheetComponentOptions } from '../src';
 import { SheetComponent } from '../src';
-import { customTreeFields } from '../__tests__/data/custom-tree-fields';
-import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
-import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
-import {
-  StrategySheetDataConfig,
-  StrategyOptions,
-} from '../__tests__/data/strategy-data';
+import { CustomGrid } from './components/CustomGrid';
+import { CustomTree } from './components/CustomTree';
+import { GridAnalysisSheet } from './components/GridAnalysisSheet';
+import { ResizeConfig } from './components/ResizeConfig';
+import { StrategySheet } from './components/StrategySheet';
 import {
   defaultOptions,
-  mockGridAnalysisOptions,
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
+import { partDrillDown } from './drill-down';
 import './index.less';
-import { ResizeConfig } from './resize';
 
 const { TabPane } = Tabs;
-
-const fieldMap = {
-  channel: ['物美', '华联'],
-  sex: ['男', '女'],
-};
-
-const partDrillDown: PartDrillDown = {
-  drillConfig: {
-    dataSet: [
-      {
-        name: '销售渠道',
-        value: 'channel',
-        type: 'text',
-      },
-      {
-        name: '客户性别',
-        value: 'sex',
-        type: 'text',
-      },
-    ],
-    extra: <div>test</div>,
-  },
-  // drillItemsNum: 1,
-  fetchData: (meta, drillFields) =>
-    new Promise<PartDrillDownInfo>((resolve) => {
-      // 弹窗 -> 选择 -> 请求数据
-      const preDrillDownfield =
-        meta.spreadsheet.store.get('drillDownNode')?.field;
-      const dataSet = meta.spreadsheet.dataSet;
-      const field = drillFields[0];
-      const rowDatas = dataSet
-        .getMultiData(meta.query, true, true, [preDrillDownfield])
-        .filter(
-          (item) => item.sub_type && item.type && item[preDrillDownfield],
-        );
-      console.log(rowDatas);
-      const drillDownData: DataType[] = [];
-      forEach(rowDatas, (data: DataType) => {
-        const { number, sub_type: subType, type } = data;
-        const number0 = random(50, number);
-        const number1 = number - number0;
-        const dataItem0 = {
-          ...meta.query,
-          number: number0,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field][0],
-        };
-        drillDownData.push(dataItem0);
-        const dataItem1 = {
-          ...meta.query,
-          number: number1,
-          sub_type: subType,
-          type,
-          [field]: fieldMap[field][1],
-        };
-
-        drillDownData.push(dataItem1);
-      });
-      console.log(drillDownData);
-      resolve({
-        drillField: field,
-        drillData: drillDownData,
-      });
-    }),
-};
 
 const onSheetMounted = (s2: SpreadSheet) => {
   console.log('onSheetMounted: ', s2);
@@ -167,11 +93,9 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<SheetComponentOptions>(defaultOptions);
-  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(pivotSheetDataCfg);
-  const [strategyDataCfg, setStrategyDataCfg] = React.useState<S2DataConfig>(
-    StrategySheetDataConfig,
-  );
+    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
+  const [dataCfg, setDataCfg] =
+    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
   const [columnOptions, setColumnOptions] = React.useState([]);
 
   //  ================== Refs ========================
@@ -807,6 +731,16 @@ function MainLayout() {
                     });
                   }}
                 />
+                <Switch
+                  checkedChildren="自定义序号文本"
+                  unCheckedChildren="默认序号文本"
+                  checked={mergedOptions.seriesNumberText === '自定义序号文本'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      seriesNumberText: checked ? '自定义序号文本' : '序号',
+                    });
+                  }}
+                />
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
@@ -940,7 +874,7 @@ function MainLayout() {
           </Collapse>
           {render && (
             <SheetComponent
-              dataCfg={dataCfg}
+              dataCfg={dataCfg as S2DataConfig}
               options={mergedOptions}
               sheetType={sheetType}
               adaptive={adaptive}
@@ -969,7 +903,9 @@ function MainLayout() {
                 ),
                 switcherCfg: { open: true },
                 exportCfg: { open: true },
-                advancedSortCfg: { open: true },
+                advancedSortCfg: {
+                  open: true,
+                },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
@@ -1018,56 +954,20 @@ function MainLayout() {
           )}
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
-          <SheetComponent
-            dataCfg={{
-              data: dataCustomTrees,
-              fields: customTreeFields,
-            }}
-            options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
-          />
+          <CustomTree ref={s2Ref} onMounted={onSheetMounted} />
+        </TabPane>
+        <TabPane tab="自定义行列头" key="customGrid">
+          <CustomGrid ref={s2Ref} onMounted={onSheetMounted} />
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <SheetComponent
-            sheetType="strategy"
-            dataCfg={strategyDataCfg}
-            options={StrategyOptions}
+          <StrategySheet
             onRowCellClick={logHandler('onRowCellClick')}
             onMounted={onSheetMounted}
-            header={{
-              title: '趋势分析表',
-              description: '支持子弹图',
-              switcherCfg: { open: true },
-              exportCfg: { open: true },
-              extra: (
-                <Switch
-                  checkedChildren="单列头"
-                  unCheckedChildren="多列头"
-                  checked={strategyDataCfg.fields.columns.length === 1}
-                  onChange={(checked) => {
-                    setStrategyDataCfg(
-                      customMerge(StrategySheetDataConfig, {
-                        fields: {
-                          columns: StrategySheetDataConfig.fields.columns.slice(
-                            0,
-                            checked ? 1 : 2,
-                          ),
-                        },
-                      }),
-                    );
-                  }}
-                />
-              ),
-            }}
+            ref={s2Ref}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
-          <SheetComponent
-            sheetType="gridAnalysis"
-            dataCfg={mockGridAnalysisDataCfg}
-            options={mockGridAnalysisOptions}
-            ref={s2Ref}
-            onMounted={onSheetMounted}
-          />
+          <GridAnalysisSheet ref={s2Ref} onMounted={onSheetMounted} />
         </TabPane>
         <TabPane tab="编辑表" key="editable">
           <SheetComponent

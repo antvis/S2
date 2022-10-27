@@ -1,6 +1,7 @@
 import type { BBox, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { pick } from 'lodash';
+import { createMockCellInfo } from '../../util/helpers';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
@@ -15,7 +16,8 @@ import {
   type S2Options,
   SpreadSheet,
   type ThemeCfg,
-  customMerge,
+  Node,
+  type ViewMeta,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -75,6 +77,7 @@ describe('Interaction Row Column Resize Tests', () => {
   const emitResize = (
     directionType: ResizeDirectionType,
     effect: ResizeAreaEffect,
+    meta?: Partial<ViewMeta>,
   ) => {
     const resizeInfo = {
       theme: {},
@@ -86,6 +89,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect,
       id: 'testId',
+      meta,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -115,6 +119,7 @@ describe('Interaction Row Column Resize Tests', () => {
     s2 = new PivotSheet(document.createElement('div'), null, s2Options);
     mockRootInteraction = new MockRootInteraction(s2);
     s2.facet = {
+      foregroundGroup: new Group(''),
       panelBBox: {
         maxX: s2Options.width,
         maxY: s2Options.height,
@@ -122,7 +127,6 @@ describe('Interaction Row Column Resize Tests', () => {
       destroy: jest.fn(),
       render: jest.fn(),
     } as unknown as BaseFacet;
-    s2.foregroundGroup = new Group('');
     s2.interaction = mockRootInteraction;
     rowColumnResizeInstance = new RowColumnResize(s2);
     s2.render = jest.fn();
@@ -531,6 +535,30 @@ describe('Interaction Row Column Resize Tests', () => {
 
     expect(s2.options.style.colCfg.heightByField).toEqual({
       [resizeInfo.id]: resizeInfo.height,
+    });
+  });
+
+  test('should get vertical custom filed resize style', () => {
+    jest.spyOn(s2, 'isCustomColumnFields').mockImplementationOnce(() => true);
+    jest
+      .spyOn(s2, 'getColumnNodes')
+      .mockImplementationOnce(() => [
+        createMockCellInfo('test-a', { level: 0 })
+          .mockCellViewMeta as unknown as Node,
+        createMockCellInfo('test-b', { level: 0 })
+          .mockCellViewMeta as unknown as Node,
+      ]);
+
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Vertical,
+      ResizeAreaEffect.Field,
+      { level: 0 },
+    );
+
+    // 获取同 level 的 style
+    expect(s2.options.style.colCfg.heightByField).toEqual({
+      'test-a': resizeInfo.height,
+      'test-b': resizeInfo.height,
     });
   });
 

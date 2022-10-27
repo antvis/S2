@@ -30,12 +30,10 @@ describe('merge test', () => {
   test('should get safety data config', () => {
     expect(getSafetyDataConfig(null)).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         rows: [],
         columns: [],
         values: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -51,18 +49,15 @@ describe('merge test', () => {
           rows: ['province', 'city', 'city'],
           columns: ['type', 'type'],
           values: ['count', 'cost', 'cost'],
-          customTreeItems: [],
           valueInCols: false,
         },
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
         values: ['count', 'cost'],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -71,9 +66,11 @@ describe('merge test', () => {
     });
   });
 
-  test('should cancel valueInCols if customTreeItems is not empty by get safety data config', () => {
+  test('should cancel valueInCols if custom rows is not empty by get safety data config', () => {
+    const rows = [{ key: '1', title: 'test' }];
     const fields: Partial<S2DataConfig['fields']> = {
-      customTreeItems: [{ key: '1', title: 'test' }],
+      rows,
+      values: ['1'],
       valueInCols: true,
     };
     expect(
@@ -82,12 +79,11 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         ...fields,
-        rows: [],
+        rows,
         columns: [],
-        values: [],
+        values: ['1'],
         valueInCols: false,
       },
       meta: [],
@@ -107,12 +103,10 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [],
-      totalData: [],
       fields: {
         ...fields,
         rows: [],
         columns: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -135,12 +129,10 @@ describe('merge test', () => {
       }),
     ).toStrictEqual({
       data: [{ value: 1 }, { value: 2 }],
-      totalData: [],
       fields: {
         ...fields,
         rows: [],
         columns: [],
-        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -260,7 +252,6 @@ describe('merge test', () => {
       rows: ['test'],
       columns: [],
       values: ['value'],
-      customTreeItems: [],
       valueInCols: true,
     });
   });

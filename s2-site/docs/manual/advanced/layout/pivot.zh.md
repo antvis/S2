@@ -60,8 +60,8 @@ function generateHeaderNodes(...args) {
         hierarchy.sampleNodesForAllLevels.push(node);
         if (!node.isLeafNode) {
             // 生成叶子节点
-            buildGridHierarchy({ 
-                parentNode: node, // 递归生成子结构，如果还有 region, 会继续生成杭州市下面的[西湖区, 余杭区]
+            buildGridHierarchy({
+                parentNode: node, // 递归生成子结构，如果还有 region, 会继续生成杭州市下面的 [西湖区，余杭区]
                 currentField: fields[level + 1], // 下一个维度作为下个循环的维度，比如第一次是 province，第二次是 city
                 hierarchy,
                 fields,
@@ -115,7 +115,7 @@ const cellWidth = calcCellWidth(); // 行、列 单元格宽度
 function calcCellWidth() {
     const rowHeaderColSize = rows.length; // [province, city]，结果是 2
     const colHeaderColSize = colLeafNodes.length; // 列叶子节点，结果是 2
-    const canvasW = this.getCanvasHW().width; // 画布宽度
+    const { width } = this.getCanvasSize(); // 画布宽度
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize); // 行+列 总数量，结果是 4
     return Math.max(cellCfg.width, canvasW / size); // 用户配置的宽度和计算宽度取最大值
 }
@@ -159,13 +159,13 @@ for (let i = 0; i < rowsHierarchy.getNodes().length; i++) {
 
 ```ts
 this.rowHeader = new RowHeader({
-    width, 
-    height, 
+    width,
+    height,
     data: rowNodes // rowNodes 中的节点有坐标和尺寸信息，调用 g2 的 <Group>RowHeader.add(<Group>RowCell)
 });
 this.colHeader = new ColHeader({
-    width, 
-    height, 
+    width,
+    height,
     data: colNodes // 同上
 });
 this.cornerHeader = new CornerHeader({

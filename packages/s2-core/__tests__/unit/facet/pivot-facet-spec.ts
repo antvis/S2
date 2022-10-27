@@ -17,6 +17,7 @@ import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import type { ViewMeta } from '@/common/interface/basic';
 import { RootInteraction } from '@/interaction/root';
+import type { CellData } from '@/data-set/cell-data';
 
 jest.mock('@/interaction/root');
 
@@ -73,6 +74,9 @@ jest.mock('@/sheet-type', () => {
         },
         measureTextWidth:
           jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+        enableFrozenHeaders() {
+          return true;
+        },
       };
     }),
   };
@@ -88,6 +92,7 @@ jest.mock('@/data-set/pivot-data-set', () => {
         indexesData,
         sortedDimensionValues,
         moreThanOneValue: jest.fn(),
+        getField: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
@@ -107,6 +112,10 @@ describe('Pivot Mode Facet Test', () => {
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
   s2.dataSet = dataSet;
   s2.interaction = new RootInteraction(s2);
+  s2.isValueInCols = jest.fn();
+  s2.isCustomHeaderFields = jest.fn();
+  s2.isCustomColumnFields = jest.fn();
+  s2.isCustomRowFields = jest.fn();
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,
@@ -185,10 +194,16 @@ describe('Pivot Mode Facet Test', () => {
     const { getCellMeta } = facet.layoutResult;
 
     test('should get correct cell meta', () => {
-      expect(getCellMeta(0, 1)?.data?.number).toBe(5343);
-      expect(getCellMeta(1, 1)?.data?.number).toBe(632);
+      expect(
+        (getCellMeta(0, 1)?.data as CellData)?.getValueByKey('number'),
+      ).toBe(5343);
+      expect(
+        (getCellMeta(1, 1)?.data as CellData)?.getValueByKey('number'),
+      ).toBe(632);
 
-      expect(getCellMeta(1)?.data?.number).toBe(2367);
+      expect((getCellMeta(1)?.data as CellData)?.getValueByKey('number')).toBe(
+        2367,
+      );
     });
   });
 
@@ -261,14 +276,6 @@ describe('Pivot Mode Facet Test', () => {
       expect(backgroundGroup.cfg.children).toHaveLength(1);
       expect(rect.cfg.type).toBe('rect');
       expect(rect.cfg.visible).toBeTrue();
-    });
-
-    test('get cell after render', () => {
-      const { panelScrollGroup } = s2;
-      const sampleDataCell = get(panelScrollGroup, 'cfg.children[0]');
-      expect(panelScrollGroup.cfg.children).toHaveLength(32);
-      expect(panelScrollGroup.cfg.visible).toBeTrue();
-      expect(get(sampleDataCell, 'meta.data.number')).toBe(7789);
     });
   });
 

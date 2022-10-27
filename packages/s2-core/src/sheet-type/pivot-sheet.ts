@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last } from 'lodash';
+import { clone, isString, last, some } from 'lodash';
 import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
@@ -8,6 +8,7 @@ import {
   getTooltipOperatorSortMenus,
 } from '../common/constant';
 import type {
+  Fields,
   RowCellCollapseTreeRowsType,
   S2Options,
   SortMethod,
@@ -17,22 +18,50 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import { PivotDataSet } from '../data-set';
-import { CustomTreePivotDataSet } from '../data-set/custom-tree-pivot-data-set';
+import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
 
 export class PivotSheet extends SpreadSheet {
-  public getDataSet(options: S2Options) {
-    const { dataSet, hierarchyType } = options;
+  public isCustomHeaderFields(
+    fieldType?: keyof Pick<Fields, 'columns' | 'rows'>,
+  ): boolean {
+    const { fields } = this.dataCfg;
+
+    if (!fieldType) {
+      return some(
+        [...fields?.rows, ...fields?.columns],
+        (field) => !isString(field),
+      );
+    }
+
+    return some(fields?.[fieldType], (field) => !isString(field));
+  }
+
+  public isCustomRowFields(): boolean {
+    return this.isCustomHeaderFields('rows');
+  }
+
+  public isCustomColumnFields(): boolean {
+    return this.isCustomHeaderFields('columns');
+  }
+
+  public getDataSet() {
+    const { dataSet } = this.options;
     if (dataSet) {
       return dataSet(this);
     }
-    const realDataSet =
-      hierarchyType === 'customTree'
-        ? new CustomTreePivotDataSet(this)
-        : new PivotDataSet(this);
-    return realDataSet;
+
+    if (this.isCustomRowFields()) {
+      return new CustomGridPivotDataSet(this);
+    }
+
+    return new PivotDataSet(this);
+  }
+
+  public enableFrozenHeaders(): boolean {
+    return false;
   }
 
   /**
@@ -42,20 +71,12 @@ export class PivotSheet extends SpreadSheet {
     return true;
   }
 
-  /**
-   * Check if is pivot mode
-   */
   public isTableMode(): boolean {
     return false;
   }
 
-  /**
-   * tree type must be in strategy mode
-   */
   public isHierarchyTreeType(): boolean {
-    const type = this.options.hierarchyType;
-    // custom tree and tree!!!
-    return type === 'tree' || type === 'customTree';
+    return this.options.hierarchyType === 'tree';
   }
 
   /**
@@ -165,17 +186,19 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
-    const ifHideMeasureColumn = this.options.style.colCfg.hideMeasureColumn;
-    const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
+    const { hideMeasureColumn } = this.options.style.colCfg;
+    const sortField = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
     const sortQuery = clone(query);
+
     let sortValue = value;
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
-    if (ifHideMeasureColumn && this.isValueInCols()) {
+    if (hideMeasureColumn && this.isValueInCols()) {
       sortValue = this.dataSet.fields.values[0];
       sortQuery[EXTRA_FIELD] = sortValue;
     }
 
+    const sortFieldId = isString(sortField) ? sortField : sortField.key;
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,
@@ -183,7 +206,7 @@ export class PivotSheet extends SpreadSheet {
       query: sortQuery,
     };
     const prevSortParams = this.dataCfg.sortParams.filter(
-      (item) => item?.sortFieldId !== sortFieldId,
+      (item) => item?.sortFieldId !== sortField,
     );
 
     this.updateSortMethodMap(meta.id, sortMethod, true);
