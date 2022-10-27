@@ -841,7 +841,8 @@ export class PivotFacet extends BaseFacet {
       spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
       rowIconWidth +
       rowCellStyle.padding.left +
-      rowCellStyle.padding.right;
+      rowCellStyle.padding.right +
+      rowCellStyle.verticalBorderWidth;
 
     // calc corner fieldNameNodeWidth
     const fieldName = dataSet.getFieldName(field);

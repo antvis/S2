@@ -2,6 +2,7 @@ import { Group } from '@antv/g-canvas';
 import { renderLine } from '.././../utils/g-renders';
 import type { FrameConfig } from '../../common/interface';
 import { translateGroup } from '../utils';
+import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 
 export class Frame extends Group {
   declare cfg: FrameConfig;
@@ -26,6 +27,18 @@ export class Frame extends Group {
   public render(): void {
     this.clear();
     this.layout();
+  }
+
+  public static getHorizontalBorderWidth(spreadsheet: SpreadSheet) {
+    const { horizontalBorderWidth } = spreadsheet.theme?.splitLine;
+
+    return horizontalBorderWidth;
+  }
+
+  public static getVerticalBorderWidth(spreadsheet: SpreadSheet) {
+    const { verticalBorderWidth } = spreadsheet.theme?.splitLine;
+
+    return spreadsheet.isPivotMode() ? verticalBorderWidth : 0;
   }
 
   public onBorderScroll(scrollX: number): void {
@@ -55,7 +68,6 @@ export class Frame extends Group {
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       cfg;
     const {
-      verticalBorderWidth,
       verticalBorderColor,
       verticalBorderColorOpacity,
       horizontalBorderWidth,
@@ -69,7 +81,7 @@ export class Frame extends Group {
       { x1: x, y1, x2: x, y2 },
       {
         stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
+        lineWidth: Frame.getVerticalBorderWidth(spreadsheet),
         opacity: verticalBorderColorOpacity,
       },
     );
@@ -85,19 +97,17 @@ export class Frame extends Group {
       scrollX,
       scrollContainsRowHeader,
       spreadsheet,
-      isPivotMode,
     } = cfg;
     const {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
-      verticalBorderWidth,
     } = spreadsheet.theme?.splitLine;
     const x1 = position.x;
     const x2 =
       x1 +
       cornerWidth +
-      (isPivotMode ? verticalBorderWidth : 0) + // 明细表不需要绘制纵向分割线，所以不需要计算它的宽度
+      Frame.getVerticalBorderWidth(spreadsheet) + // 明细表不需要绘制纵向分割线，所以不需要计算它的宽度
       viewportWidth +
       (scrollContainsRowHeader ? scrollX : 0);
     const y = position.y + cornerHeight + horizontalBorderWidth / 2;
@@ -143,13 +153,10 @@ export class Frame extends Group {
 
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
-    const {
-      shadowColors,
-      shadowWidth,
-      verticalBorderWidth,
-      horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine;
-    const x = position.x + cornerWidth + verticalBorderWidth;
+    const { shadowColors, shadowWidth, horizontalBorderWidth } =
+      spreadsheet.theme?.splitLine;
+    const x =
+      position.x + cornerWidth + Frame.getVerticalBorderWidth(spreadsheet);
     const y = position.y;
     this.addShape('rect', {
       attrs: {
@@ -175,16 +182,12 @@ export class Frame extends Group {
       position,
       spreadsheet,
     } = this.cfg;
-    const {
-      shadowColors,
-      shadowWidth,
-      verticalBorderWidth,
-      horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine;
+    const { shadowColors, shadowWidth, horizontalBorderWidth } =
+      spreadsheet.theme?.splitLine;
     const x =
       position.x +
       cornerWidth +
-      verticalBorderWidth +
+      Frame.getVerticalBorderWidth(spreadsheet) +
       viewportWidth -
       shadowWidth;
     const y = position.y;

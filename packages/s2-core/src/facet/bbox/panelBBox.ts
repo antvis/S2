@@ -1,3 +1,4 @@
+import { Frame } from '../header';
 import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {
@@ -12,14 +13,10 @@ export class PanelBBox extends BaseBBox {
     };
 
     // splitLine 也应该占位，panelBbox = canvasBbox - cornerBbox - splitLineBbox
-    const { horizontalBorderWidth, verticalBorderWidth } =
-      this.spreadsheet.theme.splitLine;
+    this.x = cornerPosition.x + Frame.getVerticalBorderWidth(this.spreadsheet);
 
-    this.x =
-      cornerPosition.x +
-      (this.spreadsheet.isPivotMode() ? verticalBorderWidth : 0);
-
-    this.y = cornerPosition.y + horizontalBorderWidth;
+    this.y =
+      cornerPosition.y + Frame.getHorizontalBorderWidth(this.spreadsheet);
     this.minX = this.x;
     this.minY = this.y;
 

@@ -18,14 +18,14 @@ import {
   getTextAndFollowingIconPosition,
   getTextAreaRange,
 } from '../utils/cell/cell';
-import { renderIcon, renderLine, renderRect } from '../utils/g-renders';
+import { renderIcon, renderLine } from '../utils/g-renders';
 import { isLastColumnAfterHidden } from '../utils/hide-columns';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import type { ColHeaderConfig } from '../facet/header';
+import { Frame, type ColHeaderConfig } from '../facet/header';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
@@ -240,7 +240,6 @@ export class ColCell extends HeaderCell {
     }
 
     const { cornerWidth, viewportWidth: headerWidth } = this.headerConfig;
-    const { verticalBorderWidth } = this.spreadsheet.theme.splitLine;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
@@ -261,7 +260,7 @@ export class ColCell extends HeaderCell {
 
     const resizeAreaWidth =
       cornerWidth +
-      (this.spreadsheet.isPivotMode() ? verticalBorderWidth : 0) +
+      Frame.getVerticalBorderWidth(this.spreadsheet) +
       headerWidth;
     // 列高调整热区
     resizeArea.addShape('rect', {
