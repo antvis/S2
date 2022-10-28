@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeader, type PageHeaderProps } from 'antd';
 import cx from 'classnames';
-import type { S2DataConfig, SpreadSheet } from '@antv/s2';
+import { S2_PREFIX_CLS, type S2DataConfig, type SpreadSheet } from '@antv/s2';
 import { Export, type ExportCfgProps } from '../export';
 import { AdvancedSort, type AdvancedSortCfgProps } from '../advanced-sort';
 import { type SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = React.memo(
     options,
     ...restProps
   }) => {
-    const PRE_CLASS = 's2-header';
+    const PRE_CLASS = `${S2_PREFIX_CLS}-header`;
 
     const getExtraComponents = () => {
       return (

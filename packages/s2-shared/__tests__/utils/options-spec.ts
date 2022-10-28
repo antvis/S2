@@ -1,5 +1,14 @@
-import { DEFAULT_STYLE, HOVER_FOCUS_DURATION } from '@antv/s2';
-import { getBaseSheetComponentOptions } from '../../src';
+import {
+  DEFAULT_STYLE,
+  DeviceType,
+  HOVER_FOCUS_DURATION,
+  LayoutWidthTypes,
+} from '@antv/s2';
+import { pick } from 'lodash';
+import {
+  getBaseSheetComponentOptions,
+  getMobileSheetComponentOptions,
+} from '../../src';
 
 describe('Options Tests', () => {
   test('should get safety options', () => {
@@ -96,6 +105,33 @@ describe('Options Tests', () => {
           },
         ],
       },
+    });
+  });
+
+  test('should get mobile options', () => {
+    const options = pick(getMobileSheetComponentOptions(), [
+      'height',
+      'style',
+      'interaction',
+    ]);
+
+    expect(options).toStrictEqual({
+      height: 380,
+      style: {
+        layoutWidthType: LayoutWidthTypes.ColAdaptive,
+      },
+      interaction: {
+        hoverHighlight: false,
+        hoverFocus: false,
+        brushSelection: {
+          data: false,
+          row: false,
+          col: false,
+        },
+        multiSelection: false,
+        rangeSelection: false,
+      },
+      device: DeviceType.MOBILE,
     });
   });
 });

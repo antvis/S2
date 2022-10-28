@@ -171,7 +171,7 @@ insertCss(`
   .antv-s2-advanced-sort {
     display: none;
   }
-  .s2-header {
+  .antv-s2-header {
     margin:0px !important;
   }
 `);

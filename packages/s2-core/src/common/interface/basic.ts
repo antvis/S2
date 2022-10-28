@@ -17,6 +17,7 @@ import type { BaseHeaderConfig, Frame } from '../../facet/header';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
+import type { DeviceType } from '../../common/interface';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
 
@@ -213,7 +214,10 @@ export interface Style {
   cellCfg?: CellCfg;
   colCfg?: ColCfg;
   rowCfg?: RowCfg;
-  device?: 'pc' | 'mobile'; // 设备，pc || mobile
+  /**
+   * @deprecated use options.deviceType instead
+   */
+  device?: DeviceType; // 设备，pc || mobile
 }
 
 export interface Pagination {

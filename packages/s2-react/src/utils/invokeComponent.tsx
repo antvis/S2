@@ -1,7 +1,7 @@
 import type { SpreadSheet } from '@antv/s2';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { SpreadSheetContext } from './SpreadSheetContext';
+import { SpreadSheetContext } from '../context/SpreadSheetContext';
 
 export type InvokeComponentProps<P> = {
   onCancel: any;
