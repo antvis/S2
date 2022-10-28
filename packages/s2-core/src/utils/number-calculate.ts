@@ -9,7 +9,7 @@ export const isNotNumber = (value: unknown) => {
     return Number.isNaN(value);
   }
   if (typeof value === 'string') {
-    return Number.isNaN(Number.parseFloat(value));
+    return Number.isNaN(Number(value));
   }
   return true;
 };
