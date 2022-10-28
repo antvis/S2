@@ -31,7 +31,7 @@ export class TableDataCell extends DataCell {
     );
   }
 
-  protected override drawBorders() {
+  public override drawBorders() {
     if (!this.meta.isFrozenCorner) {
       return;
     }

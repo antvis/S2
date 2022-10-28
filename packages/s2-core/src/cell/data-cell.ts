@@ -334,7 +334,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * 预留给明细表使用，透视表数据格不需要绘制 border， 已经交由 grid 处理
    */
-  protected override drawBorders(): void {}
+  public override drawBorders(): void {}
 
   /**
    * Find current field related condition
