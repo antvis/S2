@@ -68,6 +68,10 @@ export class TableDataCell extends DataCell {
       this.spreadsheet,
       resizeAreaId,
     );
+
+    if (!resizeArea) {
+      return;
+    }
     const colHeight = this.spreadsheet.facet.layoutResult.colsHierarchy.height;
     const { scrollY: sy } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();

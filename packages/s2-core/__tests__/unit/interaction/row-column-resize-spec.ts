@@ -119,6 +119,7 @@ describe('Interaction Row Column Resize Tests', () => {
     s2 = new PivotSheet(document.createElement('div'), null, s2Options);
     mockRootInteraction = new MockRootInteraction(s2);
     s2.facet = {
+      foregroundGroup: new Group(''),
       panelBBox: {
         maxX: s2Options.width,
         maxY: s2Options.height,
@@ -126,7 +127,6 @@ describe('Interaction Row Column Resize Tests', () => {
       destroy: jest.fn(),
       render: jest.fn(),
     } as unknown as BaseFacet;
-    s2.foregroundGroup = new Group('');
     s2.interaction = mockRootInteraction;
     rowColumnResizeInstance = new RowColumnResize(s2);
     s2.render = jest.fn();

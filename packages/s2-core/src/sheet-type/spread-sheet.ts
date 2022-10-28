@@ -1,5 +1,5 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -12,18 +12,7 @@ import {
   values,
 } from 'lodash';
 import { BaseCell } from '../cell';
-import {
-  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-  KEY_GROUP_BACK_GROUND,
-  KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_PANEL_GROUND,
-  KEY_GROUP_PANEL_SCROLL,
-  MIN_DEVICE_PIXEL_RATIO,
-  PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-  S2Event,
-} from '../common/constant';
+import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
 import { i18n } from '../common/i18n';
 import { registerIcon } from '../common/icons/factory';
@@ -55,8 +44,6 @@ import { Store } from '../common/store';
 import type { BaseDataSet } from '../data-set';
 import type { BaseFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
-import type { FrozenGroup } from '../group/frozen-group';
-import { PanelScrollGroup } from '../group/panel-scroll-group';
 import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
@@ -100,29 +87,6 @@ export abstract class SpreadSheet extends EE {
   // the base container, contains all groups
   public container: Canvas;
 
-  // the background group, render bgColor...
-  public backgroundGroup: IGroup;
-
-  // facet cell area group, it contains all cross-tab's cell
-  public panelGroup: IGroup;
-
-  public panelScrollGroup: PanelScrollGroup;
-
-  public frozenRowGroup: FrozenGroup;
-
-  public frozenColGroup: FrozenGroup;
-
-  public frozenTrailingRowGroup: FrozenGroup;
-
-  public frozenTrailingColGroup: FrozenGroup;
-
-  public frozenTopGroup: FrozenGroup;
-
-  public frozenBottomGroup: FrozenGroup;
-
-  // contains rowHeader,cornerHeader,colHeader, scroll bars
-  public foregroundGroup: IGroup;
-
   public interaction: RootInteraction;
 
   public hdAdapter: HdAdapter;
@@ -153,7 +117,7 @@ export abstract class SpreadSheet extends EE {
 
     this.setDebug();
     this.initTooltip();
-    this.initGroups(dom);
+    this.initContainer(dom);
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
@@ -238,6 +202,11 @@ export abstract class SpreadSheet extends EE {
   protected abstract bindEvents(): void;
 
   public abstract getDataSet(): BaseDataSet;
+
+  /**
+   * 是否开启冻结行列头效果
+   */
+  public abstract enableFrozenHeaders(): boolean;
 
   /**
    * Check if is pivot mode
@@ -617,7 +586,7 @@ export abstract class SpreadSheet extends EE {
    * @param dom
    * @private
    */
-  protected initGroups(dom: S2MountContainer) {
+  protected initContainer(dom: S2MountContainer) {
     const { width, height, supportCSSTransform, devicePixelRatio } =
       this.options;
     // base canvas group
@@ -630,20 +599,6 @@ export abstract class SpreadSheet extends EE {
       pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
     });
 
-    // the main three layer groups
-    this.backgroundGroup = this.container.addGroup({
-      name: KEY_GROUP_BACK_GROUND,
-      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.panelGroup = this.container.addGroup({
-      name: KEY_GROUP_PANEL_GROUND,
-      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.foregroundGroup = this.container.addGroup({
-      name: KEY_GROUP_FORE_GROUND,
-      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
-    this.initPanelGroupChildren();
     this.updateContainerStyle();
   }
 
@@ -653,15 +608,6 @@ export abstract class SpreadSheet extends EE {
     if (canvas) {
       canvas.style.display = 'block';
     }
-  }
-
-  protected initPanelGroupChildren() {
-    this.panelScrollGroup = new PanelScrollGroup({
-      name: KEY_GROUP_PANEL_SCROLL,
-      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-      s2: this,
-    });
-    this.panelGroup.add(this.panelScrollGroup);
   }
 
   public getInitColumnLeafNodes(): Node[] {

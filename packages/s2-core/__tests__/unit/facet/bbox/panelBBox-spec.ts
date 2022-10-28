@@ -7,6 +7,7 @@ describe('PanelBBox test', () => {
     realWidth: number,
     realHeight: number,
     extraOptions = {},
+    shouldEnableFrozenHeaders = true,
   ) => {
     return {
       layoutResult: {
@@ -37,6 +38,9 @@ describe('PanelBBox test', () => {
       spreadsheet: {
         isScrollContainsRowHeader() {
           return false;
+        },
+        enableFrozenHeaders() {
+          return shouldEnableFrozenHeaders;
         },
         theme: {
           scrollBar: {
@@ -93,6 +97,28 @@ describe('PanelBBox test', () => {
     expect(bbox.viewportHeight).toBe(575);
     expect(bbox.maxX).toBe(600);
     expect(bbox.maxY).toBe(595);
+    expect(bbox.originalHeight).toBe(200);
+    expect(bbox.originalWidth).toBe(200);
+  });
+
+  test('should return correct viewport when disable frozen trailing col and row', () => {
+    const facet = getMockFacet(
+      200,
+      200,
+      {
+        frozenTrailingColCount: 2,
+        frozenTrailingRowCount: 2,
+      },
+      false,
+    );
+
+    const bbox = new PanelBBox(facet, true);
+    expect(bbox.width).toBe(580);
+    expect(bbox.height).toBe(575);
+    expect(bbox.viewportWidth).toBe(200);
+    expect(bbox.viewportHeight).toBe(200);
+    expect(bbox.maxX).toBe(220);
+    expect(bbox.maxY).toBe(220);
     expect(bbox.originalHeight).toBe(200);
     expect(bbox.originalWidth).toBe(200);
   });

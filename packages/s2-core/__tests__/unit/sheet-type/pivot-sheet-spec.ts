@@ -541,12 +541,14 @@ describe('PivotSheet Tests', () => {
     expect(s2.container.get('height')).toEqual(s2.options.height);
 
     // sheet group
-    expect(s2.backgroundGroup.getChildren()).toHaveLength(1);
-    expect(s2.foregroundGroup.getChildren()).toHaveLength(9);
+    expect(s2.facet.backgroundGroup.getChildren()).toHaveLength(1);
+    expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(9);
 
     // panel scroll group
-    expect(s2.panelGroup.getChildren()).toHaveLength(1);
-    expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
+    expect(s2.facet.panelGroup.getChildren()).toHaveLength(1);
+    expect(
+      s2.facet.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL),
+    ).toHaveLength(1);
   });
 
   test.each([

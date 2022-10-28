@@ -35,7 +35,7 @@ describe('Totals Cell Resize Tests', () => {
   s2.render();
 
   test('should render extra resize id for resize area handler', () => {
-    const resizeArea = s2.foregroundGroup.findById(
+    const resizeArea = s2.facet.foregroundGroup.findById(
       KEY_GROUP_COL_RESIZE_AREA,
     ) as IGroup;
     const resizeAreaList = resizeArea.getChildren();

@@ -268,6 +268,10 @@ export class RowCell extends HeaderCell {
       KEY_GROUP_ROW_RESIZE_AREA,
     );
 
+    if (!resizeArea) {
+      return;
+    }
+
     const {
       position,
       seriesNumberWidth,
