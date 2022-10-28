@@ -37,7 +37,7 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
   }
 } 1`] = `
 <span
-  class="s2-strategy-sheet-tooltip-name"
+  class="antv-s2-strategy-sheet-tooltip-name"
 >
   test col label
 </span>
@@ -66,7 +66,7 @@ exports[`StrategySheet Tooltip Tests should render tooltip with {
   }
 } 1`] = `
 <div
-  class="s2-strategy-sheet-tooltip-value"
+  class="antv-s2-strategy-sheet-tooltip-value"
 >
   test row label
 </div>

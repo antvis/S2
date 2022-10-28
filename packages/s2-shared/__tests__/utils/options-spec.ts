@@ -1,4 +1,5 @@
 import {
+  DEFAULT_MOBILE_OPTIONS,
   DEFAULT_STYLE,
   DeviceType,
   HOVER_FOCUS_DURATION,
@@ -109,28 +110,30 @@ describe('Options Tests', () => {
   });
 
   test('should get mobile options', () => {
-    const options = pick(getMobileSheetComponentOptions(), [
+    const options = getMobileSheetComponentOptions();
+    const firstLevelOptions = pick(getMobileSheetComponentOptions(), [
       'height',
-      'style',
-      'interaction',
+      'device',
     ]);
+    const interactionOptions = pick(
+      options.interaction,
+      Object.keys(DEFAULT_MOBILE_OPTIONS.interaction),
+    );
 
-    expect(options).toStrictEqual({
+    expect(interactionOptions).toEqual({
+      hoverHighlight: false,
+      hoverFocus: false,
+      brushSelection: {
+        data: false,
+        row: false,
+        col: false,
+      },
+      multiSelection: false,
+      rangeSelection: false,
+    });
+    expect(options.style.layoutWidthType).toEqual(LayoutWidthTypes.ColAdaptive);
+    expect(firstLevelOptions).toEqual({
       height: 380,
-      style: {
-        layoutWidthType: LayoutWidthTypes.ColAdaptive,
-      },
-      interaction: {
-        hoverHighlight: false,
-        hoverFocus: false,
-        brushSelection: {
-          data: false,
-          row: false,
-          col: false,
-        },
-        multiSelection: false,
-        rangeSelection: false,
-      },
       device: DeviceType.MOBILE,
     });
   });
