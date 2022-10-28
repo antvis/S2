@@ -14,6 +14,11 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
+  /**
+   * @description only used in background condition, when the background color is too light, the font color will be white
+   * @version 1.34.0
+   */
+  intelligentReverseTextColor?: boolean;
 }
 
 export type MappingFunction = (

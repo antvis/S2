@@ -135,6 +135,7 @@ const partDrillDown: PartDrillDown = {
 };
 
 const onSheetMounted = (s2: SpreadSheet) => {
+  console.log('onSheetMounted: ', s2);
   // @ts-ignore
   window.s2 = s2;
   // @ts-ignore
@@ -970,11 +971,10 @@ function MainLayout() {
                 exportCfg: { open: true },
                 advancedSortCfg: { open: true },
               }}
-              onMounted={onSheetMounted}
-              getSpreadSheet={logHandler('getSpreadSheet')}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
+              onMounted={onSheetMounted}
               onDestroy={logHandler('onDestroy', () => {
                 clearInterval(scrollTimer.current);
               })}
