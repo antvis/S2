@@ -9,6 +9,7 @@ import {
 } from '../../common/constant';
 import type { BaseFields, RawData } from '../../common/interface';
 import type {
+  DataPath,
   DataPathParams,
   PivotMeta,
   SortedDimensionValues,
@@ -100,7 +101,7 @@ export function getDimensionsWithParentPath(
  *
  * @param params
  */
-export function getDataPath(params: DataPathParams) {
+export function getDataPath(params: DataPathParams): DataPath {
   const {
     rows,
     columns,
@@ -132,9 +133,10 @@ export function getDataPath(params: DataPathParams) {
     dimensions: string[],
     dimensionValues: string[],
     pivotMeta: PivotMeta,
-  ): number[] => {
+  ): DataPath => {
     let currentMeta = pivotMeta;
-    const path = [];
+    const path: DataPath = [];
+
     for (let i = 0; i < dimensionValues.length; i++) {
       const value = dimensionValues[i];
       const isTotal = value === TOTAL_VALUE;
@@ -158,7 +160,7 @@ export function getDataPath(params: DataPathParams) {
       if (value === MULTI_VALUE) {
         path.push(value);
       } else {
-        path.push(meta?.level);
+        path.push(meta?.level!);
       }
 
       if (meta) {
@@ -171,11 +173,11 @@ export function getDataPath(params: DataPathParams) {
     return path;
   };
 
-  const rowPath = getPath(rows as string[], rowDimensionValues, rowPivotMeta);
+  const rowPath = getPath(rows as string[], rowDimensionValues, rowPivotMeta!);
   const colPath = getPath(
     columns as string[],
     colDimensionValues,
-    colPivotMeta,
+    colPivotMeta!,
   );
   const result = rowPath.concat(...colPath);
 
@@ -204,7 +206,8 @@ export function transformIndexesData(params: Param) {
     rowPivotMeta,
     colPivotMeta,
   } = params;
-  const paths = [];
+
+  const paths: DataPath[] = [];
 
   /**
    * 记录行头、列头重复的字段

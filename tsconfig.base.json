@@ -3,7 +3,7 @@
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "declaration": false,
     "sourceMap": true,
