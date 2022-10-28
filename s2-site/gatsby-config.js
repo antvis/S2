@@ -49,7 +49,7 @@ module.exports = {
         slug: 'playground',
         title: {
           zh: '在线体验',
-          en: 'Online Experience',
+          en: 'Playground',
         },
       },
     ],

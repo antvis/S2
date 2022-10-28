@@ -71,19 +71,25 @@ const App = ({ data }) => {
       if (spreadsheet) {
         const newScroll = spreadsheet.facet.getScrollOffset();
         if (!isEqual(newScroll, scroll)) {
-          const colCellHeight = (spreadsheet.getColumnNodes()[0] || { height: 0 }).height;
+          const colCellHeight = (
+            spreadsheet.getColumnNodes()[0] || { height: 0 }
+          ).height;
           const inView = (x, y) => {
-            const inX = x > scroll.scrollX && x < scroll.scrollX + spreadsheet.options.width
-            const inY = y > scroll.scrollY + colCellHeight && y < scroll.scrollY + spreadsheet.options.height
-            return inX && inY
-          }
+            const inX =
+              x > scroll.scrollX &&
+              x < scroll.scrollX + spreadsheet.options.width;
+            const inY =
+              y > scroll.scrollY + colCellHeight &&
+              y < scroll.scrollY + spreadsheet.options.height;
+            return inX && inY;
+          };
           if (inView(position.left, position.top + colCellHeight)) {
             if (show === false) {
-              setShow(true)
+              setShow(true);
             }
           } else {
             if (show === true) {
-              setShow(false)
+              setShow(false);
             }
           }
 
