@@ -8,9 +8,13 @@ import {
 import type { FormatResult, SortParam } from '../common/interface';
 import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
 import { renderRect } from '../utils/g-renders';
-import { getOrCreateResizeAreaGroupById } from '../utils/interaction/resize';
+import {
+  getOrCreateResizeAreaGroupById,
+  shouldAddResizeArea,
+} from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
 import { formattedFieldValue } from '../utils/cell/header-cell';
+import type { TableColHeader } from '../facet/header/table-col';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -52,7 +56,29 @@ export class TableColCell extends ColCell {
     if (this.isFrozenCell()) {
       return true;
     }
-    return super.shouldAddVerticalResizeArea();
+
+    const { x, y, width, height } = this.getBBoxByType();
+    const { scrollX, scrollY } = this.headerConfig;
+
+    const resizeStyle = this.getResizeAreaStyle();
+
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+
+    return shouldAddResizeArea(
+      resizeAreaBBox,
+      (
+        this.spreadsheet.facet.columnHeader as TableColHeader
+      ).getScrollGroupClipBBox(),
+      {
+        scrollX,
+        scrollY,
+      },
+    );
   }
 
   protected getVerticalResizeAreaOffset() {

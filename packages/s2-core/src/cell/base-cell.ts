@@ -222,7 +222,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
   }
 
-  protected drawBorders() {
+  public drawBorders() {
     this.getBorderPositions().forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
