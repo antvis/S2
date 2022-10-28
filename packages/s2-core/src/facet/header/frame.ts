@@ -36,9 +36,26 @@ export class Frame extends Group {
   }
 
   public static getVerticalBorderWidth(spreadsheet: SpreadSheet) {
-    const { verticalBorderWidth } = spreadsheet.theme?.splitLine;
-
-    return spreadsheet.isPivotMode() ? verticalBorderWidth : 0;
+    // 交叉表一条竖线拉通即可
+    const { splitLine, cornerCell, colCell, dataCell } = spreadsheet.theme;
+    if (spreadsheet.isPivotMode()) {
+      return splitLine.verticalBorderWidth;
+    }
+    /**
+     * 明细表需要在最左侧绘制一条边框
+     * 以前是用gridInfo处理, gridInfo会在每一个列单元格的加一条右侧竖线作为边框分隔
+     * 并且对于第一列还要加一个左侧的竖线作为边框
+     * 这会导致：如果边框设置的很大，可以明显的看到第一个单元格的内容区域比其他的小，且会有左侧内容遮挡
+     *
+     * 现在借助 centerFrame 来绘制左侧的边框，不对单元格的内容造成占位
+     * 在开启序号时，左侧头部序号单元格所使用的是 cornerCell 的主题，否则使用 colCell 的主题
+     */
+    return Math.max(
+      dataCell.cell.verticalBorderWidth,
+      spreadsheet.options.showSeriesNumber
+        ? cornerCell.cell.verticalBorderWidth
+        : colCell.cell.verticalBorderWidth,
+    );
   }
 
   public onBorderScroll(scrollX: number): void {
@@ -61,10 +78,7 @@ export class Frame extends Group {
     const cfg = this.cfg;
     // 是否是透视表
     const { isPivotMode } = cfg;
-    // 明细表啥也不要
-    if (!isPivotMode) {
-      return;
-    }
+    // 交叉表一条竖线拉通即可
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       cfg;
     const {
@@ -72,17 +86,60 @@ export class Frame extends Group {
       verticalBorderColorOpacity,
       horizontalBorderWidth,
     } = spreadsheet.theme?.splitLine;
-    const x = position.x + cornerWidth + horizontalBorderWidth / 2;
-    const y1 = position.y;
-    const y2 =
-      position.y + cornerHeight + horizontalBorderWidth + viewportHeight;
+
+    const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
+    const x = position.x + cornerWidth + frameVerticalWidth / 2;
+
+    if (isPivotMode) {
+      const y2 =
+        position.y + cornerHeight + horizontalBorderWidth + viewportHeight;
+      renderLine(
+        this,
+        { x1: x, y1: position.y, x2: x, y2 },
+        {
+          stroke: verticalBorderColor,
+          lineWidth: frameVerticalWidth,
+          opacity: verticalBorderColorOpacity,
+        },
+      );
+      return;
+    }
+
+    // 明细表需要区分头部的边框和明细格子的边框
+    const {
+      verticalBorderColor: headerVerticalBorderColor,
+      verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
+    } = spreadsheet.options.showSeriesNumber
+      ? spreadsheet.theme.cornerCell.cell
+      : spreadsheet.theme.colCell.cell;
+
     renderLine(
       this,
-      { x1: x, y1, x2: x, y2 },
+      { x1: x, y1: position.y, x2: x, y2: position.y + cornerHeight },
       {
-        stroke: verticalBorderColor,
-        lineWidth: Frame.getVerticalBorderWidth(spreadsheet),
-        opacity: verticalBorderColorOpacity,
+        stroke: headerVerticalBorderColor,
+        lineWidth: frameVerticalWidth,
+        opacity: headerVerticalBorderColorOpacity,
+      },
+    );
+
+    const {
+      verticalBorderColor: cellVerticalBorderColor,
+      verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
+    } = spreadsheet.theme.dataCell.cell;
+
+    renderLine(
+      this,
+      {
+        x1: x,
+        y1: position.y + cornerHeight + horizontalBorderWidth,
+        x2: x,
+        y2: position.y + cornerHeight + horizontalBorderWidth + viewportHeight,
+      },
+      {
+        stroke: cellVerticalBorderColor,
+        lineWidth: frameVerticalWidth,
+        opacity: cellVerticalBorderColorOpacity,
       },
     );
   }
@@ -107,7 +164,7 @@ export class Frame extends Group {
     const x2 =
       x1 +
       cornerWidth +
-      Frame.getVerticalBorderWidth(spreadsheet) + // 明细表不需要绘制纵向分割线，所以不需要计算它的宽度
+      Frame.getVerticalBorderWidth(spreadsheet) +
       viewportWidth +
       (scrollContainsRowHeader ? scrollX : 0);
     const y = position.y + cornerHeight + horizontalBorderWidth / 2;
