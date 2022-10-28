@@ -243,8 +243,7 @@ ReactDOM.render(
 
 #### 注意事项
 
-使用移动端组件 `MobileSheet`, 将会被内置移动专用的 `options`,并且移动端存在专门的组件，与 PC 端的组件有所不同。
-详情可点击 xxx todo-zc: 进行查看。
+移动端组件 `MobileSheet`, 将会被内置移动专用的 `options`,并且移动端存在专门的组件，与 PC 端的组件有所不同。
 
 ​📊 查看 [React 版本透视表移动端 demo](/zh/examples/react-component/sheet#mobile-pivot)。
 

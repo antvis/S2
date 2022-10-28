@@ -11,5 +11,5 @@
     }
   }, 
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
-  "include": ["src", "./typings.d.ts", "playground", "__tests__"]
+  "include": ["src", "./typings.d.ts", "playground"]
 }
