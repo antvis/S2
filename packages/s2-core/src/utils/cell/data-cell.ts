@@ -29,6 +29,13 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   });
 };
 
+export const SEPARATOR = '-';
+
 export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}-${colIndex}`;
+  return `${rowIndex}${SEPARATOR}${colIndex}`;
+};
+
+export const splitDataCellId = (id: string) => {
+  const [rowId, colId] = id.split(SEPARATOR);
+  return { rowId, colId };
 };

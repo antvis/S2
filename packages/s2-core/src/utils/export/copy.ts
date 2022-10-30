@@ -7,6 +7,7 @@ import {
   map,
   max,
   repeat,
+  toPairs,
   zip,
 } from 'lodash';
 import {
@@ -17,12 +18,16 @@ import {
   ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
+  SERIES_NUMBER_FIELD,
+  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
+import { getEmptyPlaceholder } from '../text';
+import { InteractionCellSelectedHighlightType } from '../../common/constant/interaction';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -625,6 +630,47 @@ function getBrushHeaderCopyable(
   ];
 }
 
+export const getDataByRowData = (
+  spreadsheet: SpreadSheet,
+  rowData: RowData,
+): Copyable => {
+  const {
+    options: { placeholder },
+    dataCfg: {
+      fields: { rows, columns, values },
+    },
+  } = spreadsheet;
+  const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
+  const column = spreadsheet.getColumnLeafNodes();
+  const rowDataPairs = toPairs(rowData);
+  const order = [...rows, ...columns, ...values];
+  let datas: string[][] = [];
+
+  if (spreadsheet.isTableMode()) {
+    datas = map(rowDataPairs, ([_rowIndex, rowDataItem]) => {
+      const columnWithoutSeriesNumber = filter(
+        column,
+        (node) => node.field !== SERIES_NUMBER_FIELD,
+      );
+      return map(
+        columnWithoutSeriesNumber,
+        (node) => rowDataItem?.[node.field] ?? defaultDataValue,
+      );
+    });
+  } else if (spreadsheet.isPivotMode()) {
+    forEach(rowDataPairs, ([_rowIndex, rowDataArr]) => {
+      forEach(rowDataArr, (rowDataItem) => {
+        const matrix = [];
+        forEach(order, (i) => {
+          matrix.push(rowDataItem?.[i] ?? defaultDataValue);
+        });
+        datas.push(matrix);
+      });
+    });
+  }
+  return matrixPlainTextTransformer(datas);
+};
+
 function getDataCellCopyable(
   spreadsheet: SpreadSheet,
   cells: CellMeta[],
@@ -655,8 +701,17 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
+    const { selectedCellHighlight } = spreadsheet.options.interaction;
+    const { CROSS, ROW } = InteractionCellSelectedHighlightType;
 
-    if (spreadsheet.options.interaction?.copyWithHeader) {
+    if (
+      [CROSS, ROW].includes(
+        selectedCellHighlight as InteractionCellSelectedHighlightType,
+      )
+    ) {
+      const rowData = spreadsheet.dataSet.getRowData(cells);
+      data = getDataByRowData(spreadsheet, rowData);
+    } else if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData,

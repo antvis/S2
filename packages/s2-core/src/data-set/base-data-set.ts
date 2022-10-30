@@ -23,6 +23,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
+import type { CellMeta, RowData } from '../common';
 import type { CellDataParams, DataType } from './index';
 
 export abstract class BaseDataSet {
@@ -176,5 +177,13 @@ export abstract class BaseDataSet {
 
   public moreThanOneValue() {
     return this.fields?.values?.length > 1;
+  }
+
+  /**
+   * get row data including cells
+   * @param cells
+   */
+  public getRowData(cells: CellMeta[]): RowData {
+    return null;
   }
 }

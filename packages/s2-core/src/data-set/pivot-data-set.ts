@@ -17,6 +17,10 @@ import {
   uniq,
   unset,
   values,
+  sortBy,
+  toPairs,
+  map,
+  uniqBy,
 } from 'lodash';
 import {
   EXTRA_FIELD,
@@ -34,6 +38,7 @@ import type {
   PartDrillDownFieldInLevel,
   S2DataConfig,
   ViewMeta,
+  RowData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
@@ -56,6 +61,8 @@ import {
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
+import type { CellMeta } from '../common';
+import { splitDataCellId } from '../utils/cell/data-cell';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
@@ -614,5 +621,31 @@ export class PivotDataSet extends BaseDataSet {
   // 是否开启自定义度量组位置值
   private isCustomMeasuresPosition(customValueOrder?: number) {
     return isNumber(customValueOrder);
+  }
+
+  public getRowData(cells: CellMeta[]): RowData {
+    const cellsSorted = sortBy(cells, (cell) => cell.rowIndex);
+    const uniqByRowIndex = uniqBy(cellsSorted, 'rowIndex');
+    const column = this.spreadsheet.getColumnLeafNodes();
+    const {
+      fields: { rows },
+    } = this.spreadsheet.dataCfg;
+    const rowData: RowData = {};
+
+    forEach(uniqByRowIndex, (cell) => {
+      const { id, rowIndex } = cell;
+      const { rowId } = splitDataCellId(id);
+      const fields = rowId.split(ID_SEPARATOR).slice(1);
+      const cellRowData = filter(this.displayData, (data) => {
+        return every(rows, (rowField, idx) => data[rowField] === fields[idx]);
+      });
+      rowData[rowIndex] = map(column, (node) => {
+        const queryPairs = toPairs(node.query);
+        return find(cellRowData, (cellRowDataItem) =>
+          every(queryPairs, ([qK, qV]) => cellRowDataItem[qK] === qV),
+        );
+      });
+    });
+    return rowData;
   }
 }
