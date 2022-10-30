@@ -17,6 +17,7 @@ import {
   type InteractionOptions,
   DEFAULT_STYLE,
   S2Event,
+  InteractionCellSelectedHighlightType,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -825,19 +826,39 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
-                <Tooltip title="高亮选中单元格">
-                  <Switch
-                    checkedChildren="选中高亮开"
-                    unCheckedChildren="选中高亮关"
-                    checked={mergedOptions.interaction?.selectedCellHighlight}
-                    onChange={(checked) => {
+                <Tooltip title="单元格选中高亮">
+                  <Select
+                    style={{ width: 160 }}
+                    defaultValue={
+                      mergedOptions.interaction?.selectedCellHighlight
+                    }
+                    placeholder="单元格选中高亮"
+                    allowClear
+                    onChange={(type) => {
                       updateOptions({
                         interaction: {
-                          selectedCellHighlight: checked,
+                          selectedCellHighlight: type,
                         },
                       });
                     }}
-                  />
+                  >
+                    <Select.Option
+                      value={InteractionCellSelectedHighlightType.ROW}
+                    >
+                      行高亮
+                    </Select.Option>
+                    <Select.Option
+                      value={InteractionCellSelectedHighlightType.CROSS}
+                    >
+                      十字高亮
+                    </Select.Option>
+                    <Select.Option value={true}>（旧）仅高亮表头</Select.Option>
+                    <Select.Option
+                      value={InteractionCellSelectedHighlightType.ONLY_HEADER}
+                    >
+                      仅高亮表头
+                    </Select.Option>
+                  </Select>
                 </Tooltip>
                 <Tooltip title="高亮当前行列单元格">
                   <Switch

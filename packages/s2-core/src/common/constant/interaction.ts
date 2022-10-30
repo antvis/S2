@@ -113,3 +113,9 @@ export enum ScrollDirection {
   LEADING = 'leading',
   TRAILING = 'trailing',
 }
+
+export enum InteractionCellSelectedHighlightType {
+  ROW = 'row',
+  CROSS = 'cross',
+  ONLY_HEADER = 'onlyHeader',
+}

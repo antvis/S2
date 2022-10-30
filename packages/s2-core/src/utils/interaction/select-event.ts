@@ -6,7 +6,12 @@ import {
   InteractionStateName,
   S2Event,
 } from '../../common/constant';
-import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
+import type {
+  CellMeta,
+  S2CellType,
+  ViewMeta,
+  HeaderCellMeta,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import {
   getActiveHoverRowColCells,
@@ -26,6 +31,15 @@ export const getCellMeta = (cell: S2CellType) => {
     id,
     colIndex,
     rowIndex,
+    type: cell.cellType,
+  };
+};
+
+export const getHeaderCellMeta = (cell: S2CellType): HeaderCellMeta => {
+  const meta = cell.getMeta();
+  const { id } = meta;
+  return {
+    id,
     type: cell.cellType,
   };
 };

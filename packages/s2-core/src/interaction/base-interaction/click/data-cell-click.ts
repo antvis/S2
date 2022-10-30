@@ -1,10 +1,12 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { isNil } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
   getTooltipOperatorTrendMenu,
+  InteractionCellSelectedHighlightType,
 } from '../../../common/constant';
 import type {
   TooltipData,
@@ -14,12 +16,14 @@ import type {
 import {
   getCellMeta,
   updateRowColCells,
+  getHeaderCellMeta,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import type { Node } from '../../../facet/layout/node';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -59,16 +63,43 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
+      const { selectedCellHighlight } = options.interaction;
+      let headerSelectedNode: Node[] = [];
+      if (!isNil(selectedCellHighlight)) {
+        const colNodes: Node[] = this.spreadsheet.getColumnNodes();
+        const rowNodes: Node[] = this.spreadsheet.getRowNodes();
+        const colHeadersSelected = colNodes.filter((node: Node) =>
+          meta.colId.includes(node.id),
+        );
+        const rowHeadersSelected = rowNodes.filter((node: Node) =>
+          meta.rowId.includes(node.id),
+        );
+        const { ROW, CROSS, ONLY_HEADER } =
+          InteractionCellSelectedHighlightType;
+        if ([true, CROSS, ONLY_HEADER].includes(selectedCellHighlight)) {
+          headerSelectedNode = [...colHeadersSelected, ...rowHeadersSelected];
+        } else if (
+          [ROW].includes(
+            selectedCellHighlight as InteractionCellSelectedHighlightType,
+          )
+        ) {
+          headerSelectedNode = [...rowHeadersSelected];
+        }
+      }
+
       interaction.changeState({
         cells: [getCellMeta(cell)],
+        headerCells: headerSelectedNode.map((c) =>
+          getHeaderCellMeta(c.belongsCell),
+        ),
         stateName: InteractionStateName.SELECTED,
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
 
-      if (options.interaction.selectedCellHighlight) {
-        updateRowColCells(meta);
-      }
+      // if (options.interaction.selectedCellHighlight) {
+      //   updateRowColCells(meta);
+      // }
     });
   }
 

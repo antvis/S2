@@ -4,6 +4,7 @@ import type {
   CellTypes,
   InterceptType,
   ScrollbarPositionType,
+  InteractionCellSelectedHighlightType,
 } from '../constant';
 import type {
   BaseCell,
@@ -38,6 +39,12 @@ export interface CellMeta {
   [key: string]: unknown;
 }
 
+export interface HeaderCellMeta {
+  id: string;
+  type: CellTypes;
+  [key: string]: unknown;
+}
+
 export type OnUpdateCells = (
   root: RootInteraction,
   defaultOnUpdateCells: () => void,
@@ -48,6 +55,8 @@ export interface InteractionStateInfo {
   stateName?: InteractionStateName;
   // all the active cells for this interaction (save meta data for recording offscreen cells)
   cells?: CellMeta[];
+  // all the active header cells including including column header and row header for this interaction (save meta data for recording offscreen cells)
+  headerCells?: HeaderCellMeta[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
@@ -162,7 +171,7 @@ export interface InteractionOptions {
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // highlight col and row header for selected cell
-  selectedCellHighlight?: boolean;
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain';
   /** ***********CUSTOM INTERACTION HOOKS**************** */

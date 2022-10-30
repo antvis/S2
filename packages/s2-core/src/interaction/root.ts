@@ -172,6 +172,12 @@ export class RootInteraction {
     return currentState?.cells || [];
   }
 
+  // 获取当前 interaction 记录的 header cell 元信息列表，包括不在可视区域内的格子
+  public getHeaderCells() {
+    const currentState = this.getState();
+    return currentState?.headerCells || [];
+  }
+
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
@@ -489,6 +495,7 @@ export class RootInteraction {
     const { interaction } = this.spreadsheet;
     const {
       cells = [],
+      headerCells = [],
       force,
       stateName,
       onUpdateCells,
@@ -498,6 +505,7 @@ export class RootInteraction {
       if (force) {
         interaction.changeState({
           cells: [],
+          headerCells: [],
           stateName: InteractionStateName.UNSELECTED,
         });
       }
@@ -513,10 +521,17 @@ export class RootInteraction {
     this.setState(interactionStateInfo);
 
     // 更新单元格
-    if (onUpdateCells) {
-      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
-    } else {
+    const update = () => {
       this.updatePanelGroupAllDataCells();
+      if (headerCells.length) {
+        this.updateCells(this.getAllColHeaderCells());
+        this.updateCells(this.getAllRowHeaderCells());
+      }
+    };
+    if (onUpdateCells) {
+      onUpdateCells(this, update);
+    } else {
+      update();
     }
     this.draw();
   }
