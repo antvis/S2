@@ -300,10 +300,12 @@ export class PivotFacet extends BaseFacet {
 
           if (cellData) {
             // 总小计格子不一定有数据
-            const cellLabel = `${handleDataItem(
-              cellData,
-              filterDisplayDataItem,
-            )}`;
+            const valueData = handleDataItem(cellData, filterDisplayDataItem);
+            const formattedValue =
+              this.spreadsheet.dataSet.getFieldFormatter(
+                cellData[EXTRA_FIELD],
+              )?.(valueData) ?? valueData;
+            const cellLabel = `${formattedValue}`;
             const cellLabelWidth =
               this.spreadsheet.measureTextWidthRoughly(cellLabel);
 
@@ -639,13 +641,17 @@ export class PivotFacet extends BaseFacet {
   ): number {
     // tree row width = [config width, canvas / 2]
     const canvasW = this.getCanvasHW().width;
-    const rowHeaderWidth = Math.min(canvasW / 2, this.getTreeRowHeaderWidth());
+    const availableWidth = canvasW - this.getSeriesNumberWidth();
+    const rowHeaderWidth = Math.min(
+      availableWidth / 2,
+      this.getTreeRowHeaderWidth(),
+    );
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
     return Math.max(
       getCellWidth(cellCfg, this.getColLabelLength(col, rowLeafNodes)),
-      (canvasW - rowHeaderWidth) / colSize,
+      (availableWidth - rowHeaderWidth) / colSize,
     );
   }
 
@@ -702,15 +708,16 @@ export class PivotFacet extends BaseFacet {
     const rowHeaderColSize = rows.length;
     const colHeaderColSize = colLeafNodes.length;
     const canvasW = this.getCanvasHW().width;
+    const availableWidth = canvasW - this.getSeriesNumberWidth();
+
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
-      // canvasW / (rowHeader's col size + colHeader's col size) = [celCfg.width, canvasW]
-      return Math.max(getCellWidth(cellCfg), canvasW / size);
+      return Math.max(getCellWidth(cellCfg), availableWidth / size);
     }
-    // (canvasW - rowHeaderW) / (colHeader's col size) = [celCfg.width, canvasW]
+
     return Math.max(
       getCellWidth(cellCfg),
-      (canvasW - rowHeaderWidth) / colHeaderColSize,
+      (availableWidth - rowHeaderWidth) / colHeaderColSize,
     );
   }
 
