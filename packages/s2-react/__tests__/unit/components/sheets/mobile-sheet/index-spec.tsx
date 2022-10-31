@@ -29,13 +29,15 @@ describe('MobileSheet Tests', () => {
   });
 
   test('get mobile default fragment', () => {
-    const { asFragment } = render(
+    const { asFragment, container } = render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
-        options={{ height: 300, width: 300 }}
+        options={{ height: 300, width: 300, hdAdapter: false }}
       />,
     );
-
+    // 防止环境不同导致 deviceRatio 不同, 无法通过 snapshot 比较
+    container.querySelector('canvas').setAttribute('width', '300');
+    container.querySelector('canvas').setAttribute('height', '300');
     expect(asFragment()).toMatchSnapshot();
   });
 });
