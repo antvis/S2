@@ -15,9 +15,9 @@ exports[`MobileSheet Tests get mobile default fragment 1`] = `
           class="antv-s2-container"
         >
           <canvas
-            height="600"
+            height="300"
             style="width: 300px; height: 300px; display: block;"
-            width="600"
+            width="300"
           />
         </div>
       </div>
