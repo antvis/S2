@@ -1,10 +1,6 @@
 import type { IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import {
-  KEY_GROUP_GRID_GROUP,
-  KEY_GROUP_PANEL_FROZEN_COL,
-  SQUARE_LINE_CAP,
-} from '../common/constant';
+import { KEY_GROUP_GRID_GROUP, SQUARE_LINE_CAP } from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
 import { renderLine } from '../utils/g-renders';
@@ -26,15 +22,9 @@ export class GridGroup extends Group {
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
     const bbox = this.getBBox();
-    const { theme, isTableMode } = this.s2;
+    const { theme } = this.s2;
 
     const style = theme.dataCell.cell;
-    // 在明细表中需要补全左侧的边框，分为两种情况：
-    // 1. 存在行头冻结，需要为冻结的行头组添加边框
-    // 2. 不存在行头冻结，需要为默认的 Grid 组添加边框
-    const shouldDrawLeftBorder =
-      isTableMode() &&
-      (id === KEY_GROUP_GRID_GROUP || id === KEY_GROUP_PANEL_FROZEN_COL);
 
     if (!this.gridGroup || !this.findById(id)) {
       this.gridGroup = this.addGroup({
@@ -47,9 +37,6 @@ export class GridGroup extends Group {
     const verticalBorderWidth = style.verticalBorderWidth;
 
     this.gridInfo = gridInfo;
-    if (shouldDrawLeftBorder) {
-      this.gridInfo.cols.unshift(verticalBorderWidth);
-    }
 
     // line 在绘制时，包围盒计算有点问题，会带入lineWidth
     // 比如传入的 x1=0, x2=10, lineWidth=20

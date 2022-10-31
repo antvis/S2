@@ -39,8 +39,19 @@ export class TableDataCell extends DataCell {
   }
 
   protected shouldDrawResizeArea() {
-    // 只有最左侧的单元格需要绘制resize区域
-    return this.meta.colIndex === 0;
+    // 每一行直绘制一条贯穿式 resize 热区
+    const id = String(this.meta.rowIndex);
+
+    const resizeArea = getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+    const frozenResizeArea = getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+    );
+
+    return !resizeArea?.findById(id) && !frozenResizeArea?.findById(id);
   }
 
   public drawResizeArea() {
@@ -89,7 +100,11 @@ export class TableDataCell extends DataCell {
       offsetY -= scrollY + paginationSy;
     }
 
+    const resizeWidth =
+      headerWidth + Frame.getVerticalBorderWidth(this.spreadsheet);
+
     resizeArea.addShape('rect', {
+      id: String(this.meta.rowIndex),
       attrs: {
         ...getResizeAreaAttrs({
           id: String(this.meta.rowIndex),
@@ -98,13 +113,13 @@ export class TableDataCell extends DataCell {
           effect: ResizeAreaEffect.Cell,
           offsetX: 0,
           offsetY,
-          width: headerWidth,
+          width: resizeWidth,
           height,
           meta: this.meta,
         }),
         x: 0,
         y: offsetY + height - resizeStyle.size,
-        width: headerWidth,
+        width: resizeWidth,
       },
     });
   }
