@@ -65,14 +65,14 @@ export const getCellBoxByType = (
         width -= borderWidth;
         break;
     }
-
-    if (boxType === CellBox.CONTENT_BOX) {
-      x += padding?.left;
-      y += padding?.top;
-      width -= padding?.left + padding?.right;
-      height -= padding?.top + padding?.bottom;
-    }
   });
+
+  if (boxType === CellBox.CONTENT_BOX) {
+    x += padding?.left;
+    y += padding?.top;
+    width -= padding?.left + padding?.right;
+    height -= padding?.top + padding?.bottom;
+  }
 
   return {
     x,

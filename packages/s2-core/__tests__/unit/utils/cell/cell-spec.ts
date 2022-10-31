@@ -1,8 +1,12 @@
 import type { SimpleBBox } from '@antv/g-canvas';
-import { CellBorderPosition, type CellTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  CellBox,
+  type CellTheme,
+} from '@/common/interface';
 import type { AreaRange } from '@/common/interface/scroll';
 import {
-  getContentArea,
+  getCellBoxByType,
   getMaxTextWidth,
   getTextAndFollowingIconPosition,
   getTextAreaRange,
@@ -10,26 +14,65 @@ import {
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
-  test('should return content area', () => {
-    const cfg = {
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 100,
-    };
-    const padding = {
+  const cfg = {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+  };
+  const cellStyle = {
+    horizontalBorderWidth: 10,
+    verticalBorderWidth: 20,
+    padding: {
       top: 12,
       right: 12,
       bottom: 8,
       left: 8,
-    };
-    const results = getContentArea(cfg, padding);
+    },
+  };
+  test('should return border area', () => {
+    const results = getCellBoxByType(
+      cfg,
+      [CellBorderPosition.LEFT, CellBorderPosition.TOP],
+      cellStyle,
+      CellBox.BORDER_BOX,
+    );
 
     expect(results).toEqual({
-      x: 8,
-      y: 12,
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    });
+  });
+  test('should return padding area', () => {
+    const results = getCellBoxByType(
+      cfg,
+      [CellBorderPosition.LEFT, CellBorderPosition.TOP],
+      cellStyle,
+      CellBox.PADDING_BOX,
+    );
+
+    expect(results).toEqual({
+      x: 20,
+      y: 10,
       width: 80,
-      height: 80,
+      height: 90,
+    });
+  });
+  test('should return content area', () => {
+    const results = getCellBoxByType(
+      cfg,
+      [CellBorderPosition.LEFT, CellBorderPosition.TOP],
+      cellStyle,
+      CellBox.CONTENT_BOX,
+    );
+
+    expect(results).toEqual({
+      x: 28,
+      y: 22,
+      width: 60,
+      height: 70,
     });
   });
 });
