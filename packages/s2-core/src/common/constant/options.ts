@@ -26,7 +26,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
   collapsedCols: {},
   cellCfg: {
     width: 96,
-    height: 60,
+    height: 30,
   },
   rowCfg: {
     width: null,
@@ -34,7 +34,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     heightByField: {},
   },
   colCfg: {
-    height: 80,
+    height: 30,
     widthByFieldValue: {},
     heightByField: {},
   },
