@@ -8,6 +8,9 @@ export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
     return Number.isNaN(value);
   }
+  if (!value) {
+    return true;
+  }
   if (typeof value === 'string') {
     return Number.isNaN(Number(value));
   }
