@@ -317,7 +317,10 @@ export class TableFacet extends BaseFacet {
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
-      const canvasW = this.getCanvasSize().width - seriesNumberWidth;
+      const canvasW =
+        this.getCanvasSize().width -
+        seriesNumberWidth -
+        Frame.getVerticalBorderWidth(this.spreadsheet);
       return Math.max(cellCfg?.width, canvasW / Math.max(1, colHeaderColSize));
     }
     return cellCfg?.width;
@@ -372,7 +375,9 @@ export class TableFacet extends BaseFacet {
 
     preLeafNode = Node.blankNode();
 
-    const canvasW = this.getCanvasSize().width;
+    const canvasW =
+      this.getCanvasSize().width -
+      Frame.getVerticalBorderWidth(this.spreadsheet);
 
     if (frozenTrailingColCount > 0) {
       for (let i = 1; i <= allNodes.length; i++) {
@@ -566,48 +571,19 @@ export class TableFacet extends BaseFacet {
     const { scrollY, scrollX } = this.getScrollOffset();
     const paginationScrollY = this.getPaginationScrollY();
 
-    translateGroup(
-      this.frozenTopGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height +
-        Frame.getHorizontalBorderWidth(this.spreadsheet) -
-        paginationScrollY,
-    );
+    const { x, y } = this.panelBBox;
 
-    translateGroup(
-      this.frozenRowGroup,
-      this.cornerBBox.width - scrollX,
-      this.cornerBBox.height +
-        Frame.getHorizontalBorderWidth(this.spreadsheet) -
-        paginationScrollY,
-    );
-    translateGroup(
-      this.frozenColGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height +
-        Frame.getHorizontalBorderWidth(this.spreadsheet) -
-        scrollY -
-        paginationScrollY,
-    );
+    translateGroup(this.frozenTopGroup, x, y - paginationScrollY);
+    translateGroup(this.frozenBottomGroup, x, y);
+
+    translateGroup(this.frozenRowGroup, x - scrollX, y - paginationScrollY);
+    translateGroup(this.frozenTrailingRowGroup, x - scrollX, y);
+
+    translateGroup(this.frozenColGroup, x, y - scrollY - paginationScrollY);
     translateGroup(
       this.frozenTrailingColGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height +
-        Frame.getHorizontalBorderWidth(this.spreadsheet) -
-        scrollY -
-        paginationScrollY,
-    );
-
-    translateGroup(
-      this.frozenBottomGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height + Frame.getHorizontalBorderWidth(this.spreadsheet),
-    );
-
-    translateGroup(
-      this.frozenTrailingRowGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height + Frame.getHorizontalBorderWidth(this.spreadsheet),
+      x,
+      y - scrollY - paginationScrollY,
     );
   };
 
@@ -639,8 +615,9 @@ export class TableFacet extends BaseFacet {
       height: panelHeight,
       viewportWidth,
       viewportHeight,
+      x: panelBBoxStartX,
+      y: panelBBoxStartY,
     } = this.panelBBox;
-    const { height: cornerHeight } = this.cornerBBox;
     const colLeafNodes = this.layoutResult.colLeafNodes;
     const cellRange = this.getCellRange();
     const dataLength = cellRange.end - cellRange.start;
@@ -688,6 +665,10 @@ export class TableFacet extends BaseFacet {
       opacity: style?.horizontalBorderColorOpacity,
     };
 
+    const frameVerticalBorderWidth = Frame.getVerticalBorderWidth(
+      this.spreadsheet,
+    );
+
     if (frozenColCount > 0) {
       const x = colLeafNodes.reduce((prev, item, idx) => {
         if (idx < frozenColCount) {
@@ -701,10 +682,10 @@ export class TableFacet extends BaseFacet {
       renderLine(
         splitLineGroup as Group,
         {
-          x1: x,
-          x2: x,
-          y1: cornerHeight,
-          y2: cornerHeight + height,
+          x1: x + panelBBoxStartX,
+          x2: x + panelBBoxStartX,
+          y1: panelBBoxStartY,
+          y2: panelBBoxStartY + height,
         },
         {
           ...verticalBorderStyle,
@@ -714,8 +695,8 @@ export class TableFacet extends BaseFacet {
       if (style.showShadow && scrollX > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
-            x,
-            y: cornerHeight,
+            x: x + panelBBoxStartX,
+            y: panelBBoxStartY,
             width: style.shadowWidth,
             height,
             fill: this.getShadowFill(0),
@@ -726,8 +707,7 @@ export class TableFacet extends BaseFacet {
 
     if (frozenRowCount > 0) {
       const y =
-        cornerHeight +
-        Frame.getHorizontalBorderWidth(this.spreadsheet) +
+        panelBBoxStartY +
         this.getTotalHeightForRange(
           cellRange.start,
           cellRange.start + frozenRowCount - 1,
@@ -737,7 +717,7 @@ export class TableFacet extends BaseFacet {
         splitLineGroup as Group,
         {
           x1: 0,
-          x2: width,
+          x2: width + frameVerticalBorderWidth,
           y1: y,
           y2: y,
         },
@@ -751,7 +731,7 @@ export class TableFacet extends BaseFacet {
           attrs: {
             x: 0,
             y,
-            width,
+            width: width + frameVerticalBorderWidth,
             height: style.shadowWidth,
             fill: this.getShadowFill(90),
           },
@@ -767,15 +747,15 @@ export class TableFacet extends BaseFacet {
         return prev;
       }, 0);
 
-      const x = panelWidth - width;
+      const x = panelWidth - width + frameVerticalBorderWidth;
       const height = frozenTrailingRowCount ? panelHeight : viewportHeight;
       renderLine(
         splitLineGroup as Group,
         {
           x1: x,
           x2: x,
-          y1: cornerHeight,
-          y2: cornerHeight + height,
+          y1: panelBBoxStartY,
+          y2: panelBBoxStartY + height,
         },
         {
           ...verticalBorderStyle,
@@ -786,7 +766,7 @@ export class TableFacet extends BaseFacet {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: x - style.shadowWidth,
-            y: cornerHeight,
+            y: panelBBoxStartY,
             width: style.shadowWidth,
             height,
             fill: this.getShadowFill(180),
@@ -807,7 +787,7 @@ export class TableFacet extends BaseFacet {
         splitLineGroup as Group,
         {
           x1: 0,
-          x2: width,
+          x2: width + frameVerticalBorderWidth,
           y1: y,
           y2: y,
         },
@@ -821,7 +801,7 @@ export class TableFacet extends BaseFacet {
           attrs: {
             x: 0,
             y: y - style.shadowWidth,
-            width,
+            width: width + frameVerticalBorderWidth,
             height: style.shadowWidth,
             fill: this.getShadowFill(270),
           },
@@ -904,20 +884,6 @@ export class TableFacet extends BaseFacet {
       (this[group] as Group).add(cell);
     }
   };
-
-  public init() {
-    super.init();
-    const { y, width, height } = this.panelBBox;
-    this.panelGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: 0,
-        y,
-        width,
-        height,
-      },
-    });
-  }
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
@@ -1057,21 +1023,6 @@ export class TableFacet extends BaseFacet {
     hRowScroll: number,
   ) {
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
-
-    const {
-      frozenColGroup,
-      frozenTrailingColGroup,
-      frozenRowGroup,
-      frozenTrailingRowGroup,
-    } = this;
-    [frozenRowGroup, frozenTrailingRowGroup].forEach((g) => {
-      translateGroupX(g, this.cornerBBox.width - scrollX);
-    });
-
-    [frozenColGroup, frozenTrailingColGroup].forEach((g) => {
-      translateGroupY(g, this.cornerBBox.height - scrollY);
-    });
-
     this.translateFrozenGroups();
     this.updateRowResizeArea();
     this.renderFrozenGroupSplitLine(scrollX, scrollY);
@@ -1141,7 +1092,6 @@ export class TableFacet extends BaseFacet {
 
   // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
   protected clip(scrollX: number, scrollY: number) {
-    const colLeafNodes = this.layoutResult.colLeafNodes;
     const paginationScrollY = this.getPaginationScrollY();
     const {
       frozenRowGroup,
@@ -1226,11 +1176,10 @@ export class TableFacet extends BaseFacet {
         type: 'rect',
         attrs: {
           x: 0,
-          y:
-            frozenRowGroupHeight +
-            this.cornerBBox.height +
-            Frame.getHorizontalBorderWidth(this.spreadsheet),
-          width: this.panelBBox.width,
+          y: this.panelBBox.y + frozenRowGroupHeight,
+          width:
+            this.panelBBox.width +
+            Frame.getVerticalBorderWidth(this.spreadsheet),
           height: panelScrollGroupHeight,
         },
       });

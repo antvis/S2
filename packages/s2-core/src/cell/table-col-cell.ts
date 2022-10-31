@@ -14,7 +14,7 @@ import {
 } from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import type { TableColHeader } from '../facet/header/table-col';
+import { getFrozenColWidth } from '../utils/layout/frozen';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -58,7 +58,7 @@ export class TableColCell extends ColCell {
     }
 
     const { x, y, width, height } = this.getBBoxByType();
-    const { scrollX, scrollY } = this.headerConfig;
+    const { scrollX, scrollY, width: headerWidth } = this.headerConfig;
 
     const resizeStyle = this.getResizeAreaStyle();
 
@@ -69,16 +69,23 @@ export class TableColCell extends ColCell {
       height,
     };
 
-    return shouldAddResizeArea(
-      resizeAreaBBox,
-      (
-        this.spreadsheet.facet.columnHeader as TableColHeader
-      ).getScrollGroupClipBBox(),
-      {
-        scrollX,
-        scrollY,
-      },
+    const frozenWidth = getFrozenColWidth(
+      this.spreadsheet.facet.layoutResult.colLeafNodes,
+      this.spreadsheet.options,
     );
+    const resizeClipAreaBBox = {
+      x: frozenWidth.frozenColWidth,
+      y: 0,
+      width:
+        headerWidth -
+        frozenWidth.frozenColWidth -
+        frozenWidth.frozenTrailingColWidth,
+      height,
+    };
+    return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+      scrollX,
+      scrollY,
+    });
   }
 
   protected getVerticalResizeAreaOffset() {
@@ -87,8 +94,8 @@ export class TableColCell extends ColCell {
 
     if (this.isFrozenCell()) {
       return {
-        x,
-        y,
+        x: position.x + x,
+        y: position.y + y,
       };
     }
     return {

@@ -8,9 +8,9 @@ import {
   SERIES_NUMBER_FIELD,
 } from '../../common/constant';
 import type { SpreadSheet } from '../../sheet-type';
-import { getValidFrozenOptions } from '../../utils/layout/frozen';
+import { getFrozenColWidth } from '../../utils/layout/frozen';
 import type { Node } from '../layout/node';
-import { isFrozenCol, isFrozenTrailingCol } from '../utils';
+import { isFrozenCol, isFrozenTrailingCol, translateGroupX } from '../utils';
 import { ColHeader } from './col';
 import type { ColHeaderConfig } from './interface';
 
@@ -109,39 +109,24 @@ export class TableColHeader extends ColHeader {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
     const options = spreadsheet.options;
 
-    if (!options.frozenColCount && !options.frozenTrailingColCount) {
-      return {
-        x: scrollX,
-        y: 0,
-        width,
-        height,
-      };
-    }
-
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
-    const { frozenColCount, frozenTrailingColCount } = getValidFrozenOptions(
-      spreadsheet.options,
-      colLeafNodes.length,
-    );
-
-    let frozenColWidth = 0;
-    let frozenTrailingColWidth = 0;
-    for (let i = 0; i < frozenColCount; i++) {
-      frozenColWidth += colLeafNodes[i].width;
-    }
-
-    for (let i = 0; i < frozenTrailingColCount; i++) {
-      frozenTrailingColWidth += colLeafNodes[colLeafNodes.length - 1 - i].width;
-    }
-
-    const frozenClipWidth = width - frozenColWidth - frozenTrailingColWidth;
+    const frozenWidth = getFrozenColWidth(colLeafNodes, options);
     return {
-      x: scrollX + frozenColWidth,
+      x: scrollX + frozenWidth.frozenColWidth,
       y: 0,
-      width: frozenClipWidth,
+      width:
+        width - frozenWidth.frozenColWidth - frozenWidth.frozenTrailingColWidth,
       height,
     };
   };
+
+  protected override offset() {
+    super.offset();
+
+    const { position } = this.headerConfig;
+    translateGroupX(this.frozenColGroup, position.x);
+    translateGroupX(this.frozenTrailingColGroup, position.x);
+  }
 
   protected clip(): void {
     this.scrollGroup.setClip({
