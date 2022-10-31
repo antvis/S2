@@ -59,6 +59,10 @@ import {
   StrategyOptions,
 } from '../__tests__/data/strategy-data';
 import {
+  chartSheetDataConfig,
+  chartOptions,
+} from '../__tests__/data/chart-data';
+import {
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
@@ -1082,6 +1086,16 @@ function MainLayout() {
             sheetType="editable"
             dataCfg={tableSheetDataCfg}
             options={mergedOptions}
+            ref={s2Ref}
+            themeCfg={themeCfg}
+            onMounted={onSheetMounted}
+          />
+        </TabPane>
+        <TabPane tab="图表" key="chart">
+          <SheetComponent
+            sheetType="chart"
+            dataCfg={chartSheetDataConfig}
+            options={chartOptions}
             ref={s2Ref}
             themeCfg={themeCfg}
             onMounted={onSheetMounted}

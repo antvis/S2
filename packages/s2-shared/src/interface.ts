@@ -37,6 +37,7 @@ export type Adaptive =
 export type SheetType =
   | 'pivot'
   | 'table'
+  | 'chart'
   | 'gridAnalysis'
   | 'strategy'
   | 'editable';
@@ -148,6 +149,7 @@ export interface BaseSheetComponentProps<
   }) => void;
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
+  onCellMounted?: (cell: S2CellType) => void;
   onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
   onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;

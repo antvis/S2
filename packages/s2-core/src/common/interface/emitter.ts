@@ -147,6 +147,7 @@ export interface EmitterType {
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
   /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
   [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
+  [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;
   [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
   [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,

@@ -10,6 +10,7 @@ import type { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
+import { ChartSheet } from './chart-sheet';
 
 const Sheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
@@ -31,6 +32,8 @@ const Sheet = React.forwardRef(
       switch (sheetType) {
         case 'table':
           return <TableSheet {...sheetProps} />;
+        case 'chart':
+          return <ChartSheet {...sheetProps} />;
         case 'gridAnalysis':
           return <GridAnalysisSheet {...sheetProps} />;
         case 'strategy':

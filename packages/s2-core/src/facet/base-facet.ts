@@ -984,8 +984,8 @@ export abstract class BaseFacet {
 
   addCell = (cell: S2CellType<ViewMeta>) => {
     const { panelScrollGroup } = this.spreadsheet;
-
     panelScrollGroup?.appendChild(cell);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_MOUNTED, cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {

@@ -7,6 +7,7 @@ export * from './export/index';
 export * from './export/copy';
 export * from './interaction';
 export * from './g-renders';
+export * from './g2-renders';
 export * from './g-mini-charts';
 export * from './merge';
 export * from './is-mobile';
