@@ -2,7 +2,7 @@ import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
 import React from 'react';
 import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
-import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
+import { SpreadSheetContext } from '../../../context/SpreadSheetContext';
 import { getSheetComponentOptions } from '../../../utils';
 import { Header } from '../../header';
 import { S2Pagination } from '../../pagination';

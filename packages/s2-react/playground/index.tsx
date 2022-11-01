@@ -308,7 +308,7 @@ function MainLayout() {
         destroyInactiveTabPane
       >
         <TabPane tab="基础表" key="basic">
-          <Collapse defaultActiveKey={['filter', 'interaction']}>
+          <Collapse defaultActiveKey={[]}>
             <Collapse.Panel header="筛选器" key="filter">
               <Space>
                 <Tooltip title="表格类型">

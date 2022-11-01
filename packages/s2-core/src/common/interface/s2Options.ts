@@ -77,6 +77,10 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // custom device pixel ratio, default "window.devicePixelRatio"
   devicePixelRatio?: number;
 
+  /** ***********Mobile Options Config**************** */
+  // use mobile options and mobile components
+  device?: DeviceType;
+
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   dataCell?: DataCellCallback;
@@ -110,6 +114,11 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 }
 
+// 设备，pc || mobile
+export enum DeviceType {
+  PC = 'pc',
+  MOBILE = 'mobile',
+}
 // Table sheet options
 export interface S2TableSheetOptions {
   // frozen row & cols

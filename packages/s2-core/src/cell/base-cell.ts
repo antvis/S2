@@ -314,7 +314,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return;
     }
 
-    const device = this.spreadsheet.options.style.device;
+    const device =
+      this.spreadsheet.options.device ?? this.spreadsheet.options.style.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
       const textStyle = this.getTextStyle();

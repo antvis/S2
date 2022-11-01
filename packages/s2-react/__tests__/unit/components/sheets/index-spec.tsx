@@ -9,9 +9,9 @@ import {
   PivotSheet,
   TableSheet,
 } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
-import { SheetComponent, SheetComponentsProps } from '../../../../src';
+import { SheetComponent, type SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
 
@@ -127,13 +127,13 @@ describe('<SheetComponent/> Tests', () => {
     );
 
     test('should get latest instance after sheet type changed', () => {
-      let s2: SpreadSheet;
+      let spreadSheet: SpreadSheet;
 
       function Component({
         sheetType,
       }: Pick<SheetComponentsProps, 'sheetType'>) {
         const onMounted = jest.fn((instance) => {
-          s2 = instance;
+          spreadSheet = instance;
         });
 
         return (
@@ -150,13 +150,13 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(<Component sheetType={'pivot'} />, container);
       });
 
-      expect(s2).toBeInstanceOf(PivotSheet);
+      expect(spreadSheet).toBeInstanceOf(PivotSheet);
 
       act(() => {
         ReactDOM.render(<Component sheetType={'table'} />, container);
       });
 
-      expect(s2).toBeInstanceOf(TableSheet);
+      expect(spreadSheet).toBeInstanceOf(TableSheet);
     });
   });
 

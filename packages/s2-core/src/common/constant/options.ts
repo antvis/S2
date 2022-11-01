@@ -5,6 +5,7 @@ import {
   ScrollbarPositionType,
 } from '../constant/interaction';
 import type { S2Options } from '../interface/s2Options';
+import { DeviceType } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
@@ -38,7 +39,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     widthByFieldValue: {},
     heightByField: {},
   },
-  device: 'pc',
+  device: DeviceType.PC,
 };
 
 export const DEFAULT_OPTIONS: Readonly<S2Options> = {
@@ -104,4 +105,26 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   placeholder: EMPTY_PLACEHOLDER,
   supportCSSTransform: false,
   devicePixelRatio: window.devicePixelRatio,
+};
+
+const mobileWidth = document.documentElement.clientWidth;
+
+export const DEFAULT_MOBILE_OPTIONS: Readonly<S2Options> = {
+  width: mobileWidth - 40,
+  height: 380,
+  style: {
+    layoutWidthType: LayoutWidthTypes.ColAdaptive,
+  },
+  interaction: {
+    hoverHighlight: false,
+    hoverFocus: false,
+    brushSelection: {
+      data: false,
+      row: false,
+      col: false,
+    },
+    multiSelection: false,
+    rangeSelection: false,
+  },
+  device: DeviceType.MOBILE,
 };

@@ -1,4 +1,4 @@
-@prefix: antv-s2-switcher;
+@import '@antv/s2-shared/src/styles/variables.less';
 
 @normal-item-color: #d9eeff;
 @checkable-item-color: #d3f4e5;
@@ -9,7 +9,7 @@
 
 @border-radius: 3px;
 
-.@{prefix}-item {
+.@{switcher-cls-prefix}-item {
   height: 24px;
   border-radius: @border-radius;
   display: flex;
@@ -50,8 +50,8 @@
   }
 }
 
-.@{prefix}-normal-list,
-.@{prefix}-checkable-list {
+.@{switcher-cls-prefix}-normal-list,
+.@{switcher-cls-prefix}-checkable-list {
   border-radius: @border-radius;
 
   & + & {
@@ -89,7 +89,7 @@
   }
 }
 
-.@{prefix}-tooltip {
+.@{switcher-cls-prefix}-tooltip {
   .ant-tooltip-inner {
     max-width: 180px;
   }

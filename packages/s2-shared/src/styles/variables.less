@@ -1,8 +1,30 @@
 // s2 类名前缀
-@s2ClsPrefix: s2;
+@s2-cls-prefix: antv-s2;
 
-// 下钻类名前缀
-@drillDownClsPrefix: ~'@{s2ClsPrefix}-drill-down';
+// Tooltip
+@tooltip-cls-prefix: ~'@{s2-cls-prefix}-tooltip';
+@tooltip-operator-cls-prefix: ~'@{s2-cls-prefix}-tooltip-operator';
+@tooltip-mobile-prefix-cls: antv-s2-tooltip-mobile-operator;
+@tooltip-menu-item-text-color: rgba(0, 0, 0, 0.65);
+@tooltip-menu-font-size: 12px;
 
-// 趋势表 tooltip 类名前缀
-@strategySheetTooltipClsPrefix: ~'@{s2ClsPrefix}-strategy-sheet-tooltip';
+// 下钻
+@drill-down-cls-prefix: ~'@{s2-cls-prefix}-drill-down';
+
+// 趋势表 tooltip
+@strategy-sheet-tooltip-cls-prefix: ~'@{s2-cls-prefix}-strategy-sheet-tooltip';
+
+// 移动端抽屉
+@tooltip-mobile-drawer-cls-prefix: ~'@{s2-cls-prefix}-tooltip-mobile-drawer';
+
+// 高级排序
+@advanced-sort-cls-prefix: ~'@{s2-cls-prefix}-advanced-sort';
+
+// 指标切换
+@switcher-cls-prefix: ~'@{s2-cls-prefix}-switcher';
+
+// 头部组件
+@header-cls-prefix: ~'@{s2-cls-prefix}-header';
+
+// 图标
+@icon-cls-prefix: ~'@{s2-cls-prefix}-icon';

@@ -73,9 +73,9 @@ export default defineComponent({
 </template>
 
 <style lang="less">
-@import '../../styles/variable.less';
+@import '@antv/s2-shared/src/styles/variables.less';
 
-.@{preCls} {
+.@{s2-cls-prefix} {
   &-spin.ant-spin-nested-loading,
   &-spin > .ant-spin-container {
     height: 100%;
