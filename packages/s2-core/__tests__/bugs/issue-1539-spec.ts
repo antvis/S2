@@ -5,7 +5,6 @@
  *
  */
 import { getContainer } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
 import dataCfg from '../data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
@@ -20,12 +19,11 @@ describe('Table Left Border Tests', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
     s2.render();
 
-    const panelScrollGroup = s2.facet.panelGroup.getChildren()[0];
-    const gridGroup = (panelScrollGroup as any).gridGroup as IGroup;
-    const leftBorder = gridGroup.getChildren()[0].getBBox();
+    // 左侧边框由 centerFrame进行绘制
+    const leftBorderLine = s2.facet.centerFrame.getChildren()[1];
 
-    expect(leftBorder.x).toBeLessThanOrEqual(1);
-    expect(leftBorder.y).toBeLessThanOrEqual(1);
+    expect(leftBorderLine.attr('x1')).toBeLessThanOrEqual(1);
+    expect(leftBorderLine.attr('x2')).toBeLessThanOrEqual(1);
   });
 
   test('should draw left border with series number', () => {
@@ -35,10 +33,9 @@ describe('Table Left Border Tests', () => {
     });
     s2.render();
 
-    const panelScrollGroup = s2.facet.panelGroup.getChildren()[0];
-    const gridGroup = (panelScrollGroup as any).gridGroup as IGroup;
-    const leftBorder = gridGroup.getChildren()[0].getBBox();
-    expect(leftBorder.x).toBeLessThanOrEqual(1);
-    expect(leftBorder.y).toBeLessThanOrEqual(1);
+    const leftBorderLine = s2.facet.centerFrame.getChildren()[1];
+
+    expect(leftBorderLine.attr('x1')).toBeLessThanOrEqual(1);
+    expect(leftBorderLine.attr('x2')).toBeLessThanOrEqual(1);
   });
 });
