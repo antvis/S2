@@ -321,7 +321,10 @@ export class TableFacet extends BaseFacet {
         this.getCanvasSize().width -
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
-      return Math.max(cellCfg?.width, canvasW / Math.max(1, colHeaderColSize));
+      return Math.max(
+        cellCfg?.width,
+        Math.floor(canvasW / Math.max(1, colHeaderColSize)),
+      );
     }
     return cellCfg?.width;
   }

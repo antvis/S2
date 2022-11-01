@@ -183,11 +183,11 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
 
     // ================== mouse down ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 90 });
+    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 10, y: 120 });
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 200, clientY: 400 });
+    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 80, clientY: 200 });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
@@ -195,9 +195,9 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
-      y: 90,
-      width: 190,
-      height: 310,
+      y: 120,
+      width: 70,
+      height: 80,
     });
 
     // ================== mouse up ==================

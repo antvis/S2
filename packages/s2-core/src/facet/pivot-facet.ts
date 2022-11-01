@@ -687,7 +687,7 @@ export class PivotFacet extends BaseFacet {
     const { cellCfg } = this.cfg;
     return Math.max(
       getCellWidth(cellCfg, this.getColLabelLength(col, rowLeafNodes)),
-      (availableWidth - rowHeaderWidth) / colSize,
+      Math.floor((availableWidth - rowHeaderWidth) / colSize),
     );
   }
 
@@ -751,12 +751,15 @@ export class PivotFacet extends BaseFacet {
 
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
-      return Math.max(getCellWidth(cellCfg), availableWidth / colSize);
+      return Math.max(
+        getCellWidth(cellCfg),
+        Math.floor(availableWidth / colSize),
+      );
     }
 
     return Math.max(
       getCellWidth(cellCfg),
-      (availableWidth - rowHeaderWidth) / colHeaderColSize,
+      Math.floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
     );
   }
 

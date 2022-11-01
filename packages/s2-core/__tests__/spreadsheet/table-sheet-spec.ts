@@ -149,7 +149,7 @@ describe('TableSheet normal spec', () => {
     const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
 
     expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
-    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 });
+    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 81, y: 0 });
 
     s2.destroy();
   });

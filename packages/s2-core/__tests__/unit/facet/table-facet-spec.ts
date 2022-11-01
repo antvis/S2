@@ -117,17 +117,12 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       ...options,
       showSeriesNumber: false,
     });
-    const { colCfg, cellCfg } = facet.cfg;
+    const { colCfg } = facet.cfg;
 
     test('col hierarchy coordinate with adaptive layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const colHeaderColSize = colLeafNodes.length;
-      const canvasW = facet.getCanvasSize().width;
-      const adaptiveWith = Math.max(
-        cellCfg.width,
-        canvasW / Math.max(1, colHeaderColSize),
-      );
+      const adaptiveWith = 119;
 
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
@@ -147,18 +142,13 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       dataSet: s2DataSet,
       showSeriesNumber: true,
     });
-    const { colCfg, cellCfg } = facet.cfg;
+    const { colCfg } = facet.cfg;
 
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
-      const colHeaderColSize = colLeafNodes.length - 1;
-      const canvasW = facet.getCanvasSize().width - seriesNumberWidth;
-      const adaptiveWith = Math.max(
-        cellCfg.width,
-        canvasW / Math.max(1, colHeaderColSize),
-      );
+      const adaptiveWith = 103;
 
       const seriesNumberNode = colLeafNodes[0];
       expect(seriesNumberNode.y).toBe(0);
@@ -307,7 +297,7 @@ describe('Table Mode Facet With Frozen Test', () => {
     expect(facet.frozenGroupInfo).toStrictEqual({
       [FrozenGroupType.FROZEN_COL]: {
         range: [0, 1],
-        width: 240,
+        width: 238,
       },
       [FrozenGroupType.FROZEN_ROW]: {
         height: 60,
@@ -315,7 +305,7 @@ describe('Table Mode Facet With Frozen Test', () => {
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
         range: [3, 4],
-        width: 240,
+        width: 238,
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 60,
@@ -343,51 +333,41 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { width } = facet.spreadsheet.options;
     const { frozenTrailingColCount } = facet.cfg;
     const { colLeafNodes } = facet.layoutResult;
-    let prevWidth = 0;
-    colLeafNodes
-      .slice(-frozenTrailingColCount)
-      .reverse()
-      .forEach((node) => {
-        prevWidth += node.width;
-        expect(node.x).toBe(width - prevWidth);
-      });
+    expect(
+      colLeafNodes
+        .slice(-frozenTrailingColCount)
+        .reverse()
+        .map((node) => node.x),
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { width } = facet.spreadsheet.options;
     const { frozenTrailingColCount } = facet.cfg;
     const { colLeafNodes, getCellMeta } = facet.layoutResult;
 
-    let prevWidth = 0;
-    colLeafNodes
-      .slice(-frozenTrailingColCount)
-      .reverse()
-      .forEach((node, index) => {
-        prevWidth += node.width;
-        expect(getCellMeta(1, colLeafNodes.length - 1 - index).x).toBe(
-          width - prevWidth,
-        );
-      });
+    expect(
+      colLeafNodes
+        .slice(-frozenTrailingColCount)
+        .reverse()
+        .map(
+          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index).x,
+        ),
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount, cellCfg } = facet.cfg;
+    const { frozenTrailingRowCount } = facet.cfg;
     const { getCellMeta } = facet.layoutResult;
     const displayData = dataSet.getDisplayDataSet();
-    const panelBBox = facet.panelBBox;
-    let prevHeight = 0;
-    displayData
-      .slice(-frozenTrailingRowCount)
-      .reverse()
-      .forEach((_, idx) => {
-        prevHeight += cellCfg.height;
-        expect(getCellMeta(displayData.length - 1 - idx, 1).y).toBe(
-          panelBBox.maxY - prevHeight,
-        );
-      });
+
+    expect(
+      displayData
+        .slice(-frozenTrailingRowCount)
+        .reverse()
+        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1).y),
+    ).toEqual([532, 502]);
   });
 
   test('should get correct viewCellHeights result', () => {

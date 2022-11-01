@@ -141,13 +141,13 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowsHierarchy.getNodes(0)).toHaveLength(2);
 
       rowsHierarchy.getLeaves().forEach((node, index) => {
-        expect(node.width).toBe(width);
+        expect(node.width).toBe(99);
         expect(node.height).toBe(
           cellCfg.height +
             rowCellStyle.padding?.top +
             rowCellStyle.padding?.bottom,
         );
-        expect(node.x).toBe(width * node.level);
+        expect(node.x).toBe(99 * node.level);
         expect(node.y).toBe(node.height * index);
       });
 

@@ -1,4 +1,4 @@
-import { Frame } from '../header';
+import { Frame } from '../header/frame';
 import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {

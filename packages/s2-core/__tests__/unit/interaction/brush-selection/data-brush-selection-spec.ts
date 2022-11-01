@@ -507,7 +507,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         ScrollDirection.TRAILING,
         mockSpreadSheetInstance,
       ),
-    ).toBe(200);
+    ).toBe(202);
 
     (facet as TableFacet).frozenGroupInfo = {
       [FrozenGroupType.FROZEN_COL]: {
@@ -537,7 +537,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         ScrollDirection.TRAILING,
         mockSpreadSheetInstance,
       ),
-    ).toBe(300);
+    ).toBe(302);
 
     facet.panelBBox = {
       height: facet.getCanvasSize().height,
