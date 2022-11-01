@@ -469,11 +469,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + offsetX;
 
-    guideLineStart[1] = resizedOffsetX;
-    guideLineEnd[1] = resizedOffsetX;
+    const halfSize = resizeInfo.size / 2;
+    guideLineStart[1] = resizedOffsetX - halfSize;
+    guideLineEnd[1] = resizedOffsetX - halfSize;
 
     this.resizeTarget.attr({
-      x: resizedOffsetX - resizeInfo.size / 2,
+      x: resizedOffsetX - resizeInfo.size,
     });
   }
 
@@ -491,11 +492,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + offsetY;
 
-    guideLineStart[2] = resizedOffsetY;
-    guideLineEnd[2] = resizedOffsetY;
+    const halfSize = resizeInfo.size / 2;
+    guideLineStart[2] = resizedOffsetY - halfSize;
+    guideLineEnd[2] = resizedOffsetY - halfSize;
 
     this.resizeTarget.attr({
-      y: resizedOffsetY - resizeInfo.size / 2,
+      y: resizedOffsetY - resizeInfo.size,
     });
   }
 
@@ -537,8 +539,20 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     );
 
     const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = Math.floor(end.x - start.x + defaultResizeInfo.size);
-    const resizedHeight = Math.floor(end.y - start.y + defaultResizeInfo.size);
+    const resizedWidth = Math.floor(
+      end.x -
+        start.x +
+        (defaultResizeInfo.type === ResizeDirectionType.Horizontal
+          ? defaultResizeInfo.size
+          : 0),
+    );
+    const resizedHeight = Math.floor(
+      end.y -
+        start.y +
+        (defaultResizeInfo.type === ResizeDirectionType.Vertical
+          ? defaultResizeInfo.size
+          : 0),
+    );
 
     return {
       ...defaultResizeInfo,
