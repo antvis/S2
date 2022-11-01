@@ -17,6 +17,7 @@ import {
 } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { CopyType, S2Event } from '@/common/constant';
+import { TableSeriesCell } from '@/cell';
 
 const newLineTest = `"### 问题摘要
 - **会话地址**："`;
@@ -48,7 +49,7 @@ describe('List Table Core Data Process', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   it('should copy no data', () => {
@@ -63,7 +64,11 @@ describe('List Table Core Data Process', () => {
   it('should copy normal data', () => {
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(
+        (cell) =>
+          cell.cellType === CellTypes.DATA_CELL &&
+          !(cell instanceof TableSeriesCell),
+      )[0];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -87,7 +92,7 @@ describe('List Table Core Data Process', () => {
   it('should copy row data', () => {
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
+      .filter((cell) => cell instanceof TableSeriesCell)[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -114,7 +119,11 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(
+        (cell) =>
+          cell.cellType === CellTypes.DATA_CELL &&
+          !(cell instanceof TableSeriesCell),
+      )[0];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -143,7 +152,11 @@ describe('List Table Core Data Process', () => {
     ss.render();
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+      .filter(
+        (cell) =>
+          cell.cellType === CellTypes.DATA_CELL &&
+          !(cell instanceof TableSeriesCell),
+      )[0];
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
@@ -173,7 +186,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = ss.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[1];
+      .filter((cell) => cell instanceof TableSeriesCell)[1];
 
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -232,7 +245,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
+      .filter((cell) => cell instanceof TableSeriesCell)[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -262,7 +275,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = s2.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[1];
+      .filter((cell) => cell instanceof TableSeriesCell)[1];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -299,7 +312,11 @@ describe('List Table Core Data Process', () => {
 
     const cell = sss.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[20];
+      .filter(
+        (cell) =>
+          cell.cellType === CellTypes.DATA_CELL &&
+          !(cell instanceof TableSeriesCell),
+      )[20];
 
     sss.interaction.changeState({
       cells: [getCellMeta(cell)],

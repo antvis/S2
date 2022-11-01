@@ -2,6 +2,7 @@ import { forEach } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
+  CellTypes,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
@@ -22,11 +23,12 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
 export const getCellMeta = (cell: S2CellType) => {
   const meta = cell.getMeta();
   const { id, colIndex, rowIndex } = meta;
+
   return {
     id,
     colIndex,
     rowIndex,
-    type: cell.cellType,
+    type: cell instanceof TableSeriesCell ? CellTypes.ROW_CELL : cell.cellType,
   };
 };
 
