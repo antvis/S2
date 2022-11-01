@@ -1,4 +1,4 @@
-import { isArray, isEmpty, mergeWith, uniq, isEqual } from 'lodash';
+import { isArray, isEmpty, mergeWith, uniq, isEqual, forEach } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
 import { DEFAULT_OPTIONS } from '../common/constant/options';
 import type { S2DataConfig, S2Options, Fields } from '../common/interface';
