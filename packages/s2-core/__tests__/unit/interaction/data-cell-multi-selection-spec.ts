@@ -76,6 +76,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
       s2.interaction.changeState({
         cells: [],
+        headerCells: [],
         stateName: InteractionStateName.SELECTED,
       });
       const mockCellA = createMockCellInfo('testId2', {
@@ -108,6 +109,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],
+        headerCells: [],
         stateName: InteractionStateName.SELECTED,
       });
 
@@ -150,6 +152,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellB.mockCellMeta],
+        headerCells: [],
         stateName: InteractionStateName.SELECTED,
       });
 
@@ -173,6 +176,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
       s2.interaction.changeState({
         cells: [],
+        headerCells: [],
         stateName: InteractionStateName.SELECTED,
       });
       const mockCellA = createMockCellInfo('testId2', {

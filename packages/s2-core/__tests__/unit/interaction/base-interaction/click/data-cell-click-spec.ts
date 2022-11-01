@@ -49,6 +49,7 @@ describe('Interaction Data Cell Click Tests', () => {
     } as unknown as GEvent);
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
+      headerCells: [],
       stateName: InteractionStateName.SELECTED,
     });
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
@@ -67,6 +68,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
+      headerCells: [],
       stateName: InteractionStateName.SELECTED,
     });
   });
