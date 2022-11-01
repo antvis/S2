@@ -55,7 +55,7 @@ export const getActionIconConfig = (
   let nextIconNames = iconConfig.iconNames;
   if (iconConfig.displayCondition) {
     nextIconNames = nextIconNames.filter((iconName) =>
-      iconConfig.displayCondition(meta, iconName),
+      iconConfig.displayCondition?.(meta, iconName),
     );
   }
 

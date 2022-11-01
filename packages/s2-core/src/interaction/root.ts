@@ -57,7 +57,7 @@ export class RootInteraction {
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  private hoverTimer: number = null;
+  private hoverTimer: number | null = null;
 
   public eventController: EventController;
 
@@ -179,7 +179,7 @@ export class RootInteraction {
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     return map(ids, (id) =>
       find(allCells, (cell) => cell?.getMeta()?.id === id),
-    ).filter((cell) => cell); // 去除 undefined
+    ).filter(Boolean) as S2CellType[]; // 去除 undefined
   }
 
   public clearStyleIndependent() {
@@ -293,8 +293,8 @@ export class RootInteraction {
     let selectedCells = isSelectedCell ? [] : [getCellMeta(cell)];
 
     if (isMultiSelected) {
-      selectedCells = concat(lastState?.cells, selectedCells);
-      childrenNodes = concat(lastState?.nodes, childrenNodes);
+      selectedCells = concat(lastState?.cells || [], selectedCells);
+      childrenNodes = concat(lastState?.nodes || [], childrenNodes);
 
       if (isSelectedCell) {
         selectedCells = selectedCells.filter(
@@ -383,7 +383,7 @@ export class RootInteraction {
       multiSelection,
       rangeSelection,
       selectedCellMove,
-    } = this.spreadsheet.options.interaction;
+    } = this.spreadsheet.options.interaction!;
     const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
       this.getBrushSelectionInfo(brushSelection);
 
@@ -452,7 +452,7 @@ export class RootInteraction {
   }
 
   private registerInteractions() {
-    const { customInteractions } = this.spreadsheet.options.interaction;
+    const { customInteractions } = this.spreadsheet.options.interaction!;
 
     this.interactions.clear();
 
@@ -554,7 +554,7 @@ export class RootInteraction {
   }
 
   public clearHoverTimer() {
-    clearTimeout(this.hoverTimer);
+    clearTimeout(this.hoverTimer!);
   }
 
   public setHoverTimer(timer: number) {

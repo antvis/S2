@@ -30,7 +30,6 @@ import type {
   Conditions,
   Condition,
   MappingResult,
-  IconCondition,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -74,7 +73,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: IShape;
+  protected conditionIntervalShape: IShape | undefined;
 
   protected conditionIconShape: GuiIcon;
 
@@ -90,7 +89,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.meta = meta;
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
-    this.conditions = this.spreadsheet.options.conditions;
+    this.conditions = this.spreadsheet.options.conditions!;
     this.handleRestOptions(...restOptions);
     this.initCell();
   }
@@ -104,7 +103,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public getIconStyle() {
-    return this.theme[this.cellType].icon;
+    return this.theme[this.cellType]?.icon;
   }
 
   public getTextAndIconPosition(iconCount = 1) {
@@ -163,7 +162,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getTextPosition(): Point;
 
-  protected abstract findFieldCondition(conditions: Condition[]): Condition;
+  protected abstract findFieldCondition(
+    conditions: Condition[] | undefined,
+  ): Condition | undefined;
 
   protected abstract mappingValue(condition: Condition): MappingResult;
 
@@ -185,17 +186,17 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     type: keyof ResizeInteractionOptions,
     cell: S2CellType,
   ) {
-    const { resize } = this.spreadsheet.options.interaction;
+    const { resize } = this.spreadsheet.options.interaction!;
 
     if (isBoolean(resize)) {
       return resize;
     }
 
-    if (isFunction(resize.visible)) {
-      return resize.visible(cell);
+    if (isFunction(resize?.visible)) {
+      return resize?.visible(cell);
     }
 
-    return resize[type];
+    return resize?.[type];
   }
 
   public getCellArea() {
@@ -207,8 +208,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   public getContentArea() {
     const cellStyle = (this.getStyle() ||
       this.theme.dataCell) as DefaultCellTheme;
-    const { padding } = cellStyle?.cell;
-    return getContentArea(this.getCellArea(), padding);
+    const { padding } = cellStyle?.cell!;
+    return getContentArea(this.getCellArea(), padding!);
   }
 
   protected getIconPosition(iconCount = 1) {
@@ -252,7 +253,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       return;
     }
 
-    const device = this.spreadsheet.options.style.device;
+    const { device } = this.spreadsheet.options.style!;
     // 配置了链接跳转
     if (!isMobile(device)) {
       const textStyle = this.getTextStyle();
@@ -299,12 +300,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
-      );
-      targetShapeNames.forEach((shapeName: StateShapeLayer) => {
+      ) as StateShapeLayer[];
+
+      targetShapeNames.forEach((shapeName) => {
         const isStateShape = this.stateShapes.has(shapeName);
         const shape = isStateShape
           ? this.stateShapes.get(shapeName)
-          : this[shapeName];
+          : get(this, shapeName);
 
         // stateShape 默认 visible 为 false
         if (isStateShape && !shape.get('visible')) {
@@ -323,7 +325,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
             });
           }
         }
-        updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
+        updateShapeAttr(shape, get(SHAPE_STYLE_MAP, styleKey), style);
       });
     });
   }
@@ -331,8 +333,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected getInteractiveBorderShapeStyle<T>(style: T & number) {
     const { x, y, height, width } = this.getCellArea();
 
-    const { horizontalBorderWidth, verticalBorderWidth } =
-      this.theme.dataCell.cell;
+    const { horizontalBorderWidth = 0, verticalBorderWidth = 0 } =
+      this.theme.dataCell!.cell!;
 
     return {
       x: x + verticalBorderWidth / 2 + style / 2,
@@ -367,17 +369,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public drawConditionIconShapes() {
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
-    if (iconCondition && iconCondition.mapping) {
+    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    if (iconCondition?.mapping!) {
       const attrs = this.mappingValue(iconCondition);
       const position = this.getIconPosition();
-      const { size } = this.theme.dataCell.icon;
+      const { size } = this.theme.dataCell!.icon!;
       if (!isEmpty(attrs?.icon)) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
-          name: attrs.icon,
+          name: attrs.icon!,
           width: size,
           height: size,
           fill: attrs.fill,

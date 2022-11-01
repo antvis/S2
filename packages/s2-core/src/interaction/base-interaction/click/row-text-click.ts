@@ -24,8 +24,8 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
       }
 
       const { cellData } = this.getCellAppendInfo(event.target);
-      const key = cellData.key;
-      const rowData = this.getRowData(cellData);
+      const key = cellData!.key;
+      const rowData = this.getRowData(cellData!);
 
       this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         key,
@@ -77,11 +77,11 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   private getRowIndex = (cellData: Node) => {
     const isTree = this.spreadsheet.options.hierarchyType === 'tree';
     if (isTree) {
-      let child = cellData;
-      while (!isEmpty(child.children)) {
-        child = head(child.children);
+      let child: Node | undefined = cellData;
+      while (!isEmpty(child?.children)) {
+        child = head(child?.children);
       }
-      return cellData.rowIndex ?? child.rowIndex;
+      return cellData.rowIndex ?? child?.rowIndex;
     }
     // if current cell has no row index, return dynamic computed value
     const rowIndex = Math.floor(cellData.y / cellData.height);

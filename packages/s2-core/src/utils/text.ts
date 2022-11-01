@@ -381,7 +381,7 @@ const getCurrentTextStyle = ({
  * 获取自定义空值占位符
  */
 export const getEmptyPlaceholder = (
-  meta: ViewMeta,
+  meta: Record<string, any>,
   placeHolder: S2Options['placeholder'],
 ) => {
   return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
@@ -498,7 +498,7 @@ export const drawObjectText = (
 
   const iconStyle = cellStyle?.icon;
   const iconCfg = iconCondition &&
-    iconCondition.mapping && {
+    iconCondition.mapping! && {
       size: iconStyle?.size,
       margin: iconStyle?.margin,
       position: iconCondition?.position,

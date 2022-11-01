@@ -8,17 +8,14 @@ import type {
   ResizeInfo,
 } from '../../common/interface';
 import type { FrameConfig } from '../../common/interface/frame';
-import type {
-  S2BasicOptions,
-  S2TableSheetOptions,
-} from '../../common/interface/s2Options';
-import type { BaseDataSet, Query } from '../../data-set';
+import type { Query } from '../../data-set';
 import type { BaseHeaderConfig, Frame } from '../../facet/header';
-import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
+
+export type { GetCellMeta, LayoutResult, SpreadSheetFacetCfg } from './facet';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化
@@ -196,7 +193,7 @@ export interface FilterParam {
 
 export type SortParams = SortParam[];
 
-export interface Style {
+export interface S2Style {
   layoutWidthType?: LayoutWidthType;
   // 是否展示树状分层下的层级占位点
   showTreeLeafNodeAlignDot?: boolean;
@@ -205,9 +202,9 @@ export interface Style {
   // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
   hierarchyCollapse?: boolean;
   // 树状分层模式下，行头默认展开到第几层
-  rowExpandDepth?: number;
+  rowExpandDepth?: number | null;
   // row header in tree mode collapse some nodes
-  collapsedRows?: Record<string, boolean>;
+  collapsedRows?: Record<string, boolean> | null;
   // col header collapse nodes
   collapsedCols?: Record<string, boolean>;
   cellCfg?: CellCfg;
@@ -315,7 +312,7 @@ export type HierarchyCallback = (
   node: Node,
 ) => HierarchyResult;
 
-export type CellCustomWidth = number | ((node: Node) => number);
+export type CellCustomWidth = number | ((node: Node | null) => number);
 
 export interface CellCfg {
   width?: number;
@@ -392,21 +389,6 @@ export type MappingDataItemCallback = (
   valueField: string,
   data: DataItem,
 ) => Record<string, string | number> | DataItem;
-/**
- * Spreadsheet facet config
- */
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    S2BasicOptions,
-    S2TableSheetOptions,
-    Style {
-  // spreadsheet interface
-  spreadsheet: SpreadSheet;
-  // data set of spreadsheet
-  dataSet: BaseDataSet;
-  // field's meta info
-  meta?: Meta[];
-}
 
 export type ViewMetaData = Data | CellData;
 
@@ -450,19 +432,6 @@ export interface ViewMeta {
 }
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
-
-export type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
-
-export interface LayoutResult {
-  colNodes: Node[];
-  colsHierarchy: Hierarchy;
-  rowNodes: Node[];
-  rowsHierarchy: Hierarchy;
-  rowLeafNodes: Node[];
-  colLeafNodes: Node[];
-  getCellMeta: GetCellMeta;
-  spreadsheet: SpreadSheet;
-}
 
 export interface OffsetConfig {
   offsetX?: {

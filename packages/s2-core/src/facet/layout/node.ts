@@ -76,20 +76,20 @@ export class Node {
     this.value = value;
     this.label = label || value;
     this.parent = parent;
-    this.level = level;
-    this.rowIndex = rowIndex;
-    this.isTotals = isTotals;
-    this.isCollapsed = isCollapsed;
-    this.hierarchy = hierarchy;
-    this.isPivotMode = isPivotMode;
-    this.seriesNumberWidth = seriesNumberWidth;
-    this.field = field;
-    this.spreadsheet = spreadsheet;
+    this.level = level!;
+    this.rowIndex = rowIndex!;
+    this.isTotals = isTotals!;
+    this.isCollapsed = isCollapsed!;
+    this.hierarchy = hierarchy!;
+    this.isPivotMode = isPivotMode!;
+    this.seriesNumberWidth = seriesNumberWidth!;
+    this.field = field!;
+    this.spreadsheet = spreadsheet!;
     this.query = query;
     this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
-    this.isTotalMeasure = isTotalMeasure;
-    this.isLeaf = isLeaf;
+    this.isTotalMeasure = isTotalMeasure!;
+    this.isLeaf = isLeaf!;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
     this.config = {
@@ -226,16 +226,16 @@ export class Node {
   public id: string;
 
   // node top-left x-coordinate
-  public x = 0;
+  public x: number = 0;
 
   // node top-left y-coordinate
-  public y = 0;
+  public y: number = 0;
 
   // node width
-  public width = 0;
+  public width: number = 0;
 
   // node height
-  public height = 0;
+  public height: number = 0;
 
   // node real display text label
   public label: string;
@@ -247,19 +247,19 @@ export class Node {
   public value: string;
 
   // cell index in layout list(TODO What's use for?)
-  public colIndex = -1;
+  public colIndex: number = -1;
 
   // node's level in tree hierarchy
-  public level = 0;
+  public level: number = 0;
 
   // list table row index.
   public rowIndex: number;
 
   // node's parent node
-  public parent: Node;
+  public parent: Node | undefined;
 
   // check if node is leaf(the max level in tree)
-  public isLeaf = false;
+  public isLeaf: boolean = false;
 
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
@@ -281,7 +281,7 @@ export class Node {
   public children: Node[] = [];
 
   // node width adaptive mode need paddingLeft = paddingRight
-  public padding = 0;
+  public padding: number = 0;
 
   // node's hierarchy
   public hierarchy: Hierarchy;
@@ -301,7 +301,7 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: S2CellType;
+  public belongsCell?: S2CellType | null | undefined;
 
   public inCollapseNode?: boolean;
 

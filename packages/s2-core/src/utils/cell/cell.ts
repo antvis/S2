@@ -24,12 +24,12 @@ import { CellBorderPosition } from '../../common/interface';
 export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
   const { x, y, width, height } = bbox;
 
-  const contentWidth: number = width - padding?.left - padding?.right;
-  const contentHeight: number = height - padding?.top - padding?.bottom;
+  const contentWidth: number = width - padding?.left! - padding?.right!;
+  const contentHeight: number = height - padding?.top! - padding?.bottom!;
 
   return {
-    x: x + padding?.left,
-    y: y + padding?.top,
+    x: x + padding?.left!,
+    y: y + padding?.top!,
     width: contentWidth,
     height: contentHeight,
   };
@@ -60,7 +60,10 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
   return (
-    contentWidth - iconCfg.size - iconCfg.margin.right - iconCfg.margin.left
+    contentWidth -
+    iconCfg.size! -
+    iconCfg!.margin!.right! -
+    iconCfg!.margin!.left!
   );
 };
 
@@ -97,7 +100,7 @@ export const getTextAndFollowingIconPosition = (
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
   const iconSpace =
-    iconCount * (size + margin.left) + (iconCount ? margin.right : 0);
+    iconCount * (size! + margin!.left!) + (iconCount ? margin!.right! : 0);
   let textX: number;
   let iconX: number;
 
@@ -116,7 +119,8 @@ export const getTextAndFollowingIconPosition = (
        */
       textX = x + (iconPosition === 'left' ? iconSpace : 0);
       iconX =
-        x + (iconPosition === 'left' ? margin.left : textWidth + margin.left);
+        x +
+        (iconPosition === 'left' ? margin!.left! : textWidth + margin!.left!);
       break;
     case 'center': {
       /**
@@ -132,14 +136,15 @@ export const getTextAndFollowingIconPosition = (
        */
       const totalWidth =
         iconSpace -
-        (iconPosition === 'left' ? margin.left : margin.right) +
+        (iconPosition === 'left' ? margin!.left! : margin!.right!) +
         textWidth;
       const startX = x + width / 2 - totalWidth / 2;
       textX =
         startX +
         textWidth / 2 +
-        (iconPosition === 'left' ? iconSpace - margin.left : 0);
-      iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
+        (iconPosition === 'left' ? iconSpace - margin!.left! : 0);
+      iconX =
+        startX + (iconPosition === 'left' ? 0 : textWidth + margin!.left!);
       break;
     }
     default: {
@@ -159,14 +164,14 @@ export const getTextAndFollowingIconPosition = (
         x +
         width -
         (iconPosition === 'right'
-          ? iconSpace - margin.left
-          : textWidth + iconSpace - margin.left);
+          ? iconSpace - margin?.left!
+          : textWidth + iconSpace - margin?.left!);
       break;
     }
   }
 
-  const textY = getVerticalPosition(contentBox, textBaseline, 0);
-  const iconY = getVerticalPosition(contentBox, textBaseline, size);
+  const textY = getVerticalPosition(contentBox, textBaseline!, 0);
+  const iconY = getVerticalPosition(contentBox, textBaseline!, size);
 
   return {
     text: { x: textX, y: textY },
@@ -281,9 +286,9 @@ export const getBorderPositionAndStyle = (
     let yPosition = y;
     if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
-      yPosition = y + verticalBorderWidth / 2;
+      yPosition = y + verticalBorderWidth! / 2;
     } else {
-      yPosition = y + height - verticalBorderWidth / 2;
+      yPosition = y + height - verticalBorderWidth! / 2;
     }
     y1 = yPosition;
     y2 = yPosition;
@@ -303,9 +308,9 @@ export const getBorderPositionAndStyle = (
   ) {
     let xPosition = x;
     if (position === CellBorderPosition.LEFT) {
-      xPosition = x + horizontalBorderWidth / 2;
+      xPosition = x + horizontalBorderWidth! / 2;
     } else {
-      xPosition = x + width - horizontalBorderWidth / 2;
+      xPosition = x + width - horizontalBorderWidth! / 2;
     }
     x1 = xPosition;
     x2 = xPosition;
@@ -366,10 +371,10 @@ export const adjustColHeaderScrollingViewport = (
   const nextViewport = { ...viewport };
 
   if (textAlign === 'left') {
-    nextViewport.start += textPadding.left;
-    nextViewport.width -= textPadding.left;
+    nextViewport.start += textPadding.left!;
+    nextViewport.width -= textPadding.left!;
   } else if (textAlign === 'right') {
-    nextViewport.width -= textPadding.right;
+    nextViewport.width -= textPadding.right!;
   }
 
   return nextViewport;

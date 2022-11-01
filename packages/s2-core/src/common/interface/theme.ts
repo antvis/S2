@@ -23,9 +23,9 @@ export interface PaletteMeta {
   }>;
   /* 语义色值 */
   semanticColors: {
-    red?: string;
-    green?: string;
-    yellow?: string;
+    red: string;
+    green: string;
+    yellow: string;
     [key: string]: string;
   };
   /* 补充色值 */

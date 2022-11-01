@@ -62,9 +62,9 @@ export class Frame extends Group {
         y1,
         x2: x,
         y2,
-        stroke: splitLine.verticalBorderColor,
-        lineWidth: splitLine.verticalBorderWidth,
-        opacity: splitLine.verticalBorderColorOpacity,
+        stroke: splitLine?.verticalBorderColor,
+        lineWidth: splitLine?.verticalBorderWidth,
+        opacity: splitLine?.verticalBorderColorOpacity,
       },
     });
   }
@@ -76,7 +76,7 @@ export class Frame extends Group {
       height,
       viewportWidth,
       position,
-      scrollX,
+      scrollX = 0,
       scrollContainsRowHeader,
       spreadsheet,
     } = cfg;
@@ -91,9 +91,9 @@ export class Frame extends Group {
         y1: y,
         x2,
         y2: y,
-        stroke: splitLine.horizontalBorderColor,
-        lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.horizontalBorderColorOpacity,
+        stroke: splitLine?.horizontalBorderColor,
+        lineWidth: splitLine?.horizontalBorderWidth,
+        opacity: splitLine?.horizontalBorderColorOpacity,
       },
     });
   }
@@ -105,7 +105,7 @@ export class Frame extends Group {
 
     if (
       !isPivotMode ||
-      !splitLine.showShadow ||
+      !splitLine?.showShadow ||
       !spreadsheet.isFrozenRowHeader()
     ) {
       return;
@@ -129,9 +129,9 @@ export class Frame extends Group {
       attrs: {
         x,
         y,
-        width: splitLine.shadowWidth,
+        width: splitLine?.shadowWidth,
         height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
+        fill: `l (0) 0:${splitLine?.shadowColors?.left} 1:${splitLine?.shadowColors?.right}`,
       },
     });
   }
@@ -150,15 +150,15 @@ export class Frame extends Group {
       spreadsheet,
     } = this.cfg;
     const splitLine = spreadsheet.theme?.splitLine;
-    const x = position.x + width + viewportWidth - splitLine.shadowWidth;
+    const x = position.x + width + viewportWidth - splitLine?.shadowWidth!;
     const y = position.y;
     this.addShape('rect', {
       attrs: {
         x,
         y,
-        width: splitLine.shadowWidth,
+        width: splitLine?.shadowWidth,
         height: viewportHeight + height,
-        fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
+        fill: `l (0) 0:${splitLine?.shadowColors?.right} 1:${splitLine?.shadowColors?.left}`,
       },
     });
   }

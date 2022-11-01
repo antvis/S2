@@ -58,6 +58,7 @@ export class HdAdapter {
       return;
     }
     // VisualViewport support browser zoom & mac touch tablet
+    // @ts-ignore
     this.viewport?.visualViewport?.addEventListener(
       'resize',
       this.renderByZoomScale,
@@ -68,6 +69,7 @@ export class HdAdapter {
     if (isMobile()) {
       return;
     }
+    // @ts-ignore
     this.viewport?.visualViewport?.removeEventListener(
       'resize',
       this.renderByZoomScale,
@@ -94,12 +96,12 @@ export class HdAdapter {
     // 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
     const pixelRatio = Math.max(
       ratio,
-      devicePixelRatio,
+      devicePixelRatio!,
       MIN_DEVICE_PIXEL_RATIO,
     );
 
     container.set('pixelRatio', pixelRatio);
-    container.changeSize(width, height);
+    container.changeSize(width!, height!);
 
     this.spreadsheet.render(false);
   };

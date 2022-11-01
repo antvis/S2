@@ -46,6 +46,7 @@ import type {
   Tooltip,
   ViewMeta,
   ViewMetaData,
+  Data,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -131,7 +132,7 @@ export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
   } as TooltipOptions;
 };
 
-export const getMergedQuery = (meta: ViewMeta) => {
+export const getMergedQuery = (meta: ViewMeta | null) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
@@ -397,7 +398,7 @@ export const getSelectedCellsData = (
    *  - 3.2 如果部分是, 如何处理? 小计/总计不应该被选中, 还是数据不参与计算?
    *  - 3.3 如果选中的含有小计, 并且有总计, 数据参与计算也没有意义, 如何处理?
    */
-  const isBelongTotalCell = (cellMeta: ViewMeta) => {
+  const isBelongTotalCell = (cellMeta: ViewMeta | null) => {
     if (!cellMeta) {
       return false;
     }
@@ -476,8 +477,8 @@ export const getCustomFieldsSummaries = (
     const cellsData = customFieldGroup[name];
     const selectedData = flatMap(
       cellsData,
-      (cellData) => cellData.selectedData,
-    );
+      (cellData: TooltipSummaryOptions) => cellData.selectedData,
+    ) as unknown as Data[];
 
     const validCellsData = cellsData.filter((item) => isNumber(item.value));
     const value = isEmpty(validCellsData)
@@ -570,7 +571,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     targetCell!,
   );
 
-  const firstCellInfo = (cellInfos[0] || {}) as ViewMetaData;
+  const firstCellInfo = (cellInfos[0] || {}) as unknown as ViewMetaData;
 
   if (!options?.hideSummary) {
     // 计算多项的sum（默认为sum，可自定义）
@@ -652,8 +653,8 @@ export const getCellsTooltipData = (
 
       const currentCellInfo: TooltipData = {
         ...query,
-        colIndex: valueInCols ? meta.colIndex : null,
-        rowIndex: !valueInCols ? meta.rowIndex : null,
+        colIndex: valueInCols ? meta?.colIndex : null,
+        rowIndex: !valueInCols ? meta?.rowIndex : null,
       };
 
       const isEqualCellInfo = tooltipData.find((cellInfo) =>
@@ -732,7 +733,7 @@ export const getTooltipVisibleOperator = (
 };
 
 export const verifyTheElementInTooltip = (
-  parent: HTMLElement,
+  parent: HTMLElement | null,
   child: Node,
 ): boolean => {
   let result = false;

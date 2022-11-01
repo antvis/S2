@@ -72,7 +72,7 @@ export function renderText(
 
 export function renderLine(
   group: Group,
-  coordinate: { x1: number; y1: number; x2: number; y2: number },
+  coordinate: { x1?: number; y1?: number; x2?: number; y2?: number },
   lineStyle: ShapeAttrs,
 ): IShape {
   return group?.addShape?.('line', {
@@ -85,7 +85,7 @@ export function renderLine(
 }
 
 export function updateShapeAttr<K extends keyof ShapeAttrs>(
-  shape: IShape,
+  shape: IShape | undefined,
   attribute: K,
   value: ShapeAttrs[K],
 ) {

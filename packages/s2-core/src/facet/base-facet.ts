@@ -38,6 +38,7 @@ import type {
   LayoutResult,
   OffsetConfig,
   S2CellType,
+  ScrollChangeParams,
   SpreadSheetFacetCfg,
   ViewMeta,
 } from '../common/interface';
@@ -109,13 +110,13 @@ export abstract class BaseFacet {
 
   public vScrollBar: ScrollBar;
 
-  public rowHeader: RowHeader;
+  public rowHeader: RowHeader | null;
 
   public columnHeader: ColHeader;
 
   public cornerHeader: CornerHeader;
 
-  public rowIndexHeader: SeriesNumberHeader;
+  public rowIndexHeader: SeriesNumberHeader | null;
 
   public centerFrame: Frame;
 
@@ -146,7 +147,10 @@ export abstract class BaseFacet {
     this.init();
   }
 
-  protected getCellCustomWidth(node: Node, width: CellCustomWidth) {
+  protected getCellCustomWidth(
+    node: Node | null,
+    width: CellCustomWidth | undefined,
+  ) {
     return isFunction(width) ? width?.(node) : width;
   }
 
@@ -569,35 +573,38 @@ export abstract class BaseFacet {
         scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
-        const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-        const hRowScrollX = Math.floor(newOffset);
-        this.setScrollOffset({ hRowScrollX });
+      this.hRowScrollBar.on(
+        ScrollType.ScrollChange,
+        ({ offset }: ScrollChangeParams) => {
+          const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
+          const hRowScrollX = Math.floor(newOffset);
+          this.setScrollOffset({ hRowScrollX });
 
-        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
-        this.rowIndexHeader?.onRowScrollX(
-          hRowScrollX,
-          KEY_GROUP_ROW_INDEX_RESIZE_AREA,
-        );
-        this.cornerHeader.onRowScrollX(
-          hRowScrollX,
-          KEY_GROUP_CORNER_RESIZE_AREA,
-        );
+          this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+          this.rowIndexHeader?.onRowScrollX(
+            hRowScrollX,
+            KEY_GROUP_ROW_INDEX_RESIZE_AREA,
+          );
+          this.cornerHeader.onRowScrollX(
+            hRowScrollX,
+            KEY_GROUP_CORNER_RESIZE_AREA,
+          );
 
-        const scrollBarOffsetX = this.getScrollBarOffset(
-          hRowScrollX,
-          this.hRowScrollBar,
-        );
+          const scrollBarOffsetX = this.getScrollBarOffset(
+            hRowScrollX,
+            this.hRowScrollBar,
+          );
 
-        const position: CellScrollPosition = {
-          scrollX: scrollBarOffsetX,
-          scrollY: 0,
-        };
+          const position: CellScrollPosition = {
+            scrollX: scrollBarOffsetX,
+            scrollY: 0,
+          };
 
-        this.hRowScrollBar.updateThumbOffset(scrollBarOffsetX, false);
-        this.spreadsheet.emit(S2Event.ROW_CELL_SCROLL, position);
-        this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
-      });
+          this.hRowScrollBar.updateThumbOffset(scrollBarOffsetX, false);
+          this.spreadsheet.emit(S2Event.ROW_CELL_SCROLL, position);
+          this.spreadsheet.emit(S2Event.GLOBAL_SCROLL, position);
+        },
+      );
       this.foregroundGroup.add(this.hRowScrollBar);
     }
   };
@@ -644,7 +651,7 @@ export abstract class BaseFacet {
 
       this.hScrollBar.on(
         ScrollType.ScrollChange,
-        ({ offset, updateThumbOffset }) => {
+        ({ offset, updateThumbOffset }: ScrollChangeParams) => {
           const newScrollX = this.getValidScrollBarOffset(offset, maxOffset);
           if (updateThumbOffset) {
             this.hScrollBar.updateThumbOffset(
@@ -701,7 +708,7 @@ export abstract class BaseFacet {
 
       this.vScrollBar.on(
         ScrollType.ScrollChange,
-        ({ offset, updateThumbOffset }) => {
+        ({ offset, updateThumbOffset }: ScrollChangeParams) => {
           const newScrollY = this.getValidScrollBarOffset(offset, maxOffset);
           if (updateThumbOffset) {
             this.vScrollBar.updateThumbOffset(
@@ -1144,7 +1151,7 @@ export abstract class BaseFacet {
     this.foregroundGroup.add(this.centerFrame);
   }
 
-  protected getRowHeader(): RowHeader {
+  protected getRowHeader(): RowHeader | null {
     if (!this.rowHeader) {
       const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
       const seriesNumberWidth = this.getSeriesNumberWidth();
@@ -1198,7 +1205,7 @@ export abstract class BaseFacet {
     return this.cornerHeader;
   }
 
-  protected getSeriesNumberHeader(): SeriesNumberHeader {
+  protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return SeriesNumberHeader.getSeriesNumberHeader({
       panelBBox: this.panelBBox,
       seriesNumberWidth: this.getSeriesNumberWidth(),
@@ -1306,7 +1313,7 @@ export abstract class BaseFacet {
       columnNodes.length + hiddenColumnFields.length;
     const initColumnLeafNodes = store.get('initColumnLeafNodes', []);
 
-    if (originalColumnsLength !== initColumnLeafNodes.length) {
+    if (originalColumnsLength !== initColumnLeafNodes?.length) {
       store.set('initColumnLeafNodes', columnNodes);
     }
   }

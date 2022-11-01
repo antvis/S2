@@ -5,11 +5,12 @@ import {
   type S2DataConfig,
   ResizeType,
   ColCell,
+  type RawData,
 } from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
-);
+) as RawData[];
 
 const columns = [
   'order_id',
@@ -31,7 +32,7 @@ const columns = [
   'profit',
 ];
 
-const meta = [
+const meta: S2DataConfig['meta'] = [
   {
     field: 'count',
     name: '销售个数',
@@ -39,7 +40,7 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
-    formatter: (v: number) => `${v}元`,
+    formatter: (v) => `${v}元`,
   },
 ];
 

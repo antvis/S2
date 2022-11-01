@@ -1,6 +1,7 @@
 import type { IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { ColCell } from '../../cell';
+import { ColCell, TableColCell } from '../../cell';
+import type { S2CellType } from '../../common';
 import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
@@ -64,11 +65,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     item: Node,
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
-  ) {
+  ): S2CellType {
     return new ColCell(item, spreadsheet, headerConfig);
   }
 
-  protected getCellGroup() {
+  protected getCellGroup(node: Node) {
     return this.scrollGroup;
   }
 
@@ -97,7 +98,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
         item.belongsCell = cell;
 
-        const group = this.getCellGroup();
+        const group = this.getCellGroup(item);
         group.add(cell);
       }
     });

@@ -10,7 +10,7 @@ import type {
   MiniChartData,
   S2CellType,
 } from '../common/interface';
-import type { RangeColors } from '../common/interface/theme';
+import type { DefaultCellTheme, RangeColors } from '../common/interface/theme';
 import {
   renderCircle,
   renderPolyline,
@@ -35,73 +35,79 @@ interface FractionDigitsOptions {
 export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const { data, encode, type } = chartData;
   const { x, y, height, width } = cell.getMeta();
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL) as DefaultCellTheme;
   const { cell: cellStyle, miniChart } = dataCellStyle;
-  const measures = [];
+  const measures: number[] = [];
   const encodedData = map(data, (item) => {
-    measures.push(item?.[encode!.y]);
+    measures.push(item?.[encode!.y] as number);
     return {
       x: item[encode!.x],
       y: item[encode!.y],
     };
   });
-  const maxMeasure = max(measures);
-  const minMeasure = min(measures);
+  const maxMeasure = max(measures) || 0;
+  const minMeasure = min(measures) || 0;
   let measureRange = maxMeasure - minMeasure;
 
-  const xStart = x + cellStyle.padding.left;
-  const xEnd = x + width - cellStyle.padding.right;
-  const yStart = y + cellStyle.padding.top;
-  const yEnd = y + height - cellStyle.padding.bottom;
+  const { left = 0, right = 0, top = 0, bottom = 0 } = cellStyle!.padding!;
+  const xStart = x + left;
+  const xEnd = x + width - right;
+  const yStart = y + top;
+  const yEnd = y + height - bottom;
 
   const heightRange = yEnd - yStart;
+  const intervalPadding = miniChart?.bar?.intervalPadding!;
 
   const intervalX =
     type === MiniChartTypes.Bar
-      ? (xEnd -
-          xStart -
-          (measures.length - 1) * miniChart?.bar?.intervalPadding) /
+      ? (xEnd - xStart - (measures.length - 1) * intervalPadding) /
           measures.length +
-        miniChart?.bar?.intervalPadding
+        intervalPadding
       : (xEnd - xStart) / (measures.length - 1) ?? 0;
-  const box = [];
-  const points = map(encodedData, (item: { x: number; y: number }, key) => {
-    const positionX = xStart + key * intervalX;
-    let positionY: number;
 
-    if (measureRange !== 0) {
-      positionY = yEnd - ((item?.y - minMeasure) / measureRange) * heightRange;
-    } else {
-      positionY = minMeasure > 0 ? yStart : yEnd;
-    }
-    if (type === MiniChartTypes.Bar) {
-      let baseLinePositionY: number;
-      let barHeight: number;
+  const box: number[][] = [];
+  const points = map(
+    encodedData,
+    (item: { x: number; y: number }, key: number) => {
+      const positionX: number = xStart + key * intervalX;
+      let positionY: number;
 
-      if (minMeasure < 0 && maxMeasure > 0 && measureRange !== 0) {
-        // 基准线（0 坐标）在中间
-        baseLinePositionY =
-          yEnd - ((0 - minMeasure) / measureRange) * heightRange;
-        barHeight = Math.abs(positionY - baseLinePositionY);
-        if (item?.y < 0) {
-          positionY = baseLinePositionY; // 如果值小于 0 需要从基准线为起始 y 坐标开始绘制
-        }
+      if (measureRange !== 0) {
+        positionY =
+          yEnd - ((item?.y - minMeasure) / measureRange) * heightRange;
       } else {
-        // TODO 之后看需不需要把基准线画出来
-        baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
-        measureRange = max([Math.abs(maxMeasure), Math.abs(minMeasure)]);
-        barHeight =
-          measureRange === 0
-            ? heightRange
-            : (Math.abs(item?.y - 0) / measureRange) * heightRange;
-        positionY = baseLinePositionY;
+        positionY = minMeasure > 0 ? yStart : yEnd;
       }
+      if (type === MiniChartTypes.Bar) {
+        let baseLinePositionY: number;
+        let barHeight: number;
 
-      const barWidth = intervalX - miniChart?.bar?.intervalPadding;
-      box.push([barWidth, barHeight]);
-    }
-    return [positionX, positionY];
-  });
+        if (minMeasure < 0 && maxMeasure > 0 && measureRange !== 0) {
+          // 基准线（0 坐标）在中间
+          baseLinePositionY =
+            yEnd - ((0 - minMeasure) / measureRange) * heightRange;
+          barHeight = Math.abs(positionY - baseLinePositionY);
+          if (item?.y < 0) {
+            positionY = baseLinePositionY; // 如果值小于 0 需要从基准线为起始 y 坐标开始绘制
+          }
+        } else {
+          // TODO 之后看需不需要把基准线画出来
+          baseLinePositionY = minMeasure < 0 ? yStart : yEnd;
+          measureRange = max([Math.abs(maxMeasure), Math.abs(minMeasure)])!;
+          barHeight =
+            measureRange === 0
+              ? heightRange
+              : (Math.abs(item?.y - 0) / measureRange) * heightRange;
+          positionY = baseLinePositionY;
+        }
+
+        const barWidth = intervalX - intervalPadding;
+        box.push([barWidth, barHeight]);
+      }
+      return [positionX, positionY];
+    },
+  ) as unknown as number[][];
+
   return {
     points,
     box,
@@ -118,26 +124,26 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
     return;
   }
 
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL) as DefaultCellTheme;
   const { miniChart } = dataCellStyle;
-  const { point, linkLine } = miniChart.line;
+  const { point, linkLine } = miniChart?.line!;
 
   const { points } = scale(chartData, cell);
 
   renderPolyline(cell, {
     points,
-    stroke: linkLine.fill,
-    lineWidth: linkLine.size,
-    opacity: linkLine.opacity,
+    stroke: linkLine?.fill,
+    lineWidth: linkLine?.size,
+    opacity: linkLine?.opacity,
   });
 
   for (let i = 0; i < points.length; i++) {
     renderCircle(cell, {
       x: points[i][0],
       y: points[i][1],
-      r: point.size,
-      fill: point.fill,
-      fillOpacity: point.opacity,
+      r: point?.size,
+      fill: point?.fill,
+      fillOpacity: point?.opacity,
     });
   }
 };
@@ -237,10 +243,10 @@ export const drawInterval = (cell: DataCell) => {
   const { x, y, height, width } = cell.getCellArea();
 
   const intervalCondition = cell.findFieldCondition(
-    cell.cellConditions?.interval,
+    cell.cellConditions?.interval!,
   );
 
-  if (intervalCondition && intervalCondition.mapping) {
+  if (intervalCondition?.mapping!) {
     const attrs = cell.mappingValue(intervalCondition);
     if (!attrs) {
       return;
@@ -248,8 +254,8 @@ export const drawInterval = (cell: DataCell) => {
 
     const valueRange = attrs.isCompare ? attrs : cell.valueRangeByField;
 
-    const minValue = parseNumberWithPrecision(valueRange.minValue);
-    const maxValue = parseNumberWithPrecision(valueRange.maxValue);
+    const minValue = parseNumberWithPrecision(valueRange.minValue!);
+    const maxValue = parseNumberWithPrecision(valueRange.maxValue!);
 
     const fieldValue = parseNumberWithPrecision(
       cell.getMeta().fieldValue as number,
@@ -258,12 +264,14 @@ export const drawInterval = (cell: DataCell) => {
     if (fieldValue < minValue || fieldValue > maxValue) {
       return;
     }
+    const cellStyle = cell.getStyle();
+
     const barChartHeight =
-      cell.getStyle().miniChart.interval?.height ??
-      cell.getStyle().cell.miniBarChartHeight;
+      cellStyle?.miniChart?.interval?.height ??
+      cellStyle?.cell?.miniBarChartHeight;
     const barChartFillColor =
-      cell.getStyle().miniChart.interval?.fill ??
-      cell.getStyle().cell.miniBarChartFillColor;
+      cellStyle?.miniChart?.interval?.fill ??
+      cellStyle?.cell?.miniBarChartFillColor;
 
     const getScale = getIntervalScale(minValue, maxValue);
     const { zeroScale, scale: intervalScale } = getScale(fieldValue);
@@ -272,7 +280,7 @@ export const drawInterval = (cell: DataCell) => {
 
     return renderRect(cell, {
       x: x + width * zeroScale,
-      y: y + height / 2 - barChartHeight / 2,
+      y: y + height / 2 - barChartHeight! / 2,
       width: width * intervalScale,
       height: barChartHeight,
       fill,

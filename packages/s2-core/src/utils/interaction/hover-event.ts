@@ -11,7 +11,7 @@ import { generateId } from '../layout/generate-id';
  */
 export const getActiveHoverRowColCells = (
   id: string,
-  headerCells: ColCell[] | RowCell[],
+  headerCells: (ColCell | RowCell)[],
   isRowInHierarchyTreeType?: boolean,
 ) => {
   let allHeaderIds: string[];
@@ -38,7 +38,7 @@ export const updateAllColHeaderCellState = (
 ) => {
   if (colId) {
     const allColHeaderCells = getActiveHoverRowColCells(colId, colHeaderCells);
-    forEach(allColHeaderCells, (cell: ColCell) => {
+    forEach(allColHeaderCells, (cell) => {
       cell.updateByState(stateName);
     });
   }

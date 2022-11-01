@@ -6,7 +6,7 @@ import type {
   MappingDataItemCallback,
   MergedCellInfo,
   Pagination,
-  Style,
+  S2Style,
   Totals,
   ViewMeta,
 } from '../../common/interface/basic';
@@ -44,7 +44,7 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // conditions config
   conditions?: Conditions;
   // total config
-  totals?: Totals;
+  totals?: Totals | null;
   // tooltip configs
   tooltip?: Tooltip<T>;
   // interaction configs
@@ -64,12 +64,12 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // register custom svg icons
   customSVGIcons?: CustomSVGIcon[];
   // extra styles
-  style?: Style;
+  style?: S2Style;
   hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
   mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
-  placeholder?: ((meta: ViewMeta) => string) | string;
+  placeholder?: ((meta: Record<string, any>) => string) | string;
   // custom corner text
   cornerText?: string;
   // custom virtual extra field text

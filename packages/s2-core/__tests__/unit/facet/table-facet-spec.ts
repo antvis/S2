@@ -122,7 +122,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const colHeaderColSize = colLeafNodes.length;
       const canvasW = facet.getCanvasSize().width;
       const adaptiveWith = Math.max(
-        cellCfg.width,
+        cellCfg!.width!,
         canvasW / Math.max(1, colHeaderColSize),
       );
 
@@ -130,7 +130,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith);
         expect(Math.round(node.width)).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
       });
     });
   });
@@ -153,7 +153,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const colHeaderColSize = colLeafNodes.length - 1;
       const canvasW = facet.getCanvasSize().width - seriesNumberWidth;
       const adaptiveWith = Math.max(
-        cellCfg.width,
+        cellCfg!.width!,
         canvasW / Math.max(1, colHeaderColSize),
       );
 
@@ -161,13 +161,13 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.y).toBe(0);
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
-      expect(seriesNumberNode.height).toBe(colCfg.height);
+      expect(seriesNumberNode.height).toBe(colCfg!.height);
 
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
         expect(node.width).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
       });
     });
   });
@@ -221,7 +221,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -275,7 +275,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -345,11 +345,11 @@ describe('Table Mode Facet With Frozen Test', () => {
     const { colLeafNodes } = facet.layoutResult;
     let prevWidth = 0;
     colLeafNodes
-      .slice(-frozenTrailingColCount)
+      .slice(-frozenTrailingColCount!)
       .reverse()
       .forEach((node) => {
         prevWidth += node.width;
-        expect(node.x).toBe(width - prevWidth);
+        expect(node.x).toBe(width! - prevWidth);
       });
   });
 
@@ -360,13 +360,12 @@ describe('Table Mode Facet With Frozen Test', () => {
 
     let prevWidth = 0;
     colLeafNodes
-      .slice(-frozenTrailingColCount)
+      .slice(-frozenTrailingColCount!)
       .reverse()
       .forEach((node, index) => {
         prevWidth += node.width;
-        expect(getCellMeta(1, colLeafNodes.length - 1 - index).x).toBe(
-          width - prevWidth,
-        );
+        const meta = getCellMeta(1, colLeafNodes!.length - 1 - index);
+        expect(meta!.x).toBe(width! - prevWidth);
       });
   });
 
@@ -377,13 +376,12 @@ describe('Table Mode Facet With Frozen Test', () => {
     const panelBBox = facet.panelBBox;
     let prevHeight = 0;
     displayData
-      .slice(-frozenTrailingRowCount)
+      .slice(-frozenTrailingRowCount!)
       .reverse()
       .forEach((_, idx) => {
-        prevHeight += cellCfg.height;
-        expect(getCellMeta(displayData.length - 1 - idx, 1).y).toBe(
-          panelBBox.maxY - prevHeight,
-        );
+        prevHeight += cellCfg!.height!;
+        const meta = getCellMeta(displayData.length - 1 - idx, 1);
+        expect(meta!.y).toBe(panelBBox.maxY - prevHeight);
       });
   });
 
@@ -519,8 +517,8 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
     }),
     ...DEFAULT_STYLE,
     columns: ['province', 'city', 'type', 'sub_type', 'price'],
-    layoutCoordinate: (cfg, _, currentNode) => {
-      currentNode.width = 200;
+    layoutCoordinate: (_, __, currentNode) => {
+      currentNode!.width = 200;
     },
   });
 

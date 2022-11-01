@@ -72,7 +72,7 @@ export interface StoreKey {
   // interval condition
   valueRanges: ValueRanges;
   // 初次渲染时的列头叶子节点
-  initColumnLeafNodes: Node[];
+  initColumnLeafNodes: Node[] | undefined;
   /**
    * 隐藏列详情
    *  | a, b, [c,d 隐藏] [icon e ] , [f 隐藏], [icon g]   |
@@ -87,7 +87,7 @@ export interface StoreKey {
   visibleActionIcons: GuiIcon[];
 
   // last click cell
-  lastClickedCell: S2CellType<ViewMeta>;
+  lastClickedCell: S2CellType<ViewMeta> | null;
   initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
 
   // 排序方式

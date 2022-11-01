@@ -10,7 +10,7 @@ export const getScrollOffsetForCol = (
 ) => {
   const { facet } = spreadsheet;
   const { width } = facet.panelBBox;
-  const info = (facet as TableFacet)?.frozenGroupInfo;
+  const info = (facet as unknown as TableFacet)?.frozenGroupInfo;
   const frozenColWidth = info?.frozenCol.width ?? 0;
   const frozenTrailingColWidth = info?.frozenTrailingCol.width ?? 0;
 
@@ -33,7 +33,7 @@ export const getScrollOffsetForRow = (
 
   const { height } = facet.panelBBox;
 
-  const info = (facet as TableFacet)?.frozenGroupInfo;
+  const info = (facet as unknown as TableFacet)?.frozenGroupInfo;
   const frozenRowHeight = info?.frozenRow.height ?? 0;
   const frozenTrailingRowHeight = info?.frozenTrailingRow.height ?? 0;
 

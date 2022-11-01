@@ -61,7 +61,7 @@ export class EventController {
   }
 
   public get isAutoResetSheetStyle() {
-    return this.spreadsheet.options.interaction.autoResetSheetStyle;
+    return this.spreadsheet.options.interaction?.autoResetSheetStyle;
   }
 
   public bindEvents() {
@@ -83,44 +83,24 @@ export class EventController {
     });
 
     // dom events
-    this.addDomEventListener(
-      window,
-      OriginEventType.CLICK,
-      (event: MouseEvent) => {
-        this.resetSheetStyle(event);
-        this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
-      },
-    );
-    this.addDomEventListener(
-      window,
-      OriginEventType.KEY_DOWN,
-      (event: KeyboardEvent) => {
-        this.onKeyboardCopy(event);
-        this.onKeyboardEsc(event);
-        this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
-      },
-    );
-    this.addDomEventListener(
-      window,
-      OriginEventType.KEY_UP,
-      (event: KeyboardEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_UP, event);
-      },
-    );
-    this.addDomEventListener(
-      window,
-      OriginEventType.MOUSE_UP,
-      (event: MouseEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
-      },
-    );
-    this.addDomEventListener(
-      window,
-      OriginEventType.MOUSE_MOVE,
-      (event: MouseEvent) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
-      },
-    );
+    this.addDomEventListener(window, OriginEventType.CLICK, (event) => {
+      this.resetSheetStyle(event);
+      this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
+    });
+    this.addDomEventListener(window, OriginEventType.KEY_DOWN, (event) => {
+      this.onKeyboardCopy(event);
+      this.onKeyboardEsc(event);
+      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
+    });
+    this.addDomEventListener(window, OriginEventType.KEY_UP, (event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_UP, event);
+    });
+    this.addDomEventListener(window, OriginEventType.MOUSE_UP, (event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
+    });
+    this.addDomEventListener(window, OriginEventType.MOUSE_MOVE, (event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+    });
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
@@ -132,7 +112,7 @@ export class EventController {
     // windows and macos copy
     if (
       this.isCanvasEffect &&
-      this.spreadsheet.options.interaction.enableCopy &&
+      this.spreadsheet.options.interaction?.enableCopy &&
       // todo: 在copy header 时有问题
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
@@ -213,13 +193,13 @@ export class EventController {
     const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
     const { width, height } = this.spreadsheet.options;
     return {
-      width: Math.min(width, maxX),
-      height: Math.min(height, maxY),
+      width: Math.min(width!, maxX),
+      height: Math.min(height!, maxY),
     };
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
+    if (!getTooltipOptions(this.spreadsheet, event)?.showTooltip) {
       return false;
     }
 
@@ -235,10 +215,10 @@ export class EventController {
 
     if (event instanceof MouseEvent) {
       return (
-        event.clientX >= x &&
-        event.clientX <= x + width &&
-        event.clientY >= y &&
-        event.clientY <= y + height
+        event.clientX >= x! &&
+        event.clientX <= x! + width! &&
+        event.clientY >= y! &&
+        event.clientY <= y! + height!
       );
     }
 
@@ -256,8 +236,8 @@ export class EventController {
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
     resizeArea.attr(
       SHAPE_STYLE_MAP.backgroundOpacity,
-      this.spreadsheet.theme.resizeArea.interactionState.hover
-        .backgroundOpacity,
+      this.spreadsheet.theme.resizeArea?.interactionState?.hover
+        ?.backgroundOpacity,
     );
   }
 
@@ -266,7 +246,7 @@ export class EventController {
     if (!isEmpty(resizeArea)) {
       resizeArea.attr(
         SHAPE_STYLE_MAP.backgroundOpacity,
-        this.spreadsheet.theme.resizeArea.backgroundOpacity,
+        this.spreadsheet.theme.resizeArea?.backgroundOpacity,
       );
     }
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
@@ -565,18 +545,22 @@ export class EventController {
     });
   }
 
-  private addDomEventListener(
+  private addDomEventListener<K extends keyof WindowEventMap>(
     target: EventTarget,
-    type: string,
-    handler: EventListenerOrEventListenerObject,
+    type: K,
+    handler: (event: WindowEventMap[K]) => void,
   ) {
     if (target.addEventListener) {
-      const { eventListenerOptions } = this.spreadsheet.options.interaction;
-      target.addEventListener(type, handler, eventListenerOptions);
+      const { eventListenerOptions } = this.spreadsheet.options.interaction!;
+      target.addEventListener(
+        type,
+        handler as EventListenerOrEventListenerObject,
+        eventListenerOptions,
+      );
       this.domEventListeners.push({
         target,
         type,
-        handler,
+        handler: handler as EventListenerOrEventListenerObject,
         options: eventListenerOptions,
       });
     } else {

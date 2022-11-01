@@ -42,7 +42,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
         nodeQuery = {
           ...query,
-          [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
+          [EXTRA_FIELD]: spreadsheet?.dataSet?.fields?.values?.[0],
         };
         isLeaf = true;
       } else {

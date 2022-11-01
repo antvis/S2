@@ -11,14 +11,14 @@ export class PanelBBox extends BaseBBox {
       y: Math.floor(cornerBBox.maxY),
     };
 
-    const scrollBarSize = this.spreadsheet.theme.scrollBar.size;
+    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
     const { width: canvasWidth, height: canvasHeight } =
       this.spreadsheet.options;
 
-    const panelWidth = Math.max(0, canvasWidth - cornerPosition.x);
+    const panelWidth = Math.max(0, canvasWidth! - cornerPosition.x);
     const panelHeight = Math.max(
       0,
-      canvasHeight - cornerPosition.y - scrollBarSize,
+      canvasHeight! - cornerPosition.y - scrollBarSize!,
     );
 
     this.x = cornerPosition.x;
@@ -38,11 +38,11 @@ export class PanelBBox extends BaseBBox {
 
     const { frozenTrailingColCount, frozenTrailingRowCount } =
       this.spreadsheet.options;
-    if (frozenTrailingColCount > 0) {
+    if (frozenTrailingColCount! > 0) {
       this.viewportWidth = this.width;
       this.maxX = cornerPosition.x + this.width;
     }
-    if (frozenTrailingRowCount > 0) {
+    if (frozenTrailingRowCount! > 0) {
       this.viewportHeight = this.height;
       this.maxY = cornerPosition.y + this.height;
     }

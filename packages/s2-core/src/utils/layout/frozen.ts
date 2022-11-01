@@ -1,37 +1,37 @@
 import type { S2TableSheetOptions } from '../../common/interface';
 
 export const getValidFrozenOptions = (
-  opts: S2TableSheetOptions,
+  options: S2TableSheetOptions,
   colLength: number,
   dataLength = 0,
 ) => {
   // 如果没有传行列冻结选项，提前返回
-  if (!Object.values(opts).find((item) => item > 0)) {
-    return opts;
+  if (!Object.values(options).find((item) => item > 0)) {
+    return options;
   }
 
-  const newOpts = {
-    ...opts,
+  const newOptions: S2TableSheetOptions = {
+    ...options,
   };
 
-  if (newOpts.frozenColCount >= colLength) {
-    newOpts.frozenColCount = colLength;
+  if (newOptions.frozenColCount! >= colLength) {
+    newOptions.frozenColCount = colLength;
   }
 
-  const remainFrozenColCount = colLength - newOpts.frozenColCount;
+  const remainFrozenColCount = colLength - newOptions.frozenColCount!;
 
-  if (newOpts.frozenTrailingColCount > remainFrozenColCount) {
-    newOpts.frozenTrailingColCount = remainFrozenColCount;
+  if (newOptions.frozenTrailingColCount! > remainFrozenColCount) {
+    newOptions.frozenTrailingColCount = remainFrozenColCount;
   }
 
-  if (newOpts.frozenRowCount >= dataLength) {
-    newOpts.frozenRowCount = dataLength;
+  if (newOptions.frozenRowCount! >= dataLength) {
+    newOptions.frozenRowCount = dataLength;
   }
 
-  const remainFrozenRowCount = dataLength - newOpts.frozenRowCount;
-  if (newOpts.frozenTrailingRowCount > remainFrozenRowCount) {
-    newOpts.frozenTrailingRowCount = remainFrozenRowCount;
+  const remainFrozenRowCount = dataLength - newOptions.frozenRowCount!;
+  if (newOptions.frozenTrailingRowCount! > remainFrozenRowCount) {
+    newOptions.frozenTrailingRowCount = remainFrozenRowCount;
   }
 
-  return newOpts;
+  return newOptions;
 };

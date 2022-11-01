@@ -21,7 +21,7 @@ export class Hierarchy {
   public sampleNodesForAllLevels: Node[] = [];
 
   // last level's first node
-  public sampleNodeForLastLevel: Node = null;
+  public sampleNodeForLastLevel: Node | null = null;
 
   // all nodes in this hierarchy
   private allNodesWithoutRoot: Node[] = [];

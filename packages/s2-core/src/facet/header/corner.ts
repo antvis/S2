@@ -64,7 +64,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       viewportWidth: width,
       viewportHeight: height,
       hierarchyType: facetCfg.hierarchyType, // 是否为树状布局
-      hierarchyCollapse: facetCfg.hierarchyCollapse,
+      hierarchyCollapse: facetCfg.hierarchyCollapse!,
       rows: facetCfg.rows,
       columns: facetCfg.columns,
       seriesNumberWidth,
@@ -74,7 +74,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   public static getTreeCornerText(options: BaseCornerOptions) {
     const { spreadsheet, facetCfg } = options;
-    const { dataSet, rows } = facetCfg;
+    const { dataSet, rows = [] } = facetCfg;
 
     const { cornerText: defaultCornerText } = spreadsheet.options;
 
@@ -117,7 +117,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       spreadsheet,
     } = options;
     const { rowsHierarchy, colsHierarchy } = layoutResult;
-    const { rows, columns, dataSet } = facetCfg;
+    const { rows = [], columns = [], dataSet } = facetCfg;
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
     // check if show series number node
@@ -255,7 +255,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     data.forEach((item: Node) => {
-      let cell: Group;
+      let cell: Group | null = null;
       if (cornerCell) {
         cell = cornerCell(
           item,
@@ -271,12 +271,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           this.headerConfig,
         );
       }
-      this.add(cell);
+      this.add(cell as Group);
     });
   }
 
   protected offset() {
-    const { scrollX } = this.headerConfig;
+    const { scrollX = 0 } = this.headerConfig;
     translateGroupX(this, -scrollX);
   }
 

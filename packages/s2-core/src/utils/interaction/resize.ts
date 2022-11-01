@@ -17,8 +17,9 @@ export const getResizeAreaAttrs = (
     height: resizeAreaHeight,
     ...otherOptions
   } = options;
-  const width = type === ResizeDirectionType.Horizontal ? theme.size : null;
-  const height = type === ResizeDirectionType.Vertical ? theme.size : null;
+  const width =
+    type === ResizeDirectionType.Horizontal ? theme.size : undefined;
+  const height = type === ResizeDirectionType.Vertical ? theme.size : undefined;
 
   return {
     fill: theme.background,
@@ -41,7 +42,7 @@ export const getResizeAreaAttrs = (
 export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
-): IGroup => {
+): IGroup | undefined => {
   if (!spreadsheet.foregroundGroup) {
     return;
   }

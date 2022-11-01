@@ -52,7 +52,7 @@ describe('SpreadSheet Tests', () => {
       const mountContainer = null;
 
       function init() {
-        const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
+        const s2 = new PivotSheet(mountContainer!, mockDataConfig, s2Options);
         s2.render();
         s2.destroy();
         s2.render();
@@ -74,8 +74,8 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       const canvas = s2.container.get('el') as HTMLCanvasElement;
-      expect(canvas.width).toEqual(s2Options.width * devicePixelRatio);
-      expect(canvas.height).toEqual(s2Options.height * devicePixelRatio);
+      expect(canvas.width).toEqual(s2Options.width! * devicePixelRatio);
+      expect(canvas.height).toEqual(s2Options.height! * devicePixelRatio);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
       expect(canvas.style.height).toEqual(`${s2Options.height}px`);
 
@@ -119,7 +119,7 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       window.dispatchEvent(new Event('resize'));
-      visualViewport.dispatchEvent(new Event('resize'));
+      visualViewport!.dispatchEvent(new Event('resize'));
 
       // await debounce
       await sleep(1000);
@@ -199,7 +199,7 @@ describe('SpreadSheet Tests', () => {
           s2.render();
           s2.destroy();
 
-          visualViewport.dispatchEvent(new Event('resize'));
+          visualViewport!.dispatchEvent(new Event('resize'));
         }
 
         expect(init).not.toThrowError();

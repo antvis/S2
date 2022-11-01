@@ -37,9 +37,9 @@ export class CornerBBox extends BaseBBox {
     const { colsHierarchy } = this.layoutResult;
     const { width: canvasWidth } = this.spreadsheet.options;
 
-    const maxCornerBBoxWidth = canvasWidth * CORNER_MAX_WIDTH_RATIO;
+    const maxCornerBBoxWidth = canvasWidth! * CORNER_MAX_WIDTH_RATIO;
     const colsHierarchyWidth = colsHierarchy?.width;
-    const panelWidthWidthUnClippedCorner = canvasWidth - this.originalWidth;
+    const panelWidthWidthUnClippedCorner = canvasWidth! - this.originalWidth;
 
     // 不需要裁剪条件：
     // 1. 角头的宽度没有超过最大的角头范围
@@ -52,7 +52,7 @@ export class CornerBBox extends BaseBBox {
     }
 
     let clippedWidth = 0;
-    const maxPanelWidth = canvasWidth - maxCornerBBoxWidth;
+    const maxPanelWidth = canvasWidth! - maxCornerBBoxWidth;
 
     // 列头宽度超过了剩余宽度，但是小于 Panel 的最大宽度
     if (colsHierarchyWidth <= maxPanelWidth) {

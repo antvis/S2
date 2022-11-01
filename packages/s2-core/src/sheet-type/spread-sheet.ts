@@ -314,7 +314,7 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, content } = getTooltipOptions(this, event);
+    const { showTooltip, content } = getTooltipOptions(this, event)!;
     if (!showTooltip) {
       return;
     }
@@ -459,8 +459,8 @@ export abstract class SpreadSheet extends EE {
    * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
    */
   public changeSize(
-    width: number = this.options.width,
-    height: number = this.options.height,
+    width: number = this.options.width!,
+    height: number = this.options.height!,
   ) {
     this.changeSheetSize(width, height);
   }
@@ -471,8 +471,8 @@ export abstract class SpreadSheet extends EE {
    * @param height
    */
   public changeSheetSize(
-    width: number = this.options.width,
-    height: number = this.options.height,
+    width: number = this.options.width!,
+    height: number = this.options.height!,
   ) {
     const canvas = this.getCanvasElement();
     const containerWidth = this.container.get('width');
@@ -498,7 +498,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getLayoutWidthType(): LayoutWidthType {
-    return this.options.style.layoutWidthType;
+    return this.options.style!.layoutWidthType!;
   }
 
   public getRowNodes(level = -1): Node[] {
@@ -624,11 +624,11 @@ export abstract class SpreadSheet extends EE {
     // base canvas group
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
-      width,
-      height,
+      width: width!,
+      height: height!,
       localRefresh: false,
       supportCSSTransform,
-      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      pixelRatio: Math.max(devicePixelRatio!, MIN_DEVICE_PIXEL_RATIO),
     });
 
     // the main three layer groups
@@ -666,7 +666,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getInitColumnLeafNodes(): Node[] {
-    return this.store.get('initColumnLeafNodes', []);
+    return this.store.get('initColumnLeafNodes', [])!;
   }
 
   public clearColumnLeafNodes() {
@@ -675,7 +675,7 @@ export abstract class SpreadSheet extends EE {
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
   private initHiddenColumnsDetail = () => {
-    const { hiddenColumnFields } = this.options.interaction;
+    const { hiddenColumnFields } = this.options.interaction!;
     const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
     // 隐藏列为空, 并且没有操作的情况下, 则无需生成
     if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
@@ -686,7 +686,7 @@ export abstract class SpreadSheet extends EE {
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();
-    forIn(canvasEvents, (_, event: keyof EmitterType) => {
+    forIn(canvasEvents, (_, event) => {
       this.off(event);
     });
   }
@@ -703,7 +703,7 @@ export abstract class SpreadSheet extends EE {
         return 0;
       }
 
-      const ctx = this.getCanvasElement()?.getContext('2d');
+      const ctx = this.getCanvasElement()?.getContext('2d')!;
       const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
         font as CSSStyleDeclaration;
 

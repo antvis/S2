@@ -1,10 +1,16 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
-import type { S2CellType, SortParam } from '../../common/interface';
+import type {
+  Data,
+  S2CellType,
+  SortMethod,
+  SortParam,
+} from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
+import type { CellData } from '../../data-set';
 
-export type TooltipDataItem = Record<string, any>;
+export type TooltipDataItem = Data;
 
 export interface TooltipOperatorMenu {
   key: string;
@@ -16,7 +22,7 @@ export interface TooltipOperatorMenu {
 }
 
 export interface TooltipOperatorOptions {
-  onClick?: (...args: unknown[]) => void;
+  onClick?: (params: { key: SortMethod; [key: string]: unknown }) => void;
   menus?: TooltipOperatorMenu[];
   defaultSelectedKeys?: string[];
 }
@@ -50,7 +56,7 @@ export interface TooltipOptions {
 export interface TooltipSummaryOptions {
   name: string | null;
   value: number | string | undefined | null;
-  selectedData: TooltipDataItem[];
+  selectedData: Data[] | CellData[];
 }
 
 export interface TooltipNameTipsOptions {
@@ -129,11 +135,11 @@ export interface SummaryProps {
 }
 
 export interface SummaryParam extends TooltipDataParams {
-  cellInfos?: TooltipDataItem[];
+  cellInfos?: TooltipData[];
 }
 
 export interface TooltipDataParam extends TooltipDataParams {
-  cellInfos: TooltipDataItem[];
+  cellInfos: TooltipData[];
 }
 
 export interface OrderOption {
@@ -142,7 +148,7 @@ export interface OrderOption {
   name: string;
 }
 
-export type TooltipAutoAdjustBoundary = 'body' | 'container';
+export type TooltipAutoAdjustBoundary = 'body' | 'container' | null | undefined;
 
 export type TooltipContentType = Element | string;
 
