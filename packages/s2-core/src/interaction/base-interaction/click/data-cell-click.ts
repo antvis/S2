@@ -65,7 +65,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       const { selectedCellHighlight } = options.interaction;
       let headerSelectedNode: Node[] = [];
-      if (!isNil(selectedCellHighlight)) {
+      if (!isNil(selectedCellHighlight) && selectedCellHighlight !== false) {
         const colNodes: Node[] = this.spreadsheet.getColumnNodes();
         const rowNodes: Node[] = this.spreadsheet.getRowNodes();
         const colHeadersSelected = colNodes.filter((node: Node) =>

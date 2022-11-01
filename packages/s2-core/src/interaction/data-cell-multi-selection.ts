@@ -91,7 +91,7 @@ export class DataCellMultiSelection
         this.spreadsheet.hideTooltip();
         let headerSelectedNode: Node[] = [];
         const { selectedCellHighlight } = this.spreadsheet.options.interaction;
-        if (!isNil(selectedCellHighlight)) {
+        if (!isNil(selectedCellHighlight) && selectedCellHighlight !== false) {
           const colNodes = this.spreadsheet.getColumnNodes();
           const rowNodes = this.spreadsheet.getRowNodes();
           const { ROW, CROSS, ONLY_HEADER } =
