@@ -79,17 +79,30 @@ export class ColBrushSelection extends BaseBrushSelection {
     };
   }
 
-  protected isInBrushRange = (meta: ViewMeta | Node) => {
+  protected isInBrushRange(meta: ViewMeta | Node) {
     const { start, end } = this.getBrushRange();
-    const { x = 0, y = 0 } = meta;
+    const cornerBBox = this.spreadsheet.facet.cornerBBox;
+    const { x = 0, y = 0, width = 0, height = 0 } = meta;
+    const maxX = end.x - cornerBBox.width;
+    const minX = start.x - cornerBBox.width;
+    const maxY = end.y;
+    const minY = start.y;
 
-    return (
-      x >= start.headerX &&
-      x <= end.headerX &&
-      y >= start.headerY &&
-      y <= end.headerY
+    return this.rectanglesIntersect(
+      {
+        minX,
+        minY,
+        maxX,
+        maxY,
+      },
+      {
+        minX: x,
+        maxX: x + width,
+        minY: y,
+        maxY: y + height,
+      },
     );
-  };
+  }
 
   // 最终刷选的cell
   protected updateSelectedCells() {

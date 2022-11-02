@@ -38,6 +38,7 @@ import { getCellsTooltipData } from '../../utils';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
+import type { Rect } from '../../common/interface';
 
 /**
  * Panel area's brush selection interaction
@@ -172,6 +173,16 @@ export class BaseBrushSelection
         needScroll: needScrollForY,
       },
     };
+  };
+
+  // 矩形相交算法: 通过判断两矩形左右上下的线是否相交
+  protected rectanglesIntersect = (rect1: Rect, rect2: Rect) => {
+    return (
+      rect1.maxX > rect2.minX &&
+      rect1.minX < rect2.maxX &&
+      rect1.minY < rect2.maxY &&
+      rect1.maxY > rect2.minY
+    );
   };
 
   private autoScrollIntervalId = null;
@@ -538,6 +549,7 @@ export class BaseBrushSelection
       this.startBrushPoint?.headerY,
       this.endBrushPoint?.headerY,
     );
+
     // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
     // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
     return {
