@@ -32,7 +32,7 @@ import {
   type MappingResult,
   type IconCondition,
   type CellBorderPosition,
-  CellBox,
+  CellClipBox,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -115,7 +115,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
-      this.getBBoxByType(CellBox.CONTENT_BOX),
+      this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textStyle,
       this.actualTextWidth,
       iconCfg,
@@ -204,7 +204,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return resize[type];
   }
 
-  public getBBoxByType(type = CellBox.BORDER_BOX) {
+  public getBBoxByType(type = CellClipBox.BORDER_BOX) {
     const bbox: SimpleBBox = {
       x: this.meta.x,
       y: this.meta.y,
@@ -239,7 +239,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected drawInteractiveBorderShape() {
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, this.getBBoxByType(CellBox.PADDING_BOX), {
+      renderRect(this, this.getBBoxByType(CellClipBox.PADDING_BOX), {
         visible: false,
       }),
     );
@@ -392,7 +392,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected getInteractiveBorderShapeStyle<T>(borderSize: T & number) {
-    const { x, y, height, width } = this.getBBoxByType(CellBox.PADDING_BOX);
+    const { x, y, height, width } = this.getBBoxByType(CellClipBox.PADDING_BOX);
 
     const halfSize = borderSize / 2;
 

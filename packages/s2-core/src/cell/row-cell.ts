@@ -11,7 +11,7 @@ import {
 import type { RowHeaderConfig } from '../facet/header';
 import {
   CellBorderPosition,
-  CellBox,
+  CellClipBox,
   type ViewMeta,
 } from '../common/interface';
 import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
@@ -99,7 +99,7 @@ export class RowCell extends HeaderCell {
     }
 
     const { isCollapsed, id, hierarchy } = this.meta;
-    const { x } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
     const { size } = this.getStyle().icon;
 
@@ -370,12 +370,12 @@ export class RowCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextArea() {
-    const content = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const content = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textIndent = this.getTextIndent();
     return {
       ...content,

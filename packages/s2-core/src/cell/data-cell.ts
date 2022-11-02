@@ -7,7 +7,7 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition, CellBox } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -273,7 +273,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return getMaxTextWidth(width, this.getIconStyle());
   }
 

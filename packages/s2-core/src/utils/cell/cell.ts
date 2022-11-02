@@ -1,7 +1,7 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import {
-  CellBox,
+  CellClipBox,
   type AreaRange,
   type CellTheme,
   type IconCfg,
@@ -13,7 +13,8 @@ import {
 import { CellBorderPosition } from '../../common/interface';
 
 /**
- * 类似 background-clip 属性，分为：
+ * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
+ * 分为三种类型：
  * borderBox: 整个 cell 的范围
  * paddingBox: cell 去除 border 的范围
  * contentBox: cell 去除 (border + padding) 的范围
@@ -32,9 +33,9 @@ export const getCellBoxByType = (
   bbox: SimpleBBox,
   borderPositions: CellBorderPosition[],
   cellStyle: CellTheme,
-  boxType: CellBox,
+  boxType: CellClipBox,
 ) => {
-  if (boxType === CellBox.BORDER_BOX) {
+  if (boxType === CellClipBox.BORDER_BOX) {
     return bbox;
   }
 
@@ -67,7 +68,7 @@ export const getCellBoxByType = (
     }
   });
 
-  if (boxType === CellBox.CONTENT_BOX) {
+  if (boxType === CellClipBox.CONTENT_BOX) {
     x += padding?.left;
     y += padding?.top;
     width -= padding?.left + padding?.right;

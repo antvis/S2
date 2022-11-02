@@ -17,7 +17,7 @@ import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
 import {
-  CellBox,
+  CellClipBox,
   type CellCfg,
   type Condition,
   type MultiData,
@@ -452,7 +452,7 @@ export const drawObjectText = (
     y,
     height: totalTextHeight,
     width: totalTextWidth,
-  } = cell.getBBoxByType(CellBox.CONTENT_BOX);
+  } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { values: textValues } = text;
   const { options, measureTextWidth } = cell.getMeta().spreadsheet;

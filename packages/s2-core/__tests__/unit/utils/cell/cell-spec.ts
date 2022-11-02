@@ -1,7 +1,7 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellBorderPosition,
-  CellBox,
+  CellClipBox,
   type CellTheme,
 } from '@/common/interface';
 import type { AreaRange } from '@/common/interface/scroll';
@@ -35,7 +35,7 @@ describe('Cell Content Test', () => {
       cfg,
       [CellBorderPosition.LEFT, CellBorderPosition.TOP],
       cellStyle,
-      CellBox.BORDER_BOX,
+      CellClipBox.BORDER_BOX,
     );
 
     expect(results).toEqual({
@@ -50,7 +50,7 @@ describe('Cell Content Test', () => {
       cfg,
       [CellBorderPosition.LEFT, CellBorderPosition.TOP],
       cellStyle,
-      CellBox.PADDING_BOX,
+      CellClipBox.PADDING_BOX,
     );
 
     expect(results).toEqual({
@@ -65,7 +65,7 @@ describe('Cell Content Test', () => {
       cfg,
       [CellBorderPosition.LEFT, CellBorderPosition.TOP],
       cellStyle,
-      CellBox.CONTENT_BOX,
+      CellClipBox.CONTENT_BOX,
     );
 
     expect(results).toEqual({

@@ -18,7 +18,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition, CellBox } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
 import { getTextPosition, getVerticalPosition } from '../utils/cell/cell';
@@ -70,8 +70,8 @@ export class CornerCell extends HeaderCell {
   }
 
   protected drawCellText() {
-    const { x } = this.getBBoxByType(CellBox.CONTENT_BOX);
-    const { y, height } = this.getBBoxByType(CellBox.PADDING_BOX);
+    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const { y, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
 
     const textStyle = this.getTextStyle();
     const cornerText = this.getCornerText();
@@ -166,7 +166,7 @@ export class CornerCell extends HeaderCell {
 
     const { size } = this.getStyle().icon;
     const { textBaseline, fill } = this.getTextStyle();
-    const area = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     this.treeIcon = renderTreeIcon(
       this,
@@ -305,7 +305,7 @@ export class CornerCell extends HeaderCell {
       margin.left;
 
     const iconY = getVerticalPosition(
-      this.getBBoxByType(CellBox.CONTENT_BOX),
+      this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textBaseline,
       size,
     );
@@ -330,7 +330,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 

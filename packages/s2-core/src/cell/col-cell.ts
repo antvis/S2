@@ -9,7 +9,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition, CellBox } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { DefaultCellTheme, IconTheme } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import {
@@ -66,7 +66,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getActionIconsWidth();
   }
 
@@ -143,7 +143,7 @@ export class ColCell extends HeaderCell {
       this.headerConfig;
 
     const textStyle = this.getTextStyle();
-    const contentBox = this.getBBoxByType(CellBox.CONTENT_BOX);
+    const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {

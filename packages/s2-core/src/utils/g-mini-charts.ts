@@ -5,7 +5,7 @@
 
 import { get, isEmpty, map, max, min } from 'lodash';
 import {
-  CellBox,
+  CellClipBox,
   type BaseChartData,
   type BulletValue,
   type MiniChartData,
@@ -235,7 +235,7 @@ export const drawInterval = (cell: DataCell) => {
     return;
   }
 
-  const { x, y, height, width } = cell.getBBoxByType(CellBox.PADDING_BOX);
+  const { x, y, height, width } = cell.getBBoxByType(CellClipBox.PADDING_BOX);
 
   const intervalCondition = cell.findFieldCondition(
     cell.cellConditions?.interval,
