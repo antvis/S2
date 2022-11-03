@@ -28,9 +28,9 @@ export class Select extends BaseComponent {
           onChange({ [attributeId]: value });
         }}
       >
-        {map(options, (option, idx) => {
+        {map(options, (option) => {
           return (
-            <Option key={`${idx}`} value={option.value}>
+            <Option key={option.value} value={option.value}>
               {option.label}
             </Option>
           );

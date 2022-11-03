@@ -17,9 +17,9 @@ export class Radio extends BaseComponent {
           onChange({ [attributeId]: e.target.value })
         }
       >
-        {map(options, (option, idx) => {
+        {map(options, (option) => {
           return (
-            <AntdRadio.Button key={`${idx}`} value={option.value}>
+            <AntdRadio.Button key={option.value} value={option.value}>
               {option.label}
             </AntdRadio.Button>
           );
