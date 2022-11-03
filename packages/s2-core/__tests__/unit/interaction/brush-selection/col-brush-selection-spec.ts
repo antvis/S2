@@ -29,9 +29,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
-  let customX = 200 - 90;
   const allColHeaderCells = map(new Array(4), (a, i) => {
-    customX += 90;
+    const customX = 90 * i + 1;
     return {
       cellType: CellTypes.COL_CELL,
       getMeta() {
@@ -39,7 +38,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
           colIndex: i,
           rowIndex: 0,
           x: customX,
-          y: 0,
+          y: 30,
         };
       },
     };
@@ -76,6 +75,15 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
         interaction: {
           brushSelection: {
             col: true,
+          },
+        },
+        style: {
+          colCfg: {
+            width: 90,
+            height: 30,
+          },
+          rowCfg: {
+            width: 100,
           },
         },
       },
@@ -151,6 +159,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
   });
 
   test('should skip brush selection if mouse move less than valid distance', () => {
+    brushSelectionInstance.brushRangeCells = [];
     emitEvent(S2Event.COL_CELL_MOUSE_DOWN, {
       x: 200,
       y: 0,
@@ -188,7 +197,10 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, { clientX: 600, clientY: 90 });
+    emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
+      clientX: 600,
+      clientY: 90,
+    });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,

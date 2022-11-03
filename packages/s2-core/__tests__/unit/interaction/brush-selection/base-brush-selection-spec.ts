@@ -10,6 +10,7 @@ import {
   SpreadSheet,
   type ViewMeta,
   InterceptType,
+  BaseBrushSelection,
 } from '@/index';
 
 jest.mock('@/interaction/event-controller');
@@ -148,5 +149,56 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
         InterceptType.HOVER,
       ]),
     ).toBeFalsy();
+  });
+
+  test('should return true when two rectangles cross relationship', () => {
+    const rect1 = {
+      minX: 0,
+      minY: 0,
+      maxX: 10,
+      maxY: 10,
+    };
+    const rect2 = {
+      minX: 5,
+      minY: 5,
+      maxX: 15,
+      maxY: 15,
+    };
+    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
+  });
+
+  test('should return true when two rectangles containment relationship', () => {
+    const rect1 = {
+      minX: 0,
+      minY: 0,
+      maxX: 20,
+      maxY: 20,
+    };
+    const rect2 = {
+      minX: 5,
+      minY: 5,
+      maxX: 15,
+      maxY: 15,
+    };
+    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
+  });
+
+  test('should return false when two rectangles is not cross relationship', () => {
+    const rect1 = {
+      minX: 0,
+      minY: 0,
+      maxX: 10,
+      maxY: 10,
+    };
+    const rect2 = {
+      minX: 10,
+      minY: 10,
+      maxX: 15,
+      maxY: 15,
+    };
+    const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+    expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeFalsy();
   });
 });

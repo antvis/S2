@@ -176,7 +176,7 @@ export class BaseBrushSelection
   };
 
   // 矩形相交算法: 通过判断两矩形左右上下的线是否相交
-  protected rectanglesIntersect = (rect1: Rect, rect2: Rect) => {
+  public rectanglesIntersect = (rect1: Rect, rect2: Rect) => {
     return (
       rect1.maxX > rect2.minX &&
       rect1.minX < rect2.maxX &&
