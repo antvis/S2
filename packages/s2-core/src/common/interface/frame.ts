@@ -5,8 +5,8 @@ export interface FrameConfig {
     y: number;
   };
   scrollX?: number;
-  width: number;
-  height: number;
+  cornerWidth: number;
+  cornerHeight: number;
   viewportWidth: number;
   viewportHeight: number;
   showViewportLeftShadow: boolean;

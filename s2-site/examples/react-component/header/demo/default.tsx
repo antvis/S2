@@ -65,7 +65,7 @@ fetch(
   });
 
 insertCss(`
-  .s2-header {
+  .antv-s2-header {
     margin:0px !important;
   }
 `);

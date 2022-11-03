@@ -41,8 +41,8 @@ describe('Col Cell Tests', () => {
 
     test.each([
       ['left', 8], // col.padding.left
-      ['center', 100], // col.width / 2
-      ['right', 192], // col.width - col.padding.right
+      ['center', 99.5], // col.width / 2 - border
+      ['right', 191], // col.width - col.padding.right - border
     ] as [TextAlign, number][])(
       'should calc node text position in %s align mode',
       (textAlign, textX) => {
@@ -62,15 +62,15 @@ describe('Col Cell Tests', () => {
         const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
         expect(getTextPosition()).toEqual({
           x: textX,
-          y: 15,
+          y: 15.5,
         });
       },
     );
 
     test.each([
       ['left', 52], // col.padding.left + actualTextWidth + icon.margin.left
-      ['center', 115], // col.width / 2 + (actualTextWidth + icon.margin.left + icon.width + icon.margin.right) / 2  - (icon.width + icon.margin.right)
-      ['right', 178], // col.width - col.padding.right - icon.margin.right - icon.width
+      ['center', 114.5], // col.width / 2 + (actualTextWidth + icon.margin.left + icon.width + icon.margin.right) / 2  - (icon.width + icon.margin.right)  - border
+      ['right', 177], // col.width - col.padding.right - icon.margin.right - icon.width - border
     ] as [TextAlign, number][])(
       'should calc icon position in %s align mode',
       (textAlign, iconX) => {
@@ -102,7 +102,7 @@ describe('Col Cell Tests', () => {
         const getIconPosition = get(colCell, 'getIconPosition').bind(colCell);
         expect(getIconPosition()).toEqual({
           x: iconX,
-          y: 10,
+          y: 10.5,
         });
       },
     );

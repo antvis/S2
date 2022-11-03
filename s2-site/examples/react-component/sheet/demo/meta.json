@@ -21,6 +21,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jWifHNLOsB/08db1064-bb09-4d44-b42b-26aed1766545.png"
     },
     {
+      "filename": "editable.tsx",
+      "title": {
+        "zh": "编辑表",
+        "en": "Editable Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ"
+    },
+    {
       "filename": "strategy.tsx",
       "title": {
         "zh": "趋势分析表组件",
@@ -35,6 +43,14 @@
         "en": "StrategySheet with mini chart"
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lLfATbGywcEAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "mobile-pivot.tsx",
+      "title": {
+        "zh": "移动端透视表组件",
+        "en": "Mobile PivotSheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*cf2uQYVVStQAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

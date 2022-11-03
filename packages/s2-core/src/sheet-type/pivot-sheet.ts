@@ -60,6 +60,13 @@ export class PivotSheet extends SpreadSheet {
     return new PivotDataSet(this);
   }
 
+  public enableFrozenHeaders(): boolean {
+    return false;
+  }
+
+  /**
+   * Check if is pivot mode
+   */
   public isPivotMode(): boolean {
     return true;
   }

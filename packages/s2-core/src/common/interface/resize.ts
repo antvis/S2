@@ -58,6 +58,7 @@ export interface ResizeInfo {
   /** 改动影响区域 */
   effect: ResizeAreaEffect;
   isResizeArea?: boolean;
+  isResizeMask?: boolean;
   /** 字段id */
   id: string;
   /** 当前拖拽热区对应的节点信息 */

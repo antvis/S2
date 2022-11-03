@@ -235,13 +235,14 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   ) {
     const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
       spreadsheet.options;
+    const facet = spreadsheet.facet;
     const {
-      facet,
       frozenColGroup,
       frozenTrailingColGroup,
       frozenRowGroup,
       frozenTrailingRowGroup,
-    } = spreadsheet;
+    } = facet;
+
     const { colLeafNodes } = facet.layoutResult;
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;

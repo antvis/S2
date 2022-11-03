@@ -1,12 +1,13 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
-  TableSheet,
-  type S2Options,
+  BaseBrushSelection,
+  DataCell,
+  DeviceType,
+  InteractionName,
   type S2DataConfig,
   S2Event,
-  DataCell,
-  InteractionName,
-  BaseBrushSelection,
+  type S2Options,
+  TableSheet,
 } from '@/index';
 
 const data = getMockData(
@@ -50,7 +51,7 @@ const options: S2Options = {
     cellCfg: {
       height: 32,
     },
-    device: 'pc',
+    device: DeviceType.PC,
   },
   pagination: {
     current: 1,
@@ -73,7 +74,7 @@ describe('Brush selection scroll spec', () => {
   test('Should scroll when mouse outside canvas', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
-    const dataCells = s2.panelScrollGroup.getChildren();
+    const dataCells = s2.facet.panelScrollGroup.getChildren();
     const target = dataCells.find((item) => item instanceof DataCell);
     const offsetY = s2.container.get('el').getBoundingClientRect().top;
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {

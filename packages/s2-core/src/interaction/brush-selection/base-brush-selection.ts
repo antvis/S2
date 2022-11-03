@@ -75,7 +75,7 @@ export class BaseBrushSelection
   }
 
   protected initPrepareSelectMaskShape() {
-    const { foregroundGroup } = this.spreadsheet;
+    const { foregroundGroup } = this.spreadsheet.facet;
     if (!foregroundGroup) {
       return;
     }

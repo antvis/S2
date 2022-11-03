@@ -2,8 +2,10 @@
  * 判断是否是移动端。
  * 兼容场景：pc端但是使用mobile配置。
  */
+import { DeviceType } from '../common';
+
 export function isMobile(device?: string) {
-  if (device === 'mobile') {
+  if (device === DeviceType.MOBILE) {
     return true;
   }
   return /(iPhone|iPad|SymbianOS|Windows Phone|iPod|iOS|Android)/i.test(

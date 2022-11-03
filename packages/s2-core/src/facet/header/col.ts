@@ -1,11 +1,11 @@
 import type { IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { ColCell } from '../../cell';
-import type { S2CellType } from '../../common';
+import { ColCell } from '../../cell/col-cell';
 import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
 } from '../../common/constant';
+import type { S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';

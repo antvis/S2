@@ -23,6 +23,7 @@ module.exports = {
     'vue/setup-compiler-macros': true,
   },
   parser: '@typescript-eslint/parser',
+  parserOptions: { tsconfigRootDir: __dirname },
   plugins: ['prettier', '@typescript-eslint', 'import', 'vue'],
   settings: {
     jest: {

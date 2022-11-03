@@ -37,7 +37,9 @@ describe('Resize Utils Tests', () => {
     MockSpreadSheet.mockClear();
 
     s2 = new MockSpreadSheet();
-    s2.foregroundGroup = new Group('');
+    s2.facet = {
+      foregroundGroup: new Group(''),
+    } as any;
   });
 
   describe('#getResizeAreaAttrs()', () => {
@@ -144,8 +146,8 @@ describe('Resize Utils Tests', () => {
   describe('#getResizeAreaGroupById()', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
       const group = getOrCreateResizeAreaGroupById(s2, 'id');
-      expect(group!.add).toBeDefined();
-      expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
+      expect(group.add).toBeDefined();
+      expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(1);
     });
 
     test('should get prev resize area group if prevResizeArea is exist', () => {
@@ -157,7 +159,7 @@ describe('Resize Utils Tests', () => {
       getOrCreateResizeAreaGroupById(s2, groupId);
 
       // use prev created group, only one resize area group
-      expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
+      expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(1);
     });
   });
 });

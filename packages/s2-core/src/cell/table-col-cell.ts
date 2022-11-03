@@ -7,12 +7,14 @@ import {
 } from '../common/constant';
 import type { FormatResult } from '../common/interface';
 import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
-import { getContentArea } from '../utils/cell/cell';
-import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';
 import { renderRect } from '../utils/g-renders';
-import { getOrCreateResizeAreaGroupById } from '../utils/interaction/resize';
+import {
+  getOrCreateResizeAreaGroupById,
+  shouldAddResizeArea,
+} from '../utils/interaction/resize';
 import { getSortTypeIcon } from '../utils/sort-action';
 import { formattedFieldValue } from '../utils/cell/header-cell';
+import { getFrozenColWidth } from '../utils/layout/frozen';
 import type { BaseHeaderConfig } from '../facet/header';
 
 export class TableColCell extends ColCell {
@@ -53,7 +55,36 @@ export class TableColCell extends ColCell {
     if (this.isFrozenCell()) {
       return true;
     }
-    return super.shouldAddVerticalResizeArea();
+
+    const { x, y, width, height } = this.getBBoxByType();
+    const { scrollX, scrollY, width: headerWidth } = this.headerConfig;
+
+    const resizeStyle = this.getResizeAreaStyle();
+
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+
+    const frozenWidth = getFrozenColWidth(
+      this.spreadsheet.facet.layoutResult.colLeafNodes,
+      this.spreadsheet.options,
+    );
+    const resizeClipAreaBBox = {
+      x: frozenWidth.frozenColWidth,
+      y: 0,
+      width:
+        headerWidth -
+        frozenWidth.frozenColWidth -
+        frozenWidth.frozenTrailingColWidth,
+      height,
+    };
+    return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+      scrollX,
+      scrollY,
+    });
   }
 
   protected getVerticalResizeAreaOffset() {
@@ -62,8 +93,8 @@ export class TableColCell extends ColCell {
 
     if (this.isFrozenCell()) {
       return {
-        x,
-        y,
+        x: position.x + x,
+        y: position.y + y,
       };
     }
     return {
@@ -96,25 +127,6 @@ export class TableColCell extends ColCell {
     return style?.bolderText!;
   }
 
-  public getContentArea() {
-    const { padding } = this.getStyle()?.cell || this.theme.dataCell!.cell!;
-    const newPadding = { ...padding };
-    const extraPadding = getExtraPaddingForExpandIcon(
-      this.spreadsheet,
-      this.meta.field,
-      this.getStyle()!,
-    );
-
-    if (extraPadding.left) {
-      newPadding.left = (newPadding.left || 0) + extraPadding.left;
-    }
-    if (extraPadding.right) {
-      newPadding.right = (newPadding.right || 0) + extraPadding.right;
-    }
-
-    return getContentArea(this.getCellArea(), newPadding);
-  }
-
   protected getHorizontalResizeAreaName() {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
   }
@@ -122,7 +134,7 @@ export class TableColCell extends ColCell {
   protected drawBackgroundShape() {
     const { backgroundColor } = this.getStyle()!.cell!;
     this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
+      ...this.getBBoxByType(),
       fill: backgroundColor,
     });
   }

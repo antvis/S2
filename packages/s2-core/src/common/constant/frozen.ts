@@ -8,7 +8,7 @@ export enum FrozenCellType {
   BOTTOM = 'bottom',
 }
 
-export enum FrozenGroup {
+export enum FrozenGroupType {
   FROZEN_COL = 'frozenCol',
   FROZEN_ROW = 'frozenRow',
   FROZEN_TRAILING_COL = 'frozenTrailingCol',

@@ -144,7 +144,7 @@ describe('Spreadsheet Totals Tests', () => {
     });
     spreadsheet.render();
 
-    const grandTotal = spreadsheet.panelScrollGroup
+    const grandTotal = spreadsheet.facet.panelScrollGroup
       .getChildren()
       .find(
         (child) =>
@@ -154,7 +154,7 @@ describe('Spreadsheet Totals Tests', () => {
     // @ts-ignore
     expect(grandTotal.textShape.attr('text')).toEqual('26193');
 
-    const rowSubtotal1 = spreadsheet.panelScrollGroup
+    const rowSubtotal1 = spreadsheet.facet.panelScrollGroup
       .getChildren()
       .find(
         (child) =>
@@ -164,7 +164,7 @@ describe('Spreadsheet Totals Tests', () => {
     // @ts-ignore
     expect(rowSubtotal1.textShape).toBeUndefined();
 
-    const rowSubtotal2 = spreadsheet.panelScrollGroup
+    const rowSubtotal2 = spreadsheet.facet.panelScrollGroup
       .getChildren()
       .find(
         (child) =>

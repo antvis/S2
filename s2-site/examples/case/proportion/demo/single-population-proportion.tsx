@@ -199,7 +199,7 @@ insertCss(`
     margin-left: 5px;
   }
 
-  .s2-header {
+  .antv-s2-header {
     margin:0px !important;
   }
 `);

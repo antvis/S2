@@ -1,10 +1,6 @@
 import type { IGroup } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import {
-  KEY_GROUP_GRID_GROUP,
-  KEY_GROUP_PANEL_FROZEN_COL,
-  SQUARE_LINE_CAP,
-} from '../common/constant';
+import { KEY_GROUP_GRID_GROUP, SQUARE_LINE_CAP } from '../common/constant';
 import type { GridInfo } from '../common/interface';
 import type { GridGroupConstructorParameters } from '../common/interface/group';
 import type { SpreadSheet } from '../sheet-type/spread-sheet';
@@ -27,15 +23,9 @@ export class GridGroup extends Group {
 
   public updateGrid = (gridInfo: GridInfo, id = KEY_GROUP_GRID_GROUP) => {
     const bbox = this.getBBox();
-    const { theme, isTableMode } = this.s2;
+    const { theme } = this.s2;
 
-    const style = theme.dataCell!.cell;
-    // 在明细表中需要补全左侧的边框，分为两种情况：
-    // 1. 存在行头冻结，需要为冻结的行头组添加边框
-    // 2. 不存在行头冻结，需要为默认的 Grid 组添加边框
-    const shouldDrawLeftBorder =
-      isTableMode() &&
-      (id === KEY_GROUP_GRID_GROUP || id === KEY_GROUP_PANEL_FROZEN_COL);
+    const style = theme.dataCell.cell;
 
     if (!this.gridGroup || !this.findById(id)) {
       this.gridGroup = this.addGroup({
@@ -45,24 +35,22 @@ export class GridGroup extends Group {
 
     this.gridGroup.clear();
 
-    this.gridInfo = gridInfo;
-    if (shouldDrawLeftBorder) {
-      this.gridInfo.cols.unshift(0);
-    }
+    const verticalBorderWidth = style.verticalBorderWidth;
 
-    // line 在绘制时，包围盒计算有点问题，会代入lineWidth
+    this.gridInfo = gridInfo;
+
+    // line 在绘制时，包围盒计算有点问题，会带入lineWidth
     // 比如传入的 x1=0, x2=10, lineWidth=20
     // 最后line得出来的包围盒 minX=-10, maxX=20，会将lineWidth/2纳入计算中
     // 最后就会导致更新过程中，GridGroup的包围盒不断被放大
     // 因此在传入时，将这部分坐标减去，并结合lineCap将这部分绘制出来，达到内容区域绘制不变，包围盒计算正确的目的
-    const verticalBorderWidth = style!.verticalBorderWidth;
-    const halfVerticalBorderWidthBorderWidth = style!.verticalBorderWidth! / 2;
+    const halfVerticalBorderWidthBorderWidth = verticalBorderWidth / 2;
     this.gridInfo.cols.forEach((x) => {
       renderLine(
         this.gridGroup as Group,
         {
-          x1: x,
-          x2: x,
+          x1: x - halfVerticalBorderWidthBorderWidth,
+          x2: x - halfVerticalBorderWidthBorderWidth,
           y1: Math.ceil(bbox.minY + halfVerticalBorderWidthBorderWidth),
           y2: Math.floor(bbox.maxY - halfVerticalBorderWidthBorderWidth),
         },
@@ -75,17 +63,16 @@ export class GridGroup extends Group {
       );
     });
 
-    const horizontalBorderWidth = style!.horizontalBorderWidth;
-    const halfHorizontalBorderWidth = style!.horizontalBorderWidth! / 2;
-
+    const horizontalBorderWidth = style.horizontalBorderWidth;
+    const halfHorizontalBorderWidth = horizontalBorderWidth / 2;
     this.gridInfo.rows.forEach((y) => {
       renderLine(
         this.gridGroup as Group,
         {
           x1: Math.ceil(bbox.minX + halfHorizontalBorderWidth),
           x2: Math.floor(bbox.maxX - halfHorizontalBorderWidth),
-          y1: y,
-          y2: y,
+          y1: y - halfHorizontalBorderWidth,
+          y2: y - halfHorizontalBorderWidth,
         },
         {
           stroke: style!.horizontalBorderColor,

@@ -38,6 +38,7 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
+import { Frame } from './header';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {
@@ -682,7 +683,10 @@ export class PivotFacet extends BaseFacet {
   ): number {
     // tree row width = [config width, canvas / 2]
     const canvasW = this.getCanvasSize().width;
-    const availableWidth = canvasW - this.getSeriesNumberWidth();
+    const availableWidth =
+      canvasW -
+      this.getSeriesNumberWidth() -
+      Frame.getVerticalBorderWidth(this.spreadsheet);
     const rowHeaderWidth = Math.min(
       availableWidth / 2,
       this.getTreeRowHeaderWidth(),
@@ -691,8 +695,8 @@ export class PivotFacet extends BaseFacet {
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
     return Math.max(
-      getCellWidth(cellCfg!, this.getColLabelLength(col, rowLeafNodes)),
-      (availableWidth - rowHeaderWidth) / colSize,
+      getCellWidth(cellCfg, this.getColLabelLength(col, rowLeafNodes)),
+      Math.floor((availableWidth - rowHeaderWidth) / colSize),
     );
   }
 
@@ -749,16 +753,22 @@ export class PivotFacet extends BaseFacet {
     const rowHeaderColSize = rows.length;
     const colHeaderColSize = colLeafNodes.length;
     const { width } = this.getCanvasSize();
-    const availableWidth = width - this.getSeriesNumberWidth();
+    const availableWidth =
+      width -
+      this.getSeriesNumberWidth() -
+      Frame.getVerticalBorderWidth(this.spreadsheet);
 
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
-      return Math.max(getCellWidth(cellCfg!), availableWidth / colSize);
+      return Math.max(
+        getCellWidth(cellCfg),
+        Math.floor(availableWidth / colSize),
+      );
     }
 
     return Math.max(
-      getCellWidth(cellCfg!),
-      (availableWidth - rowHeaderWidth) / colHeaderColSize,
+      getCellWidth(cellCfg),
+      Math.floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
     );
   }
 
@@ -849,8 +859,9 @@ export class PivotFacet extends BaseFacet {
     const rowNodeWidth =
       spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
       rowIconWidth +
-      rowCellStyle!.padding!.left! +
-      rowCellStyle!.padding!.right!;
+      rowCellStyle.padding.left +
+      rowCellStyle.padding.right +
+      rowCellStyle.verticalBorderWidth;
 
     // calc corner fieldNameNodeWidth
     const fieldName = dataSet.getFieldName(field);

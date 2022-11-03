@@ -91,6 +91,7 @@ describe('Interaction Row Column Resize Tests', () => {
       effect,
       id: 'testId',
       meta,
+      size: 3,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -124,6 +125,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
     mockRootInteraction = new MockRootInteraction(s2);
     s2.facet = {
+      foregroundGroup: new Group(''),
       panelBBox: {
         maxX: s2Options.width,
         maxY: s2Options.height,
@@ -131,7 +133,6 @@ describe('Interaction Row Column Resize Tests', () => {
       destroy: jest.fn(),
       render: jest.fn(),
     } as unknown as BaseFacet;
-    s2.foregroundGroup = new Group('');
     s2.interaction = mockRootInteraction;
     rowColumnResizeInstance = new RowColumnResize(s2);
     s2.render = jest.fn();
@@ -157,6 +158,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const maskAttrs: ShapeAttrs = {
       appendInfo: {
         isResizeArea: true,
+        isResizeMask: true,
       },
       x: 0,
       y: 0,
@@ -171,8 +173,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const pickMaskAttrs = (attrs: ShapeAttrs) =>
       pick(attrs, Object.keys(maskAttrs));
 
-    const resizeMask =
-      rowColumnResizeInstance.resizeReferenceGroup?.findById(RESIZE_MASK_ID);
+    const resizeMask = getResizeMask();
 
     const startGuideLine = getStartGuideLine();
     const endGuideLine = getEndGuideLine();
@@ -202,6 +203,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      size: 3,
     } as ResizeInfo;
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
@@ -217,12 +219,12 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetX: 10,
     });
     expect(getStartGuideLine().attr('path')).toStrictEqual([
-      ['M', 2, 2],
-      ['L', 2, s2Options.height],
+      ['M', 3.5, 2],
+      ['L', 3.5, s2Options.height],
     ]);
     expect(getEndGuideLine().attr('path')).toStrictEqual([
-      ['M', 7, 2],
-      ['L', 7, s2Options.height],
+      ['M', 5.5, 2],
+      ['L', 5.5, s2Options.height],
     ]);
   });
 
@@ -238,13 +240,14 @@ describe('Interaction Row Column Resize Tests', () => {
       type: ResizeDirectionType.Horizontal,
       offsetX: 2,
       offsetY: 2,
-      width: 5,
-      height: 2,
+      width: 20,
+      height: 0,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
-      resizedWidth: 5,
+      resizedWidth: 40,
       resizedHeight: 0,
+      size: 3,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -258,6 +261,15 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // show resize cursor
     expect(getResizeMask().attr('cursor')).toEqual('col-resize');
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+      {
+        offsetX: 30,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
 
     emitResizeEvent(
       S2Event.GLOBAL_MOUSE_UP,
@@ -274,7 +286,7 @@ describe('Interaction Row Column Resize Tests', () => {
       style: {
         colCfg: {
           widthByFieldValue: {
-            [resizeInfo.id]: 5,
+            [resizeInfo.id]: 40,
           },
         },
       },
@@ -287,7 +299,7 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 30,
       heightByField: {},
       widthByFieldValue: {
-        [resizeInfo.id]: 5,
+        [resizeInfo.id]: 40,
       },
     });
 
@@ -315,6 +327,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      size: 3,
     } as ResizeInfo;
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
@@ -329,12 +342,12 @@ describe('Interaction Row Column Resize Tests', () => {
       offsetY: 20,
     });
     expect(getStartGuideLine().attr('path')).toStrictEqual([
-      ['M', 2, 2],
-      ['L', s2Options.width, 2],
+      ['M', 2, 3.5],
+      ['L', s2Options.width, 3.5],
     ]);
     expect(getEndGuideLine().attr('path')).toStrictEqual([
-      ['M', 2, 4],
-      ['L', s2Options.width, 4],
+      ['M', 2, 2.5],
+      ['L', s2Options.width, 2.5],
     ]);
   });
 
@@ -357,6 +370,7 @@ describe('Interaction Row Column Resize Tests', () => {
       id: '',
       resizedWidth: 0,
       resizedHeight: 2,
+      size: 3,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -579,6 +593,7 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      size: 3,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -631,7 +646,10 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
+      resizedHeight: 0,
+      resizedWidth: 0,
       id: '',
+      size: 3,
     } as ResizeInfo;
 
     emitResizeEvent(

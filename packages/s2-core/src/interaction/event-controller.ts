@@ -231,6 +231,10 @@ export class EventController {
   }
 
   private activeResizeArea(event: CanvasEvent) {
+    const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+    if (appendInfo?.isResizeMask) {
+      return;
+    }
     this.resetResizeArea();
     const resizeArea = event.target as Group;
     this.spreadsheet.store.set('activeResizeArea', resizeArea);

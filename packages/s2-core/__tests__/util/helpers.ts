@@ -15,6 +15,7 @@ import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
 import type { BaseFacet } from '@/facet';
+import type { PanelBBox } from '@/facet/bbox/panelBBox';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -68,6 +69,16 @@ export const createFakeSpreadSheet = () => {
     panelBBox: {
       maxX: s2.options.width,
       maxY: s2.options.height,
+    } as PanelBBox,
+    panelGroup: {
+      getChildren() {
+        return [];
+      },
+    },
+    foregroundGroup: {
+      getChildren() {
+        return [];
+      },
     },
     layoutResult: {
       getCellMeta: jest.fn(),

@@ -18,16 +18,12 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { FormatResult, TextTheme } from '../common/interface';
 import { CornerNodeType } from '../common/interface/node';
-import {
-  getBorderPositionAndStyle,
-  getTextPosition,
-  getVerticalPosition,
-} from '../utils/cell/cell';
+import { getTextPosition, getVerticalPosition } from '../utils/cell/cell';
 import { formattedFieldValue } from '../utils/cell/header-cell';
-import { renderLine, renderText, renderTreeIcon } from '../utils/g-renders';
+import { renderText, renderTreeIcon } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
@@ -39,6 +35,9 @@ import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
+  /* 角头 label 类型 */
+  public cornerType: CornerNodeType;
+
   protected declare headerConfig: CornerHeaderConfig;
 
   protected textShapes: IShape[] = [];
@@ -48,11 +47,12 @@ export class CornerCell extends HeaderCell {
     return cornerType === CornerNodeType.Col;
   }
 
-  /* 角头 label 类型 */
-  public cornerType: CornerNodeType;
-
   public get cellType() {
     return CellTypes.CORNER_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.TOP, CellBorderPosition.LEFT];
   }
 
   public update() {}
@@ -65,13 +65,13 @@ export class CornerCell extends HeaderCell {
     this.drawCellText();
     this.drawConditionIconShapes();
     this.drawActionIcons();
-    this.drawBorderShape();
+    this.drawBorders();
     this.drawResizeArea();
   }
 
   protected drawCellText() {
-    const { x } = this.getContentArea();
-    const { y, height } = this.getCellArea();
+    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+    const { y, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
 
     const textStyle = this.getTextStyle();
     const cornerText = this.getCornerText();
@@ -166,7 +166,7 @@ export class CornerCell extends HeaderCell {
 
     const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();
-    const area = this.getContentArea();
+    const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     this.treeIcon = renderTreeIcon(
       this,
@@ -186,21 +186,6 @@ export class CornerCell extends HeaderCell {
         );
       },
     );
-  }
-
-  /**
-   * Render cell horizontalBorder border
-   * @protected
-   */
-  protected drawBorderShape() {
-    [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        this.getCellArea(),
-        this.getStyle()!.cell!,
-      );
-      renderLine(this, position, style!);
-    });
   }
 
   protected isLastRowCornerCell() {
@@ -236,6 +221,10 @@ export class CornerCell extends HeaderCell {
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
 
+    if (!resizeArea) {
+      return;
+    }
+
     const {
       position,
       scrollX = 0,
@@ -243,10 +232,11 @@ export class CornerCell extends HeaderCell {
       width: headerWidth,
       height: headerHeight,
     } = this.headerConfig;
-    const { x, y, width, height, field, cornerType } = this.meta;
+    const { x, y, width, height } = this.getBBoxByType();
+    const { field, cornerType } = this.meta;
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle!.size! / 2,
+      x: x + width - resizeStyle.size,
       y,
       width: resizeStyle.size!,
       height,
@@ -286,7 +276,7 @@ export class CornerCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size! / 2,
+        x: offsetX + width - resizeStyle.size,
         y: offsetY,
         height: this.isLastRowCornerCell() ? headerHeight : height,
       },
@@ -315,8 +305,8 @@ export class CornerCell extends HeaderCell {
       margin?.left;
 
     const iconY = getVerticalPosition(
-      this.getContentArea(),
-      textBaseline!,
+      this.getBBoxByType(CellClipBox.CONTENT_BOX),
+      textBaseline,
       size,
     );
 
@@ -340,7 +330,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 

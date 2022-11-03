@@ -1,6 +1,9 @@
 import { isArray, isEmpty, mergeWith, uniq, isEqual, isString } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
-import { DEFAULT_OPTIONS } from '../common/constant/options';
+import {
+  DEFAULT_MOBILE_OPTIONS,
+  DEFAULT_OPTIONS,
+} from '../common/constant/options';
 import type {
   S2DataConfig,
   S2Options,
@@ -62,5 +65,6 @@ export const getSafetyDataConfig = (
   return mergedDataCfg;
 };
 
-export const getSafetyOptions = (options: Partial<S2Options> | null) =>
-  customMerge(DEFAULT_OPTIONS, options);
+export const getSafetyOptions = (options: Partial<S2Options>) => {
+  return customMerge(DEFAULT_OPTIONS, options);
+};

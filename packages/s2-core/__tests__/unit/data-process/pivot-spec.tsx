@@ -210,30 +210,20 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('3、Calculate row & col coordinates', () => {
-    const { width, style } = s2.options;
-    const { fields } = s2.dataCfg;
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
       s2.facet.layoutResult;
     const { cellCfg, colCfg } = get(s2, 'facet.cfg');
-    const expectedWidth = Math.max(
-      style!.cellCfg!.width!,
-      width! / (size(fields.rows) + size(colLeafNodes)),
-    );
     test('should calc correct row & cell width', () => {
-      expect(rowLeafNodes[0].width).toEqual(expectedWidth);
-      expect(colLeafNodes[0].width).toEqual(expectedWidth);
+      expect(rowLeafNodes[0].width).toEqual(99);
+      expect(colLeafNodes[0].width).toEqual(100);
     });
     test('should calc correct row node size and coordinate', () => {
       // all sample width.
-      expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(
-        expectedWidth,
-      );
-      expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(
-        expectedWidth,
-      );
+      expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(99);
+      expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(99);
       // all width
       expect(uniq(rowsHierarchy.getNodes().map((node) => node.width))).toEqual([
-        expectedWidth,
+        99,
       ]);
       // leaf node
       rowLeafNodes.forEach((node, index) => {
@@ -242,7 +232,7 @@ describe('Pivot Table Core Data Process', () => {
           cellCfg.height + padding?.top + padding?.bottom,
         );
         expect(node.y).toEqual(node.height * index);
-        expect(node.x).toEqual(expectedWidth);
+        expect(node.x).toEqual(99);
       });
       // level = 0
       const provinceNodes = rowsHierarchy.getNodes(0);
@@ -273,7 +263,8 @@ describe('Pivot Table Core Data Process', () => {
       );
       // leaf node
       colLeafNodes.forEach((node, index) => {
-        expect(node.width).toEqual(expectedWidth);
+        const width = Math.floor(node.width);
+        expect(width).toEqual(100);
         expect(node.x).toEqual(node.width * index);
         expect(node.y).toEqual(node.level * colCfg.height);
       });

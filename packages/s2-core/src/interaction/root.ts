@@ -204,13 +204,14 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     return getAllChildCells(
-      this.spreadsheet.panelGroup?.getChildren() as IElement[],
+      this.spreadsheet.facet?.panelGroup?.getChildren() as IElement[],
       DataCell,
     );
   }
 
   public getAllRowHeaderCells(): RowCell[] {
-    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const children =
+      this.spreadsheet.facet?.foregroundGroup?.getChildren() || [];
     const rowHeader = children.find((group) => group instanceof RowHeader);
     const headerChildren = rowHeader?.cfg?.children || [];
 
@@ -220,7 +221,8 @@ export class RootInteraction {
   }
 
   public getAllColHeaderCells(): ColCell[] {
-    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const children =
+      this.spreadsheet.facet?.foregroundGroup?.getChildren() || [];
     const colHeader = children.find((group) => group instanceof ColHeader);
     const headerChildren = colHeader?.cfg?.children || [];
 

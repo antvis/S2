@@ -13,7 +13,7 @@ describe('Table Sheet Resize Test', () => {
     });
     s2.render();
 
-    const resizeGroup = s2.foregroundGroup.findById(
+    const resizeGroup = s2.facet.foregroundGroup.findById(
       KEY_GROUP_ROW_RESIZE_AREA,
     ) as IGroup;
 
@@ -28,7 +28,7 @@ describe('Table Sheet Resize Test', () => {
     });
     s2.render();
 
-    const resizeGroup = s2.foregroundGroup.findById(
+    const resizeGroup = s2.facet.foregroundGroup.findById(
       KEY_GROUP_ROW_RESIZE_AREA,
     ) as IGroup;
 

@@ -42,16 +42,18 @@ export const getResizeAreaAttrs = (
 export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
-): IGroup | undefined => {
-  if (!spreadsheet.foregroundGroup) {
+): IGroup => {
+  if (!spreadsheet.facet?.foregroundGroup) {
     return;
   }
 
-  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
+  const existedResizeArea = spreadsheet.facet.foregroundGroup.findById(
+    id,
+  ) as IGroup;
 
   return (
     existedResizeArea ||
-    spreadsheet.foregroundGroup.addGroup({
+    spreadsheet.facet.foregroundGroup.addGroup({
       id,
       zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
     })

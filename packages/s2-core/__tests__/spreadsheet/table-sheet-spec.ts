@@ -1,11 +1,12 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
-  TableSheet,
-  type S2Options,
-  type S2DataConfig,
-  ResizeType,
   ColCell,
+  DeviceType,
+  ResizeType,
+  TableSheet,
   type RawData,
+  type S2DataConfig,
+  type S2Options,
 } from '@/index';
 
 const data = getMockData(
@@ -74,7 +75,7 @@ const options: S2Options = {
     cellCfg: {
       height: 32,
     },
-    device: 'pc',
+    device: DeviceType.PC,
   },
   interaction: {
     enableCopy: true,
@@ -150,7 +151,7 @@ describe('TableSheet normal spec', () => {
     const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
 
     expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
-    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 });
+    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 81, y: 0 });
 
     s2.destroy();
   });

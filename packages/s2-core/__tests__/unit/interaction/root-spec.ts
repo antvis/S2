@@ -1,4 +1,4 @@
-import { Canvas, Group } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g-canvas';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { Store } from '@/common/store';
 import {
@@ -84,7 +84,6 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.container = {
       draw: jest.fn(),
     } as unknown as Canvas;
-    mockSpreadSheetInstance.panelGroup = new Group('');
     mockSpreadSheetInstance.isTableMode = jest.fn();
     mockSpreadSheetInstance.isHierarchyTreeType = () => false;
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);

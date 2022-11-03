@@ -1,7 +1,8 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
+import { omit, pick } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { S2Event, type S2Options } from '@/common';
+import { DEFAULT_OPTIONS, S2Event, type S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
@@ -270,6 +271,158 @@ describe('SpreadSheet Tests', () => {
 
       expect(tableSheet).toBeInstanceOf(TableSheet);
       expect(container.querySelectorAll('canvas')).toHaveLength(1);
+    });
+  });
+
+  describe('Sheet Config Change Tests', () => {
+    let container: HTMLElement;
+
+    beforeAll(() => {
+      container = getContainer();
+    });
+
+    afterAll(() => {
+      container?.remove();
+    });
+
+    test('should update all Data Config when reset is true', () => {
+      const totalData = [
+        {
+          province: '浙江',
+          type: '笔',
+          price: 3,
+          cost: 6,
+        },
+      ];
+      const s2 = new PivotSheet(
+        container,
+        { ...mockDataConfig, totalData },
+        s2Options,
+      );
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([
+        {
+          $$extra$$: 'price',
+          $$value$$: 3,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+        {
+          $$extra$$: 'cost',
+          $$value$$: 6,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ]);
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+
+      // 改变 totalData 为 undefined 再次渲染
+      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, true);
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([]);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual([]);
+      s2.destroy();
+    });
+
+    test('should update all Data Config when reset is false', () => {
+      const totalData = [
+        {
+          province: '浙江',
+          type: '笔',
+          price: 3,
+          cost: 6,
+        },
+      ];
+      const s2 = new PivotSheet(
+        container,
+        { ...mockDataConfig, totalData },
+        s2Options,
+      );
+      s2.render();
+
+      const totalDataSet = [
+        {
+          $$extra$$: 'price',
+          $$value$$: 3,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+        {
+          $$extra$$: 'cost',
+          $$value$$: 6,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ];
+
+      // 改变 totalData 为 undefined 再次渲染
+      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, false);
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual(totalDataSet);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+      s2.destroy();
+    });
+
+    test('should update all Options when reset is true', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+      const partialOptions = pick(s2.options, emitAttrs);
+      expect(partialOptions).toEqual(s2Options);
+
+      s2.setOptions(
+        {
+          width: 300,
+          hdAdapter: false,
+        },
+        true,
+      );
+      expect(pick(s2.options, emitAttrs)).toEqual({
+        height: DEFAULT_OPTIONS.height,
+        hierarchyType: DEFAULT_OPTIONS.hierarchyType,
+        width: 300,
+        hdAdapter: false,
+      });
+    });
+
+    test('should update all Options when reset is false', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+
+      s2.setOptions(
+        {
+          width: 300,
+          hdAdapter: false,
+        },
+        false,
+      );
+
+      expect(pick(s2.options, emitAttrs)).toEqual({
+        height: s2Options.height,
+        hierarchyType: s2Options.hierarchyType,
+        width: 300,
+        hdAdapter: false,
+      });
     });
   });
 });

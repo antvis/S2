@@ -258,7 +258,9 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.addMergeCell(new MergedCell(sheet, cells, meta));
+    sheet.facet.panelScrollGroup.addMergeCell(
+      new MergedCell(sheet, cells, meta),
+    );
   }
 };
 
