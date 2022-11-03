@@ -434,9 +434,11 @@ describe('RootInteraction Tests', () => {
         cells: [getCellMeta(mockCell)],
         stateName,
       });
-      expect(get(rootInteraction, handler)()).toBeTruthy();
+      // @ts-ignore
+      expect(rootInteraction[handler]()).toBeTruthy();
       rootInteraction.resetState();
-      expect(get(rootInteraction, handler)()).toBeFalsy();
+      // @ts-ignore
+      expect(rootInteraction[handler]()).toBeFalsy();
     });
 
     test('should get current cell status is equal', () => {

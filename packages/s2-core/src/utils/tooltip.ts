@@ -565,7 +565,7 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   let name: string | null = null;
   let summaries: TooltipSummaryOptions[] = [];
   let headInfo: TooltipHeadInfo | null = null;
-  let details: TooltipDetailListItem[] = [];
+  let details: TooltipDetailListItem[] | null = null;
 
   const description = spreadsheet.dataSet.getCustomFieldDescription(
     targetCell!,

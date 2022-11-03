@@ -52,7 +52,7 @@ describe('Resize Utils Tests', () => {
         fillOpacity: resizeAreaTheme.backgroundOpacity,
         cursor: `col-resize`,
         width: resizeAreaTheme.size,
-        height: null,
+        height: undefined,
         appendInfo: {
           isResizeArea: true,
           effect: ResizeAreaEffect.Cell,
@@ -77,7 +77,7 @@ describe('Resize Utils Tests', () => {
         fill: resizeAreaTheme.background,
         fillOpacity: resizeAreaTheme.backgroundOpacity,
         cursor: `row-resize`,
-        width: null,
+        width: undefined,
         height: resizeAreaTheme.size,
         appendInfo: {
           isResizeArea: true,

@@ -288,10 +288,8 @@ describe('Pivot Mode Facet Test', () => {
     'should not throw "Cannot read property \'value\' of undefined" error if called with single offset config',
     (method) => {
       const onlyOffsetYFn = () => {
-        get(
-          facet,
-          method,
-        )({
+        // @ts-ignore
+        facet[method]({
           offsetY: {
             value: 10,
           },
@@ -299,10 +297,8 @@ describe('Pivot Mode Facet Test', () => {
       };
 
       const onlyOffsetXFn = () => {
-        get(
-          facet,
-          method,
-        )({
+        // @ts-ignore
+        facet[method]({
           offsetX: {
             value: 10,
           },

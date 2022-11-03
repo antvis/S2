@@ -4,14 +4,17 @@ import {
 } from '@/utils/interaction/select-event';
 import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { TableSeriesCell } from '@/cell';
 import type { ViewMeta } from '@/common';
+import { TableSeriesCell } from '../../../../src/cell';
 
 jest.mock('@/cell', () => {
   return {
-    TableSeriesCell: class TableSeriesCell {
-      getMeta = {
-        id: '5-序号',
+    TableSeriesCell: function () {
+      // @ts-ignore
+      this.getMeta = () => {
+        return {
+          id: '5-序号',
+        };
       };
     },
   };
@@ -61,9 +64,7 @@ describe('Select Event Utils Tests', () => {
                 ],
               },
             },
-            isTableMode: () => {
-              return true;
-            },
+            isTableMode: () => true,
           } as unknown as SpreadSheet,
         ).map((item) => item.getMeta().id),
       ).toStrictEqual(['5-序号']);
