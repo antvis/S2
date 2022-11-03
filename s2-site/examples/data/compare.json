@@ -64,13 +64,13 @@
       "size": "10 * 100",
       "name": "@antv/s2",
       "time": "1",
-      "value": 54
+      "value": 45
     },
     {
       "size": "10 * 100",
       "name": "@antv/s2",
       "time": "2",
-      "value": 59
+      "value": 55
     },
     {
       "size": "10 * 100",
@@ -82,7 +82,7 @@
       "size": "10 * 100",
       "name": "@antv/s2",
       "time": "4",
-      "value": 64
+      "value": 47
     },
     {
       "size": "10 * 100",
@@ -118,7 +118,7 @@
       "size": "10 * 100",
       "name": "@antv/s2",
       "time": "10",
-      "value": 56
+      "value": 58
     },
     {
       "size": "10 * 100",
@@ -306,61 +306,61 @@
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "1",
-      "value": 154
+      "value": 72
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "2",
-      "value": 159
+      "value": 113
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "3",
-      "value": 143
+      "value": 100
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "4",
-      "value": 138
+      "value": 70
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "5",
-      "value": 147
+      "value": 126
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "6",
-      "value": 166
+      "value": 74
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "7",
-      "value": 144
+      "value": 119
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "8",
-      "value": 163
+      "value": 94
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "9",
-      "value": 160
+      "value": 117
     },
     {
       "size": "100 * 100",
       "name": "@antv/s2",
       "time": "10",
-      "value": 162
+      "value": 119
     },
     {
       "size": "100 * 100",
@@ -548,61 +548,61 @@
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "1",
-      "value": 4940
+      "value": 915
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "2",
-      "value": 4618
+      "value": 1077
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "3",
-      "value": 4640
+      "value": 1391
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "4",
-      "value": 4628
+      "value": 1270
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "5",
-      "value": 4679
+      "value": 1099
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "6",
-      "value": 4675
+      "value": 1123
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "7",
-      "value": 4820
+      "value": 1334
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "8",
-      "value": 4821
+      "value": 1452
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "9",
-      "value": 4769
+      "value": 1352
     },
     {
       "size": "1000 * 1000",
       "name": "@antv/s2",
       "time": "10",
-      "value": 4834
+      "value": 1145
     },
     {
       "size": "1000 * 1000",
