@@ -79,21 +79,25 @@ export class ColBrushSelection extends BaseBrushSelection {
     };
   }
 
+  /**
+   * 用户判断 colCell 是否在当前刷选的范围内
+   * @param meta colCell 位置等属性存储的对象
+   * @returns boolean
+   */
   protected isInBrushRange(meta: ViewMeta | Node) {
     const { start, end } = this.getBrushRange();
+    const { scrollX } = this.spreadsheet.facet.getScrollOffset();
+
     const cornerBBox = this.spreadsheet.facet.cornerBBox;
     const { x = 0, y = 0, width = 0, height = 0 } = meta;
-    const maxX = end.x - cornerBBox.width;
-    const minX = start.x - cornerBBox.width;
-    const maxY = end.y;
-    const minY = start.y;
 
     return this.rectanglesIntersect(
       {
-        minX,
-        minY,
-        maxX,
-        maxY,
+        // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        minX: start.x - cornerBBox.width + scrollX,
+        minY: start.y,
+        maxX: end.x - cornerBBox.width + scrollX,
+        maxY: end.y,
       },
       {
         minX: x,
