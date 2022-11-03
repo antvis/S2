@@ -1,5 +1,4 @@
 import { Rect } from '@antv/g';
-import type { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell/row-cell';
 import type { S2CellType } from '../../common/interface';
@@ -12,18 +11,8 @@ import type { RowHeaderConfig } from './interface';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
-  // mobile event
-  private gm: GM;
-
   constructor(cfg: RowHeaderConfig) {
     super(cfg);
-  }
-
-  public destroy() {
-    super.destroy();
-    if (this.gm) {
-      this.gm.destroy();
-    }
   }
 
   protected layout() {
