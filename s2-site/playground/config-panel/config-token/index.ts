@@ -133,6 +133,10 @@ export default {
               {
                 label: '数量',
                 value: 'number'
+              },
+              {
+                label: '价格',
+                value: 'price'
               }
             ]
           },

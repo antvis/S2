@@ -14,6 +14,7 @@ export class Select extends BaseComponent {
     const defaultValue = map(options, (option) => {
       return option.value;
     });
+
     return (
       <AntdSelect
         mode="multiple"

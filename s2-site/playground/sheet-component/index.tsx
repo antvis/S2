@@ -142,8 +142,8 @@ export const CustomSheet: React.FC<Props> = (props) => {
     } else {
       setAdaptive(false);
       setOptions({
-        width: sheetConfig?.sheetWidth || 600,
-        height: sheetConfig?.sheetHeight || 480,
+        width: sheetConfig?.sheetWidth ?? 600,
+        height: sheetConfig?.sheetHeight ?? 480,
       });
     }
   }, [sheetConfig?.adaptive]);
@@ -165,7 +165,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
   }, [sheetConfig?.showSeriesNumber]);
 
   return (
-    <div className="container" ref={containerRef}>
+    <div className="sheet-container" ref={containerRef}>
       <SheetComponent
         dataCfg={dataCfg}
         options={options}

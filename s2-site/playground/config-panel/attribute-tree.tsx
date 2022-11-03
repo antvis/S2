@@ -19,7 +19,13 @@ function titleCase(type: string) {
 export class AttributeTree extends PureComponent<AttributeTreeProps> {
   renderChildren = (children: AttributeTreeProps['config']['children']) => {
     return map(children, (child, idx) => {
-      return <AttributeTree {...this.props} key={`${idx}`} config={child} />;
+      return (
+        <AttributeTree
+          {...this.props}
+          key={`${child.displayName}-${idx}`}
+          config={child}
+        />
+      );
     });
   };
 

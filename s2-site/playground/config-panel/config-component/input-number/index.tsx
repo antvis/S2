@@ -1,6 +1,5 @@
 import React from 'react';
 import { InputNumber as AntdInputNumber } from 'antd';
-import _ from 'lodash';
 import { BaseComponent } from '../base';
 import './index.less';
 

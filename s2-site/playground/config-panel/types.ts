@@ -20,8 +20,8 @@ export type AttributeComponentProps = {
   // 属性组件 展示名
   displayName?: string;
   // 属性组件 id
-  attributeId?: string;
-  children?: AttributeComponentProps[];
+  attributeId: string;
+  children: AttributeComponentProps[];
   // 组件相关的一些配置
   [k: string]: any;
 };

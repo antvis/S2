@@ -9,12 +9,11 @@ export class ColorPicker extends BaseComponent {
     const { config, onChange, attributes } = this.props;
     const { defaultColor, attributeId } = config;
     const color = attributes?.themeColor?.hex || defaultColor;
-
     const overlay = () => {
       return (
         <ChromePicker
           color={color}
-          onChangeComplete={(value) => onChange({ [attributeId]: value })}
+          onChangeComplete={(value: any) => onChange({ [attributeId]: value })}
         />
       );
     };
