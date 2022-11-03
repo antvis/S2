@@ -1,5 +1,4 @@
 import { Group, type FederatedPointerEvent as GraphEvent, Rect } from '@antv/g';
-import { type GestureEvent, Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -52,6 +51,7 @@ import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
+import MobileWheel from './mobile/Wheel';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -97,7 +97,7 @@ export abstract class BaseFacet {
 
   public viewCellHeights: ViewCellHeights;
 
-  protected mobileWheel: Wheel;
+  protected mobileWheel: MobileWheel;
 
   protected timer: Timer;
 
@@ -177,8 +177,11 @@ export abstract class BaseFacet {
   };
 
   onContainerWheel = () => {
-    this.onContainerWheelForPc();
-    this.onContainerWheelForMobile();
+    if (isMobile()) {
+      this.onContainerWheelForMobile();
+    } else {
+      this.onContainerWheelForPc();
+    }
   };
 
   onContainerWheelForPc = () => {
@@ -187,11 +190,8 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForMobile = () => {
-    // TODO: 移动端滚动事件？是否替换其他手势库
-    // mock wheel event fo mobile
-    this.mobileWheel = new Wheel(this.spreadsheet.container);
-
-    this.mobileWheel.on('wheel', (ev: GestureEvent) => {
+    this.mobileWheel = new MobileWheel(this.spreadsheet.container);
+    this.mobileWheel.on('wheel', (ev) => {
       this.spreadsheet.hideTooltip();
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
@@ -334,7 +334,7 @@ export abstract class BaseFacet {
   private unbindEvents = () => {
     const canvas = this.spreadsheet.getCanvasElement();
     canvas?.removeEventListener('wheel', this.onWheel);
-    this.mobileWheel.destroy();
+    this.mobileWheel?.destroy();
   };
 
   clipPanelGroup = () => {
