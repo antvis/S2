@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^8.16.0",
+    "@types/d3-dsv": "^3.0.0",
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-timer": "^3.0.0",
     "@types/tinycolor2": "^1.4.3",

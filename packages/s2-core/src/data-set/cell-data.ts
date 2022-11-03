@@ -36,5 +36,5 @@ export const getFieldValueOfViewMetaData = (
   if (data instanceof CellData) {
     return data.getValueByKey(key);
   }
-  return data[key];
+  return data?.[key];
 };

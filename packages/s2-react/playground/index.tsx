@@ -104,7 +104,7 @@ function MainLayout() {
   );
 
   //  ================== Refs ========================
-  const s2Ref = React.useRef<SpreadSheet | undefined>();
+  const s2Ref = React.useRef<SpreadSheet>();
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================

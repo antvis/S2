@@ -132,7 +132,7 @@ export class PivotDataSet extends BaseDataSet {
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
       // the current node has a drill-down field, clean it
-      forEach(idPathMap.get(rowNodeId), (path: number[]) => {
+      forEach(idPathMap.get(rowNodeId), (path) => {
         unset(this.indexesData, path);
       });
       deleteMetaById(this.rowPivotMeta, rowNodeId);
@@ -364,10 +364,10 @@ export class PivotDataSet extends BaseDataSet {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         this.getTotalStatus(query) as TotalsStatus,
-        this.spreadsheet.options?.totals,
+        this.spreadsheet.options?.totals!,
       ) || {};
 
-    const calcAction = calcActionByType[aggregation];
+    const calcAction = calcActionByType[aggregation!];
 
     // 前端计算汇总值
     if (calcAction || calcFunc) {
@@ -377,7 +377,7 @@ export class PivotDataSet extends BaseDataSet {
       if (calcFunc) {
         totalValue = calcFunc(query, data);
       } else if (calcAction) {
-        totalValue = calcAction(data, VALUE_FIELD);
+        totalValue = calcAction(data, VALUE_FIELD)!;
       }
 
       return new CellData(
@@ -549,14 +549,14 @@ export class PivotDataSet extends BaseDataSet {
             selectTypes[i],
           ) as FlattingIndexesData;
         } else {
-          result = map(result, (item) => item[current]);
+          result = map(result!, (item) => get(item, current));
         }
       } else if (shouldQueryMultiData(current)) {
         hadMultiField = true;
         result = [result] as FlattingIndexesData;
         i--;
       } else {
-        result = result?.[current];
+        result = get(result, current);
       }
     }
 

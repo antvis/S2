@@ -145,7 +145,7 @@ export abstract class SpreadSheet extends EE {
   public constructor(
     dom: S2MountContainer,
     dataCfg: S2DataConfig,
-    options: S2Options,
+    options: S2Options | null,
   ) {
     super();
     this.dataCfg = getSafetyDataConfig(dataCfg);

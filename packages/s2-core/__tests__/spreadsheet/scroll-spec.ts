@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
-import { ScrollType } from '../../src/ui/scrollbar';
+import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type {
@@ -16,6 +16,7 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '@/common/constant';
+import { get } from 'lodash';
 
 const s2Options: S2Options = {
   width: 200,
@@ -456,7 +457,7 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(200, 200); // 显示横/竖滚动条
     s2.render(false);
 
-    const scrollBar = s2.facet[name];
+    const scrollBar = get(s2.facet, name) as ScrollBar;
     expect(scrollBar.thumbShape.getBBox()[key]).toStrictEqual(
       scrollBar.thumbLen,
     );
@@ -653,9 +654,13 @@ describe('Scroll Tests', () => {
       expect(document.body.style.overscrollBehavior).toEqual('none');
     });
 
-    it.each(['auto', 'contain', 'none'])(
+    it.each([
+      'auto',
+      'contain',
+      'none',
+    ] as InteractionOptions['overscrollBehavior'][])(
       'should add %s property to body',
-      (overscrollBehavior: InteractionOptions['overscrollBehavior']) => {
+      (overscrollBehavior) => {
         document.body.style.overscrollBehavior = '';
 
         const sheet = new PivotSheet(getContainer(), mockDataConfig, {

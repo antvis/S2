@@ -412,7 +412,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    return condition?.mapping(
+      value,
+      this.meta.data as unknown as Record<string, any>,
+    )!;
   }
 
   public updateByState(stateName: InteractionStateName) {

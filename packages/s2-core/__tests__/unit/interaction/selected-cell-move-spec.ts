@@ -90,7 +90,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell00.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
@@ -110,11 +112,14 @@ describe('Interaction Keyboard Move Tests', () => {
     } as KeyboardEvent);
     expect(s2.interaction.changeState).not.toBeCalled();
   });
+
   test('should move selected cell left', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell01.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
@@ -139,7 +144,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell10.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell10.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell10.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
@@ -164,7 +171,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell01.mockCell;
 
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
@@ -189,7 +198,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell00.mockCell;
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
@@ -241,7 +252,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn();
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell00.mockCell;
     s2.on(S2Event.DATA_CELL_SELECT_MOVE, onDataCellSelectMove);
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
@@ -278,7 +291,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell00.mockCell;
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
@@ -314,7 +329,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell01.mockCell;
 
     s2.interaction.eventController.isCanvasEffect = false;
@@ -331,7 +348,9 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
     // select cell
+    // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
+    // @ts-ignore
     keyboardMove.endCell = mockCell01.mockCell;
     s2.facet.scrollWithAnimation({
       offsetX: {

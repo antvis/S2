@@ -69,7 +69,7 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target);
+    const cell = this.spreadsheet.getCell(event.target)!;
     const meta = cell.getMeta();
     const { x: headerX, y: headerY } = meta;
     return {
@@ -84,10 +84,10 @@ export class ColBrushSelection extends BaseBrushSelection {
     const { x = 0, y = 0 } = meta;
 
     return (
-      x >= start.headerX &&
-      x <= end.headerX &&
-      y >= start.headerY &&
-      y <= end.headerY
+      x >= start.headerX! &&
+      x <= end.headerX! &&
+      y >= start.headerY! &&
+      y <= end.headerY!
     );
   };
 

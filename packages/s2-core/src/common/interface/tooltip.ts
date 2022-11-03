@@ -103,9 +103,9 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
-  details?: TooltipDetailListItem[];
-  headInfo?: TooltipHeadInfo | null;
-  name?: string | null;
+  details?: TooltipDetailListItem[] | null | undefined;
+  headInfo?: TooltipHeadInfo | null | undefined;
+  name?: string | null | undefined;
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;

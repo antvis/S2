@@ -13,7 +13,6 @@ import {
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
 import type {
-  S2Options,
   SortMethod,
   SortParam,
   SpreadSheetFacetCfg,

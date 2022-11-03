@@ -20,8 +20,8 @@ export class TableDataCell extends DataCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction;
-    const linkTextFill = this.theme.rowCell.text.linkTextFill;
+    const { linkFields = [] } = this.spreadsheet.options.interaction!;
+    const linkTextFill = this.theme.rowCell!.text!.linkTextFill!;
 
     super.drawLinkFieldShape(
       linkFields.includes(this.meta.valueField),
@@ -48,7 +48,8 @@ export class TableDataCell extends DataCell {
     const { x, y, width, height } = this.getCellArea();
     const rowIndex = this.meta.rowIndex;
     const resizeStyle = this.getResizeAreaStyle();
-    const { frozenRowCount, frozenTrailingRowCount } = this.spreadsheet.options;
+    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
+      this.spreadsheet.options;
     const cellRange = this.spreadsheet.facet.getCellRange();
     const isFrozenRow = isFrozenRowUtil(
       rowIndex,
@@ -79,7 +80,7 @@ export class TableDataCell extends DataCell {
       yOffset -= isFrozenRow ? paginationSy : scrollY;
     }
 
-    resizeArea.addShape('rect', {
+    resizeArea?.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           id: String(this.meta.rowIndex),
@@ -93,7 +94,7 @@ export class TableDataCell extends DataCell {
           meta: this.meta,
         }),
         x,
-        y: yOffset + height - resizeStyle.size / 2,
+        y: yOffset + height - resizeStyle.size! / 2,
         width,
       },
     });

@@ -1,4 +1,3 @@
-import type { ViewMetaData } from './basic';
 import type { IconTheme } from './theme';
 
 export interface ValueRange {
@@ -24,8 +23,8 @@ export interface MappingResult extends ValueRange {
 
 export type MappingFunction = (
   fieldValue: number | string,
-  data: ViewMetaData,
-) => MappingResult;
+  data: Record<string, any>,
+) => MappingResult | undefined;
 
 /**
  * One field can hold a condition

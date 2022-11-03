@@ -93,7 +93,7 @@ const handleTreeRowHierarchy = (params: HeaderParams) => {
     // row tree hierarchy(value must stay in colHeader)
     buildRowTreeHierarchy({
       level: 0,
-      currentField: rows[0] as string,
+      currentField: rows?.[0] as string,
       pivotMeta: (dataSet as PivotDataSet).rowPivotMeta,
       facetCfg,
       parentNode: rootNode,

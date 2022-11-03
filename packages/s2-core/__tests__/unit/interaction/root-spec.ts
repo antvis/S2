@@ -30,6 +30,7 @@ import {
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
+import { get } from 'lodash';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -217,7 +218,7 @@ describe('RootInteraction Tests', () => {
 
   test('should call cancel mergedCell', () => {
     let mergedCell: MergedCell;
-    rootInteraction.unmergeCell(mergedCell);
+    rootInteraction.unmergeCell(mergedCell!);
     expect(unmergeCell).toBeCalled();
   });
 
@@ -416,7 +417,7 @@ describe('RootInteraction Tests', () => {
       rootInteraction.highlightNodes([mockNodeA, mockNodeB]);
 
       [mockNodeA, mockNodeB].forEach((node) => {
-        expect(node.belongsCell.updateByState).toHaveBeenCalledWith(
+        expect(node.belongsCell?.updateByState).toHaveBeenCalledWith(
           InteractionStateName.SELECTED,
           belongsCell,
         );
@@ -433,9 +434,9 @@ describe('RootInteraction Tests', () => {
         cells: [getCellMeta(mockCell)],
         stateName,
       });
-      expect(rootInteraction[handler]()).toBeTruthy();
+      expect(get(rootInteraction, handler)()).toBeTruthy();
       rootInteraction.resetState();
-      expect(rootInteraction[handler]()).toBeFalsy();
+      expect(get(rootInteraction, handler)()).toBeFalsy();
     });
 
     test('should get current cell status is equal', () => {
@@ -537,7 +538,7 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.interactions.size).toEqual(defaultInteractionSize);
     Object.keys(InteractionName).forEach((key) => {
       expect(
-        rootInteraction.interactions.has(InteractionName[key]),
+        rootInteraction.interactions.has(get(InteractionName, key)),
       ).toBeTruthy();
     });
   });
@@ -575,7 +576,7 @@ describe('RootInteraction Tests', () => {
       interaction: MyInteraction,
     };
 
-    mockSpreadSheetInstance.options.interaction.customInteractions = [
+    mockSpreadSheetInstance.options.interaction!.customInteractions = [
       customInteraction,
     ];
 

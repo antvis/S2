@@ -1,5 +1,6 @@
 import React from 'react';
 import { S2Event, SpreadSheet } from '@antv/s2';
+import type { LayoutPaginationParams } from '@antv/s2-shared';
 import { get, isEmpty } from 'lodash';
 import { useUpdateEffect } from 'ahooks';
 import type { SheetComponentsProps } from '../components';
@@ -8,10 +9,9 @@ const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
 export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
-  const {
-    options: { pagination: paginationCfg },
-    showPagination,
-  } = props;
+  const { options, showPagination } = props;
+
+  const paginationCfg = options?.pagination;
   const [pagination, setPagination] = React.useState({
     total: 0,
     current: paginationCfg?.current || DEFAULT_PAGE_NUMBER,
@@ -62,10 +62,11 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
       return;
     }
 
-    const totalUpdateCallback = (data) => {
+    const totalUpdateCallback = (data: LayoutPaginationParams) => {
       setPagination((prev) => ({ ...prev, total: data.total }));
     };
     s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
+
     return () => {
       s2.off(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
     };

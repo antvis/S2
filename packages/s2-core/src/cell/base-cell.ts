@@ -166,7 +166,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     conditions: Condition[] | undefined,
   ): Condition | undefined;
 
-  protected abstract mappingValue(condition: Condition): MappingResult;
+  protected abstract mappingValue(
+    condition: Condition,
+  ): MappingResult | undefined;
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -377,10 +379,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       if (!isEmpty(attrs?.icon)) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
-          name: attrs.icon!,
+          name: attrs?.icon!,
           width: size,
           height: size,
-          fill: attrs.fill,
+          fill: attrs?.fill,
         });
       }
     }

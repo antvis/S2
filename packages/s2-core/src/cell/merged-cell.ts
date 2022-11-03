@@ -19,7 +19,7 @@ export class MergedCell extends DataCell {
     cells: S2CellType[],
     meta?: ViewMeta,
   ) {
-    super(meta, spreadsheet, cells);
+    super(meta!, spreadsheet, cells);
   }
 
   handleRestOptions(...[cells]: [S2CellType[]]) {
@@ -34,7 +34,7 @@ export class MergedCell extends DataCell {
 
   protected initCell() {
     // TODO：1、交互态扩展； 2、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
-    this.conditions = this.spreadsheet.options.conditions;
+    this.conditions = this.spreadsheet.options.conditions!;
     this.drawBackgroundShape();
     this.drawTextShape();
   }
@@ -44,12 +44,12 @@ export class MergedCell extends DataCell {
    */
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
-    const cellTheme = this.theme.dataCell.cell;
+    const cellTheme = this.theme.dataCell!.cell;
     this.backgroundShape = renderPolygon(this, {
       points: allPoints,
-      stroke: cellTheme.horizontalBorderColor,
-      fill: cellTheme.backgroundColor,
-      lineHeight: cellTheme.horizontalBorderWidth,
+      stroke: cellTheme!.horizontalBorderColor,
+      fill: cellTheme!.backgroundColor,
+      lineHeight: cellTheme!.horizontalBorderWidth,
     });
   }
 

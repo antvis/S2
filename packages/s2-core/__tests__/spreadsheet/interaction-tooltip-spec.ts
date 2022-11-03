@@ -43,7 +43,7 @@ describe('Interaction Tooltip Tests', () => {
     } as unknown as GEvent);
 
     expect(isContains()).toBeTruthy();
-    expect(s2.tooltip.container.style.display).not.toEqual('none');
-    expect(s2.tooltip.container.style.visibility).not.toEqual('hidden');
+    expect(s2.tooltip.container!.style.display).not.toEqual('none');
+    expect(s2.tooltip.container!.style.visibility).not.toEqual('hidden');
   });
 });

@@ -45,7 +45,7 @@ describe('background color opacity test', () => {
     expect(cornerCell.backgroundShape.attr('fillOpacity')).toEqual(0.1);
 
     // row cell
-    const rowCell = s2.facet.rowHeader.getChildByIndex(0);
+    const rowCell = s2.facet.rowHeader!.getChildByIndex(0);
     // @ts-ignore
     expect(rowCell.backgroundShape.attr('fillOpacity')).toEqual(0.2);
 

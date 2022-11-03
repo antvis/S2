@@ -8,6 +8,7 @@ import {
 } from '../../../common/constant';
 import type {
   TooltipData,
+  TooltipOperatorMenu,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../../../common/interface';
@@ -42,7 +43,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const cell: DataCell = this.spreadsheet.getCell(event.target);
+      const cell = this.spreadsheet.getCell(event.target) as DataCell;
       const meta = cell.getMeta();
 
       if (!meta) {
@@ -66,7 +67,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
 
-      if (options.interaction.selectedCellHighlight) {
+      if (options.interaction!.selectedCellHighlight) {
         updateRowColCells(meta);
       }
     });
@@ -77,9 +78,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta,
   ): TooltipOperatorOptions {
     const TOOLTIP_OPERATOR_TREND_MENU = getTooltipOperatorTrendMenu();
-    const cell = this.spreadsheet.getCell(event.target);
-    const { operation } = getTooltipOptions(this.spreadsheet, event);
-    const trendMenu = operation.trend && {
+    const cell = this.spreadsheet.getCell(event.target)!;
+    const { operation } = getTooltipOptions(this.spreadsheet, event)!;
+    const trendMenu: TooltipOperatorMenu = {
       ...TOOLTIP_OPERATOR_TREND_MENU,
       onClick: () => {
         this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, {
@@ -95,8 +96,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       },
     };
 
-    return getTooltipVisibleOperator(operation, {
-      defaultMenus: [trendMenu],
+    return getTooltipVisibleOperator(operation!, {
+      defaultMenus: operation?.trend ? [trendMenu] : [],
       cell,
     });
   }
@@ -135,11 +136,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
   private emitLinkFieldClickEvent(event: CanvasEvent) {
     const { cellData } = this.getCellAppendInfo(event.target);
-    const { valueField: key, data: record } = cellData;
+    const { valueField: key, data: record } = cellData!;
 
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
       key,
-      record: Object.assign({ rowIndex: cellData.rowIndex }, record),
+      record: Object.assign({ rowIndex: cellData!.rowIndex }, record),
     });
   }
 }

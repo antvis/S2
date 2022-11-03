@@ -33,12 +33,12 @@ export const StrategySheet: React.FC<
           <Switch
             checkedChildren="单列头"
             unCheckedChildren="多列头"
-            checked={strategyDataCfg.fields.columns.length === 1}
+            checked={strategyDataCfg.fields.columns?.length === 1}
             onChange={(checked) => {
               setStrategyDataCfg(
                 customMerge(StrategySheetDataConfig, {
                   fields: {
-                    columns: StrategySheetDataConfig.fields.columns.slice(
+                    columns: StrategySheetDataConfig.fields.columns?.slice(
                       0,
                       checked ? 1 : 2,
                     ),

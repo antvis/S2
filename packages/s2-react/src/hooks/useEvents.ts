@@ -11,7 +11,7 @@ import type { SheetComponentsProps } from '../components';
 
 export const useCellEvent = (
   eventName: S2Event,
-  handler: (data: TargetCellInfo) => void,
+  handler: ((data: TargetCellInfo) => void) | undefined,
   s2: SpreadSheet,
 ) => {
   React.useEffect(() => {
@@ -28,13 +28,13 @@ export const useCellEvent = (
 
 export const useS2Event = (
   eventName: S2Event,
-  handler: (args: unknown) => void,
+  handler: ((...args: any[]) => void) | undefined,
   s2: SpreadSheet,
   emitBeforeOff = false,
 ) => {
   React.useEffect(() => {
-    const handlerFn: EmitterType[S2Event] = (args: unknown[]) => {
-      handler?.(args);
+    const handlerFn: EmitterType[S2Event] = (...args: any[]) => {
+      handler?.(...args);
     };
     s2?.on(eventName, handlerFn);
 

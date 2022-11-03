@@ -97,7 +97,7 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.interaction.intercepts.clear();
     spreadsheet.getCell = () => ({} as any);
     spreadsheet.options = s2Options;
-    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+    spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
         x: 0,
         y: 0,
@@ -529,7 +529,7 @@ describe('Interaction Event Controller Tests', () => {
   test('should not reset if current mouse on the tooltip and outside the canvas container', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
-    spreadsheet.tooltip.container.getBoundingClientRect = () =>
+    spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
         x: 200,
         y: 200,

@@ -65,7 +65,7 @@ describe('TableSheet Tests', () => {
         },
       );
 
-      s2.onSortTooltipClick({ key: 'asc' }, {
+      s2.onSortTooltipClick('asc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -89,7 +89,7 @@ describe('TableSheet Tests', () => {
         field: 'cost',
       } as Node;
 
-      s2.onSortTooltipClick({ key: 'desc' }, node);
+      s2.onSortTooltipClick('desc', node);
 
       expect(s2.store.get('sortMethodMap')).toEqual({
         city: 'asc',
@@ -107,7 +107,7 @@ describe('TableSheet Tests', () => {
         },
       ]);
 
-      s2.onSortTooltipClick({ key: 'desc' }, {
+      s2.onSortTooltipClick('desc', {
         id: 'city',
         field: 'city',
       } as Node);
@@ -143,7 +143,7 @@ describe('TableSheet Tests', () => {
         ],
       });
 
-      s2.onSortTooltipClick({ key: 'asc' }, {
+      s2.onSortTooltipClick('asc', {
         id: 'cost',
         field: 'cost',
       } as Node);
@@ -167,9 +167,9 @@ describe('TableSheet Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1421
-    test.each(['zh_CN', 'en_US'])(
+    test.each(['zh_CN', 'en_US'] as LangType[])(
       'should render group sort menu',
-      (lang: LangType) => {
+      (lang) => {
         setLang(lang);
 
         const sheet = new TableSheet(container, dataCfg, s2Options);
@@ -183,7 +183,7 @@ describe('TableSheet Tests', () => {
           stopPropagation() {},
         } as GEvent;
 
-        sheet.handleGroupSort(event, null);
+        sheet.handleGroupSort(event, null as unknown as Node);
 
         const isEnUS = lang === 'en_US';
         const groupAscText = isEnUS ? 'ASC' : '升序';

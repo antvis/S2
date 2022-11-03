@@ -28,6 +28,7 @@ import {
   type Totals,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
+  type TooltipSummaryOptions,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -217,12 +218,16 @@ describe('Tooltip Utils Tests', () => {
 
   describe('Tooltip Get Options Tests', () => {
     const getCellNameByType = (cellType: CellTypes) => {
-      return {
-        [CellTypes.ROW_CELL]: 'row',
-        [CellTypes.COL_CELL]: 'col',
-        [CellTypes.DATA_CELL]: 'data',
-        [CellTypes.CORNER_CELL]: 'corner',
-      }[cellType];
+      return (
+        {
+          [CellTypes.ROW_CELL]: 'row',
+          [CellTypes.COL_CELL]: 'col',
+          [CellTypes.DATA_CELL]: 'data',
+          [CellTypes.CORNER_CELL]: 'corner',
+          [CellTypes.MERGED_CELL]: 'merge',
+          [CellTypes.HEADER_CELL]: 'header',
+        }[cellType] || ''
+      );
     };
 
     test.each([
@@ -375,12 +380,12 @@ describe('Tooltip Utils Tests', () => {
         cell: mockCell,
         defaultMenus,
       });
-      const visibleSubMenus = operator.menus.find(
+      const visibleSubMenus = operator.menus?.find(
         ({ key }) => key === 'menu-7',
       );
 
       expect(operator.onClick).toEqual(onClick);
-      expect(operator.menus.map(({ key }) => key)).toEqual([
+      expect(operator.menus?.map(({ key }) => key)).toEqual([
         'default-menu',
         'menu-0',
         'menu-1',
@@ -388,7 +393,7 @@ describe('Tooltip Utils Tests', () => {
         'menu-5',
         'menu-7',
       ]);
-      expect(visibleSubMenus.children).toHaveLength(0);
+      expect(visibleSubMenus?.children).toHaveLength(0);
     });
   });
 
@@ -436,7 +441,7 @@ describe('Tooltip Utils Tests', () => {
       );
     };
 
-    const createTotalsPivotSheet = (totals: Totals) =>
+    const createTotalsPivotSheet = (totals: Totals | null) =>
       createPivotSheet(
         {
           totals,
@@ -457,7 +462,7 @@ describe('Tooltip Utils Tests', () => {
         .mockImplementationOnce(() => [cell]);
 
       return getTooltipData({
-        cellInfos: [cell],
+        cellInfos: [cell as TooltipData],
         options: {
           showSingleTips: true,
         },
@@ -474,7 +479,7 @@ describe('Tooltip Utils Tests', () => {
           rowNodes: [],
           colNodes: [],
         },
-      } as BaseFacet;
+      } as unknown as BaseFacet;
 
       const cell = createMockCellInfo('test-a');
       const tooltipData = getTooltipData({
@@ -518,7 +523,7 @@ describe('Tooltip Utils Tests', () => {
               .slice(0, count);
 
         const selectedCellMetas = selectedCells.map((cell) =>
-          cell.getMeta(),
+          cell!.getMeta(),
         ) as unknown as CellMeta[];
 
         jest
@@ -526,7 +531,7 @@ describe('Tooltip Utils Tests', () => {
           .mockImplementationOnce(() => selectedCellMetas);
 
         const tooltipData = getTooltipData({
-          cellInfos: [selectedCellMetas],
+          cellInfos: [selectedCellMetas as TooltipData],
           options: {
             showSingleTips: false,
           },
@@ -586,7 +591,7 @@ describe('Tooltip Utils Tests', () => {
           return isTotalCell ? meta.isTotals : !meta.isTotals;
         });
 
-        const tooltipData = getMockTooltipData(rowCell);
+        const tooltipData = getMockTooltipData(rowCell!);
 
         expect(tooltipData).toStrictEqual({
           ...defaultTooltipData,
@@ -634,7 +639,7 @@ describe('Tooltip Utils Tests', () => {
           return isTotalCell ? meta.isTotals : !meta.isTotals;
         });
 
-        const tooltipData = getMockTooltipData(colCell);
+        const tooltipData = getMockTooltipData(colCell!);
 
         expect(tooltipData).toStrictEqual({
           ...defaultTooltipData,
@@ -659,9 +664,9 @@ describe('Tooltip Utils Tests', () => {
           return meta.isGrandTotals;
         });
 
-      const tooltipData = getMockTooltipData(grandTotalRowCell);
+      const tooltipData = getMockTooltipData(grandTotalRowCell!);
 
-      expect(tooltipData.summaries[0].value).toStrictEqual(78868);
+      expect(tooltipData.summaries?.[0].value).toStrictEqual(78868);
 
       s2.destroy();
     });
@@ -685,10 +690,10 @@ describe('Tooltip Utils Tests', () => {
             );
           });
 
-        const tooltipData = getMockTooltipData(colLeafCell);
+        const tooltipData = getMockTooltipData(colLeafCell!);
 
         const value = isTotalCell ? 78868 : 26193;
-        expect(tooltipData.summaries[0].value).toStrictEqual(value);
+        expect(tooltipData.summaries?.[0].value).toStrictEqual(value);
 
         s2.destroy();
       },
@@ -755,8 +760,8 @@ describe('Tooltip Utils Tests', () => {
               return meta[key];
             });
 
-          expect(getMockTooltipData(colTotalCell).description).toBeUndefined();
-          expect(getMockTooltipData(rowTotalCell).description).toBeUndefined();
+          expect(getMockTooltipData(colTotalCell!).description).toBeUndefined();
+          expect(getMockTooltipData(rowTotalCell!).description).toBeUndefined();
 
           s2.destroy();
         },
@@ -789,7 +794,7 @@ describe('Tooltip Utils Tests', () => {
     expect(container.classList.contains('test')).toBeTruthy();
 
     setTooltipContainerStyle(container, {
-      className: ['test', null, undefined, ''],
+      className: ['test', null, undefined, ''] as string[],
     });
 
     expect(container.classList.contains('null')).toBeFalsy();
@@ -917,7 +922,9 @@ describe('Tooltip Utils Tests', () => {
       },
     ];
 
-    const summaries = getCustomFieldsSummaries(mockData);
+    const summaries = getCustomFieldsSummaries(
+      mockData as unknown as TooltipSummaryOptions[],
+    );
     const summary = summaries[0];
 
     expect(summaries).toHaveLength(1);

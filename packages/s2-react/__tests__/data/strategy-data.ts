@@ -1,9 +1,5 @@
-import {
-  type Data,
-  EXTRA_COLUMN_FIELD,
-  isUpDataValue,
-  type S2DataConfig,
-} from '@antv/s2';
+import type { RawData } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 
@@ -264,9 +260,9 @@ export const StrategySheetDataConfig: S2DataConfig = {
     },
 
     // 净增目标完成度子弹图数据
-    getKPIMockData() as unknown as Data,
+    getKPIMockData() as unknown as RawData,
     // 趋势图数据
-    getMiniChartMockData() as unknown as Data,
+    getMiniChartMockData() as unknown as RawData,
     {
       'measure-a': {
         originalValues: [[377, '']],
@@ -398,7 +394,7 @@ export const StrategyOptions: SheetComponentOptions = {
       disable: (resizeInfo) => {
         return (
           resizeInfo.meta.label === '净增完成度' &&
-          resizeInfo.resizedWidth < resizeInfo.width
+          resizeInfo.resizedWidth! < resizeInfo.width
         );
       },
     },

@@ -19,6 +19,7 @@ import {
   TOOLTIP_CONTAINER_CLS,
   setLang,
   type LangType,
+  type HiddenColumnsInfo,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -28,6 +29,7 @@ import type { CornerCell } from '@/cell/corner-cell';
 jest.mock('@/utils/hide-columns');
 
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
+import type { BaseEvent } from '../../../src';
 
 const mockHideColumnsByThunkGroup =
   hideColumnsByThunkGroup as jest.Mock<PivotSheet>;
@@ -76,6 +78,8 @@ describe('PivotSheet Tests', () => {
         [CellTypes.COL_CELL]: 'col',
         [CellTypes.DATA_CELL]: 'data',
         [CellTypes.CORNER_CELL]: 'corner',
+        [CellTypes.HEADER_CELL]: 'header',
+        [CellTypes.MERGED_CELL]: 'merged',
       }[cellType];
     };
 
@@ -88,7 +92,9 @@ describe('PivotSheet Tests', () => {
         content: () => 'custom callback content',
       });
 
-      expect(s2.tooltip.container.innerHTML).toEqual('custom callback content');
+      expect(s2.tooltip.container!.innerHTML).toEqual(
+        'custom callback content',
+      );
     });
 
     test('should support callback tooltip content for element', () => {
@@ -101,13 +107,13 @@ describe('PivotSheet Tests', () => {
         content: () => content,
       });
 
-      expect(s2.tooltip.container.contains(content)).toBeTruthy();
+      expect(s2.tooltip.container!.contains(content)).toBeTruthy();
     });
 
     test('should init tooltip', () => {
       s2.showTooltip({ position: { x: 0, y: 0 } });
 
-      expect(s2.tooltip.container.className).toEqual(
+      expect(s2.tooltip.container!.className).toEqual(
         `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_CLS}-show`,
       );
     });
@@ -192,7 +198,7 @@ describe('PivotSheet Tests', () => {
 
       sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
-      expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+      expect(sheet.tooltip.container!.innerHTML).toEqual(tooltipContent);
 
       sheet.destroy();
     });
@@ -227,7 +233,7 @@ describe('PivotSheet Tests', () => {
         sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
-        expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+        expect(sheet.tooltip.container!.innerHTML).toEqual(tooltipContent);
 
         sheet.destroy();
       },
@@ -262,7 +268,9 @@ describe('PivotSheet Tests', () => {
           content: methodTooltipContent,
         });
 
-        expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+        expect(sheet.tooltip.container!.innerHTML).toEqual(
+          methodTooltipContent,
+        );
 
         sheet.destroy();
       },
@@ -293,9 +301,9 @@ describe('PivotSheet Tests', () => {
         sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
-        expect(sheet.tooltip.container.contains(tooltipContent)).toBeTruthy();
+        expect(sheet.tooltip.container!.contains(tooltipContent)).toBeTruthy();
         expect(
-          sheet.tooltip.container.contains(defaultTooltipContent),
+          sheet.tooltip.container!.contains(defaultTooltipContent),
         ).toBeFalsy();
 
         sheet.destroy();
@@ -332,7 +340,7 @@ describe('PivotSheet Tests', () => {
         });
 
         expect(
-          sheet.tooltip.container.contains(methodTooltipContent),
+          sheet.tooltip.container!.contains(methodTooltipContent),
         ).toBeTruthy();
 
         sheet.destroy();
@@ -551,16 +559,16 @@ describe('PivotSheet Tests', () => {
 
   test.each([
     {
-      width: s2Options.width + 100,
-      height: s2Options.height + 100,
+      width: s2Options.width! + 100,
+      height: s2Options.height! + 100,
     },
     {
-      width: s2Options.width + 100,
+      width: s2Options.width! + 100,
       height: s2Options.height,
     },
     {
       width: s2Options.width,
-      height: s2Options.height + 100,
+      height: s2Options.height! + 100,
     },
     {
       width: s2Options.width,
@@ -595,7 +603,7 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should clear init column nodes', () => {
-    s2.store.set('initColumnLeafNodes', [null, null]);
+    s2.store.set('initColumnLeafNodes', [null, null] as unknown as Node[]);
 
     s2.clearColumnLeafNodes();
 
@@ -636,7 +644,9 @@ describe('PivotSheet Tests', () => {
 
     expect(mockHideColumnsByThunkGroup).toHaveBeenCalledTimes(0);
 
-    s2.store.set('hiddenColumnsDetail', [null]);
+    s2.store.set('hiddenColumnsDetail', [
+      null,
+    ] as unknown as HiddenColumnsInfo[]);
 
     // 重新更新, 有隐藏列信息, 但是 reBuildHiddenColumnsDetail 为 false
     s2.render(false, { reBuildHiddenColumnsDetail: false });
@@ -730,7 +740,7 @@ describe('PivotSheet Tests', () => {
       const treeRowType: RowCellCollapseTreeRowsType = {
         id: 'testId',
         isCollapsed: false,
-        node: null,
+        node: null as unknown as Node,
       };
 
       const collapsedRowsType = {
@@ -744,7 +754,7 @@ describe('PivotSheet Tests', () => {
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
       expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
-      expect(s2.options.style.collapsedRows).toEqual(
+      expect(s2.options.style!.collapsedRows).toEqual(
         collapsedRowsType.collapsedRows,
       );
       expect(renderSpy).toHaveBeenCalledTimes(1);
@@ -761,13 +771,13 @@ describe('PivotSheet Tests', () => {
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
 
-      expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.style.hierarchyCollapse).toBeFalsy();
+      expect(s2.options.style!.collapsedRows).toEqual(null);
+      expect(s2.options.style!.hierarchyCollapse).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
-      expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.style.hierarchyCollapse).toBeTruthy();
+      expect(s2.options.style!.collapsedRows).toEqual(null);
+      expect(s2.options.style!.hierarchyCollapse).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -824,9 +834,9 @@ describe('PivotSheet Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/1421
-  test.each(['zh_CN', 'en_US'])(
+  test.each(['zh_CN', 'en_US'] as LangType[])(
     'should render group sort menu',
-    (lang: LangType) => {
+    (lang) => {
       setLang(lang);
       const sheet = new PivotSheet(container, dataCfg, s2Options);
       sheet.render();
@@ -839,7 +849,7 @@ describe('PivotSheet Tests', () => {
         stopPropagation() {},
       } as GEvent;
 
-      sheet.handleGroupSort(event, null);
+      sheet.handleGroupSort(event, null as unknown as Node);
 
       const isEnUS = lang === 'en_US';
       const groupAscText = isEnUS ? 'Group ASC' : '组内升序';
@@ -872,8 +882,8 @@ describe('PivotSheet Tests', () => {
 
     const showTooltipWithInfoSpy = jest
       .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation((event, data, options) => ({
-        forceRender: options.forceRender,
+      .mockImplementation((_, __, options) => ({
+        forceRender: options?.forceRender,
       }));
 
     const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
@@ -933,7 +943,7 @@ describe('PivotSheet Tests', () => {
         type: '笔',
       },
     });
-    s2.options.style.colCfg.hideMeasureColumn = true;
+    s2.options.style!.colCfg!.hideMeasureColumn = true;
     s2.groupSortByMethod('asc', nodeMeta);
 
     expect(s2.dataCfg.sortParams).toEqual([
@@ -970,9 +980,12 @@ describe('PivotSheet Tests', () => {
       content: () => 'custom callback content',
     });
     s2.hideTooltip();
-    s2.tooltip.container.classList.add('destroy-test');
+    s2.tooltip.container!.classList.add('destroy-test');
     s2.interaction.addIntercepts([InterceptType.HOVER]);
-    s2.interaction.interactions.set('test-interaction', null);
+    s2.interaction.interactions.set(
+      'test-interaction',
+      null as unknown as BaseEvent,
+    );
     s2.container.on('test-event', () => {});
     s2.destroy();
 
@@ -1016,7 +1029,7 @@ describe('PivotSheet Tests', () => {
         fields: {
           columns: [],
         },
-      } as S2DataConfig);
+      } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
@@ -1036,7 +1049,7 @@ describe('PivotSheet Tests', () => {
         fields: {
           rows: [],
         },
-      } as S2DataConfig);
+      } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
@@ -1074,7 +1087,7 @@ describe('PivotSheet Tests', () => {
           rows: [],
           columns: [],
         },
-      } as S2DataConfig);
+      } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
@@ -1095,7 +1108,7 @@ describe('PivotSheet Tests', () => {
           values: [],
           valueInCols: true,
         },
-      } as S2DataConfig);
+      } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
@@ -1124,7 +1137,7 @@ describe('PivotSheet Tests', () => {
           values: [],
           valueInCols: true,
         },
-      } as S2DataConfig);
+      } as unknown as S2DataConfig);
 
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
         width: 400,

@@ -8,7 +8,6 @@ import type {
   Pagination,
   S2Style,
   Totals,
-  ViewMeta,
 } from '../../common/interface/basic';
 import type {
   LayoutArrange,

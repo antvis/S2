@@ -10,7 +10,7 @@
     "target": "es5",
     "importHelpers": true,
     "moduleResolution": "node",
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "downlevelIteration": true,

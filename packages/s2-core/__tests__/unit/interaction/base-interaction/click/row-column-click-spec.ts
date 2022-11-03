@@ -144,6 +144,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
 
     const selectHeaderCellSpy = jest
       .spyOn(s2.interaction, 'selectHeaderCell')
+      // @ts-ignore
       .mockImplementationOnce(() => false);
 
     const mockCellData = {
@@ -206,7 +207,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
   ])(
     'should emit cell selected event when %s clicked with multi selection',
     ({ event, enableMultiSelection, result }) => {
-      s2.options.interaction.multiSelection = enableMultiSelection;
+      s2.options.interaction!.multiSelection = enableMultiSelection;
 
       const selectHeaderCellSpy = jest
         .spyOn(s2.interaction, 'selectHeaderCell')

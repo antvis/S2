@@ -6,7 +6,7 @@ import { TableColCell } from './table-col-cell';
 
 export class TableCornerCell extends TableColCell {
   public getStyle(name?: string) {
-    return name ? this.theme[name] : get(this, 'theme.cornerCell');
+    return name ? get(this.theme, name) : get(this.theme, 'cornerCell');
   }
 
   protected showSortIcon() {
@@ -19,7 +19,7 @@ export class TableCornerCell extends TableColCell {
       this.getCellArea(),
       this.getStyle().cell,
     );
-    renderLine(this, position, style);
+    renderLine(this, position, style!);
   }
 
   protected drawBorders() {

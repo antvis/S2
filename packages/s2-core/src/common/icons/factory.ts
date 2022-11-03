@@ -1,4 +1,4 @@
-import { keys, lowerCase } from 'lodash';
+import { get, keys, lowerCase } from 'lodash';
 import * as InternalSvgIcons from './svg';
 
 // 所有的 Icon 缓存
@@ -14,5 +14,6 @@ export const getIcon = (name: string): string => {
 
 // 缓存内置 Icon 信息
 keys(InternalSvgIcons).forEach((name) => {
-  registerIcon(name, InternalSvgIcons[name]);
+  const icon = get(InternalSvgIcons, name);
+  registerIcon(name, icon);
 });

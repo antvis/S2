@@ -18,6 +18,7 @@ import {
   type ThemeCfg,
   Node,
   type ViewMeta,
+  type S2DataConfig,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 
@@ -116,7 +117,11 @@ describe('Interaction Row Column Resize Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
-    s2 = new PivotSheet(document.createElement('div'), null, s2Options);
+    s2 = new PivotSheet(
+      document.createElement('div'),
+      null as unknown as S2DataConfig,
+      s2Options,
+    );
     mockRootInteraction = new MockRootInteraction(s2);
     s2.facet = {
       panelBBox: {
@@ -167,7 +172,7 @@ describe('Interaction Row Column Resize Tests', () => {
       pick(attrs, Object.keys(maskAttrs));
 
     const resizeMask =
-      rowColumnResizeInstance.resizeReferenceGroup.findById(RESIZE_MASK_ID);
+      rowColumnResizeInstance.resizeReferenceGroup?.findById(RESIZE_MASK_ID);
 
     const startGuideLine = getStartGuideLine();
     const endGuideLine = getEndGuideLine();
@@ -183,7 +188,7 @@ describe('Interaction Row Column Resize Tests', () => {
     // style
     expect(pickAttrs(startGuideLine.attr())).toEqual(guideLineAttrs);
     expect(pickAttrs(endGuideLine.attr())).toEqual(guideLineAttrs);
-    expect(pickMaskAttrs(resizeMask.attr())).toEqual(maskAttrs);
+    expect(pickMaskAttrs(resizeMask!.attr())).toEqual(maskAttrs);
   });
 
   test('should update resize guide line position when col cell mouse down', () => {
@@ -278,7 +283,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(colWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style.colCfg).toEqual({
+    expect(s2.options.style!.colCfg).toEqual({
       height: 30,
       heightByField: {},
       widthByFieldValue: {
@@ -388,7 +393,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(rowWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style.cellCfg).toEqual({
+    expect(s2.options.style!.cellCfg).toEqual({
       width: 96,
       height: 2,
     });
@@ -412,7 +417,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style.colCfg.widthByFieldValue).toEqual({
+    expect(s2.options.style!.colCfg!.widthByFieldValue).toEqual({
       [resizeInfo.id]: resizeInfo.width,
     });
   });
@@ -440,8 +445,8 @@ describe('Interaction Row Column Resize Tests', () => {
     };
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
-    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style!.rowCfg!.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style!.treeRowsWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {
@@ -469,7 +474,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(rowWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style.rowCfg.widthByField).toEqual({
+    expect(s2.options.style!.rowCfg!.widthByField).toEqual({
       [resizeInfo.id]: resizeInfo.width,
     });
   });
@@ -493,7 +498,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(seriesWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.theme.rowCell.seriesNumberWidth).toEqual(resizeInfo.width);
+    expect(s2.theme.rowCell!.seriesNumberWidth).toEqual(resizeInfo.width);
   });
 
   // https://github.com/antvis/S2/issues/1538
@@ -503,6 +508,7 @@ describe('Interaction Row Column Resize Tests', () => {
       semanticColors: {
         red: 'red',
         green: 'green',
+        yellow: 'yellow',
       },
     };
 
@@ -512,7 +518,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Series);
 
-    expect(s2.theme.background.color).toEqual('red');
+    expect(s2.theme.background!.color).toEqual('red');
   });
 
   test('should get vertical cell resize style', () => {
@@ -521,7 +527,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style.cellCfg).toEqual({
+    expect(s2.options.style!.cellCfg).toEqual({
       width: 96,
       height: resizeInfo.height,
     });
@@ -533,7 +539,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Field,
     );
 
-    expect(s2.options.style.colCfg.heightByField).toEqual({
+    expect(s2.options.style!.colCfg!.heightByField).toEqual({
       [resizeInfo.id]: resizeInfo.height,
     });
   });
@@ -556,7 +562,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     // 获取同 level 的 style
-    expect(s2.options.style.colCfg.heightByField).toEqual({
+    expect(s2.options.style!.colCfg!.heightByField).toEqual({
       'test-a': resizeInfo.height,
       'test-b': resizeInfo.height,
     });
@@ -600,7 +606,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Field,
     );
 
-    expect(s2.options.style.rowCfg.widthByField).toEqual({
+    expect(s2.options.style!.rowCfg!.widthByField).toEqual({
       [resizeInfo.id]: resizeInfo.width,
     });
   });

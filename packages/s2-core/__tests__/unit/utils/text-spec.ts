@@ -7,15 +7,16 @@ import {
   getEmptyPlaceholder,
   getContentAreaForMultiData,
 } from '@/utils/text';
+import type { TextTheme } from '../../../src/common';
 
 const isHD = window.devicePixelRatio >= 2;
 
 describe('Text Utils Tests', () => {
-  const font = {
+  const font: TextTheme = {
     fontFamily: 'Roboto',
     fontSize: 12,
     fontWeight: 'normal',
-  } as unknown as CSSStyleDeclaration;
+  };
 
   describe('Test Widths Tests', () => {
     let measureTextWidth: (text: number | string, font: unknown) => number;

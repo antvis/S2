@@ -30,10 +30,13 @@ describe.skip('HD Adapter Tests', () => {
     hdAdapter.init();
 
     expectContainerSize = (
-      [width, height] = [s2.options.width, s2.options.height],
+      [width, height]: [number, number] = [
+        s2.options.width!,
+        s2.options.height!,
+      ],
       [updatedWidth, updatedHeight] = [
-        s2.options.width * DPR,
-        s2.options.height * DPR,
+        s2.options.width! * DPR,
+        s2.options.height! * DPR,
       ],
     ) => {
       const canvas: HTMLCanvasElement = s2.container.get('el');
@@ -59,7 +62,7 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should not be update container size when zoom scale changed, but scale less than current DPR', async () => {
-    visualViewport.dispatchEvent(new Event('resize'));
+    visualViewport?.dispatchEvent(new Event('resize'));
     await sleep(500);
 
     expectContainerSize();
@@ -73,14 +76,14 @@ describe.skip('HD Adapter Tests', () => {
       value: scale,
       configurable: true,
     });
-    visualViewport.dispatchEvent(new Event('resize'));
+    visualViewport?.dispatchEvent(new Event('resize'));
     await sleep(500);
 
     // update container width/height, not update container stylesheet width/height
     // eg: <canvas width="1000" height="500" style="width:500px; height: 250px;" />
     expectContainerSize(
-      [s2.options.width, s2.options.height],
-      [s2.options.width * scale, s2.options.height * scale],
+      [s2.options.width!, s2.options.height!],
+      [s2.options.width! * scale, s2.options.height! * scale],
     );
   });
 
@@ -89,7 +92,7 @@ describe.skip('HD Adapter Tests', () => {
       value: 1,
       configurable: true,
     });
-    visualViewport.dispatchEvent(new Event('resize'));
+    visualViewport?.dispatchEvent(new Event('resize'));
 
     await sleep(500);
     expect(s2.render).not.toHaveBeenCalled();
@@ -101,7 +104,7 @@ describe.skip('HD Adapter Tests', () => {
       value: 3,
       configurable: true,
     });
-    visualViewport.dispatchEvent(new Event('resize'));
+    visualViewport?.dispatchEvent(new Event('resize'));
 
     await sleep(500);
     expect(s2.render).not.toHaveBeenCalled();
@@ -114,7 +117,7 @@ describe.skip('HD Adapter Tests', () => {
       configurable: true,
     });
     hdAdapter.init();
-    visualViewport.dispatchEvent(new Event('resize'));
+    visualViewport?.dispatchEvent(new Event('resize'));
 
     await sleep(500);
 

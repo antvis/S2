@@ -16,12 +16,14 @@ describe('Copy Tests', () => {
     const text = '222';
 
     // 复制成功后不移除临时节点, 便于测试
-    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => null);
+    jest
+      .spyOn(document.body, 'removeChild')
+      .mockImplementationOnce(() => null as unknown as Node);
 
     await copyToClipboard(text, true);
 
     const result = await navigator.clipboard.readText();
-    const textareaValue = document.querySelector('textarea').value;
+    const textareaValue = document.querySelector('textarea')?.value;
 
     expect(result).toEqual(text);
     expect(textareaValue).toEqual(result);
@@ -32,7 +34,9 @@ describe('Copy Tests', () => {
   test('should sync copy text to clipboard if async copy failed', async () => {
     const text = '222';
 
-    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => null);
+    jest
+      .spyOn(document.body, 'removeChild')
+      .mockImplementationOnce(() => null as unknown as Node);
 
     // 模拟复制失败
     jest
@@ -42,7 +46,7 @@ describe('Copy Tests', () => {
     await copyToClipboard(text);
 
     const result = await navigator.clipboard.readText();
-    const textareaValue = document.querySelector('textarea').value;
+    const textareaValue = document.querySelector('textarea')?.value;
 
     expect(result).toEqual(text);
     expect(textareaValue).toEqual(result);

@@ -160,7 +160,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
     // 选中 a-1
     s2.interaction.selectHeaderCell({
-      cell: rowNode.belongsCell,
+      cell: rowNode.belongsCell!,
     });
 
     // 选中单元格本身
@@ -170,7 +170,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
     // 取消选中 a - 1
     s2.interaction.selectHeaderCell({
-      cell: rowNode.belongsCell,
+      cell: rowNode.belongsCell!,
     });
     expect(s2.interaction.getActiveCells()).toBeEmpty();
   });
@@ -183,14 +183,14 @@ describe('SpreadSheet Custom Tree Tests', () => {
     { key: 'a-1-2', count: 2, sum: null },
     { key: 'a-1-2', count: 2, sum: null },
   ])('should get selected cell summary infos for %o', ({ key, count, sum }) => {
-    const rowNode = s2.getRowNodes().find((node) => node.field === key);
+    const rowNode = s2.getRowNodes().find((node) => node.field === key)!;
 
     // 选中
     s2.interaction.selectHeaderCell({
-      cell: rowNode.belongsCell,
+      cell: rowNode.belongsCell!,
     });
 
-    const tooltipData = getTestTooltipData(s2, rowNode.belongsCell);
+    const tooltipData = getTestTooltipData(s2, rowNode.belongsCell!);
 
     // 选中个数
     expect(getSelectedCount(tooltipData.summaries)).toEqual(count);

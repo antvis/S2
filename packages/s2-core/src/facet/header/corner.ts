@@ -149,10 +149,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           value: cornerText,
         });
         cornerNode.x = position.x + seriesNumberWidth;
-        cornerNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+        cornerNode.y = colsHierarchy?.sampleNodeForLastLevel?.y!;
         // cNode should subtract series width
         cornerNode.width = width - seriesNumberWidth;
-        cornerNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+        cornerNode.height = colsHierarchy?.sampleNodeForLastLevel?.height!;
         cornerNode.seriesNumberWidth = seriesNumberWidth;
         cornerNode.isPivotMode = true;
         cornerNode.spreadsheet = spreadsheet;

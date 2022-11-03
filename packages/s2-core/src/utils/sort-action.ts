@@ -363,7 +363,10 @@ export const handleSortAction = (params: SortActionParams): string[] => {
   });
 };
 
-export const getSortTypeIcon = (sortParam: SortParam, isSortCell?: boolean) => {
+export const getSortTypeIcon = (
+  sortParam: SortParam | undefined,
+  isSortCell?: boolean,
+) => {
   if (sortParam?.sortMethod) {
     if (isAscSort(sortParam?.sortMethod)) {
       return 'groupAsc';

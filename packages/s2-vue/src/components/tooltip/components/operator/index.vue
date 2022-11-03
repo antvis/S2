@@ -6,6 +6,7 @@ import { defineComponent } from 'vue';
 import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 import TooltipOperatorMenu from './menu.vue';
+import type { MenuClickEventHandler } from 'ant-design-vue/lib/menu/src/interface';
 
 interface TooltipOperatorProps extends BaseTooltipOperatorProps {
   onClick?: MenuProps['onClick'];
@@ -19,9 +20,9 @@ export default defineComponent({
     'onClick',
     'cell',
   ] as unknown as GetInitProps<TooltipOperatorProps>,
-  setup(props, { emit }) {
-    const onMenuClick = (...args) => {
-      emit('click', ...args);
+  setup(_, { emit }) {
+    const onMenuClick: MenuClickEventHandler = (menuInfo) => {
+      emit('click', menuInfo);
     };
     return {
       TOOLTIP_PREFIX_CLS,

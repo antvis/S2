@@ -109,7 +109,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       stateName: InteractionStateName.SELECTED,
     });
 
-    if (options.interaction.selectedCellHighlight) {
+    if (options.interaction?.selectedCellHighlight) {
       selectedCellMetas.forEach((meta) => {
         updateRowColCells(meta as unknown as ViewMeta);
       });
@@ -149,7 +149,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       const viewMeta = this.spreadsheet.facet.layoutResult.getCellMeta(
         meta.rowIndex,
         meta.colIndex,
-      );
+      )!;
       return new DataCell(viewMeta, this.spreadsheet);
     });
   }

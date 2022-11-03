@@ -1,3 +1,4 @@
+import type { HiddenColumnsInfo } from './../../../src/common/interface/store';
 import { getContainer } from 'tests/util/helpers';
 import type { RootInteraction } from '@/interaction/root';
 import type { Node } from '@/facet/layout/node';
@@ -39,7 +40,7 @@ describe('hide-columns test', () => {
       {
         fields: {
           rows: [],
-          columns: initColumnNodes.map(({ field }) => field),
+          columns: initColumnNodes.map(({ field }) => field!),
           values: [],
         },
         data: [],
@@ -186,7 +187,7 @@ describe('hide-columns test', () => {
   test.each(initColumnNodes)(
     'should calculate is last column correct if field is %o',
     ({ field }) => {
-      expect(isLastColumnAfterHidden(sheet, field)).toBeFalsy();
+      expect(isLastColumnAfterHidden(sheet, field!)).toBeFalsy();
     },
   );
 
@@ -203,7 +204,9 @@ describe('hide-columns test', () => {
   });
 
   test('should clear hidden columns detail and options if hidden column fields isEmpty and enable force update', () => {
-    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [null]);
+    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [
+      null,
+    ] as unknown as HiddenColumnsInfo[]);
 
     hideColumns(mockSpreadSheetInstance, [], true);
 
@@ -213,7 +216,7 @@ describe('hide-columns test', () => {
       [],
     );
     expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+      mockSpreadSheetInstance.options.interaction!.hiddenColumnFields,
     ).toEqual([]);
   });
 
@@ -222,7 +225,7 @@ describe('hide-columns test', () => {
 
     // update options
     expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+      mockSpreadSheetInstance.options.interaction!.hiddenColumnFields,
     ).toEqual(['3']);
     // save hidden meta
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
@@ -283,7 +286,7 @@ describe('hide-columns test', () => {
     );
     // update options
     expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+      mockSpreadSheetInstance.options.interaction!.hiddenColumnFields,
     ).toEqual(['5']);
     // reset interaction
     expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
@@ -336,7 +339,9 @@ describe('hide-columns test', () => {
   });
 
   test('should clear hidden group columns detail and options if hidden column fields isEmpty and enable force update', () => {
-    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [null]);
+    mockSpreadSheetInstance.store.set('hiddenColumnsDetail', [
+      null,
+    ] as unknown as HiddenColumnsInfo[]);
 
     hideColumnsByThunkGroup(mockSpreadSheetInstance, [], true);
 
@@ -346,7 +351,7 @@ describe('hide-columns test', () => {
       [],
     );
     expect(
-      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+      mockSpreadSheetInstance.options.interaction!.hiddenColumnFields,
     ).toEqual([]);
   });
 

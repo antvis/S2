@@ -33,8 +33,14 @@ const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
-  const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
-    params;
+  const {
+    parentNode,
+    currentField = '',
+    level,
+    facetCfg,
+    hierarchy,
+    pivotMeta,
+  } = params;
   const {
     spreadsheet,
     dataSet,

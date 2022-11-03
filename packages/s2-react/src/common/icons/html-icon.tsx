@@ -6,7 +6,7 @@ import './html-icon.less';
 
 export interface HtmlIconProps {
   name: string; // 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
-  style?: React.CSSProperties;
+  style?: React.CSSProperties | undefined;
   width?: number;
   height?: number;
   className?: string;

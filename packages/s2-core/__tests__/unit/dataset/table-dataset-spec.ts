@@ -4,7 +4,7 @@
 import { orderBy, uniq } from 'lodash';
 import { data } from 'tests/data/mock-dataset.json';
 import { assembleDataCfg } from '../../util';
-import type { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig, SortParam } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 jest.mock('@/sheet-type');
@@ -194,7 +194,7 @@ describe('Table Mode Dataset Test', () => {
             return orderBy(
               data,
               [sortFieldId],
-              [sortMethod.toLocaleLowerCase() as 'asc' | 'desc'],
+              [sortMethod!.toLocaleLowerCase() as 'asc' | 'desc'],
             );
           },
         },
@@ -220,7 +220,7 @@ describe('Table Mode Dataset Test', () => {
         {
           sortFieldId,
           sortBy,
-          sortFunc: null,
+          sortFunc: null as unknown as SortParam['sortFunc'],
         },
       ];
       dataSet.handleDimensionValuesSort();

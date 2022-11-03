@@ -18,6 +18,7 @@ import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
+  type AdjustLeafNodesParams,
   type IconTheme,
   type MultiData,
 } from '../common';
@@ -37,7 +38,6 @@ import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import type { AdjustLeafNodesParams } from './interface';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {

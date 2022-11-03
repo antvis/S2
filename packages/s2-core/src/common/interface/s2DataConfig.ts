@@ -43,7 +43,7 @@ export interface MultiData<T = SimpleData[][] | MiniChartData> {
   [key: string]: unknown;
 }
 
-export type SimpleData = string | number;
+export type SimpleData = string | number | null;
 
 export type DataItem = SimpleData | MultiData | undefined | null;
 

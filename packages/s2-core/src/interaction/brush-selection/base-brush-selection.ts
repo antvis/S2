@@ -575,7 +575,7 @@ export class BaseBrushSelection
     });
   }
 
-  protected onUpdateCells: OnUpdateCells = (root, defaultOnUpdateCells) => {
+  protected onUpdateCells: OnUpdateCells = (_, defaultOnUpdateCells) => {
     return defaultOnUpdateCells();
   };
 
@@ -686,7 +686,7 @@ export class BaseBrushSelection
   };
 
   // 需要查看继承他的父类是如何定义的
-  protected isInBrushRange(): boolean {
+  protected isInBrushRange(node: ViewMeta | Node): boolean {
     return false;
   }
 
@@ -694,7 +694,7 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
-  public getSelectedCellMetas = () => {};
+  protected getSelectedCellMetas(brushRange: BrushRange) {}
 
   protected updateSelectedCells() {}
 }

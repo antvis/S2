@@ -32,7 +32,7 @@ export const getActiveHoverRowColCells = (
 };
 
 export const updateAllColHeaderCellState = (
-  colId: string,
+  colId: string | undefined,
   colHeaderCells: ColCell[],
   stateName: InteractionStateName,
 ) => {

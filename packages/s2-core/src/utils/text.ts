@@ -201,7 +201,7 @@ export const getEllipsisText = ({
   placeholder,
 }: {
   measureTextWidth: (text: number | string, font: unknown) => number;
-  text: string | number;
+  text: string | number | null | undefined;
   maxWidth: number;
   fontParam?: TextTheme;
   priorityParam?: string[];
@@ -372,7 +372,7 @@ const getCurrentTextStyle = ({
       rowIndex,
       colIndex,
       meta,
-    }).fill;
+    })?.fill;
   }
   return { ...textStyle, fill };
 };
@@ -521,7 +521,7 @@ export const drawObjectText = (
     const measures = clone(textValues[i]);
 
     for (let j = 0; j < measures.length; j++) {
-      curText = measures[j];
+      curText = measures[j]!;
       const curStyle = useCondition
         ? getCurrentTextStyle({
             rowIndex: i,
@@ -566,7 +566,7 @@ export const drawObjectText = (
         const attrs = iconCondition?.mapping(curText, {
           rowIndex: i,
           colIndex: j,
-          meta: cell?.getMeta() as ViewMeta,
+          meta: cell?.getMeta(),
         });
         if (attrs) {
           renderIcon(cell, {

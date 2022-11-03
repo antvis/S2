@@ -12,15 +12,19 @@ export const expectHighlightActiveNodes = (
   ids: string[] = [],
 ) => {
   const state = s2.interaction.getState();
-  const nodeIds = state.nodes.map((node) => node.id);
+  const nodeIds = state.nodes?.map((node) => node.id);
   expect(nodeIds).toEqual(ids);
 };
 
-export const getSelectedCount = (summaries: TooltipSummaryOptions[]) => {
+export const getSelectedCount = (
+  summaries: TooltipSummaryOptions[] | undefined,
+) => {
   return sumBy(summaries, (item) => size(item?.selectedData));
 };
 
-export const getSelectedSum = (summaries: TooltipSummaryOptions[]) => {
+export const getSelectedSum = (
+  summaries: TooltipSummaryOptions[] | undefined,
+) => {
   return sumBy(summaries, 'value');
 };
 

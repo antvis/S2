@@ -168,7 +168,7 @@ export interface InteractionOptions {
   // highlight col and row header for selected cell
   selectedCellHighlight?: boolean;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
-  overscrollBehavior?: 'auto' | 'none' | 'contain';
+  overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

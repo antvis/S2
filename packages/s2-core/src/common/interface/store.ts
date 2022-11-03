@@ -1,3 +1,4 @@
+import type { DataPath } from './../../data-set/interface';
 import type { BBox, Group } from '@antv/g-canvas';
 import type {
   InteractionOptions,
@@ -54,7 +55,7 @@ export interface StoreKey {
   // column cell click sort params
   sortParam: SortParam;
   // 下钻节点id和对应生成的 path寻址路径
-  drillDownIdPathMap: Map<string, number[][]>;
+  drillDownIdPathMap: Map<string, DataPath[]>;
   // 当前下钻节点
   drillDownNode: Node;
   // 下钻数据的个数控制
@@ -91,7 +92,7 @@ export interface StoreKey {
   initOverscrollBehavior: InteractionOptions['overscrollBehavior'];
 
   // 排序方式
-  sortMethodMap: Record<string, SortMethod>;
+  sortMethodMap: Record<string, SortMethod> | null;
 
   [key: string]: unknown;
 }

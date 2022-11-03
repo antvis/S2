@@ -7,7 +7,7 @@
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { TableSheet, SpreadSheet } from '@/sheet-type';
-import type { S2Options } from '@/common/interface';
+import type { S2DataConfig, S2Options } from '@/common/interface';
 
 const s2Options: S2Options = {
   // 让被测试的单元格在首屏显示出来
@@ -24,7 +24,7 @@ const s2Options: S2Options = {
   },
 };
 
-const dataCfg = {
+const dataCfg: S2DataConfig = {
   ...mockDataConfig,
   fields: {
     columns: ['cost', 'type', 'province', 'price'],
@@ -56,10 +56,10 @@ describe('Column Formatter Tests', () => {
     const colNodes = s2.getColumnNodes();
     const typeColNode = colNodes.find(({ field }) => field === 'type');
     const costColNode = colNodes.find(({ field }) => field === 'cost');
-    expect(typeColNode.label).toStrictEqual('类型');
-    expect(typeColNode.value).toStrictEqual('类型');
-    expect(costColNode.label).toStrictEqual('成本');
-    expect(costColNode.value).toStrictEqual('成本');
+    expect(typeColNode!.label).toStrictEqual('类型');
+    expect(typeColNode!.value).toStrictEqual('类型');
+    expect(costColNode!.label).toStrictEqual('成本');
+    expect(costColNode!.value).toStrictEqual('成本');
   });
 
   test('date cell should render formatted value', () => {

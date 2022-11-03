@@ -1,6 +1,6 @@
 import type { IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
-import { ColCell, TableColCell } from '../../cell';
+import { ColCell } from '../../cell';
 import type { S2CellType } from '../../common';
 import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,

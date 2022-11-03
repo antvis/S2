@@ -248,9 +248,9 @@ export interface HeaderActionIconOptions {
   x: number;
   y: number;
   /** @deprecated 使用 onClick 代替 */
-  action: (props: HeaderIconClickParams) => void;
-  onClick: (headerIconClickParams: HeaderIconClickParams) => void;
-  onHover: (headerIconHoverParams: HeaderIconHoverParams) => void;
+  action?: (props: HeaderIconClickParams) => void;
+  onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
+  onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
   defaultHide?: boolean;
 }
 
@@ -312,7 +312,7 @@ export type HierarchyCallback = (
   node: Node,
 ) => HierarchyResult;
 
-export type CellCustomWidth = number | ((node: Node | null) => number);
+export type CellCustomWidth = null | number | ((node: Node | null) => number);
 
 export interface CellCfg {
   width?: number;

@@ -1,6 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { forEach, isBoolean, isEmpty } from 'lodash';
-import type { RowCell } from '../../cell';
 import { S2Event } from '../../common/constant';
 import {
   HOVER_FOCUS_DURATION,
@@ -47,7 +46,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         interaction.getAllRowHeaderCells(),
         this.spreadsheet.isHierarchyTreeType(),
       );
-      forEach(allRowHeaderCells, (cell: RowCell) => {
+      forEach(allRowHeaderCells, (cell) => {
         cell.updateByState(InteractionStateName.HOVER);
       });
     }
@@ -66,7 +65,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   ) {
     const { interaction } = this.spreadsheet;
     const { interaction: interactionOptions } = this.spreadsheet.options;
-    const { hoverFocus } = interactionOptions;
+    const { hoverFocus } = interactionOptions!;
 
     interaction.clearHoverTimer();
 
@@ -85,7 +84,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         showSingleTips,
       };
-      if (interactionOptions.hoverHighlight) {
+      if (interactionOptions?.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
@@ -194,11 +193,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-      if (interactionOptions.hoverHighlight) {
+      if (interactionOptions?.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
-      if (interactionOptions.hoverFocus) {
+      if (interactionOptions?.hoverFocus) {
         this.changeStateToHoverFocus(cell, event, meta);
       }
     });

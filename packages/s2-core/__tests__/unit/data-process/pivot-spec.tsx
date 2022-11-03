@@ -8,6 +8,7 @@ import { data } from '../../data/mock-dataset.json';
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
+import type { ViewMeta } from '../../../src/common';
 
 describe('Pivot Table Core Data Process', () => {
   const s2 = new PivotSheet(
@@ -26,13 +27,13 @@ describe('Pivot Table Core Data Process', () => {
       const colPivotMeta = ds.colPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
-      expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
+      expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
       ]);
-      expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
+      expect([...rowPivotMeta.get('四川省')!.children.keys()]).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
@@ -135,17 +136,14 @@ describe('Pivot Table Core Data Process', () => {
       const leavesNodes = rowsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
       expect(firstLeafNode.label).toEqual('杭州市');
-      expect(firstLeafNode.parent.label).toEqual('浙江省');
-      expect(firstLeafNode.parent.children?.map((node) => node.label)).toEqual([
-        '杭州市',
-        '绍兴市',
-        '宁波市',
-        '舟山市',
-      ]);
+      expect(firstLeafNode.parent!.label).toEqual('浙江省');
+      expect(firstLeafNode.parent!.children?.map((node) => node.label)).toEqual(
+        ['杭州市', '绍兴市', '宁波市', '舟山市'],
+      );
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
       expect(lastLeafNode.label).toEqual('乐山市');
-      expect(lastLeafNode.parent.label).toEqual('四川省');
-      expect(lastLeafNode.parent.children?.map((node) => node.label)).toEqual([
+      expect(lastLeafNode.parent!.label).toEqual('四川省');
+      expect(lastLeafNode.parent!.children?.map((node) => node.label)).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
@@ -196,17 +194,17 @@ describe('Pivot Table Core Data Process', () => {
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
       expect(firstLeafNode.label).toEqual('number');
-      expect(firstLeafNode.parent.label).toEqual('桌子');
-      expect(firstLeafNode.parent.parent?.label).toEqual('家具');
+      expect(firstLeafNode.parent!.label).toEqual('桌子');
+      expect(firstLeafNode.parent!.parent?.label).toEqual('家具');
       expect(
-        firstLeafNode.parent.parent?.children?.map((node) => node.label),
+        firstLeafNode.parent!.parent?.children?.map((node) => node.label),
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
       expect(lastLeafNode.label).toEqual('number');
-      expect(lastLeafNode.parent.label).toEqual('纸张');
-      expect(lastLeafNode.parent.parent?.label).toEqual('办公用品');
+      expect(lastLeafNode.parent!.label).toEqual('纸张');
+      expect(lastLeafNode.parent!.parent?.label).toEqual('办公用品');
       expect(
-        lastLeafNode.parent.parent?.children?.map((node) => node.label),
+        lastLeafNode.parent!.parent?.children?.map((node) => node.label),
       ).toEqual(['笔', '纸张']);
     });
   });
@@ -216,10 +214,10 @@ describe('Pivot Table Core Data Process', () => {
     const { fields } = s2.dataCfg;
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
       s2.facet.layoutResult;
-    const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
+    const { cellCfg, colCfg } = get(s2, 'facet.cfg');
     const expectedWidth = Math.max(
-      style.cellCfg.width,
-      width / (size(fields.rows) + size(colLeafNodes)),
+      style!.cellCfg!.width!,
+      width! / (size(fields.rows) + size(colLeafNodes)),
     );
     test('should calc correct row & cell width', () => {
       expect(rowLeafNodes[0].width).toEqual(expectedWidth);
@@ -239,9 +237,9 @@ describe('Pivot Table Core Data Process', () => {
       ]);
       // leaf node
       rowLeafNodes.forEach((node, index) => {
-        const { padding } = s2.theme.rowCell.cell;
+        const { padding } = s2.theme.rowCell!.cell!;
         expect(node.height).toEqual(
-          cellCfg.height + padding?.top + padding.bottom,
+          cellCfg.height + padding?.top + padding?.bottom,
         );
         expect(node.y).toEqual(node.height * index);
         expect(node.x).toEqual(expectedWidth);
@@ -305,26 +303,28 @@ describe('Pivot Table Core Data Process', () => {
   describe('4、Calculate data cell info', () => {
     const { getCellMeta } = s2.facet.layoutResult;
     test('should get correct data value', () => {
+      const getData = (meta: ViewMeta | null) => meta?.data?.[VALUE_FIELD];
+
       // 左上角
-      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(7789);
-      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(2367);
-      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(5343);
-      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(632);
+      expect(getData(getCellMeta(0, 0))).toBe(7789);
+      expect(getData(getCellMeta(1, 0))).toBe(2367);
+      expect(getData(getCellMeta(0, 1))).toBe(5343);
+      expect(getData(getCellMeta(1, 1))).toBe(632);
       // 右下角
-      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(352);
-      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(2458);
-      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(3551);
-      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(2457);
+      expect(getData(getCellMeta(7, 3))).toBe(352);
+      expect(getData(getCellMeta(7, 2))).toBe(2458);
+      expect(getData(getCellMeta(6, 3))).toBe(3551);
+      expect(getData(getCellMeta(6, 2))).toBe(2457);
       // 右上角
-      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(1343);
-      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(945);
-      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(1354);
-      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(1304);
+      expect(getData(getCellMeta(0, 3))).toBe(1343);
+      expect(getData(getCellMeta(0, 2))).toBe(945);
+      expect(getData(getCellMeta(1, 3))).toBe(1354);
+      expect(getData(getCellMeta(1, 2))).toBe(1304);
       // 左下角
-      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(2330);
-      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(2445);
-      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(1943);
-      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(2333);
+      expect(getData(getCellMeta(7, 0))).toBe(2330);
+      expect(getData(getCellMeta(7, 1))).toBe(2445);
+      expect(getData(getCellMeta(6, 0))).toBe(1943);
+      expect(getData(getCellMeta(6, 1))).toBe(2333);
     });
   });
 });

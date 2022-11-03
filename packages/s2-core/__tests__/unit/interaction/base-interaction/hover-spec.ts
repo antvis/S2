@@ -1,7 +1,7 @@
 import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
-import type { S2Options, ViewMeta } from '@/common/interface';
+import type { CellEventTarget, S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import type { SpreadSheet } from '@/sheet-type';
 import {
@@ -34,7 +34,7 @@ describe('Interaction Hover Tests', () => {
     },
   ];
 
-  const getCell = (target) =>
+  const getCell = (target: CellEventTarget) =>
     ({
       update: mockCellUpdate,
       getMeta: () => {
@@ -105,7 +105,7 @@ describe('Interaction Hover Tests', () => {
     s2.emit(S2Event.DATA_CELL_HOVER, {
       target: { cellType: 'mockCell' } as any,
     } as GEvent);
-    expect((s2.interaction.getState().cells[0] as any).type).toBe('dataCell');
+    expect((s2.interaction.getState().cells![0] as any).type).toBe('dataCell');
   });
 
   test('should trigger data cell hover immediately hover focus time equals 0', async () => {
@@ -156,7 +156,7 @@ describe('Interaction Hover Tests', () => {
       } as any,
     } as GEvent);
 
-    expect((s2.interaction.getState().cells[0] as any).rowIndex).toBe(0);
+    expect((s2.interaction.getState().cells![0] as any).rowIndex).toBe(0);
   });
 
   test('should clear data cell hover focus timer when cell clicked', async () => {

@@ -38,7 +38,9 @@ const uniqueFields = (fields: Fields): Fields => {
   };
 };
 
-export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
+export const getSafetyDataConfig = (
+  ...dataConfig: (Partial<S2DataConfig> | null)[]
+) => {
   const mergedDataCfg = customMerge(
     DEFAULT_DATA_CONFIG,
     ...dataConfig,
@@ -60,5 +62,5 @@ export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
   return mergedDataCfg;
 };
 
-export const getSafetyOptions = (options: Partial<S2Options>) =>
+export const getSafetyOptions = (options: Partial<S2Options> | null) =>
   customMerge(DEFAULT_OPTIONS, options);
