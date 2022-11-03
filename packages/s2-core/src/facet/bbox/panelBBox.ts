@@ -20,12 +20,12 @@ export class PanelBBox extends BaseBBox {
     this.minX = this.x;
     this.minY = this.y;
 
-    const scrollBarSize = this.spreadsheet.theme.scrollBar.size;
+    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
     const { width: canvasWidth, height: canvasHeight } =
       this.spreadsheet.options;
 
-    const panelWidth = Math.max(0, canvasWidth - this.x);
-    const panelHeight = Math.max(0, canvasHeight - this.y - scrollBarSize);
+    const panelWidth = Math.max(0, canvasWidth! - this.x);
+    const panelHeight = Math.max(0, canvasHeight! - this.y - scrollBarSize!);
 
     this.width = panelWidth;
     this.height = panelHeight;

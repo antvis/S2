@@ -1,5 +1,5 @@
-import type { HiddenColumnsInfo } from './../../../src/common/interface/store';
 import { getContainer } from 'tests/util/helpers';
+import type { HiddenColumnsInfo } from './../../../src/common/interface/store';
 import type { RootInteraction } from '@/interaction/root';
 import type { Node } from '@/facet/layout/node';
 import {

@@ -2,8 +2,8 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
+import { CopyMIMEType } from '@/utils/export/interface';
 import { TableSheet, PivotSheet } from '@/sheet-type';
-
 import {
   CellTypes,
   InteractionStateName,
@@ -11,7 +11,6 @@ import {
 } from '@/common/constant/interaction';
 import {
   convertString,
-  CopyMIMEType,
   getCopyData,
   getSelectedData,
 } from '@/utils/export/copy';

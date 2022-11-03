@@ -9,11 +9,11 @@ import {
 } from '../../common/constant';
 import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
+import type { Node } from '../../facet/layout/node';
 import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
 } from './hover-event';
-import type { Node } from '../../facet/layout/node';
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(

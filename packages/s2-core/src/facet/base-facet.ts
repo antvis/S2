@@ -201,7 +201,7 @@ export abstract class BaseFacet {
     this.panelGroup.add(this.panelScrollGroup);
   }
 
-  protected getCellCustomWidth(node: Node, width: CellCustomWidth) {
+  protected getCellCustomWidth(node: Node | null, width: CellCustomWidth) {
     return isFunction(width) ? width?.(node) : width;
   }
 

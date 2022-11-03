@@ -1,6 +1,6 @@
 import { assembleDataCfg } from 'tests/util';
-import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
 import type { RawData } from '../../../src/common';
+import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
 
 /**
  * 获取 Mock 数据

@@ -9,8 +9,8 @@ export const addTotals = (params: TotalParams) => {
   const totalsConfig = spreadsheet.getTotalsConfig(
     isFirstField ? currentField : lastField,
   );
-  let action: 'unshift' | 'push' | undefined = undefined;
-  let totalValue: TotalClass | undefined = undefined;
+  let action: 'unshift' | 'push' | undefined;
+  let totalValue: TotalClass | undefined;
   if (isFirstField) {
     // check to see if grand total is added
     if (totalsConfig?.showGrandTotals) {

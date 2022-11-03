@@ -40,7 +40,11 @@ export const getCellBoxByType = (
   }
 
   let { x, y, width, height } = bbox;
-  const { padding, horizontalBorderWidth, verticalBorderWidth } = cellStyle;
+  const {
+    padding,
+    horizontalBorderWidth = 0,
+    verticalBorderWidth = 0,
+  } = cellStyle;
 
   borderPositions.forEach((position) => {
     const borderWidth = [
@@ -69,10 +73,10 @@ export const getCellBoxByType = (
   });
 
   if (boxType === CellClipBox.CONTENT_BOX) {
-    x += padding?.left;
-    y += padding?.top;
-    width -= padding?.left + padding?.right;
-    height -= padding?.top + padding?.bottom;
+    x += padding?.left!;
+    y += padding?.top!;
+    width -= padding?.left! + padding?.right!;
+    height -= padding?.top! + padding?.bottom!;
   }
 
   return {
@@ -313,10 +317,10 @@ export const getBorderPositionAndStyle = (
 ) => {
   const { x, y, width, height } = bbox;
   const {
-    horizontalBorderWidth,
+    horizontalBorderWidth = 0,
     horizontalBorderColorOpacity,
     horizontalBorderColor,
-    verticalBorderWidth,
+    verticalBorderWidth = 0,
     verticalBorderColor,
     verticalBorderColorOpacity,
   } = style;
@@ -336,10 +340,10 @@ export const getBorderPositionAndStyle = (
         strokeOpacity: verticalBorderColorOpacity,
       };
 
-  let x1: number;
-  let y1: number;
-  let x2: number;
-  let y2: number;
+  let x1 = 0;
+  let y1 = 0;
+  let x2 = 0;
+  let y2 = 0;
   // horizontal
   if (
     position === CellBorderPosition.TOP ||

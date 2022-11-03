@@ -109,7 +109,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': ['error', 3],
+    'max-params': ['error', 4],
     'no-unreachable': 2,
     'no-useless-computed-key': 2,
     'block-spacing': [2, 'always'],
@@ -117,6 +117,9 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 2,
     '@typescript-eslint/no-non-null-asserted-optional-chain': 0,
+    'no-unsafe-optional-chaining': 0,
+    'default-param-last': 0,
+    '@typescript-eslint/ban-ts-comment': 1,
     eqeqeq: [
       2,
       'always',

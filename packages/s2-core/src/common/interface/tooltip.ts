@@ -21,8 +21,13 @@ export interface TooltipOperatorMenu {
   children?: TooltipOperatorMenu[];
 }
 
+export type TooltipOperatorClickHandler = (params: {
+  key: SortMethod;
+  [key: string]: unknown;
+}) => void;
+
 export interface TooltipOperatorOptions {
-  onClick?: (params: { key: SortMethod; [key: string]: unknown }) => void;
+  onClick?: TooltipOperatorClickHandler;
   menus?: TooltipOperatorMenu[];
   defaultSelectedKeys?: string[];
 }
@@ -60,8 +65,8 @@ export interface TooltipSummaryOptions {
 }
 
 export interface TooltipNameTipsOptions {
-  name?: string;
-  tips?: string;
+  name?: string | undefined | null;
+  tips?: string | undefined | null;
 }
 
 export interface TooltipOperationOptions {
@@ -77,7 +82,7 @@ export interface TooltipOperationState {
 }
 
 export type TooltipDetailProps = {
-  list: TooltipDetailListItem[];
+  list: TooltipDetailListItem[] | null | undefined;
 };
 
 export type TooltipInterpretationOptions = {
@@ -126,12 +131,12 @@ export type TooltipDataParams = {
 };
 
 export type TooltipIconProps = {
-  icon: Element | string;
+  icon: Element | string | undefined | null;
   [key: string]: unknown;
 };
 
 export interface SummaryProps {
-  summaries: TooltipSummaryOptions[];
+  summaries: TooltipSummaryOptions[] | undefined;
 }
 
 export interface SummaryParam extends TooltipDataParams {
@@ -150,7 +155,7 @@ export interface OrderOption {
 
 export type TooltipAutoAdjustBoundary = 'body' | 'container' | null | undefined;
 
-export type TooltipContentType = Element | string;
+export type TooltipContentType = Element | string | undefined | null;
 
 export interface BaseTooltipConfig<T = TooltipContentType> {
   showTooltip?: boolean;

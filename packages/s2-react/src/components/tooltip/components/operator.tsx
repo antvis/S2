@@ -25,7 +25,7 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
       return (
         <span onClick={() => menu.onClick?.(cell)}>
           <TooltipIcon
-            icon={menu.icon}
+            icon={menu.icon!}
             className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
           />
           <span className={`${TOOLTIP_PREFIX_CLS}-operator-text`}>

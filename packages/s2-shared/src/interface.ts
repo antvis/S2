@@ -237,7 +237,7 @@ export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
   titleText?: string;
   searchText?: string;
   clearButtonText?: string;
-  dataSet: DataSet[];
+  dataSet?: DataSet[] | undefined;
   drillFields?: string[];
   disabledFields?: string[];
   getDrillFields?: (drillFields: string[]) => void;

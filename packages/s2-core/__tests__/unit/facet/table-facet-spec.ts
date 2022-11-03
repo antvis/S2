@@ -333,7 +333,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenTrailingColCount } = facet.cfg;
+    const { frozenTrailingColCount = 0 } = facet.cfg;
     const { colLeafNodes } = facet.layoutResult;
     expect(
       colLeafNodes
@@ -349,10 +349,10 @@ describe('Table Mode Facet With Frozen Test', () => {
 
     expect(
       colLeafNodes
-        .slice(-frozenTrailingColCount)
+        .slice(-frozenTrailingColCount!)
         .reverse()
         .map(
-          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index).x,
+          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index)!.x,
         ),
     ).toEqual([476, 357]);
   });
@@ -364,9 +364,9 @@ describe('Table Mode Facet With Frozen Test', () => {
 
     expect(
       displayData
-        .slice(-frozenTrailingRowCount)
+        .slice(-frozenTrailingRowCount!)
         .reverse()
-        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1).y),
+        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([532, 502]);
   });
 

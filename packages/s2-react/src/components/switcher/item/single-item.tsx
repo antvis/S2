@@ -34,7 +34,7 @@ export const SingleItem: FC<SingleItemProps> = ({
 
   useEffect(() => {
     // 针对超长文字，添加 tooltip
-    setEllipsis(ref.current.offsetWidth < ref.current.scrollWidth);
+    setEllipsis(ref.current?.offsetWidth! < ref.current?.scrollWidth!);
   }, []);
 
   const realDisplayName = displayName ?? id;

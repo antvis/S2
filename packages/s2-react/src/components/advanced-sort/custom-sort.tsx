@@ -10,20 +10,23 @@ export interface CustomSortProps {
 
 export const CustomSort: React.FC<CustomSortProps> = (props) => {
   const { splitOrders = [], setSplitOrders } = props;
-  const upHandler = (value) => {
+
+  const upHandler = (value: string) => {
     const res = splitOrders.concat();
     res.splice(res.indexOf(value), 1);
     res.unshift(value);
     setSplitOrders(res);
   };
-  const downHandler = (value) => {
+
+  const downHandler = (value: string) => {
     const res = splitOrders.concat();
     let index = res.indexOf(value);
     res.splice(res.indexOf(value), 1);
     res.splice((index += 1), 0, value);
     setSplitOrders(res);
   };
-  const toTopHandler = (value) => {
+
+  const toTopHandler = (value: string) => {
     const res = splitOrders.concat();
     let index = res.indexOf(value);
     if (index > 0) {
@@ -33,7 +36,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
     }
   };
 
-  const renderItem = (value) => {
+  const renderItem = (value: string) => {
     return (
       <>
         <span className="split-text">{value}</span>

@@ -10,7 +10,7 @@ export const MobileSheet = React.forwardRef(
       <>
         <SheetComponent
           {...props}
-          options={getMobileSheetComponentOptions(props.options)}
+          options={getMobileSheetComponentOptions(props.options!)}
           ref={ref}
         />
       </>
@@ -19,4 +19,5 @@ export const MobileSheet = React.forwardRef(
 );
 
 export const MobileSheetComponent = React.memo(MobileSheet);
+
 MobileSheetComponent.displayName = 'MobileSheetComponent';

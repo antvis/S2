@@ -26,7 +26,7 @@ import type {
   LayoutResult,
   ResizeInteractionOptions,
   S2CellType,
-  SortParam,
+  SortParams,
   SplitLine,
   SpreadSheetFacetCfg,
   TableSortParam,
@@ -61,8 +61,6 @@ import {
   isFrozenTrailingRow,
   splitInViewIndexesWithFrozen,
   translateGroup,
-  translateGroupX,
-  translateGroupY,
 } from './utils';
 
 export class TableFacet extends BaseFacet {
@@ -127,7 +125,7 @@ export class TableFacet extends BaseFacet {
     });
   }
 
-  private onSortHandler = (sortParams) => {
+  private onSortHandler = (sortParams: SortParams) => {
     const s2 = this.spreadsheet;
     let params = sortParams;
     // 兼容之前 sortParams 为对象的用法
@@ -323,7 +321,7 @@ export class TableFacet extends BaseFacet {
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
       return Math.max(
-        cellCfg?.width,
+        cellCfg?.width!,
         Math.floor(canvasW / Math.max(1, colHeaderColSize)),
       );
     }
@@ -417,7 +415,7 @@ export class TableFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
+    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -769,7 +767,7 @@ export class TableFacet extends BaseFacet {
       if (style.showShadow && Math.floor(scrollX) < Math.floor(maxScrollX)) {
         splitLineGroup.addShape('rect', {
           attrs: {
-            x: x - style.shadowWidth,
+            x: x - style.shadowWidth!,
             y: panelBBoxStartY,
             width: style.shadowWidth,
             height,
@@ -804,7 +802,7 @@ export class TableFacet extends BaseFacet {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
-            y: y - style.shadowWidth,
+            y: y - style.shadowWidth!,
             width: width + frameVerticalBorderWidth,
             height: style.shadowWidth,
             fill: this.getShadowFill(270),
@@ -843,6 +841,8 @@ export class TableFacet extends BaseFacet {
 
     Object.keys(result).forEach((key) => {
       const cells = result[key];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const group = this[FrozenCellGroupMap[key]];
       if (group) {
         cells.forEach((cell) => {
@@ -856,7 +856,7 @@ export class TableFacet extends BaseFacet {
     const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
     if (viewMeta) {
       viewMeta.isFrozenCorner = true;
-      const cell = this.cfg.dataCell(viewMeta);
+      const cell = this.cfg.dataCell!(viewMeta);
       group.add(cell);
     }
   };
@@ -885,6 +885,8 @@ export class TableFacet extends BaseFacet {
 
     const group = FrozenCellGroupMap[frozenCellType];
     if (group) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       (this[group] as Group).add(cell);
     }
   };

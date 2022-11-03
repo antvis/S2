@@ -1,4 +1,3 @@
-import type { DataPath } from './../../data-set/interface';
 import type { BBox, Group } from '@antv/g-canvas';
 import type {
   InteractionOptions,
@@ -11,6 +10,7 @@ import type {
 import type { Node } from '../../facet/layout/node';
 import type { PartDrillDownFieldInLevel } from '../../common/interface';
 import type { GuiIcon } from '../../common/icons';
+import type { DataPath } from './../../data-set/interface';
 import type { S2DataConfig } from './s2DataConfig';
 import type { ValueRanges } from './condition';
 

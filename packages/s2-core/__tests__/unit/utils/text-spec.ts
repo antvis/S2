@@ -1,4 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
+import type { TextTheme } from '../../../src/common';
 import {
   getEllipsisText,
   getEllipsisTextInner,
@@ -7,7 +8,6 @@ import {
   getEmptyPlaceholder,
   getContentAreaForMultiData,
 } from '@/utils/text';
-import type { TextTheme } from '../../../src/common';
 
 const isHD = window.devicePixelRatio >= 2;
 

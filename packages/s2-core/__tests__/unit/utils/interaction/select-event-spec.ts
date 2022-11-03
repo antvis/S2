@@ -1,3 +1,4 @@
+import { TableSeriesCell } from '../../../../src/cell';
 import {
   isMultiSelectionKey,
   getRowCellForSelectedCell,
@@ -5,11 +6,10 @@ import {
 import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import type { ViewMeta } from '@/common';
-import { TableSeriesCell } from '../../../../src/cell';
 
 jest.mock('@/cell', () => {
   return {
-    TableSeriesCell: function () {
+    TableSeriesCell() {
       // @ts-ignore
       this.getMeta = () => {
         return {

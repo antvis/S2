@@ -37,7 +37,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private cursorType: string;
 
-  public resizeReferenceGroup: IGroup;
+  public resizeReferenceGroup: IGroup | null;
 
   public resizeStartPosition: ResizePosition = {};
 
@@ -470,7 +470,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineStart[1] = resizedOffsetX - halfSize;
     guideLineEnd[1] = resizedOffsetX - halfSize;
 
-    this.resizeTarget.attr({
+    this.resizeTarget?.attr({
       x: resizedOffsetX - resizeInfo.size,
     });
   }
@@ -493,7 +493,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineStart[2] = resizedOffsetY - halfSize;
     guideLineEnd[2] = resizedOffsetY - halfSize;
 
-    this.resizeTarget.attr({
+    this.resizeTarget?.attr({
       y: resizedOffsetY - resizeInfo.size,
     });
   }

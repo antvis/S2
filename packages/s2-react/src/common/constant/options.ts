@@ -3,7 +3,7 @@ import { CustomTooltip } from '../../components/tooltip/custom-tooltip';
 
 export const MOBILE_DRAWER_WIDTH = 300;
 
-export const RENDER_TOOLTIP_OPTION: Partial<S2Options> = {
+export const RENDER_TOOLTIP_OPTION: S2Options = {
   tooltip: {
     renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },

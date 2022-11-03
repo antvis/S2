@@ -70,7 +70,7 @@ enum CustomType {
 }
 
 export const CustomGrid: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
+  Partial<SheetComponentsProps> & React.MutableRefObject<SpreadSheet>
 > = React.forwardRef((props, ref) => {
   const [customType, setCustomType] = React.useState<CustomType>(
     (localStorage.getItem('debugCustomType') as unknown as CustomType) ||

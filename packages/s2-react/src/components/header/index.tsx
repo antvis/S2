@@ -43,18 +43,18 @@ export const Header: React.FC<HeaderProps> = React.memo(
       return (
         <>
           {extra}
-          {switcherCfg.open && (
+          {switcherCfg?.open && (
             <SwitcherHeader
               sheet={sheet}
-              dataCfg={dataCfg}
-              options={options}
+              dataCfg={dataCfg!}
+              options={options!}
               {...switcherCfg}
             />
           )}
-          {advancedSortCfg.open && (
+          {advancedSortCfg?.open && (
             <AdvancedSort sheet={sheet} {...advancedSortCfg} />
           )}
-          {exportCfg.open && (
+          {exportCfg?.open && (
             <Export key={'export'} sheet={sheet} {...exportCfg} />
           )}
         </>

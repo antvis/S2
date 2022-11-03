@@ -64,7 +64,7 @@ describe('SheetComponent Tooltip Tests', () => {
 
     act(() => {
       Array.from({ length: 10 }).forEach(() => {
-        expect(showTooltip).not.toThrowError();
+        expect(showTooltip).not.toThrow();
       });
     });
     showTooltip();
@@ -159,8 +159,8 @@ describe('SheetComponent Tooltip Tests', () => {
       });
     });
 
-    expect(errorSpy).not.toThrowError();
-    expect(warnSpy).not.toThrowError();
+    expect(errorSpy).not.toThrow();
+    expect(warnSpy).not.toThrow();
 
     errorSpy.mockRestore();
     warnSpy.mockRestore();
@@ -181,7 +181,7 @@ describe('SheetComponent Tooltip Tests', () => {
       .querySelector('.ant-dropdown-trigger')
       ?.dispatchEvent(new Event('click'));
 
-    expect(errorSpy).not.toThrowError(
+    expect(errorSpy).not.toThrow(
       'Uncaught Error: React.Children.only expected to receive a single React element child.',
     );
 

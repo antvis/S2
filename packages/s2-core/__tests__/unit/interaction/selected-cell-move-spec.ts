@@ -98,8 +98,8 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -110,7 +110,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).not.toBeCalled();
+    expect(s2.interaction.changeState).not.toHaveBeenCalled();
   });
 
   test('should move selected cell left', () => {
@@ -125,8 +125,8 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_LEFT,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -137,7 +137,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_LEFT,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).not.toBeCalled();
+    expect(s2.interaction.changeState).not.toHaveBeenCalled();
   });
 
   test('should move selected cell up', () => {
@@ -152,8 +152,8 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_UP,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -164,7 +164,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_UP,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).not.toBeCalled();
+    expect(s2.interaction.changeState).not.toHaveBeenCalled();
   });
 
   test('should move selected cell down', () => {
@@ -179,8 +179,8 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_DOWN,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 1, id: '1-1', rowIndex: 1, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -191,7 +191,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_DOWN,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).not.toBeCalled();
+    expect(s2.interaction.changeState).not.toHaveBeenCalled();
   });
 
   test('should move selected with meta', () => {
@@ -206,8 +206,8 @@ describe('Interaction Keyboard Move Tests', () => {
       key: InteractionKeyboardKey.ARROW_RIGHT,
       metaKey: true,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -217,8 +217,8 @@ describe('Interaction Keyboard Move Tests', () => {
       metaKey: true,
     } as KeyboardEvent);
 
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 1, id: '1-1', rowIndex: 1, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -228,8 +228,8 @@ describe('Interaction Keyboard Move Tests', () => {
       metaKey: true,
     } as KeyboardEvent);
 
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 0, id: '1-0', rowIndex: 1, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -239,8 +239,8 @@ describe('Interaction Keyboard Move Tests', () => {
       metaKey: true,
     } as KeyboardEvent);
 
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [{ colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' }],
       stateName: 'selected',
     });
@@ -261,8 +261,8 @@ describe('Interaction Keyboard Move Tests', () => {
       key: InteractionKeyboardKey.ARROW_RIGHT,
       shiftKey: true,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [
         { colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' },
         { colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' },
@@ -274,8 +274,8 @@ describe('Interaction Keyboard Move Tests', () => {
       key: InteractionKeyboardKey.ARROW_DOWN,
       shiftKey: true,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [
         { colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' },
         { colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' },
@@ -284,7 +284,7 @@ describe('Interaction Keyboard Move Tests', () => {
       ],
       stateName: 'selected',
     });
-    expect(onDataCellSelectMove).toBeCalled();
+    expect(onDataCellSelectMove).toHaveBeenCalled();
   });
 
   test('should move selected with shift and meta', () => {
@@ -300,8 +300,8 @@ describe('Interaction Keyboard Move Tests', () => {
       shiftKey: true,
       metaKey: true,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [
         { colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' },
         { colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' },
@@ -313,8 +313,8 @@ describe('Interaction Keyboard Move Tests', () => {
       key: InteractionKeyboardKey.ARROW_DOWN,
       shiftKey: true,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).toBeCalled();
-    expect(s2.interaction.changeState).toBeCalledWith({
+    expect(s2.interaction.changeState).toHaveBeenCalled();
+    expect(s2.interaction.changeState).toHaveBeenCalledWith({
       cells: [
         { colIndex: 0, id: '0-0', rowIndex: 0, type: 'dataCell' },
         { colIndex: 1, id: '0-1', rowIndex: 0, type: 'dataCell' },
@@ -339,7 +339,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_DOWN,
     } as KeyboardEvent);
-    expect(s2.interaction.changeState).not.toBeCalled();
+    expect(s2.interaction.changeState).not.toHaveBeenCalled();
 
     s2.interaction.eventController.isCanvasEffect = true;
   });

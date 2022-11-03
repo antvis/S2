@@ -61,7 +61,9 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
     const defaultState = getSwitcherState(defaultFields);
 
     const [state, setState] = React.useState<SwitcherState>(defaultState);
-    const [draggingItemId, setDraggingItemId] = React.useState<string>(null);
+    const [draggingItemId, setDraggingItemId] = React.useState<string | null>(
+      null,
+    );
     const onBeforeDragStart = (initial: BeforeCapture) => {
       setDraggingItemId(initial.draggableId);
     };
@@ -83,7 +85,9 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       }
 
       const updatedState = moveItem(
+        // @ts-ignore
         state[source.droppableId],
+        // @ts-ignore
         state[destination.droppableId],
         source,
         destination,

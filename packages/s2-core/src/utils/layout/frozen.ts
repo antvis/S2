@@ -49,10 +49,8 @@ export const getFrozenColWidth = (
     return result;
   }
 
-  const { frozenColCount, frozenTrailingColCount } = getValidFrozenOptions(
-    options,
-    colLeafNodes.length,
-  );
+  const { frozenColCount = 0, frozenTrailingColCount = 0 } =
+    getValidFrozenOptions(options, colLeafNodes.length);
 
   for (let i = 0; i < frozenColCount; i++) {
     result.frozenColWidth += colLeafNodes[i].width;

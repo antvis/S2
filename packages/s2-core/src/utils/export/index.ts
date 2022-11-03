@@ -140,10 +140,7 @@ const processObjectValueInCol = (data: MultiData) => {
 /*
  * Process the multi-measure with single-lines
  */
-const processObjectValueInRow = (
-  data: MultiData,
-  isFormat: boolean = false,
-) => {
+const processObjectValueInRow = (data: MultiData, isFormat = false) => {
   if (!isFormat) {
     return get(data?.originalValues, 0) ?? get(data?.values, 0);
   }
@@ -209,7 +206,7 @@ const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: SpreadSheet,
   placeholder: string[],
-  isFormat: boolean = false,
+  isFormat = false,
 ) => {
   let tempCells = [];
 

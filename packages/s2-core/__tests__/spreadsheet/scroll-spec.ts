@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import { ScrollBar, ScrollType } from '../../src/ui/scrollbar';
 import type { CellScrollPosition } from './../../src/common/interface/scroll';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
@@ -16,7 +17,6 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '@/common/constant';
-import { get } from 'lodash';
 
 const s2Options: S2Options = {
   width: 200,
@@ -400,7 +400,7 @@ describe('Scroll Tests', () => {
     sheet.facet.startScroll(true);
 
     expect((sheet.facet as any).dynamicRenderCell).toHaveBeenCalledWith(true);
-    expect((sheet.facet as any).emitScrollEvent).not.toBeCalled();
+    expect((sheet.facet as any).emitScrollEvent).not.toHaveBeenCalled();
   });
 
   test('should render correct scroll position', () => {

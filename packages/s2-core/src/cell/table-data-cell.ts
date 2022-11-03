@@ -119,7 +119,7 @@ export class TableDataCell extends DataCell {
           meta: this.meta,
         }),
         x: 0,
-        y: offsetY + height - resizeStyle.size,
+        y: offsetY + height - resizeStyle!.size!,
         width: resizeWidth,
       },
     });

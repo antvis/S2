@@ -301,7 +301,7 @@ describe('Pivot Mode Facet Test', () => {
       };
 
       [onlyOffsetXFn, onlyOffsetYFn].forEach((handler) => {
-        expect(handler).not.toThrowError();
+        expect(handler).not.toThrow();
       });
     },
   );

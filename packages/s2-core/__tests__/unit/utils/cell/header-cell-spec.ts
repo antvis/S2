@@ -25,8 +25,14 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
       expect(rowConfig).toEqual(actionConfig[0]);
-      expect(rowConfig!.displayCondition).toBeCalledWith(rowMeta, 'SortUp');
-      expect(rowConfig!.displayCondition).toBeCalledWith(rowMeta, 'SortDown');
+      expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
+        rowMeta,
+        'SortUp',
+      );
+      expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
+        rowMeta,
+        'SortDown',
+      );
 
       // 列头 icon
       expect(

@@ -51,7 +51,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     successText = i18n('操作成功'),
     errorText = i18n('操作失败'),
     sheet,
-    fileName,
+    fileName = '',
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     open,
     dropdown,
     ...restProps

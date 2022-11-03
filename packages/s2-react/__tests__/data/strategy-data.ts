@@ -427,7 +427,7 @@ export const StrategyOptions: SheetComponentOptions = {
     icon: [
       {
         position: 'right',
-        mapping(value, cellInfo) {
+        mapping(value) {
           return isUpDataValue(value)
             ? {
                 // icon 用于指定图标条件格式所使用的 icon 类型

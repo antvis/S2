@@ -51,7 +51,7 @@ describe('SheetComponent Correct Render Tests', () => {
         );
       }
 
-      expect(render).not.toThrowError();
+      expect(render).not.toThrow();
     },
   );
 });

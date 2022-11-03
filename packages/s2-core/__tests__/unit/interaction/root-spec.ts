@@ -1,5 +1,6 @@
 import type { Canvas } from '@antv/g-canvas';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
@@ -30,7 +31,6 @@ import {
 import { RootInteraction } from '@/interaction/root';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import { get } from 'lodash';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -212,13 +212,13 @@ describe('RootInteraction Tests', () => {
 
   test('should call merge cells', () => {
     rootInteraction.mergeCells();
-    expect(mergeCell).toBeCalled();
+    expect(mergeCell).toHaveBeenCalled();
   });
 
   test('should call cancel mergedCell', () => {
     let mergedCell: MergedCell;
     rootInteraction.unmergeCell(mergedCell!);
-    expect(unmergeCell).toBeCalled();
+    expect(unmergeCell).toHaveBeenCalled();
   });
 
   test('should call hideColumns', () => {

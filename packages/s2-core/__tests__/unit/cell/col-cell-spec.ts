@@ -120,6 +120,7 @@ describe('Col Cell Tests', () => {
       const formatter = jest.fn();
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
+      // eslint-disable-next-line no-new
       new ColCell(node, s2);
 
       expect(formatter).toHaveBeenCalledWith(node.label, undefined, node);

@@ -282,7 +282,7 @@ export class ColCell extends HeaderCell {
         }),
         name: resizeAreaName,
         x: 0,
-        y: y + height - resizeStyle.size,
+        y: y + height - resizeStyle.size!,
         width: resizeAreaWidth,
       },
     });
@@ -302,7 +302,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
       width: resizeStyle.size!,
       height,
@@ -364,7 +364,7 @@ export class ColCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size,
+        x: offsetX + width - resizeStyle.size!,
         y: offsetY,
         height,
       },
@@ -405,7 +405,7 @@ export class ColCell extends HeaderCell {
   protected addExpandColumnSplitLine() {
     const { x, y, width, height } = this.getBBoxByType();
     const { horizontalBorderColor, horizontalBorderColorOpacity } =
-      this.theme.splitLine;
+      this.theme.splitLine!;
     const lineX = this.isLastColumn() ? x + width : x;
 
     renderLine(
@@ -446,7 +446,7 @@ export class ColCell extends HeaderCell {
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
   protected getExpandColumnIconConfig() {
-    const { size } = this.getExpandIconTheme();
+    const { size = 0 } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getBBoxByType();
 
     const baseIconX = x - size;

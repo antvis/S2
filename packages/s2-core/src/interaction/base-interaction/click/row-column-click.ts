@@ -1,4 +1,3 @@
-import type { ViewMeta } from './../../../common/interface/basic';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
 import {
@@ -27,6 +26,7 @@ import {
   getTooltipVisibleOperator,
   mergeCellInfo,
 } from '../../../utils/tooltip';
+import type { ViewMeta } from './../../../common/interface/basic';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;

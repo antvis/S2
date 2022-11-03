@@ -232,7 +232,7 @@ export class RowCell extends HeaderCell {
 
     const resizeAreaBBox = {
       x,
-      y: y + height - resizeStyle.size,
+      y: y + height - resizeStyle.size!,
       width,
       height: resizeStyle.size!,
     };
@@ -274,7 +274,7 @@ export class RowCell extends HeaderCell {
           meta: this.meta,
         }),
         x: offsetX,
-        y: offsetY + height - resizeStyle.size,
+        y: offsetY + height - resizeStyle.size!,
         width: resizeAreaWidth,
       },
     });

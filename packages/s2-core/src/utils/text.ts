@@ -455,7 +455,7 @@ export const drawObjectText = (
     height: totalTextHeight,
     width: totalTextWidth,
   } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
-  const meta = cell.getMeta();
+  const meta = cell.getMeta() as ViewMeta;
   const text = multiData || (meta.fieldValue as MultiData);
   const { values: textValues } = text;
   const { options, measureTextWidth } = meta.spreadsheet;

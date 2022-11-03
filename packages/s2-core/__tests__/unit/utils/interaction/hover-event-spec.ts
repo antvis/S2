@@ -12,9 +12,11 @@ jest.mock('@/cell', () => {
   return {
     ColCell: class ColCell {
       stateName: InteractionStateName;
+
       getMeta = () => ({
         id: 'root[&]city',
       });
+
       updateByState = (name: InteractionStateName) => {
         this.stateName = name;
       };

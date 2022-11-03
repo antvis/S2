@@ -1,14 +1,14 @@
 /**
  * 透视表核心数据流程（保证基本数据正确）
  * */
-import { flattenDeep, get, size, uniq } from 'lodash';
+import { flattenDeep, get, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
+import type { ViewMeta } from '../../../src/common';
 import { VALUE_FIELD } from '@/common/constant';
 import type { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
-import type { ViewMeta } from '../../../src/common';
 
 describe('Pivot Table Core Data Process', () => {
   const s2 = new PivotSheet(

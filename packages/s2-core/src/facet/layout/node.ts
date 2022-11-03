@@ -226,16 +226,16 @@ export class Node {
   public id: string;
 
   // node top-left x-coordinate
-  public x: number = 0;
+  public x = 0;
 
   // node top-left y-coordinate
-  public y: number = 0;
+  public y = 0;
 
   // node width
-  public width: number = 0;
+  public width = 0;
 
   // node height
-  public height: number = 0;
+  public height = 0;
 
   // node real display text label
   public label: string;
@@ -247,10 +247,10 @@ export class Node {
   public value: string;
 
   // cell index in layout list(TODO What's use for?)
-  public colIndex: number = -1;
+  public colIndex = -1;
 
   // node's level in tree hierarchy
-  public level: number = 0;
+  public level = 0;
 
   // list table row index.
   public rowIndex: number;
@@ -259,7 +259,7 @@ export class Node {
   public parent: Node | undefined;
 
   // check if node is leaf(the max level in tree)
-  public isLeaf: boolean = false;
+  public isLeaf = false;
 
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
@@ -281,7 +281,7 @@ export class Node {
   public children: Node[] = [];
 
   // node width adaptive mode need paddingLeft = paddingRight
-  public padding: number = 0;
+  public padding = 0;
 
   // node's hierarchy
   public hierarchy: Hierarchy;

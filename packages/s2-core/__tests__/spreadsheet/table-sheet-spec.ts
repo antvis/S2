@@ -126,7 +126,7 @@ describe('TableSheet normal spec', () => {
       scrollX: 10,
       hRowScrollX: 0,
     });
-    expect(onScrollFinish).toBeCalled();
+    expect(onScrollFinish).toHaveBeenCalled();
 
     s2.destroy();
   });

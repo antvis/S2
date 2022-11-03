@@ -236,7 +236,7 @@ export class CornerCell extends HeaderCell {
     const { field, cornerType } = this.meta;
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
       width: resizeStyle.size!,
       height,
@@ -276,7 +276,7 @@ export class CornerCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size,
+        x: offsetX + width - resizeStyle.size!,
         y: offsetY,
         height: this.isLastRowCornerCell() ? headerHeight : height,
       },
@@ -306,7 +306,7 @@ export class CornerCell extends HeaderCell {
 
     const iconY = getVerticalPosition(
       this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textBaseline,
+      textBaseline!,
       size,
     );
 

@@ -13,7 +13,7 @@ export const TooltipDetail: React.FC<TooltipDetailProps> = (
 
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-detail-list`}>
-      {list.map((listItem: TooltipDetailListItem, idx) => {
+      {list?.map((listItem: TooltipDetailListItem, idx) => {
         const { name, value, icon } = listItem;
 
         return (

@@ -15,7 +15,7 @@ export class StrategyDataSet extends CustomTreePivotDataSet {
       ...updatedDataCfg,
       fields: {
         ...updatedDataCfg.fields,
-        rows: [...dataCfg.fields.rows, EXTRA_FIELD],
+        rows: [...(dataCfg.fields.rows || []), EXTRA_FIELD],
         valueInCols,
       },
     };

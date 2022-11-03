@@ -41,10 +41,10 @@ export class TableSheet extends SpreadSheet {
 
   public enableFrozenHeaders(): boolean {
     const {
-      frozenRowCount,
-      frozenTrailingRowCount,
-      frozenColCount,
-      frozenTrailingColCount,
+      frozenRowCount = 0,
+      frozenTrailingRowCount = 0,
+      frozenColCount = 0,
+      frozenTrailingColCount = 0,
     } = this.options;
     return (
       frozenRowCount > 0 ||

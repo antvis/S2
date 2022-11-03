@@ -220,7 +220,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return getCellBoxByType(
       bbox,
       this.getBorderPositions(),
-      cellStyle?.cell,
+      cellStyle?.cell!,
       type,
     );
   }
@@ -230,7 +230,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       const { position, style } = getBorderPositionAndStyle(
         type,
         this.getBBoxByType(),
-        this.getStyle().cell,
+        this.getStyle()?.cell!,
       );
       renderLine(this, position, style);
     });
@@ -249,8 +249,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected abstract getBackgroundColor(): {
-    backgroundColor: string;
-    backgroundColorOpacity: number;
+    backgroundColor: string | undefined;
+    backgroundColorOpacity: number | undefined;
   };
 
   protected drawBackgroundShape() {
@@ -318,7 +318,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     }
 
     const device =
-      this.spreadsheet.options.device ?? this.spreadsheet.options.style.device;
+      this.spreadsheet.options.device ?? this.spreadsheet.options.style?.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
       const textStyle = this.getTextStyle();

@@ -20,7 +20,7 @@ export interface SwitcherField {
   expandable?: boolean;
   expandText?: string;
   selectable?: boolean;
-  items: SwitcherItem[];
+  items: SwitcherItem[] | undefined;
 }
 
 export interface SwitcherFields {

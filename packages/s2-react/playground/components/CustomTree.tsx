@@ -23,7 +23,8 @@ export const customTreeOptions: SheetComponentOptions = {
 };
 
 export const CustomTree: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
+  Partial<SheetComponentsProps> &
+    React.MutableRefObject<SpreadSheet | undefined>
 > = React.forwardRef((props, ref) => {
   return (
     <SheetComponent

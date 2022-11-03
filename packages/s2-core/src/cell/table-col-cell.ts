@@ -62,9 +62,9 @@ export class TableColCell extends ColCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
-      width: resizeStyle.size,
+      width: resizeStyle.size!,
       height,
     };
 

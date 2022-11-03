@@ -33,20 +33,20 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
 
   const [, ...derivedLabels] = React.useMemo(() => {
     try {
-      return JSON.parse(leftColNode?.value);
+      return JSON.parse(leftColNode?.value!);
     } catch {
       return [];
     }
   }, [leftColNode?.value]);
 
   const { placeholder, style } = spreadsheet.options;
-  const valuesCfg = style.cellCfg?.valuesCfg;
+  const valuesCfg = style?.cellCfg?.valuesCfg;
 
   const [value, ...derivedValues] = first(metaFieldValue?.values) || [
     metaFieldValue,
   ];
   const [originalValue, ...derivedOriginalValues] = first(
-    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleData[][],
+    get(metaFieldValue, valuesCfg?.originalValueField!) as SimpleData[][],
   ) || [value];
 
   const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
@@ -68,7 +68,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
         <>
           <div className={tooltipCls('divider')} />
           <ul className={tooltipCls('derived-values')}>
-            {derivedValues.map((derivedValue: SimpleData, i) => {
+            {(derivedValues as SimpleData[]).map((derivedValue, i) => {
               const isNormal = isNil(derivedValue) || derivedValue === '';
               const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;

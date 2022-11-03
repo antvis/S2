@@ -4,6 +4,7 @@ import dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep, get, last } from 'lodash';
 import { PivotDataSet } from '../../../src/data-set';
+import type { BaseEvent } from '../../../src';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -29,7 +30,6 @@ import type { CornerCell } from '@/cell/corner-cell';
 jest.mock('@/utils/hide-columns');
 
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-import type { BaseEvent } from '../../../src';
 
 const mockHideColumnsByThunkGroup =
   hideColumnsByThunkGroup as jest.Mock<PivotSheet>;

@@ -29,17 +29,17 @@ export class Frame extends Group {
     this.layout();
   }
 
-  public static getHorizontalBorderWidth(spreadsheet: SpreadSheet) {
-    const { horizontalBorderWidth } = spreadsheet.theme?.splitLine;
+  public static getHorizontalBorderWidth(spreadsheet: SpreadSheet): number {
+    const { horizontalBorderWidth } = spreadsheet.theme?.splitLine!;
 
-    return horizontalBorderWidth;
+    return horizontalBorderWidth!;
   }
 
-  public static getVerticalBorderWidth(spreadsheet: SpreadSheet) {
+  public static getVerticalBorderWidth(spreadsheet: SpreadSheet): number {
     // 交叉表一条竖线拉通即可
     const { splitLine, cornerCell, colCell, dataCell } = spreadsheet.theme;
     if (spreadsheet.isPivotMode()) {
-      return splitLine.verticalBorderWidth;
+      return splitLine?.verticalBorderWidth!;
     }
     /**
      * 明细表需要在最左侧绘制一条边框
@@ -51,10 +51,10 @@ export class Frame extends Group {
      * 在开启序号时，左侧头部序号单元格所使用的是 cornerCell 的主题，否则使用 colCell 的主题
      */
     return Math.max(
-      dataCell.cell.verticalBorderWidth,
+      dataCell!.cell!.verticalBorderWidth!,
       spreadsheet.options.showSeriesNumber
-        ? cornerCell.cell.verticalBorderWidth
-        : colCell.cell.verticalBorderWidth,
+        ? cornerCell!.cell!.verticalBorderWidth!
+        : colCell!.cell!.verticalBorderWidth!,
     );
   }
 
@@ -85,14 +85,14 @@ export class Frame extends Group {
       verticalBorderColor,
       verticalBorderColorOpacity,
       horizontalBorderWidth,
-    } = spreadsheet.theme?.splitLine;
+    } = spreadsheet.theme?.splitLine!;
 
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
-    const x = position.x + cornerWidth + frameVerticalWidth / 2;
+    const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
     if (isPivotMode) {
       const y2 =
-        position.y + cornerHeight + horizontalBorderWidth + viewportHeight;
+        position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
       renderLine(
         this,
         { x1: x, y1: position.y, x2: x, y2 },
@@ -110,8 +110,8 @@ export class Frame extends Group {
       verticalBorderColor: headerVerticalBorderColor,
       verticalBorderColorOpacity: headerVerticalBorderColorOpacity,
     } = spreadsheet.options.showSeriesNumber
-      ? spreadsheet.theme.cornerCell.cell
-      : spreadsheet.theme.colCell.cell;
+      ? spreadsheet.theme.cornerCell!.cell!
+      : spreadsheet.theme.colCell!.cell!;
 
     renderLine(
       this,
@@ -126,15 +126,15 @@ export class Frame extends Group {
     const {
       verticalBorderColor: cellVerticalBorderColor,
       verticalBorderColorOpacity: cellVerticalBorderColorOpacity,
-    } = spreadsheet.theme.dataCell.cell;
+    } = spreadsheet.theme.dataCell!.cell!;
 
     renderLine(
       this,
       {
         x1: x,
-        y1: position.y + cornerHeight + horizontalBorderWidth,
+        y1: position.y + cornerHeight + horizontalBorderWidth!,
         x2: x,
-        y2: position.y + cornerHeight + horizontalBorderWidth + viewportHeight,
+        y2: position.y + cornerHeight + horizontalBorderWidth! + viewportHeight,
       },
       {
         stroke: cellVerticalBorderColor,
@@ -159,15 +159,15 @@ export class Frame extends Group {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
-    } = spreadsheet.theme?.splitLine;
+    } = spreadsheet.theme?.splitLine!;
     const x1 = position.x;
     const x2 =
       x1 +
       cornerWidth +
-      Frame.getVerticalBorderWidth(spreadsheet) +
+      Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth +
       (scrollContainsRowHeader ? scrollX : 0);
-    const y = position.y + cornerHeight + horizontalBorderWidth / 2;
+    const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
     renderLine(
       this,
@@ -211,16 +211,16 @@ export class Frame extends Group {
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
       this.cfg;
     const { shadowColors, shadowWidth, horizontalBorderWidth } =
-      spreadsheet.theme?.splitLine;
+      spreadsheet.theme?.splitLine!;
     const x =
-      position.x + cornerWidth + Frame.getVerticalBorderWidth(spreadsheet);
+      position.x + cornerWidth + Frame.getVerticalBorderWidth(spreadsheet)!;
     const y = position.y;
     this.addShape('rect', {
       attrs: {
         x,
         y,
         width: shadowWidth,
-        height: cornerHeight + horizontalBorderWidth + viewportHeight,
+        height: cornerHeight + horizontalBorderWidth! + viewportHeight,
         fill: `l (0) 0:${shadowColors?.left} 1:${shadowColors?.right}`,
       },
     });
@@ -240,20 +240,20 @@ export class Frame extends Group {
       spreadsheet,
     } = this.cfg;
     const { shadowColors, shadowWidth, horizontalBorderWidth } =
-      spreadsheet.theme?.splitLine;
+      spreadsheet.theme?.splitLine!;
     const x =
       position.x +
       cornerWidth +
-      Frame.getVerticalBorderWidth(spreadsheet) +
+      Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth -
-      shadowWidth;
+      shadowWidth!;
     const y = position.y;
     this.addShape('rect', {
       attrs: {
         x,
         y,
         width: shadowWidth,
-        height: cornerHeight + horizontalBorderWidth + viewportHeight,
+        height: cornerHeight + horizontalBorderWidth! + viewportHeight,
         fill: `l (0) 0:${shadowColors?.right} 1:${shadowColors?.left}`,
       },
     });

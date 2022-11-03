@@ -272,7 +272,7 @@ export class PivotFacet extends BaseFacet {
         this.spreadsheet.measureTextWidthRoughly(leafNodeLabel) + iconWidth;
 
       // 采样 50 个 label，逐个计算找出最长的 label
-      let maxDataLabel: string = '';
+      let maxDataLabel = '';
       let maxDataLabelWidth = 0;
       for (let index = 0; index < LAYOUT_SAMPLE_COUNT; index++) {
         const rowNode = rowLeafNodes[index];
@@ -658,7 +658,7 @@ export class PivotFacet extends BaseFacet {
       return cellDraggedWidth;
     }
 
-    const cellCustomWidth = this.getCellCustomWidth(node, rowCfg?.width);
+    const cellCustomWidth = this.getCellCustomWidth(node, rowCfg?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -695,7 +695,7 @@ export class PivotFacet extends BaseFacet {
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
     return Math.max(
-      getCellWidth(cellCfg, this.getColLabelLength(col, rowLeafNodes)),
+      getCellWidth(cellCfg!, this.getColLabelLength(col, rowLeafNodes)),
       Math.floor((availableWidth - rowHeaderWidth) / colSize),
     );
   }
@@ -761,13 +761,13 @@ export class PivotFacet extends BaseFacet {
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
       return Math.max(
-        getCellWidth(cellCfg),
+        getCellWidth(cellCfg!),
         Math.floor(availableWidth / colSize),
       );
     }
 
     return Math.max(
-      getCellWidth(cellCfg),
+      getCellWidth(cellCfg!),
       Math.floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
     );
   }
@@ -787,7 +787,7 @@ export class PivotFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义
-    const customRowWidth = this.getCellCustomWidth(null, rowCfg?.width);
+    const customRowWidth = this.getCellCustomWidth(null, rowCfg?.width!);
     if (customRowWidth) {
       return customRowWidth;
     }
@@ -859,9 +859,9 @@ export class PivotFacet extends BaseFacet {
     const rowNodeWidth =
       spreadsheet.measureTextWidth(maxLabel, rowTextStyle) +
       rowIconWidth +
-      rowCellStyle.padding.left +
-      rowCellStyle.padding.right +
-      rowCellStyle.verticalBorderWidth;
+      rowCellStyle!.padding!.left! +
+      rowCellStyle!.padding!.right! +
+      rowCellStyle!.verticalBorderWidth!;
 
     // calc corner fieldNameNodeWidth
     const fieldName = dataSet.getFieldName(field);

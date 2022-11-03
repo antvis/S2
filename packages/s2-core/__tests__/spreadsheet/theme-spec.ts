@@ -451,8 +451,8 @@ describe('SpreadSheet Theme Tests', () => {
           3,
         ) as IGroup; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
-        expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);
+        expect(textOfSeriesCell?.attr('textBaseline')).toEqual('top');
       },
     );
   });
