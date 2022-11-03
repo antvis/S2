@@ -545,9 +545,9 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
+   * @param skipScrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
    */
-  startScroll = (skipSrollEvent = false) => {
+  startScroll = (skipScrollEvent = false) => {
     const { scrollX, scrollY } = this.getScrollOffset();
 
     this.hScrollBar?.onlyUpdateThumbOffset(
@@ -557,7 +557,7 @@ export abstract class BaseFacet {
     this.vScrollBar?.onlyUpdateThumbOffset(
       this.getScrollBarOffset(scrollY, this.vScrollBar),
     );
-    this.dynamicRenderCell(skipSrollEvent);
+    this.dynamicRenderCell(skipScrollEvent);
   };
 
   getRendererHeight = () => {
@@ -1034,8 +1034,8 @@ export abstract class BaseFacet {
   ) {
     translateGroup(
       this.panelScrollGroup,
-      this.cornerBBox.width - scrollX,
-      this.cornerBBox.height - scrollY,
+      this.panelBBox.x - scrollX,
+      this.panelBBox.y - scrollY,
     );
     this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
@@ -1267,8 +1267,8 @@ export abstract class BaseFacet {
           x: this.cornerBBox.x,
           y: this.cornerBBox.y,
         },
-        width: cornerWidth,
-        height: cornerHeight,
+        cornerWidth,
+        cornerHeight,
         viewportWidth,
         viewportHeight,
         showViewportLeftShadow: false,

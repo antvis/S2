@@ -16,13 +16,14 @@ import {
 import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
-import type {
-  CellCfg,
-  Condition,
-  MultiData,
-  S2CellType,
-  SimpleData,
-  ViewMeta,
+import {
+  CellClipBox,
+  type CellCfg,
+  type Condition,
+  type MultiData,
+  type S2CellType,
+  type SimpleData,
+  type ViewMeta,
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
@@ -451,7 +452,7 @@ export const drawObjectText = (
     y,
     height: totalTextHeight,
     width: totalTextWidth,
-  } = cell.getContentArea();
+  } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { values: textValues } = text;
   const { options, measureTextWidth } = cell.getMeta().spreadsheet;

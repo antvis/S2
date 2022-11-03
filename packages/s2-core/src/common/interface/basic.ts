@@ -46,6 +46,29 @@ export enum CellBorderPosition {
 }
 
 /**
+ * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
+ * 分为三种类型：
+ * borderBox: 整个 cell 的范围
+ * paddingBox: cell 去除 border 的范围
+ * contentBox: cell 去除 (border + padding) 的范围
+ * -------------------------------
+ * |b|           padding         |
+ * |o|  |---------------------|  |
+ * |r|  |                     |  |
+ * |d|  |                     |  |
+ * |e|  |---------------------|  |
+ * |r|           padding         |
+ * -------------------------------
+ * -------border-bottom-----------
+ * -------------------------------
+ */
+export enum CellClipBox {
+  BORDER_BOX = 'borderBox',
+  PADDING_BOX = 'paddingBox',
+  CONTENT_BOX = 'contentBox',
+}
+
+/**
  * 布局类型：
  * adaptive: 行列等宽，均分整个 canvas 画布宽度
  * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度

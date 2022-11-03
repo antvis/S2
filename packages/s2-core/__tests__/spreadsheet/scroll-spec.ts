@@ -414,12 +414,12 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
 
-    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
-    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(222);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(222);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     s2.render(false);
-    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(190);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(193);
 
     s2.setOptions({
       interaction: {
@@ -475,9 +475,9 @@ describe('Scroll Tests', () => {
       },
     });
 
-    const { hScrollBar, vScrollBar, cornerBBox, panelBBox } = s2.facet;
+    const { hScrollBar, vScrollBar, panelBBox } = s2.facet;
     expect(
-      hScrollBar.thumbLen + hScrollBar.thumbOffset + cornerBBox.maxX,
+      hScrollBar.thumbLen + hScrollBar.thumbOffset + panelBBox.minX,
     ).toStrictEqual(panelBBox.maxX);
     expect(
       vScrollBar.thumbLen + vScrollBar.thumbOffset + panelBBox.minY,

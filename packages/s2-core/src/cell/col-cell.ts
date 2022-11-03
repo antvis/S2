@@ -1,31 +1,31 @@
-import type { Point, SimpleBBox } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import {
   CellTypes,
+  SPLIT_LINE_WIDTH,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
 } from '../common/constant';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { DefaultCellTheme, IconTheme } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
 import {
   adjustColHeaderScrollingTextPosition,
   adjustColHeaderScrollingViewport,
-  getBorderPositionAndStyle,
   getTextAndFollowingIconPosition,
   getTextAreaRange,
 } from '../utils/cell/cell';
-import { renderIcon, renderLine, renderRect } from '../utils/g-renders';
+import { renderIcon, renderLine } from '../utils/g-renders';
 import { isLastColumnAfterHidden } from '../utils/hide-columns';
 import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import type { ColHeaderConfig } from '../facet/header';
+import { Frame, type ColHeaderConfig } from '../facet/header';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
@@ -37,6 +37,10 @@ export class ColCell extends HeaderCell {
 
   public get cellType() {
     return CellTypes.COL_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.TOP, CellBorderPosition.RIGHT];
   }
 
   protected initCell() {
@@ -61,39 +65,8 @@ export class ColCell extends HeaderCell {
     this.update();
   }
 
-  // 交互使用的背景色
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 2;
-
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
-        visible: false,
-      }),
-    );
-  }
-
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getActionIconsWidth();
   }
 
@@ -170,7 +143,7 @@ export class ColCell extends HeaderCell {
       this.headerConfig;
 
     const textStyle = this.getTextStyle();
-    const contentBox = this.getContentArea();
+    const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
@@ -285,7 +258,10 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const resizeAreaWidth = cornerWidth + headerWidth;
+    const resizeAreaWidth =
+      cornerWidth +
+      Frame.getVerticalBorderWidth(this.spreadsheet) +
+      headerWidth;
     // 列高调整热区
     resizeArea.addShape('rect', {
       attrs: {
@@ -302,7 +278,7 @@ export class ColCell extends HeaderCell {
         }),
         name: resizeAreaName,
         x: 0,
-        y: y + height - resizeStyle.size / 2,
+        y: y + height - resizeStyle.size,
         width: resizeAreaWidth,
       },
     });
@@ -322,7 +298,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size / 2,
+      x: x + width - resizeStyle.size,
       y,
       width: resizeStyle.size,
       height,
@@ -384,7 +360,7 @@ export class ColCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size / 2,
+        x: offsetX + width - resizeStyle.size,
         y: offsetY,
         height,
       },
@@ -395,38 +371,6 @@ export class ColCell extends HeaderCell {
   protected drawResizeArea() {
     this.drawHorizontalResizeArea();
     this.drawVerticalResizeArea();
-  }
-
-  protected drawHorizontalBorder() {
-    const { position, style } = getBorderPositionAndStyle(
-      CellBorderPosition.TOP,
-      this.meta as SimpleBBox,
-      this.theme.colCell.cell,
-    );
-
-    renderLine(this, position, style);
-  }
-
-  protected drawVerticalBorder(dir: CellBorderPosition) {
-    const { position, style } = getBorderPositionAndStyle(
-      dir,
-      this.meta as SimpleBBox,
-      this.theme.colCell.cell,
-    );
-    renderLine(this, position, style);
-  }
-
-  protected drawBorders() {
-    const { options, isTableMode } = this.spreadsheet;
-    if (
-      this.meta.colIndex === 0 &&
-      isTableMode() &&
-      !options.showSeriesNumber
-    ) {
-      this.drawVerticalBorder(CellBorderPosition.LEFT);
-    }
-    this.drawHorizontalBorder();
-    this.drawVerticalBorder(CellBorderPosition.RIGHT);
   }
 
   protected hasHiddenColumnCell() {
@@ -458,13 +402,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected addExpandColumnSplitLine() {
-    const { x, y, width, height } = this.meta;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-    } = this.theme.splitLine;
-    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
+    const { x, y, width, height } = this.getBBoxByType();
+    const { horizontalBorderColor, horizontalBorderColorOpacity } =
+      this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width : x;
 
     renderLine(
       this,
@@ -476,7 +417,7 @@ export class ColCell extends HeaderCell {
       },
       {
         stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
+        lineWidth: SPLIT_LINE_WIDTH,
         strokeOpacity: horizontalBorderColorOpacity,
       },
     );
@@ -505,7 +446,7 @@ export class ColCell extends HeaderCell {
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
   protected getExpandColumnIconConfig() {
     const { size } = this.getExpandIconTheme();
-    const { x, y, width, height } = this.getCellArea();
+    const { x, y, width, height } = this.getBBoxByType();
 
     const baseIconX = x - size;
     const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;

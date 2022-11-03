@@ -9,7 +9,7 @@ class CustomRowCell extends RowCell {
   drawBackgroundShape() {
     this.backgroundShape = this.addShape('image', {
       attrs: {
-        ...this.getCellArea(),
+        ...this.getBBoxByType(),
         img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
       },
     });

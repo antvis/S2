@@ -1,6 +1,6 @@
 import type { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
-import { RowCell } from '../../cell';
+import { RowCell } from '../../cell/row-cell';
 import type { S2CellType } from '../../common/interface';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';

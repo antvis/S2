@@ -33,7 +33,6 @@ import type { Node } from '../facet/layout/node';
 import { includeCell } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import { getSortTypeIcon } from '../utils/sort-action';
-import { renderRect } from '../utils/g-renders';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -71,16 +70,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected initCell() {
     this.actionIcons = [];
     this.hasDefaultHiddenIcon = false;
-  }
-
-  protected getInteractiveBorderShapeStyle(border: number) {
-    const { x, y, height, width } = this.getCellArea();
-    return {
-      x: x + border,
-      y: y + border,
-      width: width - border * 2,
-      height: height - border * 2,
-    };
   }
 
   protected getFormattedFieldValue(): FormatResult {
@@ -266,17 +255,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
         onClick,
         onHover,
       });
-    });
-  }
-
-  protected drawBackgroundShape() {
-    const { backgroundColor, backgroundColorOpacity } =
-      this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill: backgroundColor,
-      fillOpacity: backgroundColorOpacity,
     });
   }
 

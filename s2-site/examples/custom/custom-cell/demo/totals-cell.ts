@@ -10,7 +10,7 @@ class CustomTotalsRowCell extends RowCell {
     // 总计
     if (this.meta.isGrandTotals) {
       this.backgroundShape = renderRect(this, {
-        ...this.getCellArea(),
+        ...this.getBBoxByType(),
         fill: '#f63',
         fillOpacity: 0.9,
       });
@@ -20,7 +20,7 @@ class CustomTotalsRowCell extends RowCell {
     // 小计
     if (this.meta.isSubTotals) {
       this.backgroundShape = renderRect(this, {
-        ...this.getCellArea(),
+        ...this.getBBoxByType(),
         fill: '#06a',
         fillOpacity: 0.9,
       });

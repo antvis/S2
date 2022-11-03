@@ -9,17 +9,13 @@ import {
   S2Event,
 } from '../common/constant';
 import type { RowHeaderConfig } from '../facet/header';
-import { CellBorderPosition, type ViewMeta } from '../common/interface';
 import {
-  getBorderPositionAndStyle,
-  getTextAndFollowingIconPosition,
-} from '../utils/cell/cell';
-import {
-  renderCircle,
-  renderLine,
-  renderRect,
-  renderTreeIcon,
-} from '../utils/g-renders';
+  CellBorderPosition,
+  CellClipBox,
+  type ViewMeta,
+} from '../common/interface';
+import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
+import { renderCircle, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
   getOrCreateResizeAreaGroupById,
@@ -37,6 +33,10 @@ export class RowCell extends HeaderCell {
 
   public get cellType() {
     return CellTypes.ROW_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT];
   }
 
   public destroy(): void {
@@ -61,43 +61,12 @@ export class RowCell extends HeaderCell {
     // 绘制树状模式下子节点层级占位圆点
     this.drawTreeLeafNodeAlignDot();
     // 绘制单元格边框
-    this.drawRectBorder();
+    this.drawBorders();
     // 绘制 resize 热区
     this.drawResizeAreaInLeaf();
     // 绘制 action icons
     this.drawActionIcons();
     this.update();
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 2;
-
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(this, this.getInteractiveBorderShapeStyle(margin), {
-        visible: false,
-      }),
-    );
-  }
-
-  // 交互使用的背景色
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
   }
 
   protected showTreeIcon() {
@@ -130,7 +99,7 @@ export class RowCell extends HeaderCell {
     }
 
     const { isCollapsed, id, hierarchy } = this.meta;
-    const { x } = this.getContentArea();
+    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
     const { size } = this.getStyle().icon;
 
@@ -233,26 +202,6 @@ export class RowCell extends HeaderCell {
     super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
   }
 
-  protected drawRectBorder() {
-    const { x } = this.getCellArea();
-
-    const contentIndent = this.getContentIndent();
-    const finalX = this.spreadsheet.isHierarchyTreeType()
-      ? x
-      : x + contentIndent;
-    [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT].forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        {
-          ...this.getCellArea(),
-          x: finalX,
-        },
-        this.getStyle().cell,
-      );
-      renderLine(this, position, style);
-    });
-  }
-
   protected drawResizeAreaInLeaf() {
     if (
       !this.meta.isLeaf ||
@@ -261,7 +210,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const { x, y, width, height } = this.getCellArea();
+    const { x, y, width, height } = this.getBBoxByType();
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
@@ -283,7 +232,7 @@ export class RowCell extends HeaderCell {
 
     const resizeAreaBBox = {
       x,
-      y: y + height - resizeStyle.size / 2,
+      y: y + height - resizeStyle.size,
       width,
       height: resizeStyle.size,
     };
@@ -325,7 +274,7 @@ export class RowCell extends HeaderCell {
           meta: this.meta,
         }),
         x: offsetX,
-        y: offsetY + height - resizeStyle.size / 2,
+        y: offsetY + height - resizeStyle.size,
         width: resizeAreaWidth,
       },
     });
@@ -421,12 +370,12 @@ export class RowCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextArea() {
-    const content = this.getContentArea();
+    const content = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textIndent = this.getTextIndent();
     return {
       ...content,

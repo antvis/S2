@@ -17,29 +17,33 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type {
-  CellThemes,
-  DefaultCellTheme,
-  FormatResult,
-  ResizeInteractionOptions,
-  ResizeArea,
-  S2CellType,
-  S2Theme,
-  StateShapeLayer,
-  TextTheme,
-  Conditions,
-  Condition,
-  MappingResult,
-  IconCondition,
+import {
+  type CellThemes,
+  type DefaultCellTheme,
+  type FormatResult,
+  type ResizeInteractionOptions,
+  type ResizeArea,
+  type S2CellType,
+  type S2Theme,
+  type StateShapeLayer,
+  type TextTheme,
+  type Conditions,
+  type Condition,
+  type MappingResult,
+  type IconCondition,
+  type CellBorderPosition,
+  CellClipBox,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
-  getContentArea,
+  getBorderPositionAndStyle,
+  getCellBoxByType,
   getTextAndFollowingIconPosition,
 } from '../utils/cell/cell';
 import {
   renderIcon,
   renderLine,
+  renderRect,
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
@@ -111,7 +115,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
-      this.getContentArea(),
+      this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textStyle,
       this.actualTextWidth,
       iconCfg,
@@ -154,6 +158,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * Update cell's selected state
    */
   public abstract update(): void;
+
+  protected abstract getBorderPositions(): CellBorderPosition[];
 
   protected abstract getTextStyle(): TextTheme;
 
@@ -198,17 +204,73 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return resize[type];
   }
 
-  public getCellArea() {
-    const { x, y, height, width } = this.meta;
-    return { x, y, height, width };
-  }
+  public getBBoxByType(type = CellClipBox.BORDER_BOX) {
+    const bbox: SimpleBBox = {
+      x: this.meta.x,
+      y: this.meta.y,
+      height: this.meta.height,
+      width: this.meta.width,
+    };
 
-  // get content area that exclude padding
-  public getContentArea() {
     const cellStyle = (this.getStyle() ||
       this.theme.dataCell) as DefaultCellTheme;
-    const { padding } = cellStyle?.cell;
-    return getContentArea(this.getCellArea(), padding);
+    return getCellBoxByType(
+      bbox,
+      this.getBorderPositions(),
+      cellStyle?.cell,
+      type,
+    );
+  }
+
+  public drawBorders() {
+    this.getBorderPositions().forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        this.getBBoxByType(),
+        this.getStyle().cell,
+      );
+      renderLine(this, position, style);
+    });
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, this.getBBoxByType(CellClipBox.PADDING_BOX), {
+        visible: false,
+      }),
+    );
+  }
+
+  protected abstract getBackgroundColor(): {
+    backgroundColor: string;
+    backgroundColorOpacity: number;
+  };
+
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getBBoxByType(),
+      fill: backgroundColor,
+      fillOpacity: backgroundColorOpacity,
+    });
+  }
+
+  /**
+   * 交互使用的背景色
+   */
+  protected drawInteractiveBgShape() {
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, this.getBBoxByType(), {
+        visible: false,
+      }),
+    );
   }
 
   protected getIconPosition(iconCount = 1) {
@@ -329,17 +391,16 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     });
   }
 
-  protected getInteractiveBorderShapeStyle<T>(style: T & number) {
-    const { x, y, height, width } = this.getCellArea();
+  protected getInteractiveBorderShapeStyle<T>(borderSize: T & number) {
+    const { x, y, height, width } = this.getBBoxByType(CellClipBox.PADDING_BOX);
 
-    const { horizontalBorderWidth, verticalBorderWidth } =
-      this.theme.dataCell.cell;
+    const halfSize = borderSize / 2;
 
     return {
-      x: x + verticalBorderWidth / 2 + style / 2,
-      y: y + horizontalBorderWidth / 2 + style / 2,
-      width: width - verticalBorderWidth - style,
-      height: height - horizontalBorderWidth - style,
+      x: x + halfSize,
+      y: y + halfSize,
+      width: width - borderSize,
+      height: height - borderSize,
     };
   }
 

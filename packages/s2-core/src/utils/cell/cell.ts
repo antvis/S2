@@ -1,37 +1,85 @@
 import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
-import type {
-  AreaRange,
-  CellTheme,
-  IconCfg,
-  Padding,
-  TextAlign,
-  TextAlignCfg,
-  TextBaseline,
+import {
+  CellClipBox,
+  type AreaRange,
+  type CellTheme,
+  type IconCfg,
+  type Padding,
+  type TextAlign,
+  type TextAlignCfg,
+  type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
 
 /**
- * -----------------------------
- * |           padding         |
- * |  |---------------------|  |
- * |  |                     |  |
- * |  |                     |  |
- * |  |---------------------|  |
- * |           padding         |
- * -----------------------------
+ * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
+ * 分为三种类型：
+ * borderBox: 整个 cell 的范围
+ * paddingBox: cell 去除 border 的范围
+ * contentBox: cell 去除 (border + padding) 的范围
+ * -------------------------------
+ * |b|           padding         |
+ * |o|  |---------------------|  |
+ * |r|  |                     |  |
+ * |d|  |                     |  |
+ * |e|  |---------------------|  |
+ * |r|           padding         |
+ * -------------------------------
+ * -------border-bottom-----------
+ * -------------------------------
  */
-export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
-  const { x, y, width, height } = bbox;
+export const getCellBoxByType = (
+  bbox: SimpleBBox,
+  borderPositions: CellBorderPosition[],
+  cellStyle: CellTheme,
+  boxType: CellClipBox,
+) => {
+  if (boxType === CellClipBox.BORDER_BOX) {
+    return bbox;
+  }
 
-  const contentWidth: number = width - padding?.left - padding?.right;
-  const contentHeight: number = height - padding?.top - padding?.bottom;
+  let { x, y, width, height } = bbox;
+  const { padding, horizontalBorderWidth, verticalBorderWidth } = cellStyle;
+
+  borderPositions.forEach((position) => {
+    const borderWidth = [
+      CellBorderPosition.BOTTOM,
+      CellBorderPosition.TOP,
+    ].includes(position)
+      ? horizontalBorderWidth
+      : verticalBorderWidth;
+
+    switch (position) {
+      case CellBorderPosition.TOP:
+        y += borderWidth;
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.BOTTOM:
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.LEFT:
+        x += borderWidth;
+        width -= borderWidth;
+        break;
+      default:
+        width -= borderWidth;
+        break;
+    }
+  });
+
+  if (boxType === CellClipBox.CONTENT_BOX) {
+    x += padding?.left;
+    y += padding?.top;
+    width -= padding?.left + padding?.right;
+    height -= padding?.top + padding?.bottom;
+  }
 
   return {
-    x: x + padding?.left,
-    y: y + padding?.top,
-    width: contentWidth,
-    height: contentHeight,
+    x,
+    y,
+    width,
+    height,
   };
 };
 
@@ -255,10 +303,10 @@ export const getTextAreaRange = (
 
 export const getBorderPositionAndStyle = (
   position: CellBorderPosition,
-  contentBox: SimpleBBox,
+  bbox: SimpleBBox,
   style: CellTheme,
 ) => {
-  const { x, y, width, height } = contentBox;
+  const { x, y, width, height } = bbox;
   const {
     horizontalBorderWidth,
     horizontalBorderColorOpacity,
@@ -267,12 +315,26 @@ export const getBorderPositionAndStyle = (
     verticalBorderColor,
     verticalBorderColorOpacity,
   } = style;
-  let x1;
-  let y1;
-  let x2;
-  let y2;
-  let borderStyle;
 
+  const borderStyle = [
+    CellBorderPosition.TOP,
+    CellBorderPosition.BOTTOM,
+  ].includes(position)
+    ? {
+        lineWidth: horizontalBorderWidth,
+        stroke: horizontalBorderColor,
+        strokeOpacity: horizontalBorderColorOpacity,
+      }
+    : {
+        lineWidth: verticalBorderWidth,
+        stroke: verticalBorderColor,
+        strokeOpacity: verticalBorderColorOpacity,
+      };
+
+  let x1: number;
+  let y1: number;
+  let x2: number;
+  let y2: number;
   // horizontal
   if (
     position === CellBorderPosition.TOP ||
@@ -281,19 +343,14 @@ export const getBorderPositionAndStyle = (
     let yPosition = y;
     if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
-      yPosition = y + verticalBorderWidth / 2;
+      yPosition = y + horizontalBorderWidth / 2;
     } else {
-      yPosition = y + height - verticalBorderWidth / 2;
+      yPosition = y + height - horizontalBorderWidth / 2;
     }
     y1 = yPosition;
     y2 = yPosition;
     x1 = x;
     x2 = x + width;
-    borderStyle = {
-      lineWidth: horizontalBorderWidth,
-      stroke: horizontalBorderColor,
-      strokeOpacity: horizontalBorderColorOpacity,
-    };
   }
 
   // vertical
@@ -303,19 +360,14 @@ export const getBorderPositionAndStyle = (
   ) {
     let xPosition = x;
     if (position === CellBorderPosition.LEFT) {
-      xPosition = x + horizontalBorderWidth / 2;
+      xPosition = x + verticalBorderWidth / 2;
     } else {
-      xPosition = x + width - horizontalBorderWidth / 2;
+      xPosition = x + width - verticalBorderWidth / 2;
     }
     x1 = xPosition;
     x2 = xPosition;
     y1 = y;
     y2 = y + height;
-    borderStyle = {
-      lineWidth: verticalBorderWidth,
-      stroke: verticalBorderColor,
-      strokeOpacity: verticalBorderColorOpacity,
-    };
   }
 
   return {

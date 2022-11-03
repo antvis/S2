@@ -16,6 +16,8 @@ export enum LayoutWidthTypes {
   Compact = 'compact',
 }
 
+export const SPLIT_LINE_WIDTH = 1;
+
 export const DEFAULT_TREE_ROW_WIDTH = 120;
 
 export const DEFAULT_STYLE: Readonly<Style> = {

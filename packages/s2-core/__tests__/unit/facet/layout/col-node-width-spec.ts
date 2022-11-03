@@ -36,7 +36,7 @@ describe('Col width Test in grid mode', () => {
     expect(colLeafNodes[0].width).toBe(200);
   });
 
-  test('get correct width in layoutWidthType adaptive mode when enable seriesnumber', () => {
+  test('get correct width in layoutWidthType adaptive mode when enable series number', () => {
     s2.setOptions({
       showSeriesNumber: true,
     });
@@ -51,17 +51,17 @@ describe('Col width Test in grid mode', () => {
     });
     s2.render();
     const { colLeafNodes } = s2.facet.layoutResult;
-    expect(Math.round(colLeafNodes[0].width)).toBe(339);
+    expect(Math.round(colLeafNodes[0].width)).toBe(337);
   });
 
-  test('get correct width in layoutWidthType adaptive tree mode when enable seriesnumber', () => {
+  test('get correct width in layoutWidthType adaptive tree mode when enable series number', () => {
     s2.setOptions({
       hierarchyType: 'tree',
       showSeriesNumber: true,
     });
     s2.render();
     const { colLeafNodes } = s2.facet.layoutResult;
-    expect(Math.round(colLeafNodes[0].width)).toBe(299);
+    expect(Math.round(colLeafNodes[0].width)).toBe(297);
   });
 
   test('get correct width in layoutWidthType compact mode', () => {
@@ -77,7 +77,7 @@ describe('Col width Test in grid mode', () => {
     expect(Math.round(colLeafNodes[0].width)).toBe(86);
   });
 
-  test('get correct width in layoutWidthType compact mode when apply fomatter', () => {
+  test('get correct width in layoutWidthType compact mode when apply formatter', () => {
     s2.setDataCfg({
       fields: undefined,
       data: undefined,

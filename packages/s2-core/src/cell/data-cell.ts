@@ -7,7 +7,7 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -19,10 +19,10 @@ import type {
   ViewMeta,
   ViewMetaIndexType,
 } from '../common/interface';
-import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
+import { getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
@@ -45,6 +45,10 @@ import {
 export class DataCell extends BaseCell<ViewMeta> {
   public get cellType() {
     return CellTypes.DATA_CELL;
+  }
+
+  protected getBorderPositions(): CellBorderPosition[] {
+    return [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT];
   }
 
   public get valueRangeByField() {
@@ -167,15 +171,17 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected initCell() {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
     if (!this.shouldHideRowSubtotalData()) {
       this.drawConditionIntervalShape();
+    }
+
+    this.drawInteractiveBorderShape();
+
+    if (!this.shouldHideRowSubtotalData()) {
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
-    if (this.meta.isFrozenCorner) {
-      this.drawBorderShape();
-    }
+    this.drawBorders();
     this.update();
   }
 
@@ -267,7 +273,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
@@ -308,62 +314,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  /**
-   * Draw cell background
-   */
-  protected drawBackgroundShape() {
-    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
-      this.getBackgroundColor();
-
-    this.backgroundShape = renderRect(this, {
-      ...this.getCellArea(),
-      fill,
-      fillOpacity,
-    });
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawInteractiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 1;
-    const { x, y, height, width } = this.getCellArea();
-    this.stateShapes.set(
-      'interactiveBorderShape',
-      renderRect(
-        this,
-        {
-          x: x + margin,
-          y: y + margin,
-          width: width - margin * 2,
-          height: height - margin * 2,
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
-  }
-
-  /**
-   * Draw interactive color
-   */
-  protected drawInteractiveBgShape() {
-    this.stateShapes.set(
-      'interactiveBgShape',
-      renderRect(
-        this,
-        {
-          ...this.getCellArea(),
-        },
-        {
-          visible: false,
-        },
-      ),
-    );
-  }
-
   // dataCell根据state 改变当前样式，
   protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
@@ -382,20 +332,9 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Render cell border controlled by verticalBorder & horizontalBorder
-   * @protected
+   * 预留给明细表使用，透视表数据格不需要绘制 border， 已经交由 grid 处理
    */
-  protected drawBorderShape() {
-    [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
-      const { position, style } = getBorderPositionAndStyle(
-        type,
-        this.getCellArea(),
-        this.getStyle().cell,
-      );
-
-      renderLine(this, position, style);
-    });
-  }
+  public override drawBorders(): void {}
 
   /**
    * Find current field related condition
@@ -456,14 +395,5 @@ export class DataCell extends BaseCell<ViewMeta> {
       SHAPE_STYLE_MAP.opacity,
       1,
     );
-  }
-
-  protected drawLeftBorder() {
-    const { position, style } = getBorderPositionAndStyle(
-      CellBorderPosition.LEFT,
-      this.getCellArea(),
-      this.getStyle().cell,
-    );
-    renderLine(this, position, style);
   }
 }

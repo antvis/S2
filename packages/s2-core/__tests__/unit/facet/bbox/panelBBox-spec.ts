@@ -35,6 +35,7 @@ describe('PanelBBox test', () => {
       getSeriesNumberWidth() {
         return 80;
       },
+
       spreadsheet: {
         isScrollContainsRowHeader() {
           return false;
@@ -42,10 +43,14 @@ describe('PanelBBox test', () => {
         enableFrozenHeaders() {
           return shouldEnableFrozenHeaders;
         },
+        isPivotMode() {
+          return true;
+        },
         theme: {
           scrollBar: {
             size: 5,
           },
+          splitLine: { verticalBorderWidth: 2, horizontalBorderWidth: 2 },
         } as ThemeCfg,
         options: {
           width: 600,
@@ -60,12 +65,12 @@ describe('PanelBBox test', () => {
     const facet = getMockFacet(200, 200);
     const bbox = new PanelBBox(facet, true);
 
-    expect(bbox.width).toBe(580);
-    expect(bbox.height).toBe(575);
+    expect(bbox.width).toBe(578);
+    expect(bbox.height).toBe(573);
     expect(bbox.viewportWidth).toBe(200);
     expect(bbox.viewportHeight).toBe(200);
-    expect(bbox.maxX).toBe(220);
-    expect(bbox.maxY).toBe(220);
+    expect(bbox.maxX).toBe(222);
+    expect(bbox.maxY).toBe(222);
     expect(bbox.originalHeight).toBe(200);
     expect(bbox.originalWidth).toBe(200);
   });
@@ -74,10 +79,10 @@ describe('PanelBBox test', () => {
     const facet = getMockFacet(2000, 2000);
     const bbox = new PanelBBox(facet, true);
 
-    expect(bbox.width).toBe(580);
-    expect(bbox.height).toBe(575);
-    expect(bbox.viewportWidth).toBe(580);
-    expect(bbox.viewportHeight).toBe(575);
+    expect(bbox.width).toBe(578);
+    expect(bbox.height).toBe(573);
+    expect(bbox.viewportWidth).toBe(578);
+    expect(bbox.viewportHeight).toBe(573);
     expect(bbox.maxX).toBe(600);
     expect(bbox.maxY).toBe(595);
     expect(bbox.originalHeight).toBe(2000);
@@ -91,10 +96,10 @@ describe('PanelBBox test', () => {
     });
 
     const bbox = new PanelBBox(facet, true);
-    expect(bbox.width).toBe(580);
-    expect(bbox.height).toBe(575);
-    expect(bbox.viewportWidth).toBe(580);
-    expect(bbox.viewportHeight).toBe(575);
+    expect(bbox.width).toBe(578);
+    expect(bbox.height).toBe(573);
+    expect(bbox.viewportWidth).toBe(578);
+    expect(bbox.viewportHeight).toBe(573);
     expect(bbox.maxX).toBe(600);
     expect(bbox.maxY).toBe(595);
     expect(bbox.originalHeight).toBe(200);
@@ -113,12 +118,12 @@ describe('PanelBBox test', () => {
     );
 
     const bbox = new PanelBBox(facet, true);
-    expect(bbox.width).toBe(580);
-    expect(bbox.height).toBe(575);
+    expect(bbox.width).toBe(578);
+    expect(bbox.height).toBe(573);
     expect(bbox.viewportWidth).toBe(200);
     expect(bbox.viewportHeight).toBe(200);
-    expect(bbox.maxX).toBe(220);
-    expect(bbox.maxY).toBe(220);
+    expect(bbox.maxX).toBe(222);
+    expect(bbox.maxY).toBe(222);
     expect(bbox.originalHeight).toBe(200);
     expect(bbox.originalWidth).toBe(200);
   });

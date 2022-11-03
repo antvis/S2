@@ -173,9 +173,10 @@ describe('Data Cell Tests', () => {
       });
 
       const dataCell = new DataCell(anotherMeta, s2);
-      expect(get(dataCell, 'conditionIntervalShape.attrs.width')).toEqual(
-        cellWidth,
-      );
+      expect(
+        get(dataCell, 'conditionIntervalShape.attrs.width') +
+          s2.theme.dataCell.cell.horizontalBorderWidth,
+      ).toEqual(cellWidth);
     });
 
     test('should draw REVERSE_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is true', () => {

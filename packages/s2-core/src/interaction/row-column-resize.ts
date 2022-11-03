@@ -35,6 +35,8 @@ import { BaseEvent, type BaseEventImplement } from './base-interaction';
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeTarget: IGroup;
 
+  private cursorType: string;
+
   public resizeReferenceGroup: IGroup;
 
   public resizeStartPosition: ResizePosition = {};
@@ -76,6 +78,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       attrs: {
         appendInfo: {
           isResizeArea: true,
+          isResizeMask: true,
         },
         x: 0,
         y: 0,
@@ -127,32 +130,37 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     const [startResizeGuideLineShape, endResizeGuideLineShape] = resizeShapes;
-    const { type, offsetX, offsetY, width, height } = resizeInfo;
+    const { type, offsetX, offsetY, width, height, size } = resizeInfo;
+
     const { width: guideLineMaxWidth, height: guideLineMaxHeight } =
       this.getGuideLineWidthAndHeight();
 
-    this.setResizeMaskCursor(`${type}-resize`);
+    this.cursorType = `${type}-resize`;
+    this.setResizeMaskCursor(this.cursorType);
 
+    // resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被clip
+    // 后续计算 resized 尺寸时，需要把收缩的部分加回来
+    const halfSize = size / 2;
     if (type === ResizeDirectionType.Horizontal) {
       startResizeGuideLineShape.attr('path', [
-        ['M', offsetX, offsetY],
-        ['L', offsetX, guideLineMaxHeight],
+        ['M', offsetX + halfSize, offsetY],
+        ['L', offsetX + halfSize, guideLineMaxHeight],
       ]);
       endResizeGuideLineShape.attr('path', [
-        ['M', offsetX + width, offsetY],
-        ['L', offsetX + width, guideLineMaxHeight],
+        ['M', offsetX + width - halfSize, offsetY],
+        ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
       this.resizeStartPosition.offsetX = event.offsetX;
       return;
     }
 
     startResizeGuideLineShape.attr('path', [
-      ['M', offsetX, offsetY],
-      ['L', guideLineMaxWidth, offsetY],
+      ['M', offsetX, offsetY + halfSize],
+      ['L', guideLineMaxWidth, offsetY + halfSize],
     ]);
     endResizeGuideLineShape.attr('path', [
-      ['M', offsetX, offsetY + height],
-      ['L', guideLineMaxWidth, offsetY + height],
+      ['M', offsetX, offsetY + height - halfSize],
+      ['L', guideLineMaxWidth, offsetY + height - halfSize],
     ]);
     this.resizeStartPosition.offsetY = event.offsetY;
   }
@@ -178,9 +186,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, (event) => {
-      throttle(this.resizeMouseMove, 33)(event);
-    });
+    this.spreadsheet.on(
+      S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+      throttle(this.resizeMouseMove.bind(this), 33),
+    );
   }
 
   // 将 SVG 的 path 转成更可读的坐标对象
@@ -381,7 +390,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, () => {
-      this.setResizeMaskCursor('default');
+      this.cursorType = 'default';
+      this.setResizeMaskCursor(this.cursorType);
 
       if (
         !this.resizeReferenceGroup ||
@@ -395,7 +405,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private resizeMouseMove = (event: CanvasEvent) => {
+  private resizeMouseMove(event: CanvasEvent) {
     if (!this.resizeReferenceGroup?.get('visible')) {
       return;
     }
@@ -433,7 +443,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     this.updateResizeGuideLineTheme(endGuideLineShape);
     endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
-  };
+  }
 
   private updateResizeGuideLineTheme(endGuideLineShape: IShape) {
     const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
@@ -442,7 +452,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       'stroke',
       isDisabled ? guideLineDisableColor : guideLineColor,
     );
-    this.setResizeMaskCursor(isDisabled ? 'no-drop' : 'default');
+    this.setResizeMaskCursor(isDisabled ? 'no-drop' : this.cursorType);
   }
 
   private updateHorizontalResizingEndGuideLinePosition(
@@ -459,11 +469,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + offsetX;
 
-    guideLineStart[1] = resizedOffsetX;
-    guideLineEnd[1] = resizedOffsetX;
+    const halfSize = resizeInfo.size / 2;
+    guideLineStart[1] = resizedOffsetX - halfSize;
+    guideLineEnd[1] = resizedOffsetX - halfSize;
 
     this.resizeTarget.attr({
-      x: resizedOffsetX - resizeInfo.size / 2,
+      x: resizedOffsetX - resizeInfo.size,
     });
   }
 
@@ -481,11 +492,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + offsetY;
 
-    guideLineStart[2] = resizedOffsetY;
-    guideLineEnd[2] = resizedOffsetY;
+    const halfSize = resizeInfo.size / 2;
+    guideLineStart[2] = resizedOffsetY - halfSize;
+    guideLineEnd[2] = resizedOffsetY - halfSize;
 
     this.resizeTarget.attr({
-      y: resizedOffsetY - resizeInfo.size / 2,
+      y: resizedOffsetY - resizeInfo.size,
     });
   }
 
@@ -525,9 +537,22 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const defaultResizeInfo = this.getCellAppendInfo<ResizeInfo>(
       this.resizeTarget,
     );
+
     const { start, end } = this.getResizeGuideLinePosition();
-    const resizedWidth = Math.floor(end.x - start.x);
-    const resizedHeight = Math.floor(end.y - start.y);
+    const resizedWidth = Math.floor(
+      end.x -
+        start.x +
+        (defaultResizeInfo.type === ResizeDirectionType.Horizontal
+          ? defaultResizeInfo.size
+          : 0),
+    );
+    const resizedHeight = Math.floor(
+      end.y -
+        start.y +
+        (defaultResizeInfo.type === ResizeDirectionType.Vertical
+          ? defaultResizeInfo.size
+          : 0),
+    );
 
     return {
       ...defaultResizeInfo,
