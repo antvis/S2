@@ -69,57 +69,59 @@ enum CustomType {
   All = 'all',
 }
 
-export const CustomGrid: React.FC<
-  Partial<SheetComponentsProps> & React.MutableRefObject<SpreadSheet>
-> = React.forwardRef((props, ref) => {
-  const [customType, setCustomType] = React.useState<CustomType>(
-    (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
-      CustomType.Row,
-  );
-  const [hierarchyType, setHierarchyType] =
-    React.useState<SheetComponentOptions['hierarchyType']>('grid');
+type CustomGridProps = Partial<SheetComponentsProps>;
 
-  const dataCfg =
-    customType === CustomType.Row
-      ? pivotSheetCustomRowGridDataCfg
-      : pivotSheetCustomColGridDataCfg;
+export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
+  (props, ref) => {
+    const [customType, setCustomType] = React.useState<CustomType>(
+      (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
+        CustomType.Row,
+    );
+    const [hierarchyType, setHierarchyType] =
+      React.useState<SheetComponentOptions['hierarchyType']>('grid');
 
-  const options: SheetComponentOptions = {
-    ...customRowGridOptions,
-    hierarchyType,
-  };
+    const dataCfg =
+      customType === CustomType.Row
+        ? pivotSheetCustomRowGridDataCfg
+        : pivotSheetCustomColGridDataCfg;
 
-  return (
-    <>
-      <Space style={{ marginBottom: 20 }}>
-        <Radio.Group
-          value={customType}
-          onChange={(e) => {
-            setCustomType(e.target.value);
-          }}
-        >
-          <Radio.Button value={CustomType.Row}>自定义行头</Radio.Button>
-          <Radio.Button value={CustomType.Col}>自定义列头</Radio.Button>
-          <Radio.Button value={CustomType.All} disabled>
-            TODO: 自定义行头和列头
-          </Radio.Button>
-        </Radio.Group>
-        <Switch
-          checkedChildren="树状模式"
-          unCheckedChildren="平铺模式"
-          checked={hierarchyType === 'tree'}
-          onChange={(checked) => {
-            setHierarchyType(checked ? 'tree' : 'grid');
-          }}
+    const options: SheetComponentOptions = {
+      ...customRowGridOptions,
+      hierarchyType,
+    };
+
+    return (
+      <>
+        <Space style={{ marginBottom: 20 }}>
+          <Radio.Group
+            value={customType}
+            onChange={(e) => {
+              setCustomType(e.target.value);
+            }}
+          >
+            <Radio.Button value={CustomType.Row}>自定义行头</Radio.Button>
+            <Radio.Button value={CustomType.Col}>自定义列头</Radio.Button>
+            <Radio.Button value={CustomType.All} disabled>
+              TODO: 自定义行头和列头
+            </Radio.Button>
+          </Radio.Group>
+          <Switch
+            checkedChildren="树状模式"
+            unCheckedChildren="平铺模式"
+            checked={hierarchyType === 'tree'}
+            onChange={(checked) => {
+              setHierarchyType(checked ? 'tree' : 'grid');
+            }}
+          />
+        </Space>
+
+        <SheetComponent
+          {...props}
+          dataCfg={dataCfg}
+          options={options}
+          ref={ref}
         />
-      </Space>
-
-      <SheetComponent
-        {...props}
-        dataCfg={dataCfg}
-        options={options}
-        ref={ref}
-      />
-    </>
-  );
-});
+      </>
+    );
+  },
+);

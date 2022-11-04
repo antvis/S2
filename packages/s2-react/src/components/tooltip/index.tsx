@@ -28,11 +28,14 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     operator: TooltipOperatorOptions | undefined,
     onlyMenu?: boolean,
   ) => {
-    return (
-      operator && (
-        <TooltipOperator {...operator} onlyMenu={onlyMenu!} cell={cell!} />
-      )
-    );
+    return operator ? (
+      <TooltipOperator
+        {...operator}
+        onClick={operator.onClick as (params: { key: string }) => void}
+        onlyMenu={onlyMenu!}
+        cell={cell!}
+      />
+    ) : null;
   };
 
   const renderNameTips = (nameTip: TooltipNameTipsOptions) => {

@@ -33,7 +33,7 @@ import {
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
 
     const strategySheetOptions =
       React.useMemo<S2Options<React.ReactNode> | null>(() => {

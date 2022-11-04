@@ -9,7 +9,7 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, ...restProps } = props;
 
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
     const s2Options = React.useMemo(() => {
       return customMerge(options, {
         dataCell: GridAnalysisDataCell,

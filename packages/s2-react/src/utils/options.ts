@@ -6,6 +6,6 @@ export const getSheetComponentOptions = (
   ...options: Partial<SheetComponentOptions>[]
 ) =>
   getBaseSheetComponentOptions<SheetComponentOptions>(
-    RENDER_TOOLTIP_OPTION,
+    RENDER_TOOLTIP_OPTION as SheetComponentOptions,
     ...options,
   );

@@ -15,9 +15,9 @@ import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentsProps) {
   const forceUpdate = useUpdate();
-  const s2Ref = React.useRef<SpreadSheet>();
-  const containerRef = React.useRef<HTMLDivElement>();
-  const wrapperRef = React.useRef<HTMLDivElement>();
+  const s2Ref = React.useRef<SpreadSheet | null>(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
 
   const {
     spreadsheet: customSpreadSheet,

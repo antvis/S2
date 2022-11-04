@@ -17,7 +17,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     const { options: pivotOptions, ...restProps } = props;
     const { dataCfg, partDrillDown } = restProps;
 
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
     const [drillFields, setDrillFields] = React.useState<string[]>([]);
 
     const onDrillDownIconClick = useLatest<ActionIconCallback>(

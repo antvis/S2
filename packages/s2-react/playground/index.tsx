@@ -104,7 +104,7 @@ function MainLayout() {
   );
 
   //  ================== Refs ========================
-  const s2Ref = React.useRef<SpreadSheet>();
+  const s2Ref = React.useRef<SpreadSheet | null>(null);
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
@@ -871,7 +871,7 @@ function MainLayout() {
                     {columnOptions.map((column) => {
                       return (
                         <Select.Option value={column} key={column as string}>
-                          {column}
+                          {column as string}
                         </Select.Option>
                       );
                     })}

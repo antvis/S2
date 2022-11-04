@@ -17,7 +17,7 @@ export const StrategySheetColTooltip: React.FC<CustomTooltipProps> = ({
     return null;
   }
 
-  const cellName = meta.spreadsheet.dataSet.getFieldName(meta.field);
+  const cellName = meta.spreadsheet.dataSet.getFieldName(meta.field!);
   const customLabel = isFunction(label) ? label(cell, cellName) : label;
   const name = customLabel ?? cellName;
 
