@@ -211,10 +211,6 @@ yarn site:bootstrap
 yarn site:start
 ```
 
-## 👁️ 洞察
-
-![Alt](https://repobeats.axiom.co/api/embed/f84f93ddda0c8c3b2e3fa408fab2c7b346d3cfae.svg "Repobeats analytics image")
-
 ## 📧 联系我们
 
 <p>
