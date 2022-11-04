@@ -2,10 +2,10 @@ import React from 'react';
 import { Pagination as AntdPagination } from 'antd';
 import { isEmpty } from 'lodash';
 import { i18n, S2_PREFIX_CLS } from '@antv/s2';
-import type { SheetComponentsProps } from '../sheets/interface';
+import type { Pagination } from 's2-core/esm';
 
 export interface S2PaginationProps {
-  pagination: SheetComponentsProps['options']['pagination'];
+  pagination: Pagination;
   onShowSizeChange: (current: number, pageSize: number) => void;
   onChange: (current: number, pageSize: number) => void;
 }
@@ -24,7 +24,7 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
 
   const { total, pageSize } = pagination;
   // only show the pagination when the pageSize > 5
-  const showQuickJumper = total / pageSize > 5;
+  const showQuickJumper = total! / pageSize > 5;
 
   return (
     <div className={PRE_CLASS}>

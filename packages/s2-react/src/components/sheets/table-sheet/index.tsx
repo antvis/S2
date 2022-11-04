@@ -5,7 +5,7 @@ import type { SheetComponentsProps } from '../interface';
 
 export const TableSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet>(null);
 
     return <BaseSheet {...props} ref={s2Ref} />;
   },

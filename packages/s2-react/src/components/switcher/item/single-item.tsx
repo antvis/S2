@@ -29,7 +29,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   disabled,
   onVisibleItemChange,
 }) => {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement | null>(null);
   const [ellipsis, setEllipsis] = useState(false);
 
   useEffect(() => {
