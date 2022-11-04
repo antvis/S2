@@ -2,10 +2,10 @@ import React from 'react';
 import { Pagination as AntdPagination } from 'antd';
 import { isEmpty } from 'lodash';
 import { i18n, S2_PREFIX_CLS } from '@antv/s2';
-import type { Pagination } from 's2-core/esm';
+import type { S2Options } from '@antv/s2';
 
 export interface S2PaginationProps {
-  pagination: Pagination;
+  pagination: S2Options['pagination'];
   onShowSizeChange: (current: number, pageSize: number) => void;
   onChange: (current: number, pageSize: number) => void;
 }
