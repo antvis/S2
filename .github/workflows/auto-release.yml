@@ -15,6 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Python 3.11 和 node-gyp 有兼容问题, 导致无法安装依赖
+      # https://github.com/slint-ui/slint/commit/a9c48e33502fdebc36c5aa2f4f516c2218424679#diff-944291df2c9c06359d37cc8833d182d705c9e8c3108e7cfe132d61a06e9133dd
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
