@@ -63,7 +63,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         expect(cellTheme!.bolderText!.fill).toEqual(cellTheme!.icon!.fill);
         expect(cellTheme!.text!.fill).toEqual(cellTheme!.icon!.fill);
-        expect(cellTheme.cell).toBeTruthy();
+        expect(cellTheme!.cell).toBeTruthy();
       },
     );
 
@@ -74,7 +74,7 @@ describe('SpreadSheet Theme Tests', () => {
       s2.render();
       const cellTheme = s2.theme[cellType];
 
-      expect(cellTheme.cell).toBeTruthy();
+      expect(cellTheme!.cell).toBeTruthy();
     });
 
     test('should set theme correctly', () => {
