@@ -1,3 +1,10 @@
+# [@antv/s2-v1.33.1](https://github.com/antvis/S2/compare/@antv/s2-v1.33.0...@antv/s2-v1.33.1) (2022-11-04)
+
+
+### Bug Fixes
+
+* 修复 mergedCell 缺失theme 导致的报错 ([#1874](https://github.com/antvis/S2/issues/1874)) ([9da12a9](https://github.com/antvis/S2/commit/9da12a93b48f0f12903caba92d362d3174e3fe81))
+
 # [@antv/s2-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-v1.32.0...@antv/s2-v1.33.0) (2022-10-24)
 
 
