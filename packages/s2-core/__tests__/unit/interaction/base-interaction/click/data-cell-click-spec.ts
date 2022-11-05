@@ -8,11 +8,15 @@ import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
+  InteractionCellSelectedHighlightType,
   InteractionName,
   InteractionStateName,
   InterceptType,
   S2Event,
 } from '@/common/constant';
+import type { Node } from '@/facet/layout/node';
+import { CellTypes } from '@/common/constant';
+import { getHeaderCellMeta } from '@/utils';
 
 jest.mock('@/interaction/event-controller');
 
@@ -160,5 +164,42 @@ describe('Interaction Data Cell Click Tests', () => {
 
     expect(s2.interaction.isHoverFocusState()).toBeFalsy();
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
+  });
+
+  test('should highlight the header cell when cross highlighting', () => {
+    const columnNode: Array<Partial<Node>> = [
+      {
+        belongsCell: {
+          getMeta: () => ({ id: mockCellInfo.mockCell.getMeta().colId }),
+          cellType: CellTypes.COL_CELL,
+        } as any,
+        id: mockCellInfo.mockCell.getMeta().colId,
+      },
+      {
+        belongsCell: {
+          getMeta: () => ({ id: '1' }),
+          cellType: CellTypes.COL_CELL,
+        } as any,
+        id: '1',
+      },
+    ];
+    s2.getColumnNodes = jest.fn(() => columnNode) as any;
+    s2.getRowNodes = jest.fn(() => []);
+
+    s2.setOptions({
+      interaction: {
+        selectedCellHighlight: InteractionCellSelectedHighlightType.CROSS,
+      },
+    });
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    expect(s2.interaction.getState()).toEqual({
+      cells: [mockCellInfo.mockCellMeta],
+      headerCells: [getHeaderCellMeta(columnNode[0].belongsCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
   });
 });
