@@ -138,7 +138,7 @@ const s2Options = {
 
 ```
 
-##### 方式一：集合到 data 中
+##### 将总计、小计数据集合到 data 中
 
 ```typescript
 const s2DataConfig = {
@@ -149,29 +149,6 @@ const s2DataConfig = {
             type: '笔',
             price: '1',
         },
-        // 总计/总计
-        {
-            price: '15.5',
-        }
-    ],
-    ...
-}
-
-```
-
-##### 方式二：传入 totalData
-
-```typescript
-const s2DataConfig = {
-    data: [
-        {
-            province: '浙江',
-            city: '杭州',
-            type: '笔',
-            price: '1',
-        },
-    ],
-    totalData: [
         // 总计/总计
         {
             price: '15.5',

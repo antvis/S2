@@ -11,7 +11,6 @@ redirect_from:
 | :------------- | :----------------- | :--------- | :----- | :--- |
 | data           | 原始数据        | [Data[]](#data) |    |   ✓   |
 | fields         | 维度指标       | [Fields](#fields) |    |   ✓     |
-| totalData        | 总计/小计数据       | [Data[]](#data) |    |      |
 | meta    | 字段元数据，可配置字段别名，描述，数值格式化函数等信息 | [Meta[]](#meta)  |  |       |
 | sortParams    | 排序参数配置 | [SortParam[]](#sortparam)  |  |       |
 
