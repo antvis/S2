@@ -50,8 +50,8 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [主页](https://antv-s2.gitee.io)
-* [Demo 示例](https://antv-s2.gitee.io/zh/examples/gallery)
+* [主页](https://s2.antv.vision/zh)
+* [Demo 示例](https://s2.antv.vision/zh/examples/gallery)
 
 ## ✨ 特性
 
