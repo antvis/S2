@@ -1,8 +1,13 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
-import { omit, pick } from 'lodash';
+import { pick } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { DEFAULT_OPTIONS, S2Event, type S2Options } from '@/common';
+import {
+  DEFAULT_OPTIONS,
+  S2Event,
+  type S2Options,
+  type TextTheme,
+} from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
@@ -422,6 +427,31 @@ describe('SpreadSheet Tests', () => {
         hierarchyType: s2Options.hierarchyType,
         width: 300,
         hdAdapter: false,
+      });
+    });
+
+    describe('Measure Text Tests', () => {
+      const text = '测试';
+      const font: TextTheme = {
+        textAlign: 'center',
+        fontSize: 12,
+      };
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+      s2.render();
+
+      test('should measure text', () => {
+        expect(s2.measureText(text, null)).toBeNull();
+        expect(s2.measureText(text, font)).toBeInstanceOf(TextMetrics);
+      });
+
+      test('should measure text width', () => {
+        expect(s2.measureTextWidth(text, null)).toEqual(0);
+        expect(s2.measureTextWidth(text, font)).not.toBeLessThanOrEqual(0);
+      });
+
+      test('should measure text height', () => {
+        expect(s2.measureTextHeight(text, null)).toEqual(0);
+        expect(s2.measureTextHeight(text, font)).not.toBeLessThanOrEqual(0);
       });
     });
   });
