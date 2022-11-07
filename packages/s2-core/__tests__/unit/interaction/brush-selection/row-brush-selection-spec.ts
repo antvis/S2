@@ -118,8 +118,6 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
-      headerX: startBrushRowCellMeta.x,
-      headerY: startBrushRowCellMeta.y,
       colIndex: startBrushRowCellMeta.colIndex,
       rowIndex: startBrushRowCellMeta.rowIndex,
       scrollX: 0,
@@ -148,8 +146,6 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.endBrushPoint).toStrictEqual({
-      headerX: endBrushRowCellMeta.x,
-      headerY: endBrushRowCellMeta.y,
       colIndex: endBrushRowCellMeta.colIndex,
       rowIndex: endBrushRowCellMeta.rowIndex,
       x: 160,

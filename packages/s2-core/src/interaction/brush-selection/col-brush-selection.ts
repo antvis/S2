@@ -6,7 +6,7 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import type { OnUpdateCells } from '../../common/interface';
@@ -66,17 +66,6 @@ export class ColBrushSelection extends BaseBrushSelection {
 
   protected setDisplayedCells() {
     this.displayedCells = this.spreadsheet.interaction.getAllColHeaderCells();
-  }
-
-  protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta();
-    const { x: headerX, y: headerY } = meta;
-    return {
-      ...super.getBrushPoint(event),
-      headerX,
-      headerY,
-    };
   }
 
   /**

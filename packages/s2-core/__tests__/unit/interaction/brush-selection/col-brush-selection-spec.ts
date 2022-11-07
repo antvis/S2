@@ -121,8 +121,6 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
-      headerX: startBrushColCellMeta.x,
-      headerY: startBrushColCellMeta.y,
       colIndex: startBrushColCellMeta.colIndex,
       rowIndex: startBrushColCellMeta.rowIndex,
       scrollX: 0,
@@ -151,8 +149,6 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     expect(brushSelectionInstance.spreadsheet.getCell).toHaveBeenCalled();
     expect(brushSelectionInstance.endBrushPoint).toStrictEqual({
-      headerX: endBrushColCellMeta.x,
-      headerY: endBrushColCellMeta.y,
       colIndex: endBrushColCellMeta.colIndex,
       rowIndex: endBrushColCellMeta.rowIndex,
       x: 330,
