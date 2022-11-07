@@ -30,7 +30,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
   let mockRootInteraction: RootInteraction;
 
   const allColHeaderCells = map(new Array(4), (a, i) => {
-    const customX = 90 * i + 1;
+    const customX = 90 * i;
     return {
       cellType: CellTypes.COL_CELL,
       getMeta() {
@@ -39,6 +39,8 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
           rowIndex: 0,
           x: customX,
           y: 30,
+          width: 90,
+          height: 30,
         };
       },
     };
@@ -83,7 +85,7 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
             height: 30,
           },
           rowCfg: {
-            width: 100,
+            width: 90,
           },
         },
       },

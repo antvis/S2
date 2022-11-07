@@ -29,17 +29,17 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
-  let customY = 60;
   const allRowHeaderCells = map(new Array(8), (a, i) => {
-    customY += 30;
+    const customY = 30 * i + 30;
     return {
       cellType: CellTypes.ROW_CELL,
       getMeta() {
         return {
-          colIndex: 0,
           rowIndex: i,
           x: 0,
           y: customY,
+          width: 90,
+          height: 30,
         };
       },
     } as RowCell;
@@ -76,6 +76,14 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         interaction: {
           brushSelection: {
             row: true,
+          },
+        },
+        style: {
+          colCfg: {
+            height: 30,
+          },
+          rowCfg: {
+            width: 90,
           },
         },
       },
@@ -187,7 +195,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 200, clientY: 400 });
+    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
@@ -196,7 +204,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
       x: 10,
       y: 90,
-      width: 190,
+      width: 170,
       height: 310,
     });
 
