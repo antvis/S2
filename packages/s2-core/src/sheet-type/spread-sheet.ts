@@ -71,10 +71,6 @@ export abstract class SpreadSheet extends EE {
   // Spreadsheet's configurations
   public options: S2Options;
 
-  /**
-   * processed data structure, include {@link Fields}, {@link Meta}
-   * {@link Data}, {@link SortParams}
-   */
   public dataSet: BaseDataSet;
 
   /**
@@ -337,17 +333,26 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
+   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig) {
+  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
     this.store.set('originalDataCfg', dataCfg);
-    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    if (reset) {
+      this.dataCfg = getSafetyDataConfig(dataCfg);
+    } else {
+      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    }
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
 
-  public setOptions(options: Partial<S2Options>) {
+  public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
-    this.options = customMerge(this.options, options);
+    if (reset) {
+      this.options = getSafetyOptions(options);
+    } else {
+      this.options = customMerge(this.options, options);
+    }
     this.registerIcons();
   }
 

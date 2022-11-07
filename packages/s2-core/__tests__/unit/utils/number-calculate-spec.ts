@@ -18,6 +18,8 @@ describe('Number Calculate Test', () => {
       expect(isNotNumber(null)).toBe(true);
       expect(isNotNumber(undefined)).toBe(true);
       expect(isNotNumber('-')).toBe(true);
+      expect(isNotNumber('2022-10-28')).toBe(true);
+      expect(isNotNumber('1\n2\n3')).toBe(true);
       expect(isNotNumber(NaN)).toBe(true);
       expect(isNotNumber('')).toBe(true);
       expect(isNotNumber(Object.create(null))).toBe(true);

@@ -51,17 +51,31 @@ s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](/zh/docs/api/general/S2Options)
+更新 options: [可选项](/zh/docs/api/general/S2Options)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... })
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)
+重置 options: [可选项](/zh/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setOptions({ ... }, true)
+pivotSheet.render(false) // 重新渲染，不更新数据
+```
+
+更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
+pivotSheet.render(true) // 重新渲染，且更新数据
+```
+
+重置 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setDataCfg({ ... }, true)
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
