@@ -45,6 +45,13 @@ module.exports = {
           en: 'Examples',
         },
       },
+      {
+        slug: 'playground',
+        title: {
+          zh: '在线体验',
+          en: 'Playground',
+        },
+      },
     ],
     // 文档配置
     docs: [
@@ -185,7 +192,7 @@ module.exports = {
         title: {
           zh: '布局',
           en: 'Layout',
-        }
+        },
       },
       {
         slug: 'theme',
