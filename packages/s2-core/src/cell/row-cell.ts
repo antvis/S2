@@ -229,8 +229,13 @@ export class RowCell extends HeaderCell {
   protected drawLinkFieldShape() {
     const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
-
-    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
+    const { isGrandTotals } = this.meta;
+    // 下列情况不应该绘制字段链接
+    //  1. 当前维度不再 linkFields 范围内
+    //  2. 总计（没办法获取任何行维度信息）
+    const shouldDrawLinkFieldShape =
+      linkFields.includes(this.meta.key) && !isGrandTotals;
+    super.drawLinkFieldShape(shouldDrawLinkFieldShape, linkTextFill);
   }
 
   protected drawRectBorder() {

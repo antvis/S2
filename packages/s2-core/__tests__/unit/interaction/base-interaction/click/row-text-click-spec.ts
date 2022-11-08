@@ -67,9 +67,6 @@ describe('Interaction Row Text Click Tests', () => {
     expect(linkFieldJump).toHaveBeenCalledWith({
       key: cellData.key,
       record: {
-        'key-0': 'value4',
-        'key-1': 'value5',
-        'key-2': 'value6',
         rowIndex: cellData.rowIndex,
       },
     });
@@ -110,9 +107,6 @@ describe('Interaction Row Text Click Tests', () => {
     expect(linkFieldJump).toHaveBeenCalledWith({
       key: cellData.key,
       record: {
-        'key-0': 'value4',
-        'key-1': 'value5',
-        'key-2': 'value6',
         rowIndex: cellData.rowIndex,
       },
     });
