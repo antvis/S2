@@ -185,6 +185,7 @@ fetch(
           },
           backgroundColorOpacity: 0.9,
           backgroundColor: BACK_COLOR,
+          crossBackgroundColor: BACK_COLOR,
         },
         text: {
           fill: '#fff',
