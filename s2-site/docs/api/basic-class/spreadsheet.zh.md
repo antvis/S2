@@ -20,16 +20,6 @@ const s2 = new PivotSheet()
 | facet | 当前可视渲染区域                                                                                                               | [BaseFacet](/zh/docs/api/basic-class/base-facet) |    |
 | tooltip | tooltip                                                                                                                | [BaseTooltip](/zh/docs/api/basic-class/base-tooltip) |    |
 | container | g-canvas 实例                                                                                                            | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |    |
-| backgroundGroup | 背景颜色区域 group                                                                                                           | [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| foregroundGroup | 背景颜色区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| panelGroup | 可视范围单元格区域 group                                                                                                        |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| panelScrollGroup | 可视范围单元格滚动区域 group                                                                                                      |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenRowGroup | 行头冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenColGroup | 列头冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenTrailingRowGroup | 行头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenTrailingColGroup | 列头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenTopGroup | 顶部冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
-| frozenBottomGroup | 底部冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
 | interaction | 交互                                                                                                                     |  [Interaction](/zh/docs/api/basic-class/interaction) |    |
 | hdAdapter | 高清适配                                                                                                                   | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |    |
 | on | 事件订阅                                                                                                                   | (event: [S2Event](/zh/docs/manual/advanced/interaction/basic), listener: () => void) => void |    |
