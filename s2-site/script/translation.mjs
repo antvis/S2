@@ -4,10 +4,9 @@
  */
 import { unified } from 'unified';
 import parse from 'remark-parse';
-import path from 'path';
+import path, { dirname } from 'path';
 import fs from 'fs';
 import stringify from 'remark-stringify';
-import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { visit } from 'unist-util-visit';
 import { TranslationServiceClient } from '@google-cloud/translate';
@@ -19,8 +18,22 @@ const targetLanguageCode = 'en';
 
 // 文件信息
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const mdFile = path.join(__dirname, 'README.md');
-const mdContent = fs.readFileSync(mdFile, 'utf8');
+const allFilesName = [];
+const mdFile = path.join(__dirname, 'docs/api/basic-class');
+let rootPath = mdFile;
+const getZhMdFiles = (parentFilePath) => {
+  fs.readdirSync(parentFilePath).forEach(file => {
+    const filePath = path.join(parentFilePath, file);
+    if (file === '.DS_Store') {
+      return;
+    }
+    if (file.endsWith('.zh.md')) {
+      allFilesName.push(filePath);
+    } else if (fs.statSync(filePath).isDirectory()) {
+      getZhMdFiles(filePath);
+    }
+  });
+}
 
 // markdown 和 AST 的转换方法
 const toMdAST = (md) => unified().use(parse).parse(md);
@@ -56,28 +69,38 @@ const translateText = async (originalText) => {
 }
 
 // 请求 google 翻译，将翻译结果写入 AST
-const mdAST = toMdAST(mdContent);
-const originalText = [];
-visit(mdAST, async (node) => {
-  if (node.type === "text") {
-    originalText.push(node.value);
-    const translatedText = await translateText(node.value);
-    node.value = translatedText[0];
-  }
-});
-const translatedTextArray = originalText.map(async (text) => {
+const getOriginalAllText = (mdAST) => {
+  const originalText = [];
+  visit(mdAST, async (node) => {
+    if (node.type === "text") {
+      originalText.push(node.value);
+      const translatedText = await translateText(node.value);
+      node.value = translatedText[0];
+    }
+  });
+  return originalText;
+}
+
+const translatedTextArray = (originalTextList) => originalTextList.map(async (text) => {
   return await translateText(text);
 });
 
-async function writeToFile() {
-  await Promise.all(translatedTextArray);
+const writeToFile = async (pathName, mdAST) => {
+  const writePath = pathName.replace('.zh.md', '.en.md');
   fs.writeFileSync(
-    path.join(__dirname, `README.${targetLanguageCode}.md`),
+    writePath,
     toMarkdown(mdAST),
     "utf8"
   );
-  console.log(`README.${targetLanguageCode}.md written`);
+  console.log(`${writePath} written`);
 }
-
-writeToFile();
+getZhMdFiles(rootPath);
+allFilesName.forEach(async (pathName) => {
+  // 获取文件内容 -> 转换为 AST -> 提取文字 -> 翻译 -> 写入 AST -> 转换为 markdown -> 写入文件
+  const mdContent = fs.readFileSync(pathName, 'utf8');
+  const mdAST = toMdAST(mdContent);
+  const originalTextList = getOriginalAllText(mdAST);
+  await Promise.all(translatedTextArray(originalTextList));
+  await writeToFile(pathName, mdAST);
+});
 
