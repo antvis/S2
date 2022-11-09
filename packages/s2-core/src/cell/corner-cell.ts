@@ -63,11 +63,18 @@ export class CornerCell extends HeaderCell {
     this.textShapes = [];
     this.drawBackgroundShape();
     this.drawTreeIcon();
-    this.drawTextShape();
+    this.drawCellText();
     this.drawConditionIconShapes();
     this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
+  }
+
+  /**
+   * @deprecated 已废弃, 请使用 drawTextShape
+   */
+  protected drawCellText() {
+    this.drawTextShape();
   }
 
   protected drawTextShape() {
@@ -296,9 +303,7 @@ export class CornerCell extends HeaderCell {
 
   protected showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
-    return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
-    );
+    return this.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0;
   }
 
   protected getIconPosition(): Point {
