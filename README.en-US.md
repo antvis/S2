@@ -5,7 +5,7 @@ English
 
 <div align="center">
 
-Data-driven multi-dimensional analysis table.
+A practical visualization library for tabular analysis.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
@@ -216,6 +216,10 @@ yarn lint
 yarn site:bootstrap
 yarn site:start
 ```
+
+## 👁️ Insight
+
+![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
 
 ## 📧 Contact Us
 
