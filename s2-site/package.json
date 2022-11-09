@@ -21,7 +21,7 @@
   "scripts": {
     "start": "yarn develop",
     "develop": "dumi dev",
-    "build": "yarn clean && dumi build",
+    "build": "dumi build",
     "clean": "dumi clean",
     "preview": "dumi preview",
     "deploy": "yarn build && gh-pages -d dist",
