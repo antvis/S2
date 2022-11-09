@@ -62,14 +62,14 @@ export class CornerCell extends HeaderCell {
     this.textShapes = [];
     this.drawBackgroundShape();
     this.drawTreeIcon();
-    this.drawCellText();
+    this.drawTextShape();
     this.drawConditionIconShapes();
     this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
   }
 
-  protected drawCellText() {
+  protected drawTextShape() {
     const { x } = this.getContentArea();
     const { y, height } = this.getCellArea();
 
