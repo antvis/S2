@@ -248,7 +248,7 @@ type SheetComponentOptions = S2Options<
 | event | 事件 | [Event](#) |  |  |
 | viewMeta | 当前节点信息 | [Node](/zh/docs/api/basic-class/node) |  |  |
 
-`markdown:docs/common/sort-param.zh.md`
+<embed src="@/docs/common/sort-param.zh.md"></embed>
 
 ## CellScrollPosition
 

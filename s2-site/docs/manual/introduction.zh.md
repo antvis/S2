@@ -194,7 +194,7 @@ s2.render();
 
 ## 📦 版本
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 ## 👤 作者
 

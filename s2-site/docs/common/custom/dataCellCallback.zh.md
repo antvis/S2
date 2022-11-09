@@ -11,9 +11,9 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
-`markdown:docs/common/view-meta.zh.md`
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
-`markdown:docs/common/custom/cellCallBack.zh.md`
+<embed src="@/docs/common/custom/cellCallBack.zh.md"></embed>
 
 ## CornerHeaderCallback
 

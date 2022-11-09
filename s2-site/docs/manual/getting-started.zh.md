@@ -26,7 +26,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 ### 浏览器引入（不推荐）
 
-`markdown:docs/common/browser.zh.md`
+<embed src="@/docs/common/browser.zh.md"></embed>
 
 如需兼容 `IE`，需要自行引入 `polyfill` 兼容。
 
