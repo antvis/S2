@@ -5,6 +5,7 @@ import type { S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import type { SpreadSheet } from '@/sheet-type';
 import {
+  ELLIPSIS_SYMBOL,
   HOVER_FOCUS_DURATION,
   InteractionStateName,
   OriginEventType,
@@ -46,7 +47,7 @@ describe('Interaction Hover Tests', () => {
         }
         return mockCell;
       },
-      getActualText: () => '...',
+      getActualText: () => ELLIPSIS_SYMBOL,
       getFieldValue: () => '',
       cellType: 'dataCell',
     } as any);

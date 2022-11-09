@@ -11,6 +11,7 @@ import {
 } from 'lodash';
 import {
   CellTypes,
+  ELLIPSIS_SYMBOL,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
@@ -92,7 +93,7 @@ export class CornerCell extends HeaderCell {
       placeholder: emptyPlaceholder,
     });
     this.actualText = text;
-    const ellipseIndex = text.indexOf('...');
+    const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
 
     let firstLine = text;
     let secondLine = '';
