@@ -39,6 +39,10 @@ describe('Text Utils Tests', () => {
       expect(text).toEqual('12');
     });
 
+    test('should get ellipsis symbol', () => {
+      expect(ELLIPSIS_SYMBOL).toEqual('...');
+    });
+
     test('should get correct text ellipsis', () => {
       const text = getEllipsisText({
         measureTextWidth,
