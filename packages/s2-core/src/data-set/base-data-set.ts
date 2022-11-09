@@ -180,10 +180,8 @@ export abstract class BaseDataSet {
   }
 
   /**
-   * get row data including cells
+   * get data of the rows including cells
    * @param cells
    */
-  public getRowData(cells: CellMeta[]): RowData {
-    return null;
-  }
+  public abstract getRowData(cells: CellMeta[]): RowData;
 }
