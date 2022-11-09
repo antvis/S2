@@ -4,7 +4,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格。
+开箱即用的多维可视分析表格。
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
