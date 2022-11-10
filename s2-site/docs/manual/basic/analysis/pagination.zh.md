@@ -11,7 +11,7 @@ S2 内置提供了分页能力。本质上是前端分页，点击下一页滚�
 
 首先需要在 `s2Options` 中配置 `pagination` 属性
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/LVw2QOvjgW/b1563a7b-4070-4d61-a18b-6558e2c5b27b.png" width="600"  alt="preview" />
 

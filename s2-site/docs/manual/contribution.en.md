@@ -3,4 +3,4 @@ title: Contribution
 order: 7
 ---
 
-`markdown:docs/manual/contribution.zh.md`
+<embed src="@/docs/manual/contribution.zh.md"></embed>

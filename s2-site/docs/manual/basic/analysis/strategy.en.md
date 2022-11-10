@@ -3,4 +3,4 @@ title: Strategy Sheet
 order: 9
 ---
 
-`markdown:docs/manual/basic/analysis/strategy.zh.md`
+<embed src="@/docs/manual/basic/analysis/strategy.zh.md"></embed>

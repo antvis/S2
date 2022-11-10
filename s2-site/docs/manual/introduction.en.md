@@ -6,4 +6,4 @@ redirect_from:
 ---
 
 
-`markdown:docs/manual/introduction.zh.md`
+<embed src="@/docs/manual/introduction.zh.md"></embed>

@@ -30,7 +30,7 @@ order: 4
 
 ## API
 
-`markdown:docs/common/header.zh.md`
+<embed src="@/docs/common/header.zh.md"></embed>
 
 # Vue 表头组件
 

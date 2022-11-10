@@ -99,7 +99,7 @@ object **必选**,_default：null_
 * 如果不涉及到原始数据复制导出类需求，可不提供 `originalValues`
 * 列头指标顺序和单元格指标展示顺序一一对应
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
 
 ### S2Options 配置
 
