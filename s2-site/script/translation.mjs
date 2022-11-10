@@ -5,7 +5,9 @@
 import { unified } from 'unified';
 import parse from 'remark-parse';
 import path, { dirname } from 'path';
+
 import fs from 'fs';
+import { default as glob } from 'glob';
 import stringify from 'remark-stringify';
 import { fileURLToPath } from 'url';
 import { visit } from 'unist-util-visit';
@@ -18,22 +20,9 @@ const targetLanguageCode = 'en';
 
 // 文件信息
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const allFilesName = [];
-const mdFile = path.join(__dirname, 'docs/api/basic-class');
-let rootPath = mdFile;
-const getZhMdFiles = (parentFilePath) => {
-  fs.readdirSync(parentFilePath).forEach(file => {
-    const filePath = path.join(parentFilePath, file);
-    if (file === '.DS_Store') {
-      return;
-    }
-    if (file.endsWith('.zh.md')) {
-      allFilesName.push(filePath);
-    } else if (fs.statSync(filePath).isDirectory()) {
-      getZhMdFiles(filePath);
-    }
-  });
-}
+
+const mdFile = path.join(__dirname, '../docs/api/basic-class');
+const allFilesName = glob.sync("*.zh.md", { cwd: mdFile, realpath: true });
 
 // markdown 和 AST 的转换方法
 const toMdAST = (md) => unified().use(parse).parse(md);
@@ -72,7 +61,7 @@ const translateText = async (originalText) => {
 const getOriginalAllText = (mdAST) => {
   const originalText = [];
   visit(mdAST, async (node) => {
-    if (node.type === "text") {
+    if (node.type === "text" || node.type === "code") {
       originalText.push(node.value);
       const translatedText = await translateText(node.value);
       node.value = translatedText[0];
@@ -94,7 +83,7 @@ const writeToFile = async (pathName, mdAST) => {
   );
   console.log(`${writePath} written`);
 }
-getZhMdFiles(rootPath);
+
 allFilesName.forEach(async (pathName) => {
   // 获取文件内容 -> 转换为 AST -> 提取文字 -> 翻译 -> 写入 AST -> 转换为 markdown -> 写入文件
   const mdContent = fs.readFileSync(pathName, 'utf8');
