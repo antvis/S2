@@ -218,4 +218,66 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     expect(selectedFn).toHaveBeenCalledTimes(1);
     expect(brushSelectionFn).toHaveBeenCalledTimes(1);
   });
+
+  test('should get brush selection range cells when row header is scroll', () => {
+    mockSpreadSheetInstance.setOptions({
+      style: {
+        rowCfg: {
+          width: 200,
+        },
+      },
+    });
+    const rowCells = map(new Array(8), (a, i) => {
+      const customY = 30 * i + 30;
+
+      return {
+        cellType: CellTypes.ROW_CELL,
+        getMeta() {
+          return {
+            rowIndex: i,
+            x: i >= 4 ? 200 : 0,
+            y: i >= 4 ? customY - 120 : customY,
+            width: 200,
+            height: 30,
+          };
+        },
+      } as RowCell;
+    });
+
+    mockRootInteraction.getAllRowHeaderCells = () => rowCells;
+    mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockSpreadSheetInstance.facet.setScrollOffset({
+      hRowScrollX: 100,
+      scrollY: 0,
+    });
+    mockSpreadSheetInstance.render();
+    // ================== mouse down ==================
+    emitEvent(S2Event.ROW_CELL_MOUSE_DOWN, { x: 100, y: 90 });
+
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
+    // ================== mouse move ==================
+    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 150, clientY: 400 });
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.DRAGGED,
+    );
+
+    expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
+      x: 100,
+      y: 90,
+      width: 50,
+      height: 310,
+    });
+
+    // ================== mouse up ==================
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // reset brush stage
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    // get brush range selected cells
+    expect(brushSelectionInstance.brushRangeCells).toHaveLength(
+      rowCells.length / 2,
+    );
+  });
 });

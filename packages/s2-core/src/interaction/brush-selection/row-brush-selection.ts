@@ -64,18 +64,21 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected isInBrushRange = (meta: ViewMeta | Node) => {
+    // start、end 都是相对位置
     const { start, end } = this.getBrushRange();
-    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollY, hRowScrollX } = this.spreadsheet.facet.getScrollOffset();
 
-    const cornerBBox = this.spreadsheet.facet.cornerBBox;
+    const { cornerBBox } = this.spreadsheet.facet;
+    // 绝对位置，不随滚动条变化
     const { x = 0, y = 0, width = 0, height = 0 } = meta;
 
     return this.rectanglesIntersect(
       {
+        // 行头过长时，可以单独进行滚动，所以需要加上滚动的距离
+        minX: start.x + hRowScrollX,
         // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
-        minX: start.x,
         minY: start.y - cornerBBox.height + scrollY,
-        maxX: end.x,
+        maxX: end.x + hRowScrollX,
         maxY: end.y - cornerBBox.height + scrollY,
       },
       {
