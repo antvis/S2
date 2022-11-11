@@ -1,3 +1,16 @@
+# [@antv/s2-v1.34.0](https://github.com/antvis/S2/compare/@antv/s2-v1.33.1...@antv/s2-v1.34.0) (2022-11-11)
+
+
+### Bug Fixes
+
+* 修复行头链接跳转时，获取行数据的问题 ([#1888](https://github.com/antvis/S2/issues/1888)) ([bee41fd](https://github.com/antvis/S2/commit/bee41fdb50fe4d116e738de53295e818a729a9cb))
+
+
+### Features
+
+* **interaction:** 角头有省略号时 hover 后显示 tooltip ([#1889](https://github.com/antvis/S2/issues/1889)) ([1bd307a](https://github.com/antvis/S2/commit/1bd307ae913c82fd241057366530d16b51abfe69))
+* 新增 measureTextHeight 用于测量文字高度 ([#1880](https://github.com/antvis/S2/issues/1880)) ([3da1bd5](https://github.com/antvis/S2/commit/3da1bd52db39ff7b116a4c6faa56c415f5a5ea5c))
+
 # [@antv/s2-v1.33.1](https://github.com/antvis/S2/compare/@antv/s2-v1.33.0...@antv/s2-v1.33.1) (2022-11-04)
 
 
