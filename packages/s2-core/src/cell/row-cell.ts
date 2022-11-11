@@ -1,5 +1,4 @@
 import type { PointLike, Text } from '@antv/g';
-import { GM } from '@antv/g-gesture';
 import { find, get } from 'lodash';
 import {
   CellTypes,
@@ -34,15 +33,8 @@ import { HeaderCell } from './header-cell';
 export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
 
-  protected gm: GM;
-
   public get cellType() {
     return CellTypes.ROW_CELL;
-  }
-
-  public destroy(): void {
-    super.destroy();
-    this.gm?.destroy();
   }
 
   protected initCell() {
@@ -179,11 +171,7 @@ export class RowCell extends HeaderCell {
 
     // in mobile, we use this cell
     if (isMobile()) {
-      // TODO: 移动端是否可以生效？
-      this.gm = new GM(this, {
-        gestures: ['Tap'],
-      });
-      this.gm.on('tap', () => {
+      this.addEventListener('click', () => {
         this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
           id,
           isCollapsed: !isCollapsed,
