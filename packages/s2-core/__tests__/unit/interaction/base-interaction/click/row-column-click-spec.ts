@@ -150,6 +150,9 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     const mockCellData = {
       valueField: 'valueField',
       data: { a: 1 },
+      getHeadLeafChild() {
+        return this;
+      },
     };
 
     s2.emit(S2Event.ROW_CELL_CLICK, {

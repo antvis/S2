@@ -35,6 +35,14 @@
         "en": "Custom schema"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/xEL8hrZJUo/c1a79590-aeaf-484c-98c9-99980ab627ef.png"
+    },
+    {
+      "filename": "custom-transparent-background.ts",
+      "title": {
+        "zh": "透明背景",
+        "en": "Transparent background"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4adQSLv95OkAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

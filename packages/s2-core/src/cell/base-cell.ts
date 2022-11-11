@@ -183,7 +183,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   public getStyle<K extends keyof S2Theme = keyof CellThemes>(
     name?: K,
   ): DefaultCellTheme | S2Theme[K] {
-    return this.theme[name || this.cellType];
+    return get(this.theme, name || this.cellType);
   }
 
   protected getResizeAreaStyle(): ResizeArea {

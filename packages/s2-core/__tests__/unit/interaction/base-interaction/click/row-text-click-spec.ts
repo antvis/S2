@@ -1,9 +1,7 @@
-import type { Event as GEvent } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { RowTextClick } from '@/interaction/base-interaction/click';
 import type { RawData, S2DataConfig, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
@@ -40,81 +38,5 @@ describe('Interaction Row Text Click Tests', () => {
 
   test('should bind events', () => {
     expect(rowTextClick.bindEvents).toBeDefined();
-  });
-
-  test('should emit link field jump event when row cell text click', () => {
-    const cellData = {
-      key: 'key-1',
-      value: 'value5',
-      rowIndex: 1,
-      y: 20,
-      height: 10,
-    };
-    const linkFieldJump = jest.fn();
-    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      target: {
-        attrs: {
-          appendInfo: {
-            isLinkFieldText: true,
-            cellData,
-          },
-        },
-      },
-    } as unknown as GEvent);
-
-    // get second original row data,
-    expect(linkFieldJump).toHaveBeenCalledWith({
-      key: cellData.key,
-      record: {
-        'key-0': 'value4',
-        'key-1': 'value5',
-        'key-2': 'value6',
-        rowIndex: cellData.rowIndex,
-      },
-    });
-  });
-
-  test('should emit link field jump event when row cell text click and show grand / sub totals', () => {
-    Object.defineProperty(s2.options, 'totals', {
-      get() {
-        return {
-          row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-          },
-        };
-      },
-    });
-    const cellData = {
-      key: 'key-1',
-      value: 'value5',
-      rowIndex: 3,
-    };
-    const linkFieldJump = jest.fn();
-    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
-    s2.emit(S2Event.ROW_CELL_CLICK, {
-      target: {
-        attrs: {
-          appendInfo: {
-            isLinkFieldText: true,
-            cellData,
-          },
-        },
-      },
-    } as unknown as GEvent);
-
-    // get second row data, skip grand totals and sub totals
-    expect(linkFieldJump).toHaveBeenCalledWith({
-      key: cellData.key,
-      record: {
-        'key-0': 'value4',
-        'key-1': 'value5',
-        'key-2': 'value6',
-        rowIndex: cellData.rowIndex,
-      },
-    });
   });
 });
