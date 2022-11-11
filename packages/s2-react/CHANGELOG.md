@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.30.0...@antv/s2-react-v1.31.0) (2022-11-11)
+
+
+### Features
+
+* **interaction:** 角头有省略号时 hover 后显示 tooltip ([#1889](https://github.com/antvis/S2/issues/1889)) ([1bd307a](https://github.com/antvis/S2/commit/1bd307ae913c82fd241057366530d16b51abfe69))
+
 # [@antv/s2-react-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.29.0...@antv/s2-react-v1.30.0) (2022-10-24)
 
 
