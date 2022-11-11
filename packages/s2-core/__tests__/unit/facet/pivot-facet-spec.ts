@@ -129,10 +129,10 @@ describe('Pivot Mode Facet Test', () => {
   describe('should get correct hierarchy', () => {
     const { cellCfg, colCfg, rows, spreadsheet } = facet.cfg;
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
-    const rowCellStyle = spreadsheet.theme.rowCell.cell;
+    const rowCellStyle = spreadsheet.theme.rowCell!.cell;
     const width = Math.max(
-      DEFAULT_STYLE.cellCfg.width,
-      DEFAULT_OPTIONS.width / (size(rows) + size(colLeafNodes)),
+      DEFAULT_STYLE.cellCfg!.width!,
+      DEFAULT_OPTIONS.width! / (size(rows) + size(colLeafNodes)),
     );
     test('row hierarchy', () => {
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(8);
@@ -143,9 +143,9 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(99);
         expect(node.height).toBe(
-          cellCfg.height +
-            rowCellStyle.padding?.top +
-            rowCellStyle.padding?.bottom,
+          cellCfg!.height! +
+            rowCellStyle!.padding?.top! +
+            rowCellStyle!.padding?.bottom!,
         );
         expect(node.x).toBe(99 * node.level);
         expect(node.y).toBe(node.height * index);
@@ -171,7 +171,7 @@ describe('Pivot Mode Facet Test', () => {
 
       colsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(width);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
         expect(node.x).toBe(width * index);
         expect(node.y).toBe(node.height * node.level);
       });
@@ -227,7 +227,7 @@ describe('Pivot Mode Facet Test', () => {
 
     test('row hierarchy when tree mode', () => {
       const { cellCfg, spreadsheet } = facet.cfg;
-      const rowCellStyle = spreadsheet.theme.rowCell.cell;
+      const rowCellStyle = spreadsheet.theme.rowCell!.cell;
       const width = facet.cfg.treeRowsWidth;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
@@ -238,9 +238,9 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
         expect(node.height).toBe(
-          cellCfg.height +
-            rowCellStyle.padding?.top +
-            rowCellStyle.padding?.bottom,
+          cellCfg!.height! +
+            rowCellStyle!.padding?.top! +
+            rowCellStyle!.padding?.bottom!,
         );
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);
@@ -259,8 +259,8 @@ describe('Pivot Mode Facet Test', () => {
     } = facet;
     test('get header after render', () => {
       expect(rowHeader instanceof RowHeader).toBeTrue();
-      expect(rowHeader.cfg.children).toHaveLength(10);
-      expect(rowHeader.cfg.visible).toBeTrue();
+      expect(rowHeader!.cfg.children).toHaveLength(10);
+      expect(rowHeader!.cfg.visible).toBeTrue();
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
       expect(cornerHeader.cfg.children).toHaveLength(2);
@@ -283,6 +283,7 @@ describe('Pivot Mode Facet Test', () => {
     'should not throw "Cannot read property \'value\' of undefined" error if called with single offset config',
     (method) => {
       const onlyOffsetYFn = () => {
+        // @ts-ignore
         facet[method]({
           offsetY: {
             value: 10,
@@ -291,6 +292,7 @@ describe('Pivot Mode Facet Test', () => {
       };
 
       const onlyOffsetXFn = () => {
+        // @ts-ignore
         facet[method]({
           offsetX: {
             value: 10,
@@ -299,7 +301,7 @@ describe('Pivot Mode Facet Test', () => {
       };
 
       [onlyOffsetXFn, onlyOffsetYFn].forEach((handler) => {
-        expect(handler).not.toThrowError();
+        expect(handler).not.toThrow();
       });
     },
   );

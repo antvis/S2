@@ -4,13 +4,13 @@ import { getMobileSheetComponentOptions } from '@antv/s2-shared';
 import { SheetComponent } from '../index';
 import type { SheetComponentsProps } from '../interface';
 
-export const MobileSheet = React.forwardRef(
-  (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
+export const MobileSheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
+  (props, ref) => {
     return (
       <>
         <SheetComponent
           {...props}
-          options={getMobileSheetComponentOptions(props.options)}
+          options={getMobileSheetComponentOptions(props.options!)}
           ref={ref}
         />
       </>
@@ -19,4 +19,5 @@ export const MobileSheet = React.forwardRef(
 );
 
 export const MobileSheetComponent = React.memo(MobileSheet);
+
 MobileSheetComponent.displayName = 'MobileSheetComponent';

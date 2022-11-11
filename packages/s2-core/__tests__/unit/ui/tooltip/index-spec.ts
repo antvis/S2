@@ -6,7 +6,6 @@ import {
   TOOLTIP_CONTAINER_HIDE_CLS,
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_POSITION_OFFSET,
-  TOOLTIP_PREFIX_CLS,
 } from '@/common';
 
 jest.mock('@/interaction/event-controller');
@@ -60,7 +59,7 @@ describe('Tooltip Tests', () => {
 
     const left = 10 + TOOLTIP_POSITION_OFFSET.x;
     const top = 10 + TOOLTIP_POSITION_OFFSET.y;
-    const { style } = tooltip.container;
+    const { style } = tooltip.container!;
 
     // set position
     expect(tooltip.position).toEqual({
@@ -68,7 +67,7 @@ describe('Tooltip Tests', () => {
       y: top,
     });
     // add class
-    expect(tooltip.container.className).toEqual(
+    expect(tooltip.container!.className).toEqual(
       `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_SHOW_CLS}`,
     );
     // visible status
@@ -89,7 +88,7 @@ describe('Tooltip Tests', () => {
 
     tooltip.hide();
 
-    const { style } = tooltip.container;
+    const { style } = tooltip.container!;
 
     // reset position
     expect(tooltip.position).toEqual({
@@ -99,7 +98,7 @@ describe('Tooltip Tests', () => {
     // visible status
     expect(tooltip.visible).toBeFalsy();
     // add class
-    expect(tooltip.container.className).toEqual(
+    expect(tooltip.container!.className).toEqual(
       `${TOOLTIP_CONTAINER_CLS} ${TOOLTIP_CONTAINER_HIDE_CLS}`,
     );
     // add pointer events
@@ -115,7 +114,7 @@ describe('Tooltip Tests', () => {
     });
 
     const containerId = 'testId';
-    tooltip.container.setAttribute('id', containerId);
+    tooltip.container!.setAttribute('id', containerId);
     tooltip.destroy();
 
     // reset position
@@ -140,7 +139,7 @@ describe('Tooltip Tests', () => {
 
     tooltip.disablePointerEvent();
 
-    const { style } = tooltip.container;
+    const { style } = tooltip.container!;
 
     expect(style.pointerEvents).toEqual('none');
   });
@@ -154,7 +153,7 @@ describe('Tooltip Tests', () => {
       content: 'text',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('text');
+    expect(tooltip.container!.innerHTML).toEqual('text');
   });
 
   test('should display custom dom element', async () => {
@@ -171,7 +170,7 @@ describe('Tooltip Tests', () => {
       content: element1,
     });
 
-    expect(tooltip.container.contains(element1)).toBeTruthy();
+    expect(tooltip.container!.contains(element1)).toBeTruthy();
 
     tooltip.show({
       position,
@@ -180,8 +179,8 @@ describe('Tooltip Tests', () => {
 
     await sleep(500);
 
-    expect(tooltip.container.contains(element2)).toBeTruthy();
-    expect(tooltip.container.children).toHaveLength(1);
+    expect(tooltip.container!.contains(element2)).toBeTruthy();
+    expect(tooltip.container!.children).toHaveLength(1);
   });
 
   test('should display custom string content', () => {
@@ -200,7 +199,7 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    expect(tooltip.container.innerHTML).toEqual('text');
+    expect(tooltip.container!.innerHTML).toEqual('text');
   });
 
   test('should display custom dom content', () => {
@@ -222,8 +221,8 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    expect(tooltip.container.querySelector('.text')).toBeTruthy();
-    expect(tooltip.container.contains(element)).toBeTruthy();
+    expect(tooltip.container!.querySelector('.text')).toBeTruthy();
+    expect(tooltip.container!.contains(element)).toBeTruthy();
   });
 
   test('should replace tooltip content by call method', () => {
@@ -237,14 +236,14 @@ describe('Tooltip Tests', () => {
       content: 'content1',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('content1');
+    expect(tooltip.container!.innerHTML).toEqual('content1');
 
     tooltip.show({
       position,
       content: 'content2',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('content2');
+    expect(tooltip.container!.innerHTML).toEqual('content2');
   });
 
   test('should set empty tooltip content', () => {
@@ -258,14 +257,14 @@ describe('Tooltip Tests', () => {
       content: 'content1',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('content1');
+    expect(tooltip.container!.innerHTML).toEqual('content1');
 
     tooltip.show({
       position,
       content: '',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('');
+    expect(tooltip.container!.innerHTML).toEqual('');
   });
 
   test('should display custom string content by call method and ignore option config', () => {
@@ -285,7 +284,7 @@ describe('Tooltip Tests', () => {
       content: 'content',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('content');
+    expect(tooltip.container!.innerHTML).toEqual('content');
   });
 
   test('should display custom string content by call method and ignore all option config', () => {
@@ -314,7 +313,7 @@ describe('Tooltip Tests', () => {
       content: 'custom content',
     });
 
-    expect(tooltip.container.innerHTML).toEqual('custom content');
+    expect(tooltip.container!.innerHTML).toEqual('custom content');
   });
 
   test('should render max container size if content size more than container size', () => {
@@ -339,22 +338,22 @@ describe('Tooltip Tests', () => {
       content: node,
     });
 
-    const tooltipRect = tooltip.container.getBoundingClientRect();
+    const tooltipRect = tooltip.container!.getBoundingClientRect();
 
     // Tooltip 最大宽度/高度
     expect(tooltipRect.width).toStrictEqual(MAX_WIDTH);
     expect(tooltipRect.height).toStrictEqual(MAX_HEIGHT);
 
     // Tooltip 容器应该有滚动条
-    expect(tooltip.container.scrollWidth).toStrictEqual(contentSize.width);
-    expect(tooltip.container.scrollHeight).toStrictEqual(contentSize.height);
-    expect(tooltip.container.clientWidth).toBeLessThan(
-      tooltip.container.scrollWidth,
+    expect(tooltip.container!.scrollWidth).toStrictEqual(contentSize.width);
+    expect(tooltip.container!.scrollHeight).toStrictEqual(contentSize.height);
+    expect(tooltip.container!.clientWidth).toBeLessThan(
+      tooltip.container!.scrollWidth,
     );
   });
 
   test('should set custom container style', () => {
-    s2.options.tooltip.style = {
+    s2.options.tooltip!.style = {
       fontSize: '20px',
       color: 'red',
     };
@@ -368,11 +367,11 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    expect(tooltip.container.style.fontSize).toEqual('20px');
+    expect(tooltip.container!.style.fontSize).toEqual('20px');
   });
 
   test('should set custom container class name', () => {
-    s2.options.tooltip.className = 'custom';
+    s2.options.tooltip!.className = 'custom';
 
     tooltip = new BaseTooltip(s2);
 
@@ -383,12 +382,12 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    expect(tooltip.container.classList.contains('custom')).toBeTruthy();
+    expect(tooltip.container!.classList.contains('custom')).toBeTruthy();
   });
 
   test('should set custom container class name list', () => {
     const classList = ['custom1', 'custom2'];
-    s2.options.tooltip.className = classList;
+    s2.options.tooltip!.className = classList;
 
     tooltip = new BaseTooltip(s2);
 
@@ -399,7 +398,7 @@ describe('Tooltip Tests', () => {
       },
     });
 
-    expect(tooltip.container.classList.contains(classList[0])).toBeTruthy();
-    expect(tooltip.container.classList.contains(classList[1])).toBeTruthy();
+    expect(tooltip.container!.classList.contains(classList[0])).toBeTruthy();
+    expect(tooltip.container!.classList.contains(classList[1])).toBeTruthy();
   });
 });

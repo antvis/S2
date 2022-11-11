@@ -43,6 +43,8 @@ export type DataPathParams = {
   colPivotMeta?: PivotMeta;
 } & BaseFields;
 
+export type DataPath = (number | string)[];
+
 export interface CellDataParams {
   // search query
   query: Query;

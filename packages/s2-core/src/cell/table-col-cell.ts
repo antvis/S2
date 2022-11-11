@@ -5,7 +5,7 @@ import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
-import type { FormatResult, SortParam } from '../common/interface';
+import type { FormatResult } from '../common/interface';
 import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
 import { renderRect } from '../utils/g-renders';
 import {
@@ -15,27 +15,26 @@ import {
 import { getSortTypeIcon } from '../utils/sort-action';
 import { formattedFieldValue } from '../utils/cell/header-cell';
 import { getFrozenColWidth } from '../utils/layout/frozen';
+import type { BaseHeaderConfig } from '../facet/header';
 
 export class TableColCell extends ColCell {
-  protected handleRestOptions(...[headerConfig]) {
+  protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
     const { field } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
-    const sortParam: SortParam = find(
-      sortParams,
-      (item) => item?.sortFieldId === field,
-    );
-
+    const sortParam = find(sortParams, (item) => item?.sortFieldId === field);
     const type = getSortTypeIcon(sortParam, true);
+
     this.headerConfig.sortParam = {
-      ...this.headerConfig.sortParam,
+      ...this.headerConfig.sortParam!,
       ...(sortParam || {}),
       type,
     };
   }
 
   protected isFrozenCell() {
-    const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
+    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
+      this.spreadsheet.options;
     const { colIndex } = this.meta;
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
 
@@ -63,9 +62,9 @@ export class TableColCell extends ColCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
-      width: resizeStyle.size,
+      width: resizeStyle.size!,
       height,
     };
 
@@ -90,7 +89,7 @@ export class TableColCell extends ColCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX, position } = this.headerConfig;
+    const { scrollX = 0, position } = this.headerConfig;
 
     if (this.isFrozenCell()) {
       return {
@@ -125,7 +124,7 @@ export class TableColCell extends ColCell {
 
   protected getTextStyle() {
     const style = this.getStyle();
-    return style?.bolderText;
+    return style?.bolderText!;
   }
 
   protected getHorizontalResizeAreaName() {
@@ -133,7 +132,7 @@ export class TableColCell extends ColCell {
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor } = this.getStyle().cell;
+    const { backgroundColor } = this.getStyle()!.cell!;
     this.backgroundShape = renderRect(this, {
       ...this.getBBoxByType(),
       fill: backgroundColor,

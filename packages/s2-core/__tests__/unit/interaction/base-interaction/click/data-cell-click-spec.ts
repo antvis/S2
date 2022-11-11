@@ -38,7 +38,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   test('should bind events', () => {
     expect(
-      s2.interaction.interactions.get(InteractionName.DATA_CELL_CLICK)
+      s2.interaction.interactions.get(InteractionName.DATA_CELL_CLICK)!
         .bindEvents,
     ).toBeDefined();
   });

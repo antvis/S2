@@ -1,11 +1,11 @@
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { Node } from '@/facet/layout/node';
 
-function generateChildren(height?: number) {
+function generateChildren(height?: number | undefined) {
   const children: Node[] = [];
   for (let i = 0; i < 10; i++) {
     const child = new Node({ id: `child${i}`, key: '', value: '' });
-    child.height = height;
+    child.height = height!;
     children.push(child);
   }
 

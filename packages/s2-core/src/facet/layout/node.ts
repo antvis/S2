@@ -76,20 +76,20 @@ export class Node {
     this.value = value;
     this.label = label || value;
     this.parent = parent;
-    this.level = level;
-    this.rowIndex = rowIndex;
-    this.isTotals = isTotals;
-    this.isCollapsed = isCollapsed;
-    this.hierarchy = hierarchy;
-    this.isPivotMode = isPivotMode;
-    this.seriesNumberWidth = seriesNumberWidth;
-    this.field = field;
-    this.spreadsheet = spreadsheet;
+    this.level = level!;
+    this.rowIndex = rowIndex!;
+    this.isTotals = isTotals!;
+    this.isCollapsed = isCollapsed!;
+    this.hierarchy = hierarchy!;
+    this.isPivotMode = isPivotMode!;
+    this.seriesNumberWidth = seriesNumberWidth!;
+    this.field = field!;
+    this.spreadsheet = spreadsheet!;
     this.query = query;
     this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
-    this.isTotalMeasure = isTotalMeasure;
-    this.isLeaf = isLeaf;
+    this.isTotalMeasure = isTotalMeasure!;
+    this.isLeaf = isLeaf!;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
     this.config = {
@@ -256,7 +256,7 @@ export class Node {
   public rowIndex: number;
 
   // node's parent node
-  public parent: Node;
+  public parent: Node | undefined;
 
   // check if node is leaf(the max level in tree)
   public isLeaf = false;
@@ -301,7 +301,7 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: S2CellType;
+  public belongsCell?: S2CellType | null | undefined;
 
   public inCollapseNode?: boolean;
 
@@ -327,9 +327,9 @@ export class Node {
 
   public getHeadLeafChild() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let leafChild: Node = this;
-    while (!isEmpty(leafChild.children)) {
-      leafChild = head(leafChild.children);
+    let leafChild: Node | undefined = this;
+    while (!isEmpty(leafChild?.children)) {
+      leafChild = head(leafChild?.children);
     }
     return leafChild;
   }

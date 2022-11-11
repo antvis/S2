@@ -69,6 +69,8 @@ export interface AdvancedSortProps extends AdvancedSortCfgProps {
   sheet: SpreadSheet;
 }
 
+export type RuleItem = RuleValue & { rule: string[] };
+
 export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   sheet,
   className,
@@ -83,11 +85,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
 }) => {
   const [isSortVisible, setIsModalVisible] = useState(false);
   const [isCustomVisible, setIsCustomVisible] = useState(false);
-  const [ruleList, setRuleList] = useState([]);
-  const [rules, setRules] = useState([]);
-  const [manualDimensionList, setManualDimensionList] = useState([]);
-  const [dimensionList, setDimensionList] = useState([]);
-  const [sortBy, setSortBy] = useState([]);
+  const [ruleList, setRuleList] = useState<RuleItem[]>([]);
+  const [rules, setRules] = useState<RuleItem[]>([]);
+  const [manualDimensionList, setManualDimensionList] = useState<Dimension[]>(
+    [],
+  );
+  const [dimensionList, setDimensionList] = useState<Dimension[]>([]);
+  const [sortBy, setSortBy] = useState<string[]>([]);
   const [currentDimension, setCurrentDimension] = useState<Dimension>();
   const [form] = Form.useForm();
 
@@ -97,25 +101,32 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const handleModal = () => {
     setIsModalVisible(!isSortVisible);
   };
+
   const sortClick = () => {
     if (onSortOpen) {
       onSortOpen();
     }
     handleModal();
   };
+
   const handleCustom = () => {
     setIsCustomVisible(!isCustomVisible);
   };
-  const handleDimension = (dimension) => {
+
+  const handleDimension = (dimension: Dimension) => {
     if (!find(ruleList, (item) => item.field === dimension.field)) {
       setCurrentDimension(dimension);
-      setRuleList([...ruleList, dimension]);
+      setRuleList([...ruleList, dimension] as RuleItem[]);
     }
     setDimensionList(
       filter(dimensionList, (item) => item.field !== dimension.field),
     );
   };
-  const handleCustomSort = (dimension, splitOrders) => {
+
+  const handleCustomSort = (
+    dimension: Dimension,
+    splitOrders: string[] = [],
+  ) => {
     handleCustom();
     setCurrentDimension(dimension);
     if (splitOrders) {
@@ -129,11 +140,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       );
     }
   };
+
   const customSort = () => {
     handleCustom();
-    const currentFieldValue = form.getFieldsValue([currentDimension?.field]);
+    const currentFieldValue = form.getFieldsValue([currentDimension?.field!]);
     currentFieldValue.sortBy = sortBy;
-    form.setFieldsValue({ [currentDimension?.field]: currentFieldValue });
+    form.setFieldsValue({ [currentDimension?.field!]: currentFieldValue });
     const newRuleList = map(ruleList, (item) => {
       if (item.field === currentDimension?.field) {
         return {
@@ -145,21 +157,24 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         };
       }
       return item;
-    });
+    }) as unknown as RuleItem[];
     setRuleList(newRuleList);
   };
+
   const customCancel = () => {
     handleCustom();
   };
-  const deleteRule = (dimension) => {
+
+  const deleteRule = (dimension: Dimension) => {
     setRuleList(filter(ruleList, (item) => item.field !== dimension.field));
     setDimensionList([...dimensionList, dimension]);
   };
+
   const onFinish = () => {
     const ruleValue = form.getFieldsValue();
     const { values = [] } = sheet.dataCfg.fields;
-    const ruleValues = [];
-    const currentSortParams = [];
+    const ruleValues: RuleValue[] = [];
+    const currentSortParams: SortParam[] = [];
     forEach(keys(ruleValue), (item) => {
       const { sortMethod, rule = [], sortBy: currentSortBy } = ruleValue[item];
       const current: SortParam = { sortFieldId: item };
@@ -187,13 +202,16 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     }
     handleModal();
   };
-  const getDimensionList = (list) => {
+
+  const getDimensionList = (list: Dimension[]) => {
     return filter(
       list,
-      (item) => !find(sortParams, (i) => i.sortFieldId === item.field),
+      (item: Dimension) =>
+        !find(sortParams, (sortParam) => sortParam.sortFieldId === item.field),
     );
   };
-  const getManualDimensionList = () => {
+
+  const getManualDimensionList = (): Dimension[] => {
     if (dimensions) {
       return dimensions;
     }
@@ -205,23 +223,26 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         name: sheet.dataSet.getFieldName(field),
         list: sheet.dataSet.getDimensionValues(field),
       };
-    });
+    }) as unknown as Dimension[];
   };
+
   const getRuleOptions = () => {
     if (ruleOptions) {
       return ruleOptions;
     }
     return map(SORT_RULE_OPTIONS, (item) => {
       if (item.value === 'sortByMeasure') {
-        const { values } = sheet.dataCfg.fields || {};
-        item.children = map(values, (vi) => {
-          return { label: sheet.dataSet.getFieldName(vi), value: vi };
+        const { values = [] } = sheet.dataCfg.fields || {};
+        // @ts-ignore
+        item.children = map(values, (field) => {
+          return { label: sheet.dataSet.getFieldName(field), value: field };
         });
       }
       return item;
     });
   };
-  const getRuleList = () => {
+
+  const getRuleList = (): RuleItem[] => {
     return map(sortParams, (item) => {
       const {
         sortFieldId,
@@ -272,6 +293,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       </Sider>
     );
   };
+
   const renderContent = () => {
     return (
       <Content className={`${ADVANCED_SORT_PRE_CLS}-content-layout`}>
@@ -342,7 +364,10 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                         <a
                           className={`${ADVANCED_SORT_PRE_CLS}-rule-end`}
                           onClick={() => {
-                            handleCustomSort(item, currentSortBy);
+                            handleCustomSort(
+                              item as unknown as Dimension,
+                              currentSortBy,
+                            );
                           }}
                         >
                           {i18n('设置顺序')}
@@ -359,7 +384,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                 <DeleteOutlined
                   className={`${ADVANCED_SORT_PRE_CLS}-rule-end-delete`}
                   onClick={() => {
-                    deleteRule(item);
+                    deleteRule(item as unknown as Dimension);
                   }}
                 />
               </Form.Item>
@@ -374,8 +399,11 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     if (isSortVisible) {
       const initRuleList = getRuleList();
       const manualDimensions = getManualDimensionList();
-      const initDimensionList = getDimensionList(manualDimensions);
-      const initRuleOptions = getRuleOptions();
+      const initDimensionList = getDimensionList(
+        manualDimensions,
+      ) as Dimension[];
+      const initRuleOptions = getRuleOptions() as unknown as RuleItem[];
+
       setRuleList(initRuleList);
       setManualDimensionList(manualDimensions);
       setDimensionList(initDimensionList);

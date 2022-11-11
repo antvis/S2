@@ -17,7 +17,7 @@ import type {
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
-import { PivotDataSet } from '../data-set';
+import { BaseDataSet, PivotDataSet } from '../data-set';
 import { CustomGridPivotDataSet } from '../data-set/custom-grid-pivot-data-set';
 import { PivotFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
@@ -31,7 +31,7 @@ export class PivotSheet extends SpreadSheet {
 
     if (!fieldType) {
       return some(
-        [...fields?.rows, ...fields?.columns],
+        [...fields?.rows!, ...fields?.columns!],
         (field) => !isString(field),
       );
     }
@@ -47,7 +47,7 @@ export class PivotSheet extends SpreadSheet {
     return this.isCustomHeaderFields('columns');
   }
 
-  public getDataSet() {
+  public getDataSet(): BaseDataSet {
     const { dataSet } = this.options;
     if (dataSet) {
       return dataSet(this);
@@ -91,14 +91,14 @@ export class PivotSheet extends SpreadSheet {
    * Scroll Freeze Row Header
    */
   public isFrozenRowHeader(): boolean {
-    return this.options?.frozenRowHeader;
+    return this.options?.frozenRowHeader!;
   }
 
   /**
    * Check if the value is in the columns
    */
   public isValueInCols(): boolean {
-    return this.dataSet.fields.valueInCols;
+    return this.dataSet.fields.valueInCols!;
   }
 
   public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
@@ -160,14 +160,14 @@ export class PivotSheet extends SpreadSheet {
       },
     };
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
-      collapsedRows: options.style.collapsedRows,
+      collapsedRows: options.style!.collapsedRows!,
       meta: data?.node,
     });
 
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-      collapsedRows: options.style.collapsedRows,
+      collapsedRows: options.style!.collapsedRows!,
       meta: data?.node,
     });
   }
@@ -186,7 +186,7 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
-    const { hideMeasureColumn } = this.options.style.colCfg;
+    const { hideMeasureColumn } = this.options.style!.colCfg!;
     const sortField = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
     const sortQuery = clone(query);
@@ -194,20 +194,20 @@ export class PivotSheet extends SpreadSheet {
     let sortValue = value;
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
     if (hideMeasureColumn && this.isValueInCols()) {
-      sortValue = this.dataSet.fields.values[0];
-      sortQuery[EXTRA_FIELD] = sortValue;
+      sortValue = this.dataSet.fields.values![0];
+      sortQuery![EXTRA_FIELD] = sortValue;
     }
 
-    const sortFieldId = isString(sortField) ? sortField : sortField.key;
+    const sortFieldId = isString(sortField) ? sortField : sortField!.key;
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,
       sortByMeasure: sortValue,
       query: sortQuery,
     };
-    const prevSortParams = this.dataCfg.sortParams.filter(
+    const prevSortParams = this.dataCfg.sortParams?.filter(
       (item) => item?.sortFieldId !== sortField,
-    );
+    )!;
 
     this.updateSortMethodMap(meta.id, sortMethod, true);
 

@@ -62,13 +62,13 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   }
 
   // header all cells layout
-  protected abstract layout();
+  protected abstract layout(): void;
 
   // header group offset
-  protected abstract offset();
+  protected abstract offset(): void;
 
   // header group clip
-  protected abstract clip();
+  protected abstract clip(): void;
 
   public clear() {
     super.clear();
@@ -76,19 +76,21 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
 
   /**
    * Check whether header cell in viewPort
-   * @param gridPos
-   * @param gridSize
-   * @param viewportPos
-   * @param viewportSize
    */
-  protected isHeaderCellInViewport = (
-    gridPos,
-    gridSize,
-    viewportPos,
+  protected isHeaderCellInViewport = ({
+    cellPosition,
+    cellSize,
+    viewportPosition,
     viewportSize,
-  ) => {
+  }: {
+    cellPosition: number;
+    cellSize: number;
+    viewportPosition: number;
+    viewportSize: number;
+  }) => {
     return (
-      gridPos + gridSize >= viewportPos && viewportPos + viewportSize >= gridPos
+      cellPosition + cellSize >= viewportPosition &&
+      viewportPosition + viewportSize >= cellPosition
     );
   };
 }

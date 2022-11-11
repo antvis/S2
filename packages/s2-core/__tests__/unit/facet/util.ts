@@ -1,4 +1,5 @@
 import { assembleDataCfg } from 'tests/util';
+import type { RawData } from '../../../src/common';
 import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
 
 /**
@@ -8,7 +9,7 @@ export function getMockPivotMeta() {
   const sortedDimensionValues = {};
   const rawRowPivotMeta = new Map();
   const rawColPivotMeta = new Map();
-  const rawIndexesData = [];
+  const rawIndexesData: RawData[][] | RawData[] = [];
   const { fields, data } = assembleDataCfg();
   return transformIndexesData({
     rows: fields.rows,

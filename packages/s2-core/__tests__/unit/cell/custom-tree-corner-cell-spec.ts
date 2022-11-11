@@ -1,7 +1,6 @@
 /**
  * custom-tree mode.
  */
-import { get } from 'lodash';
 import { customTreeNodes } from 'tests/data/custom-tree-nodes';
 import { CustomTreeData } from 'tests/data/data-custom-tree';
 import type { S2DataConfig } from '@/common/interface';
@@ -9,7 +8,7 @@ import { PivotSheet } from '@/sheet-type';
 import { CornerCell, type S2Options } from '@/index';
 
 describe('test for corner text', () => {
-  const values = [
+  const values: string[] = [
     'measure-a',
     'measure-b',
     'measure-c',
@@ -17,6 +16,7 @@ describe('test for corner text', () => {
     'measure-e',
     'measure-f',
   ];
+
   const dataCfg: S2DataConfig = {
     meta: [],
     data: CustomTreeData,
@@ -38,23 +38,26 @@ describe('test for corner text', () => {
   const mockSheet = new PivotSheet(container, dataCfg, options);
   mockSheet.render();
 
-  test('get correct default corner text when the corner label is empty.', () => {
-    const cornerCells = get(
-      mockSheet,
-      'facet.cornerBBox.facet.cornerHeader.cfg.children',
-    ).filter((v) => v instanceof CornerCell);
+  test('get correct default corner text when the corner label is empty', () => {
+    const cornerCells = mockSheet.facet.cornerHeader.getChildren();
+
+    // @ts-ignore
     expect(cornerCells[0].actualText).toEqual('自定义节点A/指标E/数值');
+    // @ts-ignore
     expect(cornerCells[1].actualText).toEqual('type');
   });
 
   test('get correct default corner text when set the cornerText.', () => {
     mockSheet.setOptions({ ...options, cornerText: 'test' });
     mockSheet.render();
-    const cornerCells = get(
-      mockSheet,
-      'facet.cornerBBox.facet.cornerHeader.cfg.children',
-    ).filter((v) => v instanceof CornerCell);
+
+    const cornerCells = mockSheet.facet.cornerHeader
+      .getChildren()
+      .filter((v) => v instanceof CornerCell);
+
+    // @ts-ignore
     expect(cornerCells[0].actualText).toEqual('test');
+    // @ts-ignore
     expect(cornerCells[1].actualText).toEqual('type');
   });
 });

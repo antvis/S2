@@ -8,7 +8,7 @@ import type {
   PivotDataSet,
   SpreadSheet,
 } from '@antv/s2';
-import { clone, filter, isEmpty } from 'lodash';
+import { clone, filter, isEmpty, size } from 'lodash';
 import type { PartDrillDown, PartDrillDownInfo } from '../interface';
 
 export interface DrillDownParams {
@@ -100,7 +100,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
 const defaultPartDrillDownDisplayCondition = (meta: Node) => {
   const s2 = meta.spreadsheet;
   const { fields } = s2.dataCfg;
-  const iconLevel = fields.rows?.length - 1;
+  const iconLevel = size(fields.rows) - 1;
 
   // 当 values 为空时, 会将 dataCfg.fields.valueInCols 强制置为 false, 导致下钻 icon 不显示
   // 兼容初始 values 为空, 默认需要显示下钻 icon, 通过下钻动态改变 values 的场景  https://github.com/antvis/S2/issues/1514

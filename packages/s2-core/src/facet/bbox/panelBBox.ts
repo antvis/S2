@@ -12,7 +12,7 @@ export class PanelBBox extends BaseBBox {
       y: Math.floor(cornerBBox.maxY),
     };
 
-    // splitLine 也应该占位，panelBbox = canvasBbox - cornerBbox - splitLineBbox
+    // splitLine 也应该占位，panelBBox = canvasBBox - cornerBBox - splitLineBBox
     this.x = cornerPosition.x + Frame.getVerticalBorderWidth(this.spreadsheet);
 
     this.y =
@@ -20,12 +20,12 @@ export class PanelBBox extends BaseBBox {
     this.minX = this.x;
     this.minY = this.y;
 
-    const scrollBarSize = this.spreadsheet.theme.scrollBar.size;
+    const scrollBarSize = this.spreadsheet.theme.scrollBar!.size;
     const { width: canvasWidth, height: canvasHeight } =
       this.spreadsheet.options;
 
-    const panelWidth = Math.max(0, canvasWidth - this.x);
-    const panelHeight = Math.max(0, canvasHeight - this.y - scrollBarSize);
+    const panelWidth = Math.max(0, canvasWidth! - this.x);
+    const panelHeight = Math.max(0, canvasHeight! - this.y - scrollBarSize!);
 
     this.width = panelWidth;
     this.height = panelHeight;
@@ -44,11 +44,11 @@ export class PanelBBox extends BaseBBox {
 
     const { frozenTrailingColCount, frozenTrailingRowCount } =
       this.spreadsheet.options;
-    if (frozenTrailingColCount > 0) {
+    if (frozenTrailingColCount! > 0) {
       this.viewportWidth = this.width;
       this.maxX = this.x + this.width;
     }
-    if (frozenTrailingRowCount > 0) {
+    if (frozenTrailingRowCount! > 0) {
       this.viewportHeight = this.height;
       this.maxY = this.y + this.height;
     }

@@ -17,9 +17,9 @@ describe('Row Cell Tests', () => {
       ['left', 21],
       ['center', 77],
       ['right', 129],
-    ])(
+    ] as [TextAlign, number][])(
       'should align link shape with text',
-      (textAlign: TextAlign, textCenterX: number) => {
+      (textAlign, textCenterX) => {
         s2.setOptions({
           interaction: {
             linkFields: ['province'],
@@ -34,7 +34,7 @@ describe('Row Cell Tests', () => {
         });
         s2.render();
 
-        const provinceCell = s2.facet.rowHeader.getChildByIndex(0) as RowCell;
+        const provinceCell = s2.facet.rowHeader!.getChildByIndex(0) as RowCell;
         const { minX, maxX } = (provinceCell as any).linkFieldShape.getBBox();
 
         // 宽度相当
@@ -67,7 +67,7 @@ describe('Row Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(1);
+      const rowCell = s2.facet.rowHeader!.getChildByIndex(1);
       expect(get(rowCell, 'textShape.attrs.fill')).toEqual('#5083F5');
     });
 
@@ -88,7 +88,7 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(1);
+      const rowCell = s2.facet.rowHeader!.getChildByIndex(1);
       expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -109,7 +109,7 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getChildByIndex(0);
+      const rowCell = s2.facet.rowHeader!.getChildByIndex(0);
       expect(get(rowCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
     });
   });

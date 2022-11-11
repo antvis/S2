@@ -77,13 +77,13 @@ export class ColCell extends HeaderCell {
 
     // 非叶子节点，因 label 滚动展示，需要适配不同 align情况
     const iconStyle = this.getIconStyle();
-    const iconMarginLeft = iconStyle.margin.left;
+    const iconMarginLeft = iconStyle!.margin!.left;
 
     const textStyle = this.getTextStyle();
     const position = this.textPosition;
     const textX = position.x;
 
-    const y = position.y - iconStyle.size / 2;
+    const y = position.y - iconStyle!.size! / 2;
 
     if (textStyle.textAlign === 'left') {
       /**
@@ -95,7 +95,7 @@ export class ColCell extends HeaderCell {
        *   +---------+  +----+
        */
       return {
-        x: textX + this.actualTextWidth + iconMarginLeft,
+        x: textX + this.actualTextWidth + iconMarginLeft!,
         y,
       };
     }
@@ -109,7 +109,7 @@ export class ColCell extends HeaderCell {
        *   +---------+  +----+
        */
       return {
-        x: textX + iconMarginLeft,
+        x: textX + iconMarginLeft!,
         y,
       };
     }
@@ -123,7 +123,7 @@ export class ColCell extends HeaderCell {
      *   +---------+  +----+
      */
     return {
-      x: textX + this.actualTextWidth / 2 + iconMarginLeft,
+      x: textX + this.actualTextWidth / 2 + iconMarginLeft!,
       y,
     };
   }
@@ -139,8 +139,12 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { isLeaf } = this.meta;
-    const { width, scrollContainsRowHeader, cornerWidth, scrollX } =
-      this.headerConfig;
+    const {
+      width,
+      scrollContainsRowHeader,
+      cornerWidth = 0,
+      scrollX = 0,
+    } = this.headerConfig;
 
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
@@ -178,8 +182,8 @@ export class ColCell extends HeaderCell {
     const { textAlign } = this.getTextStyle();
     const adjustedViewport = adjustColHeaderScrollingViewport(
       viewport,
-      textAlign,
-      this.getStyle().cell?.padding,
+      textAlign!,
+      this.getStyle()!.cell?.padding,
     );
 
     const actionIconSpace = this.getActionIconsWidth();
@@ -197,7 +201,7 @@ export class ColCell extends HeaderCell {
       textAreaRange,
       this.actualTextWidth,
       actionIconSpace,
-      textAlign,
+      textAlign!,
     );
     const textY = contentBox.y + contentBox.height / 2;
 
@@ -206,10 +210,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected getActionIconsWidth() {
-    const { size, margin } = this.getStyle().icon;
+    const { size, margin } = this.getStyle()!.icon!;
     const iconCount = this.getActionIconsCount();
     return (
-      (size + margin.left) * iconCount + (iconCount > 0 ? margin.right : 0)
+      (size! + margin!.left!) * iconCount + (iconCount > 0 ? margin!.right! : 0)
     );
   }
 
@@ -239,7 +243,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { cornerWidth, viewportWidth: headerWidth } = this.headerConfig;
+    const { cornerWidth = 0, viewportWidth: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
@@ -249,7 +253,7 @@ export class ColCell extends HeaderCell {
 
     const resizeAreaName = this.getHorizontalResizeAreaName();
 
-    const existedHorizontalResizeArea = resizeArea.find(
+    const existedHorizontalResizeArea = resizeArea?.find(
       (element) => element.attrs.name === resizeAreaName,
     );
 
@@ -263,7 +267,7 @@ export class ColCell extends HeaderCell {
       Frame.getVerticalBorderWidth(this.spreadsheet) +
       headerWidth;
     // 列高调整热区
-    resizeArea.addShape('rect', {
+    resizeArea?.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
@@ -278,7 +282,7 @@ export class ColCell extends HeaderCell {
         }),
         name: resizeAreaName,
         x: 0,
-        y: y + height - resizeStyle.size,
+        y: y + height - resizeStyle.size!,
         width: resizeAreaWidth,
       },
     });
@@ -290,7 +294,7 @@ export class ColCell extends HeaderCell {
       scrollX,
       scrollY,
       scrollContainsRowHeader,
-      cornerWidth,
+      cornerWidth = 0,
       height: headerHeight,
       width: headerWidth,
     } = this.headerConfig;
@@ -298,9 +302,9 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
-      width: resizeStyle.size,
+      width: resizeStyle.size!,
       height,
     };
 
@@ -319,7 +323,7 @@ export class ColCell extends HeaderCell {
 
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
-    const { scrollX, position } = this.headerConfig;
+    const { scrollX = 0, position } = this.headerConfig;
     return {
       x: position.x + x - scrollX,
       y: position.y + y,
@@ -347,7 +351,7 @@ export class ColCell extends HeaderCell {
 
     // 列宽调整热区
     // 基准线是根据container坐标来的，因此把热区画在container
-    resizeArea.addShape('rect', {
+    resizeArea?.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
@@ -360,7 +364,7 @@ export class ColCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size,
+        x: offsetX + width - resizeStyle.size!,
         y: offsetY,
         height,
       },
@@ -374,10 +378,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected hasHiddenColumnCell() {
-    const {
-      interaction: { hiddenColumnFields = [] },
-      tooltip: { operation },
-    } = this.spreadsheet.options;
+    const { interaction, tooltip } = this.spreadsheet.options;
 
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
@@ -386,8 +387,8 @@ export class ColCell extends HeaderCell {
 
     if (
       isEmpty(hiddenColumnsDetail) ||
-      isEmpty(hiddenColumnFields) ||
-      !operation.hiddenColumns
+      isEmpty(interaction?.hiddenColumnFields) ||
+      !tooltip?.operation?.hiddenColumns
     ) {
       return false;
     }
@@ -398,13 +399,13 @@ export class ColCell extends HeaderCell {
 
   protected getExpandIconTheme(): IconTheme {
     const themeCfg = this.getStyle() as DefaultCellTheme;
-    return themeCfg.icon;
+    return themeCfg.icon!;
   }
 
   protected addExpandColumnSplitLine() {
     const { x, y, width, height } = this.getBBoxByType();
     const { horizontalBorderColor, horizontalBorderColorOpacity } =
-      this.theme.splitLine;
+      this.theme.splitLine!;
     const lineX = this.isLastColumn() ? x + width : x;
 
     renderLine(
@@ -445,7 +446,7 @@ export class ColCell extends HeaderCell {
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
   protected getExpandColumnIconConfig() {
-    const { size } = this.getExpandIconTheme();
+    const { size = 0 } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getBBoxByType();
 
     const baseIconX = x - size;

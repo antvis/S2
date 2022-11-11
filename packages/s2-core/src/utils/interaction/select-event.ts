@@ -9,6 +9,7 @@ import {
 } from '../../common/constant';
 import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
+import type { Node } from '../../facet/layout/node';
 import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
@@ -41,11 +42,15 @@ export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
   spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
 };
 
-export function getRangeIndex<T extends CellMeta | ViewMeta>(start: T, end: T) {
+export function getRangeIndex<T extends CellMeta | ViewMeta | Node>(
+  start: T,
+  end: T,
+) {
   const minRowIndex = Math.min(start.rowIndex, end.rowIndex);
   const maxRowIndex = Math.max(start.rowIndex, end.rowIndex);
   const minColIndex = Math.min(start.colIndex, end.colIndex);
   const maxColIndex = Math.max(start.colIndex, end.colIndex);
+
   return {
     start: {
       rowIndex: minRowIndex,
@@ -82,7 +87,7 @@ export function getRowCellForSelectedCell(
   }
 
   return getActiveHoverRowColCells(
-    meta.rowId,
+    meta.rowId!,
     interaction.getAllRowHeaderCells(),
     spreadsheet.isHierarchyTreeType(),
   );
@@ -93,14 +98,14 @@ export function updateRowColCells(meta: ViewMeta) {
   const { interaction } = spreadsheet;
 
   updateAllColHeaderCellState(
-    colId,
+    colId!,
     interaction.getAllColHeaderCells(),
     InteractionStateName.SELECTED,
   );
 
   if (rowId) {
     const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
-    forEach(allRowHeaderCells, (cell: RowCell) => {
+    forEach(allRowHeaderCells, (cell) => {
       cell.updateByState(InteractionStateName.SELECTED);
     });
   }

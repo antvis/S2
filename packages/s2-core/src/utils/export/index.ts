@@ -1,5 +1,6 @@
 import {
   clone,
+  concat,
   flatten,
   forEach,
   get,
@@ -29,7 +30,7 @@ import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
 import type { CustomHeaderFields } from './../../common/interface/basic';
-import { CopyMIMEType, type Copyable, type CopyableItem } from './copy';
+import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 import { getCsvString } from './export-worker';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
@@ -67,7 +68,7 @@ export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
   return navigator.clipboard
     .write([
       new ClipboardItem(
-        [].concat(data).reduce((prev, copyable: CopyableItem) => {
+        concat(data).reduce((prev, copyable: CopyableItem) => {
           const { type, content } = copyable;
           return {
             ...prev,
@@ -138,13 +139,12 @@ const processObjectValueInCol = (data: MultiData) => {
 
 /*
  * Process the multi-measure with single-lines
- * For StrategySheet
  */
-const processObjectValueInRow = (data: MultiData, isFormat: boolean) => {
+const processObjectValueInRow = (data: MultiData, isFormat = false) => {
   if (!isFormat) {
-    return data?.originalValues?.[0] ?? data?.values?.[0];
+    return get(data?.originalValues, 0) ?? get(data?.values, 0);
   }
-  return data?.values?.[0];
+  return get(data?.values, 0);
 };
 
 /* Process the data in detail mode. */
@@ -154,16 +154,19 @@ const processValueInDetail = (
   isFormat?: boolean,
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
-  const { columns } = sheetInstance.dataCfg?.fields;
-  const res = [];
+  const { columns = [] } = sheetInstance.dataCfg?.fields;
+  const res: string[] = [];
+
   for (const [index, record] of data.entries()) {
     let tempRows = [];
     if (!isFormat) {
-      tempRows = columns.map((v: string) => getCsvString(record[v]));
+      tempRows = columns.map((field) => getCsvString(record[field as string]));
     } else {
-      tempRows = columns.map((v: string) => {
-        const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
-        return getCsvString(mainFormatter(record[v], record as ViewMetaData));
+      tempRows = columns.map((field) => {
+        const mainFormatter = sheetInstance.dataSet.getFieldFormatter(field);
+        return getCsvString(
+          mainFormatter(record[field as string], record as ViewMetaData),
+        );
       });
     }
     if (sheetInstance.options.showSeriesNumber) {
@@ -203,7 +206,7 @@ const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: SpreadSheet,
   placeholder: string[],
-  isFormat?: boolean,
+  isFormat = false,
 ) => {
   let tempCells = [];
 
@@ -279,8 +282,8 @@ const getNodeFormatLabel = (node: Node) => {
  * @param rowLeafNode
  */
 const getRowNodeFormatData = (rowLeafNode: Node) => {
-  const line = [];
-  const getRowNodeFormatterLabel = (node: Node) => {
+  const line: string[] = [];
+  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
     // node.id === ROOT_ID 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
     if (node.id === ROOT_ID) {
       return;
@@ -326,7 +329,7 @@ export const copyData = (
   formatOptions?: FormatOptions,
 ): string => {
   // isFormatHeader 格式化表头， isFormatData 格式化数据
-  const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions);
+  const { isFormatHeader, isFormatData } = getFormatOptions(formatOptions!);
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
   const { maxLevel: maxRowsHeaderLevel } = rowsHierarchy;
@@ -370,20 +373,20 @@ export const copyData = (
       }
 
       // 指标挂行头且为平铺模式下，获取指标名称
-      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
+      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine)!);
       tempLine[tempLine.length - 1] = lastLabel;
 
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
-          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex)!;
           tempLine.push(
             processValueInCol(viewMeta, sheetInstance, isFormatData),
           );
         } else {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          const placeholder = getPlaceholder(viewMeta, colNode, sheetInstance);
+          const placeholder = getPlaceholder(viewMeta!, colNode, sheetInstance);
           const lintItem = processValueInRow(
-            viewMeta,
+            viewMeta!,
             sheetInstance,
             placeholder,
             isFormatData,
@@ -395,7 +398,7 @@ export const copyData = (
           }
         }
       }
-      maxRowLength = max([tempLine.length, maxRowLength]);
+      maxRowLength = max([tempLine.length, maxRowLength])!;
       const lineString = tempLine
         .map((value) => getCsvString(value))
         .join(split);
@@ -414,25 +417,25 @@ export const copyData = (
     // 当列头label为array时用于补全其他层级的label
     let arrayLength = 0;
     // Get the table header of Columns.
-    let tempColHeader = clone(colLeafNodes).map((colItem) => {
-      let curColItem = colItem;
+    let tempColHeader = clone(colLeafNodes).map((leafNode) => {
+      let currentLeafNode = leafNode;
 
       const tempCol = [];
 
       // Generate the column dimensions.
-      while (curColItem.level !== undefined) {
-        let label = getHeaderLabel(curColItem.label);
+      while (currentLeafNode.level !== undefined) {
+        let label = getHeaderLabel(currentLeafNode.label);
         if (isArray(label)) {
-          arrayLength = max([arrayLength, size(label)]);
+          arrayLength = max([arrayLength, size(label)])!;
         } else {
           // label 为数组时不进行格式化
           label =
             isFormatHeader && sheetInstance.isPivotMode()
-              ? getNodeFormatLabel(curColItem)
+              ? getNodeFormatLabel(currentLeafNode)
               : label;
         }
         tempCol.push(label);
-        curColItem = curColItem.parent;
+        currentLeafNode = currentLeafNode.parent!;
       }
       return tempCol;
     });
@@ -442,7 +445,7 @@ export const copyData = (
     }
 
     const colLevels = tempColHeader.map((colHeader) => colHeader.length);
-    const colLevel = max(colLevels);
+    const colLevel = max(colLevels)!;
 
     const colHeader: string[][] = [];
     // Convert the number of column dimension levels to the corresponding array.

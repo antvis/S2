@@ -9,7 +9,11 @@ import {
 } from 'tests/data/mock-drill-down-dataset.json';
 import { data } from 'tests/data/mock-dataset.json';
 
-import type { ViewMeta, SortMethod } from '@/common/interface';
+import type {
+  ViewMeta,
+  SortMethod,
+  CustomHeaderField,
+} from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import type { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
@@ -61,15 +65,15 @@ describe('Pivot Dataset Test', () => {
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
-      expect(rowPivotMeta.get('浙江省').level).toEqual(1);
-      expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
+      expect(rowPivotMeta.get('浙江省')!.level).toEqual(1);
+      expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
       ]);
-      expect(rowPivotMeta.get('四川省').level).toEqual(2);
-      expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
+      expect(rowPivotMeta.get('四川省')!.level).toEqual(2);
+      expect([...rowPivotMeta.get('四川省')!.children.keys()]).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
@@ -81,16 +85,16 @@ describe('Pivot Dataset Test', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(1);
-      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
+      expect(colPivotMeta.get('家具')!.level).toEqual(1);
+      expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
         '桌子',
         '沙发',
       ]);
       expect([
-        ...colPivotMeta.get('家具').children.get('桌子').children.keys(),
+        ...colPivotMeta.get('家具')!.children.get('桌子')!.children.keys(),
       ]).toEqual(['number']);
-      expect(colPivotMeta.get('办公用品').level).toEqual(2);
-      expect([...colPivotMeta.get('办公用品').children.keys()]).toEqual([
+      expect(colPivotMeta.get('办公用品')!.level).toEqual(2);
+      expect([...colPivotMeta.get('办公用品')!.children.keys()]).toEqual([
         '笔',
         '纸张',
       ]);
@@ -164,7 +168,7 @@ describe('Pivot Dataset Test', () => {
         },
         isTotals: true,
       });
-      expect(cell1.getOrigin()).toContainEntries([['number', 7789]]);
+      expect(cell1!.getOrigin()).toContainEntries([['number', 7789]]);
 
       const cell2 = dataSet.getCellData({
         query: {
@@ -176,7 +180,7 @@ describe('Pivot Dataset Test', () => {
         },
         isTotals: true,
       });
-      expect(cell2.getOrigin()).toContainEntries([['number', 352]]);
+      expect(cell2!.getOrigin()).toContainEntries([['number', 352]]);
     });
 
     describe('getMultiData function', () => {
@@ -434,17 +438,21 @@ describe('Pivot Dataset Test', () => {
 
     test('transformDrillDownData function', () => {
       dataSet.transformDrillDownData('district', drillDownData, cityNode);
-      const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
-      expect(metaMap.childField).toEqual('district');
-      expect(metaMap.children.get('西湖区')).not.toBeEmpty();
+      const metaMap = dataSet.rowPivotMeta
+        .get('浙江省')!
+        .children.get('杭州市');
+      expect(metaMap!.childField).toEqual('district');
+      expect(metaMap!.children.get('西湖区')).not.toBeEmpty();
     });
 
     test('clearDrillDownData function', () => {
       dataSet.transformDrillDownData('district', drillDownData, cityNode);
       dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
-      const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
-      expect(metaMap.childField).toBeUndefined();
-      expect(metaMap.children).toBeEmpty();
+      const metaMap = dataSet.rowPivotMeta
+        .get('浙江省')!
+        .children.get('杭州市');
+      expect(metaMap!.childField).toBeUndefined();
+      expect(metaMap!.children).toBeEmpty();
     });
 
     test('transformDrillDownData function with totalData', () => {
@@ -464,7 +472,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
-      expect(cellData.getValueByKey('number')).toEqual(110);
+      expect(cellData!.getValueByKey('number')).toEqual(110);
     });
 
     test('clearDrillDownData function with totalData', () => {
@@ -547,7 +555,9 @@ describe('Pivot Dataset Test', () => {
       expect(dataSet.getFieldName({ key: '1', title: '测试' })).toStrictEqual(
         '测试',
       );
-      expect(dataSet.getFieldName(null)).toBeNull();
+      expect(
+        dataSet.getFieldName(null as unknown as CustomHeaderField),
+      ).toBeNull();
     });
 
     test('should return correct field description', () => {

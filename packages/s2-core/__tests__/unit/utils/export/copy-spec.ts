@@ -2,8 +2,8 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
+import { CopyMIMEType } from '@/utils/export/interface';
 import { TableSheet, PivotSheet } from '@/sheet-type';
-
 import {
   CellTypes,
   InteractionStateName,
@@ -11,7 +11,6 @@ import {
 } from '@/common/constant/interaction';
 import {
   convertString,
-  CopyMIMEType,
   getCopyData,
   getSelectedData,
 } from '@/utils/export/copy';
@@ -390,7 +389,7 @@ describe('Pivot Table Core Data Process', () => {
       `${
         totalData.find(
           (data) => data.province === '浙江省' && data.sub_type === '桌子',
-        ).number
+        )!.number
       }`,
     );
   });
@@ -432,7 +431,7 @@ describe('Pivot Table Core Data Process', () => {
       .pop();
 
     ss.interaction.changeState({
-      cells: [getCellMeta(cell)],
+      cells: [getCellMeta(cell!)],
       stateName: InteractionStateName.SELECTED,
     });
     expect(getSelectedData(ss).split('\t').length).toBe(4);
@@ -600,7 +599,7 @@ describe('Pivot Table Core Data Process', () => {
         copyWithHeader: false,
       },
     });
-    const node = s2.getColumnNodes().find((node) => node.isLeaf);
+    const node = s2.getColumnNodes().find((node) => node.isLeaf)!;
     s2.groupSortByMethod('ASC' as SortMethodType, node);
     s2.setDataCfg(s2.dataCfg);
     s2.render();
@@ -608,7 +607,7 @@ describe('Pivot Table Core Data Process', () => {
     const cell = s2.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)
-      .find((e) => e.getMeta().isLeaf);
+      .find((e) => e.getMeta().isLeaf)!;
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],

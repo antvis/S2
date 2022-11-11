@@ -1,5 +1,6 @@
 import type { Canvas } from '@antv/g-canvas';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import { Store } from '@/common/store';
 import {
   BaseEvent,
@@ -211,13 +212,13 @@ describe('RootInteraction Tests', () => {
 
   test('should call merge cells', () => {
     rootInteraction.mergeCells();
-    expect(mergeCell).toBeCalled();
+    expect(mergeCell).toHaveBeenCalled();
   });
 
   test('should call cancel mergedCell', () => {
     let mergedCell: MergedCell;
-    rootInteraction.unmergeCell(mergedCell);
-    expect(unmergeCell).toBeCalled();
+    rootInteraction.unmergeCell(mergedCell!);
+    expect(unmergeCell).toHaveBeenCalled();
   });
 
   test('should call hideColumns', () => {
@@ -415,7 +416,7 @@ describe('RootInteraction Tests', () => {
       rootInteraction.highlightNodes([mockNodeA, mockNodeB]);
 
       [mockNodeA, mockNodeB].forEach((node) => {
-        expect(node.belongsCell.updateByState).toHaveBeenCalledWith(
+        expect(node.belongsCell?.updateByState).toHaveBeenCalledWith(
           InteractionStateName.SELECTED,
           belongsCell,
         );
@@ -432,8 +433,10 @@ describe('RootInteraction Tests', () => {
         cells: [getCellMeta(mockCell)],
         stateName,
       });
+      // @ts-ignore
       expect(rootInteraction[handler]()).toBeTruthy();
       rootInteraction.resetState();
+      // @ts-ignore
       expect(rootInteraction[handler]()).toBeFalsy();
     });
 
@@ -536,7 +539,7 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.interactions.size).toEqual(defaultInteractionSize);
     Object.keys(InteractionName).forEach((key) => {
       expect(
-        rootInteraction.interactions.has(InteractionName[key]),
+        rootInteraction.interactions.has(get(InteractionName, key)),
       ).toBeTruthy();
     });
   });
@@ -574,7 +577,7 @@ describe('RootInteraction Tests', () => {
       interaction: MyInteraction,
     };
 
-    mockSpreadSheetInstance.options.interaction.customInteractions = [
+    mockSpreadSheetInstance.options.interaction!.customInteractions = [
       customInteraction,
     ];
 

@@ -61,9 +61,9 @@ describe('SpreadSheet Theme Tests', () => {
         s2.render();
         const cellTheme = s2.theme[cellType];
 
-        expect(cellTheme.bolderText.fill).toEqual(cellTheme.icon.fill);
-        expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
-        expect(cellTheme.cell).toBeTruthy();
+        expect(cellTheme!.bolderText!.fill).toEqual(cellTheme!.icon!.fill);
+        expect(cellTheme!.text!.fill).toEqual(cellTheme!.icon!.fill);
+        expect(cellTheme!.cell).toBeTruthy();
       },
     );
 
@@ -74,7 +74,7 @@ describe('SpreadSheet Theme Tests', () => {
       s2.render();
       const cellTheme = s2.theme[cellType];
 
-      expect(cellTheme.cell).toBeTruthy();
+      expect(cellTheme!.cell).toBeTruthy();
     });
 
     test('should set theme correctly', () => {
@@ -84,7 +84,7 @@ describe('SpreadSheet Theme Tests', () => {
         },
       });
 
-      expect(s2.theme.rowCell.seriesNumberWidth).toStrictEqual(200);
+      expect(s2.theme.rowCell!.seriesNumberWidth).toStrictEqual(200);
     });
 
     // https://github.com/antvis/S2/issues/1538
@@ -94,6 +94,7 @@ describe('SpreadSheet Theme Tests', () => {
         semanticColors: {
           red: 'red',
           green: 'green',
+          yellow: 'yellow',
         },
       };
 
@@ -114,7 +115,7 @@ describe('SpreadSheet Theme Tests', () => {
         },
       });
 
-      expect(s2.theme.background.color).toStrictEqual('red');
+      expect(s2.theme.background!.color).toStrictEqual('red');
     });
   });
 
@@ -153,7 +154,7 @@ describe('SpreadSheet Theme Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader.getFirst() as RowCell;
+      const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
       const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
 
       expect(actionIconCfg.fill).toEqual(iconInfo.fill);
@@ -187,13 +188,13 @@ describe('SpreadSheet Theme Tests', () => {
         s2.setThemeCfg(getRowCellThemeCfg(align));
         s2.render();
 
-        const rowCell = s2.facet.rowHeader.getFirst() as RowCell;
+        const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
 
         const rowCellWidth = get(rowCell, 'meta.width');
         const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
 
         expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconCfg.x + actionIconCfg.width).toBeLessThanOrEqual(
+        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
           rowCellWidth,
         );
       },
@@ -221,7 +222,7 @@ describe('SpreadSheet Theme Tests', () => {
       if (!containsDataCells) {
         expect(
           targetNodes.every((node) => {
-            const nodeTextShape = node.belongsCell.getTextShape();
+            const nodeTextShape = node.belongsCell!.getTextShape();
             return (
               nodeTextShape.attr('textAlign') === textAlign &&
               nodeTextShape.attr('fontWeight') === fontWight
@@ -232,7 +233,7 @@ describe('SpreadSheet Theme Tests', () => {
       }
 
       targetNodes.forEach((node) => {
-        const nodeTextShape = node.belongsCell.getTextShape();
+        const nodeTextShape = node.belongsCell!.getTextShape();
         const isEqualTextAlign = dataCells.every((cell) => {
           return (
             cell.getTextShape().attr('textAlign') ===
@@ -406,7 +407,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.setDataCfg({
           fields: {
-            columns: [...s2.dataCfg.fields.columns, EXTRA_COLUMN_FIELD],
+            columns: [...(s2.dataCfg.fields.columns || []), EXTRA_COLUMN_FIELD],
           },
         } as S2DataConfig);
 
@@ -454,13 +455,15 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.render();
 
-        const rowCell = s2.facet.rowHeader.getChildByIndex(0) as IGroup; // 浙江省
+        const rowCell = s2.facet.rowHeader!.getChildByIndex(0) as IGroup; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
 
-        const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
+        const seriesCell = s2.facet.rowIndexHeader!.getChildByIndex(
+          3,
+        ) as IGroup; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
-        expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
-        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);
+        expect(textOfSeriesCell?.attr('textBaseline')).toEqual('top');
       },
     );
   });

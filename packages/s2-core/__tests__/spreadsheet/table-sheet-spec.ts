@@ -3,14 +3,15 @@ import {
   ColCell,
   DeviceType,
   ResizeType,
+  TableSheet,
+  type RawData,
   type S2DataConfig,
   type S2Options,
-  TableSheet,
 } from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
-);
+) as RawData[];
 
 const columns = [
   'order_id',
@@ -32,7 +33,7 @@ const columns = [
   'profit',
 ];
 
-const meta = [
+const meta: S2DataConfig['meta'] = [
   {
     field: 'count',
     name: '销售个数',
@@ -40,7 +41,7 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
-    formatter: (v: number) => `${v}元`,
+    formatter: (v) => `${v}元`,
   },
 ];
 
@@ -125,7 +126,7 @@ describe('TableSheet normal spec', () => {
       scrollX: 10,
       hRowScrollX: 0,
     });
-    expect(onScrollFinish).toBeCalled();
+    expect(onScrollFinish).toHaveBeenCalled();
 
     s2.destroy();
   });

@@ -128,7 +128,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith);
         expect(Math.round(node.width)).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
       });
     });
   });
@@ -154,13 +154,13 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.y).toBe(0);
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
-      expect(seriesNumberNode.height).toBe(colCfg.height);
+      expect(seriesNumberNode.height).toBe(colCfg!.height);
 
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
         expect(node.width).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
       });
     });
   });
@@ -214,7 +214,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -268,7 +268,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg.height);
+        expect(node.height).toBe(colCfg!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -333,7 +333,7 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenTrailingColCount } = facet.cfg;
+    const { frozenTrailingColCount = 0 } = facet.cfg;
     const { colLeafNodes } = facet.layoutResult;
     expect(
       colLeafNodes
@@ -349,10 +349,10 @@ describe('Table Mode Facet With Frozen Test', () => {
 
     expect(
       colLeafNodes
-        .slice(-frozenTrailingColCount)
+        .slice(-frozenTrailingColCount!)
         .reverse()
         .map(
-          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index).x,
+          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index)!.x,
         ),
     ).toEqual([476, 357]);
   });
@@ -364,9 +364,9 @@ describe('Table Mode Facet With Frozen Test', () => {
 
     expect(
       displayData
-        .slice(-frozenTrailingRowCount)
+        .slice(-frozenTrailingRowCount!)
         .reverse()
-        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1).y),
+        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([532, 502]);
   });
 
@@ -502,8 +502,8 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
     }),
     ...DEFAULT_STYLE,
     columns: ['province', 'city', 'type', 'sub_type', 'price'],
-    layoutCoordinate: (cfg, _, currentNode) => {
-      currentNode.width = 200;
+    layoutCoordinate: (_, __, currentNode) => {
+      currentNode!.width = 200;
     },
   });
 

@@ -14,7 +14,7 @@ import type {
 import type {
   FilterParam,
   SortParams,
-  Style,
+  S2Style,
 } from '../../common/interface/basic';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
@@ -39,7 +39,7 @@ type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;
 type ResizeHandler = (data: {
   info: ResizeInfo;
-  style?: Style;
+  style?: S2Style;
   seriesNumberWidth?: number;
 }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;

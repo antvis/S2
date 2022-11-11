@@ -3,7 +3,7 @@ import { TableColCell } from './table-col-cell';
 
 export class TableCornerCell extends TableColCell {
   public getStyle(name?: string) {
-    return name ? this.theme[name] : get(this, 'theme.cornerCell');
+    return name ? get(this.theme, name) : this.theme?.cornerCell;
   }
 
   protected showSortIcon() {

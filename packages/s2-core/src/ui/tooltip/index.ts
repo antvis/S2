@@ -22,7 +22,7 @@ export class BaseTooltip {
 
   public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
-  public container: HTMLElement; // the base container element
+  public container: HTMLElement | null; // the base container element
 
   public options: TooltipShowOptions;
 
@@ -50,7 +50,7 @@ export class BaseTooltip {
       autoAdjustBoundary,
     });
 
-    this.position = adjustPosition?.({ position: { x, y }, event }) ?? {
+    this.position = adjustPosition?.({ position: { x, y }, event: event! }) ?? {
       x,
       y,
     };
@@ -148,12 +148,12 @@ export class BaseTooltip {
   private getContainer(): HTMLElement {
     if (!this.container) {
       const { tooltip } = this.spreadsheet.options;
-      const rootContainer = tooltip.getContainer?.() || document.body;
+      const rootContainer = tooltip?.getContainer?.() || document.body;
       const container = document.createElement('div');
 
       setTooltipContainerStyle(container, {
-        style: tooltip.style,
-        className: [TOOLTIP_CONTAINER_CLS].concat(tooltip.className),
+        style: tooltip?.style,
+        className: [TOOLTIP_CONTAINER_CLS].concat(tooltip?.className!),
       });
 
       rootContainer.appendChild(container);

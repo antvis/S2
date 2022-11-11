@@ -82,7 +82,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
         parentNode: node,
         level: level + 1,
         hierarchy,
-        tree: children,
+        tree: children || [],
       });
     }
   });

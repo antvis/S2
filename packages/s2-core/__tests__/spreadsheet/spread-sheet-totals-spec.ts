@@ -3,7 +3,7 @@ import { getContainer } from 'tests/util/helpers';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { flatMap, get, merge } from 'lodash';
 import { PivotSheet } from '@/sheet-type';
-import type { S2DataConfig, S2Options } from '@/common';
+import type { RawData, S2DataConfig, S2Options } from '@/common';
 import type { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
 
@@ -86,9 +86,10 @@ describe('Spreadsheet Totals Tests', () => {
      * 行头：浙江省下有多个城市、四川省下只有成都
      * 列头：办公用品下有两个维度，家具下只有桌子
      */
-    const filterCond = (item) =>
+    const filterCond = (item: RawData) =>
       (item.province === '浙江省' || item.city === '成都市') &&
       (item.type === '办公用品' || item.sub_type === '桌子');
+
     anotherDataCfg.data = anotherDataCfg.data.filter(filterCond);
 
     spreadsheet.setDataCfg(anotherDataCfg);
@@ -115,7 +116,7 @@ describe('Spreadsheet Totals Tests', () => {
     ) => {
       return nodes.find(
         (node) =>
-          node.parent.label === parentLabel &&
+          node.parent?.label === parentLabel &&
           node.field === subTotalDimension &&
           node.isSubTotals,
       );

@@ -12,6 +12,6 @@ export class TableSeriesCell extends TableDataCell {
   }
 
   protected getTextStyle(): TextTheme {
-    return this.theme.rowCell.seriesText;
+    return this.theme.rowCell!.seriesText!;
   }
 }

@@ -18,3 +18,5 @@ export interface TargetCellInfo {
   event: GEvent;
   viewMeta: Node;
 }
+
+export type CellEventTarget = GEvent['target'] | null | undefined;

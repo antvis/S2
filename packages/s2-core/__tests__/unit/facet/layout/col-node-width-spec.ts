@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import type { S2Options } from '@/common';
+import type { S2DataConfig, S2Options } from '@/common';
 
 const s2options: S2Options = {
   width: 800,
@@ -79,13 +79,13 @@ describe('Col width Test in grid mode', () => {
 
   test('get correct width in layoutWidthType compact mode when apply formatter', () => {
     s2.setDataCfg({
-      fields: undefined,
-      data: undefined,
+      fields: undefined as unknown as S2DataConfig['fields'],
+      data: undefined as unknown as S2DataConfig['data'],
       meta: [
         {
           field: 'price',
-          formatter: (v: number) => {
-            return `${(v / 1000000).toFixed(0)}百万`;
+          formatter: (v) => {
+            return `${((v as number) / 1000000).toFixed(0)}百万`;
           },
         },
       ],

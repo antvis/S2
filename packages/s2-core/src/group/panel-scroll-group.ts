@@ -1,6 +1,7 @@
 import type { IGroup } from '@antv/g-canvas';
-import { updateMergedCells } from '../utils/interaction/merge-cell';
 import type { GridInfo } from '../common/interface';
+import type { GridGroupConstructorParameters } from '../common/interface/group';
+import { updateMergedCells } from '../utils/interaction/merge-cell';
 import type { MergedCell } from './../cell/merged-cell';
 import { KEY_GROUP_MERGED_CELLS } from './../common/constant/basic';
 import { GridGroup } from './grid-group';
@@ -8,7 +9,7 @@ import { GridGroup } from './grid-group';
 export class PanelScrollGroup extends GridGroup {
   protected mergedCellsGroup: IGroup;
 
-  constructor(cfg) {
+  constructor(cfg: GridGroupConstructorParameters) {
     super(cfg);
     this.initMergedCellsGroup();
   }

@@ -24,8 +24,8 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
       }
 
       const { cellData } = this.getCellAppendInfo(event.target);
-      const key = cellData.key;
-      const rowData = this.getRowData(cellData);
+      const key = cellData!.key;
+      const rowData = this.getRowData(cellData!);
 
       this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         key,
@@ -37,7 +37,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   private getRowData = (cellData: Node): RawData => {
     const leafNode = cellData.getHeadLeafChild();
 
-    const data = this.spreadsheet.dataSet.getMultiData(leafNode?.query, {
+    const data = this.spreadsheet.dataSet.getMultiData(leafNode?.query!, {
       row: {
         totalDimensions: true,
       },
@@ -46,7 +46,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
     const originalData = getFieldValueOfViewMetaData(data) as RawData;
     return {
       ...originalData,
-      rowIndex: cellData.rowIndex ?? leafNode.rowIndex,
+      rowIndex: cellData.rowIndex ?? leafNode?.rowIndex,
     };
   };
 }

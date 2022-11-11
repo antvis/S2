@@ -1,16 +1,16 @@
+import { TableSeriesCell } from '../../../../src/cell';
 import {
   isMultiSelectionKey,
   getRowCellForSelectedCell,
 } from '@/utils/interaction/select-event';
 import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { TableSeriesCell } from '@/cell';
 import type { ViewMeta } from '@/common';
 
 jest.mock('@/cell', () => {
   return {
-    // eslint-disable-next-line object-shorthand
-    TableSeriesCell: function () {
+    TableSeriesCell() {
+      // @ts-ignore
       this.getMeta = () => {
         return {
           id: '5-序号',
@@ -64,9 +64,7 @@ describe('Select Event Utils Tests', () => {
                 ],
               },
             },
-            isTableMode: () => {
-              return true;
-            },
+            isTableMode: () => true,
           } as unknown as SpreadSheet,
         ).map((item) => item.getMeta().id),
       ).toStrictEqual(['5-序号']);

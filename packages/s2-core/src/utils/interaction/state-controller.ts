@@ -29,7 +29,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
   });
 
   spreadsheet.interaction.resetState();
-  if (spreadsheet.options.interaction.selectedCellsSpotlight) {
+  if (spreadsheet.options.interaction?.selectedCellsSpotlight) {
     const unSelectedCells =
       spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
 
@@ -50,7 +50,7 @@ export const setState = (
   interactionStateInfo: InteractionStateInfo,
 ) => {
   const stateName = interactionStateInfo?.stateName;
-  if (!spreadsheet.interaction.isEqualStateName(stateName)) {
+  if (!spreadsheet.interaction.isEqualStateName(stateName!)) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();

@@ -13,8 +13,8 @@ export const handleDataItem = (
   callback?: FilterDataItemCallback | MappingDataItemCallback,
 ) => {
   return callback
-    ? callback(data[EXTRA_FIELD] as string, data[VALUE_FIELD])
-    : data[VALUE_FIELD];
+    ? callback(data?.[EXTRA_FIELD] as string, data?.[VALUE_FIELD])
+    : data?.[VALUE_FIELD];
 };
 
 /**

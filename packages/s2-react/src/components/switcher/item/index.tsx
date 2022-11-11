@@ -11,7 +11,7 @@ import './index.less';
 export interface DimensionCommonProps
   extends Pick<SwitcherField, 'selectable' | 'expandable'> {
   fieldType: FieldType;
-  draggingItemId?: string;
+  draggingItemId?: string | null;
   onVisibleItemChange: (
     fieldType: FieldType,
     checked: boolean,

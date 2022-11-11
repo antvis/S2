@@ -82,8 +82,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const { data, scrollY, viewportHeight, spreadsheet } = this.headerConfig;
-    if (spreadsheet.isPivotMode) {
+    const {
+      data,
+      scrollY = 0,
+      viewportHeight,
+      spreadsheet,
+    } = this.headerConfig;
+
+    if (spreadsheet.isPivotMode()) {
       //  添加矩形背景
       this.addBackGround();
     }
@@ -91,12 +97,12 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const borderGroup = this.addGroup();
     each(data, (cellData) => {
       const { y, height: cellHeight, isLeaf } = cellData;
-      const isHeaderCellInViewport = this.isHeaderCellInViewport(
-        y,
-        cellHeight,
-        scrollY,
-        viewportHeight,
-      );
+      const isHeaderCellInViewport = this.isHeaderCellInViewport({
+        cellPosition: y,
+        cellSize: cellHeight,
+        viewportPosition: scrollY,
+        viewportSize: viewportHeight,
+      });
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
         const group = this.addGroup();
@@ -115,7 +121,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollY, scrollX, position } = this.headerConfig;
+    const { scrollY = 0, scrollX = 0, position } = this.headerConfig;
     translateGroup(this, position.x - scrollX, position.y - scrollY);
     if (this.backgroundShape) {
       this.backgroundShape.translate(position.x, position.y + scrollY);
@@ -126,7 +132,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addBackGround() {
-    const rowCellTheme = this.getStyle().cell;
+    const rowCellTheme = this.getStyle()?.cell;
     const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
@@ -134,9 +140,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       y: -position.y,
       width,
       height: viewportHeight,
-      fill: rowCellTheme.backgroundColor,
+      fill: rowCellTheme?.backgroundColor,
       stroke: 'transparent',
-      opacity: rowCellTheme.backgroundColorOpacity,
+      opacity: rowCellTheme?.backgroundColorOpacity,
     });
 
     const { position: borderPosition, style: borderStyle } =
@@ -148,27 +154,31 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
           width,
           height: viewportHeight,
         },
-        rowCellTheme,
+        rowCellTheme!,
       );
 
-    this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
+    this.leftBorderShape = renderLine(this, borderPosition, borderStyle!);
   }
 
-  private addBorder(group: IGroup, cellData) {
+  private addBorder(group: IGroup, cellData: Node) {
     const cellTheme = this.getStyle().cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
+      getBorderPositionAndStyle(
+        CellBorderPosition.BOTTOM,
+        cellData,
+        cellTheme!,
+      );
 
-    renderLine(group as Group, horizontalPosition, horizontalStyle);
+    renderLine(group as Group, horizontalPosition, horizontalStyle!);
   }
 
   private getStyle() {
-    return this.headerConfig.spreadsheet.theme.rowCell;
+    return this.headerConfig.spreadsheet.theme.rowCell!;
   }
 
   private addText(group: IGroup, cellData: Node) {
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const { scrollY = 0, viewportHeight: height } = this.headerConfig;
     const textStyle = {
       ...this.getStyle().seriesText,
       textBaseline: 'top' as const,
@@ -176,16 +186,16 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
     const padding = this.getTextPadding(label, cellWidth);
     const textY = getAdjustPosition(
-      y + padding.top,
-      cellHeight - padding.top - padding.bottom,
+      y + padding.top!,
+      cellHeight - padding.top! - padding.bottom!,
       scrollY,
       height,
-      textStyle.fontSize,
+      textStyle.fontSize!,
     );
 
     group.addShape('text', {
       attrs: {
-        x: x + padding.left,
+        x: x + padding.left!,
         y: textY,
         text: label,
         ...textStyle,
@@ -198,11 +208,11 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const rowCellTheme = this.getStyle();
     const textWidth = this.headerConfig.spreadsheet.measureTextWidth(
       text,
-      rowCellTheme.seriesText,
+      rowCellTheme?.seriesText,
     );
     const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
     return {
-      ...rowCellTheme.cell.padding,
+      ...rowCellTheme?.cell?.padding,
       left: padding,
       right: padding,
     };

@@ -51,7 +51,7 @@ describe('<SheetComponent/> Tests', () => {
           );
         }
 
-        expect(render).not.toThrowError();
+        expect(render).not.toThrow();
       },
     );
 

@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "declaration": false,
     "sourceMap": true,
     "target": "es5",
     "importHelpers": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
     "resolveJsonModule": true,

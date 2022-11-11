@@ -21,18 +21,21 @@ import type { TooltipRenderProps } from './interface';
 
 import './index.less';
 
-export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
+export const TooltipComponent = (props: TooltipRenderProps) => {
   const { data, options, content, cell } = props;
 
   const renderOperation = (
-    operator: TooltipOperatorOptions,
+    operator: TooltipOperatorOptions | undefined,
     onlyMenu?: boolean,
   ) => {
-    return (
-      operator && (
-        <TooltipOperator {...operator} onlyMenu={onlyMenu} cell={cell} />
-      )
-    );
+    return operator ? (
+      <TooltipOperator
+        {...operator}
+        onClick={operator.onClick as (params: { key: string }) => void}
+        onlyMenu={onlyMenu!}
+        cell={cell!}
+      />
+    ) : null;
   };
 
   const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
@@ -40,12 +43,12 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     return <TooltipSimpleTips name={name} tips={tips} />;
   };
 
-  const renderSummary = (summaries: TooltipSummaryOptions[]) => {
+  const renderSummary = (summaries: TooltipSummaryOptions[] | undefined) => {
     return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   };
 
-  const renderHeadInfo = (headInfo: TooltipHeadInfoType) => {
-    const { cols, rows } = headInfo || {};
+  const renderHeadInfo = (headInfo: TooltipHeadInfoType | undefined | null) => {
+    const { cols = [], rows = [] } = headInfo || {};
 
     return (
       (!isEmpty(cols) || !isEmpty(rows)) && (
@@ -54,21 +57,23 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     );
   };
 
-  const renderDetail = (details: TooltipDetailListItem[]) => {
+  const renderDetail = (
+    details: TooltipDetailListItem[] | null | undefined,
+  ) => {
     return !isEmpty(details) && <TooltipDetail list={details} />;
   };
 
-  const renderInfos = (infos: string) => {
+  const renderInfos = (infos: string | undefined) => {
     return infos && <TooltipInfos infos={infos} />;
   };
 
   const renderInterpretation = (
-    interpretation: TooltipInterpretationOptions,
+    interpretation: TooltipInterpretationOptions | undefined,
   ) => {
     return interpretation && <TooltipInterpretation {...interpretation} />;
   };
 
-  const renderDescription = (description: string) => {
+  const renderDescription = (description: string | undefined) => {
     return <TooltipDescription description={description} />;
   };
 

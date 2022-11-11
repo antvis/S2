@@ -51,14 +51,14 @@ describe('Theme Color Tests', () => {
     function renderEmptyPalette() {
       generatePalette();
     }
-    expect(renderEmptyPalette).not.toThrowError();
+    expect(renderEmptyPalette).not.toThrow();
   });
 
   test('should not throw error when receive empty brand color', () => {
     function renderStandardColors() {
-      generateStandardColors(undefined);
+      generateStandardColors(undefined as unknown as string);
     }
-    expect(renderStandardColors).not.toThrowError();
+    expect(renderStandardColors).not.toThrow();
   });
 
   test('should get standard color if brand color is empty', () => {
@@ -75,7 +75,9 @@ describe('Theme Color Tests', () => {
       '#000000',
       '#000000',
     ];
-    expect(generateStandardColors(undefined)).toEqual(colors);
+    expect(generateStandardColors(undefined as unknown as string)).toEqual(
+      colors,
+    );
     expect(generateStandardColors('')).toEqual(colors);
   });
 });

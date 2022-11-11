@@ -18,9 +18,9 @@ const addTotals = (
   // tree mode only has grand totals, but if there are subTotals configs,
   // it will display in cross-area cell
   // TODO valueInCol = false and one or more values
-  if (totalsConfig.showGrandTotals) {
+  if (totalsConfig?.showGrandTotals) {
     const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-    fieldValues[func](new TotalClass(totalsConfig.label, false, true));
+    fieldValues[func](new TotalClass(totalsConfig.label!, false, true));
   }
 };
 
@@ -33,8 +33,14 @@ const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
-  const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
-    params;
+  const {
+    parentNode,
+    currentField = '',
+    level,
+    facetCfg,
+    hierarchy,
+    pivotMeta,
+  } = params;
   const {
     spreadsheet,
     dataSet,
@@ -43,7 +49,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     rowExpandDepth,
   } = facetCfg;
   const { query, id: parentId } = parentNode;
-  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
+  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
@@ -84,7 +90,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     const pivotMetaValue = isTotals
       ? null
       : pivotMeta.get(fieldValue as string);
-    let value;
+    let value: string;
     let nodeQuery = query;
     let isGrandTotals = false;
     let isSubTotals = false;
@@ -95,7 +101,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       value = i18n((fieldValue as TotalClass).label);
       nodeQuery = query;
     } else {
-      value = fieldValue;
+      value = fieldValue as string;
       nodeQuery = {
         ...query,
         [currentField]: value,
@@ -153,7 +159,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     if (!emptyChildren && !isCollapse && !isTotals && expandCurrentNode) {
       buildRowTreeHierarchy({
         level: level + 1,
-        currentField: pivotMetaValue.childField,
+        currentField: pivotMetaValue.childField!,
         pivotMeta: pivotMetaValue.children,
         facetCfg,
         parentNode: node,

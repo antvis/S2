@@ -1,4 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
+import type { TextTheme } from '../../../src/common';
 import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   getEllipsisText,
@@ -12,11 +13,11 @@ import {
 const isHD = window.devicePixelRatio >= 2;
 
 describe('Text Utils Tests', () => {
-  const font = {
+  const font: TextTheme = {
     fontFamily: 'Roboto',
     fontSize: 12,
     fontWeight: 'normal',
-  } as unknown as CSSStyleDeclaration;
+  };
 
   describe('Test Widths Tests', () => {
     let measureTextWidth: (text: number | string, font: unknown) => number;

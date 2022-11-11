@@ -1,6 +1,6 @@
 import type { SpreadSheet } from '@antv/s2';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { SpreadSheetContext } from '../context/SpreadSheetContext';
 
 export type InvokeComponentProps<P> = {
@@ -33,19 +33,19 @@ export function invokeComponent<P>(
     }
   }
 
-  const div = document.createElement('div');
+  const container = document.createElement('div');
   if (id) {
-    div.id = id;
+    container.id = id;
   }
-  document.body.appendChild(div);
+  document.body.appendChild(container);
 
-  let resolveCb;
-  let rejectCb;
+  let resolveCb: (value: unknown) => void;
+  let rejectCb: (reason?: unknown) => void;
 
-  function destroy(...args: any[]) {
-    const unmountResult = ReactDOM.unmountComponentAtNode(div);
-    if (unmountResult && div.parentNode) {
-      div.parentNode.removeChild(div);
+  function destroy() {
+    const unmountResult = ReactDOM.unmountComponentAtNode(container);
+    if (unmountResult && container.parentNode) {
+      container.parentNode.removeChild(container);
 
       if (onCleanup) {
         onCleanup();
@@ -53,8 +53,8 @@ export function invokeComponent<P>(
     }
   }
 
-  function close(...args: any[]) {
-    destroy.call(null, ...args);
+  function close() {
+    destroy();
     rejectCb();
   }
 
@@ -72,7 +72,7 @@ export function invokeComponent<P>(
         <SpreadSheetContext.Provider value={spreadsheet}>
           <Component onCancel={close} resolver={resolveCb} params={params} />
         </SpreadSheetContext.Provider>,
-        div,
+        container,
       );
     });
   }

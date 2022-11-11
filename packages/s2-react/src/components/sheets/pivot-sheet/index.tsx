@@ -17,7 +17,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     const { options: pivotOptions, ...restProps } = props;
     const { dataCfg, partDrillDown } = restProps;
 
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
     const [drillFields, setDrillFields] = React.useState<string[]>([]);
 
     const onDrillDownIconClick = useLatest<ActionIconCallback>(
@@ -32,7 +32,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
         );
 
         if (event) {
-          const { showTooltip } = getTooltipOptions(sheetInstance, event);
+          const { showTooltip } = getTooltipOptions(sheetInstance, event)!;
           if (!showTooltip) {
             return;
           }
@@ -50,8 +50,8 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     /** 基于 props.options 来构造新的 options 传递给 base-sheet */
     const options = React.useMemo(() => {
       return buildDrillDownOptions<SheetComponentOptions>(
-        pivotOptions,
-        partDrillDown,
+        pivotOptions!,
+        partDrillDown!,
         (params) => onDrillDownIconClick.current(params),
       );
     }, [pivotOptions, partDrillDown, onDrillDownIconClick]);
@@ -71,7 +71,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     React.useEffect(() => {
       s2Ref.current?.hideTooltip();
       if (isEmpty(drillFields)) {
-        clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
+        clearDrillDownInfo(s2Ref.current?.store.get('drillDownNode')?.id);
       } else {
         // 执行下钻
         handleDrillDown({
@@ -79,7 +79,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
           drillFields,
           fetchData: partDrillDown?.fetchData,
           drillItemsNum: partDrillDown?.drillItemsNum,
-          spreadsheet: s2Ref.current,
+          spreadsheet: s2Ref.current!,
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +95,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     /**
      * 控制交叉表 render
      */
-    const onSheetUpdate = usePivotSheetUpdate(partDrillDown);
+    const onSheetUpdate = usePivotSheetUpdate(partDrillDown!);
 
     return (
       <BaseSheet

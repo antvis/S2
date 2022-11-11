@@ -32,8 +32,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       width,
       viewportHeight,
       seriesNumberWidth,
-      scrollY,
-      scrollX,
+      scrollY = 0,
+      scrollX = 0,
     } = this.headerConfig;
 
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
@@ -48,7 +48,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     };
     each(data, (item: Node) => {
       if (rowCellInRect(item) && item.height !== 0) {
-        let cell: S2CellType;
+        let cell: S2CellType | null = null;
         // 首先由外部控制UI展示
         if (rowCell) {
           cell = rowCell(item, spreadsheet, this.headerConfig);
@@ -60,13 +60,18 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        this.add(cell);
+        this.add(cell as S2CellType);
       }
     });
   }
 
   protected offset() {
-    const { scrollX, scrollY, position, seriesNumberWidth } = this.headerConfig;
+    const {
+      scrollX = 0,
+      scrollY = 0,
+      position,
+      seriesNumberWidth,
+    } = this.headerConfig;
     // 向右多移动的seriesNumberWidth是序号的宽度
     translateGroup(
       this,
@@ -76,8 +81,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const { width, viewportHeight, scrollX, scrollY, seriesNumberWidth } =
-      this.headerConfig;
+    const {
+      width,
+      viewportHeight,
+      scrollX = 0,
+      scrollY = 0,
+      seriesNumberWidth,
+    } = this.headerConfig;
+
     this.setClip({
       type: 'rect',
       attrs: {

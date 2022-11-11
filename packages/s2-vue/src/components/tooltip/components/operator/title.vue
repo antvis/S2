@@ -1,7 +1,6 @@
 <script lang="ts">
 import {
   type TooltipOperatorMenu,
-  type S2CellType,
   TOOLTIP_PREFIX_CLS,
   getIcon,
 } from '@antv/s2';

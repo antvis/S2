@@ -25,7 +25,6 @@ import type {
   FormatResult,
   HeaderActionIconOptions,
   MappingResult,
-  SortParam,
   TextTheme,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header';
@@ -50,9 +49,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
-    const sortParams = this.spreadsheet.dataCfg.sortParams;
+    const sortParams = this.spreadsheet.dataCfg.sortParams || [];
     const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
-    const sortParam: SortParam = find(
+    const sortParam = find(
       [...sortParams].reverse(),
       (item) =>
         isSortCell &&
@@ -60,8 +59,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
         isEqual(get(item, 'query'), query),
     );
     const type = getSortTypeIcon(sortParam, isSortCell);
+
     this.headerConfig.sortParam = {
-      ...this.headerConfig.sortParam,
+      ...this.headerConfig.sortParam!,
       ...(sortParam || { query }),
       type,
     };
@@ -82,7 +82,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const isTableMode = this.spreadsheet.isTableMode();
     // 如果是 table mode，列头不需要被格式化
     const formattedValue =
-      formatter && !isTableMode
+      formatter! && !isTableMode
         ? formatter(label, undefined, this.meta)
         : label;
 
@@ -135,8 +135,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconsWidth() {
-    const { size, margin } = this.getStyle().icon;
-    return (size + margin.left) * this.getActionIconsCount();
+    const { size, margin } = this.getStyle()!.icon!;
+    return (size! + margin!.left!) * this.getActionIconsCount();
   }
 
   // 绘制排序icon
@@ -145,15 +145,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return;
     }
 
-    const { icon, text } = this.getStyle();
-    const fill = this.getTextConditionFill(text);
+    const { icon, text } = this.getStyle()!;
+    const fill = this.getTextConditionFill(text!);
     const { sortParam } = this.headerConfig;
     const position = this.getIconPosition();
     const sortIcon = new GuiIcon({
       name: get(sortParam, 'type', 'none'),
       ...position,
-      width: icon.size,
-      height: icon.size,
+      width: icon!.size,
+      height: icon!.size,
       fill,
     });
     sortIcon.on('click', (event: CanvasEvent) => {
@@ -171,8 +171,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected addActionIcon(options: HeaderActionIconOptions) {
     const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
-    const { icon: iconTheme, text: textTheme } = this.getStyle();
-    const fill = this.getTextConditionFill(textTheme);
+    const { icon: iconTheme, text: textTheme } = this.getStyle()!;
+    const fill = this.getTextConditionFill(textTheme!);
     // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
     const actionIconColor = iconTheme?.fill || fill;
 
@@ -233,9 +233,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     const position = this.getIconPosition(iconNames.length);
 
-    const { size, margin } = this.getStyle().icon;
+    const { size, margin } = this.getStyle()!.icon!;
     forEach(iconNames, (iconName, i) => {
-      const x = position.x + i * size + i * margin.left;
+      const x = position.x + i * size! + i * margin!.left!;
       const y = position.y;
 
       const iconDefaultHide =
@@ -302,7 +302,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(cells: CellMeta[], nodes: Node[] = []) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
@@ -313,8 +313,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getTextStyle(): TextTheme {
-    const { text, bolderText, measureText } = this.getStyle();
-    let style: TextTheme;
+    const { text, bolderText, measureText } = this.getStyle()!;
+    let style: TextTheme | undefined;
     if (this.isMeasureField()) {
       style = measureText || text;
     } else if (this.isBolderText()) {
@@ -322,7 +322,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     } else {
       style = text;
     }
-    const fill = this.getTextConditionFill(style);
+    const fill = this.getTextConditionFill(style!);
 
     return { ...style, fill };
   }
@@ -332,8 +332,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.getStyle()?.cell || {};
     let fill = backgroundColor;
     // get background condition fill color
-    const bgCondition = this.findFieldCondition(this.conditions?.background);
-    if (bgCondition && bgCondition.mapping) {
+    const bgCondition = this.findFieldCondition(this.conditions?.background!);
+    if (bgCondition?.mapping!) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         fill = attrs.fill;
@@ -377,7 +377,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         this.handleSearchResult(cells);
         break;
       default:
-        this.handleByStateName(cells, stateInfo?.stateName);
+        this.handleByStateName(cells, stateInfo?.stateName!);
         break;
     }
   }
@@ -396,10 +396,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public mappingValue(condition: Condition): MappingResult {
     const value = this.getMeta().label;
-    return condition?.mapping(value, this.meta);
+    return condition?.mapping(value, this.meta)!;
   }
 
-  public findFieldCondition(conditions: Condition[]): Condition {
+  public findFieldCondition(conditions: Condition[]): Condition | undefined {
     return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.field)

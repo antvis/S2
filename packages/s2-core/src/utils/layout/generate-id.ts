@@ -7,8 +7,6 @@ import {
 } from '../../common/constant';
 /**
  * Row and column header node id generator.
- * @param parentId
- * @param value
  */
 
 export const generateId = (...ids: string[]): string => {
@@ -26,18 +24,20 @@ export const generateId = (...ids: string[]): string => {
 };
 
 export const resolveId = (id = '') => {
-  return id.split(ID_SEPARATOR).reduce((result, current) => {
-    if (current === ROOT_ID) {
-      return result;
-    }
+  return id
+    .split(ID_SEPARATOR)
+    .reduce<(string | null | undefined)[]>((result, current) => {
+      if (current === ROOT_ID) {
+        return result;
+      }
 
-    if (current === NULL_SYMBOL_ID) {
-      result.push(null);
-    } else if (current === UNDEFINED_SYMBOL_ID) {
-      result.push(undefined);
-    } else {
-      result.push(current);
-    }
-    return result;
-  }, []);
+      if (current === NULL_SYMBOL_ID) {
+        result.push(null);
+      } else if (current === UNDEFINED_SYMBOL_ID) {
+        result.push(undefined);
+      } else {
+        result.push(current);
+      }
+      return result;
+    }, []);
 };

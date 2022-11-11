@@ -3,6 +3,7 @@ import { TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import type { TooltipOperatorProps as BaseTooltipOperatorProps } from '@antv/s2-shared';
 import { Menu, Dropdown, type MenuProps } from 'ant-design-vue';
 import { defineComponent } from 'vue';
+import type { MenuClickEventHandler } from 'ant-design-vue/lib/menu/src/interface';
 import type { GetInitProps } from '../../../../interface';
 import TooltipOperatorTitle from './title.vue';
 import TooltipOperatorMenu from './menu.vue';
@@ -19,9 +20,9 @@ export default defineComponent({
     'onClick',
     'cell',
   ] as unknown as GetInitProps<TooltipOperatorProps>,
-  setup(props, { emit }) {
-    const onMenuClick = (...args) => {
-      emit('click', ...args);
+  setup(_, { emit }) {
+    const onMenuClick: MenuClickEventHandler = (menuInfo) => {
+      emit('click', menuInfo);
     };
     return {
       TOOLTIP_PREFIX_CLS,

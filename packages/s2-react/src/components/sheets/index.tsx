@@ -11,8 +11,8 @@ import { PivotSheet } from './pivot-sheet';
 import { StrategySheet } from './strategy-sheet';
 import { TableSheet } from './table-sheet';
 
-const Sheet = React.forwardRef(
-  (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
+const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
+  (props, ref) => {
     const { sheetType } = props;
 
     const sheetProps = React.useMemo<SheetComponentsProps>(() => {
@@ -20,7 +20,7 @@ const Sheet = React.forwardRef(
         ...props,
         onMounted: (instance) => {
           if (ref) {
-            ref.current = instance;
+            (ref as React.MutableRefObject<SpreadSheet>).current = instance;
           }
           props.onMounted?.(instance);
         },

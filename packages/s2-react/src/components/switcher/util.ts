@@ -38,7 +38,7 @@ export const getSwitcherConfig = (allowExchangeHeader = true) => ({
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
-export const getMainLayoutClassName = (sheetType: SheetType) => {
+export const getMainLayoutClassName = (sheetType: SheetType | undefined) => {
   switch (sheetType) {
     case 'table':
       return getSwitcherClassName('content', 'one-dimension');
@@ -47,8 +47,10 @@ export const getMainLayoutClassName = (sheetType: SheetType) => {
   }
 };
 
-export const shouldCrossRows = (sheetType: SheetType, type: FieldType) =>
-  sheetType === 'table' || type === FieldType.Values;
+export const shouldCrossRows = (
+  sheetType: SheetType | undefined,
+  type: FieldType,
+) => sheetType === 'table' || type === FieldType.Values;
 
 export const moveItem = (
   source: SwitcherItem[] = [],
@@ -85,7 +87,7 @@ export const checkItem = (
   parentId?: string,
 ): SwitcherItem[] => {
   const target: SwitcherItem = {
-    ...source.find((item) => item.id === (parentId ?? id)),
+    ...source.find((item) => item.id === (parentId ?? id))!,
   };
 
   // 有 parentId 时，说明是第二层级的改变
@@ -106,8 +108,10 @@ export const checkItem = (
 };
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
-  const generateFieldResult = (items: SwitcherItem[]): SwitcherResultItem => {
-    const flattenValues = (list: SwitcherItem[]) =>
+  const generateFieldResult = (
+    items: SwitcherItem[] = [],
+  ): SwitcherResultItem => {
+    const flattenValues = (list: SwitcherItem[] = []): SwitcherItem[] =>
       flatten(
         map(list, ({ children, ...rest }) => {
           return [{ ...rest }, ...flattenValues(children)];

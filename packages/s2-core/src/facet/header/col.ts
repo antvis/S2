@@ -5,6 +5,7 @@ import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   KEY_GROUP_COL_SCROLL,
 } from '../../common/constant';
+import type { S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
@@ -41,7 +42,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { width, height, scrollX, spreadsheet } = this.headerConfig;
+    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
     const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
 
     this.scrollGroup.setClip({
@@ -64,21 +65,22 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     item: Node,
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
-  ) {
+  ): S2CellType {
     return new ColCell(item, spreadsheet, headerConfig);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected getCellGroup(node: Node) {
     return this.scrollGroup;
   }
 
   protected isColCellInRect(item: Node): boolean {
-    const { spreadsheet, cornerWidth, width, scrollX } = this.headerConfig;
+    const { spreadsheet, cornerWidth, width, scrollX = 0 } = this.headerConfig;
 
     return (
       // don't care about scrollY, because there is only freeze col-header exist
       width + scrollX > item.x &&
-      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
+      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth!) <
         item.x + item.width
     );
   }
@@ -104,7 +106,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected offset() {
-    const { position, scrollX } = this.headerConfig;
+    const { position, scrollX = 0 } = this.headerConfig;
     // 暂时不考虑移动y
     translateGroupX(this.scrollGroup, position.x - scrollX);
   }

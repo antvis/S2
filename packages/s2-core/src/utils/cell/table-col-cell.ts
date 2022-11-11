@@ -11,21 +11,21 @@ export const getTableColIconsWidth = (
   cellType: CellTypes,
   iconStyle: IconTheme,
 ) => {
-  const iconSize = get(iconStyle, 'size');
-  const iconMargin = get(iconStyle, 'margin');
+  const iconSize = iconStyle?.size!;
+  const iconMargin = iconStyle?.margin!;
 
-  let iconNums = 0;
+  let iconCount = 0;
   if (s2.options.showDefaultHeaderActionIcon) {
-    iconNums = 1;
+    iconCount = 1;
   } else {
-    iconNums =
-      getActionIconConfig(s2.options.headerActionIcons, meta, cellType)
+    iconCount =
+      getActionIconConfig(s2.options.headerActionIcons!, meta, cellType)
         ?.iconNames.length ?? 0;
   }
 
   return (
-    iconNums * (iconSize + iconMargin.left) +
-    (iconNums > 0 ? iconMargin.right : 0)
+    iconCount * (iconSize + iconMargin.left!) +
+    (iconCount > 0 ? iconMargin.right! : 0)
   );
 };
 
@@ -34,8 +34,8 @@ export const getExtraPaddingForExpandIcon = (
   field: string,
   style: DefaultCellTheme,
 ) => {
-  const iconMarginLeft = style.icon.margin?.left || 0;
-  const iconMarginRight = style.icon.margin?.right || 0;
+  const iconMarginLeft = style.icon?.margin?.left || 0;
+  const iconMarginRight = style.icon?.margin?.right || 0;
   const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
 
   let hasPrevSiblingCell = false;
@@ -64,11 +64,17 @@ export const getOccupiedWidthForTableCol = (
 ) => {
   const padding = get(style, 'cell.padding');
   const expandIconPadding = getExtraPaddingForExpandIcon(s2, meta.field, style);
+  const iconsWidth = getTableColIconsWidth(
+    s2,
+    meta,
+    CellTypes.COL_CELL,
+    style?.icon!,
+  );
 
   return (
     padding.left +
     padding.right +
-    getTableColIconsWidth(s2, meta, CellTypes.COL_CELL, get(style, 'icon')) +
+    iconsWidth +
     expandIconPadding.left +
     expandIconPadding.right
   );

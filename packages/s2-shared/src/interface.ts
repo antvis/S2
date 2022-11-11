@@ -44,6 +44,13 @@ export type SheetType =
 /** render callback */
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
+export type LayoutPaginationParams = {
+  pageSize: number;
+  pageCount: number;
+  total: number;
+  current: number;
+};
+
 export interface BaseSheetComponentProps<
   PartialDrillDown = PartDrillDown,
   Header = unknown,
@@ -140,12 +147,7 @@ export interface BaseSheetComponentProps<
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
-  onLayoutPagination?: (data: {
-    pageSize: number;
-    pageCount: number;
-    total: number;
-    current: number;
-  }) => void;
+  onLayoutPagination?: (data: LayoutPaginationParams) => void;
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
@@ -235,7 +237,7 @@ export interface BaseDrillDownComponentProps<DataSet = BaseDataSet> {
   titleText?: string;
   searchText?: string;
   clearButtonText?: string;
-  dataSet: DataSet[];
+  dataSet?: DataSet[] | undefined;
   drillFields?: string[];
   disabledFields?: string[];
   getDrillFields?: (drillFields: string[]) => void;

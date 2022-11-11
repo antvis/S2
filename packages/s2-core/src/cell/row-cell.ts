@@ -101,7 +101,7 @@ export class RowCell extends HeaderCell {
     const { isCollapsed, id, hierarchy } = this.meta;
     const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
-    const { size } = this.getStyle().icon;
+    const { size } = this.getStyle()!.icon!;
 
     const contentIndent = this.getContentIndent();
 
@@ -113,10 +113,10 @@ export class RowCell extends HeaderCell {
       {
         x: iconX,
         y: iconY,
-        width: size,
-        height: size,
+        width: size!,
+        height: size!,
       },
-      fill,
+      fill!,
       isCollapsed,
       () => {
         if (isMobile()) {
@@ -168,15 +168,15 @@ export class RowCell extends HeaderCell {
     if (!parentTreeIconCfg) {
       return;
     }
-    const { size, margin } = this.getStyle().icon;
-    const x = parentTreeIconCfg.x + size + margin.right;
+    const { size, margin } = this.getStyle()!.icon!;
+    const x = parentTreeIconCfg.x + size + margin!.right;
     const textY = this.getTextPosition().y;
 
     const { fill, fontSize } = this.getTextStyle();
-    const r = size / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    const r = size! / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      x: x + size / 2, // 和收起展开 icon 保持居中对齐
-      y: textY + (fontSize - r) / 2,
+      x: x + size! / 2, // 和收起展开 icon 保持居中对齐
+      y: textY + (fontSize! - r) / 2,
       r,
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
@@ -199,7 +199,7 @@ export class RowCell extends HeaderCell {
     const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
 
-    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
+    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill!);
   }
 
   protected drawResizeAreaInLeaf() {
@@ -226,15 +226,15 @@ export class RowCell extends HeaderCell {
       seriesNumberWidth,
       width: headerWidth,
       viewportHeight: headerHeight,
-      scrollX,
-      scrollY,
+      scrollX = 0,
+      scrollY = 0,
     } = this.headerConfig;
 
     const resizeAreaBBox = {
       x,
-      y: y + height - resizeStyle.size,
+      y: y + height - resizeStyle.size!,
       width,
-      height: resizeStyle.size,
+      height: resizeStyle.size!,
     };
 
     const resizeClipAreaBBox = {
@@ -260,7 +260,7 @@ export class RowCell extends HeaderCell {
       ? headerWidth - seriesNumberWidth - (x - scrollX)
       : width;
 
-    resizeArea.addShape('rect', {
+    resizeArea?.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           id: this.meta.id,
@@ -274,7 +274,7 @@ export class RowCell extends HeaderCell {
           meta: this.meta,
         }),
         x: offsetX,
-        y: offsetY + height - resizeStyle.size,
+        y: offsetY + height - resizeStyle.size!,
         width: resizeAreaWidth,
       },
     });
@@ -284,8 +284,8 @@ export class RowCell extends HeaderCell {
     if (!this.spreadsheet.isHierarchyTreeType()) {
       return 0;
     }
-    const { icon, cell } = this.getStyle();
-    const iconWidth = icon.size + icon.margin.right;
+    const { icon, cell } = this.getStyle()!;
+    const iconWidth = icon!.size! + icon!.margin!.right!;
 
     let parent = this.meta.parent;
     let sum = 0;
@@ -296,19 +296,21 @@ export class RowCell extends HeaderCell {
       parent = parent.parent;
     }
     if (this.showTreeLeafNodeAlignDot()) {
-      sum += this.isTreeLevel() ? 0 : cell.padding.right + icon.margin.right;
+      sum += this.isTreeLevel()
+        ? 0
+        : cell!.padding!.right! + icon!.margin!.right!;
     }
 
     return sum;
   }
 
   protected getTextIndent() {
-    const { size, margin } = this.getStyle().icon;
+    const { size, margin } = this.getStyle()!.icon!;
     const contentIndent = this.getContentIndent();
     const treeIconWidth =
       this.showTreeIcon() ||
       (this.isTreeLevel() && this.showTreeLeafNodeAlignDot())
-        ? size + margin.right
+        ? size! + margin!.right!
         : 0;
     return contentIndent + treeIconWidth;
   }
@@ -324,7 +326,7 @@ export class RowCell extends HeaderCell {
   protected getIconPosition() {
     // 不同 textAlign 下，对应的文字绘制点 x 不同
     const { x, y, textAlign } = this.textShape.cfg.attrs;
-    const iconMarginLeft = this.getStyle().icon.margin.left;
+    const iconMarginLeft = this.getStyle()!.icon!.margin!.left;
 
     if (textAlign === 'left') {
       /**
@@ -392,9 +394,9 @@ export class RowCell extends HeaderCell {
     const textY = getAdjustPosition(
       textArea.y,
       textArea.height,
-      scrollY,
+      scrollY!,
       height,
-      fontSize,
+      fontSize!,
     );
     const textX = getTextAndFollowingIconPosition(
       textArea,
@@ -408,8 +410,8 @@ export class RowCell extends HeaderCell {
 
   protected getIconYPosition() {
     const textY = this.getTextPosition().y;
-    const { size } = this.getStyle().icon;
+    const { size } = this.getStyle()!.icon!;
     const { fontSize } = this.getTextStyle();
-    return textY + (fontSize - size) / 2;
+    return textY + (fontSize! - size!) / 2;
   }
 }

@@ -1,10 +1,12 @@
 import { isArray, isEmpty, mergeWith, uniq, isEqual, isString } from 'lodash';
 import { DEFAULT_DATA_CONFIG } from '../common/constant/dataConfig';
-import {
-  DEFAULT_MOBILE_OPTIONS,
-  DEFAULT_OPTIONS,
-} from '../common/constant/options';
-import type { S2DataConfig, S2Options, Fields } from '../common/interface';
+import { DEFAULT_OPTIONS } from '../common/constant/options';
+import type {
+  S2DataConfig,
+  S2Options,
+  Fields,
+  CustomHeaderFields,
+} from '../common/interface';
 
 export const customMerge = (...objects: unknown[]) => {
   const customize = (origin: unknown, updated: unknown) => {
@@ -17,11 +19,11 @@ export const customMerge = (...objects: unknown[]) => {
   return mergeWith({}, ...args);
 };
 
-const uniqueFields = (fields: Fields) => {
+const uniqueFields = (fields: Fields): Fields => {
   const keys = ['rows', 'columns', 'values'] as const;
-  const result: Partial<Fields> = keys.reduce((r, key) => {
+  const result: Partial<Fields> = keys.reduce<Fields>((r, key) => {
     const list = fields[key];
-    const unique = uniq(list);
+    const unique = uniq(list) as CustomHeaderFields & string[];
     if (!isEqual(unique, list)) {
       // eslint-disable-next-line no-console
       console.warn(`fields.${key}:[${list}] should be unique`);
@@ -36,7 +38,9 @@ const uniqueFields = (fields: Fields) => {
   };
 };
 
-export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
+export const getSafetyDataConfig = (
+  ...dataConfig: (Partial<S2DataConfig> | null)[]
+) => {
   const mergedDataCfg = customMerge(
     DEFAULT_DATA_CONFIG,
     ...dataConfig,
@@ -46,7 +50,7 @@ export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
   mergedDataCfg.fields = uniqueFields(mergedDataCfg.fields);
 
   // 自定义树和数值为空的场景, 关闭 数值置于列头
-  const isCustomRows = mergedDataCfg.fields.rows.some(
+  const isCustomRows = mergedDataCfg.fields.rows?.some(
     (field) => !isString(field),
   );
   const isEmptyValues = isEmpty(mergedDataCfg.fields.values);
@@ -58,6 +62,6 @@ export const getSafetyDataConfig = (...dataConfig: Partial<S2DataConfig>[]) => {
   return mergedDataCfg;
 };
 
-export const getSafetyOptions = (options: Partial<S2Options>) => {
+export const getSafetyOptions = (options: Partial<S2Options> | null) => {
   return customMerge(DEFAULT_OPTIONS, options);
 };

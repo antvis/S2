@@ -58,13 +58,13 @@ describe('SpreadSheet Tests', () => {
       const mountContainer = null;
 
       function init() {
-        const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
+        const s2 = new PivotSheet(mountContainer!, mockDataConfig, s2Options);
         s2.render();
         s2.destroy();
         s2.render();
       }
 
-      expect(init).toThrowError('Target mount container is not a DOM element');
+      expect(init).toThrow('Target mount container is not a DOM element');
     });
 
     // https://github.com/antvis/S2/issues/1050
@@ -80,8 +80,8 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       const canvas = s2.container.get('el') as HTMLCanvasElement;
-      expect(canvas.width).toEqual(s2Options.width * devicePixelRatio);
-      expect(canvas.height).toEqual(s2Options.height * devicePixelRatio);
+      expect(canvas.width).toEqual(s2Options.width! * devicePixelRatio);
+      expect(canvas.height).toEqual(s2Options.height! * devicePixelRatio);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
       expect(canvas.style.height).toEqual(`${s2Options.height}px`);
 
@@ -125,7 +125,7 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       window.dispatchEvent(new Event('resize'));
-      visualViewport.dispatchEvent(new Event('resize'));
+      visualViewport!.dispatchEvent(new Event('resize'));
 
       // await debounce
       await sleep(1000);
@@ -178,7 +178,7 @@ describe('SpreadSheet Tests', () => {
           });
         }
 
-        expect(init).not.toThrowError();
+        expect(init).not.toThrow();
       },
     );
 
@@ -193,7 +193,7 @@ describe('SpreadSheet Tests', () => {
           s2.changeSheetSize(200, 200);
         }
 
-        expect(init).not.toThrowError();
+        expect(init).not.toThrow();
       },
     );
 
@@ -205,10 +205,10 @@ describe('SpreadSheet Tests', () => {
           s2.render();
           s2.destroy();
 
-          visualViewport.dispatchEvent(new Event('resize'));
+          visualViewport!.dispatchEvent(new Event('resize'));
         }
 
-        expect(init).not.toThrowError();
+        expect(init).not.toThrow();
       },
     );
 
@@ -248,12 +248,12 @@ describe('SpreadSheet Tests', () => {
         expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
         expect(container.querySelectorAll('canvas')).toHaveLength(1);
 
-        await new Promise((resolve) =>
+        await new Promise((resolve) => {
           setTimeout(() => {
             s2.destroy();
             resolve(true);
-          }, 1000),
-        );
+          }, 1000);
+        });
 
         expect(s2.container.get('el')).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);

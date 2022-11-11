@@ -60,8 +60,8 @@ describe('PivotDataSet util test', () => {
       sub_type: '桌子',
       type: '家具',
     });
-    expect(result.colPivotMeta.has('家具')).toBeTrue();
-    expect(result.rowPivotMeta.has('浙江省')).toBeTrue();
+    expect(result.colPivotMeta?.has('家具')).toBeTrue();
+    expect(result.rowPivotMeta?.has('浙江省')).toBeTrue();
     expect(
       getDimensionsWithoutPathPre(result.sortedDimensionValues.province),
     ).toEqual(['浙江省', '四川省']);

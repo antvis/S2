@@ -30,7 +30,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   let mockRootInteraction: RootInteraction;
 
   let customY = 60;
-  const allRowHeaderCells = map(new Array(8), (a, i) => {
+  const allRowHeaderCells = map(new Array(8), (_, i) => {
     customY += 30;
     return {
       cellType: CellTypes.ROW_CELL,

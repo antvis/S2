@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ESNext",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strict": false,
+    "noImplicitAny": false,
   },
   "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
   "include": ["src", "./typings.d.ts"]

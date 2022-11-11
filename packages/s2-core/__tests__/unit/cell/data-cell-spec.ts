@@ -43,15 +43,15 @@ describe('Data Cell Tests', () => {
         layoutResult: {
           rowLeafNodes: [],
         },
-      } as PivotFacet;
+      } as unknown as PivotFacet;
     });
 
     test('should pass complete data into formatter', () => {
       const formatter = jest.fn();
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const dataCell = new DataCell(meta, s2);
+      // eslint-disable-next-line no-new
+      new DataCell(meta, s2);
       expect(formatter).toHaveBeenCalledWith(meta.fieldValue, meta.data, meta);
     });
 
@@ -175,7 +175,7 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(anotherMeta, s2);
       expect(
         get(dataCell, 'conditionIntervalShape.attrs.width') +
-          s2.theme.dataCell.cell.horizontalBorderWidth,
+          s2.theme.dataCell!.cell!.horizontalBorderWidth,
       ).toEqual(cellWidth);
     });
 

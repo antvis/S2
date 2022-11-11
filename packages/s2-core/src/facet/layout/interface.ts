@@ -59,7 +59,7 @@ export interface TreeHeaderParams {
   parentNode: Node;
   facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
-  currentField: string;
+  currentField: string | undefined;
   level: number;
   pivotMeta: PivotMeta;
 }

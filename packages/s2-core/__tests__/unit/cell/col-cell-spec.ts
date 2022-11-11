@@ -43,9 +43,9 @@ describe('Col Cell Tests', () => {
       ['left', 8], // col.padding.left
       ['center', 99.5], // col.width / 2 - border
       ['right', 191], // col.width - col.padding.right - border
-    ])(
+    ] as [TextAlign, number][])(
       'should calc node text position in %s align mode',
-      (textAlign: TextAlign, textX: number) => {
+      (textAlign, textX) => {
         s2.setThemeCfg({
           theme: {
             colCell: {
@@ -71,9 +71,9 @@ describe('Col Cell Tests', () => {
       ['left', 52], // col.padding.left + actualTextWidth + icon.margin.left
       ['center', 114.5], // col.width / 2 + (actualTextWidth + icon.margin.left + icon.width + icon.margin.right) / 2  - (icon.width + icon.margin.right)  - border
       ['right', 177], // col.width - col.padding.right - icon.margin.right - icon.width - border
-    ])(
+    ] as [TextAlign, number][])(
       'should calc icon position in %s align mode',
-      (textAlign: TextAlign, iconX: number) => {
+      (textAlign, iconX) => {
         s2.setThemeCfg({
           theme: {
             colCell: {
@@ -120,8 +120,8 @@ describe('Col Cell Tests', () => {
       const formatter = jest.fn();
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const colCell = new ColCell(node, s2);
+      // eslint-disable-next-line no-new
+      new ColCell(node, s2);
 
       expect(formatter).toHaveBeenCalledWith(node.label, undefined, node);
     });

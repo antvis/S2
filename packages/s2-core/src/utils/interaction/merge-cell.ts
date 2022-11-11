@@ -74,7 +74,7 @@ export const unique = (edges: number[][][]) => {
 export const getNextEdge = (
   curEdge: number[][],
   edges: number[][][],
-): number[][] => {
+): number[][] | undefined => {
   return find(edges, (edge) => isEqual(edge[0], curEdge[1]));
 };
 
@@ -95,12 +95,12 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   let allPoints: number[][] = [];
   const startEdge = allEdges[0];
   let curEdge = startEdge;
-  let nextEdge: number[][] = [];
+  let nextEdge: number[][] | undefined = [];
 
   while (!isEqual(startEdge, nextEdge)) {
     allPoints = allPoints.concat(curEdge);
     nextEdge = getNextEdge(curEdge, allEdges);
-    curEdge = nextEdge;
+    curEdge = nextEdge!;
   }
   return allPoints;
 };
@@ -122,9 +122,9 @@ export const getInvisibleInfo = (
       cellInfo.colIndex,
     );
     if (meta) {
-      const cell = sheet?.facet?.cfg.dataCell(meta);
+      const cell = sheet?.facet?.cfg?.dataCell?.(meta);
       viewMeta = cellInfo?.showText ? meta : viewMeta;
-      cells.push(cell);
+      cells.push(cell!);
     }
   });
   return { cells, cellsMeta: viewMeta };
@@ -180,7 +180,7 @@ export const getTempMergedCell = (
     cellsInfos,
     allVisibleCells,
   );
-  let viewMeta: ViewMeta | Node = cellsMeta;
+  let viewMeta: ViewMeta | Node | undefined = cellsMeta;
   let mergedAllCells: S2CellType[] = cells;
   // some cells are invisible and some cells are visible
   const isPartiallyVisible =
@@ -189,7 +189,7 @@ export const getTempMergedCell = (
   // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
   if (isPartiallyVisible) {
     const { cells: invisibleCells, cellsMeta: invisibleMeta } =
-      getInvisibleInfo(invisibleCellInfo, sheet);
+      getInvisibleInfo(invisibleCellInfo, sheet!);
 
     viewMeta = viewMeta || invisibleMeta;
     mergedAllCells = cells.concat(invisibleCells);
@@ -306,7 +306,7 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
   }
   const newMergedCellsInfo = removeUnmergedCellsInfo(
     removedCells,
-    sheet.options?.mergedCellsInfo,
+    sheet.options?.mergedCellsInfo || [],
   );
   if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
     sheet.setOptions({
@@ -388,7 +388,7 @@ export const updateMergedCells = (
 
   // allVisibleTempMergedCells 所有可视区域的 mergedCell
   const allVisibleTempMergedCells: TempMergedCell[] = [];
-  mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
+  mergedCellsInfo!.forEach((cellsInfo: MergedCellInfo[]) => {
     const tempMergedCell = getTempMergedCell(allCells, sheet, cellsInfo);
     if (tempMergedCell.cells.length > 0) {
       allVisibleTempMergedCells.push(tempMergedCell);

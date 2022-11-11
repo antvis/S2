@@ -67,7 +67,7 @@ describe('useSpreadSheet tests', () => {
       valueInCols: true,
     };
 
-    const { result, rerender } = renderHook(() =>
+    const { result } = renderHook(() =>
       useSpreadSheet(
         cloneDeep({
           ...getConfig(defaultFields),

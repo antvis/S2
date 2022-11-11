@@ -40,7 +40,11 @@ export const getCellBoxByType = (
   }
 
   let { x, y, width, height } = bbox;
-  const { padding, horizontalBorderWidth, verticalBorderWidth } = cellStyle;
+  const {
+    padding,
+    horizontalBorderWidth = 0,
+    verticalBorderWidth = 0,
+  } = cellStyle;
 
   borderPositions.forEach((position) => {
     const borderWidth = [
@@ -69,10 +73,10 @@ export const getCellBoxByType = (
   });
 
   if (boxType === CellClipBox.CONTENT_BOX) {
-    x += padding?.left;
-    y += padding?.top;
-    width -= padding?.left + padding?.right;
-    height -= padding?.top + padding?.bottom;
+    x += padding?.left!;
+    y += padding?.top!;
+    width -= padding?.left! + padding?.right!;
+    height -= padding?.top! + padding?.bottom!;
   }
 
   return {
@@ -108,7 +112,10 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
   return (
-    contentWidth - iconCfg.size - iconCfg.margin.right - iconCfg.margin.left
+    contentWidth -
+    iconCfg.size! -
+    iconCfg!.margin!.right! -
+    iconCfg!.margin!.left!
   );
 };
 
@@ -145,7 +152,7 @@ export const getTextAndFollowingIconPosition = (
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
   const iconSpace =
-    iconCount * (size + margin.left) + (iconCount ? margin.right : 0);
+    iconCount * (size! + margin!.left!) + (iconCount ? margin!.right! : 0);
   let textX: number;
   let iconX: number;
 
@@ -164,7 +171,8 @@ export const getTextAndFollowingIconPosition = (
        */
       textX = x + (iconPosition === 'left' ? iconSpace : 0);
       iconX =
-        x + (iconPosition === 'left' ? margin.left : textWidth + margin.left);
+        x +
+        (iconPosition === 'left' ? margin!.left! : textWidth + margin!.left!);
       break;
     case 'center': {
       /**
@@ -180,14 +188,15 @@ export const getTextAndFollowingIconPosition = (
        */
       const totalWidth =
         iconSpace -
-        (iconPosition === 'left' ? margin.left : margin.right) +
+        (iconPosition === 'left' ? margin!.left! : margin!.right!) +
         textWidth;
       const startX = x + width / 2 - totalWidth / 2;
       textX =
         startX +
         textWidth / 2 +
-        (iconPosition === 'left' ? iconSpace - margin.left : 0);
-      iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
+        (iconPosition === 'left' ? iconSpace - margin!.left! : 0);
+      iconX =
+        startX + (iconPosition === 'left' ? 0 : textWidth + margin!.left!);
       break;
     }
     default: {
@@ -207,14 +216,14 @@ export const getTextAndFollowingIconPosition = (
         x +
         width -
         (iconPosition === 'right'
-          ? iconSpace - margin.left
-          : textWidth + iconSpace - margin.left);
+          ? iconSpace - margin?.left!
+          : textWidth + iconSpace - margin?.left!);
       break;
     }
   }
 
-  const textY = getVerticalPosition(contentBox, textBaseline, 0);
-  const iconY = getVerticalPosition(contentBox, textBaseline, size);
+  const textY = getVerticalPosition(contentBox, textBaseline!, 0);
+  const iconY = getVerticalPosition(contentBox, textBaseline!, size);
 
   return {
     text: { x: textX, y: textY },
@@ -308,10 +317,10 @@ export const getBorderPositionAndStyle = (
 ) => {
   const { x, y, width, height } = bbox;
   const {
-    horizontalBorderWidth,
+    horizontalBorderWidth = 0,
     horizontalBorderColorOpacity,
     horizontalBorderColor,
-    verticalBorderWidth,
+    verticalBorderWidth = 0,
     verticalBorderColor,
     verticalBorderColorOpacity,
   } = style;
@@ -331,10 +340,10 @@ export const getBorderPositionAndStyle = (
         strokeOpacity: verticalBorderColorOpacity,
       };
 
-  let x1: number;
-  let y1: number;
-  let x2: number;
-  let y2: number;
+  let x1 = 0;
+  let y1 = 0;
+  let x2 = 0;
+  let y2 = 0;
   // horizontal
   if (
     position === CellBorderPosition.TOP ||
@@ -418,10 +427,10 @@ export const adjustColHeaderScrollingViewport = (
   const nextViewport = { ...viewport };
 
   if (textAlign === 'left') {
-    nextViewport.start += textPadding.left;
-    nextViewport.width -= textPadding.left;
+    nextViewport.start += textPadding.left!;
+    nextViewport.width -= textPadding.left!;
   } else if (textAlign === 'right') {
-    nextViewport.width -= textPadding.right;
+    nextViewport.width -= textPadding.right!;
   }
 
   return nextViewport;

@@ -15,7 +15,7 @@ export class CustomTooltip extends BaseTooltip {
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(
       showOptions.event?.target as EventTarget,
-    );
+    )!;
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
     const content = showOptions.content ?? tooltip?.content;
 
@@ -35,8 +35,8 @@ export class CustomTooltip extends BaseTooltip {
     );
 
     // render(null) 确保每一次的 tooltip 内容是最新的
-    render(null, this.container);
-    render(tooltipVNode, this.container);
+    render(null, this.container!);
+    render(tooltipVNode, this.container!);
   }
 
   destroy() {

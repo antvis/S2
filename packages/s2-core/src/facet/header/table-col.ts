@@ -44,7 +44,8 @@ export class TableColHeader extends ColHeader {
 
   protected isFrozenCell(meta: Node) {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
+    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
+      spreadsheet?.options;
     const { colIndex } = meta;
     const colLeafNodes = spreadsheet?.facet.layoutResult.colLeafNodes;
     return (
@@ -77,7 +78,8 @@ export class TableColHeader extends ColHeader {
 
   protected getCellGroup(node: Node) {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
+    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
+      spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
     if (isFrozenCol(node.colIndex, frozenColCount)) {
@@ -92,7 +94,8 @@ export class TableColHeader extends ColHeader {
 
   protected isColCellInRect(item: Node): boolean {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
+    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
+      spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
     if (
@@ -106,7 +109,7 @@ export class TableColHeader extends ColHeader {
   }
 
   public getScrollGroupClipBBox = () => {
-    const { width, height, scrollX, spreadsheet } = this.headerConfig;
+    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
     const options = spreadsheet.options;
 
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;

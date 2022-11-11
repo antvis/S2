@@ -22,15 +22,17 @@ export const customTreeOptions: SheetComponentOptions = {
   // cornerText: '指标',
 };
 
-export const CustomTree: React.FC<
-  Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => {
-  return (
-    <SheetComponent
-      {...props}
-      dataCfg={customTreeDataCfg}
-      options={customTreeOptions}
-      ref={ref}
-    />
-  );
-});
+type CustomTreeProps = Partial<SheetComponentsProps>;
+
+export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
+  (props, ref) => {
+    return (
+      <SheetComponent
+        {...props}
+        dataCfg={customTreeDataCfg}
+        options={customTreeOptions}
+        ref={ref}
+      />
+    );
+  },
+);

@@ -5,7 +5,7 @@ import type {
   ResizeType,
 } from '../../common/constant/resize';
 import type { Node } from '../../facet/layout/node';
-import type { Style, ViewMeta } from './basic';
+import type { S2Style, ViewMeta } from './basic';
 import type { S2CellType } from './interaction';
 import type { ResizeArea } from './theme';
 
@@ -38,13 +38,13 @@ export interface ResizePosition {
 
 export interface ResizeDetail {
   eventType: ResizeEvent;
-  style?: Style;
+  style?: S2Style | undefined;
   seriesNumberWidth?: number;
 }
 
 export interface ResizeParams {
   info: ResizeInfo;
-  style: Style;
+  style: S2Style | undefined;
 }
 
 export interface ResizeInfo {
@@ -60,7 +60,7 @@ export interface ResizeInfo {
   isResizeArea?: boolean;
   isResizeMask?: boolean;
   /** 字段id */
-  id?: string;
+  id: string;
   /** 当前拖拽热区对应的节点信息 */
   meta: Node | ViewMeta;
   /** 拖拽后的宽度 */

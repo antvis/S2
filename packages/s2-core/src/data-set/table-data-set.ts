@@ -53,7 +53,7 @@ export class TableDataSet extends BaseDataSet {
       this.spreadsheet.options || {};
     return displayData.slice(
       frozenRowCount || 0,
-      -frozenTrailingRowCount || undefined,
+      -frozenTrailingRowCount! || undefined,
     );
   }
 
@@ -86,9 +86,9 @@ export class TableDataSet extends BaseDataSet {
 
       let data = this.getMovableRows();
 
-      const restData = [];
+      const restData: RawData[] = [];
       if (query) {
-        const scopedData = [];
+        const scopedData: RawData[] = [];
         data.forEach((record) => {
           const keys = Object.keys(query);
           let inScope = true;
@@ -123,12 +123,12 @@ export class TableDataSet extends BaseDataSet {
 
           return idxB - idxA;
         });
-      } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
+      } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
         const func = isFunction(sortBy) ? sortBy : null;
         sortedData = orderBy(
           data,
           [func || sortFieldId],
-          [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
+          [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         );
       }
 
@@ -145,7 +145,7 @@ export class TableDataSet extends BaseDataSet {
     });
   };
 
-  public getDimensionValues(field: string, query?: Query): string[] {
+  public getDimensionValues(): string[] {
     return [];
   }
 

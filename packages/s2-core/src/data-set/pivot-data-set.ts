@@ -36,6 +36,7 @@ import type {
   PartDrillDownFieldInLevel,
   RawData,
   S2DataConfig,
+  TotalsStatus,
   ViewMeta,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
@@ -131,7 +132,7 @@ export class PivotDataSet extends BaseDataSet {
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
       // the current node has a drill-down field, clean it
-      forEach(idPathMap.get(rowNodeId), (path: number[]) => {
+      forEach(idPathMap.get(rowNodeId), (path) => {
         unset(this.indexesData, path);
       });
       deleteMetaById(this.rowPivotMeta, rowNodeId);
@@ -155,8 +156,8 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
     });
     this.indexesData = indexesData;
-    this.rowPivotMeta = rowPivotMeta;
-    this.colPivotMeta = colPivotMeta;
+    this.rowPivotMeta = rowPivotMeta!;
+    this.colPivotMeta = colPivotMeta!;
     this.sortedDimensionValues = sortedDimensionValues;
 
     // 4、record data paths by nodeId
@@ -255,16 +256,23 @@ export class PivotDataSet extends BaseDataSet {
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [] } = dataCfg;
-    const { columns, rows, values, valueInCols, customValueOrder } = fields;
+    const {
+      columns = [],
+      rows = [],
+      values,
+      valueInCols,
+      customValueOrder,
+    } = fields;
+
     let newColumns = columns;
     let newRows = rows;
     if (valueInCols) {
       newColumns = this.isCustomMeasuresPosition(customValueOrder)
-        ? this.handleCustomMeasuresOrder(customValueOrder, newColumns)
+        ? this.handleCustomMeasuresOrder(customValueOrder!, newColumns)
         : uniq([...columns, EXTRA_FIELD]);
     } else {
       newRows = this.isCustomMeasuresPosition(customValueOrder)
-        ? this.handleCustomMeasuresOrder(customValueOrder, newRows)
+        ? this.handleCustomMeasuresOrder(customValueOrder!, newRows)
         : uniq([...rows, EXTRA_FIELD]);
     }
 
@@ -297,7 +305,7 @@ export class PivotDataSet extends BaseDataSet {
       field: EXTRA_FIELD,
       name: extraFieldName,
       formatter: (value: string) => valueFormatter(value),
-    };
+    } as Meta;
 
     return [...meta, extraFieldMeta];
   }
@@ -315,21 +323,21 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     if (!isEmpty(query)) {
-      let sortedMeta = [];
+      let sortedMeta: string[] = [];
       const dimensionValuePath = [];
       for (const dimension of dimensions) {
-        const value = get(query, dimension as string);
+        const value: string = get(query, dimension as string);
         dimensionValuePath.push(`${value}`);
         const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
         if (meta.has(value) && !isUndefined(value)) {
           const childField = meta.get(value)?.childField;
-          meta = meta.get(value).children;
+          meta = meta.get(value)!.children;
           if (
             find(this.sortParams, (item) => item.sortFieldId === childField) &&
-            this.sortedDimensionValues[childField]
+            this.sortedDimensionValues[childField!]
           ) {
             const dimensionValues = this.sortedDimensionValues[
-              childField
+              childField!
             ]?.filter((item) => item?.includes(cacheKey));
             sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
           } else {
@@ -355,20 +363,21 @@ export class PivotDataSet extends BaseDataSet {
   getTotalValue(query: Query) {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
-        this.getTotalStatus(query),
-        this.spreadsheet.options?.totals,
+        this.getTotalStatus(query) as TotalsStatus,
+        this.spreadsheet.options?.totals!,
       ) || {};
-    const calcAction = calcActionByType[aggregation];
+
+    const calcAction = calcActionByType[aggregation!];
 
     // 前端计算汇总值
     if (calcAction || calcFunc) {
       const data = this.getMultiData(query);
-      let totalValue: number;
+      let totalValue: number | null = null;
 
       if (calcFunc) {
         totalValue = calcFunc(query, data);
       } else if (calcAction) {
-        totalValue = calcAction(data, VALUE_FIELD);
+        totalValue = calcAction(data, VALUE_FIELD)!;
       }
 
       return new CellData(
@@ -389,12 +398,12 @@ export class PivotDataSet extends BaseDataSet {
     // 判断当前是否为下钻节点
     // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
     const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
-      (parentPath) => rowNode.id.startsWith(parentPath),
+      (parentPath) => rowNode?.id.startsWith(parentPath),
     );
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
     if (!isTotals || isDrillDown) {
-      rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
+      rows = Node.getFieldPath(rowNode!, isDrillDown) ?? originRows;
     }
     const rowDimensionValues = transformDimensionsValues(
       query,
@@ -441,9 +450,9 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   protected getMultiDataQueryPath(query: Query, drillDownFields?: string[]) {
-    const { rows, columns } = this.fields;
+    const { rows = [], columns = [] } = this.fields;
     const totalRows = !isEmpty(drillDownFields)
-      ? uniq(rows.concat(drillDownFields))
+      ? uniq(rows.concat(drillDownFields!))
       : rows;
 
     const rowDimensionValues = transformDimensionsValues(
@@ -479,13 +488,15 @@ export class PivotDataSet extends BaseDataSet {
   ) {
     const getTotalSelectTypes = (
       dimensions: string[],
-      { grandTotalOnly, subTotalOnly, totalDimensions }: TotalSelection,
+      totalSelection?: TotalSelection,
     ) => {
-      return filterExtraDimension(dimensions).map((d, idx) => {
+      const { grandTotalOnly, subTotalOnly, totalDimensions } =
+        totalSelection || ({} as TotalSelection);
+      return filterExtraDimension(dimensions).map((dimension, idx) => {
         let type = DataSelectType.DetailOnly;
         if (
           totalDimensions === true ||
-          includes(totalDimensions as string[], d)
+          includes(totalDimensions as string[], dimension)
         ) {
           type = DataSelectType.All;
         }
@@ -502,8 +513,8 @@ export class PivotDataSet extends BaseDataSet {
 
     totals = getTotalSelection(totals);
 
-    const rowSelectTypes = getTotalSelectTypes(rows, totals.row);
-    const columnSelectTypes = getTotalSelectTypes(columns, totals.column);
+    const rowSelectTypes = getTotalSelectTypes(rows, totals?.row);
+    const columnSelectTypes = getTotalSelectTypes(columns, totals?.column);
     return rowSelectTypes.concat(columnSelectTypes);
   }
 
@@ -538,14 +549,14 @@ export class PivotDataSet extends BaseDataSet {
             selectTypes[i],
           ) as FlattingIndexesData;
         } else {
-          result = map(result, (item) => item[current]);
+          result = map(result!, (item) => get(item, current));
         }
       } else if (shouldQueryMultiData(current)) {
         hadMultiField = true;
         result = [result] as FlattingIndexesData;
         i--;
       } else {
-        result = result?.[current];
+        result = get(result, current);
       }
     }
 
@@ -554,7 +565,7 @@ export class PivotDataSet extends BaseDataSet {
       result = [result];
     }
 
-    const extraFields = this.getQueryExtraFields(query);
+    const extraFields = this.getQueryExtraFields(query)!;
 
     return flatMap(compact(result as RawData[]), (item) =>
       CellData.getCellDataList(item, extraFields),
@@ -570,7 +581,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   private getFieldFormatterForTotalValue(cellMeta?: ViewMeta) {
-    let valueField: string;
+    let valueField = '';
     // 当数据置于行头时，小计总计列尝试去找对应的指标
     if (!this.spreadsheet.isValueInCols() && cellMeta) {
       valueField = get(cellMeta.rowQuery, EXTRA_FIELD);

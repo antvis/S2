@@ -361,19 +361,19 @@ describe('useEvents tests', () => {
     };
     // emit
     act(MockEmitFn);
-    expect(props[name]).toBeCalledTimes(1);
+    expect(props[name]).toHaveBeenCalledTimes(1);
 
     // cleanup effects for useEffect hooks
     unmount();
     // emit
     act(MockEmitFn);
-    expect(props[name]).toBeCalledTimes(1);
+    expect(props[name]).toHaveBeenCalledTimes(1);
 
     const newProps = {
       ...props,
       [name]: jest.fn(),
     };
     rerender({ props: newProps });
-    expect(newProps[name]).toBeCalledTimes(0);
+    expect(newProps[name]).toHaveBeenCalledTimes(0);
   });
 });

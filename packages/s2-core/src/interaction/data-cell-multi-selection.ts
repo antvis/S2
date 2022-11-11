@@ -71,7 +71,7 @@ export class DataCellMultiSelection
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      const cell: DataCell = this.spreadsheet.getCell(event.target);
+      const cell = this.spreadsheet.getCell(event.target) as DataCell;
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 

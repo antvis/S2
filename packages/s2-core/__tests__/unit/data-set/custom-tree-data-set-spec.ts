@@ -55,8 +55,8 @@ describe('Custom Tree Dataset Test', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(1);
-      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
+      expect(colPivotMeta.get('家具')!.level).toEqual(1);
+      expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
         '桌子',
         '椅子',
       ]);
@@ -98,7 +98,7 @@ describe('Custom Tree Dataset Test', () => {
               [EXTRA_FIELD]: 'measure-a',
             },
             isTotals: true,
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['measure-a', 1]]);
 
@@ -111,7 +111,7 @@ describe('Custom Tree Dataset Test', () => {
               [EXTRA_FIELD]: 'measure-e',
             },
             isTotals: true,
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['measure-e', 55]]);
     });

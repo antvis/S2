@@ -1,5 +1,5 @@
 import { ResizeType } from '../../common/constant/resize';
-import type { Style } from '../../common/interface/basic';
+import type { S2Style } from '../../common/interface/basic';
 import {
   HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
@@ -20,7 +20,7 @@ export const SPLIT_LINE_WIDTH = 1;
 
 export const DEFAULT_TREE_ROW_WIDTH = 120;
 
-export const DEFAULT_STYLE: Readonly<Style> = {
+export const DEFAULT_STYLE: Readonly<S2Style> = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
   showTreeLeafNodeAlignDot: false,
   collapsedRows: {},

@@ -115,7 +115,7 @@ describe('merge test', () => {
     });
   });
 
-  test('should merge old datacfg', () => {
+  test('should merge old dataCfg', () => {
     const oldDataCfg: Partial<S2DataConfig> = {
       data: [{ value: 1 }, { value: 2 }],
     };

@@ -56,14 +56,14 @@ export const createFakeSpreadSheet = () => {
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
   s2.options = DEFAULT_OPTIONS;
   s2.dataCfg = {
-    meta: null,
+    meta: [],
     data: [],
     fields: {},
     sortParams: [],
   };
   s2.container = new Canvas({
-    width: DEFAULT_OPTIONS.width,
-    height: DEFAULT_OPTIONS.height,
+    width: DEFAULT_OPTIONS.width!,
+    height: DEFAULT_OPTIONS.height!,
     container,
   });
   s2.dataSet = {

@@ -160,7 +160,7 @@ export class CornerCell extends HeaderCell {
     this.actualTextWidth = max([
       measureTextWidth(firstLine, textStyle),
       measureTextWidth(secondLine, textStyle),
-    ]);
+    ])!;
   }
 
   /**
@@ -172,7 +172,7 @@ export class CornerCell extends HeaderCell {
     }
     const { hierarchyCollapse } = this.headerConfig;
 
-    const { size } = this.getStyle().icon;
+    const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();
     const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
@@ -180,11 +180,11 @@ export class CornerCell extends HeaderCell {
       this,
       {
         x: area.x,
-        y: getVerticalPosition(area, textBaseline, size),
+        y: getVerticalPosition(area, textBaseline!, size),
         width: size,
         height: size,
       },
-      fill,
+      fill!,
       hierarchyCollapse,
       () => {
         this.headerConfig.spreadsheet.store.set('scrollY', 0);
@@ -235,8 +235,8 @@ export class CornerCell extends HeaderCell {
 
     const {
       position,
-      scrollX,
-      scrollY,
+      scrollX = 0,
+      scrollY = 0,
       width: headerWidth,
       height: headerHeight,
     } = this.headerConfig;
@@ -244,9 +244,9 @@ export class CornerCell extends HeaderCell {
     const { field, cornerType } = this.meta;
 
     const resizeAreaBBox = {
-      x: x + width - resizeStyle.size,
+      x: x + width - resizeStyle.size!,
       y,
-      width: resizeStyle.size,
+      width: resizeStyle.size!,
       height,
     };
 
@@ -271,7 +271,7 @@ export class CornerCell extends HeaderCell {
     const offsetX = position.x + x - scrollX;
     const offsetY = position.y + (this.isLastRowCornerCell() ? 0 : y);
 
-    resizeArea.addShape('rect', {
+    resizeArea?.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
@@ -284,7 +284,7 @@ export class CornerCell extends HeaderCell {
           height,
           meta: this.meta,
         }),
-        x: offsetX + width - resizeStyle.size,
+        x: offsetX + width - resizeStyle.size!,
         y: offsetY,
         height: this.isLastRowCornerCell() ? headerHeight : height,
       },
@@ -299,7 +299,7 @@ export class CornerCell extends HeaderCell {
   protected getIconPosition(): Point {
     const textCfg = this.textShapes?.[0]?.cfg.attrs;
     const { textBaseline, textAlign } = this.getTextStyle();
-    const { size, margin } = this.getStyle().icon;
+    const { size, margin } = this.getStyle()!.icon!;
 
     const iconX =
       textCfg?.x +
@@ -308,11 +308,11 @@ export class CornerCell extends HeaderCell {
         [matches('right'), constant(0)],
         [stubTrue, constant(this.actualTextWidth)],
       ])(textAlign) +
-      margin.left;
+      margin?.left;
 
     const iconY = getVerticalPosition(
       this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textBaseline,
+      textBaseline!,
       size,
     );
 
@@ -320,14 +320,14 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getTreeIconWidth() {
-    const { size, margin } = this.getStyle().icon;
-    return this.showTreeIcon() ? size + margin.right : 0;
+    const { size, margin } = this.getStyle()!.icon!;
+    return this.showTreeIcon() ? size! + margin!.right! : 0;
   }
 
   protected getTextStyle(): TextTheme {
-    const { text, bolderText } = this.getStyle();
+    const { text, bolderText } = this.getStyle()!;
     const cornerTextStyle = this.isBolderText() ? text : bolderText;
-    const fill = this.getTextConditionFill(cornerTextStyle);
+    const fill = this.getTextConditionFill(cornerTextStyle!);
 
     return {
       ...cornerTextStyle,

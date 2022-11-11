@@ -10,16 +10,15 @@ import { InteractionStateName } from '@/common';
 
 jest.mock('@/cell', () => {
   return {
-    // eslint-disable-next-line object-shorthand
-    ColCell: function () {
-      this.stateName = '';
-      this.getMeta = () => {
-        return {
-          id: 'root[&]city',
-        };
-      };
-      this.updateByState = (stateName) => {
-        this.stateName = stateName;
+    ColCell: class ColCell {
+      stateName: InteractionStateName;
+
+      getMeta = () => ({
+        id: 'root[&]city',
+      });
+
+      updateByState = (name: InteractionStateName) => {
+        this.stateName = name;
       };
     },
   };

@@ -109,7 +109,7 @@ export const optimizeScrollXY = (
   const deltaX = angle <= 1 / ANGLE ? 0 : x;
   const deltaY = angle > ANGLE ? 0 : y;
 
-  return [deltaX * ratio.horizontal, deltaY * ratio.vertical];
+  return [deltaX * ratio.horizontal!, deltaY * ratio.vertical!];
 };
 
 export const translateGroup = (

@@ -9,6 +9,7 @@ import {
   getPalette,
   Node,
   SpreadSheet,
+  type CustomHeaderFields,
   type HeaderActionIconProps,
   type InteractionOptions,
   type S2DataConfig,
@@ -37,7 +38,7 @@ import {
   type RadioChangeEvent,
 } from 'antd';
 import 'antd/dist/antd.min.css';
-import { debounce } from 'lodash';
+import { debounce, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
@@ -72,13 +73,15 @@ const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
     <div style={{ width: 1000, height: 2000 }}>我很宽很长</div>
-    <DatePicker.RangePicker getPopupContainer={(node) => node.parentElement} />
+    <DatePicker.RangePicker getPopupContainer={(node) => node.parentElement!} />
   </div>
 );
 
 const CustomColTooltip = () => <div>custom colTooltip</div>;
 
-const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
+const ActionIconTooltip = ({ name }: { name: React.ReactNode }) => (
+  <div>{name} Tooltip</div>
+);
 
 function MainLayout() {
   //  ================== State ========================
@@ -96,10 +99,12 @@ function MainLayout() {
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
-  const [columnOptions, setColumnOptions] = React.useState([]);
+  const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
+    [],
+  );
 
   //  ================== Refs ========================
-  const s2Ref = React.useRef<SpreadSheet>();
+  const s2Ref = React.useRef<SpreadSheet | null>(null);
   const scrollTimer = React.useRef<NodeJS.Timer>();
 
   //  ================== Callback ========================
@@ -185,7 +190,7 @@ function MainLayout() {
     logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
       const { event } = cellInfo;
-      s2Ref.current.showTooltip({
+      s2Ref.current?.showTooltip({
         position: { x: event.clientX, y: event.clientY },
         content: <CustomColTooltip />,
       });
@@ -194,7 +199,7 @@ function MainLayout() {
 
   const getColumnOptions = (type: SheetType) => {
     if (type === 'table') {
-      return dataCfg.fields.columns;
+      return dataCfg.fields?.columns || [];
     }
     return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
   };
@@ -258,7 +263,7 @@ function MainLayout() {
             node.id !== 'root[&]家具[&]桌子[&]number',
           action: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
-              position: { x: event.clientX, y: event.clientY },
+              position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="Filter colCell" />,
             });
           },
@@ -270,7 +275,7 @@ function MainLayout() {
             node.id === 'root[&]家具[&]桌子[&]number',
           action: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
-              position: { x: event.clientX, y: event.clientY },
+              position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="SortDown colCell" />,
             });
           },
@@ -280,7 +285,7 @@ function MainLayout() {
           belongsCell: 'cornerCell',
           action: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
-              position: { x: event.clientX, y: event.clientY },
+              position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="FilterAsc cornerCell" />,
             });
           },
@@ -290,7 +295,7 @@ function MainLayout() {
           belongsCell: 'rowCell',
           action: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
-              position: { x: event.clientX, y: event.clientY },
+              position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="SortDown & Filter rowCell" />,
             });
           },
@@ -379,7 +384,7 @@ function MainLayout() {
               <Space style={{ margin: '20px 0', display: 'flex' }}>
                 <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
                   <Select
-                    defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
+                    defaultValue={mergedOptions.tooltip?.autoAdjustBoundary}
                     onChange={onAutoAdjustBoundaryChange}
                     style={{ width: 230 }}
                     size="small"
@@ -427,7 +432,7 @@ function MainLayout() {
                         <Slider
                           {...sliderOptions}
                           defaultValue={
-                            mergedOptions.interaction.scrollSpeedRatio
+                            mergedOptions.interaction!.scrollSpeedRatio!
                               .horizontal
                           }
                           onChange={onScrollSpeedRatioChange('horizontal')}
@@ -436,7 +441,8 @@ function MainLayout() {
                         <Slider
                           {...sliderOptions}
                           defaultValue={
-                            mergedOptions.interaction.scrollSpeedRatio.vertical
+                            mergedOptions.interaction!.scrollSpeedRatio!
+                              .vertical
                           }
                           onChange={onScrollSpeedRatioChange('vertical')}
                         />
@@ -448,7 +454,7 @@ function MainLayout() {
                 </Popover>
                 <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
                   <Select
-                    defaultValue={mergedOptions.interaction.overscrollBehavior}
+                    defaultValue={mergedOptions.interaction!.overscrollBehavior}
                     onChange={onOverscrollBehaviorChange}
                     style={{ width: 150 }}
                     size="small"
@@ -465,8 +471,8 @@ function MainLayout() {
                       ?.getRowNodes()
                       .find(({ id }) => id === 'root[&]四川省[&]成都市');
 
-                    clearInterval(scrollTimer.current);
-                    s2Ref.current.updateScrollOffset({
+                    clearInterval(scrollTimer.current!);
+                    s2Ref.current?.updateScrollOffset({
                       offsetY: {
                         value: rowNode?.y,
                         animate: true,
@@ -479,8 +485,8 @@ function MainLayout() {
                 <Button
                   size="small"
                   onClick={() => {
-                    clearInterval(scrollTimer.current);
-                    s2Ref.current.updateScrollOffset({
+                    clearInterval(scrollTimer.current!);
+                    s2Ref.current?.updateScrollOffset({
                       offsetY: {
                         value: 0,
                         animate: true,
@@ -496,14 +502,15 @@ function MainLayout() {
                   onClick={() => {
                     if (
                       scrollTimer.current ||
-                      !s2Ref.current.facet.vScrollBar
+                      !s2Ref.current?.facet.vScrollBar
                     ) {
-                      clearInterval(scrollTimer.current);
+                      clearInterval(scrollTimer.current!);
                       return;
                     }
                     scrollTimer.current = setInterval(() => {
-                      const { scrollY } = s2Ref.current.facet.getScrollOffset();
-                      if (s2Ref.current.facet.isScrollToBottom(scrollY)) {
+                      const { scrollY } =
+                        s2Ref.current?.facet.getScrollOffset()!;
+                      if (s2Ref.current?.facet.isScrollToBottom(scrollY)) {
                         console.log('滚动到底部');
                         s2Ref.current.updateScrollOffset({
                           offsetY: {
@@ -513,7 +520,7 @@ function MainLayout() {
                         });
                         return;
                       }
-                      s2Ref.current.updateScrollOffset({
+                      s2Ref.current!.updateScrollOffset({
                         offsetY: {
                           value: scrollY + 50,
                           animate: true,
@@ -558,7 +565,7 @@ function MainLayout() {
                     checkedChildren="收起子节点"
                     unCheckedChildren="展开子节点"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.style.hierarchyCollapse}
+                    checked={mergedOptions.style?.hierarchyCollapse}
                     onChange={(checked) => {
                       updateOptions({
                         style: {
@@ -584,7 +591,9 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏数值"
                   unCheckedChildren="显示数值"
-                  defaultChecked={mergedOptions.style.colCfg.hideMeasureColumn}
+                  defaultChecked={
+                    mergedOptions.style?.colCfg?.hideMeasureColumn
+                  }
                   onChange={(checked) => {
                     updateOptions({
                       style: {
@@ -690,7 +699,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="开启Tooltip"
                   unCheckedChildren="关闭Tooltip"
-                  checked={mergedOptions.tooltip.showTooltip}
+                  checked={mergedOptions.tooltip?.showTooltip}
                   onChange={(checked) => {
                     updateOptions({
                       tooltip: {
@@ -708,7 +717,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
-                  checked={!!mergedOptions.interaction.linkFields.length}
+                  checked={!isEmpty(mergedOptions.interaction?.linkFields)}
                   onChange={(checked) => {
                     updateOptions({
                       interaction: {
@@ -725,7 +734,7 @@ function MainLayout() {
                     updateOptions({
                       style: {
                         colCfg: {
-                          height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
+                          height: checked ? 0 : DEFAULT_STYLE.colCfg?.height,
                         },
                       },
                     });
@@ -749,7 +758,7 @@ function MainLayout() {
                   <Switch
                     checkedChildren="选中聚光灯开"
                     unCheckedChildren="选中聚光灯关"
-                    checked={mergedOptions.interaction.selectedCellsSpotlight}
+                    checked={mergedOptions?.interaction?.selectedCellsSpotlight}
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {
@@ -777,7 +786,7 @@ function MainLayout() {
                   <Switch
                     checkedChildren="hover十字器开"
                     unCheckedChildren="hover十字器关"
-                    checked={mergedOptions.interaction.hoverHighlight}
+                    checked={mergedOptions?.interaction?.hoverHighlight}
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {
@@ -791,7 +800,7 @@ function MainLayout() {
                   <Switch
                     checkedChildren="hover聚焦开"
                     unCheckedChildren="hover聚焦关"
-                    checked={mergedOptions.interaction.hoverFocus as boolean}
+                    checked={mergedOptions?.interaction?.hoverFocus as boolean}
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {
@@ -820,7 +829,7 @@ function MainLayout() {
                 <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
                   <Select
                     style={{ width: 180 }}
-                    defaultValue={mergedOptions.style.rowExpandDepth}
+                    defaultValue={mergedOptions?.style?.rowExpandDepth}
                     placeholder="默认行头展开层级"
                     onChange={(level) => {
                       updateOptions({
@@ -846,7 +855,9 @@ function MainLayout() {
                 >
                   <Select
                     style={{ width: 300 }}
-                    defaultValue={mergedOptions.interaction.hiddenColumnFields}
+                    defaultValue={
+                      mergedOptions?.interaction?.hiddenColumnFields
+                    }
                     mode="multiple"
                     placeholder="默认隐藏列"
                     onChange={(fields) => {
@@ -859,8 +870,8 @@ function MainLayout() {
                   >
                     {columnOptions.map((column) => {
                       return (
-                        <Select.Option value={column} key={column}>
-                          {column}
+                        <Select.Option value={column} key={column as string}>
+                          {column as string}
                         </Select.Option>
                       );
                     })}
@@ -912,12 +923,12 @@ function MainLayout() {
               onRangeSort={logHandler('onRangeSort')}
               onMounted={onSheetMounted}
               onDestroy={logHandler('onDestroy', () => {
-                clearInterval(scrollTimer.current);
+                clearInterval(scrollTimer.current!);
               })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={(cellInfo) => {
-                s2Ref.current.showTooltip({
+                s2Ref.current?.showTooltip({
                   position: {
                     x: cellInfo.event.clientX,
                     y: cellInfo.event.clientY,

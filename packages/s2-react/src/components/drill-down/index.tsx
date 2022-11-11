@@ -30,7 +30,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   searchText = i18n('搜索字段'),
   extra,
   drillFields,
-  dataSet,
+  dataSet = [],
   disabledFields,
   getDrillFields,
   setDrillFields,
@@ -126,7 +126,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
               disabled={option.disabled}
               className={`${DRILL_DOWN_PRE_CLASS}-menu-item`}
               icon={
-                option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type]
+                option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type!]
               }
             >
               {option.name}

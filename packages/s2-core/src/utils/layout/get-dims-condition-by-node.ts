@@ -1,7 +1,7 @@
 import type { Node } from '../../facet/layout/node';
 
 export function getDimsCondition(parent: Node, force?: boolean) {
-  const cond = {};
+  const cond: Record<string, string> = {};
   let p = parent;
   while (p && p.key) {
     /**
@@ -11,7 +11,7 @@ export function getDimsCondition(parent: Node, force?: boolean) {
     if (!p.isTotals || force) {
       cond[p.key] = p.value;
     }
-    p = p.parent;
+    p = p.parent!;
   }
   return cond;
 }

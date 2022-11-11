@@ -25,7 +25,7 @@ const hideMeasureColumn = (
 
 const getIsEqualValueLeafNode = (spreadsheet: SpreadSheet) => {
   // 没有隐藏列, 则无需再做后面的计算
-  if (isEmpty(spreadsheet.options.interaction.hiddenColumnFields)) {
+  if (isEmpty(spreadsheet.options.interaction?.hiddenColumnFields)) {
     return false;
   }
 
@@ -58,14 +58,14 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
 
   const index = fields.indexOf(currentField);
 
-  const { dataSet, values, spreadsheet } = facetCfg;
+  const { dataSet, values = [], spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
 
   let query = {};
   if (parentNode.isTotals) {
     // add total measures
     if (addTotalMeasureInTotal) {
-      query = getDimsCondition(parentNode.parent, true);
+      query = getDimsCondition(parentNode.parent!, true);
       // add total measures
       fieldValues.push(...values.map((v) => new TotalMeasure(v)));
     }
@@ -89,7 +89,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
 
     if (isEmpty(fieldValues)) {
       if (currentField === EXTRA_FIELD) {
-        fieldValues.push(...dataSet.fields?.values);
+        fieldValues.push(...(dataSet.fields?.values || []));
       } else {
         fieldValues.push(fieldName);
       }
@@ -128,7 +128,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
         const isCustomColumnField = node.field === EXTRA_COLUMN_FIELD;
         if (isMeasureField || isCustomColumnField || isEqualValueLeafNode) {
           return (
-            node.parent.id !== parentNode.id && node.parent.value !== value
+            node.parent?.id !== parentNode.id && node.parent?.value !== value
           );
         }
         // 没有数值字段 (hideMeasureColumn: true) 隐藏自己即可

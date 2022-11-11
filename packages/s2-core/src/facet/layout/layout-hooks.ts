@@ -96,8 +96,8 @@ export const layoutHierarchy = (
  */
 export const layoutCoordinate = (
   facetCfg: SpreadSheetFacetCfg,
-  rowNode: Node,
-  colNode: Node,
+  rowNode: Node | null,
+  colNode: Node | null,
 ) => {
   if (facetCfg?.layoutCoordinate) {
     // only leaf node's coordinates can be modified

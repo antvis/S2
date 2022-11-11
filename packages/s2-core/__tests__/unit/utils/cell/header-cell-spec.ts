@@ -25,17 +25,31 @@ describe('Header Cell Utils Tests', () => {
         CellTypes.ROW_CELL,
       );
       expect(rowConfig).toEqual(actionConfig[0]);
-      expect(rowConfig.displayCondition).toBeCalledWith(rowMeta, 'SortUp');
-      expect(rowConfig.displayCondition).toBeCalledWith(rowMeta, 'SortDown');
+      expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
+        rowMeta,
+        'SortUp',
+      );
+      expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
+        rowMeta,
+        'SortDown',
+      );
 
       // 列头 icon
       expect(
-        getActionIconConfig(actionConfig, null, CellTypes.COL_CELL),
+        getActionIconConfig(
+          actionConfig,
+          null as unknown as Node,
+          CellTypes.COL_CELL,
+        ),
       ).toEqual(actionConfig[1]);
 
       // 未命中
       expect(
-        getActionIconConfig(actionConfig, null, CellTypes.CORNER_CELL),
+        getActionIconConfig(
+          actionConfig,
+          null as unknown as Node,
+          CellTypes.CORNER_CELL,
+        ),
       ).toBeUndefined();
     });
 
@@ -44,16 +58,16 @@ describe('Header Cell Utils Tests', () => {
         {
           iconNames: ['SortUp', 'SortDown'],
           belongsCell: 'rowCell',
-          displayCondition: (meta, iconName) => iconName === 'SortDown',
+          displayCondition: (_, iconName) => iconName === 'SortDown',
         },
       ];
 
       const rowConfig = getActionIconConfig(
         actionConfig,
-        null,
+        null as unknown as Node,
         CellTypes.ROW_CELL,
       );
-      expect(rowConfig.iconNames).toEqual(['SortDown']);
+      expect(rowConfig!.iconNames).toEqual(['SortDown']);
     });
   });
 });

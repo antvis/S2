@@ -22,17 +22,17 @@ export const BaseSheet = React.forwardRef<
     useSpreadSheet(props);
 
   const [contextVal, setContextVal] = React.useState<SpreadSheet>(
-    s2Ref.current,
+    s2Ref.current!,
   );
 
   // 同步实例
   React.useEffect(() => {
     if (ref) {
-      (ref as React.MutableRefObject<SpreadSheet>).current = s2Ref.current;
+      (ref as React.MutableRefObject<SpreadSheet>).current = s2Ref.current!;
     }
   }, [ref, s2Ref]);
 
-  React.useEffect(() => setContextVal(s2Ref.current), [setContextVal, s2Ref]);
+  React.useEffect(() => setContextVal(s2Ref.current!), [setContextVal, s2Ref]);
 
   return (
     <React.StrictMode>
@@ -42,10 +42,10 @@ export const BaseSheet = React.forwardRef<
             {header && (
               <Header
                 {...header}
-                sheet={s2Ref.current}
-                width={options.width}
+                sheet={s2Ref.current!}
+                width={options!.width}
                 dataCfg={getSafetyDataConfig(dataCfg)}
-                options={getSheetComponentOptions(options)}
+                options={getSheetComponentOptions(options!)}
               />
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />

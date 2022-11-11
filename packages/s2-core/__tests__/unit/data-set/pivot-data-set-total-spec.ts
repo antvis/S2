@@ -6,7 +6,11 @@ import * as multiDataCfg from 'tests/data/simple-data.json';
 import * as mockData from 'tests/data/mock-dataset.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
-import { type S2DataConfig, Aggregation } from '@/common/interface';
+import {
+  type S2DataConfig,
+  Aggregation,
+  type CalcTotals,
+} from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
@@ -40,14 +44,14 @@ describe('Pivot Dataset Total Test', () => {
         '四川省',
         TOTAL_VALUE, // 行总计，根据数据结构来的
       ]);
-      expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
+      expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
         TOTAL_VALUE, // 行小计，来源测试数据
       ]);
-      expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
+      expect([...rowPivotMeta.get('四川省')!.children.keys()]).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
@@ -64,13 +68,13 @@ describe('Pivot Dataset Total Test', () => {
         TOTAL_VALUE,
       ]);
 
-      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
+      expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
         '桌子',
         '沙发',
         TOTAL_VALUE,
       ]);
 
-      expect([...colPivotMeta.get('办公用品').children.keys()]).toEqual([
+      expect([...colPivotMeta.get('办公用品')!.children.keys()]).toEqual([
         '笔',
         '纸张',
         TOTAL_VALUE,
@@ -155,7 +159,7 @@ describe('Pivot Dataset Total Test', () => {
               sub_type: '桌子',
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 18375]]);
 
@@ -167,7 +171,7 @@ describe('Pivot Dataset Total Test', () => {
               sub_type: '桌子',
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 26193]]);
 
@@ -180,7 +184,7 @@ describe('Pivot Dataset Total Test', () => {
               type: '家具',
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 13132]]);
 
@@ -192,7 +196,7 @@ describe('Pivot Dataset Total Test', () => {
               city: '杭州市',
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 15420]]);
 
@@ -203,7 +207,7 @@ describe('Pivot Dataset Total Test', () => {
               type: '家具',
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 49709]]);
 
@@ -213,7 +217,7 @@ describe('Pivot Dataset Total Test', () => {
             query: {
               [EXTRA_FIELD]: 'number',
             },
-          })
+          })!
           .getOrigin(),
       ).toContainEntries([['number', 78868]]);
     });
@@ -266,7 +270,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 18375]]);
 
@@ -279,7 +283,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 26193]]);
 
@@ -293,7 +297,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 13132]]);
 
@@ -306,7 +310,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 15420]]);
 
@@ -318,7 +322,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 49709]]);
 
@@ -329,7 +333,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 78868]]);
       });
@@ -385,7 +389,7 @@ describe('Pivot Dataset Total Test', () => {
                   [EXTRA_FIELD]: 'price',
                 },
                 isTotals: true,
-              })
+              })!
               .getOrigin(),
           ).toContainEntries([['price', 2]]);
           expect(
@@ -397,7 +401,7 @@ describe('Pivot Dataset Total Test', () => {
                   [EXTRA_FIELD]: 'cost',
                 },
                 isTotals: true,
-              })
+              })!
               .getOrigin(),
           ).toContainEntries([['cost', 4]]);
         });
@@ -410,15 +414,17 @@ describe('Pivot Dataset Total Test', () => {
         const mockSheet = new MockPivotSheet();
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
-        const calcFunc1 = (query, data) => {
+
+        const calcFunc1: CalcTotals['calcFunc'] = (_, data) => {
           const sum = data.reduce((pre, next) => {
-            return pre + next[VALUE_FIELD];
+            return pre + (next[VALUE_FIELD] as number);
           }, 0);
           return sum * 2;
         };
-        const calcFunc2 = (query, data) => {
+
+        const calcFunc2: CalcTotals['calcFunc'] = (_, data) => {
           const sum = data.reduce((pre, next) => {
-            return pre + next[VALUE_FIELD];
+            return pre + (next[VALUE_FIELD] as number);
           }, 0);
           return sum;
         };
@@ -464,7 +470,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 18375]]);
 
@@ -477,7 +483,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 52386]]);
 
@@ -491,7 +497,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 26264]]);
 
@@ -504,7 +510,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 15420]]);
 
@@ -516,7 +522,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 99418]]);
 
@@ -527,7 +533,7 @@ describe('Pivot Dataset Total Test', () => {
                 [EXTRA_FIELD]: 'number',
               },
               isTotals: true,
-            })
+            })!
             .getOrigin(),
         ).toContainEntries([['number', 78868]]);
       });

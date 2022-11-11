@@ -15,9 +15,9 @@ import { useResize } from './useResize';
 
 export function useSpreadSheet(props: SheetComponentsProps) {
   const forceUpdate = useUpdate();
-  const s2Ref = React.useRef<SpreadSheet>();
-  const containerRef = React.useRef<HTMLDivElement>();
-  const wrapperRef = React.useRef<HTMLDivElement>();
+  const s2Ref = React.useRef<SpreadSheet | null>(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
 
   const {
     spreadsheet: customSpreadSheet,
@@ -31,16 +31,16 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   /** 保存重渲 effect 的 deps */
   const updatePrevDepsRef = React.useRef<
     [S2DataConfig, SheetComponentOptions, ThemeCfg]
-  >([dataCfg, options, themeCfg]);
+  >([dataCfg, options!, themeCfg!]);
 
-  const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
-  const pagination = usePagination(s2Ref.current, props);
+  const { loading, setLoading } = useLoading(s2Ref.current!, props.loading);
+  const pagination = usePagination(s2Ref.current!, props);
 
-  useEvents(props, s2Ref.current);
+  useEvents(props, s2Ref.current!);
 
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
-      const s2Options = getSheetComponentOptions(options);
+      const s2Options = getSheetComponentOptions(options!);
       if (customSpreadSheet) {
         return customSpreadSheet(container, dataCfg, s2Options);
       }
@@ -54,7 +54,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
 
   const buildSpreadSheet = React.useCallback(() => {
     setLoading(true);
-    s2Ref.current = renderSpreadSheet(containerRef.current);
+    s2Ref.current = renderSpreadSheet(containerRef.current!);
     s2Ref.current.setThemeCfg(props.themeCfg);
     s2Ref.current.render();
     setLoading(false);
@@ -77,14 +77,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   React.useEffect(() => {
     buildSpreadSheet();
     return () => {
-      s2Ref.current.destroy?.();
+      s2Ref.current?.destroy?.();
     };
   }, []);
 
   // 重渲 effect：dataCfg, options or theme changed
   useUpdateEffect(() => {
     const [prevDataCfg, prevOptions, prevThemeCfg] = updatePrevDepsRef.current;
-    updatePrevDepsRef.current = [dataCfg, options, themeCfg];
+    updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
 
     let reloadData = false;
     let reBuildDataSet = false;
@@ -109,7 +109,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
         s2Ref.current?.setDataCfg(dataCfg);
       }
       s2Ref.current?.setOptions(options as S2Options);
-      s2Ref.current?.changeSheetSize(options.width, options.height);
+      s2Ref.current?.changeSheetSize(options!.width, options!.height);
     }
 
     if (!Object.is(prevThemeCfg, themeCfg)) {
@@ -125,15 +125,15 @@ export function useSpreadSheet(props: SheetComponentsProps) {
       reBuildDataSet,
     });
 
-    s2Ref.current?.render(renderOptions.reloadData, {
-      reBuildDataSet: renderOptions.reBuildDataSet,
+    s2Ref.current?.render(renderOptions!.reloadData, {
+      reBuildDataSet: renderOptions!.reBuildDataSet,
     });
   }, [dataCfg, options, themeCfg, onSheetUpdate]);
 
   useResize({
-    s2: s2Ref.current,
-    container: containerRef.current,
-    wrapper: wrapperRef.current,
+    s2: s2Ref.current!,
+    container: containerRef.current!,
+    wrapper: wrapperRef.current!,
     adaptive: props.adaptive,
   });
 

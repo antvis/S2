@@ -17,6 +17,8 @@ import {
   getScrollOffsetForCol,
   FrozenGroupType,
   getScrollOffsetForRow,
+  type S2DataConfig,
+  type S2Options,
 } from '@/index';
 import type { TableFacet } from '@/facet';
 
@@ -87,8 +89,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance = new PivotSheet(
       document.createElement('div'),
-      null,
-      null,
+      null as unknown as S2DataConfig,
+      null as unknown as S2Options,
     );
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
@@ -184,7 +186,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     (brushSelectionInstance as any).updateSelectedCells();
 
     (mockRootInteraction.getAllColHeaderCells() || [])
-      .filter((cell, i) => i < 5)
+      .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
@@ -192,7 +194,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockRootInteraction.getAllCells();
 
     (mockRootInteraction.getAllRowHeaderCells() || [])
-      .filter((cell, i) => i < 5)
+      .filter((_, i) => i < 5)
       .forEach((cell) => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
@@ -348,10 +350,10 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(brushSelectionInstance.brushRangeCells).toHaveLength(15);
     brushSelectionInstance.brushRangeCells.forEach((cell) => {
       const { rowIndex, colIndex } = cell.getMeta();
-      expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex);
-      expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex);
-      expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex);
-      expect(colIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.colIndex);
+      expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex!);
+      expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex!);
+      expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex!);
+      expect(colIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.colIndex!);
     });
     // emit event
     expect(selectedFn).toHaveBeenCalledTimes(1);

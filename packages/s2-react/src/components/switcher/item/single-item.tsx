@@ -29,12 +29,12 @@ export const SingleItem: FC<SingleItemProps> = ({
   disabled,
   onVisibleItemChange,
 }) => {
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement | null>(null);
   const [ellipsis, setEllipsis] = useState(false);
 
   useEffect(() => {
     // 针对超长文字，添加 tooltip
-    setEllipsis(ref.current.offsetWidth < ref.current.scrollWidth);
+    setEllipsis(ref.current?.offsetWidth! < ref.current?.scrollWidth!);
   }, []);
 
   const realDisplayName = displayName ?? id;

@@ -26,7 +26,7 @@ describe('Corner Tests', () => {
         rowsHierarchy: {
           sampleNodesForAllLevels: [],
         },
-      } as LayoutResult,
+      } as unknown as LayoutResult,
       seriesNumberWidth: 50,
       spreadsheet: s2,
     });

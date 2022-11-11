@@ -68,7 +68,7 @@ export class ScrollBar extends Group {
 
   private eventHandlers: EventHandler[] = [];
 
-  private scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
+  private scrollFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
 
   constructor(scrollBarCfg: ScrollBarCfg) {
     super(scrollBarCfg);
@@ -90,7 +90,7 @@ export class ScrollBar extends Group {
     this.thumbLen = thumbLen;
     this.position = position;
     this.minThumbLen = minThumbLen;
-    this.theme = theme;
+    this.theme = theme!;
     this.scrollTargetMaxOffset = scrollTargetMaxOffset;
 
     this.initScrollBar();
@@ -107,7 +107,7 @@ export class ScrollBar extends Group {
    * 详情: https://github.com/antvis/S2/pull/1566/files#diff-3f08348041906ddf1e4f094bfe2ac32b35ff668918d3fbb952e9227ae462cc08R52
    */
   private getCoordinatesWithBBoxExtraPadding = () => {
-    const { size } = this.theme;
+    const { size = 0 } = this.theme;
     const startPadding = this.isHorizontal ? 0 : size / 2;
     const endPadding = this.isHorizontal ? size : size / 2;
 
@@ -187,7 +187,7 @@ export class ScrollBar extends Group {
   };
 
   public emitScrollChange = (offset: number, updateThumbOffset = true) => {
-    cancelAnimationFrame(this.scrollFrameId);
+    cancelAnimationFrame(this.scrollFrameId!);
 
     this.scrollFrameId = requestAnimationFrame(() => {
       this.emit(ScrollType.ScrollChange, {
@@ -240,7 +240,7 @@ export class ScrollBar extends Group {
 
   // 创建滑道的 shape
   private createTrackShape = (group: IGroup): IShape => {
-    const { lineCap = 'round', trackColor, size } = this.theme;
+    const { lineCap = 'round', trackColor, size = 0 } = this.theme;
 
     const baseAttrs: ShapeAttrs = {
       lineWidth: size,
@@ -272,7 +272,7 @@ export class ScrollBar extends Group {
 
   // 创建滑块的 shape
   private createThumbShape = (group: IGroup): IShape => {
-    const { size, lineCap = 'round', thumbColor } = this.theme;
+    const { size = 0, lineCap = 'round', thumbColor } = this.theme;
     const baseAttrs: ShapeAttrs = {
       lineWidth: size,
       stroke: thumbColor,
@@ -378,7 +378,7 @@ export class ScrollBar extends Group {
 
   // 拖拽滑块的事件回调
   // 这里是 dom 原生事件，绑定在 dom 元素上的
-  private onMouseMove = (e: MouseEvent) => {
+  private onMouseMove = (e: Event | TouchEvent) => {
     e.preventDefault();
 
     const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
@@ -395,7 +395,7 @@ export class ScrollBar extends Group {
     this.updateThumbOffset(this.thumbOffset + diff);
   };
 
-  private onMouseUp = (e: MouseEvent) => {
+  private onMouseUp = (e: Event | TouchEvent) => {
     this.emit(ScrollType.ScrollEnd, {});
     e.preventDefault();
     this.clearEvents?.();

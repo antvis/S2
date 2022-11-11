@@ -1,10 +1,16 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
-import type { S2CellType, SortParam } from '../../common/interface';
+import type {
+  Data,
+  S2CellType,
+  SortMethod,
+  SortParam,
+} from '../../common/interface';
 import type { BaseTooltip } from '../../ui/tooltip';
+import type { CellData } from '../../data-set';
 
-export type TooltipDataItem = Record<string, any>;
+export type TooltipDataItem = Data;
 
 export interface TooltipOperatorMenu {
   key: string;
@@ -15,8 +21,13 @@ export interface TooltipOperatorMenu {
   children?: TooltipOperatorMenu[];
 }
 
+export type TooltipOperatorClickHandler = (params: {
+  key: SortMethod;
+  [key: string]: unknown;
+}) => void;
+
 export interface TooltipOperatorOptions {
-  onClick?: (...args: unknown[]) => void;
+  onClick?: TooltipOperatorClickHandler;
   menus?: TooltipOperatorMenu[];
   defaultSelectedKeys?: string[];
 }
@@ -48,14 +59,14 @@ export interface TooltipOptions {
 }
 
 export interface TooltipSummaryOptions {
-  name: string;
-  value: number | string;
-  selectedData: TooltipDataItem[];
+  name: string | null;
+  value: number | string | undefined | null;
+  selectedData: Data[] | CellData[];
 }
 
 export interface TooltipNameTipsOptions {
-  name?: string;
-  tips?: string;
+  name?: string | undefined | null;
+  tips?: string | undefined | null;
 }
 
 export interface TooltipOperationOptions {
@@ -71,7 +82,7 @@ export interface TooltipOperationState {
 }
 
 export type TooltipDetailProps = {
-  list: TooltipDetailListItem[];
+  list: TooltipDetailListItem[] | null | undefined;
 };
 
 export type TooltipInterpretationOptions = {
@@ -97,14 +108,14 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
-  details?: TooltipDetailListItem[];
-  headInfo?: TooltipHeadInfo;
-  name?: string;
+  details?: TooltipDetailListItem[] | null | undefined;
+  headInfo?: TooltipHeadInfo | null | undefined;
+  name?: string | null | undefined;
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;
-  colIndex?: number;
-  rowIndex?: number;
+  colIndex?: number | null;
+  rowIndex?: number | null;
   description?: string;
 };
 
@@ -116,24 +127,24 @@ export type TooltipHeadInfo = {
 export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
-  targetCell: S2CellType;
+  targetCell?: S2CellType | undefined | null;
 };
 
 export type TooltipIconProps = {
-  icon: Element | string;
+  icon: Element | string | undefined | null;
   [key: string]: unknown;
 };
 
 export interface SummaryProps {
-  summaries: TooltipSummaryOptions[];
+  summaries: TooltipSummaryOptions[] | undefined;
 }
 
 export interface SummaryParam extends TooltipDataParams {
-  cellInfos?: TooltipDataItem[];
+  cellInfos?: TooltipData[];
 }
 
 export interface TooltipDataParam extends TooltipDataParams {
-  cellInfos: TooltipDataItem[];
+  cellInfos: TooltipData[];
 }
 
 export interface OrderOption {
@@ -142,9 +153,9 @@ export interface OrderOption {
   name: string;
 }
 
-export type TooltipAutoAdjustBoundary = 'body' | 'container';
+export type TooltipAutoAdjustBoundary = 'body' | 'container' | null | undefined;
 
-export type TooltipContentType = Element | string;
+export type TooltipContentType = Element | string | undefined | null;
 
 export interface BaseTooltipConfig<T = TooltipContentType> {
   showTooltip?: boolean;

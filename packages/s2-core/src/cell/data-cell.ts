@@ -13,7 +13,6 @@ import type {
   Condition,
   FormatResult,
   IconCfg,
-  IconCondition,
   MappingResult,
   TextTheme,
   ViewMeta,
@@ -95,7 +94,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (
-          this.spreadsheet.options.interaction.selectedCellsSpotlight
+          this.spreadsheet.options.interaction?.selectedCellsSpotlight
         ) {
           this.updateByState(InteractionStateName.UNSELECTED);
         }
@@ -112,7 +111,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       return;
     }
 
-    if (this.spreadsheet.options.interaction.hoverHighlight) {
+    if (this.spreadsheet.options.interaction?.hoverHighlight) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
@@ -213,26 +212,24 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
     const textStyle = isTotals
-      ? this.theme.dataCell.bolderText
-      : this.theme.dataCell.text;
+      ? this.theme.dataCell?.bolderText
+      : this.theme.dataCell?.text;
 
     // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
     const fill = this.getTextConditionFill({
       ...textStyle,
-      fill: this.getDefaultTextFill(textStyle),
+      fill: this.getDefaultTextFill(textStyle!),
     });
 
     return { ...textStyle, fill };
   }
 
   public getIconStyle(): IconCfg | undefined {
-    const { size, margin } = this.theme.dataCell.icon;
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
+    const { size, margin } = this.theme.dataCell!.icon!;
+    const iconCondition = this.findFieldCondition(this.conditions?.icon!);
 
-    const iconCfg: IconCfg = iconCondition &&
-      iconCondition.mapping && {
+    const iconCfg = iconCondition &&
+      iconCondition.mapping! && {
         size,
         margin,
         position: getIconPositionCfg(iconCondition),
@@ -260,9 +257,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getFormattedFieldValue(): FormatResult {
     const { rowId, valueField, fieldValue, data } = this.meta;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
+    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId!);
     const fieldId = rowMeta ? rowId : valueField;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId);
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId!);
     // TODO: 这里只用 formatter(fieldValue, this.meta) 即可, 为了保持兼容, 暂时在第三个参入传入 meta 信息
     const formattedValue = formatter(fieldValue, data, this.meta);
 
@@ -282,10 +279,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public getBackgroundColor() {
-    const { crossBackgroundColor, backgroundColorOpacity } =
-      this.getStyle().cell;
+    const cellStyle = this.getStyle()?.cell;
+    const { crossBackgroundColor, backgroundColorOpacity } = cellStyle!;
 
-    let backgroundColor = this.getStyle().cell.backgroundColor;
+    let backgroundColor = cellStyle!.backgroundColor;
 
     if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
       // 隔行颜色的配置
@@ -298,13 +295,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     // get background condition fill color
-    const bgCondition = this.findFieldCondition(this.conditions?.background);
+    const bgCondition = this.findFieldCondition(this.conditions?.background!);
     let intelligentReverseTextColor = false;
-    if (bgCondition && bgCondition.mapping) {
+    if (bgCondition?.mapping!) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
-        intelligentReverseTextColor = attrs.intelligentReverseTextColor;
+        intelligentReverseTextColor = attrs.intelligentReverseTextColor!;
       }
     }
     return {
@@ -324,7 +321,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
-    } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {
+    } else if (this.spreadsheet.options.interaction?.selectedCellsSpotlight) {
       this.updateByState(InteractionStateName.UNSELECTED);
     } else {
       this.hideInteractionShape();
@@ -340,7 +337,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  public findFieldCondition(conditions: Condition[]): Condition {
+  public findFieldCondition(conditions: Condition[]): Condition | undefined {
     return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
@@ -354,7 +351,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    return condition?.mapping(
+      value,
+      this.meta.data as unknown as Record<string, any>,
+    )!;
   }
 
   public updateByState(stateName: InteractionStateName) {

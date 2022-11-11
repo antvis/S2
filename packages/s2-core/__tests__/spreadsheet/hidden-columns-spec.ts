@@ -3,7 +3,7 @@ import * as mockPivotDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { difference } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import type { S2Options } from '@/common';
+import type { HiddenColumnsInfo, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,
@@ -49,15 +49,15 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         [],
       );
       const [costDetail] = hiddenColumnsDetail;
-      expect(tableSheet.options.interaction.hiddenColumnFields).toEqual(
+      expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
       expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
         difference(mockTableDataConfig.fields.columns, hiddenColumns),
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
-      expect(costDetail.displaySiblingNode.prev.field).toEqual('price');
-      expect(costDetail.displaySiblingNode.next.field).toEqual('province');
+      expect(costDetail.displaySiblingNode.prev?.field).toEqual('price');
+      expect(costDetail.displaySiblingNode.next?.field).toEqual('province');
       expect(costDetail.hideColumnNodes).toHaveLength(1);
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
@@ -82,18 +82,18 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       // price
       expect(priceDetail.displaySiblingNode.prev).toBeNull();
-      expect(priceDetail.displaySiblingNode.next.field).toEqual('cost');
+      expect(priceDetail.displaySiblingNode.next?.field).toEqual('cost');
       expect(priceDetail.hideColumnNodes).toHaveLength(1);
       expect(priceDetail.hideColumnNodes[0].field).toEqual('price');
 
       expect(priceDetail.displaySiblingNode.prev).toBeNull();
-      expect(priceDetail.displaySiblingNode.next.field).toEqual('cost');
+      expect(priceDetail.displaySiblingNode.next?.field).toEqual('cost');
       expect(priceDetail.hideColumnNodes).toHaveLength(1);
       expect(priceDetail.hideColumnNodes[0].field).toEqual('price');
 
       // city
-      expect(cityDetail.displaySiblingNode.prev.field).toEqual('province');
-      expect(cityDetail.displaySiblingNode.next.field).toEqual('type');
+      expect(cityDetail.displaySiblingNode.prev?.field).toEqual('province');
+      expect(cityDetail.displaySiblingNode.next?.field).toEqual('type');
       expect(cityDetail.hideColumnNodes).toHaveLength(1);
       expect(cityDetail.hideColumnNodes[0].field).toEqual('city');
     });
@@ -118,8 +118,8 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(hiddenColumnsDetail).toHaveLength(1);
 
       // price
-      expect(groupDetail.displaySiblingNode.prev.field).toEqual('price');
-      expect(groupDetail.displaySiblingNode.next.field).toEqual('city');
+      expect(groupDetail.displaySiblingNode.prev?.field).toEqual('price');
+      expect(groupDetail.displaySiblingNode.next?.field).toEqual('city');
       expect(groupDetail.hideColumnNodes).toHaveLength(2);
       expect(groupDetail.hideColumnNodes[0].field).toEqual('cost');
       expect(groupDetail.hideColumnNodes[1].field).toEqual('province');
@@ -138,15 +138,15 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [costDetail] = hiddenColumnsDetail;
 
-      expect(sheet.options.interaction.hiddenColumnFields).toEqual(
+      expect(sheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
       expect(sheet.getColumnNodes().map((node) => node.field)).toEqual(
         difference(mockTableDataConfig.fields.columns, hiddenColumns),
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
-      expect(costDetail.displaySiblingNode.prev.field).toEqual('price');
-      expect(costDetail.displaySiblingNode.next.field).toEqual('province');
+      expect(costDetail.displaySiblingNode.prev?.field).toEqual('price');
+      expect(costDetail.displaySiblingNode.next?.field).toEqual('province');
       expect(costDetail.hideColumnNodes).toHaveLength(1);
       expect(costDetail.hideColumnNodes[0].field).toEqual('cost');
     });
@@ -194,7 +194,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         [],
       );
       const [priceDetail] = hiddenColumnsDetail;
-      expect(pivotSheet.options.interaction.hiddenColumnFields).toEqual(
+      expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
       expect(pivotSheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
@@ -202,7 +202,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(priceDetail.displaySiblingNode.prev).toEqual(null);
-      expect(priceDetail.displaySiblingNode.next.id).toEqual(cityPriceColumnId);
+      expect(priceDetail.displaySiblingNode.next?.id).toEqual(
+        cityPriceColumnId,
+      );
       expect(priceDetail.hideColumnNodes).toHaveLength(1);
       expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
     });
@@ -219,7 +221,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       const [multipleColumnDetail] = hiddenColumnsDetail;
 
       expect(pivotSheet.getColumnLeafNodes()).toEqual([]);
-      expect(pivotSheet.options.interaction.hiddenColumnFields).toEqual(
+      expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
       expect(hiddenColumnsDetail).toHaveLength(1);
@@ -237,7 +239,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should not rerender after hidden empty column fields if disable force render', () => {
-      const defaultHiddenColumnsDetail = [null];
+      const defaultHiddenColumnsDetail = [
+        null,
+      ] as unknown as HiddenColumnsInfo[];
       pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
 
       const renderSpy = jest
@@ -253,7 +257,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     });
 
     test('should rerender after hidden empty column fields if enable force render', () => {
-      const defaultHiddenColumnsDetail = [null];
+      const defaultHiddenColumnsDetail = [
+        null,
+      ] as unknown as HiddenColumnsInfo[];
       pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
 
       const renderSpy = jest
@@ -280,7 +286,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [priceDetail] = hiddenColumnsDetail;
-      expect(sheet.options.interaction.hiddenColumnFields).toEqual(
+      expect(sheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
       expect(sheet.getColumnLeafNodes().map((node) => node.id)).toEqual([
@@ -288,7 +294,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
       expect(priceDetail.displaySiblingNode.prev).toEqual(null);
-      expect(priceDetail.displaySiblingNode.next.id).toEqual(cityPriceColumnId);
+      expect(priceDetail.displaySiblingNode.next?.id).toEqual(
+        cityPriceColumnId,
+      );
       expect(priceDetail.hideColumnNodes).toHaveLength(1);
       expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
     });

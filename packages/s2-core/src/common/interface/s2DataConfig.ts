@@ -43,9 +43,9 @@ export interface MultiData<T = SimpleData[][] | MiniChartData> {
   [key: string]: unknown;
 }
 
-export type SimpleData = string | number;
+export type SimpleData = string | number | null;
 
-export type DataItem = SimpleData | MultiData;
+export type DataItem = SimpleData | MultiData | undefined | null;
 
 export type RawData = Record<string, DataItem>;
 
@@ -54,7 +54,7 @@ export type ExtraData = {
   [VALUE_FIELD]: string | DataItem;
 };
 
-export type Data = RawData & ExtraData;
+export type Data = (RawData & ExtraData) | undefined;
 
 export interface CustomTreeNode {
   key: string;

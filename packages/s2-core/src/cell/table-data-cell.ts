@@ -22,8 +22,8 @@ export class TableDataCell extends DataCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction;
-    const linkTextFill = this.theme.rowCell.text.linkTextFill;
+    const { linkFields = [] } = this.spreadsheet.options.interaction!;
+    const linkTextFill = this.theme.rowCell!.text!.linkTextFill!;
 
     super.drawLinkFieldShape(
       linkFields.includes(this.meta.valueField),
@@ -61,7 +61,8 @@ export class TableDataCell extends DataCell {
     const { y, height } = this.getBBoxByType();
     const rowIndex = this.meta.rowIndex;
     const resizeStyle = this.getResizeAreaStyle();
-    const { frozenRowCount, frozenTrailingRowCount } = this.spreadsheet.options;
+    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
+      this.spreadsheet.options;
     const cellRange = this.spreadsheet.facet.getCellRange();
     const isFrozenRow = isFrozenRowUtil(
       rowIndex,
@@ -118,7 +119,7 @@ export class TableDataCell extends DataCell {
           meta: this.meta,
         }),
         x: 0,
-        y: offsetY + height - resizeStyle.size,
+        y: offsetY + height - resizeStyle!.size!,
         width: resizeWidth,
       },
     });

@@ -31,6 +31,7 @@ describe('Display Data Item Callback Test', () => {
     const callback: FilterDataItemCallback = (field, item) => {
       if (field === 'value') {
         return {
+          // @ts-ignore
           values: [(item as MultiData).values[0].filter((_, idx) => idx < 2)],
         };
       }

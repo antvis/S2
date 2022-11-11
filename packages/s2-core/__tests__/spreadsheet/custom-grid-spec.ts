@@ -205,7 +205,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
       // 选中 a-1
       s2.interaction.selectHeaderCell({
-        cell: rowNode.belongsCell,
+        cell: rowNode.belongsCell!,
       });
 
       // 选中单元格本身
@@ -219,7 +219,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
       // 取消选中 a - 1
       s2.interaction.selectHeaderCell({
-        cell: rowNode.belongsCell,
+        cell: rowNode.belongsCell!,
       });
       expect(s2.interaction.getActiveCells()).toBeEmpty();
     });
@@ -234,19 +234,19 @@ describe('SpreadSheet Custom Grid Tests', () => {
     ])(
       'should get selected cell summary infos for %o',
       ({ key, count, sum }) => {
-        const rowNode = s2.getRowNodes().find((node) => node.field === key);
+        const rowNode = s2.getRowNodes().find((node) => node.field === key)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
-          cell: rowNode.belongsCell,
+          cell: rowNode.belongsCell!,
         });
 
-        const tooltipData = getTestTooltipData(s2, rowNode.belongsCell);
+        const tooltipData = getTestTooltipData(s2, rowNode.belongsCell!);
 
         // 选中个数
-        expect(getSelectedCount(tooltipData.summaries)).toEqual(count);
+        expect(getSelectedCount(tooltipData.summaries!)).toEqual(count);
         // 汇总数据总和
-        expect(getSelectedSum(tooltipData.summaries)).toEqual(sum);
+        expect(getSelectedSum(tooltipData.summaries!)).toEqual(sum);
       },
     );
 
@@ -433,7 +433,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
       // 选中 a-1
       s2.interaction.selectHeaderCell({
-        cell: colNode.belongsCell,
+        cell: colNode.belongsCell!,
       });
 
       // 选中单元格本身
@@ -447,7 +447,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
       // 取消选中 a - 1
       s2.interaction.selectHeaderCell({
-        cell: colNode.belongsCell,
+        cell: colNode.belongsCell!,
       });
       expect(s2.interaction.getActiveCells()).toBeEmpty();
     });
@@ -462,14 +462,14 @@ describe('SpreadSheet Custom Grid Tests', () => {
     ])(
       'should get selected cell summary infos for %o',
       ({ key, count, sum }) => {
-        const colNode = s2.getColumnNodes().find((node) => node.field === key);
+        const colNode = s2.getColumnNodes().find((node) => node.field === key)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
-          cell: colNode.belongsCell,
+          cell: colNode.belongsCell!,
         });
 
-        const tooltipData = getTestTooltipData(s2, colNode.belongsCell);
+        const tooltipData = getTestTooltipData(s2, colNode.belongsCell!);
 
         // 选中个数
         expect(getSelectedCount(tooltipData.summaries)).toEqual(count);
@@ -521,7 +521,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
       const [measureDetail] = hiddenColumnsDetail;
 
-      expect(s2.options.interaction.hiddenColumnFields).toEqual(hiddenColumns);
+      expect(s2.options.interaction?.hiddenColumnFields).toEqual(hiddenColumns);
       expect(s2.getColumnNodes().map((node) => node.field)).toEqual([
         'a-1',
         'a-1-1',
@@ -530,8 +530,8 @@ describe('SpreadSheet Custom Grid Tests', () => {
         'a-2',
       ]);
       expect(hiddenColumnsDetail).toHaveLength(1);
-      expect(measureDetail.displaySiblingNode.prev.field).toEqual('measure-1');
-      expect(measureDetail.displaySiblingNode.next.field).toEqual('a-1-2');
+      expect(measureDetail.displaySiblingNode.prev?.field).toEqual('measure-1');
+      expect(measureDetail.displaySiblingNode.next?.field).toEqual('a-1-2');
       expect(measureDetail.hideColumnNodes).toHaveLength(1);
       expect(measureDetail.hideColumnNodes[0].field).toEqual('measure-2');
     });

@@ -64,7 +64,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      const cell: DataCell = this.spreadsheet.getCell(event.target);
+      const cell = this.spreadsheet.getCell(event.target) as DataCell;
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 
@@ -128,23 +128,20 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
 
     if (!isNil(meta?.x)) {
       interaction.addIntercepts([InterceptType.HOVER]);
-      let selectedCells = [getCellMeta(cell)];
+      let selectedCells = [getCellMeta(cell!)];
       const lastCell = this.spreadsheet.store.get('lastClickedCell');
       // 处理shift区间多选
       if (
         this.isRangeSelection &&
         lastCell &&
-        lastCell.cellType === cell.cellType &&
-        lastCell.getMeta().level === cell.getMeta().level
+        lastCell.cellType === cell!.cellType &&
+        lastCell.getMeta().level === meta.level
       ) {
         const [rowMaxLevel, colMaxLevel] = [
           this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
           this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
         ];
-        const { start, end } = getRangeIndex(
-          lastCell.getMeta() as ViewMeta,
-          cell.getMeta() as ViewMeta,
-        );
+        const { start, end } = getRangeIndex(lastCell.getMeta(), meta);
         if (cell instanceof DataCell) {
           selectedCells = this.handleSeriesNumberRowSelected(
             start.rowIndex,
@@ -152,8 +149,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
             cell,
           );
         } else if (
-          cell.cellType === CellTypes.ROW_CELL &&
-          cell.getMeta().level === rowMaxLevel
+          cell?.cellType === CellTypes.ROW_CELL &&
+          meta.level === rowMaxLevel
         ) {
           selectedCells = this.handleRowSelected(
             start.rowIndex,
@@ -161,8 +158,8 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
             cell,
           );
         } else if (
-          cell.cellType === CellTypes.COL_CELL &&
-          cell.getMeta().level === colMaxLevel
+          cell?.cellType === CellTypes.COL_CELL &&
+          meta.level === colMaxLevel
         ) {
           selectedCells = this.handleColSelected(
             start.colIndex,

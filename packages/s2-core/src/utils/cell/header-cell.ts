@@ -39,7 +39,7 @@ export const shouldShowActionIcons = (
  * @returns icon 配置
  */
 export const getActionIconConfig = (
-  actionIconCfgList: HeaderActionIcon[],
+  actionIconCfgList: HeaderActionIcon[] = [],
   meta: Node,
   cellType: CellTypes,
 ): HeaderActionIcon | undefined => {
@@ -55,7 +55,7 @@ export const getActionIconConfig = (
   let nextIconNames = iconConfig.iconNames;
   if (iconConfig.displayCondition) {
     nextIconNames = nextIconNames.filter((iconName) =>
-      iconConfig.displayCondition(meta, iconName),
+      iconConfig.displayCondition?.(meta, iconName),
     );
   }
 

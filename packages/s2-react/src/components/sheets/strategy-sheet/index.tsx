@@ -12,7 +12,7 @@ import {
 import { isArray, isEmpty, isFunction, isNil, size } from 'lodash';
 import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import type { SheetComponentsProps } from '../interface';
+import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
@@ -33,99 +33,100 @@ import {
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
 
-    const strategySheetOptions = React.useMemo<
-      S2Options<React.ReactNode>
-    >(() => {
-      if (isEmpty(dataCfg)) {
-        return null;
-      }
+    const strategySheetOptions =
+      React.useMemo<S2Options<React.ReactNode> | null>(() => {
+        if (isEmpty(dataCfg)) {
+          return null;
+        }
 
-      // 单指标非自定义树结构隐藏指标列
-      const hideMeasureColumn = size(dataCfg?.fields?.values) === 1;
+        // 单指标非自定义树结构隐藏指标列
+        const hideMeasureColumn = size(dataCfg?.fields?.values) === 1;
 
-      const getContent =
-        (cellType: 'row' | 'col' | 'data') =>
-        (
-          cell: S2CellType,
-          tooltipOptions: TooltipShowOptions<React.ReactNode>,
-        ): React.ReactNode => {
-          // 优先级: 单元格 > 表格级
-          const tooltipContent: TooltipShowOptions<React.ReactNode>['content'] =
-            options.tooltip?.[cellType]?.content ?? options.tooltip?.content;
+        const getContent =
+          (cellType: 'row' | 'col' | 'data') =>
+          (
+            cell: S2CellType,
+            tooltipOptions: TooltipShowOptions<React.ReactNode>,
+          ): React.ReactNode => {
+            // 优先级: 单元格 > 表格级
+            const tooltipContent: TooltipShowOptions<React.ReactNode>['content'] =
+              options?.tooltip?.[cellType]?.content ??
+              options?.tooltip?.content;
 
-          const content = isFunction(tooltipContent)
-            ? tooltipContent?.(cell, tooltipOptions)
-            : tooltipContent;
+            const content = isFunction(tooltipContent)
+              ? tooltipContent?.(cell, tooltipOptions)
+              : tooltipContent;
 
-          return content;
-        };
+            return content;
+          };
 
-      return {
-        hierarchyType: 'tree',
-        dataCell: (viewMeta: ViewMeta) =>
-          new CustomDataCell(viewMeta, viewMeta.spreadsheet),
-        colCell: (
-          node: Node,
-          spreadsheet: SpreadSheet,
-          headerConfig: ColHeaderConfig,
-        ) => new CustomColCell(node, spreadsheet, headerConfig),
-        dataSet: (spreadSheet: SpreadSheet) => new StrategyDataSet(spreadSheet),
-        showDefaultHeaderActionIcon: false,
-        style: {
-          colCfg: {
-            hideMeasureColumn,
-          },
-        },
-        interaction: {
-          autoResetSheetStyle: true,
-          // 趋势分析表禁用 刷选, 多选, 区间多选
-          brushSelection: false,
-          selectedCellMove: false,
-          multiSelection: false,
-          rangeSelection: false,
-        },
-        tooltip: {
-          operation: {
-            hiddenColumns: true,
-          },
-          row: {
-            content: (cell, tooltipOptions) =>
-              getContent('row')(cell, tooltipOptions) ?? (
-                <StrategySheetRowTooltip cell={cell} />
-              ),
-          },
-          col: {
-            content: (cell, tooltipOptions) =>
-              getContent('row')(cell, tooltipOptions) ?? (
-                <StrategySheetColTooltip cell={cell} />
-              ),
-          },
-          data: {
-            content: (cell, tooltipOptions) => {
-              const meta = cell.getMeta() as ViewMeta;
-              const fieldValue = meta.fieldValue as MultiData;
-              const content = getContent('data')(cell, tooltipOptions);
-
-              // 自定义内容优先级最高
-              if (!isNil(content)) {
-                return content;
-              }
-
-              // 如果是数组, 说明是普通数值+同环比数据, 显示普通数值 Tooltip
-              if (isArray(fieldValue?.values)) {
-                return <StrategySheetDataTooltip cell={cell} />;
-              }
-
-              return <></>;
+        return {
+          hierarchyType: 'tree',
+          dataCell: (viewMeta: ViewMeta) =>
+            new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+          colCell: (
+            node: Node,
+            spreadsheet: SpreadSheet,
+            headerConfig: ColHeaderConfig,
+          ) => new CustomColCell(node, spreadsheet, headerConfig),
+          dataSet: (spreadSheet: SpreadSheet) =>
+            new StrategyDataSet(spreadSheet),
+          showDefaultHeaderActionIcon: false,
+          style: {
+            colCfg: {
+              hideMeasureColumn,
             },
           },
-        },
-      };
-    }, [dataCfg, options.tooltip]);
+          interaction: {
+            autoResetSheetStyle: true,
+            // 趋势分析表禁用 刷选, 多选, 区间多选
+            brushSelection: false,
+            selectedCellMove: false,
+            multiSelection: false,
+            rangeSelection: false,
+          },
+          tooltip: {
+            operation: {
+              hiddenColumns: true,
+            },
+            row: {
+              content: (cell, tooltipOptions) =>
+                getContent('row')(cell, tooltipOptions) ?? (
+                  <StrategySheetRowTooltip cell={cell} />
+                ),
+            },
+            col: {
+              content: (cell, tooltipOptions) =>
+                getContent('row')(cell, tooltipOptions) ?? (
+                  <StrategySheetColTooltip cell={cell} />
+                ),
+            },
+            data: {
+              content: (cell, tooltipOptions) => {
+                const meta = cell.getMeta() as ViewMeta;
+                const fieldValue = meta.fieldValue as MultiData;
+                const content = getContent('data')(cell, tooltipOptions);
 
-    const s2Options = React.useMemo<S2Options>(() => {
+                // 自定义内容优先级最高
+                if (!isNil(content)) {
+                  return content;
+                }
+
+                // 如果是数组, 说明是普通数值+同环比数据, 显示普通数值 Tooltip
+                if (isArray(fieldValue?.values)) {
+                  return <StrategySheetDataTooltip cell={cell} />;
+                }
+
+                return <></>;
+              },
+            },
+          },
+        };
+      }, [dataCfg, options?.tooltip]);
+
+    const s2Options = React.useMemo<SheetComponentOptions>(() => {
       return customMerge(options, strategySheetOptions);
     }, [options, strategySheetOptions]);
 

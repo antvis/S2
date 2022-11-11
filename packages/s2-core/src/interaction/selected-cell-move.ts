@@ -77,15 +77,16 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       },
     );
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
-      const cell = this.spreadsheet.getCell(event.target).getMeta() as ViewMeta;
-      if (cell) {
-        this.startCell = this.getCellMetaFromViewMeta(cell);
+      const cell = this.spreadsheet.getCell(event.target);
+      const cellMeta = cell?.getMeta() as ViewMeta;
+      if (cellMeta) {
+        this.startCell = this.getCellMetaByViewMeta(cellMeta);
         this.endCell = this.startCell;
       }
     });
   }
 
-  private getCellMetaFromViewMeta(meta: ViewMeta): CellMeta {
+  private getCellMetaByViewMeta(meta: ViewMeta): CellMeta {
     return {
       rowIndex: meta.rowIndex,
       colIndex: meta.colIndex,
@@ -100,6 +101,11 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     changeStartCell,
     isJumpMode,
     isSingleSelection,
+  }: {
+    event: any;
+    changeStartCell: boolean;
+    isJumpMode: boolean;
+    isSingleSelection: boolean;
   }) {
     const { spreadsheet, startCell, endCell } = this;
     const cell = changeStartCell ? startCell : endCell;
@@ -112,7 +118,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const movedCell = this.generateCellMeta(spreadsheet, rowIndex, colIndex);
     const selectedCells = isSingleSelection
       ? [movedCell]
-      : this.getRangeCells(spreadsheet, startCell, movedCell);
+      : this.getRangeCells(spreadsheet, startCell!, movedCell);
     selectCells(spreadsheet, selectedCells);
     if (changeStartCell) {
       this.startCell = movedCell;
@@ -141,13 +147,13 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
   private getRangeCells(
     spreadsheet: SpreadSheet,
-    start: CellMeta,
-    end: CellMeta,
+    startCell: CellMeta,
+    endCell: CellMeta,
   ): CellMeta[] {
     const {
       start: { rowIndex: startRowIndex, colIndex: startColIndex },
       end: { rowIndex: endRowIndex, colIndex: endColIndex },
-    } = getRangeIndex(start, end);
+    } = getRangeIndex(startCell, endCell);
     const cells: CellMeta[] = [];
     for (let row = startRowIndex; row <= endRowIndex; row++) {
       for (let col = startColIndex; col <= endColIndex; col++) {
@@ -157,7 +163,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     return cells;
   }
 
-  private getMoveInfo(code: string, cell: CellMeta, isJump: boolean) {
+  private getMoveInfo(code: string, cell: CellMeta | null, isJump: boolean) {
     const { spreadsheet } = this;
     const {
       frozenColCount = 0,
@@ -282,14 +288,14 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     // offsetX
     if (colIndex <= indexes[0]) {
       // scroll left
-      offsetX = targetNode.x - frozenColWidth;
+      offsetX = targetNode?.x! - frozenColWidth;
     } else if (
       colIndex >= indexes[1] &&
       colIndex < colLeafNodes.length - frozenTrailingRowCount
     ) {
       // scroll right
       offsetX =
-        targetNode.x + targetNode.width - width + frozenTrailingColWidth;
+        targetNode?.x! + targetNode?.width! - width + frozenTrailingColWidth;
     }
 
     // offsetY

@@ -32,8 +32,8 @@ export interface LayoutHierarchyReturnType {
  */
 export type LayoutCoordinate = (
   spreadsheet: SpreadSheet,
-  rowNode: Node,
-  colNode: Node,
+  rowNode: Node | null,
+  colNode: Node | null,
 ) => void;
 
 /**

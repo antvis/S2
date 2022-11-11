@@ -1,4 +1,4 @@
-import { getLang, i18n, setLang } from '@/common/i18n';
+import { getLang, i18n, setLang, type LangType } from '@/common/i18n';
 
 describe('I18n Test', () => {
   test('should get default chinese lang', () => {
@@ -11,7 +11,7 @@ describe('I18n Test', () => {
   });
 
   test('should get default chinese lang if receive a empty lang type', () => {
-    setLang(null);
+    setLang(null as unknown as LangType);
     expect(getLang()).toEqual('zh_CN');
   });
 

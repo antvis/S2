@@ -77,13 +77,13 @@ export const getHiddenColumnsThunkGroup = (
   }
   // 上一个需要隐藏项的序号
   let prevHiddenIndex = Number.NEGATIVE_INFINITY;
-  return columns.reduce((result, field, index) => {
+  return columns.reduce<string[][]>((result, field, index) => {
     if (!hiddenColumnFields.includes(field)) {
       return result;
     }
     if (index === prevHiddenIndex + 1) {
       const lastGroup = last(result);
-      lastGroup.push(field);
+      lastGroup?.push(field);
     } else {
       const group = [field];
       result.push(group);
@@ -128,8 +128,8 @@ export const hideColumns = (
     'hiddenColumnsDetail',
     [],
   );
-  const { hiddenColumnFields: lastHiddenColumnFields } =
-    spreadsheet.options.interaction;
+  const { hiddenColumnFields: lastHiddenColumnFields = [] } =
+    spreadsheet.options.interaction!;
 
   if (isEqual(selectedColumnFields, lastHiddenColumnFields) && !forceRender) {
     return;

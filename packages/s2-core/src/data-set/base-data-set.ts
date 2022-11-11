@@ -49,9 +49,9 @@ export abstract class BaseDataSet {
   public indexesData: RawData[][] | RawData[];
 
   // 高级排序, 组内排序
-  public sortParams: SortParams;
+  public sortParams: SortParams | undefined;
 
-  public filterParams: FilterParam[];
+  public filterParams: FilterParam[] | undefined;
 
   // 透视表入口对象实例
   protected spreadsheet: SpreadSheet;
@@ -71,7 +71,7 @@ export abstract class BaseDataSet {
    * 获取字段信息
    */
   public getFieldMeta = memoize(
-    (field: CustomHeaderField, meta?: Meta[]): Meta => {
+    (field: CustomHeaderField, meta?: Meta[]): Meta | undefined => {
       const realField = this.getField(field);
       return find(this.meta || meta, { field: realField });
     },
@@ -97,7 +97,9 @@ export abstract class BaseDataSet {
    * 获取自定义单元格字段名称
    * @param cell
    */
-  public getCustomRowFieldName(cell: S2CellType<ViewMeta | Node>): string {
+  public getCustomRowFieldName(
+    cell: S2CellType<ViewMeta | Node>,
+  ): string | undefined {
     if (!cell) {
       return;
     }
@@ -108,11 +110,11 @@ export abstract class BaseDataSet {
       const row = find(this.spreadsheet.getRowNodes(), {
         rowIndex: meta?.rowIndex,
       });
-      return row?.label || this.getFieldName(row?.field);
+      return row?.label || this.getFieldName(row?.field as CustomHeaderField);
     }
 
     // 行/列头单元格, 取节点本身标题
-    return meta?.label || this.getFieldName(meta.field);
+    return meta?.label || this.getFieldName(meta.field as CustomHeaderField);
   }
 
   /**
@@ -121,7 +123,7 @@ export abstract class BaseDataSet {
    */
   public getCustomFieldDescription = (
     cell: S2CellType<ViewMeta | Node>,
-  ): string => {
+  ): string | undefined => {
     if (!cell) {
       return;
     }
@@ -136,11 +138,14 @@ export abstract class BaseDataSet {
       const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
         field: meta.field || meta.value || meta.valueField,
       });
-      return this.getFieldDescription(currentMeta?.field);
+      return this.getFieldDescription(currentMeta?.field as CustomHeaderField);
     }
 
     // 行/列头单元格, 取节点本身描述
-    return meta?.extra?.description || this.getFieldDescription(meta?.field);
+    return (
+      meta?.extra?.description ||
+      this.getFieldDescription(meta?.field as CustomHeaderField)
+    );
   };
 
   /**
@@ -156,17 +161,17 @@ export abstract class BaseDataSet {
    * 获得字段描述
    * @param field
    */
-  public getFieldDescription(field: CustomHeaderField): string {
+  public getFieldDescription(field: CustomHeaderField): string | undefined {
     const realField = this.getField(field);
     return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {
-    this.getFieldMeta.cache.clear();
+    this.getFieldMeta?.cache?.clear?.();
     const { fields, meta, data, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
     this.fields = fields;
-    this.meta = meta;
+    this.meta = meta!;
     this.originData = data;
     this.sortParams = sortParams;
     this.filterParams = filterParams;
@@ -247,6 +252,6 @@ export abstract class BaseDataSet {
   ): Data[] | CellData[];
 
   public moreThanOneValue() {
-    return this.fields?.values?.length > 1;
+    return this.fields?.values?.length! > 1;
   }
 }

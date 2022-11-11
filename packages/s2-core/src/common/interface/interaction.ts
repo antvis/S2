@@ -12,6 +12,8 @@ import type {
   DataCell,
   MergedCell,
   RowCell,
+  TableCornerCell,
+  TableSeriesCell,
 } from '../../cell';
 import type { HeaderCell } from '../../cell/header-cell';
 import type { Node } from '../../facet/layout/node';
@@ -28,6 +30,8 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | CornerCell
   | RowCell
   | MergedCell
+  | TableCornerCell
+  | TableSeriesCell
   | BaseCell<T>;
 
 export interface CellMeta {
@@ -164,7 +168,7 @@ export interface InteractionOptions {
   // highlight col and row header for selected cell
   selectedCellHighlight?: boolean;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
-  overscrollBehavior?: 'auto' | 'none' | 'contain';
+  overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

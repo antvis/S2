@@ -8,7 +8,7 @@ import { getContainer } from 'tests/util/helpers';
 import { filter, get } from 'lodash';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { CornerCell } from '@/cell';
-import type { S2Options } from '@/common/interface';
+import type { S2DataConfig, S2Options } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2options: S2Options = {
@@ -26,7 +26,7 @@ const s2options: S2Options = {
   },
 };
 
-const dataCfg = {
+const dataCfg: S2DataConfig = {
   ...mockDataConfig,
   fields: {
     rows: ['province'],
@@ -87,8 +87,8 @@ describe('Formatter Tests', () => {
     const rowNodes = s2.getRowNodes();
     const provinceRowNode = rowNodes.find(({ field }) => field === 'province');
 
-    expect(provinceRowNode.label).toStrictEqual('浙江');
-    expect(provinceRowNode.value).toStrictEqual('浙江');
+    expect(provinceRowNode!.label).toStrictEqual('浙江');
+    expect(provinceRowNode!.value).toStrictEqual('浙江');
   });
 
   test('column should not be formatted', () => {
@@ -96,8 +96,8 @@ describe('Formatter Tests', () => {
 
     const cityColNode = colNodes.find(({ field }) => field === 'city');
 
-    expect(cityColNode.label).toStrictEqual('义乌');
-    expect(cityColNode.value).toStrictEqual('义乌');
+    expect(cityColNode!.label).toStrictEqual('义乌');
+    expect(cityColNode!.value).toStrictEqual('义乌');
   });
 
   test('data cell should render formatted value', () => {

@@ -49,6 +49,7 @@ export const ResizeConfig: React.FC<{
   const onResizeActiveChange = (checkedAreas: CheckboxValueType[]) => {
     const resize = RESIZE_CONFIG.reduce((cfg, item) => {
       const type = item.value;
+      // @ts-ignore
       cfg[type] = checkedAreas.includes(type);
       return cfg;
     }, {});

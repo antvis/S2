@@ -6,14 +6,13 @@ import {
   getTooltipOperatorTableSortMenus,
 } from '../common/constant';
 import type {
-  S2Options,
   SortMethod,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
-import { TableDataSet } from '../data-set';
+import { BaseDataSet, TableDataSet } from '../data-set';
 import { TableFacet } from '../facet';
 import type { Node } from '../facet/layout/node';
 import { SpreadSheet } from './spread-sheet';
@@ -31,7 +30,7 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  public getDataSet() {
+  public getDataSet(): BaseDataSet {
     const { dataSet } = this.options;
     if (dataSet) {
       return dataSet(this);
@@ -42,10 +41,10 @@ export class TableSheet extends SpreadSheet {
 
   public enableFrozenHeaders(): boolean {
     const {
-      frozenRowCount,
-      frozenTrailingRowCount,
-      frozenColCount,
-      frozenTrailingColCount,
+      frozenRowCount = 0,
+      frozenTrailingRowCount = 0,
+      frozenColCount = 0,
+      frozenTrailingColCount = 0,
     } = this.options;
     return (
       frozenRowCount > 0 ||
@@ -136,16 +135,15 @@ export class TableSheet extends SpreadSheet {
     this.off(S2Event.RANGE_FILTER);
   }
 
-  // TODO: 好迷的写法, 拿到 key 又硬要写成 {key: key} 然后又解构一次, 不确定有没有被外面调用, 暂时不动
-  public onSortTooltipClick = ({ key }: { key: SortMethod }, meta: Node) => {
+  public onSortTooltipClick = (sortMethod: SortMethod, meta: Node) => {
     const { field } = meta;
 
     const sortParam: SortParam = {
       sortFieldId: field,
-      sortMethod: key,
+      sortMethod,
     };
 
-    this.updateSortMethodMap(meta.id, key);
+    this.updateSortMethodMap(meta.id, sortMethod);
     // 触发排序事件
     this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
@@ -156,9 +154,8 @@ export class TableSheet extends SpreadSheet {
 
     const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const sortMethod = key as unknown as SortMethod;
-        this.onSortTooltipClick({ key: sortMethod }, meta);
+      onClick: ({ key: sortMethod }) => {
+        this.onSortTooltipClick(sortMethod, meta);
       },
       menus: getTooltipOperatorTableSortMenus(),
       defaultSelectedKeys,

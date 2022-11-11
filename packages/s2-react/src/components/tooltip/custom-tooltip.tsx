@@ -25,7 +25,7 @@ export class CustomTooltip extends BaseTooltip {
 
   renderContent() {
     // 配置级 s2.options.tooltip.content = ''
-    const { content: contentFromOptions } = this.spreadsheet.options.tooltip;
+    const { content: contentFromOptions } = this.spreadsheet.options.tooltip!;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
     const cell = this.spreadsheet.getCell(showOptions?.event?.target);

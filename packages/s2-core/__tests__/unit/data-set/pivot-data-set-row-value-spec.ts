@@ -52,25 +52,25 @@ describe('Pivot Mode Test When Value In Row', () => {
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
-      expect(rowPivotMeta.get('浙江省').level).toEqual(1);
-      expect([...rowPivotMeta.get('浙江省').children.keys()]).toEqual([
+      expect(rowPivotMeta.get('浙江省')!.level).toEqual(1);
+      expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
         '舟山市',
       ]);
       expect([
-        ...rowPivotMeta.get('浙江省').children.get('杭州市').children.keys(),
+        ...rowPivotMeta.get('浙江省')!.children.get('杭州市')!.children.keys(),
       ]).toEqual(['number']);
-      expect(rowPivotMeta.get('四川省').level).toEqual(2);
-      expect([...rowPivotMeta.get('四川省').children.keys()]).toEqual([
+      expect(rowPivotMeta.get('四川省')!.level).toEqual(2);
+      expect([...rowPivotMeta.get('四川省')!.children.keys()]).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
         '乐山市',
       ]);
       expect([
-        ...rowPivotMeta.get('四川省').children.get('成都市').children.keys(),
+        ...rowPivotMeta.get('四川省')!.children!.get('成都市')!.children.keys(),
       ]).toEqual(['number']);
     });
 
@@ -78,14 +78,14 @@ describe('Pivot Mode Test When Value In Row', () => {
       const colPivotMeta = dataSet.colPivotMeta;
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
-      expect(colPivotMeta.get('家具').level).toEqual(1);
-      expect([...colPivotMeta.get('家具').children.keys()]).toEqual([
+      expect(colPivotMeta.get('家具')!.level).toEqual(1);
+      expect([...colPivotMeta.get('家具')!.children.keys()]).toEqual([
         '桌子',
         '沙发',
       ]);
 
-      expect(colPivotMeta.get('办公用品').level).toEqual(2);
-      expect([...colPivotMeta.get('办公用品').children.keys()]).toEqual([
+      expect(colPivotMeta.get('办公用品')!.level).toEqual(2);
+      expect([...colPivotMeta.get('办公用品')!.children.keys()]).toEqual([
         '笔',
         '纸张',
       ]);

@@ -12,6 +12,7 @@ import { FieldType, SWITCHER_FIELDS } from './constant';
 import type {
   SwitcherField,
   SwitcherFields,
+  SwitcherItem,
   SwitcherResult,
 } from './interface';
 
@@ -52,7 +53,7 @@ export const generateSwitcherFields = (
         displayName: target?.name,
         checked: !hiddenColumnFields.includes(id as string),
       };
-    });
+    }) as unknown as SwitcherItem[];
 
     config[fieldKey] = { items, ...getSwitcherFieldCfg(sheet, fieldKey) };
     return config;
@@ -89,6 +90,7 @@ export const getSwitcherFields = (result: SwitcherResult) => {
   return reduce(
     result,
     (cfg, value, field) => {
+      // @ts-ignore
       cfg.fields[field] = map(value.items, 'id');
       cfg.hiddenFields.push(...map(value.hideItems, 'id'));
       return cfg;
