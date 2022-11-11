@@ -134,7 +134,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.showEllipsisTooltip(event, cell);
   }
 
-  private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType) {
+  private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType | null) {
     if (!cell || cell.getActualText() === cell.getFieldValue()) {
       return;
     }

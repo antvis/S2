@@ -29,10 +29,7 @@ export class CellData {
   }
 }
 
-export const getFieldValueOfViewMetaData = (
-  data: ViewMetaData,
-  key?: string,
-) => {
+export const getFieldValueOfViewMetaData = (data: ViewMetaData, key = '') => {
   if (data instanceof CellData) {
     return key ? data.getValueByKey(key) : data.getOrigin();
   }

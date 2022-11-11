@@ -327,9 +327,9 @@ export class Node {
 
   public getHeadLeafChild() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let leafChild: Node = this;
-    while (!isEmpty(leafChild.children)) {
-      leafChild = head(leafChild.children);
+    let leafChild: Node | undefined = this;
+    while (!isEmpty(leafChild?.children)) {
+      leafChild = head(leafChild?.children);
     }
     return leafChild;
   }

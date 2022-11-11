@@ -46,7 +46,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
     const originalData = getFieldValueOfViewMetaData(data) as RawData;
     return {
       ...originalData,
-      rowIndex: cellData.rowIndex ?? leafNode.rowIndex,
+      rowIndex: cellData.rowIndex ?? leafNode?.rowIndex,
     };
   };
 }
