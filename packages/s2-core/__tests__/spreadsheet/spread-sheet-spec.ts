@@ -2,7 +2,12 @@ import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
 import { pick } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
-import { DEFAULT_OPTIONS, S2Event, type S2Options } from '@/common';
+import {
+  DEFAULT_OPTIONS,
+  S2Event,
+  type S2Options,
+  type TextTheme,
+} from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
@@ -286,99 +291,42 @@ describe('SpreadSheet Tests', () => {
     });
 
     test('should update all Data Config when reset is true', () => {
-      const totalData = [
-        {
-          province: '浙江',
-          type: '笔',
-          price: 3,
-          cost: 6,
-        },
-      ];
       const s2 = new PivotSheet(
         container,
-        { ...mockDataConfig, totalData },
+        { ...mockDataConfig, meta: [{ field: 'price', name: '价格' }] },
         s2Options,
       );
       s2.render();
 
-      // expect(s2.dataSet.totalData).toEqual([
-      //   {
-      //     $$extra$$: 'price',
-      //     $$value$$: 3,
-      //     cost: 6,
-      //     price: 3,
-      //     province: '浙江',
-      //     type: '笔',
-      //   },
-      //   {
-      //     $$extra$$: 'cost',
-      //     $$value$$: 6,
-      //     cost: 6,
-      //     price: 3,
-      //     province: '浙江',
-      //     type: '笔',
-      //   },
-      // ]);
-      expect(s2.dataCfg.totalData).toEqual(totalData);
+      expect(s2.dataSet.originData).toHaveLength(3);
+      expect(s2.dataCfg.meta).toHaveLength(1);
 
       // 改变 totalData 为 undefined 再次渲染
-      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, true);
+      s2.setDataCfg({ ...mockDataConfig, data: [] }, true);
       s2.render();
 
-      // expect(s2.dataSet.totalData).toEqual([]);
-      expect(s2.dataCfg.fields).toEqual({
-        ...mockDataConfig.fields,
-        customTreeItems: [],
-      });
-      expect(s2.dataCfg.totalData).toEqual([]);
+      expect(s2.dataSet.originData).toHaveLength(0);
+      expect(s2.dataCfg.meta).toHaveLength(0);
       s2.destroy();
     });
 
     test('should update all Data Config when reset is false', () => {
-      const totalData = [
-        {
-          province: '浙江',
-          type: '笔',
-          price: 3,
-          cost: 6,
-        },
-      ];
       const s2 = new PivotSheet(
         container,
-        { ...mockDataConfig, totalData },
+        { ...mockDataConfig, meta: [{ field: 'price', name: '价格' }] },
         s2Options,
       );
       s2.render();
 
-      // const totalDataSet = [
-      //   {
-      //     $$extra$$: 'price',
-      //     $$value$$: 3,
-      //     cost: 6,
-      //     price: 3,
-      //     province: '浙江',
-      //     type: '笔',
-      //   },
-      //   {
-      //     $$extra$$: 'cost',
-      //     $$value$$: 6,
-      //     cost: 6,
-      //     price: 3,
-      //     province: '浙江',
-      //     type: '笔',
-      //   },
-      // ];
+      expect(s2.dataSet.originData).toHaveLength(3);
+      expect(s2.dataCfg.meta).toHaveLength(1);
 
       // 改变 totalData 为 undefined 再次渲染
-      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, false);
+      s2.setDataCfg({ ...mockDataConfig, data: [] }, false);
       s2.render();
 
-      // expect(s2.dataSet.totalData).toEqual(totalDataSet);
-      expect(s2.dataCfg.fields).toEqual({
-        ...mockDataConfig.fields,
-        customTreeItems: [],
-      });
-      expect(s2.dataCfg.totalData).toEqual(totalData);
+      expect(s2.dataSet.originData).toHaveLength(0);
+      expect(s2.dataCfg.meta).toHaveLength(1);
       s2.destroy();
     });
 
@@ -422,6 +370,31 @@ describe('SpreadSheet Tests', () => {
         hierarchyType: s2Options.hierarchyType,
         width: 300,
         hdAdapter: false,
+      });
+    });
+
+    describe('Measure Text Tests', () => {
+      const text = '测试';
+      const font: TextTheme = {
+        textAlign: 'center',
+        fontSize: 12,
+      };
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+      s2.render();
+
+      test('should measure text', () => {
+        expect(s2.measureText(text, null)).toBeNull();
+        expect(s2.measureText(text, font)).toBeInstanceOf(TextMetrics);
+      });
+
+      test('should measure text width', () => {
+        expect(s2.measureTextWidth(text, null)).toEqual(0);
+        expect(s2.measureTextWidth(text, font)).not.toBeLessThanOrEqual(0);
+      });
+
+      test('should measure text height', () => {
+        expect(s2.measureTextHeight(text, null)).toEqual(0);
+        expect(s2.measureTextHeight(text, font)).not.toBeLessThanOrEqual(0);
       });
     });
   });

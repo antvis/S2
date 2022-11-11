@@ -23,37 +23,74 @@ order: 6
 
 ## 性能优化
 
+以如下透视表为例：
+![pivot sheet](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*8FDiR45m_tsAAAAAAAAAAAAAARQnAQ)
+
+```ts
+const dataCfg={
+  fields:{
+    rows: ["province", "city"],
+    columns: ["type","sub_type"],
+    values: ["number"]
+  },
+  data:[
+    {
+      number: 7789,
+      province: "浙江省",
+      city: "杭州市",
+      type: "家具",
+      sub_type: "桌子"
+    },{
+      number: 2367,
+      province: "浙江省",
+      city: "绍兴市",
+      type: "家具",
+      sub_type: "桌子"
+    },
+  //...
+  ]
+}
+```
+
 ### 数据结构
 
 `S2` 渲染流程的第一步，就是把用户的明细数据转换为二维数组和具有层级的数据结构，在表格布局中会频繁的查询和排序，因此数据结构的设计显得尤为重要。
 
-我们知道，存储明细数据的 `Meta` 结构一般有三种：扁平数组、图、树，对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构来实现 `Meta`。
+我们知道，存储明细数据的 `Meta` 结构一般有三种：扁平数组、图、树。对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构来实现 `Meta`。
 
-另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好。数据结构如下：
+另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好，其`Map`具体类型定义可以参见[PivotMeta](https://github.com/antvis/S2/blob/c76203072a78dbf6656a70bc1c5487e6b1d9f009/packages/s2-core/src/data-set/interface.ts#L7-L15)。数据结构如下：
 
 ```ts
 // Meta
 const rowsMeta: PivotMeta = {
-  东北：{
-    id: 0,
+  浙江省: {
+    level: 1,
+    childField:"city",
     children: {
-      黑龙江：{
-        id: 0,
+      浙江市: {
+        level: 1,
         children: {},
       },
-      辽宁：{
-        id: 1,
+      绍兴市: {
+        level: 2,
         children: {},
       },
+      //...
     },
   },
-  华北：{
-    id: 1,
+  四川省: {
+    level: 2,
+    childField:"city",
     children: {
-      山西：{
-        id: 0,
+      成都市: {
+        level: 1,
         children: {},
       },
+      绵阳市: {
+        level: 2,
+        children: {},
+      },
+      //...
     },
   },
 };
@@ -61,33 +98,58 @@ const rowsMeta: PivotMeta = {
 
 通过这样的数据结构，我们就实现了表格行列树结构的前端表达。「形」有了后，我们就需要「魂」，也就是数据。
 
-在 `S2` 中，`Pivot` 作为数据训练和查询的底层透视存在 i，目的是将原始数据（一维）转为多维数组。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `loadash.set` 实现），举个例子：
+在 `S2` 中，我们需要将用户传入一维数据`data`通过内部的数据训练转为多维数组`indexesData`。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `lodash.set` 实现），举个例子：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_fRFSYS-Vi8AAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
+![path](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*GyJCTq-gw-sAAAAAAAAAAAAAARQnAQ)
 
-上图中，单元格的行坐标为：浙江省 [0] - 宁波市 [0]，列坐标为：家具 [0]-沙发 [1]。因此单元格在多维数组中坐标为 [0, 0, 0, 1]，查询数据时从行列的 `Hierarchy` 层级结构中获取对应的查询路径，即可拿到对应的数据。因此在 `S2` 中查询数据不是循环遍历底层数据，而是生成查询数组路径与层级结构对比，从而获取数据。
+上图中，紫色单元格对应的坐标为：
+
+* 行坐标：浙江省 [1] - 杭州市 [1]
+* 列坐标：家具 [1] - 沙发 [2]。
+
+因此单元格在多维数组中坐标为 `[1, 1, 1, 2]`（多维数组每一个层级的 0 号位都是总计、小计专用位，明细数据序号都从 1 开始）。`indexesData`形如：
 
 ```ts
-// 原始数据通过转换
-const data = [
-  [ // 东北
-    [ // 黑龙江
-      [{ order_amt: 299.11, type: '办公用品', sub_type: '纸张' }],
-      [{ order_amt: 2962.96, type: '家具产品', sub_type: '书架' }],
-    ],
-    [ // 辽宁
-      [undefined, { order_amt: 177.67, type: '办公用品', sub_type: '夹子及其配件' }],
-    ],
+// 转换后的数据结构，
+[
+  null,
+  // 浙江省
+  [
+    null,
+    // 杭州市
+    [
+      null,
+      // 家具
+      [
+        null,
+        {
+          "number": 7789,
+          "province": "浙江省",
+          "city": "杭州市",
+          "type": "家具",
+          "sub_type": "桌子"
+        },
+        {
+          "number": 5343,
+          "province": "浙江省",
+          "city": "杭州市",
+          "type": "家具",
+          "sub_type": "沙发"
+        }
+      ],
+      // 办公用户
+    ]
+    // 其他城市
   ],
-  [ // 华北
-    [ // 山西
-      [undefined, undefined, { order_amt: 651.45, type: '办公用品', sub_type: '容器，箱子' }],
-    ],
-  ],
-];
+  // 四川省
+  [/*...*/]
+]
+
 ```
 
-这样，通过遍历一次原始数据，生成 `Meta` 和转换后的数组数据，查询数据时间复杂度是 O(n)。此方案的优点是性能优异，理论上最快方案，时间复杂度 O(n*m) 是线性的根据明细数据的行数*列数决定。
+查询数据时，首先从行列的 `Meta` 层级结构中获取对应的查询路径，然后根据查询路径即可在多维数组`indexesData`中拿到对应的数据。
+
+因此在 `S2` 中查询数据不是循环遍历底层数据，基于层级结构和查询数组路径获取数据。在第一次遍历原始数据，生成必要的 `Meta` 和多维数组信息后，查询数据时间复杂度是 **O(n)**。此方案的优点是性能优异。
 
 ### 按需渲染
 
@@ -139,15 +201,16 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 查看 `100w` 条数据实际性能表现：
 
-- [透视表](/zh/examples/case/performance-compare#pivot)
-- [明细表](/zh/examples/case/performance-compare#table)
+* [透视表](/zh/examples/case/performance-compare#pivot)
+* [明细表](/zh/examples/case/performance-compare#table)
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview"  />
+详细的性能对比数据如下：
+![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
 
 > 备注：
 >
-> - 其中列头是实验次数，总计是平均渲染时间。
-> - `100w` 场景 orb 和 ReactPivot 卡死，无数据。
+> * 其中列头是实验次数，总计是平均渲染时间。
+> * `100w` 场景 orb 和 ReactPivot 卡死，无数据。
 
 ## 总结
 

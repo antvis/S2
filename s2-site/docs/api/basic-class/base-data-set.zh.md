@@ -14,7 +14,6 @@ s2.dataSet
 | fields | 字段信息 | () => [Fields](/zh/docs/api/general/S2DataConfig#fields) |
 | meta | 字段元信息，包含有字段名、格式化等 | () => [Meta[]](/zh/docs/api/general/S2DataConfig#meta) |
 | originData | 原始数据 | () => [DataType[]](#datatype) |
-| totalData | 汇总数据 | () => [DataType[]](#datatype)  |
 | indexesData | 多维索引数据 | () => [DataType[]](#datatype)  |
 | sortParams | 排序配置 | () => [SortParams](/zh/docs/api/general/S2DataConfig#sortparams) |
 | spreadsheet | 表格实例 | () => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |

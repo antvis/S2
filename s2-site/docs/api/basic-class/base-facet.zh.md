@@ -65,6 +65,16 @@ s2.facet
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
 | getCanvasSize | 获取画布宽高 | `{width: number, height: number}` |
+| backgroundGroup | 背景颜色区域 group                                                                                                           | [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| foregroundGroup | 背景颜色区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| panelGroup | 可视范围单元格区域 group                                                                                                        |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| panelScrollGroup | 可视范围单元格滚动区域 group                                                                                                      |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenRowGroup | 行头冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenColGroup | 列头冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenTrailingRowGroup | 行头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenTrailingColGroup | 列头底部冻结区域 group                                                                                                         |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenTopGroup | 顶部冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
+| frozenBottomGroup | 底部冻结区域 group                                                                                                           |  [Group](https://g.antv.vision/zh/docs/api/group) |    |
 
 ### CellScrollOffset
 
