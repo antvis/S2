@@ -649,7 +649,7 @@ export abstract class SpreadSheet extends EE {
    * @returns 文本测量信息 TextMetrics
    */
   public measureText = memoize(
-    (text: number | string = '', font: unknown): TextMetrics => {
+    (text: number | string = '', font: unknown): TextMetrics | null => {
       if (!font) {
         return null;
       }

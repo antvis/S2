@@ -109,7 +109,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': ['error', 4],
+    'max-params': [1, 3],
     'no-unreachable': 2,
     'no-useless-computed-key': 2,
     'block-spacing': [2, 'always'],
@@ -139,9 +139,14 @@ module.exports = {
     {
       files: ['*.tsx', '*.ts'],
       rules: {
+        'import/no-default-export': 2,
+      },
+    },
+    {
+      files: ['*.tsx'],
+      rules: {
         'react-hooks/exhaustive-deps': 1,
         'react-hooks/rules-of-hooks': 2,
-        'import/no-default-export': 2,
       },
     },
   ],

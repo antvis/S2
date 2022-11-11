@@ -686,6 +686,7 @@ export class BaseBrushSelection
   };
 
   // 需要查看继承他的父类是如何定义的
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isInBrushRange(node: ViewMeta | Node): boolean {
     return false;
   }
@@ -694,6 +695,7 @@ export class BaseBrushSelection
 
   protected bindMouseMove() {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected getSelectedCellMetas(brushRange: BrushRange) {}
 
   protected updateSelectedCells() {}

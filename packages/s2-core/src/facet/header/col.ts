@@ -69,6 +69,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return new ColCell(item, spreadsheet, headerConfig);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected getCellGroup(node: Node) {
     return this.scrollGroup;
   }
