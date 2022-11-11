@@ -58,6 +58,7 @@ export const createFakeSpreadSheet = () => {
     meta: null,
     data: [],
     fields: {},
+    sortParams: [],
   };
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,

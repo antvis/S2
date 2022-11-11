@@ -989,15 +989,6 @@ function MainLayout() {
                   content: 'click',
                 });
               }}
-              onCornerCellHover={(cellInfo) => {
-                s2Ref.current.showTooltip({
-                  position: {
-                    x: cellInfo.event.clientX,
-                    y: cellInfo.event.clientY,
-                  },
-                  content: 'hover',
-                });
-              }}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}
