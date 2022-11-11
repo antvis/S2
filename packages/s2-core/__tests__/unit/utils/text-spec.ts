@@ -1,4 +1,5 @@
 import { createPivotSheet } from 'tests/util/helpers';
+import { ELLIPSIS_SYMBOL } from '@/common';
 import {
   getEllipsisText,
   getEllipsisTextInner,
@@ -38,6 +39,10 @@ describe('Text Utils Tests', () => {
       expect(text).toEqual('12');
     });
 
+    test('should get ellipsis symbol', () => {
+      expect(ELLIPSIS_SYMBOL).toEqual('...');
+    });
+
     test('should get correct text ellipsis', () => {
       const text = getEllipsisText({
         measureTextWidth,
@@ -46,7 +51,7 @@ describe('Text Utils Tests', () => {
         placeholder: '--',
       });
 
-      expect(text).toEndWith('...');
+      expect(text).toEndWith(ELLIPSIS_SYMBOL);
       expect(text.length).toBeLessThanOrEqual(5);
     });
 
@@ -89,7 +94,7 @@ describe('Text Utils Tests', () => {
         maxWidth: 24,
       });
 
-      expect(text).toEndWith('...');
+      expect(text).toEndWith(ELLIPSIS_SYMBOL);
       expect(text.length).toBeLessThanOrEqual(4);
     });
 

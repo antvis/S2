@@ -237,8 +237,7 @@ export abstract class BaseDataSet {
    * To get a row or column cells data;
    * if query is empty, return all data
    * @param query
-   * @param isTotals
-   * @param isRow
+   * @param totals @TotalSelectionsOfMultiData
    * @param drillDownFields
    */
   public abstract getMultiData(

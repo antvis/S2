@@ -11,6 +11,7 @@ import {
 } from 'lodash';
 import {
   CellTypes,
+  ELLIPSIS_SYMBOL,
   EXTRA_FIELD,
   getDefaultCornerText,
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -69,7 +70,14 @@ export class CornerCell extends HeaderCell {
     this.drawResizeArea();
   }
 
+  /**
+   * @deprecated 已废弃, 请使用 drawTextShape
+   */
   protected drawCellText() {
+    this.drawTextShape();
+  }
+
+  protected drawTextShape() {
     const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { y, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
 
@@ -92,7 +100,7 @@ export class CornerCell extends HeaderCell {
       placeholder: emptyPlaceholder,
     });
     this.actualText = text;
-    const ellipseIndex = text.indexOf('...');
+    const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
 
     let firstLine = text;
     let secondLine = '';
@@ -285,9 +293,7 @@ export class CornerCell extends HeaderCell {
 
   protected showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
-    return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
-    );
+    return this.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0;
   }
 
   protected getIconPosition(): Point {

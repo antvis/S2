@@ -15,7 +15,11 @@ import {
 } from 'lodash';
 import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
-import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
+import {
+  CellTypes,
+  ELLIPSIS_SYMBOL,
+  EMPTY_PLACEHOLDER,
+} from '../common/constant';
 import {
   CellClipBox,
   type CellCfg,
@@ -71,7 +75,7 @@ export const getEllipsisTextInner = (
   font: CSSStyleDeclaration,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
 
   let leftText;
 
@@ -244,18 +248,18 @@ export const getEllipsisText = ({
   subTexts = leftSubTexts.concat(subTexts);
 
   let result = finalText;
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
   let remainWidth = maxWidth;
   subTexts.forEach((subText) => {
     if (remainWidth <= 0) {
       const originIdx = result.indexOf(subText);
       const prev = result.slice(originIdx - 3, originIdx);
-      if (prev && prev !== '...') {
+      if (prev && prev !== ELLIPSIS_SYMBOL) {
         const subWidth = measureTextWidth(subText, font);
         // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
         result = result.replace(
           subText,
-          subWidth > DOT_WIDTH ? '...' : subText,
+          subWidth > DOT_WIDTH ? ELLIPSIS_SYMBOL : subText,
         );
       } else {
         result = result.replace(subText, '');
@@ -286,7 +290,6 @@ export const getEllipsisText = ({
  * To decide whether the data is positive or negative.
  * Two cases needed to be considered since  the derived value could be number or string.
  * @param value
- * @param font
  */
 export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
