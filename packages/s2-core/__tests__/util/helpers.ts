@@ -65,9 +65,15 @@ export const createFakeSpreadSheet = () => {
     height: DEFAULT_OPTIONS.height,
     container,
   });
+  s2.dataSet = {
+    getMultiData() {
+      return [];
+    },
+  } as unknown as any;
   s2.facet = {
     layoutResult: {
       getCellMeta: jest.fn(),
+      rowLeafNodes: [],
     },
   } as unknown as BaseFacet;
   s2.facet.panelBBox = {
