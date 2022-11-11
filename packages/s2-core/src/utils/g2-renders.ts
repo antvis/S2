@@ -10,6 +10,9 @@ export const renderByG2 = (cell: S2CellType) => {
       y,
       width,
       height,
+      axis: {
+        y: { labelAutoRotate: true },
+      },
       ...fieldValue,
     },
     { group: cell },

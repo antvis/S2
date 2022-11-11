@@ -4,8 +4,8 @@ import type { SheetComponentOptions } from '../../src';
 import { intake } from './data-point';
 
 export const chartOptions: SheetComponentOptions = {
-  width: 1000,
-  height: 1700,
+  width: 2800,
+  height: 2000,
   interaction: {
     hoverHighlight: false,
     hoverFocus: false,
@@ -103,8 +103,8 @@ const getAreaOptions = (coordinate: string, shape: string) => {
 
 export const chartSheetDataConfig: S2DataConfig = {
   fields: {
-    columns: ['coordinate'],
-    rows: ['mark', 'shape'],
+    rows: ['coordinate'],
+    columns: ['mark', 'shape'],
     values: ['chart'],
     valueInCols: true,
   },
