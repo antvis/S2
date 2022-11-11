@@ -59,7 +59,7 @@ s2.setTheme({})
 | scrollBar | 滚动条样式 | [ScrollBarTheme](#scrollbartheme) |  |  |
 | splitLine | 单元格分割线样式 | [SplitLine](#splitline) |  |  |
 | prepareSelectMask | 刷选遮罩样式 | [InteractionStateTheme](#interactionstatetheme) |  |  |
-| background | 刷选遮罩样式 | [Background](#background) |  |  |
+| background | 背景样式 | [Background](#background) |  |  |
 | [key: string] | 额外属性字段，用于用户自定义主题时传参 | `unknown` |  |  |
 
 #### DefaultCellTheme
@@ -210,9 +210,9 @@ s2.setTheme({})
 
 <description> **optional** _object_ </description>
 
-功能描述：背景
+功能描述：背景配置
 
 | 参数    | 说明 | 类型     | 默认值 | 必选 |
 | :------ | :--- | :------- | :----- | :--: |
 | color   | 颜色 | `string` | -      |      |
-| opacity |      | `number` | 1      |      |
+| opacity | 透明度     | `number` | 1      |      |
