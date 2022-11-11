@@ -371,7 +371,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         const isStateShape = this.stateShapes.has(shapeName);
         const shape = isStateShape
           ? this.stateShapes.get(shapeName)
-          : get(this, shapeName);
+          : // @ts-ignore
+            this[shapeName];
 
         // stateShape 默认 visible 为 false
         if (isStateShape && !shape.get('visible')) {
