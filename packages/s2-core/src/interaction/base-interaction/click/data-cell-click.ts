@@ -1,12 +1,10 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isNil } from 'lodash';
 import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
   getTooltipOperatorTrendMenu,
-  InteractionCellSelectedHighlightType,
 } from '../../../common/constant';
 import type {
   TooltipData,
@@ -16,13 +14,13 @@ import type {
 import {
   getCellMeta,
   getHeaderCellMeta,
+  getRowColHeaderCellBySelectedCellHighlight,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import type { Node } from '../../../facet/layout/node';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -33,7 +31,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
 
-      const { interaction, options } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
       interaction.clearHoverTimer();
 
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
@@ -62,35 +60,16 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const { selectedCellHighlight } = options.interaction;
-      let headerSelectedNode: Node[] = [];
-      if (!isNil(selectedCellHighlight) && selectedCellHighlight !== false) {
-        const colNodes: Node[] = this.spreadsheet.getColumnNodes();
-        const rowNodes: Node[] = this.spreadsheet.getRowNodes();
-        const colHeadersSelected = colNodes.filter((node: Node) =>
-          meta.colId.includes(node.id),
-        );
-        const rowHeadersSelected = rowNodes.filter((node: Node) =>
-          meta.rowId.includes(node.id),
-        );
-        const { ROW, CROSS, ONLY_HEADER } =
-          InteractionCellSelectedHighlightType;
-        if ([true, CROSS, ONLY_HEADER].includes(selectedCellHighlight)) {
-          headerSelectedNode = [...colHeadersSelected, ...rowHeadersSelected];
-        } else if (
-          [ROW].includes(
-            selectedCellHighlight as InteractionCellSelectedHighlightType,
-          )
-        ) {
-          headerSelectedNode = [...rowHeadersSelected];
-        }
-      }
+      const headerSelectedNode = getRowColHeaderCellBySelectedCellHighlight(
+        meta.id,
+        this.spreadsheet,
+      );
 
       interaction.changeState({
         cells: [getCellMeta(cell)],
-        headerCells: headerSelectedNode.map((c) =>
-          getHeaderCellMeta(c.belongsCell),
-        ),
+        headerCells: headerSelectedNode
+          .filter((node) => !!node.belongsCell)
+          .map((node) => getHeaderCellMeta(node.belongsCell)),
         stateName: InteractionStateName.SELECTED,
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);

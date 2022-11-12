@@ -1,12 +1,11 @@
 import type { IShape, Point } from '@antv/g-canvas';
-import { find, findLast, first, forEach, get, isEmpty, isEqual } from 'lodash';
+import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
-  InteractionCellSelectedHighlightType,
 } from '../common/constant/interaction';
 import { CellBorderPosition } from '../common/interface';
 import type {
@@ -21,7 +20,11 @@ import type {
   ViewMetaIndexType,
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
-import { includeCell } from '../utils/cell/data-cell';
+import {
+  includeCell,
+  shouldUpdateBySelectedCellsHighlight,
+  updateBySelectedCellsHighlight,
+} from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { drawInterval } from '../utils/g-mini-charts';
@@ -78,8 +81,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
-    const { selectedCellHighlight } = this.spreadsheet.options.interaction;
-    const { ROW, CROSS, ONLY_HEADER } = InteractionCellSelectedHighlightType;
 
     switch (currentCellType) {
       // 列多选
@@ -92,28 +93,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (selectedCellHighlight === ROW) {
-          forEach(cells, (cell) => {
-            if (cell.rowIndex === this.getMeta().rowIndex) {
-              this.updateByState(InteractionStateName.SELECTED);
-            }
-          });
-        } else if (selectedCellHighlight === CROSS) {
-          forEach(cells, (cell) => {
-            if (
-              cell.rowIndex === this.getMeta().rowIndex ||
-              cell.colIndex === this.getMeta().colIndex
-            ) {
-              this.updateByState(InteractionStateName.SELECTED);
-            }
-          });
-        } else if (selectedCellHighlight === ONLY_HEADER) {
-          const isRowCell =
-            this.cellType === CellTypes.ROW_CELL &&
-            this.getMeta().rowIndex === cells?.[0]?.rowIndex;
-          if (isRowCell || includeCell(cells, this)) {
-            this.updateByState(InteractionStateName.SELECTED);
-          }
+        if (shouldUpdateBySelectedCellsHighlight(this.spreadsheet)) {
+          updateBySelectedCellsHighlight(cells, this, this.spreadsheet);
         } else if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (

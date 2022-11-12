@@ -19,6 +19,7 @@ import type {
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
+  HeaderCellMeta,
 } from '../common/interface';
 import { ColHeader, RowHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
@@ -173,7 +174,7 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 header cell 元信息列表，包括不在可视区域内的格子
-  public getHeaderCells() {
+  public getHeaderCells(): HeaderCellMeta[] {
     const currentState = this.getState();
     return currentState?.headerCells || [];
   }

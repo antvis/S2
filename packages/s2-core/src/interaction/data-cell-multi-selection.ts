@@ -1,17 +1,17 @@
 import type { Event } from '@antv/g-canvas';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, reduce } from 'lodash';
 import type { DataCell } from '../cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
   getHeaderCellMeta,
+  getRowColHeaderCellBySelectedCellHighlight,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import type { Node } from '../facet/layout/node';
@@ -89,34 +89,26 @@ export class DataCellMultiSelection
 
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
         this.spreadsheet.hideTooltip();
-        let headerSelectedNode: Node[] = [];
-        const { selectedCellHighlight } = this.spreadsheet.options.interaction;
-        if (!isNil(selectedCellHighlight) && selectedCellHighlight !== false) {
-          const colNodes = this.spreadsheet.getColumnNodes();
-          const rowNodes = this.spreadsheet.getRowNodes();
-          const { ROW, CROSS, ONLY_HEADER } =
-            InteractionCellSelectedHighlightType;
-          if ([true, CROSS, ONLY_HEADER].includes(selectedCellHighlight)) {
-            headerSelectedNode = [...colNodes, ...rowNodes];
-          } else if (
-            [ROW].includes(
-              selectedCellHighlight as InteractionCellSelectedHighlightType,
-            )
-          ) {
-            headerSelectedNode = [...rowNodes];
-          }
-        }
-        headerSelectedNode = headerSelectedNode.filter((headerNode) =>
-          selectedCells.find((selectedCell) =>
-            selectedCell.id.includes(headerNode.id),
-          ),
+
+        const headerSelectedNode: Node[] = reduce(
+          selectedCells,
+          (nodes, selectedCell) => {
+            return [
+              ...nodes,
+              ...getRowColHeaderCellBySelectedCellHighlight(
+                selectedCell.id,
+                this.spreadsheet,
+              ),
+            ];
+          },
+          [],
         );
 
         interaction.changeState({
           cells: selectedCells,
-          headerCells: headerSelectedNode.map((_cell) =>
-            getHeaderCellMeta(_cell.belongsCell),
-          ),
+          headerCells: headerSelectedNode
+            .filter((node) => !!node.belongsCell)
+            .map((node) => getHeaderCellMeta(node.belongsCell)),
           stateName: InteractionStateName.SELECTED,
         });
         this.spreadsheet.emit(

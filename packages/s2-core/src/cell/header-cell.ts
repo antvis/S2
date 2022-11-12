@@ -27,6 +27,7 @@ import type {
   MappingResult,
   SortParam,
   TextTheme,
+  HeaderCellMeta,
 } from '../common/interface';
 import type { BaseHeaderConfig } from '../facet/header/base';
 import type { Node } from '../facet/layout/node';
@@ -324,16 +325,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(
+    cells: Array<CellMeta | HeaderCellMeta>,
+    nodes: Node[],
+  ) {
     if (includeCell(cells, this)) {
-      this.updateByState(InteractionStateName.SELECTED);
-    }
-    const headerCell = this.spreadsheet.interaction.getHeaderCells();
-    if (
-      headerCell?.find(
-        (headerCellItem) => this.getMeta().id === headerCellItem.id,
-      )
-    ) {
       this.updateByState(InteractionStateName.SELECTED);
     }
 
@@ -397,7 +393,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:
-        this.handleSelect(cells, stateInfo?.nodes);
+        this.handleSelect(
+          [...cells, ...this.spreadsheet.interaction.getHeaderCells()],
+          stateInfo?.nodes,
+        );
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:

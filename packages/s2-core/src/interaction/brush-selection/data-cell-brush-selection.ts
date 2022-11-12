@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isEmpty, range } from 'lodash';
+import { isBoolean, isEmpty, range } from 'lodash';
 import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
@@ -109,7 +109,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       stateName: InteractionStateName.SELECTED,
     });
 
-    if (options.interaction.selectedCellHighlight) {
+    const { selectedCellHighlight } = options.interaction;
+    if (isBoolean(selectedCellHighlight) && selectedCellHighlight) {
       selectedCellMetas.forEach((meta) => {
         updateRowColCells(meta as unknown as ViewMeta);
       });

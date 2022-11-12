@@ -1,10 +1,11 @@
-import { forEach } from 'lodash';
+import { forEach, isBoolean } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
+  type InteractionCellSelectedHighlightType,
 } from '../../common/constant';
 import type {
   CellMeta,
@@ -13,6 +14,7 @@ import type {
   HeaderCellMeta,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
+import type { Node } from '../../facet/layout/node';
 import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
@@ -117,3 +119,70 @@ export function updateRowColCells(meta: ViewMeta) {
     });
   }
 }
+
+export const selectedCellHighlightAdaptor = (
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType,
+) => {
+  if (isBoolean(selectedCellHighlight)) {
+    return {
+      rowHeader: selectedCellHighlight,
+      colHeader: selectedCellHighlight,
+      rowCells: false,
+      colCells: false,
+    };
+  }
+
+  const {
+    rowHeader = false,
+    colHeader = false,
+    rowCells = false,
+    colCells = false,
+  } = selectedCellHighlight ?? {};
+
+  return {
+    rowHeader,
+    colHeader,
+    rowCells,
+    colCells,
+  };
+};
+
+export const getRowHeaderByCellId = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  return s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
+};
+
+export const getColHeaderByCellId = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  return s2.getColumnNodes().filter((node: Node) => cellId.includes(node.id));
+};
+
+export const getRowColHeaderCellBySelectedCellHighlight = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
+    s2.options.interaction.selectedCellHighlight,
+  );
+
+  const getters = [
+    {
+      shouldGet: rowHeader,
+      getter: getRowHeaderByCellId,
+    },
+    {
+      shouldGet: colHeader,
+      getter: getColHeaderByCellId,
+    },
+  ];
+
+  return getters
+    .filter((item) => item.shouldGet)
+    .reduce((s, i) => {
+      return [...s, ...i.getter(cellId, s2)];
+    }, []);
+};
