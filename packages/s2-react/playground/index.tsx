@@ -17,7 +17,7 @@ import {
   type InteractionOptions,
   DEFAULT_STYLE,
   S2Event,
-  InteractionCellSelectedHighlightType,
+  type InteractionCellSelectedHighlightType,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -39,7 +39,7 @@ import {
   Tooltip,
 } from 'antd';
 import 'antd/dist/antd.min.css';
-import { debounce, forEach, random } from 'lodash';
+import { debounce, forEach, isBoolean, random } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
@@ -826,37 +826,55 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
-                <Tooltip title="单元格选中高亮">
+                <Tooltip title="高亮选中单元格行为，演示这里旧配置优先级最高">
                   <Select
-                    style={{ width: 160 }}
-                    defaultValue={
-                      mergedOptions.interaction?.selectedCellHighlight
-                    }
+                    style={{ width: 260 }}
                     placeholder="单元格选中高亮"
                     allowClear
+                    mode="multiple"
                     onChange={(type) => {
+                      let selectedCellHighlight:
+                        | boolean
+                        | InteractionCellSelectedHighlightType = false;
+                      const oldIdx = type.findIndex((typeItem) =>
+                        isBoolean(typeItem),
+                      );
+
+                      if (oldIdx > -1) {
+                        selectedCellHighlight = type[oldIdx];
+                      } else {
+                        selectedCellHighlight = {
+                          rowHeader: false,
+                          colHeader: false,
+                          rowCells: false,
+                          colCells: false,
+                        };
+                        type.forEach((i) => {
+                          selectedCellHighlight[i] = true;
+                        });
+                      }
+
                       updateOptions({
                         interaction: {
-                          selectedCellHighlight: type,
+                          selectedCellHighlight,
                         },
                       });
                     }}
                   >
-                    <Select.Option
-                      value={InteractionCellSelectedHighlightType.ROW}
-                    >
-                      行高亮
+                    <Select.Option value={true}>
+                      （旧）高亮选中单元格所在行列头
                     </Select.Option>
-                    <Select.Option
-                      value={InteractionCellSelectedHighlightType.CROSS}
-                    >
-                      十字高亮
+                    <Select.Option value="rowHeader">
+                      rowHeader: 高亮所在行头
                     </Select.Option>
-                    <Select.Option value={true}>（旧）仅高亮表头</Select.Option>
-                    <Select.Option
-                      value={InteractionCellSelectedHighlightType.ONLY_HEADER}
-                    >
-                      仅高亮表头
+                    <Select.Option value="colHeader">
+                      colHeader: 高亮所在列头
+                    </Select.Option>
+                    <Select.Option value="rowCells">
+                      rowCells: 高亮所在行
+                    </Select.Option>
+                    <Select.Option value="colCells">
+                      colCells: 高亮所在列
                     </Select.Option>
                   </Select>
                 </Tooltip>
