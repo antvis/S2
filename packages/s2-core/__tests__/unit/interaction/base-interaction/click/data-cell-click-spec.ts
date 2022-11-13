@@ -8,7 +8,7 @@ import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
-  InteractionCellSelectedHighlightType,
+  type InteractionCellSelectedHighlightType,
   InteractionName,
   InteractionStateName,
   InterceptType,
@@ -166,14 +166,14 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(clearHoverTimerSpy).toHaveBeenCalledTimes(2);
   });
 
-  test('should highlight the header cell when cross highlighting', () => {
+  test('should highlight the column header cell when data cell clicked', () => {
     const columnNode: Array<Partial<Node>> = [
       {
         belongsCell: {
-          getMeta: () => ({ id: mockCellInfo.mockCell.getMeta().colId }),
+          getMeta: () => ({ id: `${mockCellInfo.mockCell.getMeta().id}` }),
           cellType: CellTypes.COL_CELL,
         } as any,
-        id: mockCellInfo.mockCell.getMeta().colId,
+        id: `${mockCellInfo.mockCell.getMeta().id}`,
       },
       {
         belongsCell: {
@@ -188,7 +188,9 @@ describe('Interaction Data Cell Click Tests', () => {
 
     s2.setOptions({
       interaction: {
-        selectedCellHighlight: InteractionCellSelectedHighlightType.CROSS,
+        selectedCellHighlight: {
+          colHeader: true,
+        } as InteractionCellSelectedHighlightType,
       },
     });
 

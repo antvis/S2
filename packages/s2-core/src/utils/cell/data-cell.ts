@@ -1,4 +1,4 @@
-import { isEqual, forEach } from 'lodash';
+import { isEqual, forEach, isBoolean } from 'lodash';
 import type { DataCell } from '../../cell';
 import type { SpreadSheet } from '../../sheet-type';
 import {
@@ -6,6 +6,7 @@ import {
   VALUE_FIELD,
   InteractionStateName,
   CellTypes,
+  type InteractionCellSelectedHighlightType,
 } from '../../common/constant';
 import type {
   CellMeta,
@@ -15,7 +16,6 @@ import type {
   S2CellType,
   HeaderCellMeta,
 } from '../../common/interface';
-import { selectedCellHighlightAdaptor } from '../../utils/interaction';
 
 export const handleDataItem = (
   data: Data,
@@ -50,6 +50,33 @@ export const getDataCellId = (rowIndex: string, colIndex: string) => {
 export const splitDataCellId = (id: string) => {
   const [rowId, colId] = id.split(SEPARATOR);
   return { rowId, colId };
+};
+
+export const selectedCellHighlightAdaptor = (
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType,
+) => {
+  if (isBoolean(selectedCellHighlight)) {
+    return {
+      rowHeader: selectedCellHighlight,
+      colHeader: selectedCellHighlight,
+      rowCells: false,
+      colCells: false,
+    };
+  }
+
+  const {
+    rowHeader = false,
+    colHeader = false,
+    rowCells = false,
+    colCells = false,
+  } = selectedCellHighlight ?? {};
+
+  return {
+    rowHeader,
+    colHeader,
+    rowCells,
+    colCells,
+  };
 };
 
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {

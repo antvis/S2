@@ -29,7 +29,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
 import { getEmptyPlaceholder } from '../text';
-import { selectedCellHighlightAdaptor } from '../interaction';
+import { selectedCellHighlightAdaptor } from '../cell/data-cell';
 import { flattenDeep } from '../data-set-operate';
 
 export function keyEqualTo(key: string, compareKey: string) {

@@ -1,11 +1,10 @@
-import { forEach, isBoolean } from 'lodash';
+import { forEach } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
-import { getDataCellId } from '../cell/data-cell';
+import { getDataCellId, selectedCellHighlightAdaptor } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
-  type InteractionCellSelectedHighlightType,
 } from '../../common/constant';
 import type {
   CellMeta,
@@ -120,33 +119,6 @@ export function updateRowColCells(meta: ViewMeta) {
     });
   }
 }
-
-export const selectedCellHighlightAdaptor = (
-  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType,
-) => {
-  if (isBoolean(selectedCellHighlight)) {
-    return {
-      rowHeader: selectedCellHighlight,
-      colHeader: selectedCellHighlight,
-      rowCells: false,
-      colCells: false,
-    };
-  }
-
-  const {
-    rowHeader = false,
-    colHeader = false,
-    rowCells = false,
-    colCells = false,
-  } = selectedCellHighlight ?? {};
-
-  return {
-    rowHeader,
-    colHeader,
-    rowCells,
-    colCells,
-  };
-};
 
 export const getRowHeaderByCellId = (
   cellId: string,
