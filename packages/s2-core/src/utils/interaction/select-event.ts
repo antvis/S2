@@ -28,12 +28,13 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
 
 export const getCellMeta = (cell: S2CellType) => {
   const meta = cell.getMeta();
-  const { id, colIndex, rowIndex } = meta;
+  const { id, colIndex, rowIndex, rowQuery } = meta;
   return {
     id,
     colIndex,
     rowIndex,
     type: cell.cellType,
+    rowQuery,
   };
 };
 

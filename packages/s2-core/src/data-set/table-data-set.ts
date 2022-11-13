@@ -1,13 +1,4 @@
-import {
-  each,
-  orderBy,
-  filter,
-  includes,
-  isFunction,
-  sortBy,
-  uniqBy,
-  forEach,
-} from 'lodash';
+import { each, orderBy, filter, includes, isFunction } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig } from '../common/interface';
 import type { CellMeta } from '../common';
@@ -179,14 +170,7 @@ export class TableDataSet extends BaseDataSet {
     return this.displayData;
   }
 
-  public getRowData(cells: CellMeta[]): RowData {
-    const cellsSorted = sortBy(cells, (cell) => cell.rowIndex);
-    const uniqByRowIndex = uniqBy(cellsSorted, 'rowIndex');
-    const rowData: RowData = {};
-    forEach(uniqByRowIndex, (cell) => {
-      const { rowIndex } = cell;
-      rowData[rowIndex] = this.displayData[cell.rowIndex];
-    });
-    return rowData;
+  public getRowData(cell: CellMeta): RowData {
+    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
   }
 }

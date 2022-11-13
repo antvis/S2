@@ -4,10 +4,12 @@ import {
   filter,
   forEach,
   isEmpty,
+  isNil,
   map,
   max,
+  orderBy,
+  reduce,
   repeat,
-  toPairs,
   zip,
 } from 'lodash';
 import {
@@ -27,7 +29,8 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
 import { getEmptyPlaceholder } from '../text';
-import { InteractionCellSelectedHighlightType } from '../../common/constant/interaction';
+import { selectedCellHighlightAdaptor } from '../interaction';
+import { flattenDeep } from '../data-set-operate';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -630,6 +633,14 @@ function getBrushHeaderCopyable(
   ];
 }
 
+const tilePivotData = (
+  data,
+  columnOrdered,
+  defaultDataValue,
+): Array<string> => {
+  return map(columnOrdered, (field) => data[field] ?? defaultDataValue);
+};
+
 export const getDataByRowData = (
   spreadsheet: SpreadSheet,
   rowData: RowData,
@@ -642,31 +653,35 @@ export const getDataByRowData = (
   } = spreadsheet;
   const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
   const column = spreadsheet.getColumnLeafNodes();
-  const rowDataPairs = toPairs(rowData);
-  const order = [...rows, ...columns, ...values];
   let datas: string[][] = [];
 
   if (spreadsheet.isTableMode()) {
-    datas = map(rowDataPairs, ([_rowIndex, rowDataItem]) => {
-      const columnWithoutSeriesNumber = filter(
-        column,
-        (node) => node.field !== SERIES_NUMBER_FIELD,
-      );
+    const columnWithoutSeriesNumber = filter(
+      column,
+      (node) => node.field !== SERIES_NUMBER_FIELD,
+    );
+    // 按列头顺序复制
+    datas = map(rowData, (rowDataItem) => {
       return map(
         columnWithoutSeriesNumber,
         (node) => rowDataItem?.[node.field] ?? defaultDataValue,
       );
     });
   } else if (spreadsheet.isPivotMode()) {
-    forEach(rowDataPairs, ([_rowIndex, rowDataArr]) => {
-      forEach(rowDataArr, (rowDataItem) => {
-        const matrix = [];
-        forEach(order, (i) => {
-          matrix.push(rowDataItem?.[i] ?? defaultDataValue);
-        });
-        datas.push(matrix);
-      });
-    });
+    // 透视表的数据加上行头、列头才有意义，这里会以行头、列头、数据值的顺序将每一个单元格构造成一行
+    const columnOrdered = [...rows, ...columns, ...values];
+    const rowDataFlatten = flattenDeep(rowData);
+    // 去掉小计
+    const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
+      [...rows, ...columns].every((field) => !isNil(data[field])),
+    );
+    datas = reduce(
+      rowDataFlattenWithoutTotal,
+      (ret, data) => {
+        return [...ret, tilePivotData(data, columnOrdered, defaultDataValue)];
+      },
+      [],
+    );
   }
   return matrixPlainTextTransformer(datas);
 };
@@ -701,15 +716,14 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
-    const { selectedCellHighlight } = spreadsheet.options.interaction;
-    const { CROSS, ROW } = InteractionCellSelectedHighlightType;
+    const { rowCells } = selectedCellHighlightAdaptor(
+      spreadsheet.options.interaction.selectedCellHighlight,
+    );
 
-    if (
-      [CROSS, ROW].includes(
-        selectedCellHighlight as InteractionCellSelectedHighlightType,
-      )
-    ) {
-      const rowData = spreadsheet.dataSet.getRowData(cells);
+    if (rowCells) {
+      const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
+        spreadsheet.dataSet.getRowData(cell),
+      );
       data = getDataByRowData(spreadsheet, rowData);
     } else if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(

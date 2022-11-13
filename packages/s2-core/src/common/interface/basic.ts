@@ -509,4 +509,4 @@ export interface GridInfo {
   rows: number[];
 }
 
-export type RowData = Record<number, Data[]> | Record<number, DataType>;
+export type RowData = Data | DataType;
