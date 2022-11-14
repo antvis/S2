@@ -11,6 +11,7 @@ import { default as glob } from 'glob';
 import stringify from 'remark-stringify';
 import { fileURLToPath } from 'url';
 import { visit } from 'unist-util-visit';
+import remarkGfm from 'remark-gfm';
 import { TranslationServiceClient } from '@google-cloud/translate';
 
 // 项目统一信息
@@ -20,16 +21,16 @@ const targetLanguageCode = 'en';
 
 // 文件信息
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const mdFile = path.join(__dirname, '../docs/api');
+const mdFile = path.join(__dirname, '../docs/manual/basic');
 const allFilesName = glob.sync("*.zh.md", { cwd: mdFile, realpath: true });
 
 // markdown 和 AST 的转换方法
-const toMdAST = (md) => unified().use(parse).parse(md);
+const toMdAST = (md) => unified().use(parse).use(remarkGfm).parse(md);
 const toMarkdown = (ast) => {
-  return unified().use(stringify).stringify(ast);
+  return unified().use(stringify).use(remarkGfm).stringify(ast);
 };
 
+// 是否为有效的 url
 const isValidHttpUrl = (string) => {
   let url;
   try {
@@ -39,6 +40,15 @@ const isValidHttpUrl = (string) => {
   }
   return url.protocol === "http:" || url.protocol === "https:";
 }
+// 是否为数字和英语
+const isEnglishOrNumber = (text) => {
+  const regx = /^[A-Za-z-1-9]*\.*$/;
+  const trimText = text.toString().replace(/ /g,'');
+  return regx.test(trimText);
+}
+
+const cacheMap = new Map();
+let cacheCount = 0;
 
 /**
  * google translate API 请求, 中翻英
@@ -85,10 +95,12 @@ const getOriginalTextInfo = (mdAST) => {
 
   visit(mdAST, (node) => {
     if (isTranslateText(node)) {
-      if (isLinkType(node) && isValidHttpUrl(node.url)) {
+      const nodeVal = node.type === 'link' ? formatUrl(node.url) : node.value;
+      // 英文不翻译、缓存中有的不翻译、链接不翻译
+      console.log(isEnglishOrNumber(nodeVal), cacheMap.has(nodeVal), isValidHttpUrl(nodeVal));
+      if (!nodeVal || isEnglishOrNumber(nodeVal) || cacheMap.has(nodeVal) || isValidHttpUrl(nodeVal)) {
         return;
       }
-      const nodeVal = node.type === 'link' ? formatUrl(node.url) : node.value;
       if (!textMap.has(nodeVal)) {
         originalTextArr.push(nodeVal);
         textMap.set(nodeVal, index);
@@ -101,9 +113,12 @@ const getOriginalTextInfo = (mdAST) => {
 
 // 判断是否为需要翻译的文本
 function isTranslateText(node) {
-  return node.type === "text" || node.type === "code" || node.type === "link";
+  return node.type === "text" || node.type === "code" || node.type === "link" ;
 }
 
+const toInSiteLink = (url) => {
+  return `#${url}`;
+}
 /**
  * 将翻译后的文本写入 AST
  * @param mdAST 翻译前的 markdown AST
@@ -113,14 +128,29 @@ function isTranslateText(node) {
  */
 const writeValueToAST = (mdAST, translatedTextList, textMap) => {
   visit(mdAST, (node) => {
-    if (isTranslateText(node)) {
-      if (isLinkType(node) && !isValidHttpUrl(node.url)) {
-        const valueIndex = textMap.get(formatUrl(node.url));
-        node.url = `#${translatedTextList[valueIndex]}`;
-      } else {
-        const valueIndex = textMap.get(node.value);
-        node.value = translatedTextList[valueIndex];
+    const nodeVal = node.type === 'link' ? formatUrl(node.url) : node.value;
+    if (isValidHttpUrl(nodeVal) || isEnglishOrNumber(nodeVal)) {
+      return;
+    }
+
+    if (isLinkType(node)) {
+      if (cacheMap.has(nodeVal)) {
+        cacheCount++;
+        node.url = toInSiteLink(cacheMap.get(nodeVal));
+        return;
       }
+      const valueIndex = textMap.get(nodeVal);
+      node.url = toInSiteLink(translatedTextList[valueIndex]);
+      cacheMap.set(nodeVal, translatedTextList[valueIndex]);
+    } else if (isTranslateText(node)) {
+      if (cacheMap.has(nodeVal)) {
+        cacheCount++;
+        node.value = cacheMap.get(nodeVal);
+        return;
+      }
+      const valueIndex = textMap.get(nodeVal);
+      node.value = translatedTextList[valueIndex];
+      cacheMap.set(nodeVal, translatedTextList[valueIndex]);
     }
   });
   return mdAST;
@@ -157,4 +187,4 @@ allFilesName.forEach(async (pathName) => {
   console.log(translatedAllText, 'translatedAllText', translatedAllText.length);
   await writeToFile(pathName, mdAST);
 });
-
+console.log(cacheCount, 'cacheCount used');
