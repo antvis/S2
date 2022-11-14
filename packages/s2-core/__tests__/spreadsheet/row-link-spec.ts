@@ -32,19 +32,22 @@ const s2DataCfg = {
       city: '义乌1',
       type: '笔',
       price: 1,
+      cost: 9,
     },
 
     {
       province: '浙江',
       city: '义乌1',
       type: '笔',
-      cost: 2,
+      price: 10,
+      cost: 99,
     },
     {
       province: '浙江',
       city: '义乌2',
       type: '笔',
       price: 1,
+      cost: 6,
     },
     {
       province: '浙江',
@@ -73,6 +76,7 @@ describe('Row Text Link Tests', () => {
 
   let s2: PivotSheet;
   const linkFieldJump = jest.fn();
+
   beforeAll(() => {
     container = getContainer();
     s2 = new PivotSheet(container, s2DataCfg, s2Options);
@@ -101,8 +105,6 @@ describe('Row Text Link Tests', () => {
         type: '笔',
         price: 2,
         cost: 2,
-        $$extra$$: 'price',
-        $$value$$: 2,
         rowIndex: 0,
       },
     });
@@ -128,9 +130,8 @@ describe('Row Text Link Tests', () => {
         province: '浙江',
         city: '义乌1',
         type: '笔',
-        price: 1,
-        $$extra$$: 'price',
-        $$value$$: 1,
+        price: 10,
+        cost: 99,
         rowIndex: 1,
       },
     });
@@ -157,8 +158,6 @@ describe('Row Text Link Tests', () => {
         type: '笔',
         price: 1,
         cost: 2,
-        $$extra$$: 'price',
-        $$value$$: 1,
         rowIndex: 3,
       },
     });

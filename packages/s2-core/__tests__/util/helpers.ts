@@ -99,6 +99,7 @@ export const createFakeSpreadSheet = () => {
   s2.dataSet = {
     getFieldDescription: jest.fn(),
     getCustomFieldDescription: jest.fn(),
+    getMultiData: jest.fn(() => []),
   } as unknown as BaseDataSet;
 
   s2.getCellType = jest.fn();

@@ -9,7 +9,8 @@ import type { ViewMeta } from '@/common';
 
 jest.mock('@/cell', () => {
   return {
-    TableSeriesCell() {
+    // eslint-disable-next-line object-shorthand
+    TableSeriesCell: function () {
       // @ts-ignore
       this.getMeta = () => {
         return {

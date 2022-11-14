@@ -1,4 +1,5 @@
 import { isMultiDataItem } from '@/utils/data-item-type-checker';
+
 describe('data-item-type-checker test', () => {
   test(`should return true when it's multi data item`, () => {
     expect(isMultiDataItem({ values: [[1], [2]] })).toBeTrue();

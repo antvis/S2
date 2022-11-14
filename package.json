@@ -141,7 +141,7 @@
     "husky": "^8.0.2",
     "jest": "^26.6.3",
     "jest-electron": "^0.1.12",
-    "jest-extended": "^3.1.0",
+    "jest-extended": "^0.11.5",
     "jest-less-loader": "^0.1.2",
     "jest-raw-loader": "^1.0.1",
     "jest-url-loader": "^0.1.0",
