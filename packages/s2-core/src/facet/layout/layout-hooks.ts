@@ -40,6 +40,13 @@ export const layoutHierarchy = (
   currentNode: Node,
   hierarchy: Hierarchy,
 ): boolean => {
+  const hiddenColumnNode =
+    facetCfg.spreadsheet.facet?.matchHiddenColumnNode(currentNode);
+
+  if (hiddenColumnNode) {
+    return false;
+  }
+
   let expandCurrentNode = true;
   const addNode = (node: Node, insetIndex = -1, hierarchyIndex = -1) => {
     if (insetIndex === -1) {
@@ -65,15 +72,15 @@ export const layoutHierarchy = (
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
       if (!isEmpty(unshiftNodes)) {
-        each(unshiftNodes, (v) => {
-          addNode(v);
+        each(unshiftNodes, (node) => {
+          addNode(node);
         });
         currentIndex = parentNode.children.length;
         hierarchyIndex = hierarchy.getNodes().length;
       }
       if (!isEmpty(pushNodes)) {
-        each(pushNodes, (v) => {
-          addNode(v);
+        each(pushNodes, (node) => {
+          addNode(node);
         });
       }
       if (!deleteNode) {

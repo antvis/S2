@@ -66,7 +66,7 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: 200,
+      width: 100,
     },
     cellCfg: {
       height: 50,
