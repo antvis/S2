@@ -64,6 +64,7 @@ s2.facet.xx()
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
+| matchHiddenColumnNode | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/zh/docs/api/basic-class/node)) => [HiddenColumnsInfo](/zh/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  |
 
 ### CellScrollOffset
 
