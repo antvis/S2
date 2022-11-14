@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { getPalette, generatePalette, ThemeCfg } from '@antv/s2';
+import { getPalette, generatePalette } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
 import { ChromePicker } from 'react-color';
 import { Button, Popover, Space } from 'antd';
@@ -19,7 +19,7 @@ fetch(
 
     function App() {
       const [themeColor, setThemeColor] = useState('#EA1720');
-      const [themeCfg, setThemeCfg] = useState<ThemeCfg>({
+      const [themeCfg, setThemeCfg] = useState({
         name: 'colorful',
       });
 
