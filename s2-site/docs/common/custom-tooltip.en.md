@@ -3,4 +3,4 @@ title: Custom Tooltip
 order: 5
 ---
 
-`markdown:docs/common/custom-tooltip.zh.md`
+<embed src="@/docs/common/custom-tooltip.zh.md"></embed>

@@ -345,7 +345,7 @@ s2.render();
 
 ### MergedCellInfo
 
-`markdown:docs/common/merged-cell.zh.md`
+<embed src="@/docs/common/merged-cell.zh.md"></embed>
 
 ![合并单元格](https://gw.alipayobjects.com/zos/antfincdn/kHAYfFaJA/ae92e636-6574-487b-8d78-57dcae21e1d4.png)
 

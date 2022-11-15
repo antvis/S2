@@ -3,4 +3,4 @@ title: Quick Start
 order: 1
 ---
 
-`markdown:docs/manual/getting-started.zh.md`
+<embed src="@/docs/manual/getting-started.zh.md"></embed>

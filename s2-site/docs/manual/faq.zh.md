@@ -19,7 +19,7 @@ order: 8
 
 ### 浏览器引入
 
-`markdown:docs/common/browser.zh.md`
+<embed src="@/docs/common/browser.zh.md"></embed>
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
@@ -158,7 +158,7 @@ s2.render(false)
 
 以下是版本概览：
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 配套的 [分析组件](/zh/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 

@@ -3,4 +3,4 @@ title: BaseCell
 order: 4
 ---
 
-`markdown:docs/api/basic-class/base-cell.zh.md`
+<embed src="@/docs/api/basic-class/base-cell.zh.md"></embed>

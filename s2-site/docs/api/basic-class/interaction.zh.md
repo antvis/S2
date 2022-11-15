@@ -52,7 +52,7 @@ s2.interaction.xx()
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/zh/docs/api/basic-class/node)[]) => void |
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
 ### InteractionConstructor
 

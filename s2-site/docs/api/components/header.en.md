@@ -3,4 +3,4 @@ title: Header
 order: 4
 ---
 
-`markdown:docs/api/components/header.zh.md`
+<embed src="@/docs/api/components/header.zh.md"></embed>

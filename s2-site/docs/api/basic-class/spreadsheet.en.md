@@ -3,4 +3,4 @@ title: SpreadSheet
 order: 1
 ---
 
-`markdown:docs/api/basic-class/spreadsheet.zh.md`
+<embed src="@/docs/api/basic-class/spreadsheet.zh.md"></embed>

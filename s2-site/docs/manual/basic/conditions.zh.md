@@ -103,7 +103,7 @@ const s2Options = {
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
 
-`markdown:docs/common/icon.zh.md`​
+<embed src="@/docs/common/icon.zh.md"></embed>​
 
 🎨 字段标记详细的配置参考 [Conditions API](/zh/docs/api/general/S2Options#conditions) 文档。
 

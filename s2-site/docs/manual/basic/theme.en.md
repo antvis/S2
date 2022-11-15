@@ -5,4 +5,4 @@ order: 6
 
 ## 简介
 
-`markdown:docs/manual/basic/theme.zh.md`
+<embed src="@/docs/manual/basic/theme.zh.md"></embed>

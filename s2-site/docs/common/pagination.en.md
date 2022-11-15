@@ -3,4 +3,4 @@ title: Pagination
 order: 6
 ---
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>

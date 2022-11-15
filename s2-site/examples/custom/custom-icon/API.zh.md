@@ -3,6 +3,6 @@ title: API
 order: 6
 ---
 
-`markdown:docs/common/custom/customSvgIcons.zh.md`
+<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
 
-`markdown:docs/common/custom/headerActionIcons.zh.md`
+<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>

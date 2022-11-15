@@ -5,4 +5,4 @@ order: 0
 
 # Style
 
-`markdown:docs/common/style.zh.md`
+<embed src="@/docs/common/style.zh.md"></embed>

@@ -65,4 +65,4 @@ import { SheetComponent } from '@antv/s2-react'
 
 ![导出](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ)
 
-`markdown:docs/common/export.zh.md`
+<embed src="@/docs/common/export.zh.md"></embed>

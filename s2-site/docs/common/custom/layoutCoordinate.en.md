@@ -3,4 +3,4 @@ title: layout coordinate
 order: 4
 ---
 
-`markdown:docs/common/custom/layoutCoordinate.zh.md`
+<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>

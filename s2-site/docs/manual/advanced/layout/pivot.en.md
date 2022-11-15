@@ -3,4 +3,4 @@ title: Pivot
 order: 1
 ---
 
-`markdown:docs/manual/advanced/layout/pivot.zh.md`
+<embed src="@/docs/manual/advanced/layout/pivot.zh.md"></embed>

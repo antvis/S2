@@ -4,7 +4,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格。
+开箱即用的多维可视分析表格。
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
@@ -210,6 +210,10 @@ yarn lint
 yarn site:bootstrap
 yarn site:start
 ```
+
+## 👁️ 洞察
+
+![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
 
 ## 📧 联系我们
 
