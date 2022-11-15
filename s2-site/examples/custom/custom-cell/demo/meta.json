@@ -51,6 +51,14 @@
         "en": "custom totals cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/W22O8FkKz/8ab7d837-4d91-49c1-81a5-66d6de619206.png"
+    },
+    {
+      "filename": "custom-specified-cell.ts",
+      "title": {
+        "zh": "自定义特定单元格",
+        "en": "custom specified cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*KJqYQKjxIwIAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

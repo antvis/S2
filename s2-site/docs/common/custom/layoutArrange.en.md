@@ -4,4 +4,4 @@ order: 1
 ---
 
 
-`markdown:docs/common/custom/layoutArrange.zh.md`
+<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>

@@ -46,19 +46,19 @@ order: 1
 | supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 | devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
-`markdown:docs/common/conditions.zh.md`
+<embed src="@/docs/common/conditions.zh.md"></embed>
 
-`markdown:docs/common/totals.zh.md`
+<embed src="@/docs/common/totals.zh.md"></embed>
 
-`markdown:docs/common/tooltip.zh.md`
+<embed src="@/docs/common/tooltip.zh.md"></embed>
 
-`markdown:docs/common/custom-tooltip.zh.md`
+<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>
 
-`markdown:docs/common/style.zh.md`
+<embed src="@/docs/common/style.zh.md"></embed>
 
 ## DataCellCallback
 
@@ -68,7 +68,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
-`markdown:docs/common/view-meta.zh.md`
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CellCallback
 
@@ -98,15 +98,15 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓   |
 | restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
 
-`markdown:docs/common/custom/layoutHierarchy.zh.md`
+<embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutArrange.zh.md`
+<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutCoordinate.zh.md`
+<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutDataPosition.zh.md`
+<embed src="@/docs/common/custom/layoutDataPosition.zh.md"></embed>
 
-`markdown:docs/common/custom/headerActionIcons.zh.md`
+<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>
 
 ## HeaderActionIconProps
 
@@ -118,7 +118,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | meta | 当前 cell 的 meta 信息 | Node | - | ✓ |
 | event | 当前点击事件信息 | Event |  false  | ✓ |
 
-`markdown:docs/common/custom/customSvgIcons.zh.md`
+<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
 
 ## FilterDataItemCallback
 
@@ -182,4 +182,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-`markdown:docs/common/merged-cell.zh.md`
+<embed src="@/docs/common/merged-cell.zh.md"></embed>

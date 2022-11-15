@@ -3,4 +3,4 @@ title: Interaction
 order: 5
 ---
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>

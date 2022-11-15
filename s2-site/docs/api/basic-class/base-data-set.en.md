@@ -3,4 +3,4 @@ title: BaseDataSet
 order: 5
 ---
 
-`markdown:docs/api/basic-class/base-data-set.zh.md`
+<embed src="@/docs/api/basic-class/base-data-set.zh.md"></embed>

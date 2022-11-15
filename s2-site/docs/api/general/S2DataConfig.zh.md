@@ -83,6 +83,6 @@ object **必选**,_default：null_
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
-`markdown:docs/common/sort-param.zh.md`
+<embed src="@/docs/common/sort-param.zh.md"></embed>
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
