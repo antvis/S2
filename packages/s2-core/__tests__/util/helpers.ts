@@ -58,15 +58,22 @@ export const createFakeSpreadSheet = () => {
     meta: null,
     data: [],
     fields: {},
+    sortParams: [],
   };
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,
     height: DEFAULT_OPTIONS.height,
     container,
   });
+  s2.dataSet = {
+    getMultiData() {
+      return [];
+    },
+  } as unknown as any;
   s2.facet = {
     layoutResult: {
       getCellMeta: jest.fn(),
+      rowLeafNodes: [],
     },
   } as unknown as BaseFacet;
   s2.facet.panelBBox = {

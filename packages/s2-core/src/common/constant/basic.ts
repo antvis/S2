@@ -89,3 +89,6 @@ export enum MiniChartTypes {
 
 // 线条 linecap 样式
 export const SQUARE_LINE_CAP = 'square';
+
+// 省略号
+export const ELLIPSIS_SYMBOL = '...';
