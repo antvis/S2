@@ -27,12 +27,6 @@
     "deploy": "dumi build && gh-pages -d dist",
     "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"
   },
-  "resolutions": {
-    "monaco-editor-webpack-plugin": "2.0.0",
-    "monaco-editor": "0.21.0",
-    "sharp": "0.29.0",
-    "normalize-url": "^4.5.1"
-  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@antv/dumi-theme-antv": "^0.3.0-beta.5",
