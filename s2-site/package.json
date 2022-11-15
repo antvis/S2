@@ -25,7 +25,7 @@
     "clean": "dumi clean",
     "preview": "dumi preview",
     "deploy": "dumi build && gh-pages -d dist",
-    "sync:s2-lock": "upgrade @antv/s2 @antv/s2-react --latest"
+    "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"
   },
   "resolutions": {
     "monaco-editor-webpack-plugin": "2.0.0",
