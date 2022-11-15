@@ -41,7 +41,7 @@ export const layoutHierarchy = (
   hierarchy: Hierarchy,
 ): boolean => {
   const hiddenColumnNode =
-    facetCfg.spreadsheet.facet?.matchHiddenColumnNode(currentNode);
+    facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(currentNode);
 
   if (hiddenColumnNode) {
     return false;

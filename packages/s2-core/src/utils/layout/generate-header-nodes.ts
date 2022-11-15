@@ -118,7 +118,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       !node.isSubTotals
     ) {
       const hiddenColumnNode =
-        facetCfg.spreadsheet.facet?.matchHiddenColumnNode(node);
+        facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(node);
 
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.maxLevel = level;

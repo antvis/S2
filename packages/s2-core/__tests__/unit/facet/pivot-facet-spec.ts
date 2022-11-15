@@ -4,8 +4,9 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
-import { DEFAULT_TREE_ROW_WIDTH } from './../../../src/common/constant/options';
 import { getMockPivotMeta } from './util';
+import { Node } from '@/facet/layout/node';
+import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
 import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -65,6 +66,7 @@ jest.mock('@/sheet-type', () => {
           layoutResult: {
             rowLeafNodes: [],
           },
+          getHiddenColumnsInfo: jest.fn(),
         },
         getCanvasElement: () => container.get('el'),
         hideTooltip: jest.fn(),
@@ -351,5 +353,20 @@ describe('Pivot Mode Facet Test', () => {
     customWidthFacet.layoutResult.rowNodes.forEach((node) => {
       expect(node.width).toStrictEqual(400);
     });
+  });
+
+  test('should get hidden columns info', () => {
+    const node = new Node({ id: '1', key: '1', value: '1' });
+
+    expect(facet.getHiddenColumnsInfo(node)).toBeNull();
+
+    const hiddenColumnsInfo = {
+      hideColumnNodes: [node],
+      displaySiblingNode: null,
+    };
+
+    s2.store.set('hiddenColumnsDetail', [hiddenColumnsInfo]);
+
+    expect(facet.getHiddenColumnsInfo(node)).toEqual(hiddenColumnsInfo);
   });
 });

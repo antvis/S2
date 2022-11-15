@@ -1306,7 +1306,7 @@ export abstract class BaseFacet {
     }
   }
 
-  public matchHiddenColumnNode(columnNode: Node): HiddenColumnsInfo | null {
+  public getHiddenColumnsInfo(columnNode: Node): HiddenColumnsInfo | null {
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],
