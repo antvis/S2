@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { DataCell, S2Event } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
+import type { TableFacet } from 's2-core/src/facet'; 
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import './drag-copy-point.less';
 import { DragCopyMask } from './drag-copy-mask';
-import type { TableFacet } from 's2-core/src/facet';
 
 export type DragCopyProps = {
   onChange?: (val) => void;
