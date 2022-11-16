@@ -7,7 +7,7 @@
   "no-empty-links": false,
   "no-duplicate-heading": false,
   "MD003": {
-    "style": "setext_with_atx"
+    "style": "atx"
   },
   "front-matter": {
     "type": "yaml"

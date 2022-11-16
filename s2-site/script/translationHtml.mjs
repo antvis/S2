@@ -16,8 +16,8 @@ import { toHtml } from 'hast-util-to-html'
 import { TranslationServiceClient } from "@google-cloud/translate";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const mdFile = path.join(__dirname, '../docs/manual/basic/analysis');
-const allZhFilesName = glob.sync("*.zh.md", { cwd: mdFile, realpath: true });
+const mdFile = path.join(__dirname, '../manual/advanced/interaction/');
+const allZhFilesName = glob.sync("merge-cell.zh.md", { cwd: mdFile, realpath: true });
 
 /**
  * <tag foo="bar"> -> <tag data-mdast="html" foo="bar">
@@ -36,14 +36,14 @@ function addAttrIntoHtml(value) {
  * ---
  * @type {RegExp}
  */
-const yamlRegx = /---[\s\S]*?---/;
+const yamlHeaderRegx = /---[\s\S]*?---/;
 
 /**
  * @param content
  * @return {*}
  */
 function removeFileHead(content) {
-  return content.replace(yamlRegx, '');
+  return content.replace(yamlHeaderRegx, '');
 }
 
 const mdToHtml = async (filePath) => {
@@ -115,8 +115,15 @@ export const getTranslatedText = async (originalHtml, mimeType = 'text/html') =>
  * @return {string}
  */
 function getEnFileContent(writePath, file) {
-  const readFileContent = fs.readFileSync(writePath, 'utf8');
-  return readFileContent.match(yamlRegx)[0] + '\n\n' + String(file);
+  const readFileContent = fs.readFileSync(writePath, {
+    encoding: 'utf8',
+    flag: 'w+'
+  });
+  const yamlHeader = readFileContent.match(yamlHeaderRegx);
+  if (yamlHeader?.[0]) {
+    return yamlHeader?.[0] + '\n\n' + String(file);
+  }
+  return String(file);
 }
 
 const HtmlToMd = async (html, writePath) => {
@@ -139,7 +146,11 @@ const HtmlToMd = async (html, writePath) => {
           // 有点 hack 的方式，因为 translate API 会吞掉 code 中的空格。
           // 所以，在翻译前，将 code 中的空格替换成 &nbsp;，翻译后，再替换回来
           node.children[0].value = node.children[0].value === ' ' ? '' : node.children[0].value;
-          node.children[1].children[0].value = node.children[1].children[0].value.replace(/&nbsp;/g, ' ');
+          if (node.children[1]) {
+            node.children[1].children[0].value = node.children[1].children[0].value.replace(/&nbsp;/g, ' ');
+          } else {
+            debugger;
+          }
           return defaultHandlers.pre(h, node);
         },
       }
@@ -153,17 +164,25 @@ const HtmlToMd = async (html, writePath) => {
     writePath,
     content,
     'utf8',
-  )
-  ;
+  );
   console.log(`${writePath} written`);
-
 }
 
+// 总有一些文件风格迥异，报错了后需要单独处理一下
+const errorFilePath = [];
+
 const allAsyncTask = allZhFilesName.map(async (pathName) => {
-  const html = await mdToHtml(pathName);
-  const htmlEn = await getTranslatedText([ html ]);
-  const writePath = pathName.replace('.zh', '.en');
-  await HtmlToMd(htmlEn[0], writePath);
+  try {
+    const html = await mdToHtml(pathName);
+    const htmlEn = await getTranslatedText([ html ]);
+    const writePath = pathName.replace('.zh', '.en');
+    await HtmlToMd(htmlEn[0], writePath);
+  } catch (e) {
+    console.error(pathName, 'error');
+    errorFilePath.push(pathName);
+    console.error(e)
+  }
 });
 await Promise.all(allAsyncTask);
+console.log('error file path',  errorFilePath);
 process.exit(0);
