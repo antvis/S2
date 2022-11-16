@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { S2Event, TableSheet, DataCell, InteractionStateName } from '@antv/s2';
+import { S2Event, DataCell, InteractionStateName } from '@antv/s2';
 import type { Point } from '@antv/g-canvas';
 import { throttle, pick, get } from 'lodash';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
@@ -13,7 +13,6 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
   const spreadsheet = useSpreadSheetRef();
 
   const [startCell, setstartCell] = useState<DataCell>();
-  const [endPoint, setEndPoint] = useState<DataCell>();
   const [maskPosition, setMaskPosition] = useState({ right: 0, bottom: 0 });
   const [dragPoint, setDragPoint] = useState<Point>();
 
@@ -133,7 +132,6 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     }
     const source = spreadsheet.dataSet.originData;
 
-    setEndPoint(targetCell);
     const selectedRange = getSelectedCellRange(startCell, targetCell);
     const { fieldValue } = startCell.getMeta();
     const changedCells = selectedRange.map((item) => {
