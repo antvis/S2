@@ -5,7 +5,6 @@
 import { unified } from 'unified';
 import parse from 'remark-parse';
 import path, { dirname } from 'path';
-
 import fs from 'fs';
 import { default as glob } from 'glob';
 import stringify from 'remark-stringify';
@@ -96,7 +95,7 @@ const getOriginalTextInfo = (mdAST) => {
   visit(mdAST, (node) => {
     if (isTranslateText(node)) {
       const nodeVal = node.type === 'link' ? formatUrl(node.url) : node.value;
-      // 英文不翻译、缓存中有的不翻译、链接不翻译
+      // 英文数值不翻译、缓存中有的不翻译、链接不翻译
       console.log(isEnglishOrNumber(nodeVal), cacheMap.has(nodeVal), isValidHttpUrl(nodeVal));
       if (!nodeVal || isEnglishOrNumber(nodeVal) || cacheMap.has(nodeVal) || isValidHttpUrl(nodeVal)) {
         return;

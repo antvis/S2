@@ -50,8 +50,15 @@
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",
+    "hast-util-to-html": "^8.0.3",
+    "rehype-document": "^6.1.0",
+    "rehype-format": "^4.0.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-remark": "^9.1.2",
+    "rehype-stringify": "^9.0.3",
     "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "remark-stringify": "^10.0.2",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.1"
