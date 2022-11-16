@@ -1,16 +1,13 @@
-/**
- * @file 拖拽复制单元格右下角标
- * @author 张威澳
- */
-
 import React, { useState, useEffect } from 'react';
-import { S2Event } from '@antv/s2';
+import { DataCell, S2Event } from '@antv/s2';
+import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { useS2Event } from '../../../../hooks';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
 import './drag-copy-point.less';
 import { DragCopyMask } from './drag-copy-mask';
+import type { TableFacet } from 's2-core/src/facet';
 
 export type DragCopyProps = {
   onChange?: (val) => void;
@@ -19,35 +16,42 @@ export type DragCopyProps = {
 export function DragCopyPoint(props: DragCopyProps) {
   const spreadsheet = useSpreadSheetRef();
 
-  const [scroll, setScroll] = useState<any>({
+  const [scroll, setScroll] = useState<
+    ScrollOffset & { width?: number; overflow?: boolean }
+  >({
     scrollX: -999,
     scrollY: -999,
     width: 8,
     overflow: true,
   });
   const [position, setPosition] = useState({ left: -999, top: -999 });
-  const [cell, setCell] = useState<any>();
+  const [cell, setCell] = useState<DataCell>();
 
   const handleScroll = () => {
     if (spreadsheet) {
       const newScroll = spreadsheet.facet.getScrollOffset();
-      const { frozenCol, frozenRow } = (spreadsheet.facet as any)
+      const { frozenCol, frozenRow } = (spreadsheet.facet as TableFacet)
         .frozenGroupInfo;
       const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
-      const cellMate = cell?.getMeta();
+      const cellMeta = cell?.getMeta();
+
       if (!isEqual(newScroll, scroll)) {
         // 超出可视区域隐藏point
-        if (cellMate) {
+        if (cellMeta) {
+          const { verticalBorderWidth: vWidth, horizontalBorderWidth: hWidth } =
+            cell.getStyle().cell;
+
           // 确定点位
-          const pointX = cellMate.width + cellMate.x;
-          const pointY = cellMate.height + cellMate.y;
+          const pointX = cellMeta.width + cellMeta.x;
+          const pointY = cellMeta.height + cellMeta.y;
           // 计算点位的偏移量
-          const pointWidth = pointX - newScroll.scrollX - rect.width + 4;
+          const pointWidth =
+            pointX - newScroll.scrollX - rect.width + (vWidth + hWidth) * 2;
           let overflow = true;
           if (
-            frozenCol.width >= pointX - newScroll.scrollX - 2 ||
-            frozenRow.height >= pointY - newScroll.scrollY - 2 ||
-            rect.width <= pointX - newScroll.scrollX - 2 ||
+            frozenCol.width >= pointX - newScroll.scrollX - hWidth * 2 ||
+            frozenRow.height >= pointY - newScroll.scrollY - vWidth * 2 ||
+            rect.width <= pointX - newScroll.scrollX - hWidth * 2 ||
             rect.height <= pointY - newScroll.scrollY + frozenRow.height
           ) {
             overflow = true;

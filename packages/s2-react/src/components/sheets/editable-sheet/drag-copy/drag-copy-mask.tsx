@@ -1,8 +1,3 @@
-/**
- * @file 拖拽复制单元格遮罩层
- * @author 张威澳
- */
-
 import React, { useState, useEffect } from 'react';
 import { S2Event, TableSheet, DataCell, InteractionStateName } from '@antv/s2';
 import type { Point } from '@antv/g-canvas';
