@@ -71,7 +71,7 @@ const PaletteLegend = () => {
   );
 };
 
-fetch('../data/single-population-proportion.json')
+fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
   .then((res) => res.json())
   .then(({ data }) => {
     const s2DataConfig = {

@@ -1,5 +1,5 @@
 import { defineConfig } from 'dumi';
-import { repository, version, homepage } from './package.json';
+import { repository, homepage } from './package.json';
 
 export default defineConfig({
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
