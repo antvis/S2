@@ -34,9 +34,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 创建 `S2` 表格有三种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 和 `Vue3` 版本
 
-- core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
-- React 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
-- Vue3 版本：[`@antv/s2-vue`](https://github.com/antvis/S2/tree/master/packages/s2-vue)
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 ### 基础类
 
@@ -186,7 +184,7 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件), 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -210,7 +208,7 @@ ReactDOM.render(
 
 #### 注意事项
 
-`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`,`Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
+`React` 版本的 `分析组件` 如：`高级排序`, `导出`, `下钻`, `Tooltip` 等组件基于 `antd` 组件库开发，如需使用，需要额外安装，并引入对应样式
 
 ```ts
 yarn add antd @ant-design/icons
@@ -291,6 +289,8 @@ cd S2
 
 # 安装依赖
 yarn
+# 调试 s2-core
+yarn core:start
 # 调试 s2-react
 yarn react:playground
 # 调试 s2-vue

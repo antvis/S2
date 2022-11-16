@@ -13,8 +13,14 @@ s2.setThemeCfg({
   name: "default"
 })
 
-// 单独设置主题 Schema
-s2.setTheme({})
+// 单独设置主题 Schema, 配置单元格背景，文字大小，文字颜色
+s2.setTheme({
+  rowCell: {
+    cell: {
+      backgroundColor: '#fff'
+    },
+  }
+})
 ```
 
 ## ThemeCfg
@@ -24,7 +30,7 @@ s2.setTheme({})
 功能描述： 表主题配置项
 
 | 参数    | 参数        | 类型                              | 默认值    | 必选 |
-| :------ | :---------- | :-------------------------------- | :-------- | :--: |
+| ------ | ---------- | -------------------------------- | -------- | ---- |
 | theme   | 主题 schema | [S2Theme](#s2theme)               | -         |      |
 | palette | 色板        | [Palette](#palette)               | -         |      |
 | name    | 主题名      | `default` \| `colorful` \| `gray` | `default` |      |
@@ -36,7 +42,7 @@ s2.setTheme({})
 功能描述： 表主题色板
 
 | 参数 | 参数 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | brandColor | 色板主题色 | `string` | - | ✓ |
 | basicColors | 基础颜色 | `string[]` | - | ✓ |
 | basicColorRelations | basicColors 与标准色板数组下标的对应关系 | `Array<{ basicColorIndex: number; standardColorIndex: number;}>` | - | ✓ |
@@ -50,7 +56,7 @@ s2.setTheme({})
 功能描述： 表主题 `Schema`
 
 | 参数 | 参数 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | cornerCell | 角头单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  |  |
 | rowCell | 行头单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  |  |
 | colCell | 列头单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  |  |
@@ -69,7 +75,7 @@ s2.setTheme({})
 功能描述： 默认单元格主题
 
 | 参数              | 说明         | 类型                    | 默认值 | 必选 |
-| :---------------- | :----------- | :---------------------- | :----- | :--: |
+| ---------------- | ----------- | ---------------------- | ----- | ---- |
 | bolderText        | 加粗文本样式 | [TextTheme](#texttheme) | -      |      |
 | text              | 文本样式     | [TextTheme](#texttheme) | -      |      |
 | seriesText       | 序号文本样式 | [TextTheme](#texttheme) | -      |      |
@@ -85,7 +91,7 @@ s2.setTheme({})
 功能描述： 列宽行高拖拽热区样式
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | size | 热区大小 | `number` | 3 |  |
 | background | 热区背景色 | `string` | - |  |
 | backgroundOpacity | 热区背景色透明度 | `number` | - |  |
@@ -100,7 +106,7 @@ s2.setTheme({})
 功能描述： 滚动条样式
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | trackColor | 滚动条轨道颜色 | `string` | `rgba(0,0,0,0)` |  |
 | thumbHoverColor | 滚动条 Hover 态颜色 | `string` | `rgba(0,0,0,0.4)` |  |
 | thumbColor | 滚动条颜色 | `string` | `rgba(0,0,0,0.15)` |  |
@@ -115,7 +121,7 @@ s2.setTheme({})
 功能描述： 分割线样式
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | horizontalBorderColor | 水平分割线颜色 | `string` | - |  |
 | horizontalBorderColorOpacity | 水平分割线颜色透明度 | `number` | 0.2 |  |
 | horizontalBorderWidth | 水平分割线宽度 | `number` | 2 |  |
@@ -133,7 +139,7 @@ s2.setTheme({})
 功能描述： 文本主题
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | textAlign | 文本内容的对齐方式 | `left` \| `center` \| `right` | - |  |
 | textBaseline | 绘制文本时的基线 | `top` \| `middle` \| `bottom` | - |  |
 | fontFamily | 字体 | `string` | `Roboto, PingFangSC,` <br> `BlinkMacSystemFont,` <br> `Microsoft YaHei,` <br> `Arial, sans-serif` |  |
@@ -150,7 +156,7 @@ s2.setTheme({})
 功能描述： 单元格通用主题
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | crossBackgroundColor | 基数行单元格背景色 | `string` | - |  |
 | backgroundColor | 单元格背景色 | `string` | - |  |
 | backgroundColorOpacity | 单元格背景色透明度 | `number` | 1 |  |
@@ -172,7 +178,7 @@ s2.setTheme({})
 功能描述：icon 通用主题
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | fill | icon 填充色 | `string` | - |  |
 | downIconColor | 下跌 icon 填充色 | `string` | `#FF4D4F` |  |
 | upIconColor | 上涨 icon 填充色 | `string` | `#29A294` |  |
@@ -186,7 +192,7 @@ s2.setTheme({})
 功能描述：交互通用主题
 
 | 参数              | 说明       | 类型     | 默认值 | 必选 |
-| :---------------- | :--------- | :------- | :----- | :--: |
+| ---------------- | --------- | ------- | ----- | ---- |
 | backgroundColor   | 背景填充色 | `string` |        |      |
 | backgroundOpacity | 背景透明度 | `number` |        |      |
 | borderColor       | 边线填充色 | `string` |        |      |
@@ -200,7 +206,7 @@ s2.setTheme({})
 功能描述：icon 外边距，单元格内边距
 
 | 参数   | 说明 | 类型     | 默认值 | 必选 |
-| :----- | :--- | :------- | :----- | :--: |
+| ----- | --- | ------- | ----- | ---- |
 | top    | 上   | `number` |        |      |
 | right  | 右   | `number` |        |      |
 | bottom | 下   | `number` |        |      |
@@ -213,6 +219,6 @@ s2.setTheme({})
 功能描述：背景配置
 
 | 参数    | 说明 | 类型     | 默认值 | 必选 |
-| :------ | :--- | :------- | :----- | :--: |
+| ------ | --- | ------- | ----- | ---- |
 | color   | 颜色 | `string` | -      |      |
 | opacity | 透明度     | `number` | 1      |      |

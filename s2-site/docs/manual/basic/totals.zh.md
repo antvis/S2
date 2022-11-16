@@ -78,26 +78,25 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | calcTotals          | 计算总计                 | `CalcTotals` |        |      |
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
-```typescript
+```ts
 const s2Options = {
-    totals: {
-        row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'province' ],
-        },
-        col: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'type' ],
-        },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province'],
     },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
+    },
+  },
 };
-
 ```
 
 ### 2. 数据
@@ -140,46 +139,43 @@ const s2Options = {
 
 ##### 方式一：集合到 data 中
 
-```typescript
+```ts
 const s2DataConfig = {
-    data: [
-        {
-            province: '浙江',
-            city: '杭州',
-            type: '笔',
-            price: '1',
-        },
-        // 总计/总计
-        {
-            price: '15.5',
-        }
-    ],
-    ...
-}
-
+  data: [
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
+      price: '1',
+    },
+    // 总计/总计
+    {
+      price: '15.5',
+    },
+  ],
+  ...
+};
 ```
 
 ##### 方式二：传入 totalData
 
-```typescript
+```ts
 const s2DataConfig = {
-    data: [
-        {
-            province: '浙江',
-            city: '杭州',
-            type: '笔',
-            price: '1',
-        },
-    ],
-    totalData: [
-        // 总计/总计
-        {
-            price: '15.5',
-        }
-    ],
-    ...
-}
-
+  data: [
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
+      price: '1',
+    },
+  ],
+  totalData: [
+    // 总计/总计
+    {
+      price: '15.5',
+    },
+  ],
+};
 ```
 
 #### 2. 计算出数据
@@ -190,92 +186,74 @@ const s2DataConfig = {
 
 通过配置 `aggregation` 来实现，聚合方式目前支持 `SUM` （求和）、 `MIN` （最小值）、 `MAX` （最大值）和 `AVG` （算术平均） 。
 
-```typescript
+```ts
 const s2Options = {
-    totals: {
-        row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'province' ],
-            calcTotals: {
-                aggregation: 'SUM',
-            },
-            calcSubTotals: {
-                aggregation: 'SUM',
-            },
-        },
-        col: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'type' ],
-            calcTotals: {
-                aggregation: 'SUM',
-            },
-            calcSubTotals: {
-                aggregation: 'SUM',
-            },
-        },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province'],
+      calcTotals: {
+        aggregation: 'SUM',
+      },
+      calcSubTotals: {
+        aggregation: 'SUM',
+      },
     },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
+      calcTotals: {
+        aggregation: 'SUM',
+      },
+      calcSubTotals: {
+        aggregation: 'SUM',
+      },
+    },
+  },
 };
-
 ```
 
 ##### 2. 配置自定义方法
 
 通过配置 `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number` 来实现
 
-```typescript
+```ts
 const s2Options = {
-    totals: {
-        row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'province' ],
-            calcTotals: {
-                calcFunc: (query, data) => {
-                    return
-                ...
-                    ;
-                }
-            },
-            calcSubTotals: {
-                calcFunc: (query, data) => {
-                    return
-                ...
-                    ;
-                }
-            },
-        },
-        col: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: [ 'type' ],
-            calcTotals: {
-                calcFunc: (query, data) => {
-                    return
-                ...
-                    ;
-                }
-            },
-            calcSubTotals: {
-                calcFunc: (query, data) => {
-                    return
-                ...
-                    ;
-                }
-            },
-        },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province'],
+      calcTotals: {
+        calcFunc: (query, data) => {},
+      },
+      calcSubTotals: {
+        calcFunc: (query, data) => {},
+      },
     },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
+      calcTotals: {
+        calcFunc: (query, data) => {},
+      },
+      calcSubTotals: {
+        calcFunc: (query, data) => {},
+      },
+    },
+  },
 };
-
 ```
 
 ### 优先级

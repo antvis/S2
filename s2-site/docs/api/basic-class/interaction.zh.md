@@ -6,7 +6,7 @@ order: 2
 功能描述：交互类相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/interaction/root.ts)
 
 ```ts
-s2.interaction.xx()
+s2.interaction.reset()
 ```
 
 | 参数 | 说明                                               | 类型 |
