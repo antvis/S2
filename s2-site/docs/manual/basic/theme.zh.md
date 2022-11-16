@@ -5,7 +5,7 @@ order: 6
 
 ## 简介
 
-S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。
+S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。[查看 API](/api/general/s2theme)
 
 ### 色彩
 
@@ -30,9 +30,9 @@ S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主�
 
 由此 S2 保证了，所有绘制时使用的颜色均来自于主题色或主题色的派生颜色。这样使表格界面颜色统一，也便于用户根据自己需要的主题色，生成个性化主题。
 
-### 主题 schema
+### 主题 Schema
 
-主题 schema 的定义为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细等。整个 schema 中，所有的颜色会从 [Palette](/zh/docs/api/general/S2Theme#palette) 中取用：
+主题 schema 的定义为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细、文字大小、文字对齐方式等。整个 schema 中，所有的颜色会从 [Palette](/zh/docs/api/general/S2Theme#palette) 中取用：
 
 - basicColors：基础颜色，如角/列/行头背景，字体/icon 颜色
 - semanticColors：语义颜色，如红色、绿色指代的色值
@@ -51,7 +51,7 @@ s2.render(false);
 
 ## 自定义主题
 
-实例对象上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) 的参数，你可以：
+s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) 的参数，你可以：
 
 - 通过 ThemeCfg.name 使用预置主题
 - 通过 ThemeCfg.palette 自定义色板生成主题
@@ -110,7 +110,7 @@ S2 内置 3 套主题效果：
 
 如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你需要为 `setThemeCfg` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
+此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -121,11 +121,43 @@ const customTheme = {
   },
 };
 
+// s2.setThemeCfg({ theme: customTheme })
 s2.setTheme(customTheme)
 s2.render(false);
 ```
 
 <playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
+
+#### 自定义单元格对齐方式
+
+[查看详情](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) 和 [完整 API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    text: {
+      textAlign: 'left',
+    },
+    bolderText: {
+      textAlign: 'left',
+    },
+  },
+});
+```
+
+#### 自定义单元格背景色
+
+查看 [完整 API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    cell: {
+      backgroundColor: '#dcdcdc',
+    },
+  },
+});
+```
 
 ### 自定义色板
 
@@ -190,8 +222,6 @@ const newPalette = generatePalette({ ...palette, brandColor: themeColor });
 s2.setThemeCfg({
   palette: newPalette,
 });
-
-s2.setThemeCfg({ palette: s2Palette });
 s2.render(false);
 ```
 

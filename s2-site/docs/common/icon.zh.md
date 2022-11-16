@@ -5,8 +5,8 @@ order: 3
 
 `S2` 目前内置 icon 列表：
 
-| icon 名称     | icon 图标                                                                                                                      | 功能描述   | icon 名称        | icon 图标                                                                                                                      | 功能描述           |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------ |
+| icon 名称     | icon 图标    | 功能描述   | icon 名称        | icon 图标     | 功能描述           |
+| ------------- | --------------------- | ---------- | ---------------- | ----------- | ------------------ |
 | CellDown      | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632471683806-41687600-9f55-49f7-8210-25c438b8152e.png" height=30> | 同环比下降 | ExpandColIcon    | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632472462583-40f32d2a-0a26-4e4f-8ebf-39603c3b8939.png" height=30> | 明细表隐藏展开     |
 | CellUp        | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632471716079-9bc714c4-0b4e-4176-a2b9-d620251d30d6.png" height=30> | 同环比上升 | Plus             | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632475581023-4a53ecff-942c-45ff-8dc5-1c5b08e7b157.png" height=30> | 树状表格展开       |
 | GlobalAsc     | <img alt="icon" src="https://intranetproxy.alipay.com/skylark/lark/0/2021/png/315626/1632471780679-5a7ee62d-73be-4713-945d-6b03f2786e8d.png" height=30> | 全局升序   | Minus      | <img alt="icon" src="https://gw.alipayobjects.com/zos/antfincdn/dKGwptOOB9/34d9064e-eaee-4160-ad84-a08f4ef1fee4.png" height=30> | 树状表格收起       |

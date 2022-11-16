@@ -5,8 +5,16 @@ order: 1
 
 表格参数配置
 
+```ts
+const s2Options = {
+  width: 600,
+  height: 400,
+  hierarchyType: 'grid'
+}
+```
+
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| :-- | :-- | :-: | :--  | :-- | --- |
+| -- | -- | --- | --  | -- | --- |
 | width | `number` |    | 600  | 表格宽度 |
 | height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
@@ -79,7 +87,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 功能描述：自定义单元格
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | node | 当前渲染的 node 节点 | [Node](/zh/docs/api/basic-class/node) | - | ✓ |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓ |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
@@ -93,7 +101,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 功能描述：自定义角头
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | parent |   父级单元格 | [S2CellType](#s2celltype) | - | ✓ |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓   |
 | restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
@@ -113,7 +121,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
 | 参数 | 说明                   | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | iconName | 当前点击的 icon 名称 | string | - | ✓ |
 | meta | 当前 cell 的 meta 信息 | Node | - | ✓ |
 | event | 当前点击事件信息 | Event |  false  | ✓ |
@@ -129,7 +137,7 @@ FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 功能描述：转换，过滤数据
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | valueField | 表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
 | data | 数据格式 | [DataItem](#dataitem) | - | ✓   |
 
@@ -142,7 +150,7 @@ MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string,
 功能描述：数据隐射，用于显示在 tooltip 中
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-: |
+| --- | --- | --- | --- | --- |
 | valueField |   表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
 | data | 数据格式 | [DataItem](#dataitem) | - | ✓ |
 
@@ -164,7 +172,7 @@ export type DataItem = SimpleDataItem | MultiData;
 ## LayoutResult
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-: |
+| --- | --- | --- | --- | --- |
 | colNodes |   列的所有节点 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
 | colsHierarchy |   列的结构信息 | [Hierarchy](#hierarchy) |  |  |
 | rowNodes |   行的所有节点 | [Node[]](#node) |  |  |
