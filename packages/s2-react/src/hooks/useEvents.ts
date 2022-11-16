@@ -152,6 +152,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.LAYOUT_PAGINATION, props.onLayoutPagination, s2);
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
+  useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);
   useS2Event(
     S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
     props.onLayoutAfterCollapseRows,

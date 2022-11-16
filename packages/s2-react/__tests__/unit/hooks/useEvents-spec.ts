@@ -47,10 +47,13 @@ const S2EventCases = [
     name: 'onRangeFiltered',
   },
   {
+    event: S2Event.LAYOUT_CELL_MOUNTED,
+    name: 'onLayoutCellMounted',
+  },
+  {
     event: S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
     name: 'onLayoutAfterHeaderLayout',
   },
-
   {
     event: S2Event.LAYOUT_PAGINATION,
     name: 'onLayoutPagination',
