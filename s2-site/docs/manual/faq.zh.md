@@ -23,7 +23,7 @@ order: 8
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
-有，国内镜像部署在 `gitee` 上面 [点击访问](https://antv-s2.gitee.io/)
+有，国内镜像部署在 `gitee` 上面。[点击访问](https://antv-s2.gitee.io/)
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
@@ -51,17 +51,31 @@ s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](/zh/docs/api/general/S2Options)
+更新 options: [可选项](/zh/docs/api/general/S2Options)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... })
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)
+重置 options: [可选项](/zh/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setOptions({ ... }, true)
+pivotSheet.render(false) // 重新渲染，不更新数据
+```
+
+更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
+pivotSheet.render(true) // 重新渲染，且更新数据
+```
+
+重置 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setDataCfg({ ... }, true)
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
@@ -114,7 +128,7 @@ s2.render(false)
 
 请查看 [Tooltip 注意事项](/zh/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
-### 如何在 Vue 中自定义 Tooltip
+### 如何在 Vue 中自定义 Tooltip?
 
 可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/zh/docs/manual/basic/tooltip/#在-vue3-中自定义)
 
@@ -128,9 +142,21 @@ s2.render(false)
 
 ![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
 
-### 鼠标滚轮如何进行水平滚动
+### 鼠标滚轮如何进行水平滚动？
 
 按住 `Shift` 键的同时滚动鼠标
+
+### 如何自定义文字的大小和对齐方式？
+
+可以配置自定义主题，查看 [使用文档](/zh/docs/manual/basic/theme) 和 [示例](/zh/examples/theme/custom#custom-manual-palette)
+
+### 如何自定义单元格宽高？
+
+请查看 [使用文档](/zh/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/zh/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
+
+### S2 支持对表格进行编辑吗？
+
+请查看 [编辑模式示例](https://s2.antv.vision/zh/examples/case/data-preview#excel)
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 
@@ -140,7 +166,7 @@ s2.render(false)
 - `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
 - `@antv/s2-vue`: 基于 `Vue3` 和 `@antv/s2` 封装，提供配套的分析组件
 
-也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
+也就是说 `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等框架中使用。
 
 以下是版本概览：
 
@@ -178,11 +204,11 @@ s2.render(false)
 
 - 你的预期是什么？目前的行为是什么？
 
-> 预期是 "没问题", 目前是 "有问题", 这种描述和没说没什么区别，请尽量的描述的具体一点
+> 预期是 "没问题", 目前是 "有问题", 这种描述和没说没什么区别，请尽量的描述的具体一点，如：`数据不正确：预期应该是 xx, 实际是 xx. 布局错误：节点应该显示在行头，实际出现在了列头。`
 
 - 尽量抹去一些带有你自己业务语义的一些名词和描述
 
-在提出问题前，请确保你已经阅读过 [官方文档](/zh/docs/manual/introduction) 和 [常见问题](/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed)
+在提出问题前，请确保你已经阅读过 [官方文档](/zh/docs/manual/introduction) 和 [常见问题](/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed).
 
 强烈建议阅读：
 

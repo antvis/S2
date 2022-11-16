@@ -4,7 +4,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格。
+开箱即用的多维可视分析表格。
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
@@ -50,8 +50,8 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [主页](https://antv-s2.gitee.io)
-* [Demo 示例](https://antv-s2.gitee.io/zh/examples/gallery)
+* [主页](https://s2.antv.vision/zh)
+* [Demo 示例](https://s2.antv.vision/zh/examples/gallery)
 
 ## ✨ 特性
 
@@ -210,6 +210,10 @@ yarn lint
 yarn site:bootstrap
 yarn site:start
 ```
+
+## 👁️ 洞察
+
+![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
 
 ## 📧 联系我们
 

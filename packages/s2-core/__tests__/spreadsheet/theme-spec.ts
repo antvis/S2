@@ -1,8 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
-import type { ShapeAttrs } from '@antv/g-canvas';
 import type {
   TextBaseline,
   TextTheme,
@@ -50,6 +49,7 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
       CellTypes.CORNER_CELL,
+      CellTypes.MERGED_CELL,
     ];
 
     test.each(CELL_TYPES)(
@@ -63,8 +63,19 @@ describe('SpreadSheet Theme Tests', () => {
 
         expect(cellTheme.bolderText.fill).toEqual(cellTheme.icon.fill);
         expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
+        expect(cellTheme.cell).toBeTruthy();
       },
     );
+
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+      s2.setThemeCfg({
+        name: 'colorful',
+      });
+      s2.render();
+      const cellTheme = s2.theme[cellType];
+
+      expect(cellTheme.cell).toBeTruthy();
+    });
 
     test('should set theme correctly', () => {
       s2.setTheme({
