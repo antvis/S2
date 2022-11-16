@@ -18,7 +18,7 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 `S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/zh/docs/api/general/S2Options#conditions) 属性。
 
-```js
+```ts
 // 构建 options
 const s2Options = {
   width: 600,

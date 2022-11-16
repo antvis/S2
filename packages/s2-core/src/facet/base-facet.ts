@@ -489,9 +489,9 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
+   * @param skipScrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
    */
-  startScroll = (skipSrollEvent = false) => {
+  startScroll = (skipScrollEvent = false) => {
     const { scrollX, scrollY } = this.getScrollOffset();
 
     this.hScrollBar?.onlyUpdateThumbOffset(
@@ -501,7 +501,7 @@ export abstract class BaseFacet {
     this.vScrollBar?.onlyUpdateThumbOffset(
       this.getScrollBarOffset(scrollY, this.vScrollBar),
     );
-    this.dynamicRenderCell(skipSrollEvent);
+    this.dynamicRenderCell(skipScrollEvent);
   };
 
   getRendererHeight = () => {
@@ -1246,11 +1246,11 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent: 如true则不触发GLOBAL_SCROLL事件
+   * @param skipScrollEvent: 如true则不触发GLOBAL_SCROLL事件
    * During scroll behavior, first call to this method fires immediately and then on interval.
    * @protected
    */
-  protected dynamicRenderCell(skipSrollEvent?: boolean) {
+  protected dynamicRenderCell(skipScrollEvent?: boolean) {
     const {
       scrollX,
       scrollY: originalScrollY,
@@ -1270,7 +1270,7 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-    if (!skipSrollEvent) {
+    if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY });
     }
     this.onAfterScroll();

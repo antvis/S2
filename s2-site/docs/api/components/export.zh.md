@@ -16,7 +16,7 @@ order: 5
 ## ExportCfgProps
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-- |
+| -- | -- | -- | -- | -- |
 | open | 开启组件 | `boolean` | `false` | ✓ |
 | className | 类名 | `string` |  |  |
 | icon | 展示图标 | `ReactNode` |  |  |

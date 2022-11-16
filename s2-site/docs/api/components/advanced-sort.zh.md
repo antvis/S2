@@ -10,7 +10,7 @@ order: 4
 `AdvancedSort` 组件的 `props`
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
-| :-- | :-- | :-- | :-- | :-- |
+| -- | -- | -- | -- | -- |
 | sheet | 当前表实例 | [SpreadSheet](https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet) | ✓ |  |
 | open | 是否展示 | `boolean` | ✓ |  |
 | className | class 类名称 | `string` |  |  |
@@ -28,7 +28,7 @@ order: 4
 在 `header` 中配置 `advancedSortCfg` 的 `props`
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
-| :-- | :-- | :-- | :-- | :-- |
+| -- | -- | -- | -- | -- |
 | open | 是否展示 | `boolean` |  | false |
 | className | class 类名称 | `string` |  |  |
 | icon | 排序按钮图标 | `React.ReactNode` |  |  |
@@ -45,7 +45,7 @@ order: 4
 可选字段列表，不配置默认为：`行头+列头+数值`
 
 | 参数  | 说明     | 类型       | 默认值 | 必选 |
-| :---- | :------- | :--------- | :----- | :--- |
+| ---- | ------- | --------- | ----- | --- |
 | field | 维度 id  | `string`   | ✓      |      |
 | name  | 维度名称 | `string`   | ✓      |      |
 | list  | 维度列表 | `string[]` | ✓      |      |
@@ -55,7 +55,7 @@ order: 4
 规则配置列表，不配置默认为：`首字母、手动排序、其他字段`
 
 | 参数     | 说明       | 类型           | 默认值   | 必选             |
-| :------- | :--------- | :------------- | :------- | :--------------- | --- | --- |
+| ------- | --------- | ------------- | ------- | --------------- | --- | --- |
 | label    | 规则名称   | `string`       | ✓        |                  |
 | value    | 规则值     | `'sortMethod'  | 'sortBy' | 'sortByMeasure'` |     | ✓   |
 | children | 规则子列表 | `RuleOption[]` | ✓        |                  |
@@ -65,7 +65,7 @@ order: 4
 关闭弹窗后处理排序结果的回调函数的第一个参数：获取到的排序信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-- |
+| -- | -- | -- | -- | -- |
 | field | 维度 id | `string` | ✓ |  |
 | name | 维度名称 | `string` | ✓ |  |
 | sortMethod | 排序方式（升/降序） | `ASC` \| `DESC` \| `asc` \| `desc` |  |  |

@@ -9,7 +9,7 @@ order: 2
 
 ## 1. 手动隐藏 - 通过点击
 
-点击列头在弹出的 `tooltip` 里, 点击 `隐藏` 按钮即可
+点击列头在弹出的 `tooltip` 里，点击 `隐藏` 按钮即可
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview" />
 
@@ -84,7 +84,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+    hiddenColumnFields: ['root[&] 家具 [&] 沙发 [&]number'],
   }
 }
 ```
@@ -116,7 +116,7 @@ const s2Options = {
 
 ## 3. 手动隐藏 - 通过实例方法
 
-[查看所有API](/zh/docs/api/basic-class/interaction)
+[查看所有 API](/zh/docs/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet(...)
@@ -130,6 +130,8 @@ s2.interaction.hideColumns(hiddenColumnFields)
 可通过 `S2Event` 透出的 `LAYOUT_COLS_EXPANDED` 和 `LAYOUT_COLS_HIDDEN` 分别监听列头的展开和隐藏
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 const s2 = new PivotSheet(...);
 
 s2.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
