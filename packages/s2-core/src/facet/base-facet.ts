@@ -1041,6 +1041,7 @@ export abstract class BaseFacet {
 
   addCell = (cell: S2CellType<ViewMeta>) => {
     this.panelScrollGroup?.appendChild(cell);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_MOUNTED, cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {

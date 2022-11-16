@@ -63,6 +63,7 @@ export enum S2Event {
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
+  LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
   LAYOUT_AFTER_COLLAPSE_ROWS = 'layout:after-collapsed-rows',
@@ -71,6 +72,7 @@ export enum S2Event {
   LAYOUT_COLS_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
+
   LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */

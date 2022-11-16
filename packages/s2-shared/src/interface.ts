@@ -37,6 +37,7 @@ export type Adaptive =
 export type SheetType =
   | 'pivot'
   | 'table'
+  | 'chart'
   | 'gridAnalysis'
   | 'strategy'
   | 'editable';
@@ -52,6 +53,7 @@ export type LayoutPaginationParams = {
 };
 
 export interface BaseSheetComponentProps<
+  RenderHandler = unknown,
   PartialDrillDown = PartDrillDown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
@@ -66,6 +68,7 @@ export interface BaseSheetComponentProps<
   options?: Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
+  renderConfig?: RenderHandler;
   adaptive?: Adaptive;
   showPagination?:
     | boolean
@@ -150,6 +153,7 @@ export interface BaseSheetComponentProps<
   onLayoutPagination?: (data: LayoutPaginationParams) => void;
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
+  onLayoutCellMounted?: (cell: S2CellType) => void;
   onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
   onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
