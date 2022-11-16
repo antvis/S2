@@ -16,8 +16,8 @@ import { toHtml } from 'hast-util-to-html'
 import { TranslationServiceClient } from "@google-cloud/translate";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const mdFile = path.join(__dirname, '../docs/manual/basic');
-const allZhFilesName = glob.sync("test.zh.md", { cwd: mdFile, realpath: true });
+const mdFile = path.join(__dirname, '../docs/manual/basic/analysis');
+const allZhFilesName = glob.sync("*.zh.md", { cwd: mdFile, realpath: true });
 
 /**
  * <tag foo="bar"> -> <tag data-mdast="html" foo="bar">
@@ -98,7 +98,6 @@ export const getTranslatedText = async (originalHtml, mimeType = 'text/html') =>
   let result = [];
   try {
     // Run request
-    console.log('request 11');
     const [ response ] = await translationClient.translateText(request);
     for (const translation of response.translations) {
       result.push(translation.translatedText.replace(/ų/g, '\n'));
@@ -162,9 +161,7 @@ const HtmlToMd = async (html, writePath) => {
 
 const allAsyncTask = allZhFilesName.map(async (pathName) => {
   const html = await mdToHtml(pathName);
-  console.log(html, 'html');
   const htmlEn = await getTranslatedText([ html ]);
-  console.log(htmlEn[0], 'htmlEn');
   const writePath = pathName.replace('.zh', '.en');
   await HtmlToMd(htmlEn[0], writePath);
 });
