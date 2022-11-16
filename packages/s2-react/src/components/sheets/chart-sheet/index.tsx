@@ -12,7 +12,7 @@ import { ChartCell } from './chart-cell';
 
 export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options, renderProps, ...restProps } = props;
+    const { options, renderConfig, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
       return customMerge(options, {
@@ -22,13 +22,13 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
     }, [options]);
 
     const onCellMounted = (cell: S2CellType) => {
-      if (isEmpty(renderProps) || !isFunction(renderProps?.render)) {
+      if (isEmpty(renderConfig) || !isFunction(renderConfig?.render)) {
         return;
       }
       renderToMountedCell(
         cell,
-        renderProps?.render,
-        renderProps?.renderOptions,
+        renderConfig?.render,
+        renderConfig?.renderOptions,
       );
     };
 
