@@ -1,4 +1,4 @@
-import type { FederatedPointerEvent as Event } from '@antv/g';
+import type { FederatedPointerEvent as Event, Group } from '@antv/g';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
@@ -509,3 +509,10 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
+
+export type RenderHandler = (
+  options: Record<string, unknown>,
+  context: {
+    group: Group;
+  },
+) => void;

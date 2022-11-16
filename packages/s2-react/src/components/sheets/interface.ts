@@ -1,4 +1,4 @@
-import type { Pagination } from '@antv/s2';
+import type { Pagination, RenderHandler } from '@antv/s2';
 import type { Node, S2Options } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
 import type { PaginationProps as AntdPaginationProps } from 'antd';
@@ -27,12 +27,18 @@ export interface PartDrillDown {
   displayCondition?: (meta: Node) => boolean;
 }
 
+export interface RenderProps {
+  render: RenderHandler;
+  renderOptions?: Record<string, unknown>;
+}
+
 export type SheetComponentOptions = S2Options<
   ReactNode,
   Pagination & AntdPaginationProps
 >;
 
 export type SheetComponentsProps = BaseSheetComponentProps<
+  RenderProps,
   PartDrillDown,
   HeaderCfgProps,
   SheetComponentOptions

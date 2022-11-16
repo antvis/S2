@@ -46,6 +46,7 @@ export type SheetType =
 export type SheetUpdateCallback = (params: S2RenderOptions) => S2RenderOptions;
 
 export interface BaseSheetComponentProps<
+  RenderHandler = unknown,
   PartialDrillDown = unknown,
   Header = unknown,
   Options = S2Options<TooltipContentType, Pagination>,
@@ -60,6 +61,7 @@ export interface BaseSheetComponentProps<
   options?: Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
+  renderProps?: RenderHandler;
   adaptive?: Adaptive;
   showPagination?:
     | boolean

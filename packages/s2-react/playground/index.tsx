@@ -20,6 +20,7 @@ import {
   type CellData,
   type S2Options,
 } from '@antv/s2';
+import { renderToMountedElement } from '@antv/g2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
 import { useUpdateEffect } from 'ahooks';
@@ -1096,6 +1097,7 @@ function MainLayout() {
             sheetType="chart"
             dataCfg={chartSheetDataConfig}
             options={chartOptions}
+            renderProps={{ render: renderToMountedElement }}
             ref={s2Ref}
             themeCfg={themeCfg}
             onMounted={onSheetMounted}

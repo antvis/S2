@@ -1,4 +1,3 @@
-import type { G2Spec } from '@antv/g2';
 import type {
   EXTRA_FIELD,
   MiniChartTypes,
@@ -46,7 +45,7 @@ export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
 
 export type SimpleDataItem = string | number;
 
-export type DataItem = SimpleDataItem | MultiData | G2Spec;
+export type DataItem = SimpleDataItem | MultiData | Record<string, unknown>;
 
 export type RawData = Record<string, DataItem>;
 
