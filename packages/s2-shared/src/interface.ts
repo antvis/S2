@@ -61,7 +61,7 @@ export interface BaseSheetComponentProps<
   options?: Options;
   loading?: boolean;
   partDrillDown?: PartialDrillDown;
-  renderProps?: RenderHandler;
+  renderConfig?: RenderHandler;
   adaptive?: Adaptive;
   showPagination?:
     | boolean
@@ -151,7 +151,7 @@ export interface BaseSheetComponentProps<
   }) => void;
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
-  onCellMounted?: (cell: S2CellType) => void;
+  onLayoutCellMounted?: (cell: S2CellType) => void;
   onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
   onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;

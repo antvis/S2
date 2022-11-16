@@ -21,7 +21,7 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
       });
     }, [options]);
 
-    const onCellMounted = (cell: S2CellType) => {
+    const onLayoutCellMounted = (cell: S2CellType) => {
       if (isEmpty(renderConfig) || !isFunction(renderConfig?.render)) {
         return;
       }
@@ -35,7 +35,7 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
     return (
       <BaseSheet
         options={s2Options}
-        onCellMounted={onCellMounted}
+        onLayoutCellMounted={onLayoutCellMounted}
         ref={s2Ref}
         {...restProps}
       />

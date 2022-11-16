@@ -64,6 +64,7 @@ order: 0
 | onRangeSorted | 组内排序结束触发回调事件（暂只支持透视表） | (event: CanvasEvent ) => void; |  |  |
 | onRangeFilter | 筛选时触发回调事件 | (data: { filterKey: string; filteredValues: string[] } ) => void; |  |  |
 | onRangeFiltered | 筛选结束触发回调事件 | (data: DataType[] ) => void; |  |  |
+| onLayoutCellMounted | 表头布局单元格挂载完成事件 | cell: S2CellType |  |  |
 | onLayoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/zh/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
