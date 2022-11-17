@@ -21,11 +21,11 @@ export interface EventListenerReturn {
   remove: () => void;
 }
 
-export interface EventHandler {
+export type EventHandler = {
   target: ICanvas;
   type: keyof HTMLElementEventMap;
-  handler: (e: MouseEvent | TouchEvent) => void;
-}
+  handler: (e: any) => void;
+};
 
 export class ScrollBar extends Group {
   // 滚动条的布局，横向 | 纵向, 非必传，默认为 false(纵向)
@@ -186,7 +186,7 @@ export class ScrollBar extends Group {
   public onlyUpdateThumbOffset = (offset: number) => {
     this.updateThumbOffset(offset, false);
     // TODO: 获取 canvas 调用 draw？现在都是自动重绘，是不是不需要调用了
-    this.ownerDocument.defaultView.render();
+    this.ownerDocument?.defaultView?.render();
   };
 
   public emitScrollChange = (offset: number, updateThumbOffset = true) => {
@@ -349,7 +349,7 @@ export class ScrollBar extends Group {
   };
 
   private bindLaterEvent = () => {
-    const canvas = this.ownerDocument.defaultView;
+    const canvas = this.ownerDocument!.defaultView!;
     const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
@@ -394,14 +394,14 @@ export class ScrollBar extends Group {
 
   // 拖拽滑块的事件回调
   // 这里是 dom 原生事件，绑定在 dom 元素上的
-  private onMouseMove = (e: FederatedPointerEvent) => {
+  private onMouseMove = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     // TODO: 可以统一PC、移动，都用 pointerdown
     // const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
 
-    const clientX = e.clientX;
-    const clientY = e.clientY;
+    const clientX = (e as FederatedPointerEvent).clientX;
+    const clientY = (e as FederatedPointerEvent).clientY;
 
     // 鼠标松开的位置
     const endPos = this.isHorizontal ? clientX : clientY;
@@ -412,7 +412,7 @@ export class ScrollBar extends Group {
     this.updateThumbOffset(this.thumbOffset + diff);
   };
 
-  private onMouseUp = (e: FederatedPointerEvent) => {
+  private onMouseUp = (e: { preventDefault: () => void }) => {
     this.dispatchEvent(new CustomEvent(ScrollType.ScrollEnd, {}));
     e.preventDefault();
     this.clearEvents?.();

@@ -1,4 +1,4 @@
-import { debounce, set } from 'lodash';
+import { debounce } from 'lodash';
 import { MIN_DEVICE_PIXEL_RATIO } from '../../common/constant/options';
 import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';

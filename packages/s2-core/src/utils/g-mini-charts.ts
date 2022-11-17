@@ -142,8 +142,8 @@ export const drawLine = (chartData: BaseChartData, cell: S2CellType) => {
     renderCircle(cell, {
       cx: points[i][0],
       cy: points[i][1],
-      r: point?.size,
-      fill: point?.fill,
+      r: point!.size,
+      fill: point!.fill,
       fillOpacity: point?.opacity,
     });
   }
@@ -283,7 +283,7 @@ export const drawInterval = (cell: DataCell) => {
       x: x + width * zeroScale,
       y: y + height / 2 - barChartHeight! / 2,
       width: width * intervalScale,
-      height: barChartHeight,
+      height: barChartHeight!,
       fill,
     });
   }

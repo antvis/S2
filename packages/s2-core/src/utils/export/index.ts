@@ -22,7 +22,6 @@ import {
 } from '../../common/constant';
 import {
   CornerNodeType,
-  type MultiData,
   type ViewMeta,
   type ViewMetaData,
 } from '../../common/interface';
@@ -126,7 +125,7 @@ export const download = (str: string, fileName: string) => {
  * use the ' ' to divide different measures in the same line
  * use the '$' to divide different lines
  */
-const processObjectValueInCol = (data: MultiData) => {
+const processObjectValueInCol = (data: Record<string, unknown>) => {
   const tempCells = data?.label ? [data?.label] : [];
   const values = data?.values as (string | number)[][];
   if (!isEmpty(values)) {
@@ -140,7 +139,10 @@ const processObjectValueInCol = (data: MultiData) => {
 /*
  * Process the multi-measure with single-lines
  */
-const processObjectValueInRow = (data: MultiData, isFormat = false) => {
+const processObjectValueInRow = (
+  data: Record<string, unknown>,
+  isFormat = false,
+) => {
   if (!isFormat) {
     return get(data?.originalValues, 0) ?? get(data?.values, 0);
   }

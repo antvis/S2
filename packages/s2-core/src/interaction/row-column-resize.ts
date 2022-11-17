@@ -86,8 +86,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             x: 0,
             y: 0,
-            width,
-            height,
+            width: width!,
+            height: height!,
             fill: 'transparent',
           },
         },

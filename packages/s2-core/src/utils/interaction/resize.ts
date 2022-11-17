@@ -30,8 +30,8 @@ export const getResizeAreaAttrs = (
       fill: theme.background,
       fillOpacity: theme.backgroundOpacity,
       cursor: `${type}-resize`,
-      width,
-      height,
+      width: width!,
+      height: height!,
     },
     appendInfo: {
       ...otherOptions,

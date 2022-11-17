@@ -244,8 +244,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected drawInteractiveBorderShape() {
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, this.getBBoxByType(CellClipBox.PADDING_BOX), {
-        visible: false,
+      renderRect(this, {
+        ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+        visibility: 'hidden',
       }),
     );
   }
@@ -272,8 +273,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, this.getBBoxByType(), {
-        visible: false,
+      renderRect(this, {
+        ...this.getBBoxByType(),
+        visibility: 'hidden',
       }),
     );
   }
