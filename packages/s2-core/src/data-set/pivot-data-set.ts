@@ -355,7 +355,7 @@ export class PivotDataSet extends BaseDataSet {
           ) {
             const dimensionValues = this.sortedDimensionValues[
               childField
-            ]?.filter((item) => item?.includes(cacheKey));
+            ]?.filter((item) => item?.startsWith(cacheKey));
             sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
           } else {
             sortedMeta = [...meta.keys()];
