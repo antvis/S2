@@ -1,9 +1,11 @@
-import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import {
   each,
   get,
   includes,
   isBoolean,
+  isEmpty,
   isFunction,
   isNumber,
   keys,
@@ -14,29 +16,36 @@ import {
   InteractionStateName,
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
-} from '@/common/constant';
-import {
+} from '../common/constant';
+import type {
   CellThemes,
+  DefaultCellTheme,
   FormatResult,
-  ResizeActiveOptions,
+  ResizeInteractionOptions,
   ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
   TextTheme,
-} from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+  Conditions,
+  Condition,
+  MappingResult,
+  IconCondition,
+} from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import {
   getContentArea,
   getTextAndFollowingIconPosition,
-} from '@/utils/cell/cell';
-import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
-import { isMobile } from '@/utils/is-mobile';
+} from '../utils/cell/cell';
 import {
-  getEllipsisText,
-  getEmptyPlaceholder,
-  measureTextWidth,
-} from '@/utils/text';
+  renderIcon,
+  renderLine,
+  renderText,
+  updateShapeAttr,
+} from '../utils/g-renders';
+import { isMobile } from '../utils/is-mobile';
+import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
+import type { GuiIcon } from '../common/icons/gui-icon';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -63,6 +72,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
 
+  protected conditions: Conditions;
+
+  protected conditionIntervalShape: IShape;
+
+  protected conditionIconShape: GuiIcon;
+
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, IShape>();
 
@@ -75,6 +90,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.meta = meta;
     this.spreadsheet = spreadsheet;
     this.theme = spreadsheet.theme;
+    this.conditions = this.spreadsheet.options.conditions;
     this.handleRestOptions(...restOptions);
     this.initCell();
   }
@@ -147,37 +163,51 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getTextPosition(): Point;
 
+  protected abstract findFieldCondition(conditions: Condition[]): Condition;
+
+  protected abstract mappingValue(condition: Condition): MappingResult;
+
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
   public getStyle<K extends keyof S2Theme = keyof CellThemes>(
     name?: K,
-  ): S2Theme[K] {
-    return this.theme[name || this.cellType];
+  ): DefaultCellTheme | S2Theme[K] {
+    return get(this.theme, name || this.cellType);
   }
 
   protected getResizeAreaStyle(): ResizeArea {
-    return this.getStyle('resizeArea');
+    return this.getStyle('resizeArea') as ResizeArea;
   }
 
-  protected shouldDrawResizeAreaByType(type: keyof ResizeActiveOptions) {
-    const resize = this.spreadsheet.options?.interaction?.resize;
+  protected shouldDrawResizeAreaByType(
+    type: keyof ResizeInteractionOptions,
+    cell: S2CellType,
+  ) {
+    const { resize } = this.spreadsheet.options.interaction;
+
     if (isBoolean(resize)) {
       return resize;
+    }
+
+    if (isFunction(resize.visible)) {
+      return resize.visible(cell);
     }
 
     return resize[type];
   }
 
-  protected getCellArea() {
+  public getCellArea() {
     const { x, y, height, width } = this.meta;
     return { x, y, height, width };
   }
 
   // get content area that exclude padding
   public getContentArea() {
-    const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
+    const cellStyle = (this.getStyle() ||
+      this.theme.dataCell) as DefaultCellTheme;
+    const { padding } = cellStyle?.cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
@@ -189,9 +219,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const { placeholder } = this.spreadsheet.options;
+    const {
+      options: { placeholder },
+      measureTextWidth,
+    } = this.spreadsheet;
     const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
     const ellipsisText = getEllipsisText({
+      measureTextWidth,
       text: formattedValue,
       maxWidth: maxTextWidth,
       fontParam: textStyle,
@@ -221,13 +255,23 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const device = this.spreadsheet.options.style.device;
     // 配置了链接跳转
     if (!isMobile(device)) {
-      const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+      const textStyle = this.getTextStyle();
+      const position = this.getTextPosition();
+
+      let startX = position.x; // 默认居左，其他align方式需要调整
+      if (textStyle.textAlign === 'center') {
+        startX -= this.actualTextWidth / 2;
+      } else if (textStyle.textAlign === 'right') {
+        startX -= this.actualTextWidth;
+      }
+
+      const { maxY }: BBox = this.textShape.getBBox();
       this.linkFieldShape = renderLine(
         this,
         {
-          x1: minX,
+          x1: startX,
           y1: maxY + 1,
-          x2: maxX,
+          x2: startX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
           y2: maxY + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
@@ -238,7 +282,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       fill: linkFillColor,
       cursor: 'pointer',
       appendInfo: {
-        isRowHeaderText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        isLinkFieldText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
         cellData: this.meta,
       },
     });
@@ -251,8 +295,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
-
-    const { x, y, height, width } = this.getCellArea();
 
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
@@ -275,12 +317,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
-            const marginStyle = {
-              x: x + style / 2,
-              y: y + style / 2,
-              width: width - style - 1,
-              height: height - style - 1,
-            };
+            const marginStyle = this.getInteractiveBorderShapeStyle(style);
             each(marginStyle, (currentStyle, currentStyleKey) => {
               updateShapeAttr(shape, currentStyleKey, currentStyle);
             });
@@ -289,6 +326,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
+  }
+
+  protected getInteractiveBorderShapeStyle<T>(style: T & number) {
+    const { x, y, height, width } = this.getCellArea();
+
+    const { horizontalBorderWidth, verticalBorderWidth } =
+      this.theme.dataCell.cell;
+
+    return {
+      x: x + verticalBorderWidth / 2 + style / 2,
+      y: y + horizontalBorderWidth / 2 + style / 2,
+      width: width - verticalBorderWidth - style,
+      height: height - horizontalBorderWidth - style,
+    };
   }
 
   public hideInteractionShape() {
@@ -309,5 +360,39 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public getTextShape() {
     return this.textShape;
+  }
+
+  public get cellConditions() {
+    return this.conditions;
+  }
+
+  public drawConditionIconShapes() {
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+    if (iconCondition && iconCondition.mapping) {
+      const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
+      const { size } = this.theme.dataCell.icon;
+      if (!isEmpty(attrs?.icon)) {
+        this.conditionIconShape = renderIcon(this, {
+          ...position,
+          name: attrs.icon,
+          width: size,
+          height: size,
+          fill: attrs.fill,
+        });
+      }
+    }
+  }
+
+  public getTextConditionFill(textStyle: TextTheme) {
+    // get text condition's fill result
+    let fillResult = textStyle.fill;
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+    if (textCondition?.mapping) {
+      fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    }
+    return fillResult;
   }
 }

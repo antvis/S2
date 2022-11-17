@@ -1,10 +1,31 @@
-import {
+import type {
   Fields,
   FilterParam,
   Meta,
   SortParams,
-} from '@/common/interface/index';
+} from '../../common/interface';
+import type { MiniChartTypes } from '../constant';
 
+export interface BaseChartData {
+  type: MiniChartTypes;
+  data: Data[];
+  encode?: {
+    x: keyof Data;
+    y: keyof Data;
+  };
+}
+
+/* 子弹图数据结构 */
+export interface BulletValue {
+  type: MiniChartTypes.Bullet;
+  // 当前指标
+  measure: number | string;
+  // 目标值
+  target: number | string;
+  [key: string]: unknown;
+}
+
+export type MiniChartData = BaseChartData | BulletValue;
 /** use for gridAnalysisSheet
  *  eg. { label: '余额女',
         values: [
@@ -15,10 +36,9 @@ import {
         ],
       }
  */
-
-export interface MultiData {
-  values: (string | number)[][];
-  originalValues?: (string | number)[][];
+export interface MultiData<T = SimpleDataItem[][] | MiniChartData> {
+  values: T;
+  originalValues?: T;
   // the title of one cell of the gridAnalysisSheet
   label?: string;
   [key: string]: unknown;

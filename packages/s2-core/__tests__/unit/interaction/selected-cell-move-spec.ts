@@ -1,6 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { S2Options } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
 
@@ -30,6 +30,12 @@ describe('Interaction Keyboard Move Tests', () => {
         },
       },
     } as S2Options;
+    s2.theme = {
+      splitLine: {
+        verticalBorderWidth: 1,
+        horizontalBorderWidth: 1,
+      },
+    };
     s2.isTableMode = jest.fn(() => true);
     s2.dataSet = {
       fields: { columns: ['0', '1'] },
@@ -43,8 +49,16 @@ describe('Interaction Keyboard Move Tests', () => {
         ],
       },
       getTotalHeightForRange: (start, end) => 0,
-      scrollWithAnimation: (data) => {},
-      getScrollOffset: () => ({ scrollX: 0, scrollY: 0 }),
+      scrollWithAnimation: (data) => {
+        s2.store.set('scrollX', data?.offsetX?.value);
+        s2.store.set('scrollY', data?.offsetY?.value);
+      },
+      getScrollOffset: () => {
+        return {
+          scrollX: s2.store.get('scrollX', 0),
+          scrollY: s2.store.get('scrollY', 0),
+        };
+      },
       panelBBox: {
         viewportHeight: 200,
         viewportWidth: 200,
@@ -62,6 +76,7 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
     s2.interaction.getInteractedCells = () => [mockCell];
+    s2.interaction.eventController.isCanvasEffect = true;
   });
 
   test('should bind events', () => {
@@ -218,11 +233,14 @@ describe('Interaction Keyboard Move Tests', () => {
   });
 
   test('should move selected with shift', () => {
-    s2.interaction.changeState = jest.fn((state) => {});
+    const onDataCellSelectMove = jest.fn();
+
+    s2.interaction.changeState = jest.fn();
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
     // select cell
     keyboardMove.startCell = mockCell00.mockCell;
     keyboardMove.endCell = mockCell00.mockCell;
+    s2.on(S2Event.DATA_CELL_SELECT_MOVE, onDataCellSelectMove);
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.ARROW_RIGHT,
       shiftKey: true,
@@ -250,6 +268,7 @@ describe('Interaction Keyboard Move Tests', () => {
       ],
       stateName: 'selected',
     });
+    expect(onDataCellSelectMove).toBeCalled();
   });
 
   test('should move selected with shift and meta', () => {
@@ -285,6 +304,53 @@ describe('Interaction Keyboard Move Tests', () => {
         { colIndex: 1, id: '1-1', rowIndex: 1, type: 'dataCell' },
       ],
       stateName: 'selected',
+    });
+  });
+
+  test('should not move selected cell down when isCanvasEffect is false', () => {
+    s2.interaction.changeState = jest.fn((state) => {});
+    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell01.mockCell;
+    keyboardMove.endCell = mockCell01.mockCell;
+
+    s2.interaction.eventController.isCanvasEffect = false;
+
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.ARROW_DOWN,
+    } as KeyboardEvent);
+    expect(s2.interaction.changeState).not.toBeCalled();
+
+    s2.interaction.eventController.isCanvasEffect = true;
+  });
+
+  test('should scroll to active cell', () => {
+    s2.interaction.changeState = jest.fn((state) => {});
+    s2.interaction.getCells = () => [mockCell01.mockCell as any];
+    // select cell
+    keyboardMove.startCell = mockCell01.mockCell;
+    keyboardMove.endCell = mockCell01.mockCell;
+    s2.facet.scrollWithAnimation({
+      offsetX: {
+        value: 1,
+      },
+      offsetY: {
+        value: 1,
+      },
+    });
+
+    expect(s2.facet.getScrollOffset()).toEqual({
+      scrollX: 1,
+      scrollY: 1,
+    });
+
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.ARROW_LEFT,
+    } as KeyboardEvent);
+
+    expect(s2.facet.getScrollOffset()).toEqual({
+      scrollX: 0,
+      scrollY: 1,
     });
   });
 });

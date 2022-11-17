@@ -1,6 +1,6 @@
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { GetCellMeta } from '@/common/interface/basic';
+import type { GetCellMeta } from '../../common/interface/basic';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
 
 /**
  * determine the order of every row/column tree branch

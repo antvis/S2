@@ -1,6 +1,6 @@
-import { TableSheet, PivotSheet } from 'src/sheet-type';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 
 describe('TableSheet Export Test', () => {
@@ -8,7 +8,13 @@ describe('TableSheet Export Test', () => {
     const s2 = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [],
+        meta: [
+          {
+            field: 'type',
+            name: '产品类型',
+            formatter: (type) => `${type}产品`,
+          },
+        ],
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
@@ -18,7 +24,9 @@ describe('TableSheet Export Test', () => {
       }),
     );
     s2.render();
-    const data = copyData(s2, '\t');
+    const data = copyData(s2, '\t', {
+      isFormatHeader: true,
+    });
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
     // 33行数据 包括一行列头
@@ -31,7 +39,7 @@ describe('TableSheet Export Test', () => {
       '序号',
       'province',
       'city',
-      'type',
+      '产品类型',
       'sub_type',
       'number',
     ]);
@@ -117,6 +125,61 @@ describe('PivotSheet Export Test', () => {
       expect(e.split('\t')).toHaveLength(34);
     });
   });
+
+  // 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
+  // https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
+  it('should export correct data in tree mode and hierarchyCollapse is true', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(),
+      assembleOptions({
+        hierarchyType: 'tree',
+        style: {
+          hierarchyCollapse: true,
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+
+    expect(rows).toHaveLength(5);
+    expect(rows[0].split('\t').length).toEqual(5);
+    expect(rows[0].split('\t')[0]).toEqual('"类别"');
+    expect(rows[0].split('\t')[1]).toEqual('"家具"');
+    expect(rows[1].split('\t')[0]).toEqual('"子类别"');
+    expect(rows[1].split('\t')[1]).toEqual('"桌子"');
+    expect(rows[2].split('\t')[0]).toEqual('"省份"');
+    expect(rows[2].split('\t')[1]).toEqual('"数量"');
+  });
+
+  // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
+  it('should export correct data in tree mode and hierarchyCollapse is false', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg(),
+      assembleOptions({
+        hierarchyType: 'tree',
+        style: {
+          hierarchyCollapse: false,
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+
+    expect(rows).toHaveLength(13);
+    expect(rows[0].split('\t').length).toEqual(6);
+    expect(rows[0].split('\t')[1]).toEqual('"类别"');
+    expect(rows[0].split('\t')[2]).toEqual('"家具"');
+    expect(rows[1].split('\t')[1]).toEqual('"子类别"');
+    expect(rows[1].split('\t')[2]).toEqual('"桌子"');
+    expect(rows[2].split('\t')[0]).toEqual('"省份"');
+    expect(rows[2].split('\t')[1]).toEqual('"城市"');
+    expect(rows[2].split('\t')[2]).toEqual('"数量"');
+  });
+
   it('should export correct data in grid mode with valueInCols is false', () => {
     const s2 = new PivotSheet(
       getContainer(),

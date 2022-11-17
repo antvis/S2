@@ -1,19 +1,18 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { inRange, isNil, range } from 'lodash';
-import { getCellMeta } from 'src/utils/interaction/select-event';
-import { getActiveCellsTooltipData } from '../utils/tooltip';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { DataCell } from '../cell';
 import {
-  InterceptType,
+  CellTypes,
   InteractionKeyboardKey,
   InteractionStateName,
+  InterceptType,
   S2Event,
-  CellTypes,
-} from '@/common/constant';
-import { S2CellType, ViewMeta } from '@/common/interface';
-import { DataCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
-import { getRangeIndex } from '@/utils/interaction/select-event';
+} from '../common/constant';
+import type { S2CellType, ViewMeta } from '../common/interface';
+import type { Node } from '../facet/layout/node';
+import { getCellMeta, getRangeIndex } from '../utils/interaction/select-event';
+import { getCellsTooltipData } from '../utils/tooltip';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private isRangeSelection = false;
@@ -23,6 +22,11 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     this.bindDataCellClick();
     this.bindColCellClick();
     this.bindKeyboardUp();
+  }
+
+  public reset() {
+    this.isRangeSelection = false;
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
   private bindKeyboardDown() {
@@ -40,8 +44,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
-        this.isRangeSelection = false;
-        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.reset();
       }
     });
   }
@@ -108,7 +111,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       });
       this.spreadsheet.showTooltipWithInfo(
         event,
-        getActiveCellsTooltipData(this.spreadsheet),
+        getCellsTooltipData(this.spreadsheet),
       );
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,

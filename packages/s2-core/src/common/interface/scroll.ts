@@ -4,12 +4,20 @@ export interface ScrollOffset {
   hRowScrollX?: number;
 }
 
-export interface S2WheelEvent extends WheelEvent {
-  layerX: number;
-  layerY: number;
-}
-
 export interface AreaRange {
   start: number;
   width: number;
+}
+
+export interface CellScrollPosition {
+  scrollX: number;
+  scrollY: number;
+}
+
+export interface CellScrollOffset {
+  deltaX?: number;
+  deltaY?: number;
+  offset?: number;
+  offsetX: number;
+  offsetY: number;
 }

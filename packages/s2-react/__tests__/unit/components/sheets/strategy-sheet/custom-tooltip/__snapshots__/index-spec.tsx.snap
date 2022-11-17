@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StrategySheet Tooltip Tests should render custom derived value 1`] = `
+Array [
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+  <span
+    class="derived-value-group derived-value-trend-up"
+  >
+    <span
+      class="derived-value-trend-icon"
+    />
+    customDerivedValue
+  </span>,
+]
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test col label',
+  component: [Function: StrategySheetColTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetColTooltip'
+  }
+} 1`] = `
+<span
+  class="s2-strategy-sheet-tooltip-name"
+>
+  test col label
+</span>
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test data label',
+  component: [Function: StrategySheetDataTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetDataTooltip',
+    defaultProps: { showOriginalValue: false }
+  }
+} 1`] = `
+<span
+  class="header-label"
+>
+  test data label
+</span>
+`;
+
+exports[`StrategySheet Tooltip Tests should render tooltip with {
+  label: 'test row label',
+  component: [Function: StrategySheetRowTooltip] {
+    [length]: 1,
+    [name]: 'StrategySheetRowTooltip'
+  }
+} 1`] = `
+<div
+  class="s2-strategy-sheet-tooltip-value"
+>
+  test row label
+</div>
+`;

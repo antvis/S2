@@ -2,62 +2,69 @@
  * 获取tooltip中需要显示的数据项
  */
 
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type * as CSS from 'csstype';
 import {
   assign,
+  compact,
   concat,
+  every,
   filter,
   find,
   forEach,
   get,
   isEmpty,
   isEqual,
+  isFunction,
   isNil,
   isNumber,
-  map,
-  pick,
-  some,
-  uniq,
-  noop,
-  mapKeys,
-  every,
   isObject,
-  isFunction,
-  compact,
+  map,
+  mapKeys,
+  noop,
+  pick,
 } from 'lodash';
-import * as CSS from 'csstype';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
-import { customMerge } from './merge';
-import { getEmptyPlaceholder } from './text';
-import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
-import { LayoutResult } from '@/common/interface/basic';
-import {
-  SummaryParam,
-  TooltipData,
-  TooltipDataItem,
-  TooltipDataParam,
-  TooltipHeadInfo,
-  TooltipOptions,
-  TooltipPosition,
-  TooltipSummaryOptions,
-  BaseTooltipConfig,
-  TooltipOperatorOptions,
-  TooltipOperation,
-  TooltipOperatorMenu,
-} from '@/common/interface/tooltip';
-import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
-import { S2CellType } from '@/common/interface/interaction';
-import { SpreadSheet } from '@/sheet-type';
-import { i18n } from '@/common/i18n';
 import {
   CellTypes,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
-} from '@/common/constant';
-import { Tooltip, ViewMeta } from '@/common/interface';
-import { isNotNumber, getDataSumByField } from '@/utils/number-calculate';
+} from '../common/constant';
+import {
+  TOOLTIP_CONTAINER_HIDE_CLS,
+  TOOLTIP_CONTAINER_SHOW_CLS,
+  TOOLTIP_POSITION_OFFSET,
+} from '../common/constant/tooltip';
+import { i18n } from '../common/i18n';
+import type {
+  AutoAdjustPositionOptions,
+  Data,
+  LayoutResult,
+  TooltipDetailListItem,
+  Tooltip,
+  ViewMeta,
+} from '../common/interface';
+import type { S2CellType } from '../common/interface/interaction';
+import type {
+  BaseTooltipConfig,
+  SummaryParam,
+  TooltipData,
+  TooltipDataItem,
+  TooltipDataParam,
+  TooltipHeadInfo,
+  TooltipOperation,
+  TooltipOperatorMenu,
+  TooltipOperatorOptions,
+  TooltipOptions,
+  TooltipPosition,
+  TooltipSummaryOptions,
+} from '../common/interface/tooltip';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+import { customMerge } from './merge';
+import { getEmptyPlaceholder } from './text';
 
 /**
  * calculate tooltip show position
@@ -68,10 +75,12 @@ export const getAutoAdjustPosition = ({
   tooltipContainer,
   autoAdjustBoundary,
 }: AutoAdjustPositionOptions): TooltipPosition => {
+  const canvas = spreadsheet.getCanvasElement();
+
   let x = position.x + TOOLTIP_POSITION_OFFSET.x;
   let y = position.y + TOOLTIP_POSITION_OFFSET.y;
 
-  if (!autoAdjustBoundary) {
+  if (!autoAdjustBoundary || !canvas) {
     return {
       x,
       y,
@@ -81,7 +90,6 @@ export const getAutoAdjustPosition = ({
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
   const { maxX, maxY } = spreadsheet.facet.panelBBox;
   const { width, height } = spreadsheet.options;
-  const canvas = spreadsheet.container.get('el') as HTMLCanvasElement;
 
   const { top: canvasOffsetTop, left: canvasOffsetLeft } =
     canvas.getBoundingClientRect();
@@ -124,27 +132,31 @@ export const getMergedQuery = (meta: ViewMeta) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
-/**
- * add style to container
- */
-export const setContainerStyle = (
+export const setTooltipContainerStyle = (
   container: HTMLElement,
-  options: { style?: CSS.Properties; className?: string } = {
-    className: '',
+  options: {
+    visible?: boolean;
+    style?: CSS.Properties;
+    className?: string[];
   },
 ) => {
   if (!container) {
     return;
   }
-  const { style, className } = options;
+
+  const { style, className = [], visible } = options;
+
   if (style) {
-    Object.keys(style).forEach((item) => {
-      container.style[item] = style[item];
-    });
+    Object.assign(container.style, style);
   }
-  if (className) {
-    container.classList.add(className);
+
+  if (className.length) {
+    const classList = className.filter(Boolean);
+    container.classList.add(...classList);
   }
+
+  container.classList.toggle(TOOLTIP_CONTAINER_SHOW_CLS, visible);
+  container.classList.toggle(TOOLTIP_CONTAINER_HIDE_CLS, !visible);
 };
 
 /* formate */
@@ -176,7 +188,7 @@ export const getListItem = (
     valueField?: string;
     useCompleteDataForFormatter?: boolean;
   },
-): ListItem => {
+): TooltipDetailListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
   // 暂时对 object 类型 data 不作处理，上层通过自定义 tooltip 的方式去自行定制
@@ -198,12 +210,12 @@ export const getFieldList = (
   spreadsheet: SpreadSheet,
   fields: string[],
   activeData: TooltipDataItem,
-): ListItem[] => {
+): TooltipDetailListItem[] => {
   const currFields = filter(
     concat([], fields),
     (field) => field !== EXTRA_FIELD && activeData[field],
   );
-  const fieldList = map(currFields, (field: string): ListItem => {
+  const fieldList = map(currFields, (field: string): TooltipDetailListItem => {
     return getListItem(spreadsheet, {
       data: activeData,
       field,
@@ -247,11 +259,11 @@ export const getHeadInfo = (
  * @param activeData
  * @param options
  */
-export const getDetailList = (
+export const getTooltipDetailList = (
   spreadsheet: SpreadSheet,
   activeData: TooltipDataItem,
   options: TooltipOptions,
-): ListItem[] => {
+): TooltipDetailListItem[] => {
   if (activeData) {
     const { isTotals } = options;
     const field = activeData[EXTRA_FIELD];
@@ -412,14 +424,20 @@ export const getSelectedCellsData = (
     );
   }
   // 其他（刷选，data cell多选）
-  const cells = spreadsheet.interaction.getActiveCells();
+  const cells = spreadsheet.interaction.getCells();
   return cells
-    .filter((cell) => {
-      const meta = cell?.getMeta() as ViewMeta;
+    .filter((cellMeta) => {
+      const meta = layoutResult.getCellMeta(
+        cellMeta.rowIndex,
+        cellMeta.colIndex,
+      );
       return !isBelongTotalCell(meta);
     })
-    .map((cell) => {
-      const meta = cell?.getMeta() as ViewMeta;
+    .map((cellMeta) => {
+      const meta = layoutResult.getCellMeta(
+        cellMeta.rowIndex,
+        cellMeta.colIndex,
+      );
       return meta?.data || getMergedQuery(meta);
     });
 };
@@ -478,6 +496,25 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   return summaries;
 };
 
+export const getDescription = (targetCell: S2CellType): string => {
+  if (!targetCell) {
+    return;
+  }
+
+  const meta = targetCell.getMeta();
+
+  if (meta.isTotals) {
+    return;
+  }
+
+  const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
+    field: meta.field || meta.value || meta.valueField,
+  });
+  const field = currentMeta?.field;
+
+  return meta.spreadsheet.dataSet.getFieldDescription(field);
+};
+
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
   const {
     spreadsheet,
@@ -487,10 +524,11 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     targetCell,
   } = params;
 
-  let summaries = null;
-  let headInfo = null;
+  let summaries: TooltipSummaryOptions[] = null;
+  let headInfo: TooltipHeadInfo = null;
   let details = null;
 
+  const description = getDescription(targetCell);
   const firstCellInfo = cellInfos[0] || {};
 
   if (!options?.hideSummary) {
@@ -503,25 +541,31 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover
-    const getFieldName = (field: string) =>
-      find(spreadsheet.dataCfg?.meta, (item) => item?.field === field)?.name;
-
     const currentFormatter = getFieldFormatter(
       spreadsheet,
       firstCellInfo.valueField,
     );
     const formattedValue = currentFormatter(firstCellInfo.value);
     const cellName = options.enableFormat
-      ? getFieldName(firstCellInfo.value) || formattedValue
-      : getFieldName(firstCellInfo.valueField);
+      ? spreadsheet.dataSet.getFieldName(firstCellInfo.value) || formattedValue
+      : spreadsheet.dataSet.getFieldName(firstCellInfo.valueField);
 
     firstCellInfo.name = cellName || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
-    details = getDetailList(spreadsheet, firstCellInfo, options);
+    details = getTooltipDetailList(spreadsheet, firstCellInfo, options);
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
-  return { summaries, interpretation, infos, tips, name, headInfo, details };
+  return {
+    summaries,
+    interpretation,
+    infos,
+    tips,
+    name,
+    headInfo,
+    details,
+    description,
+  };
 };
 
 export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
@@ -535,34 +579,42 @@ export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
   });
 };
 
-export const getActiveCellsTooltipData = (
+export const getCellsTooltipData = (
   spreadsheet: SpreadSheet,
 ): TooltipData[] => {
-  const cellInfos: TooltipData[] = [];
   if (!spreadsheet.interaction.isSelectedState()) {
     return [];
   }
-  spreadsheet.interaction.getActiveCells().forEach((cell) => {
-    const { valueInCols } = spreadsheet.dataCfg.fields;
-    const meta = cell.getMeta() as ViewMeta;
-    const query = getMergedQuery(meta);
-    if (isEmpty(meta) || isEmpty(query)) {
-      return;
-    }
-    const currentCellInfo: TooltipData = {
-      ...query,
-      colIndex: valueInCols ? meta.colIndex : null,
-      rowIndex: !valueInCols ? meta.rowIndex : null,
-    };
 
-    const isEqualCellInfo = cellInfos.find((cellInfo) =>
-      isEqual(currentCellInfo, cellInfo),
-    );
-    if (!isEqualCellInfo) {
-      cellInfos.push(currentCellInfo);
-    }
-  });
-  return cellInfos;
+  const { valueInCols } = spreadsheet.dataCfg.fields;
+  // 包括不在可视区域内的格子, 如: 滚动刷选
+  return spreadsheet.interaction
+    .getCells()
+    .reduce<TooltipData[]>((tooltipData, cellMeta) => {
+      const meta = spreadsheet.facet.layoutResult.getCellMeta(
+        cellMeta?.rowIndex,
+        cellMeta?.colIndex,
+      );
+      const query = getMergedQuery(meta);
+
+      if (isEmpty(meta) || isEmpty(query)) {
+        return [];
+      }
+
+      const currentCellInfo: TooltipData = {
+        ...query,
+        colIndex: valueInCols ? meta.colIndex : null,
+        rowIndex: !valueInCols ? meta.rowIndex : null,
+      };
+
+      const isEqualCellInfo = tooltipData.find((cellInfo) =>
+        isEqual(currentCellInfo, cellInfo),
+      );
+      if (!isEqualCellInfo) {
+        tooltipData.push(currentCellInfo);
+      }
+      return tooltipData;
+    }, []);
 };
 
 export const getTooltipOptionsByCellType = (
@@ -636,7 +688,7 @@ export const verifyTheElementInTooltip = (
 ): boolean => {
   let result = false;
   let currentNode: Node = child;
-  while (currentNode !== document.body) {
+  while (currentNode && currentNode !== document.body) {
     if (parent === currentNode) {
       result = true;
       break;

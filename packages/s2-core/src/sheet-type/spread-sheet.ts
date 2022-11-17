@@ -1,5 +1,5 @@
 import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, type IGroup } from '@antv/g-canvas';
 import {
   forEach,
   forIn,
@@ -8,9 +8,10 @@ import {
   isEmpty,
   isFunction,
   isString,
+  memoize,
+  values,
 } from 'lodash';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-import { BaseCell } from '@/cell';
+import { BaseCell } from '../cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -22,10 +23,14 @@ import {
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
-} from '@/common/constant';
-import { DebuggerUtil } from '@/common/debug';
-import { i18n } from '@/common/i18n';
-import {
+} from '../common/constant';
+import { DebuggerUtil } from '../common/debug';
+import { i18n } from '../common/i18n';
+import { registerIcon } from '../common/icons/factory';
+import type {
+  CustomSVGIcon,
+  EmitterType,
+  InteractionOptions,
   LayoutWidthType,
   OffsetConfig,
   Pagination,
@@ -34,6 +39,8 @@ import {
   S2MountContainer,
   S2Options,
   S2RenderOptions,
+  S2Theme,
+  SortMethod,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
@@ -42,24 +49,26 @@ import {
   TooltipShowOptions,
   Total,
   Totals,
-} from '@/common/interface';
-import { EmitterType } from '@/common/interface/emitter';
-import { Store } from '@/common/store';
-import { BaseDataSet } from '@/data-set';
-import { BaseFacet } from '@/facet';
-import { Node } from '@/facet/layout/node';
-import { CustomSVGIcon, S2Theme } from '@/common/interface';
-import { RootInteraction } from '@/interaction/root';
-import { getTheme } from '@/theme';
-import { HdAdapter } from '@/ui/hd-adapter';
-import { BaseTooltip } from '@/ui/tooltip';
-import { clearValueRangeState } from '@/utils/condition/state-controller';
-import { customMerge } from '@/utils/merge';
-import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
-import { registerIcon } from '@/common/icons/factory';
-import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
-import { PanelScrollGroup } from '@/group/panel-scroll-group';
-import { FrozenGroup } from '@/group/frozen-group';
+} from '../common/interface';
+import { Store } from '../common/store';
+import type { BaseDataSet } from '../data-set';
+import type { BaseFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import type { FrozenGroup } from '../group/frozen-group';
+import { PanelScrollGroup } from '../group/panel-scroll-group';
+import { RootInteraction } from '../interaction/root';
+import { getTheme } from '../theme';
+import { HdAdapter } from '../ui/hd-adapter';
+import { BaseTooltip } from '../ui/tooltip';
+import { clearValueRangeState } from '../utils/condition/state-controller';
+import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import {
+  customMerge,
+  getSafetyDataConfig,
+  getSafetyOptions,
+} from '../utils/merge';
+import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -141,6 +150,7 @@ export abstract class SpreadSheet extends EE {
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
+    this.setDebug();
     this.initTooltip();
     this.initGroups(dom);
     this.bindEvents();
@@ -148,7 +158,32 @@ export abstract class SpreadSheet extends EE {
     this.initTheme();
     this.initHdAdapter();
     this.registerIcons();
-    this.setDebug();
+    this.setOverscrollBehavior();
+  }
+
+  private setOverscrollBehavior() {
+    const { overscrollBehavior } = this.options.interaction;
+    // 行内样式 + css 样式
+    const initOverscrollBehavior = window
+      .getComputedStyle(document.body)
+      .getPropertyValue(
+        'overscroll-behavior',
+      ) as InteractionOptions['overscrollBehavior'];
+
+    // 用户没有在 body 上主动设置过 overscrollBehavior，才进行更新
+    const hasInitOverscrollBehavior =
+      initOverscrollBehavior && initOverscrollBehavior !== 'auto';
+
+    if (hasInitOverscrollBehavior) {
+      this.store.set('initOverscrollBehavior', initOverscrollBehavior);
+    } else if (overscrollBehavior) {
+      document.body.style.overscrollBehavior = overscrollBehavior;
+    }
+  }
+
+  private restoreOverscrollBehavior() {
+    document.body.style.overscrollBehavior =
+      this.store.get('initOverscrollBehavior') || '';
   }
 
   private setDebug() {
@@ -324,21 +359,35 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
+   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig) {
+  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
     this.store.set('originalDataCfg', dataCfg);
-    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    if (reset) {
+      this.dataCfg = getSafetyDataConfig(dataCfg);
+    } else {
+      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    }
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
 
-  public setOptions(options: Partial<S2Options>) {
+  public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
-    this.options = customMerge(this.options, options);
+    if (reset) {
+      this.options = getSafetyOptions(options);
+    } else {
+      this.options = customMerge(this.options, options);
+    }
     this.registerIcons();
   }
 
   public render(reloadData = true, options: S2RenderOptions = {}) {
+    // 防止表格卸载后, 再次调用 render 函数的报错
+    if (!this.getCanvasElement()) {
+      return;
+    }
+
     const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
       options;
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
@@ -357,6 +406,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public destroy() {
+    this.restoreOverscrollBehavior();
     this.emit(S2Event.LAYOUT_DESTROY);
     this.facet?.destroy();
     this.hdAdapter?.destroy();
@@ -365,20 +415,19 @@ export abstract class SpreadSheet extends EE {
     this.destroyTooltip();
     this.clearCanvasEvent();
     this.container?.destroy();
+
+    removeOffscreenCanvas();
   }
 
-  /**
-   * Update theme config, if the {@param type} is exists, re-use it,
-   * otherwise create new one {@see theme}
-   * @param type string
-   * @param theme
-   */
   public setThemeCfg(themeCfg: ThemeCfg = {}) {
     const theme = themeCfg?.theme || {};
-    this.theme = customMerge(
-      getTheme({ ...themeCfg, spreadsheet: this }),
-      theme,
-    );
+    const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
+
+    this.theme = customMerge(newTheme, theme);
+  }
+
+  public setTheme(theme: S2Theme) {
+    this.theme = customMerge(this.theme, theme);
   }
 
   /**
@@ -423,19 +472,27 @@ export abstract class SpreadSheet extends EE {
     width: number = this.options.width,
     height: number = this.options.height,
   ) {
+    const canvas = this.getCanvasElement();
     const containerWidth = this.container.get('width');
     const containerHeight = this.container.get('height');
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
 
-    if (!isSizeChanged) {
+    if (!isSizeChanged || !canvas) {
       return;
     }
 
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
+  }
+
+  /**
+   * 获取 <canvas/> HTML元素
+   */
+  public getCanvasElement(): HTMLCanvasElement {
+    return this.container.get('el') as HTMLCanvasElement;
   }
 
   public getLayoutWidthType(): LayoutWidthType {
@@ -478,7 +535,7 @@ export abstract class SpreadSheet extends EE {
    * default offsetX(horizontal scroll need animation)
    * but offsetY(vertical scroll don't need animation)
    */
-  public updateScrollOffset(offsetConfig: OffsetConfig): void {
+  public updateScrollOffset(offsetConfig: OffsetConfig) {
     this.facet.updateScrollOffset(
       customMerge(
         {
@@ -591,8 +648,10 @@ export abstract class SpreadSheet extends EE {
 
   // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
   protected updateContainerStyle() {
-    const canvas = this.container.get('el') as HTMLCanvasElement;
-    canvas.style.display = 'block';
+    const canvas = this.getCanvasElement();
+    if (canvas) {
+      canvas.style.display = 'block';
+    }
   }
 
   protected initPanelGroupChildren() {
@@ -606,6 +665,10 @@ export abstract class SpreadSheet extends EE {
 
   public getInitColumnLeafNodes(): Node[] {
     return this.store.get('initColumnLeafNodes', []);
+  }
+
+  public clearColumnLeafNodes() {
+    this.store.set('initColumnLeafNodes', undefined);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
@@ -624,5 +687,113 @@ export abstract class SpreadSheet extends EE {
     forIn(canvasEvents, (_, event: keyof EmitterType) => {
       this.off(event);
     });
+  }
+
+  /**
+   * 获取文本在画布中的测量信息
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本测量信息 TextMetrics
+   */
+  public measureText = memoize(
+    (text: number | string = '', font: unknown): TextMetrics => {
+      if (!font) {
+        return null;
+      }
+
+      const ctx = this.getCanvasElement()?.getContext('2d');
+      const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
+        font as CSSStyleDeclaration;
+
+      ctx.font = [
+        fontStyle,
+        fontVariant,
+        fontWeight,
+        `${fontSize}px`,
+        fontFamily,
+      ]
+        .join(' ')
+        .trim();
+
+      return ctx.measureText(String(text));
+    },
+    (text: any, font) => [text, ...values(font)].join(''),
+  );
+
+  /**
+   * 计算文本在画布中的宽度
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本宽度
+   */
+  public measureTextWidth = (
+    text: number | string = '',
+    font: unknown,
+  ): number => {
+    const textMetrics = this.measureText(text, font);
+    return textMetrics?.width || 0;
+  };
+
+  /**
+   * 计算文本在画布中的宽度 https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本高度
+   */
+  public measureTextHeight = (
+    text: number | string = '',
+    font: unknown,
+  ): number => {
+    const textMetrics = this.measureText(text, font);
+    if (!textMetrics) {
+      return 0;
+    }
+    return (
+      textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+    );
+  };
+
+  /**
+   * 粗略计算文本在画布中的宽度
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本宽度
+   */
+  public measureTextWidthRoughly = (text: any, font: any = {}): number => {
+    const alphaWidth = this.measureTextWidth('a', font);
+    const chineseWidth = this.measureTextWidth('蚂', font);
+
+    let w = 0;
+    if (!text) {
+      return w;
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const char of text) {
+      const code = char.charCodeAt(0);
+
+      // /[\u0000-\u00ff]/
+      w += code >= 0 && code <= 255 ? alphaWidth : chineseWidth;
+    }
+
+    return w;
+  };
+
+  public updateSortMethodMap(
+    nodeId: string,
+    sortMethod: SortMethod,
+    replace = false,
+  ) {
+    const lastSortMethodMap = !replace ? this.store.get('sortMethodMap') : null;
+    this.store.set('sortMethodMap', {
+      ...lastSortMethodMap,
+      [nodeId]: sortMethod,
+    });
+  }
+
+  public getMenuDefaultSelectedKeys(nodeId: string): string[] {
+    const sortMethodMap = this.store.get('sortMethodMap');
+    const selectedSortMethod = get(sortMethodMap, nodeId);
+    return selectedSortMethod ? [selectedSortMethod] : [];
   }
 }

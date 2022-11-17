@@ -11,3 +11,4 @@ export * from './theme';
 export * from './tooltip';
 export * from './resize';
 export * from './copy';
+export * from './pagination';

@@ -6,21 +6,23 @@ import { cloneDeep, get, last } from 'lodash';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
-  CustomSVGIcon,
+  type CustomSVGIcon,
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  RowCellCollapseTreeRowsType,
-  S2DataConfig,
+  type RowCellCollapseTreeRowsType,
+  type S2DataConfig,
   S2Event,
-  S2Options,
-  TooltipShowOptions,
+  type S2Options,
+  type TooltipShowOptions,
   TOOLTIP_CONTAINER_CLS,
+  setLang,
+  type LangType,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
 import { BaseTooltip } from '@/ui/tooltip';
-import { CornerCell } from '@/cell/corner-cell';
+import type { CornerCell } from '@/cell/corner-cell';
 
 jest.mock('@/utils/hide-columns');
 
@@ -55,6 +57,7 @@ describe('PivotSheet Tests', () => {
   let container: HTMLDivElement;
 
   beforeAll(() => {
+    setLang('zh_CN');
     container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
@@ -112,7 +115,7 @@ describe('PivotSheet Tests', () => {
       s2.tooltip.destroy();
 
       // remove container
-      expect(s2.tooltip.container.children).toHaveLength(0);
+      expect(s2.tooltip.container).toBe(null);
       // reset position
       expect(s2.tooltip.position).toEqual({
         x: 0,
@@ -590,6 +593,14 @@ describe('PivotSheet Tests', () => {
     expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
   });
 
+  test('should clear init column nodes', () => {
+    s2.store.set('initColumnLeafNodes', [null, null]);
+
+    s2.clearColumnLeafNodes();
+
+    expect(s2.store.get('initColumnLeafNodes')).toBeFalsy();
+  });
+
   test('should get pivot mode', () => {
     expect(s2.isPivotMode()).toBeTruthy();
     expect(s2.isTableMode()).toBeFalsy();
@@ -740,12 +751,12 @@ describe('PivotSheet Tests', () => {
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
 
       expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.hierarchyCollapse).toBeFalsy();
+      expect(s2.options.style.hierarchyCollapse).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
       expect(s2.options.style.collapsedRows).toEqual(null);
-      expect(s2.options.hierarchyCollapse).toBeTruthy();
+      expect(s2.options.style.hierarchyCollapse).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -755,7 +766,9 @@ describe('PivotSheet Tests', () => {
       const tree = new PivotSheet(getContainer(), dataCfg, {
         ...s2Options,
         hierarchyType: 'tree',
-        hierarchyCollapse: true,
+        style: {
+          hierarchyCollapse: true,
+        },
       });
       tree.render();
 
@@ -764,7 +777,9 @@ describe('PivotSheet Tests', () => {
       ).toEqual(['province']);
 
       tree.setOptions({
-        hierarchyCollapse: false,
+        style: {
+          hierarchyCollapse: false,
+        },
       });
       tree.render();
 
@@ -797,12 +812,58 @@ describe('PivotSheet Tests', () => {
     });
   });
 
+  // https://github.com/antvis/S2/issues/1421
+  test.each(['zh_CN', 'en_US'])(
+    'should render group sort menu',
+    (lang: LangType) => {
+      setLang(lang);
+      const sheet = new PivotSheet(container, dataCfg, s2Options);
+      sheet.render();
+
+      const showTooltipWithInfoSpy = jest
+        .spyOn(sheet, 'showTooltipWithInfo')
+        .mockImplementation(() => {});
+
+      const event = {
+        stopPropagation() {},
+      } as GEvent;
+
+      sheet.handleGroupSort(event, null);
+
+      const isEnUS = lang === 'en_US';
+      const groupAscText = isEnUS ? 'Group ASC' : '组内升序';
+      const groupDescText = isEnUS ? 'Group DESC' : '组内降序';
+      const groupNoneText = isEnUS ? 'No order' : '不排序';
+
+      expect(showTooltipWithInfoSpy).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.anything(),
+        {
+          onlyMenu: true,
+          forceRender: true,
+          operator: {
+            menus: [
+              { icon: 'groupAsc', key: 'asc', text: groupAscText },
+              { icon: 'groupDesc', key: 'desc', text: groupDescText },
+              { key: 'none', text: groupNoneText },
+            ],
+            onClick: expect.anything(),
+            defaultSelectedKeys: [],
+          },
+        },
+      );
+      sheet.destroy();
+    },
+  );
+
   test('should handle group sort', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
     const showTooltipWithInfoSpy = jest
       .spyOn(s2, 'showTooltipWithInfo')
-      .mockImplementation(() => {});
+      .mockImplementation((event, data, options) => ({
+        forceRender: options.forceRender,
+      }));
 
     const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
 
@@ -813,7 +874,7 @@ describe('PivotSheet Tests', () => {
       nodeMeta,
     );
 
-    expect(showTooltipWithInfoSpy).toHaveBeenCalledTimes(1);
+    expect(showTooltipWithInfoSpy).toHaveReturnedWith({ forceRender: true });
 
     s2.groupSortByMethod('asc', nodeMeta);
 
@@ -826,6 +887,10 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'asc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
 
     s2.groupSortByMethod('desc', nodeMeta);
 
@@ -837,6 +902,12 @@ describe('PivotSheet Tests', () => {
         sortMethod: 'desc',
       },
     ]);
+
+    expect(s2.store.get('sortMethodMap')).toEqual({
+      '1': 'desc',
+    });
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['desc']);
+    expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
     expect(renderSpy).toHaveBeenCalledTimes(2);
 
     renderSpy.mockRestore();
@@ -853,6 +924,7 @@ describe('PivotSheet Tests', () => {
     });
     s2.options.style.colCfg.hideMeasureColumn = true;
     s2.groupSortByMethod('asc', nodeMeta);
+
     expect(s2.dataCfg.sortParams).toEqual([
       {
         query: { $$extra$$: 'price', type: '笔' },
@@ -861,6 +933,7 @@ describe('PivotSheet Tests', () => {
         sortMethod: 'asc',
       },
     ]);
+    expect(s2.getMenuDefaultSelectedKeys(nodeMeta.id)).toEqual(['asc']);
   });
 
   test('should destroy sheet', () => {
@@ -875,6 +948,17 @@ describe('PivotSheet Tests', () => {
     s2.render(false);
 
     s2.store.set('test', 111);
+
+    // restore mock...
+    (s2.tooltip.show as jest.Mock).mockRestore();
+    s2.showTooltip({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: () => 'custom callback content',
+    });
+    s2.hideTooltip();
     s2.tooltip.container.classList.add('destroy-test');
     s2.interaction.addIntercepts([InterceptType.HOVER]);
     s2.interaction.interactions.set('test-interaction', null);
@@ -895,7 +979,8 @@ describe('PivotSheet Tests', () => {
     expect(s2.interaction.eventController.s2EventHandlers).toHaveLength(0);
     expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
     // destroy tooltip
-    expect(s2.tooltip.container.children).toHaveLength(0);
+    expect(document.querySelector('.destroy-test')).toBe(null);
+    expect(s2.tooltip.container).toBe(null);
     // destroy facet
     expect(facetDestroySpy).toHaveBeenCalledTimes(1);
     // destroy hdAdapter
@@ -1017,6 +1102,42 @@ describe('PivotSheet Tests', () => {
       );
       // modify valueInCols config
       expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
+
+      sheet.destroy();
     });
+
+    // https://github.com/antvis/S2/issues/1514
+    it('should not show default action icons if values is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
+        fields: {
+          values: [],
+          valueInCols: true,
+        },
+      } as S2DataConfig);
+
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, {
+        width: 400,
+        height: 200,
+        showDefaultHeaderActionIcon: true,
+        hierarchyType: 'tree',
+      });
+      sheet.render();
+
+      sheet.getRowLeafNodes().forEach((node) => {
+        const rowCell = node.belongsCell;
+        expect(get(rowCell, 'actionIcons')).toHaveLength(0);
+      });
+
+      sheet.destroy();
+    });
+  });
+
+  test('should emit destroy event', () => {
+    const onDestroy = jest.fn();
+    s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
+
+    s2.destroy();
+
+    expect(onDestroy).toHaveBeenCalledTimes(1);
   });
 });

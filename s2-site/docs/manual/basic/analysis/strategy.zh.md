@@ -11,47 +11,52 @@ order: 9
 
 ## 快速上手
 
-### [DataConfig](https://gw.alipayobjects.com/os/bmw-prod/e97a8fe6-1026-4fed-b420-cd7d0e88e8b4.json)
+### [DataConfig](https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json)
 
 <details>
 <summary>点击查看趋势分析表 options 配置</summary>
 
 ```js
- const s2Options = {
-      width: 600,
-      height: 480,
-      cornerText: '指标层级', // 角头对应行头的 label 名
-      hierarchyType: 'customTree', // 必须指定类型
-      style: {  // 染色逻辑，区分指标和副指标
-        cellCfg: {
-          valuesCfg: {
-            originalValueField: 'originalValues',
-            conditions: {
-              text: {
-                field: 'number',
-                mapping: (value, cellInfo) => {
-                  const { meta } = cellInfo;
-
-                  if (meta.fieldValue.values[0][0] === value || !value) {
-                    return {
-                      fill: '#000',
-                    };
-                  }
-                  return {
-                    fill: value > 0 ? '#FF4D4F' : '#29A294',
-                  };
-                },
-              },
-            },
-          },
+const s2Options = {
+  width: 600,
+  height: 480,
+  cornerText: '指标层级',
+  hierarchyType: 'customTree',
+  conditions: {
+    text: [
+      {
+        field: 'number',
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          if (
+            meta?.fieldValue?.values[0][0] === value ||
+            !value ||
+            !meta?.fieldValue
+          ) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: value > 0 ? '#FF4D4F' : '#29A294',
+          };
         },
       },
-    };
+    ],
+  },
+  style: {
+    cellCfg: {
+      valuesCfg: {
+        originalValueField: 'originalValues',
+      },
+    },
+  },
+};
 ```
 
 </details>
 
-```js
+```ts
 import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
@@ -59,7 +64,7 @@ import '@antv/s2-react/dist/style.min.css';
 
 ReactDOM.render(
   <SheetComponent
-    dataCfg={dataCfg}
+    dataCfg={s2DataCfg}
     options={s2Options}
     sheetType="strategy"
   />,
@@ -84,7 +89,7 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | :------------- | :----------------- | :--------- | :----- | :--- |
-| values           | 格式化后的数据，直接展示在dataCfg中 | `(string | number)[][]`   |  ✓   |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
 | originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
@@ -99,4 +104,68 @@ object **必选**,_default：null_
 ### S2Options 配置
 
 * 必须指定 `hierarchyType: 'customTree'`
-* 染色逻辑配置可以在  `style.cellCfg.conditions` 中配置，用法参考[字段标记](/zh/docs/manual/basic/conditions)目前暂时只支持文本颜色通道
+* 染色逻辑配置可以在  `options.conditions` 中配置，不需要指定 `field` 参数，用法参考 [字段标记](/zh/docs/manual/basic/conditions) 目前暂时只支持文本颜色通道
+
+## Tooltip
+
+趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (row)`, `列头 (col)`, `数值 (data)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105), 同时可以在 `@antv/s2-react` 包中进行单独引入
+
+| 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
+| :------------- | :----------------- | :--------- | :----- | :--- |
+| cell           | 当前单元格 | `S2CellType`   |  ✓   |
+| defaultTooltipShowOptions | 默认 tooltip 展示配置 | `TooltipShowOptions<ReactNode>`  |  |      |
+| label        | 标题    | `ReactNode | (cell: S2CellType, defaultLabel: ReactNode) => React.ReactNode` |    |      |
+| showOriginalValue      | 是否显示原始数值 （如有）      | `boolean` | `false`   |      |
+
+```ts
+import { StrategySheetRowTooltip, StrategySheetColTooltip, StrategySheetDataTooltip } from '@antv/s2-react'
+
+const s2Options = {
+  tooltip: {
+    content: (cell) => <StrategySheetDataTooltip cell={cell} label={label}/>
+  }
+}
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/MCgZSZyEm/df084a59-407c-4a69-bc93-1f12eb01b019.png" width="600"  alt="preview" />
+
+### 自定义标题
+
+默认使用行头节点名字作为 Tooltip 标题，可通过 `label` 自定义内容的方式
+
+```tsx
+// 字符串
+<StrategySheetDataTooltip cell={cell} label={"自定义标题"}/>
+
+// 自定义组件
+<StrategySheetDataTooltip cell={cell} label={(cell, defaultLabel) => `${defaultLabel}（自定义标题`} />
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/dosQkhLBp/fbe5a635-60ad-4e55-9a23-858842b977ac.png" width="600"  alt="preview" />
+
+### 显示原始数据
+
+开启 `showOriginalValue` 后，会读取当前 Tooltip 对应的 `originalValues` 数据（如有）, 将原始数据一同展示，即 `展示值（原始值）`
+
+```tsx
+<StrategySheetDataTooltip cell={cell} showOriginalValue />
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/xe57%261A5E/9e0ae256-7823-498c-8d88-740ff30bff5a.png" width="600"  alt="preview" />
+
+### 渲染同环比额外节点
+
+可以通过 `renderDerivedValue` 在自定义同环比数值，比如替换成原始值
+
+* `currentValue`: 当前值
+* `originalValue`: 原始值
+* `cell`: 当前 Tooltip 对应的单元格信息
+
+```tsx
+<StrategySheetDataTooltip
+  cell={cell}
+  renderDerivedValue={(currentValue, originalValue, cell) => <span>({originalValue})</span> }
+/>
+```
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/jOYhdqOr6/a43696e1-3cdb-49b7-9906-4053c3f7e65b.png" width="600"  alt="preview" />

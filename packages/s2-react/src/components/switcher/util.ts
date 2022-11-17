@@ -1,15 +1,39 @@
 import { filter, flatten, map, mapValues } from 'lodash';
-import { DraggableLocation } from 'react-beautiful-dnd';
-import { getClassNameWithPrefix } from '@antv/s2';
-import { SheetType } from '@antv/s2-shared';
-import { FieldType, SWITCHER_PREFIX_CLS } from './constant';
-import {
+import type { DraggableLocation } from 'react-beautiful-dnd';
+import { getClassNameWithPrefix, i18n } from '@antv/s2';
+import type { SheetType } from '@antv/s2-shared';
+import { ColIcon, RowIcon, ValueIcon } from '../icons';
+import { DroppableType, FieldType, SWITCHER_PREFIX_CLS } from './constant';
+import type {
   SwitcherItem,
   SwitcherResult,
   SwitcherState,
   SwitcherFields,
   SwitcherResultItem,
 } from './interface';
+
+// 是否开启行列维度相互切换
+export const getSwitcherConfig = (allowExchangeHeader = true) => ({
+  [FieldType.Rows]: {
+    text: i18n('行头'),
+    icon: RowIcon,
+    droppableType: allowExchangeHeader
+      ? DroppableType.Dimensions
+      : DroppableType.Rows,
+  },
+  [FieldType.Cols]: {
+    text: i18n('列头'),
+    icon: ColIcon,
+    droppableType: allowExchangeHeader
+      ? DroppableType.Dimensions
+      : DroppableType.Cols,
+  },
+  [FieldType.Values]: {
+    text: i18n('值'),
+    icon: ValueIcon,
+    droppableType: DroppableType.Measures,
+  },
+});
 
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);

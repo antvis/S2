@@ -1,14 +1,15 @@
 import React from 'react';
-import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
+import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { useUpdateEffect } from 'ahooks';
+import type { SheetComponentOptions } from '../sheets/interface';
 import {
   generateSheetConfig,
   generateSwitcherFields,
   generateSwitcherFieldsCfgFromResult,
   getSheetType,
 } from './headerUtil';
-import { SwitcherResult } from './interface';
-import { Switcher, SwitcherProps } from '.';
+import type { SwitcherResult } from './interface';
+import { Switcher, type SwitcherProps } from './';
 import './index.less';
 
 type SwitcherBasicCfg = Pick<
@@ -19,6 +20,7 @@ type SwitcherBasicCfg = Pick<
   | 'contentTitleText'
   | 'popover'
   | 'disabled'
+  | 'allowExchangeHeader'
 >;
 
 export interface SwitcherCfgProps extends SwitcherBasicCfg {
@@ -28,7 +30,7 @@ export interface SwitcherCfgProps extends SwitcherBasicCfg {
 export interface SwitcherHeaderProps extends SwitcherBasicCfg {
   sheet: SpreadSheet;
   dataCfg: S2DataConfig;
-  options: S2Options;
+  options: SheetComponentOptions;
 }
 
 export const SwitcherHeader: React.FC<SwitcherHeaderProps> = ({

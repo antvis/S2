@@ -1,13 +1,13 @@
-import { BuildHeaderParams, BuildHeaderResult } from '@/facet/layout/interface';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { buildRowTreeHierarchy } from '@/facet/layout/build-row-tree-hierarchy';
-import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';
-import { buildTableHierarchy } from '@/facet/layout/build-table-hierarchy';
-import { PivotDataSet } from '@/data-set';
-import { buildRowCustomTreeHierarchy } from '@/facet/layout/build-row-custom-tree-hierarchy';
-import { SpreadSheet } from '@/sheet-type';
-import { SpreadSheetFacetCfg } from '@/common/interface';
+import type { SpreadSheetFacetCfg } from '../../common/interface';
+import type { PivotDataSet } from '../../data-set';
+import type { SpreadSheet } from '../../sheet-type';
+import { buildGridHierarchy } from '../layout/build-gird-hierarchy';
+import { buildRowCustomTreeHierarchy } from '../layout/build-row-custom-tree-hierarchy';
+import { buildRowTreeHierarchy } from '../layout/build-row-tree-hierarchy';
+import { buildTableHierarchy } from '../layout/build-table-hierarchy';
+import { Hierarchy } from '../layout/hierarchy';
+import type { BuildHeaderParams, BuildHeaderResult } from '../layout/interface';
+import { Node } from '../layout/node';
 
 interface HeaderParams {
   isValueInCols: boolean;
@@ -153,7 +153,9 @@ export const buildHeaderHierarchy = (
   }
 
   const getLeafNodes = () => {
-    if (!isRowHeader) return hierarchy.getLeaves();
+    if (!isRowHeader) {
+      return hierarchy.getLeaves();
+    }
     return spreadsheet.isHierarchyTreeType()
       ? hierarchy.getNodes()
       : hierarchy.getLeaves();

@@ -5,7 +5,7 @@ import {
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  S2Options,
+  type S2Options,
 } from '@/common';
 
 function renderSheet(options: S2Options) {
@@ -91,6 +91,32 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
   });
 
+  // https://github.com/antvis/S2/issues/1603
+  test('should disable col cell resize area if col is hidden', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resize: {
+          colCellHorizontal: false,
+          colCellVertical: true,
+        },
+      },
+    } as S2Options);
+
+    s2.setOptions({
+      style: {
+        colCfg: {
+          height: 0,
+        },
+      },
+    });
+
+    s2.render(false);
+
+    const group = s2.facet.foregroundGroup;
+
+    expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
+  });
+
   test('should disable col cell vertical direction resize area', () => {
     const s2 = renderSheet({
       interaction: {
@@ -117,5 +143,47 @@ describe('SpreadSheet Resize Active Tests', () => {
     const group = s2.facet.foregroundGroup;
 
     expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
+  });
+
+  test('should disable all cell resize area by visible', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resize: {
+          visible: () => false,
+        },
+      },
+    } as S2Options);
+
+    const group = s2.facet.foregroundGroup;
+
+    [
+      KEY_GROUP_CORNER_RESIZE_AREA,
+      KEY_GROUP_COL_RESIZE_AREA,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    ].forEach((key) => {
+      expect(group.findById(key)).toBeNull();
+    });
+  });
+
+  test('should only show col cell resize area by visible', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resize: {
+          visible: (cell) => {
+            const meta = cell.getMeta();
+            return meta.id === 'root[&]笔[&]price';
+          },
+        },
+      },
+    } as S2Options);
+
+    const group = s2.facet.foregroundGroup;
+    const colResizeGroups = group
+      .getChildren()
+      .filter((element) => element.cfg.id === KEY_GROUP_COL_RESIZE_AREA);
+
+    expect(colResizeGroups).toHaveLength(1);
+    expect(group.findById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
+    expect(group.findById(KEY_GROUP_CORNER_RESIZE_AREA)).toBeNull();
   });
 });

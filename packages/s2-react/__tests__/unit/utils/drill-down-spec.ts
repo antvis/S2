@@ -1,12 +1,24 @@
+/**
+ * drill-down.ts 文件已迁移至 shared 文件，但因 spec 中需要的相关方法和数据很多都是在 react 共用的。所以暂不迁移
+ */
 import {
   PivotDataSet,
   RootInteraction,
-  S2Options,
+  type S2Options,
   Store,
   Node,
   SpreadSheet,
   PivotSheet,
 } from '@antv/s2';
+import {
+  buildDrillDownOptions,
+  DrillDownParams,
+  getDrillDownCache,
+  handleActionIconClick,
+  handleDrillDown,
+  type PartDrillDown,
+  type PartDrillDownInfo,
+} from '@antv/s2-shared';
 import { sleep, getContainer } from '../../util/helpers';
 import { data as originData } from '../../data/mock-dataset.json';
 import {
@@ -14,13 +26,6 @@ import {
   HZDrillDownData,
   SXDrillDownData,
 } from '../../data/mock-drill-down-dataset.json';
-import {
-  handleActionIconClick,
-  handleDrillDown,
-  buildDrillDownOptions,
-  getDrillDownCache,
-} from '@/utils';
-import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;
@@ -86,7 +91,11 @@ describe('Drill Down Test', () => {
   const iconClickCallback = jest.fn();
 
   beforeEach(() => {
-    mockInstance = new PivotSheet(getContainer(), mockDataCfg, null);
+    mockInstance = new PivotSheet(
+      getContainer(),
+      mockDataCfg,
+      null as unknown as S2Options,
+    );
     mockInstance.store = new Store();
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);
@@ -97,9 +106,31 @@ describe('Drill Down Test', () => {
     cityNode.spreadsheet = mockInstance;
   });
 
+  test('should set correct drilldownNum', () => {
+    const getDrillDownParams = (drillItemsNum?: number) =>
+      ({
+        rows: mockDataCfg.fields.rows,
+        drillFields: ['district'],
+        fetchData,
+        spreadsheet: mockInstance,
+        drillItemsNum,
+      } as DrillDownParams);
+
+    // drillDownNum = undefined
+    handleDrillDown(getDrillDownParams());
+    expect(mockInstance.store.get('drillItemsNum')).toEqual(-1);
+
+    // reset
+    mockInstance.store.get('drillItemsNum', undefined);
+
+    // drillDownNum = integer
+    handleDrillDown(getDrillDownParams(19));
+    expect(mockInstance.store.get('drillItemsNum')).toEqual(19);
+  });
+
   test('for handleDrillDown function', async () => {
     mockInstance.store.set('drillDownNode', cityNode);
-    const drillDownCfg = {
+    const drillDownCfg: DrillDownParams = {
       rows: mockDataCfg.fields.rows,
       drillFields: ['district'],
       fetchData,

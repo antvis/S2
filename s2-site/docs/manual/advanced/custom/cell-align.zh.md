@@ -2,10 +2,11 @@
 title: 自定义单元格对齐方式
 order: 4
 ---
-> 在阅读本节内容前，请确保你已经阅读 [主题配置](/zh/docs/manual/basic/theme) 文档
+
+> **在阅读本节内容前，请确保你已经阅读 [主题配置](/zh/docs/manual/basic/theme) 文档**
 
 为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性
-  
+
 ![img](https://gw.alipayobjects.com/zos/antfincdn/avyf3tcnW/2022-02-23%25252016.38.05.gif)
 
 因此，S2 对单元格的对齐方式有一定限制。下面分别介绍每个类型单元格可以自定义的对齐行为。
@@ -83,6 +84,7 @@ cornerCell: {
 
 * 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
 * 叶子节点单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 序号单元格可单独控制，默认和行头对齐，对齐方式受 [seriesText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/GPEd6w4pj/f2bb3ba9-e4a4-4304-a7b6-a1b9e59e768a.png)
 
@@ -153,7 +155,7 @@ rowCell: {
 为保证滑动下最大可见的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `middle`，`textAlign` 不受限制可按需要自定义。
 
 * 指标单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 其他维度单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 其他维度单元格（蓝色部分）对齐方式受 [measureText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
 
 <image alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400" />
 
@@ -169,7 +171,7 @@ rowCell: {
       <td style="text-align: center;">
         <pre class="language-js">
 colCell: {
-  text: {
+  measureText: {
     textAlign: 'left',
   },
   bolderText: {
@@ -186,7 +188,7 @@ colCell: {
       <td style="text-align: center;">
          <pre class="language-js">
 colCell: {
-  text: {
+  measureText: {
     textAlign: 'center',
   },
   bolderText: {
@@ -203,7 +205,7 @@ colCell: {
       <td style="text-align: center;">
                <pre class="language-js">
 colCell: {
-  text: {
+  measureText: {
     textAlign: 'right',
   },
   bolderText: {

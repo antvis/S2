@@ -1,8 +1,8 @@
 import {
-  Group,
   Canvas,
   Event as CanvasEvent,
-  LooseObject,
+  Group,
+  type LooseObject,
   Shape,
 } from '@antv/g-canvas';
 import { each, get, isEmpty, isNil } from 'lodash';
@@ -14,12 +14,11 @@ import {
   OriginEventType,
   S2Event,
   SHAPE_STYLE_MAP,
-} from '@/common/constant';
-import { EmitterType } from '@/common/interface/emitter';
-import { ResizeInfo } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
-import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { getTooltipOptions, verifyTheElementInTooltip } from '@/utils/tooltip';
+} from '../common/constant';
+import type { EmitterType, ResizeInfo } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
+import { getSelectedData, keyEqualTo } from '../utils/export/copy';
+import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -50,7 +49,7 @@ export class EventController {
 
   public domEventListeners: EventListener[] = [];
 
-  private isCanvasEffect = false;
+  public isCanvasEffect = false;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -134,6 +133,7 @@ export class EventController {
     if (
       this.isCanvasEffect &&
       this.spreadsheet.options.interaction.enableCopy &&
+      // todo: 在copy header 时有问题
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
@@ -162,8 +162,18 @@ export class EventController {
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
 
-    if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
-      interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
+    if (
+      interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+      ])
+    ) {
+      interaction.removeIntercepts([
+        InterceptType.BRUSH_SELECTION,
+        InterceptType.ROW_BRUSH_SELECTION,
+        InterceptType.COL_BRUSH_SELECTION,
+      ]);
       return;
     }
 
@@ -180,7 +190,11 @@ export class EventController {
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
-      const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+      const canvas = this.spreadsheet.getCanvasElement();
+      if (!canvas) {
+        return false;
+      }
+
       const { x, y } = canvas.getBoundingClientRect() || {};
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)
@@ -218,6 +232,7 @@ export class EventController {
         event.target,
       );
     }
+
     if (event instanceof MouseEvent) {
       return (
         event.clientX >= x &&
@@ -264,6 +279,28 @@ export class EventController {
 
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
+
+      // 仅捕获在canvas之外触发的事件     https://github.com/antvis/S2/issues/1592
+      const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
+        if (!this.spreadsheet.getCanvasElement()) {
+          return false;
+        }
+        if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
+          event.clientX = mouseEvent.clientX;
+          event.clientY = mouseEvent.clientY;
+          event.originalEvent = mouseEvent;
+          this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
+        }
+      };
+
+      window.addEventListener('mousemove', resizeMouseMoveCapture);
+      window.addEventListener(
+        'mouseup',
+        () => {
+          window.removeEventListener('mousemove', resizeMouseMoveCapture);
+        },
+        { once: true },
+      );
       return;
     }
 
@@ -320,12 +357,7 @@ export class EventController {
           break;
       }
 
-      if (
-        !this.spreadsheet.interaction.hasIntercepts([
-          InterceptType.HOVER,
-          InterceptType.BRUSH_SELECTION,
-        ])
-      ) {
+      if (!this.hasBrushSelectionIntercepts()) {
         this.spreadsheet.emit(S2Event.GLOBAL_HOVER, event);
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -349,6 +381,15 @@ export class EventController {
       }
     }
   };
+
+  private hasBrushSelectionIntercepts() {
+    return this.spreadsheet.interaction.hasIntercepts([
+      InterceptType.HOVER,
+      InterceptType.BRUSH_SELECTION,
+      InterceptType.ROW_BRUSH_SELECTION,
+      InterceptType.COL_BRUSH_SELECTION,
+    ]);
+  }
 
   private onCanvasMouseup = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {

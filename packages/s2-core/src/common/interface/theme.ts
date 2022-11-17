@@ -1,8 +1,8 @@
-import { ShapeAttrs } from '@antv/g-canvas';
-import { InteractionStateName } from '../constant';
+import type { ShapeAttrs } from '@antv/g-canvas';
+import type { InteractionStateName } from '../constant';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { generateStandardColors } from '../../utils/color';
-import { CellTypes } from '@/common/constant/interaction';
+import type { CellTypes } from '../../common/constant/interaction';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -25,6 +25,7 @@ export interface PaletteMeta {
   semanticColors: {
     red?: string;
     green?: string;
+    yellow?: string;
     [key: string]: string;
   };
   /* 补充色值 */
@@ -134,9 +135,9 @@ export interface CellTheme {
   padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
-  /* 单元格内条件格式-迷你条形图高度 */
+  /* @deprecated 已废弃， 请用 miniChartTheme.interval.height代替 */
   miniBarChartHeight?: number;
-  /* 单元格内条件格式-迷你条形图默认填充颜色 */
+  /* @deprecated 已废弃， 请用 miniChartTheme.interval.fill 代替 */
   miniBarChartFillColor?: string;
 }
 
@@ -160,6 +161,8 @@ export interface ResizeArea {
   background?: string;
   /* 参考线颜色 */
   guideLineColor?: string;
+  /* 参考线不可用颜色 */
+  guideLineDisableColor?: string;
   /* 参考线间隔 */
   guideLineDash?: number[];
   /* 热区背景色透明度 */
@@ -213,12 +216,16 @@ export interface DefaultCellTheme extends GridAnalysisCellTheme {
   bolderText?: TextTheme;
   /* 文本样式 */
   text?: TextTheme;
+  /* 序号样式 */
+  seriesText?: TextTheme;
   /* 度量值文本样式 */
   measureText?: TextTheme;
   /* 单元格样式 */
   cell?: CellTheme;
   /* 图标样式 */
   icon?: IconTheme;
+  /* mini 图样式配置 */
+  miniChart?: MiniChartTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
 }
@@ -261,4 +268,80 @@ export interface ThemeCfg {
   palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
   /* 主题名 */
   name?: ThemeName;
+}
+
+/* 趋势分析表子弹图状态颜色 */
+export interface RangeColors {
+  /* 满意 */
+  good: string;
+  /* 良好 */
+  satisfactory: string;
+  /* 不符合预期 */
+  bad: string;
+}
+
+/* 子弹图样式配置 */
+export interface BulletTheme {
+  /* 进度条 */
+  progressBar: {
+    /* 子弹图宽度相对单元格 content 占比，小数 */
+    widthPercent: number;
+    height: number;
+    /* 内高度 */
+    innerHeight: number;
+  };
+
+  /* 测量标记线 */
+  comparativeMeasure: {
+    width: number;
+    height: number;
+    fill?: string;
+    color?: string; // @deprecated 已废弃, 请使用 fill 代替 */
+    opacity?: number;
+  };
+
+  /* 子弹图状态颜色 */
+  rangeColors: RangeColors;
+  /* 子弹图背景色 */
+  backgroundColor: string;
+}
+
+/* 折线图样式配置 */
+export interface LineTheme {
+  /* 点 */
+  point?: {
+    // 半径
+    size: number;
+    fill?: string;
+    opacity?: number;
+  };
+  /* 线 */
+  linkLine?: {
+    size: number;
+    fill?: string;
+    opacity?: number;
+  };
+}
+
+/* 柱状图样式配置 */
+export interface BarTheme {
+  // 柱状图之间的间隔距离
+  intervalPadding?: number;
+  fill?: string;
+  opacity?: number;
+}
+
+/* 条件格式柱图样式配置 */
+
+export interface IntervalTheme {
+  height: number;
+  fill: string;
+}
+
+/* 迷你图样式 */
+export interface MiniChartTheme {
+  line?: LineTheme;
+  bar?: BarTheme;
+  bullet?: BulletTheme;
+  interval?: IntervalTheme;
 }

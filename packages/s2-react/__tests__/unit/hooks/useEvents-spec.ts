@@ -1,8 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, S2Options, SpreadSheet, GEvent } from '@antv/s2';
+import {
+  PivotSheet,
+  S2Event,
+  type S2Options,
+  SpreadSheet,
+  GEvent,
+} from '@antv/s2';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { SheetComponentsProps } from '../../../src/components';
+import type { SheetComponentsProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 
 const s2Options: S2Options = {
@@ -21,7 +27,7 @@ const S2EventCases = [
     name: 'onDataCellTrendIconClick',
   },
   {
-    event: S2Event.DATE_CELL_BRUSH_SELECTION,
+    event: S2Event.DATA_CELL_BRUSH_SELECTION,
     name: 'onDataCellBrushSelection',
   },
   {
@@ -240,6 +246,14 @@ const cellEventCases = [
   {
     event: S2Event.DATA_CELL_MOUSE_MOVE,
     name: 'onDataCellMouseMove',
+  },
+  {
+    event: S2Event.DATA_CELL_BRUSH_SELECTION,
+    name: 'onDataCellBrushSelection',
+  },
+  {
+    event: S2Event.DATA_CELL_SELECT_MOVE,
+    name: 'onDataCellSelectMove',
   },
   {
     event: S2Event.CORNER_CELL_HOVER,

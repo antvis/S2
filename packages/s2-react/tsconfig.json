@@ -1,14 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ESNEXT",
+    "target": "ESNext",
     "jsx": "react",
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "tests/*": ["./__tests__/*"],
-    },
-    "useDefineForClassFields": true,
-    "forceConsistentCasingInFileNames": true,
-  }
+      "@antv/s2":["s2-core/src/index.ts"],
+      "@antv/s2-shared":["s2-shared/src/index.ts"],
+      "@/*":["s2-react/src/*"],
+      "tests/*":["s2-react/__tests__/*"]
+    }
+  }, 
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist", "temp"],
+  "include": ["src", "./typings.d.ts", "playground"]
 }

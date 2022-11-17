@@ -11,9 +11,13 @@ order: 7
 
 ## 注意事项
 
-`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**, `@antv/s2-react` 中通过 [组件](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
+`@antv/s2` 中只保留了 `tooltip` 的核心显隐逻辑，提供相应数据，**不渲染内容**
 
-- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react`, 免去你二次封装
+`React` 版本 和 `Vue3` 版本中通过 [自定义 Tooltip 类](#自定义-tooltip-类) 的方式渲染 `tooltip` 的内容，包括 `排序下拉菜单`, `单元格选中信息汇总`, `列头隐藏按钮` 等。
+
+查看 `React` 版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx) 和 `Vue3` 版本的 [具体实现](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/tooltip/custom-tooltip.ts)
+
+- 如果您有 `tooltip` 的需求，您可以直接使用开箱即用的 `@antv/s2-react` `@antv/s2-vue`, 免去你二次封装，使用更加方便
 - 如果您不希望依赖框架，或者希望在 `Vue`, `Angular` 框架中使用 `tooltip`, 请参考 [自定义 Tooltip 类](#自定义-tooltip-类) 章节
 - 别忘了引入样式
 
@@ -110,6 +114,7 @@ const s2Options = {
 
 ```ts
 const content = document.createElement('div')
+content.innerHTML = '我是自定义内容'
 
 const s2Options = {
   tooltip: {
@@ -146,6 +151,18 @@ const s2Options = {
       console.log('当前单元格：', cell)
       console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
       return <TooltipContent cell={cell} detail={detail} />
+    },
+  },
+};
+```
+
+如果需要使用默认 Tooltip, 返回 `null` 即可
+
+```ts
+const s2Options = {
+  tooltip: {
+    content: () => {
+      return null
     },
   },
 };
@@ -299,6 +316,25 @@ const s2Options = {
 }
 ```
 
+#### 自定义 Tooltip 容器样式
+
+在 `tooltip` 容器中添加额外的 `style` 样式和 `class` 类名，可以更方便的覆盖样式
+
+```ts
+const s2Options = {
+  tooltip: {
+    style: {
+      fontSize: '20px'
+    },
+    className: 'test'
+  }
+};
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/5Mk9LYotc/bb266a1d-7f8a-4876-b2b4-c633fc44efc2.png)
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/mGoP8DC5d/db963e35-dfe2-4e46-8866-aec85cbd38da.png)
+
 #### 自定义 Tooltip 类
 
 除了上面讲到的 `自定义 Tooltip 内容` 外，你还可以 `自定义 Tooltip 类` 与任意框架 (`Vue`, `Angular`, `React`) 结合
@@ -405,9 +441,13 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 #### 在 Vue3 中自定义
 
-在 `Vue3` 中可以通过两种方式自定义内容。[例子](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?file=/src/main.js)
+在 `Vue3` 中可以通过两种方式自定义内容。
 
-- 1. `createVNode` 自定义类的方式 （推荐）
+[![Edit @antv/s2 Vue3 Tooltip Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark)
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
+
+##### `createVNode` 自定义类的方式 （推荐）
 
 ```ts
 // TooltipContent.vue
@@ -451,7 +491,9 @@ class CustomTooltip extends BaseTooltip {
 }
 ```
 
-- 2. `defineCustomElement` 自定义内容的方式
+##### `defineCustomElement` 自定义内容的方式 （不推荐）
+
+> 注意，customElements 不能重复注册，否则浏览器会报错
 
 ```ts
 import { defineCustomElement } from "vue";
@@ -479,7 +521,12 @@ const s2Options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/AphZDgJvY/b4654699-927d-4b58-9da2-a5793f964061.png" width="600"  alt="preview" />
+<iframe src="https://codesandbox.io/embed/antv-s2-vue3-tooltip-demo-hpm3rf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark"
+     style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+     title="@antv/s2 Vue3 Tooltip Demo"
+     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+   ></iframe>
 
 #### 重写展示方法
 
@@ -494,7 +541,7 @@ tooltip: {
 
 ```tsx
 <SheetComponent
-  getSpreadSheet={(instance) => {
+  onMounted={(instance) => {
     instance.showTooltip = (tooltipOptions) => {
       // 可自定义这里的 tooltipOptions
       instance.tooltip.show(tooltipOptions);

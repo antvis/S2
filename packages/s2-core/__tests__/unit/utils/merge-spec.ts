@@ -4,7 +4,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import { HOVER_FOCUS_DURATION, S2DataConfig } from '@/common';
+import { HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -35,6 +35,33 @@ describe('merge test', () => {
         rows: [],
         columns: [],
         values: [],
+        customTreeItems: [],
+        valueInCols: false,
+      },
+      meta: [],
+      sortParams: [],
+      filterParams: [],
+    });
+  });
+
+  test('should unique dataConfig fields', () => {
+    expect(
+      getSafetyDataConfig({
+        fields: {
+          rows: ['province', 'city', 'city'],
+          columns: ['type', 'type'],
+          values: ['count', 'cost', 'cost'],
+          customTreeItems: [],
+          valueInCols: false,
+        },
+      }),
+    ).toStrictEqual({
+      data: [],
+      totalData: [],
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['count', 'cost'],
         customTreeItems: [],
         valueInCols: false,
       },
@@ -146,6 +173,7 @@ describe('merge test', () => {
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
+        selectedCellHighlight: false,
         selectedCellsSpotlight: false,
         hoverHighlight: true,
         hoverFocus: { duration: HOVER_FOCUS_DURATION },
@@ -154,7 +182,11 @@ describe('merge test', () => {
           vertical: 1,
         },
         autoResetSheetStyle: true,
-        brushSelection: true,
+        brushSelection: {
+          data: true,
+          row: false,
+          col: false,
+        },
         multiSelection: true,
         rangeSelection: true,
         resize: {
@@ -166,6 +198,7 @@ describe('merge test', () => {
         },
         scrollbarPosition: 'content',
         eventListenerOptions: false,
+        overscrollBehavior: 'auto',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

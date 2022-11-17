@@ -4,7 +4,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格。
+开箱即用的多维可视分析表格。
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
@@ -50,15 +50,15 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [主页](https://antv-s2.gitee.io)
-* [Demo 示例](https://antv-s2.gitee.io/zh/examples/gallery)
+* [主页](https://s2.antv.vision/zh)
+* [Demo 示例](https://s2.antv.vision/zh/examples/gallery)
 
 ## ✨ 特性
 
 1. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
 2. 高性能：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
 3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
-4. 开箱即用：提供不同分析场景下开箱即用的 react 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
+4. 开箱即用：提供不同分析场景下开箱即用的 `React`, `Vue3` 版本表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
 5. 可交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
 ## 📦 安装
@@ -109,7 +109,7 @@ const s2DataConfig = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: '笔',
       price: '8',
     },
@@ -121,7 +121,7 @@ const s2DataConfig = {
     },
     {
       province: '吉林',
-      city: '丹东',
+      city: '长春',
       type: ' 纸张',
       price: '3',
     },
@@ -188,17 +188,20 @@ cd S2
 # 安装依赖
 yarn # 或者 yarn bootstrap
 
+# 打包
+yarn build
+
 # 调试 s2-core
 yarn core:start
 
 # 调试 s2-react
 yarn react:playground
 
+# 调试 s2-vue
+yarn vue:playground
+
 # 单元测试
 yarn test
-
-# 打包
-yarn build
 
 # 代码风格和类型检测
 yarn lint
@@ -208,9 +211,20 @@ yarn site:bootstrap
 yarn site:start
 ```
 
+## 👁️ 洞察
+
+![Alt](https://repobeats.axiom.co/api/embed/ebb7eecb994dc0e3980044aefe43eb81302e3632.svg "Repobeats analytics image")
+
 ## 📧 联系我们
 
-<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
+<p>
+  <a>
+    <img width="300" height="auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg">
+  </a>
+  <a>
+    <img width="300" height="auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/v4TlwgORE/qq_qr_code.JPG">
+  </a>
+</p>
 
 ## 👬 Contributors
 

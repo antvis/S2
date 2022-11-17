@@ -1,9 +1,10 @@
 {
+  "private": false,
   "name": "@antv/s2-react",
-  "version": "1.15.1",
+  "version": "1.31.0",
   "main": "lib/index.js",
-  "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
+  "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "description": "use S2 with react",
   "license": "MIT",
@@ -36,17 +37,19 @@
   ],
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
-    "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:esm build:cjs build:umd build:declaration",
+    "clean": "rimraf lib esm dist temp",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
     "build:esm": "cross-env FORMAT=es vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:umd": "cross-env FORMAT=umd vite build",
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
-    "build:declaration": "ttsc -p tsconfig.declaration.json",
+    "build:dts": "run-s dts:*",
+    "watch": "rimraf esm && yarn build:esm -w",
+    "dts:build": "tsc -p tsconfig.declaration.json",
+    "dts:extract": "cross-env LIB=s2-react node ../../scripts/dts.js",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
-    "test": "jest",
-    "test:coverage": "yarn test --passWithNoTests --coverage",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
     "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
     "test:live": "node ./scripts/test-live.mjs",
@@ -69,7 +72,7 @@
   },
   "devDependencies": {
     "@antv/s2": "*",
-    "@antv/s2-shared":"*",
+    "@antv/s2-shared": "*",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
@@ -78,8 +81,9 @@
     "@types/react-dom": "17.0.14",
     "antd": "^4.19.3",
     "react": "^17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
-    "react-color": "^2.19.3"
+    "vite-plugin-svgr": "^2.1.0"
   },
   "bundlesize": [
     {
@@ -90,5 +94,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "205 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

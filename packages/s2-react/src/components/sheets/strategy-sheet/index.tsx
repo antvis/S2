@@ -1,28 +1,35 @@
-import React from 'react';
+import type { S2CellType } from '@antv/s2';
 import {
+  type ColHeaderConfig,
   customMerge,
-  SpreadSheet,
-  ViewMeta,
-  ColHeaderConfig,
   Node,
-  S2Options,
-  S2DataConfig,
+  type S2DataConfig,
+  type S2Options,
+  SpreadSheet,
+  type ViewMeta,
+  type MultiData,
+  type TooltipShowOptions,
 } from '@antv/s2';
-import { isEmpty, size } from 'lodash';
+import { isArray, isEmpty, isFunction, isNil, size } from 'lodash';
+import React from 'react';
 import { BaseSheet } from '../base-sheet';
-import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
-import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
-import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
+import type { SheetComponentsProps } from '../interface';
 import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { StrategyDataSet } from './custom-data-set';
-import { SheetComponentsProps } from '@/components/sheets/interface';
+import {
+  StrategySheetColTooltip,
+  StrategySheetDataTooltip,
+  StrategySheetRowTooltip,
+} from './custom-tooltip';
 
-/* *
+/**
  * 趋势分析表特性：
  * 1. 维度为空时默认为自定义目录树结构
  * 2. 单指标时数值置于列头，且隐藏指标列头
  * 3. 多指标时数值置于行头，不隐藏指标列头
+ * 4. 支持 KPI 进度 (子弹图)
+ * 5. 行头, 数值单元格不支持多选
  */
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -30,7 +37,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2Ref = React.useRef<SpreadSheet>();
 
     const strategySheetOptions = React.useMemo<
-      Partial<S2Options<React.ReactNode>>
+      S2Options<React.ReactNode>
     >(() => {
       if (isEmpty(dataCfg)) {
         return {};
@@ -53,6 +60,24 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       ) {
         hideMeasureColumn = true;
       }
+
+      const getContent =
+        (cellType: 'row' | 'col' | 'data') =>
+        (
+          cell: S2CellType,
+          tooltipOptions: TooltipShowOptions<React.ReactNode>,
+        ): React.ReactNode => {
+          // 优先级: 单元格 > 表格级
+          const tooltipContent: TooltipShowOptions<React.ReactNode>['content'] =
+            options.tooltip?.[cellType]?.content ?? options.tooltip?.content;
+
+          const content = isFunction(tooltipContent)
+            ? tooltipContent?.(cell, tooltipOptions)
+            : tooltipContent;
+
+          return content;
+        };
+
       return {
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
@@ -82,37 +107,45 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             hiddenColumns: true,
           },
           row: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <RowTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell, tooltipOptions) =>
+              getContent('row')(cell, tooltipOptions) ?? (
+                <StrategySheetRowTooltip cell={cell} />
+              ),
           },
           col: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <ColTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell, tooltipOptions) =>
+              getContent('row')(cell, tooltipOptions) ?? (
+                <StrategySheetColTooltip cell={cell} />
+              ),
           },
           data: {
-            content: (cell, defaultTooltipShowOptions) => (
-              <DataTooltip
-                cell={cell}
-                defaultTooltipShowOptions={defaultTooltipShowOptions}
-              />
-            ),
+            content: (cell, tooltipOptions) => {
+              const meta = cell.getMeta() as ViewMeta;
+              const fieldValue = meta.fieldValue as MultiData;
+              const content = getContent('data')(cell, tooltipOptions);
+
+              // 自定义内容优先级最高
+              if (!isNil(content)) {
+                return content;
+              }
+
+              // 如果是数组, 说明是普通数值+同环比数据, 显示普通数值 Tooltip
+              if (isArray(fieldValue?.values)) {
+                return <StrategySheetDataTooltip cell={cell} />;
+              }
+
+              return <></>;
+            },
           },
         },
       };
-    }, [dataCfg, options.hierarchyType]);
+    }, [dataCfg, options.hierarchyType, options.tooltip]);
 
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
-      const defaultFields = {
+      const defaultFields: Partial<S2DataConfig> = {
         fields: {
-          valueInCols: size(dataCfg?.fields?.values) <= 1, // 多指标数值挂行头，单指标挂列头
+          // 多指标数值挂行头，单指标挂列头
+          valueInCols: size(dataCfg?.fields?.values) <= 1,
         },
       };
       return customMerge(dataCfg, defaultFields);

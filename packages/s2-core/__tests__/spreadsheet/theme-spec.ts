@@ -1,18 +1,22 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
+import type { IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { ShapeAttrs } from '@antv/g-canvas';
-import { TextTheme } from '@/common/interface/theme';
-import { PivotSheet } from '@/sheet-type';
+import type {
+  TextBaseline,
+  TextTheme,
+  ThemeCfg,
+} from '@/common/interface/theme';
+import type { PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
-  S2DataConfig,
-  TextAlign,
+  type S2DataConfig,
+  type TextAlign,
 } from '@/common';
-import { RowCell } from '@/cell';
-import { Node } from '@/facet/layout/node';
+import type { RowCell } from '@/cell';
+import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Theme Tests', () => {
   let s2: PivotSheet;
@@ -45,6 +49,7 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
       CellTypes.CORNER_CELL,
+      CellTypes.MERGED_CELL,
     ];
 
     test.each(CELL_TYPES)(
@@ -58,8 +63,59 @@ describe('SpreadSheet Theme Tests', () => {
 
         expect(cellTheme.bolderText.fill).toEqual(cellTheme.icon.fill);
         expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
+        expect(cellTheme.cell).toBeTruthy();
       },
     );
+
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+      s2.setThemeCfg({
+        name: 'colorful',
+      });
+      s2.render();
+      const cellTheme = s2.theme[cellType];
+
+      expect(cellTheme.cell).toBeTruthy();
+    });
+
+    test('should set theme correctly', () => {
+      s2.setTheme({
+        rowCell: {
+          seriesNumberWidth: 200,
+        },
+      });
+
+      expect(s2.theme.rowCell.seriesNumberWidth).toStrictEqual(200);
+    });
+
+    // https://github.com/antvis/S2/issues/1538
+    test('should not reset theme palette after updated theme', () => {
+      const palette: ThemeCfg['palette'] = {
+        basicColors: Array.from({ length: 10 }).fill('red') as string[],
+        semanticColors: {
+          red: 'red',
+          green: 'green',
+        },
+      };
+
+      s2.setThemeCfg({
+        palette,
+        theme: {
+          rowCell: {
+            text: {
+              textAlign: 'left',
+            },
+          },
+        },
+      });
+
+      s2.setTheme({
+        rowCell: {
+          seriesNumberWidth: 200,
+        },
+      });
+
+      expect(s2.theme.background.color).toStrictEqual('red');
+    });
   });
 
   describe('Custom SVG Icon Tests', () => {
@@ -311,7 +367,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         expectTextAlign({
           textAlign,
-          fontWight: 520,
+          fontWight: 700,
           customNodes: isRowCell ? rowTotalNodes : colTotalNodes,
         });
       },
@@ -365,6 +421,47 @@ describe('SpreadSheet Theme Tests', () => {
         s2.render(true);
 
         expectTextAlign({ textAlign, fontWight: 'normal' });
+      },
+    );
+  });
+
+  describe('Series Cell Tests', () => {
+    const getTextShape = (group: IGroup) => {
+      return group
+        .getChildren()
+        .find((child) => child instanceof child.getShapeBase().Text);
+    };
+
+    test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
+      'should render %s text align for column nodes',
+      (textBaseline) => {
+        s2.setThemeCfg({
+          theme: {
+            rowCell: {
+              seriesText: {
+                textBaseline,
+              },
+              bolderText: {
+                textBaseline,
+              },
+            },
+          },
+        });
+
+        s2.setOptions({
+          showSeriesNumber: true,
+        });
+
+        s2.render();
+
+        const rowCell = s2.facet.rowHeader.getChildByIndex(0) as IGroup; // 浙江省
+        const textOfRowCell = getTextShape(rowCell);
+
+        const seriesCell = s2.facet.rowIndexHeader.getChildByIndex(3) as IGroup; // 序号1
+        const textOfSeriesCell = getTextShape(seriesCell);
+        expect(textOfRowCell.attr('textBaseline')).toEqual(textBaseline);
+        expect(textOfSeriesCell.attr('textBaseline')).toEqual('top');
+        expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
     );
   });

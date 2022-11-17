@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { S2Options } from '@antv/s2';
-import * as mockDataConfig from 'tests/data/simple-data.json';
+import type { S2Options } from '@antv/s2';
+import * as mockDataConfig from '../data/simple-data.json';
 import { SheetComponent } from '../../src';
 import { getContainer } from '../util/helpers';
 

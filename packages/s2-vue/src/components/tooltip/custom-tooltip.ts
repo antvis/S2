@@ -25,9 +25,13 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
+    // 保留 content 通过 props 传递的同时，新增通过 slot 传递。因为 slot 可能是 Component
     const tooltipVNode = createVNode(
       TooltipComponent,
       tooltipProps as VNodeProps,
+      {
+        content: () => content,
+      },
     );
 
     // render(null) 确保每一次的 tooltip 内容是最新的

@@ -5,6 +5,14 @@
   },
   "demos": [
     {
+      "filename": "row-expand-depth.ts",
+      "title": {
+        "zh": "行头默认层级展开 - 透视表",
+        "en": "Row Depth Expand"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/E8BAkGZo%26/2022-08-23%25252010.03.51.gif"
+    },
+    {
       "filename": "pivot-link-jump.ts",
       "title": {
         "zh": "链接跳转 - 透视表",
@@ -47,10 +55,18 @@
     {
       "filename": "resize-active.ts",
       "title": {
-        "zh": "自定义resize热区",
+        "zh": "自定义行列宽度调整热区",
         "en": "Custom resize area"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HEfCpSTRO/2021-12-06%25252011.39.15.gif"
+    },
+    {
+      "filename": "resize-disable.ts",
+      "title": {
+        "zh": "自定义行列宽度调整规则",
+        "en": "Custom resize disable"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif"
     },
     {
       "filename": "merge-cell.ts",
@@ -59,6 +75,30 @@
         "en": "Merge cell"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif"
+    },
+    {
+      "filename": "scroll-to-cell.ts",
+      "title": {
+        "zh": "滚动至指定单元格",
+        "en": "Scroll to cell"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/303GANzFN/Kapture%2525202022-05-30%252520at%25252015.56.54.gif"
+    },
+    {
+      "filename": "scroll-loop.ts",
+      "title": {
+        "zh": "循环滚动",
+        "en": "Scroll loop"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3q7Rp9HhP/Kapture%2525202022-05-30%252520at%25252015.53.27.gif"
+    },
+    {
+      "filename": "overscroll-behavior.ts",
+      "title": {
+        "zh": "关闭浏览器默认边界滚动行为",
+        "en": "Reaching the boundary of a scrolling area"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JRAt1kb93/Kapture%2525202022-06-06%252520at%25252011.28.43.gif"
     }
   ]
 }

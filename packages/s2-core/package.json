@@ -1,10 +1,12 @@
 {
+  "private": false,
   "name": "@antv/s2",
-  "version": "1.18.0-beta.1",
+  "version": "1.33.1",
   "main": "lib/index.js",
-  "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
+  "module": "esm/index.js",
   "types": "esm/index.d.ts",
+  "src": "src/index.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
@@ -37,17 +39,21 @@
   ],
   "scripts": {
     "start": "yarn test:live",
-    "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:esm build:cjs build:umd",
-    "build:esm": "cross-env FORMAT=esm rollup -c rollup.config.js",
+    "clean": "rimraf lib esm dist temp",
+    "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
+    "build:esm": "cross-env FORMAT=es rollup -c rollup.config.js",
     "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
+    "build:dts": "run-s dts:*",
+    "dts:build": "tsc -p tsconfig.declaration.json",
+    "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
-    "test": "jest",
-    "test:coverage": "yarn test --passWithNoTests --coverage",
+    "sync-event": "node ./scripts/sync-event.mjs",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "yarn test --coverage",
     "test:ci": "yarn test --maxWorkers=3",
     "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
     "test:watch": "yarn test --watch",
@@ -64,13 +70,14 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "csstype": "^3.0.11",
+    "@testing-library/dom": "^8.16.0",
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-timer": "^3.0.0",
+    "csstype": "^3.0.11",
     "d3-dsv": "^1.1.1",
-    "tinycolor2": "^1.4.2",
     "inquirer": "^8.2.0",
-    "inquirer-autocomplete-prompt": "^2.0.0"
+    "inquirer-autocomplete-prompt": "^2.0.0",
+    "tinycolor2": "^1.4.2"
   },
   "sideEffects": [
     "*.css",
@@ -85,5 +92,8 @@
       "path": "./dist/style.min.css",
       "maxSize": "5 kB"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

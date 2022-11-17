@@ -1,13 +1,12 @@
-import { Node } from 'src/facet/layout/node';
-import { get, find } from 'lodash';
-import { CellTypes } from 'src/common/constant';
-import { DefaultCellTheme, IconTheme } from 'src/common/interface/theme';
-import { SpreadSheet } from 'src/sheet-type';
-import { HeaderActionIcon } from 'src/common/interface/basic';
-import { shouldShowActionIcons } from './header-cell';
+import { get } from 'lodash';
+import { CellTypes } from '../../common/constant';
+import type { DefaultCellTheme, IconTheme } from '../../common/interface/theme';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { getActionIconConfig } from './header-cell';
 
 export const getTableColIconsWidth = (
-  ss: SpreadSheet,
+  s2: SpreadSheet,
   meta: Node,
   cellType: CellTypes,
   iconStyle: IconTheme,
@@ -16,14 +15,12 @@ export const getTableColIconsWidth = (
   const iconMargin = get(iconStyle, 'margin');
 
   let iconNums = 0;
-  if (ss.options.showDefaultHeaderActionIcon) {
+  if (s2.options.showDefaultHeaderActionIcon) {
     iconNums = 1;
   } else {
-    iconNums = (
-      find(ss.options.headerActionIcons, (headerActionIcon: HeaderActionIcon) =>
-        shouldShowActionIcons(headerActionIcon, meta, cellType),
-      )?.iconNames ?? []
-    ).length;
+    iconNums =
+      getActionIconConfig(s2.options.headerActionIcons, meta, cellType)
+        ?.iconNames.length ?? 0;
   }
 
   return (
@@ -33,13 +30,13 @@ export const getTableColIconsWidth = (
 };
 
 export const getExtraPaddingForExpandIcon = (
-  ss: SpreadSheet,
+  s2: SpreadSheet,
   field: string,
   style: DefaultCellTheme,
 ) => {
   const iconMarginLeft = style.icon.margin?.left || 0;
   const iconMarginRight = style.icon.margin?.right || 0;
-  const hiddenColumnsDetail = ss.store.get('hiddenColumnsDetail', []);
+  const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail', []);
 
   let hasPrevSiblingCell = false;
   let hasNextSiblingCell = false;

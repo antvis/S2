@@ -1,11 +1,18 @@
-import type { BaseSheetComponentProps } from '@antv/s2-shared';
-import type { UnionToIntersection } from '@vue/shared';
+import type {
+  BaseSheetComponentProps,
+  BaseDrillDownComponentProps,
+  PartDrillDown,
+} from '@antv/s2-shared';
 import type { PropType } from 'vue';
+import type { PaginationProps } from 'ant-design-vue';
+import type { UnionToIntersection } from '@vue/shared';
+import type { TooltipContentType, S2Options, Pagination } from '@antv/s2';
 
 // 这个是vue中的类型，但是vue没有export
 // reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
 interface PropOption<T = any> {
-  type?: PropType<T>;
+  type: PropType<T>;
+  default?: T;
 }
 
 interface RequiredPropOption<T = any> {
@@ -72,7 +79,19 @@ type GetInitEmits<T> = {
 /*                                    组件类型                                    */
 /* -------------------------------------------------------------------------- */
 
+export type SheetComponentOptions = S2Options<
+  TooltipContentType,
+  Pagination & PaginationProps
+>;
+export type SheetComponentProps = BaseSheetComponentProps<
+  PartDrillDown,
+  unknown,
+  SheetComponentOptions
+>;
 export type BaseSheetInitPropKeys = GetPropKeys<BaseSheetComponentProps>;
 export type BaseSheetInitEmitKeys = GetEmitKeys<BaseSheetComponentProps>;
-export type BaseSheetInitProps = GetInitProps<BaseSheetComponentProps>;
+export type BaseSheetInitProps = GetInitProps<SheetComponentProps>;
 export type BaseSheetInitEmits = GetInitEmits<BaseSheetComponentProps>;
+export type BaseDrillDownProps = GetInitProps<BaseDrillDownComponentProps>;
+export type BaseDrillDownEmitKeys = GetEmitKeys<BaseDrillDownComponentProps>;
+export type BaseDrillDownEmits = GetInitEmits<BaseDrillDownComponentProps>;

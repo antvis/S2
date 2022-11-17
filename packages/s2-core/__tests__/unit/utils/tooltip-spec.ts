@@ -3,11 +3,12 @@ import {
   createMockCellInfo,
   createPivotSheet,
 } from 'tests/util/helpers';
-import { BBox } from '@antv/g-canvas';
+import type { BBox } from '@antv/g-canvas';
 import { omit } from 'lodash';
+import type { CellMeta } from '@/common/interface/interaction';
 import {
   getAutoAdjustPosition,
-  setContainerStyle,
+  setTooltipContainerStyle,
   getTooltipOptions,
   getTooltipData,
 } from '@/utils/tooltip';
@@ -17,16 +18,18 @@ import {
   getCellMeta,
   getTooltipVisibleOperator,
   Node,
-  S2CellType,
+  type S2CellType,
   SpreadSheet,
-  Tooltip,
-  TooltipData,
+  type Tooltip,
+  type TooltipData,
   TOOLTIP_POSITION_OFFSET,
-  Total,
-  Totals,
+  type Total,
+  type Totals,
   VALUE_FIELD,
+  TOOLTIP_CONTAINER_SHOW_CLS,
+  TOOLTIP_CONTAINER_HIDE_CLS,
 } from '@/index';
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 
 jest.mock('@/interaction/event-controller');
 
@@ -414,6 +417,7 @@ describe('Tooltip Utils Tests', () => {
       name: undefined,
       summaries: [],
       tips: undefined,
+      description: undefined,
     };
 
     const getCellData = (
@@ -512,12 +516,16 @@ describe('Tooltip Utils Tests', () => {
               })
               .slice(0, count);
 
+        const selectedCellMetas = selectedCells.map((cell) =>
+          cell.getMeta(),
+        ) as unknown as CellMeta[];
+
         jest
-          .spyOn(s2.interaction, 'getActiveCells')
-          .mockImplementationOnce(() => selectedCells);
+          .spyOn(s2.interaction, 'getCells')
+          .mockImplementationOnce(() => selectedCellMetas);
 
         const tooltipData = getTooltipData({
-          cellInfos: [selectedCells],
+          cellInfos: [selectedCellMetas],
           options: {
             showSingleTips: false,
           },
@@ -581,6 +589,7 @@ describe('Tooltip Utils Tests', () => {
 
         expect(tooltipData).toStrictEqual({
           ...defaultTooltipData,
+          description: isTotalCell ? undefined : '省份说明。。',
           summaries: [
             {
               name: '数量',
@@ -658,12 +667,81 @@ describe('Tooltip Utils Tests', () => {
         s2.destroy();
       },
     );
+
+    describe('Tooltip Description Tests', () => {
+      afterEach(() => {
+        s2.destroy();
+      });
+
+      test('should get row cell description', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(rowCell);
+
+        expect(tooltipData.description).toEqual('省份说明。。');
+      });
+
+      test('should get col cell descriptions', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const colCell = s2.interaction.getAllColHeaderCells()[0];
+
+        const tooltipData = getMockTooltipData(colCell);
+
+        expect(tooltipData.description).toEqual('类别说明。。');
+      });
+
+      test('should get data cell description', () => {
+        s2 = createTotalsPivotSheet(null);
+        s2.render();
+
+        const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
+        const tooltipData = getMockTooltipData(dataCell);
+
+        expect(tooltipData.description).toEqual('数量说明。。');
+      });
+
+      test.each(['isTotals', 'isSubTotals', 'isGrandTotals'])(
+        'should not get total cell description with %s',
+        (key) => {
+          s2 = createTotalsPivotSheet({
+            col: colTotalOptions,
+            row: rowTotalOptions,
+          });
+          s2.render();
+
+          const colTotalCell = s2.interaction
+            .getAllColHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          const rowTotalCell = s2.interaction
+            .getAllRowHeaderCells()
+            .find((cell) => {
+              const meta = cell.getMeta();
+              return meta[key];
+            });
+
+          expect(getMockTooltipData(colTotalCell).description).toBeUndefined();
+          expect(getMockTooltipData(rowTotalCell).description).toBeUndefined();
+
+          s2.destroy();
+        },
+      );
+    });
   });
 
   test('should set container style', () => {
     const container = document.createElement('div');
 
-    setContainerStyle(container, {
+    setTooltipContainerStyle(container, {
       style: {
         width: '100px',
         pointerEvents: 'none',
@@ -676,11 +754,40 @@ describe('Tooltip Utils Tests', () => {
 
   test('should set container class name', () => {
     const container = document.createElement('div');
+    container.className = 'a';
 
-    setContainerStyle(container, {
-      className: 'test',
+    setTooltipContainerStyle(container, {
+      className: ['test'],
     });
 
-    expect(container.className).toEqual('test');
+    expect(container.classList.contains('test')).toBeTruthy();
+
+    setTooltipContainerStyle(container, {
+      className: ['test', null, undefined, ''],
+    });
+
+    expect(container.classList.contains('null')).toBeFalsy();
+    expect(container.classList.contains('undefined')).toBeFalsy();
+  });
+
+  test('should set container class name by visible', () => {
+    const container = document.createElement('div');
+    container.className = 'visible';
+
+    setTooltipContainerStyle(container, {
+      visible: true,
+    });
+
+    expect(container.className).toEqual(
+      `visible ${TOOLTIP_CONTAINER_SHOW_CLS}`,
+    );
+
+    setTooltipContainerStyle(container, {
+      visible: false,
+    });
+
+    expect(container.className).toEqual(
+      `visible ${TOOLTIP_CONTAINER_HIDE_CLS}`,
+    );
   });
 });

@@ -1,28 +1,31 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
-import { isMultiSelectionKey } from '@/utils/interaction/select-event';
 import {
-  hideColumnsByThunkGroup,
-  isEqualDisplaySiblingNodeId,
-} from '@/utils/hide-columns';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import {
-  S2Event,
-  InterceptType,
   CellTypes,
-  TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
-} from '@/common/constant';
-import {
+  InterceptType,
+  S2Event,
+  getTooltipOperatorHiddenColumnsMenu,
+} from '../../../common/constant';
+import type {
   TooltipOperation,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
-} from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+} from '../../../common/interface';
+import type { Node } from '../../../facet/layout/node';
 import {
-  mergeCellInfo,
+  BaseEvent,
+  type BaseEventImplement,
+} from '../../../interaction/base-event';
+import {
+  hideColumnsByThunkGroup,
+  isEqualDisplaySiblingNodeId,
+} from '../../../utils/hide-columns';
+import { isMultiSelectionKey } from '../../../utils/interaction/select-event';
+import {
   getTooltipOptions,
   getTooltipVisibleOperator,
-} from '@/utils/tooltip';
+  mergeCellInfo,
+} from '../../../utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -69,12 +72,21 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private handleRowColClick = (event: CanvasEvent) => {
     event.stopPropagation();
-    const { interaction } = this.spreadsheet;
+
+    if (this.isLinkFieldText(event.target)) {
+      return;
+    }
+
+    const { interaction, options } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);
+
+    const { multiSelection: enableMultiSelection } = options.interaction;
+    // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
+    const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
 
     const success = interaction.selectHeaderCell({
       cell,
-      isMultiSelection: this.isMultiSelection,
+      isMultiSelection,
     });
 
     if (success) {
@@ -113,6 +125,9 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     // 只有一个叶子节点时, 不显示隐藏按钮
     const isOnlyOneLeafColumn =
       this.spreadsheet.getColumnLeafNodes().length === 1;
+
+    const TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU =
+      getTooltipOperatorHiddenColumnsMenu();
 
     const enableHiddenColumnOperator =
       isColCell &&

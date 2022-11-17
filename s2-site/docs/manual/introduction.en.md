@@ -2,7 +2,7 @@
 title: Introduction
 order: 0
 redirect_from:
-  - /zh/docs/manual
+  - /en/docs/manual
 ---
 
 

@@ -1,9 +1,8 @@
-import { omit, isEqual } from 'lodash';
-import { Hierarchy } from './hierarchy';
-import { ROOT_ID } from '@/common/constant/basic';
-import { SpreadSheet } from '@/sheet-type';
-import { S2CellType } from '@/common/interface';
-import { CornerNodeType } from '@/common/interface/node';
+import { head, isEmpty, isEqual, omit } from 'lodash';
+import { ROOT_ID } from '../../common/constant/basic';
+import type { CornerNodeType, S2CellType } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import type { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;
@@ -324,5 +323,14 @@ export class Node {
 
   public toJSON() {
     return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
+  }
+
+  public getHeadLeafChild() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let leafChild: Node = this;
+    while (!isEmpty(leafChild.children)) {
+      leafChild = head(leafChild.children);
+    }
+    return leafChild;
   }
 }

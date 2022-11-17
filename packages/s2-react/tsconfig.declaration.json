@@ -1,10 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src"],
   "compilerOptions": {
-    "declarationDir": "esm",
+    "declarationDir": "temp",
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true
-  }
+    "emitDeclarationOnly": true,
+    "paths": {}
+  },
+  "exclude": ["playground"]
 }

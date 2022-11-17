@@ -1,5 +1,12 @@
-import { drawObjectText, safeJsonParse } from '@antv/s2';
-import { ColCell, Node, SpreadSheet, ColHeaderConfig } from '@antv/s2';
+import {
+  ColCell,
+  type ColHeaderConfig,
+  drawObjectText,
+  Node,
+  safeJsonParse,
+  SpreadSheet,
+  type MultiData,
+} from '@antv/s2';
 import { isArray } from 'lodash';
 
 /**
@@ -19,12 +26,17 @@ export class CustomColCell extends ColCell {
   }
 
   protected drawTextShape() {
-    const fieldValue = this.getMeta()?.value;
-    const values = safeJsonParse(fieldValue);
-    if (isArray(values)) {
-      drawObjectText(this, { values: [values] }, true);
-    } else {
-      super.drawTextShape();
+    const meta = this.getMeta();
+    const value = safeJsonParse(meta?.value) as MultiData;
+
+    if (!isArray(value)) {
+      return super.drawTextShape();
     }
+
+    const { formattedValue } = this.getFormattedFieldValue();
+    const displayValues =
+      formattedValue !== meta?.value ? [[formattedValue]] : [value];
+
+    drawObjectText(this, { values: displayValues }, false);
   }
 }

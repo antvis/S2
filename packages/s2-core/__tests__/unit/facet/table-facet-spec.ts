@@ -2,18 +2,18 @@
  * table mode pivot test.
  */
 import { Canvas } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { FrozenGroup } from 'src/common/constant';
 import { merge } from 'lodash';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
-import { SpreadSheet } from '@/sheet-type';
+import { FrozenGroup } from '@/common/constant';
+import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { Store } from '@/common/store';
-import { getTheme } from '@/theme';
 import { DEFAULT_STYLE } from '@/index';
+import { SpreadSheet } from '@/sheet-type';
+import { getTheme } from '@/theme';
 
-jest.mock('src/sheet-type', () => {
+jest.mock('@/sheet-type', () => {
   const container = new Canvas({
     width: 100,
     height: 100,
@@ -44,11 +44,16 @@ jest.mock('src/sheet-type', () => {
         isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
+        getCanvasElement: () => container.get('el'),
+        hideTooltip: jest.fn(),
+        interaction: {
+          clearHoverTimer: jest.fn(),
+        },
       };
     }),
   };
 });
-jest.mock('src/data-set/table-data-set', () => {
+jest.mock('@/data-set/table-data-set', () => {
   return {
     TableDataSet: jest.fn().mockImplementation(() => {
       return {
@@ -168,11 +173,33 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
 
 describe('Table Mode Facet Test With Compact Layout', () => {
   describe('should get correct col layout', () => {
+    const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
     const ss: SpreadSheet = new MockSpreadSheet();
     const dataSet: TableDataSet = new MockTableDataSet(ss);
     ss.getLayoutWidthType = () => {
       return 'compact';
     };
+
+    const mockMeasureFunc = (text: string | number) => {
+      switch (text) {
+        case '浙江省':
+          return LABEL_WIDTH[0];
+        case '杭州市':
+          return LABEL_WIDTH[1];
+        case '办公用品':
+          return LABEL_WIDTH[2];
+        case '沙发':
+          return LABEL_WIDTH[3];
+        case 'undefined':
+          return LABEL_WIDTH[4];
+        default:
+          return 0;
+      }
+    };
+    ss.measureTextWidth =
+      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+    ss.measureTextWidthRoughly = mockMeasureFunc;
+
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
       dataSet,
@@ -185,7 +212,6 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
-
       const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
@@ -200,11 +226,32 @@ describe('Table Mode Facet Test With Compact Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
+    const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
     const ss: SpreadSheet = new MockSpreadSheet();
     const dataSet: TableDataSet = new MockTableDataSet(ss);
     ss.getLayoutWidthType = () => {
       return 'compact';
     };
+    const mockMeasureFunc = (text: string | number) => {
+      switch (text) {
+        case '浙江省':
+          return LABEL_WIDTH[0];
+        case '杭州市':
+          return LABEL_WIDTH[1];
+        case '办公用品':
+          return LABEL_WIDTH[2];
+        case '沙发':
+          return LABEL_WIDTH[3];
+        case 'undefined': // seriesnumber & price
+          return LABEL_WIDTH[4];
+        default:
+          return 0;
+      }
+    };
+    ss.measureTextWidth =
+      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+    ss.measureTextWidthRoughly = mockMeasureFunc;
+
     const facet: TableFacet = new TableFacet({
       spreadsheet: ss,
       dataSet,
@@ -456,10 +503,10 @@ describe('Table Mode Facet Test With Zero Height', () => {
 });
 
 describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const s2: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(s2);
   const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
+    spreadsheet: s2,
     dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
@@ -480,4 +527,42 @@ describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
       expect(item.width).toBe(200);
     });
   });
+});
+
+describe('Custom Column Width Tests', () => {
+  // https://github.com/antvis/S2/pull/1591
+  test.each([
+    { width: 200, useFunc: false },
+    { width: 300, useFunc: true },
+  ])(
+    'should render custom column leaf node width by %o',
+    ({ width, useFunc }) => {
+      const s2: SpreadSheet = new MockSpreadSheet();
+      const dataSet: TableDataSet = new MockTableDataSet(s2);
+      const widthFn = jest.fn(() => width);
+      const customWidthFacet = new TableFacet({
+        spreadsheet: s2,
+        dataSet,
+        ...assembleDataCfg().fields,
+        ...assembleOptions(),
+        ...DEFAULT_STYLE,
+        colCfg: {
+          width: useFunc ? widthFn : width,
+        },
+      });
+
+      customWidthFacet.layoutResult.colNodes.forEach((node) => {
+        expect(node.width).toStrictEqual(width);
+      });
+
+      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+        expect(node.width).toStrictEqual(width);
+      });
+
+      if (useFunc) {
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(widthFn).toHaveReturnedTimes(2);
+      }
+    },
+  );
 });

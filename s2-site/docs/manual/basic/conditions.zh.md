@@ -5,10 +5,10 @@ order: 4
 
 S2 自带字段标记特性。用户可以根据业务语义设置不同的渲染逻辑，实现重点数据的标记和分析。字段标记类型包括：
 
-* 文本 (text) 字段标记
-* 背景 (background) 字段标记
-* 柱状图 (interval) 字段标记
-* 图标 (icon) 字段标记
+* 文本 (text) 字段标记 （所有单元格类型）
+* 背景 (background) 字段标记 （所有单元格类型）
+* 柱状图 (interval) 字段标记 （仅支持数据单元格）
+* 图标 (icon) 字段标记 （目前支持透视表数据单元格、行头和列头单元格）
 
 下图直观展示了四种字段标记的形态：
 
@@ -58,8 +58,8 @@ const s2Options = {
 
 `field` 用于指定将字段标记应用于哪些字段上，其取值范围会因表的形态不同而不同：
 
-* 对于透视表，`field` 取值范围或正则匹配范围是 `values`
-* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`
+* 对于透视表，`field` 取值范围或正则匹配范围是 `values`，作用范围为行头、列头、角头和数据单元格
+* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`，作用范围为数据单元格
 
 <table
   style="width: 100%; outline: none; border-collapse: collapse;"
@@ -88,20 +88,22 @@ const s2Options = {
 
 `mapping` 是处理字段标记的回调函数：
 
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| fieldValue | 单元格对应字段的值           | `number` &#124; `string`  &#124; `null`        | -      |      |
-| data     | 单元格对应的​一条完整数据    | `object`               | -      |   ✓   |
+| 参数       | 说明                      | 类型                                    | 默认值 | 必选 |
+| ---------- | ------------------------- | --------------------------------------- | ------ | ---- |
+| fieldValue | 单元格对应字段的值        | `number` &#124; `string`  &#124; `null` | -      |      |
+| data       | 单元格对应的​一条完整数据 | `object`                                | -      | ✓    |
 
-| 返回值           | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| fill           | 当作用于文本字段标记时，代表**文字填充颜色** <br>当作用于背景字段标记时，代表**单元格背景填充颜色** <br>当作用于柱状图字段标记时，代表**柱状图填充颜色** <br>当作用于图标字段标记时，代表**图标填充颜色** <br> | `string`    | -      |   ✓   |
-| icon     | 仅用于**图标**字段标记，指定图标类型    | `string`              | -      |      |
-| isCompare |仅用于**柱状图**字段标记，当为 `true` 时，可以定制柱状图的最大最小值 |`boolean`| -      |      |
-| minValue | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最小值  |`number` | -      |      |
-| maxValue |  仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值 |`number` | -      |      |
+| 返回值    | 说明                                                                                                                                                                                                           | 类型      | 默认值 | 必选 |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------ | ---- |
+| fill      | 当作用于文本字段标记时，代表**文字填充颜色** <br>当作用于背景字段标记时，代表**单元格背景填充颜色** <br>当作用于柱状图字段标记时，代表**柱状图填充颜色** <br>当作用于图标字段标记时，代表**图标填充颜色** <br> | `string`  | -      | ✓    |
+| icon      | 仅用于**图标**字段标记，指定图标类型                                                                                                                                                                           | `string`  | -      |      |
+| isCompare | 仅用于**柱状图**字段标记，当为 `true` 时，可以定制柱状图的最大最小值                                                                                                                                           | `boolean` | -      |      |
+| minValue  | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最小值                                                                                                                                          | `number`  | -      |      |
+| maxValue  | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值                                                                                                                                          | `number`  | -      |      |
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
+
+`markdown:docs/common/icon.zh.md`​
 
 🎨 字段标记详细的配置参考 [Conditions API](/zh/docs/api/general/S2Options#conditions) 文档。
 
@@ -109,28 +111,44 @@ const s2Options = {
 
 ### 自定义图标位置
 
-通过设置 `icon` 字段标记中的 `position` 属性，可以设置图标位于文本的左侧还是右侧。
+通过设置 `icon` 字段标记中的 `position` 属性，可以设置图标位于文本的左侧还是右侧。（目前表头单元格暂不支持切换）
 
 `price` 字段的图标位于文本右侧，`cost` 字段的图标位于文本左侧：
 
 <playground path="analysis/conditions/demo/icon.ts" rid='icon' height="200"></playground>
 
-​
-
 ### 自定义柱状图范围
 
-通过显示指定 `interval` 字段标记中的 `mapping 函数` 返回值  `isCompare` 属性值为 `true`，并指定 `maxValue` 和 `minValue` 的值，可以自定义柱状图的区间范围。
+通过显示指定 `interval` 字段标记中的 `mapping` 函数返回值  `isCompare` 属性值为 `true`，并指定 `maxValue` 和 `minValue` 的值，可以自定义柱状图的区间范围。
 > 如果 `mapping 函数` 返回值中的 `isCompare` 属性值为 `false` 或者不返回该属性。此时 `maxValue` 和 `minValue` 会以所有图表数据中该字段的最大最小值为区间范围
 
 `price` 字段使用自定义模式，`cost` 字段使用默认模式：
 
 <playground path="analysis/conditions/demo/interval.ts" rid='interval'></playground>
 
+### 双向柱状图
+
+当柱状图的区间有正负之分时，并搭配 `mapping` 函数返回值的 `fill` 属性，即可绘制出带有不同颜色的正负双向柱状图：
+
+<playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
+
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#bidirectional-interval)。
+
 ### 渐变柱状图
 
-`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)等。
+`S2` 的底层图形绘制采用 [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) 渲染引擎 ，借助其强大的绘制能力，`fill` 字段不仅仅是颜色属性，还可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)、[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86) 等。
 
 `price` 字段使用渐变色：
 <playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#text)。
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#gradient-interval)。
+
+### 开启文字智能反色
+
+通过显示指定 `background` 字段标记中的 `mapping` 函数返回值  `intelligentReverseTextColor` 属性值为 `true`。
+当标记背景颜色较暗时，文本颜色将变为白色。当标记背景颜色明亮时，文本颜色默认为黑色。
+优先级： `background condition` 的 `intelligentReverseTextColor` < `text condition` 的 `fill`
+
+<playground path="analysis/conditions/demo/intelligent-background.ts" rid='intelligentReverseTextColor'></playground>
+
+​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#intelligent-background)。

@@ -3,23 +3,28 @@
   "meta": [
     {
       "field": "number",
-      "name": "数量"
+      "name": "数量",
+      "description": "数量说明。。"
     },
     {
       "field": "province",
-      "name": "省份"
+      "name": "省份",
+      "description": "省份说明。。"
     },
     {
       "field": "city",
-      "name": "城市"
+      "name": "城市",
+      "description": "城市说明。。"
     },
     {
       "field": "type",
-      "name": "类别"
+      "name": "类别",
+      "description": "类别说明。。"
     },
     {
       "field": "sub_type",
-      "name": "子类别"
+      "name": "子类别",
+      "description": "子类别说明。。"
     }
   ],
   "fields": {

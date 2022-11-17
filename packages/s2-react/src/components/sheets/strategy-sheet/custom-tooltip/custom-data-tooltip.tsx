@@ -1,89 +1,103 @@
-import React from 'react';
+import {
+  i18n,
+  getEmptyPlaceholder,
+  isUpDataValue,
+  type MultiData,
+  type SimpleDataItem,
+  type ViewMeta,
+} from '@antv/s2';
 import cls from 'classnames';
-import { find, first, get, isEmpty, isNil } from 'lodash';
-import { isUpDataValue, MultiData, getEmptyPlaceholder } from '@antv/s2';
-import { CustomTooltipProps } from './interface';
+import { first, get, isEmpty, isFunction, isNil } from 'lodash';
+import React from 'react';
+import { getStrategySheetTooltipClsName as tooltipCls } from '@antv/s2-shared';
+import { getLeafColNode, getRowName, getRowDescription } from '../utils';
+import type { CustomTooltipProps } from './interface';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import styles from './index.module.less';
+import './index.less';
 
-export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
-  const meta = cell.getMeta();
+export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
+  cell,
+  label,
+  showOriginalValue: showOriginalValueFromTooltip,
+  renderDerivedValue,
+}) => {
+  const meta = cell.getMeta() as ViewMeta;
+  const metaFieldValue = meta?.fieldValue as MultiData<SimpleDataItem[][]>;
 
-  const currentRow = React.useMemo(
-    () =>
-      find(meta.spreadsheet.getRowNodes(), {
-        rowIndex: meta.rowIndex,
-      }),
-    [meta],
-  );
-
-  const currentLeafCol = React.useMemo(
-    () =>
-      find(meta.spreadsheet.getColumnNodes(), {
-        colIndex: meta.colIndex,
-        isLeaf: true,
-      }),
-    [meta],
-  );
+  const rowDescription = getRowDescription(meta);
+  const defaultRowName = getRowName(meta);
+  const customLabel = isFunction(label) ? label(cell, defaultRowName) : label;
+  const rowName = customLabel ?? defaultRowName;
+  const leftColNode = getLeafColNode(meta);
 
   const [, ...derivedLabels] = React.useMemo(() => {
     try {
-      return JSON.parse(currentLeafCol.value);
+      return JSON.parse(leftColNode?.value);
     } catch {
       return [];
     }
-  }, [currentLeafCol.value]);
-
-  const rowName = meta.spreadsheet.dataSet.getFieldName(
-    currentRow?.valueFiled || currentRow?.value,
-  );
-
-  const [value, ...derivedValues] = first(
-    (meta.fieldValue as MultiData)?.values,
-  ) || [meta.fieldValue];
+  }, [leftColNode?.value]);
 
   const { placeholder, style } = meta.spreadsheet.options;
-  const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
   const valuesCfg = style.cellCfg?.valuesCfg;
-  const originalValue = get(meta.fieldValue, valuesCfg?.originalValueField);
+
+  const [value, ...derivedValues] = first(metaFieldValue?.values) || [
+    metaFieldValue,
+  ];
+  const [originalValue, ...derivedOriginalValues] = first(
+    get(metaFieldValue, valuesCfg?.originalValueField) as SimpleDataItem[][],
+  ) || [value];
+
+  const emptyPlaceholder = getEmptyPlaceholder(meta, placeholder);
+  const showOriginalValue =
+    valuesCfg?.showOriginalValue || showOriginalValueFromTooltip;
 
   return (
-    <div className={cls(styles.strategySheetTooltip, styles.data)}>
-      <div className={styles.header}>
-        <span className={styles.label}>{rowName}</span>
+    <div className={cls(tooltipCls(), tooltipCls('data'))}>
+      <div className={tooltipCls('header')}>
+        <span className={'header-label'}>{rowName}</span>
         <span>{value ?? emptyPlaceholder}</span>
       </div>
-      <div className={styles.originalValue}>
-        {isNil(originalValue?.[0]?.[0])
-          ? emptyPlaceholder
-          : originalValue?.[0]?.[0]}
-      </div>
+      {showOriginalValue && (
+        <div className={tooltipCls('original-value')}>
+          {isNil(originalValue) ? emptyPlaceholder : originalValue}
+        </div>
+      )}
       {!isEmpty(derivedValues) && (
         <>
-          <div className={styles.divider}></div>
-          <ul className={styles.derivedValues}>
-            {derivedValues.map((derivedValue, i) => {
-              const isNormal = isNil(derivedValue);
-              const isUp = isUpDataValue(derivedValue);
+          <div className={tooltipCls('divider')} />
+          <ul className={tooltipCls('derived-values')}>
+            {derivedValues.map((derivedValue: SimpleDataItem, i) => {
+              const isNormal = isNil(derivedValue) || derivedValue === '';
+              const isUp = isUpDataValue(derivedValue as string);
               const isDown = !isNormal && !isUp;
+              const originalDerivedValue = derivedOriginalValues[
+                i
+              ] as SimpleDataItem;
 
               return (
-                <li className={styles.value} key={i}>
-                  <span className={styles.derivedValueLabel}>
+                <li className="derived-value-item" key={i}>
+                  <span className="derived-value-label">
                     {derivedLabels[i]}
                   </span>
                   <span
-                    className={cls(styles.derivedValueGroup, {
-                      [styles.up]: isUp,
-                      [styles.down]: isDown,
+                    className={cls('derived-value-group', {
+                      'derived-value-trend-up': isUp,
+                      'derived-value-trend-down': isDown,
                     })}
                   >
-                    {!isNormal && <span className={styles.icon}></span>}
-                    <span className={styles.value}>
-                      {derivedValue ?? emptyPlaceholder}
-                    </span>
+                    {!isNormal && (
+                      <span className="derived-value-trend-icon"></span>
+                    )}
+                    {renderDerivedValue?.(
+                      derivedValue,
+                      originalDerivedValue,
+                      cell,
+                    ) ?? (
+                      <span className="derived-value-content">
+                        {derivedValue ?? emptyPlaceholder}
+                      </span>
+                    )}
                   </span>
                 </li>
               );
@@ -91,6 +105,15 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
           </ul>
         </>
       )}
+      {rowDescription && (
+        <div className={tooltipCls('description')}>
+          {i18n('说明')}: {rowDescription}
+        </div>
+      )}
     </div>
   );
+};
+
+StrategySheetDataTooltip.defaultProps = {
+  showOriginalValue: false,
 };

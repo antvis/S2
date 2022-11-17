@@ -1,11 +1,11 @@
-import { S2Options } from '../interface/s2Options';
+import { ResizeType } from '../../common/constant/resize';
+import type { Style } from '../../common/interface/basic';
 import {
   HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
 } from '../constant/interaction';
+import type { S2Options } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
-import { Style } from '@/common/interface/basic';
-import { ResizeType } from '@/common/constant/resize';
 
 export const MIN_DEVICE_PIXEL_RATIO = 1;
 
@@ -15,10 +15,11 @@ export enum LayoutWidthTypes {
   Compact = 'compact',
 }
 
+export const DEFAULT_TREE_ROW_WIDTH = 120;
+
 export const DEFAULT_STYLE: Readonly<Style> = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
   showTreeLeafNodeAlignDot: false,
-  treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
   cellCfg: {
@@ -66,7 +67,11 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
-    brushSelection: true,
+    brushSelection: {
+      data: true,
+      row: false,
+      col: false,
+    },
     multiSelection: true,
     rangeSelection: true,
     scrollbarPosition: ScrollbarPositionType.CONTENT,
@@ -78,6 +83,8 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       rowResizeType: ResizeType.ALL,
     },
     eventListenerOptions: false,
+    selectedCellHighlight: false,
+    overscrollBehavior: 'auto',
   },
   showSeriesNumber: false,
   customSVGIcons: [],

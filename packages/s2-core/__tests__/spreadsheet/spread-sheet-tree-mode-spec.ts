@@ -1,7 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import { S2DataConfig, S2Options } from '@/common';
+import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
@@ -26,7 +26,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
       s2.render();
 
       const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;
-      expect(rowsHierarchyWidth).toEqual(120);
+      expect(Math.round(rowsHierarchyWidth)).toEqual(123);
 
       // 行头维度均更改为较长的 name
       const newDataCfg: S2DataConfig = {

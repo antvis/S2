@@ -1,16 +1,12 @@
-import {
-  customMerge,
-  ResizeActiveOptions,
-  S2Options,
-  ThemeCfg,
-  ResizeType,
-} from '@antv/s2';
+import { customMerge, type ThemeCfg, ResizeType } from '@antv/s2';
 import { Checkbox, Switch } from 'antd';
-import React, { FC } from 'react';
+import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import React from 'react';
+import type { SheetComponentOptions } from '../src/components';
 
 const RESIZE_CONFIG: Array<{
   label: string;
-  value: keyof ResizeActiveOptions;
+  value: string;
 }> = [
   { label: '角头热区', value: 'cornerCellHorizontal' },
   { label: '行头热区', value: 'rowCellVertical' },
@@ -18,9 +14,11 @@ const RESIZE_CONFIG: Array<{
   { label: '列头垂直方向resize热区', value: 'colCellVertical' },
 ];
 
-export const ResizeConfig: FC<{
+export const ResizeConfig: React.FC<{
   setThemeCfg: (cb: (theme: ThemeCfg) => ThemeCfg) => void;
-  setOptions: (cb: (prev: S2Options) => S2Options) => void;
+  setOptions: (
+    cb: (prev: SheetComponentOptions) => SheetComponentOptions,
+  ) => void;
 }> = ({ setThemeCfg, setOptions }) => {
   const [showResizeArea, setShowResizeArea] = React.useState(false);
   const [rowResizeAffectCurrent, setRowResizeAffectCurrent] =
@@ -48,18 +46,18 @@ export const ResizeConfig: FC<{
     setOptions((prev) => customMerge({}, prev, opts));
   };
 
-  const onResizeActiveChange = (checkedAreas: string[]) => {
+  const onResizeActiveChange = (checkedAreas: CheckboxValueType[]) => {
     const resize = RESIZE_CONFIG.reduce((cfg, item) => {
       const type = item.value;
       cfg[type] = checkedAreas.includes(type);
       return cfg;
     }, {});
 
-    const updatedOptions = {
+    const updatedOptions: SheetComponentOptions = {
       interaction: {
         resize,
       },
-    } as S2Options;
+    };
 
     setOptions((prev) => customMerge({}, prev, updatedOptions));
   };

@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import {
   SpreadSheet,
-  S2CellType,
+  type S2CellType,
   S2Event,
   BaseEvent,
   InteractionStateName,
@@ -17,7 +17,10 @@ export class CustomHover extends BaseEvent {
   private bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: GEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
-      if (isEmpty(cell)) return;
+      if (isEmpty(cell)) {
+        return;
+      }
+
       this.spreadsheet.interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,

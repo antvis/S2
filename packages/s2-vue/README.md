@@ -2,7 +2,22 @@
 
 <div align="center">
 
-数据驱动的多维分析表格 (Vue 版本）。
+数据驱动的多维分析表格 (Vue3 版本）。
+
+<p>
+ <a href="https://www.npmjs.com/package/@antv/s2-vue" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2-vue.svg" alt="npm"/>
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2-vue" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/latest.svg" alt="latest version">
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2-vue" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-vue/beta.svg" alt="beta version">
+  </a>
+   <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
+    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
+  </a>
+</p>
 
 </div>
 
@@ -18,15 +33,14 @@ $ npm install @antv/s2-vue
 ### 1. 数据准备
 
 <details>
-  <summary> s2DataConfig</summary>
-  
+  <summary>s2DataConfig</summary>
+
 ```ts
-const rawDataCfg: S2DataConfig = {
+const s2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
     values: ['number'],
-    valueInCols: true,
   },
   meta: [
     {
@@ -282,52 +296,12 @@ const rawDataCfg: S2DataConfig = {
 </details>
 
 <details>
-  <summary> S2Options</summary>
-  
+  <summary>S2Options</summary>
+
 ```ts
 const rawOptions: S2Options = {
-  debug: true,
   width: 600,
-  height: 400,
-  hierarchyCollapse: false,
-  tooltip: {
-    operation: {
-      trend: true,
-      hiddenColumns: true,
-      sort: true,
-      onClick: (...args) => {
-        console.log('menuClick', ...args);
-      },
-      menus: [
-        {
-          key: '1',
-          icon: 'Trend',
-          text: '菜单 1',
-          onClick(cell) {
-            console.log('cell-1: ', cell);
-          },
-          children: [
-            {
-              key: '1-1',
-              icon: 'Trend',
-              text: '菜单 1-1',
-              onClick(cell) {
-                console.log('cell-1-1: ', cell);
-              },
-            },
-          ],
-        },
-        {
-          key: '2',
-          icon: 'Trend',
-          text: '菜单 2',
-          onClick(cell) {
-            console.log('cell-2: ', cell);
-          },
-        },
-      ],
-    },
-  },
+  height: 480,
 };
 ```
 
@@ -339,15 +313,16 @@ const rawOptions: S2Options = {
 // App.vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
+import { SheetComponent } from '@antv/s2-vue';
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue';
+import "@antv/s2-vue/dist/style.min.css";
 
 export default defineComponent({
   setup() {
     const s2 = shallowRef();
     // dataCfg 数据字段较多，建议使用 shallow, 如果有数据更改直接替换整个对象
-    const dataCfg = shallowRef(rawDataCfg);
-    const options: S2Options = reactive(rawOptions);
+    const dataCfg = shallowRef(s2DataConfig);
+    const options: S2Options = reactive(S2Options);
 
     onMounted(() => {
       console.log('s2 instance:', s2.value?.instance);
@@ -360,18 +335,14 @@ export default defineComponent({
   },
 
   components: {
-    Sheet,
+    SheetComponent,
   },
 });
 </script>
 
 <template>
-  <Sheet ref="s2" :dataCfg="dataCfg" :options="options" />
+  <SheetComponent ref="s2" :dataCfg="dataCfg" :options="options" />
 </template>
-
-<style lang="less">
-@import 'ant-design-vue/dist/antd.less';
-</style>
 ```
 
 ### 3. 渲染

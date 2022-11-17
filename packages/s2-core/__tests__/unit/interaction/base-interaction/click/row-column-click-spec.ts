@@ -1,20 +1,20 @@
-import { Event as GEvent } from '@antv/g-canvas';
+import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
-import {
+import type {
   HiddenColumnsInfo,
   S2CellType,
   S2Options,
   ViewMeta,
 } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
-import { Node } from '@/facet/layout/node';
+import type { Node } from '@/facet/layout/node';
 
 jest.mock('@/interaction/event-controller');
 
-describe('Interaction Data Cell Click Tests', () => {
+describe('Interaction Row & Column Cell Click Tests', () => {
   let rowColumnClick: RowColumnClick;
   let s2: SpreadSheet;
 
@@ -137,6 +137,41 @@ describe('Interaction Data Cell Click Tests', () => {
     },
   );
 
+  test('should emit link field jump event when row cell clicked and not show tooltip', () => {
+    const linkFieldJump = jest.fn();
+
+    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, linkFieldJump);
+
+    const selectHeaderCellSpy = jest
+      .spyOn(s2.interaction, 'selectHeaderCell')
+      .mockImplementationOnce(() => false);
+
+    const mockCellData = {
+      valueField: 'valueField',
+      data: { a: 1 },
+      getHeadLeafChild() {
+        return this;
+      },
+    };
+
+    s2.emit(S2Event.ROW_CELL_CLICK, {
+      stopPropagation() {},
+      target: {
+        attrs: {
+          appendInfo: {
+            cellData: mockCellData,
+            isLinkFieldText: true,
+          },
+        },
+      },
+    } as unknown as GEvent);
+
+    expect(linkFieldJump).toHaveBeenCalledTimes(1);
+    expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();
+    expect(s2.showTooltip).not.toHaveBeenCalled();
+    expect(selectHeaderCellSpy).not.toHaveBeenCalled();
+  });
+
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
     'should emit cell selected event when %s clicked',
     (event) => {
@@ -147,6 +182,52 @@ describe('Interaction Data Cell Click Tests', () => {
         stopPropagation() {},
       } as unknown as GEvent);
       expect(selected).toHaveBeenCalledWith([mockCell]);
+    },
+  );
+
+  test.each([
+    {
+      event: S2Event.ROW_CELL_CLICK,
+      enableMultiSelection: false,
+      result: false,
+    },
+    {
+      event: S2Event.COL_CELL_CLICK,
+      enableMultiSelection: false,
+      result: false,
+    },
+    {
+      event: S2Event.ROW_CELL_CLICK,
+      enableMultiSelection: true,
+      result: true,
+    },
+    {
+      event: S2Event.COL_CELL_CLICK,
+      enableMultiSelection: true,
+      result: true,
+    },
+  ])(
+    'should emit cell selected event when %s clicked with multi selection',
+    ({ event, enableMultiSelection, result }) => {
+      s2.options.interaction.multiSelection = enableMultiSelection;
+
+      const selectHeaderCellSpy = jest
+        .spyOn(s2.interaction, 'selectHeaderCell')
+        .mockImplementation(() => true);
+
+      Object.defineProperty(rowColumnClick, 'isMultiSelection', {
+        value: true,
+        writable: true,
+      });
+
+      s2.emit(event, {
+        stopPropagation() {},
+      } as unknown as GEvent);
+
+      expect(selectHeaderCellSpy).toHaveBeenCalledWith({
+        cell: expect.anything(),
+        isMultiSelection: result,
+      });
     },
   );
 

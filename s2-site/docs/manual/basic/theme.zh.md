@@ -5,7 +5,7 @@ order: 6
 
 ## 简介
 
-S2 中内置了 3 套开箱即用的主题配置，也提供了强大的主题自定义功能。
+S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主题自定义功能。
 
 ### 色彩
 
@@ -28,7 +28,7 @@ S2 中内置了 3 套开箱即用的主题配置，也提供了强大的主题�
 - basicColors：基础颜色，共 15 个色彩位，本质上确定了表格的配色方案，生成主题 schema 时会从 basicColors 固定索引上取色，如行头背景颜色固定会取 `basicColors[1]` 的颜色
 - basicColorRelations：basicColors 与标准色板的对应关系，如内置的 colorful 主题中，行头背景色 `basicColors[1]` 是取用标准色板中的索引 0 的颜色
 
-由此 s2 保证了，所有绘制时使用的颜色均来自于主题色或主题色的派生颜色。这样使表格界面颜色统一，也便于用户根据自己需要的主题色，生成个性化主题。
+由此 S2 保证了，所有绘制时使用的颜色均来自于主题色或主题色的派生颜色。这样使表格界面颜色统一，也便于用户根据自己需要的主题色，生成个性化主题。
 
 ### 主题 schema
 
@@ -37,6 +37,17 @@ S2 中内置了 3 套开箱即用的主题配置，也提供了强大的主题�
 - basicColors：基础颜色，如角/列/行头背景，字体/icon 颜色
 - semanticColors：语义颜色，如红色、绿色指代的色值
 - others：补充颜色，一些固定特殊色，如搜索结果
+
+```ts
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+s2.setTheme({
+  background: {
+    color: '#353c59',
+  },
+});
+s2.render(false);
+```
 
 ## 自定义主题
 
@@ -55,7 +66,7 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // name 可为 default, colorful, gray
 s2.setThemeCfg({ name: 'colorful' });
-s2.render();
+s2.render(false);
 ```
 
 S2 内置 3 套主题效果：
@@ -110,8 +121,8 @@ const customTheme = {
   },
 };
 
-s2.setThemeCfg({ theme: customTheme });
-s2.render();
+s2.setTheme(customTheme)
+s2.render(false);
 ```
 
 <playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
@@ -124,7 +135,7 @@ s2.render();
 
 你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
 
-另外为方便大家调配专属色板，S2 官方提供了[自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
+另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -136,8 +147,6 @@ const s2Palette = {
     '#F8F5FE',
     '#EDE1FD',
     '#873BF4',
-    '#7232CF',
-    '#7232CF',
     '#7232CF',
     '#AB76F7',
     '#FFFFFF',
@@ -155,7 +164,7 @@ const s2Palette = {
   },
 };
 s2.setThemeCfg({ palette: s2Palette });
-s2.render();
+s2.render(false);
 ```
 
 <playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
@@ -183,7 +192,7 @@ s2.setThemeCfg({
 });
 
 s2.setThemeCfg({ palette: s2Palette });
-s2.render();
+s2.render(false);
 ```
 
 <playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>

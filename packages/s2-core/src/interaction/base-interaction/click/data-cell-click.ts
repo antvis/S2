@@ -1,21 +1,25 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { get } from 'lodash';
-import { getTooltipOptions, getTooltipVisibleOperator } from '@/utils/tooltip';
-import { getCellMeta } from '@/utils/interaction/select-event';
-import { DataCell } from '@/cell/data-cell';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { DataCell } from '../../../cell/data-cell';
 import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_TREND_MENU,
-} from '@/common/constant';
-import {
-  CellAppendInfo,
+  getTooltipOperatorTrendMenu,
+} from '../../../common/constant';
+import type {
   TooltipData,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
+} from '../../../common/interface';
+import {
+  getCellMeta,
+  updateRowColCells,
+} from '../../../utils/interaction/select-event';
+import {
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '../../../utils/tooltip';
+import { BaseEvent, type BaseEventImplement } from '../../base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -25,13 +29,18 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
-      const { interaction } = this.spreadsheet;
+
+      const { interaction, options } = this.spreadsheet;
+      interaction.clearHoverTimer();
+
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
 
-      interaction.clearHoverTimer();
-      this.emitLinkFieldClickEvent(event);
+      if (this.isLinkFieldText(event.target)) {
+        this.emitLinkFieldClickEvent(event);
+        return;
+      }
 
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
@@ -41,8 +50,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       }
 
       interaction.addIntercepts([InterceptType.HOVER]);
+
       if (interaction.isSelectedCell(cell)) {
-        interaction.reset();
+        // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail，使用 detail属性来判断是否是双击，双击时不触发选择态reset
+        if ((event.originalEvent as UIEvent)?.detail === 1) {
+          interaction.reset();
+        }
         return;
       }
 
@@ -52,6 +65,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
+
+      if (options.interaction.selectedCellHighlight) {
+        updateRowColCells(meta);
+      }
     });
   }
 
@@ -59,12 +76,21 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     event: CanvasEvent,
     meta: ViewMeta,
   ): TooltipOperatorOptions {
+    const TOOLTIP_OPERATOR_TREND_MENU = getTooltipOperatorTrendMenu();
     const cell = this.spreadsheet.getCell(event.target);
     const { operation } = getTooltipOptions(this.spreadsheet, event);
     const trendMenu = operation.trend && {
       ...TOOLTIP_OPERATOR_TREND_MENU,
       onClick: () => {
-        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
+        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, {
+          ...meta,
+          // record 只有明细模式下存在
+          record: this.spreadsheet.isTableMode()
+            ? this.spreadsheet.dataSet.getCellData({
+                query: { rowIndex: meta.rowIndex },
+              })
+            : undefined,
+        });
         this.spreadsheet.hideTooltip();
       },
     };
@@ -86,7 +112,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     } = meta;
     const currentCellMeta = data;
     const showSingleTips = this.spreadsheet.isTableMode();
-    const cellData = showSingleTips
+    const cellData: TooltipData = showSingleTips
       ? {
           ...currentCellMeta,
           value: value || fieldValue,
@@ -108,19 +134,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private emitLinkFieldClickEvent(event: CanvasEvent) {
-    const appendInfo = get(
-      event.target,
-      'attrs.appendInfo',
-      {},
-    ) as CellAppendInfo<ViewMeta>;
+    const { cellData } = this.getCellAppendInfo(event.target);
+    const { valueField: key, data: record } = cellData;
 
-    if (appendInfo.isRowHeaderText) {
-      const { cellData } = appendInfo;
-      const { valueField: key, data: record } = cellData;
-      this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
-        key,
-        record,
-      });
-    }
+    this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
+      key,
+      record: Object.assign({ rowIndex: cellData.rowIndex }, record),
+    });
   }
 }

@@ -1,8 +1,8 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import { Event as GEvent } from '@antv/g-canvas';
-import { S2CellType } from '@/common/interface/interaction';
-import { S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import type { Event as GEvent } from '@antv/g-canvas';
+import type { S2CellType } from '@/common/interface/interaction';
+import type { S2Options } from '@/common/interface';
+import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
@@ -225,5 +225,14 @@ describe('Interaction Range Selection Tests', () => {
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+  });
+
+  test('should get correct state when reset', () => {
+    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
+      key: InteractionKeyboardKey.SHIFT,
+    } as KeyboardEvent);
+    expect((rangeSelection as any).isRangeSelection).toBe(true);
+    rangeSelection.reset();
+    expect((rangeSelection as any).isRangeSelection).toBe(false);
   });
 });

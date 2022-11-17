@@ -1,33 +1,41 @@
 import cx from 'classnames';
-import React, { FC, useState } from 'react';
+import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { Checkbox } from 'antd';
 import { i18n } from '@antv/s2';
-import { DroppableType, SWITCHER_CONFIG } from '../constant';
-import { SwitcherField, SwitcherItem } from '../interface';
-import { DimensionCommonProps, DimensionItem } from '../item';
+import type { DroppableType } from '../constant';
+import type { SwitcherField, SwitcherItem } from '../interface';
+import { type DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
 import './index.less';
 
 const CLASS_NAME_PREFIX = 'dimension';
+
 type DimensionProps = SwitcherField &
   DimensionCommonProps & {
     droppableType: DroppableType;
+    text: string;
+    icon: React.FunctionComponent;
     crossRows?: boolean;
   };
 
-export const Dimension: FC<DimensionProps> = ({
-  fieldType,
-  crossRows,
-  expandable,
-  expandText,
-  allowEmpty,
-  items,
-  droppableType,
-  ...rest
-}) => {
-  const [expandChildren, setExpandChildren] = useState(true);
+export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
+  const {
+    fieldType,
+    crossRows = false,
+    selectable = false,
+    expandable = false,
+    expandText = i18n('展开子项'),
+    allowEmpty = true,
+    items = [],
+    droppableType,
+    text,
+    icon: Icon,
+    ...rest
+  } = props;
+
+  const [expandChildren, setExpandChildren] = React.useState(true);
 
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);
@@ -35,8 +43,6 @@ export const Dimension: FC<DimensionProps> = ({
 
   // 开启不允许为空后，如果当前有且仅有一个item时，需要禁用拖动
   const isDragDisabled = !allowEmpty && items.length === 1;
-
-  const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
     <div
       className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), {
@@ -75,6 +81,7 @@ export const Dimension: FC<DimensionProps> = ({
                 item={item}
                 expandable={expandable}
                 expandChildren={expandChildren}
+                selectable={selectable}
                 isDragDisabled={isDragDisabled}
                 {...rest}
               />
@@ -85,13 +92,6 @@ export const Dimension: FC<DimensionProps> = ({
       </Droppable>
     </div>
   );
-};
+});
 
-Dimension.defaultProps = {
-  allowEmpty: true,
-  crossRows: false,
-  expandable: false,
-  expandText: i18n('展开子项'),
-  selectable: false,
-  items: [],
-};
+Dimension.displayName = 'Dimension';

@@ -1,11 +1,9 @@
-import { i18n } from '../i18n';
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const EXTRA_COLUMN_FIELD = '$$extra_column$$';
 export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
-export const DEFAULT_CORNER_TEXT = i18n('指标');
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
@@ -27,6 +25,7 @@ export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
 export const KEY_GROUP_FORE_GROUND = 'foreGroundGroup';
 export const KEY_GROUP_PANEL_GROUND = 'panelGroup';
 export const KEY_GROUP_PANEL_SCROLL = 'panelScrollGroup';
+export const KEY_GROUP_MERGED_CELLS = 'mergedCellsGroup';
 export const KEY_GROUP_PANEL_FROZEN_ROW = 'frozenRowGroup';
 export const KEY_GROUP_PANEL_FROZEN_COL = 'frozenColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TRAILING_ROW = 'frozenTrailingRowGroup';
@@ -77,3 +76,19 @@ export const IMAGE = 'image';
 
 // 角头最大占整个容器的比例 (0-1)
 export const CORNER_MAX_WIDTH_RATIO = 0.5;
+
+/** 布局采样数 */
+export const LAYOUT_SAMPLE_COUNT = 50;
+
+/** mini 图类型 */
+export enum MiniChartTypes {
+  Line = 'line',
+  Bar = 'bar',
+  Bullet = 'bullet',
+}
+
+// 线条 linecap 样式
+export const SQUARE_LINE_CAP = 'square';
+
+// 省略号
+export const ELLIPSIS_SYMBOL = '...';

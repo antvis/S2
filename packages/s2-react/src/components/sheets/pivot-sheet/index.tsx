@@ -2,16 +2,15 @@ import { isEmpty, isObject } from 'lodash';
 import React from 'react';
 import { SpreadSheet, getTooltipOptions } from '@antv/s2';
 import { useLatest } from 'ahooks';
-import { BaseSheet } from '../base-sheet';
-import { DrillDown } from '@/components/drill-down';
-import { SheetComponentsProps } from '@/components/sheets/interface';
-
 import {
-  ActionIconCallback,
-  handleDrillDown,
   buildDrillDownOptions,
-} from '@/utils';
-import { usePivotSheetUpdate } from '@/hooks';
+  handleDrillDown,
+  type ActionIconCallback,
+} from '@antv/s2-shared';
+import { BaseSheet } from '../base-sheet';
+import { usePivotSheetUpdate } from '../../../hooks';
+import { DrillDown } from '../../drill-down';
+import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -50,8 +49,10 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
 
     /** 基于 props.options 来构造新的 options 传递给 base-sheet */
     const options = React.useMemo(() => {
-      return buildDrillDownOptions(pivotOptions, partDrillDown, (params) =>
-        onDrillDownIconClick.current(params),
+      return buildDrillDownOptions<SheetComponentOptions>(
+        pivotOptions,
+        partDrillDown,
+        (params) => onDrillDownIconClick.current(params),
       );
     }, [pivotOptions, partDrillDown, onDrillDownIconClick]);
 

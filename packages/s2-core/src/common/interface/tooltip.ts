@@ -1,7 +1,8 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import type { SpreadSheet } from '@/sheet-type';
-import type { S2CellType, SortParam } from '@/common/interface';
-import type { BaseTooltip } from '@/ui/tooltip';
+import type * as CSS from 'csstype';
+import type { SpreadSheet } from '../../sheet-type';
+import type { S2CellType, SortParam } from '../../common/interface';
+import type { BaseTooltip } from '../../ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
@@ -17,6 +18,7 @@ export interface TooltipOperatorMenu {
 export interface TooltipOperatorOptions {
   onClick?: (...args: unknown[]) => void;
   menus?: TooltipOperatorMenu[];
+  defaultSelectedKeys?: string[];
 }
 
 export interface TooltipPosition {
@@ -24,26 +26,25 @@ export interface TooltipPosition {
   y: number;
 }
 
-export type ListItem = {
+export type TooltipDetailListItem = {
   name: string;
   value: string | number;
   icon?: Element | string;
 };
 
-export interface SortQuery {
-  [key: string]: string;
-}
-
 export interface TooltipOptions {
+  // 隐藏汇总
   hideSummary?: boolean;
-  // button action on the top
+  // 顶部操作项
   operator?: TooltipOperatorOptions;
   enterable?: boolean;
-  // totals or not
+  // 是否是小计
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
   enableFormat?: boolean;
+  // 是否强制清空 dom
+  forceRender?: boolean;
 }
 
 export interface TooltipSummaryOptions {
@@ -60,7 +61,9 @@ export interface TooltipNameTipsOptions {
 export interface TooltipOperationOptions {
   plot: SpreadSheet;
   sortFieldId: string;
-  sortQuery: SortQuery;
+  sortQuery: {
+    [key: string]: string;
+  };
 }
 
 export interface TooltipOperationState {
@@ -68,7 +71,7 @@ export interface TooltipOperationState {
 }
 
 export type TooltipDetailProps = {
-  list: ListItem[];
+  list: TooltipDetailListItem[];
 };
 
 export type TooltipInterpretationOptions = {
@@ -94,7 +97,7 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
-  details?: ListItem[];
+  details?: TooltipDetailListItem[];
   headInfo?: TooltipHeadInfo;
   name?: string;
   tips?: string;
@@ -102,11 +105,12 @@ export type TooltipData = {
   interpretation?: TooltipInterpretationOptions;
   colIndex?: number;
   rowIndex?: number;
+  description?: string;
 };
 
 export type TooltipHeadInfo = {
-  rows: ListItem[];
-  cols: ListItem[];
+  rows: TooltipDetailListItem[];
+  cols: TooltipDetailListItem[];
 };
 
 export type TooltipDataParams = {
@@ -160,6 +164,10 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
   adjustPosition?: (positionInfo: TooltipPositionInfo) => TooltipPosition;
   // Custom tooltip mount container
   getContainer?: () => HTMLElement;
+  // Extra tooltip container class name
+  className?: string | string[];
+  // Extra tooltip container style
+  style?: CSS.Properties;
 }
 
 export interface TooltipPositionInfo {

@@ -5,9 +5,9 @@ order: 8
 
 ## React 版本
 
-对于使用 React 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/zh/docs/api/basic-class/spreadsheet)， 进行一些进阶操作时，可以使用 `React.useRef` 和 `getSpreadSheet` 两种方式
+对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/zh/docs/api/basic-class/spreadsheet)， 进行一些进阶操作时，可以使用 `React.useRef` 和 `getSpreadSheet` 两种方式
 
-### ref 方式 （推荐）
+### ref 方式（推荐）
 
 ```tsx
 import { SpreadSheet } from '@antv/s2'
@@ -16,17 +16,19 @@ import { SheetComponent } from '@antv/s2-react'
 function App() {
   const s2Ref = React.useRef<SpreadSheet>()
 
-  React.useEffect(() => {
+  const onMounted = () => {
     console.log(s2Ref.current)
-  }, [])
+  }
 
   return (
-    <SheetComponent ref={s2Ref} />
+    <SheetComponent ref={s2Ref} onMounted={onMounted}/>
   )
 }
 ```
 
 ### getSpreadSheet 方式
+
+> ⚠️ @antv/s2-react@1.29.0 已废弃
 
 ```tsx
 import { SpreadSheet } from '@antv/s2'
@@ -49,7 +51,7 @@ function App() {
 }
 ```
 
-### 组件形态变更时重新监听事件
+### 组件形态变更时实例更新
 
 `S2` 提供了 `透视表`, `明细表` 等表形态，对于 `SheetComponent` 组件 对应 `sheetType` 属性
 
@@ -62,7 +64,16 @@ function App() {
 }
 ```
 
-当 `sheetType` 变更时，底层会使用不同的表格类进行渲染，也就意味着此时 `实例` 已经发生了变更，变更前注册事件会被注销，`S2` 对这种场景进行了优化，不管是 `ref` 还是 `getSpreadSheet` 方式，拿到的都是最新的实例，只需要监听 `sheetType`, 变更时对事件重新监听即可
+当 `sheetType` 变更时，底层会使用不同的表格类进行渲染，也就意味着此时 `实例` 已经发生了变更
+
+```diff
+pivot => table
+
++ new TableSheet()
+- new PivotSheet()
+```
+
+变更前注册事件会被注销，`S2` 对这种场景进行了优化，不管是 `ref` 还是 `getSpreadSheet` 方式，拿到的都是最新的实例，开发者无需关心
 
 ```tsx
 import { SpreadSheet, S2Event } from '@antv/s2'
@@ -72,15 +83,12 @@ function App() {
   const s2Ref = React.useRef<SpreadSheet>()
   const [sheetType, setSheetType] = React.useState('pivot')
 
-  React.useEffect(() => {
-    s2Ref.current.on(S2Event.xxx, () => {
-      ...
-    })
-  // 保证表形态变更时，保持事件的正常监听
-  }, [sheetType])
+  const onMounted = (instance) => {
+    console.log(s2Ref.current === instance)
+  }
 
   return (
-    <SheetComponent sheetType={sheetType} />
+    <SheetComponent ref={s2Ref} sheetType={sheetType} onMounted={onMounted}/>
   )
 }
 ```
@@ -104,23 +112,23 @@ const YourComponent = React.forwardRef(
 function App() {
   const s2Ref = React.useRef<SpreadSheet>()
 
-  React.useEffect(() => {
+  const onMounted = () => {
     console.log(s2Ref.current)
-  }, [])
+  }
 
   return (
-    <YourComponent ref={s2Ref} />
+    <YourComponent ref={s2Ref} onMounted={onMounted}/>
   )
 }
 ```
 
 ## Vue 版本
 
-### ref 方式 （推荐）
+### ref 方式（推荐）
 
 ref 方式得到的是一个对象，其中的`instance`属性才对应真正的表格实例：
 
-```tsx
+```vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { Sheet } from '@antv/s2-vue';
@@ -129,7 +137,7 @@ import { defineComponent, onMounted, shallowRef } from 'vue';
 export default defineComponent({
   setup() {
     const s2 = shallowRef();
-  
+
     onMounted(() => {
       console.log('s2 instance:', s2.value?.instance);
     });
@@ -145,13 +153,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <Sheet ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
+  <SheetComponent ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
 </template>
 ```
 
-### getSpreadSheet 方式
+### getSpreadSheet 方式 (@antv/s2-vue@1.4.0 已废弃）
 
-```tsx
+> ⚠️ @antv/s2-vue@1.4.0 已废弃
+
+```vue
 <script lang="ts">
 import type { S2DataConfig, S2Options } from '@antv/s2';
 import { Sheet } from '@antv/s2-vue';
@@ -160,11 +170,11 @@ import { defineComponent, shallowRef } from 'vue';
 export default defineComponent({
   setup() {
     const s2 = shallowRef();
-  
+
     const getSpreadSheet = (instance:SpreadSheet) => {
       s2.value = instance;
     }
-    
+
     return {
       s2,
       getSpreadSheet
@@ -178,7 +188,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Sheet :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
+  <SheetComponent :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
 </template>
 ```
 
@@ -202,21 +212,22 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Sheet ref="s2Ref" />
+  <SheetComponent ref="s2Ref" />
 </template>
 ```
 
 外部组件获取实例搭配使用 ref 方式：
 
-```tsx
+```vue
 <script lang="ts">
 export default defineComponent({
   setup() {
     const s2 = shallowRef();
-  
+
     onMounted(() => {
       console.log('s2 instance:', s2.value?.instance);
     });
+
     return {
       s2
     };

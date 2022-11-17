@@ -12,6 +12,8 @@ order: 2
 通过在 [dataConfig](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
 中传入 [sortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
 
+### sortParam
+
 | 参数          | 说明                                        | 类型                                  | 默认值 | 必选 |
 | ------------- | ------------------------------------------- | ------------------------------------- | ------ | ---- |
 | sortFieldId   | 度量 Id，即要被排序的 Id                    | `string`                              | -      | ✓   |
@@ -59,7 +61,7 @@ sortParams: [
 ```ts
 sortParams: [
     { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
-    { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '丹东' ] },
+    { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '长春' ] },
     { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
 ];
 ```

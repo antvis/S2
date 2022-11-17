@@ -1,5 +1,5 @@
-import { get } from 'lodash';
 import Decimal from 'decimal.js';
+import { get } from 'lodash';
 import { Aggregation } from '../common/interface';
 
 type DataItem = Record<string, any>;
@@ -8,8 +8,11 @@ export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
     return Number.isNaN(value);
   }
+  if (!value) {
+    return true;
+  }
   if (typeof value === 'string') {
-    return Number.isNaN(Number.parseFloat(value));
+    return Number.isNaN(Number(value));
   }
   return true;
 };

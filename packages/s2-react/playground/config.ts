@@ -1,76 +1,14 @@
-import { isUpDataValue, S2DataConfig, S2Options, S2Theme } from '@antv/s2';
+import { isUpDataValue } from '@antv/s2';
+import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
-import { isNil } from 'lodash';
 import {
   data,
   totalData,
   meta,
   fields,
 } from '../__tests__/data/mock-dataset.json';
-
-const BASIC_BACKGROUND_COLOR = '#FFFFFF';
-const INTERACTIVE_BACKGROUND_COLOR = '#E1EAFE';
-
-export const strategyTheme: S2Theme = {
-  cornerCell: {
-    icon: {
-      size: 12,
-    },
-  },
-  rowCell: {
-    cell: {
-      backgroundColor: BASIC_BACKGROUND_COLOR,
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-    },
-    icon: {
-      size: 12,
-    },
-  },
-  colCell: {
-    cell: {
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-      padding: {
-        left: 4,
-        right: 4,
-      },
-    },
-  },
-  dataCell: {
-    cell: {
-      crossBackgroundColor: BASIC_BACKGROUND_COLOR,
-      interactionState: {
-        hover: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        hoverFocus: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        selected: {
-          backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-        unselected: {},
-        prepareSelect: {
-          borderColor: INTERACTIVE_BACKGROUND_COLOR,
-        },
-      },
-    },
-  },
-};
+import type { SheetComponentOptions } from '../src/components';
 
 export const tableSheetDataCfg: S2DataConfig = {
   data,
@@ -88,22 +26,52 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
-export const s2Options: S2Options = {
+export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 400,
-  hierarchyCollapse: false,
+  showSeriesNumber: false,
   interaction: {
     enableCopy: true,
+    // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
+    overscrollBehavior: 'none',
+    brushSelection: {
+      data: true,
+      col: true,
+      row: true,
+    },
   },
-  // totals: {
-  //   col: {
-  //     showGrandTotals: true,
-  //     showSubTotals: true,
-  //     reverseLayout: true,
-  //     reverseSubLayout: false,
-  //   },
-  // },
+  tooltip: {
+    operation: {
+      trend: true,
+    },
+  },
+  conditions: {
+    text: [],
+    interval: [
+      {
+        field: 'number',
+        mapping() {
+          return {
+            fill: '#80BFFF',
+            // 自定义柱状图范围
+            isCompare: true,
+            maxValue: 8000,
+            minValue: 300,
+          };
+        },
+      },
+    ],
+  },
+  hierarchyType: 'grid',
+  style: {
+    rowCfg: {
+      width: 200,
+    },
+    cellCfg: {
+      height: 50,
+    },
+  },
 };
 
 export const sliderOptions: SliderSingleProps = {
@@ -118,50 +86,7 @@ export const sliderOptions: SliderSingleProps = {
   },
 };
 
-export const strategyOptions: S2Options = {
-  width: 800,
-  height: 400,
-  cornerText: '指标',
-  placeholder: (v) => {
-    const placeholder = v?.fieldValue ? '-' : '';
-    return placeholder;
-  },
-  headerActionIcons: [
-    {
-      iconNames: ['Trend'],
-      belongsCell: 'rowCell',
-      defaultHide: true,
-      action: () => {},
-    },
-  ],
-  style: {
-    cellCfg: {
-      valuesCfg: {
-        originalValueField: 'originalValues',
-        conditions: {
-          text: {
-            field: 'number',
-            mapping: (value, cellInfo) => {
-              const { meta } = cellInfo;
-              const isNormalValue = isNil(value);
-
-              if (meta.fieldValue.values[0][0] === value || isNormalValue) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
-      },
-    },
-  },
-};
-
-export const mockGridAnalysisOptions: S2Options = {
+export const mockGridAnalysisOptions: SheetComponentOptions = {
   width: 1600,
   height: 600,
   style: {
@@ -170,27 +95,28 @@ export const mockGridAnalysisOptions: S2Options = {
       width: 400,
       height: 100,
       valuesCfg: {
-        widthPercentCfg: [40, 20, 20, 20],
-        conditions: {
-          text: {
-            field: 'number',
-            mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
-              if (colIndex <= 1) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
+        widthPercent: [40, 0.2, 0.2, 0.2],
       },
     },
   },
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { colIndex } = cellInfo;
+          if (colIndex <= 1) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+  },
 };
 
-export const defaultOptions: S2Options =
-  getBaseSheetComponentOptions(s2Options);
+export const defaultOptions =
+  getBaseSheetComponentOptions<SheetComponentOptions>(s2Options);

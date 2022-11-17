@@ -34,7 +34,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': [
-      1,
+      2,
       {
         endOfLine: 'lf',
         semi: true,
@@ -60,12 +60,7 @@ module.exports = {
         allowAfterThis: true,
       },
     ],
-    'no-plusplus': [
-      1,
-      {
-        allowForLoopAfterthoughts: true,
-      },
-    ],
+    'no-plusplus': 0,
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
     '@typescript-eslint/no-empty-function': 0,
@@ -79,6 +74,7 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
       },
     ],
+    'react/sort-comp': 2,
     'react/display-name': 0,
     'react/prop-types': 0,
     'react/state-in-constructor': 0,
@@ -114,6 +110,9 @@ module.exports = {
     'max-statements-per-line': [2, { max: 1 }],
     'max-params': [1, 4],
     'no-unreachable': 2,
+    'no-useless-computed-key': 2,
+    'block-spacing': [2, 'always'],
+    'lines-between-class-members': [2, 'always'],
     eqeqeq: [
       2,
       'always',
@@ -121,7 +120,7 @@ module.exports = {
         null: 'ignore',
       },
     ],
-    curly: [2, 'multi-line', 'consistent'],
+    curly: [2, 'all'],
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
   },

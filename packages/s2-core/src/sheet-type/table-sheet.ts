@@ -1,8 +1,5 @@
-import { Node } from 'src/facet/layout/node';
-import { FrozenGroup } from 'src/group/frozen-group';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { SpreadSheet } from './spread-sheet';
-import { TableDataCell, TableRowCell } from '@/cell';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import { TableDataCell, TableSeriesCell } from '../cell';
 import {
   InterceptType,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
@@ -13,17 +10,21 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
   S2Event,
-  TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
-} from '@/common/constant';
-import {
+  getTooltipOperatorTableSortMenus,
+} from '../common/constant';
+import type {
   S2Options,
+  SortMethod,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
-} from '@/common/interface';
-import { TableDataSet } from '@/data-set';
-import { TableFacet } from '@/facet';
+} from '../common/interface';
+import { TableDataSet } from '../data-set';
+import { TableFacet } from '../facet';
+import type { Node } from '../facet/layout/node';
+import { FrozenGroup } from '../group/frozen-group';
+import { SpreadSheet } from './spread-sheet';
 
 export class TableSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {
@@ -118,7 +119,7 @@ export class TableSheet extends SpreadSheet {
     // 默认单元格实现
     const defaultCell = (facet: ViewMeta) => {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
-        return new TableRowCell(facet, this);
+        return new TableSeriesCell(facet, this);
       }
       return new TableDataCell(facet, this);
     };
@@ -152,15 +153,20 @@ export class TableSheet extends SpreadSheet {
   public destroy() {
     super.destroy();
     this.clearFrozenGroups();
+    this.off(S2Event.RANGE_SORT);
+    this.off(S2Event.RANGE_FILTER);
   }
 
-  public onSortTooltipClick = ({ key }, meta) => {
+  // TODO: 好迷的写法, 拿到 key 又硬要写成 {key: key} 然后又解构一次, 不确定有没有被外面调用, 暂时不动
+  public onSortTooltipClick = ({ key }: { key: SortMethod }, meta: Node) => {
     const { field } = meta;
 
     const sortParam: SortParam = {
       sortFieldId: field,
-      sortMethod: key as unknown as SortParam['sortMethod'],
+      sortMethod: key,
     };
+
+    this.updateSortMethodMap(meta.id, key);
     // 触发排序事件
     this.emit(S2Event.RANGE_SORT, [sortParam]);
   };
@@ -168,15 +174,21 @@ export class TableSheet extends SpreadSheet {
   public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
+
+    const defaultSelectedKeys = this.getMenuDefaultSelectedKeys(meta?.id);
     const operator: TooltipOperatorOptions = {
-      onClick: (params: { key: string }) =>
-        this.onSortTooltipClick(params, meta),
-      menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
+      onClick: ({ key }) => {
+        const sortMethod = key as unknown as SortMethod;
+        this.onSortTooltipClick({ key: sortMethod }, meta);
+      },
+      menus: getTooltipOperatorTableSortMenus(),
+      defaultSelectedKeys,
     };
 
     this.showTooltipWithInfo(event, [], {
       operator,
       onlyMenu: true,
+      forceRender: true,
     });
   }
 }

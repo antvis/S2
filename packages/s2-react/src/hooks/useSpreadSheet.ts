@@ -1,16 +1,12 @@
-import {
-  PivotSheet,
-  S2Constructor,
-  S2DataConfig,
-  S2Options,
-  ThemeCfg,
-  SpreadSheet,
-  TableSheet,
-} from '@antv/s2';
+import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import type { S2DataConfig, S2Options, ThemeCfg } from '@antv/s2';
 import { useUpdate, useUpdateEffect } from 'ahooks';
 import { identity } from 'lodash';
 import React from 'react';
-import { SheetComponentsProps } from '../components';
+import type {
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '../components';
 import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
@@ -31,12 +27,11 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     sheetType,
     onSheetUpdate = identity,
   } = props;
+
   /** 保存重渲 effect 的 deps */
-  const updatePrevDepsRef = React.useRef<[S2DataConfig, S2Options, ThemeCfg]>([
-    dataCfg,
-    options,
-    themeCfg,
-  ]);
+  const updatePrevDepsRef = React.useRef<
+    [S2DataConfig, SheetComponentOptions, ThemeCfg]
+  >([dataCfg, options, themeCfg]);
 
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
   const pagination = usePagination(s2Ref.current, props);
@@ -46,14 +41,13 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
       const s2Options = getSheetComponentOptions(options);
-      const s2Constructor: S2Constructor = [container, dataCfg, s2Options];
       if (customSpreadSheet) {
-        return customSpreadSheet(...s2Constructor);
+        return customSpreadSheet(container, dataCfg, s2Options);
       }
       if (sheetType === 'table') {
-        return new TableSheet(container, dataCfg, s2Options);
+        return new TableSheet(container, dataCfg, s2Options as S2Options);
       }
-      return new PivotSheet(container, dataCfg, s2Options);
+      return new PivotSheet(container, dataCfg, s2Options as S2Options);
     },
     [sheetType, options, dataCfg, customSpreadSheet],
   );
@@ -69,16 +63,22 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     // forceUpdate 一下保证子 hooks 能 rerender
     forceUpdate();
 
-    props.getSpreadSheet?.(s2Ref.current);
+    if (props.getSpreadSheet) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
+      );
+      props.getSpreadSheet(s2Ref.current);
+    }
+    props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
   // init
   React.useEffect(() => {
     buildSpreadSheet();
     return () => {
-      s2Ref.current.destroy();
+      s2Ref.current.destroy?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 重渲 effect：dataCfg, options or theme changed
@@ -89,6 +89,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     let reloadData = false;
     let reBuildDataSet = false;
     if (!Object.is(prevDataCfg, dataCfg)) {
+      // 列头变化需要重新计算初始叶子节点
+      if (
+        prevDataCfg?.fields?.columns?.length !==
+        dataCfg?.fields?.columns?.length
+      ) {
+        s2Ref.current?.clearColumnLeafNodes();
+      }
+
       reloadData = true;
       s2Ref.current?.setDataCfg(dataCfg);
     }
@@ -100,9 +108,10 @@ export function useSpreadSheet(props: SheetComponentsProps) {
         reloadData = true;
         s2Ref.current?.setDataCfg(dataCfg);
       }
-      s2Ref.current?.setOptions(options);
+      s2Ref.current?.setOptions(options as S2Options);
       s2Ref.current?.changeSheetSize(options.width, options.height);
     }
+
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);
     }

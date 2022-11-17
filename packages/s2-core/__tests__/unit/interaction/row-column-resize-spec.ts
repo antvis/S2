@@ -1,20 +1,23 @@
-import { BBox, Group, IShape, ShapeAttrs } from '@antv/g-canvas';
+import type { BBox, IShape, ShapeAttrs } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
   ResizeAreaEffect,
   ResizeDirectionType,
-  ResizeInfo,
+  type ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
   RESIZE_START_GUIDE_LINE_ID,
   RowColumnResize,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
+  type ThemeCfg,
+  customMerge,
 } from '@/index';
-import { BaseFacet } from '@/facet/base-facet';
+import type { BaseFacet } from '@/facet/base-facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');
@@ -52,19 +55,19 @@ describe('Interaction Row Column Resize Tests', () => {
   };
 
   const getStartGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_START_GUIDE_LINE_ID,
     ) as IShape;
   };
 
   const getEndGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_END_GUIDE_LINE_ID,
     ) as IShape;
   };
 
   const getResizeMask = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
       RESIZE_MASK_ID,
     ) as IShape;
   };
@@ -231,6 +234,8 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      resizedWidth: 5,
+      resizedHeight: 0,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -341,6 +346,8 @@ describe('Interaction Row Column Resize Tests', () => {
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
       id: '',
+      resizedWidth: 0,
+      resizedHeight: 2,
     } as ResizeInfo;
 
     emitResizeEvent(
@@ -407,32 +414,101 @@ describe('Interaction Row Column Resize Tests', () => {
   });
 
   test('should get horizontal tree resize style', () => {
+    const resize = jest.fn();
+    const treeWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_TREE_WIDTH, treeWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Tree,
     );
 
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: {
+        rowCfg: {
+          treeRowsWidth: 5,
+        },
+        treeRowsWidth: 5,
+      },
+    };
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style.treeRowsWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {
+    const resize = jest.fn();
+    const rowWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_ROW_WIDTH, rowWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Field,
     );
 
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: {
+        rowCfg: {
+          widthByField: {
+            [resizeInfo.id]: 5,
+          },
+        },
+      },
+    };
+
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(rowWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style.rowCfg.widthByField).toEqual({
       [resizeInfo.id]: resizeInfo.width,
     });
   });
 
   test('should get horizontal series resize style', () => {
+    const resize = jest.fn();
+    const seriesWidthResize = jest.fn();
+
+    s2.on(S2Event.LAYOUT_RESIZE_SERIES_WIDTH, seriesWidthResize);
+    s2.on(S2Event.LAYOUT_RESIZE, resize);
+
     const resizeInfo = emitResize(
       ResizeDirectionType.Horizontal,
       ResizeAreaEffect.Series,
     );
 
+    const newResizeInfo = {
+      info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
+      style: undefined,
+    };
+
+    expect(resize).toHaveBeenCalledWith(newResizeInfo);
+    expect(seriesWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.theme.rowCell.seriesNumberWidth).toEqual(resizeInfo.width);
+  });
+
+  // https://github.com/antvis/S2/issues/1538
+  test('should not reset theme palette after resize series', () => {
+    const palette: ThemeCfg['palette'] = {
+      basicColors: Array.from({ length: 10 }).fill('red') as string[],
+      semanticColors: {
+        red: 'red',
+        green: 'green',
+      },
+    };
+
+    s2.setThemeCfg({
+      palette,
+    });
+
+    emitResize(ResizeDirectionType.Horizontal, ResizeAreaEffect.Series);
+
+    expect(s2.theme.background.color).toEqual('red');
   });
 
   test('should get vertical cell resize style', () => {
@@ -480,5 +556,85 @@ describe('Interaction Row Column Resize Tests', () => {
       resizeInfo,
     );
     expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
+  });
+
+  test('should not update col width after resized if resize disabled', () => {
+    s2.setOptions({
+      interaction: {
+        resize: {
+          disable: () => true,
+        },
+      },
+    });
+
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Field,
+    );
+
+    expect(s2.options.style.rowCfg.widthByField).toEqual({
+      [resizeInfo.id]: resizeInfo.width,
+    });
+  });
+
+  test('should set no drop cursor and gray guide line if disable resize', () => {
+    const disable = jest.fn(() => true);
+
+    s2.setOptions({
+      interaction: {
+        resize: {
+          disable,
+        },
+      },
+    });
+
+    const resizeInfo = {
+      theme: {},
+      type: ResizeDirectionType.Vertical,
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      effect: ResizeAreaEffect.Cell,
+      id: '',
+    } as ResizeInfo;
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+      {
+        offsetX: 20,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    expect(getResizeMask().attr('cursor')).toEqual('no-drop');
+    expect(getEndGuideLine().attr('stroke')).toEqual('rgba(0,0,0,0.25)');
+    expect(disable).toHaveBeenCalledWith({
+      ...resizeInfo,
+      resizedWidth: 0,
+      resizedHeight: 16,
+    });
+
+    emitResizeEvent(
+      S2Event.GLOBAL_MOUSE_UP,
+      {
+        offsetX: 20,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    expect(getResizeMask()).toBeFalsy();
   });
 });

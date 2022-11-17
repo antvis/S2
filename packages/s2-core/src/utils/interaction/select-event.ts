@@ -1,10 +1,17 @@
+import { forEach } from 'lodash';
+import { ColCell, RowCell, TableSeriesCell } from '../../cell';
+import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
-} from '@/common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+} from '../../common/constant';
+import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
+import {
+  getActiveHoverRowColCells,
+  updateAllColHeaderCellState,
+} from './hover-event';
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
@@ -47,4 +54,52 @@ export function getRangeIndex<T extends CellMeta | ViewMeta>(start: T, end: T) {
       colIndex: maxColIndex,
     },
   };
+}
+
+export function getRowCellForSelectedCell(
+  meta: ViewMeta,
+  spreadsheet: SpreadSheet,
+): (ColCell | RowCell | TableSeriesCell)[] {
+  const { interaction, facet, options } = spreadsheet;
+
+  if (spreadsheet.isTableMode()) {
+    if (!options.showSeriesNumber) {
+      return [];
+    }
+    const colId = facet.layoutResult.colLeafNodes[0].id;
+    const id = getDataCellId(String(meta.rowIndex), colId);
+    const result: TableSeriesCell[] = [];
+    const rowCell = interaction
+      .getAllCells()
+      .find((cell) => cell.getMeta().id === id);
+
+    if (rowCell && rowCell instanceof TableSeriesCell) {
+      result.push(rowCell);
+    }
+    return result;
+  }
+
+  return getActiveHoverRowColCells(
+    meta.rowId,
+    interaction.getAllRowHeaderCells(),
+    spreadsheet.isHierarchyTreeType(),
+  );
+}
+
+export function updateRowColCells(meta: ViewMeta) {
+  const { rowId, colId, spreadsheet } = meta;
+  const { interaction } = spreadsheet;
+
+  updateAllColHeaderCellState(
+    colId,
+    interaction.getAllColHeaderCells(),
+    InteractionStateName.SELECTED,
+  );
+
+  if (rowId) {
+    const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
+    forEach(allRowHeaderCells, (cell: RowCell) => {
+      cell.updateByState(InteractionStateName.SELECTED);
+    });
+  }
 }

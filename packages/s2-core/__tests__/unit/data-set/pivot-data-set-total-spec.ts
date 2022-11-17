@@ -5,14 +5,14 @@ import { get, keys } from 'lodash';
 import * as multiDataCfg from 'tests/data/simple-data.json';
 import { assembleDataCfg, TOTALS_OPTIONS } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { S2DataConfig, Aggregation } from '@/common/interface';
+import { type S2DataConfig, Aggregation } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
+jest.mock('@/sheet-type');
+jest.mock('@/facet/layout/node');
 const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
 
 describe('Pivot Dataset Total Test', () => {

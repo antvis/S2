@@ -34,6 +34,8 @@ order: 7
 
 ## Pull Request
 
+> 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考)
+
 1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
 2. 安装依赖：`yarn bootstrap` 或者 `yarn`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
@@ -51,11 +53,13 @@ order: 7
 npm i -g yarn
 ```
 
-1. `yarn bootstrap` 安装依赖
+1. `yarn` 安装依赖
 2. `yarn site:bootstrap` 安装网站相关依赖
 3. `yarn site:start` 启动本地的 `S2` 网站
-4. `yarn core:start` 可视化的方式调试核心层测试 （基于 jest-electron)
-5. `yarn react:start` 可视化的方式调试组件层测试 （基于 jest-electron)
-6. `yarn react:playground` 启动本地的组件层 demo （基于 vite)
-7. `yarn build` 构建 `@antv/s2` 和 `@antv/s2-react` 两个包，分别输出 `umd`, `esm` 和 `lib` 目录
-8. `yarn test` 运行单元格测试
+4. `yarn core:start` 使用可视化的方式调试 core 层的单测 （基于 jest-electron)
+5. `yarn react:start` 可用可视化的方式调试 React 版本的单测 （基于 jest-electron)
+6. `yarn react:playground` 启动本地的交互式 React 版本 Demo （基于 vite)
+7. `yarn vue:playground` 启动本地的交互式 Vue3 版本 Demo （基于 vite)
+8. `yarn build` 构建 `@antv/s2`, `@antv/s2-react` 和 `@antv/s2-vue` 3 个包，分别输出 `umd`, `esm` 和 `lib` 目录
+9. `yarn test` 运行单元测试
+10. `yarn lint` 静态代码检测

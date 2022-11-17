@@ -5,20 +5,44 @@
   },
   "demos": [
     {
-      "filename": "custom-width.ts",
+      "filename": "custom-pivot-size.ts",
       "title": {
-        "zh": "根据指标自定义列宽",
-        "en": "Custom Width"
+        "zh": "自定义透视表行列宽高",
+        "en": "Custom PivotSheet Size"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/mFDomjRbz7/f6719631-64b6-4741-a9c1-b21abe8b351c.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24sNoM1o7b/8a35f685-f989-4125-aada-046f90b93969.png"
     },
     {
-      "filename": "custom-height.ts",
+      "filename": "custom-table-size.ts",
       "title": {
-        "zh": "根据指标自定义行高",
-        "en": "Custom Height"
+        "zh": "自定义明细表行列宽高",
+        "en": "Custom TableSheet Height"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vb3ZAIvFqi/e483295e-5a73-49e7-ae00-1cee05b184e6.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oIjIixviI/ccba0c66-c8ba-4285-b0ec-fc776d0a4cdf.png"
+    },
+    {
+      "filename": "custom-row-col-cell-width.ts",
+      "title": {
+        "zh": "自定义行列单元格宽度",
+        "en": "Custom Row/Column Cell Height"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/gzR%26xlnjG/7b23ff29-0789-4420-ad23-e1df96e4489d.png"
+    },
+    {
+      "filename": "custom-tree-row-width.ts",
+      "title": {
+        "zh": "自定义树状结构行头宽度",
+        "en": "Custom Tree Row Width"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/y%26PAejhkm/e9b18b27-a6c9-4c05-b75c-83b25030d0c6.png"
+    },
+    {
+      "filename": "hide-columns.ts",
+      "title": {
+        "zh": "隐藏列头",
+        "en": "Hide Columns"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7uLsxYg0N/b85dc985-6a07-40fd-a73e-4f0f17e63b72.png"
     }
   ]
 }

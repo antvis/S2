@@ -5,8 +5,6 @@ import type {
   InterceptType,
   ScrollbarPositionType,
 } from '../constant';
-import type { ViewMeta } from './basic';
-import type { ResizeActiveOptions } from './resize';
 import type {
   BaseCell,
   ColCell,
@@ -14,11 +12,14 @@ import type {
   DataCell,
   MergedCell,
   RowCell,
-} from '@/cell';
-import type { HeaderCell } from '@/cell/header-cell';
-import type { Node } from '@/facet/layout/node';
-import type { BaseEvent } from '@/interaction/base-event';
-import type { SpreadSheet } from '@/sheet-type';
+} from '../../cell';
+import type { HeaderCell } from '../../cell/header-cell';
+import type { Node } from '../../facet/layout/node';
+import type { BaseEvent } from '../../interaction/base-event';
+import type { SpreadSheet } from '../../sheet-type';
+import type { RootInteraction } from '../../interaction';
+import type { ResizeInteractionOptions } from './resize';
+import type { ViewMeta } from './basic';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -37,6 +38,11 @@ export interface CellMeta {
   [key: string]: unknown;
 }
 
+export type OnUpdateCells = (
+  root: RootInteraction,
+  defaultOnUpdateCells: () => void,
+) => void;
+
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
@@ -48,6 +54,8 @@ export interface InteractionStateInfo {
   nodes?: Node[];
   // for empty cells, updates are ignored, use `force` to skip ignore
   force?: boolean;
+  /** 交互行为改变后，会被更新和重绘的单元格回调 */
+  onUpdateCells?: OnUpdateCells;
 }
 
 export interface SelectHeaderCellInfo {
@@ -72,6 +80,9 @@ export interface BrushPoint {
   y: number;
   scrollX?: number;
   scrollY?: number;
+  /** 用于标记 row cell 和 col cell 点的 x, y 坐标 */
+  headerX?: number;
+  headerY?: number;
 }
 
 export interface BrushRange {
@@ -83,12 +94,7 @@ export interface BrushRange {
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
 
-export type Intercept =
-  | InterceptType.HOVER
-  | InterceptType.CLICK
-  | InterceptType.BRUSH_SELECTION
-  | InterceptType.MULTI_SELECTION
-  | InterceptType.RESIZE;
+export type Intercept = InterceptType[keyof InterceptType];
 
 export interface BrushAutoScrollConfigItem {
   value: number;
@@ -108,6 +114,18 @@ export interface HoverFocusOptions {
   duration?: number;
 }
 
+export interface BrushSelection {
+  data?: boolean;
+  row?: boolean;
+  col?: boolean;
+}
+
+export interface BrushSelectionInfo {
+  dataBrushSelection: boolean;
+  rowBrushSelection: boolean;
+  colBrushSelection: boolean;
+}
+
 export interface InteractionOptions {
   // record which row/col field need extra link info
   linkFields?: string[];
@@ -121,15 +139,17 @@ export interface InteractionOptions {
   enableCopy?: boolean;
   // copy with filed format
   copyWithFormat?: boolean;
+  // copy with header info
+  copyWithHeader?: boolean;
   // auto reset sheet style when click outside or press ecs key, default true
   autoResetSheetStyle?: boolean;
   hiddenColumnFields?: string[];
   // the ratio to control scroll speed, default set to 1
   scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
-  resize?: boolean | ResizeActiveOptions;
-  // enable mouse drag brush selection
-  brushSelection?: boolean;
+  resize?: boolean | ResizeInteractionOptions;
+  // enable mouse drag brush selection on data cell, row cell, col cell
+  brushSelection?: boolean | BrushSelection;
   // enable Command / Ctrl + click multi selection
   multiSelection?: boolean;
   // enable Shift + click multi selection
@@ -141,6 +161,10 @@ export interface InteractionOptions {
   // An object that specifies characteristics about the event listener
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
+  // highlight col and row header for selected cell
+  selectedCellHighlight?: boolean;
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+  overscrollBehavior?: 'auto' | 'none' | 'contain';
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

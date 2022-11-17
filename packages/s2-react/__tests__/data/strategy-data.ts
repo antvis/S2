@@ -1,11 +1,243 @@
-import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
+import {
+  type Data,
+  EXTRA_COLUMN_FIELD,
+  isUpDataValue,
+  type S2DataConfig,
+} from '@antv/s2';
+import { isNil } from 'lodash';
+import type { SheetComponentOptions } from '../../src';
 
-export const customTree: S2DataConfig = {
+const getKPIMockData = () => {
+  return {
+    'measure-a': {
+      originalValues: {
+        measure: 0.75,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.00251',
+        target: '0.76',
+      },
+    },
+    'measure-b': {
+      originalValues: {
+        measure: -0.82607,
+        target: 0.53022,
+      },
+      values: {
+        measure: -0.82607,
+        target: 0.53022,
+      },
+    },
+    'measure-c': {
+      originalValues: {
+        measure: 10.73922,
+        target: 0.54396,
+      },
+      values: {
+        measure: 10.73922,
+        target: 0.54396,
+      },
+    },
+    'measure-d': {
+      originalValues: {
+        measure: 0.5,
+        target: 0.3,
+      },
+      values: {
+        measure: '0.5',
+        target: '0.3',
+      },
+    },
+    'measure-e': {
+      originalValues: {
+        measure: 0.09775,
+        target: 0.1978,
+      },
+      values: {
+        measure: 0.09775,
+        target: 0.1978,
+      },
+    },
+    'measure-f': {
+      originalValues: {
+        measure: 0.25,
+        target: 0.9,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.9',
+      },
+    },
+    date: '2021年净增完成度',
+    [EXTRA_COLUMN_FIELD]: '净增完成度',
+  };
+};
+
+const getMiniChartMockData = () => {
+  return {
+    'custom-node-1': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: -1 },
+          { year: '2019', value: 1 },
+          { year: '2020', value: 2 },
+          { year: '2021', value: -100 },
+          { year: '2022', value: 2 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-a': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 100 },
+          { year: '2019', value: 100 },
+          { year: '2020', value: 100 },
+          { year: '2021', value: 100 },
+          { year: '2022', value: 100 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-b': {
+      values: {
+        type: 'bar',
+        data: [
+          { year: '2017', value: -368 },
+          { year: '2018', value: 368 },
+          { year: '2019', value: 368 },
+          { year: '2020', value: 368 },
+          { year: '2021', value: 368 },
+          { year: '2022', value: 368 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-c': {
+      values: {
+        type: 'line',
+        data: [
+          {
+            date: '2022-06-30',
+            value: 0,
+          },
+          {
+            date: '2022-07-01',
+            value: 0,
+          },
+          {
+            date: '2022-07-02',
+            value: 8,
+          },
+          {
+            date: '2022-07-03',
+            value: 8,
+          },
+          {
+            date: '2022-07-04',
+            value: 8,
+          },
+          {
+            date: '2022-07-05',
+            value: 8,
+          },
+          {
+            date: '2022-07-06',
+            value: 0,
+          },
+        ],
+        encode: {
+          x: 'date',
+          y: 'value',
+        },
+      },
+    },
+    'measure-d': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 0 },
+          { year: '2019', value: 0 },
+          { year: '2020', value: 0 },
+          { year: '2021', value: 0 },
+          { year: '2022', value: 0 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    'measure-e': {
+      values: {
+        type: 'bar',
+        data: [
+          { year: '2018', value: -5 },
+          { year: '2019', value: -10 },
+          { year: '2020', value: -5 },
+          { year: '2021', value: -10 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
+      },
+    },
+    date: '趋势',
+    [EXTRA_COLUMN_FIELD]: '趋势',
+  };
+};
+
+export const StrategySheetDataConfig: S2DataConfig = {
+  // 普通数值+同环比数据
   data: [
+    {
+      date: '2022-09',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+    },
+    {
+      'measure-a': {
+        originalValues: [[377, '']],
+        values: [[377, '']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-c': {
+        originalValues: [[null, 324]],
+        values: [[null, 324]],
+      },
+      'measure-d': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      'measure-f': {
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
+      },
+      date: '2022-10',
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
+    },
     {
       'measure-a': {
         originalValues: [[3877, 4324, 0.42]],
-        values: [[3877, 4324, '42%']],
+        values: [
+          [3877, 4324, '42%'],
+          [877, 324, '2%'],
+        ],
       },
       'measure-b': {
         originalValues: [[377, 324, -0.02]],
@@ -27,45 +259,49 @@ export const customTree: S2DataConfig = {
         originalValues: [[377, 324, 0.02]],
         values: [[377, 324, '0.02']],
       },
-      date: '2021',
+      date: '2022-11',
       [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
     },
+
+    // 净增目标完成度子弹图数据
+    getKPIMockData() as unknown as Data,
+    // 趋势图数据
+    getMiniChartMockData() as unknown as Data,
     {
       'measure-a': {
-        originalValues: [[377, '', 0.02]],
-        values: [[377, '', '0.02']],
+        originalValues: [[377, '']],
+        values: [[377, '']],
       },
       'measure-b': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
       },
       'measure-c': {
-        originalValues: [[null, 324, 0.02]],
-        values: [[null, 324, '0.02']],
+        originalValues: [[null, 324]],
+        values: [[null, 324]],
       },
       'measure-d': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
       },
-
       'measure-f': {
-        originalValues: [[377, 324, 0.02]],
-        values: [[377, 324, '0.02']],
+        originalValues: [[377, 324]],
+        values: [[377, 324]],
       },
       date: '2022',
-      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比', '同比']),
+      [EXTRA_COLUMN_FIELD]: JSON.stringify(['数值', '环比']),
     },
   ],
   meta: [
     {
       field: 'date',
-      name: '时间',
+      name: '日期',
     },
   ],
   fields: {
-    rows: [],
     columns: ['date', EXTRA_COLUMN_FIELD],
     values: [
+      'custom-node-1',
       'measure-a',
       'measure-b',
       'measure-c',
@@ -100,6 +336,12 @@ export const customTree: S2DataConfig = {
                 key: 'measure-c',
                 title: '指标C',
                 description: '指标C描述',
+                children: [],
+              },
+              {
+                key: 'measure-d',
+                title: '指标D',
+                description: '指标D描述',
                 children: [],
               },
             ],
@@ -140,5 +382,76 @@ export const customTree: S2DataConfig = {
         ],
       },
     ],
+  },
+};
+
+export const StrategyOptions: SheetComponentOptions = {
+  width: 800,
+  height: 800,
+  cornerText: '指标',
+  placeholder: (v) => {
+    const placeholder = v?.fieldValue ? '-' : '';
+    return placeholder;
+  },
+  interaction: {
+    resize: {
+      disable: (resizeInfo) => {
+        return (
+          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.resizedWidth < resizeInfo.width
+        );
+      },
+    },
+  },
+  headerActionIcons: [
+    {
+      iconNames: ['Trend'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+      action: () => {},
+    },
+  ],
+  conditions: {
+    text: [
+      {
+        mapping: (value, cellInfo) => {
+          const { meta } = cellInfo;
+          const isNilValue = isNil(value) || value === '';
+          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
+            return {
+              fill: '#000',
+            };
+          }
+          return {
+            fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+          };
+        },
+      },
+    ],
+    icon: [
+      {
+        position: 'right',
+        mapping(value, cellInfo) {
+          return isUpDataValue(value)
+            ? {
+                // icon 用于指定图标条件格式所使用的 icon 类型
+                icon: 'CellUp',
+                fill: '#29A294',
+              }
+            : {
+                icon: 'CellDown',
+                fill: '#FF4D4F',
+              };
+        },
+      },
+    ],
+  },
+  style: {
+    cellCfg: {
+      height: 76,
+      valuesCfg: {
+        originalValueField: 'originalValues',
+      },
+    },
   },
 };

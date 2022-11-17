@@ -1,7 +1,10 @@
+import type { Pagination } from '@antv/s2';
+import type { Node, S2Options } from '@antv/s2';
 import type { BaseSheetComponentProps } from '@antv/s2-shared';
-import type { Node } from '@antv/s2';
-import { DrillDownProps } from '@/components/drill-down';
-import { HeaderCfgProps } from '@/components/header';
+import type { PaginationProps as AntdPaginationProps } from 'antd';
+import type { ReactNode } from 'react';
+import type { DrillDownProps } from '../drill-down';
+import type { HeaderCfgProps } from '../header';
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -24,7 +27,13 @@ export interface PartDrillDown {
   displayCondition?: (meta: Node) => boolean;
 }
 
+export type SheetComponentOptions = S2Options<
+  ReactNode,
+  Pagination & AntdPaginationProps
+>;
+
 export type SheetComponentsProps = BaseSheetComponentProps<
   PartDrillDown,
-  HeaderCfgProps
+  HeaderCfgProps,
+  SheetComponentOptions
 >;

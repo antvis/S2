@@ -1,30 +1,31 @@
-import {
+import type {
   Event as CanvasEvent,
   IGroup,
-  ShapeAttrs,
   IShape,
+  ShapeAttrs,
 } from '@antv/g-canvas';
-import { clone, isEmpty, throttle, get } from 'lodash';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { clone, isEmpty, throttle } from 'lodash';
+import type { ResizeInteractionOptions, ResizeParams, Style } from '../common';
 import {
+  InterceptType,
+  MIN_CELL_HEIGHT,
+  MIN_CELL_WIDTH,
+  ResizeAreaEffect,
+  ResizeDirectionType,
+  ResizeType,
+  RESIZE_END_GUIDE_LINE_ID,
+  RESIZE_MASK_ID,
+  RESIZE_START_GUIDE_LINE_ID,
+  S2Event,
+} from '../common/constant';
+import type {
   ResizeDetail,
   ResizeGuideLinePath,
   ResizeGuideLinePosition,
   ResizeInfo,
   ResizePosition,
-} from '@/common/interface/resize';
-import {
-  InterceptType,
-  MIN_CELL_HEIGHT,
-  MIN_CELL_WIDTH,
-  RESIZE_MASK_ID,
-  RESIZE_START_GUIDE_LINE_ID,
-  RESIZE_END_GUIDE_LINE_ID,
-  S2Event,
-  ResizeDirectionType,
-  ResizeAreaEffect,
-  ResizeType,
-} from '@/common/constant';
+} from '../common/interface/resize';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeTarget: IGroup;
@@ -100,21 +101,31 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
+  private getResizeShapes(): IShape[] {
+    return this.resizeReferenceGroup?.get('children') || [];
+  }
+
+  private setResizeMaskCursor(cursor: string) {
+    const [, , resizeMask] = this.getResizeShapes();
+    resizeMask?.attr('cursor', cursor);
+  }
+
   private updateResizeGuideLinePosition(
     event: MouseEvent,
     resizeInfo: ResizeInfo,
   ) {
-    const resizeShapes: IShape[] = this.resizeReferenceGroup.get('children');
+    const resizeShapes = this.getResizeShapes();
+
     if (isEmpty(resizeShapes)) {
       return;
     }
-    const [startResizeGuideLineShape, endResizeGuideLineShape, resizeMask] =
-      resizeShapes;
+
+    const [startResizeGuideLineShape, endResizeGuideLineShape] = resizeShapes;
     const { type, offsetX, offsetY, width, height } = resizeInfo;
     const { width: guideLineMaxWidth, height: guideLineMaxHeight } =
       this.getGuideLineWidthAndHeight();
 
-    resizeMask.attr('cursor', `${type}-resize`);
+    this.setResizeMaskCursor(`${type}-resize`);
 
     if (type === ResizeDirectionType.Horizontal) {
       startResizeGuideLineShape.attr('path', [
@@ -143,8 +154,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
       const shape = event.target as IGroup;
-      const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
       const originalEvent = event.originalEvent as MouseEvent;
+      const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
       this.spreadsheet.store.set('resized', false);
 
       if (!resizeInfo?.isResizeArea) {
@@ -190,10 +201,34 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
-  private getResizeWidthDetail(): ResizeDetail {
-    const { start, end } = this.getResizeGuideLinePosition();
-    const width = Math.floor(end.x - start.x);
+  private getDisAllowResizeInfo() {
     const resizeInfo = this.getResizeInfo();
+    const { resize } = this.spreadsheet.options.interaction;
+
+    const {
+      width: originalWidth,
+      height: originalHeight,
+      resizedWidth,
+      resizedHeight,
+    } = resizeInfo;
+
+    const isDisabled = (resize as ResizeInteractionOptions)?.disable?.(
+      resizeInfo,
+    );
+
+    const displayWidth = isDisabled ? originalWidth : resizedWidth;
+    const displayHeight = isDisabled ? originalHeight : resizedHeight;
+
+    return {
+      displayWidth,
+      displayHeight,
+      isDisabled,
+    };
+  }
+
+  private getResizeWidthDetail(): ResizeDetail {
+    const resizeInfo = this.getResizeInfo();
+    const { displayWidth } = this.getDisAllowResizeInfo();
 
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
@@ -202,27 +237,33 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             rowCfg: {
               widthByField: {
-                [resizeInfo.id]: width,
+                [resizeInfo.id]: displayWidth,
               },
             },
           },
         };
+
       case ResizeAreaEffect.Tree:
         return {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
+            treeRowsWidth: displayWidth,
             rowCfg: {
-              treeRowsWidth: width,
+              /**
+               * @deprecated 已废弃, 以 style.treeRowsWidth 为准, 保持兼容, 暂时保留
+               */
+              treeRowsWidth: displayWidth,
             },
           },
         };
+
       case ResizeAreaEffect.Cell:
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
             colCfg: {
               widthByFieldValue: {
-                [resizeInfo.id]: width,
+                [resizeInfo.id]: displayWidth,
               },
             },
           },
@@ -231,8 +272,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       case ResizeAreaEffect.Series:
         return {
           eventType: S2Event.LAYOUT_RESIZE_SERIES_WIDTH,
-          seriesNumberWidth: width,
+          seriesNumberWidth: displayWidth,
         };
+
       default:
         return null;
     }
@@ -248,12 +290,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       },
     } = this.spreadsheet;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
-    const { start, end } = this.getResizeGuideLinePosition();
-    const baseHeight = Math.floor(end.y - start.y);
-    const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
+    const { displayHeight } = this.getDisAllowResizeInfo();
+    const height = displayHeight - rowCellPadding.top - rowCellPadding.bottom;
 
-    let rowCellStyle;
+    let rowCellStyle: Style;
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
@@ -261,7 +302,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             colCfg: {
               heightByField: {
-                [resizeInfo.id]: baseHeight,
+                [resizeInfo.id]: displayHeight,
               },
             },
           },
@@ -269,7 +310,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       case ResizeAreaEffect.Cell:
         if (
           heightByField[String(resizeInfo.id)] ||
-          get(resize, 'rowResizeType') === ResizeType.CURRENT
+          (resize as ResizeInteractionOptions)?.rowResizeType ===
+            ResizeType.CURRENT
         ) {
           rowCellStyle = {
             rowCfg: {
@@ -313,6 +355,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, () => {
+      this.setResizeMaskCursor('default');
+
       if (
         !this.resizeReferenceGroup ||
         isEmpty(this.resizeReferenceGroup?.getChildren())
@@ -333,7 +377,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const originalEvent = event.originalEvent as MouseEvent;
     const resizeInfo = this.getResizeInfo();
-    const resizeShapes = this.resizeReferenceGroup.get('children') as IShape[];
+    const resizeShapes =
+      (this.resizeReferenceGroup.getChildren() as IShape[]) || [];
 
     if (isEmpty(resizeShapes)) {
       return;
@@ -359,8 +404,20 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         guideLineEnd,
       );
     }
+
+    this.updateResizeGuideLineTheme(endGuideLineShape);
     endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
   };
+
+  private updateResizeGuideLineTheme(endGuideLineShape: IShape) {
+    const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
+    const { isDisabled } = this.getDisAllowResizeInfo();
+    endGuideLineShape.attr(
+      'stroke',
+      isDisabled ? guideLineDisableColor : guideLineColor,
+    );
+    this.setResizeMaskCursor(isDisabled ? 'no-drop' : 'default');
+  }
 
   private updateHorizontalResizingEndGuideLinePosition(
     originalEvent: MouseEvent,
@@ -414,10 +471,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       eventType: resizeEventType,
     } = this.getResizeDetail() || {};
 
-    const resizeDetail = {
+    const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style,
     };
+
     this.spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
     this.spreadsheet.emit(resizeEventType, resizeDetail);
 
@@ -426,11 +484,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     if (seriesNumberWidth) {
-      this.spreadsheet.setThemeCfg({
-        theme: {
-          rowCell: {
-            seriesNumberWidth,
-          },
+      this.spreadsheet.setTheme({
+        rowCell: {
+          seriesNumberWidth,
         },
       });
     }
@@ -440,7 +496,18 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeInfo(): ResizeInfo {
-    return this.resizeTarget?.attr('appendInfo');
+    const defaultResizeInfo = this.getCellAppendInfo<ResizeInfo>(
+      this.resizeTarget,
+    );
+    const { start, end } = this.getResizeGuideLinePosition();
+    const resizedWidth = Math.floor(end.x - start.x);
+    const resizedHeight = Math.floor(end.y - start.y);
+
+    return {
+      ...defaultResizeInfo,
+      resizedWidth,
+      resizedHeight,
+    };
   }
 
   private render() {

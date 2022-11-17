@@ -1,18 +1,18 @@
-import { Event } from '@antv/g-canvas';
+import type { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
+import type { DataCell } from '../cell';
+import {
+  InteractionStateName,
+  InterceptType,
+  S2Event,
+} from '../common/constant';
+import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
-} from 'src/utils/interaction/select-event';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { getActiveCellsTooltipData } from '@/utils/tooltip';
-import {
-  InterceptType,
-  InteractionStateName,
-  S2Event,
-} from '@/common/constant';
-import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
-import { DataCell } from '@/cell';
+} from '../utils/interaction/select-event';
+import { getCellsTooltipData } from '../utils/tooltip';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent
@@ -24,6 +24,11 @@ export class DataCellMultiSelection
     this.bindKeyboardDown();
     this.bindDataCellClick();
     this.bindKeyboardUp();
+  }
+
+  public reset() {
+    this.isMultiSelection = false;
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
   private bindKeyboardDown() {
@@ -41,8 +46,7 @@ export class DataCellMultiSelection
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
-        this.isMultiSelection = false;
-        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.reset();
       }
     });
   }
@@ -92,7 +96,7 @@ export class DataCellMultiSelection
         );
         this.spreadsheet.showTooltipWithInfo(
           event,
-          getActiveCellsTooltipData(this.spreadsheet),
+          getCellsTooltipData(this.spreadsheet),
         );
       }
     });

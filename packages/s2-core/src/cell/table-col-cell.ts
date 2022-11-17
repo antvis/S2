@@ -1,18 +1,18 @@
-import { find, get } from 'lodash';
-import { Group } from '@antv/g-canvas';
-import { ColCell } from '@/cell/col-cell';
+import { find } from 'lodash';
+import type { Group } from '@antv/g-canvas';
+import { ColCell } from '../cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-} from '@/common/constant';
-import { FormatResult, SortParam } from '@/common/interface';
-import { isFrozenCol, isFrozenTrailingCol } from '@/facet/utils';
-import { getContentArea } from '@/utils/cell/cell';
-import { getExtraPaddingForExpandIcon } from '@/utils/cell/table-col-cell';
-import { renderRect } from '@/utils/g-renders';
-import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
-import { getSortTypeIcon } from '@/utils/sort-action';
-import { formattedFieldValue } from '@/utils/cell/header-cell';
+} from '../common/constant';
+import type { FormatResult, SortParam } from '../common/interface';
+import { isFrozenCol, isFrozenTrailingCol } from '../facet/utils';
+import { getContentArea } from '../utils/cell/cell';
+import { getExtraPaddingForExpandIcon } from '../utils/cell/table-col-cell';
+import { renderRect } from '../utils/g-renders';
+import { getOrCreateResizeAreaGroupById } from '../utils/interaction/resize';
+import { getSortTypeIcon } from '../utils/sort-action';
+import { formattedFieldValue } from '../utils/cell/header-cell';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -50,9 +50,31 @@ export class TableColCell extends ColCell {
     );
   }
 
+  protected shouldAddVerticalResizeArea() {
+    if (this.isFrozenCell()) {
+      return true;
+    }
+    return super.shouldAddVerticalResizeArea();
+  }
+
+  protected getVerticalResizeAreaOffset() {
+    const { x, y } = this.meta;
+    const { scrollX, position } = this.headerConfig;
+
+    if (this.isFrozenCell()) {
+      return {
+        x,
+        y,
+      };
+    }
+    return {
+      x: position.x + x - scrollX,
+      y: position.y + y,
+    };
+  }
+
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
-
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
@@ -72,7 +94,7 @@ export class TableColCell extends ColCell {
 
   protected getTextStyle() {
     const style = this.getStyle();
-    return get(style, 'bolderText');
+    return style?.bolderText;
   }
 
   public getContentArea() {

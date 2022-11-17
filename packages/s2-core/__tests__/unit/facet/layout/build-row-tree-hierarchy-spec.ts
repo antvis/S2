@@ -1,13 +1,21 @@
 import { sortData } from 'tests/data/sort-advanced';
 import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
-import { EXTRA_FIELD, S2DataConfig, S2Options } from '@/common';
+import { EXTRA_FIELD } from '@/common';
+import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 400,
   height: 400,
   hierarchyType: 'tree',
+  // 测试总计行节点分支
+  totals: {
+    row: {
+      showGrandTotals: true,
+    },
+  },
 };
+
 describe('build row tree hierarchy', () => {
   // https://stackblitz.com/edit/react-ts-aj2r8w?file=data.ts
   test('should get order hierarchy when order is group ascend', () => {
@@ -29,13 +37,14 @@ describe('build row tree hierarchy', () => {
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
-    expect(rowLeafNodes.length).toBe(6);
+    expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].label).toEqual('浙江');
     expect(rowLeafNodes[1].label).toEqual('杭州');
     expect(rowLeafNodes[2].label).toEqual('舟山');
     expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('丹东');
+    expect(rowLeafNodes[4].label).toEqual('长春');
     expect(rowLeafNodes[5].label).toEqual('白山');
+    expect(rowLeafNodes[6].label).toEqual('总计');
   });
   test('should get order hierarchy when order is group desc', () => {
     const s2DataConfig: S2DataConfig = {
@@ -56,12 +65,13 @@ describe('build row tree hierarchy', () => {
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
-    expect(rowLeafNodes.length).toBe(6);
+    expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].label).toEqual('浙江');
     expect(rowLeafNodes[1].label).toEqual('舟山');
     expect(rowLeafNodes[2].label).toEqual('杭州');
     expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('丹东');
+    expect(rowLeafNodes[4].label).toEqual('长春');
     expect(rowLeafNodes[5].label).toEqual('白山');
+    expect(rowLeafNodes[6].label).toEqual('总计');
   });
 });

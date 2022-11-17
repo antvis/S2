@@ -1,10 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
-import { defineConfig, LibraryFormats, PluginOption } from 'vite';
-import react from '@vitejs/plugin-react';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import react from '@vitejs/plugin-react';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
+import svgr from 'vite-plugin-svgr';
+import { defineConfig, type LibraryFormats, type PluginOption } from 'vite';
 
 const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',
@@ -31,8 +32,8 @@ export default defineConfig({
 
   // 打包配置
   resolve: {
+    mainFields: ['src', 'module', 'main'],
     alias: {
-      '@': path.resolve(__dirname, 'src'),
       lodash: 'lodash-es',
     },
   },
@@ -49,6 +50,7 @@ export default defineConfig({
     react({
       jsxRuntime: 'classic',
     }),
+    svgr(),
     isAnalysisMode && visualizer({ gzipSize: true }),
   ].filter(Boolean) as PluginOption[],
 

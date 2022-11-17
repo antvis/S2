@@ -1,12 +1,12 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import {
   TableSheet,
-  S2Options,
-  S2DataConfig,
+  type S2Options,
+  type S2DataConfig,
   S2Event,
   DataCell,
   InteractionName,
-  BrushSelection,
+  BaseBrushSelection,
 } from '@/index';
 
 const data = getMockData(
@@ -79,7 +79,7 @@ describe('Brush selection scroll spec', () => {
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
       originalEvent: { layerX: 1, layerY: 1 },
-      event: { x: 1, y: 1 },
+      ...{ x: 1, y: 1 },
       preventDefault() {},
     } as any);
     await sleep(40);
@@ -107,7 +107,7 @@ describe('Brush selection scroll spec', () => {
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     const brushInteraction = s2.interaction.interactions.get(
       InteractionName.BRUSH_SELECTION,
-    ) as BrushSelection;
+    ) as BaseBrushSelection;
 
     const brushRange = brushInteraction.getBrushRange();
     const allCells = s2.interaction.getCells();

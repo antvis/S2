@@ -1,25 +1,30 @@
 import {
-  keys,
-  has,
-  map,
-  toUpper,
+  compact,
+  concat,
   endsWith,
-  uniq,
-  isEmpty,
   includes,
-  split,
   indexOf,
+  isEmpty,
+  isNaN,
+  isNil,
+  keys,
+  map,
+  split,
+  toUpper,
+  uniq,
 } from 'lodash';
-import { Fields, SortMethod, SortParam } from '@/common/interface';
-import { DataType, SortActionParams } from '@/data-set/interface';
-import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
-import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
-import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
-import { PivotDataSet } from '@/data-set';
+import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
+import type { Fields, SortMethod, SortParam } from '../common/interface';
+import type { PivotDataSet } from '../data-set';
+import type { DataType, SortActionParams } from '../data-set/interface';
+import { getListBySorted, sortByItems } from '../utils/data-set-operate';
+import { getDimensionsWithParentPath } from '../utils/dataset/pivot-data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
 export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
+
+const canTobeNumber = (a?: string | number) => !isNaN(Number(a));
 
 /**
  * 执行排序
@@ -36,12 +41,12 @@ export const sortAction = (
   const specialValues = ['-', undefined];
   return list?.sort(
     (pre: string | number | DataType, next: string | number | DataType) => {
-      let a = pre;
-      let b = next;
+      let a = pre as string | number;
+      let b = next as string | number;
       if (key) {
-        a = pre[key];
-        b = next[key];
-        if (Number(a) && Number(b)) {
+        a = pre[key] as string | number;
+        b = next[key] as string | number;
+        if (canTobeNumber(a) && canTobeNumber(b)) {
           return (Number(a) - Number(b)) * sort;
         }
         if (a && specialValues?.includes(a?.toString())) {
@@ -51,7 +56,8 @@ export const sortAction = (
           return sort;
         }
       }
-      if (a && b) {
+      // 没有参数 key 时，需要理解成按字典序（首字母）进行排序，用于排维度值的。（我也不理解为啥要把这两个逻辑写在一起，很容易误解
+      if (!isNil(a) && !isNil(b)) {
         // 数据健全兼容，用户数据不全时，能够展示.
         return a.toString().localeCompare(b.toString(), 'zh') * sort;
       }
@@ -118,7 +124,7 @@ export const sortByCustom = (params: SortActionParams): string[] => {
 
 export const sortByFunc = (params: SortActionParams): string[] => {
   const { originValues, measureValues, sortParam, dataSet } = params;
-  const { sortFunc, sortFieldId } = sortParam;
+  const { sortFunc, sortFieldId, sortMethod } = sortParam;
 
   const sortResult = sortFunc({
     data: measureValues,
@@ -144,7 +150,9 @@ export const sortByFunc = (params: SortActionParams): string[] => {
       originValues,
     });
   }
-  return sortResult;
+
+  // 用户返回的 sortResult 可能是不全的，需要用原始数据补全
+  return mergeDataWhenASC(sortResult, originValues, isAscSort(sortMethod));
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {
@@ -226,37 +234,106 @@ const createTotalParams = (
   return totalParams;
 };
 
+const filterExtraField = (fields: string[]) =>
+  fields.filter((field) => field !== EXTRA_FIELD);
+
+/**
+ * 获取 “按数值排序” 的排序参考数据
+ *
+ * 本函数可用以下结构的交叉表理解
+ * rows：province、city
+ * cols：type、subType
+ * vals：price、account
+ */
 export const getSortByMeasureValues = (
   params: SortActionParams,
 ): DataType[] => {
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet;
   const { sortByMeasure, query, sortFieldId } = sortParam;
+  const dataList = dataSet.getMultiData(query); // 按 query 查出所有数据
 
+  /**
+   * 按明细数据
+   * 需要过滤查询出的总/小计“汇总数据”
+   */
   if (sortByMeasure !== TOTAL_VALUE) {
-    // 按指标只排序 - 最内侧的行列不需要汇总后排序
-    return dataSet.getMultiData(query);
-  }
+    const rowColFields = concat(fields.rows, fields.columns);
 
-  const isRow =
-    fields?.columns?.includes(sortFieldId) &&
-    keys(query)?.length === 1 &&
-    has(query, EXTRA_FIELD);
-
-  // 按 data 数据中的小计，总计排序
-  const measureValues = dataSet.getMultiData(query, true, isRow);
-  if (measureValues && !isEmpty(measureValues)) {
-    return measureValues;
-  }
-  // 按前端的小计，总计排序
-  return map(originValues, (originValue) => {
-    const totalParams = createTotalParams(originValue, fields, sortFieldId);
-
-    return (dataSet as PivotDataSet).getTotalValue({
-      ...query,
-      ...totalParams,
+    return dataList.filter((dataItem) => {
+      const dataItemKeys = new Set(keys(dataItem));
+      // 过滤出包含所有行列维度的数据
+      // 若缺失任意 field，则是汇总数据，需要过滤掉
+      return rowColFields.every((field) => dataItemKeys.has(field));
     });
+  }
+
+  /**
+   * 按汇总值进行排序
+   * 需要过滤出符合要求的 “汇总数据”
+   * 因为 getMultiData 会查询出 query 及其子维度的所有数据
+   * 如 query={ type: 'xx' } 会包含 { type: 'xx', subType: '*' } 的数据
+   */
+  const isSortFieldInRow = includes(fields.rows, sortFieldId);
+  // 排序字段所在一侧的全部字段
+  const sortFields = filterExtraField(
+    isSortFieldInRow ? fields.rows : fields.columns,
+  );
+  // 与排序交叉的另一侧全部字段
+  const oppositeFields = filterExtraField(
+    isSortFieldInRow ? fields.columns : fields.rows,
+  );
+
+  const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
+  const queryKeys = keys(query);
+  const missedOppositeFields = oppositeFields.filter((field) => {
+    return !queryKeys.includes(field);
   });
+
+  const totalDataList = dataList.filter((dataItem) => {
+    const dataItemKeys = new Set(keys(dataItem));
+    if (!dataItemKeys.has(sortFieldId)) {
+      // 若排序数据中都不含被排序字段，则过滤
+      // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
+      // 查询出的数据会包含 “行总计x列总计” 数据，需要过滤
+      return false;
+    }
+
+    if (dataItemKeys.has(fieldAfterSortField)) {
+      // 若排序数据包含`排序字段`的后一个维度字段，则过滤
+      // 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
+      return false;
+    }
+
+    // 当排序字段这一侧的维度匹配完成
+    // 另一侧维度参考 query 中的维度缺失情况，过滤出汇总数据即可
+    // 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
+    const allMissed = missedOppositeFields.every((missedField) => {
+      return !dataItemKeys.has(missedField);
+    });
+
+    // 返回符合要求的汇总数据
+    return allMissed;
+  });
+
+  if (!isEmpty(totalDataList)) {
+    return totalDataList;
+  }
+
+  /**
+   * 无汇总值的兜底
+   * 按前端的小计，总计排序
+   */
+  return compact(
+    map(originValues, (originValue) => {
+      const totalParams = createTotalParams(originValue, fields, sortFieldId);
+
+      return (dataSet as PivotDataSet).getTotalValue({
+        ...query,
+        ...totalParams,
+      });
+    }),
+  );
 };
 
 export const handleSortAction = (params: SortActionParams): string[] => {

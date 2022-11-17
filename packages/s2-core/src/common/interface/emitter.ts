@@ -1,18 +1,24 @@
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { ResizeInfo } from './resize';
-import { Data } from '@/common/interface/s2DataConfig';
-import { FilterParam, SortParams, Style } from '@/common/interface/basic';
-import {
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { DataCell } from '../../cell/data-cell';
+import type { RowCell } from '../../cell/row-cell';
+import type { ColCell } from '../../cell/col-cell';
+import type { S2Event } from '../../common/constant';
+import type {
+  CellMeta,
+  CellScrollPosition,
   HiddenColumnsInfo,
+  LayoutResult,
   S2CellType,
   ViewMeta,
-  LayoutResult,
-  CellScrollPosition,
-} from '@/common/interface';
-
-import { S2Event } from '@/common/constant';
-import { Node } from '@/facet/layout/node';
-import { DataCell } from '@/cell/data-cell';
+} from '../../common/interface';
+import type {
+  FilterParam,
+  SortParams,
+  Style,
+} from '../../common/interface/basic';
+import type { Data } from '../../common/interface/s2DataConfig';
+import type { Node } from '../../facet/layout/node';
+import type { ResizeInfo } from './resize';
 
 export type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
@@ -43,6 +49,7 @@ export interface EmitterType {
   /** ================ Global ================  */
   [S2Event.GLOBAL_ACTION_ICON_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_ACTION_ICON_HOVER]: CanvasEventHandler;
+  [S2Event.GLOBAL_ACTION_ICON_HOVER_OFF]: CanvasEventHandler;
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
@@ -57,6 +64,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
+  [S2Event.GLOBAL_SCROLL]: (position: CellScrollPosition) => void;
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
@@ -81,7 +89,8 @@ export interface EmitterType {
   [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
-  [S2Event.DATE_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
+  [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: (DataCell | CellMeta)[]) => void;
+  [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -94,6 +103,8 @@ export interface EmitterType {
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
     data: RowCellCollapseTreeRowsType,
   ) => void;
+  [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
+  [S2Event.ROW_CELL_BRUSH_SELECTION]: (cells: RowCell[]) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -103,6 +114,7 @@ export interface EmitterType {
   [S2Event.COL_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.COL_CELL_BRUSH_SELECTION]: (cells: ColCell[]) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
@@ -133,7 +145,8 @@ export interface EmitterType {
     current: number;
   }) => void;
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
-  [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
+  /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
+  [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
   [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,

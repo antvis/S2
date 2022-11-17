@@ -1,10 +1,10 @@
-import { Node } from 'src/facet/layout/node';
-import { ViewCellHeights } from 'src/facet/layout/interface';
+import type { Node } from '@/facet/layout/node';
+import type { ViewCellHeights } from '@/facet/layout/interface';
 import {
   getColsForGrid,
   getFrozenRowsForGrid,
   getRowsForGrid,
-} from 'src/utils/grid';
+} from '@/utils/grid';
 
 describe('Grid util test', () => {
   describe('getColsForGrid', () => {

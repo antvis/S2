@@ -2,7 +2,7 @@ import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { auto, S2DataConfig, S2Options, PivotSheet } from '@antv/s2';
+import { auto, type S2DataConfig, type S2Options, PivotSheet } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components';
 
@@ -19,7 +19,7 @@ for (let i = 0; i < 1000; i++) {
     });
   }
 }
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -102,7 +102,7 @@ function MainLayout(props) {
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

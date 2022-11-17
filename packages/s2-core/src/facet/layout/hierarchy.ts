@@ -1,5 +1,5 @@
 // hierarchy to layout headers
-import { Node } from './node';
+import type { Node } from './node';
 
 /**
  * Row and Column hierarchy to handle all contained nodes

@@ -1,8 +1,8 @@
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TooltipComponent } from '@/components/tooltip';
-import { TooltipRenderProps } from '@/components/tooltip/interface';
+import type { TooltipRenderProps } from './interface';
+import { TooltipComponent } from './index';
 
 export class CustomTooltip extends BaseTooltip {
   constructor(spreadsheet: SpreadSheet) {
@@ -24,6 +24,10 @@ export class CustomTooltip extends BaseTooltip {
       content,
     };
 
+    if (showOptions.options?.forceRender) {
+      this.unmountComponentAtNode();
+    }
+
     ReactDOM.render(
       <TooltipComponent {...tooltipProps} content={content} />,
       this.container,
@@ -32,6 +36,10 @@ export class CustomTooltip extends BaseTooltip {
 
   destroy() {
     super.destroy();
+    this.unmountComponentAtNode();
+  }
+
+  private unmountComponentAtNode() {
     if (this.container) {
       ReactDOM.unmountComponentAtNode(this.container);
     }

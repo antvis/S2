@@ -10,7 +10,7 @@
         "zh": "文本标记",
         "en": "Text condition"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/rZCy7dKodx/e9141f33-2312-467d-954f-b3da98c8793d.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*50NlSIHAly0AAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "background.ts",
@@ -18,7 +18,7 @@
         "zh": "背景标记",
         "en": "Background condition"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/VbTKRrPLek/03467c3a-b963-4809-a75d-4f20a326777a.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*izglQq5QCBAAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "icon.ts",
@@ -26,7 +26,7 @@
         "zh": "图标标记",
         "en": "Icon condition"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MYN4V%26K2Kd/0f311e1a-a941-4664-a268-7c4b86c0f4d8.png"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*fSJ4RIhCddAAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "interval.ts",
@@ -67,6 +67,22 @@
         "en": "Multi-conditions"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6FFtlY%240T/792a0865-b01d-4674-a3ef-98da6c5be285.png"
+    },
+    {
+      "filename": "bidirectional-interval.ts",
+      "title": {
+        "zh": "双向柱状图",
+        "en": "Bidirectional interval"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
+    },
+    {
+      "filename": "intelligent-background.ts",
+      "title": {
+        "zh": "开启文字智能反色",
+        "en": "Intelligent background"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/oUICMHjOA/7fd723cb-fc2a-45a5-a0ab-a2840127a48a.png"
     }
   ]
 }

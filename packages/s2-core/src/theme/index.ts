@@ -1,12 +1,12 @@
-import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { S2Theme, ThemeCfg } from '../common/interface';
-import { SpreadSheet } from '../sheet-type';
+import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
+import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
+import type { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 
 /**
  * @describe generate the theme according to the type
- * @param  name
+ * @param themeCfg
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
@@ -18,6 +18,150 @@ export const getTheme = (
   } = themeCfg?.palette || getPalette(themeCfg?.name);
 
   const isTable = themeCfg?.spreadsheet?.isTableMode();
+  const boldTextDefaultFontWeight = isWindows() ? 'bold' : 700;
+
+  const getDataCell = () =>
+    ({
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: boldTextDefaultFontWeight,
+        fill: basicColors[13],
+        opacity: 1,
+        textAlign: 'right',
+        textBaseline: 'middle',
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[13],
+        opacity: 1,
+        textAlign: 'right',
+        textBaseline: 'middle',
+      },
+      cell: {
+        // ----------- background color -----------
+        crossBackgroundColor: basicColors[1],
+        backgroundColor: basicColors[8],
+        backgroundColorOpacity: 1,
+        // ----------- border color --------------
+        horizontalBorderColor: basicColors[9],
+        horizontalBorderColorOpacity: 1,
+        verticalBorderColor: basicColors[9],
+        verticalBorderColorOpacity: 1,
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 1,
+        // -------------- layout -----------------
+        padding: {
+          top: 8,
+          right: 8,
+          bottom: 8,
+          left: 8,
+        },
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: basicColors[2],
+            backgroundOpacity: 0.6,
+          },
+          // -------------- keep hover -------------------
+          hoverFocus: {
+            backgroundColor: basicColors[2],
+            backgroundOpacity: 0.6,
+            borderColor: basicColors[14],
+            borderWidth: 1,
+            borderOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: basicColors[2],
+            backgroundOpacity: 0.6,
+          },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
+          },
+          // -------------- searchResult -------------------
+          searchResult: {
+            backgroundColor: otherColors?.results ?? basicColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- highlight -------------------
+          highlight: {
+            backgroundColor: otherColors?.highlight ?? basicColors[6],
+            backgroundOpacity: 1,
+          },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
+        },
+      },
+      // ------------- mini chart ---------------
+      miniChart: {
+        // ------------- line graph -----------------
+        line: {
+          point: {
+            size: 2.2,
+            fill: basicColors[6],
+            opacity: 1,
+          },
+          linkLine: {
+            size: 1.5,
+            fill: basicColors[6],
+            opacity: 0.6,
+          },
+        },
+        // ------------- bar graph -----------------
+        bar: {
+          intervalPadding: 4,
+          fill: basicColors[6],
+          opacity: 1,
+        },
+        // ------------- bullet graph -----------------
+        bullet: {
+          progressBar: {
+            widthPercent: 0.6,
+            height: 10,
+            innerHeight: 6,
+          },
+          comparativeMeasure: {
+            width: 1,
+            height: 12,
+            fill: basicColors[13],
+            opacity: 0.25,
+          },
+          rangeColors: {
+            good: semanticColors?.green,
+            satisfactory: semanticColors.yellow,
+            bad: semanticColors.red,
+          },
+          backgroundColor: '#E9E9E9',
+        },
+        // ------------ interval bar graph -----------------
+        interval: {
+          height: INTERVAL_BAR_HEIGHT,
+          fill: basicColors[7],
+        },
+      },
+      icon: {
+        fill: basicColors[13],
+        downIconColor: semanticColors.red,
+        upIconColor: semanticColors.green,
+        size: 10,
+        margin: {
+          right: 4,
+          left: 4,
+        },
+      },
+    } as DefaultCellTheme);
 
   return {
     // ------------- Headers -------------------
@@ -25,7 +169,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
@@ -34,7 +178,7 @@ export const getTheme = (
       text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 500,
+        fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'right',
@@ -70,6 +214,16 @@ export const getTheme = (
       },
     },
     rowCell: {
+      seriesText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: basicColors[14],
+        linkTextFill: basicColors[6],
+        opacity: 1,
+        textBaseline: 'middle',
+        textAlign: 'center',
+      },
       measureText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
@@ -83,7 +237,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
@@ -137,6 +291,12 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: otherColors?.results ?? basicColors[2],
@@ -173,7 +333,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
+        fontWeight: boldTextDefaultFontWeight,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -225,6 +385,12 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: basicColors[14],
+            borderOpacity: 1,
+            borderWidth: 1,
+          },
           // -------------- searchResult -------------------
           searchResult: {
             backgroundColor: otherColors?.results ?? basicColors[2],
@@ -249,110 +415,16 @@ export const getTheme = (
       },
     },
     // ------------- DataCell -------------------
-    dataCell: {
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : 520,
-        fill: basicColors[13],
-        opacity: 1,
-        textAlign: 'right',
-        textBaseline: 'middle',
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: 'normal',
-        fill: basicColors[13],
-        opacity: 1,
-        textAlign: 'right',
-        textBaseline: 'middle',
-      },
-      cell: {
-        // ----------- background color -----------
-        crossBackgroundColor: basicColors[1],
-        backgroundColor: basicColors[8],
-        backgroundColorOpacity: 1,
-        // ----------- border color --------------
-        horizontalBorderColor: basicColors[9],
-        horizontalBorderColorOpacity: 1,
-        verticalBorderColor: basicColors[9],
-        verticalBorderColorOpacity: 1,
-        // ----------- border width --------------
-        horizontalBorderWidth: 1,
-        verticalBorderWidth: 1,
-        // -------------- layout -----------------
-        padding: {
-          top: 0,
-          right: 8,
-          bottom: 0,
-          left: 8,
-        },
-        /* ---------- interaction state ----------- */
-        interactionState: {
-          // -------------- hover -------------------
-          hover: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-          },
-          // -------------- keep hover -------------------
-          hoverFocus: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-            borderColor: basicColors[14],
-            borderWidth: 1,
-            borderOpacity: 1,
-          },
-          // -------------- selected -------------------
-          selected: {
-            backgroundColor: basicColors[2],
-            backgroundOpacity: 0.6,
-          },
-          // -------------- unselected -------------------
-          unselected: {
-            backgroundOpacity: 0.3,
-            textOpacity: 0.3,
-            opacity: 0.3,
-          },
-          // -------------- searchResult -------------------
-          searchResult: {
-            backgroundColor: otherColors?.results ?? basicColors[2],
-            backgroundOpacity: 1,
-          },
-          // -------------- highlight -------------------
-          highlight: {
-            backgroundColor: otherColors?.highlight ?? basicColors[6],
-            backgroundOpacity: 1,
-          },
-          // -------------- prepare select --------------
-          prepareSelect: {
-            borderColor: basicColors[14],
-            borderOpacity: 1,
-            borderWidth: 1,
-          },
-        },
-
-        // ------------- mini chart ---------------
-        miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
-        miniBarChartFillColor: basicColors[7],
-      },
-      icon: {
-        fill: basicColors[13],
-        downIconColor: semanticColors.red,
-        upIconColor: semanticColors.green,
-        size: 10,
-        margin: {
-          right: 4,
-          left: 4,
-        },
-      },
-    },
+    dataCell: getDataCell(),
+    // ------------- MergedCell -------------------
+    mergedCell: getDataCell(),
     // resize active area
     resizeArea: {
       size: 3,
       background: basicColors[7],
       backgroundOpacity: 0,
       guideLineColor: basicColors[7],
+      guideLineDisableColor: 'rgba(0,0,0,0.25)',
       guideLineDash: [3, 3],
       /* ---------- interaction state ----------- */
       interactionState: {

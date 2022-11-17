@@ -3,15 +3,15 @@ import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {
-  GetCellMeta,
+  type GetCellMeta,
   Node,
-  S2DataConfig,
-  S2Options,
+  type S2DataConfig,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  LayoutHierarchyReturnType,
+  type SpreadSheetFacetCfg,
+  type ViewMeta,
+  type LayoutHierarchyReturnType,
   generateId,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
@@ -19,7 +19,7 @@ import { SheetComponent } from '@/components';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let innerSS: SpreadSheet;
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -131,7 +131,7 @@ const CustomLayoutDataPosition = (
   spreadsheet: SpreadSheet,
   getCellData: GetCellMeta,
 ): GetCellMeta => {
-  const getCellMeta = (rowIndex: number, colIndex: number): ViewMeta => {
+  return (rowIndex: number, colIndex: number): ViewMeta => {
     const viewMeta = getCellData(rowIndex, colIndex);
     // 更改0，0 坐标的值为 999
     if (rowIndex === 0 && colIndex === 0) {
@@ -151,7 +151,6 @@ const CustomLayoutDataPosition = (
     }
     return viewMeta;
   };
-  return getCellMeta;
 };
 
 const getOptions = () => {
@@ -160,10 +159,10 @@ const getOptions = () => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    hierarchyCollapse: false,
     frozenRowHeader: true,
     style: {
       treeRowsWidth: 120,
+      hierarchyCollapse: false,
       collapsedRows: {},
       colCfg: {
         widthByFieldValue: {},
@@ -191,7 +190,7 @@ const MainLayout = ({ options, dataCfg }) => {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

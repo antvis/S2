@@ -1,15 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { GuiIcon, Node, RowCell, S2Options, SpreadSheet } from '@antv/s2';
-import * as mockDataConfig from 'tests/data/simple-data.json';
+import {
+  customMerge,
+  GuiIcon,
+  Node,
+  RowCell,
+  S2Options,
+  SpreadSheet,
+} from '@antv/s2';
 import { get, noop } from 'lodash';
-import { SheetComponentsProps, SheetComponent } from '../../src';
+import * as mockDataConfig from '../data/simple-data.json';
+import { type SheetComponentsProps, SheetComponent } from '../../src';
 import { getContainer } from '../util/helpers';
 
 const s2Options: S2Options = {
   width: 600,
-  height: 600,
+  height: 300,
   hierarchyType: 'tree',
 };
 
@@ -53,6 +60,7 @@ describe('Spread Sheet Drill Down Tests', () => {
   });
 
   afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
     container?.remove();
   });
 
@@ -65,7 +73,7 @@ describe('Spread Sheet Drill Down Tests', () => {
         <SheetComponent
           options={s2Options}
           dataCfg={mockDataConfig}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2Instance = instance;
           }}
           partDrillDown={partDrillDownParams}
@@ -97,7 +105,7 @@ describe('Spread Sheet Drill Down Tests', () => {
             ],
           }}
           dataCfg={mockDataConfig}
-          getSpreadSheet={(instance) => {
+          onMounted={(instance) => {
             s2Instance = instance;
           }}
           partDrillDown={partDrillDownParams}
@@ -111,5 +119,63 @@ describe('Spread Sheet Drill Down Tests', () => {
     expect(s2Instance.store.get('drillItemsNum')).toEqual(
       EXPECT_DRILL_ITEMS_NUM,
     );
+  });
+
+  // https://github.com/antvis/S2/issues/1514
+  test('should render drill down icon and not show sort icon if value is empty', () => {
+    let s2: SpreadSheet;
+
+    act(() => {
+      ReactDOM.render(
+        <SheetComponent
+          options={s2Options}
+          dataCfg={customMerge(mockDataConfig, {
+            fields: {
+              values: [],
+            },
+          })}
+          onMounted={(instance) => {
+            s2 = instance;
+          }}
+          partDrillDown={partDrillDownParams}
+        />,
+        container,
+      );
+    });
+
+    const rowNodes = s2.getRowNodes().filter((node) => node.rowIndex >= 1);
+
+    rowNodes.forEach((node) => {
+      expect(get(node.belongsCell, 'actionIcons.0.cfg.name')).toEqual(
+        'DrillDownIcon',
+      );
+    });
+  });
+
+  test('should not render drill down icon is displayCondition return false', () => {
+    let s2: SpreadSheet;
+
+    act(() => {
+      ReactDOM.render(
+        <SheetComponent
+          options={s2Options}
+          dataCfg={mockDataConfig}
+          onMounted={(instance) => {
+            s2 = instance;
+          }}
+          partDrillDown={{
+            ...partDrillDownParams,
+            displayCondition: () => false,
+          }}
+        />,
+        container,
+      );
+    });
+
+    const rowNodes = s2.getRowNodes();
+
+    rowNodes.forEach((node) => {
+      expect(get(node.belongsCell, 'actionIcons')).toHaveLength(0);
+    });
   });
 });

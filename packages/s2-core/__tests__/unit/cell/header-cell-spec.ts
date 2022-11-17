@@ -1,6 +1,6 @@
 import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import { PivotDataSet, TableDataSet } from '@/data-set';
-import { Formatter } from '@/common';
+import type { Formatter } from '@/common';
 
 import { ColCell, CornerCell, RowCell, TableColCell } from '@/cell';
 import { Node } from '@/facet/layout/node';

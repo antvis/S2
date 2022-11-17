@@ -1,9 +1,9 @@
-import { isEmpty, get } from 'lodash';
+import { get, isEmpty } from 'lodash';
+import { EXTRA_FIELD } from '../../common/constant';
+import { generateId } from '../../utils/layout/generate-id';
+import type { CustomTreeHeaderParams } from '../layout/interface';
+import { Node } from '../layout/node';
 import { layoutHierarchy } from './layout-hooks';
-import { CustomTreeHeaderParams } from '@/facet/layout/interface';
-import { Node } from '@/facet/layout/node';
-import { EXTRA_FIELD } from '@/common/constant';
-import { generateId } from '@/utils/layout/generate-id';
 
 /**
  * 自定义🌲结构设计原则：

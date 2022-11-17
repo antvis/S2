@@ -1,8 +1,8 @@
 import { map } from 'lodash';
-import { TableHeaderParams } from '@/facet/layout/interface';
-import { SERIES_NUMBER_FIELD } from '@/common/constant';
-import { i18n } from '@/common/i18n';
-import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
+import { SERIES_NUMBER_FIELD } from '../../common/constant';
+import { i18n } from '../../common/i18n';
+import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
+import type { TableHeaderParams } from '../layout/interface';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
   const { facetCfg, hierarchy, parentNode } = params;
@@ -31,7 +31,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   }
 
   generateHeaderNodes({
-    currentField: displayedColumns[0],
+    currentField: fields[0],
     fields,
     fieldValues,
     facetCfg,

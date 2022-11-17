@@ -1,12 +1,12 @@
 import { each, orderBy, filter, includes, isFunction } from 'lodash';
 import { isAscSort, isDescSort } from '..';
-import { CellDataParams, DataType } from './interface';
-import { BaseDataSet } from '@/data-set/base-data-set';
-import { S2DataConfig } from '@/common/interface';
+import type { S2DataConfig } from '../common/interface';
+import type { CellDataParams, DataType } from './interface';
+import { BaseDataSet } from './base-data-set';
 
 export class TableDataSet extends BaseDataSet {
   // data that goes into canvas (aka sorted & filtered)
-  protected displayData: DataType[];
+  protected declare displayData: DataType[];
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;
@@ -24,7 +24,9 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getStartRows() {
     const { frozenRowCount } = this.spreadsheet.options || {};
-    if (!frozenRowCount) return [];
+    if (!frozenRowCount) {
+      return [];
+    }
     const { displayData } = this;
     return displayData.slice(0, frozenRowCount);
   }
@@ -36,7 +38,9 @@ export class TableDataSet extends BaseDataSet {
   protected getEndRows() {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
     // 没有冻结行时返回空数组
-    if (!frozenTrailingRowCount) return [];
+    if (!frozenTrailingRowCount) {
+      return [];
+    }
     const { displayData } = this;
 
     return displayData.slice(-frozenTrailingRowCount);
@@ -59,7 +63,7 @@ export class TableDataSet extends BaseDataSet {
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
       const defaultFilterFunc = (row: DataType) =>
-        row[filterKey] && !includes(filteredValues, row[filterKey]);
+        !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
         ...filter(this.getMovableRows(), (row) => {
@@ -78,7 +82,9 @@ export class TableDataSet extends BaseDataSet {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortFunc, sortMethod, query } = item;
       // 排序的前提
-      if (!sortFieldId) return;
+      if (!sortFieldId) {
+        return;
+      }
 
       let data = this.getMovableRows();
 
@@ -149,7 +155,13 @@ export class TableDataSet extends BaseDataSet {
     if (this.displayData.length === 0 && query.rowIndex === 0) {
       return;
     }
-    return this.displayData[query.rowIndex][query.col];
+
+    const rowData = this.displayData[query.rowIndex];
+
+    if (!('col' in query)) {
+      return rowData;
+    }
+    return rowData[query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {

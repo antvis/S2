@@ -5,7 +5,7 @@ import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/a2e9799d-f03a-4847-8756-2976a032b485.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/0c913e28-7806-41b2-a046-df3c1586712c.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -88,7 +88,12 @@ fetch(
 
       return (
         <div>
-          <Switcher {...switcherFields} onSubmit={onSubmit} />
+          <Switcher
+            {...switcherFields}
+            // 是否允许指标在行列维度之间相互切换
+            allowExchangeHeader={true}
+            onSubmit={onSubmit}
+          />
           <SheetComponent
             sheetType={'pivot'}
             adaptive={false}

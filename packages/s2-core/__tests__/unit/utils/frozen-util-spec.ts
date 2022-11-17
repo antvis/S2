@@ -1,4 +1,4 @@
-import { getValidFrozenOptions } from 'src/utils/layout/frozen';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
 import {
   getFrozenDataCellType,
   calculateFrozenCornerCells,
@@ -6,8 +6,8 @@ import {
   getCellRange,
 } from '@/facet/utils';
 import { FrozenCellType } from '@/common/constant/frozen';
-import { Indexes } from '@/utils/indexes';
-import { ViewCellHeights } from '@/facet/layout/interface';
+import type { Indexes } from '@/utils/indexes';
+import type { ViewCellHeights } from '@/facet/layout/interface';
 
 describe('Frozen util test', () => {
   describe('getCellRange', () => {
@@ -37,8 +37,6 @@ describe('Frozen util test', () => {
   });
 
   describe('getFrozenDataCellType', () => {
-    beforeEach(() => {});
-
     it('should return correct data cell type', () => {
       const colLength = 10;
       const cellRange = {

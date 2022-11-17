@@ -7,7 +7,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { SpreadSheet, Node } from '@antv/s2';
+import type { SpreadSheet, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import dataCfg from '../data/data-issue-522.json';
 import { SheetComponent } from '@/components';
@@ -38,7 +38,7 @@ function MainLayout() {
   return (
     <div>
       <SheetComponent
-        getSpreadSheet={(s2) => {
+        onMounted={(s2) => {
           sheetInstance = s2;
         }}
         dataCfg={dataCfg}

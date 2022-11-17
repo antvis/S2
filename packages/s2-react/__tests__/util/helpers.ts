@@ -3,17 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g-canvas';
 import {
   Store,
-  S2Options,
+  type S2Options,
   SpreadSheet,
   PivotSheet,
   BaseTooltip,
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
-  ViewMeta,
+  type ViewMeta,
 } from '@antv/s2';
 import { omit } from 'lodash';
 
@@ -66,6 +66,7 @@ export const createFakeSpreadSheet = () => {
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
   s2.showTooltipWithInfo = jest.fn();
+  s2.isTableMode = jest.fn();
 
   return s2;
 };
@@ -101,6 +102,22 @@ export const createMockCellInfo = (
     rowIndex,
     type: undefined,
     update: jest.fn(),
+    spreadsheet: {
+      options: {
+        style: {},
+      },
+      getRowNodes: jest.fn(),
+      getColumnNodes: jest.fn(),
+      dataCfg: {
+        meta: null,
+        data: [],
+        fields: {},
+      },
+      dataSet: {
+        getFieldDescription: jest.fn(),
+        getFieldName: jest.fn(),
+      },
+    } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, 'update');
   const mockCell = {

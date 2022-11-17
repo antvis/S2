@@ -1,20 +1,24 @@
-import { debounce } from 'lodash';
+import { debounce, isBoolean } from 'lodash';
 import { RESIZE_RENDER_DELAY } from '../constant/resize';
 import type { Adaptive, ResizeEffectParams } from '../interface';
 
 export const analyzeAdaptive = (
-  paramsContainer: HTMLElement,
+  defaultContainer: HTMLElement,
   adaptive?: Adaptive,
 ) => {
-  let container = paramsContainer;
-  let adaptiveWidth = true;
-  let adaptiveHeight = false;
-  if (typeof adaptive !== 'boolean') {
-    container = adaptive?.getContainer?.() || paramsContainer;
-    adaptiveWidth = adaptive?.width ?? true;
-    adaptiveHeight = adaptive?.height ?? true;
+  if (isBoolean(adaptive)) {
+    return {
+      container: defaultContainer,
+      adaptiveWidth: true,
+      adaptiveHeight: false,
+    };
   }
-  return { container, adaptiveWidth, adaptiveHeight };
+
+  return {
+    container: adaptive?.getContainer?.() || defaultContainer,
+    adaptiveWidth: adaptive?.width ?? true,
+    adaptiveHeight: adaptive?.height ?? true,
+  };
 };
 
 export const createResizeObserver = (params: ResizeEffectParams) => {
@@ -38,15 +42,16 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
   const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
 
   const onResize = () => {
-    const { width: nodeWidth, height: nodeHeight } =
-      container?.getBoundingClientRect();
+    // 解决父容器有缩放, 获取宽高不对的问题: https://github.com/antvis/S2/pull/1425
+    const { clientWidth: containerWidth, clientHeight: containerHeight } =
+      container;
 
     const width = adaptiveWidth
-      ? Math.floor(nodeWidth ?? s2.options.width)
+      ? Math.floor(containerWidth ?? s2.options.width)
       : s2.options.width;
     const height = adaptiveHeight
       ? // 去除 header 和 page 后才是 sheet 真正的高度
-        Math.floor(nodeHeight ?? s2.options.height)
+        Math.floor(containerHeight ?? s2.options.height)
       : s2.options.height;
 
     if (!adaptiveWidth && !adaptiveHeight) {

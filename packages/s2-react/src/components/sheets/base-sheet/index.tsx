@@ -1,35 +1,42 @@
+import { getSafetyDataConfig, S2_PREFIX_CLS, SpreadSheet } from '@antv/s2';
 import { Spin } from 'antd';
 import React from 'react';
-import {
-  S2_PREFIX_CLS,
-  S2Options,
-  getSafetyDataConfig,
-  SpreadSheet,
-} from '@antv/s2';
-import { get } from 'lodash';
-import { Header } from '@/components/header';
-import { SheetComponentsProps } from '@/components/sheets/interface';
-import { S2Pagination } from '@/components/pagination';
-import { getSheetComponentOptions } from '@/utils';
-import { useSpreadSheet } from '@/hooks/useSpreadSheet';
+import { useSpreadSheet } from '../../../hooks/useSpreadSheet';
+import { SpreadSheetContext } from '../../../utils/SpreadSheetContext';
+import { getSheetComponentOptions } from '../../../utils';
+import { Header } from '../../header';
+import { S2Pagination } from '../../pagination';
+import type {
+  SheetComponentOptions,
+  SheetComponentsProps,
+} from '../../sheets/interface';
 
 import './index.less';
 
-export const BaseSheet = React.forwardRef(
-  (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { dataCfg, options, header, showPagination } = props;
-    const { s2Ref, loading, containerRef, pagination, wrapperRef } =
-      useSpreadSheet(props);
+export const BaseSheet = React.forwardRef<
+  SpreadSheet,
+  React.PropsWithChildren<SheetComponentsProps>
+>((props, ref) => {
+  const { dataCfg, options, header } = props;
+  const { s2Ref, loading, containerRef, pagination, wrapperRef } =
+    useSpreadSheet(props);
 
-    // 同步实例
-    React.useEffect(() => {
-      if (ref) {
-        ref.current = s2Ref.current;
-      }
-    }, [ref, s2Ref]);
+  const [contextVal, setContextVal] = React.useState<SpreadSheet>(
+    s2Ref.current,
+  );
 
-    return (
-      <React.StrictMode>
+  // 同步实例
+  React.useEffect(() => {
+    if (ref) {
+      (ref as React.MutableRefObject<SpreadSheet>).current = s2Ref.current;
+    }
+  }, [ref, s2Ref]);
+
+  React.useEffect(() => setContextVal(s2Ref.current), [setContextVal, s2Ref]);
+
+  return (
+    <React.StrictMode>
+      <SpreadSheetContext.Provider value={contextVal}>
         <Spin spinning={loading} wrapperClassName={`${S2_PREFIX_CLS}-spin`}>
           <div ref={wrapperRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
@@ -42,24 +49,24 @@ export const BaseSheet = React.forwardRef(
               />
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
-            {showPagination && (
+            {pagination.showPagination && (
               <S2Pagination
-                {...pagination}
-                pagination={options.pagination}
-                onChange={get(showPagination, 'onChange')}
-                onShowSizeChange={get(showPagination, 'onShowSizeChange')}
+                pagination={pagination.pagination}
+                onChange={pagination.onChange}
+                onShowSizeChange={pagination.onShowSizeChange}
               />
             )}
+            {props.children}
           </div>
         </Spin>
-      </React.StrictMode>
-    );
-  },
-);
+      </SpreadSheetContext.Provider>
+    </React.StrictMode>
+  );
+});
 
 BaseSheet.displayName = 'BaseSheet';
 BaseSheet.defaultProps = {
-  options: {} as S2Options,
+  options: {} as SheetComponentOptions,
   adaptive: false,
   showPagination: false,
 };

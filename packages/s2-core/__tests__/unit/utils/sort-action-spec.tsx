@@ -6,9 +6,16 @@ import {
   sortByCustom,
   sortByFunc,
 } from '@/utils/sort-action';
-import { EXTRA_FIELD, S2Options, SortParam, TOTAL_VALUE } from '@/common';
-import { PivotSheet } from '@/sheet-type';
-import { PivotDataSet, SortActionParams } from '@/data-set';
+import {
+  EXTRA_FIELD,
+  type S2Options,
+  type SortParam,
+  TOTAL_VALUE,
+  type S2DataConfig,
+  VALUE_FIELD,
+} from '@/common';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { BaseDataSet, PivotDataSet, type SortActionParams } from '@/data-set';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -28,6 +35,16 @@ describe('Sort Action Test', () => {
       expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
     });
 
+    test('sort action with zero and number arr', () => {
+      const data1 = [1, 6, -2, 0];
+      expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
+      expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
+
+      const data2 = ['0', 0, 2, -2];
+      expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
+      expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
+    });
+
     test('sort action with string arr', () => {
       const data = ['a', 'c', 'b'];
       expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
@@ -40,6 +57,22 @@ describe('Sort Action Test', () => {
       const data2 = ['啊', '11', '2'];
       expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
       expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
+    });
+
+    test('object data sorted by key with zero', () => {
+      const data1 = [{ a: 1 }, { a: 0 }, { a: -3 }, { a: 2 }];
+      expect(sortAction(data1, 'ASC', 'a')).toEqual([
+        { a: -3 },
+        { a: 0 },
+        { a: 1 },
+        { a: 2 },
+      ]);
+      expect(sortAction(data1, 'DESC', 'a')).toEqual([
+        { a: 2 },
+        { a: 1 },
+        { a: 0 },
+        { a: -3 },
+      ]);
     });
 
     test('sort action with object arr', () => {
@@ -86,6 +119,7 @@ describe('Sort Action Test', () => {
           'a',
         ),
       ).toEqual([{ a: undefined }, { a: '-' }, { a: 2 }, { a: '3' }]);
+
       expect(
         sortAction(
           [{ a: '-' }, { a: '3' }, { a: 2 }, { a: undefined }],
@@ -187,8 +221,11 @@ describe('Sort By Func Tests', () => {
     expect(result).toEqual(originValues);
   });
 
-  test('should return sortFunc result', () => {
+  test('should return merged result', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
     const result = sortByFunc({
+      originValues,
       sortParam: {
         sortFieldId: 'city',
         sortFunc: () => ['浙江[&]杭州'],
@@ -200,7 +237,30 @@ describe('Sort By Func Tests', () => {
       } as unknown as PivotDataSet,
     });
 
-    expect(result).toEqual(['浙江[&]杭州']);
+    // sortFunc 返回的值在前，未返回的值在后
+    expect(result).toEqual(['浙江[&]杭州', '四川[&]成都', '四川[&]绵阳']);
+  });
+
+  test('should return merged result when sorting by ASC', () => {
+    const originValues = ['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州'];
+
+    const result = sortByFunc({
+      originValues,
+      sortParam: {
+        sortMethod: 'ASC',
+        sortFieldId: 'city',
+        sortFunc: () => ['浙江[&]杭州'],
+      },
+      dataSet: {
+        fields: {
+          rows: ['province', 'city'],
+        },
+      } as unknown as PivotDataSet,
+    });
+
+    // asc 升序时
+    // sortFunc 没返回的值在前，返回的值在后
+    expect(result).toEqual(['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州']);
   });
 
   test('should return fallback result', () => {
@@ -232,7 +292,162 @@ describe('Sort By Func Tests', () => {
   });
 });
 
-describe('getSortByMeasureValues', () => {
+describe('GetSortByMeasureValues Tests', () => {
+  let s2: SpreadSheet;
+
+  beforeEach(() => {
+    const dataCfg: S2DataConfig = {
+      ...sortData,
+      // 补充一些总、小计数据
+      totalData: [
+        {
+          province: '浙江',
+          price: '777',
+        },
+        {
+          province: '吉林',
+          price: '888',
+        },
+        {
+          province: '浙江',
+          type: '笔',
+          price: '199',
+        },
+        {
+          province: '吉林',
+          type: '笔',
+          price: '188',
+        },
+      ],
+    };
+    s2 = new PivotSheet(getContainer(), dataCfg, {
+      totals: {
+        row: {
+          showGrandTotals: true,
+          showSubTotals: true,
+          subTotalsDimensions: ['province'],
+        },
+        col: {
+          showGrandTotals: true,
+          showSubTotals: true,
+        },
+      },
+    });
+    s2.render();
+  });
+
+  afterEach(() => {
+    s2.destroy();
+  });
+
+  test('should return detail data', () => {
+    // 对城市（最后一个维度）进行按指标排序
+    // query 会包含所有列维度，才能指向明细数据格（无汇总数据）
+    const sortParam: SortParam = {
+      sortFieldId: 'city',
+      sortByMeasure: 'price',
+      sortMethod: 'desc',
+      query: { province: '吉林', type: '笔', [EXTRA_FIELD]: 'price' },
+    };
+
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '吉林',
+        city: '长春',
+        type: '笔',
+        price: '10',
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: '10',
+      },
+      {
+        province: '吉林',
+        city: '白山',
+        type: '笔',
+        price: '9',
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: '9',
+      },
+    ]);
+  });
+
+  test('should return sub-total data', () => {
+    // 对省维度（非最后一个维度）进行按指标排序
+    // 排序数据需要取汇总值
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { type: '笔', [EXTRA_FIELD]: 'price' },
+    };
+
+    // query 限定了 type
+    // 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        type: '笔',
+        price: '199',
+        $$extra$$: 'price',
+        $$value$$: '199',
+      },
+      {
+        province: '吉林',
+        type: '笔',
+        price: '188',
+        $$extra$$: 'price',
+        $$value$$: '188',
+      },
+    ]);
+  });
+
+  test('should return grand-total data', () => {
+    // 对省维度（非最后一个维度）进行按指标排序
+    // 排序数据需要取汇总值
+    const sortParam: SortParam = {
+      sortFieldId: 'province',
+      sortByMeasure: TOTAL_VALUE,
+      sortMethod: 'desc',
+      query: { [EXTRA_FIELD]: 'price' },
+    };
+
+    // query 为限定任何列维度
+    // 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
+    const measureValues = getSortByMeasureValues({
+      dataSet: s2.dataSet,
+      sortParam,
+      originValues: ['纸张', '笔'],
+    });
+
+    expect(measureValues).toEqual([
+      {
+        province: '浙江',
+        price: '777',
+        $$extra$$: 'price',
+        $$value$$: '777',
+      },
+      {
+        province: '吉林',
+        price: '888',
+        $$extra$$: 'price',
+        $$value$$: '888',
+      },
+    ]);
+  });
+});
+
+describe('GetSortByMeasureValues Total Fallback Tests', () => {
   let sheet: PivotSheet;
   let dataSet: PivotDataSet;
   const s2Options = {
@@ -259,12 +474,14 @@ describe('getSortByMeasureValues', () => {
       },
     },
   } as S2Options;
+
   beforeEach(() => {
     sheet = new PivotSheet(getContainer(), sortData, s2Options);
     dataSet = new PivotDataSet(sheet);
     dataSet.setDataCfg(sortData);
     sheet.dataSet = dataSet;
   });
+
   test('should sort by col total', () => {
     // 根据列（类别）的总和排序
     const sortParam: SortParam = {
@@ -345,7 +562,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -369,7 +586,7 @@ describe('getSortByMeasureValues', () => {
       },
       {
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         type: '笔',
         price: '10',
         $$extra$$: 'price',
@@ -403,7 +620,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -426,7 +643,7 @@ describe('getSortByMeasureValues', () => {
       {
         $$extra$$: 'price',
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         $$value$$: 13,
         price: 13,
       },
@@ -457,7 +674,7 @@ describe('getSortByMeasureValues', () => {
       originValues: [
         '浙江[&]杭州',
         '浙江[&]舟山',
-        '吉林[&]丹东',
+        '吉林[&]长春',
         '吉林[&]白山',
       ],
     };
@@ -481,7 +698,7 @@ describe('getSortByMeasureValues', () => {
       },
       {
         province: '吉林',
-        city: '丹东',
+        city: '长春',
         type: '纸张',
         price: '3',
         $$extra$$: 'price',

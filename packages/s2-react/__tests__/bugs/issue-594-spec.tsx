@@ -10,7 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { SheetType } from '@antv/s2-shared';
+import type { SheetType } from '@antv/s2-shared';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
 
@@ -54,7 +54,7 @@ function MainLayout(
         dataCfg={mockDataConfig}
         options={{ width: 200, height: 200 }}
         themeCfg={{ name: 'default' }}
-        getSpreadSheet={(instance) => {
+        onMounted={(instance) => {
           s2 = instance;
         }}
         ref={s2Ref}

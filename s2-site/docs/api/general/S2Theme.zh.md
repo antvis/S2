@@ -3,6 +3,20 @@ title: S2Theme
 order: 2
 ---
 
+主题配置
+
+```ts
+// 统一设置主题 Schema, 色板，名称
+s2.setThemeCfg({
+  theme: {},
+  palette: {},
+  name: "default"
+})
+
+// 单独设置主题 Schema
+s2.setTheme({})
+```
+
 ## ThemeCfg
 
 <description> **optional** _object_ </description>
@@ -45,7 +59,7 @@ order: 2
 | scrollBar | 滚动条样式 | [ScrollBarTheme](#scrollbartheme) |  |  |
 | splitLine | 单元格分割线样式 | [SplitLine](#splitline) |  |  |
 | prepareSelectMask | 刷选遮罩样式 | [InteractionStateTheme](#interactionstatetheme) |  |  |
-| background | 刷选遮罩样式 | [Background](#background) |  |  |
+| background | 背景样式 | [Background](#background) |  |  |
 | [key: string] | 额外属性字段，用于用户自定义主题时传参 | `unknown` |  |  |
 
 #### DefaultCellTheme
@@ -58,6 +72,7 @@ order: 2
 | :---------------- | :----------- | :---------------------- | :----- | :--: |
 | bolderText        | 加粗文本样式 | [TextTheme](#texttheme) | -      |      |
 | text              | 文本样式     | [TextTheme](#texttheme) | -      |      |
+| seriesText       | 序号文本样式 | [TextTheme](#texttheme) | -      |      |
 | measureText       | 度量值文本样式 | [TextTheme](#texttheme) | -      |      |
 | cell              | 单元格样式   | [CellTheme](#celltheme) | -      |      |
 | icon              | 图标样式     | [IconTheme](#icontheme) | -      |      |
@@ -102,10 +117,10 @@ order: 2
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | :-- | :-- | :-- | :-- | :-: |
 | horizontalBorderColor | 水平分割线颜色 | `string` | - |  |
-| horizontalBorderColorOpacity | 水平分割线颜色透明度 | `number` | 1 |  |
+| horizontalBorderColorOpacity | 水平分割线颜色透明度 | `number` | 0.2 |  |
 | horizontalBorderWidth | 水平分割线宽度 | `number` | 2 |  |
 | verticalBorderColor | 垂直分割线颜色 | `string` | - |  |
-| verticalBorderColorOpacity | 垂直分割线颜色透明度 | `number` | 1 |  |
+| verticalBorderColorOpacity | 垂直分割线颜色透明度 | `number` | 0.25 |  |
 | verticalBorderWidth | 垂直分割线宽度 | `number` | 2 |  |
 | showShadow | 分割线是否显示外阴影（行列冻结情况下） | `boolean` | `true` |  |
 | shadowWidth | 阴影宽度 | `number` | 10 |  |
@@ -195,9 +210,9 @@ order: 2
 
 <description> **optional** _object_ </description>
 
-功能描述：背景
+功能描述：背景配置
 
 | 参数    | 说明 | 类型     | 默认值 | 必选 |
 | :------ | :--- | :------- | :----- | :--: |
 | color   | 颜色 | `string` | -      |      |
-| opacity |      | `number` | 1      |      |
+| opacity | 透明度     | `number` | 1      |      |

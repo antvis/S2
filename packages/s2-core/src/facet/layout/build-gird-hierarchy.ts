@@ -1,12 +1,13 @@
-import { isEmpty, isUndefined, uniqWith } from 'lodash';
-import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
-import { TotalMeasure } from '@/facet/layout/total-measure';
-import { layoutArrange } from '@/facet/layout/layout-hooks';
-import { getDimsCondition } from '@/utils/layout/get-dims-condition-by-node';
-import { addTotals } from '@/utils/layout/add-totals';
-import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
-import { EXTRA_COLUMN_FIELD, EXTRA_FIELD } from '@/common/constant';
-import { SpreadSheetFacetCfg } from '@/common/interface';
+import { isEmpty, isUndefined } from 'lodash';
+import { EXTRA_COLUMN_FIELD, EXTRA_FIELD } from '../../common/constant';
+import type { SpreadSheetFacetCfg } from '../../common/interface';
+import { addTotals } from '../../utils/layout/add-totals';
+import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
+import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node';
+import type { FieldValue, GridHeaderParams } from '../layout/interface';
+import { layoutArrange } from '../layout/layout-hooks';
+import { TotalMeasure } from '../layout/total-measure';
+import type { SpreadSheet } from '../../sheet-type';
 
 const hideMeasureColumn = (
   fieldValues: FieldValue[],
@@ -20,6 +21,18 @@ const hideMeasureColumn = (
       fieldValues.splice(fieldValues.indexOf(value), 1);
     }
   }
+};
+
+const getIsEqualValueLeafNode = (spreadsheet: SpreadSheet) => {
+  const leafNodes = spreadsheet.getColumnLeafNodes();
+  const values = new Set();
+  for (let i = 0; i < leafNodes.length; i++) {
+    values.add(leafNodes[i].value);
+    if (values.size > 1) {
+      return false;
+    }
+  }
+  return values.size === 1;
 };
 
 /**
@@ -89,10 +102,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   }
 
   const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
-  const isEqualValueLeafNode =
-    uniqWith(spreadsheet.getColumnLeafNodes(), (prev, next) => {
-      return prev.value === next.value;
-    }).length === 1;
+  const isEqualValueLeafNode = getIsEqualValueLeafNode(spreadsheet);
 
   const displayFieldValues = fieldValues.filter((value) => {
     // 去除多余的节点

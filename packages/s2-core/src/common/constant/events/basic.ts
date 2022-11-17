@@ -8,6 +8,8 @@ export enum S2Event {
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
   ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
+  ROW_CELL_SCROLL = 'row-cell:scroll',
+  ROW_CELL_BRUSH_SELECTION = 'row-cell:brush-selection',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
@@ -17,6 +19,7 @@ export enum S2Event {
   COL_CELL_MOUSE_DOWN = 'col-cell:mouse-down',
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
+  COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
@@ -27,7 +30,8 @@ export enum S2Event {
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
   DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
-  DATE_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
+  DATA_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
+  DATA_CELL_SELECT_MOVE = 'data-cell:select-move',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_HOVER = 'corner-cell:hover',
@@ -57,6 +61,7 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
+  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
@@ -88,6 +93,7 @@ export enum S2Event {
   GLOBAL_MOUSE_MOVE = 'global:mouse-move',
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
+  GLOBAL_ACTION_ICON_HOVER_OFF = 'global:action-icon-hover-off',
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
   GLOBAL_CLICK = 'global:click',
   GLOBAL_DOUBLE_CLICK = 'global:double-click',
@@ -95,4 +101,5 @@ export enum S2Event {
   GLOBAL_HOVER = 'global:hover',
   GLOBAL_RESET = 'global:reset',
   GLOBAL_LINK_FIELD_JUMP = 'global:link-field-jump',
+  GLOBAL_SCROLL = 'global:scroll',
 }

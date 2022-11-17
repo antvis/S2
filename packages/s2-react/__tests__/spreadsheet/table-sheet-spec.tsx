@@ -6,24 +6,23 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  S2DataConfig,
+  type S2DataConfig,
   S2Event,
-  S2Options,
+  type S2Options,
   SpreadSheet,
-  S2WheelEvent,
   TableSheet,
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
-import { SwitcherFields } from '@/components/switcher/interface';
+import type { SwitcherFields } from '@/components/switcher/interface';
 import { SheetComponent } from '@/components';
-import '@antv/s2/esm/style.css';
+import '@/components/tooltip/index.less';
 
 let s2: TableSheet;
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
-const getSpreadSheet =
+const onMounted =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
     s2 = new TableSheet(dom, dataCfg, options);
@@ -211,7 +210,7 @@ function MainLayout({ callback }) {
         adaptive={false}
         options={options}
         sheetType={'table'}
-        spreadsheet={getSpreadSheet(s2Ref)}
+        spreadsheet={onMounted(s2Ref)}
         onDataCellDoubleClick={logData}
         onContextMenu={logData}
       />
@@ -255,9 +254,9 @@ describe('table sheet normal spec', () => {
       s2.facet.onWheel({
         deltaX: 0,
         deltaY: 0,
-        layerX: 0,
-        layerY: 0,
-      } as S2WheelEvent);
+        offsetX: 0,
+        offsetY: 0,
+      } as unknown as WheelEvent);
     });
   });
 });

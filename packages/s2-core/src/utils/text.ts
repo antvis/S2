@@ -6,34 +6,45 @@ import {
   isNil,
   isNumber,
   isString,
+  map,
   memoize,
-  reverse,
+  size,
   toString,
   trim,
   values,
 } from 'lodash';
-import { DefaultCellTheme, TextAlign } from '@/common/interface/theme';
-import { renderText } from '@/utils/g-renders';
-import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import type { SimpleBBox } from '@antv/g-canvas';
+import type { ColCell } from '../cell';
 import {
+  CellTypes,
+  ELLIPSIS_SYMBOL,
+  EMPTY_PLACEHOLDER,
+} from '../common/constant';
+import type {
   CellCfg,
   Condition,
   MultiData,
   S2CellType,
+  SimpleDataItem,
   ViewMeta,
-} from '@/common/interface';
-
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
+} from '../common/interface';
+import type { Padding, TextTheme } from '../common/interface/theme';
+import { renderIcon, renderText } from '../utils/g-renders';
+import { getOffscreenCanvas } from './canvas';
+import { renderMiniChart } from './g-mini-charts';
+import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 
 /**
  * 计算文本在画布中的宽度
+ * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
     if (!font) {
       return 0;
     }
+    const ctx = getOffscreenCanvas().getContext('2d');
+
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
     // copy G 里面的处理逻辑
@@ -51,17 +62,19 @@ export const measureTextWidth = memoize(
  * 算法（减少每次 measureText 的长度，measureText 的性能跟字符串时间相关）：
  * 1. 先通过 STEP 逐步计算，找到最后一个小于 maxWidth 的字符串
  * 2. 然后对最后这个字符串二分计算
+ * @param measureTextWidth 文本宽度预估函数
  * @param text 需要计算的文本, 由于历史原因 除了支持string，还支持空值,number和数组等
  * @param maxWidth
  * @param font
  */
 export const getEllipsisTextInner = (
+  measureTextWidth: (text: number | string, font: unknown) => number,
   text: any,
   maxWidth: number,
   font: CSSStyleDeclaration,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
 
   let leftText;
 
@@ -146,6 +159,7 @@ export const getEllipsisTextInner = (
  * 然后分别乘以中文、符号的宽度
  * @param text
  * @param font
+ * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
  */
 export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
@@ -169,18 +183,21 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
 
 /**
  * @desc 改良版 获取文本的 ... 文本（可传入 优先文本片段）
+ * @param measureTextWidth 文本长度计算函数
  * @param text 需要计算的文本
  * @param maxWidth
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = ({
+  measureTextWidth,
   text,
   maxWidth,
   fontParam,
   priorityParam,
   placeholder,
 }: {
+  measureTextWidth: (text: number | string, font: unknown) => number;
   text: string | number;
   maxWidth: number;
   fontParam?: unknown;
@@ -199,6 +216,7 @@ export const getEllipsisText = ({
   }
   if (!priority || !priority.length) {
     return getEllipsisTextInner(
+      measureTextWidth,
       finalText,
       maxWidth,
       font as CSSStyleDeclaration,
@@ -229,18 +247,18 @@ export const getEllipsisText = ({
   subTexts = leftSubTexts.concat(subTexts);
 
   let result = finalText;
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
   let remainWidth = maxWidth;
   subTexts.forEach((subText) => {
     if (remainWidth <= 0) {
       const originIdx = result.indexOf(subText);
       const prev = result.slice(originIdx - 3, originIdx);
-      if (prev && prev !== '...') {
+      if (prev && prev !== ELLIPSIS_SYMBOL) {
         const subWidth = measureTextWidth(subText, font);
         // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
         result = result.replace(
           subText,
-          subWidth > DOT_WIDTH ? '...' : subText,
+          subWidth > DOT_WIDTH ? ELLIPSIS_SYMBOL : subText,
         );
       } else {
         result = result.replace(subText, '');
@@ -251,6 +269,7 @@ export const getEllipsisText = ({
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
         const ellipsis = getEllipsisTextInner(
+          measureTextWidth,
           subText,
           remainWidth,
           font as CSSStyleDeclaration,
@@ -279,33 +298,76 @@ export const isUpDataValue = (value: number | string): boolean => {
   return !!value && !trim(value).startsWith('-');
 };
 
+/**
+ * 根据单元格对齐方式计算文本的 x 坐标
+ * @param x 单元格的 x 坐标
+ * @param paddingRight
+ * @param extraWidth 额外的宽度
+ * @param textAlign 文本对齐方式
+ */
 const calX = (
   x: number,
-  paddingRight: number,
-  total?: number,
+  padding: Padding,
+  extraWidth?: number,
   textAlign = 'left',
 ) => {
-  const extra = total || 0;
+  const { right, left } = padding;
+  const extra = extraWidth || 0;
   if (textAlign === 'left') {
-    return x + paddingRight / 2 + extra;
+    return x + right / 2 + extra;
   }
   if (textAlign === 'right') {
-    return x - paddingRight / 2 - extra;
+    return x - right / 2 - extra;
   }
-  // TODO 兼容 textAlign 为居中
-  return x;
+
+  return x + left / 2 + extra;
 };
 
-const getTextStyle = (
-  rowIndex: number,
-  colIndex: number,
-  meta: ViewMeta,
-  data: string | number,
-  dataCellTheme: DefaultCellTheme,
-  textCondition: Condition,
-) => {
-  const { isTotals } = meta;
-  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+/**
+ * 返回需要绘制的 cell 主题
+ * @param cell 目标 cell
+ * @returns cell 主题和具体 text 主题
+ */
+const getDrawStyle = (cell: S2CellType) => {
+  const { isTotals } = cell.getMeta();
+  const isMeasureField = (cell as ColCell).isMeasureField?.();
+  const cellStyle = cell.getStyle(
+    isMeasureField ? CellTypes.COL_CELL : CellTypes.DATA_CELL,
+  );
+
+  let textStyle: TextTheme;
+  if (isMeasureField) {
+    textStyle = cellStyle.measureText;
+  } else if (isTotals) {
+    textStyle = cellStyle.bolderText;
+  } else {
+    textStyle = cellStyle.text;
+  }
+
+  return {
+    cellStyle,
+    textStyle,
+  };
+};
+
+/**
+ * 获取当前文字的绘制样式
+ */
+const getCurrentTextStyle = ({
+  rowIndex,
+  colIndex,
+  meta,
+  data,
+  textStyle,
+  textCondition,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  meta: ViewMeta;
+  data: string | number;
+  textStyle: TextTheme;
+  textCondition?: Condition;
+}) => {
   let fill = textStyle.fill;
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
@@ -328,44 +390,103 @@ export const getEmptyPlaceholder = (
 };
 
 /**
+ * @desc 获取多指标情况下每一个指标的内容包围盒
+ * --------------------------------------------
+ * |  text icon  |  text icon  |  text icon  |
+ * |-------------|-------------|-------------|
+ * |  text icon  |  text icon  |  text icon  |
+ * --------------------------------------------
+ * @param box SimpleBBox 整体绘制内容包围盒
+ * @param texts  SimpleDataItem[][] 指标集合
+ * @param widthPercent number[] 每行指标的宽度百分比
+ */
+export const getContentAreaForMultiData = (
+  box: SimpleBBox,
+  textValues: SimpleDataItem[][],
+  widthPercent?: number[],
+) => {
+  const { x, y, width, height } = box;
+  const avgHeight = height / size(textValues);
+  const boxes: SimpleBBox[][] = [];
+  let curX: number;
+  let curY: number;
+  let avgWidth: number;
+  let totalWidth = 0;
+
+  const percents = map(widthPercent, (item) => (item > 1 ? item / 100 : item));
+
+  for (let i = 0; i < size(textValues); i++) {
+    curY = y + avgHeight * i;
+    const rows: SimpleBBox[] = [];
+    curX = x;
+    totalWidth = 0;
+    for (let j = 0; j < size(textValues[i]); j++) {
+      avgWidth = !isEmpty(percents)
+        ? width * percents[j]
+        : width / size(textValues[0]); // 指标个数相同，任取其一即可
+
+      curX = calX(x, { left: 0, right: 0 }, totalWidth, 'left');
+      totalWidth += avgWidth;
+      rows.push({
+        x: curX,
+        y: curY,
+        width: avgWidth,
+        height: avgHeight,
+      });
+    }
+    boxes.push(rows);
+  }
+  return boxes;
+};
+
+/**
  * @desc draw text shape of object
  * @param cell
  * @multiData 自定义文本内容
- * @disabledConditions 是否禁用条件格式
+ * @useCondition 是否使用条件格式
  */
 export const drawObjectText = (
   cell: S2CellType,
   multiData?: MultiData,
-  disabledConditions?: boolean,
+  useCondition = true,
 ) => {
-  const { x } = cell.getTextAndIconPosition(0).text;
   const {
+    x,
     y,
     height: totalTextHeight,
     width: totalTextWidth,
   } = cell.getContentArea();
   const text = multiData || (cell.getMeta().fieldValue as MultiData);
-  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
-  const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
+  const { values: textValues } = text;
+  const { options, measureTextWidth } = cell.getMeta().spreadsheet;
+  const { valuesCfg } = options.style.cellCfg;
+  // 趋势分析表默认只作用一个条件（因为指标挂行头，每列都不一样，直接在回调里判断是否需要染色即可）
+  const textCondition = options?.conditions?.text?.[0];
+  const iconCondition = options?.conditions?.icon?.[0];
 
-  const widthPercentCfg = valuesCfg?.widthPercentCfg;
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const { textAlign } = dataCellStyle.text;
-  const padding = dataCellStyle.cell.padding;
+  if (!isArray(textValues)) {
+    renderMiniChart(cell, textValues);
+    return;
+  }
 
-  const realHeight = totalTextHeight / (text.values.length + 1);
+  const widthPercent = valuesCfg?.widthPercent;
+
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
-    labelHeight = realHeight / 2;
+    const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
     const labelStyle = dataCellStyle.bolderText;
+    // TODO 把padding计算在内
+    // const { padding } = dataCellStyle.cell;
+    labelHeight = totalTextHeight / (textValues.length + 1);
 
     renderText(
       cell,
       [],
-      calX(x, padding.right),
-      y + labelHeight,
+      x,
+      y + labelHeight / 2,
       getEllipsisText({
+        measureTextWidth,
         text: text.label,
         maxWidth: totalTextWidth,
         fontParam: labelStyle,
@@ -375,54 +496,94 @@ export const drawObjectText = (
   }
 
   // 绘制指标
-  const { values: textValues } = text;
+  const { cellStyle, textStyle } = getDrawStyle(cell);
+
+  const iconStyle = cellStyle?.icon;
+  const iconCfg = iconCondition &&
+    iconCondition.mapping && {
+      size: iconStyle?.size,
+      margin: iconStyle?.margin,
+      position: iconCondition?.position,
+    };
+
   let curText: string | number;
-  let curX: number;
-  let curY: number = y + realHeight / 2;
-  let curWidth: number;
-  let totalWidth = 0;
+
+  const contentBoxes = getContentAreaForMultiData(
+    {
+      x,
+      y: y + labelHeight,
+      height: totalTextHeight - labelHeight,
+      width: totalTextWidth,
+    },
+    textValues,
+    widthPercent,
+  );
+
   for (let i = 0; i < textValues.length; i++) {
-    curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
-    totalWidth = 0;
     const measures = clone(textValues[i]);
-    if (textAlign === 'right') {
-      reverse(measures); // 右对齐拿到的x坐标为最右坐标，指标顺序需要反过来
-    }
 
     for (let j = 0; j < measures.length; j++) {
       curText = measures[j];
-      const curStyle = getTextStyle(
-        i,
-        j,
-        cell?.getMeta() as ViewMeta,
-        curText,
-        dataCellStyle,
-        textCondition,
-      );
-      curWidth = !isEmpty(widthPercentCfg)
-        ? totalTextWidth * (widthPercentCfg[j] / 100)
-        : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
-
-      curX = calX(x, padding.right, totalWidth, textAlign);
-      totalWidth += curWidth;
+      const curStyle = useCondition
+        ? getCurrentTextStyle({
+            rowIndex: i,
+            colIndex: j,
+            meta: cell?.getMeta() as ViewMeta,
+            data: curText,
+            textStyle,
+            textCondition,
+          })
+        : textStyle;
       const { placeholder } = cell?.getMeta().spreadsheet.options;
       const emptyPlaceholder = getEmptyPlaceholder(
         cell?.getMeta(),
         placeholder,
       );
+
+      const maxTextWidth = getMaxTextWidth(contentBoxes[i][j].width, iconStyle);
+      const ellipsisText = getEllipsisText({
+        measureTextWidth,
+        text: curText,
+        maxWidth: maxTextWidth,
+        fontParam: curStyle,
+        placeholder: emptyPlaceholder,
+      });
+      const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+
+      const position = getTextAndFollowingIconPosition(
+        contentBoxes[i][j],
+        textStyle,
+        actualTextWidth,
+        iconCfg,
+        iconCondition ? 1 : 0,
+      );
+
       renderText(
         cell,
         [],
-        curX,
-        curY,
-        getEllipsisText({
-          text: curText,
-          maxWidth: curWidth,
-          fontParam: curStyle,
-          placeholder: emptyPlaceholder,
-        }),
+        position.text.x,
+        position.text.y,
+        ellipsisText,
         curStyle,
       );
+
+      // 绘制条件格式的 icon
+      if (iconCondition && useCondition) {
+        const attrs = iconCondition?.mapping(curText, {
+          rowIndex: i,
+          colIndex: j,
+          meta: cell?.getMeta() as ViewMeta,
+        });
+        if (attrs) {
+          renderIcon(cell, {
+            ...position.icon,
+            name: attrs.icon,
+            width: iconStyle?.size,
+            height: iconStyle?.size,
+            fill: attrs.fill,
+          });
+        }
+      }
     }
   }
 };

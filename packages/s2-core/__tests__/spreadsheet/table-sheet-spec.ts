@@ -1,5 +1,11 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import { TableSheet, S2Options, S2DataConfig, ResizeType } from '@/index';
+import {
+  TableSheet,
+  type S2Options,
+  type S2DataConfig,
+  ResizeType,
+  ColCell,
+} from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -72,6 +78,7 @@ const options: S2Options = {
   interaction: {
     enableCopy: true,
     hoverHighlight: false,
+    selectedCellHighlight: true,
     linkFields: ['order_id', 'customer_name'],
     hiddenColumnFields: ['order_date'],
     resize: {
@@ -118,5 +125,70 @@ describe('TableSheet normal spec', () => {
       hRowScrollX: 0,
     });
     expect(onScrollFinish).toBeCalled();
+
+    s2.destroy();
+  });
+
+  test('should be able to resize frozen col when there is a vertical scroll width', async () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+    s2.render();
+
+    const onScrollFinish = jest.fn();
+    s2.facet.scrollWithAnimation(
+      {
+        offsetX: {
+          value: 100,
+          animate: true,
+        },
+      },
+      10,
+      onScrollFinish,
+    );
+    await sleep(30);
+
+    const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
+
+    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
+    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 });
+
+    s2.destroy();
+  });
+
+  test('should be able to resize last column', async () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+    s2.render();
+
+    await sleep(30);
+
+    const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
+    s2.getCanvasElement().dispatchEvent(
+      new MouseEvent('mousedown', {
+        clientX: x + width - 1,
+        clientY: top + 25,
+      }),
+    );
+
+    window.dispatchEvent(
+      new MouseEvent('mousemove', {
+        clientX: x + width + 100,
+        clientY: top + 25,
+      }),
+    );
+    await sleep(300);
+
+    window.dispatchEvent(
+      new MouseEvent('mouseup', {
+        clientX: x + width + 100,
+        clientY: top + 25,
+      }),
+    );
+
+    await sleep(300);
+
+    const columnNodes = s2.getColumnNodes();
+    const lastColumnCell = columnNodes[columnNodes.length - 1]
+      .belongsCell as ColCell;
+
+    expect(lastColumnCell.getMeta().width).toBe(199);
   });
 });

@@ -60,6 +60,7 @@ export const useEvents = (
       S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
       'rowCellCollapseTreeRows',
     );
+    useS2Event(s2Ref, emit, S2Event.ROW_CELL_SCROLL, 'rowCellScroll');
 
     // ============== Col Cell ====================
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_HOVER, 'colCellHover');
@@ -117,8 +118,14 @@ export const useEvents = (
     useS2Event(
       s2Ref,
       emit,
-      S2Event.DATE_CELL_BRUSH_SELECTION,
+      S2Event.DATA_CELL_BRUSH_SELECTION,
       'dataCellBrushSelection',
+    );
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.DATA_CELL_SELECT_MOVE,
+      'dataCellSelectMove',
     );
 
     // ============== Corner Cell ====================
@@ -205,6 +212,7 @@ export const useEvents = (
       'layoutAfterHeaderLayout',
     );
     useS2Event(s2Ref, emit, S2Event.LAYOUT_PAGINATION, 'layoutPagination');
+    /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
     useS2Event(s2Ref, emit, S2Event.LAYOUT_CELL_SCROLL, 'layoutCellScroll');
     useS2Event(
       s2Ref,
@@ -305,5 +313,20 @@ export const useEvents = (
     useS2Event(s2Ref, emit, S2Event.GLOBAL_MOUSE_UP, 'mouseUp');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_RESET, 'reset');
     useS2Event(s2Ref, emit, S2Event.GLOBAL_LINK_FIELD_JUMP, 'linkFieldJump');
+    useS2Event(s2Ref, emit, S2Event.GLOBAL_SCROLL, 'scroll');
+
+    // ============== Auto 自动生成的 ================
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.ROW_CELL_BRUSH_SELECTION,
+      'rowCellBrushSelection',
+    );
+    useS2Event(
+      s2Ref,
+      emit,
+      S2Event.COL_CELL_BRUSH_SELECTION,
+      'colCellBrushSelection',
+    );
   });
 };

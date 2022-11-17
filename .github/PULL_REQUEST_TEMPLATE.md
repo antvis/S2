@@ -38,8 +38,9 @@
 
 <!-- close #0 -->
 
-### 🔍 Self Check before Merge
+### 🔍 Self-Check before the merge
 
-- [ ] Add or update relevant Docs.
-- [ ] Add or update relevant Demos.
+- [ ] Add or update relevant docs.
+- [ ] Add or update relevant demos.
+- [ ] Add or update test case.
 - [ ] Add or update relevant TypeScript definitions.

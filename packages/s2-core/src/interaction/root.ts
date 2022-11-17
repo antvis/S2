@@ -1,44 +1,51 @@
-import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import type { IElement } from '@antv/g-canvas';
-import { CornerCellClick } from './base-interaction/click/corner-cell-click';
-import {
-  DataCellClick,
-  MergedCellClick,
-  RowColumnClick,
-  RowTextClick,
-} from './base-interaction/click';
-import { HoverEvent } from './base-interaction/hover';
-import { EventController } from './event-controller';
-import { RangeSelection } from './range-selection';
-import { SelectedCellMove } from './selected-cell-move';
-import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
-import { Node } from '@/facet/layout/node';
-import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
+import { concat, find, forEach, isBoolean, isEmpty, isNil, map } from 'lodash';
+import { ColCell, DataCell, MergedCell, RowCell } from '../cell';
 import {
   CellTypes,
+  INTERACTION_STATE_INFO_KEY,
   InteractionName,
   InteractionStateName,
-  INTERACTION_STATE_INFO_KEY,
   InterceptType,
   S2Event,
-} from '@/common/constant';
-import {
+} from '../common/constant';
+import type {
+  BrushSelection,
+  BrushSelectionInfo,
+  CellMeta,
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
-} from '@/common/interface';
-import { ColHeader, RowHeader } from '@/facet/header';
-import { BaseEvent } from '@/interaction/base-event';
-import { SpreadSheet } from '@/sheet-type';
-import { getAllChildCells } from '@/utils/get-all-child-cells';
-import { clearState, setState } from '@/utils/interaction/state-controller';
-import { isMobile } from '@/utils/is-mobile';
-import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
+} from '../common/interface';
+import { ColHeader, RowHeader } from '../facet/header';
+import { Node } from '../facet/layout/node';
+import type { SpreadSheet } from '../sheet-type';
+import { getAllChildCells } from '../utils/get-all-child-cells';
+import { hideColumnsByThunkGroup } from '../utils/hide-columns';
+import { mergeCell, unmergeCell } from '../utils/interaction/merge-cell';
+import { getCellMeta } from '../utils/interaction/select-event';
+import { clearState, setState } from '../utils/interaction/state-controller';
+import { isMobile } from '../utils/is-mobile';
+import type { BaseEvent } from './base-event';
+import {
+  DataCellClick,
+  MergedCellClick,
+  RowColumnClick,
+  RowTextClick,
+} from './base-interaction/click';
+import { CornerCellClick } from './base-interaction/click/corner-cell-click';
+import { HoverEvent } from './base-interaction/hover';
+import { EventController } from './event-controller';
+import { RangeSelection } from './range-selection';
+import { SelectedCellMove } from './selected-cell-move';
+import { DataCellBrushSelection } from './brush-selection/data-cell-brush-selection';
+import { ColBrushSelection } from './brush-selection/col-brush-selection';
+import { RowBrushSelection } from './brush-selection/row-brush-selection';
+import { DataCellMultiSelection } from './data-cell-multi-selection';
+import { RowColumnResize } from './row-column-resize';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -50,7 +57,7 @@ export class RootInteraction {
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  private hoverTimer: NodeJS.Timeout = null;
+  private hoverTimer: number = null;
 
   public eventController: EventController;
 
@@ -63,6 +70,10 @@ export class RootInteraction {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
     this.registerInteractions();
+    window.addEventListener(
+      'visibilitychange',
+      this.onTriggerInteractionsResetEffect,
+    );
   }
 
   public destroy() {
@@ -71,6 +82,10 @@ export class RootInteraction {
     this.eventController.clear();
     this.clearHoverTimer();
     this.resetState();
+    window.removeEventListener(
+      'visibilitychange',
+      this.onTriggerInteractionsResetEffect,
+    );
   }
 
   public reset() {
@@ -79,6 +94,12 @@ export class RootInteraction {
     this.intercepts.clear();
     this.spreadsheet.hideTooltip();
   }
+
+  private onTriggerInteractionsResetEffect = () => {
+    this.interactions.forEach((interaction) => {
+      interaction.reset();
+    });
+  };
 
   public setState(interactionStateInfo: InteractionStateInfo) {
     setState(this.spreadsheet, interactionStateInfo);
@@ -146,13 +167,13 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells() {
+  public getCells(): CellMeta[] {
     const currentState = this.getState();
     return currentState?.cells || [];
   }
 
   // 获取 cells 中在可视区域内的实例列表
-  public getActiveCells() {
+  public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
     const allCells = this.getAllCells();
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
@@ -189,41 +210,21 @@ export class RootInteraction {
   }
 
   public getAllRowHeaderCells(): RowCell[] {
-    const children = this.spreadsheet.foregroundGroup?.getChildren();
-    const rowHeader = filter(
-      children,
-      (group) => group instanceof RowHeader,
-    )?.[0];
-    let currentNode = rowHeader?.cfg?.children;
-    if (isEmpty(currentNode)) {
-      return [];
-    }
-    while (!currentNode?.[0]?.cellType) {
-      currentNode = currentNode?.[0]?.cfg?.children;
-    }
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const rowHeader = children.find((group) => group instanceof RowHeader);
+    const headerChildren = rowHeader?.cfg?.children || [];
 
-    const rowCells = currentNode || [];
-    return rowCells.filter(
+    return getAllChildCells<RowCell>(headerChildren, RowCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     );
   }
 
   public getAllColHeaderCells(): ColCell[] {
-    const children = this.spreadsheet?.foregroundGroup?.getChildren();
-    const colHeader = filter(
-      children,
-      (group) => group instanceof ColHeader,
-    )[0];
+    const children = this.spreadsheet.foregroundGroup?.getChildren() || [];
+    const colHeader = children.find((group) => group instanceof ColHeader);
+    const headerChildren = colHeader?.cfg?.children || [];
 
-    const headerChildren = colHeader?.cfg?.children;
-
-    if (isEmpty(headerChildren)) {
-      return [];
-    }
-
-    const colCells = getAllChildCells(headerChildren, ColCell) as ColCell[];
-
-    return colCells.filter(
+    return getAllChildCells<ColCell>(headerChildren, ColCell).filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     );
   }
@@ -249,7 +250,7 @@ export class RootInteraction {
     });
   };
 
-  public getCellLeafNodes = (cell: S2CellType): Node[] => {
+  public getCellChildrenNodes = (cell: S2CellType): Node[] => {
     const meta = cell?.getMeta?.() as Node;
     const isRowCell = cell?.cellType === CellTypes.ROW_CELL;
     const isHierarchyTree = this.spreadsheet.isHierarchyTreeType();
@@ -288,18 +289,18 @@ export class RootInteraction {
       selectHeaderCellInfo?.isMultiSelection && this.isSelectedState();
 
     // 如果是已选中的单元格, 则取消选中, 兼容行列多选 (含叶子节点)
-    let leafNodes = isSelectedCell ? [] : this.getCellLeafNodes(cell);
+    let childrenNodes = isSelectedCell ? [] : this.getCellChildrenNodes(cell);
     let selectedCells = isSelectedCell ? [] : [getCellMeta(cell)];
 
     if (isMultiSelected) {
       selectedCells = concat(lastState?.cells, selectedCells);
-      leafNodes = concat(lastState?.nodes, leafNodes);
+      childrenNodes = concat(lastState?.nodes, childrenNodes);
 
       if (isSelectedCell) {
         selectedCells = selectedCells.filter(
           ({ id }) => id !== currentCellMeta.id,
         );
-        leafNodes = leafNodes.filter(
+        childrenNodes = childrenNodes.filter(
           (node) => !node?.id.includes(currentCellMeta.id),
         );
       }
@@ -311,28 +312,35 @@ export class RootInteraction {
       return;
     }
 
+    // 高亮所有的子节点, 但是只有叶子节点需要参与数据计算
+    const needCalcNodes = childrenNodes.filter((node) => node?.isLeaf);
     // 兼容行列多选 (高亮 行/列头 以及相对应的数值单元格)
     this.changeState({
       cells: selectedCells,
-      nodes: leafNodes,
+      nodes: needCalcNodes,
       stateName: InteractionStateName.SELECTED,
     });
 
     const selectedCellIds = selectedCells.map(({ id }) => id);
     this.updateCells(this.getRowColActiveCells(selectedCellIds));
 
-    // 平铺模式或者是树状模式下的列头单元格, 选中子节点
+    // 平铺模式或者是树状模式下的列头单元格, 高亮子节点
     if (!isHierarchyTree || isColCell) {
-      leafNodes.forEach((node) => {
-        node?.belongsCell?.updateByState(
-          InteractionStateName.SELECTED,
-          node.belongsCell,
-        );
-      });
+      this.highlightNodes(childrenNodes);
     }
+
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
 
     return true;
+  };
+
+  public highlightNodes = (nodes: Node[] = []) => {
+    nodes.forEach((node) => {
+      node?.belongsCell?.updateByState(
+        InteractionStateName.SELECTED,
+        node.belongsCell,
+      );
+    });
   };
 
   public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
@@ -347,6 +355,23 @@ export class RootInteraction {
     hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, forceRender);
   }
 
+  private getBrushSelectionInfo(
+    brushSelection?: boolean | BrushSelection,
+  ): BrushSelectionInfo {
+    if (isBoolean(brushSelection)) {
+      return {
+        dataBrushSelection: brushSelection,
+        rowBrushSelection: brushSelection,
+        colBrushSelection: brushSelection,
+      };
+    }
+    return {
+      dataBrushSelection: brushSelection?.data ?? false,
+      rowBrushSelection: brushSelection?.row ?? false,
+      colBrushSelection: brushSelection?.col ?? false,
+    };
+  }
+
   private getDefaultInteractions() {
     const {
       resize,
@@ -355,6 +380,8 @@ export class RootInteraction {
       rangeSelection,
       selectedCellMove,
     } = this.spreadsheet.options.interaction;
+    const { dataBrushSelection, rowBrushSelection, colBrushSelection } =
+      this.getBrushSelectionInfo(brushSelection);
 
     return [
       {
@@ -384,8 +411,18 @@ export class RootInteraction {
       },
       {
         key: InteractionName.BRUSH_SELECTION,
-        interaction: BrushSelection,
-        enable: !isMobile() && brushSelection,
+        interaction: DataCellBrushSelection,
+        enable: !isMobile() && dataBrushSelection,
+      },
+      {
+        key: InteractionName.ROW_BRUSH_SELECTION,
+        interaction: RowBrushSelection,
+        enable: !isMobile() && rowBrushSelection,
+      },
+      {
+        key: InteractionName.COL_BRUSH_SELECTION,
+        interaction: ColBrushSelection,
+        enable: !isMobile() && colBrushSelection,
       },
       {
         key: InteractionName.COL_ROW_RESIZE,
@@ -442,13 +479,20 @@ export class RootInteraction {
   }
 
   public clearState() {
-    clearState(this.spreadsheet);
-    this.draw();
+    if (clearState(this.spreadsheet)) {
+      this.draw();
+    }
   }
 
+  // 改变 cell 交互状态后，进行了更新和重新绘制
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells, force, stateName } = interactionStateInfo;
+    const {
+      cells = [],
+      force,
+      stateName,
+      onUpdateCells,
+    } = interactionStateInfo;
 
     if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
@@ -467,7 +511,13 @@ export class RootInteraction {
 
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelGroupAllDataCells();
+
+    // 更新单元格
+    if (onUpdateCells) {
+      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
+    } else {
+      this.updatePanelGroupAllDataCells();
+    }
     this.draw();
   }
 
@@ -503,7 +553,7 @@ export class RootInteraction {
     clearTimeout(this.hoverTimer);
   }
 
-  public setHoverTimer(timer: NodeJS.Timeout) {
+  public setHoverTimer(timer: number) {
     this.hoverTimer = timer;
   }
 

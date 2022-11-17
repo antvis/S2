@@ -55,6 +55,13 @@ describe('Data Set Operate Test', () => {
     });
   });
 
+  describe('CustomFlatten Tests', () => {
+    it('should handle data contains nil', () => {
+      const result = customFlatten([undefined, null, [1, 2]]);
+      expect(result).toBeArrayOfSize(4);
+    });
+  });
+
   describe('Dataset Operate Test GetListBySorted', () => {
     let list = [];
     beforeEach(() => {

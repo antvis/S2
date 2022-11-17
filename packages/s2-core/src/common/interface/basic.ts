@@ -1,28 +1,29 @@
-import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { S2CellType } from './interaction';
-import { DataItem, S2DataConfig } from './s2DataConfig';
-import { BaseHeaderConfig } from '@/facet/header/base';
-import {
-  Condition,
-  CustomTreeItem,
-  Data,
-  ResizeInfo,
-} from '@/common/interface';
-import { S2BasicOptions } from '@/common/interface/s2Options';
-import { BaseDataSet, DataType } from '@/data-set';
-import { Frame } from '@/facet/header';
-import { CellTypes } from '@/common/constant';
-import { FrameConfig } from '@/common/interface/frame';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { SpreadSheet } from '@/sheet-type';
-import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
+import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { CellTypes } from '../../common/constant';
+import type { CustomTreeItem, Data, ResizeInfo } from '../../common/interface';
+import type { FrameConfig } from '../../common/interface/frame';
+import type {
+  S2BasicOptions,
+  S2TableSheetOptions,
+} from '../../common/interface/s2Options';
+import type { BaseDataSet, DataType } from '../../data-set';
+import type { Frame } from '../../facet/header';
+import type { BaseHeaderConfig } from '../../facet/header/base';
+import type { Hierarchy } from '../../facet/layout/hierarchy';
+import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import type { S2CellType } from './interaction';
+import type { DataItem } from './s2DataConfig';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化
 // 2. copy/export
 // 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
-export type Formatter = (v: unknown, data?: Data | Data[]) => string;
+export type Formatter = (
+  v: unknown,
+  data?: Data | Data[],
+  meta?: Node | ViewMeta,
+) => string;
 
 export interface FormatResult {
   formattedValue: string;
@@ -189,8 +190,12 @@ export interface Style {
   layoutWidthType?: LayoutWidthType;
   // 是否展示树状分层下的层级占位点
   showTreeLeafNodeAlignDot?: boolean;
-  // row cell's height in tree mode
+  // 树状结构下行头宽度
   treeRowsWidth?: number;
+  // 树状分层模式下的全局收起展开属性，对应角头收起展开按钮
+  hierarchyCollapse?: boolean;
+  // 树状分层模式下，行头默认展开到第几层
+  rowExpandDepth?: number;
   // row header in tree mode collapse some nodes
   collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
@@ -201,14 +206,14 @@ export interface Style {
   device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination = {
+export interface Pagination {
   // 每页数量
   pageSize: number;
   // 当前页
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-};
+}
 
 export interface CustomSVGIcon {
   // icon 类型名
@@ -219,17 +224,26 @@ export interface CustomSVGIcon {
   svg: string;
 }
 
-export interface HeaderActionIconProps {
+export interface HeaderIconClickParams {
   iconName: string;
   meta: Node;
   event?: Event;
+}
+
+export type HeaderActionIconProps = HeaderIconClickParams;
+
+export interface HeaderIconHoverParams extends HeaderIconClickParams {
+  hovering: boolean;
 }
 
 export interface HeaderActionIconOptions {
   iconName: string;
   x: number;
   y: number;
-  action: (props: HeaderActionIconProps) => void;
+  /** @deprecated 使用 onClick 代替 */
+  action: (props: HeaderIconClickParams) => void;
+  onClick: (headerIconClickParams: HeaderIconClickParams) => void;
+  onHover: (headerIconHoverParams: HeaderIconHoverParams) => void;
   defaultHide?: boolean;
 }
 
@@ -239,11 +253,18 @@ export interface HeaderActionIcon {
   // 所属的 cell 类型
   belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
-  defaultHide?: boolean;
-  // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
-  displayCondition?: (mete: Node) => boolean;
-  // 点击后的执行函数
-  action?: (headerActionIconProps: HeaderActionIconProps) => void;
+  defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
+  // 是否展示当前 iconNames 配置的 icon
+  displayCondition?: (mete: Node, iconName: string) => boolean;
+  /**
+   * 点击后的执行函数
+   * @deprecated 使用 onClick 代替
+   */
+  action?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // 点击回调函数
+  onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
+  // hover 回调函数
+  onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
@@ -284,6 +305,8 @@ export type HierarchyCallback = (
   node: Node,
 ) => HierarchyResult;
 
+export type CellCustomWidth = number | ((node: Node) => number);
+
 export interface CellCfg {
   width?: number;
   height?: number;
@@ -292,23 +315,27 @@ export interface CellCfg {
     // 原始值字段
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
-    widthPercentCfg?: number[];
-    // 条件格式
-    conditions?: { text: Condition };
+    widthPercent?: number[];
+    // 是否显示原始值
+    showOriginalValue?: boolean;
   };
 }
 
 export interface RowCfg {
   // row's cell width
-  width?: number;
+  width?: CellCustomWidth;
   // specific some row field's width
   widthByField?: Record<string, number>;
   heightByField?: Record<string, number>;
-  // tree row width(拖拽产生的，无需主动设置)
+  /**
+   * @deprecated (已废弃, 请使用 style.treeRowsWidth 代替) tree row width(拖拽产生的，无需主动设置)
+   */
   treeRowsWidth?: number;
 }
 
 export interface ColCfg {
+  // custom column width
+  width?: CellCustomWidth;
   // columns height(for normal state)
   height?: number;
   // specific some col field's width
@@ -344,7 +371,6 @@ export interface MergedCellInfo {
 export type TempMergedCell = {
   cells: S2CellType[];
   viewMeta: ViewMeta;
-  isPartiallyVisible?: boolean;
 };
 
 export type FilterDataItemCallback = (
@@ -405,7 +431,10 @@ export interface ViewMeta {
   colId?: string;
   field?: string;
   isFrozenCorner?: boolean;
-  [key: string]: any;
+  label?: string;
+  value?: string | number;
+  query?: Record<string, any>;
+  [key: string]: unknown;
 }
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
@@ -435,7 +464,7 @@ export interface OffsetConfig {
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
-  isRowHeaderText?: boolean;
+  isLinkFieldText?: boolean;
   cellData?: T;
 }
 
@@ -446,12 +475,6 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
 }
 
 export type S2MountContainer = string | Element;
-
-export type S2Constructor<T = Element | string> = [
-  S2MountContainer,
-  S2DataConfig,
-  S2Options<T>,
-];
 
 export interface OriginalEvent extends Event {
   layerX: number;

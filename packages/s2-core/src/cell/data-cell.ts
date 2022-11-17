@@ -1,36 +1,34 @@
 import type { IShape, Point } from '@antv/g-canvas';
-import { clamp, findLast, first, get, isEmpty, isEqual, find } from 'lodash';
-import { BaseCell } from '@/cell/base-cell';
+import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import tinycolor from 'tinycolor2';
+import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
-} from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
-import {
+} from '../common/constant/interaction';
+import { CellBorderPosition } from '../common/interface';
+import type {
+  CellMeta,
   Condition,
-  Conditions,
   FormatResult,
-  Formatter,
   IconCfg,
   IconCondition,
   MappingResult,
-  CellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
-  CellBorderPosition,
-} from '@/common/interface';
-import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
-import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition/condition';
+} from '../common/interface';
+import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
+import { includeCell } from '../utils/cell/data-cell';
+import { getIconPositionCfg } from '../utils/condition/condition';
+import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { drawInterval } from '../utils/g-mini-charts';
 import {
-  renderIcon,
-  renderLine,
-  renderRect,
-  updateShapeAttr,
-} from '@/utils/g-renders';
-import { parseNumberWithPrecision } from '@/utils/formatter';
+  DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
+  REVERSE_FONT_COLOR,
+} from '../common/constant/condition';
 
 /**
  * DataCell for panelGroup area
@@ -39,20 +37,18 @@ import { parseNumberWithPrecision } from '@/utils/formatter';
  * |interval      text| icon  |
  * |                  |       |
  * ----------------------------
- * There are four conditions(]{@see BaseCell.conditions}) to determine how to render
+ * There are four conditions({@see BaseCell.conditions}) to determine how to render
  * 1、background color
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  protected conditions: Conditions;
-
-  protected conditionIntervalShape: IShape;
-
-  protected conditionIconShape: GuiIcon;
-
   public get cellType() {
     return CellTypes.DATA_CELL;
+  }
+
+  public get valueRangeByField() {
+    return this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
   }
 
   protected handleByStateName(
@@ -169,17 +165,43 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.conditions = this.spreadsheet.options.conditions;
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    this.drawConditionIntervalShape();
     this.drawInteractiveBorderShape();
-    this.drawTextShape();
-    this.drawConditionIconShapes();
+    if (!this.shouldHideRowSubtotalData()) {
+      this.drawConditionIntervalShape();
+      this.drawTextShape();
+      this.drawConditionIconShapes();
+    }
     if (this.meta.isFrozenCorner) {
       this.drawBorderShape();
     }
     this.update();
+  }
+
+  /**
+   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
+   * @param textStyle
+   * @private
+   */
+  private getDefaultTextFill(textStyle: TextTheme) {
+    let textFill = textStyle.fill;
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
+
+    const isMoreThanThreshold =
+      tinycolor(backgroundColor).getBrightness() <=
+      FONT_COLOR_BRIGHTNESS_THRESHOLD;
+
+    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    if (
+      isMoreThanThreshold &&
+      textStyle.fill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
+    ) {
+      textFill = REVERSE_FONT_COLOR;
+    }
+    return textFill;
   }
 
   protected getTextStyle(): TextTheme {
@@ -188,12 +210,11 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    // get text condition's fill result
-    let fill = textStyle.fill;
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-    if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill;
-    }
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill({
+      ...textStyle,
+      fill: this.getDefaultTextFill(textStyle),
+    });
 
     return { ...textStyle, fill };
   }
@@ -213,18 +234,32 @@ export class DataCell extends BaseCell<ViewMeta> {
     return iconCfg;
   }
 
+  protected drawConditionIntervalShape() {
+    this.conditionIntervalShape = drawInterval(this);
+  }
+
+  protected shouldHideRowSubtotalData() {
+    const { row = {} } = this.spreadsheet.options.totals ?? {};
+    const { rowIndex } = this.meta;
+    const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
+    const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
+    // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
+    // 不过能否查到实际的数据，都不应该展示
+    return (
+      this.spreadsheet.options.hierarchyType === 'tree' &&
+      !row.showSubTotals &&
+      isRowSubTotal
+    );
+  }
+
   protected getFormattedFieldValue(): FormatResult {
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
-    let formatter: Formatter;
-    if (rowMeta) {
-      // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowId);
-    } else {
-      // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(valueField);
-    }
-    const formattedValue = formatter(fieldValue, data);
+    const fieldId = rowMeta ? rowId : valueField;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(fieldId);
+    // TODO: 这里只用 formatter(fieldValue, this.meta) 即可, 为了保持兼容, 暂时在第三个参入传入 meta 信息
+    const formattedValue = formatter(fieldValue, data, this.meta);
+
     return {
       value: fieldValue,
       formattedValue,
@@ -240,126 +275,37 @@ export class DataCell extends BaseCell<ViewMeta> {
     return this.getTextAndIconPosition().text;
   }
 
-  protected drawConditionIconShapes() {
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
-    if (iconCondition && iconCondition.mapping) {
-      const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
-      const { formattedValue } = this.getFormattedFieldValue();
-      const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon) && formattedValue) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs.icon,
-          width: size,
-          height: size,
-          fill: attrs.fill,
-        });
-      }
-    }
-  }
-
-  /**
-   * 计算柱图的 scale 函数（两种情况）
-   *
-   * min_________x_____0___________________________max
-   * |<----r---->|
-   *
-   * 0_________________min_________x_______________max
-   * |<-------------r------------->|
-   *
-   * @param minValue in current field values
-   * @param max in current field values
-   */
-  private getIntervalScale(minValue = 0, maxValue = 0) {
-    minValue = parseNumberWithPrecision(minValue);
-    maxValue = parseNumberWithPrecision(maxValue);
-
-    const realMin = minValue >= 0 ? 0 : minValue;
-    const distance = maxValue - realMin || 1;
-    return (current: number) =>
-      // max percentage shouldn't be greater than 100%
-      // min percentage shouldn't be less than 0%
-      clamp((current - realMin) / distance, 0, 1);
-  }
-
-  /**
-   * Draw interval condition shape
-   * @private
-   */
-  protected drawConditionIntervalShape() {
-    const { x, y, height, width } = this.getCellArea();
-    const { formattedValue } = this.getFormattedFieldValue();
-
-    const intervalCondition = this.findFieldCondition(
-      this.conditions?.interval,
-    );
-
-    if (intervalCondition && intervalCondition.mapping && formattedValue) {
-      const attrs = this.mappingValue(intervalCondition);
-      if (!attrs) {
-        return;
-      }
-
-      const valueRange = attrs.isCompare
-        ? attrs
-        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const minValue = parseNumberWithPrecision(valueRange.minValue);
-      const maxValue = parseNumberWithPrecision(valueRange.maxValue);
-
-      const fieldValue = parseNumberWithPrecision(
-        this.meta.fieldValue as number,
-      );
-      // 对于超出设定范围的值不予显示
-      if (fieldValue < minValue || fieldValue > maxValue) {
-        return;
-      }
-
-      const scale = this.getIntervalScale(minValue, maxValue);
-      const zero = scale(0); // 零点
-      const current = scale(fieldValue); // 当前数据点
-
-      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
-      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
-      const fill = attrs.fill ?? barChartFillColor;
-
-      this.conditionIntervalShape = renderRect(this, {
-        x: x + width * zero,
-        y: y + height / 2 - barChartHeight / 2,
-        width: width * (current - zero),
-        height: barChartHeight,
-        fill,
-      });
-    }
-  }
-
   public getBackgroundColor() {
     const { crossBackgroundColor, backgroundColorOpacity } =
       this.getStyle().cell;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
 
-    if (
-      this.spreadsheet.isPivotMode() &&
-      crossBackgroundColor &&
-      this.meta.rowIndex % 2 === 0
-    ) {
+    if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
       // 隔行颜色的配置
       // 偶数行展示灰色背景，因为index是从0开始的
       backgroundColor = crossBackgroundColor;
     }
 
+    if (this.shouldHideRowSubtotalData()) {
+      return { backgroundColor, backgroundColorOpacity };
+    }
+
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);
+    let intelligentReverseTextColor = false;
     if (bgCondition && bgCondition.mapping) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
+        intelligentReverseTextColor = attrs.intelligentReverseTextColor;
       }
     }
-    return { backgroundColor, backgroundColorOpacity };
+    return {
+      backgroundColor,
+      backgroundColorOpacity,
+      intelligentReverseTextColor,
+    };
   }
 
   /**
@@ -419,7 +365,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeRowColSelectState(indexType: ViewMetaIndexType) {
+  protected changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
@@ -437,7 +383,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Render cell border controlled by verticalBorder & horizontalBorder
-   * @private
+   * @protected
    */
   protected drawBorderShape() {
     [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
@@ -455,7 +401,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Find current field related condition
    * @param conditions
    */
-  protected findFieldCondition(conditions: Condition[]): Condition {
+  public findFieldCondition(conditions: Condition[]): Condition {
     return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
@@ -467,7 +413,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  protected mappingValue(condition: Condition): MappingResult {
+  public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, this.meta.data);
   }

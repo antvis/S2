@@ -1,11 +1,12 @@
-import { Event } from '@antv/g-canvas';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { CellTypes, CellMeta, ViewMeta } from '@/common';
-import { getDataCellId } from '@/utils';
-import { SpreadSheet } from '@/sheet-type';
-import { calculateInViewIndexes } from '@/facet/utils';
-import { selectCells, getRangeIndex } from '@/utils/interaction/select-event';
+import type { Event } from '@antv/g-canvas';
+import { get } from 'lodash';
+import { type CellMeta, CellTypes, type ViewMeta } from '../common';
+import { InteractionKeyboardKey, S2Event } from '../common/constant';
+import { calculateInViewIndexes } from '../facet/utils';
+import type { SpreadSheet } from '../sheet-type';
+import { getDataCellId } from '../utils';
+import { getRangeIndex, selectCells } from '../utils/interaction/select-event';
+import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 const SelectedCellMoveMap = [
   InteractionKeyboardKey.ARROW_LEFT,
@@ -24,10 +25,17 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     super(spreadsheet);
   }
 
+  private isCanvasEffect() {
+    return this.spreadsheet.interaction.eventController.isCanvasEffect;
+  }
+
   public bindEvents() {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
+        if (!this.isCanvasEffect()) {
+          return;
+        }
         const isShift = event.shiftKey;
         const isMeta = event.metaKey;
         const hasDirection = SelectedCellMoveMap.includes(
@@ -110,6 +118,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       this.startCell = movedCell;
     }
     this.endCell = movedCell;
+    this.spreadsheet.emit(S2Event.DATA_CELL_SELECT_MOVE, selectedCells);
   }
 
   private generateCellMeta(spreadsheet: SpreadSheet, row: number, col: number) {
@@ -170,7 +179,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         frozenTrailingRowCount -
         1,
     ];
-    if (!cell) return;
+    if (!cell) {
+      return;
+    }
+
     switch (code) {
       case InteractionKeyboardKey.ARROW_RIGHT:
         if (cell.colIndex + 1 > maxCol) {
@@ -227,14 +239,21 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { colLeafNodes } = facet.layoutResult;
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
+    const splitLineStyle = get(spreadsheet, 'theme.splitLine');
     const frozenColWidth = frozenColGroup
-      ? Math.floor(frozenColGroup.getBBox().width)
+      ? Math.floor(
+          frozenColGroup.getBBox().width -
+            splitLineStyle.verticalBorderWidth / 2,
+        )
       : 0;
     const frozenTrailingColWidth = frozenTrailingColGroup
       ? Math.floor(frozenTrailingColGroup.getBBox().width)
       : 0;
     const frozenRowHeight = frozenRowGroup
-      ? Math.floor(frozenRowGroup.getBBox().height)
+      ? Math.floor(
+          frozenRowGroup.getBBox().height -
+            splitLineStyle.horizontalBorderWidth / 2,
+        )
       : 0;
     const frozenTrailingRowHeight = frozenTrailingRowGroup
       ? Math.floor(frozenTrailingRowGroup.getBBox().height)

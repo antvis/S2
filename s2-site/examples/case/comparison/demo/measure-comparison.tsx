@@ -388,12 +388,13 @@ class CustomFrame extends Frame {
 }
 
 class CustomCornelCell extends CornerCell {
-  drawCellText() {
+  drawTextShape() {
     if (this.meta.cornerType === 'col') {
       return;
     }
-    super.drawCellText();
+    super.drawTextShape();
   }
+
   drawBackgroundShape() {
     const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
     const attrs = {
@@ -424,7 +425,7 @@ fetch('../data/index-comparison.json')
         },
         {
           field: 'price',
-          name: '金额',
+          name: '销售量',
         },
         {
           field: 'uv',

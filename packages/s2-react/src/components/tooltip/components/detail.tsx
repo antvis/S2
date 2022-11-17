@@ -1,5 +1,9 @@
 import React from 'react';
-import { ListItem, TooltipDetailProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import {
+  type TooltipDetailListItem,
+  type TooltipDetailProps,
+  TOOLTIP_PREFIX_CLS,
+} from '@antv/s2';
 import { TooltipIcon } from './icon';
 
 export const TooltipDetail: React.FC<TooltipDetailProps> = (
@@ -9,7 +13,7 @@ export const TooltipDetail: React.FC<TooltipDetailProps> = (
 
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-detail-list`}>
-      {list.map((listItem: ListItem, idx) => {
+      {list.map((listItem: TooltipDetailListItem, idx) => {
         const { name, value, icon } = listItem;
 
         return (

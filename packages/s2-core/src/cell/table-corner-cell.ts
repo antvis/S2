@@ -1,7 +1,7 @@
 import { get } from 'lodash';
-import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
-import { CellBorderPosition } from 'src/common/interface';
-import { renderLine } from 'src/utils/g-renders';
+import { getBorderPositionAndStyle } from '../utils/cell/cell';
+import { CellBorderPosition } from '../common/interface';
+import { renderLine } from '../utils/g-renders';
 import { TableColCell } from './table-col-cell';
 
 export class TableCornerCell extends TableColCell {

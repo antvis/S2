@@ -1,4 +1,4 @@
-import { IconTheme } from './theme';
+import type { IconTheme } from './theme';
 
 export interface ValueRange {
   minValue?: number;
@@ -14,6 +14,11 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
+  /**
+   * @description only used in background condition, when the background color is too light, the font color will be white
+   * @version 1.34.0
+   */
+  intelligentReverseTextColor?: boolean;
 }
 
 export type MappingFunction = (
@@ -25,7 +30,7 @@ export type MappingFunction = (
  * One field can hold a condition
  */
 export interface Condition {
-  field: string | RegExp;
+  field?: string | RegExp;
   mapping: MappingFunction;
 }
 

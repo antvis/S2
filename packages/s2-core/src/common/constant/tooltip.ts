@@ -1,10 +1,15 @@
-import { TooltipOperatorMenu, TooltipPosition } from '@/common/interface';
-import { S2_PREFIX_CLS } from '@/common/constant/classnames';
-import { i18n } from '@/common/i18n';
+import { S2_PREFIX_CLS } from '../../common/constant/classnames';
+import { i18n } from '../../common/i18n';
+import type {
+  TooltipOperatorMenu,
+  TooltipPosition,
+} from '../../common/interface';
 
 export const TOOLTIP_PREFIX_CLS = `${S2_PREFIX_CLS}-tooltip`;
 
 export const TOOLTIP_CONTAINER_CLS = `${TOOLTIP_PREFIX_CLS}-container`;
+export const TOOLTIP_CONTAINER_SHOW_CLS = `${TOOLTIP_CONTAINER_CLS}-show`;
+export const TOOLTIP_CONTAINER_HIDE_CLS = `${TOOLTIP_CONTAINER_CLS}-hide`;
 
 export const TOOLTIP_OPERATION_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-operation`;
 
@@ -13,19 +18,19 @@ export const TOOLTIP_POSITION_OFFSET: TooltipPosition = {
   y: 10,
 };
 
-export const TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU: TooltipOperatorMenu = {
+export const getTooltipOperatorHiddenColumnsMenu = (): TooltipOperatorMenu => ({
   key: 'hiddenColumns',
   text: i18n('隐藏'),
   icon: 'EyeOutlined',
-};
+});
 
-export const TOOLTIP_OPERATOR_TREND_MENU: TooltipOperatorMenu = {
+export const getTooltipOperatorTrendMenu = (): TooltipOperatorMenu => ({
   key: 'trend',
   text: i18n('趋势'),
   icon: 'Trend',
-};
+});
 
-export const TOOLTIP_OPERATOR_SORT_MENUS: TooltipOperatorMenu[] = [
+export const getTooltipOperatorSortMenus = (): TooltipOperatorMenu[] => [
   {
     key: 'asc',
     icon: 'groupAsc',
@@ -42,7 +47,7 @@ export const TOOLTIP_OPERATOR_SORT_MENUS: TooltipOperatorMenu[] = [
   },
 ];
 
-export const TOOLTIP_OPERATOR_TABLE_SORT_MENUS: TooltipOperatorMenu[] = [
+export const getTooltipOperatorTableSortMenus = (): TooltipOperatorMenu[] => [
   {
     key: 'asc',
     icon: 'groupAsc',

@@ -19,9 +19,13 @@ export default defineComponent({
     'onClick',
     'cell',
   ] as unknown as GetInitProps<TooltipOperatorProps>,
-  setup() {
+  setup(props, { emit }) {
+    const onMenuClick = (...args) => {
+      emit('click', ...args);
+    };
     return {
       TOOLTIP_PREFIX_CLS,
+      onMenuClick,
     };
   },
   components: {
@@ -38,7 +42,7 @@ export default defineComponent({
     <template v-if="onlyMenu">
       <Menu
         :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"
-        @click="$.emit('click')"
+        @click="onMenuClick"
       >
         <template v-for="menu in menus" :key="menu.key">
           <TooltipOperatorMenu :menu="menu" :cell="cell" />
@@ -52,7 +56,7 @@ export default defineComponent({
           <template #overlay>
             <Menu
               :class="`${TOOLTIP_PREFIX_CLS}-operator-menus`"
-              @click="$.emit('click')"
+              @click="onMenuClick"
               v-if="menu?.children?.length"
             >
               <template v-for="menu in menus" :key="menu.key">
