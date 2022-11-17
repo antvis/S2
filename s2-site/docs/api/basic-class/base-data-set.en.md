@@ -1,3 +1,7 @@
+---
+title: BaseDataSet
+order: 5
+---
 Function description: tabular data set. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/data-set/pivot-data-set.ts)
 
 ```ts

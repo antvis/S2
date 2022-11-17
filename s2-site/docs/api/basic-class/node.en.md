@@ -1,3 +1,7 @@
+---
+title: Node
+order: 5
+---
 Function description: layout node. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/layout/node.ts)
 
 | parameter         | illustrate                             | type                                                |

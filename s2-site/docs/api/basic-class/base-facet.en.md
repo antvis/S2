@@ -1,3 +1,7 @@
+---
+title: BaseFacet
+order: 7
+---
 Function description: the current visible rendering area. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/base-facet.ts)
 
 ```ts

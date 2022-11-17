@@ -43,6 +43,7 @@
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",
     "hast-util-to-html": "^8.0.3",
+    "micromark-extension-directive": "^2.1.2",
     "rehype-document": "^6.1.0",
     "rehype-format": "^4.0.1",
     "rehype-parse": "^8.0.4",
