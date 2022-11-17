@@ -29,7 +29,7 @@ S2 内置提供了分页能力。本质上是前端分页，点击下一页滚�
 ```
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: | --- | --- | --- |
+| -- | -- | -- | -- | --- | --- | --- | --- |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination` 属性才会生效） | `boolean` \| \{ <br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void <br>} | `false` |  |
 
 ### React 版

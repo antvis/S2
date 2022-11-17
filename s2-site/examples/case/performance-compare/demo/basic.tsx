@@ -84,7 +84,7 @@ function getOptions(rawData) {
   };
 }
 
-fetch('../data/compare.json')
+fetch('https://assets.antv.antgroup.com/s2/compare.json')
   .then((res) => res.json())
   .then((data) => {
     ReactDOM.render(

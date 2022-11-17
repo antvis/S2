@@ -39,7 +39,7 @@ const App = ({ data }) => {
   );
 };
 
-fetch('../data/basic-table-mode.json')
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
     ReactDOM.render(<App data={res} />, document.getElementById('container'));
