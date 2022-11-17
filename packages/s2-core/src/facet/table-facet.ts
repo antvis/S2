@@ -205,12 +205,12 @@ export class TableFacet extends BaseFacet {
 
   override clearAllGroup() {
     super.clearAllGroup();
-    this.frozenRowGroup.set('children', []);
-    this.frozenColGroup.set('children', []);
-    this.frozenTrailingRowGroup.set('children', []);
-    this.frozenTrailingColGroup.set('children', []);
-    this.frozenTopGroup.set('children', []);
-    this.frozenBottomGroup.set('children', []);
+    this.frozenRowGroup.removeChildren();
+    this.frozenColGroup.removeChildren();
+    this.frozenTrailingRowGroup.removeChildren();
+    this.frozenTrailingColGroup.removeChildren();
+    this.frozenTopGroup.removeChildren();
+    this.frozenBottomGroup.removeChildren();
   }
 
   public destroy(): void {
@@ -1120,7 +1120,6 @@ export class TableFacet extends BaseFacet {
       frozenColGroup,
       frozenTrailingColGroup,
       frozenTrailingRowGroup,
-      panelScrollGroup,
     } = this;
     const frozenColGroupWidth = frozenColGroup.getBBox().width;
     const frozenRowGroupHeight = frozenRowGroup.getBBox().height;

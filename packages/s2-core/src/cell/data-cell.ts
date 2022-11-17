@@ -365,7 +365,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      if (stateStyles) {
+      if (stateStyles && this.conditionIntervalShape) {
         updateShapeAttr(
           this.conditionIntervalShape,
           SHAPE_STYLE_MAP.backgroundOpacity,
@@ -384,11 +384,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   public clearUnselectedState() {
     super.clearUnselectedState();
 
-    updateShapeAttr(
-      this.conditionIntervalShape,
-      SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
-    );
+    if (this.conditionIntervalShape) {
+      updateShapeAttr(
+        this.conditionIntervalShape,
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        1,
+      );
+    }
 
     updateShapeAttr(
       this.conditionIconShape as unknown as DisplayObject,

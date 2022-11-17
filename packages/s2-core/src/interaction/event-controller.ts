@@ -5,7 +5,7 @@ import {
   DisplayObject,
   type FederatedEvent,
 } from '@antv/g';
-import { each, isEmpty, isNil } from 'lodash';
+import { get, each, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
 import {
   CellTypes,
@@ -15,7 +15,7 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '../common/constant';
-import type { EmitterType } from '../common/interface';
+import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';

@@ -222,7 +222,7 @@ export class ColCell extends HeaderCell {
     return this.meta.key;
   }
 
-  protected getColResizeArea(): Group {
+  protected getColResizeArea(): Group | undefined {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_COL_RESIZE_AREA,

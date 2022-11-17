@@ -52,7 +52,9 @@ export class TableDataCell extends DataCell {
       KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
     );
 
-    return !resizeArea?.findById(id) && !frozenResizeArea?.findById(id);
+    return (
+      !resizeArea?.getElementById(id) && !frozenResizeArea?.getElementById(id)
+    );
   }
 
   public drawResizeArea() {
@@ -90,7 +92,7 @@ export class TableDataCell extends DataCell {
       return;
     }
     const { height: headerHeight, viewportWidth: headerWidth } =
-      this.spreadsheet.facet.columnHeader.cfg;
+      this.spreadsheet.facet.columnHeader.getHeaderConfig();
 
     const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();

@@ -1,4 +1,9 @@
-import { Group, type FederatedPointerEvent as GraphEvent, Rect } from '@antv/g';
+import {
+  Group,
+  type FederatedPointerEvent as GraphEvent,
+  Rect,
+  FederatedWheelEvent,
+} from '@antv/g';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
 import {
@@ -258,9 +263,9 @@ export abstract class BaseFacet {
 
   onContainerWheelForMobile = () => {
     this.mobileWheel = new MobileWheel(this.spreadsheet.container);
-    this.mobileWheel.on('wheel', (ev) => {
+    this.mobileWheel.on('wheel', (ev: FederatedWheelEvent) => {
       this.spreadsheet.hideTooltip();
-      const originEvent = ev.event;
+      const originEvent = ev.originalEvent;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
       this.onWheel({
