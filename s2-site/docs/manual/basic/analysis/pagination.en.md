@@ -3,4 +3,62 @@ title: Pagination
 order: 12
 ---
 
-<embed src="@/docs/manual/basic/analysis/pagination.zh.md"></embed>
+## Introduction
+
+S2 provides built-in paging capability. It is essentially front-end pagination, click on the next page to scroll to the corresponding row.
+
+### Get started quickly
+
+First, you need to configure the `pagination` attribute in `s2Options`
+
+`markdown:docs/common/pagination.zh.md`
+
+<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/LVw2QOvjgW/b1563a7b-4070-4d61-a18b-6558e2c5b27b.png" width="600" alt="preview">
+
+If you develop based on `@antv/s2-core` , you need to **introduce** or **implement paging components** yourself. The `core` layer only provides paging capabilities. Refer to the example
+
+* [React](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/pagination/index.tsx)
+* [Vue 3.0](https://github.com/antvis/S2/blob/master/packages/s2-vue/src/components/pagination/index.vue)
+
+If you develop based on `@antv/s2-react` or `@antv/s2-vue` , you only need to configure pagination-related configuration items to use it out of the box.
+
+### SpreadsheetProps
+
+```tsx
+<SheetComponent showPagination />
+```
+
+\| Parameters | Description | Type | Default | Required| | :-- | :-- | :-- | :-- | :-: | --- | --- | --- | | | Whether to display the default pagination (only if the `pagination` attribute is configured in `options` ) | `boolean` | {\
+onShowSizeChange?: (pageSize: number) => void,\
+onChange?: (current: number) => void\
+} | `false` | |
+
+### React version
+
+> The [Ant Design](https://ant.design/components/pagination-cn/) Pagination paging component is used, which supports [transparent transmission API](https://ant.design/components/pagination-cn/#API) . If you need to modify the style, you can directly override it through CSS.
+
+```tsx
+const s2Options = {
+  // https://ant.design/components/pagination-cn/#API
+  pagination: {}
+}
+
+<SheetComponent options={s2Options} />
+```
+
+<playground data-mdast="html" path="react-component/pagination/demo/pivot.tsx" rid="container"></playground>
+
+### Vue version 3.0
+
+> The [Ant Design Vue](https://antdv.com/components/pagination) paging component is used, which supports [transparent transmission API](https://antdv.com/components/pagination#API) . If you need to modify the style, you can directly override it through CSS.
+
+```tsx
+const s2Options = {
+  // https://antdv.com/components/pagination#API
+  pagination: {}
+}
+
+<SheetComponent :options={s2Options} />
+```
+
+[demo address](https://codesandbox.io/embed/nice-dijkstra-hzycy6?fontsize=14\&hidenavigation=1\&theme=dark)

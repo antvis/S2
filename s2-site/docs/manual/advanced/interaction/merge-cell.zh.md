@@ -364,7 +364,7 @@ s2.render();
 
 ### unmergeCells
 
-<description> **function unmergeCell(removedCells: MergedCell): void**</description>
+<description> a **function unmergeCell(removedCells: MergedCell): void**</description>
 
 取消合并单元格方法
 

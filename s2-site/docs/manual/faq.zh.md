@@ -14,12 +14,12 @@ order: 8
 > 由于条件限制，版本下限仅供参考，并不意味着不能支持更低版本，该测试在 CDN 模式下测试完成，[在线 Demo](https://lxfu1.github.io/browser-compatibility-of-antv/?tab=s2)
 
 |             | Chrome | Edge  | Firefox |  IE   | Opera | Safari |  UC   | 360 极速浏览器 | 360 安全浏览器 |
-| ----------- | ------ | ----- | ------- | ----- | ----- | ------ | ----- | -------------- | -------------- |
+| ----------- | :----: | :---: | :-----: | :---: | :---: | :----: | :---: | :------------: | :------------: |
 | **AntV S2** |   40   |  12   |   85    |   9   |  40   |   14   |  6.2  |       12       |      7.3       |
 
 ### 浏览器引入
 
-<embed src="@/docs/common/browser.zh.md"></embed>
+`markdown:docs/common/browser.zh.md`
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
@@ -156,7 +156,7 @@ s2.render(false)
 
 ### S2 支持对表格进行编辑吗？
 
-请查看 [编辑模式示例](/zh/examples/case/data-preview#excel)
+请查看 [编辑模式示例](https://s2.antv.vision/zh/examples/case/data-preview#excel)
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 

@@ -25,6 +25,7 @@ import { BaseEvent, type BaseEventImplement } from '../base-event';
  */
 export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
+    this.bindCornerCellHover();
     this.bindDataCellHover();
     this.bindRowCellHover();
     this.bindColCellHover();
@@ -120,7 +121,6 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     const { interaction } = this.spreadsheet;
     interaction.clearHoverTimer();
 
-    const meta = cell.getMeta() as ViewMeta;
     // 避免在同一单元格内鼠标移动造成的多次渲染
     if (interaction.isActiveCell(cell)) {
       return;
@@ -130,20 +130,27 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.HOVER,
     });
-    cell.update();
 
-    if (cell.getActualText() !== cell.getFieldValue()) {
-      const showSingleTips = true;
-      const options: TooltipOptions = {
-        isTotals: meta.isTotals,
-        enterable: true,
-        hideSummary: true,
-        showSingleTips,
-        enableFormat: this.spreadsheet.isPivotMode(),
-      };
-      const data = this.getCellData(meta, showSingleTips);
-      this.spreadsheet.showTooltipWithInfo(event, data, options);
+    cell.update();
+    this.showEllipsisTooltip(event, cell);
+  }
+
+  private showEllipsisTooltip(event: CanvasEvent, cell: S2CellType) {
+    if (!cell || cell.getActualText() === cell.getFieldValue()) {
+      return;
     }
+
+    const meta = cell.getMeta() as ViewMeta;
+    const showSingleTips = true;
+    const options: TooltipOptions = {
+      isTotals: meta.isTotals,
+      enterable: true,
+      hideSummary: true,
+      showSingleTips,
+      enableFormat: this.spreadsheet.isPivotMode(),
+    };
+    const data = this.getCellData(meta, showSingleTips);
+    this.spreadsheet.showTooltipWithInfo(event, data, options);
   }
 
   private getCellData(
@@ -213,6 +220,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindColCellHover() {
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
+    });
+  }
+
+  public bindCornerCellHover() {
+    this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
+      const cell = this.spreadsheet.getCell(event.target);
+      this.showEllipsisTooltip(event, cell);
     });
   }
 }

@@ -388,12 +388,13 @@ class CustomFrame extends Frame {
 }
 
 class CustomCornelCell extends CornerCell {
-  drawCellText() {
+  drawTextShape() {
     if (this.meta.cornerType === 'col') {
       return;
     }
-    super.drawCellText();
+    super.drawTextShape();
   }
+
   drawBackgroundShape() {
     const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
     const attrs = {
