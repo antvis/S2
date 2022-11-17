@@ -24,8 +24,8 @@ import { toHtml } from 'hast-util-to-html'
 import { TranslationServiceClient } from "@google-cloud/translate";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const mdFile = path.join(__dirname, '../manual/');
-const allZhFilesName = glob.sync("**/**/*.zh.md", { cwd: mdFile, realpath: true });
+const mdFile = path.join(__dirname, '../docs/manual/basic');
+const allZhFilesName = glob.sync("*.zh.md", { cwd: mdFile, realpath: true });
 
 /**
  * <tag foo="bar"> -> <tag data-mdast="html" foo="bar">
@@ -122,10 +122,9 @@ export const getTranslatedText = async (originalHtml, mimeType = 'text/html') =>
  * @param file
  * @return {string}
  */
-function getEnFileContent(writePath, file) {
+function getEnFileContent (writePath, file) {
   const readFileContent = fs.readFileSync(writePath, {
     encoding: 'utf8',
-    flag: 'w+'
   });
   const yamlHeader = readFileContent.match(yamlHeaderRegx);
   if (yamlHeader?.[0]) {
@@ -138,7 +137,12 @@ const HtmlToMd = async (html, writePath) => {
   // 当一个 html 标签，带有 data-mdast="html" 属性时，不会被转换成 md
   const getCustomHandler = (type, h, node) => {
     if (node.properties && node.properties.dataMdast === 'html') {
-      return h(node, 'html', toHtml(node, { space: 'html' }))
+      let value = toHtml(node, { space: 'html' });
+      if (type === 'embed') {
+        // embed 时，没有后闭合标签，所以需要手动添加
+        value = value.replace(/zh.md/g, 'en.md') + '</embed>';
+      }
+      return h(node, 'html', value);
     }
     return defaultHandlers[type](h, node);
   };
@@ -150,6 +154,9 @@ const HtmlToMd = async (html, writePath) => {
         img: (h, node) => getCustomHandler('img', h, node),
         playground: (h, node) => getCustomHandler('playground', h, node),
         table: (h, node) => getCustomHandler('table', h, node),
+        embed: (h, node) => {
+          return getCustomHandler('embed', h, node)
+        },
         pre: (h, node) => {
           // 有点 hack 的方式，因为 translate API 会吞掉 code 中的空格。
           // 所以，在翻译前，将 code 中的空格替换成 &nbsp;，翻译后，再替换回来
