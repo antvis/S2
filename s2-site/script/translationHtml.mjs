@@ -1,3 +1,11 @@
+/**
+ * 中翻英，全文整体翻译脚本
+ * 对文章进行全文翻译，类似打开页面，直接使用 google 进行全文翻译。
+ * 优点：1. 使用高级翻译API，词库更全。 2. 全文翻译，有上下文，翻译更准确。
+ * code (```ts) 和 inlineCode (`inline`) 无法进行翻译。
+ * 可以修改 mdFile 文件夹名称，对指定的文件夹或者文件进行翻译。
+ * 只要本地环境配置了 google translate API key，运行：node ./script/translationHtml.mjs  可以使用。
+ */
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype, { defaultHandlers as mdDefaultHandlers } from 'remark-rehype'
@@ -16,8 +24,8 @@ import { toHtml } from 'hast-util-to-html'
 import { TranslationServiceClient } from "@google-cloud/translate";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const mdFile = path.join(__dirname, '../manual/advanced/interaction/');
-const allZhFilesName = glob.sync("merge-cell.zh.md", { cwd: mdFile, realpath: true });
+const mdFile = path.join(__dirname, '../manual/');
+const allZhFilesName = glob.sync("**/**/*.zh.md", { cwd: mdFile, realpath: true });
 
 /**
  * <tag foo="bar"> -> <tag data-mdast="html" foo="bar">

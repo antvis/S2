@@ -1,6 +1,10 @@
 /**
+ * 中翻英，分词翻译脚本
+ * 全文根据 AST 分割成多个小段，每个小段翻译后再合并。类似于使用划软件翻译的效果。
+ * 适用于某些需要翻译 code (```ts) 和 inlineCode (`inline`) 的场景
+ * 可以修改 mdFile 文件夹名称，对指定的文件夹或者文件进行翻译。
+ * 只要本地环境配置了 google translate API key，运行：node ./script/translationText.mjs  可以使用。
  * respect https://github.com/dephraiim/translate-readme
- * Markdown 中翻英脚本
  */
 import { unified } from 'unified';
 import parse from 'remark-parse';
