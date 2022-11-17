@@ -172,25 +172,31 @@ export abstract class BaseFacet {
   protected initGroups() {
     const container = this.spreadsheet.container;
     // the main three layer groups
-    this.backgroundGroup = container.addGroup({
-      name: KEY_GROUP_BACK_GROUND,
-      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
+    this.backgroundGroup = container.appendChild(
+      new Group({
+        name: KEY_GROUP_BACK_GROUND,
+        style: { zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
 
     this.initPanelGroups();
-    this.foregroundGroup = container.addGroup({
-      name: KEY_GROUP_FORE_GROUND,
-      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-    });
+    this.foregroundGroup = container.appendChild(
+      new Group({
+        name: KEY_GROUP_FORE_GROUND,
+        style: { zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
   }
 
   protected initPanelGroups() {
     const container = this.spreadsheet.container;
 
-    this.panelGroup = container.addGroup({
-      name: KEY_GROUP_PANEL_GROUND,
-      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-    });
+    this.panelGroup = container.appendChild(
+      new Group({
+        name: KEY_GROUP_PANEL_GROUND,
+        style: { zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX },
+      }),
+    );
     this.panelScrollGroup = new PanelScrollGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
