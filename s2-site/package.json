@@ -22,7 +22,7 @@
     "start": "yarn develop",
     "develop": "dumi dev",
     "build": "dumi build",
-    "clean": "dumi clean",
+    "clean": "rimraf .dumi",
     "preview": "dumi preview",
     "deploy": "dumi build && gh-pages -d dist",
     "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"

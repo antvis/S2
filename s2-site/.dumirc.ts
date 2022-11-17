@@ -1,5 +1,5 @@
 import { defineConfig } from 'dumi';
-import { repository, version, homepage } from './package.json';
+import { repository, homepage } from './package.json';
 
 export default defineConfig({
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
@@ -25,10 +25,6 @@ export default defineConfig({
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
     showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
-    versions: {                                                         // 历史版本以及切换下拉菜单
-      [version]: 'https://S2.antv.vision',
-      '3.2.x': 'https://S2-v3-2.antv.vision',
-    },
     docsearchOptions: {                                                 // 头部搜索框配置
       versionV3: true,
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
@@ -57,22 +53,6 @@ export default defineConfig({
           en: 'Examples',
         },
       },
-    ],
-    ecosystems: [                                                       // 头部的菜单中的「周边生态」
-      {
-        name: {
-          zh: 'G2 官网',
-          en: 'G2 website',
-        },
-        url: 'https://g2.antv.vision',
-      },
-      {
-        name: {
-          zh: 'S2 官网',
-          en: 'S2 website',
-        },
-        url: 'https://S2.antv.vision',
-      }
     ],
     docs: [
       {
@@ -249,11 +229,11 @@ export default defineConfig({
       },
     ],
     playground: {
-    container: '<div id="container" />',
-    playgroundDidMount: 'console.log("playgroundDidMount");',
-    playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
-    devDependencies: {
-      typescript: 'latest',
+      container: '<div id="container" />',
+      playgroundDidMount: 'console.log("playgroundDidMount");',
+      playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
+      devDependencies: {
+        typescript: 'latest',
     },
     htmlCodeTemplate: `<!DOCTYPE html>
         <html>
@@ -425,23 +405,11 @@ export default defineConfig({
           'https://gw.alipayobjects.com/zos/antfincdn/eNow%2604Qsv/6e579a67-4a4f-4b90-ad91-3fbb1def67fc.png',
       },
     ],
-    /** 首页合作公司 */
-    companies: [
-      { name: '阿里云', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*V_xMRIvw2iwAAAAAAAAAAABkARQnAQ' },
-      { name: '支付宝', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*lYDrRZvcvD4AAAAAAAAAAABkARQnAQ', },
-      { name: '天猫', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*BQrxRK6oemMAAAAAAAAAAABkARQnAQ', },
-      { name: '淘宝网', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*1l8-TqUr7UcAAAAAAAAAAABkARQnAQ', },
-      { name: '网上银行', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ZAKFQJ5Bz4MAAAAAAAAAAABkARQnAQ', },
-      { name: '京东', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*yh-HRr3hCpgAAAAAAAAAAABkARQnAQ', },
-      { name: 'yunos', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_js7SaNosUwAAAAAAAAAAABkARQnAQ', },
-      { name: '菜鸟', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*TgV-RZDODJIAAAAAAAAAAABkARQnAQ', },
-    ],
   },
   alias: {
      '@': __dirname,
    },
   styles: ['/site.css'],
-  mfsu: false,
   links: [
   ],
   scripts: [
