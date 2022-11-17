@@ -146,9 +146,9 @@
   integrity sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==
 
 "@ant-design/icons@^4.7.0":
-  version "4.7.0"
-  resolved "https://registry.npmmirror.com/@ant-design/icons/-/icons-4.7.0.tgz#8c3cbe0a556ba92af5dc7d1e70c0b25b5179af0f"
-  integrity sha512-aoB4Z7JA431rt6d4u+8xcNPPCrdufSRMUOpxa1ab6mz1JCQZOEVolj2WVs/tDFmN62zzK30mNelEsprLYsSF3g==
+  version "4.8.0"
+  resolved "https://registry.npmmirror.com/@ant-design/icons/-/icons-4.8.0.tgz#3084e2bb494cac3dad6c0392f77c1efc90ee1fa4"
+  integrity sha512-T89P2jG2vM7OJ0IfGx2+9FC5sQjtTzRSz+mCHTXkFn/ELZc2YpfStmYHmqzq2Jx55J0F7+O6i5/ZKFSVNWCKNg==
   dependencies:
     "@ant-design/colors" "^6.0.0"
     "@ant-design/icons-svg" "^4.2.1"
@@ -3873,9 +3873,9 @@ dumi-assets-types@2.0.0-alpha.0:
   integrity sha512-a/Y5lf0G6gwsEQ9hop/n03CcjmHsGBk384Cz/AEX6mRYrfSpUx/lQvP9HLoXkCzScl9PL1sSmLPnMkgaXDCZLA==
 
 dumi@^2.0.0-beta.15:
-  version "2.0.0-rc.12"
-  resolved "https://registry.npmmirror.com/dumi/-/dumi-2.0.0-rc.12.tgz#6a42cedd3e1f46bc76a087a9f4c83d1327168b1a"
-  integrity sha512-fuhWd0fDtl5lqOIRbrWD7y0raFiycISrTFYbAgTrke5Y6usnz8IYGuuhMdVQ9quKUtIvO11S1qCqb5WI2U7QOA==
+  version "2.0.0-rc.14"
+  resolved "https://registry.npmmirror.com/dumi/-/dumi-2.0.0-rc.14.tgz#80d50d6b7d32ea603343f478da20549f01166b12"
+  integrity sha512-pgRB0YjAdBZ55ipb4iXkbeOaHri9Tcq5JSbsgzL/CYKiZsUci3VD2jmD1rXWk8LxK6OT6C6qg+TpWmCt97xfWA==
   dependencies:
     "@ant-design/icons-svg" "^4.2.1"
     "@makotot/ghostui" "^2.0.0"
@@ -6719,9 +6719,9 @@ inline-style-parser@0.1.1:
   integrity sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==
 
 inline-style-prefixer@^6.0.0:
-  version "6.0.3"
-  resolved "https://registry.npmmirror.com/inline-style-prefixer/-/inline-style-prefixer-6.0.3.tgz#77adda42f5d854a28c1f328def8279aa9ad9a5a5"
-  integrity sha512-So9P2BYzHcsRzvd8baBa2R4QLqVOLQ+INtPKTPTU5jZ2jvJcRf/Jwc6QMOOW0KvIPUcAGYO4T3dpqjXfCJxRZQ==
+  version "6.0.4"
+  resolved "https://registry.npmmirror.com/inline-style-prefixer/-/inline-style-prefixer-6.0.4.tgz#4290ed453ab0e4441583284ad86e41ad88384f44"
+  integrity sha512-FwXmZC2zbeeS7NzGjJ6pAiqRhXR0ugUShSNb6GApMl6da0/XGc4MOJsoWAywia52EEWbXNSy0pzkwz/+Y+swSg==
   dependencies:
     css-in-js-utils "^3.1.0"
     fast-loops "^1.1.3"

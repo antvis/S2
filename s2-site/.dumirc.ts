@@ -53,6 +53,13 @@ export default defineConfig({
           en: 'Examples',
         },
       },
+      {
+        slug: 'playground',
+        title: {
+          zh: '在线体验',
+          en: 'Playground',
+        },
+      },
     ],
     docs: [
       {
