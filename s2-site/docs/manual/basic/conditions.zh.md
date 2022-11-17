@@ -18,7 +18,7 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 `S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/zh/docs/api/general/S2Options#conditions) 属性。
 
-```js
+```ts
 // 构建 options
 const s2Options = {
   width: 600,
@@ -103,7 +103,7 @@ const s2Options = {
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
 
-`markdown:docs/common/icon.zh.md`​
+<embed src="@/docs/common/icon.zh.md"></embed>​
 
 🎨 字段标记详细的配置参考 [Conditions API](/zh/docs/api/general/S2Options#conditions) 文档。
 

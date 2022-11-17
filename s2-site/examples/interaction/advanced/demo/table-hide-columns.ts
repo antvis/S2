@@ -1,7 +1,7 @@
 import { TableSheet, S2Event } from '@antv/s2';
 
 fetch(
-  '../data/basic-table-mode.json',
+  'https://assets.antv.antgroup.com/s2/basic-table-mode.json',
 )
   .then((res) => res.json())
   .then((data) => {

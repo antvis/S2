@@ -3,4 +3,4 @@ title: API
 order: 0
 ---
 
-`markdown:docs/common/header.zh.md`
+<embed src="@/docs/common/header.zh.md"></embed>

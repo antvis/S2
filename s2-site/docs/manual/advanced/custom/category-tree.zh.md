@@ -104,4 +104,4 @@ const s2Options = {
 
 ## 自定义树结构说明
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>

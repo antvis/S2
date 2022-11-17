@@ -6,6 +6,7 @@
   "first-line-h1": false,
   "no-empty-links": false,
   "no-duplicate-heading": false,
+  "link-fragments": false,
   "MD003": {
     "style": "atx"
   },

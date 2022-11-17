@@ -5,6 +5,10 @@ order: 4
 
 功能描述：单元格基类。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/base-cell.ts)
 
+```ts
+cell.getActualText()
+```
+
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
 | getMeta | 获取单元格元数据 | () => [ViewMeta](#viewmeta) |
@@ -27,27 +31,7 @@ order: 4
 
 ### ViewMeta
 
-```ts
-interface ViewMeta {
-  spreadsheet: SpreadSheet;
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  data: Record<string, any>;
-  rowIndex: number;
-  colIndex: number;
-  valueField: string;
-  fieldValue: DataItem;
-  isTotals?: boolean;
-  rowQuery?: Record<string, any>;
-  colQuery?: Record<string, any>;
-  rowId?: string;
-  colId?: string;
-  [key: string]: any;
-}
-```
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ### Point
 

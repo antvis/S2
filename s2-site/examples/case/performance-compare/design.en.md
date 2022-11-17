@@ -1,2 +1,2 @@
 
-`markdown:docs/manual/advanced/performance.zh.md`
+<embed src="@/docs/manual/advanced/performance.zh.md"></embed>

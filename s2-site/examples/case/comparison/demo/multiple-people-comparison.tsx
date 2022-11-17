@@ -125,7 +125,7 @@ const PaletteLegend = () => {
   );
 };
 
-fetch('../data/multiple-people-comparison.json')
+fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
   .then((res) => res.json())
   .then(({ data }) => {
     const s2DataConfig = {

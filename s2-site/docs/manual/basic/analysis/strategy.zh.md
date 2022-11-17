@@ -88,7 +88,7 @@ object **必选**,_default：null_
 功能描述：用于支持多指标类型的自定义数据单元格渲染。例如：[趋势分析表](/zh/examples/react-component/sheet#strategy)
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
-| :------------- | :----------------- | :--------- | :----- | :--- |
+| ------------- | ----------------- | --------- | ----- | --- |
 | values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
 | originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
@@ -99,7 +99,7 @@ object **必选**,_default：null_
 * 如果不涉及到原始数据复制导出类需求，可不提供 `originalValues`
 * 列头指标顺序和单元格指标展示顺序一一对应
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
 
 ### S2Options 配置
 
@@ -111,7 +111,7 @@ object **必选**,_default：null_
 趋势分析表的 `Tooltip`, 使用 `S2` 提供的 [自定义能力](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) 分别对 `行头 (row)`, `列头 (col)`, `数值 (data)` 进行了 [定制](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105), 同时可以在 `@antv/s2-react` 包中进行单独引入
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
-| :------------- | :----------------- | :--------- | :----- | :--- |
+| ------------- | ----------------- | --------- | ----- | --- |
 | cell           | 当前单元格 | `S2CellType`   |  ✓   |
 | defaultTooltipShowOptions | 默认 tooltip 展示配置 | `TooltipShowOptions<ReactNode>`  |  |      |
 | label        | 标题    | `ReactNode | (cell: S2CellType, defaultLabel: ReactNode) => React.ReactNode` |    |      |

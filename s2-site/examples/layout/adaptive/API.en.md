@@ -3,4 +3,4 @@ title: API
 order: 0
 ---
 
-`markdown:docs/manual/advanced/adaptive.en.md`
+<embed src="@/docs/manual/advanced/adaptive.en.md"></embed>

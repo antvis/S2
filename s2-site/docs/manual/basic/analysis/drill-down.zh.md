@@ -116,4 +116,4 @@ ReactDOM.render(
 
 ## API
 
-`markdown:docs/api/components/drill-down.zh.md`
+<embed src="@/docs/api/components/drill-down.zh.md"></embed>
