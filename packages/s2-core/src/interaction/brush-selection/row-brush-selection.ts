@@ -6,7 +6,7 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import type { OnUpdateCells } from '../../common/interface';
@@ -63,26 +63,30 @@ export class RowBrushSelection extends BaseBrushSelection {
     this.displayedCells = this.spreadsheet.interaction.getAllRowHeaderCells();
   }
 
-  protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta();
-    const { x: headerX, y: headerY } = meta;
-    return {
-      ...super.getBrushPoint(event),
-      headerX,
-      headerY,
-    };
-  }
-
   protected isInBrushRange = (meta: ViewMeta | Node) => {
+    // start、end 都是相对位置
     const { start, end } = this.getBrushRange();
-    const { x = 0, y = 0 } = meta;
+    const { scrollY, hRowScrollX } = this.spreadsheet.facet.getScrollOffset();
 
-    return (
-      x >= start.headerX &&
-      x <= end.headerX &&
-      y >= start.headerY &&
-      y <= end.headerY
+    const { cornerBBox } = this.spreadsheet.facet;
+    // 绝对位置，不随滚动条变化
+    const { x = 0, y = 0, width = 0, height = 0 } = meta;
+
+    return this.rectanglesIntersect(
+      {
+        // 行头过长时，可以单独进行滚动，所以需要加上滚动的距离
+        minX: start.x + hRowScrollX,
+        // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        minY: start.y - cornerBBox.height + scrollY,
+        maxX: end.x + hRowScrollX,
+        maxY: end.y - cornerBBox.height + scrollY,
+      },
+      {
+        minX: x,
+        maxX: x + width,
+        minY: y,
+        maxY: y + height,
+      },
     );
   };
 
