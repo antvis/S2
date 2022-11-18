@@ -1,7 +1,9 @@
 import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import * as mockPivotDataConfig from 'tests/data/simple-data.json';
+import * as mockDataConfig from 'tests/data/mock-dataset.json';
 import { getContainer } from 'tests/util/helpers';
-import { difference } from 'lodash';
+import { difference, get, pick } from 'lodash';
+import type { Node } from '@/facet/layout/node';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common';
 
@@ -291,6 +293,158 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(priceDetail.displaySiblingNode.next.id).toEqual(cityPriceColumnId);
       expect(priceDetail.hideColumnNodes).toHaveLength(1);
       expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
+    });
+
+    describe('Multiple Values Tests', () => {
+      let sheet: PivotSheet;
+      const options = {
+        width: 600,
+        height: 480,
+        totals: {
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['type'],
+          },
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['province'],
+          },
+        },
+      };
+
+      beforeEach(() => {
+        sheet = new PivotSheet(
+          getContainer(),
+          {
+            ...mockDataConfig,
+            fields: {
+              rows: ['province', 'city'],
+              columns: ['type', 'sub_type'],
+              values: ['number'],
+              valueInCols: true,
+            },
+          },
+          options,
+        );
+        sheet.render();
+      });
+
+      afterEach(() => {
+        sheet.destroy();
+      });
+
+      test('should hide grand totals node', () => {
+        const nodeId = 'root[&]总计';
+        sheet.interaction.hideColumns([nodeId]);
+
+        const leafNodes = sheet.getColumnLeafNodes();
+        expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
+        expect(leafNodes).toHaveLength(6);
+      });
+
+      test('should hide sub totals node', () => {
+        const nodeId = 'root[&]小计';
+        sheet.interaction.hideColumns([nodeId]);
+
+        const leafNodes = sheet.getColumnLeafNodes();
+        expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
+        expect(leafNodes).toHaveLength(7);
+      });
+
+      test('should hide measure node', () => {
+        const nodeIds = [
+          'root[&]家具[&]桌子[&]number',
+          'root[&]办公用品[&]笔[&]number',
+        ];
+
+        sheet.interaction.hideColumns(nodeIds);
+
+        expect(
+          sheet.getColumnLeafNodes().find((node) => nodeIds.includes(node.id)),
+        ).toBeFalsy();
+      });
+
+      test('should render correctly row corner after hide measure node', () => {
+        const nodeIds = [
+          'root[&]总计',
+          'root[&]小计',
+          'root[&]家具[&]桌子[&]number',
+          'root[&]办公用品[&]笔[&]number',
+        ];
+
+        sheet.interaction.hideColumns(nodeIds);
+
+        const cornerNodes = get(
+          sheet.facet.cornerHeader,
+          'headerConfig.data',
+          [],
+        ) as Node[];
+
+        const colCornerNodesMeta = cornerNodes.map((node) =>
+          pick(node, ['x', 'y', 'width', 'height']),
+        );
+
+        // 避免采样的节点被隐藏后, 影响角头坐标计算
+        expect(
+          sheet.facet.layoutResult.colsHierarchy.sampleNodeForLastLevel.y,
+        ).toStrictEqual(60);
+        expect(colCornerNodesMeta).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "height": 30,
+              "width": 100,
+              "x": 0,
+              "y": 60,
+            },
+            Object {
+              "height": 30,
+              "width": 100,
+              "x": 100,
+              "y": 60,
+            },
+            Object {
+              "height": 30,
+              "width": 200,
+              "x": 0,
+              "y": 0,
+            },
+            Object {
+              "height": 30,
+              "width": 200,
+              "x": 0,
+              "y": 30,
+            },
+          ]
+        `);
+      });
+
+      // https://github.com/antvis/S2/issues/1721
+      test('should hide grand totals node1', () => {
+        const nodeId = 'root[&]总计[&]sub_type';
+
+        sheet.setDataCfg({
+          ...mockDataConfig,
+          fields: {
+            rows: ['province', 'city'],
+            columns: ['type'],
+            values: ['sub_type', 'number'],
+            valueInCols: true,
+          },
+        });
+        sheet.render();
+
+        sheet.interaction.hideColumns([nodeId]);
+
+        const leafNodes = sheet.getColumnLeafNodes();
+        expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
+        expect(leafNodes).toHaveLength(5);
+      });
     });
   });
 });
