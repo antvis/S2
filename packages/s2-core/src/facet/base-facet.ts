@@ -10,6 +10,7 @@ import {
   each,
   find,
   get,
+  isEmpty,
   isFunction,
   isUndefined,
   last,
@@ -35,6 +36,7 @@ import type {
   CellCustomWidth,
   FrameConfig,
   GridInfo,
+  HiddenColumnsInfo,
   LayoutResult,
   OffsetConfig,
   S2CellType,
@@ -1302,5 +1304,20 @@ export abstract class BaseFacet {
     if (originalColumnsLength !== initColumnLeafNodes.length) {
       store.set('initColumnLeafNodes', columnNodes);
     }
+  }
+
+  public getHiddenColumnsInfo(columnNode: Node): HiddenColumnsInfo | null {
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    if (isEmpty(hiddenColumnsDetail)) {
+      return null;
+    }
+
+    return hiddenColumnsDetail.find((detail) =>
+      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+    );
   }
 }
