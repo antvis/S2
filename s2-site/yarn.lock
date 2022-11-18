@@ -167,10 +167,10 @@
     lodash "^4.17.21"
     resize-observer-polyfill "^1.5.1"
 
-"@antv/dumi-theme-antv@^0.3.0-beta.5":
-  version "0.3.0-beta.19"
-  resolved "https://registry.npmmirror.com/@antv/dumi-theme-antv/-/dumi-theme-antv-0.3.0-beta.19.tgz#e037c5bc36b0b94929616ed24b9dcd9006a89b50"
-  integrity sha512-K9RokA1ckxdm1fyLAlWgKBhgJZ1ekFkjCL+Xkb1JC1vNTg6+oaVA3J20ByOX3ps9n9Mxbv60t/8dUkSTxCXuAA==
+"@antv/dumi-theme-antv@^0.3.0-beta.22":
+  version "0.3.0-beta.22"
+  resolved "https://registry.npmmirror.com/@antv/dumi-theme-antv/-/dumi-theme-antv-0.3.0-beta.22.tgz#67f712c37800a9da2bd39e6151e30588ed782638"
+  integrity sha512-3PqMK8vv47Hc3AGMMnwJPa9T00OKKr/XfW/eD/8pO1PJ9ZZYM9PD0qmdfTk9Sl9ojaUFsb+bC36SP234Iz/Fog==
   dependencies:
     "@ant-design/icons" "^4.7.0"
     "@babel/standalone" "^7.19.5"

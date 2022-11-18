@@ -126,7 +126,7 @@ s2.setTheme(customTheme)
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
+<Playground path="theme/custom/demo/custom-schema.ts" rid='custom-schema'></playground>
 
 #### 自定义单元格对齐方式
 
@@ -199,7 +199,7 @@ s2.setThemeCfg({ palette: s2Palette });
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
+<Playground path="theme/custom/demo/custom-manual-palette.tsx" height="500" rid='custom-manual-palette'></playground>
 
 #### 按主题色自动生成
 
@@ -225,7 +225,7 @@ s2.setThemeCfg({
 s2.render(false);
 ```
 
-<playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
+<Playground path="theme/custom/demo/custom-generate-palette.tsx" rid='custom-generate-palette'></playground>
 
 ## 预置主题色板对照表
 

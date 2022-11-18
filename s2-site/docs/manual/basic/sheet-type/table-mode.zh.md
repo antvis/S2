@@ -128,4 +128,4 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-<playground path='interaction/basic/demo/frozen.ts' rid='container' height='300'></playground>
+<Playground path='interaction/basic/demo/frozen.ts' rid='container' height='300'></playground>

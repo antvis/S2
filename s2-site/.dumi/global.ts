@@ -17,7 +17,9 @@ if (window) {
   (window as any).cascaderCss = require('antd/es/cascader/style/index.css');
   (window as any).checkboxCss = require('antd/es/checkbox/style/index.css');
   (window as any).paginationCss = require('antd/es/pagination/style/index.css');
-  (window as any).inputNumberCss = require('antd/es/input-number/style/index.css');
+  (
+    window as any
+  ).inputNumberCss = require('antd/es/input-number/style/index.css');
   (window as any).s2Css = require('@antv/s2/dist/style.min.css');
   (window as any).s2ReactCss = require('@antv/s2-react/dist/style.min.css');
 }

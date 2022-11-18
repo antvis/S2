@@ -46,7 +46,7 @@ ReactDOM.render(
 
 ```
 
-<playground path='react-component/switcher/demo/pure-switcher.tsx' rid='container'></playground>
+<Playground path='react-component/switcher/demo/pure-switcher.tsx' rid='container'></playground>
 
 ## 配置解释
 
@@ -127,7 +127,7 @@ const field = {
 
 你可以通过以下示例查看详细的结果数据类型：
 
-<playground path='analysis/switcher/demo/pivot.tsx' rid='result'></playground>
+<Playground path='analysis/switcher/demo/pivot.tsx' rid='result'></playground>
 
 ❗️注意：出于减少内部状态过时的考虑，`Switcher` 组件内部并**不会持久化操作后状态**。也就是说在每次弹窗关闭后，Switcher 内部状态会清空，再次打开时任然以 `Props` 中的各个维度配置为准。
 
@@ -153,13 +153,13 @@ const field = {
 * 行列值可以相互移动
 * 指标值可以控制显隐
 
-<playground path='react-component/switcher/demo/pivot-with-children.tsx' rid='pivot'></playground>
+<Playground path='react-component/switcher/demo/pivot-with-children.tsx' rid='pivot'></playground>
 
 ### 结合明细表使用
 
 * 列头可以控制显隐
 * 表格列头对应出现展开图标
 
-<playground path='react-component/switcher/demo/table.tsx' rid='table'></playground>
+<Playground path='react-component/switcher/demo/table.tsx' rid='table'></playground>
 
 ​📊 查看更多 [维度切换示例](/zh/examples/react-component/switcher#pure-switcher)。

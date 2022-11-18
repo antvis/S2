@@ -178,7 +178,7 @@ s2.render();
 
 #### 4. Results
 
-<playground data-mdast="html" path="basic/pivot/demo/grid.ts" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="basic/pivot/demo/grid.ts" rid="container" height="400"></playground>
 
 ### `React` version
 

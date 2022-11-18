@@ -26,7 +26,7 @@ order: 4
 />
 ```
 
-<playground path='react-component/header/demo/default.tsx' rid='container' height='400'></playground>
+<Playground path='react-component/header/demo/default.tsx' rid='container' height='400'></playground>
 
 ## API
 

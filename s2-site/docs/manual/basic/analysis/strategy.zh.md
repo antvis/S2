@@ -73,7 +73,7 @@ ReactDOM.render(
 
 ```
 
-<playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>
+<Playground path='react-component/sheet/demo/strategy.tsx' rid='container'></playground>
 
 ## 配置解释
 

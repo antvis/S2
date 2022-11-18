@@ -5,7 +5,7 @@ order: 2
 
 当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有三种方式隐藏列头
 
-<playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>
+<Playground path='interaction/advanced/demo/pivot-hide-columns.ts' rid='pivot-hide-columns' height='400'></playground>
 
 ## 1. 手动隐藏 - 通过点击
 

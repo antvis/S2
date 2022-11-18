@@ -69,7 +69,7 @@ ReactDOM.render(
 );
 ```
 
-<playground data-mdast="html" path="react-component/sheet/demo/strategy.tsx" rid="container"></playground>
+<Playground data-mdast="html" path="react-component/sheet/demo/strategy.tsx" rid="container"></playground>
 
 ## configuration explanation
 
@@ -95,7 +95,7 @@ Function description: used to support custom data cell rendering of multiple ind
 * If it does not involve the original data copy and export class requirements, `originalValues` may not be provided
 * The order of column header indicators corresponds to the display order of cell indicators
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
 
 ### S2Options configuration
 

@@ -98,4 +98,4 @@ import { SheetComponent } from '@antv/s2-react'
   Your browser does not support HTML video.
 </video>
 
-`markdown:docs/common/export.zh.md`
+<embed src="@/docs/common/export.zh.md"></embed>

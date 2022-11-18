@@ -87,7 +87,7 @@ That is to say`@antv/s2` Regardless of the framework, you can`Vue`,`Angular` use
 
 Here is an overview of the versions:
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.en.md"></embed>
 
 supplementary [Analysis component](<#/en/examples/gallery#category-table component>),not yet `@antv/s2-angular` The development plan of , welcome the community to build together 👏🏻.
 

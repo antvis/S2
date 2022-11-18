@@ -7,7 +7,7 @@ S2 can manually drag and drop to dynamically change the width and height of cell
 
 We can modify the background color, font size and other configurations of the cell through the [theme](/zh/docs/manual/basic/theme/) . If you want to customize the width and height of the cell, you can use the [style](/zh/docs/api/general/S2Options#style) configuration of `s2Options` to achieve it
 
-<playground data-mdast="html" path="layout/custom/demo/custom-pivot-size.ts" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="layout/custom/demo/custom-pivot-size.ts" rid="container" height="400"></playground>
 
 ```ts
 const s2Options = {

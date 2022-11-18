@@ -69,7 +69,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground data-mdast="html" path="interaction/advanced/demo/pivot-link-jump.ts" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="interaction/advanced/demo/pivot-link-jump.ts" rid="container" height="400"></playground>
 
 ## list
 
@@ -103,4 +103,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground data-mdast="html" path="interaction/advanced/demo/table-link-jump.ts" rid="container2" height="400"></playground>
+<Playground data-mdast="html" path="interaction/advanced/demo/table-link-jump.ts" rid="container2" height="400"></playground>

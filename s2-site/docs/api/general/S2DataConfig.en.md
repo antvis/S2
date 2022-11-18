@@ -83,6 +83,6 @@ Function description: used to support custom data cell rendering of multiple ind
 | label                   | Used as a subtitle of a cell, displayed on a separate line      | `string`  |                 |          |
 | \[key: string]          | Other transparent fields for customized display of custom cells | `unknown` | \`\`            |          |
 
-`markdown:docs/common/sort-param.zh.md`
+<embed src="@/docs/common/sort-param.zh.md"></embed>
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>

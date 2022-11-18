@@ -13,7 +13,7 @@ const s2Options = {
 };
 ```
 
-<playground data-mdast="html" path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></playground>
 
 ## premise
 
@@ -103,4 +103,4 @@ const s2Options = {
 
 ## Description of custom tree structure
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>

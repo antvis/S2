@@ -22,4 +22,4 @@ s2.tooltip.xx()
 | `clearContent`        | Empty tooltip content                                 | `() => void`                                                                |
 | `disablePointerEvent` | Disable tooltip mouse response                        | `() => void`                                                                |
 
-`markdown:docs/common/custom-tooltip.zh.md`
+<embed src="@/docs/common/custom-tooltip.zh.md"></embed>

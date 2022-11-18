@@ -51,7 +51,7 @@ s2.interaction.xx()
 | removeIntercepts                    | Remove specified interaction interception                                                                                 | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                       |
 | highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/zh/docs/api/basic-class/node) \[]) => void                          |
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
 ### Interaction Constructor
 

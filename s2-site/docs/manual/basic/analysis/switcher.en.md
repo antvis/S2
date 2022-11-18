@@ -42,7 +42,7 @@ ReactDOM.render(
 );
 ```
 
-<playground data-mdast="html" path="react-component/switcher/demo/pure-switcher.tsx" rid="container"></playground>
+<Playground data-mdast="html" path="react-component/switcher/demo/pure-switcher.tsx" rid="container"></playground>
 
 ## configuration explanation
 
@@ -100,7 +100,7 @@ All results are **grouped by dimension** , and each set of fields is **flattened
 
 You can see the detailed result data types with the following example:
 
-<playground data-mdast="html" path="analysis/switcher/demo/pivot.tsx" rid="result"></playground>
+<Playground data-mdast="html" path="analysis/switcher/demo/pivot.tsx" rid="result"></playground>
 
 ❗️ Note: In order to reduce the outdated state of the internal state, the `Switcher` component does **not persist the state after the operation** . That is to say, after each pop-up window is closed, the internal state of Switcher will be cleared, and when it is opened again, the configuration of each dimension in `Props` will still prevail.
 
@@ -126,13 +126,13 @@ You can see the detailed result data types with the following example:
 * Row and column values ​​can be shifted relative to each other
 * The indicator value can control the display and concealment
 
-<playground data-mdast="html" path="react-component/switcher/demo/pivot-with-children.tsx" rid="pivot"></playground>
+<Playground data-mdast="html" path="react-component/switcher/demo/pivot-with-children.tsx" rid="pivot"></playground>
 
 ### Use with schedule
 
 * The column header can control the visibility
 * The expansion icon appears corresponding to the column header of the table
 
-<playground data-mdast="html" path="react-component/switcher/demo/table.tsx" rid="table"></playground>
+<Playground data-mdast="html" path="react-component/switcher/demo/table.tsx" rid="table"></playground>
 
 ​📊 See more [examples of dimension switching](/zh/examples/react-component/switcher#pure-switcher) .

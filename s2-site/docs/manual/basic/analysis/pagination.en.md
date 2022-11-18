@@ -11,7 +11,7 @@ S2 provides built-in paging capability. It is essentially front-end pagination, 
 
 First, you need to configure the `pagination` attribute in `s2Options`
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/LVw2QOvjgW/b1563a7b-4070-4d61-a18b-6558e2c5b27b.png" width="600" alt="preview">
 
@@ -46,7 +46,7 @@ const s2Options = {
 <SheetComponent options={s2Options} />
 ```
 
-<playground data-mdast="html" path="react-component/pagination/demo/pivot.tsx" rid="container"></playground>
+<Playground data-mdast="html" path="react-component/pagination/demo/pivot.tsx" rid="container"></playground>
 
 ### Vue version 3.0
 
