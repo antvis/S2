@@ -9,8 +9,8 @@ order: 7
 s2.facet.xx()
 ```
 
-| 参数 | 说明 | 类型 |
-| --- | --- | --- |
+| 参数 | 说明 | 类型 | 版本 |
+| --- | --- | --- | --- |
 | spreadsheet | 表格实例 |  [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |
 | cornerBBox | 角头区域包围盒 |  [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox) |
 | panelBBox | 数值区域包围盒 | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox) |
@@ -64,7 +64,7 @@ s2.facet.xx()
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
 | addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
-| getHiddenColumnsInfo | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/zh/docs/api/basic-class/node)) => [HiddenColumnsInfo](/zh/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  |
+| getHiddenColumnsInfo | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/zh/docs/api/basic-class/node)) => [HiddenColumnsInfo](/zh/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  | `1.34.1` |
 
 ### CellScrollOffset
 
