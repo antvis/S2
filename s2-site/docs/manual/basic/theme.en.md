@@ -5,8 +5,7 @@ order: 6
 
 ## Introduction
 
-There are **3** out-of-the-box theme configurations built into S2, and powerful theme customization functions are also
-provided.
+There are **3** out-of-the-box theme configurations built into S2, and powerful theme customization functions are also provided. [View APIs](/api/general/s2theme)
 
 ### color
 
@@ -16,8 +15,7 @@ In the color usage of S2, we will first select a theme color, and use the theme 
 * Use the theme color plus different degrees of white to`白`5 lighter colors, placed on index 0\~5
 * Use the theme color plus different degrees of`黑`to generate 5 darker colors and place them on indexes 6\~11
 
-The following is an example of using **#0A78F4** and **#FF5500** different theme colors to generate a standard color
-palette:
+The following is an example of using **#0A78F4** and **#FF5500** different theme colors to generate a standard color palette:
 
 <img data-mdast="html" alt="#0A78F4 standard palette" src="https://gw.alipayobjects.com/zos/antfincdn/8BOmvrgF6/65409159-09d0-4780-a431-3bb3e61cf429.png" width="600">
 
@@ -25,44 +23,39 @@ palette:
 
 ### Swatch Palette
 
-The swatch is defined as [Palette](/zh/docs/api/general/S2Theme#palette) , from which the color will be taken when the
-theme schema is generated, and its color comes from the standard swatch. The key properties of Palette are:
+The swatch is defined as [Palette](/zh/docs/api/general/S2Theme#palette) , from which the color will be taken when the theme schema is generated, and its color comes from the standard swatch. The key properties of Palette are:
 
-* basicColors: the basic color, with a total of 15 color bits, which essentially determines the color scheme of the
-  table. When generating the theme schema, the color will be selected from the fixed index of basicColors. If the
-  background color of the row header is fixed, the color of `basicColors[1]` will be taken
-* basicColorRelations: the corresponding relationship between basicColors and standard swatches. For example, in the
-  built-in colorful theme, `basicColors[1]` is the color of index 0 in the standard swatches.
+* basicColors: the basic color, with a total of 15 color bits, which essentially determines the color scheme of the table. When generating the theme schema, the color will be selected from the fixed index of basicColors. If the background color of the row header is fixed, the color of `basicColors[1]` will be taken
+* basicColorRelations: the corresponding relationship between basicColors and standard swatches. For example, in the built-in colorful theme, `basicColors[1]` is the color of index 0 in the standard swatches.
 
-Thus S2 guarantees that all the colors used in drawing come from the theme color or the derived color of the theme
-color. In this way, the color of the table interface is unified, and it is also convenient for users to generate
-personalized themes according to the theme colors they need.
+Thus S2 guarantees that all the colors used in drawing come from the theme color or the derived color of the theme color. In this way, the color of the table interface is unified, and it is also convenient for users to generate personalized themes according to the theme colors they need.
 
-### theme schema
+### ThemeSchema
 
-The theme schema is defined as [S2Theme](/zh/docs/api/general/S2Theme#s2theme) , which describes the theme style of
-cells and interactions in detail, and its attributes include color, line thickness and so on. Throughout the schema, all
-colors will be taken from the [Palette](/zh/docs/api/general/S2Theme#palette) :
+The theme schema is defined as [S2Theme](/zh/docs/api/general/S2Theme#s2theme) , which describes the theme style of cells and interactions in detail, and its attributes include color, line thickness, text size, text alignment, etc. Throughout the schema, all colors will be taken from the [Palette](/zh/docs/api/general/S2Theme#palette) :
 
 * basicColors: Basic colors, such as corner/column/row header background, font/icon color
 * semanticColors: Semantic colors, such as the color values ​​referred to by red and green
 * others: Supplementary colors, some fixed special colors, such as search results
 
 ```ts
- const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-s2.setTheme({ background: { color: '#353c59', }, });
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+s2.setTheme({
+  background: {
+    color: '#353c59',
+  },
+});
 s2.render(false);
 ```
 
 ## custom theme
 
-The `setThemeCfg` method on the instance object is the entry point for all theme configurations. This method receives a
-parameter of type [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) . You can:
+The `setThemeCfg` method on the s2 instance is the entry point for all theme configurations. This method receives a parameter of type [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) . You can:
 
 * Use a preset theme via ThemeCfg.name
 * Generate a theme by customizing the swatches of ThemeCfg.palette
-* Generate the theme through the ThemeCfg.theme custom schema (can be used with the above two properties at the same
-  time, that is, override the theme generated by them)
+* Generate the theme through the ThemeCfg.theme custom schema (can be used with the above two properties at the same time, that is, override the theme generated by them)
 
 ### Choose a preset theme
 
@@ -78,44 +71,72 @@ s2.render(false);
 
 S2 has 3 built-in theme effects:
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;">default</td><td><img height="300" alt="default" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png"></td></tr><tr><td style="text-align: center;">colorful blue</td><td><img height="300" alt="colorful" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/rgLkfo4MrT/95b7fbc3-8c6e-442c-9c4b-8bf8b3c3da1d.png"></td></tr><tr><td style="text-align: center;">simple gray</td><td><img height="300" alt="gray" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/4rwGg8Rp3N/cf08d7dd-ab96-446e-ba8d-146de8cb6a64.png"></td></tr></tbody></table>
+<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;">Default</td><td><img height="300" alt="default" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/nDIO0OG8fv/4ff6613f-fad3-4ea6-9473-0161509f692c.png"></td></tr><tr><td style="text-align: center;">Colorful blue</td><td><img height="300" alt="colorful" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/rgLkfo4MrT/95b7fbc3-8c6e-442c-9c4b-8bf8b3c3da1d.png"></td></tr><tr><td style="text-align: center;">Simple gray</td><td><img height="300" alt="gray" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/4rwGg8Rp3N/cf08d7dd-ab96-446e-ba8d-146de8cb6a64.png"></td></tr></tbody></table>
 
 ​📊 See more [theme examples](/zh/examples/theme/default#default) .
 
 ### custom schema
 
-If the built-in themes do not meet your requirements, you can override specific configurations by customizing
-the `schema` .
+If the built-in themes do not meet your requirements, you can override specific configurations by customizing the `schema` .
 
-At this point you need to configure the `theme` object for `setThemeCfg`
-. [View the complete schema configuration](/zh/docs/api/general/S2Theme#s2theme) :
+At this point you can call `s2.setTheme` or `s2.setThemeCfg()` to configure the `theme` object. [View the complete schema configuration](/zh/docs/api/general/S2Theme#s2theme) :
 
 ```js
- const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-const customTheme = { background: { color: '#353c59', }, };
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
+const customTheme = {
+  background: {
+    color: '#353c59',
+  },
+};
+
+// s2.setThemeCfg({ theme: customTheme })
 s2.setTheme(customTheme)
-s2.render(false); 
+s2.render(false);
 ```
 
 <playground data-mdast="html" path="theme/custom/demo/custom-schema.ts" rid="custom-schema"></playground>
 
+#### Customize cell alignment
+
+[View details](https://s2.antv.antgroup.com/manual/advanced/custom/cell-align) and [full API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    text: {
+      textAlign: 'left',
+    },
+    bolderText: {
+      textAlign: 'left',
+    },
+  },
+});
+```
+
+#### Custom cell background color
+
+View [full API](/api/general/s2theme#s2theme)
+
+```ts
+s2.setTheme({
+  rowCell: {
+    cell: {
+      backgroundColor: '#dcdcdc',
+    },
+  },
+});
+```
+
 ### custom swatches
 
-Although the custom `schema` is flexible, it has a heavy mental burden and requires a more detailed understanding of
-the `schema` structure. Therefore, we also provide a custom color palette function. At this time, you need to configure
-the `palette` object for `setThemeCfg` . [View full swatch configuration](/zh/docs/api/general/S2Theme#palette) :
+Although the custom `schema` is flexible, it has a heavy mental burden and requires a more detailed understanding of the `schema` structure. Therefore, we also provide a custom color palette function. At this time, you need to configure the `palette` object for `setThemeCfg` . [View full swatch configuration](/zh/docs/api/general/S2Theme#palette) :
 
 #### Optional swatch color
 
-You can refer to
-the [built-in swatches](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) to
-personalize `basicColors` and `semanticColors` . The selected colors will be used to draw different parts of the table.
-For the relationship between colors, please refer to
-the [swatch comparison table below](#%E8%89%B2%E6%9D%BF%E5%AF%B9%E7%85%A7%E8%A1%A8) .
+You can refer to the [built-in swatches](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) to personalize `basicColors` and `semanticColors` . The selected colors will be used to draw different parts of the table. For the relationship between colors, please refer to the [swatch comparison table below](#%E8%89%B2%E6%9D%BF%E5%AF%B9%E7%85%A7%E8%A1%A8) .
 
-In addition, in order to facilitate the deployment of exclusive color palettes, S2 officially provides
-a [self-service color palette tool](/zh/examples/theme/custom/#custom-manual-palette) , which helps you quickly adjust
-color palettes, copy and paste them into projects for use with one click.
+In addition, in order to facilitate the deployment of exclusive color palettes, S2 officially provides a [self-service color palette tool](/zh/examples/theme/custom/#custom-manual-palette) , which helps you quickly adjust color palettes, copy and paste them into projects for use with one click.
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -151,10 +172,7 @@ s2.render(false);
 
 #### Automatically generated by theme color
 
-There is a large degree of freedom in the deployment of
-self- [selected swatch colors](#%E8%87%AA%E9%80%89%E8%89%B2%E6%9D%BF%E9%A2%9C%E8%89%B2) , but each color needs to be
-determined individually, and the overall process is relatively complicated. To meet users' general theme demands, S2
-also provides the function of generating color palettes based on theme colors.
+There is a large degree of freedom in the deployment of self- [selected swatch colors](#%E8%87%AA%E9%80%89%E8%89%B2%E6%9D%BF%E9%A2%9C%E8%89%B2) , but each color needs to be determined individually, and the overall process is relatively complicated. To meet users' general theme demands, S2 also provides the function of generating color palettes based on theme colors.
 
 ```js
 import { getPalette, generatePalette, PivotSheet } from '@antv/s2';
@@ -173,8 +191,6 @@ const newPalette = generatePalette({ ...palette, brandColor: themeColor });
 s2.setThemeCfg({
   palette: newPalette,
 });
-
-s2.setThemeCfg({ palette: s2Palette });
 s2.render(false);
 ```
 
@@ -182,4 +198,4 @@ s2.render(false);
 
 ## Preset theme color palette comparison table
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="10%"><col width="10%"><col width="10%"><col width="35%"><col width="35%"></colgroup><tbody><tr><td colspan="3" style="text-align: center;">swatches</td><td rowspan="3" style="text-align: center;">Scope</td><td rowspan="3" style="text-align: center;">The key corresponding to the schema</td></tr><tr><td colspan="3" style="text-align: center;">Basic color - basicColors</td></tr><tr><td style="text-align: center;">default</td><td style="text-align: center;">simple gray</td><td style="text-align: center;">colorful blue</td></tr><tr><td rowspan="8" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="8" style="text-align: center; background: #000000;  color: white;">#000000</td><td rowspan="8" style="text-align: center;  background: #FFFFFF;">#FFFFFF</td><td style="text-align: left;">Corner header cell bold text color<br></td><td style="text-align: left;">cornerCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">Corner header cell text color<br></td><td style="text-align: left;">cornerCell. text. fill<br></td></tr><tr><td style="text-align: left;">Corner header cell icon color<br></td><td style="text-align: left;">cornerCell.icon.fill<br></td></tr><tr><td style="text-align: left;">Row header cell icon color<br></td><td style="text-align: left;">rowCell.cell.icon.fill<br></td></tr><tr><td style="text-align: left;">Column header cell bold text color<br></td><td style="text-align: left;">colCell. bolderText. fill<br></td></tr><tr><td style="text-align: left;">Column header cell text color<br></td><td style="text-align: left;">colCell. text. fill<br></td></tr><tr><td style="text-align: left;">Column header cell icon color<br></td><td style="text-align: left;">colCell.icon.fill<br></td></tr><tr><td style="text-align: left;">Data cell icon color<br></td><td style="text-align: left;">dataCell.icon.fill<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #F5F8FE; ">#F5F8FE</td><td rowspan="2" style="text-align: center; background: #FAFBFB;">#FAFBFB</td><td rowspan="2" style="text-align: center;  background: #F5F8FF;">#F5F8FF</td><td style="text-align: left;">Row header cell background fill color<br></td><td style="text-align: left;">rowCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell background fill color<br></td><td style="text-align: left;">dataCell.cell.backgroundColor<br></td></tr><tr><td rowspan="5" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="5" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="5" style="text-align: center;  background: #E1EAFE;">#E1EAFE</td><td style="text-align: left;">Row header cell mouse hover state background fill color<br></td><td style="text-align: left;">rowCell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">Row header cell mouse selected background fill color<br></td><td style="text-align: left;">rowCell.interactionState.selected.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover state background fill color<br></td><td style="text-align: left;">dataCell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover focus state background fill color<br></td><td style="text-align: left;">dataCell.interactionState.hoverFocus.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse selected background fill color<br></td><td style="text-align: left;">dataCell.interactionState.selected.backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="2" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="2" style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">Corner header cell background fill color<br></td><td style="text-align: left;">cornerCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">Column header cell background fill color<br></td><td style="text-align: left;">colCell.cell.backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #CCDBFC; ">#CCDBFC</td><td rowspan="2" style="text-align: center; background: #E7E9ED;">#E7E9ED</td><td rowspan="2" style="text-align: center;  background: #2C60D4;">#2C60D4</td><td style="text-align: left;">Column header cell mouse hover state background fill color<br></td><td style="text-align: left;">colCell.cell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">Column header cell mouse selected background fill color<br></td><td style="text-align: left;">colCell.cell.interactionState.selected.backgroundColor<br></td></tr><tr><td style="text-align: center; background: #234DAB; color:white;">#234DAB</td><td style="text-align: center; background: #6E757F;color:white; ">#6E757F</td><td style="text-align: center;  background: #2C60D4;color:white;">#2C60D4</td><td style="text-align: left;">Brush the pre-selected state mask background fill color<br></td><td style="text-align: left;">prepareSelectMask.backgroundColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; color:white;">#326EF4</td><td style="text-align: center; background: #565C64; color:white; ">#565C64</td><td style="text-align: center;  background: #2C60D4; color:white;">#2C60D4</td><td style="text-align: left;">Row header cell link text color<br></td><td style="text-align: left;">rowCell.text.linkTextFill<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #326EF4; ">#326EF4</td><td rowspan="4" style="text-align: center; background: #9DA7B6;">#9DA7B6</td><td rowspan="4" style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">Data cell histogram fill color<br></td><td style="text-align: left;">dataCell.cell.miniBarChartFillColor<br></td></tr><tr><td style="text-align: left;">resize mask background color<br></td><td style="text-align: left;">resizeArea. background<br></td></tr><tr><td style="text-align: left;">resize hot zone guide color<br></td><td style="text-align: left;">resizeArea.guideLineColor<br></td></tr><tr><td style="text-align: left;">resize hotspot hover state background color<br></td><td style="text-align: left;">resizeArea.interactionState.hover. backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #FFFFFF; ">#FFFFFF</td><td rowspan="2" style="text-align: center; background: #FFFFFF;">#FFFFFF</td><td rowspan="2" style="text-align: center;  background: #FFFFFF;">#FFFFFF</td><td style="text-align: left;">Data cell background fill color<br></td><td style="text-align: left;">dataCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">Table background fill color<br></td><td style="text-align: left;">background.color<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="4" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="4" style="text-align: center;  background: #E1EAFE;">#E1EAFE</td><td style="text-align: left;">Row header cell horizontal border color<br></td><td style="text-align: left;">rowCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Row header cell vertical border color<br></td><td style="text-align: left;">rowCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: left;">Data cell horizontal border color<br></td><td style="text-align: left;">dataCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Data cell vertical border color<br></td><td style="text-align: left;">dataCell.cell.verticalBorderColor<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #CCDBFC; ">#CCDBFC</td><td rowspan="4" style="text-align: center; background: #E7E9ED;">#E7E9ED</td><td rowspan="4" style="text-align: center;  background: #5286FA;">#5286FA</td><td style="text-align: left;">Corner cell horizontal border color<br></td><td style="text-align: left;">cornerCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Corner cell vertical border color<br></td><td style="text-align: left;">cornerCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: left;">Column header cell horizontal border color<br></td><td style="text-align: left;">colCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Column header cell vertical border color<br></td><td style="text-align: left;">colCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; ">#326EF4</td><td style="text-align: center; background: #BAC1CC;">#BAC1CC</td><td style="text-align: center;  background: #5286FA;">#5286FA</td><td style="text-align: left;">Table body horizontal border color (level one horizontal dividing line)<br></td><td style="text-align: left;">splitLine.verticalBorderColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; ">#326EF4</td><td style="text-align: center; background: #BAC1CC;">#BAC1CC</td><td style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">The vertical border color of the table body (first-level vertical dividing line)<br></td><td style="text-align: left;">splitLine.horizontalBorderColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #000000; color: white; ">#000000</td><td rowspan="2" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="2" style="text-align: center;  background: #000000; color: white;">#000000</td><td style="text-align: left;">Data cell bold text color<br></td><td style="text-align: left;">dataCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">Data cell text color<br></td><td style="text-align: left;">dataCell.text.fill<br></td></tr><tr><td rowspan="5" style="text-align: center; background: #000000; color: white; ">#000000</td><td rowspan="5" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="5" style="text-align: center;  background: #000000; color: white;">#000000</td><td style="text-align: left;">Row header cell bold text color<br></td><td style="text-align: left;">rowCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">Row header cell bold link text color<br></td><td style="text-align: left;">rowCell.bolderText.linkTextFill<br></td></tr><tr><td style="text-align: left;">Row header cell link text color<br></td><td style="text-align: left;">rowCell.text.linkTextFill<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover focus state border color<br></td><td style="text-align: left;">dataCell.interactionState.hoverFocus.borderColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse brush selection pre-neutral border color<br></td><td style="text-align: left;">dataCell.interactionState.prepareSelect.borderColor<br></td></tr><tr><td colspan="3" style="text-align: center;">Semantic Colors - semanticColors</td><td colspan="2" style="text-align: center;"></td></tr><tr><td style="text-align: center; background: #FF4D4F; ">red: #FF4D4F</td><td style="text-align: center; background: #FF4D4F;">red: #FF4D4F</td><td style="text-align: center;  background: #FF4D4F;">red: #FF4D4F</td><td style="text-align: left;">Arrow icon color on data cell<br></td><td style="text-align: left;">dataCell.icon.downIconColor<br></td></tr><tr><td style="text-align: center; background: #29A294; ">green: #29A294</td><td style="text-align: center; background: #29A294;">green: #29A294</td><td style="text-align: center;  background: #29A294;">green: #29A294</td><td style="text-align: left;">Data cell down arrow icon color<br></td><td style="text-align: left;">dataCell.icon.upIconColor<br></td></tr></tbody></table>
+<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="10%"><col width="10%"><col width="10%"><col width="35%"><col width="35%"></colgroup><tbody><tr><td colspan="3" style="text-align: center;">Swatches</td><td rowspan="3" style="text-align: center;">Coverage</td><td rowspan="3" style="text-align: center;">corresponds to the key of the schema</td></tr><tr><td colspan="3" style="text-align: center;">Basic color - basicColors</td></tr><tr><td style="text-align: center;">default</td><td style="text-align: center;">simple gray</td><td style="text-align: center;">colorful blue</td></tr><tr><td rowspan="8" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="8" style="text-align: center; background: #000000;  color: white;">#000000</td><td rowspan="8" style="text-align: center;  background: #FFFFFF;">#FFFFFF</td><td style="text-align: left;">Corner header cell bold text color<br></td><td style="text-align: left;">cornerCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">Corner header cell text color<br></td><td style="text-align: left;">cornerCell.text.fill<br></td></tr><tr><td style="text-align: left;">Corner header cell icon color<br></td><td style="text-align: left;">cornerCell.icon.fill<br></td></tr><tr><td style="text-align: left;">Row header cell icon color<br></td><td style="text-align: left;">rowCell.cell.icon.fill<br></td></tr><tr><td style="text-align: left;">Column header cell bold text color<br></td><td style="text-align: left;">colCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">column header cell text color<br></td><td style="text-align: left;">colCell.text.fill<br></td></tr><tr><td style="text-align: left;">column header cell icon color<br></td><td style="text-align: left;">colCell.icon.fill<br></td></tr><tr><td style="text-align: left;">data cell icon color<br></td><td style="text-align: left;">dataCell.icon.fill<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #F5F8FE; ">#F5F8FE</td><td rowspan="2" style="text-align: center; background: #FAFBFB;">#FAFBFB</td><td rowspan="2" style="text-align: center;  background: #F5F8FF;">#F5F8FF</td><td style="text-align: left;">Row header cell background fill color<br></td><td style="text-align: left;">rowCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell background fill color<br></td><td style="text-align: left;">dataCell.cell.backgroundColor<br></td></tr><tr><td rowspan="5" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="5" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="5" style="text-align: center;  background: #E1EAFE;">#E1EAFE</td><td style="text-align: left;">The background fill color of the mouse hover state of the row header cell<br></td><td style="text-align: left;">rowCell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">The background fill color of the mouse-selected state of the row header cell<br></td><td style="text-align: left;">rowCell.interactionState.selected.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover background fill color<br></td><td style="text-align: left;">dataCell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover focus state background fill color<br></td><td style="text-align: left;">dataCell.interactionState.hoverFocus.backgroundColor<br></td></tr><tr><td style="text-align: left;">Data cell mouse selected background fill color<br></td><td style="text-align: left;">dataCell.interactionState.selected.backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="2" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="2" style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">Corner header cell background fill color<br></td><td style="text-align: left;">cornerCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">Column header cell background fill color<br></td><td style="text-align: left;">colCell.cell.backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #CCDBFC; ">#CCDBFC</td><td rowspan="2" style="text-align: center; background: #E7E9ED;">#E7E9ED</td><td rowspan="2" style="text-align: center;  background: #2C60D4;">#2C60D4</td><td style="text-align: left;">Column header cell mouse hover background fill color<br></td><td style="text-align: left;">colCell.cell.interactionState.hover.backgroundColor<br></td></tr><tr><td style="text-align: left;">The background fill color of the mouse selected state of the column header cell<br></td><td style="text-align: left;">colCell.cell.interactionState.selected.backgroundColor<br></td></tr><tr><td style="text-align: center; background: #234DAB; color:white;">#234DAB</td><td style="text-align: center; background: #6E757F;color:white; ">#6E757F</td><td style="text-align: center;  background: #2C60D4;color:white;">#2C60D4</td><td style="text-align: left;">Brush the background fill color of the pre-selected state mask<br></td><td style="text-align: left;">prepareSelectMask.backgroundColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; color:white;">#326EF4</td><td style="text-align: center; background: #565C64; color:white; ">#565C64</td><td style="text-align: center;  background: #2C60D4; color:white;">#2C60D4</td><td style="text-align: left;">Row header cell link text color<br></td><td style="text-align: left;">rowCell.text.linkTextFill<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #326EF4; ">#326EF4</td><td rowspan="4" style="text-align: center; background: #9DA7B6;">#9DA7B6</td><td rowspan="4" style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">Data cell histogram fill color<br></td><td style="text-align: left;">dataCell.cell.miniBarChartFillColor<br></td></tr><tr><td style="text-align: left;">resize mask background color<br></td><td style="text-align: left;">resizeArea.background<br></td></tr><tr><td style="text-align: left;">resize hotspot guide color<br></td><td style="text-align: left;">resizeArea.guideLineColor<br></td></tr><tr><td style="text-align: left;">resize background color of hotspot hover state<br></td><td style="text-align: left;">resizeArea.interactionState.hover. backgroundColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #FFFFFF; ">#FFFFFF</td><td rowspan="2" style="text-align: center; background: #FFFFFF;">#FFFFFF</td><td rowspan="2" style="text-align: center;  background: #FFFFFF;">#FFFFFF</td><td style="text-align: left;">Data cell background fill color<br></td><td style="text-align: left;">dataCell.cell.backgroundColor<br></td></tr><tr><td style="text-align: left;">table background fill color<br></td><td style="text-align: left;">background.color<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #E0E9FD; ">#E0E9FD</td><td rowspan="4" style="text-align: center; background: #F0F2F4;">#F0F2F4</td><td rowspan="4" style="text-align: center;  background: #E1EAFE;">#E1EAFE</td><td style="text-align: left;">Row header cell horizontal border color<br></td><td style="text-align: left;">rowCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Row header cell vertical border color<br></td><td style="text-align: left;">rowCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: left;">Data cell horizontal border color<br></td><td style="text-align: left;">dataCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Data cell vertical border color<br></td><td style="text-align: left;">dataCell.cell.verticalBorderColor<br></td></tr><tr><td rowspan="4" style="text-align: center; background: #CCDBFC; ">#CCDBFC</td><td rowspan="4" style="text-align: center; background: #E7E9ED;">#E7E9ED</td><td rowspan="4" style="text-align: center;  background: #5286FA;">#5286FA</td><td style="text-align: left;">Horizontal border color of corner header cells<br></td><td style="text-align: left;">cornerCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Corner header cell vertical border color<br></td><td style="text-align: left;">cornerCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: left;">Column header cell horizontal border color<br></td><td style="text-align: left;">colCell.cell.horizontalBorderColor<br></td></tr><tr><td style="text-align: left;">Column header cell vertical border color<br></td><td style="text-align: left;">colCell.cell.verticalBorderColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; ">#326EF4</td><td style="text-align: center; background: #BAC1CC;">#BAC1CC</td><td style="text-align: center;  background: #5286FA;">#5286FA</td><td style="text-align: left;">The horizontal border color of the table body (level one horizontal dividing line)<br></td><td style="text-align: left;">splitLine.verticalBorderColor<br></td></tr><tr><td style="text-align: center; background: #326EF4; ">#326EF4</td><td style="text-align: center; background: #BAC1CC;">#BAC1CC</td><td style="text-align: center;  background: #3471F9;">#3471F9</td><td style="text-align: left;">The vertical border color of the table body (first-level vertical dividing line)<br></td><td style="text-align: left;">splitLine.horizontalBorderColor<br></td></tr><tr><td rowspan="2" style="text-align: center; background: #000000; color: white; ">#000000</td><td rowspan="2" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="2" style="text-align: center;  background: #000000; color: white;">#000000</td><td style="text-align: left;">Data cell bold text color<br></td><td style="text-align: left;">dataCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">data cell text color<br></td><td style="text-align: left;">dataCell.text.fill<br></td></tr><tr><td rowspan="5" style="text-align: center; background: #000000; color: white; ">#000000</td><td rowspan="5" style="text-align: center; background: #000000; color: white;">#000000</td><td rowspan="5" style="text-align: center;  background: #000000; color: white;">#000000</td><td style="text-align: left;">Row header cell bold text color<br></td><td style="text-align: left;">rowCell.bolderText.fill<br></td></tr><tr><td style="text-align: left;">Row header cell bold link text color<br></td><td style="text-align: left;">rowCell.bolderText.linkTextFill<br></td></tr><tr><td style="text-align: left;">Row header cell link text color<br></td><td style="text-align: left;">rowCell.text.linkTextFill<br></td></tr><tr><td style="text-align: left;">Data cell mouse hover focused state border color<br></td><td style="text-align: left;">dataCell.interactionState.hoverFocus.borderColor<br></td></tr><tr><td style="text-align: left;">The border color of the data cell mouse selection pre-center state<br></td><td style="text-align: left;">dataCell.interactionState.prepareSelect.borderColor<br></td></tr><tr><td colspan="3" style="text-align: center;">Semantic Colors - semanticColors</td><td colspan="2" style="text-align: center;"></td></tr><tr><td style="text-align: center; background: #FF4D4F; ">red: #FF4D4F</td><td style="text-align: center; background: #FF4D4F;">red: #FF4D4F</td><td style="text-align: center;  background: #FF4D4F;">red: #FF4D4F</td><td style="text-align: left;">Color of the arrow icon on the data cell<br></td><td style="text-align: left;">dataCell.icon.downIconColor<br></td></tr><tr><td style="text-align: center; background: #29A294; ">green: #29A294</td><td style="text-align: center; background: #29A294;">green: #29A294</td><td style="text-align: center;  background: #29A294;">green: #29A294</td><td style="text-align: left;">Data cell down arrow icon color<br></td><td style="text-align: left;">dataCell.icon.upIconColor<br></td></tr></tbody></table>

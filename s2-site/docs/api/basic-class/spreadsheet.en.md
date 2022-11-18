@@ -1,3 +1,7 @@
+---
+title: SpreadSheet
+order: 1
+---
 Function description: properties and methods related to form instances. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
 
 ```ts
