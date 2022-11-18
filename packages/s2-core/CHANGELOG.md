@@ -1,3 +1,12 @@
+# [@antv/s2-v1.34.1](https://github.com/antvis/S2/compare/@antv/s2-v1.34.0...@antv/s2-v1.34.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* **interaction:** 修复多列头多指标场景下隐藏列头错误 close [#1721](https://github.com/antvis/S2/issues/1721) ([#1905](https://github.com/antvis/S2/issues/1905)) ([fb8838f](https://github.com/antvis/S2/commit/fb8838f18ee9e966da76f7a038149351143e3769))
+* 修复sortedDimensionValues过滤不正确而导致的排序错乱的问题 ([#1908](https://github.com/antvis/S2/issues/1908)) ([bfe02cb](https://github.com/antvis/S2/commit/bfe02cbdae11793e8fcdc267f19ad1572354bc28))
+* 修复圈选偏移问题 ([#1883](https://github.com/antvis/S2/issues/1883)) ([fbffdcf](https://github.com/antvis/S2/commit/fbffdcfa1c57e4e66016826c43cadf8f066c0ee4))
+
 # [@antv/s2-v1.34.0](https://github.com/antvis/S2/compare/@antv/s2-v1.33.1...@antv/s2-v1.34.0) (2022-11-11)
 
 
