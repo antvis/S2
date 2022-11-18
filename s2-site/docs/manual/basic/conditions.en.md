@@ -36,7 +36,7 @@ const s2Options = {
 };
 ```
 
-<playground data-mdast="html" path="analysis/conditions/demo/text.ts" rid="container" height="300"></playground>
+<Playground data-mdast="html" path="analysis/conditions/demo/text.ts" rid="container" height="300"></playground>
 
 ## configuration explanation
 
@@ -64,7 +64,7 @@ of the table:
 * For the detailed table, the `field` value range or regular matching range is `columns` , and the range of action is
   the data cell
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><tbody><tr style="height: 33px;"><td style="text-align: center;width:74px;">pivot table</td><td><playground path="analysis/conditions/demo/text.ts" rid="pivot" height="300"></playground></td></tr><tr><td style="text-align: center;width:74px;">list</td><td><playground path="analysis/conditions/demo/table-text.ts" rid="table" height="300"></playground></td></tr></tbody></table>
+<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><tbody><tr style="height: 33px;"><td style="text-align: center;width:74px;">pivot table</td><td><Playground path="analysis/conditions/demo/text.ts" rid="pivot" height="300"></playground></td></tr><tr><td style="text-align: center;width:74px;">list</td><td><Playground path="analysis/conditions/demo/table-text.ts" rid="table" height="300"></playground></td></tr></tbody></table>
 
 ### ​mapping
 
@@ -83,7 +83,7 @@ of the table:
 
 > If the return value of the `mapping` function is empty, it means that the field mark of the cell is not rendered
 
-`markdown:docs/common/icon.zh.md`
+<embed src="@/docs/common/icon.zh.md"></embed>
 
 🎨 field mark detailed configuration refer to [Conditions API](/zh/docs/api/general/S2Options#conditions) documentation.
 
@@ -97,7 +97,7 @@ text. (Currently, header cells do not support switching)
 The icon for the `price` field is to the right of the text, and the icon for the `cost` field is to the left of the
 text:
 
-<playground data-mdast="html" path="analysis/conditions/demo/icon.ts" rid="icon" height="200"></playground>
+<Playground data-mdast="html" path="analysis/conditions/demo/icon.ts" rid="icon" height="200"></playground>
 
 ### Custom histogram range
 
@@ -111,14 +111,14 @@ specified `interval` field tag and setting the value of the `isCompare` attribut
 
 The `price` field uses a custom schema, and the `cost` field uses the default schema:
 
-<playground data-mdast="html" path="analysis/conditions/demo/interval.ts" rid="interval"></playground>
+<Playground data-mdast="html" path="analysis/conditions/demo/interval.ts" rid="interval"></playground>
 
 ### Two-way histogram
 
 When the interval of the histogram has positive and negative points, and with the `fill` attribute of the return value
 of the `mapping` function, a positive and negative two-way histogram with different colors can be drawn:
 
-<playground data-mdast="html" path="analysis/conditions/demo/bidirectional-interval.ts" rid="bidirectional"></playground>
+<Playground data-mdast="html" path="analysis/conditions/demo/bidirectional-interval.ts" rid="bidirectional"></playground>
 
 ​📊 See more [field markup examples](/zh/examples/analysis/conditions#bidirectional-interval) .
 
@@ -130,7 +130,7 @@ also [gradient colors](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E
 , [textures](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86) , etc. can be used.
 
 The `price` field uses a gradient
-color:<playground data-mdast="html" path="analysis/conditions/demo/gradient-interval.ts" rid="gradient"></playground>
+color:<Playground data-mdast="html" path="analysis/conditions/demo/gradient-interval.ts" rid="gradient"></playground>
 
 ​📊 See more [field markup examples](/zh/examples/analysis/conditions#gradient-interval) .
 
@@ -141,6 +141,6 @@ the `intelligentReverseTextColor` attribute value is `true` . When the marker ba
 will change to white. When the marker background color is bright, the text color defaults to black.
 Priority: `intelligentReverseTextColor` of `background condition` < `fill` of `text condition`
 
-<playground data-mdast="html" path="analysis/conditions/demo/intelligent-background.ts" rid="intelligentReverseTextColor"></playground>
+<Playground data-mdast="html" path="analysis/conditions/demo/intelligent-background.ts" rid="intelligentReverseTextColor"></playground>
 
 ​📊 See more [field markup examples](/zh/examples/analysis/conditions#intelligent-background) .

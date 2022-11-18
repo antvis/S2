@@ -45,7 +45,7 @@ const s2Options = {
 <SheetComponent options={s2Options} />
 ```
 
-<playground path='react-component/pagination/demo/pivot.tsx' rid='container'></playground>
+<Playground path='react-component/pagination/demo/pivot.tsx' rid='container'></playground>
 
 ### Vue 3.0 版
 

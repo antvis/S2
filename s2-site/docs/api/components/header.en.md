@@ -26,11 +26,11 @@ The table header, located at the top of the table container, functions as a cont
 />
 ```
 
-<playground data-mdast="html" path="react-component/header/demo/default.tsx" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="react-component/header/demo/default.tsx" rid="container" height="400"></playground>
 
 ## APIs
 
-`markdown:docs/common/header.zh.md`
+<embed src="@/docs/common/header.zh.md"></embed>
 
 # Vue header component
 

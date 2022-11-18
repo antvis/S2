@@ -341,7 +341,7 @@ s2.render();
 - 合并操作：Cmd/Ctrl + 单选操作，选择多个连续单元格通过 tooltip 进行合并
 - 取消合并操作：点击合并单元格，通过 tooltip 取消合并
 
-<playground path='interaction/advanced/demo/merge-cells.tsx' rid='container' height='400'></playground>
+<Playground path='interaction/advanced/demo/merge-cells.tsx' rid='container' height='400'></playground>
 
 ## 配置和方法说明
 

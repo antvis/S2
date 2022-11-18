@@ -238,7 +238,7 @@ s2.showTooltip({
 // 或者s2.tooltip.show({ content: TooltipContent })
 ```
 
-<playground data-mdast="html" path="react-component/tooltip/demo/custom-content.tsx" rid="container-1" height="300"></playground>
+<Playground data-mdast="html" path="react-component/tooltip/demo/custom-content.tsx" rid="container-1" height="300"></playground>
 
 ##### 3. Content display priority
 
@@ -319,7 +319,7 @@ current [cell information](/zh/docs/api/basic-class/base-cell)
 };
 ```
 
-<playground data-mdast="html" path="react-component/tooltip/demo/custom-operation.tsx" rid="container-custom-operations" height="300"></playground>
+<Playground data-mdast="html" path="react-component/tooltip/demo/custom-operation.tsx" rid="container-custom-operations" height="300"></playground>
 
 #### Customize Tooltip mount node
 
@@ -410,7 +410,7 @@ Override the default and use your custom `Tooltip`
 }
 ```
 
-<playground data-mdast="html" path="react-component/tooltip/demo/custom-tooltip.tsx" rid="container-2" height="300"></playground>
+<Playground data-mdast="html" path="react-component/tooltip/demo/custom-tooltip.tsx" rid="container-2" height="300"></playground>
 
 #### Custom Tooltip display timing
 
@@ -728,4 +728,4 @@ see [TooltipShowOptions](/zh/docs/common/custom-tooltip)
       };
       ```
 
-<playground data-mdast="html" path="react-component/tooltip/demo/custom-show-tooltip.tsx" rid="container-3" height="300"></playground>
+<Playground data-mdast="html" path="react-component/tooltip/demo/custom-show-tooltip.tsx" rid="container-3" height="300"></playground>

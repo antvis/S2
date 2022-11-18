@@ -30,7 +30,7 @@ order: 5
 | syncCopy             | Copy data synchronously (default is asynchronous)                                       | `boolean`                                                       | `false`  |          |
 | drop down            | Dropdown menu configuration, transparently passed to the `Dropdown` component of `antd` | [DropdownProps](https://ant.design/components/dropdown-cn/#API) |          |          |
 
-`markdown:docs/common/export.zh.md`
+<embed src="@/docs/common/export.zh.md"></embed>
 
 # Vue export component
 

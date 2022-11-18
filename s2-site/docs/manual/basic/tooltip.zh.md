@@ -221,7 +221,7 @@ s2.showTooltip({
 // 或者 s2.tooltip.show({ content: TooltipContent })
 ```
 
-<playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
+<Playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
 
 ##### 3. 内容显示优先级
 
@@ -298,7 +298,7 @@ const s2Options = {
 };
 ```
 
-<playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+<Playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
 
 #### 自定义 Tooltip 挂载节点
 
@@ -380,7 +380,7 @@ const s2Options = {
 }
 ```
 
-<playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></playground>
+<Playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></playground>
 
 #### 自定义 Tooltip 显示时机
 
@@ -684,4 +684,4 @@ tooltip: {
     };
     ```
 
-<playground path='react-component/tooltip/demo/custom-show-tooltip.tsx' rid='container-3' height='300'></playground>
+<Playground path='react-component/tooltip/demo/custom-show-tooltip.tsx' rid='container-3' height='300'></playground>

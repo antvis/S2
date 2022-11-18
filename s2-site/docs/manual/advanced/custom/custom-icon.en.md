@@ -50,17 +50,17 @@ const s2Options = {
 }
 ```
 
-`markdown:docs/common/icon.zh.md`
+<embed src="@/docs/common/icon.zh.md"></embed>
 
 2\. Configure `headerActionIcons` parameter ​ ⚠️ Note: To register a custom row and column header action icon, you need to set the `showDefaultHeaderActionIcon` of `options` to `false` first, otherwise the sorting icon displayed in the indicator column header by default will not disappear
 
 ### configuration parameters
 
-`markdown:docs/common/header-action-icon.zh.md`
+<embed src="@/docs/common/header-action-icon.zh.md"></embed>
 
 ### Custom row and column header icon example
 
-<playground data-mdast="html" path="custom/custom-icon/demo/custom-header-action-icon.tsx" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="custom/custom-icon/demo/custom-header-action-icon.tsx" rid="container" height="400"></playground>
 
 ### Custom cell icon example
 
@@ -91,4 +91,4 @@ const s2Options = {
 }
 ```
 
-<playground data-mdast="html" path="custom/custom-icon/demo/custom-data-cell-icon.tsx" rid="customDataCellIcon" height="400"></playground>
+<Playground data-mdast="html" path="custom/custom-icon/demo/custom-data-cell-icon.tsx" rid="customDataCellIcon" height="400"></playground>

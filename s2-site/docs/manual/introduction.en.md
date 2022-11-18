@@ -194,7 +194,7 @@ s2.render();
 
 ## 📦 version
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.en.md"></embed>
 
 ## 👤 Author
 

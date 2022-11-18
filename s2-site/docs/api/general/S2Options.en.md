@@ -7,19 +7,19 @@ Form parameter configuration
 
 \| parameter | type | required | default value | function description| | :-- | :-- | :-: | :-- | :-- | --- | `number` | width| | height | `number` | | 480 | table height| | debug | `boolean` | | `false` | whether to enable debug mode| `grid` | hierarchyType | `grid` | `tree` | `customTree` | grid structure, tree: tree structure. [customTree](#tooltip) : custom tree structure | | conditions | [Conditions](#conditions) | | | condition pattern configuration | [](#interaction)| totals | [Totals](#totals) | | | | | Table Interaction Configuration| | pagination | [Pagination](#pagination) | | | `false` Configuration| `boolean` | `true` | `boolean` | | `false` | `boolean` | | `true` | `false` to display the default row header action icon | `showDefaultHeaderActionIcon` | [headerActionIcons](#headeractionicon) [|](#customsvgicon) `false` | custom svg icon| | style | [Style](#style) | | | cell style settings, such as layout type, width and height, margin, whether to hide the value column header, etc. | | frozenRowCount | `number` | | | the number of frozen rows, from counting from top (valid for schedules) | | frozenColCount | `number` | | | number of frozen columns, counting from left (valid for schedules) | | frozenTrailingRowCount | `number` | | | number of frozen rows, counting from bottom ( list is valid) | | frozenTrailingColCount | `number` | | | the number of frozen columns, counting from the right side (schedule is valid) | | `true` | `boolean` | | Blurred font rendering on high-definition retina screens| | mergedCellsInfo | [MergedCellInfo\[\]\[\]](#mergedcellinfo) | | | merged cell information| | placeholder | `(meta: Record<string, any>) => string | string` | | | fill content of empty cells | | cornerText | string | | | custom corner header text (valid when custom tree `hierarchyType: customTree` ) | | The text of the virtual value field of the corner head (valid when the value is the row header, replace the two words "value") | | dataCell | [DataCellCallback](#datacellcallback) | | | custom cell | | cornerCell | [CellCallback](#cellcallback) | | | custom cornerCell | | rowCell | [CellCallback](#cellcallback) | | | custom row header cell | | colCell | [CellCallback](#cellcallback) | | | custom column header cell | | cornerHeader | [CornerHeaderCallback](#cornerheadercallback) | | | custom corner header | | [layoutHierarchy](#layouthierarchy) | struct | | [layoutArrange](#layoutdataposition) | [LayoutArrange](#layoutarrange) | | | custom sort order | | layoutCoordinate | [layoutCoordinate](#layoutcoordinate) | [|](#filterdataitemcallback) | | `false` | [MappingDataItemCallback](#mappingdataitemcallback) | | | Convert data for tooltip display| | dataSet | [DataSet](#dataset) | | | custom data set| `transform` | supportCSSTransform | `boolean` | , mouse coordinates respond incorrectly| | devicePixelRatio | `number` | | `window.devicePixelRatio` | custom device pixel ratio|
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
-`markdown:docs/common/conditions.zh.md`
+<embed src="@/docs/common/conditions.zh.md"></embed>
 
-`markdown:docs/common/totals.zh.md`
+<embed src="@/docs/common/totals.zh.md"></embed>
 
-`markdown:docs/common/tooltip.zh.md`
+<embed src="@/docs/common/tooltip.zh.md"></embed>
 
-`markdown:docs/common/custom-tooltip.zh.md`
+<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>
 
-`markdown:docs/common/style.zh.md`
+<embed src="@/docs/common/style.zh.md"></embed>
 
 ## DataCellCallback
 
@@ -29,7 +29,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 Function description: custom value cell, [ViewMeta](#viewmeta)
 
-`markdown:docs/common/view-meta.zh.md`
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## Cell Callback
 
@@ -59,15 +59,15 @@ Function description: custom corner head
 | spreadsheet | Table class instance, which can access any configuration information | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | -        |     ✓    |
 | restOptions | Indeterminate parameters, pass additional information                | `unknown[]`                                         | -        |          |
 
-`markdown:docs/common/custom/layoutHierarchy.zh.md`
+<embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutArrange.zh.md`
+<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutCoordinate.zh.md`
+<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutDataPosition.zh.md`
+<embed src="@/docs/common/custom/layoutDataPosition.zh.md"></embed>
 
-`markdown:docs/common/custom/headerActionIcons.zh.md`
+<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>
 
 ## HeaderActionIconProps
 
@@ -79,7 +79,7 @@ Function description: After clicking the custom operation icon, the current icon
 | meta      | The meta information of the current cell | node   | -        |     ✓    |
 | event     | Current click event information          | event  | false    |     ✓    |
 
-`markdown:docs/common/custom/customSvgIcons.zh.md`
+<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
 
 ## FilterDataItemCallback
 
@@ -143,4 +143,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-`markdown:docs/common/merged-cell.zh.md`
+<embed src="@/docs/common/merged-cell.zh.md"></embed>

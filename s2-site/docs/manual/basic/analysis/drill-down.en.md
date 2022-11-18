@@ -100,7 +100,7 @@ ReactDOM.render(
 );
 ```
 
-<playground data-mdast="html" path="react-component/drill-dwon/demo/for-pivot.tsx" rid="container"></playground>
+<Playground data-mdast="html" path="react-component/drill-dwon/demo/for-pivot.tsx" rid="container"></playground>
 
 ## scenes to be used
 
@@ -110,4 +110,4 @@ ReactDOM.render(
 
 ## APIs
 
-`markdown:docs/api/components/drill-down.zh.md`
+<embed src="@/docs/api/components/drill-down.zh.md"></embed>

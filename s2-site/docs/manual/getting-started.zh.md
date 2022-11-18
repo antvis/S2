@@ -180,7 +180,7 @@ s2.render();
 
 #### 4. 结果
 
-<playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
+<Playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
 
 ### `React` 版本
 

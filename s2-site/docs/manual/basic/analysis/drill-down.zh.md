@@ -105,7 +105,7 @@ ReactDOM.render(
 );
 ```
 
-<playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
 
 ## 使用场景
 

@@ -19,7 +19,7 @@ order: 8
 
 ### 浏览器引入
 
-`markdown:docs/common/browser.zh.md`
+<embed src="@/docs/common/browser.zh.md"></embed>
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
