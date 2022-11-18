@@ -2,34 +2,48 @@ import { defineConfig } from 'dumi';
 import { repository, homepage } from './package.json';
 
 export default defineConfig({
-  locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
-  title: 'S2',                                        // 网站header标题
-  favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
-  metas: [                                                              // 自定义 meta 标签  
+  locales: [
+    { id: 'zh', name: '中文' },
+    { id: 'en', name: 'English' },
+  ],
+  title: 'S2', // 网站header标题
+  favicons: [
+    'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
+  ], // 网站 favicon
+  metas: [
+    // 自定义 meta 标签
     { name: 'keywords', content: 'S2' },
     { name: 'description', content: '多维交叉分析表格' },
   ],
   themeConfig: {
     title: 'S2',
     description: '多维交叉分析表格',
-    defaultLanguage: 'zh',                                              // 默认语言
-    isAntVSite: false,                                                  // 是否是 AntV 的大官网
-    siteUrl: homepage,                                                  // 官网地址
-    githubUrl: repository.url,                                          // GitHub 地址
-    showSearch: true,                                                   // 是否显示搜索框
-    showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
-    showGithubStars: true,                                              // 是否显示 GitHub star 数量
-    showAntVProductsCard: true,                                         // 是否显示 AntV 产品汇总的卡片
-    showLanguageSwitcher: true,                                         // 是否显示官网语言切换
-    showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
-    showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
+    defaultLanguage: 'zh', // 默认语言
+    isAntVSite: false, // 是否是 AntV 的大官网
+    siteUrl: homepage, // 官网地址
+    githubUrl: repository.url, // GitHub 地址
+    showSearch: true, // 是否显示搜索框
+    showGithubCorner: true, // 是否显示头部的 GitHub icon
+    showGithubStars: true, // 是否显示 GitHub star 数量
+    showAntVProductsCard: true, // 是否显示 AntV 产品汇总的卡片
+    showLanguageSwitcher: true, // 是否显示官网语言切换
+    showWxQrcode: true, // 是否显示头部菜单的微信公众号
+    showChartResize: true, // 是否在 demo 页展示图表视图切换
+    showAPIDoc: true, // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
-    docsearchOptions: {                                                 // 头部搜索框配置
+    docsearchOptions: {
+      // 头部搜索框配置
       versionV3: true,
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
       indexName: 's2-antv-vision',
       appId: 'D73DOU8RXD',
+    },
+    internalSite: {
+      url: 'https://s2.antv.antgroup.com',
+      name: {
+        zh: '国内镜像',
+        en: 'China Mirror',
+      },
     },
     navs: [
       {
@@ -157,7 +171,7 @@ export default defineConfig({
           en: 'Analyze component',
         },
         order: 7,
-      }
+      },
     ],
     tutorials: [
       {
@@ -192,7 +206,7 @@ export default defineConfig({
         title: {
           zh: '布局',
           en: 'Layout',
-        }
+        },
       },
       {
         slug: 'theme',
@@ -241,8 +255,8 @@ export default defineConfig({
       playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
       devDependencies: {
         typescript: 'latest',
-    },
-    htmlCodeTemplate: `<!DOCTYPE html>
+      },
+      htmlCodeTemplate: `<!DOCTYPE html>
         <html>
           <head>
             <meta charset="UTF-8">
@@ -269,9 +283,10 @@ export default defineConfig({
       },
       description: {
         zh: 'S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。',
-        en: 'S2 is a table solution in the field of multidimensional cross analysis. It is data-driven view, provides the underlying core library, basic component library and business scenario library, and has the ability of free expansion, allowing developers to use it out of the box and freely play based on their own scenarios.'
+        en: 'S2 is a table solution in the field of multidimensional cross analysis. It is data-driven view, provides the underlying core library, basic component library and business scenario library, and has the ability of free expansion, allowing developers to use it out of the box and freely play based on their own scenarios.',
       },
-      image: 'https://gw.alipayobjects.com/zos/bmw-prod/1aa91199-b986-4553-a425-6baa18c3a9bd.svg',
+      image:
+        'https://gw.alipayobjects.com/zos/bmw-prod/1aa91199-b986-4553-a425-6baa18c3a9bd.svg',
       buttons: [
         {
           text: {
@@ -279,7 +294,7 @@ export default defineConfig({
             en: 'Examples',
           },
           link: `/examples`,
-          type: 'primary'
+          type: 'primary',
         },
         {
           text: {
@@ -327,7 +342,7 @@ export default defineConfig({
         },
         description: {
           zh: '告别单一维度分析，全面拥抱任意维度的自由组合分析',
-          en: 'Say goodbye to single dimension analysis, and fully embrace the free combination analysis of any dimension'
+          en: 'Say goodbye to single dimension analysis, and fully embrace the free combination analysis of any dimension',
         },
       },
       {
@@ -349,8 +364,8 @@ export default defineConfig({
         },
         description: {
           zh: '支持全量百万数据下低于 4s 的渲染，也能通过局部下钻来实现真·秒级渲染',
-          en: 'Support full million data under 4s rendering, but also through local drill down to achieve true second level rendering'
-        }
+          en: 'Support full million data under 4s rendering, but also through local drill down to achieve true second level rendering',
+        },
       },
     ],
     /** 首页案例 */
@@ -363,11 +378,10 @@ export default defineConfig({
         },
         description: {
           zh: '多维细分网格化的分群探索表格叫分群下钻表',
-          en:'The group exploration table of multi-dimensional subdivision grid is called group driller table'
+          en: 'The group exploration table of multi-dimensional subdivision grid is called group driller table',
         },
         link: `/examples/case/proportion#group-drill-down`,
-        image:
-          'https://gw.alipayobjects.com/zos/antfincdn/RYy4GI8Y8d/demo.gif',
+        image: 'https://gw.alipayobjects.com/zos/antfincdn/RYy4GI8Y8d/demo.gif',
       },
       {
         logo: 'https://gw.alipayobjects.com/zos/bmw-prod/291cec1b-9052-4904-a484-56c582815e7b.svg',
@@ -377,7 +391,7 @@ export default defineConfig({
         },
         description: {
           zh: '将不同维度下的不同指标进行分组查看和分析的透视表叫指标对比表。',
-          en: 'Pivottables that view and analyze different indicators in different dimensions are called indicator comparison tables.'
+          en: 'Pivottables that view and analyze different indicators in different dimensions are called indicator comparison tables.',
         },
         link: `/examples/case/comparison#measure-comparison`,
         image:
@@ -391,7 +405,7 @@ export default defineConfig({
         },
         description: {
           zh: '不同维度同类对象的对比分析表格叫对比表，而专用于不同属性、偏好等的人群对比分析表格叫人群对比表。',
-          en: 'The comparative analysis table of the same object in different dimensions is called the comparison table, while the group comparative analysis table dedicated to different attributes, preferences, etc., is called the group comparison table.'
+          en: 'The comparative analysis table of the same object in different dimensions is called the comparison table, while the group comparative analysis table dedicated to different attributes, preferences, etc., is called the group comparison table.',
         },
         link: `/examples/case/comparison#multiple-people-comparison`,
         image:
@@ -405,7 +419,7 @@ export default defineConfig({
         },
         description: {
           zh: '不同维度同类对象的对比分析表格叫对比表，而专用于不同属性、偏好等的人群对比分析表格叫人群对比表。',
-          en: 'The comparative analysis table of the same object in different dimensions is called the comparison table, while the group comparative analysis table dedicated to different attributes, preferences, etc., is called the group comparison table.'
+          en: 'The comparative analysis table of the same object in different dimensions is called the comparison table, while the group comparative analysis table dedicated to different attributes, preferences, etc., is called the group comparison table.',
         },
         link: `/examples/case/proportion#single-population-proportion`,
         image:
@@ -414,11 +428,9 @@ export default defineConfig({
     ],
   },
   alias: {
-     '@': __dirname,
-   },
+    '@': __dirname,
+  },
   styles: ['/site.css'],
-  links: [
-  ],
-  scripts: [
-  ],  
+  links: [],
+  scripts: [],
 });
