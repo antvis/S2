@@ -37,6 +37,8 @@
 ### 🔗 Related issue link
 
 <!-- close #0 -->
+<!-- ref #0 -->
+<!-- fix #0 -->
 
 ### 🔍 Self-Check before the merge
 

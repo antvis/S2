@@ -117,9 +117,16 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       !parentNode.isSubTotals &&
       !node.isSubTotals
     ) {
+      const hiddenColumnNode =
+        facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(node);
+
       hierarchy.sampleNodesForAllLevels.push(node);
-      hierarchy.sampleNodeForLastLevel = node;
       hierarchy.maxLevel = level;
+      // 如果当前是隐藏节点, 则采样其兄弟节点
+      hierarchy.sampleNodeForLastLevel = hiddenColumnNode
+        ? hiddenColumnNode?.displaySiblingNode?.next ||
+          hiddenColumnNode?.displaySiblingNode?.prev
+        : node;
     }
 
     const isLeafNode = isLeaf || isCollapsed || !expandCurrentNode;

@@ -228,11 +228,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       return;
     }
 
-    data.forEach((item: Node) => {
+    data.forEach((node: Node) => {
       let cell: Group;
       if (cornerCell) {
         cell = cornerCell(
-          item,
+          node,
           this.headerConfig.spreadsheet,
           this.headerConfig,
         );
@@ -240,7 +240,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
       if (isEmpty(cell)) {
         cell = new CornerCell(
-          item,
+          node,
           this.headerConfig.spreadsheet,
           this.headerConfig,
         );
