@@ -56,8 +56,8 @@ export class GridGroup extends Group {
         {
           x1: x - halfVerticalBorderWidthBorderWidth,
           x2: x - halfVerticalBorderWidthBorderWidth,
-          y1: Math.ceil(bbox.top + halfVerticalBorderWidthBorderWidth),
-          y2: Math.floor(bbox.bottom - halfVerticalBorderWidthBorderWidth),
+          y1: halfVerticalBorderWidthBorderWidth,
+          y2: Math.floor(bbox.height - halfVerticalBorderWidthBorderWidth),
         },
         {
           stroke: style!.verticalBorderColor,
@@ -74,8 +74,8 @@ export class GridGroup extends Group {
       renderLine(
         this.gridGroup,
         {
-          x1: Math.ceil(bbox.left + halfHorizontalBorderWidth),
-          x2: Math.floor(bbox.right - halfHorizontalBorderWidth),
+          x1: halfHorizontalBorderWidth,
+          x2: Math.floor(bbox.width - halfHorizontalBorderWidth),
           y1: y - halfHorizontalBorderWidth,
           y2: y - halfHorizontalBorderWidth,
         },
