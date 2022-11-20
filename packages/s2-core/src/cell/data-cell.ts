@@ -22,7 +22,13 @@ import type {
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import {
+  renderIcon,
+  renderLine,
+  renderRect,
+  updateShapeAttr,
+} from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
@@ -234,10 +240,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     return iconCfg;
   }
 
-  protected drawConditionIntervalShape() {
-    this.conditionIntervalShape = drawInterval(this);
-  }
-
   protected shouldHideRowSubtotalData() {
     const { row = {} } = this.spreadsheet.options.totals ?? {};
     const { rowIndex } = this.meta;
@@ -253,6 +255,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -273,6 +283,40 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
+  }
+
+  public drawConditionIconShapes() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+    if (iconCondition && iconCondition.mapping) {
+      const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
+      const { size } = this.theme.dataCell.icon;
+      if (!isEmpty(attrs?.icon)) {
+        this.conditionIconShape = renderIcon(this, {
+          ...position,
+          name: attrs.icon,
+          width: size,
+          height: size,
+          fill: attrs.fill,
+        });
+      }
+    }
+  }
+
+  /**
+   * Draw interval condition shape
+   * @protected
+   */
+  protected drawConditionIntervalShape() {
+    if (this.shouldHideRowSubtotalData()) {
+      return;
+    }
+    this.conditionIntervalShape = drawInterval(this);
   }
 
   public getBackgroundColor() {
@@ -369,9 +413,21 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find(
-      (cell) => get(cell, indexType) === currentIndex,
-    );
+    let isEqualIndex = false;
+    // 明细表模式多级表头计算索引换一种策略
+    if (this.spreadsheet.isTableMode() && nodes.length) {
+      const leafs = nodes[0].hierarchy.getLeaves();
+      isEqualIndex = leafs.some((cell, i) => {
+        if (nodes.some((node) => node === cell)) {
+          return i === currentIndex;
+        }
+        return false;
+      });
+    } else {
+      isEqualIndex = [...nodes, ...cells].some(
+        (cell) => get(cell, indexType) === currentIndex,
+      );
+    }
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {

@@ -66,6 +66,9 @@ import {
 import './index.less';
 import { ResizeConfig } from './resize';
 
+// @ts-ignore
+window.__g_instances__ = [];
+
 const { TabPane } = Tabs;
 
 const fieldMap = {
