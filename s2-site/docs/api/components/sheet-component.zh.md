@@ -12,7 +12,7 @@ order: 0
 功能描述： React SheetComponent 组件的 props 参数
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: | --- | --- | --- |
+| -- | -- | -- | -- | --- | --- | --- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |
 | spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
@@ -126,7 +126,7 @@ type SheetComponentOptions = S2Options<
 功能描述： Vue SheetComponent 组件的 props，如 `<SheetComponent :sheetType="pivot" />`
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: | --- |
+| -- | -- | -- | -- | --- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot | table` | `pivot` |  |
 | dataCfg | 透视表数据映射配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
@@ -140,7 +140,7 @@ type SheetComponentOptions = S2Options<
 功能描述： Vue SheetComponent 组件的 events，`<SheetComponent @rowCellClick="handleRowCellClick" />`
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/zh/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |
 | getSpreadSheet | 获取表实例 (1.4.0 已废弃，请使用 `load`) [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
@@ -243,19 +243,19 @@ type SheetComponentOptions = S2Options<
 功能描述：交互回调函数的返回信息。
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | target | 交互作用对象 | [S2CellType](/zh/docs/api/basic-class/base-cell) |  |  |
 | event | 事件 | [Event](#) |  |  |
 | viewMeta | 当前节点信息 | [Node](/zh/docs/api/basic-class/node) |  |  |
 
-`markdown:docs/common/sort-param.zh.md`
+<embed src="@/docs/common/sort-param.zh.md"></embed>
 
 ## CellScrollPosition
 
 功能描述：单元格滚动的位置信息。
 
 | 参数        | 说明         | 类型   | 默认值 | 必选 |
-| :---------- | :----------- | :----- | :----- | :--: |
+| ---------- | ----------- | ----- | ----- | ---- |
 | scrollX     | 水平方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
 | scrollY     | 垂直方向滚动偏移量（相对滚动条轨道长度）  | `number` |        |      |
 
@@ -264,7 +264,7 @@ type SheetComponentOptions = S2Options<
 功能描述： 开启 [隐藏列头](/zh/docs/manual/advanced/interaction/hide-columns) 后，隐藏列头的节点信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | hideColumnNodes | 当前隐藏的节点信息 | [Node](/zh/docs/api/basic-class/node)[] |  |  |
 | displaySiblingNode | 展示的相邻节点信息 | { prev:[Node](/zh/docs/api/basic-class/node);next: [Node](/zh/docs/api/basic-class/node) } |  |  |
 
@@ -273,7 +273,7 @@ type SheetComponentOptions = S2Options<
 功能描述：表格 resize（单元格行高列宽拖动变化）和单元格样式信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | info | resize 配置信息 | [ResizeInfo](#resizeinfo) |  |  |
 | style | options 中样式相关配置 | [style](/zh/docs/api/general/S2Options#style) |  |  |
 
@@ -282,7 +282,7 @@ type SheetComponentOptions = S2Options<
 功能描述：表格 resize（ 单元格行高列宽拖动变化）配置信息
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-: |
+| -- | -- | -- | -- | --- |
 | theme | resize 热区配置 | [ResizeArea](/zh/docs/api/general/S2Theme#resizearea) |  |  |
 | type | resize 方向 | `Horizontal` \| `Vertical` |  |  |
 | offsetX | 横向偏移量 | `number` |  |  |

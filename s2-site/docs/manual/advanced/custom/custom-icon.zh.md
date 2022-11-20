@@ -51,7 +51,7 @@ const s2Options = {
 
 ```
 
-`markdown:docs/common/icon.zh.md`​
+<embed src="@/docs/common/icon.zh.md"></embed>​
 
 2、配置 `headerActionIcons` 参数
 ​
@@ -59,11 +59,11 @@ const s2Options = {
 
 ### 配置参数
 
-`markdown:docs/common/header-action-icon.zh.md`
+<embed src="@/docs/common/header-action-icon.zh.md"></embed>
 
 ### 自定义行列头 icon 示例
 
-<playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
 
 ### 自定义单元格 icon 示例
 
@@ -94,4 +94,4 @@ const s2Options = {
 }
 ```
 
-<playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>

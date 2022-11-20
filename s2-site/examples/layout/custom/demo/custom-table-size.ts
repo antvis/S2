@@ -1,6 +1,6 @@
 import { TableSheet } from '@antv/s2';
 
-fetch('../data/basic.json')
+fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     // 详情请查看: https://s2.antv.vision/zh/docs/manual/advanced/custom/cell-size
