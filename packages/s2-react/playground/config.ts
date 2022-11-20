@@ -15,7 +15,17 @@ export const tableSheetDataCfg: S2DataConfig = {
   totalData,
   meta,
   fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'number'],
+    columns: [
+      {
+        key: 'area',
+        children: ['province', 'city'],
+      },
+      'type',
+      {
+        key: 'money',
+        children: [{ key: 'price' }, 'cost'],
+      },
+    ],
   },
 };
 

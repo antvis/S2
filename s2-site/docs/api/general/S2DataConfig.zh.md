@@ -65,7 +65,7 @@ object **必选**,_default：null_
 | ------------- | ----------------- | --------- | ----- | --- |
 | rows           | 行维度列表         | `string[]` | `[]`   |      |
 | customTreeItems | 自定义行头目录树        | [CustomTreeItem[]](#customtreeitem) |  |      |
-| columns        | 列维度列表         | `string[]` | `[]`   |      |
+| columns        | 列维度列表         | [Columns[]](#columns) | `[]`   |      |
 | values         | 指标维度列表       | `string[]` | `[]`   |      |
 | valueInCols    | 指标维度是否在列头   | `boolean`  | `true` |      |
 | customValueOrder | 自定义指标维度在行列头中的位置顺序 | `number`  | - |      |
@@ -99,3 +99,17 @@ object **必选**,_default：null_
 <embed src="@/docs/common/sort-param.zh.md"></embed>
 
 <embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
+
+### Columns
+
+`Array\<ColumnNode | string\>`
+
+列配置数组，在明细表模式下支持使用 [ColumnNode](#columnnode) 结构来描述列分组关系
+
+### ColumnNode
+
+| 属性名称 | 说明     | 类型   | 默认值 | 必选 |
+| ------- | ---------| -------| ------|------|
+| name | 列字段 id 或分组 id   | string |       | ✓ |
+| children | 分组下面的子级  | Array\<ColumnNode \| string\> |       |  |
+>>>>>>> 71d1de01f (feat： 明细表支持多级表头 (#1687))

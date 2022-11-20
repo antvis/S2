@@ -26,6 +26,7 @@ import {
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
+import { getLeafColumnsWithKey } from '../../facet/utils';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './copy';
 import { getCsvString } from './export-worker';
 
@@ -152,13 +153,14 @@ const processValueInDetail = (
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
   const { columns } = sheetInstance.dataCfg?.fields;
+  const leafColumns = getLeafColumnsWithKey(columns || []);
   const res = [];
   for (const [index, record] of data.entries()) {
     let tempRows = [];
     if (!isFormat) {
-      tempRows = columns.map((v: string) => getCsvString(record[v]));
+      tempRows = leafColumns.map((v: string) => getCsvString(record[v]));
     } else {
-      tempRows = columns.map((v: string) => {
+      tempRows = leafColumns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
         return getCsvString(mainFormatter(record[v], record));
       });
