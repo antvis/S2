@@ -57,7 +57,7 @@ const s2Options = {
   <summary>如何获取列头 Id?</summary>
 
 ```ts
-  // https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet
+  // /docs/api/basic-class/spreadsheet
   const s2 = new PivotSheet()
   console.log(s2.getColumnNodes())
 ```

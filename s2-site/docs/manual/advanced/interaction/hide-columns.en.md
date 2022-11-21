@@ -56,7 +56,7 @@ There are multiple column headers in the pivot table, and the [node id](/docs/ap
 How to get column header Id?
 
 ```ts
-  // https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet
+  // /docs/api/basic-class/spreadsheet
   const s2 = new PivotSheet()
   console.log(s2.getColumnNodes())
 ```

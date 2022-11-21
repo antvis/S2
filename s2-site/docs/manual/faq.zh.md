@@ -156,7 +156,7 @@ s2.render(false)
 
 ### S2 支持对表格进行编辑吗？
 
-请查看 [编辑模式示例](https://s2.antv.vision/zh/examples/case/data-preview#excel)
+请查看 [编辑模式示例](/examples/case/data-preview#excel)
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 
