@@ -31,6 +31,16 @@
       "field": "sub_type",
       "name": "子类别",
       "description": "子类别说明。。"
+    },
+    {
+      "field": "area",
+      "name": "地区",
+      "description": "地区说明。。"
+    },
+    {
+      "field": "money",
+      "name": "金额",
+      "description": "金额说明。。"
     }
   ],
   "data": [
