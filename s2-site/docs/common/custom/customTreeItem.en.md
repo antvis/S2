@@ -3,7 +3,7 @@ title: custom tree item
 order: 8
 ---
 
-## CustomTreeItem
+### CustomTreeItem
 
 [Detailed](/docs/manual/advanced/custom/category-tree) [example](/examples/custom/custom-tree#custom-tree)
 

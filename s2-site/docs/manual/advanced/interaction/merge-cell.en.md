@@ -336,13 +336,13 @@ s2.render();
 * Merge operation: Cmd/Ctrl + single selection operation, select multiple continuous cells to merge through tooltip
 * Cancel the merge operation: click the merged cell and cancel the merge through the tooltip
 
-<Playground data-mdast="html" path="interaction/advanced/demo/merge-cells.tsx" rid="container" height="400"></playground>
+<Playground data-mdast="html" path="interaction/advanced/demo/merge-cell.ts" rid="container" height="400"></playground>
 
 ## Configuration and Method Description
 
 ### MergedCellInfo
 
-<embed src="@/docs/common/merged-cell.zh.md"></embed>
+<embed src="@/docs/common/merged-cell.en.md"></embed>
 
 ![Merge Cells](https://gw.alipayobjects.com/zos/antfincdn/kHAYfFaJA/ae92e636-6574-487b-8d78-57dcae21e1d4.png)
 

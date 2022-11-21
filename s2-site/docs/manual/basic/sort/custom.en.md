@@ -242,9 +242,8 @@ same`row subtotal`above
 `sortFunc` will return `SortFuncParam` parameter according to the current conditions, and supports two ways of`维度值`
 and`metric`
 
-| parameter | illustrate | type | Defaults | required | |
-| :------------ | :------------------------------------------------------------ | :--------------------------------- |
------------------------ | :------- | - |
+| parameter | illustrate | type | Defaults | required |
+| :------------ | :--- | :------ | :----------------------- | :------- | - |
 | sortFieldId | Measure Id, the Id to be sorted | `string`                           | - | ✓ | |
 | sortMethod | sort by | `ASC` \| `DESC` \| `asc` \| `desc` | - | | |
 | sortBy | custom sorted list | `string[]`                         | - | | |
