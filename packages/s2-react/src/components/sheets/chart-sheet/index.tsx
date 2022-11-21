@@ -13,7 +13,7 @@ import { ChartCell } from './chart-cell';
 export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, renderConfig, ...restProps } = props;
-    const s2Ref = React.useRef<SpreadSheet>();
+    const s2Ref = React.useRef<SpreadSheet | null>(null);
     const s2Options = React.useMemo(() => {
       return customMerge(options, {
         dataCell: ChartCell,

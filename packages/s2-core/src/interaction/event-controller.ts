@@ -267,7 +267,7 @@ export class EventController {
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
 
-      // 仅捕获在canvas之外触发的事件     https://github.com/antvis/S2/issues/1592
+      // 仅捕获在 Canvas 之外触发的事件 https://github.com/antvis/S2/issues/1592
       const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
         if (!this.spreadsheet.getCanvasElement()) {
           return false;
@@ -451,6 +451,11 @@ export class EventController {
   };
 
   private onCanvasDoubleClick = (event: CanvasEvent) => {
+    // 双击的 detail 是 2
+    if (event.detail !== 2) {
+      return;
+    }
+
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
