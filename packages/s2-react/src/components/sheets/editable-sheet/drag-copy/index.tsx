@@ -29,9 +29,8 @@ export function DragCopyPoint(props: DragCopyProps) {
   const handleScroll = () => {
     if (spreadsheet) {
       const newScroll = spreadsheet.facet.getScrollOffset();
-      const { frozenCol, frozenRow } = (
-        spreadsheet.facet as any
-      ).frozenGroupInfo;
+      const { frozenCol, frozenRow } = (spreadsheet.facet as any)
+        .frozenGroupInfo;
       const rect = spreadsheet.getCanvasElement().getBoundingClientRect();
       const cellMeta = cell?.getMeta();
 
