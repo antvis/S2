@@ -5,8 +5,16 @@ order: 1
 
 表格参数配置
 
+```ts
+const s2Options = {
+  width: 600,
+  height: 400,
+  hierarchyType: 'grid'
+}
+```
+
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| :-- | :-- | :-: | :--  | :-- | --- |
+| -- | -- | --- | --  | -- | --- |
 | width | `number` |    | 600  | 表格宽度 |
 | height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
@@ -46,19 +54,19 @@ order: 1
 | supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 | devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
-`markdown:docs/common/conditions.zh.md`
+<embed src="@/docs/common/conditions.zh.md"></embed>
 
-`markdown:docs/common/totals.zh.md`
+<embed src="@/docs/common/totals.zh.md"></embed>
 
-`markdown:docs/common/tooltip.zh.md`
+<embed src="@/docs/common/tooltip.zh.md"></embed>
 
-`markdown:docs/common/custom-tooltip.zh.md`
+<embed src="@/docs/common/custom-tooltip.zh.md"></embed>
 
-`markdown:docs/common/pagination.zh.md`
+<embed src="@/docs/common/pagination.zh.md"></embed>
 
-`markdown:docs/common/style.zh.md`
+<embed src="@/docs/common/style.zh.md"></embed>
 
 ## DataCellCallback
 
@@ -68,7 +76,7 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
-`markdown:docs/common/view-meta.zh.md`
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CellCallback
 
@@ -79,7 +87,7 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 功能描述：自定义单元格
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | node | 当前渲染的 node 节点 | [Node](/zh/docs/api/basic-class/node) | - | ✓ |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓ |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
@@ -93,32 +101,32 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 功能描述：自定义角头
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | parent |   父级单元格 | [S2CellType](#s2celltype) | - | ✓ |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓   |
 | restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
 
-`markdown:docs/common/custom/layoutHierarchy.zh.md`
+<embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutArrange.zh.md`
+<embed src="@/docs/common/custom/layoutArrange.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutCoordinate.zh.md`
+<embed src="@/docs/common/custom/layoutCoordinate.zh.md"></embed>
 
-`markdown:docs/common/custom/layoutDataPosition.zh.md`
+<embed src="@/docs/common/custom/layoutDataPosition.zh.md"></embed>
 
-`markdown:docs/common/custom/headerActionIcons.zh.md`
+<embed src="@/docs/common/custom/headerActionIcons.zh.md"></embed>
 
 ## HeaderActionIconProps
 
 功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
 | 参数 | 说明                   | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | iconName | 当前点击的 icon 名称 | string | - | ✓ |
 | meta | 当前 cell 的 meta 信息 | Node | - | ✓ |
 | event | 当前点击事件信息 | Event |  false  | ✓ |
 
-`markdown:docs/common/custom/customSvgIcons.zh.md`
+<embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
 
 ## FilterDataItemCallback
 
@@ -129,7 +137,7 @@ FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 功能描述：转换，过滤数据
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
+| --- | --- | --- | --- | ---  |
 | valueField | 表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
 | data | 数据格式 | [DataItem](#dataitem) | - | ✓   |
 
@@ -142,7 +150,7 @@ MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string,
 功能描述：数据隐射，用于显示在 tooltip 中
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-: |
+| --- | --- | --- | --- | --- |
 | valueField |   表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
 | data | 数据格式 | [DataItem](#dataitem) | - | ✓ |
 
@@ -164,7 +172,7 @@ export type DataItem = SimpleDataItem | MultiData;
 ## LayoutResult
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-: |
+| --- | --- | --- | --- | --- |
 | colNodes |   列的所有节点 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
 | colsHierarchy |   列的结构信息 | [Hierarchy](#hierarchy) |  |  |
 | rowNodes |   行的所有节点 | [Node[]](#node) |  |  |
@@ -182,4 +190,4 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-`markdown:docs/common/merged-cell.zh.md`
+<embed src="@/docs/common/merged-cell.zh.md"></embed>

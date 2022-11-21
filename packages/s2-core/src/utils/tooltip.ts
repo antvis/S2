@@ -61,6 +61,7 @@ import type {
 } from '../common/interface/tooltip';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -241,7 +242,11 @@ export const getHeadInfo = (
   if (activeData) {
     const colFields = spreadsheet?.dataSet?.fields?.columns;
     const rowFields = spreadsheet?.dataSet?.fields?.rows;
-    colList = getFieldList(spreadsheet, colFields, activeData);
+    colList = getFieldList(
+      spreadsheet,
+      getLeafColumnsWithKey(colFields || []),
+      activeData,
+    );
     rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
 

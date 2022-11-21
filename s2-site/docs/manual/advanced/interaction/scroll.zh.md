@@ -81,6 +81,8 @@ const s2Options = {
 需要注意的是：行头单元格只会在**固定行头时**才会显示滚动条，且只会有**水平滚动条**, 所以拿到的 `scrollY` 永远都是 `0`
 
 ```ts
+import { S2Event } from '@antv/s2';
+
 s2.on(S2Event.GLOBAL_SCROLL, (position) => {
   console.log('表格滚动', position) // { scrollX: 0, scrollY: 100 }
 })

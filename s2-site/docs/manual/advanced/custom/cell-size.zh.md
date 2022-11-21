@@ -7,7 +7,7 @@ S2 可以手动拖拽动态改变单元格的宽高，也提供默认的 `行列
 
 我们可以通过 [主题](/zh/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/zh/docs/api/general/S2Options#style) 配置来实现
 
-<playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
+<Playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
 
 ```ts
 const s2Options = {

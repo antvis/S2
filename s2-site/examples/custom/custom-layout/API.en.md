@@ -3,10 +3,10 @@ title: API
 order: 1
 ---
 
-`markdown:docs/common/custom/layoutArrange.en.md`
+<embed src="@/docs/common/custom/layoutArrange.en.md"></embed>
 
-`markdown:docs/common/custom/layoutCoordinate.en.md`
+<embed src="@/docs/common/custom/layoutCoordinate.en.md"></embed>
 
-`markdown:docs/common/custom/layoutDataPosition.en.md`
+<embed src="@/docs/common/custom/layoutDataPosition.en.md"></embed>
 
-`markdown:docs/common/custom/layoutHierarchy.en.md`
+<embed src="@/docs/common/custom/layoutHierarchy.en.md"></embed>

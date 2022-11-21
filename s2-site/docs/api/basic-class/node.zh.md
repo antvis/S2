@@ -5,10 +5,14 @@ order: 5
 
 功能描述：布局节点。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/layout/node.ts)
 
+```ts
+node.isTotals // false
+```
+
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| id | 节点id | `string` |
-| key | 节点key | `string` |
+| id | 节点 id | `string` |
+| key | 节点 key | `string` |
 | value | 节点值 | `string` |
 | label | 节点标题 | `string` |
 | level | 节点等级 | `number` |
@@ -29,8 +33,8 @@ order: 5
 | isTotalMeasure | 是否是数值小计 | `boolean` |
 | inCollapseNode | 是否展开的节点 | `boolean` |
 | isLeaf | 是否是叶子节点 | `boolean` |
-| x | x轴坐标 | `number` |
-| y | y轴坐标 | `number` |
+| x | x 轴坐标 | `number` |
+| y | y 轴坐标 | `number` |
 | width | 宽度 | `number` |
 | height | 高度 | `number` |
 | padding | 间距 | `number` |

@@ -13,7 +13,7 @@ const s2Options = {
 };
 ```
 
-<playground path='custom/custom-tree/demo/custom-tree.ts' rid='container' height='400'></playground>
+<Playground path='custom/custom-tree/demo/custom-tree.ts' rid='container' height='400'></playground>
 
 ## 前提
 
@@ -104,4 +104,4 @@ const s2Options = {
 
 ## 自定义树结构说明
 
-`markdown:docs/common/custom/customTreeItem.zh.md`
+<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
