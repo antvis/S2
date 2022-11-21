@@ -105,7 +105,7 @@ ReactDOM.render(
 );
 ```
 
-<playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
+<Playground path='react-component/drill-dwon/demo/for-pivot.tsx' rid='container'></playground>
 
 ## 使用场景
 
@@ -116,4 +116,4 @@ ReactDOM.render(
 
 ## API
 
-`markdown:docs/api/components/drill-down.zh.md`
+<embed src="@/docs/api/components/drill-down.zh.md"></embed>

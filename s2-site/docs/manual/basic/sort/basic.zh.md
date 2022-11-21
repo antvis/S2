@@ -5,13 +5,13 @@ order: 0
 
 ## 简介
 
-根据 `数值升/降序` 对 `行头/列头` 进行排序
+根据 `数值升/降序` 对 `行头/列头` 进行排序。[查看更多排序示例](https://s2.antv.antgroup.com/examples#category-sort)
 
-`组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`省份` 的排序方式不会更改，只会更改每个 `省份` 内部 `城市` 的顺序
+`组内排序` 代表只影响一个分组内部的排序，例如下图中 `笔-价格` 选择 `组内升序` 时，`省份` 的排序方式不会更改，只会更改每个 `省份` 内部 `城市` 的顺序。
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*SszqS7EGaXkAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-`行头/列头` 只存在单一状态，当前状态会覆盖前一状态，如上图所示，当对 `笔` 进行排序时，`纸张` 的排序状态消失，`行头+列头` 可同时存在自身状态
+`行头/列头` 只存在单一状态，当前状态会覆盖前一状态，如上图所示，当对 `笔` 进行排序时，`纸张` 的排序状态消失，`行头+列头` 可同时存在自身状态。
 
 ## 使用
 
@@ -21,6 +21,6 @@ order: 0
 const s2Options = {
   width: 600,
   height: 600,
-  showDefaultHeaderActionIcon: true, // 默认为打开，可设置为false关闭
+  showDefaultHeaderActionIcon: true, // 默认为打开，可设置为 false 关闭
 };
 ```

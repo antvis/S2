@@ -409,7 +409,7 @@ class CustomCornelCell extends CornerCell {
   drawBorderShape() {}
 }
 
-fetch('../data/index-comparison.json')
+fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
   .then((res) => res.json())
   .then((data) => {
     const s2DataConfig = {

@@ -16,7 +16,6 @@ import {
   getLang,
   type InteractionOptions,
   DEFAULT_STYLE,
-  S2Event,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -62,6 +61,8 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
+  tableSheetMultipleColumns,
+  tableSheetSingleColumns,
 } from './config';
 import './index.less';
 import { ResizeConfig } from './resize';
@@ -173,6 +174,9 @@ function MainLayout() {
     StrategySheetDataConfig,
   );
   const [columnOptions, setColumnOptions] = React.useState([]);
+  const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
+    'single' | 'multiple'
+  >('single');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet>();
@@ -214,6 +218,10 @@ function MainLayout() {
         layoutWidthType: e.target.value,
       },
     });
+  };
+
+  const onTableColumnTypeChange = (e: RadioChangeEvent) => {
+    setTableSheetColumnType(e.target.value);
   };
 
   const onSizeChange = (type: 'width' | 'height') =>
@@ -291,6 +299,19 @@ function MainLayout() {
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
+
+  useUpdateEffect(() => {
+    setDataCfg(
+      customMerge(tableSheetDataCfg, {
+        fields: {
+          columns:
+            tableSheetColumnType === 'single'
+              ? tableSheetSingleColumns
+              : tableSheetMultipleColumns,
+        },
+      }),
+    );
+  }, [tableSheetColumnType]);
 
   //  ================== Config ========================
 
@@ -396,6 +417,17 @@ function MainLayout() {
                     <Radio.Button value="table">明细表</Radio.Button>
                   </Radio.Group>
                 </Tooltip>
+                {sheetType === 'table' && (
+                  <Tooltip title="明细表多级表头">
+                    <Radio.Group
+                      onChange={onTableColumnTypeChange}
+                      defaultValue={tableSheetColumnType}
+                    >
+                      <Radio.Button value="single">单列头</Radio.Button>
+                      <Radio.Button value="multiple">多列头</Radio.Button>
+                    </Radio.Group>
+                  </Tooltip>
+                )}
                 <Tooltip title="布局类型">
                   <Radio.Group
                     onChange={onLayoutWidthTypeChange}

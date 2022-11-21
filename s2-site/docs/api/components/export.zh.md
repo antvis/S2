@@ -16,7 +16,7 @@ order: 5
 ## ExportCfgProps
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
-| :-- | :-- | :-- | :-- | :-- |
+| -- | -- | -- | -- | -- |
 | open | 开启组件 | `boolean` | `false` | ✓ |
 | className | 类名 | `string` |  |  |
 | icon | 展示图标 | `ReactNode` |  |  |
@@ -30,7 +30,7 @@ order: 5
 | syncCopy | 同步复制数据 （默认异步） | `boolean` | `false` |  |
 | dropdown | 下拉菜单配置，透传给 `antd` 的 `Dropdown` 组件 | [DropdownProps](https://ant.design/components/dropdown-cn/#API) | | |
 
-`markdown:docs/common/export.zh.md`
+<embed src="@/docs/common/export.zh.md"></embed>
 
 # Vue 导出组件
 
