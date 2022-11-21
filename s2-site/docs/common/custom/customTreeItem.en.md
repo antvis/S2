@@ -3,7 +3,7 @@ title: custom tree item
 order: 8
 ---
 
-## CustomTreeItem
+### CustomTreeItem
 
 [Detailed](/zh/docs/manual/advanced/custom/category-tree) [example](/s2.antv.vision/zh/examples/custom/custom-tree#custom-tree)
 
