@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DataCell, S2Event } from '@antv/s2';
+import { DataCell, S2Event, S2_PREFIX_CLS } from '@antv/s2';
 import type { ScrollOffset } from '@antv/s2';
 import { isEqual, pick } from 'lodash';
 import type { Event as CanvasEvent } from '@antv/g-canvas';
@@ -138,7 +138,7 @@ export function DragCopyPoint(props: DragCopyProps) {
   return (
     <div
       id="spreadsheet-drag-copy-point"
-      className="drag-copy-point"
+      className={`${S2_PREFIX_CLS}-drag-copy-point`}
       style={{
         display: scroll.overflow ? 'none' : 'block',
         left: position.left,
@@ -147,7 +147,6 @@ export function DragCopyPoint(props: DragCopyProps) {
       }}
     >
       <DragCopyMask onCopyFinished={batchSelected} />
-      <div></div>
     </div>
   );
 }

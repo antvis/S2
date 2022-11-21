@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { S2Event, DataCell, InteractionStateName } from '@antv/s2';
+import {
+  S2Event,
+  DataCell,
+  InteractionStateName,
+  S2_PREFIX_CLS,
+} from '@antv/s2';
 import type { Point } from '@antv/g-canvas';
 import { throttle, pick, get } from 'lodash';
 import { useSpreadSheetRef } from '../../../../utils/SpreadSheetContext';
@@ -193,7 +198,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
   return (
     <div
-      className="drag-copy-mask"
+      className={`${S2_PREFIX_CLS}-drag-copy-mask`}
       style={{
         right: maskPosition.right > 0 ? maskPosition.right : 0,
         bottom: maskPosition.bottom > 0 ? maskPosition.bottom : 0,
