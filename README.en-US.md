@@ -53,8 +53,8 @@ demo components and expansion capabilities, it allows developers to use it quick
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [Homepage](https://s2.antv.vision)
-* [Demos](https://antv-s2.gitee.io/en/examples/gallery)
+* [Homepage](https://s2.antv.antgroup.com/en)
+* [Demos](https://s2.antv.antgroup.com/en/examples)
 
 ## ✨ Features
 

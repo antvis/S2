@@ -53,8 +53,8 @@ demo components and expansion capabilities, it allows developers to use it quick
 
 ![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
-* [Homepage](https://s2.antv.vision)
-* [Demos](https://antv-s2.gitee.io/en/examples/gallery)
+* [Homepage](https://s2.antv.antgroup.com/en)
+* [Demos](https://s2.antv.antgroup.com/en/examples)
 
 ## ✨ Features
 
@@ -172,10 +172,10 @@ s2.render()
 
 ### 📦 Packages
 
-| Package  | Latest  |  Beta | Alpha | Size | Download |
-|---|---|---|---| --- | --- |
-| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| Package                                                                      | Latest                                                            | Beta                                                          | Alpha                                                           | Size                                                                                                                          | Download                                                      |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)        | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)       | ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg)       | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg)       | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)       | ![download](https://img.shields.io/npm/dm/@antv/s2.svg)       |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react) | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg) | ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip) | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
 
 ## 👤 Author
 
