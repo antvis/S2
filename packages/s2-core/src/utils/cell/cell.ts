@@ -1,5 +1,5 @@
-import type { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
+import type { SimpleBBox } from '../../engine';
 import {
   CellClipBox,
   type AreaRange,

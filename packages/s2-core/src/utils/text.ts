@@ -13,7 +13,7 @@ import {
   trim,
   values,
 } from 'lodash';
-import type { SimpleBBox } from '@antv/g-canvas';
+import type { SimpleBBox } from '../engine';
 import type { ColCell } from '../cell';
 import {
   CellTypes,

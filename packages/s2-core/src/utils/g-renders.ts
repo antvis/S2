@@ -2,109 +2,120 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
-import type {
+import {
   Group,
-  IShape,
-  ShapeAttrs,
-  ShapeCfg,
-  SimpleBBox,
-} from '@antv/g-canvas';
-import { forEach, isEmpty, isFunction, set } from 'lodash';
+  type DisplayObject,
+  type RectStyleProps,
+  Rect,
+  type PolygonStyleProps,
+  Polygon,
+  Polyline,
+  type PolylineStyleProps,
+  Circle,
+  type CircleStyleProps,
+  type LineStyleProps,
+  Line,
+  Text,
+  type TextStyleProps,
+} from '@antv/g';
+import { forEach, isEmpty, isFunction } from 'lodash';
+import type { SimpleBBox } from '../engine';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
 
-export function renderRect(
+export function renderRect(group: Group, style: RectStyleProps): DisplayObject {
+  return group?.appendChild(
+    new Rect({
+      style,
+    }),
+  );
+}
+
+export function renderPolygon(
   group: Group,
-  attrs: ShapeAttrs,
-  extraParams?: Omit<ShapeCfg, 'attrs'>,
-): IShape {
-  return group?.addShape?.('rect', {
-    zIndex: 1,
-    attrs,
-    ...(extraParams || {}),
-  });
+  style: PolygonStyleProps,
+): DisplayObject {
+  return group?.appendChild(new Polygon({ style }));
 }
 
-export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
-  return group?.addShape?.('polygon', {
-    attrs,
-  });
+export function renderPolyline(
+  group: Group,
+  style: PolylineStyleProps,
+): DisplayObject {
+  return group?.appendChild(
+    new Polyline({
+      style,
+    }),
+  );
 }
 
-export function renderPolyline(group: Group, attrs: ShapeAttrs): IShape {
-  return group?.addShape?.('polyline', {
-    attrs,
-  });
-}
-
-export function renderCircle(group: Group, attrs: ShapeAttrs): IShape {
-  return group?.addShape?.('circle', {
-    attrs,
-  });
+export function renderCircle(
+  group: Group,
+  style: CircleStyleProps,
+): DisplayObject {
+  return group?.appendChild(
+    new Circle({
+      style,
+    }),
+  );
 }
 
 export function renderText(
   group: Group,
-  shapes: IShape[],
+  shapes: DisplayObject[],
   x: number,
   y: number,
   text: string,
   textStyle: TextTheme,
-  extraStyle?: ShapeAttrs,
-): IShape {
+  extraStyle?: TextStyleProps,
+): DisplayObject {
   if (!isEmpty(shapes) && group) {
-    forEach(shapes, (shape: IShape) => {
-      if (group.contain(shape)) {
-        group.removeChild(shape, true);
+    forEach(shapes, (shape: DisplayObject) => {
+      if (group.contains(shape)) {
+        group.removeChild(shape);
       }
     });
   }
-  return group?.addShape?.('text', {
-    attrs: {
-      x,
-      y,
-      text,
-      ...textStyle,
-      ...extraStyle,
-    },
-  });
+  return group?.appendChild(
+    new Text({
+      style: {
+        x,
+        y,
+        text,
+        ...textStyle,
+        ...extraStyle,
+      },
+    }),
+  );
 }
 
 export function renderLine(
   group: Group,
-  coordinate: { x1?: number; y1?: number; x2?: number; y2?: number },
-  lineStyle: ShapeAttrs,
-): IShape {
-  return group?.addShape?.('line', {
-    zIndex: 100,
-    attrs: {
-      ...coordinate,
-      ...lineStyle,
-    },
-  });
+  coordinate: { x1: number; y1: number; x2: number; y2: number },
+  lineStyle: Omit<LineStyleProps, 'x1' | 'x2' | 'y1' | 'y2'>,
+): DisplayObject {
+  return group?.appendChild(
+    new Line({
+      style: {
+        zIndex: 100,
+        ...coordinate,
+        ...lineStyle,
+      },
+    }),
+  );
 }
 
-export function updateShapeAttr<K extends keyof ShapeAttrs>(
-  shape: IShape | undefined,
-  attribute: K,
-  value: ShapeAttrs[K],
-) {
-  if (shape) {
-    set(shape, `attrs.${attribute}`, value);
-  }
-}
-
-export function updateFillOpacity(shape: IShape, opacity: number) {
-  updateShapeAttr(shape, 'fillOpacity', opacity);
-}
-
-export function updateStrokeOpacity(shape: IShape, opacity: number) {
-  updateShapeAttr(shape, 'strokeOpacity', opacity);
+export function updateShapeAttr<
+  T extends DisplayObject,
+  K extends keyof T['style'],
+>(shape: T, styleName: K, styleValue: T['style'][K]) {
+  // https://g-next.antv.vision/zh/docs/api/basic/display-object#%E8%8E%B7%E5%8F%96%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC
+  shape?.style.setProperty(styleName, styleValue);
 }
 
 export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   const iconShape = new GuiIcon(iconCfg);
-  group?.add(iconShape);
+  group?.appendChild(iconShape);
   return iconShape;
 }
 
@@ -121,8 +132,8 @@ export function renderTreeIcon(
     fill,
   });
   if (isFunction(onClick)) {
-    icon.on('click', onClick);
+    icon.addEventListener('click', onClick);
   }
-  group?.add(icon);
+  group?.appendChild(icon);
   return icon;
 }

@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty, map } from 'lodash';
 import type { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -47,8 +47,9 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
-        event.originalEvent,
+      // TODO: 看是否转换正确，同brush-selection/col-brush-selection.ts
+      const pointInCanvas = this.spreadsheet.container.client2Viewport(
+        event.client,
       );
 
       if (!this.isPointInCanvas(pointInCanvas)) {

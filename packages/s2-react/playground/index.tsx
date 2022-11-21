@@ -975,7 +975,12 @@ function MainLayout() {
           <SheetComponent
             sheetType="editable"
             dataCfg={tableSheetDataCfg}
-            options={mergedOptions}
+            options={{
+              ...mergedOptions,
+              tooltip: {
+                showTooltip: false,
+              },
+            }}
             ref={s2Ref}
             themeCfg={themeCfg}
             onMounted={onSheetMounted}

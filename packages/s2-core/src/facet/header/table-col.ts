@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import { Group, Rect } from '@antv/g';
 import { TableColCell, TableCornerCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -18,9 +18,9 @@ import type { ColHeaderConfig } from './interface';
  * Column Header for SpreadSheet
  */
 export class TableColHeader extends ColHeader {
-  public frozenColGroup: IGroup;
+  public frozenColGroup: Group;
 
-  public frozenTrailingColGroup: IGroup;
+  public frozenTrailingColGroup: Group;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
@@ -28,17 +28,21 @@ export class TableColHeader extends ColHeader {
       this.headerConfig.spreadsheet?.options;
 
     if (frozenColCount) {
-      this.frozenColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
+      this.frozenColGroup = this.appendChild(
+        new Group({
+          name: KEY_GROUP_COL_FROZEN,
+          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+        }),
+      );
     }
 
     if (frozenTrailingColCount) {
-      this.frozenTrailingColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
+      this.frozenTrailingColGroup = this.appendChild(
+        new Group({
+          name: KEY_GROUP_COL_FROZEN_TRAILING,
+          style: { zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX },
+        }),
+      );
     }
   }
 
@@ -57,13 +61,13 @@ export class TableColHeader extends ColHeader {
   public clear() {
     const { spreadsheet } = this.headerConfig;
     super.clear();
-    this.frozenTrailingColGroup?.clear();
-    this.frozenColGroup?.clear();
+    this.frozenTrailingColGroup?.removeChildren();
+    this.frozenColGroup?.removeChildren();
     // 额外清除冻结列的 Resizer Area
-    const resizerArea = spreadsheet.facet?.foregroundGroup.findById(
+    const resizerArea = spreadsheet.facet?.foregroundGroup.getElementById(
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    ) as unknown as IGroup;
-    resizerArea?.clear();
+    ) as unknown as Group;
+    resizerArea?.removeChildren();
   }
 
   protected getCellInstance(
@@ -132,9 +136,8 @@ export class TableColHeader extends ColHeader {
   }
 
   protected clip(): void {
-    this.scrollGroup.setClip({
-      type: 'rect',
-      attrs: this.getScrollGroupClipBBox(),
+    this.scrollGroup.style.clipPath = new Rect({
+      style: this.getScrollGroupClipBBox(),
     });
   }
 }

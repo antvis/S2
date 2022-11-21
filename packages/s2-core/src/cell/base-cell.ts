@@ -1,5 +1,5 @@
-import type { BBox, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import type { DisplayObject, PointLike } from '@antv/g';
+import { Group } from '@antv/g';
 import {
   each,
   get,
@@ -11,6 +11,7 @@ import {
   keys,
   pickBy,
 } from 'lodash';
+import type { SimpleBBox } from '../engine';
 import {
   CellTypes,
   InteractionStateName,
@@ -50,6 +51,7 @@ import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 
+// TODO: 迁移 shape 具体类型，如 textShape 应该是 Text 而不是 displayObject
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
   protected meta: T;
@@ -61,13 +63,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected theme: S2Theme;
 
   // background control shape
-  protected backgroundShape: IShape;
+  protected backgroundShape: DisplayObject;
 
   // text control shape
-  protected textShape: IShape;
+  protected textShape: DisplayObject;
 
   // link text underline shape
-  protected linkFieldShape: IShape;
+  protected linkFieldShape: DisplayObject;
 
   // actualText
   protected actualText: string;
@@ -77,12 +79,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: IShape | undefined;
+  protected conditionIntervalShape: DisplayObject | undefined;
 
   protected conditionIconShape: GuiIcon;
 
   // interactive control shapes, unify read and manipulate operations
-  protected stateShapes = new Map<StateShapeLayer, IShape>();
+  protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
 
   public constructor(
     meta: T,
@@ -166,7 +168,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract getMaxTextWidth(): number;
 
-  protected abstract getTextPosition(): Point;
+  protected abstract getTextPosition(): PointLike;
 
   protected abstract findFieldCondition(
     conditions: Condition[] | undefined,
@@ -242,8 +244,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected drawInteractiveBorderShape() {
     this.stateShapes.set(
       'interactiveBorderShape',
-      renderRect(this, this.getBBoxByType(CellClipBox.PADDING_BOX), {
-        visible: false,
+      renderRect(this, {
+        ...this.getBBoxByType(CellClipBox.PADDING_BOX),
+        visibility: 'hidden',
       }),
     );
   }
@@ -270,8 +273,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected drawInteractiveBgShape() {
     this.stateShapes.set(
       'interactiveBgShape',
-      renderRect(this, this.getBBoxByType(), {
-        visible: false,
+      renderRect(this, {
+        ...this.getBBoxByType(),
+        visibility: 'hidden',
       }),
     );
   }
@@ -331,7 +335,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         startX -= this.actualTextWidth;
       }
 
-      const { maxY }: BBox = this.textShape.getBBox();
+      const { bottom: maxY } = this.textShape.getBBox();
       this.linkFieldShape = renderLine(
         this,
         {
@@ -344,6 +348,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       );
     }
 
+    // TODO: 迁移 appendInfo
     this.textShape.attr({
       fill: linkFillColor,
       cursor: 'pointer',
@@ -372,11 +377,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         const shape = isStateShape
           ? this.stateShapes.get(shapeName)
           : // @ts-ignore
-            this[shapeName];
+            (this[shapeName] as DisplayObject);
+
+        if (!shape) {
+          return;
+        }
 
         // stateShape 默认 visible 为 false
-        if (isStateShape && !shape.get('visible')) {
-          shape.set('visible', true);
+        if (isStateShape && shape.parsedStyle.visibility !== 'visible') {
+          shape.setAttribute('visibility', 'visible');
         }
 
         // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
@@ -410,7 +419,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public hideInteractionShape() {
-    this.stateShapes.forEach((shape: IShape) => {
+    this.stateShapes.forEach((shape: DisplayObject) => {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);

@@ -14,6 +14,7 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { CustomRect } from '../engine';
 import { BaseCell } from './base-cell';
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
@@ -51,7 +52,9 @@ export class TableDataCell extends DataCell {
       KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
     );
 
-    return !resizeArea?.findById(id) && !frozenResizeArea?.findById(id);
+    return (
+      !resizeArea?.getElementById(id) && !frozenResizeArea?.getElementById(id)
+    );
   }
 
   public drawResizeArea() {
@@ -89,7 +92,7 @@ export class TableDataCell extends DataCell {
       return;
     }
     const { height: headerHeight, viewportWidth: headerWidth } =
-      this.spreadsheet.facet.columnHeader.cfg;
+      this.spreadsheet.facet.columnHeader.getHeaderConfig();
 
     const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
@@ -104,24 +107,30 @@ export class TableDataCell extends DataCell {
     const resizeWidth =
       headerWidth + Frame.getVerticalBorderWidth(this.spreadsheet);
 
-    resizeArea.addShape('rect', {
+    const attrs = getResizeAreaAttrs({
       id: String(this.meta.rowIndex),
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: String(this.meta.rowIndex),
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX: 0,
-          offsetY,
-          width: resizeWidth,
-          height,
-          meta: this.meta,
-        }),
-        x: 0,
-        y: offsetY + height - resizeStyle!.size!,
-        width: resizeWidth,
-      },
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      effect: ResizeAreaEffect.Cell,
+      offsetX: 0,
+      offsetY,
+      width: resizeWidth,
+      height,
+      meta: this.meta,
     });
+
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x: 0,
+            y: offsetY + height - resizeStyle!.size!,
+            width: resizeWidth,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 }

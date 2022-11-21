@@ -1,5 +1,4 @@
-import type { Point } from '@antv/g-canvas';
-import { GM } from '@antv/g-gesture';
+import type { PointLike, Text } from '@antv/g';
 import { find, get } from 'lodash';
 import {
   CellTypes,
@@ -23,13 +22,12 @@ import {
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
+import { CustomRect } from '../engine';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
-
-  protected gm: GM;
 
   public get cellType() {
     return CellTypes.ROW_CELL;
@@ -37,11 +35,6 @@ export class RowCell extends HeaderCell {
 
   protected getBorderPositions(): CellBorderPosition[] {
     return [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT];
-  }
-
-  public destroy(): void {
-    super.destroy();
-    this.gm?.destroy();
   }
 
   protected initCell() {
@@ -89,7 +82,8 @@ export class RowCell extends HeaderCell {
     ) {
       return;
     }
-    return get(this.meta, 'parent.belongsCell.treeIcon.cfg');
+    // TODO: 是否正常返回样式
+    return get(this.meta, 'parent.belongsCell.treeIcon.style');
   }
 
   // draw tree icon
@@ -150,10 +144,7 @@ export class RowCell extends HeaderCell {
 
     // in mobile, we use this cell
     if (isMobile()) {
-      this.gm = new GM(this, {
-        gestures: ['Tap'],
-      });
-      this.gm.on('tap', () => {
+      this.addEventListener('click', () => {
         this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
           id,
           isCollapsed: !isCollapsed,
@@ -175,8 +166,8 @@ export class RowCell extends HeaderCell {
     const { fill, fontSize } = this.getTextStyle();
     const r = size! / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      x: x + size! / 2, // 和收起展开 icon 保持居中对齐
-      y: textY + (fontSize! - r) / 2,
+      cx: x + size! / 2, // 和收起展开 icon 保持居中对齐
+      cy: textY + (fontSize! - r) / 2,
       r,
       fill,
       fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
@@ -260,24 +251,30 @@ export class RowCell extends HeaderCell {
       ? headerWidth - seriesNumberWidth - (x - scrollX)
       : width;
 
-    resizeArea?.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          id: this.meta.id,
-          theme: resizeStyle,
-          type: ResizeDirectionType.Vertical,
-          effect: ResizeAreaEffect.Cell,
-          offsetX,
-          offsetY,
-          width,
-          height,
-          meta: this.meta,
-        }),
-        x: offsetX,
-        y: offsetY + height - resizeStyle.size!,
-        width: resizeAreaWidth,
-      },
+    const attrs = getResizeAreaAttrs({
+      id: this.meta.id,
+      theme: resizeStyle,
+      type: ResizeDirectionType.Vertical,
+      effect: ResizeAreaEffect.Cell,
+      offsetX,
+      offsetY,
+      width,
+      height,
+      meta: this.meta,
     });
+    resizeArea.appendChild(
+      new CustomRect(
+        {
+          style: {
+            ...attrs.style,
+            x: offsetX,
+            y: offsetY + height - resizeStyle.size! / 2,
+            width: resizeAreaWidth,
+          },
+        },
+        attrs.appendInfo,
+      ),
+    );
   }
 
   protected getContentIndent() {
@@ -325,8 +322,11 @@ export class RowCell extends HeaderCell {
 
   protected getIconPosition() {
     // 不同 textAlign 下，对应的文字绘制点 x 不同
-    const { x, y, textAlign } = this.textShape.cfg.attrs;
-    const iconMarginLeft = this.getStyle()!.icon!.margin!.left;
+    const { x = 0, y = 0, textAlign } = (this.textShape as Text).style;
+    const iconMarginLeft = this.getStyle()!.icon!.margin!.left!;
+
+    const textX = +x;
+    const textY = +y;
 
     if (textAlign === 'left') {
       /**
@@ -338,8 +338,8 @@ export class RowCell extends HeaderCell {
        *   +---------+  +----+
        */
       return {
-        x: x + this.actualTextWidth + iconMarginLeft,
-        y,
+        x: textX + this.actualTextWidth + iconMarginLeft,
+        y: textY,
       };
     }
     if (textAlign === 'right') {
@@ -352,8 +352,8 @@ export class RowCell extends HeaderCell {
        *   +---------+  +----+
        */
       return {
-        x: x + iconMarginLeft,
-        y,
+        x: textX + iconMarginLeft,
+        y: textY,
       };
     }
 
@@ -366,8 +366,8 @@ export class RowCell extends HeaderCell {
      *   +---------+  +----+
      */
     return {
-      x: x + this.actualTextWidth / 2 + iconMarginLeft,
-      y,
+      x: textX + this.actualTextWidth / 2 + iconMarginLeft,
+      y: textY,
     };
   }
 
@@ -386,7 +386,7 @@ export class RowCell extends HeaderCell {
     };
   }
 
-  protected getTextPosition(): Point {
+  protected getTextPosition(): PointLike {
     const textArea = this.getTextArea();
     const { scrollY, viewportHeight: height } = this.headerConfig;
 

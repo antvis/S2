@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import type { DataCell } from '../../cell/data-cell';
 import type { RowCell } from '../../cell/row-cell';
 import type { ColCell } from '../../cell/col-cell';
@@ -147,6 +147,7 @@ export interface EmitterType {
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
   /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
   [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
+  [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;
   [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
   [S2Event.LAYOUT_COLS_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,

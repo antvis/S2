@@ -1,4 +1,4 @@
-import type { GM } from '@antv/g-gesture';
+import { Rect } from '@antv/g';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell/row-cell';
 import type { S2CellType } from '../../common/interface';
@@ -11,18 +11,8 @@ import type { RowHeaderConfig } from './interface';
  * Row Header for SpreadSheet
  */
 export class RowHeader extends BaseHeader<RowHeaderConfig> {
-  // mobile event
-  private gm: GM;
-
   constructor(cfg: RowHeaderConfig) {
     super(cfg);
-  }
-
-  public destroy() {
-    super.destroy();
-    if (this.gm) {
-      this.gm.destroy();
-    }
   }
 
   protected layout() {
@@ -60,7 +50,10 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        this.add(cell as S2CellType);
+
+        if (cell) {
+          this.appendChild(cell);
+        }
       }
     });
   }
@@ -81,22 +74,14 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const {
-      width,
-      viewportHeight,
-      scrollX = 0,
-      scrollY = 0,
-      seriesNumberWidth,
-    } = this.headerConfig;
+    const { width, height, viewportHeight } = this.headerConfig;
 
-    this.setClip({
-      type: 'rect',
-      attrs: {
-        // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
-        x: scrollX - seriesNumberWidth,
-        y: scrollY,
+    this.style.clipPath = new Rect({
+      style: {
+        x: 0,
+        y: 0,
         width,
-        height: viewportHeight,
+        height: height + viewportHeight,
       },
     });
   }

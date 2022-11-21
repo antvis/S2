@@ -1,12 +1,13 @@
-import type {
-  IElement,
-  IGroup,
-  IShape,
-  ShapeAttrs,
-  Event as GEvent,
-} from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
-import { each, get } from 'lodash';
+import {
+  type DisplayObject,
+  type LineStyleProps,
+  Line,
+  CustomEvent,
+  type ICanvas,
+  FederatedPointerEvent,
+} from '@antv/g';
+import { Group } from '@antv/g';
+import { each } from 'lodash';
 import { MIN_SCROLL_BAR_HEIGHT } from '../../common/constant/scroll';
 import type { ScrollBarTheme } from '../../common/interface/theme';
 import type { PointObject, ScrollBarCfg } from './interface';
@@ -20,11 +21,11 @@ export interface EventListenerReturn {
   remove: () => void;
 }
 
-export interface EventHandler {
-  target: IElement;
+export type EventHandler = {
+  target: ICanvas;
   type: keyof HTMLElementEventMap;
-  handler: (e: MouseEvent | TouchEvent) => void;
-}
+  handler: (e: any) => void;
+};
 
 export class ScrollBar extends Group {
   // 滚动条的布局，横向 | 纵向, 非必传，默认为 false(纵向)
@@ -51,11 +52,11 @@ export class ScrollBar extends Group {
   // 滚动条样式，非必传
   public theme: ScrollBarTheme;
 
-  public scrollBarGroup: IGroup;
+  public scrollBarGroup: Group;
 
-  public trackShape: IShape;
+  public trackShape: DisplayObject;
 
-  public thumbShape: IShape;
+  public thumbShape: DisplayObject;
 
   // 鼠标 drag 过程中的开始位置
   private startPos: number;
@@ -71,7 +72,8 @@ export class ScrollBar extends Group {
   private scrollFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
 
   constructor(scrollBarCfg: ScrollBarCfg) {
-    super(scrollBarCfg);
+    // TODO: 不需要再透传 scrollBarCfg 到 group 基类
+    super();
 
     const {
       isHorizontal = false,
@@ -183,21 +185,24 @@ export class ScrollBar extends Group {
    */
   public onlyUpdateThumbOffset = (offset: number) => {
     this.updateThumbOffset(offset, false);
-    this.get('canvas')?.draw();
+    // TODO: 获取 canvas 调用 draw？现在都是自动重绘，是不是不需要调用了
+    this.ownerDocument?.defaultView?.render();
   };
 
   public emitScrollChange = (offset: number, updateThumbOffset = true) => {
     cancelAnimationFrame(this.scrollFrameId!);
 
     this.scrollFrameId = requestAnimationFrame(() => {
-      this.emit(ScrollType.ScrollChange, {
-        offset,
-        updateThumbOffset,
-      });
+      this.dispatchEvent(
+        new CustomEvent(ScrollType.ScrollChange, {
+          offset,
+          updateThumbOffset,
+        }),
+      );
     });
   };
 
-  protected addEventListener = (
+  protected bindEventListener = (
     target: EventTarget,
     eventType: keyof HTMLElementEventMap,
     callback: EventListenerOrEventListenerObject,
@@ -215,22 +220,25 @@ export class ScrollBar extends Group {
     type: EventHandler['type'],
     handler: EventHandler['handler'],
   ) => {
-    target.on(type, handler);
+    target.addEventListener(type, handler);
     this.eventHandlers.push({ target, type, handler });
   };
 
   private initScrollBar = () => {
     this.scrollBarGroup = this.createScrollBarGroup();
-    this.scrollBarGroup.move(this.position.x, this.position.y);
+    // TODO: move 测试环境下会乱飘逸，是设置绝对距离？
+    this.scrollBarGroup.setPosition(this.position.x, this.position.y);
 
     this.bindEvents();
   };
 
   // 创建 scrollBar 的 group
-  private createScrollBarGroup = (): IGroup => {
-    const group = this.addGroup({
-      className: this.isHorizontal ? 'horizontalBar' : 'verticalBar',
-    });
+  private createScrollBarGroup = (): Group => {
+    const group = this.appendChild(
+      new Group({
+        className: this.isHorizontal ? 'horizontalBar' : 'verticalBar',
+      }),
+    );
 
     this.trackShape = this.createTrackShape(group);
     this.thumbShape = this.createThumbShape(group);
@@ -239,41 +247,45 @@ export class ScrollBar extends Group {
   };
 
   // 创建滑道的 shape
-  private createTrackShape = (group: IGroup): IShape => {
+  private createTrackShape = (group: Group): DisplayObject => {
     const { lineCap = 'round', trackColor, size = 0 } = this.theme;
 
-    const baseAttrs: ShapeAttrs = {
+    const baseAttrs: Omit<LineStyleProps, 'x1' | 'x2' | 'y1' | 'y2'> = {
       lineWidth: size,
       stroke: trackColor,
       lineCap,
     };
 
     if (this.isHorizontal) {
-      return group.addShape('line', {
-        attrs: {
-          ...baseAttrs,
-          x1: 0,
-          y1: size / 2,
-          x2: this.trackLen,
-          y2: size / 2,
-        },
-      });
+      return group.appendChild(
+        new Line({
+          style: {
+            ...baseAttrs,
+            x1: 0,
+            y1: size / 2,
+            x2: this.trackLen,
+            y2: size / 2,
+          },
+        }),
+      );
     }
-    return group.addShape('line', {
-      attrs: {
-        ...baseAttrs,
-        x1: size / 2,
-        y1: 0,
-        x2: size / 2,
-        y2: this.trackLen,
-      },
-    });
+    return group.appendChild(
+      new Line({
+        style: {
+          ...baseAttrs,
+          x1: size / 2,
+          y1: 0,
+          x2: size / 2,
+          y2: this.trackLen,
+        },
+      }),
+    );
   };
 
   // 创建滑块的 shape
-  private createThumbShape = (group: IGroup): IShape => {
+  private createThumbShape = (group: Group): DisplayObject => {
     const { size = 0, lineCap = 'round', thumbColor } = this.theme;
-    const baseAttrs: ShapeAttrs = {
+    const baseAttrs: Omit<LineStyleProps, 'x1' | 'x2' | 'y1' | 'y2'> = {
       lineWidth: size,
       stroke: thumbColor,
       lineCap,
@@ -283,74 +295,78 @@ export class ScrollBar extends Group {
     const { start, end } = this.getCoordinatesWithBBoxExtraPadding();
 
     if (this.isHorizontal) {
-      return group.addShape('line', {
-        attrs: {
-          ...baseAttrs,
-          x1: start,
-          y1: size / 2,
-          x2: end,
-          y2: size / 2,
-        },
-      });
+      return group.appendChild(
+        new Line({
+          style: {
+            ...baseAttrs,
+            x1: start,
+            y1: size / 2,
+            x2: end,
+            y2: size / 2,
+          },
+        }),
+      );
     }
-    return group.addShape('line', {
-      attrs: {
-        ...baseAttrs,
-        x1: size / 2,
-        y1: start,
-        x2: size / 2,
-        y2: end,
-      },
-    });
+    return group.appendChild(
+      new Line({
+        style: {
+          ...baseAttrs,
+          x1: size / 2,
+          y1: start,
+          x2: size / 2,
+          y2: end,
+        },
+      }),
+    );
   };
 
   private bindEvents = () => {
-    this.on('mousedown', this.onStartEvent(false));
+    this.addEventListener('mousedown', this.onStartEvent(false));
     // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
     // 整个拖拽过程没有 cancel 掉。
-    this.on('mouseup', this.onMouseUp);
-    this.on('touchstart', this.onStartEvent(true));
-    this.on('touchend', this.onMouseUp);
+    this.addEventListener('mouseup', this.onMouseUp);
+    this.addEventListener('touchstart', this.onStartEvent(true));
+    this.addEventListener('touchend', this.onMouseUp);
 
-    this.trackShape.on('click', this.onTrackClick);
-    this.thumbShape.on('mouseover', this.onTrackMouseOver);
-    this.thumbShape.on('mouseout', this.onTrackMouseOut);
+    this.trackShape.addEventListener('click', this.onTrackClick);
+    this.thumbShape.addEventListener('mouseover', this.onTrackMouseOver);
+    this.thumbShape.addEventListener('mouseout', this.onTrackMouseOut);
   };
 
-  private onStartEvent =
-    (isMobile: boolean) => (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
+  private onStartEvent = (isMobile: boolean) => (e: FederatedPointerEvent) => {
+    e.preventDefault();
 
-      this.isMobile = isMobile;
+    this.isMobile = isMobile;
 
-      const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
-      const { clientX, clientY } = event;
+    // TODO: 可以统一PC、移动，都用 pointerdown
+    // const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    const { clientX, clientY } = e;
 
-      // 将开始的点记录下来
-      this.startPos = this.isHorizontal ? clientX : clientY;
+    // 将开始的点记录下来
+    this.startPos = this.isHorizontal ? clientX : clientY;
 
-      this.bindLaterEvent();
-    };
+    this.bindLaterEvent();
+  };
 
   private bindLaterEvent = () => {
-    const canvas = this.get('canvas');
+    const canvas = this.ownerDocument!.defaultView!;
     const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
     if (this.isMobile) {
       events = [
-        this.addEventListener(containerDOM, 'touchmove', this.onMouseMove),
-        this.addEventListener(containerDOM, 'touchend', this.onMouseUp),
-        this.addEventListener(containerDOM, 'touchcancel', this.onMouseUp),
+        this.bindEventListener(containerDOM, 'touchmove', this.onMouseMove),
+        this.bindEventListener(containerDOM, 'touchend', this.onMouseUp),
+        this.bindEventListener(containerDOM, 'touchcancel', this.onMouseUp),
       ];
       this.addEvent(canvas, 'touchend', this.onMouseUp);
       this.addEvent(canvas, 'touchcancel', this.onMouseUp);
     } else {
       events = [
-        this.addEventListener(containerDOM, 'mousemove', this.onMouseMove),
-        this.addEventListener(containerDOM, 'mouseup', this.onMouseUp),
+        this.bindEventListener(containerDOM, 'mousemove', this.onMouseMove),
+        this.bindEventListener(containerDOM, 'mouseup', this.onMouseUp),
         // 为了保证划出 canvas containerDom 时还没触发 mouseup
-        this.addEventListener(containerDOM, 'mouseleave', this.onMouseUp),
+        this.bindEventListener(containerDOM, 'mouseleave', this.onMouseUp),
       ];
       this.addEvent(canvas, 'mouseup', this.onMouseUp);
     }
@@ -360,14 +376,14 @@ export class ScrollBar extends Group {
         e?.remove();
       });
       each(this.eventHandlers, (eh) => {
-        eh.target?.off(eh.type, eh.handler);
+        eh.target?.removeEventListener(eh.type, eh.handler);
       });
       this.eventHandlers.length = 0;
     };
   };
 
   // 点击滑道的事件回调,移动滑块位置
-  private onTrackClick = (event: GEvent) => {
+  private onTrackClick = (event: FederatedPointerEvent) => {
     const offset = this.isHorizontal
       ? event.x - this.position.x - this.thumbLen / 2
       : event.y - this.position.y - this.thumbLen / 2;
@@ -378,13 +394,14 @@ export class ScrollBar extends Group {
 
   // 拖拽滑块的事件回调
   // 这里是 dom 原生事件，绑定在 dom 元素上的
-  private onMouseMove = (e: Event | TouchEvent) => {
+  private onMouseMove = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    // TODO: 可以统一PC、移动，都用 pointerdown
+    // const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
 
-    const clientX = event.clientX;
-    const clientY = event.clientY;
+    const clientX = (e as FederatedPointerEvent).clientX;
+    const clientY = (e as FederatedPointerEvent).clientY;
 
     // 鼠标松开的位置
     const endPos = this.isHorizontal ? clientX : clientY;
@@ -395,8 +412,8 @@ export class ScrollBar extends Group {
     this.updateThumbOffset(this.thumbOffset + diff);
   };
 
-  private onMouseUp = (e: Event | TouchEvent) => {
-    this.emit(ScrollType.ScrollEnd, {});
+  private onMouseUp = (e: { preventDefault: () => void }) => {
+    this.dispatchEvent(new CustomEvent(ScrollType.ScrollEnd, {}));
     e.preventDefault();
     this.clearEvents?.();
   };

@@ -1,4 +1,4 @@
-import type { Point } from '@antv/g-canvas';
+import type { PointLike } from '@antv/g';
 import type {
   LayoutResult,
   S2Options,
@@ -29,7 +29,7 @@ export interface BaseHeaderConfig {
   // group's container's height
   viewportHeight: number;
   // group's top-left point
-  position: Point;
+  position: PointLike;
   // group's all nodes
   data: Node[];
   // spreadsheet entrance instance

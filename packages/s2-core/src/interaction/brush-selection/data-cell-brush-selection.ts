@@ -1,4 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { isEmpty, range } from 'lodash';
 import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -35,7 +35,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
+      const pointInCanvas = this.spreadsheet.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {

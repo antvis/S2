@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { DisplayObject, PointLike } from '@antv/g';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
@@ -274,7 +274,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  protected getTextPosition(): Point {
+  protected getTextPosition(): PointLike {
     return this.getTextAndIconPosition().text;
   }
 
@@ -365,7 +365,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      if (stateStyles) {
+      if (stateStyles && this.conditionIntervalShape) {
         updateShapeAttr(
           this.conditionIntervalShape,
           SHAPE_STYLE_MAP.backgroundOpacity,
@@ -373,7 +373,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         );
 
         updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
+          this.conditionIconShape as unknown as DisplayObject,
           SHAPE_STYLE_MAP.opacity,
           stateStyles.opacity,
         );
@@ -384,14 +384,16 @@ export class DataCell extends BaseCell<ViewMeta> {
   public clearUnselectedState() {
     super.clearUnselectedState();
 
-    updateShapeAttr(
-      this.conditionIntervalShape,
-      SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
-    );
+    if (this.conditionIntervalShape) {
+      updateShapeAttr(
+        this.conditionIntervalShape,
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        1,
+      );
+    }
 
     updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
+      this.conditionIconShape as unknown as DisplayObject,
       SHAPE_STYLE_MAP.opacity,
       1,
     );

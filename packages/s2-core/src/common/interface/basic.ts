@@ -1,4 +1,4 @@
-import type { Event, ShapeAttrs } from '@antv/g-canvas';
+import type { FederatedPointerEvent as Event, Group } from '@antv/g';
 import type { CellData } from '../../data-set/cell-data';
 import type { CellTypes } from '../../common/constant';
 import type {
@@ -476,12 +476,6 @@ export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   cellData?: T;
 }
 
-export interface CellAttrs<T extends Record<string, unknown> = Node>
-  extends ShapeAttrs {
-  text?: string;
-  appendInfo?: CellAppendInfo<T>;
-}
-
 export type S2MountContainer = string | Element;
 
 export interface OriginalEvent extends Event {
@@ -515,3 +509,10 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
+
+export type RenderHandler = (
+  options: Record<string, unknown>,
+  context: {
+    group: Group;
+  },
+) => void;

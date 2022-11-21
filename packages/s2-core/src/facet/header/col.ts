@@ -1,4 +1,4 @@
-import type { IGroup, IShape } from '@antv/g-canvas';
+import { Group, Rect, type DisplayObject } from '@antv/g';
 import { each } from 'lodash';
 import { ColCell } from '../../cell/col-cell';
 import {
@@ -16,16 +16,18 @@ import type { ColHeaderConfig } from './interface';
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
-  protected scrollGroup: IGroup;
+  protected scrollGroup: Group;
 
-  protected background: IShape;
+  protected background: DisplayObject;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    this.scrollGroup = this.addGroup({
-      name: KEY_GROUP_COL_SCROLL,
-      zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-    });
+    this.scrollGroup = this.appendChild(
+      new Group({
+        name: KEY_GROUP_COL_SCROLL,
+        style: { zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX },
+      }),
+    );
   }
 
   /**
@@ -42,23 +44,21 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected clip() {
-    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
-    const isFrozenRowHeader = spreadsheet.isFrozenRowHeader();
+    const { height, spreadsheet } = this.headerConfig;
 
-    this.scrollGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: isFrozenRowHeader ? scrollX : 0,
+    this.scrollGroup.style.clipPath = new Rect({
+      style: {
+        x: 0,
         y: 0,
-        width: isFrozenRowHeader ? width : width + scrollX,
+        width: spreadsheet.options.width!,
         height,
       },
     });
   }
 
   public clear() {
-    this.scrollGroup?.clear();
-    this.background?.remove(true);
+    this.scrollGroup?.removeChildren();
+    this.background?.remove();
   }
 
   protected getCellInstance(
@@ -100,7 +100,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);
-        group.add(cell);
+        group.appendChild(cell);
       }
     });
   }

@@ -86,7 +86,7 @@ export class HdAdapter {
       options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
     const canvas = this.spreadsheet.getCanvasElement();
-    const lastRatio = container.get('pixelRatio');
+    const lastRatio = container.getConfig().devicePixelRatio;
 
     if (lastRatio === ratio || !canvas) {
       return;
@@ -100,8 +100,9 @@ export class HdAdapter {
       MIN_DEVICE_PIXEL_RATIO,
     );
 
-    container.set('pixelRatio', pixelRatio);
-    container.changeSize(width!, height!);
+    // https://github.com/antvis/G/issues/1143
+    container.getConfig().devicePixelRatio = pixelRatio;
+    container.resize(width!, height!);
 
     this.spreadsheet.render(false);
   };
