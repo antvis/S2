@@ -1,7 +1,12 @@
-import type { BBox, IShape, ShapeAttrs } from '@antv/g-canvas';
-import { Group } from '@antv/g-canvas';
+import {
+  Group,
+  DisplayObject,
+  type LineStyleProps,
+  type RectStyleProps,
+} from '@antv/g';
 import { pick } from 'lodash';
 import { createMockCellInfo } from '../../util/helpers';
+import type { BBox } from '@/engine/interface';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
@@ -21,6 +26,7 @@ import {
   type S2DataConfig,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
+import { CustomRect } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/facet');
@@ -48,31 +54,32 @@ describe('Interaction Row Column Resize Tests', () => {
     rowColumnResizeInstance.spreadsheet.emit(type, {
       originalEvent: event,
       preventDefault() {},
-      target: {
-        attr: () => ({
+      target: new CustomRect(
+        {},
+        {
           ...resizeInfo,
           isResizeArea: true,
-        }),
-      },
+        },
+      ),
     } as any);
   };
 
   const getStartGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_START_GUIDE_LINE_ID,
-    ) as IShape;
+    ) as DisplayObject;
   };
 
   const getEndGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_END_GUIDE_LINE_ID,
-    ) as IShape;
+    ) as DisplayObject;
   };
 
   const getResizeMask = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.findById(
+    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_MASK_ID,
-    ) as IShape;
+    ) as DisplayObject;
   };
 
   const emitResize = (
@@ -125,7 +132,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
     mockRootInteraction = new MockRootInteraction(s2);
     s2.facet = {
-      foregroundGroup: new Group(''),
+      foregroundGroup: new Group(),
       panelBBox: {
         maxX: s2Options.width,
         maxY: s2Options.height,
@@ -148,32 +155,33 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should init resize group', () => {
     emitResizeEvent(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, {});
 
-    const guideLineAttrs: ShapeAttrs = {
+    const guideLineAttrs: Partial<LineStyleProps> = {
       lineDash: [3, 3],
       stroke: '#326EF4',
       lineWidth: 3,
-      fillOpacity: 1,
+      opacity: 0.22,
+      fillOpacity: 0.1,
     };
 
-    const maskAttrs: ShapeAttrs = {
-      appendInfo: {
-        isResizeArea: true,
-        isResizeMask: true,
-      },
+    const maskAttrs: Partial<RectStyleProps> = {
       x: 0,
       y: 0,
       width: s2Options.width,
       height: s2Options.height,
       fill: 'transparent',
     };
+    const maskAppendInfo = {
+      isResizeArea: true,
+      isResizeMask: true,
+    };
 
-    const pickAttrs = (attrs: ShapeAttrs) =>
+    const pickAttrs = (attrs: LineStyleProps) =>
       pick(attrs, Object.keys(guideLineAttrs));
 
-    const pickMaskAttrs = (attrs: ShapeAttrs) =>
+    const pickMaskAttrs = (attrs: RectStyleProps) =>
       pick(attrs, Object.keys(maskAttrs));
 
-    const resizeMask = getResizeMask();
+    const resizeMask = getResizeMask() as CustomRect;
 
     const startGuideLine = getStartGuideLine();
     const endGuideLine = getEndGuideLine();
@@ -187,9 +195,12 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(resizeMask).not.toBeUndefined();
 
     // style
-    expect(pickAttrs(startGuideLine.attr())).toEqual(guideLineAttrs);
-    expect(pickAttrs(endGuideLine.attr())).toEqual(guideLineAttrs);
-    expect(pickMaskAttrs(resizeMask!.attr())).toEqual(maskAttrs);
+    expect(pickAttrs(startGuideLine.parsedStyle)).toEqual(guideLineAttrs);
+    expect(pickAttrs(endGuideLine.parsedStyle)).toEqual(guideLineAttrs);
+    expect(pickMaskAttrs(resizeMask!.parsedStyle)).toEqual(maskAttrs);
+    expect(pick(resizeMask!.appendInfo, Object.keys(maskAppendInfo))).toEqual(
+      maskAppendInfo,
+    );
   });
 
   test('should update resize guide line position when col cell mouse down', () => {
