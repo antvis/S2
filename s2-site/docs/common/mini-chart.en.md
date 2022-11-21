@@ -5,7 +5,7 @@ order: 6
 
 #### renderMiniChart
 
-在单元格内绘制 mini 图（支持 折线图、子弹图、柱状图）
+Draw mini charts in cells (support line charts, bullet charts, histograms)
 
 ```ts
  renderMiniChart = (cell: S2CellType, data?: BaseChartData | BulletValue) => void;
@@ -13,22 +13,22 @@ order: 6
 
 #### BaseChartData
 
-折线图、柱状图数据配置项，数据格式参考 `g2`
+Line chart, histogram data configuration items, data format refer to `g2`
 
-| 参数 | 说明 | 类型 | 必选  | 默认值 |
-| --- | ---- | --- | ---- | ------ |
-| type  | mini 图类型 | `string` (line/bar) |    ✓   |    |
-| encode  | 编码方式, 声明 x 位置通道或 y 位置通道绑定的对应的列数据| `{x: string; y: string}` |  ✓   |    |
-| data  | 原始数据  | [Data[]](#data) |    |   ✓   |
-| [key: string]  | 其他透传字段，用于自定义单元格的定制化展示   | `unknown` |   |  |
+| parameter      | illustrate                                                                                                   | type                     | required | Defaults |
+| -------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------ | -------- | -------- |
+| type           | mini-chart type                                                                                              | `string` (line/bar)      | ✓        |          |
+| encode         | Encoding method, declare the corresponding column data bound to the x position channel or y position channel | `{x: string; y: string}` | ✓        |          |
+| data           | Raw data                                                                                                     | [Data\[\]](#data)        |          | ✓        |
+| \[key: string] | Other transparent fields for customized display of custom cells                                              | `unknown`                |          |          |
 
 #### BulletValue
 
-子弹图数据配置项
+Bullet chart data configuration items
 
-| 参数 | 说明 | 类型 | 必选  | 默认值 |
-| --- | ---- | --- | ---- | ------ |
-| type  | mini 图类型 | `string` (bullet) |    ✓   |  bullet  |
-| measure  | 当前指标 | `number/string` |  ✓   |    |
-| target  | 目标值 | `number/string` |  ✓   |    |
-| [key: string]  | 其他透传字段，用于自定义单元格的定制化展示   | `unknown` |   |  |
+| parameter      | illustrate                                                      | type              | required | Defaults |
+| -------------- | --------------------------------------------------------------- | ----------------- | -------- | -------- |
+| type           | mini-chart type                                                 | `string` (bullet) | ✓        | bullet   |
+| measure        | current indicator                                               | `number/string`   | ✓        |          |
+| target         | target value                                                    | `number/string`   | ✓        |          |
+| \[key: string] | Other transparent fields for customized display of custom cells | `unknown`         |          |          |
