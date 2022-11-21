@@ -1,13 +1,17 @@
 import { includes, isBoolean } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
+import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
-import type { HeaderNodesParams } from '../../facet/layout/interface';
+import type {
+  HeaderNodesParams,
+  TableHeaderParams,
+} from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
 import { TotalMeasure } from '../../facet/layout/total-measure';
 import { generateId } from '../../utils/layout/generate-id';
+import type { Columns } from '../../common';
 
 export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {
@@ -146,4 +150,48 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       });
     }
   }
+};
+
+/**
+ * 给定一个树形结构的表头，深度优先创建表头的 node
+ * @param columns
+ * @param params
+ * @param pNode
+ * @param level
+ */
+export const DFSGenerateHeaderNodes = (
+  columns: Columns,
+  params: TableHeaderParams,
+  level: number,
+  pNode?: Node,
+) => {
+  const { facetCfg, hierarchy, parentNode } = params;
+  const { dataSet } = facetCfg;
+
+  columns.forEach((column, i) => {
+    if (typeof column === 'string') {
+      column = { key: column };
+    }
+    const { key } = column;
+    const value =
+      key === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(key);
+    const currentParent = pNode || parentNode;
+    generateHeaderNodes({
+      currentField: key,
+      fields: [key],
+      fieldValues: [value],
+      facetCfg,
+      hierarchy,
+      parentNode: currentParent,
+      level,
+      query: {},
+      addMeasureInTotalQuery: false,
+      addTotalMeasureInTotal: false,
+    });
+    if (column.children && column.children.length) {
+      const generateNode = currentParent.children[i];
+      generateNode.isLeaf = false;
+      DFSGenerateHeaderNodes(column.children, params, level + 1, generateNode);
+    }
+  });
 };
