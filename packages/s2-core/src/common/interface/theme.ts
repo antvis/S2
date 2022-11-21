@@ -270,7 +270,7 @@ export interface ThemeCfg {
   name?: ThemeName;
 }
 
-/* 趋势分析表子弹图状态颜色 */
+/* 子弹图状态颜色 */
 export interface RangeColors {
   /* 满意 */
   good: string;

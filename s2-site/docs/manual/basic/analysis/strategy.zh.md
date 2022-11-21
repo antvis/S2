@@ -89,8 +89,8 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------------- | ----------------- | --------- | ----- | --- |
-| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string | number)[][]`   |  ✓   |
-| originalValues | 原始数据，用于原始数据导出 | `(string | number)[][]`  |  |      |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | (string | number)[][]   |  ✓   |
+| originalValues | 原始数据，用于原始数据导出 | (string | number)[][]  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
@@ -169,3 +169,15 @@ const s2Options = {
 ```
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/jOYhdqOr6/a43696e1-3cdb-49b7-9906-4053c3f7e65b.png" width="600"  alt="preview" />
+
+## 配置 mini 图
+
+在指标趋势分析场景下，通常我们希望看到数据的全局走势。走势分析不仅需要包含具体的涨跌，最好还能展示出固定时间段内的趋势图，或者指标的完成情况（进度），所以我们在表格里提供了 mini 图的绘制。为了减少对外部组件库的依赖，我们内置了一个十分轻量的，基于 `@antv/g` 绘制的 mini 图库，以极小的性能开销在单元格内绘制出子弹图、折线图及柱状图。
+
+<Playground path='react-component/sheet/demo/strategy-mini-chart.tsx' rid='container2'></playground>
+
+配置如下：
+
+<embed src="@/docs/common/mini-chart.zh.md"></embed>
+
+如果想要更换 Mini 图样式配置，可以参考[主题配置]('/zh/api/general/s2theme#minicharttheme')
