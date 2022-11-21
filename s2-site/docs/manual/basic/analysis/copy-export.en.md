@@ -93,4 +93,4 @@ Click the copy or download button to export the full amount of data (full amount
 
 [Your browser does not support HTML video.](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/file/A*EZfPRJqzl4cAAAAAAAAAAAAAARQnAQ)
 
-<embed src="@/docs/common/export.zh.md"></embed>
+<embed src="@/docs/common/export.en.md"></embed>

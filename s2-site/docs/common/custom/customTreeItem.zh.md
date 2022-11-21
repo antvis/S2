@@ -3,7 +3,7 @@ title: 自定义树结构
 order: 8
 ---
 
-## CustomTreeItem
+### CustomTreeItem
 
 [详细说明](/docs/manual/advanced/custom/category-tree) [例子](/examples/custom/custom-tree#custom-tree)
 

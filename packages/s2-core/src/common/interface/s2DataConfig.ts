@@ -26,6 +26,7 @@ export interface BulletValue {
 }
 
 export type MiniChartData = BaseChartData | BulletValue;
+
 /** use for gridAnalysisSheet
  *  eg. { label: '余额女',
         values: [

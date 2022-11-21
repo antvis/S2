@@ -5,6 +5,21 @@ redirect_from:
   - /en/docs/api
 ---
 
+Demo of the DataConfig
+
+```ts
+const s2DataConfig = {
+  data: [],
+  meta: [],
+  sortParams: [],
+  fields: {
+    rows: [],
+    columns: [],
+    values: []
+  }
+}
+```
+
 Tabular data configuration
 
 | parameter  | illustrate                                                      | type                        | Defaults | required |
@@ -17,7 +32,7 @@ Tabular data configuration
 
 ### Data
 
-string | number | [MultiData](#multidata) **required** , *default: null*
+string | number | [MiniChartData](#minichartdata) | [MultiData](#multidata) **required** , *default: null*
 
 Function description: Set the data source data source of the table, for example:
 
@@ -51,8 +66,8 @@ Function description: Configure the dimension field of the table, that is, the c
 | Configuration item name | illustrate                                                           | type                                  | Defaults | required |
 | :---------------------- | :------------------------------------------------------------------- | :------------------------------------ | :------- | :------- |
 | rows                    | list of row dimensions                                               | `string[]`                            | `[]`     |          |
-| customTreeItems         | Customize the header directory tree                                  | [CustomTreeItem\[\]](#customtreeitem) |          |          |
-| columns                 | list of column dimensions                                            | `string[]`                            | `[]`     |          |
+| customTreeItems         | Customize the header directory tree                                  | [CustomTreeItem[]](#customtreeitem) |          |          |
+| columns                 | list of column dimensions                                            | [Columns[]](#columns) | `[]`     |          |
 | values                  | List of Metric Dimensions                                            | `string[]`                            | `[]`     |          |
 | valueInCols             | Whether the indicator dimension is at the column header              | `boolean`                             | `true`   |          |
 | customValueOrder        | Position order of custom metric dimensions in row and column headers | `number`                              | -        |          |
@@ -63,12 +78,16 @@ array object **required** , *default: null*
 
 Function description: Field metadata, configurable field alias and value formatting.
 
-| parameter   | illustrate                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | type                           | Defaults             | required              |
-| :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------- | :------------------- | :-------------------- |
-| field       | field id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string`                       |                      |                       |
-| name        | Field Name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string`                       |                      |                       |
-| description | Field description, which will be displayed in the tooltip corresponding to the row header, column header, and cell                                                                                                                                                                                                                                                                                                                                                                                         | `string`                       |                      |                       |
+| parameter   | illustrate | type                           | Defaults             | required              |
+| :---------- | :---- | :----------------------------- | :------------------- | :-------------------- |
+| field       | field id | `string`  |  |                       |
+| name   | Field Name  | `string`  |  |   |
+| description | Field description, which will be displayed in the tooltip corresponding to the row header, column header, and cell   | `string` |   |   |
 | formatter   | Formatting cells, row headers and column headers support formatting, but corner headers do not support formatting. The second parameter exists only for cells. Numerical fields: generally used to format numeric units Text fields: generally used as aliases for field enumeration values The second parameter will be passed in in the following situations: data cell formatting, copy/export, tooltip display ( **and only when selected When there are multiple cells, the data type is an array** ) | \`(value: unknown, data?: Data | Data\[], meta?: Node | ViewMeta) => string\` |
+
+### MiniChartData
+
+<embed src="@/docs/common/mini-chart.en.md"></embed>
 
 ### MultiData
 
@@ -86,3 +105,16 @@ Function description: used to support custom data cell rendering of multiple ind
 <embed src="@/docs/common/sort-param.zh.md"></embed>
 
 <embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
+
+### Columns
+
+`Array<ColumnNode | string>`
+
+列配置数组，在明细表模式下支持使用 [ColumnNode](#columnnode) 结构来描述列分组关系
+
+### ColumnNode
+
+| 属性名称 | 说明     | 类型   | 默认值 | 必选 |
+| ------- | ---------| -------| ------|------|
+| name | 列字段 id 或分组 id   | string |       | ✓ |
+| children | 分组下面的子级  | Array\<ColumnNode \| string\> |       |  |

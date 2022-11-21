@@ -13,9 +13,7 @@ order: 5
 object is **required** , *default: null* Function description: Subtotal calculation configuration
 
 | parameter | illustrate | type | Defaults | required | |
-| ------------------- |
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| ------------ | --------------------- | -------- | - |
+| ------------------- |---------------------------| ------------ | --------------------- | -------- | - |
 | showGrandTotals | Whether to display the total | `boolean`    | false | ✓ | |
 | showSubTotals | Whether to display subtotals. When configured as an object, always controls whether to always display
 subtotals when there are less than 2 subdimensions, and does not display by default. | `boolean \| { always: boolean }`

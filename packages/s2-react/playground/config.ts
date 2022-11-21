@@ -1,4 +1,4 @@
-import { isUpDataValue } from '@antv/s2';
+import { isUpDataValue, type Columns } from '@antv/s2';
 import type { S2DataConfig } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -10,12 +10,32 @@ import {
 } from '../__tests__/data/mock-dataset.json';
 import type { SheetComponentOptions } from '../src/components';
 
+export const tableSheetSingleColumns: Columns = [
+  'province',
+  'city',
+  'type',
+  'sub_type',
+  'number',
+];
+
+export const tableSheetMultipleColumns: Columns = [
+  {
+    key: 'area',
+    children: ['province', 'city'],
+  },
+  'type',
+  {
+    key: 'money',
+    children: [{ key: 'price' }, 'number'],
+  },
+];
+
 export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
   fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'number'],
+    columns: tableSheetSingleColumns,
   },
 };
 
