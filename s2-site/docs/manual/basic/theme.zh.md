@@ -23,7 +23,7 @@ S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主�
 
 ### 色板 Palette
 
-色板的定义为 [Palette](/zh/docs/api/general/S2Theme#palette)，当生成主题 schema 时会从中取用颜色，而它的颜色则来自于标准色板中，Palette 的关键属性有：
+色板的定义为 [Palette](/docs/api/general/S2Theme#palette)，当生成主题 schema 时会从中取用颜色，而它的颜色则来自于标准色板中，Palette 的关键属性有：
 
 - basicColors：基础颜色，共 15 个色彩位，本质上确定了表格的配色方案，生成主题 schema 时会从 basicColors 固定索引上取色，如行头背景颜色固定会取 `basicColors[1]` 的颜色
 - basicColorRelations：basicColors 与标准色板的对应关系，如内置的 colorful 主题中，行头背景色 `basicColors[1]` 是取用标准色板中的索引 0 的颜色
@@ -32,7 +32,7 @@ S2 中内置了 **3** 套开箱即用的主题配置，也提供了强大的主�
 
 ### 主题 Schema
 
-主题 schema 的定义为 [S2Theme](/zh/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细、文字大小、文字对齐方式等。整个 schema 中，所有的颜色会从 [Palette](/zh/docs/api/general/S2Theme#palette) 中取用：
+主题 schema 的定义为 [S2Theme](/docs/api/general/S2Theme#s2theme)，其详尽地描述了单元格、交互等主题样式，属性包含颜色、线条粗细、文字大小、文字对齐方式等。整个 schema 中，所有的颜色会从 [Palette](/docs/api/general/S2Theme#palette) 中取用：
 
 - basicColors：基础颜色，如角/列/行头背景，字体/icon 颜色
 - semanticColors：语义颜色，如红色、绿色指代的色值
@@ -51,7 +51,7 @@ s2.render(false);
 
 ## 自定义主题
 
-s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/zh/docs/api/general/S2Theme#themecfg) 的参数，你可以：
+s2 实例上的 `setThemeCfg` 方法是一切主题配置的入口，该方法接收一个类型为 [ThemeCfg](/docs/api/general/S2Theme#themecfg) 的参数，你可以：
 
 - 通过 ThemeCfg.name 使用预置主题
 - 通过 ThemeCfg.palette 自定义色板生成主题
@@ -104,13 +104,13 @@ S2 内置 3 套主题效果：
   </tbody>
 </table>
 
-​📊 查看更多 [主题示例](/zh/examples/theme/default#default)。
+​📊 查看更多 [主题示例](/examples/theme/default#default)。
 
 ### 自定义 schema
 
 如果内置的主题不满意你的要求，那么你可以通过自定义 `schema` 的方式重写特定的配置。
 
-此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 schema 配置](/zh/docs/api/general/S2Theme#s2theme)：
+此时你可以调用 `s2.setTheme` 或者 `s2.setThemeCfg()` 配置 `theme` 对象。[查看完整 schema 配置](/docs/api/general/S2Theme#s2theme)：
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
@@ -161,13 +161,13 @@ s2.setTheme({
 
 ### 自定义色板
 
-自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/zh/docs/api/general/S2Theme#palette)：
+自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/docs/api/general/S2Theme#palette)：
 
 #### 自选色板颜色
 
 你可以参考 [内置色板](https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful.ts) 个人化设置 `basicColors` 与 `semanticColors`，所选颜色会被用于表格不同部分的绘制，颜色使用关系请参考下方的 [色板对照表](#色板对照表)。
 
-另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/zh/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
+另外为方便大家调配专属色板，S2 官方提供了 [自助色板调色工具](/examples/theme/custom/#custom-manual-palette)，所见即所得帮助你快速调配色板，一键复制粘贴进项目使用。
 
 ```js
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);

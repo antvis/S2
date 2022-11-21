@@ -10,8 +10,8 @@ lists, functions and other functions.
 
 ## use
 
-Driven by passing [sortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) data
-in [dataConfig](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
+Driven by passing [sortParams](/docs/api/general/S2DataConfig#SortParams) data
+in [dataConfig](/docs/api/general/S2DataConfig)
 
 ### sortParam
 
@@ -128,7 +128,7 @@ is `$$total$$` .
 
 1. Use aggregated data from data.
 2. Use aggregate calculations provided by S2 Total. ​📊 View
-   document [subtotal total configuration](/zh/docs/api/general/S2Options#totals)
+   document [subtotal total configuration](/docs/api/general/S2Options#totals)
 
 #### Row Total/Row Subtotal
 
@@ -299,7 +299,7 @@ Supports custom calculations using metrics, for example:
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width="600" alt="row">
 
-📊 View demo [custom sorting](/zh/examples/analysis/sort#custom-sort-func) .
+📊 View demo [custom sorting](/examples/analysis/sort#custom-sort-func) .
 
 ## priority
 

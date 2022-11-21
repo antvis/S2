@@ -51,7 +51,7 @@ const s2Options = {
 
 ### 2. 透视表
 
-透视表存在多列头，需要指定列头对应的 [节点 id](/zh/docs/api/basic-class/node)
+透视表存在多列头，需要指定列头对应的 [节点 id](/docs/api/basic-class/node)
 
 <details>
   <summary>如何获取列头 Id?</summary>
@@ -110,13 +110,13 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/LYrMG8bf5/660aa34c-5fce-4f62-b422-ee6d3b5478d1.png)
 
-还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/zh/docs/manual/basic/analysis/switcher/)
+还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/docs/manual/basic/analysis/switcher/)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview" />
 
 ## 3. 手动隐藏 - 通过实例方法
 
-[查看所有 API](/zh/docs/api/basic-class/interaction)
+[查看所有 API](/docs/api/basic-class/interaction)
 
 ```ts
 const s2 = new PivotSheet(...)
@@ -146,7 +146,7 @@ s2.on(
 );
 ```
 
-也可以访问存储在 [`store`](/zh/docs/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取
+也可以访问存储在 [`store`](/docs/api/basic-class/store) 的 `hiddenColumnsDetail` 主动获取
 
 ```ts
 const hiddenColumnsDetail = s2.store.get('hiddenColumnsDetail')

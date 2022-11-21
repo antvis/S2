@@ -3,7 +3,7 @@ title: Customize Category Tree
 order: 2
 ---
 
-By default, `S2` provides two row header layout modes [: tile mode (grid)](https://s2.antv.vision/zh/examples/basic/pivot#grid) and [tree mode (tree)](https://s2.antv.vision/zh/examples/basic/pivot#tree) .
+By default, `S2` provides two row header layout modes [: tile mode (grid)](/examples/basic/pivot#grid) and [tree mode (tree)](/examples/basic/pivot#tree) .
 
 If you are not satisfied, you can use a custom directory tree to customize your directory structure
 

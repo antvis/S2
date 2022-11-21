@@ -31,7 +31,7 @@ download(data, 'filename')
 
 | 参数          | 说明     | 类型     | 默认值      | 必选 |
 | ------------| ------------------ | ------------- | --------------------------- | --- |
-| spreadsheet | s2 实例       | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)          |                            | ✓    |
+| spreadsheet | s2 实例       | [SpreadSheet](/docs/api/basic-class/spreadsheet)          |                            | ✓    |
 | split       | 分隔符    | `string`    |     | ✓    |
 | formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 |  <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code>    | `false` |      |
 

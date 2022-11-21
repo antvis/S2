@@ -13,7 +13,7 @@ Function description: custom order
 
 | parameter   | type                                                | required | Defaults | Functional description                                               |
 | ----------- | --------------------------------------------------- | :------: | -------- | -------------------------------------------------------------------- |
-| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
-| node        | [node](/zh/docs/api/basic-class/node)               |     ✓    |          | The currently rendered node node                                     |
+| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
+| node        | [node](/docs/api/basic-class/node)               |     ✓    |          | The currently rendered node node                                     |
 | field       | `string`                                            |     ✓    |          | current field name                                                   |
 | fieldValues | `string[]`                                          |     ✓    |          | current field value                                                  |

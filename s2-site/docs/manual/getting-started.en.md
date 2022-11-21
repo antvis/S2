@@ -182,7 +182,7 @@ s2.render();
 
 ### `React` version
 
-`S2` provides an out-of-the-box `React` version \[Table Component] (/zh/examples/gallery#category-Table Component), as well as a wealth of supporting [analysis components](/zh/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
+`S2` provides an out-of-the-box `React` version [Table Component](/examples/gallery#category-Table Component), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
 
 #### Table components use
 
@@ -215,7 +215,7 @@ yarn add antd @ant-design/icons
 import 'antd/dist/antd.min.css';
 ```
 
-​📊 Check out the [React version pivot table demo](/zh/examples/react-component/sheet#pivot) .
+​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
 
 ### `Vue3` version
 

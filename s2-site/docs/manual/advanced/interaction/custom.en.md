@@ -3,13 +3,13 @@ title: Custom Interaction
 order: 1
 ---
 
-Don't worry if the built-in interactions fail to cover actual usage scenarios. You can use the interaction events provided by [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) to perform any permutation and combination to customize the interaction. Here is an example of [**double-clicking to hide the column header in the schedule**](/zh/examples/interaction/custom#double-click-hide-columns) .
+Don't worry if the built-in interactions fail to cover actual usage scenarios. You can use the interaction events provided by [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) to perform any permutation and combination to customize the interaction. Here is an example of [**double-clicking to hide the column header in the schedule**](/examples/interaction/custom#double-click-hide-columns) .
 
 ## 1. Custom interaction class
 
 This is the basic format of a custom interaction class:
 
-Inherit `BaseEvent` to get the current table instance `this.spreadsheet` , implement the `bindEvents` method, combine a [series of methods](/zh/docs/api/basic-class/spreadsheet) provided by `this.spreadsheet` , and customize the interaction. Finally, the default interaction and custom interaction will be registered when the table is initialized.
+Inherit `BaseEvent` to get the current table instance `this.spreadsheet` , implement the `bindEvents` method, combine a [series of methods](/docs/api/basic-class/spreadsheet) provided by `this.spreadsheet` , and customize the interaction. Finally, the default interaction and custom interaction will be registered when the table is initialized.
 
 ```ts
 import { BaseEvent } from '@antv/s2';

@@ -7,7 +7,7 @@ redirect_from:
 
 表格事件列表，可以根据实际需要，监听所需事件，实现自定义业务。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
-如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/zh/docs/api/components/sheet-component)
+如果使用的是 `s2-react` 或 `s2-vue` 表组件，则已对事件进行封装，无需额外监听，使用其回调函数即可。 [详情](/docs/api/components/sheet-component)
 
 ```ts
 import { S2Event } from '@antv/s2'

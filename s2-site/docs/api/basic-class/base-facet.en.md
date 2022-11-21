@@ -10,9 +10,9 @@ s2.facet.xx()
 
 | parameter                         | illustrate                                                | type                                                                                             |
 | --------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| spreadsheet                       | Form example                                              | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)                                              |
-| cornerBBox                        | corner bounding box                                       | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox)                                               |
-| panelBBox                         | Value area bounding box                                   | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox)                                               |
+| spreadsheet                       | Form example                                              | [SpreadSheet](/docs/api/basic-class/spreadsheet)                                              |
+| cornerBBox                        | corner bounding box                                       | [BBox](/docs/api/basic-class/spreadsheet/#bbox)                                               |
+| panelBBox                         | Value area bounding box                                   | [BBox](/docs/api/basic-class/spreadsheet/#bbox)                                               |
 | backgroundGroup                   | background area                                           | [Group](https://g.antv.vision/zh/docs/api/group)                                                 |
 | panelGroup                        | Numeric field                                             | [Group](https://g.antv.vision/zh/docs/api/group)                                                 |
 | foregroundGroup                   | foreground area                                           | [Group](https://g.antv.vision/zh/docs/api/group)                                                 |
@@ -28,7 +28,7 @@ s2.facet.xx()
 | centerFrame                       | frame                                                     | [Group](https://g.antv.vision/zh/docs/api/group)                                                 |
 | gridInfo                          | grid information                                          | [GridInfo](#gridinfo)                                                                            |
 | getViewCellHeights                | Get cell height information                               | ( `layoutResult` : [LayoutResult](#layoutresult) ) => [ViewCellHeights](#viewcellheights)        |
-| scrollBarTheme                    | scroll bar theme                                          | [ScrollBarTheme](/zh/docs/api/general/S2Theme/#scrollbartheme)                                   |
+| scrollBarTheme                    | scroll bar theme                                          | [ScrollBarTheme](/docs/api/general/S2Theme/#scrollbartheme)                                   |
 | scrollBarSize                     | scroll bar size                                           | `number`                                                                                         |
 | hideScrollBar                     | hide scrollbar                                            | () => void                                                                                       |
 | delayHideScrollBar                | Delay to hide the scrollbar (after 1s)                    | () => void                                                                                       |
@@ -61,7 +61,7 @@ s2.facet.xx()
 | isScrollOverTheViewport           | Whether to scroll in the value cell area                  | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset) ) => boolean                            |
 | cancelScrollFrame                 | Cancel the current scroll frame                           | () => void                                                                                       |
 | clearScrollFrameIdOnMobile        | Cancel the current scrolling frame (mobile terminal)      | () => void                                                                                       |
-| addCell                           | add cell                                                  | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell) ) => void                                  |
+| addCell                           | add cell                                                  | (cell: [BaseCell](/docs/api/basic-class/base-cell) ) => void                                  |
 | drawGrid                          | draw grid                                                 | () => void                                                                                       |
 
 ### CellScrollOffset

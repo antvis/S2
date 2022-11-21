@@ -16,7 +16,7 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 ## 快速上手
 
-`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/zh/docs/api/general/S2Options#conditions) 属性。
+`S2` 字段标记特性通过配置 `s2Options` 中 [`Conditions`](/docs/api/general/S2Options#conditions) 属性。
 
 ```ts
 // 构建 options
@@ -44,12 +44,12 @@ const s2Options = {
 
 ## 配置解释
 
-[Conditions 属性](/zh/docs/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
+[Conditions 属性](/docs/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。
 
-* `text`，`background` 和 `interval` 的均为 [Condition](/zh/docs/api/general/S2Options#condition) 数组类型
+* `text`，`background` 和 `interval` 的均为 [Condition](/docs/api/general/S2Options#condition) 数组类型
   * 包含 `field` 和 `mapping` 两个字段
   * 一个字段 ID 多次匹配到同一范围的字段标记规则，以最后一个规则为准。
-* `icon` 稍有不同，为 [IconCondition](/zh/docs/api/general/S2Options#iconcondition) 数组类型
+* `icon` 稍有不同，为 [IconCondition](/docs/api/general/S2Options#iconcondition) 数组类型
   * 多一个 `position` 字段用于指定图标相对于文字的位置
 
 重点解释 `field` 和 `mapping` 两个字段：
@@ -105,7 +105,7 @@ const s2Options = {
 
 <embed src="@/docs/common/icon.zh.md"></embed>​
 
-🎨 字段标记详细的配置参考 [Conditions API](/zh/docs/api/general/S2Options#conditions) 文档。
+🎨 字段标记详细的配置参考 [Conditions API](/docs/api/general/S2Options#conditions) 文档。
 
 ## 特性
 
@@ -132,7 +132,7 @@ const s2Options = {
 
 <Playground path="analysis/conditions/demo/bidirectional-interval.ts" rid='bidirectional'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#bidirectional-interval)。
+​📊 查看更多 [字段标记示例](/examples/analysis/conditions#bidirectional-interval)。
 
 ### 渐变柱状图
 
@@ -141,7 +141,7 @@ const s2Options = {
 `price` 字段使用渐变色：
 <Playground path="analysis/conditions/demo/gradient-interval.ts" rid='gradient'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#gradient-interval)。
+​📊 查看更多 [字段标记示例](/examples/analysis/conditions#gradient-interval)。
 
 ### 开启文字智能反色
 
@@ -151,4 +151,4 @@ const s2Options = {
 
 <Playground path="analysis/conditions/demo/intelligent-background.ts" rid='intelligentReverseTextColor'></playground>
 
-​📊 查看更多 [字段标记示例](/zh/examples/analysis/conditions#intelligent-background)。
+​📊 查看更多 [字段标记示例](/examples/analysis/conditions#intelligent-background)。

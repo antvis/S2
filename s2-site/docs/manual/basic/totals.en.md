@@ -5,8 +5,8 @@ order: 5
 
 | parameter | illustrate   | type                                          | Defaults | required |
 | --------- | ------------ | --------------------------------------------- | -------- | -------- |
-| row       | column total | [Total](/zh/docs/api/general/S2Options#total) | {}       |          |
-| col       | row total    | [Total](/zh/docs/api/general/S2Options#total) | {}       |          |
+| row       | column total | [Total](/docs/api/general/S2Options#total) | {}       |          |
+| col       | row total    | [Total](/docs/api/general/S2Options#total) | {}       |          |
 
 #### Total
 
