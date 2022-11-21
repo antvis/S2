@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.31.0...@antv/s2-react-v1.32.0) (2022-11-21)
+
+
+### Features
+
+* 明细表支持多级表头 ([#1921](https://github.com/antvis/S2/issues/1921)) ([47cdbdc](https://github.com/antvis/S2/commit/47cdbdccafbd7f19a05550a483a42aac11a93778)), closes [#1687](https://github.com/antvis/S2/issues/1687) [#1801](https://github.com/antvis/S2/issues/1801)
+* 编辑表格新增拖拽填充功能 ([#1858](https://github.com/antvis/S2/issues/1858)) ([c607d55](https://github.com/antvis/S2/commit/c607d554208137631b75c5a03bb268d9afa901dd)), closes [#1811](https://github.com/antvis/S2/issues/1811)
+
 # [@antv/s2-react-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.30.0...@antv/s2-react-v1.31.0) (2022-11-11)
 
 
