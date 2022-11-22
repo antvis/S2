@@ -5,12 +5,12 @@ order: 2
 
 ## 简介
 
-对表格数据行进行自定义排序，支持行头/列头排序、单行/列排序、自定义列表、函数等功能。[查看示例](/zh/examples/analysis/sort#custom-sort-func)。
+对表格数据行进行自定义排序，支持行头/列头排序、单行/列排序、自定义列表、函数等功能。[查看示例](/examples/analysis/sort#custom-sort-func)。
 
 ## 使用
 
-通过在 [s2DataConfig](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
-中传入 [sortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
+通过在 [s2DataConfig](/docs/api/general/S2DataConfig)
+中传入 [sortParams](/docs/api/general/S2DataConfig#SortParams) 数据驱动
 
 ### sortParam
 
@@ -128,7 +128,7 @@ const s2DataConfig = {
 #### 配置数据聚合方式
 
 1. 使用 data 数据中的聚合数据。
-2. 使用 S2 中提供的聚合计算。​📊 查看文档 [小计总计配置](/zh/docs/api/general/S2Options#totals)
+2. 使用 S2 中提供的聚合计算。​📊 查看文档 [小计总计配置](/docs/api/general/S2Options#totals)
 
 #### 行总计/行小计
 
@@ -304,7 +304,7 @@ const s2DataConfig = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/xZbG1ALW0/cd83b502-cde6-4a7b-a581-36aae26b4028.png" width = "600"  alt="row" />
 
-📊 查看 demo [自定义排序](/zh/examples/analysis/sort#custom-sort-func)。
+📊 查看 demo [自定义排序](/examples/analysis/sort#custom-sort-func)。
 
 ## 优先级
 

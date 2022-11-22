@@ -81,7 +81,7 @@ ReactDOM.render(
 
 ```
 
-​📊 查看 [React 版本透视表示例](/zh/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
+​📊 查看 [React 版本透视表示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
 
 ### 类方式
 
@@ -95,4 +95,4 @@ const s2 = new PivotSheet(container, dataCfg, options);
 s2.render();
 ```
 
-​📊 查看 [类方式透视表示例](/zh/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。
+​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。

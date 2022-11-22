@@ -13,8 +13,8 @@ Function description: custom hierarchical structure
 
 | parameter   | type                                                | required | Defaults | Functional description                                               |
 | ----------- | --------------------------------------------------- | :------: | -------- | -------------------------------------------------------------------- |
-| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
-| node        | [node](/zh/docs/api/basic-class/node)               |     ✓    |          | The currently rendered node node                                     |
+| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |     ✓    |          | Table class instance, which can access any configuration information |
+| node        | [node](/docs/api/basic-class/node)               |     ✓    |          | The currently rendered node node                                     |
 
 ```ts
 interface LayoutHierarchyReturnType {

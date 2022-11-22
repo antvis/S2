@@ -28,7 +28,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 | Outfit selection                                           | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only pivot tables are supported)              |
 | Column head brush selection                                | `S2Event.COL_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the column header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
 | Interval shortcut multiple selection                       | `S2Event.GLOBAL_SELECTED`                                     | Select a single cell (start), then hold down `Shift` to select a cell again (end), and select all cells in the two cell intervals                                                                                                                                                     |
-| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/zh/docs/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
+| hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/docs/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
 | copy                                                       | `S2Event.GLOBAL_COPIED`                                       | Copy selected cell data                                                                                                                                                                                                                                                               |
 | hide column header                                         | `S2Event.LAYOUT_COLS_EXPANDED` `S2Event.LAYOUT_COLS_HIDDEN`   | Hide/expand column headers                                                                                                                                                                                                                                                            |
 | link jump                                                  | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | Row header/column header link jump                                                                                                                                                                                                                                                    |
@@ -41,7 +41,7 @@ Through these events, permutations and combinations, to achieve commonly used in
 * `layout:xx` : layout change event
 * `cell:xx` : Cell-level events, the entire table is divided into different cell types, you can monitor specific cells for events to achieve custom requirements
 
-[View full event list](/zh/docs/api/general/S2Event)
+[View full event list](/docs/api/general/S2Event)
 
 ```ts
 import { ColCell, DataCell, PivotSheet, RowCell, S2Event } from '@antv/s2';
@@ -75,7 +75,7 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
-If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/zh/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2`
+If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2`
 
 ```ts
 import { S2Event, SpreadSheet } from '@antv/s2'
@@ -94,7 +94,7 @@ function App() {
 }
 ```
 
-At the same time, the `React` and `Vue` versions provide the insinuation of events, and you can also use the `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/zh/docs/api/components/sheet-component) )
+At the same time, the `React` and `Vue` versions provide the insinuation of events, and you can also use the `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/docs/api/components/sheet-component) )
 
 ```ts
 import { SheetComponent } from '@antv/s2-react';
@@ -141,11 +141,11 @@ const s2Options = {
 }
 ```
 
-[View specific API configuration details](/zh/docs/api/basic-class/interaction#interaction)
+[View specific API configuration details](/docs/api/basic-class/interaction#interaction)
 
 ## built-in interaction
 
-> How to modify the interaction default style? Please check the [theme configuration](/zh/docs/manual/basic/theme)
+> How to modify the interaction default style? Please check the [theme configuration](/docs/manual/basic/theme)
 
 ### radio highlight
 
@@ -286,7 +286,7 @@ const s2Options = {
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600">
 
-Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/zh/docs/manual/advanced/interaction/hide-columns/) or [specific examples](/zh/examples/interaction/advanced#pivot-hide-columns)
+Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/docs/manual/advanced/interaction/hide-columns/) or [specific examples](/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
 const dataCfg = {
@@ -313,9 +313,9 @@ const s2Options = {
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600">
 
-S2 provides three layout methods ( [preview](https://s2.antv.vision/zh/examples/layout/basic#compact) ) by default:`列等宽布局``行列等宽布局`and`紧凑布局`, and you can also drag and drop the row/column header to adjust dynamically
+S2 provides three layout methods ( [preview](/examples/layout/basic#compact) ) by default:`列等宽布局``行列等宽布局`and`紧凑布局`, and you can also drag and drop the row/column header to adjust dynamically
 
-You can configure `resize` to control the width and height of the cells that need to be enabled to adjust the hot zone range, which is divided into three parts: corner header, row header, and column header. The default is to enable all of them. You can quickly turn on or off all `resize` by setting `boolean` type values, and you can also configure hotspots in each area to turn on or off by object type. [View specific examples](/zh/examples/interaction/advanced#resize-active)
+You can configure `resize` to control the width and height of the cells that need to be enabled to adjust the hot zone range, which is divided into three parts: corner header, row header, and column header. The default is to enable all of them. You can quickly turn on or off all `resize` by setting `boolean` type values, and you can also configure hotspots in each area to turn on or off by object type. [View specific examples](/examples/interaction/advanced#resize-active)
 
 ```ts
 const s2Options = {
@@ -337,7 +337,7 @@ const s2Options = {
 // };
 ```
 
-You can also configure `resize.visible` and `resize.disable` properties, which are used to control the display of the `resize` hotspot and customize the drag-and-drop verification logic respectively. [View specific examples](/zh/examples/interaction/advanced#resize-disable)
+You can also configure `resize.visible` and `resize.disable` properties, which are used to control the display of the `resize` hotspot and customize the drag-and-drop verification logic respectively. [View specific examples](/examples/interaction/advanced#resize-disable)
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600">
 
@@ -372,17 +372,17 @@ const s2Options = {
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600">
 
-View [details](/zh/docs/manual/advanced/interaction/merge-cell) or [specific examples](/zh/examples/interaction/advanced#merge-cell)
+View [details](/docs/manual/advanced/interaction/merge-cell) or [specific examples](/examples/interaction/advanced#merge-cell)
 
 ### link jump
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600">
 
-View [details](/zh/docs/manual/advanced/interaction/link-jump) or [specific examples](/zh/examples/interaction/advanced#pivot-link-jump)
+View [details](/docs/manual/advanced/interaction/link-jump) or [specific examples](/examples/interaction/advanced#pivot-link-jump)
 
 ### scroll
 
-view [details](/zh/docs/manual/advanced/interaction/scroll)
+view [details](/docs/manual/advanced/interaction/scroll)
 
 ### reset interaction
 
@@ -402,7 +402,7 @@ s2.on(S2Event.GLOBAL_RESET, () => {
 })
 ```
 
-Configurable `autoResetSheetStyle` to turn off reset interaction. [View specific examples](/zh/examples/interaction/advanced#auto-reset-sheet-style)
+Configurable `autoResetSheetStyle` to turn off reset interaction. [View specific examples](/examples/interaction/advanced#auto-reset-sheet-style)
 
 ```ts
 const s2Options = {
@@ -414,7 +414,7 @@ const s2Options = {
 
 ## call the API
 
-`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/zh/docs/api/basic-class/spreadsheet) , such as`选中所有单元格`,`获取列头单元格`and other common methods , please refer to the [Interaction instance class](/zh/docs/api/basic-class/interaction) for details
+`S2` has built-in some interaction-related `API` , which are uniformly mounted under the `s2.interaction` namespace. You can call them to achieve your effects after getting the [SpreadSheet instance](/docs/api/basic-class/spreadsheet) , such as`选中所有单元格`,`获取列头单元格`and other common methods , please refer to the [Interaction instance class](/docs/api/basic-class/interaction) for details
 
 ```ts
 const s2 = new PivotSheet()

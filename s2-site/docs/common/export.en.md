@@ -31,7 +31,7 @@ download(data, 'filename')
 
 | parameter     | illustrate                                                                                                                                                          | type                                                             | Defaults | required |
 | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- | :------- | :------- |
-| spreadsheet   | s2 instance                                                                                                                                                         | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)              |          | ✓        |
+| spreadsheet   | s2 instance                                                                                                                                                         | [SpreadSheet](/docs/api/basic-class/spreadsheet)              |          | ✓        |
 | split         | delimiter                                                                                                                                                           | `string`                                                         |          | ✓        |
 | formatOptions | Whether to format, you can format the data cell and row header separately, and passing Boolean values will take effect on the cell and row header at the same time. | `boolean \| { isFormatHeader?: boolean, isFormatData?: boolean}` | `false`  |          |
 

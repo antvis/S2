@@ -17,7 +17,7 @@ The figure below visually shows the form of the four field tags:
 ## Get started quickly
 
 The `S2` field marking feature is configured by configuring
-the [`Conditions`](/zh/docs/api/general/S2Options#conditions) attribute in `s2Options` .
+the [`Conditions`](/docs/api/general/S2Options#conditions) attribute in `s2Options` .
 
 ```js
  // 构建options 
@@ -40,15 +40,15 @@ const s2Options = {
 
 ## configuration explanation
 
-The [Conditions attribute](/zh/docs/api/general/S2Options#conditions) can configure four different fields, corresponding
+The [Conditions attribute](/docs/api/general/S2Options#conditions) can configure four different fields, corresponding
 to four different field tags.
 
-* `text` , `background` and `interval` are all of [Condition](/zh/docs/api/general/S2Options#condition) array type
+* `text` , `background` and `interval` are all of [Condition](/docs/api/general/S2Options#condition) array type
 
   * Contains `field` and `mapping` two fields
   * If a field ID matches multiple field marking rules in the same scope, the last rule shall prevail.
 
-* The `icon` is slightly different, it is an array type of [IconCondition](/zh/docs/api/general/S2Options#iconcondition)
+* The `icon` is slightly different, it is an array type of [IconCondition](/docs/api/general/S2Options#iconcondition)
 
   * One more `position` field is used to specify the position of the icon relative to the text
 
@@ -85,7 +85,7 @@ of the table:
 
 <embed src="@/docs/common/icon.zh.md"></embed>
 
-🎨 field mark detailed configuration refer to [Conditions API](/zh/docs/api/general/S2Options#conditions) documentation.
+🎨 field mark detailed configuration refer to [Conditions API](/docs/api/general/S2Options#conditions) documentation.
 
 ## characteristic
 
@@ -120,7 +120,7 @@ of the `mapping` function, a positive and negative two-way histogram with differ
 
 <Playground data-mdast="html" path="analysis/conditions/demo/bidirectional-interval.ts" rid="bidirectional"></playground>
 
-​📊 See more [field markup examples](/zh/examples/analysis/conditions#bidirectional-interval) .
+​📊 See more [field markup examples](/examples/analysis/conditions#bidirectional-interval) .
 
 ### Gradient histogram
 
@@ -132,7 +132,7 @@ also [gradient colors](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E
 The `price` field uses a gradient
 color:<Playground data-mdast="html" path="analysis/conditions/demo/gradient-interval.ts" rid="gradient"></playground>
 
-​📊 See more [field markup examples](/zh/examples/analysis/conditions#gradient-interval) .
+​📊 See more [field markup examples](/examples/analysis/conditions#gradient-interval) .
 
 ### Turn on text intelligent inversion
 
@@ -143,4 +143,4 @@ Priority: `intelligentReverseTextColor` of `background condition` < `fill` of `t
 
 <Playground data-mdast="html" path="analysis/conditions/demo/intelligent-background.ts" rid="intelligentReverseTextColor"></playground>
 
-​📊 See more [field markup examples](/zh/examples/analysis/conditions#intelligent-background) .
+​📊 See more [field markup examples](/examples/analysis/conditions#intelligent-background) .

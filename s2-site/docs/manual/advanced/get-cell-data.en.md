@@ -11,13 +11,13 @@ In actual business scenarios, you will often encounter some scenarios where you 
 * Listen to the mouse `click` `hover` event to obtain the current corresponding cell data
 * To customize the `tooltip` content, it is necessary to render different operation items or display different prompt information according to the current cell information
 
-The table of `S2` is drawn by `Canvas` , so there will only be one `dom` element, a set of data structures corresponding to all cells, which store the coordinates, text information, interaction status and other [information](/zh/docs/api/basic-class/base-cell) of each cell
+The table of `S2` is drawn by `Canvas` , so there will only be one `dom` element, a set of data structures corresponding to all cells, which store the coordinates, text information, interaction status and other [information](/docs/api/basic-class/base-cell) of each cell
 
-`S2` provides a series of [APIs](/zh/docs/api/basic-class/spreadsheet) for obtaining data, some commonly used scenarios are introduced below
+`S2` provides a series of [APIs](/docs/api/basic-class/spreadsheet) for obtaining data, some commonly used scenarios are introduced below
 
 ### Get the specified area cell
 
-After the rendering is complete, access `s2.facet.layoutResult` to get all [the cells in](/zh/docs/api/basic-class/node) the current visible range. [see more](/zh/docs/api/basic-class/base-facet)
+After the rendering is complete, access `s2.facet.layoutResult` to get all [the cells in](/docs/api/basic-class/node) the current visible range. [see more](/docs/api/basic-class/base-facet)
 
 ```ts
 s2.render()
@@ -36,7 +36,7 @@ console.log(s2.facet.layoutResult)
 * `rowsHierarchy` row header level information
 * `getCellMeta` gets the execution cell information according to the row and column indexes
 
-For numerical cells, due to the characteristics of virtual scrolling, it needs to be obtained dynamically. For more information, please refer to the [interaction API](/zh/docs/api/basic-class/interaction)
+For numerical cells, due to the characteristics of virtual scrolling, it needs to be obtained dynamically. For more information, please refer to the [interaction API](/docs/api/basic-class/interaction)
 
 ```ts
 
@@ -77,7 +77,7 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/GO7xii%26LQ/13b44f81-271c-4771-b7b3-45789761eab2.png" width="600" alt="preview">
 
-You can also call the [interactive method](/zh/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95) to get it manually
+You can also call the [interactive method](/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95) to get it manually
 
 ```ts
 s2.interaction.getAllCells() // 获取行/列/数值区域所有单元格
@@ -88,9 +88,9 @@ s2.interaction.isSelectedState() // 是否是选中状态
 
 ### Get row/column data
 
-When the table is initialized, the data configuration (s2DataConfig) declared by the user will be converted into the internally required data set (dataSet), please refer to the [data flow processing](/zh/docs/manual/advanced/data-process/pivot) for details
+When the table is initialized, the data configuration (s2DataConfig) declared by the user will be converted into the internally required data set (dataSet), please refer to the [data flow processing](/docs/manual/advanced/data-process/pivot) for details
 
-The [instance](/zh/docs/api/basic-class/base-data-set) of the dataset is mounted under the `s2.dataSet` namespace, you can access it to get what you need:
+The [instance](/docs/api/basic-class/base-data-set) of the dataset is mounted under the `s2.dataSet` namespace, you can access it to get what you need:
 
 * raw data
 * summary data
@@ -177,4 +177,4 @@ const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query}
 
 ### Get hidden column data
 
-[View Hide Column Header Section](/zh/docs/manual/advanced/interaction/hide-columns/#%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%88%97%E5%A4%B4%E6%95%B0%E6%8D%AE)
+[View Hide Column Header Section](/docs/manual/advanced/interaction/hide-columns/#%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%88%97%E5%A4%B4%E6%95%B0%E6%8D%AE)

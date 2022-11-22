@@ -8,8 +8,8 @@ Function description: cell base class. [details](https://github.com/antvis/S2/bl
 | ---------------------- | -------------------------------------- | ----------------------------------------------------------------------- |
 | getMeta                | Get cell metadata                      | () => [ViewMeta](#viewmeta)                                             |
 | setMeta                | Set cell metadata                      | (vieMeta: [ViewMeta](#viewmeta) ) => void                               |
-| getIconStyle           | Get cell icon style                    | () => [IconTheme](/zh/docs/api/general/S2Theme#icontheme)               |
-| getStyle               | get cell style                         | () => [DefaultCellTheme](/zh/docs/api/general/S2Theme#defaultcelltheme) |
+| getIconStyle           | Get cell icon style                    | () => [IconTheme](/docs/api/general/S2Theme#icontheme)               |
+| getStyle               | get cell style                         | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
 | getTextAndIconPosition | Get the position of cell text and icon | (iconCount: `number` ) => [TextAndIconPosition](#textandiconposition)   |
 | getActualText          | get the drawn text                     | `() => string`                                                          |
 | cellType               | cell type                              | [CellTypes](#celltypes)                                                 |

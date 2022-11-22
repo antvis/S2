@@ -4,7 +4,7 @@ order: 1
 ---
 
 The `React` version provides an advanced sorting component, optionally
-available. [example](https://s2.antv.vision/zh/examples/analysis/sort#advanced)
+available. [example](/examples/analysis/sort#advanced)
 
 > Note: state is not maintained internally
 
@@ -12,7 +12,7 @@ available. [example](https://s2.antv.vision/zh/examples/analysis/sort#advanced)
 
 Use the `SheetComponent` component of `@antv/s2-react` , and configure `advancedSortCfg` for the `header` . For
 configuration details,
-see [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+see [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';

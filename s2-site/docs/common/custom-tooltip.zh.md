@@ -102,5 +102,5 @@ object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 | text     | `string`   |       |        | 名称           |
 | icon     | `React.ReactNode \| string`   |       |        | 自定义图标     |
 | visible  | `boolean \| (cell) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
-| onClick  | (`cell`: [S2CellType](/zh/docs/api/basic-class/base-cell): ) => void                           |       |        | 点击事件回调  (cell 为当前 tooltip 对应的单元格）   |
+| onClick  | (`cell`: [S2CellType](/docs/api/basic-class/base-cell): ) => void                           |       |        | 点击事件回调  (cell 为当前 tooltip 对应的单元格）   |
 | children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |

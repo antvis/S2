@@ -81,7 +81,7 @@ ReactDOM.render(
 );
 ```
 
-​📊 Check out the demo [React version pivot table](/zh/examples/react-component/sheet#pivot) .
+​📊 Check out the demo [React version pivot table](/examples/react-component/sheet#pivot) .
 
 ### class way
 
@@ -95,4 +95,4 @@ const pivotSheet = new PivotSheet(container, dataCfg, options);
 pivotSheet.render();
 ```
 
-​📊 View [the pivot table of the demo class](/zh/examples/basic/pivot#grid) .
+​📊 View [the pivot table of the demo class](/examples/basic/pivot#grid) .

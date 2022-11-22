@@ -5,7 +5,7 @@ order: 8
 
 ### CustomTreeItem
 
-[Detailed](/zh/docs/manual/advanced/custom/category-tree) [example](/s2.antv.vision/zh/examples/custom/custom-tree#custom-tree)
+[Detailed](/docs/manual/advanced/custom/category-tree) [example](/examples/custom/custom-tree#custom-tree)
 
 Function description: custom tree structure configuration, compatible with [antd Tree](https://ant.design/components/tree-cn/) data configuration items;
 

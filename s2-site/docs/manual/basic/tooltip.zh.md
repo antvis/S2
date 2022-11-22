@@ -27,7 +27,7 @@ import "@antv/s2/dist/style.min.css";
 
 ## 使用
 
-在 `s2Options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
+在 `s2Options` 中配置 [tooltip](/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
 
 ```ts
 const s2Options = {
@@ -71,7 +71,7 @@ const s2Options = {
 
 ### 操作配置项
 
-通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/zh/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
+通过配置 `operation` 字段在 `Tooltip` 上增加 [操作项](/docs/api/general/S2Options#tooltipoperation), 支持 [自定义](#自定义-tooltip-操作项).
 
 ```ts
 const s2Options = {
@@ -140,7 +140,7 @@ const s2Options = {
 };
 ```
 
-同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/zh/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
+同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
 const TooltipContent = (props) => <div>...</div>
@@ -231,7 +231,7 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 操作项
 
-除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip` 对应的 [单元格信息](/zh/docs/api/basic-class/base-cell)
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip` 对应的 [单元格信息](/docs/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
@@ -269,7 +269,7 @@ const s2Options = {
 };
 ```
 
-还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/zh/docs/api/basic-class/base-cell) 动态显示
+还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/docs/api/basic-class/base-cell) 动态显示
 
 ```ts
 const s2Options = {
@@ -341,7 +341,7 @@ const s2Options = {
 
 继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法，渲染你封装的任意组件
 
-- [查看 BaseTooltip 基类](/zh/docs/api/basic-class/base-tooltip)
+- [查看 BaseTooltip 基类](/docs/api/basic-class/base-tooltip)
 - [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -389,7 +389,7 @@ const s2Options = {
 - 行列头**点击**时显示 `tooltip`, 单元格文字**被省略**时悬停显示 `tooltip`
 - 数值单元格悬停超过 **800ms** 显示 `tooltip`
 
-比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom), 监听行头单元格的 [交互事件](/zh/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`. [例子](/zh/examples/interaction/custom#row-col-hover-tooltip)
+比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/docs/manual/advanced/interaction/custom), 监听行头单元格的 [交互事件](/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`. [例子](/examples/interaction/custom#row-col-hover-tooltip)
 
 ```ts
 import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
@@ -421,7 +421,7 @@ const s2Options = {
 
 ```
 
-如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](/docs/api/components/sheet-component) 来进行自定义。[例子](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;
@@ -530,7 +530,7 @@ const s2Options = {
 
 #### 重写展示方法
 
-除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/zh/docs/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/zh/docs/manual/advanced/get-instance)
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/docs/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/docs/manual/advanced/get-instance)
 
 ```ts
 // options 配置 tooltip 显示
@@ -554,7 +554,7 @@ tooltip: {
 
 ##### 可自定义显示内容
 
-以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/common/custom-tooltip)
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/docs/common/custom-tooltip)
 
 - 显示位置 (position)
 
@@ -593,7 +593,7 @@ tooltip: {
 
   - 所选项统计列表（ summaries ）
 
-    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/zh/docs/common/custom-tooltip#tooltipsummaryoptions)
+    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/docs/common/custom-tooltip#tooltipsummaryoptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -607,7 +607,7 @@ tooltip: {
 
   - 轴列表（ headInfo ）
 
-    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/zh/docs/common/custom-tooltip#tooltipheadinfo)
+    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/docs/common/custom-tooltip#tooltipheadinfo)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -628,7 +628,7 @@ tooltip: {
 
   - 数据点明细信息（ details ）
 
-    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/zh/docs/common/custom-tooltip#listitem)
+    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/docs/common/custom-tooltip#listitem)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -656,11 +656,11 @@ tooltip: {
 
 - 部分配置 ( options )
 
-  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/zh/docs/common/custom-tooltip#tooltipoptions)
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/docs/common/custom-tooltip#tooltipoptions)
 
   - 操作栏（ operator ）
 
-    可操作配置，具体细节参考 [TooltipOperatorOptions](/zh/docs/common/custom-tooltip#tooltipoperatoroptions)
+    可操作配置，具体细节参考 [TooltipOperatorOptions](/docs/common/custom-tooltip#tooltipoperatoroptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {

@@ -9,7 +9,7 @@ The schedule is one of the basic forms of `S2` . The detailed table is an ordina
 
 <img data-mdast="html" alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
 
-Schedules and pivot tables share [basic interactions](/manual/advanced/interaction/basic) , [theming](/manual/basic/theme) , [replication](/manual/basic/analysis/export) [, custom cell](/manual/advanced/custom/hook) capabilities, and more. In addition, the schedule also supports special functions such as row and [column freezing](/zh/examples/interaction/basic#froze) . In the scenario of massive detailed data rendering, the detailed table can replace the `DOM` -based table component to improve performance and user experience.
+Schedules and pivot tables share [basic interactions](/manual/advanced/interaction/basic) , [theming](/manual/basic/theme) , [replication](/manual/basic/analysis/export) [, custom cell](/manual/advanced/custom/hook) capabilities, and more. In addition, the schedule also supports special functions such as row and [column freezing](/examples/interaction/basic#froze) . In the scenario of massive detailed data rendering, the detailed table can replace the `DOM` -based table component to improve performance and user experience.
 
 ## use
 
@@ -101,7 +101,7 @@ s2.render();
 
 ### serial number
 
-Pass in `s2Options` in `showSeriesNumber` to display the built-in serial number. [view demo](/zh/examples/basic/table#table)
+Pass in `s2Options` in `showSeriesNumber` to display the built-in serial number. [view demo](/examples/basic/table#table)
 
 ```ts
 const s2Options = {
@@ -111,7 +111,7 @@ const s2Options = {
 
 ### ranks freeze
 
-Row and column freeze keeps a specific row and column fixed while scrolling, so that it remains within the viewport at all times, providing information for comparison and reference. [view demo](/zh/examples/interaction/basic#frozen)
+Row and column freeze keeps a specific row and column fixed while scrolling, so that it remains within the viewport at all times, providing information for comparison and reference. [view demo](/examples/interaction/basic#frozen)
 
 Row and column freezing is controlled by passing these properties in `s2Options` :
 

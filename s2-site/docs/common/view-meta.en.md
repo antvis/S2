@@ -9,7 +9,7 @@ object is required, *default: {}* function description: information such as cell
 
 | parameter   | type                                                | required | Defaults | Functional description                                               |
 | ----------- | --------------------------------------------------- | :------: | -------- | -------------------------------------------------------------------- |
-| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |          |          | Table class instance, which can access any configuration information |
+| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |          |          | Table class instance, which can access any configuration information |
 | id          | `string`                                            |          |          | cell unique identifier                                               |
 | x           | `number`                                            |          |          | cell x-coordinate                                                    |
 | the y       | `number`                                            |          |          | cell y coordinate                                                    |

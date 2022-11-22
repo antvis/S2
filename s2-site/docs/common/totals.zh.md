@@ -9,8 +9,8 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 
 | 参数 | 说明   | 类型                                          | 必选  | 默认值 |
 | ---- | ------ | --------------------------------------------- | ---- | ------ |
-| row  | 行总计 | [Total](/zh/docs/api/general/S2Options#total) |       |    |
-| col  | 列总计 | [Total](/zh/docs/api/general/S2Options#total) |       |    |
+| row  | 行总计 | [Total](/docs/api/general/S2Options#total) |       |    |
+| col  | 列总计 | [Total](/docs/api/general/S2Options#total) |       |    |
 
 ## Total
 
