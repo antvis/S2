@@ -37,7 +37,7 @@ s2.interaction.reset()
 | getPanelGroupAllDataCells | 获取可视区域内的所有数值单元格                                  | `() => DataCell[]` |
 | getAllRowHeaderCells | 获取行头单元格                                          | `() => RowCell[]` |
 | getAllColHeaderCells | 获取列头单元格                                          | `() => ColCell[]` |
-| getRowColActiveCells | 获取行头和列头激活的单元格                                    | `() => RowCell[] | ColCell[]` |
+| getRowColActiveCells | 获取行头和列头激活的单元格                                    | `() => RowCell[] \| ColCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格                                       | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
@@ -134,3 +134,5 @@ interface InteractionStateInfo {
   force?: boolean;
 }
 ```
+
+<embed src="@/docs/common/view-meta.zh.md"></embed>

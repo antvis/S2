@@ -24,29 +24,7 @@ Function description: cell base class. [details](https://github.com/antvis/S2/bl
 | hideInteractionShape   | Interactive layers for hidden cells    | `() => void`                                                            |
 | clearUnselectedState   | clear unchecked                        | `() => void`                                                            |
 
-### ViewMeta
-
-```ts
-interface ViewMeta {
-  spreadsheet: SpreadSheet;
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  data: Record<string, any>;
-  rowIndex: number;
-  colIndex: number;
-  valueField: string;
-  fieldValue: DataItem;
-  isTotals?: boolean;
-  rowQuery?: Record<string, any>;
-  colQuery?: Record<string, any>;
-  rowId?: string;
-  colId?: string;
-  [key: string]: any;
-}
-```
+<embed src="@/docs/common/view-meta.en.md"></embed>
 
 ### point
 

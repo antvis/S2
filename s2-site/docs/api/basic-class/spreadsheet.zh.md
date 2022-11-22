@@ -45,7 +45,7 @@ s2.isPivotMode()
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |
 | clearDrillDownData | 清除下钻数据                                                                                                                 | `(rowNodeId?: string) => void` |    |
 | showTooltip | 显示 tooltip                                                                                                             | (showOptions: [TooltipShowOptions](/docs/api/common/custom-tooltip)) => void |    |
-| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息                                                                                                 | (event: `CanvasEvent |    | MouseEvent`, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
+| showTooltipWithInfo | 显示 tooltip, 并且展示一些默认信息    | (event: `CanvasEvent \| MouseEvent`, data: [TooltipData[]](/docs/api/common/custom-tooltip), options?: [TooltipOptions](/docs/api/common/custom-tooltip)) => void |
 | hideTooltip | 隐藏 tooltip                                                                                                             | `() => void` |    |
 | destroyTooltip | 销毁 tooltip                                                                                                             | `() => void` |    |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`)                                                                            | `() => void` |    |
@@ -73,8 +73,8 @@ s2.isPivotMode()
 | updateSortMethodMap | 更新存储在 store 中的节点排序方式 map, replace 为是否覆盖上一次的值                                                                           | (nodeId: string, sortMethod: string, replace?: boolean) => void |    |
 | getMenuDefaultSelectedKeys | 获取 tooltip 中选中的菜单项 key 值 | `(nodeId: string) => string[]` |    |
 | measureText | 获取文本在画布中的测量信息  | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => [TextMetrics](https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics) \| `null` |    |
-| measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number | null` |    |
-| measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number | null` |    |
+| measureTextWidth | 获取文本在画布中的测量宽度   | (text: `string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
+| measureTextHeight |  获取文本在画布中的测量高度 | (text:`string`, font: [TextTheme](/docs/api/general/S2Theme#texttheme)) => `number` \| `null` |    |
 
 ### S2MountContainer
 

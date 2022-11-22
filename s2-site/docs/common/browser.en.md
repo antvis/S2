@@ -17,6 +17,15 @@ We provide the `UMD` compilation file of the `dist` directory, import `dist/inde
 </script>
 ```
 
+Import any from `window.S2`
+
+```diff
+<script type="module">
+-  import { S2Event, PivotSheet, TableSheet } from '@antv/s2'
++  const { S2Event, PivotSheet, TableSheet } = S2
+</script>
+```
+
 If you are using the `React` version `@antv/s2-react` , or `Vue3` version `@antv/s2-vue` , additional style files need to be introduced
 
 ```html

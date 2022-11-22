@@ -22,7 +22,7 @@ A pivot table consists of five parts, namely row header, column header, corner h
 
 ## row header (rowHeader)
 
-The structure of the row header is determined by `s2DataConfig.fields.rows` , which is used for row analysis dimension display. The line head supports two display forms:`平铺模式(grid)` and`树状模式(tree)` .
+The structure of the row header is determined by `s2DataConfig.fields.rows` , which is used for row analysis dimension display. The line head supports two display forms:`平铺模式 (grid)` and`树状模式 (tree)` .
 
 For example, the line header data configures `province, city` fields
 
@@ -42,6 +42,7 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img data-mdast="html" width="200" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*p71xTrX3YIEAAAAAAAAAAAAAARQnAQ" alt="row">
 
 Displayed in tree mode as:
@@ -52,9 +53,12 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zYzLQ5rgzsoAAAAAAAAAAAAAARQnAQ" height="200" alt="column">
 
 ## column header (colHeader)
+
+> Note that when it is a detailed table, only columns need to be set.
 
 The structure of the column header is determined by `s2DataConfig.fields.columns` , which is used for column analysis dimension display.
 
@@ -68,9 +72,8 @@ const s2DataConfig = {
 }
 ```
 
+<br/>
 <img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_uMfQK9VHk4AAAAAAAAAAAAAARQnAQ" width="400" alt="column">
-
-> Note that when it is a detailed table, only columns need to be set.
 
 ## Corner Header (cornerHeader)
 
