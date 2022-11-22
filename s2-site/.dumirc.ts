@@ -250,7 +250,6 @@ export default defineConfig({
       },
     ],
     playground: {
-      container: '<div id="container" />',
       playgroundDidMount: 'console.log("playgroundDidMount");',
       playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
       devDependencies: {
