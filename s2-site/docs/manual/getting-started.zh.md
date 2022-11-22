@@ -184,7 +184,7 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -218,7 +218,7 @@ yarn add antd @ant-design/icons
 import 'antd/dist/antd.min.css';
 ```
 
-​📊 查看 [React 版本透视表 demo](/zh/examples/react-component/sheet#pivot)。
+​📊 查看 [React 版本透视表 demo](/examples/react-component/sheet#pivot)。
 
 ### `Vue3` 版本
 

@@ -5,7 +5,7 @@ order: 8
 
 ## React version
 
-For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/zh/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `getSpreadSheet`
+For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `getSpreadSheet`
 
 ### ref method (recommended)
 

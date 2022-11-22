@@ -5,7 +5,7 @@ order: 4
 
 Table event list, you can listen to the required events according to actual needs, and realize custom business. [details](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
-If you are using the `s2-react` or `s2-vue` table component, the event has been encapsulated, and no additional monitoring is required, just use its callback function. [details](/zh/docs/api/components/sheet-component)
+If you are using the `s2-react` or `s2-vue` table component, the event has been encapsulated, and no additional monitoring is required, just use its callback function. [details](/docs/api/components/sheet-component)
 
 ```ts
 s2.on(S2Event.ROW_CELL_CLICK, (event) => {

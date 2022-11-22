@@ -2,8 +2,8 @@
 title: 自定义排序操作
 order: 6
 ---
-虽然，`S2` 表格有默认的[排序操作](https://s2.antv.vision/zh/examples/analysis/sort#group-sort)和 `React header`
-组件中的[高级排序排序](https://s2.antv.vision/zh/examples/analysis/sort#advanced)功能。
+虽然，`S2` 表格有默认的[排序操作](/examples/analysis/sort#group-sort)和 `React header`
+组件中的[高级排序排序](/examples/analysis/sort#advanced)功能。
 
 但在某些业务场景下，我们仍需要自定义排序，我们将它分为**自定义排序 `icon`**，**自定义排序 `tooltip`**，**自定义排序操作**三个部分。接下来，我将带大家实现如👇 动图中的自定义排序功能。
 
@@ -11,7 +11,7 @@ order: 6
 
 ## 自定义排序 icon
 
-相关章节：[自定义icon](https://s2.antv.vision/zh/examples/custom/custom-icon#custom-header-action-icon)
+相关章节：[自定义icon](/examples/custom/custom-icon#custom-header-action-icon)
 
 ### 配置
 
@@ -66,7 +66,7 @@ const s2Options = {
 
 ## 自定义 tooltip
 
-相关章节：[headerActionIcons 配置说明](https://s2.antv.vision/zh/docs/api/general/S2Options#headeractionicon)
+相关章节：[headerActionIcons 配置说明](/docs/api/general/S2Options#headeractionicon)
 
 ### 配置
 
@@ -127,7 +127,7 @@ const s2Options = {
 
 ## 自定义排序操作
 
-相关章节：[自定义排序](https://s2.antv.vision/zh/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
+相关章节：[自定义排序](/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
 
 ### 配置
 

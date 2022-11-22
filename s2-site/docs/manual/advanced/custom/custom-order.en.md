@@ -3,7 +3,7 @@ title: Customize Order
 order: 6
 ---
 
-Although, `S2` table has default [sort action](https://s2.antv.vision/zh/examples/analysis/sort#group-sort) and [advanced sort](https://s2.antv.vision/zh/examples/analysis/sort#advanced) function in `React header` component.
+Although, `S2` table has default [sort action](/examples/analysis/sort#group-sort) and [advanced sort](/examples/analysis/sort#advanced) function in `React header` component.
 
 But in some business scenarios, we still need custom sorting, which we divide into three parts: **custom sorting `icon`** , **custom sorting `tooltip`** , and **custom sorting operations** . Next, I will take you to realize the custom sorting function as shown in the 👇 animation.
 
@@ -11,7 +11,7 @@ But in some business scenarios, we still need custom sorting, which we divide in
 
 ## custom sort icon
 
-Related chapters: [custom icon](https://s2.antv.vision/zh/examples/custom/custom-icon#custom-header-action-icon)
+Related chapters: [custom icon](/examples/custom/custom-icon#custom-header-action-icon)
 
 ### configuration
 
@@ -66,7 +66,7 @@ const s2Options = {
 
 ## custom tooltip
 
-Related chapters: [headerActionIcons configuration instructions](https://s2.antv.vision/zh/docs/api/general/S2Options#headeractionicon)
+Related chapters: [headerActionIcons configuration instructions](/docs/api/general/S2Options#headeractionicon)
 
 ### configuration
 
@@ -127,7 +127,7 @@ const s2Options = {
 
 ## custom sort operation
 
-Related chapter: [Custom sorting](https://s2.antv.vision/zh/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
+Related chapter: [Custom sorting](/docs/manual/basic/sort/custom#2-%E7%BB%B4%E5%BA%A6%E5%80%BC%E5%88%97%E8%A1%A8sortby)
 
 ### configuration
 

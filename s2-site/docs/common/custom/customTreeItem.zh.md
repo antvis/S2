@@ -5,7 +5,7 @@ order: 8
 
 ### CustomTreeItem
 
-[详细说明](/zh/docs/manual/advanced/custom/category-tree) [例子](/s2.antv.vision/zh/examples/custom/custom-tree#custom-tree)
+[详细说明](/docs/manual/advanced/custom/category-tree) [例子](/examples/custom/custom-tree#custom-tree)
 
 功能描述：自定义树状结构的配置，兼容 [antd Tree](https://ant.design/components/tree-cn/) 数据配置项；
 

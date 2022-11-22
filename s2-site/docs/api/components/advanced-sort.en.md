@@ -11,7 +11,7 @@ The `props` of the `AdvancedSort` component
 
 | parameter     | illustrate                                                             | type                                                                                                                                                    | required | Defaults |
 | :------------ | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :------- | :------- |
-| sheet         | current table instance                                                 | [SpreadSheet](https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet)                                                                               | ✓        |          |
+| sheet         | current table instance                                                 | [SpreadSheet](/docs/api/basic-class/spreadsheet)                                                                               | ✓        |          |
 | open          | whether to display                                                     | `boolean`                                                                                                                                               | ✓        |          |
 | className     | class class name                                                       | `string`                                                                                                                                                |          |          |
 | icon          | sort button icon                                                       | `React.ReactNode`                                                                                                                                       |          |          |
@@ -19,9 +19,9 @@ The `props` of the `AdvancedSort` component
 | ruleText      | Rule description                                                       | `string`                                                                                                                                                |          |          |
 | dimensions    | list of optional fields                                                | [Dimension](#dimension) \[]                                                                                                                             |          |          |
 | ruleOptions   | Rule configuration list                                                | [RuleOption](#ruleoption) \[]                                                                                                                           |          |          |
-| sortParams    | There are already sort rules by default                                | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
+| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                                            |          |          |
-| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
+| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
 
 ## AdvancedSortCfgProps
 
@@ -36,9 +36,9 @@ Configure the `props` of `advancedSortCfg` in the `header`
 | ruleText      | Rule description                                                       | `string`                                                                                                                                                |          |          |
 | dimensions    | list of optional fields                                                | [Dimension](#dimension) \[]                                                                                                                             |          |          |
 | ruleOptions   | Rule configuration list                                                | [RuleOption](#ruleoption) \[]                                                                                                                           |          |          |
-| sortParams    | There are already sort rules by default                                | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
+| sortParams    | There are already sort rules by default                                | [SortParams](/docs/api/general/S2DataConfig#sortparams)                                                                        |          |          |
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                                            |          |          |
-| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
+| onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
 
 ## Dimension
 

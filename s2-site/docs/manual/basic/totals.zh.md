@@ -51,7 +51,7 @@ order: 5
 
 ### 1. 显示配置
 
-配置 [S2Options](/zh/docs/api/general/S2Options#total) 的 `totals` 属性来实现是否展示行列小计总计以及显示位置，类型如下：
+配置 [S2Options](/docs/api/general/S2Options#total) 的 `totals` 属性来实现是否展示行列小计总计以及显示位置，类型如下：
 
 #### Totals
 
@@ -59,8 +59,8 @@ object **必选**,_default：null_ 功能描述： 小计总计配置
 
 | 参数 | 说明   | 类型                                          | 默认值 | 必选 |
 | ---- | ------ | --------------------------------------------- | ------ | ---- |
-| row  | 列总计 | [Total](/zh/docs/api/general/S2Options#total) | {}     |      |
-| col  | 行总计 | [Total](/zh/docs/api/general/S2Options#total) | {}     |      |
+| row  | 列总计 | [Total](/docs/api/general/S2Options#total) | {}     |      |
+| col  | 行总计 | [Total](/docs/api/general/S2Options#total) | {}     |      |
 
 #### Total
 
