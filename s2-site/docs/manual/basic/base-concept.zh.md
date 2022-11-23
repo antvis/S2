@@ -41,6 +41,7 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img width="200" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*p71xTrX3YIEAAAAAAAAAAAAAARQnAQ" width="250"  alt="row" />
 
 在树状模式下展示为：
@@ -51,9 +52,12 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zYzLQ5rgzsoAAAAAAAAAAAAAARQnAQ" height="200"  alt="column" />
 
 ## 列头（colHeader）
+
+> 注意，当为明细表时，仅需设置 columns。
 
 列头的结构是由 `s2DataConfig.fields.columns` 决定，用于列分析维度展示。
 
@@ -67,9 +71,8 @@ const s2DataConfig = {
 }
 ```
 
+<br/>
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_uMfQK9VHk4AAAAAAAAAAAAAARQnAQ" width="400"  alt="column" />
-
-> 注意，当为明细表时，仅需设置 columns。
 
 ## 角头（cornerHeader）
 

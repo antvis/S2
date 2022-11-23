@@ -132,3 +132,5 @@ interface InteractionStateInfo {
   force?: boolean;
 }
 ```
+
+<embed src="@/docs/common/view-meta.en.md"></embed>

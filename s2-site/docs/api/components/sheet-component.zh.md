@@ -12,9 +12,9 @@ order: 0
 功能描述： React SheetComponent 组件的 props 参数
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| -- | -- | -- | -- | --- | --- | --- | --- |
-| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |
-| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
+| -- | -- | -- | -- | --- |
+| sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot \| table \| gridAnalysis \| strategy` \| `pivot` |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
 | dataCfg | 透视表数据映射相关配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions) |  | ✓ |
 | partDrillDown | 维度下钻相关属性 | [PartDrillDown](/docs/api/components/drill-down) |  |  |
@@ -46,7 +46,7 @@ order: 0
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
-| onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: ([DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
+| onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onCornerCellClick | 角头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -68,8 +68,8 @@ order: 0
 | onLayoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | onLayoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedRows: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
-| onCollapseRowsAll | 树状模式下收起全部的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
-| onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; |  |  |
+| onCollapseRowsAll | 树状模式下收起全部的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
+| onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | (hierarchyCollapse: `boolean` ) => void; |  |  |
 | onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
 | onBeforeRender | 开始 render 前的事件 | () => void; |  |  |
 | onAfterRender | render 完成的事件 | () => void; |  |  |
@@ -97,8 +97,8 @@ order: 0
 | onReset | 交互状态重置事件 | (event: KeyboardEvent) => void |  |  |
 | onLinkFieldJump | 链接字段跳转事件 | (data: { key: string; record: [Data](/docs/api/general/S2DataConfig#data) }) => void |  |  |
 | onScroll | 单元格滚动事件 （含行头和数值单元格） | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: ColCell[]) => void; |  |  |
-| onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: RowCell[]) => void; |  |  |
+| onColCellBrushSelection | 批量选中刷选范围内的列头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [ColCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
+| onRowCellBrushSelection | 批量选中刷选范围内的行头单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息（仅支持透视表） | (cells: [RowCell](/docs/api/basic-class/base-cell)[]) => void; |  |  |
 
 ## SheetComponentOptions
 
@@ -117,6 +117,8 @@ type SheetComponentOptions = S2Options<
 >;
 ```
 
+<br/>
+
 # Vue 表组件
 
 基于 `@antv/s2` 层封装的 `Vue 3.0` 版开箱即用的组件 `<SheetComponent />`
@@ -126,7 +128,7 @@ type SheetComponentOptions = S2Options<
 功能描述： Vue SheetComponent 组件的 props，如 `<SheetComponent :sheetType="pivot" />`
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
-| -- | -- | -- | -- | --- | --- |
+| -- | -- | -- | -- | --- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 | `pivot | table` | `pivot` |  |
 | dataCfg | 透视表数据映射配置项 | [S2DataConfig](/docs/api/general/S2DataConfig) |  | ✓ |
 | options | 透视表属性配置项 | [SheetComponentOptions](#sheetcomponentoptions-1) |  | ✓ |
@@ -141,8 +143,8 @@ type SheetComponentOptions = S2Options<
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
-| spreadsheet | 自定义表 | (container: `HTMLElement | string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
-| getSpreadSheet | 获取表实例 (1.4.0 已废弃，请使用 `load`) [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
+| spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
+| getSpreadSheet | 获取表实例 (1.4.0 已废弃，请使用 `mounted`) [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -296,3 +298,5 @@ type SheetComponentOptions = S2Options<
 | meta | resize 热区对应单元格节点信息 | [Node](/docs/api/basic-class/node) |  |  |
 | resizedWidth | 拖拽后的宽度 | `number` |  |  |
 | resizedHeight | 拖拽后的高度 | `number` |  |  |
+
+<embed src="@/docs/common/view-meta.zh.md"></embed>

@@ -54,7 +54,7 @@ const s2Options = {
 
 | 参数 | 说明 | 类型 | 默认值 | 必选 | 备注                | 版本 |
 | --- | --- | --- | --- | --- |-------------------| --- |
-| drillConfig | 下钻菜单组件配置项 | [DrillDownProps] (#drilldownprops) | - | ✓ |     | |
+| drillConfig | 下钻菜单组件配置项 | [DrillDownProps](#drilldownprops) | - | ✓ |     | |
 | drillItemsNum | 下钻完成后展示的个数，默认全部展示 | `number` | -1 |  |                   | |
 | fetchData | 点击下钻后的回调 | [FetchCallBack](#fetchcallback) | - | ✓ |                   | |
 | clearDrillDown | 清除下钻信息，当有指定的 rowId 传递时清除对应 rowId 的下钻信息；如果参数是 空对象 {}，则清空所有的下钻信息 | `{rowId: string;}` | - |  | 仅 `React` 组件支持此属性 | |
@@ -110,6 +110,6 @@ const s2Options = {
 | --- | --- | --- | --- | --- |
 | name | 展示名字 | `string` |  | ✓ |
 | value | 具体值 | `string` |  | ✓ |
-| type | 维度类型, 不同类型对应 icon 不同 | `text` \| `location` \| `date` |  |  |
+| type | 维度类型，不同类型对应 icon 不同 | `text` \| `location` \| `date` |  |  |
 | disabled | 是否允许选择 | `boolean` |  |  |
-| icon | 列表 item 的 icon | `React.ReactNode` |  |  |
+| icon | 列表 item 的 icon | `ReactNode` |  |  |

@@ -29,8 +29,6 @@ cell.getActualText()
 | hideInteractionShape | 隐藏单元格的交互图层 | `() => void` |
 | clearUnselectedState | 清空未选中状态 | `() => void` |
 
-### ViewMeta
-
 <embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ### Point

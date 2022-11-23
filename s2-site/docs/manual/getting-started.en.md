@@ -182,7 +182,7 @@ s2.render();
 
 ### `React` version
 
-`S2` provides an out-of-the-box `React` version [Table Component](/examples/gallery#category-Table Component), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
+`S2` provides an out-of-the-box `React` version [Table Component](/examples/react-component/sheet/#pivot), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
 
 #### Table components use
 
