@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2-react",
-  "version": "2.0.0-next.1",
+  "version": "2.0.0-alpha.1",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@antv/s2": "^2.0.0-next.1",
+    "@antv/s2": "^2.0.0-alpha.1",
     "@antv/s2-shared": "*",
     "@testing-library/react": "^12.1.4",
     "@testing-library/react-hooks": "^7.0.2",
