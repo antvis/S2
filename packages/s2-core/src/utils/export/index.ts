@@ -26,11 +26,12 @@ import {
   type ViewMetaData,
 } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
+import { getLeafColumnsWithKey } from '../../facet/utils';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
 import type { CustomHeaderFields } from './../../common/interface/basic';
-import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 import { getCsvString } from './export-worker';
+import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -156,19 +157,17 @@ const processValueInDetail = (
   isFormat?: boolean,
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
-  const { columns = [] } = sheetInstance.dataCfg?.fields;
-  const res: string[] = [];
-
+  const { columns } = sheetInstance.dataCfg?.fields;
+  const leafColumns = getLeafColumnsWithKey(columns || []);
+  const res = [];
   for (const [index, record] of data.entries()) {
     let tempRows = [];
     if (!isFormat) {
-      tempRows = columns.map((field) => getCsvString(record[field as string]));
+      tempRows = leafColumns.map((v: string) => getCsvString(record[v]));
     } else {
-      tempRows = columns.map((field) => {
-        const mainFormatter = sheetInstance.dataSet.getFieldFormatter(field);
-        return getCsvString(
-          mainFormatter(record[field as string], record as ViewMetaData),
-        );
+      tempRows = leafColumns.map((v: string) => {
+        const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
+        return getCsvString(mainFormatter(record[v], record as ViewMetaData));
       });
     }
     if (sheetInstance.options.showSeriesNumber) {

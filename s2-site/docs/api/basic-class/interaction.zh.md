@@ -6,12 +6,12 @@ order: 2
 功能描述：交互类相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/interaction/root.ts)
 
 ```ts
-s2.interaction
+s2.interaction.reset()
 ```
 
 | 参数 | 说明                                               | 类型 |
 | --- |--------------------------------------------------| --- |
-| spreadsheet | 表格实例                                             | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |
+| spreadsheet | 表格实例                                             | [SpreadSheet](/docs/api/basic-class/spreadsheet) |
 | interactions | 当前已注册的交互                                         | `Map<string, BaseEvent>` |
 | intercept | 当前拦截的交互，防止不同交互之间冲突                               | `Set<Intercept>` |
 | destroy | 卸载所有交互实例，并重置为初始状态                                | `() => void` |
@@ -37,11 +37,11 @@ s2.interaction
 | getPanelGroupAllDataCells | 获取可视区域内的所有数值单元格                                  | `() => DataCell[]` |
 | getAllRowHeaderCells | 获取行头单元格                                          | `() => RowCell[]` |
 | getAllColHeaderCells | 获取列头单元格                                          | `() => ColCell[]` |
-| getRowColActiveCells | 获取行头和列头激活的单元格                                    | `() => RowCell[] | ColCell[]` |
+| getRowColActiveCells | 获取行头和列头激活的单元格                                    | `() => RowCell[] \| ColCell[]` |
 | getAllCells | 获取所有可视区域内的单元格                                    | () => [S2CellType](#s2celltype)[] |
 | selectAll | 选中所有单元格                                          | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格                                       | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo)) => boolean |
-| getCellChildrenNodes | 获取当前单元格的所以子节点                                    | (cell: [S2CellType](#s2celltype)) => [Node]((/zh/docs/api/basic-class/node))[] |
+| getCellChildrenNodes | 获取当前单元格的所以子节点                                    | (cell: [S2CellType](#s2celltype)) => [Node]((/docs/api/basic-class/node))[] |
 | hideColumns | 隐藏列 (forceRender 为 `false` 时，隐藏列为空的情况下，不再触发表格更新） | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void` |
 | mergeCells | 合并单元格                                            | (cellsInfo?: [MergedCellInfo](#mergedcellinfo)[], hideData?: boolean) => void |
 | unmergeCells | 取消合并单元格                                          | `(removedCells: MergedCell[]) => void` |
@@ -50,9 +50,9 @@ s2.interaction
 | addIntercepts | 新增交互拦截                                           | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
 | hasIntercepts | 是否有指定拦截的交互                                       | (interceptTypes: [InterceptType](#intercepttype)[]) => boolean |
 | removeIntercepts | 移除指定交互拦截                                         | (interceptTypes: [InterceptType](#intercepttype)[]) => void |
-| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/zh/docs/api/basic-class/node)[]) => void |
+| highlightNodes | 高亮节点对应的单元格                                       | (nodes: [Node](/docs/api/basic-class/node)[]) => void |
 
-`markdown:docs/common/interaction.zh.md`
+<embed src="@/docs/common/interaction.zh.md"></embed>
 
 ### InteractionConstructor
 
@@ -134,3 +134,5 @@ interface InteractionStateInfo {
   force?: boolean;
 }
 ```
+
+<embed src="@/docs/common/view-meta.zh.md"></embed>

@@ -12,11 +12,12 @@ import {
   toUpper,
   uniq,
 } from 'lodash';
-import type { CellData } from '../data-set/cell-data';
 import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
+import type { CellData } from '../data-set/cell-data';
 import type { SortActionParams } from '../data-set/interface';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import {
   getListBySorted,
   isTotalData,
@@ -164,7 +165,7 @@ export const sortByFunc = (params: SortActionParams): string[] => {
 const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam!;
-  const { rows, columns } = dataSet!.fields;
+  const { rows = [], columns = [] } = dataSet!.fields;
   const isInRows = rows?.includes(sortFieldId);
   let result;
 
@@ -175,10 +176,12 @@ const sortByMethod = (params: SortActionParams): string[] => {
       sortByMeasure === TOTAL_VALUE ? query?.[EXTRA_FIELD] : sortByMeasure,
     );
 
-    const fields = isInRows ? rows : columns;
+    const fields = (
+      isInRows ? rows : getLeafColumnsWithKey(columns)
+    ) as string[];
     result = getDimensionsWithParentPath(
       sortFieldId,
-      fields as string[],
+      fields!,
       dimensions as CellData[],
     );
   } else {
@@ -229,7 +232,9 @@ const createTotalParams = (
     // 获取行/列小计时，需要将所有行/列维度的值作为 params
     const realOriginValue = split(originValue, ID_SEPARATOR);
     const currentFields = (
-      fields?.rows?.includes(sortFieldId) ? fields.rows : fields.columns
+      fields?.rows?.includes(sortFieldId)
+        ? fields.rows
+        : getLeafColumnsWithKey(fields.columns)
     ) as string[];
 
     for (let i = 0; i <= indexOf(currentFields, sortFieldId); i++) {
@@ -255,19 +260,14 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet!;
   const { sortByMeasure, query, sortFieldId } = sortParam!;
-
-  // TODO: 下面逻辑可以采用新的 getMultiData 参数简化过滤逻辑
-  // 拼接 totalSelection 参数
-  const dataList = (dataSet as PivotDataSet).getMultiData(query); // 按 query 查出所有数据
-
+  const dataList = dataSet!.getMultiData(query); // 按 query 查出所有数据
+  const columns = getLeafColumnsWithKey(fields.columns);
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
    */
   if (sortByMeasure !== TOTAL_VALUE) {
-    const rowColFields = filterExtraDimension(
-      concat(fields.rows, fields.columns) as string[],
-    );
+    const rowColFields = concat(fields.rows, columns) as string[];
 
     return dataList.filter((dataItem) => {
       // 过滤出包含所有行列维度的数据

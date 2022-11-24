@@ -5,4 +5,4 @@ order: 0
 
 # Style
 
-`markdown:docs/common/style.en.md`
+<embed src="@/docs/common/style.en.md"></embed>

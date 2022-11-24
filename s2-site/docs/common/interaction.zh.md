@@ -5,17 +5,17 @@ order: 5
 
 ## Interaction
 
-| 参数                                   | 说明                                                                                                                                     | 类型                                        | 默认值                                                   |        必选        |
-|:-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------|:------------------------------------------------------|:----------------:|
-| linkFields                           | 标记字段为链接样式，用于外链跳转                                                                                                                       | `string[]`                                |                                                       |                  |
-| selectedCellsSpotlight               | 是否开启选中高亮聚光灯效果                                                                                                                          | `boolean`                                 | `false`                                               |                  |
+| 参数    | 说明   | 类型     | 默认值   |        必选        |
+| -------- | ----------- | -------------- | -------- | ---------------- |
+| linkFields  | 标记字段为链接样式，用于外链跳转  | `string[]`     |    |    |
+| selectedCellsSpotlight               | 是否开启选中高亮聚光灯效果    | `boolean`   | `false`      |                  |
 | hoverHighlight                       | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头                                                                                                               | `boolean`                                 | `true`                                                |                  |
 | hoverFocus                           | 鼠标悬停在当前单元格超过默认 800ms 后，保持当前高亮，显示 tooltip，悬停时间通过设置 `duration` 来控制                                                                       | `boolean                                  | {duration: number}`                                   |      `true`      |       |
 | hiddenColumnFields                   | 用于配置默认隐藏的列，透视表需要配置列头唯一 id, 明细表配置列头 field 字段即可                                                                                          | `string[]`                                |                                                       |                  |
 | enableCopy                           | 是否允许复制                                                                                                                                 | `boolean`                                 | `false`                                               |                  |
 | copyWithHeader                       | 复制数据是否带表头信息                                                                                                                            | `boolean`                                 | `false`                                               |                  |
 | copyWithFormat                       | 是否使用 field format 格式复制                                                                                                                 | `boolean`                                 | `false`                                               |                  |
-| customInteractions                   | 自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom)                                                                                | [CustomInteraction[]](#custominteraction) |                                                       |                  |
+| customInteractions                   | 自定义交互 [详情](/docs/manual/advanced/interaction/custom)                                                                                | [CustomInteraction[]](#custominteraction) |                                                       |                  |
 | scrollSpeedRatio                     | 用于控制滚动速率，分水平和垂直两个方向，默认为 1                                                                                                              | [ScrollSpeedRatio](#scrollspeedratio)     |                                                       |                  |
 | autoResetSheetStyle                  | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态                                                                                                          | `boolean`                                 | `true`    |     |
 | resize | 用于控制 resize 热区是否显示  | `boolean` \| [ResizeInteractionOptions](#resizeinteractionoptions) |      `true`      |       |
@@ -29,12 +29,12 @@ order: 5
 
 ### CustomInteraction
 
-功能描述：自定义交互，继承 baseEvent:  [具体例子](/zh/docs/manual/advanced/interaction/custom)
+功能描述：自定义交互，继承 baseEvent:  [具体例子](/docs/manual/advanced/interaction/custom)
 
 | 参数        | 说明           | 类型                                              | 默认值 | 必选  |
-| ----------- | -------------- | ------------------------------------------------- | ------ | :---: |
+| ----------- | -------------- | ------------------------------------------------- | ------ | --- |
 | key         | 交互的唯一标识 | `string`                                          |        |   ✓   |
-| interaction |                | [InteractionConstructor](/zh/docs/api/basic-class/interaction#interactionconstructor) |        |   ✓   |
+| interaction |                | [InteractionConstructor](/docs/api/basic-class/interaction#interactionconstructor) |        |   ✓   |
 
 ### ScrollSpeedRatio
 
@@ -47,20 +47,20 @@ interface ScrollSpeedRatio {
 
 ### ResizeInteractionOptions
 
-| 参数                 | 说明                                                                               | 类型              | 默认值 | 必选  |
-| -------------------- | ---------------------------------------------------------------------------------- | ----------------- | ------ | :---: |
+| 参数                 | 说明     | 类型    | 默认值 | 必选  |
+| -------------------- | ------- | ----------------- | ------ | --- |
 | rowCellVertical      | 是否开启行头垂直方向 resize 热区                                                   | `boolean`         | true   |       |
 | cornerCellHorizontal | 是否开启角头水平方向 resize 热区                                                   | `boolean`         | true   |       |
 | colCellHorizontal    | 是否开启列头水平方向 resize 热区                                                   | `boolean`         | true   |       |
 | colCellVertical      | 是否开启列头垂直方向 resize 热区 （列头隐藏时该配置无效）                                                   | `boolean`         | true   |       |
-| rowResizeType        | 用于控制行高 resize 时是同时对所有单元格生效，还是只对当前行生效。默认对所有行生效 | `all` \| `current` | `all`  |       |
-| disable        | 用于控制行高 resize 是否生效 查看例子 | (resizeInfo: [S2CellType](/zh/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
-| visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/zh/docs/api/basic-class/base-cell)) => boolean |   |       |
+| rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效 | `all`\| `current` | `all`  |       |
+| disable        | 用于控制行高 resize 是否生效 查看例子 | (resizeInfo: [S2CellType](/docs/api/components/sheet-component#resizeinfo)) => boolean |   |       |
+| visible        | 自定义当前单元格是否显示 resize 热区 | (cell: [S2CellType](/docs/api/basic-class/base-cell)) => boolean |   |       |
 
 ### brushSelection
 
 | 参数              | 说明                  | 类型              | 默认值   | 必选  |
-|-----------------|---------------------| ----------------- |-------| :---: |
+| ----------------- | --------------------- | ----------------- | ------- | --- |
 | data            | 是否允许数值单元格刷选         | `boolean`         | true  |       |
 | row             | 是否允许行头单元格刷选（仅支持透视表） | `boolean`         | false |       |
 | col             | 是否允许列头单元格刷选（仅支持透视表） | `boolean`         | false |       |

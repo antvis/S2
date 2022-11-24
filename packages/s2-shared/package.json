@@ -1,5 +1,5 @@
 {
-  "private": "true",
+  "private": true,
   "name": "@antv/s2-shared",
   "version": "1.0.0",
   "main": "src/index.ts",
@@ -15,7 +15,7 @@
     "test:ci-coverage": "yarn test:coverage --maxWorkers=3"
   },
   "devDependencies": {
-    "@antv/s2": "*",
+    "@antv/s2": "^2.0.0-alpha.1",
     "lodash": "^4.17.21"
   }
 }

@@ -3,11 +3,11 @@ title: 自定义单元格宽高
 order: 5
 ---
 
-S2 可以手动拖拽动态改变单元格的宽高，也提供默认的 `行列等宽`, `列等宽` 和 `行列紧凑布局` 三种布局 ([查看例子](/zh/examples/layout/basic/#compact))
+S2 可以手动拖拽动态改变单元格的宽高，也提供默认的 `行列等宽`, `列等宽` 和 `行列紧凑布局` 三种布局 ([查看例子](/examples/layout/basic/#compact))
 
-我们可以通过 [主题](/zh/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/zh/docs/api/general/S2Options#style) 配置来实现
+我们可以通过 [主题](/docs/manual/basic/theme/) 修改单元格的背景色，字体大小等配置，如果想自定义单元格的宽高，可以通过 `s2Options` 的 [style](/docs/api/general/S2Options#style) 配置来实现
 
-<playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
+<Playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
 
 ```ts
 const s2Options = {
@@ -88,7 +88,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/YKhvdW8Xs/eb290abb-7cf0-44a2-bb79-66334d1f5438.png" alt="preview" width="600"/>
 
-如果想给每一行设置不同的高度，可以通过 `rowCfg` 的 `heightByField` 预设高度来实现，这里的 `field` 对应行列交叉后每一个行头节点对应的唯一 ID [（如何获取）](/zh/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+如果想给每一行设置不同的高度，可以通过 `rowCfg` 的 `heightByField` 预设高度来实现，这里的 `field` 对应行列交叉后每一个行头节点对应的唯一 ID [（如何获取）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 
 ```ts
 const s2Options = {
@@ -157,7 +157,7 @@ const s2Options = {
 
 ### 隐藏列头
 
-还可以将高度设置为 `0`, 从而实现**隐藏列头**的效果，[查看例子](/zh/examples/layout/custom#hide-columns)
+还可以将高度设置为 `0`, 从而实现**隐藏列头**的效果，[查看例子](/examples/layout/custom#hide-columns)
 
 ```ts
 const s2Options = {

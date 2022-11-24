@@ -3,13 +3,13 @@ title: 高级排序
 order: 1
 ---
 
-`React` 版本提供高级排序组件，可选择使用。[例子](https://s2.antv.vision/zh/examples/analysis/sort#advanced)
+`React` 版本提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)
 
 > 注意：内部不维护状态
 
 ## 快速上手
 
-使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
@@ -110,7 +110,7 @@ advancedSortCfg: {
 >注意：如果这里自定义，则需在 onSortConfirm 中通过 ruleValues 自定义 sortParams
 
 | 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
-| :------- | :------------------------------------------ | :--- | :----- | :--------- |
+| ------- | ------------------------------------------ | --- | ----- | --------- |
 | label    | `string`                                    |      | ✓      | 规则名称   |
 | value    | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | ✓    |        | 规则值     |
 | children | `RuleOption[]`                              |      | ✓      | 规则子列表 |

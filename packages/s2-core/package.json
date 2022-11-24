@@ -9,7 +9,7 @@
   "src": "src/index.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",

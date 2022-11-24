@@ -3,4 +3,4 @@ title: API
 order: 7
 ---
 
-`markdown:docs/common/custom/customTreeNode.zh.md`
+<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>

@@ -114,7 +114,7 @@ export abstract class BaseDataSet {
     }
 
     // 行/列头单元格, 取节点本身标题
-    return meta?.label || this.getFieldName(meta.field as CustomHeaderField);
+    return meta?.label || this.getFieldName(meta?.field as CustomHeaderField);
   }
 
   /**
@@ -129,14 +129,14 @@ export abstract class BaseDataSet {
     }
 
     const meta = cell.getMeta?.();
-    if (meta.isTotals) {
+    if (meta?.isTotals) {
       return;
     }
 
     // 数值单元格
     if (cell.cellType === CellTypes.DATA_CELL) {
-      const currentMeta = find(meta.spreadsheet.dataCfg.meta, {
-        field: meta.field || meta.value || meta.valueField,
+      const currentMeta = find(meta?.spreadsheet.dataCfg.meta, {
+        field: meta?.field || meta?.value || meta?.valueField,
       });
       return this.getFieldDescription(currentMeta?.field as CustomHeaderField);
     }

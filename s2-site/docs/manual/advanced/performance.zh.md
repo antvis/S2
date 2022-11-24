@@ -9,7 +9,7 @@ order: 6
 
 `S2` 可以用于实现明细表，也可以实现透视表，还可以实现趋势分析表等。
 
-为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/zh/docs/manual/basic/base-concept) 有初步认知。
+为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/docs/manual/basic/base-concept) 有初步认知。
 
 ## 性能解读
 
@@ -58,35 +58,35 @@ const dataCfg={
 
 我们知道，存储明细数据的 `Meta` 结构一般有三种：扁平数组、图、树。对于表场景查询频率非常高，透视表本身的展现形式也表达了一种树形结构，因此我们选择了构建树形结构来实现 `Meta`。
 
-另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好，其`Map`具体类型定义可以参见[PivotMeta](https://github.com/antvis/S2/blob/c76203072a78dbf6656a70bc1c5487e6b1d9f009/packages/s2-core/src/data-set/interface.ts#L7-L15)。数据结构如下：
+另外，我们选择 `Map` 而不是 `Object` 实现树形结构，对于读取顺序和排序效率更高，对于删除 Key 的性能更友好，其`Map`具体类型定义可以参见 [PivotMeta](https://github.com/antvis/S2/blob/c76203072a78dbf6656a70bc1c5487e6b1d9f009/packages/s2-core/src/data-set/interface.ts#L7-L15)。数据结构如下：
 
 ```ts
 // Meta
 const rowsMeta: PivotMeta = {
-  浙江省: {
+  浙江省：{
     level: 1,
     childField:"city",
     children: {
-      浙江市: {
+      浙江市：{
         level: 1,
         children: {},
       },
-      绍兴市: {
+      绍兴市：{
         level: 2,
         children: {},
       },
       //...
     },
   },
-  四川省: {
+  四川省：{
     level: 2,
     childField:"city",
     children: {
-      成都市: {
+      成都市：{
         level: 1,
         children: {},
       },
-      绵阳市: {
+      绵阳市：{
         level: 2,
         children: {},
       },
@@ -201,8 +201,8 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 查看 `100w` 条数据实际性能表现：
 
-* [透视表](/zh/examples/case/performance-compare#pivot)
-* [明细表](/zh/examples/case/performance-compare#table)
+* [透视表](/examples/case/performance-compare#pivot)
+* [明细表](/examples/case/performance-compare#table)
 
 详细的性能对比数据如下：
 ![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
