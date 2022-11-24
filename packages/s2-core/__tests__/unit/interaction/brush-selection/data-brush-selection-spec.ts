@@ -12,7 +12,6 @@ import {
   S2Event,
   SpreadSheet,
   type ViewMeta,
-  InterceptType,
   ScrollDirection,
   getScrollOffsetForCol,
   FrozenGroupType,
@@ -134,31 +133,6 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
   });
 
-  test('should register events', () => {
-    expect(brushSelectionInstance.bindEvents).toBeDefined();
-  });
-
-  test('should not render invisible prepare select mask shape after rendered', () => {
-    expect(brushSelectionInstance.prepareSelectMaskShape).not.toBeDefined();
-  });
-
-  test('should init brush selection stage', () => {
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-  });
-
-  test('should render invisible prepare select mask shape after mouse down on the data cell', () => {
-    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-      x: 10,
-      y: 20,
-    });
-    expect(brushSelectionInstance.prepareSelectMaskShape).toBeDefined();
-    expect(
-      brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
-    ).toBeFalsy();
-  });
-
   test('should highlight relevant col&row header cell with selectedCellHighlight option toggled on', () => {
     mockSpreadSheetInstance.setOptions({
       interaction: { selectedCellHighlight: true },
@@ -199,6 +173,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         expect(cell.updateByState).toHaveBeenCalled();
       });
   });
+
   test('should get start brush point when mouse down', () => {
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
       x: 10,
@@ -239,60 +214,6 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(
       brushSelectionInstance.hidePrepareSelectMaskShape,
     ).toHaveBeenCalled();
-  });
-
-  // https://github.com/antvis/S2/issues/852
-  test('should clear brush selection state when mouse down and context menu clicked', () => {
-    const globalMouseUp = jest.fn();
-    mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
-
-    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
-      x: 10,
-      y: 20,
-    });
-    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-      clientX: 12,
-      clientY: 22,
-    });
-
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.DRAGGED,
-    );
-
-    emitEvent(S2Event.GLOBAL_CONTEXT_MENU, {});
-
-    expect(globalMouseUp).not.toHaveBeenCalled();
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.HOVER,
-      ]),
-    ).toBeFalsy();
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.BRUSH_SELECTION,
-      ]),
-    ).toBeFalsy();
-    expect(
-      brushSelectionInstance.hidePrepareSelectMaskShape,
-    ).toHaveReturnedTimes(1);
-  });
-
-  test('should skip brush selection if mouse move less than valid distance', () => {
-    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {});
-
-    expect(brushSelectionInstance.brushSelectionStage).toEqual(
-      InteractionBrushSelectionStage.UN_DRAGGED,
-    );
-    expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
-    expect(brushSelectionInstance.brushRangeCells).toHaveLength(0);
-    expect(
-      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
-        InterceptType.HOVER,
-      ]),
-    ).toBeFalsy();
   });
 
   test('should get brush selection range cells', () => {

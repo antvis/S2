@@ -20,7 +20,7 @@ const s2Options = {
 }
 ```
 
-1、如果内置 `icon` 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/zh/docs/manual/basic/theme) 章节。
+1、如果内置 `icon` 不满足，可以配置 `customSVGIcons` 参数额外注册自己的 `icon`, 自定义 `icon` 同时适用于**主题配置**，意味着你也可以调整它的大小，颜色，具体请查看 [主题配置](/docs/manual/basic/theme) 章节。
 
 ```ts
 const s2Options = {
@@ -51,7 +51,7 @@ const s2Options = {
 
 ```
 
-`markdown:docs/common/icon.zh.md`​
+<embed src="@/docs/common/icon.zh.md"></embed>​
 
 2、配置 `headerActionIcons` 参数
 ​
@@ -59,15 +59,15 @@ const s2Options = {
 
 ### 配置参数
 
-`markdown:docs/common/header-action-icon.zh.md`
+<embed src="@/docs/common/header-action-icon.zh.md"></embed>
 
 ### 自定义行列头 icon 示例
 
-<playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
 
 ### 自定义单元格 icon 示例
 
-> 单元格标记详情，可查看 [字段标记](/zh/docs/manual/basic/conditions) 章节
+> 单元格标记详情，可查看 [字段标记](/docs/manual/basic/conditions) 章节
 
 ```javascript
 const s2Options = {
@@ -94,4 +94,4 @@ const s2Options = {
 }
 ```
 
-<playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>
+<Playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>

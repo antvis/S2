@@ -17,6 +17,15 @@ order: 5
 </script>
 ```
 
+所有的导出统一挂载在全局变量 `window.S2` 下
+
+```diff
+<script type="module">
+-  import { S2Event, PivotSheet, TableSheet } from '@antv/s2'
++  const { S2Event, PivotSheet, TableSheet } = S2
+</script>
+```
+
 如果使用的是 `React` 版本 `@antv/s2-react` , 或者 `Vue3` 版本 `@antv/s2-vue` 还需额外引入样式文件
 
 ```html

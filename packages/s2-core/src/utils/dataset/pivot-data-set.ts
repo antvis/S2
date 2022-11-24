@@ -43,7 +43,7 @@ export function shouldQueryMultiData(pathValue: string | number) {
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
     const splitArr = item?.split(ID_SEPARATOR);
-    return splitArr[splitArr?.length - 1] || item;
+    return splitArr?.[splitArr?.length! - 1] || item;
   });
 }
 
@@ -68,7 +68,7 @@ export function getDimensionsWithoutPathPre(dimensions: string[]) {
  */
 export function getDimensionsWithParentPath(
   field: string,
-  defaultDimensions: string[],
+  defaultDimensions: string[] = [],
   dimensions: CellData[],
 ) {
   const measure = defaultDimensions.slice(

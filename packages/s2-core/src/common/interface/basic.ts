@@ -111,7 +111,7 @@ export interface Extra {
   remark: string;
 }
 
-export type CustomHeaderField = string | CustomTreeNode;
+export type CustomHeaderField = CustomTreeNode | string;
 
 export type CustomHeaderFields = CustomHeaderField[];
 
@@ -516,3 +516,8 @@ export type RenderHandler = (
     group: Group;
   },
 ) => void;
+
+export interface Point {
+  x: number;
+  y: number;
+}

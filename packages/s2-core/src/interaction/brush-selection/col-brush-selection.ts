@@ -6,10 +6,11 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { BrushPoint, ViewMeta } from '../../common/interface';
+import type { ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import type { OnUpdateCells } from '../../common/interface';
+import type { BBox } from '../../engine';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -70,28 +71,34 @@ export class ColBrushSelection extends BaseBrushSelection {
     this.displayedCells = this.spreadsheet.interaction.getAllColHeaderCells();
   }
 
-  protected getBrushPoint(event: CanvasEvent): BrushPoint {
-    const cell = this.spreadsheet.getCell(event.target)!;
-    const meta = cell.getMeta();
-    const { x: headerX, y: headerY } = meta;
-    return {
-      ...super.getBrushPoint(event),
-      headerX,
-      headerY,
-    };
-  }
-
-  protected isInBrushRange = (meta: ViewMeta | Node) => {
+  /**
+   * 用户判断 colCell 是否在当前刷选的范围内
+   * @param meta colCell 位置等属性存储的对象
+   * @returns boolean
+   */
+  protected isInBrushRange(meta: ViewMeta | Node) {
     const { start, end } = this.getBrushRange();
-    const { x = 0, y = 0 } = meta;
+    const { scrollX = 0 } = this.spreadsheet.facet.getScrollOffset();
 
-    return (
-      x >= start.headerX! &&
-      x <= end.headerX! &&
-      y >= start.headerY! &&
-      y <= end.headerY!
+    const cornerBBox = this.spreadsheet.facet.cornerBBox;
+    const { x = 0, y = 0, width = 0, height = 0 } = meta;
+
+    return this.rectanglesIntersect(
+      {
+        // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        minX: start.x - cornerBBox.width + scrollX,
+        minY: start.y,
+        maxX: end.x - cornerBBox.width + scrollX,
+        maxY: end.y,
+      } as BBox,
+      {
+        minX: x,
+        maxX: x + width,
+        minY: y,
+        maxY: y + height,
+      } as BBox,
     );
-  };
+  }
 
   // 最终刷选的cell
   protected updateSelectedCells() {

@@ -319,7 +319,7 @@ export class PivotDataSet extends BaseDataSet {
       dimensions = rows;
     } else if (includes(columns, field)) {
       meta = this.colPivotMeta;
-      dimensions = columns;
+      dimensions = columns as string[];
     }
 
     if (!isEmpty(query)) {
@@ -370,7 +370,7 @@ export class PivotDataSet extends BaseDataSet {
     const calcAction = calcActionByType[aggregation!];
 
     // 前端计算汇总值
-    if (calcAction || calcFunc) {
+    if (calcAction || !!calcFunc) {
       const data = this.getMultiData(query);
       let totalValue: number | null = null;
 

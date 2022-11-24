@@ -1,9 +1,9 @@
 module.exports = {
   branches: [
     'latest',
-    { name: 'beta', prerelease: true },
-    { name: 'alpha', prerelease: true },
-    { name: 'next', prerelease: true },
+    { name: 'beta', channel: 'beta', prerelease: true },
+    { name: 'alpha', channel: 'alpha', prerelease: true },
+    { name: 'next', channel: 'next', prerelease: true },
   ],
   extends: 'semantic-release-monorepo',
   plugins: [
@@ -17,6 +17,7 @@ module.exports = {
           { type: 'perf', release: 'patch' },
           { type: 'refactor', release: 'patch' },
           { type: 'style', release: 'patch' },
+          { scope: 'no-release', release: false },
         ],
       },
     ],

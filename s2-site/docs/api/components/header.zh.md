@@ -26,11 +26,11 @@ order: 4
 />
 ```
 
-<playground path='react-component/header/demo/default.tsx' rid='container' height='400'></playground>
+<Playground path='react-component/header/demo/default.tsx' rid='container' height='400'></playground>
 
 ## API
 
-`markdown:docs/common/header.zh.md`
+<embed src="@/docs/common/header.zh.md"></embed>
 
 # Vue 表头组件
 

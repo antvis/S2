@@ -217,11 +217,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     }
     const { fields = {} } = sheet.dataCfg || {};
     const { rows = [], columns = [] } = fields;
-    return map([...rows, ...columns], (field: string) => {
+    return map([...rows, ...columns], (item) => {
+      const name = typeof item === 'string' ? item : item.key;
       return {
-        field,
-        name: sheet.dataSet.getFieldName(field),
-        list: sheet.dataSet.getDimensionValues(field),
+        field: item,
+        name: sheet.dataSet.getFieldName(name),
+        list: sheet.dataSet.getDimensionValues(name),
       };
     }) as unknown as Dimension[];
   };

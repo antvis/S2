@@ -4,7 +4,7 @@ name: 🚀 After the release is successful
 on:
   workflow_run:
     workflows: ["🚀 Auto Release"]
-    branches: [latest] # 只有正式版发布才同步 changelog 和 lock
+    branches: [latest] # 只有正式版发布才同步 changelog
     types:
       - completed
 
@@ -36,29 +36,39 @@ jobs:
           git fetch --all
           git merge origin/latest --squash
 
-      - name: Sleep 5m
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 20m
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Sync Locale site @antv/s2 and @antv/s2-react lock
-        run: yarn site:sync-s2-lock
-
       - name: Push lock
         run: |
           git add .
-          git commit -m "chore: 🤖 更新 lock 和 changelog 文件" -n
+          git commit -m "chore: 🤖 更新 changelog 文件" -n
           git push origin chore-sync --no-verify -f
 
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
         run: |
-          gh pr create --title "chore: 🤖 更新 lock 和 changelog 文件" --body "🤖 由 [[Sync Site S2 Lock And Changelog With PR](https://github.com/antvis/S2/blob/master/.github/workflows/sync-site-lock-changelog-with-pr.yml)] action 自动创建."
+          gh pr create --title "chore: 🤖 更新 changelog 文件" --body "🤖 由 [[🚀 After the release is successful](https://github.com/antvis/S2/blob/master/.github/workflows/release-success.yml)] action 自动创建."
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
+
+      # 开始部署官网
+      - name: 🔊 Delpoy start notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "📢 开始自动部署官网 📢 ",
+                "text": "🔗 请点击链接查看详情",
+                "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+              }
+            }
+
+      # 安装官网依赖
+      - name: Install Dependencies
+        run: yarn site:bootstrap
 
       # 部署官网
       - name: Delpoy Site

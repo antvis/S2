@@ -12,6 +12,7 @@ import {
   each,
   find,
   get,
+  isEmpty,
   isFunction,
   isUndefined,
   last,
@@ -45,6 +46,7 @@ import type {
   CellCustomWidth,
   FrameConfig,
   GridInfo,
+  HiddenColumnsInfo,
   LayoutResult,
   OffsetConfig,
   S2CellType,
@@ -1314,7 +1316,6 @@ export abstract class BaseFacet {
     this.realCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
-
     if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY });
     }
@@ -1347,5 +1348,20 @@ export abstract class BaseFacet {
     if (originalColumnsLength !== initColumnLeafNodes?.length) {
       store.set('initColumnLeafNodes', columnNodes);
     }
+  }
+
+  public getHiddenColumnsInfo(columnNode: Node): HiddenColumnsInfo | undefined {
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    if (isEmpty(hiddenColumnsDetail)) {
+      return;
+    }
+
+    return hiddenColumnsDetail.find((detail) =>
+      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+    );
   }
 }

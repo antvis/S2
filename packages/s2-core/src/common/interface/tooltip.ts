@@ -3,6 +3,7 @@ import type * as CSS from 'csstype';
 import type { SpreadSheet } from '../../sheet-type';
 import type {
   Data,
+  Point,
   S2CellType,
   SortMethod,
   SortParam,
@@ -32,10 +33,7 @@ export interface TooltipOperatorOptions {
   defaultSelectedKeys?: string[];
 }
 
-export interface TooltipPosition {
-  x: number;
-  y: number;
-}
+export type TooltipPosition = Point;
 
 export type TooltipDetailListItem = {
   name: string;

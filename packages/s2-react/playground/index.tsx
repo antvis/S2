@@ -55,6 +55,8 @@ import {
   pivotSheetDataCfg,
   sliderOptions,
   tableSheetDataCfg,
+  tableSheetMultipleColumns,
+  tableSheetSingleColumns,
 } from './config';
 import { partDrillDown } from './drill-down';
 import './index.less';
@@ -102,6 +104,9 @@ function MainLayout() {
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
     [],
   );
+  const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
+    'single' | 'multiple'
+  >('single');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -143,6 +148,10 @@ function MainLayout() {
         layoutWidthType: e.target.value,
       },
     });
+  };
+
+  const onTableColumnTypeChange = (e: RadioChangeEvent) => {
+    setTableSheetColumnType(e.target.value);
   };
 
   const onSizeChange = (type: 'width' | 'height') =>
@@ -220,6 +229,19 @@ function MainLayout() {
     setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
+
+  useUpdateEffect(() => {
+    setDataCfg(
+      customMerge(tableSheetDataCfg, {
+        fields: {
+          columns:
+            tableSheetColumnType === 'single'
+              ? tableSheetSingleColumns
+              : tableSheetMultipleColumns,
+        },
+      }),
+    );
+  }, [tableSheetColumnType]);
 
   //  ================== Config ========================
 
@@ -325,6 +347,17 @@ function MainLayout() {
                     <Radio.Button value="table">明细表</Radio.Button>
                   </Radio.Group>
                 </Tooltip>
+                {sheetType === 'table' && (
+                  <Tooltip title="明细表多级表头">
+                    <Radio.Group
+                      onChange={onTableColumnTypeChange}
+                      defaultValue={tableSheetColumnType}
+                    >
+                      <Radio.Button value="single">单列头</Radio.Button>
+                      <Radio.Button value="multiple">多列头</Radio.Button>
+                    </Radio.Group>
+                  </Tooltip>
+                )}
                 <Tooltip title="布局类型">
                   <Radio.Group
                     onChange={onLayoutWidthTypeChange}
@@ -946,7 +979,7 @@ function MainLayout() {
               onRowCellScroll={logHandler('onRowCellScroll')}
               onLinkFieldJump={logHandler('onLinkFieldJump', () => {
                 window.open(
-                  'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                  'https://s2.antv.antgroup.com/zh/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
                 );
               })}
               onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}

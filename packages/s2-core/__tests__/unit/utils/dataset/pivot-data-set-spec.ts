@@ -43,8 +43,8 @@ describe('PivotDataSet util test', () => {
     const colPivotMeta = new Map();
     const result = transformIndexesData({
       rows,
-      columns,
       values,
+      columns: columns as string[],
       originData: dataCfg.data,
       indexesData: [],
       sortedDimensionValues,

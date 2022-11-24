@@ -11,9 +11,9 @@ DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 
 功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
-`markdown:docs/common/view-meta.zh.md`
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
-`markdown:docs/common/custom/cellCallBack.zh.md`
+<embed src="@/docs/common/custom/cellCallBack.zh.md"></embed>
 
 ## CornerHeaderCallback
 
@@ -24,7 +24,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 功能描述：自定义角头
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
+| --- | --- | ---  | --- | --- |
 | parent | [S2CellType](#s2celltype) | ✓ |  |   父级单元格 |
 | spreadsheet | [SpreadSheet](#spreadsheet) | ✓   |  | 表类实例，可以访问任意的配置信息 |
 | restOptions | `unknown[]` |  |  |   不定参数，传递额外的信息 |

@@ -50,7 +50,7 @@ fetch(
       },
     };
 
-    // https://s2.antv.vision/zh/docs/api/general/S2Theme#s2theme
+    // https://s2.antv.antgroup.com/zh/docs/api/general/S2Theme#s2theme
     const s2Theme = {
       background: {
         opacity: 0,

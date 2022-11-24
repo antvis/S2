@@ -25,6 +25,7 @@ import type {
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
+import type { BBox } from '../../engine/interface';
 import type { TableFacet } from '../../facet';
 import type { Node } from '../../facet/layout/node';
 import {
@@ -181,6 +182,16 @@ export class BaseBrushSelection
   };
 
   private autoScrollIntervalId: ReturnType<typeof setInterval> | null = null;
+
+  // 矩形相交算法: 通过判断两矩形左右上下的线是否相交
+  public rectanglesIntersect = (rect1: BBox, rect2: BBox) => {
+    return (
+      rect1.maxX > rect2.minX &&
+      rect1.minX < rect2.maxX &&
+      rect1.minY < rect2.maxY &&
+      rect1.maxY > rect2.minY
+    );
+  };
 
   protected autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
@@ -533,22 +544,6 @@ export class BaseBrushSelection
     const minY = Math.min(startYInView, this.endBrushPoint?.y);
     const maxY = Math.max(startYInView, this.endBrushPoint?.y);
 
-    const minHeaderX = Math.min(
-      this.startBrushPoint?.headerX!,
-      this.endBrushPoint?.headerX!,
-    );
-    const maxHeaderX = Math.max(
-      this.startBrushPoint?.headerX!,
-      this.endBrushPoint?.headerX!,
-    );
-    const minHeaderY = Math.min(
-      this.startBrushPoint?.headerY!,
-      this.endBrushPoint?.headerY!,
-    );
-    const maxHeaderY = Math.max(
-      this.startBrushPoint?.headerY!,
-      this.endBrushPoint?.headerY!,
-    );
     // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
     // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
     return {
@@ -557,16 +552,12 @@ export class BaseBrushSelection
         colIndex: minColIndex,
         x: minX,
         y: minY,
-        headerX: minHeaderX,
-        headerY: minHeaderY,
       },
       end: {
         rowIndex: maxRowIndex,
         colIndex: maxColIndex,
         x: maxX,
         y: maxY,
-        headerX: maxHeaderX,
-        headerY: maxHeaderY,
       },
       width: maxX - minX,
       height: maxY - minY,
@@ -676,15 +667,13 @@ export class BaseBrushSelection
       return;
     }
 
-    const { rowIndex, colIndex, x: headerX, y: headerY } = cell.getMeta();
+    const { rowIndex, colIndex } = cell.getMeta();
 
     this.endBrushPoint = {
       x,
       y,
       rowIndex,
       colIndex,
-      headerY,
-      headerX,
     };
 
     const { interaction } = this.spreadsheet;

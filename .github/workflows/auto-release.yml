@@ -27,6 +27,23 @@ jobs:
           node-version: 16 # semantic-release 需要 >= 16 的 Node.js 环境
           cache: 'yarn'
 
+      # 发布开始通知
+      - name: Release start ding talk dev group notify
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🚑 开始自动发布 🚑",
+                "text": "🔗 请点击链接查看详情",
+                "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+              }
+            }
+
       - name: Install dependencies
         run: yarn
 
