@@ -436,7 +436,12 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    const rowDataInfo = this.spreadsheet.isTableMode()
+      ? this.spreadsheet.dataSet.getCellData({
+          query: { rowIndex: this.meta.rowIndex },
+        })
+      : this.meta.data;
+    return condition?.mapping(value, rowDataInfo);
   }
 
   public updateByState(stateName: InteractionStateName) {
