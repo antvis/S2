@@ -102,7 +102,7 @@ export function DragCopyPoint() {
   }, [spreadsheet?.dataSet.sortParams, spreadsheet?.dataSet.filterParams]);
 
   useEffect(() => {
-    if (!spreadsheet.getCanvasElement()) {
+    if (!spreadsheet?.getCanvasElement()) {
       return;
     }
 
