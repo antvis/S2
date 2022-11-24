@@ -10,7 +10,7 @@ import { defineComponent, reactive, ref, shallowRef } from 'vue';
 import { forEach, random } from 'lodash';
 import { SheetComponent } from '../src';
 
-const dataCfg1: S2DataConfig = {
+const dataConfig1: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
@@ -266,7 +266,8 @@ const dataCfg1: S2DataConfig = {
     },
   ],
 };
-const dataCfg2: S2DataConfig = {
+
+const dataConfig2: S2DataConfig = {
   fields: {
     rows: ['province', 'city', 'type'],
     columns: ['sub_type'],
@@ -508,6 +509,7 @@ const dataCfg2: S2DataConfig = {
     },
   ],
 };
+
 const fieldMap = {
   channel: ['物美', '华联'],
   sex: ['男', '女'],
@@ -669,8 +671,8 @@ export default defineComponent({
       sheetType,
       s2,
       dataCfgFlag,
-      dataCfg1,
-      dataCfg2,
+      dataConfig1,
+      dataConfig2,
       options,
       themeCfg,
       onRowCellClick,
@@ -728,7 +730,7 @@ export default defineComponent({
   <SheetComponent
     ref="s2"
     :sheetType="sheetType"
-    :dataCfg="dataCfgFlag === 1 ? dataCfg1 : dataCfg2"
+    :dataCfg="dataCfgFlag === 1 ? dataConfig1 : dataConfig2"
     :options="options"
     :themeCfg="themeCfg"
     :adaptive="true"

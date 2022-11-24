@@ -400,7 +400,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
         // 避免采样的节点被隐藏后, 影响角头坐标计算
         expect(
-          sheet.facet.layoutResult.colsHierarchy.sampleNodeForLastLevel.y,
+          sheet.facet.layoutResult.colsHierarchy.sampleNodeForLastLevel?.y,
         ).toStrictEqual(60);
         expect(colCornerNodesMeta).toMatchInlineSnapshot(`
           Array [
