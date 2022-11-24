@@ -3,7 +3,7 @@ import { TableSheet } from '@antv/s2';
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
-    // 详情请查看: https://s2.antv.vision/zh/docs/manual/advanced/custom/cell-size
+    // 详情请查看: https://s2.antv.antgroup.com/zh/docs/manual/advanced/custom/cell-size
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {

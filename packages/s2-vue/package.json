@@ -8,7 +8,7 @@
   "types": "esm/index.d.ts",
   "description": "use S2 with vue",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",
