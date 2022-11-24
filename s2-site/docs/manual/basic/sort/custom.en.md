@@ -32,7 +32,7 @@ const s2DataConfig = {
   sortParams: [
     {
       sortFieldId: 'type', sortMethod: 'DESC',
-      // EXTRA_FIELD 是dataCfg.fields.values 字段的虚拟fieldId
+      // EXTRA_FIELD 是 dataCfg.fields.values 字段的虚拟 fieldId
       query: { city: '成都', [EXTRA_FIELD]: 'price' }
     }
   ],
@@ -141,7 +141,7 @@ Sort column headers by`Row Total/Row Subtotal`, examples are as follows:
 
 ...
 
-// 在S2DataConfig 中配置
+// 在 S2DataConfig 中配置
 sortParams = [
   {
     // type 依据（ 浙江- 小计）&（ price ）& 降序排序
@@ -155,7 +155,7 @@ sortParams = [
   },
 ];
 
-// 在s2Options 中配置，使用前端总计的聚合方法进行排序。如果data 数据中存在聚合数据则使用
+// 在 s2Options 中配置，使用前端总计的聚合方法进行排序。如果 data 数据中存在聚合数据则使用
 totals = {
   row: {
     subTotalsDimensions: [ 'province' ],
@@ -176,7 +176,7 @@ row total:
 ...
 sortParams = [
   {
-    // 对type 中笔和纸的总计进行降序排序
+    // 对 type 中笔和纸的总计进行降序排序
     sortFieldId: 'type',
     sortMethod: 'DESC',
     sortByMeasure: TOTAL_VALUE,
@@ -186,7 +186,7 @@ sortParams = [
   },
 ]
 
-// data 中带有排序使用的数据时，S2 会优先使用data 返回的数据进行排序
+// data 中带有排序使用的数据时，S2 会优先使用 data 返回的数据进行排序
 data = [
   {
     "type": "笔",
@@ -281,15 +281,15 @@ Supports custom calculations using metrics, for example:
   {
     sortFieldId: 'city',
     sortByMeasure: 'price',
-    // 当使用sortByMeasure 时，可以传入query 定位数值列表
-    // 如下方限定params.data 为type=纸张, 数值=price 的数据
+    // 当使用 sortByMeasure 时，可以传入 query 定位数值列表
+    // 如下方限定 params.data 为 type=纸张，数值=price 的数据
     query: { type: '纸张', [EXTRA_FIELD]: 'price' },
     sortFunc: function (params) {
       const { data, sortByMeasure, sortFieldId } = params || {};
       return data
-        // 使用price 做比较
+        // 使用 price 做比较
         ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
-        // map 出city 维度的数组
+        // map 出 city 维度的数组
         ?.map((item) => item[sortFieldId]);
     },
   },

@@ -95,8 +95,8 @@ const s2Options = {
   style: {
     rowCfg: {
       heightByField: {
-        'root[&]浙江省[&]杭州市': 60,
-        'root[&]浙江省[&]宁波市': 100,
+        'root[&] 浙江省 [&] 杭州市': 60,
+        'root[&] 浙江省 [&] 宁波市': 100,
       },
     },
   },

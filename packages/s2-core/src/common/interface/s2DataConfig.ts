@@ -64,7 +64,7 @@ export type Data = (RawData & ExtraData) | undefined;
 
 export interface CustomTreeNode {
   key: string;
-  title: string;
+  title?: string;
   // 是否收起（默认都展开）
   collapsed?: boolean;
   description?: string;

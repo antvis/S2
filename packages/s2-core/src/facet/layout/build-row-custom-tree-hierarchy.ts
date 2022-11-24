@@ -34,7 +34,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     // query只与值本身有关，不会涉及到 parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
-    const nodeId = generateId(parentNode.id, title);
+    const nodeId = generateId(parentNode.id, title!);
 
     const defaultCollapsed = collapsed ?? false;
     const isCollapsedRow = get(collapsedRows, nodeId);
@@ -49,7 +49,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       id: nodeId,
       key,
       label: title,
-      value: title,
+      value: title!,
       level,
       parent: parentNode,
       field: key,

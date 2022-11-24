@@ -62,7 +62,7 @@ s2.on(S2Event.ROW_BRUSH_SELECTION, (cells: RowCell[]) => {
 
 s2.on(S2Event.COL_BRUSH_SELECTION, (cells: ColCell[]) => {
   // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值列头单元格刷选
-  console.log('刷选的列头单元格：', cells) 
+  console.log('刷选的列头单元格：', cells)
 ...
 })
 
@@ -229,7 +229,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        row: true // 默认 false 
+        row: true // 默认 false
     }
   }
 };
@@ -243,7 +243,7 @@ const s2Options = {
 const s2Options = {
   interaction: {
     brushSelection:  {
-        col: true // 默认 false 
+        col: true // 默认 false
     }
   }
 };

@@ -9,7 +9,7 @@ order: 2
 
 <img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600" />
 
-明细表和透视表共享[基础交互](/manual/advanced/interaction/basic)、[主题](/manual/basic/theme) 、[复制](/manual/basic/analysis/export)、[自定义单元格](/manual/advanced/custom/hook) 等能力。除此之外，明细表还支持 [行列冻结](/examples/interaction/basic#froze) 等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
+明细表和透视表共享 [基础交互](/manual/advanced/interaction/basic)、[主题](/manual/basic/theme) 、[复制](/manual/basic/analysis/export)、[自定义单元格](/manual/advanced/custom/hook) 等能力。除此之外，明细表还支持 [行列冻结](/examples/interaction/basic#froze) 等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
 
 ## 使用
 

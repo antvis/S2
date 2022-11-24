@@ -1,5 +1,5 @@
 ---
-title: Table 
+title: Table
 order: 1
 ---
 

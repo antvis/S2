@@ -77,13 +77,6 @@ export interface CustomInteraction {
   interaction: InteractionConstructor;
 }
 
-export interface Rect {
-  maxX: number;
-  minX: number;
-  maxY: number;
-  minY: number;
-}
-
 export interface BrushPoint {
   rowIndex: number;
   colIndex: number;

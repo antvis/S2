@@ -81,7 +81,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+    hiddenColumnFields: ['root[&] 家具 [&] 沙发 [&]number'],
   }
 }
 ```

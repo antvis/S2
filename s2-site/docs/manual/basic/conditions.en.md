@@ -20,9 +20,9 @@ The `S2` field marking feature is configured by configuring
 the [`Conditions`](/docs/api/general/S2Options#conditions) attribute in `s2Options` .
 
 ```js
- // 构建options 
+ // 构建 options
 const s2Options = {
-  width: 600, height: 600, // 通过配置conditions 实现字段标记
+  width: 600, height: 600, // 通过配置 conditions 实现字段标记
   conditions: {
     text: [ {
       field: "price", mapping(fieldValue, data) {

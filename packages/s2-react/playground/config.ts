@@ -1,5 +1,5 @@
-import type { S2DataConfig } from '@antv/s2';
-import { isMobile, type Columns } from '@antv/s2';
+import type { CustomHeaderField, S2DataConfig } from '@antv/s2';
+import { isMobile } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import type { SheetComponentOptions } from '../src/components';
@@ -10,7 +10,7 @@ import {
   totalData,
 } from '../__tests__/data/mock-dataset.json';
 
-export const tableSheetSingleColumns: Columns = [
+export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
   'city',
   'type',
@@ -18,7 +18,7 @@ export const tableSheetSingleColumns: Columns = [
   'number',
 ];
 
-export const tableSheetMultipleColumns: Columns = [
+export const tableSheetMultipleColumns: CustomHeaderField[] = [
   {
     key: 'area',
     children: ['province', 'city'],

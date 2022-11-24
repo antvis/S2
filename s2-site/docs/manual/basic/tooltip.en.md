@@ -163,7 +163,7 @@ const s2Options = {
   tooltip: {
     content: (cell, defaultTooltipShowOptions) => {
       console.log('当前单元格：', cell)
-      console.log('默认tooltip 详细信息：', defaultTooltipShowOptions)
+      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
       return <TooltipContent cell = { cell }
       detail = { detail }
       />
@@ -235,7 +235,7 @@ s2.showTooltip({
   content: TooltipContent
 })
 
-// 或者s2.tooltip.show({ content: TooltipContent })
+// 或者 s2.tooltip.show({ content: TooltipContent })
 ```
 
 <Playground data-mdast="html" path="react-component/tooltip/demo/custom-content.tsx" rid="container-1" height="300"></playground>
@@ -248,7 +248,7 @@ s2.showTooltip({
 
 #### Custom Tooltip Action Items
 
-In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items,
+In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items
 support nesting, and listen to their respective `onClick` click events to get
 the [cell information](/docs/api/basic-class/base-cell) corresponding to the current `tooltip`
 
@@ -259,27 +259,27 @@ the [cell information](/docs/api/basic-class/base-cell) corresponding to the cur
       menus: [
         {
           key: 'custom-a',
-          text: '操作1',
+          text: '操作 1',
           icon: 'Trend',
           onClick: (cell) => {
-            console.log('操作1 点击');
+            console.log('操作 1 点击');
             console.log('tooltip 对应的单元格：', cell)
           },
           children: [ {
             key: 'custom-a-a',
-            text: '操作1-1',
+            text: '操作 1-1',
             icon: 'Trend',
             onClick: (cell) => {
-              console.log('操作1-1 点击');
+              console.log('操作 1-1 点击');
             },
           } ]
         },
         {
           key: 'custom-b',
-          text: '操作2',
+          text: '操作 2',
           icon: 'EyeOutlined',
           onClick: (cell) => {
-            console.log('操作2 点击');
+            console.log('操作 2 点击');
           },
         },
       ],
@@ -299,13 +299,13 @@ current [cell information](/docs/api/basic-class/base-cell)
       menus: [
         {
           key: 'custom-a',
-          text: '操作1',
+          text: '操作 1',
           icon: 'Trend',
           visible: false,
         },
         {
           key: 'custom-b',
-          text: '操作2',
+          text: '操作 2',
           icon: 'EyeOutlined',
           visible: (cell) => {
             // 叶子节点不显示
@@ -368,6 +368,7 @@ combine `this.spreadsheet` instance to realize the `tooltip` that meets your bus
 the `renderContent` method to render your package any component
 
 * [View BaseTooltip base class](/docs/api/basic-class/base-tooltip)
+
 * [Check out the React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 * [Check out the Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -488,7 +489,7 @@ There are two ways to customize content in `Vue3` .
  // TooltipContent.vue
 
 <template>
-  <div>我是自定义Tooltip
+  <div>我是自定义 Tooltip
 内容 < /div>
 < p > 当前值：{
   {
@@ -525,9 +526,9 @@ class CustomTooltip extends BaseTooltip {
     const cell = this.spreadsheet.getCell(this.options.event?.target);
     const meta = cell?.getMeta();
 
-    // 使用Vue 提供的`createVNode` 方法将组件渲染成虚拟DOM
+    // 使用 Vue 提供的`createVNode` 方法将组件渲染成虚拟 DOM
     const tooltipVNode = createVNode(TooltipContent, { meta });
-    // 使用`render` 函数将其挂载在tooltip 容器上
+    // 使用`render` 函数将其挂载在 tooltip 容器上
     render(tooltipVNode, this.container);
   }
 }
@@ -540,23 +541,23 @@ class CustomTooltip extends BaseTooltip {
 ```ts
  import { defineCustomElement } from "vue";
 
-// 将Vue 组件解析成Web Component
+// 将 Vue 组件解析成 Web Component
 const VueTooltipContent = defineCustomElement({
   props: [ "meta" ],
   template: `
- <div>我是自定义Tooltip 内容</div>
+ <div>我是自定义 Tooltip 内容</div>
  <p>当前值：{{ meta?.label ?? meta?.fieldValue }}</p>
  `
 });
 
-// 注册一个Web Component
+// 注册一个 Web Component
 customElements.define("vue-tooltip-content", VueTooltipContent);
 
 const s2Options = {
   tooltip: {
     content: (cell, defaultTooltipShowOptions) => {
       const meta = cell.getMeta();
-      // 替换Tooltip 内容
+      // 替换 Tooltip 内容
       return new VueTooltipContent({ meta });
     },
   },
@@ -567,12 +568,12 @@ const s2Options = {
 
 #### Override display method
 
-In addition to the custom display method of the`自定义Tooltip 类`mentioned above, the method `spreadsheet.showTooltip()` of
+In addition to the custom display method of the`自定义 Tooltip 类`mentioned above, the method `spreadsheet.showTooltip()` of
 the `Tooltip` on the [table instance](/docs/api/basic-class/spreadsheet) can also be
 modified. [How to get table instance?](/docs/manual/advanced/get-instance)
 
 ```ts
- // options 配置tooltip 显示
+ // options 配置 tooltip 显示
 tooltip: {
   showTooltip: true,
 }
@@ -582,7 +583,7 @@ tooltip: {
  <SheetComponent
   onMounted={ (instance) => {
     instance.showTooltip = (tooltipOptions) => {
-      // 可自定义这里的tooltipOptions
+      // 可自定义这里的 tooltipOptions
       instance.tooltip.show(tooltipOptions);
     };
   } }
@@ -592,7 +593,7 @@ tooltip: {
 
 ##### Display content can be customized
 
-All of the following displays can cover all cells and events. For details on custom data,
+All of the following displays can cover all cells and events. For details on custom data
 see [TooltipShowOptions](/docs/common/custom-tooltip)
 
 * display position
@@ -645,9 +646,10 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
       };
       ```
 
-  * list of axes ( headInfo )
+* list of axes ( headInfo )
 
       Axis list, display`row/column headers`names in data cells,
+
       see [TooltipHeadInfo](/docs/common/custom-tooltip#tooltipheadinfo)
       for details
 
@@ -668,9 +670,10 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
       };
       ```
 
-  * Data point details ( details )
+* Data point details ( details )
 
       Data point details, that is, the data information of the current cell, for details, please refer
+
       to [ListItem](/docs/common/custom-tooltip#listitem)
 
       ```tsx
@@ -683,7 +686,7 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
       };
       ```
 
-  * Tip information at the bottom ( infos )
+* Tip information at the bottom ( infos )
 
       Bottom prompt information, generally used for shortcut key operation prompts
 
@@ -701,9 +704,10 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 
   [Tooltip part configuration, see TooltipOptions](/docs/common/custom-tooltip#tooltipoptions) `tooltip` details
 
-  * Operation Bar ( operator )
+* Operation Bar ( operator )
 
       Operable configuration, refer to [TooltipOperatorOptions](/docs/common/custom-tooltip#tooltipoperatoroptions)
+
       for details
 
       ```tsx

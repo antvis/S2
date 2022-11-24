@@ -160,7 +160,7 @@ const s2Options = {
 // 4, 渲染
 ReactDOM.render(
   <SheetComponent
-    sheetType="editable" // 此处指定sheetType为editable
+    sheetType="editable" // 此处指定 sheetType 为 editable
     dataCfg={s2DataCfg}
     options={s2Options}
   />,

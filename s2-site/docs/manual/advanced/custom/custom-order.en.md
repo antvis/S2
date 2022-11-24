@@ -1,5 +1,5 @@
 ---
-title: Customize Order 
+title: Customize Order
 order: 6
 ---
 
@@ -19,7 +19,7 @@ Related chapters: [custom icon](/examples/custom/custom-icon#custom-header-actio
 
 ```jsx
 const s2Options = {
-  // 关闭默认icon
+  // 关闭默认 icon
   showDefaultHeaderActionIcon: false,
   ...
 }
@@ -47,7 +47,7 @@ const s2Options = {
   // 配置 icon 展示位置
   headerActionIcons: [
     {
-      // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
+      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
       iconNames: [ 'customKingIcon' ],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
@@ -94,7 +94,7 @@ const s2Options = {
   // 设置自定义 `icon` 的展示条件
   headerActionIcons: [
     {
-      // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
+      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
       iconNames: [ 'customKingIcon' ],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
