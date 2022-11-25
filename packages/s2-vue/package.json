@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2-vue",
-  "version": "2.0.0-next.1",
+  "version": "2.0.0-next.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -66,7 +66,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@antv/s2": "^2.0.0-next.1",
+    "@antv/s2": "^2.0.0-next.0",
     "@antv/s2-shared": "*",
     "@testing-library/vue": "^6.6.1",
     "@vue/tsconfig": "^0.1.3",
