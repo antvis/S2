@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-  "version": "2.0.0-next.1",
+  "version": "2.0.0-next.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -99,6 +99,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "531522ce5ae758f202a9f6bdbff8df7c3739a6a6"
+  }
 }
