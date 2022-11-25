@@ -28,21 +28,21 @@ jobs:
           cache: 'yarn'
 
       # 发布开始通知
-      - name: Release start ding talk dev group notify
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          ignoreError: true
-          body: |
-            {
-              "msgtype": "link",
-              "link": {
-                "title": "🚑 开始自动发布 🚑",
-                "text": "🔗 请点击链接查看详情",
-                "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
-              }
-            }
+      # - name: Release start ding talk dev group notify
+      #   uses: zcong1993/actions-ding@master
+      #   with:
+      #     dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+      #     ignoreError: true
+      #     body: |
+      #       {
+      #         "msgtype": "link",
+      #         "link": {
+      #           "title": "🚑 开始自动发布 🚑",
+      #           "text": "🔗 请点击链接查看详情",
+      #           "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
+      #           "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+      #         }
+      #       }
 
       - name: Install dependencies
         run: yarn
@@ -56,23 +56,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_USERCONFIG: ./npmrc
+          npm_config_legacy_peer_deps: true
         run: yarn release
 
       # 发布失败通知内部开发群
-      - name: Release failed ding talk dev group notify
-        if: ${{ failure() }}
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          ignoreError: true
-          body: |
-            {
-              "msgtype": "link",
-              "link": {
-                "title": "🚨 自动发布失败",
-                "text": "🔗 请点击链接查看具体原因, 及时修复, 尝试点击右上角 [Re-run all jobs] 重试, 或手动发布 🚑",
-                "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
-              }
-            }
+      # - name: Release failed ding talk dev group notify
+      #   if: ${{ failure() }}
+      #   uses: zcong1993/actions-ding@master
+      #   with:
+      #     dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+      #     ignoreError: true
+      #     body: |
+      #       {
+      #         "msgtype": "link",
+      #         "link": {
+      #           "title": "🚨 自动发布失败",
+      #           "text": "🔗 请点击链接查看具体原因, 及时修复, 尝试点击右上角 [Re-run all jobs] 重试, 或手动发布 🚑",
+      #           "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
+      #           "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+      #         }
+      #       }
