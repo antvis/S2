@@ -545,7 +545,7 @@ export abstract class BaseFacet {
       const thumbSize = Math.max(
         (this.cornerBBox.width * this.cornerBBox.width) /
           this.cornerBBox.originalWidth,
-        scrollBar.thumbHorizontalMinSize,
+        scrollBar?.thumbHorizontalMinSize,
       );
 
       // 行头有分割线, 滚动条应该预留分割线的宽度
@@ -629,7 +629,7 @@ export abstract class BaseFacet {
       const maxOffset = finaleRealWidth - finalWidth;
       const thumbLen = Math.max(
         (finalWidth / finaleRealWidth) * finalWidth,
-        scrollBar.thumbHorizontalMinSize,
+        scrollBar?.thumbHorizontalMinSize,
       );
 
       // TODO abstract
@@ -683,7 +683,7 @@ export abstract class BaseFacet {
       const { scrollBar } = this.spreadsheet.theme;
       const thumbLen = Math.max(
         (height / realHeight) * height,
-        scrollBar.thumbVerticalMinSize,
+        scrollBar?.thumbVerticalMinSize,
       );
       const maxOffset = realHeight - height;
       const { maxX } = this.getScrollbarPosition();
