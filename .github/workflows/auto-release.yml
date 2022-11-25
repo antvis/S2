@@ -56,6 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_USERCONFIG: ./npmrc
         run: yarn release
 
       # 发布失败通知内部开发群
