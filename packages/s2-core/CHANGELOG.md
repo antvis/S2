@@ -1,3 +1,36 @@
+# [@antv/s2-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-v1.35.0...@antv/s2-v2.0.0-next.1) (2022-11-25)
+
+
+### Bug Fixes
+
+* 下钻后meta.childField不正确 ([#1788](https://github.com/antvis/S2/issues/1788)) ([1c61dd4](https://github.com/antvis/S2/commit/1c61dd4081c9d3fed6f276b0546865914040b07a))
+* 重构绘制盒模型，修复边框偏移问题 ([#1854](https://github.com/antvis/S2/issues/1854)) ([f7e0858](https://github.com/antvis/S2/commit/f7e0858a937ea557532a7fff948e9af3b6a1fdff))
+
+
+* feat!: 2.0 next 预览版发布 ([de5a406](https://github.com/antvis/S2/commit/de5a406f4fd5e0db23eea46c8e7185589215c195))
+* feat!: 2.0 预览版发布 ([9abb76d](https://github.com/antvis/S2/commit/9abb76dd40c65ed2a6a122b6f2b20a9b963c8a58))
+
+
+### Features
+
+* 2.0 break ([a4ba788](https://github.com/antvis/S2/commit/a4ba788580788909f4fcfee98f3d7387dd883c4a))
+* 2.0.0 next ([fe0aca3](https://github.com/antvis/S2/commit/fe0aca341f9c37e3a85e622a6eb30c9da5e02a96))
+* **layout:** 自定义行列头 ([#1719](https://github.com/antvis/S2/issues/1719)) ([2e0746d](https://github.com/antvis/S2/commit/2e0746dc9ca4ec45d50b35a9408b8827252c1bfa))
+* **total:** 全量移除所有 totalData 配置 ([#1799](https://github.com/antvis/S2/issues/1799)) ([23cc219](https://github.com/antvis/S2/commit/23cc21933e02d5da6b261afe1fe1bc67008054d8))
+* version break ([064c0de](https://github.com/antvis/S2/commit/064c0de861f2e87814acf394cbdf6305397d476d))
+* 升级的渲染引擎g5.0 ([#1924](https://github.com/antvis/S2/issues/1924)) ([820a310](https://github.com/antvis/S2/commit/820a310998bae5c0324c2f3144747f7dbe0097d1)), closes [#1852](https://github.com/antvis/S2/issues/1852) [#1862](https://github.com/antvis/S2/issues/1862)
+* 在生成 id 时，对 undefined, null 做区分 ([#1828](https://github.com/antvis/S2/issues/1828)) ([0687779](https://github.com/antvis/S2/commit/06877794be701608e5a68e6cab43e56927d59967))
+* 移动端组件适配 ([#1833](https://github.com/antvis/S2/issues/1833)) ([bd2e71e](https://github.com/antvis/S2/commit/bd2e71e0d1d55057af77d435a10730b7ac929324))
+
+
+### BREAKING CHANGES
+
+* G5.0, 透视表自定义行列头, 数据流重构
+* G5.0, 行列头自定义, 数据流
+* 2.0-next
+* 2.0
+* https://github.com/antvis/S2/discussions/1933
+
 # [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
 
 
