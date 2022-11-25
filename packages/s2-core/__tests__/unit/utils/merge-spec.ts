@@ -1,10 +1,9 @@
-import { DEFAULT_STYLE } from '@/common/constant/options';
 import {
   customMerge,
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import { HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
+import type { S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -151,70 +150,7 @@ describe('merge test', () => {
 
   test('should get safety options', () => {
     // 加这个测试可以防止 本地跑demo 修改了默认配置 直接提交
-    expect(getSafetyOptions(null)).toStrictEqual({
-      width: 600,
-      height: 480,
-      debug: false,
-      hierarchyType: 'grid',
-      conditions: {},
-      cornerText: '',
-      cornerExtraFieldText: '',
-      totals: {},
-      tooltip: {
-        showTooltip: false,
-        autoAdjustBoundary: 'body',
-        operation: {
-          hiddenColumns: false,
-          trend: false,
-          sort: false,
-          menus: [],
-        },
-      },
-      interaction: {
-        linkFields: [],
-        hiddenColumnFields: [],
-        selectedCellHighlight: false,
-        selectedCellsSpotlight: false,
-        hoverHighlight: true,
-        hoverFocus: { duration: HOVER_FOCUS_DURATION },
-        scrollSpeedRatio: {
-          horizontal: 1,
-          vertical: 1,
-        },
-        autoResetSheetStyle: true,
-        brushSelection: {
-          data: true,
-          row: false,
-          col: false,
-        },
-        multiSelection: true,
-        rangeSelection: true,
-        resize: {
-          colCellHorizontal: true,
-          colCellVertical: true,
-          cornerCellHorizontal: true,
-          rowCellVertical: true,
-          rowResizeType: 'all',
-        },
-        scrollbarPosition: 'content',
-        eventListenerOptions: false,
-        overscrollBehavior: 'auto',
-      },
-      frozenRowHeader: true,
-      showSeriesNumber: false,
-      customSVGIcons: [],
-      showDefaultHeaderActionIcon: false,
-      headerActionIcons: [],
-      style: DEFAULT_STYLE,
-      frozenRowCount: 0,
-      frozenColCount: 0,
-      frozenTrailingRowCount: 0,
-      frozenTrailingColCount: 0,
-      hdAdapter: true,
-      placeholder: '-',
-      supportCSSTransform: false,
-      devicePixelRatio: window.devicePixelRatio,
-    });
+    expect(getSafetyOptions(null)).toMatchSnapshot();
   });
 
   test('should get custom options', () => {

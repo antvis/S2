@@ -1,5 +1,3 @@
-import { values } from 'lodash';
-
 export enum InteractionName {
   CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
