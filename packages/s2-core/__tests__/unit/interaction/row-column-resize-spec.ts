@@ -3,6 +3,7 @@ import {
   DisplayObject,
   type LineStyleProps,
   type RectStyleProps,
+  type ParsedRectStyleProps,
 } from '@antv/g';
 import { pick } from 'lodash';
 import { createMockCellInfo } from '../../util/helpers';
@@ -178,7 +179,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const pickAttrs = (attrs: LineStyleProps) =>
       pick(attrs, Object.keys(guideLineAttrs));
 
-    const pickMaskAttrs = (attrs: RectStyleProps) =>
+    const pickMaskAttrs = (attrs: ParsedRectStyleProps) =>
       pick(attrs, Object.keys(maskAttrs));
 
     const resizeMask = getResizeMask() as CustomRect;

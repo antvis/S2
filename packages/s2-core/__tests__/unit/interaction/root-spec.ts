@@ -1,4 +1,4 @@
-import type { Canvas } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g';
 import { createMockCellInfo, sleep } from 'tests/util/helpers';
 import { get } from 'lodash';
 import { Store } from '@/common/store';
@@ -145,7 +145,7 @@ describe('RootInteraction Tests', () => {
     // hide interaction shape
     expect(mockCell.hideInteractionShape).toHaveBeenCalledTimes(1);
     // draw call
-    expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalledTimes(1);
+    expect(mockSpreadSheetInstance.container.render).toHaveBeenCalledTimes(1);
   });
 
   test('should set all selected interaction state correct', () => {
@@ -314,7 +314,7 @@ describe('RootInteraction Tests', () => {
         cells: cells.map((item) => getCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
       });
-      expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
+      expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
       panelGroupAllDataCells.forEach((cell) => {
         expect(cell.update).toHaveBeenCalled();
       });
@@ -340,7 +340,7 @@ describe('RootInteraction Tests', () => {
         cells: [],
         stateName: InteractionStateName.SELECTED,
       });
-      expect(mockSpreadSheetInstance.container.draw).not.toHaveBeenCalled();
+      expect(mockSpreadSheetInstance.container.render).not.toHaveBeenCalled();
     });
 
     test('should draw container when active cells is empty and enable force update', () => {
@@ -349,7 +349,7 @@ describe('RootInteraction Tests', () => {
         stateName: InteractionStateName.SELECTED,
         force: true,
       });
-      expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
+      expect(mockSpreadSheetInstance.container.render).toHaveBeenCalled();
     });
 
     test('should update last selected cells when repeated call changeState', () => {

@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { Group, type IElement } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
 
 class MockDataCell extends Group {}
@@ -11,31 +11,30 @@ describe('getAllChildCells test', () => {
   });
 
   Array.from(new Array(10)).forEach(() => {
-    scrollGroup.add(new MockDataCell({}));
+    scrollGroup.appendChild(new MockDataCell({}));
   });
 
   const group = new Group({
     name: 'panelGroup',
   });
 
-  group.add(scrollGroup);
+  group.appendChild(scrollGroup);
   Array.from(new Array(5)).forEach(() => {
-    group.add(new MockDataCell({}));
+    group.appendChild(new MockDataCell({}));
   });
   Array.from(new Array(5)).forEach(() => {
-    group.add(new MockTableRowCell({}));
+    group.appendChild(new MockTableRowCell({}));
   });
 
   test('should return getAllChildCells of DataCell', () => {
     expect(
-      getAllChildCells(group.getChildren() as IElement[], MockDataCell).length,
+      getAllChildCells(group.children as Group[], MockDataCell).length,
     ).toBe(15);
   });
 
   test('should return getAllChildCells of TableRowCell', () => {
     expect(
-      getAllChildCells(group.getChildren() as IElement[], MockTableRowCell)
-        .length,
+      getAllChildCells(group.children as Group[], MockTableRowCell).length,
     ).toBe(5);
   });
 });

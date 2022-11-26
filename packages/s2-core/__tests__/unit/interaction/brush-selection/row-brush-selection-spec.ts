@@ -88,7 +88,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         },
       },
     );
-    mockSpreadSheetInstance.container.getShape = jest.fn();
+
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushRowCell) as any;

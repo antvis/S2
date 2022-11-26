@@ -85,10 +85,7 @@ describe('Data Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(0);
+      const dataCell = s2.facet.panelGroup.children[0].children[0];
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual('#5083F5');
     });
 
@@ -109,10 +106,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(2);
+      const dataCell = s2.facet.panelGroup.children[0].children[2];
       expect(get(dataCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(dataCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -133,10 +127,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(2);
+      const dataCell = s2.facet.panelGroup.children[0].children[2];
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#fffae6');
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
     });
@@ -196,10 +187,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(2);
+      const dataCell = s2.facet.panelGroup.children[0].children[2];
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual(REVERSE_FONT_COLOR);
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
     });
@@ -220,10 +208,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(2);
+      const dataCell = s2.facet.panelGroup.children[0].children[2];
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
     });
@@ -245,10 +230,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(2);
+      const dataCell = s2.facet.panelGroup.children[0].children[2];
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
     });

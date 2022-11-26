@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import type { ResizeArea, ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -38,7 +38,7 @@ describe('Resize Utils Tests', () => {
 
     s2 = new MockSpreadSheet();
     s2.facet = {
-      foregroundGroup: new Group(''),
+      foregroundGroup: new Group(),
     } as any;
   });
 
@@ -113,7 +113,7 @@ describe('Resize Utils Tests', () => {
         width: 100,
       });
       expect(attrs.appendInfo.width).toStrictEqual(100);
-      expect(attrs.height).toStrictEqual(resizeAreaTheme.size);
+      expect(attrs.style.height).toStrictEqual(resizeAreaTheme.size);
     });
 
     test('should merge custom height with col field', () => {
@@ -122,7 +122,7 @@ describe('Resize Utils Tests', () => {
         type: ResizeDirectionType.Horizontal,
         height: 100,
       });
-      expect(attrs.width).toStrictEqual(resizeAreaTheme.size);
+      expect(attrs.style.width).toStrictEqual(resizeAreaTheme.size);
       expect(attrs.appendInfo.height).toStrictEqual(100);
     });
 
@@ -131,7 +131,7 @@ describe('Resize Utils Tests', () => {
         ...commonConfig,
         type: ResizeDirectionType.Horizontal,
       });
-      expect(attrs.cursor).toStrictEqual('col-resize');
+      expect(attrs.style.cursor).toStrictEqual('col-resize');
     });
 
     test('should get resize cursor with row field', () => {
@@ -139,7 +139,7 @@ describe('Resize Utils Tests', () => {
         ...commonConfig,
         type: ResizeDirectionType.Vertical,
       });
-      expect(attrs.cursor).toStrictEqual('row-resize');
+      expect(attrs.style.cursor).toStrictEqual('row-resize');
     });
   });
 
@@ -147,7 +147,7 @@ describe('Resize Utils Tests', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
       const group = getOrCreateResizeAreaGroupById(s2, 'id');
       expect(group?.add).toBeDefined();
-      expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(1);
+      expect(s2.facet.foregroundGroup.children).toHaveLength(1);
     });
 
     test('should get prev resize area group if prevResizeArea is exist', () => {
@@ -159,7 +159,7 @@ describe('Resize Utils Tests', () => {
       getOrCreateResizeAreaGroupById(s2, groupId);
 
       // use prev created group, only one resize area group
-      expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(1);
+      expect(s2.facet.foregroundGroup.children).toHaveLength(1);
     });
   });
 });

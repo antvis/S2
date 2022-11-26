@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { DataCell } from '@/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
@@ -11,7 +11,9 @@ import {
   type ViewMeta,
   InterceptType,
   BaseBrushSelection,
+  type S2DataConfig,
 } from '@/index';
+import type { BBox } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -55,12 +57,12 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance = new PivotSheet(
       document.createElement('div'),
-      null,
+      null as unknown as S2DataConfig,
       null,
     );
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
-    mockSpreadSheetInstance.foregroundGroup = new Group('');
+    mockSpreadSheetInstance.facet.foregroundGroup = new Group();
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
@@ -157,13 +159,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       minY: 0,
       maxX: 10,
       maxY: 10,
-    };
+    } as BBox;
     const rect2 = {
       minX: 5,
       minY: 5,
       maxX: 15,
       maxY: 15,
-    };
+    } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
@@ -174,13 +176,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       minY: 0,
       maxX: 20,
       maxY: 20,
-    };
+    } as BBox;
     const rect2 = {
       minX: 5,
       minY: 5,
       maxX: 15,
       maxY: 15,
-    };
+    } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
@@ -191,13 +193,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       minY: 0,
       maxX: 10,
       maxY: 10,
-    };
+    } as BBox;
     const rect2 = {
       minX: 10,
       minY: 10,
       maxX: 15,
       maxY: 15,
-    };
+    } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeFalsy();
   });

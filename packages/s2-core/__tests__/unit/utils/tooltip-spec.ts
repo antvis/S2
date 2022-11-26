@@ -3,7 +3,7 @@ import {
   createMockCellInfo,
   createPivotSheet,
 } from 'tests/util/helpers';
-import type { BBox } from '@antv/g-canvas';
+
 import { omit } from 'lodash';
 import { CellData } from '@/data-set/cell-data';
 import type { CellMeta } from '@/common/interface/interaction';
@@ -31,6 +31,7 @@ import {
   type TooltipSummaryOptions,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
+import type { BBox } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 
@@ -63,11 +64,12 @@ describe('Tooltip Utils Tests', () => {
           ...tooltipSize,
         } as DOMRect),
     } as HTMLDivElement;
-    s2.container.get = () => ({
-      getBoundingClientRect: () => ({
-        ...containerSize,
-      }),
-    });
+    // TODO: 通过 get 设置什么？
+    // s2.container.get = () => ({
+    //   getBoundingClientRect: () => ({
+    //     ...containerSize,
+    //   }),
+    // });
     s2.facet = {
       panelBBox: {
         maxX: containerSize.width,

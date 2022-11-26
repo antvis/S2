@@ -5,7 +5,7 @@
  *
  */
 import { getContainer } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import dataCfg from '../data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
 import type { S2Options } from '@/common/interface';
@@ -20,24 +20,24 @@ describe('Grid Border Tests', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
     s2.render();
 
-    const panelScrollGroup = s2.facet.panelGroup.getChildren()[0];
-    const gridGroup = (panelScrollGroup as any).gridGroup as IGroup;
-    const originalLeftBorderBbox = gridGroup.getChildren()[0].getBBox();
+    const panelScrollGroup = s2.facet.panelGroup.children[0];
+    const gridGroup = (panelScrollGroup as any).gridGroup as Group;
+    const originalLeftBorderBbox = (gridGroup.children[0] as Group).getBBox();
 
     s2.facet.updateScrollOffset({ offsetX: { value: 100, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 200, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 300, animate: false } });
     s2.facet.updateScrollOffset({ offsetX: { value: 0, animate: false } });
-    const newLeftBorderBbox = gridGroup.getChildren()[0].getBBox();
+    const newLeftBorderBbox = (gridGroup.children[0] as Group).getBBox();
 
     const widthRatio =
-      newLeftBorderBbox.maxX -
-      newLeftBorderBbox.minX -
-      (originalLeftBorderBbox.maxX - originalLeftBorderBbox.minX);
+      newLeftBorderBbox.right -
+      newLeftBorderBbox.left -
+      (originalLeftBorderBbox.right - originalLeftBorderBbox.left);
     const heightRatio =
-      newLeftBorderBbox.maxY -
-      newLeftBorderBbox.minY -
-      (originalLeftBorderBbox.maxY - originalLeftBorderBbox.minY);
+      newLeftBorderBbox.bottom -
+      newLeftBorderBbox.top -
+      (originalLeftBorderBbox.bottom - originalLeftBorderBbox.top);
     // g绘制时，会将坐标1变成0.5，来达到真正绘制1px的效果，因此宽高不一定完全相同，会有1px的差值
     expect(widthRatio).toBeLessThanOrEqual(1);
     expect(heightRatio).toBeLessThanOrEqual(1);

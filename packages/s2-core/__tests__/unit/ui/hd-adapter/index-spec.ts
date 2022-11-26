@@ -39,7 +39,7 @@ describe.skip('HD Adapter Tests', () => {
         s2.options.height! * DPR,
       ],
     ) => {
-      const canvas: HTMLCanvasElement = s2.container.get('el');
+      const canvas: HTMLCanvasElement = s2.getCanvasElement();
       expect(canvas.style.width).toEqual(`${width}px`);
       expect(canvas.style.height).toEqual(`${height}px`);
       expect(canvas.width).toEqual(updatedWidth);

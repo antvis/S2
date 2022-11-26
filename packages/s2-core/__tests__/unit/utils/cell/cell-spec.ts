@@ -1,10 +1,10 @@
-import type { SimpleBBox } from '@antv/g-canvas';
 import {
   CellBorderPosition,
   CellClipBox,
   type CellTheme,
 } from '@/common/interface';
 import type { AreaRange } from '@/common/interface/scroll';
+import type { SimpleBBox } from '@/engine';
 import {
   getCellBoxByType,
   getMaxTextWidth,

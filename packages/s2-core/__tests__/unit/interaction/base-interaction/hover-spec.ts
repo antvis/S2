@@ -1,6 +1,6 @@
-import type { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
+import type { GEvent } from '@/index';
 import type { CellEventTarget, S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import type { SpreadSheet } from '@/sheet-type';

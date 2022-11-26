@@ -1,4 +1,4 @@
-import { Group } from '@antv/g-canvas';
+import { Group } from '@antv/g';
 import { range } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
@@ -98,7 +98,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       panelGroupAllDataCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
-    mockSpreadSheetInstance.facet.foregroundGroup = new Group('');
+    mockSpreadSheetInstance.facet.foregroundGroup = new Group();
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
     ).map((_, idx) => {
