@@ -11,7 +11,7 @@ import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotFacet } from '@/facet/pivot-facet';
-import { DataCell } from '@/cell';
+import { CornerCell, DataCell } from '@/cell';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
@@ -271,6 +271,33 @@ describe('Pivot Mode Facet Test', () => {
       expect(panelScrollGroup.cfg.children).toHaveLength(32);
       expect(panelScrollGroup.cfg.visible).toBeTrue();
       expect(get(sampleDataCell, 'meta.data.number')).toBe(7789);
+    });
+  });
+
+  describe('should get correct result when enable seriesnumber', () => {
+    const mockDataSet = new MockPivotDataSet(s2);
+    const seriesNumberFacet = new PivotFacet({
+      spreadsheet: s2,
+      dataSet: mockDataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      ...DEFAULT_STYLE,
+      showSeriesNumber: true,
+    });
+    seriesNumberFacet.render();
+
+    test('render corrent corner header', () => {
+      const { cornerHeader } = seriesNumberFacet;
+
+      expect(cornerHeader instanceof CornerHeader).toBeTrue();
+      expect(cornerHeader.cfg.children).toHaveLength(3);
+      expect(cornerHeader.cfg.visible).toBeTrue();
+
+      expect(
+        cornerHeader
+          .getChildren()
+          .every((cell: CornerCell) => cell.getMeta().spreadsheet),
+      ).toBeTrue();
     });
   });
 
