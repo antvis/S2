@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/simple-table-data.json';
 import { TableSheet } from '@/sheet-type';
@@ -13,11 +13,11 @@ describe('Table Sheet Resize Test', () => {
     });
     s2.render();
 
-    const resizeGroup = s2.facet.foregroundGroup.findById(
+    const resizeGroup = s2.facet.foregroundGroup.getElementById(
       KEY_GROUP_ROW_RESIZE_AREA,
-    ) as IGroup;
+    ) as Group;
 
-    expect(resizeGroup.getChildren().length).toBeGreaterThan(0);
+    expect(resizeGroup.children.length).toBeGreaterThan(0);
   });
 
   test('should draw resize area in data cell when hide series', () => {
@@ -28,10 +28,10 @@ describe('Table Sheet Resize Test', () => {
     });
     s2.render();
 
-    const resizeGroup = s2.facet.foregroundGroup.findById(
+    const resizeGroup = s2.facet.foregroundGroup.getElementById(
       KEY_GROUP_ROW_RESIZE_AREA,
-    ) as IGroup;
+    ) as Group;
 
-    expect(resizeGroup.getChildren().length).toBeGreaterThan(0);
+    expect(resizeGroup.children.length).toBeGreaterThan(0);
   });
 });

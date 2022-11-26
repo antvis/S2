@@ -1,4 +1,4 @@
-import type { IGroup } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -30,8 +30,8 @@ jest.mock('@/sheet-type');
 describe('Merge Cells Test', () => {
   const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
   let mockInstance: SpreadSheet;
-  let mockOneCellEdges: number[][][] = [];
-  let mockTwoCellEdges: number[][][] = [];
+  let mockOneCellEdges: [number, number][][] = [];
+  let mockTwoCellEdges: [number, number][][] = [];
   let mockMergeCellInfo: MergedCellInfo[] = [];
   let mockAllVisibleCells: S2CellType[] = [];
 
@@ -166,7 +166,7 @@ describe('Merge Cells Test', () => {
     const curEdge = [
       [3, 1],
       [3, 3],
-    ];
+    ] as [number, number][];
     expect(getNextEdge(curEdge, mockOneCellEdges)).toEqual([
       [3, 3],
       [1, 3],
@@ -284,7 +284,7 @@ describe('Merge Cells Test', () => {
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as IGroup;
+      } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);
 
@@ -311,7 +311,7 @@ describe('Merge Cells Test', () => {
 
       const mergedCellsGroup = {
         getChildren: jest.fn().mockReturnValue([]),
-      } as unknown as IGroup;
+      } as unknown as Group;
 
       updateMergedCells(mockInstance, mergedCellsGroup);
 

@@ -1,7 +1,7 @@
 import { getContainer } from 'tests/util/helpers';
-import type { Event as GEvent } from '@antv/g-canvas';
 import * as dataCfg from 'tests/data/simple-table-data.json';
 import { TableDataSet } from '../../../src/data-set';
+import type { GEvent } from '@/index';
 import { TableSheet } from '@/sheet-type';
 import { S2Event, setLang, type LangType, type S2Options } from '@/common';
 import { Node } from '@/facet/layout/node';

@@ -1,5 +1,5 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@/index';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
 import type { CellMeta, S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';

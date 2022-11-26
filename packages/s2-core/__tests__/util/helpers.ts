@@ -2,10 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas } from '@antv/g-canvas';
+import { Canvas } from '@antv/g';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
+import { Renderer } from '@antv/g-canvas';
 import type { BaseDataSet } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
@@ -65,6 +66,7 @@ export const createFakeSpreadSheet = () => {
     width: DEFAULT_OPTIONS.width!,
     height: DEFAULT_OPTIONS.height!,
     container,
+    renderer: new Renderer(),
   });
   s2.dataSet = {
     getMultiData() {
@@ -91,7 +93,7 @@ export const createFakeSpreadSheet = () => {
       rowLeafNodes: [],
     },
   } as unknown as BaseFacet;
-  s2.container.draw = jest.fn();
+  s2.container.render = jest.fn();
   s2.store = new Store();
   s2.tooltip = {
     container: {} as HTMLElement,
@@ -111,7 +113,8 @@ export const createFakeSpreadSheet = () => {
   s2.isPivotMode = jest.fn();
   s2.getCell = jest.fn();
   s2.isHierarchyTreeType = jest.fn();
-  s2.getCanvasElement = () => s2.container.get('el');
+  s2.getCanvasElement = () =>
+    s2.container.getContextService().getDomElement() as HTMLCanvasElement;
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);

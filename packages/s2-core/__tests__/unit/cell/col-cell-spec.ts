@@ -156,10 +156,7 @@ describe('Col Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const colCell = s2.facet.columnHeader
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(1);
+      const colCell = s2.facet.columnHeader.children[0].children[1];
 
       expect(get(colCell, 'textShape.attrs.fill')).toEqual('#5083F5');
     });
@@ -184,10 +181,7 @@ describe('Col Cell Tests', () => {
       });
       s2.render();
 
-      const colCell = s2.facet.columnHeader
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(0);
+      const colCell = s2.facet.columnHeader.children[0].children[0];
       expect(get(colCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(colCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -208,10 +202,7 @@ describe('Col Cell Tests', () => {
         },
       });
       s2.render();
-      const colCell = s2.facet.columnHeader
-        .getChildByIndex(0)
-        // @ts-ignore
-        .getChildByIndex(1);
+      const colCell = s2.facet.columnHeader.children[0].children[1];
       expect(get(colCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
     });
   });

@@ -414,12 +414,12 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
 
-    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(222);
-    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(222);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(222);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(222);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     s2.render(false);
-    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(193);
+    expect(s2.facet.vScrollBar.getBBox().x).toBe(193);
 
     s2.setOptions({
       interaction: {
@@ -429,13 +429,13 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
 
-    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
-    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(994);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(994);
 
     s2.changeSheetSize(1000, 200); // 纵向滚动条
     s2.render(false);
 
-    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+    expect(s2.facet.vScrollBar.getBBox().x).toBe(994);
   });
 
   // https://github.com/antvis/S2/issues/1659
@@ -452,7 +452,10 @@ describe('Scroll Tests', () => {
       name: 'vScrollBar',
       key: 'height',
     },
-  ])('should render scroll bar real size by canvas BBox', ({ name, key }) => {
+  ] as Array<{
+    name: string;
+    key: keyof DOMRect;
+  }>)('should render scroll bar real size by canvas BBox', ({ name, key }) => {
     s2.changeSheetSize(200, 200); // 显示横/竖滚动条
     s2.render(false);
 

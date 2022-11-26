@@ -1,10 +1,11 @@
 // eslint-disable-next-line max-classes-per-file
 import { getContainer } from 'tests/util/helpers';
 import dataCfg from 'tests/data/simple-data.json';
-import { Canvas, Event as GEvent } from '@antv/g-canvas';
+import { Canvas } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import { PivotDataSet } from '../../../src/data-set';
 import type { BaseEvent } from '../../../src';
+import type { GEvent } from '@/index';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -521,14 +522,14 @@ describe('PivotSheet Tests', () => {
     expect(s2.options.width).toStrictEqual(1000);
     expect(s2.options.height).toStrictEqual(500);
 
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2.getCanvasElement();
 
     expect(canvas.style.width).toStrictEqual(`1000px`);
     expect(canvas.style.height).toStrictEqual(`500px`);
   });
 
   test('should set display:block style with canvas', () => {
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2.getCanvasElement();
 
     expect(canvas.style.display).toEqual('block');
   });
@@ -545,17 +546,17 @@ describe('PivotSheet Tests', () => {
 
   test('should init canvas groups', () => {
     expect(s2.container).toBeInstanceOf(Canvas);
-    expect(s2.container.get('width')).toEqual(s2.options.width);
-    expect(s2.container.get('height')).toEqual(s2.options.height);
+    expect(s2.container.getConfig().width).toEqual(s2.options.width);
+    expect(s2.container.getConfig().height).toEqual(s2.options.height);
 
     // sheet group
-    expect(s2.facet.backgroundGroup.getChildren()).toHaveLength(1);
-    expect(s2.facet.foregroundGroup.getChildren()).toHaveLength(9);
+    expect(s2.facet.backgroundGroup.children).toHaveLength(1);
+    expect(s2.facet.foregroundGroup.children).toHaveLength(9);
 
     // panel scroll group
-    expect(s2.facet.panelGroup.getChildren()).toHaveLength(1);
+    expect(s2.facet.panelGroup.children).toHaveLength(1);
     expect(
-      s2.facet.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL),
+      s2.facet.panelGroup.getElementsByName(KEY_GROUP_PANEL_SCROLL),
     ).toHaveLength(1);
   });
 
@@ -1014,11 +1015,12 @@ describe('PivotSheet Tests', () => {
     // clear all sheet events
     expect(s2.getEvents()).toEqual({});
     // clear all canvas events
-    expect(s2.container.getEvents()).toEqual({});
+    // eslint-disable-next-line no-underscore-dangle
+    expect((s2.container.emitter as any)._eventsCount).toEqual(0);
     // clear canvas group and shapes
-    expect(s2.container.getChildren()).not.toBeDefined();
+    expect(s2.container.document.children).not.toBeDefined();
     // destroy canvas
-    expect(s2.container.get('el')).not.toBeDefined();
+    expect(s2.getCanvasElement()).not.toBeDefined();
   });
 
   describe('Test Layout by dataCfg fields', () => {

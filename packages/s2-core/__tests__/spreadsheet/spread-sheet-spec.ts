@@ -33,7 +33,7 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       expect(s2.container).toBeDefined();
-      expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+      expect(s2.getCanvasElement()).toBeInstanceOf(HTMLCanvasElement);
       expect(container.querySelector('canvas')).toBeDefined();
 
       s2.destroy();
@@ -48,7 +48,7 @@ describe('SpreadSheet Tests', () => {
       s2.render();
 
       expect(s2.container).toBeDefined();
-      expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+      expect(s2.getCanvasElement()).toBeInstanceOf(HTMLCanvasElement);
       expect(container.querySelector('canvas')).toBeDefined();
 
       s2.destroy();
@@ -79,7 +79,7 @@ describe('SpreadSheet Tests', () => {
       });
       s2.render();
 
-      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      const canvas = s2.getCanvasElement() as HTMLCanvasElement;
       expect(canvas.width).toEqual(s2Options.width! * devicePixelRatio);
       expect(canvas.height).toEqual(s2Options.height! * devicePixelRatio);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
@@ -95,7 +95,7 @@ describe('SpreadSheet Tests', () => {
       });
       s2.render();
 
-      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      const canvas = s2.getCanvasElement() as HTMLCanvasElement;
       expect(canvas.width).toEqual(s2Options.width);
       expect(canvas.height).toEqual(s2Options.height);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
@@ -154,12 +154,12 @@ describe('SpreadSheet Tests', () => {
         s2.render();
 
         expect(s2.container).toBeDefined();
-        expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+        expect(s2.getCanvasElement()).toBeInstanceOf(HTMLCanvasElement);
         expect(container.querySelectorAll('canvas')).toHaveLength(1);
 
         s2.destroy();
 
-        expect(s2.container.get('el')).not.toBeDefined();
+        expect(s2.getCanvasElement()).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
         expect(document.body.style.overscrollBehavior).toBeFalsy();
       },
@@ -245,7 +245,7 @@ describe('SpreadSheet Tests', () => {
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         s2.render();
 
-        expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+        expect(s2.getCanvasElement()).toBeInstanceOf(HTMLCanvasElement);
         expect(container.querySelectorAll('canvas')).toHaveLength(1);
 
         await new Promise((resolve) => {
@@ -255,7 +255,7 @@ describe('SpreadSheet Tests', () => {
           }, 1000);
         });
 
-        expect(s2.container.get('el')).not.toBeDefined();
+        expect(s2.getCanvasElement()).not.toBeDefined();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
 
         s2.destroy();

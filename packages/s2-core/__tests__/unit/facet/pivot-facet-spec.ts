@@ -1,9 +1,10 @@
 /**
  * pivot mode pivot test.
  */
-import { Canvas, Group } from '@antv/g-canvas';
+import { Canvas, Group, Rect } from '@antv/g';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
+import { Renderer } from '@antv/g-canvas';
 import { getMockPivotMeta } from './util';
 import { Node } from '@/facet/layout/node';
 import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
@@ -37,10 +38,11 @@ jest.mock('@/sheet-type', () => {
     width: 100,
     height: 100,
     container: document.body,
+    renderer: new Renderer(),
   });
   const panelScrollGroup = new Group({}) as PanelScrollGroup;
   panelScrollGroup.update = () => {};
-  container.add(panelScrollGroup);
+  container.appendChild(panelScrollGroup);
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
       return {
@@ -50,9 +52,9 @@ jest.mock('@/sheet-type', () => {
         theme: getTheme({}),
         store: new Store(),
         panelScrollGroup,
-        panelGroup: container.addGroup(),
-        foregroundGroup: container.addGroup(),
-        backgroundGroup: container.addGroup(),
+        panelGroup: container.appendChild(new Group()),
+        foregroundGroup: container.appendChild(new Group()),
+        backgroundGroup: container.appendChild(new Group()),
         isFrozenRowHeader: jest.fn(),
         isTableMode: jest.fn().mockReturnValue(false),
         isPivotMode: jest.fn().mockReturnValue(true),
@@ -69,7 +71,8 @@ jest.mock('@/sheet-type', () => {
           },
           getHiddenColumnsInfo: jest.fn(),
         },
-        getCanvasElement: () => container.get('el'),
+        getCanvasElement: () =>
+          container.getContextService().getDomElement() as HTMLCanvasElement,
         hideTooltip: jest.fn(),
         interaction: {
           clearHoverTimer: jest.fn(),
@@ -261,12 +264,12 @@ describe('Pivot Mode Facet Test', () => {
     } = facet;
     test('get header after render', () => {
       expect(rowHeader instanceof RowHeader).toBeTrue();
-      expect(rowHeader!.cfg.children).toHaveLength(10);
-      expect(rowHeader!.cfg.visible).toBeTrue();
+      expect(rowHeader!.children).toHaveLength(10);
+      expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.cfg.children).toHaveLength(2);
-      expect(cornerHeader.cfg.visible).toBeTrue();
+      expect(cornerHeader.children).toHaveLength(2);
+      expect(cornerHeader.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(columnHeader instanceof ColHeader).toBeTrue();
       expect(centerFrame instanceof Frame).toBeTrue();
@@ -275,9 +278,9 @@ describe('Pivot Mode Facet Test', () => {
     test('get background after render', () => {
       const rect = get(backgroundGroup, 'cfg.children[0]');
 
-      expect(backgroundGroup.cfg.children).toHaveLength(1);
-      expect(rect.cfg.type).toBe('rect');
-      expect(rect.cfg.visible).toBeTrue();
+      expect(backgroundGroup.children).toHaveLength(1);
+      expect(rect).toBeInstanceOf(Rect);
+      expect(rect.parsedStyle.visibility).not.toEqual('hidden');
     });
   });
 

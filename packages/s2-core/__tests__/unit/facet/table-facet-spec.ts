@@ -1,9 +1,10 @@
 /**
  * table mode pivot test.
  */
-import { Canvas } from '@antv/g-canvas';
+import { Canvas, Group } from '@antv/g';
 import { merge } from 'lodash';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { Renderer } from '@antv/g-canvas';
 import { data } from '../../data/mock-dataset.json';
 import { FrozenGroupType } from '@/common/constant';
 import { Store } from '@/common/store';
@@ -19,6 +20,7 @@ jest.mock('@/sheet-type', () => {
     width: 100,
     height: 100,
     container: document.body,
+    renderer: new Renderer(),
   });
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
@@ -32,9 +34,9 @@ jest.mock('@/sheet-type', () => {
         },
         container,
         theme: getTheme({}),
-        panelGroup: container.addGroup(),
-        foregroundGroup: container.addGroup(),
-        backgroundGroup: container.addGroup(),
+        panelGroup: container.appendChild(new Group()),
+        foregroundGroup: container.appendChild(new Group()),
+        backgroundGroup: container.appendChild(new Group()),
         store: new Store(),
         on: jest.fn(),
         isTableMode: jest.fn().mockReturnValue(true),
@@ -45,7 +47,8 @@ jest.mock('@/sheet-type', () => {
         isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
-        getCanvasElement: () => container.get('el'),
+        getCanvasElement: () =>
+          container.getContextService().getDomElement() as HTMLCanvasElement,
         hideTooltip: jest.fn(),
         interaction: {
           clearHoverTimer: jest.fn(),
@@ -603,32 +606,32 @@ describe('Table Mode Facet With Column Grouping Test', () => {
 
   test('should get correct group', () => {
     const leafNodes = facet.layoutResult.colLeafNodes;
-    expect(leafNodes[0].parent.field).toEqual('area');
-    expect(leafNodes[1].parent.field).toEqual('area');
-    expect(leafNodes[2].parent.field).toEqual('all_type');
-    expect(leafNodes[3].parent.field).toEqual('all_type');
-    expect(leafNodes[4].parent.id).toEqual('root');
+    expect(leafNodes[0].parent!.field).toEqual('area');
+    expect(leafNodes[1].parent!.field).toEqual('area');
+    expect(leafNodes[2].parent!.field).toEqual('all_type');
+    expect(leafNodes[3].parent!.field).toEqual('all_type');
+    expect(leafNodes[4].parent!.id).toEqual('root');
   });
   test('should has correct col hierarchy', () => {
     expect(facet.layoutResult.colNodes).toHaveLength(7);
     expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
     const nodes = facet.layoutResult.colNodes;
     expect(nodes[0].y).toBe(0);
-    expect(nodes[0].height).toEqual(colCfg.height);
-    expect(nodes[1].y).toBe(colCfg.height);
-    expect(nodes[1].height).toEqual(colCfg.height);
-    expect(nodes[2].y).toBe(colCfg.height);
-    expect(nodes[2].height).toEqual(colCfg.height);
+    expect(nodes[0].height).toEqual(colCfg!.height);
+    expect(nodes[1].y).toBe(colCfg!.height);
+    expect(nodes[1].height).toEqual(colCfg!.height);
+    expect(nodes[2].y).toBe(colCfg!.height);
+    expect(nodes[2].height).toEqual(colCfg!.height);
 
     expect(nodes[3].y).toBe(0);
-    expect(nodes[3].height).toEqual(colCfg.height);
-    expect(nodes[4].y).toBe(colCfg.height);
-    expect(nodes[4].height).toEqual(colCfg.height);
-    expect(nodes[5].y).toBe(colCfg.height);
-    expect(nodes[5].height).toEqual(colCfg.height);
+    expect(nodes[3].height).toEqual(colCfg!.height);
+    expect(nodes[4].y).toBe(colCfg!.height);
+    expect(nodes[4].height).toEqual(colCfg!.height);
+    expect(nodes[5].y).toBe(colCfg!.height);
+    expect(nodes[5].height).toEqual(colCfg!.height);
 
     expect(nodes[6].y).toBe(0);
-    expect(nodes[6].height).toEqual(colCfg.height * 2);
+    expect(nodes[6].height).toEqual(colCfg!.height! * 2);
   });
 });
 
@@ -662,19 +665,19 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
     expect(facet.frozenGroupInfo).toStrictEqual({
-      [FrozenGroup.FROZEN_COL]: {
+      [FrozenGroupType.FROZEN_COL]: {
         range: [0, 0],
         width: 240,
       },
-      [FrozenGroup.FROZEN_ROW]: {
+      [FrozenGroupType.FROZEN_ROW]: {
         height: 60,
         range: [0, 1],
       },
-      [FrozenGroup.FROZEN_TRAILING_COL]: {
+      [FrozenGroupType.FROZEN_TRAILING_COL]: {
         range: [2, 2],
         width: 240,
       },
-      [FrozenGroup.FROZEN_TRAILING_ROW]: {
+      [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 60,
         range: [30, 31],
       },
@@ -684,7 +687,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   test('should get correct col layout with frozen col', () => {
     const { frozenColCount } = facet.cfg;
     const { colNodes } = facet.layoutResult;
-    const topLevelNodes = colNodes.filter((node) => node.parent.id === 'root');
+    const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
     let prevWidth = 0;
     topLevelNodes.slice(0, frozenColCount).forEach((node) => {
       expect(node.x).toBe(prevWidth);
@@ -696,11 +699,11 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const { width } = facet.spreadsheet.options;
     const { frozenTrailingColCount } = facet.cfg;
     const { colNodes, colLeafNodes, getCellMeta } = facet.layoutResult;
-    const topLevelNodes = colNodes.filter((node) => node.parent.id === 'root');
+    const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
     const { trailingColCount } = getFrozenLeafNodesCount(
       topLevelNodes,
       0,
-      frozenTrailingColCount,
+      frozenTrailingColCount!,
     );
     let prevWidth = 0;
     colLeafNodes
@@ -708,8 +711,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       .reverse()
       .forEach((node, index) => {
         prevWidth += node.width;
-        expect(getCellMeta(1, colLeafNodes.length - 1 - index).x).toBe(
-          width - prevWidth,
+        expect(getCellMeta(1, colLeafNodes.length - 1 - index)!.x).toBe(
+          width! - prevWidth,
         );
       });
   });
@@ -721,11 +724,11 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const panelBBox = facet.panelBBox;
     let prevHeight = 0;
     displayData
-      .slice(-frozenTrailingRowCount)
+      .slice(-frozenTrailingRowCount!)
       .reverse()
       .forEach((_, idx) => {
-        prevHeight += cellCfg.height;
-        expect(getCellMeta(displayData.length - 1 - idx, 1).y).toBe(
+        prevHeight += cellCfg!.height!;
+        expect(getCellMeta(displayData.length - 1 - idx, 1)!.y).toBe(
           panelBBox.maxY - prevHeight,
         );
       });

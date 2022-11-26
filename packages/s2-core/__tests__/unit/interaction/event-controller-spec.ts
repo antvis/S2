@@ -1,6 +1,7 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, type BBox, type CanvasCfg, Shape } from '@antv/g-canvas';
+import { Canvas, Image } from '@antv/g';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { Renderer } from '@antv/g-canvas';
 import { GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
@@ -16,6 +17,7 @@ import type { SpreadSheet } from '@/sheet-type';
 import { RootInteraction } from '@/interaction/root';
 import type { CellMeta, S2Options } from '@/common/interface';
 import type { BaseFacet } from '@/facet';
+import type { BBox } from '@/engine';
 
 const MOCK_COPY_DATA = 'data';
 
@@ -82,7 +84,8 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
-    } as CanvasCfg);
+      renderer: new Renderer(),
+    });
     spreadsheet.facet = {
       panelBBox: {
         maxX: s2Options.width,
@@ -846,9 +849,9 @@ describe('Interaction Event Controller Tests', () => {
 
       const handler = jest.fn();
 
-      const image = new Shape.Image({
+      const image = new Image({
         name: 'test',
-        attrs: {
+        style: {
           img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
         },
       });

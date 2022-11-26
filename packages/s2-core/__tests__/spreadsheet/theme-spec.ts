@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
-import type { IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
+import { Text, type Group, type Image } from '@antv/g';
 import type {
   TextBaseline,
   TextTheme,
@@ -155,12 +155,13 @@ describe('SpreadSheet Theme Tests', () => {
       });
       s2.render();
       const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
-      const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
+      const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
+      const actionIconStyle = actionIcon.parsedStyle;
 
-      expect(actionIconCfg.fill).toEqual(iconInfo.fill);
-      expect(actionIconCfg.name).toEqual(iconInfo.name);
-      expect(actionIconCfg.width).toEqual(iconInfo.size);
-      expect(actionIconCfg.height).toEqual(iconInfo.size);
+      expect(actionIcon.name).toEqual(iconInfo.name);
+      expect(actionIconStyle.fill).toEqual(iconInfo.fill);
+      expect(actionIconStyle.width).toEqual(iconInfo.size);
+      expect(actionIconStyle.height).toEqual(iconInfo.size);
     });
   });
 
@@ -191,10 +192,11 @@ describe('SpreadSheet Theme Tests', () => {
         const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
 
         const rowCellWidth = get(rowCell, 'meta.width');
-        const actionIconCfg: ShapeAttrs = get(rowCell, 'actionIcons.[0].cfg');
+        const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
+        const actionIconStyle = actionIcon.parsedStyle;
 
-        expect(actionIconCfg.x).toBeGreaterThanOrEqual(0);
-        expect(actionIconCfg.x! + actionIconCfg.width!).toBeLessThanOrEqual(
+        expect(actionIconStyle.x).toBeGreaterThanOrEqual(0);
+        expect(actionIconStyle.x! + actionIconStyle.width!).toBeLessThanOrEqual(
           rowCellWidth,
         );
       },
@@ -427,10 +429,8 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Series Cell Tests', () => {
-    const getTextShape = (group: IGroup) => {
-      return group
-        .getChildren()
-        .find((child) => child instanceof child.getShapeBase().Text);
+    const getTextShape = (group: Group) => {
+      return group.children.find((child) => child instanceof Text) as Text;
     };
 
     test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
@@ -455,13 +455,12 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.render();
 
-        const rowCell = s2.facet.rowHeader!.getChildByIndex(0) as IGroup; // 浙江省
+        const rowCell = s2.facet.rowHeader!.children[0] as Group; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
 
-        const seriesCell = s2.facet.rowIndexHeader!.getChildByIndex(
-          3,
-        ) as IGroup; // 序号1
+        const seriesCell = s2.facet.rowIndexHeader!.children[3] as Group; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
+
         expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);
         expect(textOfSeriesCell?.attr('textBaseline')).toEqual('top');
       },

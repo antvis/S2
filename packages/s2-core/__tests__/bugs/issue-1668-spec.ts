@@ -2,12 +2,12 @@
  * @description spec for issue #1668
  * https://github.com/antvis/S2/issues/1668
  */
-
-import type { IGroup } from '@antv/g-canvas';
+import type { Group } from '@antv/g';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-1668.json';
 import { type S2Options, KEY_GROUP_COL_RESIZE_AREA } from '@/index';
 import { PivotSheet } from '@/sheet-type';
+import type { CustomRect } from '@/engine';
 
 const s2Options: S2Options = {
   width: 800,
@@ -35,15 +35,15 @@ describe('Totals Cell Resize Tests', () => {
   s2.render();
 
   test('should render extra resize id for resize area handler', () => {
-    const resizeArea = s2.facet.foregroundGroup.findById(
+    const resizeArea = s2.facet.foregroundGroup.getElementById<Group>(
       KEY_GROUP_COL_RESIZE_AREA,
-    ) as IGroup;
-    const resizeAreaList = resizeArea.getChildren();
+    )!;
+    const resizeAreaList = resizeArea.children as CustomRect[];
 
     expect(resizeAreaList).not.toHaveLength(0);
 
     resizeAreaList.forEach((shape) => {
-      expect(shape.attr('appendInfo').id).toBeTruthy();
+      expect(shape.appendInfo.id).toBeTruthy();
     });
   });
 });
