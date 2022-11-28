@@ -11,7 +11,7 @@ order: 4
 
 | 参数 | 说明 | 类型 | 必选 | 默认值 |
 | -- | -- | -- | -- | -- |
-| sheet | 当前表实例 | [SpreadSheet](https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet) | ✓ |  |
+| sheet | 当前表实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |  |
 | open | 是否展示 | `boolean` | ✓ |  |
 | className | class 类名称 | `string` |  |  |
 | icon | 排序按钮图标 | `React.ReactNode` |  |  |
@@ -19,9 +19,9 @@ order: 4
 | ruleText | 规则描述 | `string` |  |  |
 | dimensions | 可选字段列表 | [Dimension](#dimension)[] |  |  |
 | ruleOptions | 规则配置列表 | [RuleOption](#ruleoption)[] |  |  |
-| sortParams | 默认已有 sort 规则 | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) |  |  |
+| sortParams | 默认已有 sort 规则 | [SortParams](/docs/api/general/S2DataConfig#sortparams) |  |  |
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
 
 ## AdvancedSortCfgProps
 
@@ -36,9 +36,9 @@ order: 4
 | ruleText | 规则描述 | `string` |  |  |
 | dimensions | 可选字段列表 | [Dimension](#dimension)[] |  |  |
 | ruleOptions | 规则配置列表 | [RuleOption](#ruleoption)[] |  |  |
-| sortParams | 默认已有 sort 规则 | [SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams) |  |  |
+| sortParams | 默认已有 sort 规则 | [SortParams](/docs/api/general/S2DataConfig#sortparams) |  |  |
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
-| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](https://s2.antv.vision/zh/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
+| onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
 
 ## Dimension
 
@@ -55,7 +55,7 @@ order: 4
 规则配置列表，不配置默认为：`首字母、手动排序、其他字段`
 
 | 参数     | 说明       | 类型           | 默认值   | 必选             |
-| ------- | --------- | ------------- | ------- | --------------- | --- | --- |
+| ------- | --------- | ------------- | ------- | --------------- |
 | label    | 规则名称   | `string`       | ✓        |                  |
 | value    | 规则值     | `'sortMethod'  | 'sortBy' | 'sortByMeasure'` |     | ✓   |
 | children | 规则子列表 | `RuleOption[]` | ✓        |                  |

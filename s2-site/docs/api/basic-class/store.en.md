@@ -14,17 +14,17 @@ s2.store.set('key', value) // 存储
 | scrollX                  | horizontal scroll offset                                            | `number`                                                         |
 | scrollX                  | vertical scroll offset                                              | `number`                                                         |
 | hRowScrollX              | vertical header scroll offset                                       | `number`                                                         |
-| sortParam                | Column header sorting configuration                                 | [SortParam](/zh/docs/api/components/sheet-component/#sortparams) |
+| sortParam                | Column header sorting configuration                                 | [SortParam](/docs/api/components/sheet-component/#sortparams) |
 | drillDownIdPathMap       | Drill down node id and corresponding generated path addressing path | `Map<string, number[][]>`                                        |
-| drillDownNode            | current drill-down node                                             | [node](/zh/docs/api/basic-class/node)                            |
+| drillDownNode            | current drill-down node                                             | [node](/docs/api/basic-class/node)                            |
 | drillItemsNum            | Control the number of drill-down data                               | `number`                                                         |
 | interactionStateInfo     | Current Interaction Status Information                              | `number`                                                         |
 | drillDownFieldInLevel    | Drill down to node level information                                | [PartDrillDownInfo\[\]](#partdrilldowninfo)                      |
-| originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/zh/docs/api/general/S2DataConfig)                |
-| panelBBox                | Visual area wrapping box model                                      | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox)               |
+| originalDataCfg          | Raw Data Configuration                                              | [S2DataConfig](/docs/api/general/S2DataConfig)                |
+| panelBBox                | Visual area wrapping box model                                      | [BBox](/docs/api/basic-class/spreadsheet/#bbox)               |
 | activeResizeArea         | current resizing region group                                       | [Group](https://g.antv.vision/zh/docs/api/group)                 |
 | valueRanges              | conditional format value range                                      | [ValueRanges](#valueranges)                                      |
-| initColumnLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/zh/docs/api/basic-class/node)                        |
+| initColumnLeafNodes      | The column header leaf node when it is first rendered               | [Node\[\]](/docs/api/basic-class/node)                        |
 | hiddenColumnsDetail      | Hidden column header details                                        | [HiddenColumnsInfo\[\]](#hiddencolumnsinfo)                      |
 | lastRenderedColumnFields | The column header configuration of the last render                  | `string[]`                                                       |
 | resized                  | Whether to manually adjust the width and height                     | `boolean`                                                        |
@@ -66,3 +66,5 @@ export interface ValueRange {
 
 export type ValueRanges = Record<string, ValueRange>;
 ```
+
+<embed src="@/docs/common/view-meta.en.md"></embed>

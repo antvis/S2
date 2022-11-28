@@ -69,7 +69,7 @@ ReactDOM.render(
 );
 ```
 
-<Playground data-mdast="html" path="react-component/sheet/demo/strategy.tsx" rid="container"></playground>
+<playground data-mdast="html" path="react-component/sheet/demo/strategy.tsx" rid="container"></playground>
 
 ## configuration explanation
 
@@ -81,33 +81,33 @@ Mainly use the two configuration items `S2DataConfig` `MultiData` and `CustomTre
 
 object is **required** , *default: null*
 
-Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/zh/examples/react-component/sheet#strategy)
+Function description: used to support custom data cell rendering of multiple indicator types. Example: [Trend Analysis Table](/examples/react-component/sheet#strategy)
 
-| Configuration item name | illustrate                                                      | type      | Defaults        | required |
-| :---------------------- | :-------------------------------------------------------------- | :-------- | :-------------- | :------- |
-| values                  | The formatted data is directly displayed in dataCfg             | \`(string | number)\[]\[]\` | ✓        |
-| originalValues          | raw data, for raw data export                                   | \`(string | number)\[]\[]\` |          |
-| label                   | Used as a subtitle of a cell, displayed on a separate line      | `string`  |                 |          |
-| \[key: string]          | Other transparent fields for customized display of custom cells | `unknown` | \`\`            |          |
+| Configuration item name | illustrate                                                      | type      | Defaults      | required |
+| ----------------------- | --------------------------------------------------------------- | --------- | ------------- | -------- |
+| values                  | The formatted data is directly displayed in dataCfg             | (string   | number)\[]\[] | ✓        |
+| originalValues          | raw data, for raw data export                                   | (string   | number)\[]\[] |          |
+| label                   | Used as a subtitle of a cell, displayed on a separate line      | `string`  |               |          |
+| \[key: string]          | Other transparent fields for customized display of custom cells | `unknown` | \`\`          |          |
 
 ⚠️ Notes
 
 * If it does not involve the original data copy and export class requirements, `originalValues` may not be provided
 * The order of column header indicators corresponds to the display order of cell indicators
 
-<embed src="@/docs/common/custom/customTreeItem.en.md"></embed>
+<embed data-mdast="html" src="@/docs/common/custom/customTreeItem.en.md"></embed>
 
 ### S2Options configuration
 
 * Must specify `hierarchyType: 'customTree'`
-* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/zh/docs/manual/basic/conditions) currently only supports the text color channel
+* Coloring logic configuration can be configured in `options.conditions` , no need to specify the `field` parameter, the usage reference [field tag](/docs/manual/basic/conditions) currently only supports the text color channel
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/zh/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头(row)` ,`列头(col)` and`数值(data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头(row)` ,`列头(col)` and`数值(data)` , and can be imported separately in the `@antv/s2-react` package
 
 | Configuration item name   | illustrate                             | type                            | Defaults                                                         | required |
-| :------------------------ | :------------------------------------- | :------------------------------ | :--------------------------------------------------------------- | :------- |
+| ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------------- | -------- |
 | cell                      | current cell                           | `S2CellType`                    | ✓                                                                |          |
 | defaultTooltipShowOptions | Default tooltip display configuration  | `TooltipShowOptions<ReactNode>` |                                                                  |          |
 | label                     | title                                  | \`ReactNode                     | (cell: S2CellType, defaultLabel: ReactNode) => React.ReactNode\` |          |
@@ -165,3 +165,15 @@ You can use `renderDerivedValue` to customize the value of the same ring ratio, 
 ```
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/jOYhdqOr6/a43696e1-3cdb-49b7-9906-4053c3f7e65b.png" width="600" alt="preview">
+
+## Configure the mini map
+
+In the indicator trend analysis scenario, usually we want to see the global trend of the data. Trend analysis not only needs to include specific ups and downs, but it is also better to show the trend chart within a fixed period of time, or the completion status (progress) of indicators, so we provide the drawing of mini charts in the table. In order to reduce the dependence on external component libraries, we built a very lightweight mini library based on `@antv/g` drawing, which can draw bullet charts, line charts and histograms in cells with minimal performance overhead.
+
+<playground data-mdast="html" path="react-component/sheet/demo/strategy-mini-chart.tsx" rid="container2"></playground>
+
+The configuration is as follows:
+
+<embed data-mdast="html" src="@/docs/common/mini-chart.en.md"></embed>
+
+If you want to change the Mini graph style configuration, you can refer to the [theme configuration]('/zh/api/general/s2theme#minicharttheme')

@@ -10,7 +10,7 @@
     "site"
   ],
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/s2"
@@ -29,13 +29,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@antv/dumi-theme-antv": "^0.3.0-beta.22",
+    "@antv/dumi-theme-antv": "^0.3.0",
     "@antv/g-canvas": "^0.5.12",
     "@antv/s2": "latest",
     "@antv/s2-react": "latest",
     "antd": "^4.24.1",
     "copy-to-clipboard": "^3.3.1",
-    "dumi": "^2.0.0-beta.15",
+    "dumi": "^2.0.3",
     "gh-pages": "^3.1.0",
     "lodash": "^4.17.21",
     "react-color": "^2.19.3"

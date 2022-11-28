@@ -10,7 +10,7 @@ s2.interaction.xx()
 
 | parameter                           | illustrate                                                                                                                | type                                                                                |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| spreadsheet                         | Form example                                                                                                              | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)                                 |
+| spreadsheet                         | Form example                                                                                                              | [SpreadSheet](/docs/api/basic-class/spreadsheet)                                 |
 | interactions                        | currently registered interactions                                                                                         | `Map<string, BaseEvent>`                                                            |
 | intercept                           | Currently intercepted interactions to prevent conflicts between different interactions                                    | `Set<Intercept>`                                                                    |
 | destroy                             | Unloads all interactive instances and resets to initial state                                                             | `() => void`                                                                        |
@@ -40,7 +40,7 @@ s2.interaction.xx()
 | getAllCells                         | Get all cells in the visible area                                                                                         | () => [S2CellType](#s2celltype) \[]                                                 |
 | selectAll                           | select all cells                                                                                                          | `() => void`                                                                        |
 | selectHeaderCell                    | Select the specified row and column header cell                                                                           | (selectHeaderCellInfo: [SelectHeaderCellInfo](#selectheadercellinfo) ) => boolean   |
-| getCellChildrenNodes                | Get all child nodes of the current cell                                                                                   | (cell: [S2CellType](#s2celltype) ) => [Node](\(/zh/docs/api/basic-class/node\)) \[] |
+| getCellChildrenNodes                | Get all child nodes of the current cell                                                                                   | (cell: [S2CellType](#s2celltype) ) => [Node](\(/docs/api/basic-class/node\)) \[] |
 | hideColumns                         | Hidden column (when forceRender is `false` , if the hidden column is empty, the table update will no longer be triggered) | `(hiddenColumnFields: string[], forceRender?: boolean = true) => void`              |
 | mergeCells                          | Merge Cells                                                                                                               | (cellsInfo?: [MergedCellInfo](#mergedcellinfo) \[], hideData?: boolean) => void     |
 | unmergeCells                        | unmerge cells                                                                                                             | `(removedCells: MergedCell[]) => void`                                              |
@@ -49,7 +49,7 @@ s2.interaction.xx()
 | addIntercepts                       | Added interactive interception                                                                                            | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                       |
 | hasIntercepts                       | Whether there is an interaction specified for interception                                                                | (interceptTypes: [InterceptType](#intercepttype) \[]) => boolean                    |
 | removeIntercepts                    | Remove specified interaction interception                                                                                 | (interceptTypes: [InterceptType](#intercepttype) \[]) => void                       |
-| highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/zh/docs/api/basic-class/node) \[]) => void                          |
+| highlightNodes                      | Highlight the cell corresponding to the node                                                                              | (nodes: [Node](/docs/api/basic-class/node) \[]) => void                          |
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 
@@ -132,3 +132,5 @@ interface InteractionStateInfo {
   force?: boolean;
 }
 ```
+
+<embed src="@/docs/common/view-meta.en.md"></embed>

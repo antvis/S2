@@ -19,7 +19,7 @@ const s2Options = {
 />
 ```
 
-​📊 Check out [the React version of the drilldown demo](/zh/examples/react-component/drill-dwon#for-pivot)
+​📊 Check out [the React version of the drilldown demo](/examples/react-component/drill-dwon#for-pivot)
 
 # Vue drilldown component
 

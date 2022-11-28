@@ -17,7 +17,7 @@ s2.tooltip.show({
 
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| `spreadsheet` | 表格实例 | () => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |
+| `spreadsheet` | 表格实例 | () => [SpreadSheet](/docs/api/basic-class/spreadsheet) |
 | `container` | tooltip 挂载容器 | [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) |
 | `options` | tooltip 配置 | [TooltipShowOptions](#tooltipshowoptions) |
 | `position` | 坐标 | `{ x: number, y: number }` |

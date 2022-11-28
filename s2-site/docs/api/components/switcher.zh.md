@@ -68,7 +68,7 @@ order: 3
 内置 header 组件配置参数，本质上是 Switcher 组件 Props 的子集
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
-| -- | -- | -- | -- | -- | --- | --- | --- | --- | --- |
+| -- | -- | -- | -- | -- |
 | sheetType | 表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` |  |  |  |
 | title | 打开切换弹窗的触发节点 | `ReactNode` |  |  |
 | contentTitleText | 弹窗默认标题文字 | `string` | 行列切换 |  |

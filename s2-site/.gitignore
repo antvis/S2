@@ -8,3 +8,4 @@
 .dumi/tmp
 .dumi/tmp-production
 .DS_Store
+yarn.lock

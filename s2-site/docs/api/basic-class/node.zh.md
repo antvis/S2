@@ -18,7 +18,7 @@ node.isTotals // false
 | level | 节点等级 | `number` |
 | rowIndex | 行头索引 | `number` |
 | colIndex | 列头索引 | `number` |
-| parent | 父节点 | [Node](/zh/docs/api/basic-class/node) |
+| parent | 父节点 | [Node](/docs/api/basic-class/node) |
 | isTotals | 是否是汇总 | `boolean` |
 | isSubTotals | 是否是小计 | `boolean` |
 | isGrandTotals | 是否是总计 | `boolean` |
@@ -27,9 +27,9 @@ node.isTotals // false
 | isPivotMode | 是否是透视表 | `boolean` |
 | seriesNumberWidth | 序号宽度 | `number` |
 | field | dataCfg 对应的 field | `string` |
-| spreadsheet | 表格实例 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)  |
+| spreadsheet | 表格实例 | [SpreadSheet](/docs/api/basic-class/spreadsheet)  |
 | query | 当前节点对应的数据 | `Record<string, any>` |
-| belongsCell | 对应的单元格 | [S2CellType](/zh/docs/api/basic-class/base-cell)  |
+| belongsCell | 对应的单元格 | [S2CellType](/docs/api/basic-class/base-cell)  |
 | isTotalMeasure | 是否是数值小计 | `boolean` |
 | inCollapseNode | 是否展开的节点 | `boolean` |
 | isLeaf | 是否是叶子节点 | `boolean` |
@@ -38,4 +38,4 @@ node.isTotals // false
 | width | 宽度 | `number` |
 | height | 高度 | `number` |
 | padding | 间距 | `number` |
-| children | 子节点 | [Node[]](/zh/docs/api/basic-class/node)  |
+| children | 子节点 | [Node[]](/docs/api/basic-class/node)  |

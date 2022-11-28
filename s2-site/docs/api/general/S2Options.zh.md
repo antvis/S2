@@ -14,7 +14,7 @@ const s2Options = {
 ```
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| -- | -- | --- | --  | -- | --- |
+| -- | --- | --  | -- | --- |
 | width | `number` |    | 600  | 表格宽度 |
 | height | `number` |    | 480  | 表格高度 |
 | debug | `boolean` |   |`false` | 是否开启调试模式 |
@@ -88,8 +88,8 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
-| node | 当前渲染的 node 节点 | [Node](/zh/docs/api/basic-class/node) | - | ✓ |
-| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓ |
+| node | 当前渲染的 node 节点 | [Node](/docs/api/basic-class/node) | - | ✓ |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | - | ✓ |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 ## CornerHeaderCallback
@@ -103,7 +103,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
 | parent |   父级单元格 | [S2CellType](#s2celltype) | - | ✓ |
-| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | - | ✓   |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | - | ✓   |
 | restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 <embed src="@/docs/common/custom/layoutHierarchy.zh.md"></embed>
@@ -173,14 +173,14 @@ export type DataItem = SimpleDataItem | MultiData;
 
 | 参数 | 说明                             | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | --- |
-| colNodes |   列的所有节点 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
+| colNodes |   列的所有节点 | [Node[]](/docs/api/basic-class/node) |  |  |
 | colsHierarchy |   列的结构信息 | [Hierarchy](#hierarchy) |  |  |
 | rowNodes |   行的所有节点 | [Node[]](#node) |  |  |
 | rowsHierarchy |   行的结构信息 | [Hierarchy](#hierarchy) |  | ✓ |
-| rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
-| colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](/zh/docs/api/basic-class/node) |  |  |
+| rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](/docs/api/basic-class/node) |  |  |
+| colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](/docs/api/basic-class/node) |  |  |
 | getViewMeta |  获取交叉出 [x,y] 对应坐标的信息 | `(rowIndex: number, colIndex: number) => ViewMeta` | | |
-| spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | |  |
+| spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | |  |
 
 ## DataSet
 

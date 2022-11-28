@@ -3,13 +3,13 @@ title: 自定义交互
 order: 1
 ---
 
-如果内置交互未能覆盖实际的使用场景，不用担心。你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) 所提供的交互事件，进行任意排列组合，自定义交互。这里以 [**明细表双击隐藏列头**](/zh/examples/interaction/custom#double-click-hide-columns) 的例子说明。
+如果内置交互未能覆盖实际的使用场景，不用担心。你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) 所提供的交互事件，进行任意排列组合，自定义交互。这里以 [**明细表双击隐藏列头**](/examples/interaction/custom#double-click-hide-columns) 的例子说明。
 
 ## 1. 自定义交互类
 
 这是一个自定义交互类的基本格式：
 
-继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的 [一系列方法](/zh/docs/api/basic-class/spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
+继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的 [一系列方法](/docs/api/basic-class/spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
 
 ```ts
 import { BaseEvent } from '@antv/s2';

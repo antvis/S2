@@ -3,13 +3,13 @@ title: 高级排序
 order: 1
 ---
 
-`React` 版本提供高级排序组件，可选择使用。[查看示例](https://s2.antv.vision/zh/examples/analysis/sort#advanced)
+`React` 版本提供高级排序组件，可选择使用。[查看示例](/examples/analysis/sort#advanced)
 
 > 注意：内部不维护状态
 
 ## 快速上手
 
-使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://s2.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `@antv/s2-react` 的 `SheetComponent` 组件 ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';

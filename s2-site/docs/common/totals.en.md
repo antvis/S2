@@ -9,8 +9,8 @@ object is **required** , *default: null* Function description: subtotal total co
 
 | parameter | illustrate   | type                                          | required | Defaults |
 | --------- | ------------ | --------------------------------------------- | :------: | -------- |
-| row       | row total    | [Total](/zh/docs/api/general/S2Options#total) |          |          |
-| col       | column total | [Total](/zh/docs/api/general/S2Options#total) |          |          |
+| row       | row total    | [Total](/docs/api/general/S2Options#total) |          |          |
+| col       | column total | [Total](/docs/api/general/S2Options#total) |          |          |
 
 ## Total
 

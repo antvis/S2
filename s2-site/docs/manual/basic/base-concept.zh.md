@@ -41,6 +41,7 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img width="200" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*p71xTrX3YIEAAAAAAAAAAAAAARQnAQ" width="250"  alt="row" />
 
 在树状模式下展示为：
@@ -51,9 +52,12 @@ const s2Options = {
 }
 ```
 
+<br/>
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zYzLQ5rgzsoAAAAAAAAAAAAAARQnAQ" height="200"  alt="column" />
 
 ## 列头（colHeader）
+
+> 注意，当为明细表时，仅需设置 columns。
 
 列头的结构是由 `s2DataConfig.fields.columns` 决定，用于列分析维度展示。
 
@@ -67,9 +71,8 @@ const s2DataConfig = {
 }
 ```
 
+<br/>
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_uMfQK9VHk4AAAAAAAAAAAAAARQnAQ" width="400"  alt="column" />
-
-> 注意，当为明细表时，仅需设置 columns。
 
 ## 角头（cornerHeader）
 
@@ -79,13 +82,13 @@ const s2DataConfig = {
 
 角头也用于展示行头、列头名称，比如示例中的 `省份`、`城市`。
 
-另外，`S2` 还提供了自定义扩展，用于需要自定义角头的场景，详见 [cornerCell](/zh/examples/custom/custom-cell#corner-cell) 和 [cornerHeader](/zh/examples/custom/custom-cell#corner-header)。
+另外，`S2` 还提供了自定义扩展，用于需要自定义角头的场景，详见 [cornerCell](/examples/custom/custom-cell#corner-cell) 和 [cornerHeader](/examples/custom/custom-cell#corner-header)。
 
 ## 数据单元格 (dataCell)
 
 数据单元格是表格行列维度值交叉后产生的数据区域，通常情况下应该是度量值，是表数据分析最核心的数据呈现区域。
 
-在数据单元格区域，我们可以展现基础的交叉数据，可以通过 [字段标记](/zh/examples/analysis/conditions#text) 来辅助分析，也可以展现 [同环比等衍生指标](/zh/examples/react-component/sheet/#strategy)，还可以通过自定义 `Hooks` 来实现数据单元格自定义，更多参考 [dataCell](/zh/examples/custom/custom-cell#data-cell) 。
+在数据单元格区域，我们可以展现基础的交叉数据，可以通过 [字段标记](/examples/analysis/conditions#text) 来辅助分析，也可以展现 [同环比等衍生指标](/examples/react-component/sheet/#strategy)，还可以通过自定义 `Hooks` 来实现数据单元格自定义，更多参考 [dataCell](/examples/custom/custom-cell#data-cell) 。
 
 ## 框架（frame）
 

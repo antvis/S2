@@ -15,7 +15,7 @@ The schedule is a basic table without the capability of cross-perspective analys
 
 <img data-mdast="html" alt="s2-table-group" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*5q2TQJjNy2cAAAAAAAAAAAAAARQnAQ" width="800">
 
-The [column header layout algorithm](/zh/docs/manual/advanced/layout/pivot#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84) of the schedule and the [on-demand rendering](/zh/docs/manual/advanced/layout/pivot#%E6%8C%89%E9%9C%80%E6%B8%B2%E6%9F%93) of the content area are consistent with the pivot table, so I won’t repeat them here.
+The [column header layout algorithm](/docs/manual/advanced/layout/pivot#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84) of the schedule and the [on-demand rendering](/docs/manual/advanced/layout/pivot#%E6%8C%89%E9%9C%80%E6%B8%B2%E6%9F%93) of the content area are consistent with the pivot table, so I won’t repeat them here.
 
 ## serial number
 
