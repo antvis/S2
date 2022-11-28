@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { PivotSheet, DataCell, ColCell } from '@antv/s2';
 
 /**
@@ -26,6 +27,7 @@ class CustomDataCell extends DataCell {
         ...defaultTextStyle,
         fontSize: 16,
         fill: '#396',
+        textAlign: 'left',
       };
     }
 
@@ -36,6 +38,7 @@ class CustomDataCell extends DataCell {
         fontSize: 14,
         fontWeight: 700,
         fill: '#f63',
+        textAlign: 'center',
       };
     }
 
@@ -49,6 +52,7 @@ class CustomDataCell extends DataCell {
         fontWeight: 200,
         fill: '#dcdcdc',
         opacity: 0.9,
+        textAlign: 'right',
       };
     }
 
@@ -71,6 +75,7 @@ class CustomColCell extends ColCell {
         ...defaultTextStyle,
         fontSize: 16,
         fill: '#396',
+        textAlign: 'left',
       };
     }
 
@@ -79,6 +84,7 @@ class CustomColCell extends ColCell {
       return {
         ...defaultTextStyle,
         fill: 'pink',
+        textAlign: 'center',
       };
     }
 
@@ -87,6 +93,7 @@ class CustomColCell extends ColCell {
       return {
         ...defaultTextStyle,
         fontSize: 22,
+        textAlign: 'right',
       };
     }
 
