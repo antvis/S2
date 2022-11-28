@@ -1,3 +1,10 @@
+# [@antv/s2-v1.35.1](https://github.com/antvis/S2/compare/@antv/s2-v1.35.0...@antv/s2-v1.35.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* 角头序号单元格meta无spreadsheet实例 ([#1950](https://github.com/antvis/S2/issues/1950)) ([e3ad987](https://github.com/antvis/S2/commit/e3ad987ba4136444fcc28246d93b892896ac8f50))
+
 # [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
 
 
