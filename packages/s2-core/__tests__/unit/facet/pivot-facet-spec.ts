@@ -236,15 +236,17 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct layer after render', () => {
-    facet.render();
-    const {
-      rowHeader,
-      cornerHeader,
-      columnHeader,
-      centerFrame,
-      backgroundGroup,
-    } = facet;
+    beforeAll(() => {
+      facet.render();
+    });
+
+    afterAll(() => {
+      facet.render();
+    });
+
     test('get header after render', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
+
       expect(rowHeader instanceof RowHeader).toBeTrue();
       expect(rowHeader.cfg.children).toHaveLength(10);
       expect(rowHeader.cfg.visible).toBeTrue();
@@ -258,6 +260,8 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('get background after render', () => {
+      const { backgroundGroup } = facet;
+
       const rect = get(backgroundGroup, 'cfg.children[0]');
 
       expect(backgroundGroup.cfg.children).toHaveLength(1);
@@ -284,7 +288,14 @@ describe('Pivot Mode Facet Test', () => {
       ...DEFAULT_STYLE,
       showSeriesNumber: true,
     });
-    seriesNumberFacet.render();
+
+    beforeAll(() => {
+      seriesNumberFacet.render();
+    });
+
+    afterAll(() => {
+      seriesNumberFacet.destroy();
+    });
 
     test('render corrent corner header', () => {
       const { cornerHeader } = seriesNumberFacet;
