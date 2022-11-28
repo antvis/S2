@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-  "version": "1.35.0",
+  "version": "1.36.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
