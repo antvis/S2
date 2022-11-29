@@ -68,21 +68,19 @@ export const Header: React.FC<HeaderProps> = React.memo(
     };
 
     return (
-      <>
-        <div
-          className={cx(PRE_CLASS, className)}
-          style={{ ...style, width }}
-          {...restProps}
-        >
-          <div className={`${PRE_CLASS}-heading`}>
-            <div className={`${PRE_CLASS}-heading-left`}>
-              <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
-            </div>
-            <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
+      <div
+        className={cx(PRE_CLASS, className)}
+        style={{ ...style, width }}
+        {...restProps}
+      >
+        <div className={`${PRE_CLASS}-heading`}>
+          <div className={`${PRE_CLASS}-heading-left`}>
+            <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
           </div>
-          <div className={`${PRE_CLASS}-content`}>{description}</div>
+          <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
         </div>
-      </>
+        <div className={`${PRE_CLASS}-content`}>{description}</div>
+      </div>
     );
   },
 );
