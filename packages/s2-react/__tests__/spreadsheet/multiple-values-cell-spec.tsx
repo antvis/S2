@@ -79,7 +79,6 @@ const getDataCfg = (): S2DataConfig => {
 
 const getOptions = (): S2Options => {
   return {
-    debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'tree',
