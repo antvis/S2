@@ -1,4 +1,4 @@
-import { each, orderBy, filter, includes, isFunction } from 'lodash';
+import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig, RawData, Data } from '../common/interface';
 import type { CellDataParams, Query } from './interface';
@@ -156,7 +156,7 @@ export class TableDataSet extends BaseDataSet {
 
     const rowData = this.displayData[query.rowIndex];
 
-    if (!('col' in query)) {
+    if (!('col' in query) || !isObject(rowData)) {
       return rowData as Data;
     }
     return rowData[query.col] as unknown as Data;

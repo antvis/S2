@@ -12,7 +12,7 @@ import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotFacet } from '@/facet/pivot-facet';
-import { DataCell } from '@/cell';
+import { CornerCell, DataCell } from '@/cell';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
@@ -254,15 +254,17 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct layer after render', () => {
-    facet.render();
-    const {
-      rowHeader,
-      cornerHeader,
-      columnHeader,
-      centerFrame,
-      backgroundGroup,
-    } = facet;
+    beforeAll(() => {
+      facet.render();
+    });
+
+    afterAll(() => {
+      facet.render();
+    });
+
     test('get header after render', () => {
+      const { rowHeader, cornerHeader, columnHeader, centerFrame } = facet;
+
       expect(rowHeader instanceof RowHeader).toBeTrue();
       expect(rowHeader!.children).toHaveLength(10);
       expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
@@ -276,11 +278,47 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('get background after render', () => {
+      const { backgroundGroup } = facet;
+
       const rect = get(backgroundGroup, 'cfg.children[0]');
 
       expect(backgroundGroup.children).toHaveLength(1);
       expect(rect).toBeInstanceOf(Rect);
       expect(rect.parsedStyle.visibility).not.toEqual('hidden');
+    });
+  });
+
+  describe('should get correct result when enable seriesnumber', () => {
+    const mockDataSet = new MockPivotDataSet(s2);
+    const seriesNumberFacet = new PivotFacet({
+      spreadsheet: s2,
+      dataSet: mockDataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      ...DEFAULT_STYLE,
+      showSeriesNumber: true,
+    });
+
+    beforeAll(() => {
+      seriesNumberFacet.render();
+    });
+
+    afterAll(() => {
+      seriesNumberFacet.destroy();
+    });
+
+    test('render corrent corner header', () => {
+      const { cornerHeader } = seriesNumberFacet;
+
+      expect(cornerHeader instanceof CornerHeader).toBeTrue();
+      expect(cornerHeader.cfg.children).toHaveLength(3);
+      expect(cornerHeader.cfg.visible).toBeTrue();
+
+      expect(
+        cornerHeader
+          .getChildren()
+          .every((cell: CornerCell) => cell.getMeta().spreadsheet),
+      ).toBeTrue();
     });
   });
 

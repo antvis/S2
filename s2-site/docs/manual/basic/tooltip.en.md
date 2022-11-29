@@ -368,7 +368,6 @@ combine `this.spreadsheet` instance to realize the `tooltip` that meets your bus
 the `renderContent` method to render your package any component
 
 * [View BaseTooltip base class](/docs/api/basic-class/base-tooltip)
-
 * [Check out the React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 * [Check out the Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -649,7 +648,6 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 * list of axes ( headInfo )
 
       Axis list, display`row/column headers`names in data cells,
-
       see [TooltipHeadInfo](/docs/common/custom-tooltip#tooltipheadinfo)
       for details
 
@@ -673,7 +671,6 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 * Data point details ( details )
 
       Data point details, that is, the data information of the current cell, for details, please refer
-
       to [ListItem](/docs/common/custom-tooltip#listitem)
 
       ```tsx
