@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component Tests should render component 1`] = `
+<DocumentFragment>
+  <div
+    class="s2-header test"
+  >
+    <div
+      class="s2-header-heading"
+    >
+      <div
+        class="s2-header-heading-left"
+      >
+        <div
+          class="s2-header-heading-title"
+        >
+          title
+        </div>
+      </div>
+      <div
+        class="s2-header-heading-extra"
+      >
+        <div
+          class="ant-space ant-space-horizontal ant-space-align-center"
+          style="gap: 8px;"
+        >
+          <div
+            class="ant-space-item"
+            style=""
+          >
+            extra
+          </div>
+          <div
+            class="ant-space-item"
+            style=""
+          >
+            <button
+              class="ant-btn ant-btn-default ant-btn-sm antv-s2-switcher-entry-button"
+              type="button"
+            >
+              <div />
+              <span>
+                行列切换
+              </span>
+            </button>
+          </div>
+          <div
+            class="ant-space-item"
+            style=""
+          >
+            <div
+              class="antv-s2-advanced-sort"
+            >
+              <button
+                class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+                type="button"
+              >
+                <div />
+                <span>
+                  高级排序
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="ant-space-item"
+          >
+            <a
+              class="ant-dropdown-trigger ant-dropdown-link antv-s2-export"
+            >
+              <div />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="s2-header-content"
+    />
+  </div>
+</DocumentFragment>
+`;
