@@ -114,7 +114,9 @@ describe('Scroll Tests', () => {
   test('should not trigger scroll if not scroll over the viewport', () => {
     const expectScroll = getScrollExpect();
 
-    canvas.dispatchEvent(new WheelEvent('wheel', { deltaX: 20, deltaY: 20 }));
+    canvas.dispatchEvent(
+      new WheelEvent('wheel', { deltaX: 0, deltaY: 20, shiftKey: true }),
+    );
 
     expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeFalsy();
     expectScroll();
@@ -631,6 +633,47 @@ describe('Scroll Tests', () => {
       expect(
         document.body.style.getPropertyValue('overscroll-behavior'),
       ).toBeFalsy();
+    });
+
+    test('should scroll horizontally when shift key is held', async () => {
+      s2.setOptions({
+        frozenRowHeader: true,
+        style: {
+          layoutWidthType: 'compact',
+          rowCfg: {
+            width: 200,
+          },
+        },
+      });
+
+      const onRowCellScroll = jest.fn((...args) => {
+        expect(args[0].scrollX).toBeGreaterThan(0);
+        expect(args[0].scrollY).toBe(0);
+      });
+
+      s2.changeSheetSize(400, 300);
+      s2.render(false);
+
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheCornerArea')
+        .mockImplementationOnce(() => true);
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheViewport')
+        .mockImplementationOnce(() => true);
+
+      s2.on(S2Event.ROW_CELL_SCROLL, onRowCellScroll);
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: 0,
+        deltaY: 20,
+        shiftKey: true,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+
+      await sleep(200);
+
+      expect(onRowCellScroll).toHaveBeenCalled();
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', () => {
