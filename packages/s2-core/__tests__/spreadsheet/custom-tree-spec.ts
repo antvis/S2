@@ -281,10 +281,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.render(true);
 
     const ids = s2.facet.layoutResult.rowNodes.map((node) => {
-      const iconName = get(
-        node.belongsCell,
-        'treeIcon.iconImageShape.attrs.name',
-      );
+      const iconName = get(node.belongsCell, 'treeIcon.config.name');
       return {
         id: node.id,
         iconName,
