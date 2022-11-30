@@ -378,7 +378,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         ).toBeFalsy();
       });
 
-      test('should render correctly row corner after hide measure node', () => {
+      test('should render correct row corner after hide measure node', () => {
         const nodeIds = [
           'root[&]总计',
           'root[&]小计',
@@ -406,25 +406,25 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           Array [
             Object {
               "height": 30,
-              "width": 100,
+              "width": 99,
               "x": 0,
               "y": 60,
             },
             Object {
               "height": 30,
-              "width": 100,
-              "x": 100,
+              "width": 99,
+              "x": 99,
               "y": 60,
             },
             Object {
               "height": 30,
-              "width": 200,
+              "width": 198,
               "x": 0,
               "y": 0,
             },
             Object {
               "height": 30,
-              "width": 200,
+              "width": 198,
               "x": 0,
               "y": 30,
             },
