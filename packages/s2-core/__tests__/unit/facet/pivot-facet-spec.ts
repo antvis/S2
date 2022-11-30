@@ -311,13 +311,13 @@ describe('Pivot Mode Facet Test', () => {
       const { cornerHeader } = seriesNumberFacet;
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.cfg.children).toHaveLength(3);
-      expect(cornerHeader.cfg.visible).toBeTrue();
+      expect(cornerHeader.children).toHaveLength(3);
+      expect(cornerHeader.parsedStyle.visibility).toEqual('visible');
 
       expect(
-        cornerHeader
-          .getChildren()
-          .every((cell: CornerCell) => cell.getMeta().spreadsheet),
+        (cornerHeader.children as CornerCell[]).every(
+          (cell) => cell.getMeta().spreadsheet,
+        ),
       ).toBeTrue();
     });
   });
