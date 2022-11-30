@@ -650,13 +650,15 @@ export class BaseBrushSelection
 
   protected renderPrepareSelected = (point: PointLike) => {
     const { x, y } = point;
-    // TODO: 5.0 x、y返回的正确否，且他是一个异步的方法
-    const target = this.spreadsheet.container.document.elementFromPointSync(
+
+    const elements = this.spreadsheet.container.document.elementsFromPointSync(
       x,
       y,
     );
 
-    const cell = this.spreadsheet.getCell(target);
+    const cell = elements
+      .map((element) => this.spreadsheet.getCell(element))
+      .find(Boolean);
     // 只有行头，列头，单元格可以刷选
     const isBrushCellType =
       cell instanceof DataCell ||

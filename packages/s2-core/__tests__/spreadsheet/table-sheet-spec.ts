@@ -174,18 +174,20 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300); // 等待绘制响应
 
-    window.dispatchEvent(
+    document.dispatchEvent(
       new MouseEvent('mousemove', {
         clientX: x + width + 100,
         clientY: top + 25,
+        bubbles: true,
       }),
     );
     await sleep(300);
 
-    window.dispatchEvent(
+    document.dispatchEvent(
       new PointerEvent('pointerup', {
         clientX: x + width + 100,
         clientY: top + 25,
+        bubbles: true,
       }),
     );
 
