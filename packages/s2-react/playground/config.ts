@@ -119,6 +119,10 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
       },
     },
   },
+  tooltip: { showTooltip: false },
+  interaction: {
+    selectedCellsSpotlight: true,
+  },
   conditions: {
     text: [
       {

@@ -77,7 +77,8 @@
     "d3-dsv": "^1.1.1",
     "inquirer": "^8.2.0",
     "inquirer-autocomplete-prompt": "^2.0.0",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "@antv/s2-shared": "*"
   },
   "sideEffects": [
     "*.css",

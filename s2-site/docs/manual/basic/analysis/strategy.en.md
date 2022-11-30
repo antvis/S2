@@ -26,9 +26,9 @@ const s2Options = {
       {
         field: 'number',
         mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
+          const { meta, colIndex } = cellInfo;
           if (
-            meta?.fieldValue?.values[0][0] === value ||
+            colIndex === 0 ||
             !value ||
             !meta?.fieldValue
           ) {
@@ -104,7 +104,7 @@ Function description: used to support custom data cell rendering of multiple ind
 
 ## Tooltips
 
-The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头(row)` ,`列头(col)` and`数值(data)` , and can be imported separately in the `@antv/s2-react` package
+The `Tooltip` of the trend analysis table uses the [customization capabilities](/docs/manual/basic/tooltip#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E5%86%85%E5%AE%B9) provided by `S2` to [customize](https://github.com/antvis/S2/blob/f35ff01400384cd2f3d84705e9daf75fc11b0149/packages/s2-react/src/components/sheets/strategy-sheet/index.tsx#L105) the`行头 (row)` ,`列头 (col)` and`数值 (data)` , and can be imported separately in the `@antv/s2-react` package
 
 | Configuration item name   | illustrate                             | type                            | Defaults                                                         | required |
 | ------------------------- | -------------------------------------- | ------------------------------- | ---------------------------------------------------------------- | -------- |

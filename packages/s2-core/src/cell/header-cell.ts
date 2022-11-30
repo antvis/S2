@@ -69,6 +69,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.actionIcons = [];
     this.hasDefaultHiddenIcon = false;
   }
