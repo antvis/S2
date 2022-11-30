@@ -891,7 +891,17 @@ export abstract class BaseFacet {
 
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
-    const { deltaX, deltaY, offsetX, offsetY } = event;
+    let { deltaX, deltaY, offsetX, offsetY } = event;
+    const { shiftKey } = event;
+
+    // 按住shift时，固定为水平方向滚动
+    if (shiftKey) {
+      offsetX = offsetX - deltaX + deltaY;
+      deltaX = deltaY;
+      offsetY -= deltaY;
+      deltaY = 0;
+    }
+
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,
