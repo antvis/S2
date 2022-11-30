@@ -364,7 +364,10 @@ export abstract class SpreadSheet extends EE {
 
   public render(reloadData = true, options: S2RenderOptions = {}) {
     // 防止表格卸载后, 再次调用 render 函数的报错
-    if (!this.getCanvasElement()) {
+    if (
+      !this.getCanvasElement() ||
+      !window.document.body.contains(this.getCanvasElement())
+    ) {
       return;
     }
 
@@ -612,7 +615,7 @@ export abstract class SpreadSheet extends EE {
       container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
-      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
+      devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
       renderer: new Renderer(),
       supportCSSTransform,
     });
