@@ -34,7 +34,6 @@ const s2DataCfg = {
       price: 1,
       cost: 9,
     },
-
     {
       province: '浙江',
       city: '义乌1',
@@ -89,11 +88,11 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attrs: {
-          appendInfo: {
+        attr() {
+          return {
             isLinkFieldText: true,
             cellData: rowNode,
-          },
+          };
         },
       },
     } as any);
@@ -115,11 +114,11 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attrs: {
-          appendInfo: {
+        attr() {
+          return {
             isLinkFieldText: true,
             cellData: rowNode,
-          },
+          };
         },
       },
     } as any);
@@ -142,11 +141,11 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attrs: {
-          appendInfo: {
+        attr() {
+          return {
             isLinkFieldText: true,
             cellData: rowNode,
-          },
+          };
         },
       },
     } as any);
