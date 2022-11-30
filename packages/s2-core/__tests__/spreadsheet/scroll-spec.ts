@@ -414,12 +414,12 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
 
-    expect(s2.facet.hScrollBar.getBBox().y).toBe(222);
-    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(222);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(225);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(225);
 
     s2.changeSheetSize(1000, 150); // 纵向滚动条
     s2.render(false);
-    expect(s2.facet.vScrollBar.getBBox().x).toBe(193);
+    expect(s2.facet.vScrollBar.getBBox().x).toBe(191);
 
     s2.setOptions({
       interaction: {
@@ -429,13 +429,13 @@ describe('Scroll Tests', () => {
     s2.changeSheetSize(100, 1000); // 横向滚动条
     s2.render(false);
 
-    expect(s2.facet.hScrollBar.getBBox().y).toBe(994);
-    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(994);
+    expect(s2.facet.hScrollBar.getBBox().y).toBe(997);
+    expect(s2.facet.hRowScrollBar.getBBox().y).toBe(997);
 
     s2.changeSheetSize(1000, 200); // 纵向滚动条
     s2.render(false);
 
-    expect(s2.facet.vScrollBar.getBBox().x).toBe(994);
+    expect(s2.facet.vScrollBar.getBBox().x).toBe(997);
   });
 
   // https://github.com/antvis/S2/issues/1659
@@ -461,9 +461,11 @@ describe('Scroll Tests', () => {
 
     // @ts-ignore
     const scrollBar = s2.facet[name] as ScrollBar;
-    expect(scrollBar.thumbShape.getBBox()[key]).toStrictEqual(
-      scrollBar.thumbLen,
-    );
+    // @ts-ignore
+    const positon = scrollBar.getCoordinatesWithBBoxExtraPadding();
+    expect(
+      Math.round(scrollBar.thumbShape.getBBox()[key] as number),
+    ).toStrictEqual(Math.round(positon.end - positon.start));
   });
 
   test('should render scroll bar does not appear outside the canvas', () => {

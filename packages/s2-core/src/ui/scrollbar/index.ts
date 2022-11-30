@@ -9,6 +9,7 @@ import {
 import { Group } from '@antv/g';
 import { each } from 'lodash';
 import { MIN_SCROLL_BAR_HEIGHT } from '../../common/constant/scroll';
+import { OriginEventType } from '../../common/';
 import type { ScrollBarTheme } from '../../common/interface/theme';
 import type { PointObject, ScrollBarCfg } from './interface';
 
@@ -105,11 +106,20 @@ export class ScrollBar extends Group {
   };
 
   /**
-   * Antv/g 4.x 版本计算 bbox 有bug, 实际渲染的宽度会比给定的宽度大, 需要对其做修正
-   * 详情: https://github.com/antvis/S2/pull/1566/files#diff-3f08348041906ddf1e4f094bfe2ac32b35ff668918d3fbb952e9227ae462cc08R52
+   * Antv/g 5.0 环境下坐标修正
+   *
+   * 当 lineCap 设置为非 'butt' 后，实际绘制左右两端会多两个头，且不计入 getBBox 的计算
+   * 如长100，strokeWidth=10，实际渲染110长度的线，getBBox 仍返回100
    */
   private getCoordinatesWithBBoxExtraPadding = () => {
-    const { size = 0 } = this.theme;
+    const { lineCap = 'butt', size = 0 } = this.theme;
+    if (lineCap === 'butt') {
+      return {
+        start: this.thumbOffset,
+        end: this.thumbOffset + this.thumbLen,
+      };
+    }
+
     const startPadding = this.isHorizontal ? 0 : size / 2;
     const endPadding = this.isHorizontal ? size : size / 2;
 
@@ -226,7 +236,6 @@ export class ScrollBar extends Group {
 
   private initScrollBar = () => {
     this.scrollBarGroup = this.createScrollBarGroup();
-    // TODO: move 测试环境下会乱飘逸，是设置绝对距离？
     this.scrollBarGroup.setPosition(this.position.x, this.position.y);
 
     this.bindEvents();
@@ -324,7 +333,7 @@ export class ScrollBar extends Group {
     this.addEventListener('mousedown', this.onStartEvent(false));
     // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
     // 整个拖拽过程没有 cancel 掉。
-    this.addEventListener('mouseup', this.onMouseUp);
+    this.addEventListener(OriginEventType.POINTER_UP, this.onMouseUp);
     this.addEventListener('touchstart', this.onStartEvent(true));
     this.addEventListener('touchend', this.onMouseUp);
 
@@ -363,7 +372,11 @@ export class ScrollBar extends Group {
       this.addEvent(canvas, 'touchcancel', this.onMouseUp);
     } else {
       events = [
-        this.bindEventListener(containerDOM, 'mousemove', this.onMouseMove),
+        this.bindEventListener(
+          containerDOM,
+          OriginEventType.POINTER_MOVE,
+          this.onMouseMove,
+        ),
         this.bindEventListener(containerDOM, 'mouseup', this.onMouseUp),
         // 为了保证划出 canvas containerDom 时还没触发 mouseup
         this.bindEventListener(containerDOM, 'mouseleave', this.onMouseUp),
