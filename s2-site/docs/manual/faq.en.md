@@ -101,7 +101,7 @@ Currently `S2` only support`web` Platforms and Mini Programs are not currently s
 
 ### Why is my issue closed?
 
-Please strictly follow`Issue 模板` fill in, provide some**Significant**information, including but not limited to:
+Please read [document](https://github.com/antvis/S2/issues/1904) and strictly follow`Issue 模板` fill in, provide some**Significant**information, including but not limited to:
 
 * you**actual**Installed version number:
 

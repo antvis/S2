@@ -9,6 +9,8 @@ S2 可以手动拖拽动态改变单元格的宽高，也提供默认的 `行列
 
 <Playground path='layout/custom/demo/custom-pivot-size.ts' rid='container' height='400'></playground>
 
+<br/>
+
 ```ts
 const s2Options = {
   style: {
@@ -36,6 +38,8 @@ const s2Options = {
   },
 }
 ```
+
+<br/>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/%24peMHWxZX/d20c9c80-d8d0-4fae-8d88-d31fe83c8072.png" alt="preview" width="600"/>
 
@@ -88,6 +92,8 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/YKhvdW8Xs/eb290abb-7cf0-44a2-bb79-66334d1f5438.png" alt="preview" width="600"/>
 
+<br/>
+
 如果想给每一行设置不同的高度，可以通过 `rowCfg` 的 `heightByField` 预设高度来实现，这里的 `field` 对应行列交叉后每一个行头节点对应的唯一 ID [（如何获取）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 
 ```ts
@@ -139,19 +145,21 @@ const s2Options = {
 }
 ```
 
-还可以通过 `colCfg.widthByFieldValue` 来预设宽度实现，S2 表格内部使用该属性用来做拖拽调整宽高的数据存储，此时 `fieldValue` 对应 `s2DataConfig.fields.columns` 中配置的列头数值
+还可以通过 `colCfg.widthByFieldValue` 来预设宽度实现，S2 表格内部使用该属性用来做拖拽调整宽高的数据存储，此时 `fieldValue` 对应 `s2DataConfig.fields.columns` 中配置的列头对应数值
 
 ```ts
 const s2Options = {
   style: {
     colCfg: {
       widthByFieldValue: {
-        number: 200,
+        "数量": 200,
       }
     },
   },
 }
 ```
+
+<br/>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/OXHJhUbEH/85b95114-f5db-48ca-981c-cb29b004514f.png" alt="preview" width="600"/>
 
@@ -168,5 +176,7 @@ const s2Options = {
   },
 }
 ```
+
+<br/>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/VKHZ7SqIL/7371cfc3-b8e9-4f0b-a9c5-a9689aa0053a.png" alt="preview" width="600"/>
