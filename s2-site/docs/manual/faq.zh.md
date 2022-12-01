@@ -174,7 +174,7 @@ s2.render(false)
 
 配套的 [分析组件](/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
-### 怎样贡献代码？
+### 如何贡献代码？
 
 请查看 [贡献指南](/docs/manual/contribution)
 
@@ -224,5 +224,9 @@ s2.render(false)
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
+
+### 有讨论群吗？
+
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 2. 错误和警告

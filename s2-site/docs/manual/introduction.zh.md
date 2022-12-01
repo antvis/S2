@@ -235,14 +235,7 @@ yarn site:start
 
 ## 📧 联系我们
 
-<p>
-  <a>
-    <img width="300" height="auto" alt="DingTalk" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg">
-  </a>
-  <a>
-    <img width="300" height="auto" alt="qq" src="https://gw.alipayobjects.com/zos/antfincdn/v4TlwgORE/qq_qr_code.JPG">
-  </a>
-</p>
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 👬 Contributors
 
