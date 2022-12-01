@@ -458,7 +458,7 @@ describe('SpreadSheet Theme Tests', () => {
         const rowCell = s2.facet.rowHeader!.children[0] as Group; // 浙江省
         const textOfRowCell = getTextShape(rowCell);
 
-        const seriesCell = s2.facet.rowIndexHeader!.children[3] as Group; // 序号1
+        const seriesCell = s2.facet.seriesNumberHeader!.children[3] as Group; // 序号1
         const textOfSeriesCell = getTextShape(seriesCell);
 
         expect(textOfRowCell?.attr('textBaseline')).toEqual(textBaseline);

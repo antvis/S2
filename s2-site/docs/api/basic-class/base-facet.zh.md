@@ -25,7 +25,7 @@ s2.facet.getRealWidth()
 | rowHeader | 行头 |  [BaseHeaderConfig](#baseheaderconfig) |
 | columnHeader | 列头 |  [BaseHeaderConfig](#baseheaderconfig)  |
 | cornerHeader | 角头 |  [BaseHeaderConfig](#baseheaderconfig)  |
-| rowIndexHeader | 序号 |  [BaseHeaderConfig](#baseheaderconfig)  |
+| seriesNumberHeader | 序号 |  [BaseHeaderConfig](#baseheaderconfig)  |
 | centerFrame | 框架 |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | gridInfo | 网格信息 |  [GridInfo](#gridinfo) |
 | getViewCellHeights | 获取单元格高度信息 | (`layoutResult`: [LayoutResult](#layoutresult)) => [ViewCellHeights](#viewcellheights) |

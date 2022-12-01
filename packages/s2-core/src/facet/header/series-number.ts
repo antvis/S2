@@ -1,10 +1,8 @@
-import { Group, type DisplayObject, Rect, Text } from '@antv/g';
+import { type DisplayObject, Rect } from '@antv/g';
 import { each } from 'lodash';
-import { CellBorderPosition, type Padding } from '../../common/interface';
+import { SERIES_NUMBER_FIELD } from '../../common/constant/basic';
+import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
-import { getBorderPositionAndStyle } from '../../utils/cell/cell';
-import { renderLine, renderRect } from '../../utils/g-renders';
-import { getAdjustPosition } from '../../utils/text-absorption';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
@@ -43,7 +41,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       if (!node.isTotals || isHierarchyTreeType) {
         const sNode = new Node({
           id: '',
-          key: '',
+          key: SERIES_NUMBER_FIELD,
+          rowIndex: seriesNodes.length,
           value: `${seriesNodes.length + 1}`,
         });
         sNode.x = node.x;
@@ -88,14 +87,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       spreadsheet,
     } = this.headerConfig;
 
-    if (spreadsheet.isPivotMode()) {
-      //  添加矩形背景
-      this.addBackGround();
-    }
-
-    const borderGroup = this.appendChild(new Group());
-    each(data, (cellData) => {
-      const { y, height: cellHeight, isLeaf } = cellData;
+    each(data, (item) => {
+      const { y, height: cellHeight } = item;
       const isHeaderCellInViewport = this.isHeaderCellInViewport({
         cellPosition: y,
         cellSize: cellHeight,
@@ -104,16 +97,10 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       });
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
-        const group = this.appendChild(new Group());
-
-        // 添加文本
-        this.addText(group, cellData);
-
-        this.appendChild(group);
-
-        // 添加边框
-        if (!isLeaf) {
-          this.addBorder(borderGroup, cellData);
+        const cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
+        item.belongsCell = cell;
+        if (cell) {
+          this.appendChild(cell);
         }
       }
     });
@@ -128,94 +115,5 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     if (this.leftBorderShape) {
       this.leftBorderShape.translate(position.x, position.y + scrollY);
     }
-  }
-
-  private addBackGround() {
-    const rowCellTheme = this.getStyle()?.cell;
-    const { position, width, viewportHeight } = this.headerConfig;
-
-    this.backgroundShape = renderRect(this, {
-      x: position.x,
-      y: -position.y,
-      width,
-      height: viewportHeight,
-      fill: rowCellTheme?.backgroundColor,
-      stroke: 'transparent',
-      opacity: rowCellTheme?.backgroundColorOpacity,
-    });
-
-    const { position: borderPosition, style: borderStyle } =
-      getBorderPositionAndStyle(
-        CellBorderPosition.LEFT,
-        {
-          x: position.x,
-          y: -position.y,
-          width,
-          height: viewportHeight,
-        },
-        rowCellTheme!,
-      );
-
-    this.leftBorderShape = renderLine(this, borderPosition, borderStyle!);
-  }
-
-  private addBorder(group: Group, cellData: Node) {
-    const cellTheme = this.getStyle().cell;
-
-    const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(
-        CellBorderPosition.BOTTOM,
-        cellData,
-        cellTheme!,
-      );
-
-    renderLine(group as Group, horizontalPosition, horizontalStyle!);
-  }
-
-  private getStyle() {
-    return this.headerConfig.spreadsheet.theme.rowCell!;
-  }
-
-  private addText(group: Group, cellData: Node) {
-    const { scrollY = 0, viewportHeight: height } = this.headerConfig;
-    const textStyle = {
-      ...this.getStyle().seriesText,
-      textBaseline: 'top' as const,
-    };
-    const { label, x, y, width: cellWidth, height: cellHeight } = cellData;
-    const padding = this.getTextPadding(label, cellWidth);
-    const textY = getAdjustPosition(
-      y + padding.top!,
-      cellHeight - padding.top! - padding.bottom!,
-      scrollY,
-      height,
-      textStyle.fontSize!,
-    );
-
-    group.appendChild(
-      new Text({
-        style: {
-          x: x + padding.left!,
-          y: textY,
-          text: label,
-          ...textStyle,
-          cursor: 'pointer',
-        },
-      }),
-    );
-  }
-
-  private getTextPadding(text: string, cellWidth: number): Padding {
-    const rowCellTheme = this.getStyle();
-    const textWidth = this.headerConfig.spreadsheet.measureTextWidth(
-      text,
-      rowCellTheme?.seriesText,
-    );
-    const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
-    return {
-      ...rowCellTheme?.cell?.padding,
-      left: padding,
-      right: padding,
-    };
   }
 }

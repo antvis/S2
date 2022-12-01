@@ -9,12 +9,14 @@ import { TableColCell } from './table-col-cell';
 import { TableCornerCell } from './table-corner-cell';
 import { TableDataCell } from './table-data-cell';
 import { TableSeriesCell } from './table-series-cell';
+import { SeriesNumberCell } from './series-number-cell';
 
 export {
   TableCornerCell,
   TableColCell,
   TableSeriesCell,
   TableDataCell,
+  SeriesNumberCell,
   RowCell,
   ColCell,
   DataCell,

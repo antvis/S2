@@ -22,6 +22,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import type { RootInteraction } from '../../interaction';
 import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
+import type { SeriesNumberCell } from '@/cell/series-number-cell';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -29,6 +30,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | SeriesNumberCell
   | MergedCell
   | TableCornerCell
   | TableSeriesCell
