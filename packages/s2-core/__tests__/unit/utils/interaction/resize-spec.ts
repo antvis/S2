@@ -50,11 +50,13 @@ describe('Resize Utils Tests', () => {
           type: ResizeDirectionType.Horizontal,
         }),
       ).toStrictEqual({
-        fill: resizeAreaTheme.background,
-        fillOpacity: resizeAreaTheme.backgroundOpacity,
-        cursor: `col-resize`,
-        width: resizeAreaTheme.size,
-        height: undefined,
+        style: {
+          fill: resizeAreaTheme.background,
+          fillOpacity: resizeAreaTheme.backgroundOpacity,
+          cursor: `col-resize`,
+          width: resizeAreaTheme.size,
+          height: undefined,
+        },
         appendInfo: {
           isResizeArea: true,
           effect: ResizeAreaEffect.Cell,
@@ -76,11 +78,13 @@ describe('Resize Utils Tests', () => {
           type: ResizeDirectionType.Vertical,
         }),
       ).toStrictEqual({
-        fill: resizeAreaTheme.background,
-        fillOpacity: resizeAreaTheme.backgroundOpacity,
-        cursor: `row-resize`,
-        width: undefined,
-        height: resizeAreaTheme.size,
+        style: {
+          fill: resizeAreaTheme.background,
+          fillOpacity: resizeAreaTheme.backgroundOpacity,
+          cursor: `row-resize`,
+          width: undefined,
+          height: resizeAreaTheme.size,
+        },
         appendInfo: {
           isResizeArea: true,
           effect: ResizeAreaEffect.Cell,
