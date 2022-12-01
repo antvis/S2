@@ -3,13 +3,14 @@ import {
   CellTypes,
   copyData,
   customMerge,
+  getCellMeta,
+  InteractionStateName,
   SpreadSheet,
   type S2DataConfig,
 } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { expectSelectedCellsSpotlight } from '@antv/s2-shared/__tests__/util/helpers';
 import {
   SheetComponent,
   SheetComponentOptions,
@@ -273,15 +274,32 @@ describe('<StrategySheet/> Tests', () => {
     });
 
     // https://github.com/antvis/S2/issues/1960
-    // eslint-disable-next-line jest/expect-expect
     it('should selected cell and update spotlight style', () => {
       const dataCellId = `root[&]自定义节点A[&]指标A-root[&]2022-11[&]["数值","环比","同比"]`;
 
-      expectSelectedCellsSpotlight({
-        s2,
-        selectedCount: 30,
-        selectedCellId: dataCellId,
+      const selectedDataCell = s2.interaction
+        .getPanelGroupAllDataCells()
+        .find((cell) => cell.getMeta().id === dataCellId)!;
+
+      s2.interaction.changeState({
+        cells: [getCellMeta(selectedDataCell)],
+        stateName: InteractionStateName.SELECTED,
       });
+
+      const allDataCells = s2.interaction.getPanelGroupAllDataCells();
+      const unSelectedDataCells =
+        s2.interaction.getPanelGroupAllUnSelectedDataCells();
+
+      expect(allDataCells).toHaveLength(30);
+      // 选中一个
+      expect(unSelectedDataCells).toHaveLength(29);
+      // 其余置灰
+      unSelectedDataCells
+        .filter((cell) => cell.getTextShape())
+        .forEach((cell) => {
+          const textShape = cell.getTextShape();
+          expect(textShape.attr('fillOpacity')).toEqual(0.3);
+        });
     });
   });
 });

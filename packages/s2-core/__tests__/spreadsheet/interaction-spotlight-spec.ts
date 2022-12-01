@@ -1,7 +1,8 @@
 import { createPivotSheet } from 'tests/util/helpers';
-import { expectSelectedCellsSpotlight } from '@antv/s2-shared/__tests__/util/helpers';
 import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
+import { getCellMeta } from '@/utils';
+import { InteractionStateName } from '@/common';
 
 const s2Options: S2Options = {
   width: 600,
@@ -23,14 +24,31 @@ describe('Interaction SelectedCellsSpotlight Tests', () => {
     s2.destroy();
   });
 
-  // eslint-disable-next-line jest/expect-expect
   test('should display tooltip when data cell clicked', () => {
     const dataCellId = `root[&]浙江[&]杭州-root[&]笔[&]price`;
 
-    expectSelectedCellsSpotlight({
-      s2,
-      selectedCount: 4,
-      selectedCellId: dataCellId,
+    const selectedDataCell = s2.interaction
+      .getPanelGroupAllDataCells()
+      .find((cell) => cell.getMeta().id === dataCellId)!;
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(selectedDataCell)],
+      stateName: InteractionStateName.SELECTED,
     });
+
+    const allDataCells = s2.interaction.getPanelGroupAllDataCells();
+    const unSelectedDataCells =
+      s2.interaction.getPanelGroupAllUnSelectedDataCells();
+
+    expect(allDataCells).toHaveLength(4);
+    // 选中一个
+    expect(unSelectedDataCells).toHaveLength(3);
+    // 其余置灰
+    unSelectedDataCells
+      .filter((cell) => cell.getTextShape())
+      .forEach((cell) => {
+        const textShape = cell.getTextShape();
+        expect(textShape.attr('fillOpacity')).toEqual(0.3);
+      });
   });
 });
