@@ -64,12 +64,10 @@ describe('Tooltip Utils Tests', () => {
           ...tooltipSize,
         } as DOMRect),
     } as HTMLDivElement;
-    // TODO: 通过 get 设置什么？
-    // s2.container.get = () => ({
-    //   getBoundingClientRect: () => ({
-    //     ...containerSize,
-    //   }),
-    // });
+    s2.getCanvasElement().getBoundingClientRect = () =>
+      ({
+        ...containerSize,
+      } as DOMRect);
     s2.facet = {
       panelBBox: {
         maxX: containerSize.width,
