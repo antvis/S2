@@ -20,7 +20,10 @@ import {
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
 } from '../../../utils/hide-columns';
-import { isMultiSelectionKey } from '../../../utils/interaction/select-event';
+import {
+  isMultiSelectionKey,
+  shouldMouseEventTriggerMultiSelection,
+} from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
@@ -28,31 +31,16 @@ import {
 } from '../../../utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
-  private isMultiSelection = false;
-
   public bindEvents() {
-    this.bindKeyboardDown();
     this.bindKeyboardUp();
     this.bindColCellClick();
     this.bindRowCellClick();
     this.bindTableColExpand();
   }
 
-  private bindKeyboardDown() {
-    this.spreadsheet.on(
-      S2Event.GLOBAL_KEYBOARD_DOWN,
-      (event: KeyboardEvent) => {
-        if (isMultiSelectionKey(event)) {
-          this.isMultiSelection = true;
-        }
-      },
-    );
-  }
-
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (isMultiSelectionKey(event)) {
-        this.isMultiSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
@@ -82,7 +70,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const { multiSelection: enableMultiSelection } = options.interaction;
     // 关闭了多选就算按下了 Ctrl/Commend, 行/列也按单选处理
-    const isMultiSelection = !!(enableMultiSelection && this.isMultiSelection);
+    const isMultiSelection = !!(
+      enableMultiSelection &&
+      shouldMouseEventTriggerMultiSelection(
+        event.originalEvent as unknown as MouseEvent,
+      )
+    );
 
     const success = interaction.selectHeaderCell({
       cell,

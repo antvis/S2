@@ -10,6 +10,7 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
+  shouldMouseEventTriggerMultiSelection,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
@@ -18,8 +19,6 @@ export class DataCellMultiSelection
   extends BaseEvent
   implements BaseEventImplement
 {
-  private isMultiSelection = false;
-
   public bindEvents() {
     this.bindKeyboardDown();
     this.bindDataCellClick();
@@ -27,7 +26,6 @@ export class DataCellMultiSelection
   }
 
   public reset() {
-    this.isMultiSelection = false;
     this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
   }
 
@@ -36,7 +34,6 @@ export class DataCellMultiSelection
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
         if (isMultiSelectionKey(event)) {
-          this.isMultiSelection = true;
           this.spreadsheet.interaction.addIntercepts([InterceptType.CLICK]);
         }
       },
@@ -75,7 +72,10 @@ export class DataCellMultiSelection
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 
-      if (this.isMultiSelection && meta) {
+      if (
+        shouldMouseEventTriggerMultiSelection(event as unknown as MouseEvent) &&
+        meta
+      ) {
         const selectedCells = this.getSelectedCells(cell);
 
         if (isEmpty(selectedCells)) {

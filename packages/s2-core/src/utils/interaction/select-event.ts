@@ -19,6 +19,11 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
   );
 };
 
+export const shouldMouseEventTriggerMultiSelection = (e: MouseEvent) => {
+  const { metaKey, ctrlKey } = e;
+  return metaKey || ctrlKey;
+};
+
 export const getCellMeta = (cell: S2CellType) => {
   const meta = cell.getMeta();
   const { id, colIndex, rowIndex } = meta;
