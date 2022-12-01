@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { getContainer } from 'tests/util/helpers';
 import dataCfg from 'tests/data/simple-data.json';
-import { Canvas } from '@antv/g';
+import { Canvas, CanvasEvent } from '@antv/g';
 import { cloneDeep, get, last } from 'lodash';
 import { PivotDataSet } from '../../../src/data-set';
 import type { BaseEvent } from '../../../src';
@@ -585,7 +585,7 @@ describe('PivotSheet Tests', () => {
       const isCalled = width !== s2Options.width || height !== s2Options.height;
 
       const changeSizeSpy = jest
-        .spyOn(s2.container, 'changeSize')
+        .spyOn(s2.container, 'resize')
         .mockImplementationOnce(() => {});
 
       s2.changeSheetSize(width, height);
@@ -989,7 +989,8 @@ describe('PivotSheet Tests', () => {
       'test-interaction',
       null as unknown as BaseEvent,
     );
-    s2.container.on('test-event', () => {});
+    const destroyFn = jest.fn();
+    s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
     s2.destroy();
 
     // clear store
@@ -1015,12 +1016,10 @@ describe('PivotSheet Tests', () => {
     // clear all sheet events
     expect(s2.getEvents()).toEqual({});
     // clear all canvas events
-    // eslint-disable-next-line no-underscore-dangle
-    expect((s2.container.emitter as any)._eventsCount).toEqual(0);
-    // clear canvas group and shapes
-    expect(s2.container.document.children).not.toBeDefined();
-    // destroy canvas
-    expect(s2.getCanvasElement()).not.toBeDefined();
+
+    // g5.0 destroy
+    expect(destroyFn).toBeCalled();
+    expect(document.body.contains(s2.getCanvasElement())).toBeFalse();
   });
 
   describe('Test Layout by dataCfg fields', () => {
