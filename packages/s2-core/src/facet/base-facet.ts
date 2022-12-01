@@ -1193,11 +1193,10 @@ export abstract class BaseFacet {
         height,
         viewportWidth,
         viewportHeight,
-        position: { x: 0, y },
+        position: { x: seriesNumberWidth, y },
         data: this.layoutResult.rowNodes,
         hierarchyType: this.cfg.hierarchyType,
         linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
-        seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
     }

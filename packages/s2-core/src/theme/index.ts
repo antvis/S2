@@ -241,7 +241,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textAlign: isTable ? 'center' : 'center',
+        textAlign: isTable ? 'center' : 'left',
         textBaseline: 'top',
       },
       text: {
