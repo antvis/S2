@@ -1,13 +1,13 @@
 import { type DisplayObject, Rect } from '@antv/g';
 import { each } from 'lodash';
-import { SERIES_NUMBER_FIELD } from '../../common/constant/basic';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
-import { Node } from '../layout/node';
 import { translateGroup } from '../utils';
+import type { Hierarchy } from '../layout/hierarchy';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
+import { getSeriesNumberNodes } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: DisplayObject;
@@ -20,45 +20,25 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   public static getSeriesNumberHeader(options: {
     panelBBox: PanelBBox;
     seriesNumberWidth: number;
-    leafNodes: Node[];
+    rowsHierarchy: Hierarchy;
     spreadsheet: SpreadSheet;
     cornerWidth: number;
   }): SeriesNumberHeader {
     const {
       panelBBox,
       seriesNumberWidth,
-      leafNodes,
+      rowsHierarchy,
       spreadsheet,
       cornerWidth,
     } = options;
-
     const { height, viewportHeight } = panelBBox;
-    const seriesNodes: Node[] = [];
-    const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
-    leafNodes.forEach((node: Node): void => {
-      // 1、is spreadsheet and node is not total(grand or sub)
-      // 2、is listSheet
-      if (!node.isTotals || isHierarchyTreeType) {
-        const sNode = new Node({
-          id: '',
-          key: SERIES_NUMBER_FIELD,
-          rowIndex: seriesNodes.length,
-          value: `${seriesNodes.length + 1}`,
-        });
-        sNode.x = node.x;
-        sNode.y = node.y;
-        sNode.height = node.height;
-        sNode.width = seriesNumberWidth;
-        seriesNodes.push(sNode);
-      }
-    });
     return new SeriesNumberHeader({
       width: cornerWidth,
       height,
       viewportWidth: cornerWidth,
       viewportHeight,
       position: { x: 0, y: panelBBox.y },
-      data: seriesNodes,
+      data: getSeriesNumberNodes(rowsHierarchy, seriesNumberWidth, spreadsheet),
       spreadsheet,
     });
   }

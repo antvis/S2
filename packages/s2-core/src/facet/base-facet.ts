@@ -1240,11 +1240,11 @@ export abstract class BaseFacet {
 
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return SeriesNumberHeader.getSeriesNumberHeader({
-      panelBBox: this.panelBBox,
-      seriesNumberWidth: this.getSeriesNumberWidth(),
       spreadsheet: this.spreadsheet,
-      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      panelBBox: this.panelBBox,
       cornerWidth: this.cornerBBox.width,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      rowsHierarchy: this.layoutResult.rowsHierarchy,
     });
   }
 
