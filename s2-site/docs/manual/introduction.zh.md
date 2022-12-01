@@ -202,47 +202,11 @@ s2.render();
 
 ## 🤝 参与贡献
 
-```bash
-git clone git@github.com:antvis/S2.git
-
-cd S2
-
-# 安装依赖
-yarn # 或者 yarn bootstrap
-
-# 调试 s2-core
-yarn core:start
-
-# 调试 s2-react
-yarn react:playground
-
-# 调试 s2-vue
-yarn vue:playground
-
-# 单元测试
-yarn test
-
-# 打包
-yarn build
-
-# 代码风格和类型检测
-yarn lint
-
-# 本地启动官网
-yarn site:bootstrap
-yarn site:start
-```
+<embed src="@/docs/common/development.zh.md"></embed>
 
 ## 📧 联系我们
 
-<p>
-  <a>
-    <img width="300" height="auto" alt="DingTalk" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg">
-  </a>
-  <a>
-    <img width="300" height="auto" alt="qq" src="https://gw.alipayobjects.com/zos/antfincdn/v4TlwgORE/qq_qr_code.JPG">
-  </a>
-</p>
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 👬 Contributors
 

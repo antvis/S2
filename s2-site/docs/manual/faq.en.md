@@ -101,7 +101,7 @@ Currently `S2` only support`web` Platforms and Mini Programs are not currently s
 
 ### Why is my issue closed?
 
-Please strictly follow`Issue 模板` fill in, provide some**Significant**information, including but not limited to:
+Please read [document](https://github.com/antvis/S2/issues/1904) and strictly follow`Issue 模板` fill in, provide some**Significant**information, including but not limited to:
 
 * you**actual**Installed version number:
 
@@ -141,5 +141,9 @@ Highly recommended reading:
 ### I want to report bugs, how to provide a reproducible online demo?
 
 Recommended Use `codesandbox`, We provide various versions of the template to facilitate your feedback.[view all templates](https://www.yuque.com/antv/vo4vyz/bam4vz)
+
+### How to contact us
+
+<embed src="@/docs/common/contact-us.en.md"></embed>
 
 ## 2. Errors and Warnings
