@@ -142,4 +142,8 @@ Highly recommended reading:
 
 Recommended Use `codesandbox`, We provide various versions of the template to facilitate your feedback.[view all templates](https://www.yuque.com/antv/vo4vyz/bam4vz)
 
+### How to contact us
+
+<embed src="@/docs/common/contact-us.en.md"></embed>
+
 ## 2. Errors and Warnings
