@@ -3,7 +3,7 @@
  */
 import { Canvas, Group, Rect } from '@antv/g';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { size, get, find } from 'lodash';
+import { size, find } from 'lodash';
 import { Renderer } from '@antv/g-canvas';
 import { getMockPivotMeta } from './util';
 import { Node } from '@/facet/layout/node';
@@ -34,17 +34,18 @@ const { rowPivotMeta, colPivotMeta, indexesData, sortedDimensionValues } =
   getMockPivotMeta();
 
 jest.mock('@/sheet-type', () => {
-  const container = new Canvas({
-    width: 100,
-    height: 100,
-    container: document.body,
-    renderer: new Renderer(),
-  });
-  const panelScrollGroup = new Group({}) as PanelScrollGroup;
-  panelScrollGroup.update = () => {};
-  container.appendChild(panelScrollGroup);
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
+      const container = new Canvas({
+        width: 100,
+        height: 100,
+        container: document.body,
+        renderer: new Renderer(),
+      });
+      const panelScrollGroup = new Group({}) as PanelScrollGroup;
+      panelScrollGroup.update = () => {};
+      container.appendChild(panelScrollGroup);
+
       return {
         dataCfg: assembleDataCfg(),
         options: assembleOptions(),
@@ -259,7 +260,7 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     afterAll(() => {
-      facet.render();
+      facet.destroy();
     });
 
     test('get header after render', () => {
@@ -280,7 +281,7 @@ describe('Pivot Mode Facet Test', () => {
     test('get background after render', () => {
       const { backgroundGroup } = facet;
 
-      const rect = get(backgroundGroup, 'cfg.children[0]');
+      const rect = backgroundGroup.children[0];
 
       expect(backgroundGroup.children).toHaveLength(1);
       expect(rect).toBeInstanceOf(Rect);
@@ -293,6 +294,7 @@ describe('Pivot Mode Facet Test', () => {
     const seriesNumberFacet = new PivotFacet({
       spreadsheet: s2,
       dataSet: mockDataSet,
+      dataCell: (fct) => new DataCell(fct, s2),
       ...assembleDataCfg().fields,
       ...assembleOptions(),
       ...DEFAULT_STYLE,
