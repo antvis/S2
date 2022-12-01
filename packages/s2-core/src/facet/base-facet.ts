@@ -69,7 +69,7 @@ import { isMobile } from '../utils/is-mobile';
 import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { FrozenGroup } from '../group/frozen-group';
-import { WheelEvent as MobileWheel } from './mobile/wheel';
+import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
