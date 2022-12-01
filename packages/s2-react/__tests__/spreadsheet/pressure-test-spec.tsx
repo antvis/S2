@@ -49,7 +49,6 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'grid',

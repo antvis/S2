@@ -3,9 +3,9 @@ title: 高级排序
 order: 4
 ---
 
-# React 高级排序组件
+## React 高级排序组件
 
-## AdvancedSortProps
+### AdvancedSortProps
 
 `AdvancedSort` 组件的 `props`
 
@@ -23,7 +23,7 @@ order: 4
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
 | onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
 
-## AdvancedSortCfgProps
+### AdvancedSortCfgProps
 
 在 `header` 中配置 `advancedSortCfg` 的 `props`
 
@@ -40,7 +40,7 @@ order: 4
 | onSortOpen | 打开排序弹窗的回调 | `() => void` |  |  |
 | onSortConfirm | 关闭弹窗后处理排序结果的回调 | `(ruleValues:`[RuleValue](#rulevalue)[]`, sortParams:`[SortParams](/docs/api/general/S2DataConfig#sortparams)`) => void` |  |  |
 
-## Dimension
+### Dimension
 
 可选字段列表，不配置默认为：`行头+列头+数值`
 
@@ -50,7 +50,7 @@ order: 4
 | name  | 维度名称 | `string`   | ✓      |      |
 | list  | 维度列表 | `string[]` | ✓      |      |
 
-## RuleOption
+### RuleOption
 
 规则配置列表，不配置默认为：`首字母、手动排序、其他字段`
 
@@ -60,7 +60,7 @@ order: 4
 | value    | 规则值     | `'sortMethod'  | 'sortBy' | 'sortByMeasure'` |     | ✓   |
 | children | 规则子列表 | `RuleOption[]` | ✓        |                  |
 
-## RuleValue
+### RuleValue
 
 关闭弹窗后处理排序结果的回调函数的第一个参数：获取到的排序信息
 
@@ -72,6 +72,6 @@ order: 4
 | sortBy | 自定义排序列表 | `string[]` |  |  |
 | sortByMeasure | 类 | `string` |  |  |
 
-# Vue 高级排序组件
+## Vue 高级排序组件
 
 开发中，敬请期待

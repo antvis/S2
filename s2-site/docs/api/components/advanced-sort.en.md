@@ -3,9 +3,9 @@ title: Advanced Sort
 order: 4
 ---
 
-# React Advanced Sorting Component
+## React Advanced Sorting Component
 
-## AdvancedSortProps
+### AdvancedSortProps
 
 The `props` of the `AdvancedSort` component
 
@@ -23,7 +23,7 @@ The `props` of the `AdvancedSort` component
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                                            |          |          |
 | onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
 
-## AdvancedSortCfgProps
+### AdvancedSortCfgProps
 
 Configure the `props` of `advancedSortCfg` in the `header`
 
@@ -40,7 +40,7 @@ Configure the `props` of `advancedSortCfg` in the `header`
 | onSortOpen    | Callback for opening sort popup                                        | `() => void`                                                                                                                                            |          |          |
 | onSortConfirm | Callback for processing sorting results after closing the popup window | `(ruleValues:` [RuleValue](#rulevalue) \[] `, sortParams:` [SortParams](/docs/api/general/S2DataConfig#sortparams) `) => void` |          |          |
 
-## Dimension
+### Dimension
 
 Optional field list, if not configured, the default is:`行头+列头+数值`
 
@@ -50,13 +50,13 @@ Optional field list, if not configured, the default is:`行头+列头+数值`
 | name      | dimension name | `string`   | ✓        |          |
 | list      | dimension list | `string[]` | ✓        |          |
 
-## RuleOption
+### RuleOption
 
 Rule configuration list, if not configured, the default is:`首字母、手动排序、其他字段`
 
 \| parameter | description | type | default | required | | :------- | :--------- | :------------- | :------- | :--------------- | --- | --- | | label | rule name | `string` | ✓ | | | value | rule value | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | | ✓ | | children | list of rule children | `RuleOption[]` | ✓ | |
 
-## RuleValue
+### RuleValue
 
 The first parameter of the callback function that processes the sorting results after closing the pop-up window: the obtained sorting information
 
@@ -68,6 +68,6 @@ The first parameter of the callback function that processes the sorting results 
 | sortBy        | custom sorted list             | `string[]`                         |          |          |
 | sortByMeasure | kind                           | `string`                           |          |          |
 
-# Vue Advanced Sorting Component
+## Vue Advanced Sorting Component
 
 In development, please look forward to

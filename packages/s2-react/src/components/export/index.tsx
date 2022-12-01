@@ -11,14 +11,6 @@ import cx from 'classnames';
 import React from 'react';
 import { DotIcon } from '../icons';
 
-export interface DataSet {
-  icon?: React.ReactNode;
-  name: string;
-  value: string;
-  type?: 'text' | 'location' | 'date';
-  disabled?: boolean;
-}
-
 export interface ExportCfgProps {
   open: boolean;
   className?: string;

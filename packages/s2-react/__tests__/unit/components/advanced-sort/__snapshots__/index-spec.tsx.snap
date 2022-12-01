@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedSort Component Tests should render component 1`] = `
+<DocumentFragment>
+  <div
+    class="antv-s2-advanced-sort test"
+  >
+    <button
+      class="ant-btn ant-btn-default ant-btn-sm antv-s2-advanced-sort-btn"
+      type="button"
+    >
+      <div />
+      <span>
+        高级排序
+      </span>
+    </button>
+  </div>
+</DocumentFragment>
+`;

@@ -11,6 +11,7 @@ import {
 } from '@antv/s2';
 import { SheetType } from '@antv/s2-shared';
 import type { Event as GEvent } from '@antv/g-canvas';
+import { render } from '@testing-library/react';
 import { SheetComponent, SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
@@ -37,23 +38,39 @@ describe('<SheetComponent/> Tests', () => {
       'editable',
     ];
 
+    const commonSheetProps: SheetComponentsProps = {
+      // CI 环境和 本地 DPR 不一致
+      options: { width: 200, height: 200, devicePixelRatio: 2 },
+      dataCfg: null as unknown as S2DataConfig,
+      showPagination: true,
+      header: {
+        switcherCfg: { open: true },
+        exportCfg: { open: true },
+        advancedSortCfg: { open: true },
+      },
+    };
+
     test.each(sheetTypes)(
       'should render successfully for %s sheet',
       (sheetType) => {
-        function render() {
+        function init() {
           ReactDOM.render(
-            <SheetComponent
-              sheetType={sheetType}
-              options={{ width: 200, height: 200 }}
-              dataCfg={null as unknown as S2DataConfig}
-            />,
+            <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
             container,
           );
         }
 
-        expect(render).not.toThrowError();
+        expect(init).not.toThrowError();
       },
     );
+
+    test.each(sheetTypes)('should render %s sheet by snapshot', (sheetType) => {
+      const { asFragment } = render(
+        <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
+      );
+
+      expect(asFragment()).toMatchSnapshot();
+    });
 
     test.each(sheetTypes)(
       'should not throw getSpreadSheet deprecated warning for %s sheet',

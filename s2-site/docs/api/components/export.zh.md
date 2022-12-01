@@ -3,7 +3,7 @@ title: 导出
 order: 5
 ---
 
-# React 导出组件
+## React 导出组件
 
 ```tsx
 <SheetComponent
@@ -13,7 +13,7 @@ order: 5
 />
 ```
 
-## ExportCfgProps
+### ExportCfgProps
 
 | 属性 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | -- |
@@ -32,6 +32,6 @@ order: 5
 
 <embed src="@/docs/common/export.zh.md"></embed>
 
-# Vue 导出组件
+## Vue 导出组件
 
 开发中，敬请期待
