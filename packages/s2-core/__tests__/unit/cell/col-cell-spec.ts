@@ -156,9 +156,9 @@ describe('Col Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const colCell = s2.facet.columnHeader.children[0].children[1];
+      const colCell = s2.facet.columnHeader.children[0].children[1] as ColCell;
 
-      expect(get(colCell, 'textShape.attrs.fill')).toEqual('#5083F5');
+      expect(colCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
     test('should draw right condition icon shape', () => {
@@ -203,7 +203,9 @@ describe('Col Cell Tests', () => {
       });
       s2.render();
       const colCell = s2.facet.columnHeader.children[0].children[1];
-      expect(get(colCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
+      expect(get(colCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+        '#F7B46F',
+      );
     });
   });
 });
