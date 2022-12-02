@@ -9,6 +9,7 @@ import { get, each, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
 import {
   CellTypes,
+  GEventType,
   InteractionKeyboardKey,
   InterceptType,
   OriginEventType,
@@ -75,8 +76,9 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
+    // TODO: g5.0 目前没支持 dbclick 事件
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
-    this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
+    this.addCanvasEvent(GEventType.RIGHT_MOUSE_UP, this.onCanvasContextMenu);
 
     // spreadsheet events
     this.addS2Event(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
@@ -448,14 +450,14 @@ export class EventController {
 
   private onCanvasClick = (event: CanvasEvent) => {
     this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
+
+    // 双击的 detail 是 2
+    if (event.detail === 2) {
+      this.onCanvasDoubleClick(event);
+    }
   };
 
   private onCanvasDoubleClick = (event: CanvasEvent) => {
-    // 双击的 detail 是 2
-    if (event.detail !== 2) {
-      return;
-    }
-
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
