@@ -13,6 +13,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/v3rnigo9e%24/6862c027-eb75-49e4-88e4-40b9855202a1.png"
     },
     {
+      "filename": "series-number-cell.ts",
+      "title": {
+        "zh": "自定义序号单元格",
+        "en": "custom series number cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*-IXnSaGqY1EAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
       "filename": "row-cell.ts",
       "title": {
         "zh": "自定义行头单元格",
