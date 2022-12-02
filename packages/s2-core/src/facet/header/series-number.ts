@@ -1,20 +1,16 @@
-import { type DisplayObject, Rect } from '@antv/g';
+import { Rect } from '@antv/g';
 import { each, isEmpty } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { translateGroup } from '../utils';
 import type { Hierarchy } from '../layout/hierarchy';
+import type { S2CellType } from '../../common/interface';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
-import type { S2CellType } from '@/common';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
-  private backgroundShape: DisplayObject;
-
-  private leftBorderShape: DisplayObject;
-
   /**
    * Get seriesNumber header by config
    */
@@ -85,7 +81,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         viewportPosition: scrollY,
         viewportSize: viewportHeight,
       });
-      if (isHeaderCellInViewport) {
+      // 按需渲染：视窗内的才渲染
+
+      if (!isHeaderCellInViewport) {
         return;
       }
       let cell: S2CellType | null = null;
@@ -95,22 +93,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       if (isEmpty(cell)) {
         cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
       }
-      // 按需渲染：视窗内的才渲染
       item.belongsCell = cell;
-      if (cell) {
-        this.appendChild(cell);
-      }
+      this.appendChild(cell);
     });
   }
 
   protected offset() {
     const { scrollY = 0, scrollX = 0, position } = this.headerConfig;
     translateGroup(this, position.x - scrollX, position.y - scrollY);
-    if (this.backgroundShape) {
-      this.backgroundShape.translate(position.x, position.y + scrollY);
-    }
-    if (this.leftBorderShape) {
-      this.leftBorderShape.translate(position.x, position.y + scrollY);
-    }
   }
 }
