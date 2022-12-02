@@ -5,7 +5,7 @@ exports[`Pagination Tests should receive antd <Pagination/> component extra prop
   class="antv-s2-pagination"
 >
   <ul
-    class="ant-pagination"
+    class="ant-pagination ant-pagination-mini"
     unselectable="unselectable"
   >
     <li
