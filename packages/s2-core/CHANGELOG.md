@@ -1,3 +1,21 @@
+# [@antv/s2-v1.36.0](https://github.com/antvis/S2/compare/@antv/s2-v1.35.1...@antv/s2-v1.36.0) (2022-12-02)
+
+
+### Bug Fixes
+
+* **dataset:** 修复数据undefined情况 ([#1954](https://github.com/antvis/S2/issues/1954)) ([8815d86](https://github.com/antvis/S2/commit/8815d865f839c9b5d4083a804378492be42a5673))
+* **facet:** 调整 layoutCoordinate 执行顺序 ([#1953](https://github.com/antvis/S2/issues/1953)) ([dba62d7](https://github.com/antvis/S2/commit/dba62d720427f99109ef3fe4fb3a121631f4f256))
+* **interaction:** 修复趋势分析表选中高亮效果无效 close [#1960](https://github.com/antvis/S2/issues/1960) ([#1961](https://github.com/antvis/S2/issues/1961)) ([5140b60](https://github.com/antvis/S2/commit/5140b6060d03b0290ddb4b314e7892520038f369))
+* 增加 style 配置为空时的容错 ([#1967](https://github.com/antvis/S2/issues/1967)) ([9250487](https://github.com/antvis/S2/commit/92504874e5f925a2fc2a640194f676c2bd32b55e))
+
+
+### Features
+
+* **header:** 去除 antd PageHeader 组件依赖 & Header 组件重构 close [#1981](https://github.com/antvis/S2/issues/1981) ([#1957](https://github.com/antvis/S2/issues/1957)) ([a3addd7](https://github.com/antvis/S2/commit/a3addd7494a2002e40c0cd00871bee47bedefb17))
+* **scroll:** 增加滚动条最小尺寸配置 close [#1892](https://github.com/antvis/S2/issues/1892) ([#1948](https://github.com/antvis/S2/issues/1948)) ([7040ac0](https://github.com/antvis/S2/commit/7040ac08acc0dffff60fb20e2a19ff6daeb4625e))
+* shift+按键支持横向滚动 ([#1956](https://github.com/antvis/S2/issues/1956)) ([d40a638](https://github.com/antvis/S2/commit/d40a638a0786fe3df1cb5f6052c4e54cbf137060))
+* 明细表模式的"字段标记"，mapping 中第二个参数，返回整行信息 ([#1947](https://github.com/antvis/S2/issues/1947)) ([4958b88](https://github.com/antvis/S2/commit/4958b88ff6d0ee80bf65194f06239220d08dbf40))
+
 # [@antv/s2-v1.35.1](https://github.com/antvis/S2/compare/@antv/s2-v1.35.0...@antv/s2-v1.35.1) (2022-11-28)
 
 
