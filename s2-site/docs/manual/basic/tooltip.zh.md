@@ -287,7 +287,7 @@ const s2Options = {
           text: '操作 2',
           icon: 'EyeOutlined',
           visible: (cell) => {
-            // 叶子节点不显示
+            // 根据单元格信息动态显示，如：叶子节点不显示
             const meta = cell.getMeta()
             return meta.isLeaf
           },
@@ -298,7 +298,32 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <Playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
+<br/>
+
+如果使用的是 `@antv/s2-react`, 那么 `text` 和 `icon` 还支持任意 `ReactNode`
+
+```tsx
+import { StarOutlined } from '@ant-design/icons';
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: <div>操作 1</div>,
+          icon: <StarOutlined />,
+        },
+    },
+  },
+};
+```
+
+<br/>
 
 #### 自定义 Tooltip 挂载节点
 
@@ -308,6 +333,8 @@ const s2Options = {
 <div class="container" />
 ```
 
+<br/>
+
 ```ts
 const s2Options = {
   tooltip: {
@@ -315,6 +342,8 @@ const s2Options = {
   }
 }
 ```
+
+<br/>
 
 #### 自定义 Tooltip 容器样式
 

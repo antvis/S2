@@ -25,7 +25,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const { data, options, content, cell } = props;
 
   const renderOperation = (
-    operator: TooltipOperatorOptions,
+    operator: TooltipOperatorOptions<React.ReactNode, React.ReactNode>,
     onlyMenu?: boolean,
   ) => {
     return (
@@ -73,7 +73,11 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   };
 
   const renderContent = () => {
-    const { operator, onlyMenu } = getTooltipDefaultOptions(options);
+    const { operator, onlyMenu } = getTooltipDefaultOptions<
+      React.ReactNode,
+      React.ReactNode
+    >(options);
+
     const {
       summaries,
       headInfo,
