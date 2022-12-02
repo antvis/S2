@@ -14,9 +14,11 @@ import type {
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
+  LayoutSeriesNumberNodes,
 } from '../../common/interface/hooks';
 import type { BaseDataSet } from '../../data-set';
 import type {
+  BaseHeaderConfig,
   ColHeaderConfig,
   CornerHeaderConfig,
   RowHeaderConfig,
@@ -86,6 +88,8 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   dataCell?: DataCellCallback;
   // custom corner cell
   cornerCell?: CellCallback<CornerHeaderConfig>;
+  // custom series number cell for pivot mode
+  seriesNumberCell?: CellCallback<BaseHeaderConfig>;
   // custom row cell
   rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
@@ -105,7 +109,8 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
   layoutDataPosition?: LayoutDataPosition;
-
+  // determine the series number cell coordinates
+  layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
   /** ***********CUSTOM DATA CELL RENDER HOOKS**************** */
   // determine the display part of multiple data item
   filterDisplayDataItem?: FilterDataItemCallback;

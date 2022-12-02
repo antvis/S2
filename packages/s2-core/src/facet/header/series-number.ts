@@ -1,5 +1,5 @@
 import { type DisplayObject, Rect } from '@antv/g';
-import { each } from 'lodash';
+import { each, isEmpty } from 'lodash';
 import { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { SpreadSheet } from '../../sheet-type/index';
 import type { PanelBBox } from '../bbox/panelBBox';
@@ -8,6 +8,7 @@ import type { Hierarchy } from '../layout/hierarchy';
 import { BaseHeader } from './base';
 import type { BaseHeaderConfig } from './interface';
 import { getSeriesNumberNodes } from './util';
+import type { S2CellType } from '@/common';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: DisplayObject;
@@ -32,13 +33,21 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       cornerWidth,
     } = options;
     const { height, viewportHeight } = panelBBox;
+
+    const layoutSeriesNumberNodes =
+      spreadsheet.facet.cfg.layoutSeriesNumberNodes ?? getSeriesNumberNodes;
+
     return new SeriesNumberHeader({
       width: cornerWidth,
       height,
       viewportWidth: cornerWidth,
       viewportHeight,
       position: { x: 0, y: panelBBox.y },
-      data: getSeriesNumberNodes(rowsHierarchy, seriesNumberWidth, spreadsheet),
+      data: layoutSeriesNumberNodes(
+        rowsHierarchy,
+        seriesNumberWidth,
+        spreadsheet,
+      ),
       spreadsheet,
     });
   }
@@ -66,6 +75,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       viewportHeight,
       spreadsheet,
     } = this.headerConfig;
+    const seriesNumberCell = spreadsheet?.facet?.cfg?.seriesNumberCell;
 
     each(data, (item) => {
       const { y, height: cellHeight } = item;
@@ -76,12 +86,19 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         viewportSize: viewportHeight,
       });
       if (isHeaderCellInViewport) {
-        // 按需渲染：视窗内的才渲染
-        const cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
-        item.belongsCell = cell;
-        if (cell) {
-          this.appendChild(cell);
-        }
+        return;
+      }
+      let cell: S2CellType | null = null;
+      if (seriesNumberCell) {
+        cell = seriesNumberCell(item, spreadsheet, this.headerConfig);
+      }
+      if (isEmpty(cell)) {
+        cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
+      }
+      // 按需渲染：视窗内的才渲染
+      item.belongsCell = cell;
+      if (cell) {
+        this.appendChild(cell);
       }
     });
   }
