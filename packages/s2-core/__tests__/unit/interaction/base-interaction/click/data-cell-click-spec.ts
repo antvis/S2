@@ -13,6 +13,7 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
+import { CustomRect } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 
@@ -93,14 +94,20 @@ describe('Interaction Data Cell Click Tests', () => {
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
-      target: {
-        attrs: {
-          appendInfo: {
-            cellData: mockCellData,
-            isLinkFieldText: true,
+      target: new CustomRect(
+        {
+          style: {
+            x: 1,
+            y: 1,
+            width: 1,
+            height: 1,
           },
         },
-      },
+        {
+          cellData: mockCellData,
+          isLinkFieldText: true,
+        },
+      ),
     } as unknown as GEvent);
 
     expect(linkFieldJump).toHaveBeenCalledWith({
