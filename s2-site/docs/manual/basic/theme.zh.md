@@ -159,6 +159,20 @@ s2.setTheme({
 });
 ```
 
+#### 自定义滚动条样式
+
+查看 [完整 API](/api/general/s2theme#scrollbartheme)
+
+```ts
+s2.setTheme({
+  scrollBar: {
+    thumbColor: '#666',
+    thumbHorizontalMinSize: 20,
+    thumbVerticalMinSize: 20,
+  },
+});
+```
+
 ### 自定义色板
 
 自定义 `schema` 虽然灵活，但是心智负担比较重，需要对 `schema` 的结构有比较详细的了解。因此我们还提供了自定义色板功能，此时你需要为 `setThemeCfg` 配置`palette`对象。[查看完整色板配置](/docs/api/general/S2Theme#palette)：

@@ -3,7 +3,7 @@ title: Export
 order: 5
 ---
 
-# React export components
+## React export components
 
 ```tsx
 <SheetComponent
@@ -13,7 +13,7 @@ order: 5
 />
 ```
 
-## ExportCfgProps
+### ExportCfgProps
 
 | Attributes           | illustrate                                                                              | type                                                            | Defaults | required |
 | :------------------- | :-------------------------------------------------------------------------------------- | :-------------------------------------------------------------- | :------- | :------- |
@@ -32,6 +32,6 @@ order: 5
 
 <embed src="@/docs/common/export.zh.md"></embed>
 
-# Vue export component
+## Vue export component
 
 In development, please look forward to

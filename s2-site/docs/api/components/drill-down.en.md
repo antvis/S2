@@ -3,7 +3,7 @@ title: DrillDown
 order: 2
 ---
 
-# React Drilldown Components
+## React Drilldown Components
 
 ```jsx
 const s2Options = {
@@ -21,7 +21,7 @@ const s2Options = {
 
 ​📊 Check out [the React version of the drilldown demo](/examples/react-component/drill-dwon#for-pivot)
 
-# Vue drilldown component
+## Vue drilldown component
 
 The drill-down component can only be used in table and perspective mode.
 
@@ -44,11 +44,11 @@ const s2Options = {
 
 ​📊 Check out [the Vue version of the drilldown demo](https://codesandbox.io/s/vue-drilldown-demo-8p1lmv?file=/src/App.vue:6385-6396)
 
-# public API
+## public API
 
 Function description: Configure dimension drill-down, currently only supports drill-down in the perspective mode tree structure, row header dimension drill-down
 
-## Part Drill Down
+### Part Drill Down
 
 Type: `object` , **optional** , default: `{}`
 
@@ -62,7 +62,7 @@ Type: `object` , **optional** , default: `{}`
 
 Note: The `drillConfig` and `displayCondition` fields in PartDrillDown will affect the re-rendering of the drill-down mode, please note that use memo or state to control its variability.
 
-### FetchCallBack
+#### FetchCallBack
 
 ```js
 (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>
@@ -70,7 +70,7 @@ Note: The `drillConfig` and `displayCondition` fields in PartDrillDown will affe
 
 Function description: Callback parameters after clicking the drilldown: [PartDrillDownInfo](#partdrilldowninfo)
 
-#### PartDrillDownInfo
+##### PartDrillDownInfo
 
 Type: `object` , **required** , default value: `{}`
 
@@ -81,7 +81,7 @@ Function description: Drill down data request parameter configuration
 | drillData  | drill down data                  | `Record<string, string \| number>[]` | ✓        |          |
 | drillField | Drill down dimension value value | `string`                             | ✓        |          |
 
-### DrillDownProps
+#### DrillDownProps
 
 Type: `object` , **required** , default value: `{}`
 
@@ -100,7 +100,7 @@ Function description: Drill down menu component configuration items
 | extra           | Customize the inserted node, inserted between the search box and the drill-down menu | `ReactNode`             |          |          | Only `React` components support this property |
 | drillFields     | Dimensions that allow drill-down                                                     | `string[]`              |          |          | Only `React` components support this property |
 
-#### DataSet
+##### DataSet
 
 Type: `object` , **required** , default value: `{}`
 

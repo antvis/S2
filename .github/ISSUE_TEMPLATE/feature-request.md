@@ -5,6 +5,9 @@ title: '🙏'
 labels: 🙏feature request
 ---
 
+<!-- ⚠️ Please fill in the template strictly, otherwise it will be closed directly （请严格按照模板填写，否则直接关闭） -->
+<!-- ⚠️ 请严格按照模板填写，否则直接关闭 -->
+
 ### 🖋 Description
 
 <!-- Required! -->
@@ -13,7 +16,7 @@ labels: 🙏feature request
 ### 🏞 What problem does this feature solve
 
 <!-- Required! -->
-<!-- 这个功能能解决什么问题？-->
+<!-- 这个功能能解决什么问题？ 现有功能不满足的点在哪？-->
 
 ### 🧐 Suggest the API
 

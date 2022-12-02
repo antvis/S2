@@ -35,6 +35,14 @@
         "en": "Custom Layout Hierarchy"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/s33%26UjDslN/fed91224-4700-455a-b50f-8adc5cad8abd.png"
+    },
+    {
+      "filename": "custom-value-order.ts",
+      "title": {
+        "zh": "自定义指标维度层级顺序",
+        "en": "Custom Value Order"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Ofk_QYa4eE0AAAAAAAAAAAAADmJ7AQ/fmt.avif"
     }
   ]
 }

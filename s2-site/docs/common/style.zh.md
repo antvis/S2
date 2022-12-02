@@ -40,7 +40,7 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 | height |  单元格高度 | `number` | 30 |  |
 | widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景）, `fieldValue` 对应 `s2DataConfig.fields.columns` 中的列头数值 | `Record<string, number>`   | - |  |
 | heightByField | 根据度量值设置高度（拖拽或者预设高度场景）, `field` 对应 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
-| hideMeasureColumn | 默认数值挂列头，会同时显示列头和数值，隐藏数值列，使其更美观。 | `boolean` | false |  |
+| hideMeasureColumn | 默认数值挂列头，会同时显示列头和数值，隐藏数值列，使其更美观。（仅在单数值时有效，多数值时推荐使用 [隐藏列头](https://s2.antv.vision/manual/advanced/interaction/hide-columns#2-%E9%80%8F%E8%A7%86%E8%A1%A8)) | `boolean` | false |  |
 
 ## RowCfg
 

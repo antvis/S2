@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { get } from 'lodash';
-import { createPivotSheet } from 'tests/util/helpers';
 import ShapeBase from '@antv/g-canvas/lib/shape/base';
-import { renderText } from '../../../src/utils/g-renders';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
-import { GuiIcon, type Formatter, type ViewMeta } from '@/common';
-import { PivotDataSet } from '@/data-set';
-import { SpreadSheet, PivotSheet } from '@/sheet-type';
+import { find, get } from 'lodash';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
+import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell';
-import type { PivotFacet } from '@/facet';
+import { GuiIcon, type Formatter, type ViewMeta } from '@/common';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '@/common/constant/condition';
+import { PivotDataSet } from '@/data-set';
+import type { PivotFacet } from '@/facet';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -312,6 +312,50 @@ describe('Data Cell Tests', () => {
         .getChildByIndex(2);
       expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
       expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
+    });
+
+    test('should test condition mapping params when the sheet is pivot', () => {
+      s2.setOptions({
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping(value, dataInfo) {
+                const originData = s2.dataSet.originData;
+                const resultData = find(originData, dataInfo);
+                expect(resultData).toEqual(dataInfo);
+                expect(value).toEqual(resultData.cost);
+                return {
+                  fill: '#fffae6',
+                };
+              },
+            },
+          ],
+        },
+      });
+      s2.render();
+    });
+    test('should test condition mapping params when the sheet is table', () => {
+      const table = createTableSheet({});
+      table.setOptions({
+        conditions: {
+          background: [
+            {
+              field: 'type',
+              mapping(value, dataInfo) {
+                const originData = table.dataSet.originData;
+                const resultData = find(originData, dataInfo);
+                expect(resultData).toEqual(dataInfo);
+                expect(value).toEqual(resultData.type);
+                return {
+                  fill: '#fffae6',
+                };
+              },
+            },
+          ],
+        },
+      });
+      table.render();
     });
   });
 });

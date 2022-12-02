@@ -6,7 +6,6 @@ export * from './dataConfig';
 export * from './frozen';
 export * from './interaction';
 export * from './options';
-export * from './scroll';
 export * from './theme';
 export * from './tooltip';
 export * from './resize';

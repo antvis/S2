@@ -3,9 +3,9 @@ title: Switcher
 order: 3
 ---
 
-# React Dimension Toggle Component
+## React Dimension Toggle Component
 
-## Switcher Component Props
+### Switcher Component Props
 
 | Attributes            | illustrate                                                                                                 | type                                                          | Defaults                 | required |
 | :-------------------- | :--------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------ | :----------------------- | :------- |
@@ -21,7 +21,7 @@ order: 3
 | onSubmit              | After the popup window is closed, the callback function for processing the row and column switching result | `(result:` [SwitcherResult](#switcherresult) `) => void`      |                          |          |
 | popover               | Popup window configuration, transparently passed to the `antd` component of `Popover`                      | [PopoverProps](https://ant.design/components/popover-cn/#API) |                          |          |
 
-## SwitcherField
+### SwitcherField
 
 Row and column headers and index value configuration description objects
 
@@ -33,7 +33,7 @@ Row and column headers and index value configuration description objects
 | selectable | Whether to open the checkbox of the field to control the display and hiding                                 | `boolean`                          | `false`  |          |
 | allowEmpty | Whether the current dimension can drag out all sub-items                                                    | `boolean`                          | `true`   |          |
 
-## SwitcherItem
+### SwitcherItem
 
 Configure field objects
 
@@ -44,7 +44,7 @@ Configure field objects
 | checked     | Whether the field needs to be displayed                                                                        | `boolean`                          | `true`   |          |
 | children    | If the field has associated sub-items (such as: same-ring ratio), use this property to configure the sub-items | [SwitcherItem](#switcheritem) `[]` | `[]`     |          |
 
-## SwitcherResult
+### SwitcherResult
 
 After the popup window is closed, the parameter of the callback function that processes the row and column switching result
 
@@ -54,7 +54,7 @@ After the popup window is closed, the parameter of the callback function that pr
 | columns    | All column header field operation results | [SwitcherResultItem](#switcherresultitem) |          |          |
 | values     | All indicator field operation results     | [SwitcherResultItem](#switcherresultitem) |          |          |
 
-## SwitcherResultItem
+### SwitcherResultItem
 
 After closing the pop-up window, the description object of each dimension result
 
@@ -63,7 +63,7 @@ After closing the pop-up window, the description object of each dimension result
 | items      | A **flattened** collection of all fields, sorted in order after dragging                         | [SwitcherItem](#switcheritem) `[]` | `[]`     |          |
 | hideItems  | All collections that need to be **flattened with** hidden fields, sorted in order after dragging | [SwitcherItem](#switcheritem) `[]` | `[]`     |          |
 
-## SwitcherCfgProps
+### SwitcherCfgProps
 
 Built-in header component configuration parameters, essentially a subset of Switcher component Props
 
@@ -73,6 +73,6 @@ Built-in header component configuration parameters, essentially a subset of Swit
 3\. `gridAnalysis` : grid analysis table\
 4\. `strategy` : trend analysis table | `string` `pivot | table | gridAnalysis | strategy` | `pivot` | | | | `ReactNode` | switch | | | `Popover` | reset button text | `string` | restore default | | | `antd` | popup box content style name | `string` | | | [](https://ant.design/components/popover-cn/#API)| | disabled | whether to disable | `boolean` | `false` | |
 
-# Vue Dimension Toggle Component
+## Vue Dimension Toggle Component
 
 In development, please look forward to
