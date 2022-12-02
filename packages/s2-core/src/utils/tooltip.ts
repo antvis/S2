@@ -66,8 +66,6 @@ import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
 import type { Node as S2Node } from '../facet/layout/node';
 import { getLeafColumnsWithKey } from '../facet/utils';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
 import { getEmptyPlaceholder } from './text';
 
@@ -284,7 +282,6 @@ export const getTooltipDetailList = (
   }
   const { isTotals } = options;
   const field = activeData[EXTRA_FIELD] as string;
-  const value = activeData[VALUE_FIELD];
   const detailList: TooltipDetailListItem[] = [];
 
   if (isTotals) {
@@ -297,30 +294,6 @@ export const getTooltipDetailList = (
         valueField: activeData[VALUE_FIELD] as string,
       }),
     );
-  }
-  // the value hangs at the head of the column, match the displayed fields according to the metric itself
-  // 1、multiple derivative indicators
-  // 2、only one column scene
-  // 3、the clicked cell belongs to the derived index column
-  // tooltip need to show all derivative indicators
-  else if (
-    isMultiDataItem(value) &&
-    spreadsheet.getTooltipDataItemMappingCallback()
-  ) {
-    const mappedResult = handleDataItem(
-      activeData,
-      spreadsheet.getTooltipDataItemMappingCallback(),
-    ) as ViewMetaData;
-
-    forEach(mappedResult, (_, key) => {
-      detailList.push(
-        getListItem(spreadsheet, {
-          data: mappedResult,
-          field: key,
-          targetCell,
-        }),
-      );
-    });
   } else {
     detailList.push(
       getListItem(spreadsheet, { data: activeData, field, targetCell }),

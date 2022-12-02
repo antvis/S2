@@ -26,7 +26,7 @@ import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult, ViewMeta } from '../common/interface';
-import { getDataCellId, handleDataItem } from '../utils/cell/data-cell';
+import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
   getIndexRangeWithOffsets,
@@ -234,7 +234,7 @@ export class PivotFacet extends BaseFacet {
     rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ): number {
-    const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
+    const { colCfg, dataSet } = this.cfg;
 
     const cellDraggedWidth = this.getColCellDraggedWidth(col);
 
@@ -289,7 +289,7 @@ export class PivotFacet extends BaseFacet {
 
           if (cellData) {
             // 总小计格子不一定有数据
-            const valueData = handleDataItem(cellData, filterDisplayDataItem);
+            const valueData = cellData?.[VALUE_FIELD];
             const formattedValue =
               this.spreadsheet.dataSet.getFieldFormatter(
                 cellData[EXTRA_FIELD],

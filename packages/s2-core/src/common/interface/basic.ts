@@ -407,16 +407,6 @@ export type TempMergedCell = {
   viewMeta: ViewMeta;
 };
 
-export type FilterDataItemCallback = (
-  valueField: string,
-  data: DataItem,
-) => DataItem;
-
-export type MappingDataItemCallback = (
-  valueField: string,
-  data: DataItem,
-) => Record<string, string | number> | DataItem;
-
 export type ViewMetaData = Data | CellData;
 
 export interface ViewMeta {

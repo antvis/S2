@@ -536,10 +536,6 @@ export abstract class SpreadSheet extends EE {
     );
   }
 
-  public getTooltipDataItemMappingCallback() {
-    return this.options?.mappingDisplayDataItem;
-  }
-
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,

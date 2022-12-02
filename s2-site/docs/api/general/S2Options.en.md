@@ -4,8 +4,45 @@ order: 1
 ---
 
 Form parameter configuration
-
-\| parameter | type | required | default value | function description| | :-- | :-- | :-: | :-- | :-- | --- | `number` | width| | height | `number` | | 480 | table height| | debug | `boolean` | | `false` | whether to enable debug mode| `grid` | hierarchyType | `grid` | `tree` | `customTree` | grid structure, tree: tree structure. [customTree](#tooltip) : custom tree structure | | conditions | [Conditions](#conditions) | | | condition pattern configuration | [](#interaction)| totals | [Totals](#totals) | | | | | Table Interaction Configuration| | pagination | [Pagination](#pagination) | | | `false` Configuration| `boolean` | `true` | `boolean` | | `false` | `boolean` | | `true` | `false` to display the default row header action icon | `showDefaultHeaderActionIcon` | [headerActionIcons](#headeractionicon) [|](#customsvgicon) `false` | custom svg icon| | style | [Style](#style) | | | cell style settings, such as layout type, width and height, margin, whether to hide the value column header, etc. | | frozenRowCount | `number` | | | the number of frozen rows, from counting from top (valid for schedules) | | frozenColCount | `number` | | | number of frozen columns, counting from left (valid for schedules) | | frozenTrailingRowCount | `number` | | | number of frozen rows, counting from bottom ( list is valid) | | frozenTrailingColCount | `number` | | | the number of frozen columns, counting from the right side (schedule is valid) | | `true` | `boolean` | | Blurred font rendering on high-definition retina screens| | mergedCellsInfo | [MergedCellInfo\[\]\[\]](#mergedcellinfo) | | | merged cell information| | placeholder | `(meta: Record<string, any>) => string | string` | | | fill content of empty cells | | cornerText | string | | | custom corner header text (valid when custom tree `hierarchyType: customTree` ) | | The text of the virtual value field of the corner head (valid when the value is the row header, replace the two words "value") | | dataCell | [DataCellCallback](#datacellcallback) | | | custom cell | | cornerCell | [CellCallback](#cellcallback) | | | custom cornerCell | | rowCell | [CellCallback](#cellcallback) | | | custom row header cell | | colCell | [CellCallback](#cellcallback) | | | custom column header cell | | cornerHeader | [CornerHeaderCallback](#cornerheadercallback) | | | custom corner header | | [layoutHierarchy](#layouthierarchy) | struct | | [layoutArrange](#layoutdataposition) | [LayoutArrange](#layoutarrange) | | | custom sort order | | layoutCoordinate | [layoutCoordinate](#layoutcoordinate) | [|](#filterdataitemcallback) | | `false` | [MappingDataItemCallback](#mappingdataitemcallback) | | | Convert data for tooltip display| | dataSet | [DataSet](#dataset) | | | custom data set| `transform` | supportCSSTransform | `boolean` | , mouse coordinates respond incorrectly| | devicePixelRatio | `number` | | `window.devicePixelRatio` | custom device pixel ratio|
+| parameter                        | type                                          | required    |  default value                    | function description                                                                          |
+| --------------------------- | --------------------------------------------- | ------- | ------------------------- | --------------------------------------------------------------------------------- |
+| width                       | `number`                                      |         | 600                       | table width                                                                          |
+| height                      | `number`                                      |         | 480                       | table height                                                                          |
+| debug                       | `boolean`                                     |         | `false`                   | whether to enable debug mode                                                                  |
+| hierarchyType               | `grid` \| `tree`                              |         | `grid`                    | row header layout style，grid：grid structure， tree： tree structure                              |
+| conditions                  | [Conditions](#conditions)                     |         |                           | conditions pattern configuration                                                                      |
+| totals                      | [Totals](#totals)                             |         |                           | grand total, sub total configuration                                                                      |
+| tooltip                     | [Tooltip](#tooltip)                           |         |                           | tooltip configuration                                                                      |
+| interaction                 | [Interaction](#interaction)                   |         |                           | table interaction configuration                                                                      |
+| pagination                  | [Pagination](#pagination)                     |         |                           | pagination configuration                                                                          |
+| frozenRowHeader             | `boolean`                                     |         | `true`                    | freeze row header(only used for table mode)                                                           |
+| showSeriesNumber            | `boolean`                                     |         | `false`                   | whether to show series number                                                                    |
+| seriesNumberText            | `string`                                      |         | `序号`                    | customized series number corner cell text                                                                    |
+| showDefaultHeaderActionIcon | `boolean`                                     |         | `true`                    | whether to show default header action icons |
+| headerActionIcons           | [HeaderActionIcon[]](#headeractionicon)       |         | `false`                   | customized action icons(with prerequisite to turn off `showDefaultHeaderActionIcon`)         |
+| customSVGIcons              | [CustomSVGIcon[]](#customsvgicon)             |         | `false`                   | customize svg icons
+| style                       | [Style](#style)                               |         |                           | cell style configurations, such as layout type, width, height,margin and etc.|
+| frozenRowCount              | `number`                                      |         |                           | the number of frozen rows, from counting from top (only used for table mode)                                      |
+| frozenColCount              | `number`                                      |         |                           | number of frozen columns, counting from left (only used for table mode)                                       |
+| frozenTrailingRowCount      | `number`                                      |         |                           | he number of frozen columns, counting from the bottom side (only used for table mode)                            |
+| frozenTrailingColCount      | `number`                                      |         |                           | he number of frozen columns, counting from the right side (only used for table mode)                                      |
+| hdAdapter                   | `boolean`                                     |         | `true`                    | whether to enable high definition adaption, to solve the problem of blurred font rendering on retina screen when switching between multiple screens|
+| mergedCellsInfo             | [MergedCellInfo[][]](#mergedcellinfo)         |         |                           | merged cells info                                                                    |
+| placeholder                 | `(meta: Record<string, any>) => string        | string` |                           |                                                                                   | placeholder for empty cells |
+| cornerText                  | string                                        |         |                           | customize corner cell text 自定义角头文本 （only used for `hierarchyType: customTree`）                    |
+| cornerExtraFieldText        | string                                        |         |                           | customize text of the virtual value of the corner cell (valid when the value is the row header, replace the two words "value")             |
+| dataCell                    | [DataCellCallback](#datacellcallback)         |         |                           | customize data cell cell                                                                 |
+| cornerCell                  | [CellCallback](#cellcallback)                 |         |                           | customize corner cell                                                                 |
+| rowCell                     | [CellCallback](#cellcallback)                 |         |                           | customize row cell                                                                    |
+| colCell                     | [CellCallback](#cellcallback)                 |         |                           | customize col cell                                                                   |
+| cornerHeader                | [CornerHeaderCallback](#cornerheadercallback) |         |                           | customize corner header                                                                        |
+| layoutHierarchy             | [LayoutHierarchy](#layouthierarchy)           |         |                           | customize layout hierarchy                                                                    |
+| layoutArrange               | [LayoutArrange](#layoutarrange)               |         |                           | customize layout arrange                                                                    |
+| layoutCoordinate            | [layoutCoordinate](#layoutcoordinate)         |         |                           | customize coordinate                                                                        |
+| layoutDataPosition          | [layoutDataPosition](#layoutdataposition)     |         |                           | customize data position                                                                        |
+| dataSet                     | [DataSet](#dataset)                           |         |                           | customize data set                                                                      |
+| supportCSSTransform         | `boolean`                                     |         | `false`                   | make mouse coordinates respond incorrectly when customize `transform` style in parent node|
+| devicePixelRatio            | `number`                                      |         | `window.devicePixelRatio` | custom device pixel ratio
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 
@@ -80,32 +117,6 @@ Function description: After clicking the custom operation icon, the current icon
 | event     | Current click event information          | event  | false    |     ✓    |
 
 <embed src="@/docs/common/custom/customSvgIcons.zh.md"></embed>
-
-## FilterDataItemCallback
-
-```js
-FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
-```
-
-Function description: convert, filter data
-
-| parameter  | illustrate                                                           | type                  | Defaults | required |
-| ---------- | -------------------------------------------------------------------- | --------------------- | -------- | :------: |
-| valueField | Table class instance, which can access any configuration information | `string`              | -        |     ✓    |
-| data       | Data Format                                                          | [DataItem](#dataitem) | -        |     ✓    |
-
-## MappingDataItemCallback
-
-```js
-MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string, string | number> | DataItem;
-```
-
-Function description: data implicit, used to display in tooltip
-
-| parameter  | illustrate                                                           | type                  | Defaults | required |
-| ---------- | -------------------------------------------------------------------- | --------------------- | -------- | :------: |
-| valueField | Table class instance, which can access any configuration information | `string`              | -        |     ✓    |
-| data       | Data Format                                                          | [DataItem](#dataitem) | -        |     ✓    |
 
 ## DataItem
 

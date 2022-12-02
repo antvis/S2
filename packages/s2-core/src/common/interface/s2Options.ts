@@ -3,7 +3,6 @@ import type {
   CornerHeaderCallback,
   DataCellCallback,
   FrameCallback,
-  MappingDataItemCallback,
   MergedCellInfo,
   Pagination,
   S2Style,
@@ -24,11 +23,7 @@ import type {
   RowHeaderConfig,
 } from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type {
-  CustomSVGIcon,
-  FilterDataItemCallback,
-  HeaderActionIcon,
-} from './basic';
+import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { Tooltip, TooltipContentType } from './tooltip';
@@ -111,12 +106,6 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   layoutDataPosition?: LayoutDataPosition;
   // determine the series number cell coordinates
   layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
-  /** ***********CUSTOM DATA CELL RENDER HOOKS**************** */
-  // determine the display part of multiple data item
-  filterDisplayDataItem?: FilterDataItemCallback;
-  // determine data mapping when shows in tooltip
-  mappingDisplayDataItem?: MappingDataItemCallback;
-  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 }
 
 // 设备，pc || mobile
