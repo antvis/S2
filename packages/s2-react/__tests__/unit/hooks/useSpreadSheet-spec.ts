@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import {
   PivotSheet,
   S2Event,
+  SpreadSheet,
   type S2DataConfig,
   type S2Options,
 } from '@antv/s2';
@@ -43,7 +44,7 @@ describe('useSpreadSheet tests', () => {
     const { result } = renderHook(() =>
       useSpreadSheet({ ...getConfig(), sheetType: 'pivot', adaptive: false }),
     );
-    const s2 = result.current.s2Ref.current;
+    const s2: SpreadSheet = result.current.s2Ref.current;
 
     expect(s2.options.width).toEqual(s2Options.width);
     expect(s2.options.height).toEqual(s2Options.height);
@@ -51,7 +52,7 @@ describe('useSpreadSheet tests', () => {
       s2.setOptions({ width: 300, height: 400 });
     });
 
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2.getCanvasElement();
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
 

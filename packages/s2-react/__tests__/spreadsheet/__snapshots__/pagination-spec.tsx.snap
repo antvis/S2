@@ -126,7 +126,7 @@ exports[`Pagination Tests should render locale text for { locale: 'en_US', page:
   class="antv-s2-pagination"
 >
   <ul
-    class="ant-pagination mini"
+    class="ant-pagination ant-pagination-mini"
     unselectable="unselectable"
   >
     <li
@@ -299,7 +299,7 @@ exports[`Pagination Tests should render locale text for { locale: 'zh_CN', page:
   class="antv-s2-pagination"
 >
   <ul
-    class="ant-pagination mini"
+    class="ant-pagination ant-pagination-mini"
     unselectable="unselectable"
   >
     <li

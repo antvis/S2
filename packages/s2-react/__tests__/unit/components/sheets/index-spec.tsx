@@ -10,7 +10,7 @@ import {
   TableSheet,
 } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/s2';
 import { SheetComponent, type SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
@@ -270,10 +270,10 @@ describe('<SheetComponent/> Tests', () => {
         });
 
       const bulletMeasureTextList = dataCell.map((cell) => {
-        const textShape = cell
-          .getChildren()
-          .find((child) => child.cfg.type === 'text');
-        return textShape?.attr('text');
+        const textShape = cell.children.find(
+          (child) => child.nodeName === 'text',
+        );
+        return textShape?.textContent;
       });
 
       expect(bulletMeasureTextList).toStrictEqual([
@@ -305,9 +305,9 @@ describe('<SheetComponent/> Tests', () => {
           },
         );
 
-        const textList = s2.facet.cornerHeader
-          .getChildren()
-          .map((element) => (element as any).actualText);
+        const textList = s2.facet.cornerHeader.children.map(
+          (element) => (element as any).actualText,
+        );
 
         const cornerText = isCustomCornerText
           ? '测试'
