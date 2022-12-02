@@ -176,4 +176,4 @@ The configuration is as follows:
 
 <embed data-mdast="html" src="@/docs/common/mini-chart.en.md"></embed>
 
-If you want to change the Mini graph style configuration, you can refer to the [theme configuration]('/zh/api/general/s2theme#minicharttheme')
+If you want to change the Mini graph style configuration, you can refer to the [theme configuration](/api/general/s2theme#minicharttheme)
