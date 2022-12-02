@@ -692,7 +692,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏数值"
                   unCheckedChildren="显示数值"
-                  defaultChecked={mergedOptions.style.colCfg.hideMeasureColumn}
+                  defaultChecked={mergedOptions.style.colCfg?.hideMeasureColumn}
                   onChange={(checked) => {
                     updateOptions({
                       style: {

@@ -592,9 +592,7 @@ export const drawObjectText = (
  * 根据 cellCfg 配置获取当前单元格宽度
  */
 export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
-  const { width } = cellCfg;
-  const cellWidth = width;
-  return cellWidth * labelSize;
+  return cellCfg?.width * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {
