@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -8,7 +8,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 1000,
       height: 480,
       cornerText: '指标层级',
@@ -18,12 +18,8 @@ fetch(
           {
             field: 'number',
             mapping: (value, cellInfo) => {
-              const { meta } = cellInfo;
-              if (
-                meta?.fieldValue?.values[0][0] === value ||
-                !value ||
-                !meta?.fieldValue
-              ) {
+              const { meta, colIndex } = cellInfo;
+              if (colIndex === 0 || !value || !meta?.fieldValue) {
                 return {
                   fill: '#000',
                 };

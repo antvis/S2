@@ -322,6 +322,7 @@ export class TableFacet extends BaseFacet {
           currentNode,
           adaptiveColWitdth,
         );
+        layoutCoordinate(this.cfg, null, currentNode);
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
       }
@@ -335,7 +336,6 @@ export class TableFacet extends BaseFacet {
         currentNode,
         colsHierarchy.height,
       );
-      layoutCoordinate(this.cfg, null, currentNode);
     }
     const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
     const { frozenTrailingColCount } = getValidFrozenOptions(

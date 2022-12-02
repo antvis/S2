@@ -4,7 +4,7 @@ const reactPkg = require('../packages/s2-react/package.json');
 const vuePkg = require('../packages/s2-vue/package.json');
 const sharedPkg = require('@antv/s2-shared/package.json');
 
-const branchList = ['alpha', 'next', 'beta', 'master'];
+const branchList = ['alpha', 'next', 'beta'];
 
 function getCurrentBranch() {
   return execSync('git symbolic-ref --short -q HEAD')

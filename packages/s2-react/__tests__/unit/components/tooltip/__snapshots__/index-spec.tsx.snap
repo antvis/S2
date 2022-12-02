@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tooltip Component Tests should render sort menu and select { key: 'asc', icon: 'groupAsc', text: '组内升序' } menu 1`] = `[Function]`;
+
+exports[`Tooltip Component Tests should render sort menu and select { key: 'desc', icon: 'groupDesc', text: '组内降序' } menu 1`] = `[Function]`;
+
+exports[`Tooltip Component Tests should render sort menu and select { key: 'none', text: '不排序' } menu 1`] = `[Function]`;

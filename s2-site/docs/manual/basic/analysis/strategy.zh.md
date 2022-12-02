@@ -27,9 +27,9 @@ const s2Options = {
       {
         field: 'number',
         mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
+          const { meta, colIndex } = cellInfo;
           if (
-            meta?.fieldValue?.values[0][0] === value ||
+            colIndex === 0 ||
             !value ||
             !meta?.fieldValue
           ) {
@@ -180,4 +180,4 @@ const s2Options = {
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 
-如果想要更换 Mini 图样式配置，可以参考[主题配置]('/zh/api/general/s2theme#minicharttheme')
+如果想要更换 Mini 图样式配置，可以参考 [主题配置]('/zh/api/general/s2theme#minicharttheme')

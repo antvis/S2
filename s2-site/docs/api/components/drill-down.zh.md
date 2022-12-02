@@ -3,7 +3,7 @@ title: 维度下钻
 order: 2
 ---
 
-# React 下钻组件
+## React 下钻组件
 
 ```jsx
 const s2Options = {
@@ -21,7 +21,7 @@ const s2Options = {
 
 ​📊 查看 [React 版下钻 demo](/examples/react-component/drill-dwon#for-pivot)
 
-# Vue 下钻组件
+## Vue 下钻组件
 
 下钻组件只有在表格，透视模式才能使用。
 
@@ -44,11 +44,11 @@ const s2Options = {
 
 ​📊 查看 [Vue 版下钻 demo](https://codesandbox.io/s/vue-drilldown-demo-8p1lmv?file=/src/App.vue:6385-6396)
 
-# 公共 API
+## 公共 API
 
 <description>功能描述：配置维度下钻，当前仅支持透视模式的树形结构下，行头维度下钻</description>
 
-## PartDrillDown
+### PartDrillDown
 
 类型：`object`，**可选**，默认值：`{}`
 
@@ -62,7 +62,7 @@ const s2Options = {
 
 注意：PartDrillDown 中 `drillConfig`、`displayCondition` 字段会影响下钻模式的重渲，请注意使用 memo 或 state 控制其可变性。
 
-### FetchCallBack
+#### FetchCallBack
 
 ```js
 (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>
@@ -70,7 +70,7 @@ const s2Options = {
 
 功能描述：点击下钻后的回调参数：[PartDrillDownInfo](#partdrilldowninfo)
 
-#### PartDrillDownInfo
+##### PartDrillDownInfo
 
 类型：`object`，**必选**，默认值：`{}`
 
@@ -81,7 +81,7 @@ const s2Options = {
 | drillData | 下钻的数据 | <code class="language-text">Record<string, string \| number>[] </code> | ✓ |  |
 | drillField | 下钻维度 value 值 | `string` | ✓ |  |
 
-### DrillDownProps
+#### DrillDownProps
 
 类型：`object`，**必选**，默认值：`{}`
 
@@ -100,7 +100,7 @@ const s2Options = {
 | extra | 自定义插入的节点，插入在搜索框和下钻菜单中间 | `ReactNode` |  |  | 仅 `React` 组件支持此属性 |
 | drillFields | 允许下钻的维度      | `string[]` |  |  | 仅 `React` 组件支持此属性  |
 
-#### DataSet
+##### DataSet
 
 类型：`object`，**必选**，默认值：`{}`
 

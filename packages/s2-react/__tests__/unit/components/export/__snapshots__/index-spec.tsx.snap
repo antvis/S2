@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Export Component Tests should render component 1`] = `
+<DocumentFragment>
+  <a
+    class="ant-dropdown-trigger ant-dropdown-link antv-s2-export test"
+  >
+    <div />
+  </a>
+</DocumentFragment>
+`;

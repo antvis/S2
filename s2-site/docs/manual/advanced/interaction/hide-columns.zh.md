@@ -57,9 +57,9 @@ const s2Options = {
   <summary>如何获取列头 Id?</summary>
 
 ```ts
-  // /docs/api/basic-class/spreadsheet
-  const s2 = new PivotSheet()
-  console.log(s2.getColumnNodes())
+// /docs/api/basic-class/spreadsheet
+const s2 = new PivotSheet()
+console.log(s2.getColumnNodes())
 ```
 
 </details>
@@ -84,7 +84,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&] 家具 [&] 沙发 [&]number'],
+    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
   }
 }
 ```

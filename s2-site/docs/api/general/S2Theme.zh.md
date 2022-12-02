@@ -111,8 +111,10 @@ s2.setTheme({
 | trackColor      | 滚动条轨道颜色             | `string`                      | `rgba(0,0,0,0)`      |      |
 | thumbHoverColor | 滚动条 Hover 态颜色        | `string`                      | `rgba(0,0,0,0.4)`    |      |
 | thumbColor      | 滚动条颜色                 | `string`                      | `rgba(0,0,0,0.15)`   |      |
-| size            | 滚动条尺寸                 | `number`                      | Mobile: 3 <br> PC: 6 |      |
-| hoverSize       | 滚动条 Hover 态大小        | `number`                      | 16                   |      |
+| thumbHorizontalMinSize      | 滚动条水平最小尺寸 （在大数量情况下，滚动条会很小，可配置水平滚动条最小尺寸）                | `string`                      | `32`   |      |
+| thumbVerticalMinSize      | 滚动条垂直最小尺寸 （在大数量情况下，滚动条会很小，可配置垂直滚动条最小尺寸）                 | `string`                      | `32`   |      |
+| size            | 滚动条尺寸                 | `number`                      | Mobile: `3` <br> PC: `6` |      |
+| hoverSize       | 滚动条 Hover 时的尺寸        | `number`                      | `16`                   |      |
 | lineCap         | 指定如何绘制每一条线段末端 | `butt` \| `round` \| `square` | `round`              |      |
 
 #### SplitLine

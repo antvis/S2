@@ -70,7 +70,7 @@ Function description: Configure the dimension field of the table, that is, the c
 | columns                 | list of column dimensions                                            | [Columns[]](#columns) | `[]`     |          |
 | values                  | List of Metric Dimensions                                            | `string[]`                            | `[]`     |          |
 | valueInCols             | Whether the indicator dimension is at the column header              | `boolean`                             | `true`   |          |
-| customValueOrder        | Position order of custom metric dimensions in row and column headers | `number`                              | -        |          |
+| customValueOrder        | Position order of custom metric dimensions in row and column headers  [example](/en/examples/custom/custom-layout/#custom-value-order) | `number`                              | -        |          |
 
 ### Meta
 

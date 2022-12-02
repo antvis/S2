@@ -480,7 +480,7 @@ export const drawObjectText = (
     // const { padding } = dataCellStyle.cell;
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    renderText(
+    const textShape = renderText(
       cell,
       [],
       x,
@@ -493,6 +493,8 @@ export const drawObjectText = (
       }),
       labelStyle,
     );
+
+    cell.addTextShape(textShape);
   }
 
   // 绘制指标
@@ -558,7 +560,7 @@ export const drawObjectText = (
         iconCondition ? 1 : 0,
       );
 
-      renderText(
+      const textShape = renderText(
         cell,
         [],
         position.text.x,
@@ -566,6 +568,7 @@ export const drawObjectText = (
         ellipsisText,
         curStyle,
       );
+      cell.addTextShape(textShape);
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
@@ -575,13 +578,14 @@ export const drawObjectText = (
           meta: cell?.getMeta() as ViewMeta,
         });
         if (attrs) {
-          renderIcon(cell, {
+          const iconShape = renderIcon(cell, {
             ...position.icon,
             name: attrs.icon,
             width: iconStyle?.size,
             height: iconStyle?.size,
             fill: attrs.fill,
           });
+          cell.addConditionIconShape(iconShape);
         }
       }
     }

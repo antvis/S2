@@ -3,13 +3,13 @@ title: Header
 order: 4
 ---
 
-# React header component
+## React header component
 
 > **optional** *HeaderCfgProps* default: `{}`
 
 The table header, located at the top of the table container, functions as a content overview and a table toolbar. Consists of table title, description, export, advanced sorting, indicator toggle and custom action area.
 
-## How to use
+### How to use
 
 ```tsx
 <SheetComponent
@@ -28,10 +28,10 @@ The table header, located at the top of the table container, functions as a cont
 
 <Playground data-mdast="html" path="react-component/header/demo/default.tsx" rid="container" height="400"></playground>
 
-## APIs
+### APIs
 
 <embed src="@/docs/common/header.zh.md"></embed>
 
-# Vue header component
+## Vue header component
 
 In development, please look forward to
