@@ -10,19 +10,21 @@ import {
   Hierarchy,
   buildTableHierarchy,
   TableSheet,
+  DeviceType,
+  type S2MountContainer,
 } from '@antv/s2';
 import { getContainer } from '../../util/helpers';
 import { data, totalData, meta } from '../../data/mock-dataset.json';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let spreadsheetIns: SpreadSheet;
 
 const onMounted = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
 ) => {
-  spreadsheetIns = new TableSheet(dom, dataCfg, options);
+  spreadsheetIns = new TableSheet(dom, dataCfg, options as S2Options);
   return spreadsheetIns;
 };
 
@@ -38,7 +40,7 @@ const getDataCfg = () => {
   };
 };
 
-const getOptions = () => {
+const getOptions = (): SheetComponentsProps['options'] => {
   return {
     width: 800,
     height: 600,
@@ -47,12 +49,12 @@ const getOptions = () => {
       cellCfg: {
         height: 32,
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
-  } as S2Options;
+  };
 };
 
-function MainLayout(props) {
+function MainLayout(props: SheetComponentsProps) {
   return (
     <div>
       <div style={{ display: 'inline-block' }}></div>

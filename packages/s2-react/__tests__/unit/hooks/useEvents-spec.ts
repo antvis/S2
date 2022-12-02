@@ -2,16 +2,17 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import {
   PivotSheet,
   S2Event,
-  type S2Options,
   SpreadSheet,
   GEvent,
+  type S2DataConfig,
+  type S2Options,
 } from '@antv/s2';
 import { createMockCellInfo, getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import type { SheetComponentsProps } from '../../../src/components';
 import { useCellEvent, useEvents, useS2Event } from '@/hooks';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
   hdAdapter: false,
@@ -316,7 +317,7 @@ describe('useEvents tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options);
 
     const mockCell = createMockCellInfo('test', { rowIndex: 0, colIndex: 0 });
 
@@ -326,7 +327,7 @@ describe('useEvents tests', () => {
 
   test('useEvents should be defined', () => {
     const mockBaseSheetProps: SheetComponentsProps = {
-      dataCfg: undefined,
+      dataCfg: undefined as unknown as S2DataConfig,
       options: undefined,
       spreadsheet: () => s2,
     };

@@ -20,17 +20,17 @@ describe('usePagination tests', () => {
   let s2: SpreadSheet;
 
   const props: SheetComponentsProps = {
-    options: s2Options,
+    options: s2Options as SheetComponentsProps['options'],
     dataCfg: mockDataConfig,
   };
 
   const propsWithoutPagination: SheetComponentsProps = {
-    options: omit(s2Options, 'pagination'),
+    options: omit(s2Options as SheetComponentsProps['options'], 'pagination'),
     dataCfg: mockDataConfig,
   };
 
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options);
     s2.render();
   });
 
@@ -42,7 +42,7 @@ describe('usePagination tests', () => {
 
   test('should get default pagination', () => {
     const { result } = renderHook(() =>
-      usePagination(null, propsWithoutPagination),
+      usePagination(null as unknown as SpreadSheet, propsWithoutPagination),
     );
 
     expect(result.current.pagination).toEqual({

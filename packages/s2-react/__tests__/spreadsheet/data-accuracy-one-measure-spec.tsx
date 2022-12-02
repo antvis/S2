@@ -9,6 +9,8 @@ import {
   type S2Options,
   SpreadSheet,
   PivotSheet,
+  type RawData,
+  type S2MountContainer,
 } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import {
@@ -23,16 +25,16 @@ import {
   totalData5,
   totalData6,
 } from '../data/data-accuracy';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
   index: number,
 ) => {
-  const s2 = new PivotSheet(dom, dataCfg, options);
+  const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
   if (index === 1) {
     spreadsheet1 = s2;
   }
@@ -40,8 +42,8 @@ const setSpreadSheet = (
 };
 
 const getData = (index: number, isTotal?: boolean) => {
-  let realData = [];
-  let totalData = [];
+  let realData: RawData[] = [];
+  let totalData: RawData[] = [];
   // eslint-disable-next-line default-case
   switch (index) {
     case 1:
@@ -88,18 +90,18 @@ const getDataCfg = (index: number) => {
       {
         field: 'price',
         name: '单价',
-        formatter: (v) => auto(v),
+        formatter: (v: number) => auto(v),
       },
       {
         field: 'account',
         name: '账号',
-        formatter: (v) => v + '个',
+        formatter: (v: string) => v + '个',
       },
     ],
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  };
+  } as SheetComponentsProps['dataCfg'];
 };
 
 const getOptions = () => {
@@ -147,10 +149,10 @@ const getOptions = () => {
     tooltip: {
       showTooltip: true,
     },
-  } as S2Options;
+  } as SheetComponentsProps['options'];
 };
 
-const wrapComponent = (text, component) => {
+const wrapComponent = (text: string, component: React.ReactNode) => {
   return (
     <div style={{ marginBottom: 30 }}>
       <div>{text}</div>
@@ -169,9 +171,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 1);
           }}
@@ -184,9 +186,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 2);
           }}
@@ -199,9 +201,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 3);
           }}
@@ -214,9 +216,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 4);
           }}
@@ -229,9 +231,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 5);
           }}
@@ -250,9 +252,9 @@ describe('data accuracy one measure spec', () => {
     expect(data1.length).toBe(4);
     expect(spreadsheet1.dataSet.originData.length).toBe(4);
     expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
-    expect(spreadsheet1.dataSet.fields.columns.includes(EXTRA_FIELD)).toBe(
+    expect(spreadsheet1.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
       true,
     );
-    expect(spreadsheet1.dataSet.fields.rows.includes(EXTRA_FIELD)).toBe(false);
+    expect(spreadsheet1.dataSet.fields.rows!.includes(EXTRA_FIELD)).toBe(false);
   });
 });

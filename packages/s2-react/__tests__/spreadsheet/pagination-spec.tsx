@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { LangType, S2Options, setLang } from '@antv/s2';
+import { type LangType, setLang, type Pagination } from '@antv/s2';
 import * as mockDataConfig from '../data/simple-data.json';
-import { SheetComponent } from '../../src';
+import { SheetComponent, type SheetComponentsProps } from '../../src';
 import { getContainer } from '../util/helpers';
 import 'antd/dist/antd.min.css';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 600,
   height: 200,
   pagination: {
@@ -76,8 +76,7 @@ describe('Pagination Tests', () => {
               current: 2,
               showSizeChanger: false,
               showQuickJumper: true,
-              size: 'large',
-            },
+            } as Pagination,
           }}
           dataCfg={mockDataConfig as any}
           showPagination
