@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
@@ -7,7 +7,10 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import {
+  CellBorderPosition,
+  type InteractionStateTheme,
+} from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -166,6 +169,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawInteractiveBorderShape();
@@ -448,40 +452,30 @@ export class DataCell extends BaseCell<ViewMeta> {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
-      const stateStyles = get(
+      const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
-      if (stateStyles) {
-        updateShapeAttr(
-          this.conditionIntervalShape,
-          SHAPE_STYLE_MAP.backgroundOpacity,
-          stateStyles.backgroundOpacity,
-        );
+      ) as InteractionStateTheme;
 
-        updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
-          SHAPE_STYLE_MAP.opacity,
-          stateStyles.opacity,
-        );
+      if (interactionStateTheme) {
+        this.toggleConditionIntervalShapeOpacity(interactionStateTheme.opacity);
       }
     }
   }
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+    this.toggleConditionIntervalShapeOpacity(1);
+  }
 
+  private toggleConditionIntervalShapeOpacity(opacity: number) {
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
+      opacity,
     );
 
-    updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
-      SHAPE_STYLE_MAP.opacity,
-      1,
-    );
+    updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 
   protected drawLeftBorder() {

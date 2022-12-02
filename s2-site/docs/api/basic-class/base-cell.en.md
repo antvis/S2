@@ -23,6 +23,12 @@ Function description: cell base class. [details](https://github.com/antvis/S2/bl
 | updateByState          | Update cell styles based on state      | `(stateName: InteractionStateName, cell: S2CellType) => void`           |
 | hideInteractionShape   | Interactive layers for hidden cells    | `() => void`                                                            |
 | clearUnselectedState   | clear unchecked                        | `() => void`                                                            |
+| getTextShape | get text shape | `() => IShape` |
+| getTextShapes | get all text shape | `() => IShape[]` |
+| addTextShape | add text shape | `(shape: IShape) => void` |
+| getConditionIconShape | get icon shape | `() => GuiIcon` |
+| getConditionIconShapes | get all icon shape | `() => GuiIcon[]` |
+| addConditionIconShape | add icon shape | `(shape: GuiIcon) => void` |
 
 <embed src="@/docs/common/view-meta.en.md"></embed>
 
