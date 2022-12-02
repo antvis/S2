@@ -469,7 +469,7 @@ export class TableFacet extends BaseFacet {
         {},
       );
 
-      const customHeight = heightByField[String(index)];
+      const customHeight = heightByField?.[String(index)];
       if (customHeight) {
         return customHeight;
       }
@@ -490,7 +490,7 @@ export class TableFacet extends BaseFacet {
       let lastOffset = 0;
       data.forEach((_, idx) => {
         const currentHeight =
-          heightByField[String(idx)] ?? this.getDefaultCellHeight();
+          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;
