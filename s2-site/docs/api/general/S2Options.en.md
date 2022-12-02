@@ -33,6 +33,7 @@ Form parameter configuration
 | cornerExtraFieldText        | string                                        |         |                           | customize text of the virtual value of the corner cell (valid when the value is the row header, replace the two words "value")             |
 | dataCell                    | [DataCellCallback](#datacellcallback)         |         |                           | customize data cell cell                                                                 |
 | cornerCell                  | [CellCallback](#cellcallback)                 |         |                           | customize corner cell                                                                 |
+| seriesNumberCell            | [CellCallback](#cellcallback)                 |         |                           | customize series number cell                                                                   |
 | rowCell                     | [CellCallback](#cellcallback)                 |         |                           | customize row cell                                                                    |
 | colCell                     | [CellCallback](#cellcallback)                 |         |                           | customize col cell                                                                   |
 | cornerHeader                | [CornerHeaderCallback](#cornerheadercallback) |         |                           | customize corner header                                                                        |
@@ -40,6 +41,7 @@ Form parameter configuration
 | layoutArrange               | [LayoutArrange](#layoutarrange)               |         |                           | customize layout arrange                                                                    |
 | layoutCoordinate            | [layoutCoordinate](#layoutcoordinate)         |         |                           | customize coordinate                                                                        |
 | layoutDataPosition          | [layoutDataPosition](#layoutdataposition)     |         |                           | customize data position                                                                        |
+| layoutSeriesNumberNodes          | [LayoutSeriesNumberNodes](#layoutSeriesNumberNodes)     |         |                           | customize series number node coordinate                                                                        |
 | dataSet                     | [DataSet](#dataset)                           |         |                           | customize data set                                                                      |
 | supportCSSTransform         | `boolean`                                     |         | `false`                   | make mouse coordinates respond incorrectly when customize `transform` style in parent node|
 | devicePixelRatio            | `number`                                      |         | `window.devicePixelRatio` | custom device pixel ratio

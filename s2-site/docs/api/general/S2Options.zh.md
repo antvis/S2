@@ -42,13 +42,15 @@ const s2Options = {
 | cornerExtraFieldText        | string                                        |         |                           | 自定义角头虚拟数值字段文本 （数值挂行头时有效，替换 "数值" 这两个字）             |
 | dataCell                    | [DataCellCallback](#datacellcallback)         |         |                           | 自定义单元格 cell                                                                 |
 | cornerCell                  | [CellCallback](#cellcallback)                 |         |                           | 自定义 cornerCell                                                                 |
+| seriesNumberCell            | [CellCallback](#cellcallback)                 |         |                           | 自定义序号 cell                                                                   |
 | rowCell                     | [CellCallback](#cellcallback)                 |         |                           | 自定义行头 cell                                                                   |
 | colCell                     | [CellCallback](#cellcallback)                 |         |                           | 自定义列头 cell                                                                   |
 | cornerHeader                | [CornerHeaderCallback](#cornerheadercallback) |         |                           | 自定义角头                                                                        |
 | layoutHierarchy             | [LayoutHierarchy](#layouthierarchy)           |         |                           | 自定义层级结构                                                                    |
 | layoutArrange               | [LayoutArrange](#layoutarrange)               |         |                           | 自定义排列顺序                                                                    |
-| layoutCoordinate            | [layoutCoordinate](#layoutcoordinate)         |         |                           | 自定义坐标                                                                        |
-| layoutDataPosition          | [layoutDataPosition](#layoutdataposition)     |         |                           | 自定义数据                                                                        |
+| layoutCoordinate            | [LayoutCoordinate](#layoutcoordinate)         |         |                           | 自定义坐标                                                                        |
+| layoutDataPosition          | [LayoutDataPosition](#layoutdataposition)     |         |                           | 自定义数据                                                                        |
+| layoutSeriesNumberNodes          | [LayoutSeriesNumberNodes](#layoutSeriesNumberNodes)     |         |                           | 自定义序号列列Node坐标                                                                        |
 | dataSet                     | [DataSet](#dataset)                           |         |                           | 自定义数据集                                                                      |
 | supportCSSTransform         | `boolean`                                     |         | `false`                   | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题 |
 | devicePixelRatio            | `number`                                      |         | `window.devicePixelRatio` | 自定义设备像素比                                                                  |
