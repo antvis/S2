@@ -66,6 +66,7 @@ export enum S2Event {
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
   LAYOUT_AFTER_COLLAPSE_ROWS = 'layout:after-collapsed-rows',
+  LAYOUT_AFTER_REAL_DATA_CELL_RENDER = 'layout:after-real-data-cell-render',
   LAYOUT_TREE_ROWS_COLLAPSE_ALL = 'layout:toggle-collapse-all',
   LAYOUT_COLS_EXPANDED = 'layout:table-col-expanded',
   LAYOUT_COLS_HIDDEN = 'layout:table-col-hidden',
