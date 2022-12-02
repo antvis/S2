@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import type { S2Options } from '@antv/s2';
 import * as mockDataConfig from '../data/simple-data.json';
-import { SheetComponent } from '../../src';
+import { SheetComponent, type SheetComponentsProps } from '../../src';
 import { getContainer } from '../util/helpers';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 600,
   height: 600,
   hierarchyType: 'grid',
@@ -14,7 +13,7 @@ const s2Options: S2Options = {
 
 describe('Spread Sheet Tests', () => {
   const hasScrollBar = (container: HTMLElement) => {
-    const s2Container = container.querySelector('.antv-s2-container');
+    const s2Container = container.querySelector('.antv-s2-container')!;
     return (
       (s2Container.scrollWidth > s2Container.clientWidth ||
         document.body.scrollWidth > window.innerWidth) &&

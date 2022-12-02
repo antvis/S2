@@ -1,4 +1,5 @@
 import { Group } from '@antv/g';
+import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
@@ -56,16 +57,16 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     MockRootInteraction.mockClear();
 
     mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
+      getContainer(),
       null as unknown as S2DataConfig,
       null,
     );
+    mockSpreadSheetInstance.render();
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockSpreadSheetInstance.interaction = mockRootInteraction;
-    mockSpreadSheetInstance.render();
     brushSelectionInstance = new DataCellBrushSelection(
       mockSpreadSheetInstance,
     );
@@ -108,9 +109,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       x: 10,
       y: 20,
     });
+
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-      clientX: 12,
-      clientY: 22,
+      clientX: canvasRect.left + 12,
+      clientY: canvasRect.top + 22,
     });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(

@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
 import type { RowCell } from '@antv/s2';
+import type { Rect } from '@antv/g';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -34,8 +35,10 @@ describe('Row Cell Tests', () => {
         });
         s2.render();
 
-        const provinceCell = s2.facet.rowHeader!.getChildByIndex(0) as RowCell;
-        const { minX, maxX } = (provinceCell as any).linkFieldShape.getBBox();
+        const provinceCell = s2.facet.rowHeader!.children[0] as RowCell;
+        const { left: minX, right: maxX } = (
+          get(provinceCell, 'linkFieldShape') as Rect
+        ).getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;
@@ -67,8 +70,8 @@ describe('Row Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const rowCell = s2.facet.rowHeader!.getChildByIndex(1);
-      expect(get(rowCell, 'textShape.attrs.fill')).toEqual('#5083F5');
+      const rowCell = s2.facet.rowHeader!.children[1] as RowCell;
+      expect(rowCell.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
     test('should draw right condition icon shape', () => {
@@ -88,7 +91,7 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader!.getChildByIndex(1);
+      const rowCell = s2.facet.rowHeader!.children[1];
       expect(get(rowCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(rowCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -109,8 +112,10 @@ describe('Row Cell Tests', () => {
         },
       });
       s2.render();
-      const rowCell = s2.facet.rowHeader!.getChildByIndex(0);
-      expect(get(rowCell, 'backgroundShape.attrs.fill')).toEqual('#F7B46F');
+      const rowCell = s2.facet.rowHeader!.children[0];
+      expect(get(rowCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+        '#F7B46F',
+      );
     });
   });
 });

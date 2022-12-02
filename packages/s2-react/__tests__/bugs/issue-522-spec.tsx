@@ -10,12 +10,12 @@ import { act } from 'react-dom/test-utils';
 import type { SpreadSheet, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import dataCfg from '../data/data-issue-522.json';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let sheetInstance: SpreadSheet;
 
 function MainLayout() {
-  const options = {
+  const options: SheetComponentsProps['options'] = {
     width: 1180,
     height: 525,
     totals: {
@@ -31,7 +31,7 @@ function MainLayout() {
         showSubTotals: false,
         reverseLayout: true,
         reverseSubLayout: true,
-        subTotalsDimensions: null,
+        subTotalsDimensions: [],
       },
     },
   };

@@ -1,19 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  SpreadSheet,
-  type S2Options,
-  BaseTooltip,
-  S2Event,
-  GEvent,
-} from '@antv/s2';
+import { SpreadSheet, BaseTooltip, S2Event, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { act } from 'react-dom/test-utils';
 import { SheetComponent } from '@/components/sheets';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
+import type { SheetComponentsProps } from '@/components';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
   hdAdapter: false,
@@ -84,10 +79,10 @@ describe('SheetComponent Tooltip Tests', () => {
 
   test('should get renderTooltip options', async () => {
     await sleep(1000);
-    const { renderTooltip } = s2.options.tooltip;
+    const { renderTooltip } = s2.options.tooltip!;
 
     expect(renderTooltip).toBeFunction();
-    expect(renderTooltip(s2)).toBeInstanceOf(CustomTooltip);
+    expect(renderTooltip!(s2)).toBeInstanceOf(CustomTooltip);
   });
 
   test('should render tooltip content for jsx element', async () => {
@@ -96,7 +91,7 @@ describe('SheetComponent Tooltip Tests', () => {
 
     s2.showTooltip({ position: { x: 0, y: 0 }, content });
 
-    expect(s2.tooltip.container.querySelector('#custom-content')).toBeTruthy();
+    expect(s2.tooltip.container!.querySelector('#custom-content')).toBeTruthy();
   });
 
   test('should support callback tooltip content for string', async () => {
@@ -110,7 +105,7 @@ describe('SheetComponent Tooltip Tests', () => {
       content: () => 'custom callback content',
     });
 
-    expect(s2.tooltip.container.innerHTML).toEqual('custom callback content');
+    expect(s2.tooltip.container!.innerHTML).toEqual('custom callback content');
   });
 
   test('should support callback tooltip content for element', async () => {
@@ -129,7 +124,7 @@ describe('SheetComponent Tooltip Tests', () => {
     });
 
     expect(
-      s2.tooltip.container.querySelector('#custom-callback-content'),
+      s2.tooltip.container!.querySelector('#custom-callback-content'),
     ).toBeTruthy();
   });
 

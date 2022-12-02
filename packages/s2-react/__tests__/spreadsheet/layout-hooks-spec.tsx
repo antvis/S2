@@ -6,25 +6,25 @@ import {
   type GetCellMeta,
   Node,
   type S2DataConfig,
-  type S2Options,
   SpreadSheet,
   PivotSheet,
-  type SpreadSheetFacetCfg,
   type ViewMeta,
   type LayoutHierarchyReturnType,
   generateId,
+  type S2MountContainer,
+  type S2Options,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let innerSS: SpreadSheet;
 const onMounted = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
 ) => {
-  innerSS = new PivotSheet(dom, dataCfg, options);
+  innerSS = new PivotSheet(dom, dataCfg, options as S2Options);
   return innerSS;
 };
 
@@ -82,8 +82,8 @@ const CustomLayoutHierarchy = (
     const preValue = '前序节点A';
     const nextValue = '后序节点A';
     const parentNode = node.parent;
-    const preUniqueId = generateId(parentNode.id, preValue);
-    const nextUniqueId = generateId(parentNode.id, nextValue);
+    const preUniqueId = generateId(parentNode!.id, preValue);
+    const nextUniqueId = generateId(parentNode!.id, nextValue);
     const preNode = new Node({
       ...node.config,
       id: preUniqueId,
@@ -92,7 +92,7 @@ const CustomLayoutHierarchy = (
       value: preValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
-      query: { ...parentNode.query, [node.key]: preValue },
+      query: { ...parentNode!.query, [node.key]: preValue },
     });
 
     const nextNode = new Node({
@@ -103,7 +103,7 @@ const CustomLayoutHierarchy = (
       value: nextValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
-      query: { ...parentNode.query, [node.key]: nextValue },
+      query: { ...parentNode!.query, [node.key]: nextValue },
     });
 
     return {
@@ -112,14 +112,15 @@ const CustomLayoutHierarchy = (
       delete: false,
     };
   }
-  return null; // 默认直接返回null即可
+
+  return {};
 };
 
 const CustomLayoutCoordinate = (
-  facetCfg: SpreadSheetFacetCfg,
-  rowNode: Node,
+  spreadsheet: SpreadSheet,
+  rowNode: Node | null,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  colNode: Node,
+  colNode: Node | null,
 ) => {
   // 东莞 这行高度调整为70
   if (rowNode?.label === '东莞') {
@@ -131,29 +132,27 @@ const CustomLayoutDataPosition = (
   spreadsheet: SpreadSheet,
   getCellData: GetCellMeta,
 ): GetCellMeta => {
-  return (rowIndex: number, colIndex: number): ViewMeta => {
+  return (rowIndex?: number, colIndex?: number): ViewMeta | null => {
     const viewMeta = getCellData(rowIndex, colIndex);
     // 更改0，0 坐标的值为 999
     if (rowIndex === 0 && colIndex === 0) {
       return {
         ...viewMeta,
-        data: [
-          {
-            $$extra$$: 'profit',
-            $$value$$: 999,
-            area: '中南',
-            sub_type: '系固件',
-            type: '办公用品',
-          },
-        ],
+        data: {
+          $$extra$$: 'profit',
+          $$value$$: 999,
+          area: '中南',
+          sub_type: '系固件',
+          type: '办公用品',
+        },
         fieldValue: 999,
-      };
+      } as ViewMeta;
     }
     return viewMeta;
   };
 };
 
-const getOptions = () => {
+const getOptions = (): SheetComponentsProps['options'] => {
   return {
     debug: true,
     width: 800,
@@ -183,7 +182,7 @@ const getOptions = () => {
   };
 };
 
-const MainLayout = ({ options, dataCfg }) => {
+const MainLayout = ({ options, dataCfg }: SheetComponentsProps) => {
   return (
     <div>
       <SheetComponent
@@ -227,7 +226,7 @@ describe('layout hooks spec', () => {
 
   test('layout data position hook', () => {
     const { getCellMeta } = innerSS.facet.layoutResult;
-    const { fieldValue } = getCellMeta(0, 0);
+    const { fieldValue } = getCellMeta(0, 0)!;
     expect(fieldValue).toEqual(999);
   });
 

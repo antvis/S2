@@ -129,7 +129,8 @@ describe('Brush selection scroll spec', () => {
 
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
-      event: { x: 128, y: 49 },
+      x: 128,
+      y: 49,
       preventDefault() {},
     } as any);
 

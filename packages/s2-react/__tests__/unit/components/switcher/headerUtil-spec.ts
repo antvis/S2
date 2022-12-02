@@ -26,7 +26,7 @@ describe('headerUtil test', () => {
       meta: [],
     };
 
-    const hiddenColumnFields = [];
+    const hiddenColumnFields: string[] = [];
 
     const cfg = generateSwitcherFields(sheet, dataCfg, hiddenColumnFields);
     expect(cfg).toEqual({
@@ -84,7 +84,7 @@ describe('headerUtil test', () => {
       meta: [],
     };
 
-    const hiddenColumnFields = [];
+    const hiddenColumnFields: string[] = [];
 
     const cfg = generateSwitcherFields(sheet, dataCfg, hiddenColumnFields);
     expect(cfg).toEqual({

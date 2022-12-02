@@ -1,27 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import type { SpreadSheet, S2Options } from '@antv/s2';
+import type { SpreadSheet } from '@antv/s2';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
 import type { Adaptive } from '@antv/s2-shared';
 import { SheetComponent } from '@/components/sheets';
+import type { SheetComponentsProps } from '@/components';
 
 interface Props {
   containerWidth?: number;
   containerHeight?: number;
   adaptive?: Adaptive;
   containerId?: string;
-  options?: S2Options;
+  options?: SheetComponentsProps['options'];
 }
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
   hdAdapter: false,
 };
 
-let s2: SpreadSheet;
+let s2: SpreadSheet | null;
 
 function MainLayout({
   containerWidth,
@@ -68,7 +69,7 @@ describe('SheetComponent adaptive Tests', () => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            getContainer: () => document.getElementById(containerId),
+            getContainer: () => document.getElementById(containerId)!,
             ...adaptive,
           }}
           containerId={containerId}
@@ -97,8 +98,8 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1000);
 
-    expect(s2.options.width).toEqual(400);
-    expect(s2.container.cfg.width).toEqual(400);
+    expect(s2!.options.width).toEqual(400);
+    expect(s2!.container.getConfig().width).toEqual(400);
   });
 
   test('should use option width and height when table first rendered, and disable adaptive', async () => {
@@ -113,10 +114,10 @@ describe('SheetComponent adaptive Tests', () => {
       );
     });
     await sleep(1000);
-    expect(s2.options.width).toEqual(s2Options.width);
-    expect(s2.options.height).toEqual(s2Options.height);
-    expect(s2.container.cfg.width).toEqual(s2Options.width);
-    expect(s2.container.cfg.height).toEqual(s2Options.height);
+    expect(s2!.options.width).toEqual(s2Options.width);
+    expect(s2!.options.height).toEqual(s2Options.height);
+    expect(s2!.container.getConfig().width).toEqual(s2Options.width);
+    expect(s2!.container.getConfig().height).toEqual(s2Options.height);
   });
 
   test('should update table width and height when container resize', async () => {
@@ -128,7 +129,7 @@ describe('SheetComponent adaptive Tests', () => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            getContainer: () => document.getElementById(containerId),
+            getContainer: () => document.getElementById(containerId)!,
           }}
           containerId={containerId}
           containerWidth={200}
@@ -139,7 +140,7 @@ describe('SheetComponent adaptive Tests', () => {
     });
 
     act(() => {
-      const container = document.getElementById(containerId);
+      const container = document.getElementById(containerId)!;
       container.style.width = newContainerWidth + 'px';
       container.style.height = newContainerHeight + 'px';
     });
@@ -150,10 +151,10 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1000);
 
-    expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.options.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.width).toEqual(newContainerWidth);
+    expect(s2!.options.width).toEqual(newContainerWidth);
+    expect(s2!.options.height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
   });
 
   // https://github.com/antvis/S2/issues/792
@@ -167,7 +168,7 @@ describe('SheetComponent adaptive Tests', () => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            getContainer: () => document.getElementById(containerId),
+            getContainer: () => document.getElementById(containerId)!,
           }}
           containerId={containerId}
         />,
@@ -178,7 +179,7 @@ describe('SheetComponent adaptive Tests', () => {
     // parent size changed, trigger resize observer
     act(() => {
       document
-        .getElementById(containerId)
+        .getElementById(containerId)!
         .setAttribute(
           'style',
           `width: ${newContainerWidth}px; height: ${newContainerHeight}px`,
@@ -187,13 +188,13 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1000);
 
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2!.getCanvasElement();
 
     // render by resized parent container
-    expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.options.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.width).toEqual(newContainerWidth);
-    expect(s2.container.cfg.height).toEqual(newContainerHeight);
+    expect(s2!.options.width).toEqual(newContainerWidth);
+    expect(s2!.options.height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
+    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
 
     // update canvas width
     expect(canvas.style.width).toEqual(`${newContainerWidth}px`);
@@ -216,7 +217,7 @@ describe('SheetComponent adaptive Tests', () => {
     // parent size changed, trigger resize observer
     act(() => {
       document
-        .getElementById(containerId)
+        .getElementById(containerId)!
         .setAttribute(
           'style',
           `width: ${newContainerWidth}px; height: ${newContainerHeight}px`,
@@ -225,10 +226,10 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1000);
 
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2!.getCanvasElement() as HTMLCanvasElement;
 
-    expect(s2.options.width).toEqual(200);
-    expect(s2.container.cfg.width).toEqual(200);
+    expect(s2!.options.width).toEqual(200);
+    expect(s2!.container.getConfig().width).toEqual(200);
     expect(canvas.style.width).toEqual(`200px`);
     expect(canvas.style.height).toEqual(`200px`);
   });
@@ -244,8 +245,8 @@ describe('SheetComponent adaptive Tests', () => {
       );
     });
 
-    const container = document.getElementById(containerId);
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const container = document.getElementById(containerId)!;
+    const canvas = s2!.getCanvasElement();
 
     await sleep(1000);
 
@@ -260,10 +261,10 @@ describe('SheetComponent adaptive Tests', () => {
       'testIssue901',
     );
 
-    expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.options.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.width).toEqual(newContainerWidth);
+    expect(s2!.options.width).toEqual(newContainerWidth);
+    expect(s2!.options.height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
   });
 
   test('should just use container height when adaptive width is false', async () => {
@@ -272,10 +273,10 @@ describe('SheetComponent adaptive Tests', () => {
       { width: false },
     );
 
-    expect(s2.options.width).toEqual(options.width);
-    expect(s2.options.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.height).toEqual(newContainerHeight);
-    expect(s2.container.cfg.width).toEqual(options.width);
+    expect(s2!.options.width).toEqual(options.width);
+    expect(s2!.options.height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
+    expect(s2!.container.getConfig().width).toEqual(options.width);
   });
 
   test('should just use container width when adaptive height is false', async () => {
@@ -283,10 +284,10 @@ describe('SheetComponent adaptive Tests', () => {
       'onlyWidthAdaptive',
       { height: false },
     );
-    expect(s2.options.height).toEqual(options.height);
-    expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.container.cfg.height).toEqual(options.height);
-    expect(s2.container.cfg.width).toEqual(newContainerWidth);
+    expect(s2!.options.height).toEqual(options.height);
+    expect(s2!.options.width).toEqual(newContainerWidth);
+    expect(s2!.container.getConfig().height).toEqual(options.height);
+    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
   });
 
   test('should use options width and height when adaptive config height and width are false', async () => {
@@ -295,10 +296,10 @@ describe('SheetComponent adaptive Tests', () => {
       width: false,
     });
 
-    expect(s2.options.width).toEqual(options.width);
-    expect(s2.options.height).toEqual(options.height);
-    expect(s2.container.cfg.height).toEqual(options.height);
-    expect(s2.container.cfg.width).toEqual(options.width);
+    expect(s2!.options.width).toEqual(options.width);
+    expect(s2!.options.height).toEqual(options.height);
+    expect(s2!.container.getConfig().height).toEqual(options.height);
+    expect(s2!.container.getConfig().width).toEqual(options.width);
   });
 
   // https://github.com/antvis/S2/issues/1411
@@ -330,7 +331,7 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1000);
 
-    expect(s2.options.width).toEqual(newContainerWidth);
-    expect(s2.container.cfg.width).toEqual(newContainerWidth);
+    expect(s2!.options.width).toEqual(newContainerWidth);
+    expect(s2!.container.getConfig().width).toEqual(newContainerWidth);
   });
 });

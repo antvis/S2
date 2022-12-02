@@ -1,4 +1,5 @@
 import { map } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
 import {
   ColBrushSelection,
@@ -17,11 +18,9 @@ import {
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
-jest.mock('@/cell/col-cell');
 
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
-const MockColCell = ColCell as unknown as jest.Mock<ColCell>;
 
 // ColHeader: start: { x: 200, y: 0}, end: {x: 600, y: 90}
 describe('Interaction Col Cell Brush Selection Tests', () => {
@@ -59,17 +58,19 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     y: 90,
   };
 
-  const startBrushColCell = new MockColCell();
-  startBrushColCell.getMeta = () => startBrushColCellMeta as Node;
+  const startBrushColCell = Object.assign(Object.create(ColCell.prototype), {
+    getMeta: () => startBrushColCellMeta as Node,
+  }) as unknown as ColCell;
 
-  const endBrushColCell = new MockColCell();
-  endBrushColCell.getMeta = () => endBrushColCellMeta as Node;
+  const endBrushColCell = Object.assign(Object.create(ColCell.prototype), {
+    getMeta: () => endBrushColCellMeta as Node,
+  }) as unknown as ColCell;
 
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
     mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
+      getContainer(),
       data as S2DataConfig,
       {
         width: 600,
@@ -139,9 +140,12 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
     });
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
 
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
-      clientX: 330,
-      clientY: 60,
+      clientX: canvasRect.left + 330,
+      clientY: canvasRect.top + 60,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
@@ -162,9 +166,12 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
       y: 0,
     });
 
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
-      clientX: 205,
-      clientY: 5,
+      clientX: canvasRect.left + 205,
+      clientY: canvasRect.top + 5,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
@@ -194,16 +201,21 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushColCell) as any;
     // ================== mouse move ==================
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitEvent(S2Event.COL_CELL_MOUSE_MOVE, {
-      clientX: 600,
-      clientY: 90,
+      clientX: canvasRect.left + 600,
+      clientY: canvasRect.top + 90,
     });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
     );
 
-    expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
+    expect(
+      brushSelectionInstance.prepareSelectMaskShape.parsedStyle,
+    ).toMatchObject({
       x: 200,
       y: 0,
       width: 400,

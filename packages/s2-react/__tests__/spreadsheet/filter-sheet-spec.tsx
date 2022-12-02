@@ -6,12 +6,14 @@ import { Button, Space } from 'antd';
 import {
   type S2DataConfig,
   S2Event,
-  type S2Options,
   SpreadSheet,
   TableSheet,
+  DeviceType,
+  type S2MountContainer,
+  type S2Options,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 import 'antd/dist/antd.min.css';
 const data = getMockData('../data/tableau-supermarket.csv');
@@ -20,8 +22,12 @@ let spreadSheet: SpreadSheet;
 
 const onMounted =
   (ref: React.MutableRefObject<SpreadSheet | undefined>) =>
-  (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new TableSheet(dom, dataCfg, options);
+  (
+    dom: S2MountContainer,
+    dataCfg: S2DataConfig,
+    options: SheetComponentsProps['options'],
+  ) => {
+    const s2 = new TableSheet(dom, dataCfg, options as S2Options);
     ref.current = s2;
     spreadSheet = s2;
 
@@ -68,7 +74,7 @@ function MainLayout() {
     data,
   } as unknown as S2DataConfig;
 
-  const options: S2Options = {
+  const options: SheetComponentsProps['options'] = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -79,21 +85,18 @@ function MainLayout() {
       cellCfg: {
         height: 32,
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
 
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
-      operation: {
-        filter: true,
-      },
+      operation: {},
     },
-  } as S2Options;
+  };
 
   const s2Ref = React.useRef<SpreadSheet | undefined>(undefined);
 

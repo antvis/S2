@@ -97,11 +97,11 @@ describe('Manual Sort Tests', () => {
       s2.dataSet.getDimensionValues('type2', {
         type1: '小程序访问',
       }),
-    ).toEqual(['整体访问', '小程序访问', '支付宝访问']);
+    ).toEqual(['小程序访问', '整体访问', '支付宝访问']);
     expect(
       s2.dataSet.getDimensionValues('type2', {
         type1: '支付宝访问',
       }),
-    ).toEqual(['整体访问', '小程序访问', '支付宝访问']);
+    ).toEqual(['支付宝访问', '整体访问', '小程序访问']);
   });
 });

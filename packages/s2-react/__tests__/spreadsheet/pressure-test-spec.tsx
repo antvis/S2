@@ -2,11 +2,19 @@ import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { auto, type S2DataConfig, type S2Options, PivotSheet } from '@antv/s2';
+import {
+  auto,
+  type S2DataConfig,
+  type S2Options,
+  PivotSheet,
+  type RawData,
+  DeviceType,
+  type S2MountContainer,
+} from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
-const data = [];
+const data: RawData[] = [];
 
 // 100W 条数据
 for (let i = 0; i < 1000; i++) {
@@ -20,14 +28,14 @@ for (let i = 0; i < 1000; i++) {
   }
 }
 const onMounted = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
 ) => {
-  return new PivotSheet(dom, dataCfg, options);
+  return new PivotSheet(dom, dataCfg, options as S2Options);
 };
 
-const getDataCfg = () => {
+const getDataCfg = (): S2DataConfig => {
   return {
     fields: {
       rows: ['province', 'city'],
@@ -39,7 +47,7 @@ const getDataCfg = () => {
       {
         field: 'price',
         name: '单价',
-        formatter: (v) => auto(v),
+        formatter: (v: unknown) => auto(v as number),
       },
     ],
     data,
@@ -47,13 +55,12 @@ const getDataCfg = () => {
   };
 };
 
-const getOptions = () => {
+const getOptions = (): SheetComponentsProps['options'] => {
   return {
     debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    hierarchyCollapse: false,
     showSeriesNumber: false,
     frozenRowHeader: false,
     totals: {
@@ -87,7 +94,7 @@ const getOptions = () => {
         //   province: 200
         // }
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
     tooltip: {
       showTooltip: true,
@@ -95,7 +102,7 @@ const getOptions = () => {
   };
 };
 
-function MainLayout(props) {
+function MainLayout(props: SheetComponentsProps) {
   return (
     <div>
       <SheetComponent

@@ -4,7 +4,7 @@
  * Wrong ref when sheet type changed
  *
  */
-import React from 'react';
+import React, { type MutableRefObject } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
@@ -14,18 +14,18 @@ import type { SheetType } from '@antv/s2-shared';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
 
-let s2: SpreadSheet;
+let s2: SpreadSheet | null;
 
 const mockRef = {
   current: null,
-};
+} as unknown as MutableRefObject<SpreadSheet | null>;
 
 function MainLayout(
   props: Partial<SheetComponentsProps> & { toggleSheetType?: boolean },
 ) {
   const s2Ref = React.useRef<SpreadSheet>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const [sheetType, setSheetType] = React.useState<SheetType>(props.sheetType);
+  const [sheetType, setSheetType] = React.useState<SheetType>(props.sheetType!);
 
   React.useEffect(() => {
     mockRef.current = s2Ref.current;
@@ -38,8 +38,8 @@ function MainLayout(
   }, [sheetType]);
 
   React.useEffect(() => {
-    s2Ref.current.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
-    s2.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
+    s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
+    s2?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
   }, [sheetType]);
 
   return (
@@ -95,11 +95,11 @@ describe('SheetComponent Ref Tests', () => {
 
     // toggle sheet type
     act(() => {
-      document.querySelector('.btn').dispatchEvent(new Event('click'));
+      document.querySelector('.btn')!.dispatchEvent(new Event('click'));
     });
 
     // should don't miss events
-    expect(s2.getEvents()[S2Event.DATA_CELL_TREND_ICON_CLICK]).toBeDefined();
-    expect(mockRef.current.getEvents()[S2Event.COL_CELL_CLICK]).toBeDefined();
+    expect(s2?.getEvents()[S2Event.DATA_CELL_TREND_ICON_CLICK]).toBeDefined();
+    expect(mockRef.current?.getEvents()[S2Event.COL_CELL_CLICK]).toBeDefined();
   });
 });

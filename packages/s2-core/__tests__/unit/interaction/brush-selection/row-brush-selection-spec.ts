@@ -1,4 +1,5 @@
 import { map } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 import * as data from '../../../data/mock-dataset.json';
 import {
   RowBrushSelection,
@@ -17,11 +18,9 @@ import {
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
-jest.mock('@/cell/row-cell');
 
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
-const MockRowCell = RowCell as unknown as jest.Mock<RowCell>;
 
 // RowHeader: start: { x: 0, y: 90}, end: {x: 200, y: 400}
 describe('Interaction Row Cell Brush Selection Tests', () => {
@@ -58,17 +57,19 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     y: 400,
   };
 
-  const startBrushRowCell = new MockRowCell();
-  startBrushRowCell.getMeta = () => startBrushRowCellMeta as Node;
+  const startBrushRowCell = Object.assign(Object.create(RowCell.prototype), {
+    getMeta: () => startBrushRowCellMeta as Node,
+  }) as unknown as RowCell;
 
-  const endBrushRowCell = new MockRowCell();
-  endBrushRowCell.getMeta = () => endBrushRowCellMeta as Node;
+  const endBrushRowCell = Object.assign(Object.create(RowCell.prototype), {
+    getMeta: () => endBrushRowCellMeta as Node,
+  }) as unknown as RowCell;
 
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
     mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
+      getContainer(),
       data as S2DataConfig,
       {
         width: 600,
@@ -137,9 +138,12 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     });
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
 
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
-      clientY: 330,
-      clientX: 160,
+      clientY: canvasRect.top + 330,
+      clientX: canvasRect.left + 160,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
@@ -159,9 +163,12 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       y: 90,
     });
 
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
-      clientY: 14,
-      clientX: 94,
+      clientY: canvasRect.top + 14,
+      clientX: canvasRect.left + 94,
     });
 
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
@@ -191,17 +198,26 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
+
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
+    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+      clientX: canvasRect.left + 180,
+      clientY: canvasRect.top + 400,
+    });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
     );
 
-    expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
+    expect(
+      brushSelectionInstance.prepareSelectMaskShape.parsedStyle,
+    ).toMatchObject({
       x: 10,
-      y: 90,
+      y: 120,
       width: 170,
-      height: 310,
+      height: 280,
     });
 
     // ================== mouse up ==================
@@ -256,13 +272,21 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 150, clientY: 400 });
+    const canvasRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
+    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+      clientX: canvasRect.left + 150,
+      clientY: canvasRect.top + 400,
+    });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
     );
 
-    expect(brushSelectionInstance.prepareSelectMaskShape.attr()).toMatchObject({
+    expect(
+      brushSelectionInstance.prepareSelectMaskShape.parsedStyle,
+    ).toMatchObject({
       x: 100,
       y: 90,
       width: 50,

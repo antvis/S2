@@ -1,20 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  customMerge,
-  GuiIcon,
-  Node,
-  RowCell,
-  S2Options,
-  SpreadSheet,
-} from '@antv/s2';
+import { customMerge, GuiIcon, Node, RowCell, SpreadSheet } from '@antv/s2';
 import { get, noop } from 'lodash';
 import * as mockDataConfig from '../data/simple-data.json';
 import { type SheetComponentsProps, SheetComponent } from '../../src';
 import { getContainer } from '../util/helpers';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 600,
   height: 300,
   hierarchyType: 'tree',
@@ -41,7 +34,7 @@ const partDrillDownParams: SheetComponentsProps['partDrillDown'] = {
 
 const findDrillDownIcon = (instance: SpreadSheet) => {
   const rowHeaderActionIcons = get(
-    (instance.facet.rowHeader.getChildren() as RowCell[]).find(
+    (instance.facet.rowHeader?.children as RowCell[]).find(
       (item) => item.getActualText() === '杭州',
     ),
     'actionIcons',
@@ -49,7 +42,7 @@ const findDrillDownIcon = (instance: SpreadSheet) => {
   );
 
   return rowHeaderActionIcons.find(
-    (icon: GuiIcon) => icon.cfg.name === 'DrillDownIcon',
+    (icon: GuiIcon) => get(icon, 'cfg.name') === 'DrillDownIcon',
   );
 };
 
@@ -65,7 +58,7 @@ describe('Spread Sheet Drill Down Tests', () => {
   });
 
   test('should render drill down icon', () => {
-    let s2Instance: SpreadSheet = null;
+    let s2Instance: SpreadSheet | null = null;
 
     // 首次 render
     act(() => {
@@ -81,11 +74,11 @@ describe('Spread Sheet Drill Down Tests', () => {
         container,
       );
     });
-    expect(findDrillDownIcon(s2Instance)).toBeDefined();
+    expect(findDrillDownIcon(s2Instance!)).toBeDefined();
 
     // mock drill down
-    s2Instance.store.set('drillDownIdPathMap', new Map());
-    s2Instance.store.set('drillItemsNum', EXPECT_DRILL_ITEMS_NUM);
+    s2Instance!.store.set('drillDownIdPathMap', new Map());
+    s2Instance!.store.set('drillItemsNum', EXPECT_DRILL_ITEMS_NUM);
 
     // update options.headerActionIcons
     act(() => {
@@ -113,10 +106,10 @@ describe('Spread Sheet Drill Down Tests', () => {
         container,
       );
     });
-    expect(findDrillDownIcon(s2Instance)).toBeDefined();
+    expect(findDrillDownIcon(s2Instance!)).toBeDefined();
 
     // render new headerActionIcons should not clear data
-    expect(s2Instance.store.get('drillItemsNum')).toEqual(
+    expect(s2Instance!.store.get('drillItemsNum')).toEqual(
       EXPECT_DRILL_ITEMS_NUM,
     );
   });
@@ -143,7 +136,7 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2.getRowNodes().filter((node) => node.rowIndex >= 1);
+    const rowNodes = s2!.getRowNodes().filter((node) => node.rowIndex >= 1);
 
     rowNodes.forEach((node) => {
       expect(get(node.belongsCell, 'actionIcons.0.cfg.name')).toEqual(
@@ -172,7 +165,7 @@ describe('Spread Sheet Drill Down Tests', () => {
       );
     });
 
-    const rowNodes = s2.getRowNodes();
+    const rowNodes = s2!.getRowNodes();
 
     rowNodes.forEach((node) => {
       expect(get(node.belongsCell, 'actionIcons')).toHaveLength(0);

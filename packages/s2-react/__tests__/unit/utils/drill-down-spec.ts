@@ -12,7 +12,7 @@ import {
 } from '@antv/s2';
 import {
   buildDrillDownOptions,
-  DrillDownParams,
+  type DrillDownParams,
   getDrillDownCache,
   handleActionIconClick,
   handleDrillDown,

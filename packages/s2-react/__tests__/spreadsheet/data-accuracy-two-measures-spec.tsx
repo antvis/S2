@@ -8,6 +8,9 @@ import {
   type S2DataConfig,
   type S2Options,
   SpreadSheet,
+  type RawData,
+  DeviceType,
+  type S2MountContainer,
 } from '@antv/s2';
 import {
   data10,
@@ -20,17 +23,17 @@ import {
   totalData9,
 } from '../data/data-accuracy';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 import 'antd/dist/antd.min.css';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
   index: number,
 ) => {
-  const s2 = new PivotSheet(dom, dataCfg, options);
+  const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
   if (index === 1) {
     spreadsheet1 = s2;
   }
@@ -38,8 +41,8 @@ const setSpreadSheet = (
 };
 
 const getData = (index: number, isTotal?: boolean) => {
-  let realData = [];
-  let totalData = [];
+  let realData: RawData[] = [];
+  let totalData: RawData[] = [];
   // eslint-disable-next-line default-case
   switch (index) {
     case 1:
@@ -82,27 +85,26 @@ const getDataCfg = (index: number) => {
       {
         field: 'price',
         name: '单价',
-        formatter: (v) => auto(v),
+        formatter: (v: number) => auto(v),
       },
       {
         field: 'account',
         name: '账号',
-        formatter: (v) => auto(v),
+        formatter: (v: number) => auto(v),
       },
     ],
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  };
+  } as SheetComponentsProps['dataCfg'];
 };
 
-const getOptions = () => {
+const getOptions = (): SheetComponentsProps['options'] => {
   return {
     debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    hierarchyCollapse: false,
     showSeriesNumber: false,
     frozenRowHeader: false,
     totals: {
@@ -136,15 +138,15 @@ const getOptions = () => {
         //   province: 200
         // }
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
     tooltip: {
       showTooltip: true,
     },
-  } as S2Options;
+  };
 };
 
-const wrapComponent = (text, component) => {
+const wrapComponent = (text: string, component: React.ReactNode) => {
   return (
     <div>
       <div>{text}</div>
@@ -163,9 +165,9 @@ function MainLayout() {
           adaptive={false}
           options={getOptions()}
           spreadsheet={(
-            dom: string | HTMLElement,
+            dom: S2MountContainer,
             dataCfg: S2DataConfig,
-            options: S2Options,
+            options: SheetComponentsProps['options'],
           ) => {
             return setSpreadSheet(dom, dataCfg, options, 1);
           }}
@@ -244,9 +246,9 @@ describe('data accuracy two measures spec', () => {
     expect(data6.length).toBe(8);
     // expect(spreadsheet1.dataSet.originData.length).toBe(8);
     expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
-    expect(spreadsheet1.dataSet.fields.columns.includes(EXTRA_FIELD)).toBe(
+    expect(spreadsheet1.dataSet.fields.columns!.includes(EXTRA_FIELD)).toBe(
       true,
     );
-    expect(spreadsheet1.dataSet.fields.columns.length).toBe(3);
+    expect(spreadsheet1.dataSet.fields.columns!.length).toBe(3);
   });
 });

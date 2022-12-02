@@ -16,14 +16,15 @@ import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
 
 jest.mock('@/sheet-type', () => {
-  const container = new Canvas({
-    width: 100,
-    height: 100,
-    container: document.body,
-    renderer: new Renderer(),
-  });
   return {
     SpreadSheet: jest.fn().mockImplementation(() => {
+      const container = new Canvas({
+        width: 100,
+        height: 100,
+        container: document.body,
+        renderer: new Renderer(),
+      });
+
       return {
         dataCfg: {
           ...assembleDataCfg(),
@@ -638,28 +639,33 @@ describe('Table Mode Facet With Column Grouping Test', () => {
 describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   const ss: SpreadSheet = new MockSpreadSheet();
   const dataSet: TableDataSet = new MockTableDataSet(ss);
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...assembleOptions({
-      frozenColCount: 1,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 1,
-      frozenTrailingRowCount: 2,
-    }),
-    ...DEFAULT_STYLE,
-    columns: [
-      {
-        key: 'area',
-        children: ['province', 'city'],
-      },
-      'price',
-      {
-        key: 'all_type',
-        children: ['type', 'sub_type'],
-      },
-    ],
+  let facet: TableFacet;
+
+  beforeAll(async () => {
+    await ss.container.ready;
+    facet = new TableFacet({
+      spreadsheet: ss,
+      dataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions({
+        frozenColCount: 1,
+        frozenRowCount: 2,
+        frozenTrailingColCount: 1,
+        frozenTrailingRowCount: 2,
+      }),
+      ...DEFAULT_STYLE,
+      columns: [
+        {
+          key: 'area',
+          children: ['province', 'city'],
+        },
+        'price',
+        {
+          key: 'all_type',
+          children: ['type', 'sub_type'],
+        },
+      ],
+    });
   });
 
   test('should get correct frozenInfo', () => {
@@ -667,7 +673,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     expect(facet.frozenGroupInfo).toStrictEqual({
       [FrozenGroupType.FROZEN_COL]: {
         range: [0, 0],
-        width: 240,
+        width: 238,
       },
       [FrozenGroupType.FROZEN_ROW]: {
         height: 60,
@@ -675,7 +681,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       },
       [FrozenGroupType.FROZEN_TRAILING_COL]: {
         range: [2, 2],
-        width: 240,
+        width: 238,
       },
       [FrozenGroupType.FROZEN_TRAILING_ROW]: {
         height: 60,
@@ -696,7 +702,6 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { width } = facet.spreadsheet.options;
     const { frozenTrailingColCount } = facet.cfg;
     const { colNodes, colLeafNodes, getCellMeta } = facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
@@ -705,33 +710,27 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       0,
       frozenTrailingColCount!,
     );
-    let prevWidth = 0;
-    colLeafNodes
-      .slice(-trailingColCount)
-      .reverse()
-      .forEach((node, index) => {
-        prevWidth += node.width;
-        expect(getCellMeta(1, colLeafNodes.length - 1 - index)!.x).toBe(
-          width! - prevWidth,
-        );
-      });
+
+    expect(
+      colLeafNodes
+        .slice(-trailingColCount)
+        .reverse()
+        .map(
+          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index)!.x,
+        ),
+    ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount, cellCfg } = facet.cfg;
+    const { frozenTrailingRowCount } = facet.cfg;
     const { getCellMeta } = facet.layoutResult;
     const displayData = dataSet.getDisplayDataSet();
-    const panelBBox = facet.panelBBox;
-    let prevHeight = 0;
-    displayData
-      .slice(-frozenTrailingRowCount!)
-      .reverse()
-      .forEach((_, idx) => {
-        prevHeight += cellCfg!.height!;
-        expect(getCellMeta(displayData.length - 1 - idx, 1)!.y).toBe(
-          panelBBox.maxY - prevHeight,
-        );
-      });
+    expect(
+      displayData
+        .slice(-frozenTrailingRowCount!)
+        .reverse()
+        .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
+    ).toEqual([502, 472]);
   });
 
   test('should get correct viewCellHeights result', () => {

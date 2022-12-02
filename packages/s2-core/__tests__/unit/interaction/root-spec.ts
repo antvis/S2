@@ -82,7 +82,7 @@ describe('RootInteraction Tests', () => {
     } as S2Options;
     mockSpreadSheetInstance.hideTooltip = jest.fn();
     mockSpreadSheetInstance.container = {
-      draw: jest.fn(),
+      render: jest.fn(),
     } as unknown as Canvas;
     mockSpreadSheetInstance.isTableMode = jest.fn();
     mockSpreadSheetInstance.isHierarchyTreeType = () => false;

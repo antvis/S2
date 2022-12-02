@@ -6,10 +6,12 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
   type S2DataConfig,
-  type S2Options,
   SpreadSheet,
   PivotSheet,
   Node,
+  type S2MountContainer,
+  DeviceType,
+  type S2Options,
 } from '@antv/s2';
 import {
   multipleDataWithBottom,
@@ -17,15 +19,15 @@ import {
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let sheet: SpreadSheet;
 const onMounted = (
-  dom: string | HTMLElement,
+  dom: S2MountContainer,
   dataCfg: S2DataConfig,
-  options: S2Options,
+  options: SheetComponentsProps['options'],
 ) => {
-  sheet = new PivotSheet(dom, dataCfg, options);
+  sheet = new PivotSheet(dom, dataCfg, options as S2Options);
   (window as any).sheet = sheet;
   return sheet;
 };
@@ -42,32 +44,32 @@ const getDataCfg = (): S2DataConfig => {
       {
         field: 'rc',
         name: '同比',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
       {
         field: 'ac',
         name: '环比',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
       {
         field: 'price',
         name: '售价',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
       {
         field: 'price-ac',
         name: '售价(同比)',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
       {
         field: 'price-rc',
         name: '售价(环比)',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
       {
         field: 'count',
         name: '销售个数',
-        formatter: (v: string) => v,
+        formatter: (v: unknown) => v as string,
       },
     ],
     data: multipleDataWithNormal,
@@ -77,7 +79,7 @@ const getDataCfg = (): S2DataConfig => {
   };
 };
 
-const getOptions = (): S2Options => {
+const getOptions = (): SheetComponentsProps['options'] => {
   return {
     debug: true,
     width: 800,
@@ -124,8 +126,6 @@ const getOptions = (): S2Options => {
         action() {},
       },
     ],
-    selectedCellsSpotlight: true,
-    hoverHighlight: true,
     tooltip: {
       showTooltip: true,
     },
@@ -138,12 +138,12 @@ const getOptions = (): S2Options => {
       cellCfg: {
         height: 32,
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
-  } as S2Options;
+  };
 };
 
-function MainLayout(props) {
+function MainLayout(props: SheetComponentsProps) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
 
@@ -151,7 +151,7 @@ function MainLayout(props) {
   const [valueInCols, setValueInCols] = React.useState(true);
   const [arrangement, setArrangement] = React.useState('normal');
 
-  const onValueInColsChange = (checked) => {
+  const onValueInColsChange = (checked: boolean) => {
     setValueInCols(checked);
 
     setDataCfg(
@@ -163,7 +163,7 @@ function MainLayout(props) {
     );
   };
 
-  const onModeChange = (checked) => {
+  const onModeChange = (checked: boolean) => {
     setMode(checked ? 'tree' : 'grid');
     setOptions(
       merge({}, options, {
@@ -237,7 +237,7 @@ describe('spreadsheet multiple values cell spec', () => {
   });
 
   test('should generate default conditions', () => {
-    const { icon, text } = sheet.options.conditions;
+    const { icon, text } = sheet.options.conditions!;
     expect(icon).toHaveLength(1);
     expect(text).toHaveLength(0);
 

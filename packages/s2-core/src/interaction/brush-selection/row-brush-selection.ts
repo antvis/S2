@@ -48,10 +48,11 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      // TODO: 看是否转换正确，同brush-selection/col-brush-selection.ts
-      const pointInCanvas = this.spreadsheet.container.client2Viewport(
-        event.client,
-      );
+
+      const pointInCanvas = this.spreadsheet.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
 
       if (!this.isPointInCanvas(pointInCanvas)) {
         return;
