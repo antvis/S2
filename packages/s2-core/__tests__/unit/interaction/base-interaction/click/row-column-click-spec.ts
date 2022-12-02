@@ -11,6 +11,7 @@ import type {
 import type { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
 import type { Node } from '@/facet/layout/node';
+import { CustomRect } from '@/engine';
 
 jest.mock('@/interaction/event-controller');
 
@@ -157,14 +158,13 @@ describe('Interaction Row & Column Cell Click Tests', () => {
 
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation() {},
-      target: {
-        attrs: {
-          appendInfo: {
-            cellData: mockCellData,
-            isLinkFieldText: true,
-          },
+      target: new CustomRect(
+        { style: { x: 1, y: 1, width: 1, height: 1 } },
+        {
+          cellData: mockCellData,
+          isLinkFieldText: true,
         },
-      },
+      ),
     } as unknown as GEvent);
 
     expect(linkFieldJump).toHaveBeenCalledTimes(1);
