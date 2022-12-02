@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import ShapeBase from '@antv/g-canvas/lib/shape/base';
 import { find, get } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { renderText } from '@/utils/g-renders';
@@ -98,7 +97,6 @@ describe('Data Cell Tests', () => {
 
     test('should get text shape', () => {
       const dataCell = new DataCell(meta, s2);
-      expect(dataCell.getTextShape()).toBeInstanceOf(ShapeBase);
       expect(dataCell.getTextShapes()).toEqual([dataCell.getTextShape()]);
     });
 
