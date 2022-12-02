@@ -1,5 +1,6 @@
 import { Group } from '@antv/g';
 import { range } from 'lodash';
+import { getContainer } from 'tests/util/helpers';
 import { DataCell } from '@/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
@@ -87,7 +88,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     MockRootInteraction.mockClear();
 
     mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
+      getContainer(),
       null as unknown as S2DataConfig,
       null as unknown as S2Options,
     );
@@ -198,9 +199,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       x: 10,
       y: 20,
     });
+
+    const domRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
+    //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-      clientX: 12,
-      clientY: 22,
+      clientX: domRect.left + 12,
+      clientY: domRect.top + 22,
     });
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
 
@@ -233,9 +239,13 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
     // ================== mouse move ==================
+    const domRect = mockSpreadSheetInstance
+      .getCanvasElement()
+      .getBoundingClientRect();
+    //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
-      clientX: 100,
-      clientY: 200,
+      clientX: domRect.left + 100,
+      clientY: domRect.top + 200,
     });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
