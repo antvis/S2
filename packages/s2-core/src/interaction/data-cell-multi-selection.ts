@@ -14,7 +14,7 @@ import {
   getInteractionCellsBySelectedCells,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
-import { selectedCellHighlightAdaptor } from '../utils/cell/data-cell';
+import { afterSelectDataCells } from '../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
@@ -90,25 +90,13 @@ export class DataCellMultiSelection
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
         this.spreadsheet.hideTooltip();
 
-        const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
-          options.interaction.selectedCellHighlight,
-        );
-
         interaction.changeState({
           cells: getInteractionCellsBySelectedCells(
             selectedCells,
             this.spreadsheet,
           ),
           stateName: InteractionStateName.SELECTED,
-          onUpdateCells: (root, updateDataCells) => {
-            if (colHeader) {
-              root.updateCells(root.getAllColHeaderCells());
-            }
-            if (rowHeader) {
-              root.updateCells(root.getAllRowHeaderCells());
-            }
-            updateDataCells();
-          },
+          onUpdateCells: afterSelectDataCells,
         });
         this.spreadsheet.emit(
           S2Event.GLOBAL_SELECTED,

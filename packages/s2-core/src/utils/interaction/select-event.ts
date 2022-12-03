@@ -163,3 +163,16 @@ export const getInteractionCellsBySelectedCells = (
   // headerSelectedCell 会有重复的 cell，在这里统一去重
   return uniqBy([...selectedCells, ...headerSelectedCell], 'id');
 };
+
+export const afterSelectDataCells = (root, updateDataCells) => {
+  const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
+    root.spreadsheet.options.interaction.selectedCellHighlight,
+  );
+  if (colHeader) {
+    root.updateCells(root.getAllColHeaderCells());
+  }
+  if (rowHeader) {
+    root.updateCells(root.getAllRowHeaderCells());
+  }
+  updateDataCells();
+};

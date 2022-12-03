@@ -14,13 +14,13 @@ import type {
 import {
   getCellMeta,
   getInteractionCells,
+  afterSelectDataCells,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
   getTooltipVisibleOperator,
 } from '../../../utils/tooltip';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
-import { selectedCellHighlightAdaptor } from '../../..//utils/cell/data-cell';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -31,7 +31,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
 
-      const { interaction, options } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
       interaction.clearHoverTimer();
 
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
@@ -60,21 +60,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
-        options.interaction.selectedCellHighlight,
-      );
       interaction.changeState({
         cells: getInteractionCells(getCellMeta(cell), this.spreadsheet),
         stateName: InteractionStateName.SELECTED,
-        onUpdateCells: (root, updateDataCells) => {
-          if (colHeader) {
-            root.updateCells(root.getAllColHeaderCells());
-          }
-          if (rowHeader) {
-            root.updateCells(root.getAllRowHeaderCells());
-          }
-          updateDataCells();
-        },
+        onUpdateCells: afterSelectDataCells,
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);

@@ -8,7 +8,8 @@ import {
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
-import { updateRowColCells } from '../../utils';
+import { getInteractionCellsBySelectedCells } from '../../utils';
+import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -105,16 +106,13 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     interaction.changeState({
-      cells: selectedCellMetas,
+      cells: getInteractionCellsBySelectedCells(
+        selectedCellMetas,
+        this.spreadsheet,
+      ),
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: afterSelectDataCells,
     });
-
-    const { selectedCellHighlight } = options.interaction;
-    if (isBoolean(selectedCellHighlight) && selectedCellHighlight) {
-      selectedCellMetas.forEach((meta) => {
-        updateRowColCells(meta as unknown as ViewMeta);
-      });
-    }
 
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedCellMetas);
