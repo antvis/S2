@@ -29,7 +29,6 @@ import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
 import { getEmptyPlaceholder } from '../text';
-import { selectedCellHighlightAdaptor } from '../cell/data-cell';
 import { flattenDeep } from '../data-set-operate';
 
 export function keyEqualTo(key: string, compareKey: string) {
@@ -716,9 +715,7 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
-    const { rowCells } = selectedCellHighlightAdaptor(
-      spreadsheet.options.interaction.selectedCellHighlight,
-    );
+    const { rowCells } = spreadsheet.interaction.getSelectedCellHighlight();
 
     if (rowCells) {
       const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>

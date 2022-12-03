@@ -42,37 +42,9 @@ export const getDataCellId = (rowIndex: string, colIndex: string) => {
   return `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
 };
 
-export const selectedCellHighlightAdaptor = (
-  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType,
-) => {
-  if (isBoolean(selectedCellHighlight)) {
-    return {
-      rowHeader: selectedCellHighlight,
-      colHeader: selectedCellHighlight,
-      rowCells: false,
-      colCells: false,
-    };
-  }
-
-  const {
-    rowHeader = false,
-    colHeader = false,
-    rowCells = false,
-    colCells = false,
-  } = selectedCellHighlight ?? {};
-
-  return {
-    rowHeader,
-    colHeader,
-    rowCells,
-    colCells,
-  };
-};
-
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
   const { rowCells, colCells, rowHeader, colHeader } =
-    selectedCellHighlightAdaptor(s2.options.interaction.selectedCellHighlight);
-
+    s2.interaction.getSelectedCellHighlight();
   return rowCells || colCells || rowHeader || colHeader;
 };
 
@@ -138,7 +110,7 @@ export const updateBySelectedCellsHighlight = (
   s2: SpreadSheet,
 ) => {
   const { rowHeader, colHeader, rowCells, colCells } =
-    selectedCellHighlightAdaptor(s2.options.interaction.selectedCellHighlight);
+    s2.interaction.getSelectedCellHighlight();
 
   const isRowCell = dataCell.cellType === CellTypes.ROW_CELL;
   const showSNWhenRowHeaderHighlight =

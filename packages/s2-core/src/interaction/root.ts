@@ -8,6 +8,7 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
+  type InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type {
   BrushSelection,
@@ -566,5 +567,32 @@ export class RootInteraction {
 
   public getHoverTimer() {
     return this.hoverTimer;
+  }
+
+  public getSelectedCellHighlight(): InteractionCellSelectedHighlightType {
+    const { selectedCellHighlight } = this.spreadsheet.options.interaction;
+
+    if (isBoolean(selectedCellHighlight)) {
+      return {
+        rowHeader: selectedCellHighlight,
+        colHeader: selectedCellHighlight,
+        rowCells: false,
+        colCells: false,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      rowCells = false,
+      colCells = false,
+    } = selectedCellHighlight ?? {};
+
+    return {
+      rowHeader,
+      colHeader,
+      rowCells,
+      colCells,
+    };
   }
 }

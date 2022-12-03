@@ -1,6 +1,6 @@
 import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
-import { getDataCellId, selectedCellHighlightAdaptor } from '../cell/data-cell';
+import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
@@ -124,9 +124,7 @@ export const getInteractionCells = (
   cell: CellMeta,
   s2: SpreadSheet,
 ): Array<CellMeta> => {
-  const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
-    s2.options.interaction.selectedCellHighlight,
-  );
+  const { colHeader, rowHeader } = s2.interaction.getSelectedCellHighlight();
 
   const headerGetters = [
     {
@@ -165,9 +163,7 @@ export const getInteractionCellsBySelectedCells = (
 };
 
 export const afterSelectDataCells = (root, updateDataCells) => {
-  const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
-    root.spreadsheet.options.interaction.selectedCellHighlight,
-  );
+  const { colHeader, rowHeader } = root.getSelectedCellHighlight();
   if (colHeader) {
     root.updateCells(root.getAllColHeaderCells());
   }
