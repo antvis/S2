@@ -323,7 +323,6 @@ describe('List Table Core Data Process', () => {
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
-      headerCells: [],
       stateName: InteractionStateName.SELECTED,
     });
 

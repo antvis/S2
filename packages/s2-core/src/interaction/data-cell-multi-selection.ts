@@ -1,7 +1,8 @@
 import type { Event } from '@antv/g-canvas';
-import { isEmpty, reduce } from 'lodash';
+import { isEmpty } from 'lodash';
 import type { DataCell } from '../cell';
 import {
+  CellTypes,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -10,11 +11,10 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
-  getHeaderCellMeta,
-  getRowColHeaderCellBySelectedCellHighlight,
+  getInteractionCellsBySelectedCells,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
-import type { Node } from '../facet/layout/node';
+import { selectedCellHighlightAdaptor } from '../utils/cell/data-cell';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
@@ -57,7 +57,7 @@ export class DataCellMultiSelection
   private getSelectedCells(cell: S2CellType<ViewMeta>) {
     const id = cell.getMeta().id;
     const { interaction } = this.spreadsheet;
-    let selectedCells = interaction.getCells();
+    let selectedCells = interaction.getCells([CellTypes.DATA_CELL]);
     let cells: CellMeta[] = [];
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {
       selectedCells = [];
@@ -76,7 +76,7 @@ export class DataCellMultiSelection
       event.stopPropagation();
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
-      const { interaction } = this.spreadsheet;
+      const { interaction, options } = this.spreadsheet;
 
       if (this.isMultiSelection && meta) {
         const selectedCells = this.getSelectedCells(cell);
@@ -90,26 +90,25 @@ export class DataCellMultiSelection
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
         this.spreadsheet.hideTooltip();
 
-        const headerSelectedNode: Node[] = reduce(
-          selectedCells,
-          (nodes, selectedCell) => {
-            return [
-              ...nodes,
-              ...getRowColHeaderCellBySelectedCellHighlight(
-                selectedCell.id,
-                this.spreadsheet,
-              ),
-            ];
-          },
-          [],
+        const { colHeader, rowHeader } = selectedCellHighlightAdaptor(
+          options.interaction.selectedCellHighlight,
         );
 
         interaction.changeState({
-          cells: selectedCells,
-          headerCells: headerSelectedNode
-            .filter((node) => !!node.belongsCell)
-            .map((node) => getHeaderCellMeta(node.belongsCell)),
+          cells: getInteractionCellsBySelectedCells(
+            selectedCells,
+            this.spreadsheet,
+          ),
           stateName: InteractionStateName.SELECTED,
+          onUpdateCells: (root, updateDataCells) => {
+            if (colHeader) {
+              root.updateCells(root.getAllColHeaderCells());
+            }
+            if (rowHeader) {
+              root.updateCells(root.getAllRowHeaderCells());
+            }
+            updateDataCells();
+          },
         });
         this.spreadsheet.emit(
           S2Event.GLOBAL_SELECTED,

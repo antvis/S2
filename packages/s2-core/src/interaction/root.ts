@@ -19,7 +19,6 @@ import type {
   MergedCellInfo,
   S2CellType,
   SelectHeaderCellInfo,
-  HeaderCellMeta,
 } from '../common/interface';
 import { ColHeader, RowHeader } from '../facet/header';
 import { Node } from '../facet/layout/node';
@@ -168,15 +167,13 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells(): CellMeta[] {
+  public getCells(cellType?: CellTypes[]): CellMeta[] {
     const currentState = this.getState();
-    return currentState?.cells || [];
-  }
-
-  // 获取当前 interaction 记录的 header cell 元信息列表，包括不在可视区域内的格子
-  public getHeaderCells(): HeaderCellMeta[] {
-    const currentState = this.getState();
-    return currentState?.headerCells || [];
+    const cells = currentState?.cells || [];
+    if (isNil(cellType)) {
+      return cells;
+    }
+    return cells.filter((cell) => cellType.includes(cell.type));
   }
 
   // 获取 cells 中在可视区域内的实例列表
@@ -496,7 +493,6 @@ export class RootInteraction {
     const { interaction } = this.spreadsheet;
     const {
       cells = [],
-      headerCells = [],
       force,
       stateName,
       onUpdateCells,
@@ -506,7 +502,6 @@ export class RootInteraction {
       if (force) {
         interaction.changeState({
           cells: [],
-          headerCells: [],
           stateName: InteractionStateName.UNSELECTED,
         });
       }
@@ -524,10 +519,6 @@ export class RootInteraction {
     // 更新单元格
     const update = () => {
       this.updatePanelGroupAllDataCells();
-      if (headerCells.length) {
-        this.updateCells(this.getAllColHeaderCells());
-        this.updateCells(this.getAllRowHeaderCells());
-      }
     };
     if (onUpdateCells) {
       onUpdateCells(this, update);

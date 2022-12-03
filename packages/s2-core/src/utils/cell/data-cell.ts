@@ -14,7 +14,6 @@ import type {
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
-  HeaderCellMeta,
 } from '../../common/interface';
 
 export const handleDataItem = (
@@ -31,10 +30,7 @@ export const handleDataItem = (
  * @param cells active cells
  * @param currentCell current activated cell
  */
-export const includeCell = (
-  cells: Array<CellMeta | HeaderCellMeta>,
-  currentCell: S2CellType,
-) => {
+export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   const currentId = currentCell.getMeta().id;
   return cells.some((cell) => {
     return isEqual(cell.id, currentId);
@@ -45,11 +41,6 @@ export const SEPARATOR = '-';
 
 export const getDataCellId = (rowIndex: string, colIndex: string) => {
   return `${rowIndex}${SEPARATOR}${colIndex}`;
-};
-
-export const splitDataCellId = (id: string) => {
-  const [rowId, colId] = id.split(SEPARATOR);
-  return { rowId, colId };
 };
 
 export const selectedCellHighlightAdaptor = (
@@ -86,6 +77,10 @@ export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
   return rowCells || colCells || rowHeader || colHeader;
 };
 
+export const isDataCell = (cell: CellMeta) => {
+  return cell.type === CellTypes.DATA_CELL;
+};
+
 /**
  * highlight cells of the row
  * @param cells cells selected
@@ -96,7 +91,7 @@ export const updateCurrentRowCellState = (
   dataCell: DataCell,
 ) => {
   forEach(cells, (cell) => {
-    if (cell.rowIndex === dataCell.getMeta().rowIndex) {
+    if (isDataCell(cell) && cell.rowIndex === dataCell.getMeta().rowIndex) {
       dataCell.updateByState(InteractionStateName.SELECTED);
     }
   });
@@ -112,7 +107,7 @@ export const updateCurrentColumnCellState = (
   dataCell: DataCell,
 ) => {
   forEach(cells, (cell) => {
-    if (cell.colIndex === dataCell.getMeta().colIndex) {
+    if (isDataCell(cell) && cell.colIndex === dataCell.getMeta().colIndex) {
       dataCell.updateByState(InteractionStateName.SELECTED);
     }
   });
@@ -129,6 +124,7 @@ export const updateCurrentCellState = (
 ) => {
   forEach(cells, (cell) => {
     if (
+      isDataCell(cell) &&
       cell.rowIndex === dataCell.getMeta().rowIndex &&
       cell.colIndex === dataCell.getMeta().colIndex
     ) {

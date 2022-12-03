@@ -15,8 +15,6 @@ import {
   S2Event,
 } from '@/common/constant';
 import type { Node } from '@/facet/layout/node';
-import { CellTypes } from '@/common/constant';
-import { getHeaderCellMeta } from '@/utils';
 
 jest.mock('@/interaction/event-controller');
 
@@ -53,8 +51,8 @@ describe('Interaction Data Cell Click Tests', () => {
     } as unknown as GEvent);
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
-      headerCells: [],
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: expect.any(Function),
     });
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
@@ -72,8 +70,8 @@ describe('Interaction Data Cell Click Tests', () => {
 
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
-      headerCells: [],
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: expect.any(Function),
     });
   });
 
@@ -167,24 +165,37 @@ describe('Interaction Data Cell Click Tests', () => {
   });
 
   test('should highlight the column header cell when data cell clicked', () => {
+    const headerCellId0 = 'header-0';
+    const headerCellId1 = 'header-1';
     const columnNode: Array<Partial<Node>> = [
       {
         belongsCell: {
-          getMeta: () => ({ id: `${mockCellInfo.mockCell.getMeta().id}` }),
-          cellType: CellTypes.COL_CELL,
+          getMeta: () => ({
+            id: headerCellId0,
+            colIndex: -1,
+            rowIndex: -1,
+          }),
         } as any,
-        id: `${mockCellInfo.mockCell.getMeta().id}`,
+        id: headerCellId0,
       },
       {
         belongsCell: {
-          getMeta: () => ({ id: '1' }),
-          cellType: CellTypes.COL_CELL,
+          getMeta: () => ({
+            id: headerCellId1,
+            colIndex: -1,
+            rowIndex: -1,
+          }),
         } as any,
-        id: '1',
+        id: headerCellId1,
       },
     ];
     s2.getColumnNodes = jest.fn(() => columnNode) as any;
     s2.getRowNodes = jest.fn(() => []);
+
+    const firstDataCellInfo = createMockCellInfo(
+      `${headerCellId0}[&]first-data-cell`,
+    );
+    s2.getCell = () => firstDataCellInfo.mockCell as any;
 
     s2.setOptions({
       interaction: {
@@ -194,14 +205,24 @@ describe('Interaction Data Cell Click Tests', () => {
       },
     });
 
+    const mockHeaderCellInfo = createMockCellInfo(headerCellId0, {
+      colIndex: columnNode[0].belongsCell.getMeta().colIndex,
+      rowIndex: columnNode[0].belongsCell.getMeta().rowIndex,
+    });
+
+    s2.interaction.getAllColHeaderCells = jest.fn();
+    s2.interaction.updateCells = jest.fn();
+
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
 
     expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellInfo.mockCellMeta],
-      headerCells: [getHeaderCellMeta(columnNode[0].belongsCell)],
+      cells: [firstDataCellInfo.mockCellMeta, mockHeaderCellInfo.mockCellMeta],
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: expect.any(Function),
     });
+    expect(s2.interaction.getAllColHeaderCells).toHaveBeenCalled();
+    expect(s2.interaction.updateCells).toHaveBeenCalled();
   });
 });

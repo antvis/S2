@@ -40,12 +40,6 @@ export interface CellMeta {
   [key: string]: unknown;
 }
 
-export interface HeaderCellMeta {
-  id: string;
-  type: CellTypes;
-  [key: string]: unknown;
-}
-
 export type OnUpdateCells = (
   root: RootInteraction,
   defaultOnUpdateCells: () => void,
@@ -56,8 +50,6 @@ export interface InteractionStateInfo {
   stateName?: InteractionStateName;
   // all the active cells for this interaction (save meta data for recording offscreen cells)
   cells?: CellMeta[];
-  // all the active header cells including including column header and row header for this interaction (save meta data for recording offscreen cells)
-  headerCells?: HeaderCellMeta[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
