@@ -7,6 +7,7 @@ import {
   InteractionStateName,
   CellTypes,
   type InteractionCellSelectedHighlightType,
+  EMPTY_PLACEHOLDER,
 } from '../../common/constant';
 import type {
   CellMeta,
@@ -37,10 +38,8 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   });
 };
 
-export const SEPARATOR = '-';
-
 export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}${SEPARATOR}${colIndex}`;
+  return `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
 };
 
 export const selectedCellHighlightAdaptor = (
