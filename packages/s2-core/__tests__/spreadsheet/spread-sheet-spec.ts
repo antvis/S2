@@ -1,6 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer, sleep } from 'tests/util/helpers';
 import { pick } from 'lodash';
+import { CanvasEvent } from '@antv/g';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import {
   DEFAULT_OPTIONS,
@@ -151,6 +152,8 @@ describe('SpreadSheet Tests', () => {
       'should destroy sheet correctly',
       (Sheet) => {
         const s2 = new Sheet(container, mockDataConfig, s2Options);
+        const destroyFn = jest.fn();
+        s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
         s2.render();
 
         expect(s2.container).toBeDefined();
@@ -159,7 +162,7 @@ describe('SpreadSheet Tests', () => {
 
         s2.destroy();
 
-        expect(s2.getCanvasElement()).not.toBeDefined();
+        expect(destroyFn).toBeCalled();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
         expect(document.body.style.overscrollBehavior).toBeFalsy();
       },
@@ -243,6 +246,8 @@ describe('SpreadSheet Tests', () => {
       'should delay destroy sheet correctly',
       async (Sheet) => {
         const s2 = new Sheet(container, mockDataConfig, s2Options);
+        const destroyFn = jest.fn();
+        s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
         s2.render();
 
         expect(s2.getCanvasElement()).toBeInstanceOf(HTMLCanvasElement);
@@ -255,7 +260,7 @@ describe('SpreadSheet Tests', () => {
           }, 1000);
         });
 
-        expect(s2.getCanvasElement()).not.toBeDefined();
+        expect(destroyFn).toBeCalled();
         expect(container.querySelectorAll('canvas')).toHaveLength(0);
 
         s2.destroy();

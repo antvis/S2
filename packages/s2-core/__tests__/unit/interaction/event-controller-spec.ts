@@ -1,8 +1,13 @@
 /* eslint-disable jest/expect-expect */
-import { Canvas, Image } from '@antv/g';
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { Canvas, FederatedEvent, Image } from '@antv/g';
+import {
+  createFakeSpreadSheet,
+  createFederatedMouseEvent,
+  createFederatedPointerEvent,
+  sleep,
+} from 'tests/util/helpers';
 import { Renderer } from '@antv/g-canvas';
-import { GuiIcon } from '@/common';
+import { GEventType, GuiIcon } from '@/common';
 import type { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
@@ -50,15 +55,17 @@ describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
   let spreadsheet: SpreadSheet;
 
-  const mockEvent = {
-    target: undefined,
-    preventDefault: () => {},
-    originalEvent: {},
-    stopPropagation: () => {},
+  /** 用于识别 mock 的事件 */
+  const MOCK_CLIENT = {
+    x: 123,
+    y: 456,
   };
 
   const expectEvents =
-    (eventType: OriginEventType, callback?: () => void) =>
+    (
+      eventType: OriginEventType | GEventType,
+      customEvent?: (evt: FederatedEvent) => void,
+    ) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
       spreadsheet.getCellType = () => type;
@@ -68,14 +75,26 @@ describe('Interaction Event Controller Tests', () => {
           getMeta: () => {},
         } as any);
 
-      eventNames.forEach((eventName) => {
-        const eventHandler = jest.fn();
-        spreadsheet.once(eventName, eventHandler);
-        spreadsheet.container.emit(eventType, mockEvent);
-        expect(eventHandler).toHaveBeenCalledWith(mockEvent);
-      });
+      const dispatchEvent = () => {
+        const evt = createFederatedMouseEvent(spreadsheet, eventType);
+        evt.client.x = MOCK_CLIENT.x;
+        evt.client.y = MOCK_CLIENT.y;
 
-      callback?.();
+        customEvent?.(evt);
+
+        spreadsheet.container.dispatchEvent(evt);
+      };
+
+      eventNames.forEach((eventName) => {
+        const eventHandler = jest.fn((evt) => {
+          return evt.client;
+        });
+        spreadsheet.once(eventName, eventHandler);
+
+        dispatchEvent();
+
+        expect(eventHandler).toHaveReturnedWith(MOCK_CLIENT);
+      });
     };
 
   beforeEach(() => {
@@ -107,9 +126,9 @@ describe('Interaction Event Controller Tests', () => {
         width: 0,
         height: 0,
       } as DOMRect);
-    eventController = new EventController(
-      spreadsheet as unknown as SpreadSheet,
-    );
+
+    // acquire instance
+    eventController = spreadsheet.interaction.eventController;
     Object.defineProperty(eventController, 'isCanvasEffect', {
       value: true,
     });
@@ -130,10 +149,10 @@ describe('Interaction Event Controller Tests', () => {
   test('should register canvas events', () => {
     const canvasEventTypes: string[] = [
       OriginEventType.MOUSE_DOWN,
-      OriginEventType.MOUSE_MOVE,
-      OriginEventType.MOUSE_UP,
+      OriginEventType.POINTER_MOVE,
+      OriginEventType.POINTER_UP,
       OriginEventType.MOUSE_OUT,
-      OriginEventType.CONTEXT_MENU,
+      GEventType.RIGHT_MOUSE_UP,
       OriginEventType.DOUBLE_CLICK,
       OriginEventType.CLICK,
     ];
@@ -161,8 +180,8 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.CLICK,
       OriginEventType.KEY_DOWN,
       OriginEventType.KEY_UP,
-      OriginEventType.MOUSE_UP,
-      OriginEventType.MOUSE_MOVE,
+      OriginEventType.POINTER_UP,
+      OriginEventType.POINTER_MOVE,
     ];
     expect(eventController.domEventListeners).toHaveLength(
       domEventTypes.length,
@@ -252,8 +271,8 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
   ])(
-    'should emit mouse move and hover event for %s',
-    expectEvents(OriginEventType.MOUSE_MOVE),
+    'should emit pointer move and hover event for %s',
+    expectEvents(OriginEventType.POINTER_MOVE),
   );
 
   test.each([
@@ -278,8 +297,8 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.MERGED_CELLS_MOUSE_UP],
     },
   ])(
-    'should emit mouse up and click event for %s',
-    expectEvents(OriginEventType.MOUSE_UP),
+    'should emit pointer up and click event for %s',
+    expectEvents(OriginEventType.POINTER_UP),
   );
 
   test.each([
@@ -303,10 +322,16 @@ describe('Interaction Event Controller Tests', () => {
       type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_DOUBLE_CLICK],
     },
-  ])(
-    'should emit double click event for %s',
-    expectEvents(OriginEventType.DOUBLE_CLICK),
-  );
+  ])('should emit double click event for %s', (params) => {
+    Object.defineProperty(eventController, 'target', {
+      value: spreadsheet.container,
+      writable: true,
+    });
+
+    expectEvents(OriginEventType.CLICK, (evt: FederatedEvent) => {
+      evt.detail = 2;
+    })(params);
+  });
 
   test.each([
     {
@@ -337,25 +362,35 @@ describe('Interaction Event Controller Tests', () => {
     },
   ])(
     'should emit context menu event for %s',
-    expectEvents(OriginEventType.CONTEXT_MENU),
+    expectEvents(GEventType.RIGHT_MOUSE_UP),
   );
 
   test('should emit global context menu event', () => {
-    const mockEvent = {
-      preventDefault: () => {},
-      originalEvent: {},
-    };
-    const contextMenu = jest.fn();
+    const contextMenu = jest.fn((evt) => {
+      return evt.client;
+    });
     spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, contextMenu);
-    spreadsheet.container.emit(OriginEventType.CONTEXT_MENU, mockEvent);
-    expect(contextMenu).toHaveBeenCalledWith(mockEvent);
+
+    const evt = createFederatedPointerEvent(
+      spreadsheet,
+      GEventType.RIGHT_MOUSE_UP,
+    );
+    evt.client.x = MOCK_CLIENT.x;
+    evt.client.y = MOCK_CLIENT.y;
+
+    spreadsheet.container.dispatchEvent(evt);
+    expect(contextMenu).toReturnWith(MOCK_CLIENT);
   });
 
   test('should emit global mouse up event', () => {
     const mouseUp = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, mouseUp);
 
-    window.dispatchEvent(new Event('mouseup'));
+    window.document.body.dispatchEvent(
+      new Event(OriginEventType.POINTER_UP, {
+        bubbles: true,
+      }),
+    );
 
     expect(mouseUp).toHaveBeenCalled();
   });
@@ -708,8 +743,8 @@ describe('Interaction Event Controller Tests', () => {
   test.each([
     { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
     { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
-    { type: OriginEventType.MOUSE_UP, event: S2Event.GLOBAL_MOUSE_UP },
-    { type: OriginEventType.MOUSE_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
+    { type: OriginEventType.POINTER_UP, event: S2Event.GLOBAL_MOUSE_UP },
+    { type: OriginEventType.POINTER_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
   ])(
     'should not prevent default original event if controller emitted global event %o',
     ({ type, event }) => {
@@ -746,8 +781,8 @@ describe('Interaction Event Controller Tests', () => {
   test.each([
     { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
     { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_UP },
-    { type: OriginEventType.MOUSE_UP, event: S2Event.GLOBAL_MOUSE_UP },
-    { type: OriginEventType.MOUSE_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
+    { type: OriginEventType.POINTER_UP, event: S2Event.GLOBAL_MOUSE_UP },
+    { type: OriginEventType.POINTER_MOVE, event: S2Event.GLOBAL_MOUSE_MOVE },
   ])(
     'should first trigger capture event listener event %o',
     ({ type, event }) => {
@@ -797,7 +832,7 @@ describe('Interaction Event Controller Tests', () => {
     { cellType: CellTypes.CORNER_CELL, event: S2Event.CORNER_CELL_CLICK },
   ])(
     'should not trigger click event if event target is gui icon image shape for event %o',
-    ({ cellType, event }) => {
+    async ({ cellType, event }) => {
       spreadsheet.getCell = () =>
         ({
           cellType,
@@ -805,29 +840,37 @@ describe('Interaction Event Controller Tests', () => {
         } as any);
 
       const handler = jest.fn();
-      const { iconImageShape } = new GuiIcon({
-        name: 'test',
+      const guiIcon = new GuiIcon({
+        name: 'SortUp',
         width: 10,
         height: 10,
       });
 
+      await sleep(200); // 图片加载
+
+      spreadsheet.container.appendChild(guiIcon); // 加入 g 渲染树才有事件传递
       spreadsheet.once(event, handler);
 
+      // 内部的 GuiIcon
+      const { iconImageShape } = guiIcon;
       Object.defineProperty(eventController, 'target', {
         value: iconImageShape,
         writable: true,
       });
-
-      // 内部的 GuiIcon
-      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
-        ...mockEvent,
-        target: iconImageShape,
-      });
+      iconImageShape.dispatchEvent(
+        createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
+      );
 
       expect(handler).not.toHaveBeenCalled();
 
       // 普通 Target
-      spreadsheet.container.emit(OriginEventType.MOUSE_UP, mockEvent);
+      Object.defineProperty(eventController, 'target', {
+        value: spreadsheet.container,
+        writable: true,
+      });
+      spreadsheet.container.dispatchEvent(
+        createFederatedPointerEvent(spreadsheet, OriginEventType.POINTER_UP),
+      );
 
       expect(handler).toHaveBeenCalledTimes(1);
     },
@@ -855,6 +898,7 @@ describe('Interaction Event Controller Tests', () => {
           img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
         },
       });
+      spreadsheet.container.appendChild(image); // 加入 g 渲染树才有事件传递
 
       Object.defineProperty(eventController, 'target', {
         value: image,
@@ -862,10 +906,10 @@ describe('Interaction Event Controller Tests', () => {
       });
 
       spreadsheet.on(event, handler);
-      spreadsheet.container.emit(OriginEventType.MOUSE_UP, {
-        ...mockEvent,
-        target: image,
-      });
+
+      image.dispatchEvent(
+        createFederatedMouseEvent(spreadsheet, OriginEventType.POINTER_UP),
+      );
 
       expect(handler).toHaveBeenCalledTimes(1);
     },

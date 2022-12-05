@@ -11,11 +11,14 @@ import {
   type S2Options,
   SpreadSheet,
   TableSheet,
+  DeviceType,
+  type RawData,
+  type S2MountContainer,
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
 import type { SwitcherFields } from '@/components/switcher/interface';
-import { SheetComponent } from '@/components';
+import { SheetComponent, type SheetComponentsProps } from '@/components';
 import '@/components/tooltip/index.less';
 
 let s2: TableSheet;
@@ -23,9 +26,13 @@ let s2: TableSheet;
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const onMounted =
-  (ref: React.MutableRefObject<SpreadSheet>) =>
-  (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    s2 = new TableSheet(dom, dataCfg, options);
+  (ref: React.MutableRefObject<SpreadSheet | null>) =>
+  (
+    dom: S2MountContainer,
+    dataCfg: S2DataConfig,
+    options: SheetComponentsProps['options'],
+  ) => {
+    s2 = new TableSheet(dom, dataCfg, options as S2Options);
     ref.current = s2;
     return s2;
   };
@@ -64,11 +71,17 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
-    formatter: (v) => `${v}元`,
+    formatter: (v: number) => `${v}元`,
   },
 ];
 
-function MainLayout({ callback }) {
+type Props = {
+  callback: (params: {
+    setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
+  }) => void;
+};
+
+function MainLayout({ callback }: Props) {
   const [showPagination, setShowPagination] = React.useState(false);
   const [hiddenColumnsOperator, setHiddenColumnsOperator] =
     React.useState(true);
@@ -87,20 +100,20 @@ function MainLayout({ callback }) {
     sortParams: [
       {
         sortFieldId: 'count',
-        sortBy: (obj) =>
+        sortBy: (obj: RawData) =>
           canConvertToNumber('count') ? Number(obj.count) : obj.count,
         sortMethod: 'DESC',
       },
       {
         sortFieldId: 'profit',
-        sortBy: (obj) =>
+        sortBy: (obj: RawData) =>
           canConvertToNumber('profit') ? Number(obj.profit) : obj.profit,
         sortMethod: 'ASC',
       },
     ],
   } as unknown as S2DataConfig;
 
-  const options: S2Options = {
+  const options: SheetComponentsProps['options'] = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -109,12 +122,14 @@ function MainLayout({ callback }) {
       cellCfg: {
         height: 32,
       },
-      device: 'pc',
+      device: DeviceType.PC,
     },
-    pagination: showPagination && {
-      pageSize: 50,
-      current: 1,
-    },
+    pagination: showPagination
+      ? {
+          pageSize: 50,
+          current: 1,
+        }
+      : undefined,
     interaction: {
       enableCopy: true,
       hoverHighlight: false,
@@ -140,25 +155,25 @@ function MainLayout({ callback }) {
   };
 
   useEffect(() => {
-    s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
+    s2Ref.current!.on(S2Event.GLOBAL_COPIED, logData);
+    s2Ref.current!.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
-    s2Ref.current.on(S2Event.LAYOUT_COLS_EXPANDED, logData);
-    s2Ref.current.on(S2Event.LAYOUT_COLS_HIDDEN, logData);
-    s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
+    s2Ref.current!.on(S2Event.LAYOUT_COLS_EXPANDED, logData);
+    s2Ref.current!.on(S2Event.LAYOUT_COLS_HIDDEN, logData);
+    s2Ref.current!.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
       if (e.key === 'a' && e.metaKey) {
         e.preventDefault();
-        s2Ref.current.interaction.selectAll();
+        s2Ref.current!.interaction.selectAll();
       }
     });
 
-    s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
+    s2Ref.current!.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
-      s2Ref.current.off(S2Event.GLOBAL_COPIED);
-      s2Ref.current.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
-      s2Ref.current.off(S2Event.LAYOUT_COLS_EXPANDED);
-      s2Ref.current.off(S2Event.LAYOUT_COLS_HIDDEN);
+      s2Ref.current!.off(S2Event.GLOBAL_COPIED);
+      s2Ref.current!.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
+      s2Ref.current!.off(S2Event.LAYOUT_COLS_EXPANDED);
+      s2Ref.current!.off(S2Event.LAYOUT_COLS_HIDDEN);
     };
   }, []);
 
@@ -194,7 +209,7 @@ function MainLayout({ callback }) {
         <Switch
           checkedChildren="开启隐藏列"
           unCheckedChildren="关闭隐藏列"
-          defaultChecked={options.tooltip.operation.hiddenColumns}
+          defaultChecked={options.tooltip!.operation!.hiddenColumns}
           onChange={setHiddenColumnsOperator}
         />
         <Switch
@@ -219,12 +234,12 @@ function MainLayout({ callback }) {
 }
 
 describe('table sheet normal spec', () => {
-  let cbs;
+  let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
   act(() => {
     ReactDOM.render(
       <MainLayout
         callback={(params) => {
-          cbs = params;
+          setShowPagination = params.setShowPagination;
         }}
       />,
       getContainer(),
@@ -238,7 +253,7 @@ describe('table sheet normal spec', () => {
     });
 
     act(() => {
-      cbs.setShowPagination(true);
+      setShowPagination(true);
     });
 
     // wait for debounce render
@@ -250,7 +265,7 @@ describe('table sheet normal spec', () => {
     });
 
     act(() => {
-      cbs.setShowPagination(false);
+      setShowPagination(false);
       s2.facet.onWheel({
         deltaX: 0,
         deltaY: 0,

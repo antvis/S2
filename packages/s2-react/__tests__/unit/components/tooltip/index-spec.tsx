@@ -2,6 +2,7 @@ import * as mockDataConfig from 'tests/data/simple-data.json';
 import {
   BaseTooltip,
   getTooltipOperatorSortMenus,
+  SpreadSheet,
   type S2CellType,
   type TooltipOperatorMenu,
 } from '@antv/s2';
@@ -37,9 +38,9 @@ describe('Tooltip Component Tests', () => {
       expect(screen.getByText('组内降序')).toBeDefined();
       expect(screen.getByText('不排序')).toBeDefined();
 
-      const selectedMenu = [
-        ...document.querySelectorAll('.ant-menu-item-selected'),
-      ];
+      const selectedMenu = Array.from(
+        document.querySelectorAll('.ant-menu-item-selected'),
+      );
       expect(selectedMenu).toHaveLength(1);
       expect(selectedMenu[0]?.textContent).toContain(text);
     },
@@ -48,7 +49,7 @@ describe('Tooltip Component Tests', () => {
 
 describe('Tooltip Common Components Tests', () => {
   test('custom tooltip instance of CustomTooltip', () => {
-    let s2;
+    let s2: SpreadSheet;
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
@@ -59,9 +60,9 @@ describe('Tooltip Common Components Tests', () => {
       />,
     );
 
-    s2.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
-    expect(s2.tooltip).toBeInstanceOf(CustomTooltip);
-    expect(s2.tooltip).toBeInstanceOf(BaseTooltip);
+    s2!.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
+    expect(s2!.tooltip).toBeInstanceOf(CustomTooltip);
+    expect(s2!.tooltip).toBeInstanceOf(BaseTooltip);
   });
 
   test('render sort tooltip: TooltipOperator', () => {
@@ -113,7 +114,7 @@ describe('Tooltip Common Components Tests', () => {
     expect(getByText('隐藏').className).toContain(
       'antv-s2-tooltip-operator-text',
     );
-    expect(container.querySelector('svg').getAttribute('data-icon')).toBe(
+    expect(container.querySelector('svg')!.getAttribute('data-icon')).toBe(
       'eye',
     );
   });

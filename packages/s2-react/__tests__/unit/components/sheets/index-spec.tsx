@@ -10,7 +10,7 @@ import {
   TableSheet,
 } from '@antv/s2';
 import type { SheetType } from '@antv/s2-shared';
-import type { Event as GEvent } from '@antv/g-canvas';
+import type { GEvent } from '@antv/s2';
 import { SheetComponent, type SheetComponentsProps } from '../../../../src';
 import { getContainer } from '../../../util/helpers';
 import { StrategySheetDataConfig } from '../../../data/strategy-data';
@@ -110,9 +110,9 @@ describe('<SheetComponent/> Tests', () => {
           );
         });
 
-        expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef);
-        expect(onMounted).toHaveBeenCalledWith(onMountedRef);
-        expect(onMountedRef).toEqual(getSpreadSheetRef);
+        expect(getSpreadSheet).toHaveBeenCalledWith(getSpreadSheetRef!);
+        expect(onMounted).toHaveBeenCalledWith(onMountedRef!);
+        expect(onMountedRef!).toEqual(getSpreadSheetRef!);
         expect(onDestroy).not.toHaveBeenCalled();
         expect(warnSpy).toHaveBeenCalledWith(
           '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
@@ -150,13 +150,13 @@ describe('<SheetComponent/> Tests', () => {
         ReactDOM.render(<Component sheetType={'pivot'} />, container);
       });
 
-      expect(spreadSheet).toBeInstanceOf(PivotSheet);
+      expect(spreadSheet!).toBeInstanceOf(PivotSheet);
 
       act(() => {
         ReactDOM.render(<Component sheetType={'table'} />, container);
       });
 
-      expect(spreadSheet).toBeInstanceOf(TableSheet);
+      expect(spreadSheet!).toBeInstanceOf(TableSheet);
     });
   });
 
@@ -199,7 +199,7 @@ describe('<SheetComponent/> Tests', () => {
 
       renderStrategySheet(s2Options);
 
-      expect(s2.options.tooltip.data.content).toEqual(content);
+      expect(s2!.options.tooltip!.data!.content).toEqual(content);
     });
 
     test('should hideMeasureColumn if only one value field', () => {
@@ -216,16 +216,20 @@ describe('<SheetComponent/> Tests', () => {
 
       renderStrategySheet(s2Options, s2DataConfig);
 
-      expect(s2.options.style.colCfg.hideMeasureColumn).toBeTruthy();
+      expect(s2!.options.style!.colCfg!.hideMeasureColumn).toBeTruthy();
     });
 
     test('should enable hidden columns operation', () => {
       renderStrategySheet(null);
 
-      expect(s2.options.tooltip.operation.hiddenColumns).toBeTruthy();
+      expect(s2!.options.tooltip!.operation!.hiddenColumns).toBeTruthy();
     });
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.DATA_CELL,
+    ] as const)(
       'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
       (cellType) => {
         const content = `${cellType} test content`;
@@ -248,7 +252,7 @@ describe('<SheetComponent/> Tests', () => {
 
         s2.showTooltipWithInfo({} as GEvent, []);
 
-        expect(s2.tooltip.container.innerText).toEqual(content);
+        expect(s2!.tooltip.container!.innerText).toEqual(content);
       },
     );
 
@@ -270,10 +274,10 @@ describe('<SheetComponent/> Tests', () => {
         });
 
       const bulletMeasureTextList = dataCell.map((cell) => {
-        const textShape = cell
-          .getChildren()
-          .find((child) => child.cfg.type === 'text');
-        return textShape?.attr('text');
+        const textShape = cell.children.find(
+          (child) => child.nodeName === 'text',
+        );
+        return textShape?.textContent;
       });
 
       expect(bulletMeasureTextList).toStrictEqual([
@@ -305,9 +309,9 @@ describe('<SheetComponent/> Tests', () => {
           },
         );
 
-        const textList = s2.facet.cornerHeader
-          .getChildren()
-          .map((element) => (element as any).actualText);
+        const textList = s2.facet.cornerHeader.children.map(
+          (element) => (element as any).actualText,
+        );
 
         const cornerText = isCustomCornerText
           ? '测试'

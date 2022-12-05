@@ -53,11 +53,11 @@ export class ColBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      // TODO：老版本的注释是根据事件获取画布坐标，这里尝试转换
-      // g5.0 事件的 client 坐标转换见 https://g-next.antv.vision/zh/docs/api/event#clientxy
-      const pointInCanvas = this.spreadsheet.container.client2Viewport(
-        event.client,
-      );
+
+      const pointInCanvas = this.spreadsheet.container.client2Viewport({
+        x: event.clientX,
+        y: event.clientY,
+      });
 
       if (!this.isPointInCanvas(pointInCanvas)) {
         return;

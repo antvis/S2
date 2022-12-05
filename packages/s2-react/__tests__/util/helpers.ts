@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import type { Canvas } from '@antv/g-canvas';
+import type { Canvas } from '@antv/g';
 import {
   Store,
   type S2Options,
@@ -48,7 +48,7 @@ export const createFakeSpreadSheet = () => {
   class FakeSpreadSheet extends EE {
     public options: S2Options;
 
-    public setOptions(options) {
+    public setOptions(options: S2Options) {
       this.options = customMerge(this.options, options);
     }
   }
@@ -73,8 +73,12 @@ export const createFakeSpreadSheet = () => {
   return s2;
 };
 // 可借助 tinygradient 完成功能更全面的颜色过渡
-export function getGradient(rate, startColor, endColor) {
-  function toGgb(color) {
+export function getGradient(
+  rate: number,
+  startColor: string,
+  endColor: string,
+) {
+  function toGgb(color: string) {
     color = color.slice(1);
     const r = parseInt(color.substring(0, 2), 16);
     const g = parseInt(color.substring(2, 4), 16);

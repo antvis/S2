@@ -163,25 +163,31 @@ describe('TableSheet normal spec', () => {
     await sleep(30);
 
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
+
     s2.getCanvasElement().dispatchEvent(
-      new MouseEvent('mousedown', {
-        clientX: x + width - 1,
+      new PointerEvent('pointerdown', {
+        clientX: x + width - 0.4,
         clientY: top + 25,
+        pointerType: 'mouse',
       }),
     );
 
-    window.dispatchEvent(
+    await sleep(300); // 等待绘制响应
+
+    document.dispatchEvent(
       new MouseEvent('mousemove', {
         clientX: x + width + 100,
         clientY: top + 25,
+        bubbles: true,
       }),
     );
     await sleep(300);
 
-    window.dispatchEvent(
-      new MouseEvent('mouseup', {
+    document.dispatchEvent(
+      new PointerEvent('pointerup', {
         clientX: x + width + 100,
         clientY: top + 25,
+        bubbles: true,
       }),
     );
 
@@ -191,6 +197,6 @@ describe('TableSheet normal spec', () => {
     const lastColumnCell = columnNodes[columnNodes.length - 1]
       .belongsCell as ColCell;
 
-    expect(lastColumnCell.getMeta().width).toBe(199);
+    expect(lastColumnCell.getMeta().width).toBe(198);
   });
 });

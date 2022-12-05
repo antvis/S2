@@ -1,6 +1,6 @@
-import type { Data } from '@antv/s2';
+import type { RawData } from '@antv/s2';
 
-export const multipleDataWithNormal: Data[] = [
+export const multipleDataWithNormal: RawData[] = [
   {
     province: '四川',
     city: '成都',
@@ -57,7 +57,7 @@ export const multipleDataWithNormal: Data[] = [
   },
 ];
 
-export const multipleDataWithBottom: Data[] = [
+export const multipleDataWithBottom: RawData[] = [
   {
     province: '四川',
     city: '成都',
@@ -124,7 +124,7 @@ export const multipleDataWithBottom: Data[] = [
   },
 ];
 
-export const multipleDataWithCombine: Data[] = [
+export const multipleDataWithCombine: RawData[] = [
   {
     province: '四川',
     city: '成都',

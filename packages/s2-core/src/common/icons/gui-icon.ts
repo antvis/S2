@@ -28,7 +28,6 @@ export class GuiIcon extends Group {
   private cfg: GuiIconCfg;
 
   constructor(cfg: GuiIconCfg) {
-    // TODO: 可能不需要透传 cfg 到 group
     super({ name: cfg.name });
     this.cfg = cfg;
     this.render();

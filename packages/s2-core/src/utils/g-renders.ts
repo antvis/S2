@@ -82,6 +82,14 @@ export function renderText(
         x,
         y,
         text,
+        /**
+         * 补充 g5.0 内部 measureText 时的必要参数（variant|fontStyle|lineWidth）
+         * 否则创建完 Text 后，实例 getBBox 返回为全 0
+         * @see https://github.com/antvis/GUI/blob/302ae68d93dbb5675f35fca37e8821d4427d495b/src/util/style.ts#L18-L29
+         */
+        fontVariant: 'normal',
+        fontStyle: 'normal',
+        lineWidth: 1,
         ...textStyle,
         ...extraStyle,
       },

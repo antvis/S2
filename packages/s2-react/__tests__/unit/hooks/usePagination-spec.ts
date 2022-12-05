@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { PivotSheet, type S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { cloneDeep, omit } from 'lodash';
+import { omit } from 'lodash';
 import { usePagination } from '@/hooks';
 import type { SheetComponentsProps } from '@/components/sheets/interface';
 
@@ -20,17 +20,17 @@ describe('usePagination tests', () => {
   let s2: SpreadSheet;
 
   const props: SheetComponentsProps = {
-    options: s2Options,
+    options: s2Options as SheetComponentsProps['options'],
     dataCfg: mockDataConfig,
   };
 
   const propsWithoutPagination: SheetComponentsProps = {
-    options: omit(s2Options, 'pagination'),
+    options: omit(s2Options as SheetComponentsProps['options'], 'pagination'),
     dataCfg: mockDataConfig,
   };
 
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options as S2Options);
     s2.render();
   });
 
@@ -42,7 +42,7 @@ describe('usePagination tests', () => {
 
   test('should get default pagination', () => {
     const { result } = renderHook(() =>
-      usePagination(null, propsWithoutPagination),
+      usePagination(null as unknown as SpreadSheet, propsWithoutPagination),
     );
 
     expect(result.current.pagination).toEqual({
@@ -66,13 +66,18 @@ describe('usePagination tests', () => {
   });
 
   test('should update total after render with new data', () => {
-    const { result, rerender } = renderHook(() => usePagination(s2, props));
+    let s2Instance = s2;
+    const { result, rerender } = renderHook(() =>
+      usePagination(s2Instance, props),
+    );
 
     expect(result.current.pagination.total).toBe(0);
 
     act(() => {
       // 触发内部更新
-      s2 = cloneDeep(s2);
+      s2Instance = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+      s2Instance.render();
+
       rerender();
     });
     expect(result.current.pagination.total).toBe(2);
@@ -87,11 +92,11 @@ describe('usePagination tests', () => {
           price: '18',
         },
       ];
-      s2.setDataCfg({
+      s2Instance.setDataCfg({
         ...mockDataConfig,
         data: newData,
       });
-      s2.render();
+      s2Instance.render();
     });
     expect(result.current.pagination.total).toBe(3);
   });

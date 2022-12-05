@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
-import { Canvas } from '@antv/g';
+import { Canvas, FederatedMouseEvent, FederatedPointerEvent } from '@antv/g';
 import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
@@ -227,4 +227,27 @@ export const createPivotSheet = (
       debug: false,
     },
   );
+};
+
+export const createFederatedPointerEvent = (
+  spreadsheet: SpreadSheet,
+  eventType: string,
+) => {
+  const evt = new FederatedPointerEvent(
+    spreadsheet.container.getEventService(),
+  );
+  evt.type = eventType;
+  evt.pointerType = 'mouse';
+
+  return evt;
+};
+
+export const createFederatedMouseEvent = (
+  spreadsheet: SpreadSheet,
+  eventType: string,
+) => {
+  const evt = new FederatedMouseEvent(spreadsheet.container.getEventService());
+  evt.type = eventType;
+
+  return evt;
 };

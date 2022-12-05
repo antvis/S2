@@ -12,6 +12,7 @@ import {
   CellTypes,
   EXTRA_COLUMN_FIELD,
   EXTRA_FIELD,
+  GuiIcon,
   type S2DataConfig,
   type TextAlign,
 } from '@/common';
@@ -155,13 +156,14 @@ describe('SpreadSheet Theme Tests', () => {
       });
       s2.render();
       const rowCell = s2.facet.rowHeader!.getFirst() as RowCell;
-      const actionIcon = get(rowCell, 'actionIcons.[0]') as Image;
-      const actionIconStyle = actionIcon.parsedStyle;
+      const actionIcon = get(rowCell, 'actionIcons.[0]') as GuiIcon;
+      // @ts-ignore
+      const cfg = actionIcon.cfg;
 
       expect(actionIcon.name).toEqual(iconInfo.name);
-      expect(actionIconStyle.fill).toEqual(iconInfo.fill);
-      expect(actionIconStyle.width).toEqual(iconInfo.size);
-      expect(actionIconStyle.height).toEqual(iconInfo.size);
+      expect(cfg.fill).toEqual(iconInfo.fill);
+      expect(cfg.width).toEqual(iconInfo.size);
+      expect(cfg.height).toEqual(iconInfo.size);
     });
   });
 

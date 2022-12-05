@@ -10,7 +10,13 @@ export const PALETTE_MAP: Record<string, Palette> = {
   gray: paletteGray,
 };
 
+/**
+ * 默认字体
+ *
+ * -apple-system 会导致 iOS15 崩溃
+ * BlinkMacSystemFont 会导致 g5.0 下 jest-electron 测试环境崩溃
+ */
 export const FONT_FAMILY =
-  'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+  'Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif';
 
 export const INTERVAL_BAR_HEIGHT = 12;

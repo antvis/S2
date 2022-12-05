@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import {
   PivotSheet,
   S2Event,
+  SpreadSheet,
   type S2DataConfig,
   type S2Options,
 } from '@antv/s2';
@@ -11,7 +12,7 @@ import { cloneDeep } from 'lodash';
 import { useSpreadSheet } from '@/hooks';
 import type { SheetComponentsProps } from '@/components';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentsProps['options'] = {
   width: 200,
   height: 200,
   hdAdapter: false,
@@ -23,7 +24,8 @@ describe('useSpreadSheet tests', () => {
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
   ): SheetComponentsProps => {
     return {
-      spreadsheet: () => new PivotSheet(container, mockDataConfig, s2Options),
+      spreadsheet: () =>
+        new PivotSheet(container, mockDataConfig, s2Options as S2Options),
       options: s2Options,
       dataCfg: {
         fields,
@@ -43,7 +45,7 @@ describe('useSpreadSheet tests', () => {
     const { result } = renderHook(() =>
       useSpreadSheet({ ...getConfig(), sheetType: 'pivot', adaptive: false }),
     );
-    const s2 = result.current.s2Ref.current;
+    const s2: SpreadSheet = result.current.s2Ref.current!;
 
     expect(s2.options.width).toEqual(s2Options.width);
     expect(s2.options.height).toEqual(s2Options.height);
@@ -51,7 +53,7 @@ describe('useSpreadSheet tests', () => {
       s2.setOptions({ width: 300, height: 400 });
     });
 
-    const canvas = s2.container.get('el') as HTMLCanvasElement;
+    const canvas = s2.getCanvasElement();
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
 
@@ -77,7 +79,7 @@ describe('useSpreadSheet tests', () => {
     );
     const s2 = result.current.s2Ref.current;
 
-    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
+    expect(s2!.getInitColumnLeafNodes()).toHaveLength(2);
 
     // 很奇怪, rerender 之后始终拿到的两次 dataCfg 是一样的, 暂时先注释了
     // act(() => {
@@ -106,7 +108,7 @@ describe('useSpreadSheet tests', () => {
       }),
     );
 
-    const s2 = result.current.s2Ref.current;
+    const s2 = result.current.s2Ref.current!;
 
     s2.on(S2Event.LAYOUT_DESTROY, onDestroyFromS2Event);
 

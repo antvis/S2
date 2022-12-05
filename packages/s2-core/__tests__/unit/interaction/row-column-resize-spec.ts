@@ -1,11 +1,11 @@
 import {
   Group,
   DisplayObject,
-  type LineStyleProps,
   type RectStyleProps,
   type ParsedRectStyleProps,
+  Path,
 } from '@antv/g';
-import { pick } from 'lodash';
+import { get, pick } from 'lodash';
 import { createMockCellInfo } from '../../util/helpers';
 import type { BBox } from '@/engine/interface';
 import { RootInteraction } from '@/interaction/root';
@@ -156,35 +156,23 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should init resize group', () => {
     emitResizeEvent(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, {});
 
-    const guideLineAttrs: Partial<LineStyleProps> = {
-      lineDash: [3, 3],
-      stroke: '#326EF4',
-      lineWidth: 3,
-      opacity: 0.22,
-      fillOpacity: 0.1,
-    };
-
     const maskAttrs: Partial<RectStyleProps> = {
       x: 0,
       y: 0,
       width: s2Options.width,
       height: s2Options.height,
-      fill: 'transparent',
     };
     const maskAppendInfo = {
       isResizeArea: true,
       isResizeMask: true,
     };
 
-    const pickAttrs = (attrs: LineStyleProps) =>
-      pick(attrs, Object.keys(guideLineAttrs));
-
     const pickMaskAttrs = (attrs: ParsedRectStyleProps) =>
       pick(attrs, Object.keys(maskAttrs));
 
     const resizeMask = getResizeMask() as CustomRect;
 
-    const startGuideLine = getStartGuideLine();
+    const startGuideLine = getStartGuideLine() as Path;
     const endGuideLine = getEndGuideLine();
     // add resize group
     expect(rowColumnResizeInstance.resizeReferenceGroup).toBeDefined();
@@ -196,9 +184,12 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(resizeMask).not.toBeUndefined();
 
     // style
-    expect(pickAttrs(startGuideLine.parsedStyle)).toEqual(guideLineAttrs);
-    expect(pickAttrs(endGuideLine.parsedStyle)).toEqual(guideLineAttrs);
+    expect(startGuideLine.parsedStyle.lineDash).toEqual([3, 3]);
+    expect(startGuideLine.parsedStyle.stroke).toBeColor('#326EF4');
+    expect(startGuideLine.parsedStyle.lineWidth).toEqual(3);
+
     expect(pickMaskAttrs(resizeMask!.parsedStyle)).toEqual(maskAttrs);
+    expect(get(resizeMask!.parsedStyle.fill, 'alpha')).toEqual(0);
     expect(pick(resizeMask!.appendInfo, Object.keys(maskAppendInfo))).toEqual(
       maskAppendInfo,
     );

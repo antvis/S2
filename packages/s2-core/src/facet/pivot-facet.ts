@@ -319,8 +319,9 @@ export class PivotFacet extends BaseFacet {
 
       return (
         this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
-        colCellStyle?.padding?.left! +
-        colCellStyle?.padding?.right! +
+        colCellStyle!.padding!.left! +
+        colCellStyle!.padding!.right! +
+        colCellStyle!.verticalBorderWidth! * 2 +
         appendedWidth
       );
     }

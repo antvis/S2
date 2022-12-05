@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
+import type { Rect } from '@antv/g';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import type { Formatter, ViewMeta } from '@/common';
 import { PivotDataSet } from '@/data-set';
@@ -14,6 +15,13 @@ import {
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
+
+const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') => {
+  return s2.facet.panelGroup.children[0].find<DataCell>(
+    (item) =>
+      item instanceof DataCell && item.getMeta().valueField === valueField,
+  );
+};
 
 describe('Data Cell Tests', () => {
   describe('data cell formatter test', () => {
@@ -85,8 +93,9 @@ describe('Data Cell Tests', () => {
     });
     test('should draw right condition text shape', () => {
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[0];
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual('#5083F5');
+      const dataCell = findDataCell(s2, 'price');
+
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor('#5083F5');
     });
 
     test('should draw right condition icon shape', () => {
@@ -106,7 +115,7 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[2];
+      const dataCell = findDataCell(s2, 'cost');
       expect(get(dataCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(dataCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -127,9 +136,14 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[2];
-      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#fffae6');
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
+
+      const dataCell = findDataCell(s2, 'cost');
+      expect(
+        (get(dataCell, 'backgroundShape') as Rect).parsedStyle.fill,
+      ).toBeColor('#fffae6');
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
+        DEFAULT_FONT_COLOR,
+      );
     });
 
     test('should draw condition interval shape', () => {
@@ -165,7 +179,7 @@ describe('Data Cell Tests', () => {
 
       const dataCell = new DataCell(anotherMeta, s2);
       expect(
-        get(dataCell, 'conditionIntervalShape.attrs.width') +
+        get(dataCell, 'conditionIntervalShape.parsedStyle.width') +
           s2.theme.dataCell!.cell!.horizontalBorderWidth,
       ).toEqual(cellWidth);
     });
@@ -187,9 +201,13 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[2];
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(REVERSE_FONT_COLOR);
-      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
+      const dataCell = findDataCell(s2, 'cost');
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
+        REVERSE_FONT_COLOR,
+      );
+      expect(get(dataCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+        '#000000',
+      );
     });
 
     test('should draw DEFAULT_FONT_COLOR on text when background low brightness and intelligentReverseTextColor is false', () => {
@@ -208,9 +226,13 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[2];
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
-      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#000000');
+      const dataCell = findDataCell(s2, 'cost');
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
+        DEFAULT_FONT_COLOR,
+      );
+      expect(get(dataCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+        '#000000',
+      );
     });
 
     test('should draw DEFAULT_FONT_COLOR on text when background high brightness is and intelligentReverseTextColor is true', () => {
@@ -230,9 +252,13 @@ describe('Data Cell Tests', () => {
         },
       });
       s2.render();
-      const dataCell = s2.facet.panelGroup.children[0].children[2];
-      expect(get(dataCell, 'textShape.attrs.fill')).toEqual(DEFAULT_FONT_COLOR);
-      expect(get(dataCell, 'backgroundShape.attrs.fill')).toEqual('#ffffff');
+      const dataCell = findDataCell(s2, 'cost');
+      expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
+        DEFAULT_FONT_COLOR,
+      );
+      expect(get(dataCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
+        '#ffffff',
+      );
     });
   });
 });

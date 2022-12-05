@@ -4,6 +4,7 @@
  * https://github.com/antvis/S2/issues/1780
  */
 
+import { FederatedMouseEvent } from '@antv/g';
 import { getContainer } from '../util/helpers';
 import * as mockDataConfig from '../data/data-issue-1668.json';
 import type { S2Options } from '@/index';
@@ -31,7 +32,9 @@ describe('ScrollBar Track Offset Tests', () => {
       .spyOn(hScrollBar, 'updateThumbOffset')
       .mockImplementation(() => {});
 
-    hScrollBar.trackShape.emit('click', { x: 0, y: 0 });
+    const mouseEvt = new FederatedMouseEvent(s2.container.getEventService());
+    mouseEvt.type = 'click';
+    hScrollBar.trackShape.dispatchEvent(mouseEvt);
 
     expect(updateThumbOffsetSpy).toHaveBeenCalledWith(0);
   });
