@@ -309,7 +309,7 @@ describe('Pivot Mode Facet Test', () => {
       seriesNumberFacet.destroy();
     });
 
-    test('render corrent corner header', () => {
+    test('render correct corner header', () => {
       const { cornerHeader } = seriesNumberFacet;
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
