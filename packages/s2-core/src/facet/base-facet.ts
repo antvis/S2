@@ -145,7 +145,7 @@ export abstract class BaseFacet {
 
   public cornerHeader: CornerHeader;
 
-  public rowIndexHeader: SeriesNumberHeader | null;
+  public seriesNumberHeader: SeriesNumberHeader | null;
 
   public centerFrame: Frame;
 
@@ -629,7 +629,7 @@ export abstract class BaseFacet {
           this.setScrollOffset({ hRowScrollX });
 
           this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
-          this.rowIndexHeader?.onRowScrollX(
+          this.seriesNumberHeader?.onRowScrollX(
             hRowScrollX,
             KEY_GROUP_ROW_INDEX_RESIZE_AREA,
           );
@@ -1035,7 +1035,7 @@ export abstract class BaseFacet {
       scrollY,
       KEY_GROUP_ROW_RESIZE_AREA,
     );
-    this.rowIndexHeader?.onScrollXY(
+    this.seriesNumberHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_INDEX_RESIZE_AREA,
@@ -1167,14 +1167,14 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0 && !this.rowIndexHeader) {
-      this.rowIndexHeader = this.getSeriesNumberHeader();
+    if (seriesNumberWidth > 0 && !this.seriesNumberHeader) {
+      this.seriesNumberHeader = this.getSeriesNumberHeader();
     }
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    if (this.rowIndexHeader) {
-      this.foregroundGroup.appendChild(this.rowIndexHeader);
+    if (this.seriesNumberHeader) {
+      this.foregroundGroup.appendChild(this.seriesNumberHeader);
     }
     if (this.rowHeader) {
       this.foregroundGroup.appendChild(this.rowHeader);
@@ -1193,11 +1193,10 @@ export abstract class BaseFacet {
         height,
         viewportWidth,
         viewportHeight,
-        position: { x: 0, y },
+        position: { x: seriesNumberWidth, y },
         data: this.layoutResult.rowNodes,
         hierarchyType: this.cfg.hierarchyType,
         linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
-        seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
     }
@@ -1240,11 +1239,11 @@ export abstract class BaseFacet {
 
   protected getSeriesNumberHeader(): SeriesNumberHeader | null {
     return SeriesNumberHeader.getSeriesNumberHeader({
-      panelBBox: this.panelBBox,
-      seriesNumberWidth: this.getSeriesNumberWidth(),
       spreadsheet: this.spreadsheet,
-      leafNodes: this.layoutResult.rowsHierarchy.getNodes(0),
+      panelBBox: this.panelBBox,
       cornerWidth: this.cornerBBox.width,
+      seriesNumberWidth: this.getSeriesNumberWidth(),
+      rowsHierarchy: this.layoutResult.rowsHierarchy,
     });
   }
 

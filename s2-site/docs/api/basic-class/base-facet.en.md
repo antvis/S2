@@ -24,7 +24,7 @@ s2.facet.xx()
 | rowHeader                         | Outfit                                                    | [BaseHeaderConfig](#baseheaderconfig)                                                            |
 | columnHeader                      | Header                                                    | [BaseHeaderConfig](#baseheaderconfig)                                                            |
 | cornerHeader                      | Corner head                                               | [BaseHeaderConfig](#baseheaderconfig)                                                            |
-| rowIndexHeader                    | serial number                                             | [BaseHeaderConfig](#baseheaderconfig)                                                            |
+| seriesNumberHeader                    | serial number                                             | [BaseHeaderConfig](#baseheaderconfig)                                                            |
 | centerFrame                       | frame                                                     | [Group](https://g.antv.vision/zh/docs/api/group)                                                 |
 | gridInfo                          | grid information                                          | [GridInfo](#gridinfo)                                                                            |
 | getViewCellHeights                | Get cell height information                               | ( `layoutResult` : [LayoutResult](#layoutresult) ) => [ViewCellHeights](#viewcellheights)        |

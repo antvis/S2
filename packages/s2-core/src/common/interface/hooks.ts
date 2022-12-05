@@ -1,3 +1,4 @@
+import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { GetCellMeta } from '../../common/interface/basic';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
@@ -43,3 +44,12 @@ export type LayoutDataPosition = (
   spreadsheet: SpreadSheet,
   getCellData: GetCellMeta,
 ) => GetCellMeta;
+
+/**
+ * determine the series number cell coordinates
+ */
+export type LayoutSeriesNumberNodes = (
+  rowsHierarchy: Hierarchy,
+  seriesNumberWidth: number,
+  spreadsheet: SpreadSheet,
+) => Node[];

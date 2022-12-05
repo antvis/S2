@@ -214,7 +214,6 @@ export class RowCell extends HeaderCell {
 
     const {
       position,
-      seriesNumberWidth,
       width: headerWidth,
       viewportHeight: headerHeight,
       scrollX = 0,
@@ -244,11 +243,11 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const offsetX = position.x + x - scrollX + seriesNumberWidth;
+    const offsetX = position.x + x - scrollX;
     const offsetY = position.y + y - scrollY;
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
-      ? headerWidth - seriesNumberWidth - (x - scrollX)
+      ? headerWidth - position.x - (x - scrollX)
       : width;
 
     const attrs = getResizeAreaAttrs({

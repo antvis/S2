@@ -21,9 +21,9 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       spreadsheet,
       width,
       viewportHeight,
-      seriesNumberWidth,
       scrollY = 0,
       scrollX = 0,
+      position,
     } = this.headerConfig;
 
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
@@ -32,8 +32,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       return (
         viewportHeight + scrollY > item.y && // bottom
         scrollY < item.y + item.height && // top
-        width - seriesNumberWidth + scrollX > item.x && // left
-        scrollX - seriesNumberWidth < item.x + item.width
+        width - position.x + scrollX > item.x && // left
+        scrollX - position.x < item.x + item.width
       ); // right
     };
     each(data, (item: Node) => {
@@ -59,18 +59,9 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected offset() {
-    const {
-      scrollX = 0,
-      scrollY = 0,
-      position,
-      seriesNumberWidth,
-    } = this.headerConfig;
+    const { scrollX = 0, scrollY = 0, position } = this.headerConfig;
     // 向右多移动的seriesNumberWidth是序号的宽度
-    translateGroup(
-      this,
-      position.x - scrollX + seriesNumberWidth,
-      position.y - scrollY,
-    );
+    translateGroup(this, position.x - scrollX, position.y - scrollY);
   }
 
   protected clip(): void {

@@ -3,7 +3,6 @@ import type {
   CornerHeaderCallback,
   DataCellCallback,
   FrameCallback,
-  MappingDataItemCallback,
   MergedCellInfo,
   Pagination,
   S2Style,
@@ -14,19 +13,17 @@ import type {
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
+  LayoutSeriesNumberNodes,
 } from '../../common/interface/hooks';
 import type { BaseDataSet } from '../../data-set';
 import type {
+  BaseHeaderConfig,
   ColHeaderConfig,
   CornerHeaderConfig,
   RowHeaderConfig,
 } from '../../facet/header/interface';
 import type { SpreadSheet } from '../../sheet-type';
-import type {
-  CustomSVGIcon,
-  FilterDataItemCallback,
-  HeaderActionIcon,
-} from './basic';
+import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { Tooltip, TooltipContentType } from './tooltip';
@@ -86,6 +83,8 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   dataCell?: DataCellCallback;
   // custom corner cell
   cornerCell?: CellCallback<CornerHeaderConfig>;
+  // custom series number cell for pivot mode
+  seriesNumberCell?: CellCallback<BaseHeaderConfig>;
   // custom row cell
   rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
@@ -105,13 +104,8 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
   layoutDataPosition?: LayoutDataPosition;
-
-  /** ***********CUSTOM DATA CELL RENDER HOOKS**************** */
-  // determine the display part of multiple data item
-  filterDisplayDataItem?: FilterDataItemCallback;
-  // determine data mapping when shows in tooltip
-  mappingDisplayDataItem?: MappingDataItemCallback;
-  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
+  // determine the series number cell coordinates
+  layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
 }
 
 // 设备，pc || mobile

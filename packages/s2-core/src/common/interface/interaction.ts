@@ -20,6 +20,7 @@ import type { Node } from '../../facet/layout/node';
 import type { BaseEvent } from '../../interaction/base-event';
 import type { SpreadSheet } from '../../sheet-type';
 import type { RootInteraction } from '../../interaction';
+import type { SeriesNumberCell } from '../../cell/series-number-cell';
 import type { ResizeInteractionOptions } from './resize';
 import type { ViewMeta } from './basic';
 
@@ -29,6 +30,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | SeriesNumberCell
   | MergedCell
   | TableCornerCell
   | TableSeriesCell

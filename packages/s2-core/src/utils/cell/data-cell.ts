@@ -1,21 +1,5 @@
 import { isEqual } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
-import type {
-  CellMeta,
-  FilterDataItemCallback,
-  MappingDataItemCallback,
-  S2CellType,
-  ViewMetaData,
-} from '../../common/interface';
-
-export const handleDataItem = (
-  data: ViewMetaData,
-  callback?: FilterDataItemCallback | MappingDataItemCallback,
-) => {
-  return callback
-    ? callback(data?.[EXTRA_FIELD] as string, data?.[VALUE_FIELD])
-    : data?.[VALUE_FIELD];
-};
+import type { CellMeta, S2CellType } from '../../common/interface';
 
 /**
  * @description  Determine if the current cell belongs to Cells
