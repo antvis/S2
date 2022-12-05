@@ -34,9 +34,9 @@ const s2Options = {
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
 | frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
 | frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
-| hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
+| hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter) |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
-| placeholder |  `(meta: Record<string, any>) => string | string` |    |  | 空单元格的填充内容 |
+| placeholder |  `string \| (meta: Record<string, any>) => string` |    |  | 空单元格的填充内容 |
 | cornerText | string |    |  | 自定义角头文本 （自定义树 `hierarchyType: customTree` 时有效） |
 | cornerExtraFieldText | string |    |  | 自定义角头虚拟数值字段文本 （数值挂行头时有效，替换 "数值" 这两个字） |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
