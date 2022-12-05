@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.32.0...@antv/s2-react-v1.33.0) (2022-12-02)
+
+
+### Bug Fixes
+
+* **interaction:** 修复趋势分析表选中高亮效果无效 close [#1960](https://github.com/antvis/S2/issues/1960) ([#1961](https://github.com/antvis/S2/issues/1961)) ([5140b60](https://github.com/antvis/S2/commit/5140b6060d03b0290ddb4b314e7892520038f369))
+* 增加 style 配置为空时的容错 ([#1967](https://github.com/antvis/S2/issues/1967)) ([9250487](https://github.com/antvis/S2/commit/92504874e5f925a2fc2a640194f676c2bd32b55e))
+
+
+### Features
+
+* **header:** 去除 antd PageHeader 组件依赖 & Header 组件重构 close [#1981](https://github.com/antvis/S2/issues/1981) ([#1957](https://github.com/antvis/S2/issues/1957)) ([a3addd7](https://github.com/antvis/S2/commit/a3addd7494a2002e40c0cd00871bee47bedefb17))
+
 # [@antv/s2-react-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.31.0...@antv/s2-react-v1.32.0) (2022-11-21)
 
 
