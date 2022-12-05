@@ -21,7 +21,7 @@
   "scripts": {
     "start": "yarn develop",
     "develop": "dumi dev",
-    "build": "dumi build ",
+    "build": "dumi build",
     "clean": "rimraf .dumi",
     "preview": "dumi preview",
     "deploy": "dumi build &&  cp ./CNAME ./dist/CNAME && gh-pages -d dist",
