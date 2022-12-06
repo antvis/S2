@@ -1,6 +1,5 @@
 import type { Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
-import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -30,9 +29,9 @@ import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
-  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import { isReverse } from '../utils/color';
 
 /**
  * DataCell for panelGroup area
@@ -194,13 +193,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
-    const isMoreThanThreshold =
-      tinycolor(backgroundColor).getBrightness() <=
-      FONT_COLOR_BRIGHTNESS_THRESHOLD;
-
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
-      isMoreThanThreshold &&
+      isReverse(backgroundColor) &&
       textStyle.fill === DEFAULT_FONT_COLOR &&
       intelligentReverseTextColor
     ) {
