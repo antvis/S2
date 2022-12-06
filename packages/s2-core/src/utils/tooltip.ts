@@ -122,13 +122,18 @@ export const getAutoAdjustPosition = ({
   };
 };
 
-export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
+export const getTooltipDefaultOptions = <
+  Icon = Element | string,
+  Text = string,
+>(
+  options?: TooltipOptions<Icon, Text>,
+): TooltipOptions<Icon, Text> => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
     enableFormat: true,
     ...options,
-  } as TooltipOptions;
+  };
 };
 
 export const getMergedQuery = (meta: ViewMeta | null) => {

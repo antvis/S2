@@ -81,7 +81,6 @@ const getDataCfg = (): S2DataConfig => {
 
 const getOptions = (): SheetComponentsProps['options'] => {
   return {
-    debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'tree',

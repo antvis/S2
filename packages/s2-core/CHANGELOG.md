@@ -1,15 +1,12 @@
 # [@antv/s2-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-v1.35.0...@antv/s2-v2.0.0-next.1) (2022-11-25)
 
-
 ### Bug Fixes
 
-* 下钻后meta.childField不正确 ([#1788](https://github.com/antvis/S2/issues/1788)) ([1c61dd4](https://github.com/antvis/S2/commit/1c61dd4081c9d3fed6f276b0546865914040b07a))
+* 下钻后 meta.childField 不正确 ([#1788](https://github.com/antvis/S2/issues/1788)) ([1c61dd4](https://github.com/antvis/S2/commit/1c61dd4081c9d3fed6f276b0546865914040b07a))
 * 重构绘制盒模型，修复边框偏移问题 ([#1854](https://github.com/antvis/S2/issues/1854)) ([f7e0858](https://github.com/antvis/S2/commit/f7e0858a937ea557532a7fff948e9af3b6a1fdff))
-
 
 * feat!: 2.0 next 预览版发布 ([de5a406](https://github.com/antvis/S2/commit/de5a406f4fd5e0db23eea46c8e7185589215c195))
 * feat!: 2.0 预览版发布 ([9abb76d](https://github.com/antvis/S2/commit/9abb76dd40c65ed2a6a122b6f2b20a9b963c8a58))
-
 
 ### Features
 
@@ -18,21 +15,19 @@
 * **layout:** 自定义行列头 ([#1719](https://github.com/antvis/S2/issues/1719)) ([2e0746d](https://github.com/antvis/S2/commit/2e0746dc9ca4ec45d50b35a9408b8827252c1bfa))
 * **total:** 全量移除所有 totalData 配置 ([#1799](https://github.com/antvis/S2/issues/1799)) ([23cc219](https://github.com/antvis/S2/commit/23cc21933e02d5da6b261afe1fe1bc67008054d8))
 * version break ([064c0de](https://github.com/antvis/S2/commit/064c0de861f2e87814acf394cbdf6305397d476d))
-* 升级的渲染引擎g5.0 ([#1924](https://github.com/antvis/S2/issues/1924)) ([820a310](https://github.com/antvis/S2/commit/820a310998bae5c0324c2f3144747f7dbe0097d1)), closes [#1852](https://github.com/antvis/S2/issues/1852) [#1862](https://github.com/antvis/S2/issues/1862)
+* 升级的渲染引擎 g5.0 ([#1924](https://github.com/antvis/S2/issues/1924)) ([820a310](https://github.com/antvis/S2/commit/820a310998bae5c0324c2f3144747f7dbe0097d1)), closes [#1852](https://github.com/antvis/S2/issues/1852) [#1862](https://github.com/antvis/S2/issues/1862)
 * 在生成 id 时，对 undefined, null 做区分 ([#1828](https://github.com/antvis/S2/issues/1828)) ([0687779](https://github.com/antvis/S2/commit/06877794be701608e5a68e6cab43e56927d59967))
 * 移动端组件适配 ([#1833](https://github.com/antvis/S2/issues/1833)) ([bd2e71e](https://github.com/antvis/S2/commit/bd2e71e0d1d55057af77d435a10730b7ac929324))
 
-
 ### BREAKING CHANGES
 
-* G5.0, 透视表自定义行列头, 数据流重构
-* G5.0, 行列头自定义, 数据流
+* G5.0, 透视表自定义行列头，数据流重构
+* G5.0, 行列头自定义，数据流
 * 2.0-next
 * 2.0
 * https://github.com/antvis/S2/discussions/1933
 
 # [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
-
 
 ### Features
 
@@ -40,20 +35,17 @@
 
 # [@antv/s2-v1.34.1](https://github.com/antvis/S2/compare/@antv/s2-v1.34.0...@antv/s2-v1.34.1) (2022-11-18)
 
-
 ### Bug Fixes
 
 * **interaction:** 修复多列头多指标场景下隐藏列头错误 close [#1721](https://github.com/antvis/S2/issues/1721) ([#1905](https://github.com/antvis/S2/issues/1905)) ([fb8838f](https://github.com/antvis/S2/commit/fb8838f18ee9e966da76f7a038149351143e3769))
-* 修复sortedDimensionValues过滤不正确而导致的排序错乱的问题 ([#1908](https://github.com/antvis/S2/issues/1908)) ([bfe02cb](https://github.com/antvis/S2/commit/bfe02cbdae11793e8fcdc267f19ad1572354bc28))
+* 修复 sortedDimensionValues 过滤不正确而导致的排序错乱的问题 ([#1908](https://github.com/antvis/S2/issues/1908)) ([bfe02cb](https://github.com/antvis/S2/commit/bfe02cbdae11793e8fcdc267f19ad1572354bc28))
 * 修复圈选偏移问题 ([#1883](https://github.com/antvis/S2/issues/1883)) ([fbffdcf](https://github.com/antvis/S2/commit/fbffdcfa1c57e4e66016826c43cadf8f066c0ee4))
 
 # [@antv/s2-v1.34.0](https://github.com/antvis/S2/compare/@antv/s2-v1.33.1...@antv/s2-v1.34.0) (2022-11-11)
 
-
 ### Bug Fixes
 
 * 修复行头链接跳转时，获取行数据的问题 ([#1888](https://github.com/antvis/S2/issues/1888)) ([bee41fd](https://github.com/antvis/S2/commit/bee41fdb50fe4d116e738de53295e818a729a9cb))
-
 
 ### Features
 
@@ -62,28 +54,24 @@
 
 # [@antv/s2-v1.33.1](https://github.com/antvis/S2/compare/@antv/s2-v1.33.0...@antv/s2-v1.33.1) (2022-11-04)
 
-
 ### Bug Fixes
 
-* 修复 mergedCell 缺失theme 导致的报错 ([#1874](https://github.com/antvis/S2/issues/1874)) ([9da12a9](https://github.com/antvis/S2/commit/9da12a93b48f0f12903caba92d362d3174e3fe81))
+* 修复 mergedCell 缺失 theme 导致的报错 ([#1874](https://github.com/antvis/S2/issues/1874)) ([9da12a9](https://github.com/antvis/S2/commit/9da12a93b48f0f12903caba92d362d3174e3fe81))
 
 # [@antv/s2-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-v1.32.0...@antv/s2-v1.33.0) (2022-10-24)
 
-
 ### Bug Fixes
 
-* bold字体对应数字字重不正确 ([#1841](https://github.com/antvis/S2/issues/1841)) ([abe1607](https://github.com/antvis/S2/commit/abe16074ae7924190e2aa4c2f1bf64bad0151328))
-* customFilter执行时不再执行defaultFilter ([#1814](https://github.com/antvis/S2/issues/1814)) ([21710b2](https://github.com/antvis/S2/commit/21710b260dc41039e832d48d673a63dc21c60454))
+* bold 字体对应数字字重不正确 ([#1841](https://github.com/antvis/S2/issues/1841)) ([abe1607](https://github.com/antvis/S2/commit/abe16074ae7924190e2aa4c2f1bf64bad0151328))
+* customFilter 执行时不再执行 defaultFilter ([#1814](https://github.com/antvis/S2/issues/1814)) ([21710b2](https://github.com/antvis/S2/commit/21710b260dc41039e832d48d673a63dc21c60454))
 * **interaction:** 修复滚动刷选 onDataCellBrushSelection 未透出正确的单元格 close [#1817](https://github.com/antvis/S2/issues/1817) ([#1825](https://github.com/antvis/S2/issues/1825)) ([5866ba1](https://github.com/antvis/S2/commit/5866ba1d33daa144a18f2771f77785c524fe67c3))
 * **theme:** 获取标准色时增加容错和兜底 ([#1847](https://github.com/antvis/S2/issues/1847)) ([6e61b0c](https://github.com/antvis/S2/commit/6e61b0c69aee3389397b433bc63c227f42376f1a))
 * 紧凑模式下节点宽度计算错误 ([#1834](https://github.com/antvis/S2/issues/1834)) ([7f2f2b3](https://github.com/antvis/S2/commit/7f2f2b3b699eb8dbc8b43ce12f4b3a32888b17e5))
 * 自适应模式节点宽度计算错误 ([#1839](https://github.com/antvis/S2/issues/1839)) ([7bdceb2](https://github.com/antvis/S2/commit/7bdceb251f1d418025e99209145b67a9bf2ef786))
 
-
 ### Features
 
 * 在背景字段标记中添加 文本智能反色 ([#1842](https://github.com/antvis/S2/issues/1842)) ([80cbf20](https://github.com/antvis/S2/commit/80cbf2060ac530e0edeae1f7adef7a56303f8723))
-
 
 ### Reverts
 
@@ -91,13 +79,11 @@
 
 # [@antv/s2-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-v1.31.1...@antv/s2-v1.32.0) (2022-10-14)
 
-
 ### Bug Fixes
 
-* data-cell文字无法交互 ([#1822](https://github.com/antvis/S2/issues/1822)) ([1ede665](https://github.com/antvis/S2/commit/1ede6657598fd58f4360f054418a579684f9b116))
+* data-cell 文字无法交互 ([#1822](https://github.com/antvis/S2/issues/1822)) ([1ede665](https://github.com/antvis/S2/commit/1ede6657598fd58f4360f054418a579684f9b116))
 * **tooltip:** tooltip 显示时不应该强制清空 dom ([#1816](https://github.com/antvis/S2/issues/1816)) ([98c95d8](https://github.com/antvis/S2/commit/98c95d8ab11df26a9618921d36bb9ce732495fcd))
 * 带行头复制报错修复 ([#1812](https://github.com/antvis/S2/issues/1812)) ([0558ed3](https://github.com/antvis/S2/commit/0558ed35580f54abe01f9637a4f1ad4745cf0328))
-
 
 ### Features
 
@@ -105,37 +91,32 @@
 
 # [@antv/s2-v1.31.1](https://github.com/antvis/S2/compare/@antv/s2-v1.31.0...@antv/s2-v1.31.1) (2022-10-14)
 
-
 ### Bug Fixes
 
-* data-cell文字无法交互 ([89faca0](https://github.com/antvis/S2/commit/89faca03f5a5282ae4d67114d6f7daed8f59660a))
+* data-cell 文字无法交互 ([89faca0](https://github.com/antvis/S2/commit/89faca03f5a5282ae4d67114d6f7daed8f59660a))
 
 # [@antv/s2-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-v1.30.0...@antv/s2-v1.31.0) (2022-10-02)
 
-
 ### Bug Fixes
 
-* clipbardItem不存在时不报错 ([#1791](https://github.com/antvis/S2/issues/1791)) ([e7261ff](https://github.com/antvis/S2/commit/e7261ff1e8b44019fe75204a2adccade505c16d5))
+* clipbardItem 不存在时不报错 ([#1791](https://github.com/antvis/S2/issues/1791)) ([e7261ff](https://github.com/antvis/S2/commit/e7261ff1e8b44019fe75204a2adccade505c16d5))
 * **scroll:** 修复点击滚动条滑道区域表格渲染空白 close [#1764](https://github.com/antvis/S2/issues/1764) [#1780](https://github.com/antvis/S2/issues/1780) ([#1785](https://github.com/antvis/S2/issues/1785)) ([41166be](https://github.com/antvis/S2/commit/41166be08065ebdea3db7202eec141b850bcaae3))
 * **sort:** 修复 tooltip 中排序菜单未记住上一次选中状态 close [#1716](https://github.com/antvis/S2/issues/1716) ([#1746](https://github.com/antvis/S2/issues/1746)) ([67e09c4](https://github.com/antvis/S2/commit/67e09c43b6508cbd141dc47fedbebfbc247cbb3f))
 * table formatter with header selected ([#1786](https://github.com/antvis/S2/issues/1786)) ([71a7a3b](https://github.com/antvis/S2/commit/71a7a3b9c2f07b754c1aced0b82eea90249044c0))
 * 将依赖检查移动到外层 ([#1792](https://github.com/antvis/S2/issues/1792)) ([0a8e4ed](https://github.com/antvis/S2/commit/0a8e4edb55a81f0dfdcefbcb6ef38d5642ca179b))
 * 明细表奇数行背景色不生效修复 ([#1795](https://github.com/antvis/S2/issues/1795)) ([f1bd3ec](https://github.com/antvis/S2/commit/f1bd3ecdce0318bb11739f0f58bbec0755403994))
 
-
 ### Features
 
-* 树状结构下, 行小计数据显示配置规则 ([#1797](https://github.com/antvis/S2/issues/1797)) ([68a397d](https://github.com/antvis/S2/commit/68a397d0c296399e35e2ab8362b789e771ffcb99))
+* 树状结构下，行小计数据显示配置规则 ([#1797](https://github.com/antvis/S2/issues/1797)) ([68a397d](https://github.com/antvis/S2/commit/68a397d0c296399e35e2ab8362b789e771ffcb99))
 
 # [@antv/s2-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-v1.29.1...@antv/s2-v1.30.0) (2022-09-16)
-
 
 ### Bug Fixes
 
 * 修复合并单元格条件格式不生效问题 close [#1751](https://github.com/antvis/S2/issues/1751) ([#1753](https://github.com/antvis/S2/issues/1753)) ([50570cd](https://github.com/antvis/S2/commit/50570cdd717cd152d8090aa737ce722621a844aa))
 * 修复多指标单元格展示错误 ([#1754](https://github.com/antvis/S2/issues/1754)) ([228e101](https://github.com/antvis/S2/commit/228e101e37ab341886427dbbc7d7f3858e778dc5))
 * 子弹图左侧文字未对齐 ([#1759](https://github.com/antvis/S2/issues/1759)) ([d061d47](https://github.com/antvis/S2/commit/d061d47d5bff271aa77c1c00551985110eac0405))
-
 
 ### Features
 
@@ -144,7 +125,6 @@
 
 # [@antv/s2-v1.29.1](https://github.com/antvis/S2/compare/@antv/s2-v1.29.0...@antv/s2-v1.29.1) (2022-09-13)
 
-
 ### Bug Fixes
 
 * 修复表格 onDestroy 卸载事件无法触发 ([#1733](https://github.com/antvis/S2/issues/1733)) ([2195f1a](https://github.com/antvis/S2/commit/2195f1aec681085ec32ee1446b780e00af901c47))
@@ -152,26 +132,22 @@
 
 # [@antv/s2-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-v1.28.0...@antv/s2-v1.29.0) (2022-09-05)
 
-
 ### Bug Fixes
 
 * **types:** 修复严格模式下 S2Options 类型报错 ([#1723](https://github.com/antvis/S2/issues/1723)) ([ef55f55](https://github.com/antvis/S2/commit/ef55f559f940614b19f76fbc5c941e114f220461))
-* 修复tooltip 点击空白无法消失的问题 ([#1729](https://github.com/antvis/S2/issues/1729)) ([baa7245](https://github.com/antvis/S2/commit/baa72454702f34ccd9dc5957e8574b8e38087c62))
-
+* 修复 tooltip 点击空白无法消失的问题 ([#1729](https://github.com/antvis/S2/issues/1729)) ([baa7245](https://github.com/antvis/S2/commit/baa72454702f34ccd9dc5957e8574b8e38087c62))
 
 ### Features
 
-* 导出组件层CustomTooltip类 ([#1726](https://github.com/antvis/S2/issues/1726)) ([46270ab](https://github.com/antvis/S2/commit/46270ab0ae6e42cf92dcf77c0a35a70e07b9b10c))
+* 导出组件层 CustomTooltip 类 ([#1726](https://github.com/antvis/S2/issues/1726)) ([46270ab](https://github.com/antvis/S2/commit/46270ab0ae6e42cf92dcf77c0a35a70e07b9b10c))
 
 # [@antv/s2-v1.28.0](https://github.com/antvis/S2/compare/@antv/s2-v1.27.0...@antv/s2-v1.28.0) (2022-08-29)
-
 
 ### Bug Fixes
 
 * **pagination:** 透传组件分页参数 & 修复国际化不生效 close [#1697](https://github.com/antvis/S2/issues/1697) ([#1698](https://github.com/antvis/S2/issues/1698)) ([be334fc](https://github.com/antvis/S2/commit/be334fcef6a11d08358f007eba805cbd380560d5))
-* tablefacet销毁时off事件 ([#1704](https://github.com/antvis/S2/issues/1704)) ([9067538](https://github.com/antvis/S2/commit/906753878612b790dcd6c0f9298d0049c48d2b8d))
-* text居中居右时link绘制错位 ([#1706](https://github.com/antvis/S2/issues/1706)) ([da9af7a](https://github.com/antvis/S2/commit/da9af7a605af72a0d3b477e502aad790f17a942a))
-
+* tablefacet 销毁时 off 事件 ([#1704](https://github.com/antvis/S2/issues/1704)) ([9067538](https://github.com/antvis/S2/commit/906753878612b790dcd6c0f9298d0049c48d2b8d))
+* text 居中居右时 link 绘制错位 ([#1706](https://github.com/antvis/S2/issues/1706)) ([da9af7a](https://github.com/antvis/S2/commit/da9af7a605af72a0d3b477e502aad790f17a942a))
 
 ### Features
 
@@ -180,59 +156,52 @@
 
 # [@antv/s2-v1.27.0](https://github.com/antvis/S2/compare/@antv/s2-v1.26.0...@antv/s2-v1.27.0) (2022-08-22)
 
-
 ### Features
 
-* actionIcons支持细粒度展示控制 ([#1689](https://github.com/antvis/S2/issues/1689)) ([8029511](https://github.com/antvis/S2/commit/80295113965a77f0e1756c7d0f32c95ec7550834))
+* actionIcons 支持细粒度展示控制 ([#1689](https://github.com/antvis/S2/issues/1689)) ([8029511](https://github.com/antvis/S2/commit/80295113965a77f0e1756c7d0f32c95ec7550834))
 
 # [@antv/s2-v1.26.0](https://github.com/antvis/S2/compare/@antv/s2-v1.25.0...@antv/s2-v1.26.0) (2022-08-15)
 
-
 ### Bug Fixes
 
-* **interaction:** 优化resetSheetStyle性能 ([#1653](https://github.com/antvis/S2/issues/1653)) ([972afc6](https://github.com/antvis/S2/commit/972afc6c4cfc5192db753c1488f4ed852254ae13))
+* **interaction:** 优化 resetSheetStyle 性能 ([#1653](https://github.com/antvis/S2/issues/1653)) ([972afc6](https://github.com/antvis/S2/commit/972afc6c4cfc5192db753c1488f4ed852254ae13))
 * **resize:** 修复总计列存在子节点时无法调整宽度 ([#1675](https://github.com/antvis/S2/issues/1675)) ([62f3459](https://github.com/antvis/S2/commit/62f3459bdccba72f40404a9ccdd5572202bbfcee))
 * **scroll:** 修复滚动条显示越界 & 优化滚动性能 ([#1671](https://github.com/antvis/S2/issues/1671)) ([cfbccb9](https://github.com/antvis/S2/commit/cfbccb93aaa78edbcf1e7860b940a5431ead8b7a))
 * **scroll:** 修复滚动边界判断错误导致无法滚动 ([#1664](https://github.com/antvis/S2/issues/1664)) ([cf4b8b3](https://github.com/antvis/S2/commit/cf4b8b3e05fa7cf4d5386a3d4a1ad6d98c5179ce))
 * 修复明细表 onRaneSort 失效问题 ([#1678](https://github.com/antvis/S2/issues/1678)) ([3563f3c](https://github.com/antvis/S2/commit/3563f3c9a48998827722babb265e7889b7a86a20))
 * 修复趋势分析表对于不同个数同环比列头复制时，数据不对齐的问题 ([#1679](https://github.com/antvis/S2/issues/1679)) ([ba88dec](https://github.com/antvis/S2/commit/ba88dec2c2ef9506264c64ba069685c0bd9a4c67))
 * 修复选中态的描边宽度样式问题 ([#1654](https://github.com/antvis/S2/issues/1654)) ([577cd84](https://github.com/antvis/S2/commit/577cd84bebe3351bf93b8f1a33c298b7cde66b11))
-* 双击时不取消datacell 选中态 ([#1682](https://github.com/antvis/S2/issues/1682)) ([779940b](https://github.com/antvis/S2/commit/779940b149d2c7b6d18f7e9ec5a1652e3b559273))
+* 双击时不取消 datacell 选中态 ([#1682](https://github.com/antvis/S2/issues/1682)) ([779940b](https://github.com/antvis/S2/commit/779940b149d2c7b6d18f7e9ec5a1652e3b559273))
 * 链接字段高亮下划线过长 ([#1652](https://github.com/antvis/S2/issues/1652)) ([4a79470](https://github.com/antvis/S2/commit/4a794704a48147a91379666c7530c60d9f4644e8))
-
 
 ### Features
 
-* 刷选时支持高亮所有对应的行列头cell ([#1680](https://github.com/antvis/S2/issues/1680)) ([c7fb53f](https://github.com/antvis/S2/commit/c7fb53f403608e5194d745408966cc9b18c92025))
+* 刷选时支持高亮所有对应的行列头 cell ([#1680](https://github.com/antvis/S2/issues/1680)) ([c7fb53f](https://github.com/antvis/S2/commit/c7fb53f403608e5194d745408966cc9b18c92025))
 * 明细表行头单元格支持拖拽 ([#1655](https://github.com/antvis/S2/issues/1655)) ([ab470cb](https://github.com/antvis/S2/commit/ab470cb43eb1ed0d0162b3bed48e568ecaf42cb2))
-
 
 ### Performance Improvements
 
-* 优化生成grid模式时性能问题 ([#1686](https://github.com/antvis/S2/issues/1686)) ([a4f52e6](https://github.com/antvis/S2/commit/a4f52e677ee30a7987614846fa061541d4170a97))
+* 优化生成 grid 模式时性能问题 ([#1686](https://github.com/antvis/S2/issues/1686)) ([a4f52e6](https://github.com/antvis/S2/commit/a4f52e677ee30a7987614846fa061541d4170a97))
 
 # [@antv/s2-v1.25.0](https://github.com/antvis/S2/compare/@antv/s2-v1.24.0...@antv/s2-v1.25.0) (2022-08-05)
-
 
 ### Bug Fixes
 
 *  修复存在 0 时，数值为 number 时，排序错误的问题 ([#1644](https://github.com/antvis/S2/issues/1644)) ([8138c69](https://github.com/antvis/S2/commit/8138c699dd4e14385ee8dc78ddcaca6f8f7a5ec0))
-* **interaction:** 向左移动到不完全可见cell的时候，没有滚动过去 ([#1607](https://github.com/antvis/S2/issues/1607)) ([42541a5](https://github.com/antvis/S2/commit/42541a55f50158f5241c5777cb5d70a4c26599af))
+* **interaction:** 向左移动到不完全可见 cell 的时候，没有滚动过去 ([#1607](https://github.com/antvis/S2/issues/1607)) ([42541a5](https://github.com/antvis/S2/commit/42541a55f50158f5241c5777cb5d70a4c26599af))
 * **layout:** 修复 treeRowsWidth 配置不生效 close [#1622](https://github.com/antvis/S2/issues/1622) ([#1646](https://github.com/antvis/S2/issues/1646)) ([9e70d62](https://github.com/antvis/S2/commit/9e70d62549da5e14d40d373d23d8592763c550a3))
 * **pagination:** 分页配置未传 current 参数时表格渲染空白 ([#1633](https://github.com/antvis/S2/issues/1633)) ([1c65443](https://github.com/antvis/S2/commit/1c654437073071c1fb8b118018b3007922d198f4))
 * sortByFunc 排序后行列维度节点丢失 ([#1606](https://github.com/antvis/S2/issues/1606)) ([3a20d7d](https://github.com/antvis/S2/commit/3a20d7d8d4f86d3413c191cda08c71cd293538b0))
 * **strategysheet:** 修复趋势分析表列头格式化不生效 ([#1616](https://github.com/antvis/S2/issues/1616)) ([ca3cbb5](https://github.com/antvis/S2/commit/ca3cbb58da57d7989654bb982e6a508d0fd3a42a))
-* 明细表复制时无需使用formatter格式化列头label ([#1610](https://github.com/antvis/S2/issues/1610)) ([8f13911](https://github.com/antvis/S2/commit/8f13911a176384c8ce27ad6d02862dd3ba04e27c))
-
+* 明细表复制时无需使用 formatter 格式化列头 label ([#1610](https://github.com/antvis/S2/issues/1610)) ([8f13911](https://github.com/antvis/S2/commit/8f13911a176384c8ce27ad6d02862dd3ba04e27c))
 
 ### Features
 
 * **interaction:** 宽高调整事件透出 resizedWidth/resizedHeight, 修复错误类型定义 ([#1638](https://github.com/antvis/S2/issues/1638)) ([fbf45df](https://github.com/antvis/S2/commit/fbf45dfffaf7b17409010c16c7f6a5bb73133197))
-* 复制支持html格式 ([#1647](https://github.com/antvis/S2/issues/1647)) ([3ea6349](https://github.com/antvis/S2/commit/3ea634970a162d869cf12dad7aa754bebafd30f3))
-* 支持resize最右侧column ([#1611](https://github.com/antvis/S2/issues/1611)) ([f63bfa2](https://github.com/antvis/S2/commit/f63bfa2a0e95c8c42c064d0e2e56ce9550ac50c6))
+* 复制支持 html 格式 ([#1647](https://github.com/antvis/S2/issues/1647)) ([3ea6349](https://github.com/antvis/S2/commit/3ea634970a162d869cf12dad7aa754bebafd30f3))
+* 支持 resize 最右侧 column ([#1611](https://github.com/antvis/S2/issues/1611)) ([f63bfa2](https://github.com/antvis/S2/commit/f63bfa2a0e95c8c42c064d0e2e56ce9550ac50c6))
 
 # [@antv/s2-v1.24.0](https://github.com/antvis/S2/compare/@antv/s2-v1.23.0...@antv/s2-v1.24.0) (2022-07-22)
-
 
 ### Bug Fixes
 
@@ -240,61 +209,56 @@
 * **strategysheet:** 修复单元格宽度拖拽变小后子弹图宽度计算错误 ([#1584](https://github.com/antvis/S2/issues/1584)) ([99b8593](https://github.com/antvis/S2/commit/99b859392c7151d5700bf1c505a02f795b9a3f80))
 * **strategysheet:** 修复子弹图进度小于 1% 时显示错误的问题 ([#1563](https://github.com/antvis/S2/issues/1563)) ([936ca6a](https://github.com/antvis/S2/commit/936ca6a3a7bf40ddc0ff1a0271c3a5ffb1091dcf))
 * **strategysheet:** 修复子弹图颜色显示错误 & 百分比精度问题 ([#1588](https://github.com/antvis/S2/issues/1588)) ([c4bb48c](https://github.com/antvis/S2/commit/c4bb48cbe128b47e3574af903142934fd7452846))
-* 下钻个数为-1时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
+* 下钻个数为-1 时应展示全部下钻数据 ([#1557](https://github.com/antvis/S2/issues/1557)) ([13caa5b](https://github.com/antvis/S2/commit/13caa5b5ad2c08c7c98685a97fb34dc8f04c7fe5))
 * 修复 line 包围盒问题 ([#1566](https://github.com/antvis/S2/issues/1566)) ([7fb4352](https://github.com/antvis/S2/commit/7fb435289f8de078382426695a2ebc18b8c25efc))
-* 修复初始化时, border不见的问题 ([#1581](https://github.com/antvis/S2/issues/1581)) ([5d9e204](https://github.com/antvis/S2/commit/5d9e2041466e38e603eb509bb9d35398484f9f65))
+* 修复初始化时，border 不见的问题 ([#1581](https://github.com/antvis/S2/issues/1581)) ([5d9e204](https://github.com/antvis/S2/commit/5d9e2041466e38e603eb509bb9d35398484f9f65))
 * 修复合并单元格临界情况被错误移除的问题 ([#1574](https://github.com/antvis/S2/issues/1574)) ([311eeaa](https://github.com/antvis/S2/commit/311eeaa64e612ca81bbb5d5f5ea036d4bfe2111d))
-* 修复合并单元格被grid边框覆盖的问题 ([#1569](https://github.com/antvis/S2/issues/1569)) ([3498edb](https://github.com/antvis/S2/commit/3498edbe901ac99605d61191fcf55530b71dd32e))
+* 修复合并单元格被 grid 边框覆盖的问题 ([#1569](https://github.com/antvis/S2/issues/1569)) ([3498edb](https://github.com/antvis/S2/commit/3498edbe901ac99605d61191fcf55530b71dd32e))
 * 修复明细表最左侧边框绘制问题 ([#1562](https://github.com/antvis/S2/issues/1562)) ([a8b62bb](https://github.com/antvis/S2/commit/a8b62bbe6421829bd2067030caeb5bbad0651649))
-* 修复移动端滚动没有prevent问题 ([#1549](https://github.com/antvis/S2/issues/1549)) ([a3ab84c](https://github.com/antvis/S2/commit/a3ab84c80b582190bee6094b1c1c44e5ef0b9b3c))
+* 修复移动端滚动没有 prevent 问题 ([#1549](https://github.com/antvis/S2/issues/1549)) ([a3ab84c](https://github.com/antvis/S2/commit/a3ab84c80b582190bee6094b1c1c44e5ef0b9b3c))
 * 修复趋势分析表导出问题 ([#1553](https://github.com/antvis/S2/issues/1553)) ([457c378](https://github.com/antvis/S2/commit/457c378ae346eb19a3d7822fd887eafecced420c))
-* 有冻结行且有垂直scrollWidth时冻结行无法 resize ([#1594](https://github.com/antvis/S2/issues/1594)) ([bcdcbe1](https://github.com/antvis/S2/commit/bcdcbe1a8ab889b2b040625e01989c099854843c))
+* 有冻结行且有垂直 scrollWidth 时冻结行无法 resize ([#1594](https://github.com/antvis/S2/issues/1594)) ([bcdcbe1](https://github.com/antvis/S2/commit/bcdcbe1a8ab889b2b040625e01989c099854843c))
 * 维度按指标汇总值排序时结果错误 ([#1550](https://github.com/antvis/S2/issues/1550)) ([b60564c](https://github.com/antvis/S2/commit/b60564cea08fac0a5334f38b1b1d4882d22d284b))
-
 
 ### Features
 
 * **interaction:** 行列宽高支持控制拖拽范围 ([#1583](https://github.com/antvis/S2/issues/1583)) ([1d51272](https://github.com/antvis/S2/commit/1d51272ee339f2c31b6236e16406c1b52f57a3b9))
 * **layout:** 支持自定义行/列单元格宽度 close [#1585](https://github.com/antvis/S2/issues/1585) ([#1591](https://github.com/antvis/S2/issues/1591)) ([ea5c1f3](https://github.com/antvis/S2/commit/ea5c1f3b41a0ccc9766fe2466924db1b8ea586ee))
-* **tooltip:** 支持设置多个class类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
+* **tooltip:** 支持设置多个 class 类名 ([#1546](https://github.com/antvis/S2/issues/1546)) ([1fb22c6](https://github.com/antvis/S2/commit/1fb22c64f32d739acbf9dee681b126a703b38a20))
 * 当前只能复制数值可带表头复制 ([#1590](https://github.com/antvis/S2/issues/1590)) ([b2ff70e](https://github.com/antvis/S2/commit/b2ff70e11d3abaab318aec9acc4bc4e2ac8c4114)), closes [#1583](https://github.com/antvis/S2/issues/1583)
 
 # [@antv/s2-v1.23.0](https://github.com/antvis/S2/compare/@antv/s2-v1.22.0...@antv/s2-v1.23.0) (2022-07-08)
-
 
 ### Bug Fixes
 
 * 🐛 明细表大数据量下滚动条无法滚动到顶部 ([#1529](https://github.com/antvis/S2/issues/1529)) ([2791be9](https://github.com/antvis/S2/commit/2791be9769b3082bdfe8ae9a8ae0831ca821251a)), closes [#1528](https://github.com/antvis/S2/issues/1528)
 * **drill-down:** values 配置为空时未显示下钻 icon ([#1535](https://github.com/antvis/S2/issues/1535)) ([8a1d27c](https://github.com/antvis/S2/commit/8a1d27c1a517e7a04d1037ef95b57450adc7df2c))
-* **interaction:** 修复按下快捷选中按钮之后通过触摸板切换页面，快捷键状态没有reset的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
+* **interaction:** 修复按下快捷选中按钮之后通过触摸板切换页面，快捷键状态没有 reset 的问题 ([#1496](https://github.com/antvis/S2/issues/1496)) ([704e8e0](https://github.com/antvis/S2/commit/704e8e0f4e8cbbeb2b1e0e1dacbd2c3dd13b9dbc))
 * **interaction:** 修复链接跳转会触发单选和 Tooltip 显示的问题 ([#1498](https://github.com/antvis/S2/issues/1498)) ([ebcb0c2](https://github.com/antvis/S2/commit/ebcb0c2c663da89c457a2149f6bc19fbde2ab8c9))
 * **theme:** 修复调整序号列后色板丢失 close [#1538](https://github.com/antvis/S2/issues/1538) ([#1543](https://github.com/antvis/S2/issues/1543)) ([6678848](https://github.com/antvis/S2/commit/6678848094c5c707a5586b33117bfd0b968fc302))
 * 优化 mini 图坐标计算逻辑 ([#1534](https://github.com/antvis/S2/issues/1534)) ([88a61e0](https://github.com/antvis/S2/commit/88a61e08b70750401d86e99dd5a6d320a1390da8))
 * 修复 pivot 无法获取整行数据，而报错的问题 ([#1504](https://github.com/antvis/S2/issues/1504)) ([89e22d3](https://github.com/antvis/S2/commit/89e22d3ffd425b3e1e7a180744b3d85e3635adb6))
 * 修复大量数据下，行列总计单元格计算时耗时和内存问题 ([#1531](https://github.com/antvis/S2/issues/1531)) ([2913ce9](https://github.com/antvis/S2/commit/2913ce98b053edafde3568e67df9112e69bf3bab))
-* 修复角头数值i18n展示问题 ([#1509](https://github.com/antvis/S2/issues/1509)) ([9166137](https://github.com/antvis/S2/commit/91661376dadc66def28ec328de36d0bf828a3f2e))
-* 列头文字&icon无法正确对齐 ([#1515](https://github.com/antvis/S2/issues/1515)) ([3457af9](https://github.com/antvis/S2/commit/3457af9da4205765115b6174a53d7a4d92a8ceef))
-* 移除字段标记中多余的 fieldValue判断 ([#1525](https://github.com/antvis/S2/issues/1525)) ([fb06ce0](https://github.com/antvis/S2/commit/fb06ce0fadb7cc8f2b42c5f78b85f22d91a2640a))
+* 修复角头数值 i18n 展示问题 ([#1509](https://github.com/antvis/S2/issues/1509)) ([9166137](https://github.com/antvis/S2/commit/91661376dadc66def28ec328de36d0bf828a3f2e))
+* 列头文字&icon 无法正确对齐 ([#1515](https://github.com/antvis/S2/issues/1515)) ([3457af9](https://github.com/antvis/S2/commit/3457af9da4205765115b6174a53d7a4d92a8ceef))
+* 移除字段标记中多余的 fieldValue 判断 ([#1525](https://github.com/antvis/S2/issues/1525)) ([fb06ce0](https://github.com/antvis/S2/commit/fb06ce0fadb7cc8f2b42c5f78b85f22d91a2640a))
 * 趋势分析表 conditions 增加容错能力 ([#1537](https://github.com/antvis/S2/issues/1537)) ([4770c9a](https://github.com/antvis/S2/commit/4770c9af5025f2318ca4c9d02f8217ada83fd00c))
-
 
 ### Features
 
-* 基础表、趋势分析表tooltip新增显示字段说明功能 ([#1541](https://github.com/antvis/S2/issues/1541)) ([3a9f3cb](https://github.com/antvis/S2/commit/3a9f3cb2f22aeb14b15b8d3fe79f107ff8f04516))
+* 基础表、趋势分析表 tooltip 新增显示字段说明功能 ([#1541](https://github.com/antvis/S2/issues/1541)) ([3a9f3cb](https://github.com/antvis/S2/commit/3a9f3cb2f22aeb14b15b8d3fe79f107ff8f04516))
 * 支持 绘制 mini 柱状图 ([#1505](https://github.com/antvis/S2/issues/1505)) ([24a6ca6](https://github.com/antvis/S2/commit/24a6ca643e3b1154e4093c15216b218ef02cf3df))
 
 # [@antv/s2-v1.22.0](https://github.com/antvis/S2/compare/@antv/s2-v1.21.1...@antv/s2-v1.22.0) (2022-06-24)
 
-
 ### Bug Fixes
 
-* node 可能为null ([#1486](https://github.com/antvis/S2/issues/1486)) ([bce985f](https://github.com/antvis/S2/commit/bce985fac083009668cb30c9b936e68c4b97b4ba))
-* **strategysheet:** 修复趋势分析表多列头切换为单列头后, 隐藏列头功能失效 ([#1470](https://github.com/antvis/S2/issues/1470)) ([b39742e](https://github.com/antvis/S2/commit/b39742e3a7276836c504f2a0d5343ff201a65bba))
+* node 可能为 null ([#1486](https://github.com/antvis/S2/issues/1486)) ([bce985f](https://github.com/antvis/S2/commit/bce985fac083009668cb30c9b936e68c4b97b4ba))
+* **strategysheet:** 修复趋势分析表多列头切换为单列头后，隐藏列头功能失效 ([#1470](https://github.com/antvis/S2/issues/1470)) ([b39742e](https://github.com/antvis/S2/commit/b39742e3a7276836c504f2a0d5343ff201a65bba))
 * 修复柱状图区间及零点问题 ([#1465](https://github.com/antvis/S2/issues/1465)) ([a78d944](https://github.com/antvis/S2/commit/a78d9441d7b821c1518ed70ddaa80f468b4a110b))
-* 增加tooltip允许复制的样式防止被覆盖 ([#1477](https://github.com/antvis/S2/issues/1477)) ([39775ca](https://github.com/antvis/S2/commit/39775ca6dddf830e52f1fc530cd0af2f32c84da6))
+* 增加 tooltip 允许复制的样式防止被覆盖 ([#1477](https://github.com/antvis/S2/issues/1477)) ([39775ca](https://github.com/antvis/S2/commit/39775ca6dddf830e52f1fc530cd0af2f32c84da6))
 * 构造含总计的 tree 行头布局时报错 ([#1472](https://github.com/antvis/S2/issues/1472)) ([faff65c](https://github.com/antvis/S2/commit/faff65cb5378e94e2557c0b561b461eaaa5f1c37))
 * 趋势表自定义列头数值误用数据单元格样式 ([#1479](https://github.com/antvis/S2/issues/1479)) ([c23e105](https://github.com/antvis/S2/commit/c23e105b6d633cd2b66ac3a8618851923be7d1be))
-
 
 ### Features
 
@@ -307,20 +271,17 @@
 
 # [@antv/s2-v1.21.1](https://github.com/antvis/S2/compare/@antv/s2-v1.21.0...@antv/s2-v1.21.1) (2022-06-21)
 
-
 ### Bug Fixes
 
 * 构造含总计的 tree 行头布局时报错 ([a44c2c8](https://github.com/antvis/S2/commit/a44c2c81a5c0454a506ebd61014a72f810c921e8))
 
 # [@antv/s2-v1.21.0](https://github.com/antvis/S2/compare/@antv/s2-v1.20.0...@antv/s2-v1.21.0) (2022-06-20)
 
-
 ### Bug Fixes
 
 * customFlatten 空值保护 ([#1463](https://github.com/antvis/S2/issues/1463)) ([34a5cdc](https://github.com/antvis/S2/commit/34a5cdc1f5bffe0f35b1fa499dd325b4d19db289))
-* **interaction:** 修复禁用多选后, 未对行/列头生效 ([#1461](https://github.com/antvis/S2/issues/1461)) ([6dab9da](https://github.com/antvis/S2/commit/6dab9da19c9fd53bdd5198f18abe7c00f12f061e))
+* **interaction:** 修复禁用多选后，未对行/列头生效 ([#1461](https://github.com/antvis/S2/issues/1461)) ([6dab9da](https://github.com/antvis/S2/commit/6dab9da19c9fd53bdd5198f18abe7c00f12f061e))
 * 修复相同配置字段导致程序出错 ([#1460](https://github.com/antvis/S2/issues/1460)) ([a92a4b7](https://github.com/antvis/S2/commit/a92a4b717f48dd12040ce1d3fac02bdc8aea157a))
-
 
 ### Features
 
@@ -328,34 +289,30 @@
 
 # [@antv/s2-v1.20.0](https://github.com/antvis/S2/compare/@antv/s2-v1.19.0...@antv/s2-v1.20.0) (2022-06-17)
 
-
 ### Bug Fixes
 
 * **copy:** 修复字段名带有-导致复制失败的问题 ([#1433](https://github.com/antvis/S2/issues/1433)) ([7fb7fac](https://github.com/antvis/S2/commit/7fb7fac7fb6ab09762c26efa2dd0226dc35c15bb))
 * **sort:** 透视表/明细表 排序菜单文案显示错误 ([#1424](https://github.com/antvis/S2/issues/1424)) ([d837b41](https://github.com/antvis/S2/commit/d837b415d55189d3c5f7e7b2734d41076a054ce3))
-* **tooltip:** 修复行/列层级超过2级时选中数据统计错误 ([#1443](https://github.com/antvis/S2/issues/1443)) ([09dd677](https://github.com/antvis/S2/commit/09dd677458c904f7b86c8457a489bca26a366269))
+* **tooltip:** 修复行/列层级超过 2 级时选中数据统计错误 ([#1443](https://github.com/antvis/S2/issues/1443)) ([09dd677](https://github.com/antvis/S2/commit/09dd677458c904f7b86c8457a489bca26a366269))
 * **tooltip:** 减少 tooltip 框重绘 ([#1418](https://github.com/antvis/S2/issues/1418)) ([59c6a87](https://github.com/antvis/S2/commit/59c6a87f256866962ea3b523fd882a8d4e1eb6e9))
 * 修复序号对齐问题， close [#1412](https://github.com/antvis/S2/issues/1412) ([#1431](https://github.com/antvis/S2/issues/1431)) ([cbe4980](https://github.com/antvis/S2/commit/cbe498059dacd53edb58e387f5357f9740ffb194))
 * 出现 tooltip 后点击画布外面的空白区域可能抛出错误 ([#1438](https://github.com/antvis/S2/issues/1438)) ([483367e](https://github.com/antvis/S2/commit/483367e0363373965290831d2cb1e479854641f7))
 * 树状结构下，子节点全部折叠，导出内容错误 ([#1435](https://github.com/antvis/S2/issues/1435)) ([fa36599](https://github.com/antvis/S2/commit/fa36599a988a6e7b1ac75b65646b2e767587081a))
 
-
 ### Features
 
 * canvas 未聚焦时不触发选中格子的键盘 move 行为 ([#1415](https://github.com/antvis/S2/issues/1415)) ([e9255be](https://github.com/antvis/S2/commit/e9255bead71d44b344851ccdcc7def6fb51e79c2))
 * **interaction:** 选中单元格后对应行列头高亮 ([#1414](https://github.com/antvis/S2/issues/1414)) ([202b378](https://github.com/antvis/S2/commit/202b378fed8e880cea0a75b12db905c3ae385b19))
-* **scroll:** 增加边界滚动配置, 解决横屏滚动会触发 mac 回退的问题 ([#1409](https://github.com/antvis/S2/issues/1409)) ([ada5082](https://github.com/antvis/S2/commit/ada5082d299357b1b38af7629a784e3d071e6b77))
+* **scroll:** 增加边界滚动配置，解决横屏滚动会触发 mac 回退的问题 ([#1409](https://github.com/antvis/S2/issues/1409)) ([ada5082](https://github.com/antvis/S2/commit/ada5082d299357b1b38af7629a784e3d071e6b77))
 * 无序号列时绘制左侧列边框 ([#1417](https://github.com/antvis/S2/issues/1417)) ([041b8aa](https://github.com/antvis/S2/commit/041b8aa9714b096e0f24e62dd57079401519ec07))
 
 # [@antv/s2-v1.19.0](https://github.com/antvis/S2/compare/@antv/s2-v1.18.0...@antv/s2-v1.19.0) (2022-06-02)
 
-
 ### Bug Fixes
 
-* **copy:** 修复rowdata可能为null的情况 ([#1393](https://github.com/antvis/S2/issues/1393)) ([0beeac4](https://github.com/antvis/S2/commit/0beeac424d809e5d97844ff95490bd80e7c451ea))
+* **copy:** 修复 rowdata 可能为 null 的情况 ([#1393](https://github.com/antvis/S2/issues/1393)) ([0beeac4](https://github.com/antvis/S2/commit/0beeac424d809e5d97844ff95490bd80e7c451ea))
 * **locale:** 修复国际化配置不生效 close [#1394](https://github.com/antvis/S2/issues/1394) ([#1397](https://github.com/antvis/S2/issues/1397)) ([cfd5dbe](https://github.com/antvis/S2/commit/cfd5dbe0344afbb6f3929bece1778c02f9bbc00b))
 * 修复表格卸载后调用实例方法报错的问题 close [#1349](https://github.com/antvis/S2/issues/1349) ([#1400](https://github.com/antvis/S2/issues/1400)) ([bcf21bb](https://github.com/antvis/S2/commit/bcf21bb2099e04496c76b9cd28fa6d7723c9edcb))
-
 
 ### Features
 
@@ -363,30 +320,27 @@
 
 # [@antv/s2-v1.18.0](https://github.com/antvis/S2/compare/@antv/s2-v1.17.0...@antv/s2-v1.18.0) (2022-05-30)
 
-
 ### Bug Fixes
 
 * **facet:** DataCell 边框改为统一绘制的 Grid ([#1297](https://github.com/antvis/S2/issues/1297)) ([daaf989](https://github.com/antvis/S2/commit/daaf989fbb2be537d30675c661aff08a74d6b7f6))
-* fieldValue精度过高时intervalShape未绘制 ([#1372](https://github.com/antvis/S2/issues/1372)) ([0bb19b7](https://github.com/antvis/S2/commit/0bb19b7215c6d55b31fb4111d736f7d9a39e2fd8))
+* fieldValue 精度过高时 intervalShape 未绘制 ([#1372](https://github.com/antvis/S2/issues/1372)) ([0bb19b7](https://github.com/antvis/S2/commit/0bb19b7215c6d55b31fb4111d736f7d9a39e2fd8))
 * **interaction:** 修复自定义单元格有自定义图片时无法触发点击 close [#1360](https://github.com/antvis/S2/issues/1360) ([#1365](https://github.com/antvis/S2/issues/1365)) ([685cd04](https://github.com/antvis/S2/commit/685cd0458e33d189ced36eb708c8ed697f3d024c))
-* **interaction:** 修复默认隐藏列的配置更新为空数组时, 未触发表格更新 ([#1351](https://github.com/antvis/S2/issues/1351)) ([7ed1011](https://github.com/antvis/S2/commit/7ed101152caa180cc7090861f4fbf7f774148a23))
+* **interaction:** 修复默认隐藏列的配置更新为空数组时，未触发表格更新 ([#1351](https://github.com/antvis/S2/issues/1351)) ([7ed1011](https://github.com/antvis/S2/commit/7ed101152caa180cc7090861f4fbf7f774148a23))
 * **strategysheet:** 修复趋势分析表多列头时叶子节点未和数值单元格对齐 ([#1371](https://github.com/antvis/S2/issues/1371)) ([2d3ff04](https://github.com/antvis/S2/commit/2d3ff047b414b5861203d39b5f3db23fe1307c16))
 * **tooltip:** 修复存在小计/总计时汇总数据计算错误 close [#1137](https://github.com/antvis/S2/issues/1137) ([#1346](https://github.com/antvis/S2/issues/1346)) ([f6e5e8c](https://github.com/antvis/S2/commit/f6e5e8c1b05563dee29e926887aa08ef92bd4302))
 * total 配置项取用错误 ([#1338](https://github.com/antvis/S2/issues/1338)) ([e514ad6](https://github.com/antvis/S2/commit/e514ad6048a12ab52f6137c14ba3c27582424e84))
 * 下钻数据没有按照用户数据展示 ([#1353](https://github.com/antvis/S2/issues/1353)) ([065c3bd](https://github.com/antvis/S2/commit/065c3bdea3625232de7d98797ef7266eea74f67c))
 * 增加默认条件格式默认默认默认值 ([#1379](https://github.com/antvis/S2/issues/1379)) ([c084c01](https://github.com/antvis/S2/commit/c084c01ddb471000f32b255260c45e1427884681))
-* 明细表下range-selection报错 ([#1368](https://github.com/antvis/S2/issues/1368)) ([189d337](https://github.com/antvis/S2/commit/189d337dc7efc3ec9ba1a48c4fc8d0649d1d5439))
-
+* 明细表下 range-selection 报错 ([#1368](https://github.com/antvis/S2/issues/1368)) ([189d337](https://github.com/antvis/S2/commit/189d337dc7efc3ec9ba1a48c4fc8d0649d1d5439))
 
 ### Features
 
 * **interaction:** 增加单元格的右键事件 close [#1326](https://github.com/antvis/S2/issues/1326) ([#1334](https://github.com/antvis/S2/issues/1334)) ([230f3cc](https://github.com/antvis/S2/commit/230f3cc80137d666acf90c35891654cbefa83703))
 * sortFunc 支持使用手动排序兜底 ([#1374](https://github.com/antvis/S2/issues/1374)) ([252acdd](https://github.com/antvis/S2/commit/252acdd3f44816a0cf490a1fe2c39fd1e461bc54))
-* **theme:** 新增度量值的主题配置, 修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
+* **theme:** 新增度量值的主题配置，修复小计总计主题配置不生效 close [#1357](https://github.com/antvis/S2/issues/1357) ([#1364](https://github.com/antvis/S2/issues/1364)) ([ef3f99e](https://github.com/antvis/S2/commit/ef3f99e312b2f0a49b9d5928084c842718ae23be))
 * Vue 1.0 ([#1290](https://github.com/antvis/S2/issues/1290)) ([0745836](https://github.com/antvis/S2/commit/07458368d7eafd3ddee168d5b2adca463374ab5a))
-* 丰富tooltip关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
+* 丰富 tooltip 关闭的验证逻辑 ([#1352](https://github.com/antvis/S2/issues/1352)) ([264a9e9](https://github.com/antvis/S2/commit/264a9e93d586f8b8c5498af912c6a31aa4da8f04))
 * 支持回调函数调整 Tooltip 位置 ([#1350](https://github.com/antvis/S2/issues/1350)) ([898f3df](https://github.com/antvis/S2/commit/898f3df590227ef0f0d2afd17892a9514bb7c2a3))
-
 
 ### Reverts
 
@@ -394,23 +348,20 @@
 
 # [@antv/s2-v1.17.0](https://github.com/antvis/S2/compare/@antv/s2-v1.16.0...@antv/s2-v1.17.0) (2022-05-13)
 
-
 ### Bug Fixes
 
 * **copy:** 修复同步复制时会触发页面滚动的问题 close [#1317](https://github.com/antvis/S2/issues/1317) ([#1321](https://github.com/antvis/S2/issues/1321)) ([821e676](https://github.com/antvis/S2/commit/821e676a6f2e2f9c57554afa751ddf20e153da80))
-* dataCfg变化时未重新计算treeRow宽度 ([#1316](https://github.com/antvis/S2/issues/1316)) ([f5e53b0](https://github.com/antvis/S2/commit/f5e53b0313ef7bcf23fd63438f1059ef91c0afa1))
-* **interaction:** 角头单元格增加对自定义tooltip的适配 ([#1322](https://github.com/antvis/S2/issues/1322)) ([11c8e48](https://github.com/antvis/S2/commit/11c8e48d37e4e08742ba2d0dbeccfc99a694beff))
+* dataCfg 变化时未重新计算 treeRow 宽度 ([#1316](https://github.com/antvis/S2/issues/1316)) ([f5e53b0](https://github.com/antvis/S2/commit/f5e53b0313ef7bcf23fd63438f1059ef91c0afa1))
+* **interaction:** 角头单元格增加对自定义 tooltip 的适配 ([#1322](https://github.com/antvis/S2/issues/1322)) ([11c8e48](https://github.com/antvis/S2/commit/11c8e48d37e4e08742ba2d0dbeccfc99a694beff))
 * 去除 header cell 中对 sortParams 的原地反转操作 ([#1313](https://github.com/antvis/S2/issues/1313)) ([843757c](https://github.com/antvis/S2/commit/843757cf2cd88b500db19e47e35727edf585ddcc))
 * 在复制或者表格数据时，可对行列头进行格式化导出 ([#1319](https://github.com/antvis/S2/issues/1319)) ([6e5fc0a](https://github.com/antvis/S2/commit/6e5fc0a34e5b1bcee23b5e634e3dba517f370485))
 * 带总/小计的交叉表复制报错 ([#1332](https://github.com/antvis/S2/issues/1332)) ([2063583](https://github.com/antvis/S2/commit/20635836f5d56f11c99de7c95e73d5e29080c2e9))
 
-
 ### Features
 
-* 当子维度不足2个时可隐藏小计节点 ([#1325](https://github.com/antvis/S2/issues/1325)) ([444fea3](https://github.com/antvis/S2/commit/444fea31ca305a47c696d4f876b350710810b9de))
+* 当子维度不足 2 个时可隐藏小计节点 ([#1325](https://github.com/antvis/S2/issues/1325)) ([444fea3](https://github.com/antvis/S2/commit/444fea31ca305a47c696d4f876b350710810b9de))
 
 # [@antv/s2-v1.16.0](https://github.com/antvis/S2/compare/@antv/s2-v1.15.0...@antv/s2-v1.16.0) (2022-05-06)
-
 
 ### Bug Fixes
 
@@ -418,9 +369,8 @@
 * **interaction:** 设置 stateShape 的 visible 默认为 false 来减少绘制调用 ([#1295](https://github.com/antvis/S2/issues/1295)) ([10f4391](https://github.com/antvis/S2/commit/10f43916e884bdebdc35c05734091dff9d8b2ca0))
 * **interaction:** 连续 Hover 失效问题修复 ([#1292](https://github.com/antvis/S2/issues/1292)) ([162b5f2](https://github.com/antvis/S2/commit/162b5f22d3b67b321c83bdee234528d247105bd0))
 * **strategySheet:** 隐藏列兼容趋势分析表衍生指标场景 ([#1299](https://github.com/antvis/S2/issues/1299)) ([f67731e](https://github.com/antvis/S2/commit/f67731ee2d39a806d0f886658d8332646108865c))
-* 修复容器设置transform样式后框选背景框错位问题 ([#1311](https://github.com/antvis/S2/issues/1311)) ([0582bb5](https://github.com/antvis/S2/commit/0582bb5a5fb652523b21ca91f8f09af6103b18f2))
-* 修正auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
-
+* 修复容器设置 transform 样式后框选背景框错位问题 ([#1311](https://github.com/antvis/S2/issues/1311)) ([0582bb5](https://github.com/antvis/S2/commit/0582bb5a5fb652523b21ca91f8f09af6103b18f2))
+* 修正 auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
 
 ### Features
 
@@ -429,20 +379,18 @@
 
 # [@antv/s2-v1.15.0](https://github.com/antvis/S2/compare/@antv/s2-v1.14.0...@antv/s2-v1.15.0) (2022-04-22)
 
-
 ### Bug Fixes
 
 * all selected ([#1275](https://github.com/antvis/S2/issues/1275)) ([cf002e8](https://github.com/antvis/S2/commit/cf002e80d1ed111e470edee5d7c70ea2d50daf16))
-* **corner-cell:** 微调角头icon位置保持和行头对齐 ([#1287](https://github.com/antvis/S2/issues/1287)) ([5235afc](https://github.com/antvis/S2/commit/5235afca9bf0ddc774695741b8aa4fff469e8fa5))
+* **corner-cell:** 微调角头 icon 位置保持和行头对齐 ([#1287](https://github.com/antvis/S2/issues/1287)) ([5235afc](https://github.com/antvis/S2/commit/5235afca9bf0ddc774695741b8aa4fff469e8fa5))
 * **row-column-resize:** 修复虚线宽度设置不生效问题 ([#1250](https://github.com/antvis/S2/issues/1250)) ([a1810b9](https://github.com/antvis/S2/commit/a1810b94e48792ae4399c155e33573fa72ec0e0e))
 * scrollY 越界问题修复 & 重构 ([#1274](https://github.com/antvis/S2/issues/1274)) ([0bac1c1](https://github.com/antvis/S2/commit/0bac1c1f929f7389bb58dafd7e1fdec8a5b7fce3))
 * **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
-* 修复switcher组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
+* 修复 switcher 组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
 * 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
-* 修复树形状态下收起展开后汇总数据错误问题, close issue [#1153](https://github.com/antvis/S2/issues/1153) ([#1282](https://github.com/antvis/S2/issues/1282)) ([6a7260c](https://github.com/antvis/S2/commit/6a7260c5492973f4caba9a2ef537200c551857b2))
-* 行头/单元格icon颜色应默认与字体色一致 ([#1276](https://github.com/antvis/S2/issues/1276)) ([5a0dcd8](https://github.com/antvis/S2/commit/5a0dcd8d6c9cbd83ae405eaceaf10db8d0d86a95))
+* 修复树形状态下收起展开后汇总数据错误问题，close issue [#1153](https://github.com/antvis/S2/issues/1153) ([#1282](https://github.com/antvis/S2/issues/1282)) ([6a7260c](https://github.com/antvis/S2/commit/6a7260c5492973f4caba9a2ef537200c551857b2))
+* 行头/单元格 icon 颜色应默认与字体色一致 ([#1276](https://github.com/antvis/S2/issues/1276)) ([5a0dcd8](https://github.com/antvis/S2/commit/5a0dcd8d6c9cbd83ae405eaceaf10db8d0d86a95))
 * 解决明细表表头被格式化的问题 ([#1257](https://github.com/antvis/S2/issues/1257)) ([aca54aa](https://github.com/antvis/S2/commit/aca54aa8b5455f195c52b034cce80de2c5ced5d3))
-
 
 ### Features
 
@@ -476,14 +424,13 @@
 * **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
 * **strategySheet:** 隐藏列兼容趋势分析表衍生指标场景 ([#1299](https://github.com/antvis/S2/issues/1299)) ([f67731e](https://github.com/antvis/S2/commit/f67731ee2d39a806d0f886658d8332646108865c))
 * 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
-* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
-* 修正auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
+* 修复 lint 报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
+* 修正 auto reset 的 canvas 外判断逻辑 ([#1293](https://github.com/antvis/S2/issues/1293)) ([307963c](https://github.com/antvis/S2/commit/307963ce76325edfdb339abdacdb07ab6e554121))
 * 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
-
 
 ### Features
 
-* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
+* hsl 分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
 * 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
 * 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
 * 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
@@ -494,14 +441,14 @@
 ### Bug Fixes
 
 * all selected ([#1275](https://github.com/antvis/S2/issues/1275)) ([cf002e8](https://github.com/antvis/S2/commit/cf002e80d1ed111e470edee5d7c70ea2d50daf16))
-* **corner-cell:** 微调角头icon位置保持和行头对齐 ([#1287](https://github.com/antvis/S2/issues/1287)) ([5235afc](https://github.com/antvis/S2/commit/5235afca9bf0ddc774695741b8aa4fff469e8fa5))
+* **corner-cell:** 微调角头 icon 位置保持和行头对齐 ([#1287](https://github.com/antvis/S2/issues/1287)) ([5235afc](https://github.com/antvis/S2/commit/5235afca9bf0ddc774695741b8aa4fff469e8fa5))
 * **row-column-resize:** 修复虚线宽度设置不生效问题 ([#1250](https://github.com/antvis/S2/issues/1250)) ([a1810b9](https://github.com/antvis/S2/commit/a1810b94e48792ae4399c155e33573fa72ec0e0e))
 * scrollY 越界问题修复 & 重构 ([#1274](https://github.com/antvis/S2/issues/1274)) ([0bac1c1](https://github.com/antvis/S2/commit/0bac1c1f929f7389bb58dafd7e1fdec8a5b7fce3))
 * **theme:**  修复颜色主题配置对自定义 icon 不生效的问题 ([#1261](https://github.com/antvis/S2/issues/1261)) ([ad52a03](https://github.com/antvis/S2/commit/ad52a03d1a59fbf87fe9dd2c14482f37181a4454))
-* 修复switcher组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
+* 修复 switcher 组件布局问题 ([#1270](https://github.com/antvis/S2/issues/1270)) ([8cd28fc](https://github.com/antvis/S2/commit/8cd28fc1e0a91ab8b969200e191a26c407513fc1))
 * 修复交叉表分页问题 ([#1260](https://github.com/antvis/S2/issues/1260)) ([a8142b9](https://github.com/antvis/S2/commit/a8142b961e7c839a2de60aea232209f815f5d32d))
-* 修复树形状态下收起展开后汇总数据错误问题, close issue [#1153](https://github.com/antvis/S2/issues/1153) ([#1282](https://github.com/antvis/S2/issues/1282)) ([6a7260c](https://github.com/antvis/S2/commit/6a7260c5492973f4caba9a2ef537200c551857b2))
-* 行头/单元格icon颜色应默认与字体色一致 ([#1276](https://github.com/antvis/S2/issues/1276)) ([5a0dcd8](https://github.com/antvis/S2/commit/5a0dcd8d6c9cbd83ae405eaceaf10db8d0d86a95))
+* 修复树形状态下收起展开后汇总数据错误问题，close issue [#1153](https://github.com/antvis/S2/issues/1153) ([#1282](https://github.com/antvis/S2/issues/1282)) ([6a7260c](https://github.com/antvis/S2/commit/6a7260c5492973f4caba9a2ef537200c551857b2))
+* 行头/单元格 icon 颜色应默认与字体色一致 ([#1276](https://github.com/antvis/S2/issues/1276)) ([5a0dcd8](https://github.com/antvis/S2/commit/5a0dcd8d6c9cbd83ae405eaceaf10db8d0d86a95))
 * 解决明细表表头被格式化的问题 ([#1257](https://github.com/antvis/S2/issues/1257)) ([aca54aa](https://github.com/antvis/S2/commit/aca54aa8b5455f195c52b034cce80de2c5ced5d3))
 
 ### Features

@@ -25,7 +25,9 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   const { data, options, content, cell } = props;
 
   const renderOperation = (
-    operator: TooltipOperatorOptions | undefined,
+    operator:
+      | TooltipOperatorOptions<React.ReactNode, React.ReactNode>
+      | undefined,
     onlyMenu?: boolean,
   ) => {
     return operator ? (
@@ -78,7 +80,11 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   };
 
   const renderContent = () => {
-    const { operator, onlyMenu } = getTooltipDefaultOptions(options);
+    const { operator, onlyMenu } = getTooltipDefaultOptions<
+      React.ReactNode,
+      React.ReactNode
+    >(options);
+
     const {
       summaries,
       headInfo,

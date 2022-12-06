@@ -17,6 +17,8 @@ order: 8
 | ----------- | :----: | :---: | :-----: | :---: | :---: | :----: | :---: | :------------: | :------------: |
 | **AntV S2** |   40   |  12   |   85    |   9   |  40   |   14   |  6.2  |       12       |      7.3       |
 
+`@antv/s2-react` 和 `@antv/s2-vue` 见官方 [React JavaScript 环境要求](https://zh-hans.reactjs.org/docs/javascript-environment-requirements.html) 和 [Vite 浏览器兼容性](https://cn.vitejs.dev/guide/build.html#browser-compatibility)
+
 ### 浏览器引入
 
 <embed src="@/docs/common/browser.zh.md"></embed>
@@ -31,7 +33,7 @@ order: 8
 
 ```ts
 const s2Options = {
-   supportCSSTransform: true
+  supportCSSTransform: true
 }
 ```
 
@@ -174,7 +176,7 @@ s2.render(false)
 
 配套的 [分析组件](/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
-### 怎样贡献代码？
+### 如何贡献代码？
 
 请查看 [贡献指南](/docs/manual/contribution)
 
@@ -184,7 +186,7 @@ s2.render(false)
 
 ### 为什么我的 Issue 被关闭了？
 
-请严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
+请阅读 [提 Issue 前必读](https://github.com/antvis/S2/issues/1904), 并严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
 
 - 你**实际**安装的版本号：
 
@@ -224,5 +226,9 @@ s2.render(false)
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
+
+### 有讨论群吗？
+
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 2. 错误和警告

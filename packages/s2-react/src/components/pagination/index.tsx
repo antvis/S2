@@ -6,8 +6,8 @@ import type { S2Options } from '@antv/s2';
 
 export interface S2PaginationProps {
   pagination: S2Options['pagination'];
-  onShowSizeChange: (current: number, pageSize: number) => void;
-  onChange: (current: number, pageSize: number) => void;
+  onShowSizeChange?: (current: number, pageSize: number) => void;
+  onChange?: (current: number, pageSize: number) => void;
 }
 
 const PRE_CLASS = `${S2_PREFIX_CLS}-pagination`;

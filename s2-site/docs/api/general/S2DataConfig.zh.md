@@ -101,8 +101,8 @@ object **必选**,_default：null_
 | rows             | 行维度 （可自定义行头，[查看例子](#TODO)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
 | columns          | 列维度 （可自定义列头，[查看例子](#TODO)) | `string[]` \| [CustomTreeNode[]](#customtreenode) | `[]`   |      |
 | values           | 指标维度                                  | `string[]`                                        | `[]`   |      |
-| valueInCols      | 指标维度是否在列头                        | `boolean`                                         | `true` |      |
-| customValueOrder | 自定义指标维度在行列头中的位置顺序        | `number`                                          | -      |      |
+| valueInCols      | 指标维度是否在列头                        | `boolean`                                         |
+| customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始） [查看示例](/examples/custom/custom-layout/#custom-value-order) | `number`  | - |      |
 
 ### Meta
 
@@ -148,5 +148,5 @@ object **必选**,_default：null_
 
 | 属性名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------- | ---------| -------| ------|------|
-| name | 列字段 id 或分组 id   | string |       | ✓ |
+| key | 列字段 id 或分组 id   | string |       | ✓ |
 | children | 分组下面的子级  | `Array\<ColumnNode \| string\>` |       |  |

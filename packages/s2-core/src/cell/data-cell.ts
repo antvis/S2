@@ -1,4 +1,4 @@
-import type { DisplayObject, PointLike } from '@antv/g';
+import type { PointLike } from '@antv/g';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
@@ -7,7 +7,11 @@ import {
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition, CellClipBox } from '../common/interface';
+import {
+  CellBorderPosition,
+  CellClipBox,
+  type InteractionStateTheme,
+} from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -169,6 +173,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     if (!this.shouldHideRowSubtotalData()) {
@@ -235,7 +240,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         margin,
         position: getIconPositionCfg(iconCondition),
       };
-    return iconCfg;
+    return iconCfg as IconCfg;
   }
 
   protected drawConditionIntervalShape() {
@@ -370,33 +375,31 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  public mappingValue(condition: Condition): MappingResult {
+  public mappingValue(condition: Condition): MappingResult | undefined | null {
     const value = this.meta.fieldValue as unknown as number;
+    const rowDataInfo = this.spreadsheet.isTableMode()
+      ? this.spreadsheet.dataSet.getCellData({
+          query: { rowIndex: this.meta.rowIndex },
+        })
+      : this.meta.data;
     return condition?.mapping(
       value,
-      this.meta.data as unknown as Record<string, any>,
-    )!;
+      rowDataInfo as unknown as Record<string, any>,
+    );
   }
 
   public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
-      const stateStyles = get(
+      const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
-      if (stateStyles && this.conditionIntervalShape) {
-        updateShapeAttr(
-          this.conditionIntervalShape,
-          SHAPE_STYLE_MAP.backgroundOpacity,
-          stateStyles.backgroundOpacity,
-        );
+      ) as InteractionStateTheme;
 
-        updateShapeAttr(
-          this.conditionIconShape as unknown as DisplayObject,
-          SHAPE_STYLE_MAP.opacity,
-          stateStyles.opacity,
+      if (interactionStateTheme) {
+        this.toggleConditionIntervalShapeOpacity(
+          interactionStateTheme.opacity!,
         );
       }
     }
@@ -404,19 +407,16 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+    this.toggleConditionIntervalShapeOpacity(1);
+  }
 
-    if (this.conditionIntervalShape) {
-      updateShapeAttr(
-        this.conditionIntervalShape,
-        SHAPE_STYLE_MAP.backgroundOpacity,
-        1,
-      );
-    }
-
+  private toggleConditionIntervalShapeOpacity(opacity: number) {
     updateShapeAttr(
-      this.conditionIconShape as unknown as DisplayObject,
-      SHAPE_STYLE_MAP.opacity,
-      1,
+      this.conditionIntervalShape,
+      SHAPE_STYLE_MAP.backgroundOpacity,
+      opacity,
     );
+
+    updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 }

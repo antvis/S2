@@ -287,7 +287,7 @@ const s2Options = {
           text: '操作 2',
           icon: 'EyeOutlined',
           visible: (cell) => {
-            // 叶子节点不显示
+            // 根据单元格信息动态显示，如：叶子节点不显示
             const meta = cell.getMeta()
             return meta.isLeaf
           },
@@ -298,7 +298,32 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <Playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
+<br/>
+
+如果使用的是 `@antv/s2-react`, 那么 `text` 和 `icon` 还支持任意 `ReactNode`
+
+```tsx
+import { StarOutlined } from '@ant-design/icons';
+
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: <div>操作 1</div>,
+          icon: <StarOutlined />,
+        },
+    },
+  },
+};
+```
+
+<br/>
 
 #### 自定义 Tooltip 挂载节点
 
@@ -308,6 +333,8 @@ const s2Options = {
 <div class="container" />
 ```
 
+<br/>
+
 ```ts
 const s2Options = {
   tooltip: {
@@ -315,6 +342,8 @@ const s2Options = {
   }
 }
 ```
+
+<br/>
 
 #### 自定义 Tooltip 容器样式
 
@@ -341,7 +370,7 @@ const s2Options = {
 
 继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`, 也可以重写 `renderContent` 方法，渲染你封装的任意组件
 
-- [查看 BaseTooltip 基类](/docs/api/basic-class/base-tooltip)
+- [查看 BaseTooltip 基类](/api/basic-class/base-tooltip)
 - [查看 React 示例](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 - [查看 Vue 示例](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -530,7 +559,7 @@ const s2Options = {
 
 #### 重写展示方法
 
-除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/docs/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/docs/manual/advanced/get-instance)
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例](/api/basic-class/spreadsheet) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](/manual/advanced/get-instance)
 
 ```ts
 // options 配置 tooltip 显示
@@ -554,7 +583,7 @@ tooltip: {
 
 ##### 可自定义显示内容
 
-以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/docs/common/custom-tooltip)
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
 
 - 显示位置 (position)
 
@@ -593,7 +622,7 @@ tooltip: {
 
   - 所选项统计列表（ summaries ）
 
-    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/docs/common/custom-tooltip#tooltipsummaryoptions)
+    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -607,7 +636,7 @@ tooltip: {
 
   - 轴列表（ headInfo ）
 
-    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/docs/common/custom-tooltip#tooltipheadinfo)
+    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -628,7 +657,7 @@ tooltip: {
 
   - 数据点明细信息（ details ）
 
-    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/docs/common/custom-tooltip#listitem)
+    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/api/general/s2options#tooltipoptions#listitem)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -656,11 +685,11 @@ tooltip: {
 
 - 部分配置 ( options )
 
-  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/docs/common/custom-tooltip#tooltipoptions)
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/api/general/s2options#tooltipoptions)
 
   - 操作栏（ operator ）
 
-    可操作配置，具体细节参考 [TooltipOperatorOptions](/docs/common/custom-tooltip#tooltipoperatoroptions)
+    可操作配置，具体细节参考 [TooltipOperatorOptions](/api/general/s2options#tooltipoperatoroptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {

@@ -31,7 +31,6 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  MIN_SCROLL_BAR_HEIGHT,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
@@ -598,14 +597,16 @@ export abstract class BaseFacet {
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
       const { maxY } = this.getScrollbarPosition();
-      const { verticalBorderWidth = 0 } = this.spreadsheet.theme.splitLine!;
+      const { splitLine, scrollBar } = this.spreadsheet.theme;
 
-      const thumbSize =
+      const thumbSize = Math.max(
         (this.cornerBBox.width * this.cornerBBox.width) /
-        this.cornerBBox.originalWidth;
+          this.cornerBBox.originalWidth,
+        scrollBar?.thumbHorizontalMinSize!,
+      );
 
       // 行头有分割线, 滚动条应该预留分割线的宽度
-      const displayThumbSize = thumbSize - verticalBorderWidth;
+      const displayThumbSize = thumbSize - splitLine?.verticalBorderWidth!;
 
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
@@ -683,8 +684,13 @@ export abstract class BaseFacet {
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
           ? this.cornerBBox.width
           : 0);
+
+      const { scrollBar } = this.spreadsheet.theme;
       const maxOffset = finaleRealWidth - finalWidth;
-      const thumbLen = (finalWidth / finaleRealWidth) * finalWidth;
+      const thumbLen = Math.max(
+        (finalWidth / finaleRealWidth) * finalWidth,
+        scrollBar?.thumbHorizontalMinSize!,
+      );
 
       // TODO abstract
       this.hScrollBar = new ScrollBar({
@@ -734,9 +740,10 @@ export abstract class BaseFacet {
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {
-      const thumbHeight = Math.max(
+      const { scrollBar } = this.spreadsheet.theme;
+      const thumbLen = Math.max(
         (height / realHeight) * height,
-        MIN_SCROLL_BAR_HEIGHT,
+        scrollBar?.thumbVerticalMinSize!,
       );
       const maxOffset = realHeight - height;
       const { maxX } = this.getScrollbarPosition();
@@ -744,8 +751,8 @@ export abstract class BaseFacet {
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
         trackLen: height,
-        thumbLen: thumbHeight,
-        thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
+        thumbLen,
+        thumbOffset: (scrollY * (height - thumbLen)) / maxOffset,
         position: {
           x: maxX,
           y: this.panelBBox.minY,
@@ -951,7 +958,17 @@ export abstract class BaseFacet {
 
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
-    const { deltaX, deltaY, offsetX, offsetY } = event;
+    let { deltaX, deltaY, offsetX, offsetY } = event;
+    const { shiftKey } = event;
+
+    // 按住shift时，固定为水平方向滚动
+    if (shiftKey) {
+      offsetX = offsetX - deltaX + deltaY;
+      deltaX = deltaY;
+      offsetY -= deltaY;
+      deltaY = 0;
+    }
+
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,

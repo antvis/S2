@@ -41,10 +41,9 @@ const s2Options = {
       {
         field: 'number',
         mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
-          // 红涨绿跌
+          const { meta, colIndex } = cellInfo;
           if (
-            meta?.fieldValue?.values[0][0] === value ||
+            colIndex === 0 ||
             !value ||
             !meta?.fieldValue
           ) {

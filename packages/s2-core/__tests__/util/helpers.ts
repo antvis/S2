@@ -11,7 +11,7 @@ import type { BaseDataSet } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
@@ -250,4 +250,15 @@ export const createFederatedMouseEvent = (
   evt.type = eventType;
 
   return evt;
+};
+
+export const createTableSheet = (
+  s2Options: S2Options,
+  { useSimpleData } = { useSimpleData: true },
+) => {
+  return new TableSheet(
+    getContainer(),
+    useSimpleData ? simpleDataConfig : dataConfig,
+    s2Options,
+  );
 };

@@ -231,9 +231,9 @@ export interface S2Style {
   collapsedRows?: Record<string, boolean> | null;
   // col header collapse nodes
   collapsedCols?: Record<string, boolean>;
-  cellCfg?: CellCfg;
-  colCfg?: ColCfg;
-  rowCfg?: RowCfg;
+  cellCfg?: CellCfg | null | undefined;
+  colCfg?: ColCfg | null | undefined;
+  rowCfg?: RowCfg | null | undefined;
   /**
    * @deprecated use options.deviceType instead
    */

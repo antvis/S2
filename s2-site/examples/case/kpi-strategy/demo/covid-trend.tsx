@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { isNil } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 // 数据来源：https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_pc_1&city=%E5%9B%9B%E5%B7%9D-%E5%9B%9B%E5%B7%9D
@@ -11,7 +11,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((s2DataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 1200,
       height: 600,
       placeholder: '',
@@ -27,10 +27,10 @@ fetch(
         text: [
           {
             mapping: (value, cellInfo) => {
-              const { meta } = cellInfo;
+              const { colIndex } = cellInfo;
               const isNilValue = isNil(value) || value === '';
 
-              if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
+              if (colIndex === 0 || isNilValue) {
                 return {
                   fill: '#000',
                 };
@@ -45,11 +45,11 @@ fetch(
           {
             position: 'right',
             mapping(value, cellInfo) {
-              const { meta } = cellInfo;
+              const { colIndex } = cellInfo;
               const isNilValue = isNil(value) || value === '';
 
-              if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
-                return {};
+              if (colIndex === 0 || isNilValue) {
+                return null;
               }
               return isUpDataValue(value)
                 ? {

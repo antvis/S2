@@ -43,7 +43,9 @@ export const BaseSheet = React.forwardRef<
               <Header
                 {...header}
                 sheet={s2Ref.current!}
-                width={options!.width}
+                style={{
+                  width: options?.width,
+                }}
                 dataCfg={getSafetyDataConfig(dataCfg)}
                 options={getSheetComponentOptions(options!)}
               />

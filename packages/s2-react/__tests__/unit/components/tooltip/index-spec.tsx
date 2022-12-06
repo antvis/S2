@@ -20,7 +20,7 @@ describe('Tooltip Component Tests', () => {
   test.each(getTooltipOperatorSortMenus())(
     'should render sort menu and select %o menu',
     ({ key, text }) => {
-      render(
+      const { asFragment } = render(
         <TooltipComponent
           options={{
             onlyMenu: true,
@@ -33,6 +33,8 @@ describe('Tooltip Component Tests', () => {
           position={{ x: 0, y: 0 }}
         />,
       );
+
+      expect(asFragment).toMatchSnapshot();
 
       expect(screen.getByText('组内升序')).toBeDefined();
       expect(screen.getByText('组内降序')).toBeDefined();

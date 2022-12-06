@@ -2,7 +2,7 @@
 import { size, reduce } from 'lodash';
 import {
   i18n,
-  type SummaryProps,
+  type TooltipSummaryProps,
   type TooltipSummaryOptions,
   TOOLTIP_PREFIX_CLS,
 } from '@antv/s2';
@@ -11,7 +11,7 @@ import type { GetInitProps } from '../../../interface';
 
 export default defineComponent({
   name: 'TooltipSummary',
-  props: ['summaries'] as unknown as GetInitProps<SummaryProps>,
+  props: ['summaries'] as unknown as GetInitProps<TooltipSummaryProps>,
   setup(props) {
     const summaryInfo = computed(() =>
       reduce(

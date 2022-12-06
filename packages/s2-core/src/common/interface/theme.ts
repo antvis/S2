@@ -176,6 +176,10 @@ export interface ScrollBarTheme {
   thumbHoverColor?: string;
   /* 滚动条颜色 */
   thumbColor?: string;
+  /* 滚动条水平最小尺寸 */
+  thumbHorizontalMinSize?: number;
+  /* 滚动条垂直最小尺寸 */
+  thumbVerticalMinSize?: number;
   /* 滚动条尺寸 */
   size?: number;
   /* 滚动条 hover 态尺寸 */

@@ -28,7 +28,12 @@ import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
 import type { Tooltip, TooltipContentType } from './tooltip';
 
-export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
+export interface S2BasicOptions<
+  T = TooltipContentType,
+  P = Pagination,
+  Icon = Element | string,
+  Text = string,
+> {
   // canvas's width
   width?: number;
   // canvas's height
@@ -42,7 +47,7 @@ export interface S2BasicOptions<T = TooltipContentType, P = Pagination> {
   // total config
   totals?: Totals | null;
   // tooltip configs
-  tooltip?: Tooltip<T>;
+  tooltip?: Tooltip<T, Icon, Text>;
   // interaction configs
   interaction?: InteractionOptions;
   // pagination config
@@ -126,8 +131,12 @@ export interface S2TableSheetOptions {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface S2PivotSheetOptions {}
 
-export interface S2Options<T = TooltipContentType, P = Pagination>
-  extends S2BasicOptions<T, P>,
+export interface S2Options<
+  T = TooltipContentType,
+  P = Pagination,
+  Icon = Element | string,
+  Text = string,
+> extends S2BasicOptions<T, P, Icon, Text>,
     S2TableSheetOptions,
     S2PivotSheetOptions {
   // custom data set

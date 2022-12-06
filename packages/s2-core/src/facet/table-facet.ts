@@ -372,6 +372,7 @@ export class TableFacet extends BaseFacet {
           currentNode,
           adaptiveColWidth,
         );
+        layoutCoordinate(this.cfg, null, currentNode);
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
       }
@@ -386,7 +387,6 @@ export class TableFacet extends BaseFacet {
         currentNode,
         colsHierarchy.height,
       );
-      layoutCoordinate(this.cfg, null, currentNode);
     }
     const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
     const { frozenTrailingColCount = 0 } = getValidFrozenOptions(
@@ -521,7 +521,7 @@ export class TableFacet extends BaseFacet {
         {},
       );
 
-      const customHeight = heightByField[String(index)];
+      const customHeight = heightByField?.[String(index)];
       if (customHeight) {
         return customHeight;
       }
@@ -542,7 +542,7 @@ export class TableFacet extends BaseFacet {
       let lastOffset = 0;
       data.forEach((_, idx) => {
         const currentHeight =
-          heightByField[String(idx)] ?? this.getDefaultCellHeight();
+          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;

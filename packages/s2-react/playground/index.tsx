@@ -13,7 +13,6 @@ import {
   type HeaderActionIconProps,
   type InteractionOptions,
   type S2DataConfig,
-  type S2Options,
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
@@ -98,7 +97,7 @@ function MainLayout() {
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
-    React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
+    React.useState<Partial<SheetComponentOptions>>(defaultOptions);
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(

@@ -250,7 +250,7 @@ s2.showTooltip({
 
 In addition to the operation items provided by default, you can also configure `operation.menus` custom operation items
 support nesting, and listen to their respective `onClick` click events to get
-the [cell information](/docs/api/basic-class/base-cell) corresponding to the current `tooltip`
+the [cell information](/api/basic-class/base-cell) corresponding to the current `tooltip`
 
 ```ts
  const s2Options = {
@@ -290,7 +290,7 @@ the [cell information](/docs/api/basic-class/base-cell) corresponding to the cur
 
 You can also control whether the current operation item is displayed through the `visible` parameter, and support
 passing in a callback, which can be dynamically displayed according to the
-current [cell information](/docs/api/basic-class/base-cell)
+current [cell information](/api/basic-class/base-cell)
 
 ```ts
  const s2Options = {
@@ -367,7 +367,7 @@ Inherit the `BaseTooltip` base class, rewrite`show (show)`, `hide (hide)`, `dest
 combine `this.spreadsheet` instance to realize the `tooltip` that meets your business, and also rewrite
 the `renderContent` method to render your package any component
 
-* [View BaseTooltip base class](/docs/api/basic-class/base-tooltip)
+* [View BaseTooltip base class](/api/basic-class/base-tooltip)
 * [Check out the React example](https://github.com/antvis/S2/blob/master/packages/s2-react/src/components/tooltip/custom-tooltip.tsx)
 * [Check out the Vue example](https://codesandbox.io/s/compassionate-booth-hpm3rf?file=/src/App.vue)
 
@@ -455,7 +455,7 @@ const s2Options = {
 };
 ```
 
-If you are using `React` components, you can also use [cell callback functions](/docs/api/components/sheet-component)
+If you are using `React` components, you can also use [cell callback functions](/api/components/sheet-component)
 for customization. [example](/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
@@ -568,8 +568,8 @@ const s2Options = {
 #### Override display method
 
 In addition to the custom display method of the`自定义 Tooltip 类`mentioned above, the method `spreadsheet.showTooltip()` of
-the `Tooltip` on the [table instance](/docs/api/basic-class/spreadsheet) can also be
-modified. [How to get table instance?](/docs/manual/advanced/get-instance)
+the `Tooltip` on the [table instance](/api/basic-class/spreadsheet) can also be
+modified. [How to get table instance?](/manual/advanced/get-instance)
 
 ```ts
  // options 配置 tooltip 显示
@@ -592,8 +592,8 @@ tooltip: {
 
 ##### Display content can be customized
 
-All of the following displays can cover all cells and events. For details on custom data
-see [TooltipShowOptions](/docs/common/custom-tooltip)
+All of the following displays can cover all cells and events. For details on custom data,
+see [TooltipShowOptions](/api/general/s2options#tooltipshowoptions)
 
 * display position
 
@@ -633,7 +633,7 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
   * List of selected item statistics ( summaries )
 
       The statistical list of selected items is mainly distinguished by measurement value. For details, please refer
-      to [TooltipSummaryOptions](/docs/common/custom-tooltip#tooltipsummaryoptions)
+      to [TooltipSummaryOptions](/api/general/s2options#tooltipoptions#tooltipsummaryoptions)
 
       ```tsx
        instance.showTooltip = (tooltipOptions) => {
@@ -648,7 +648,7 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 * list of axes ( headInfo )
 
       Axis list, display`row/column headers`names in data cells,
-      see [TooltipHeadInfo](/docs/common/custom-tooltip#tooltipheadinfo)
+      see [TooltipHeadInfo](/api/general/s2options#tooltipoptions#tooltipheadinfo)
       for details
 
       ```tsx
@@ -671,7 +671,7 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 * Data point details ( details )
 
       Data point details, that is, the data information of the current cell, for details, please refer
-      to [ListItem](/docs/common/custom-tooltip#listitem)
+      to [ListItem](/api/general/s2options#tooltipoptions#listitem)
 
       ```tsx
        instance.showTooltip = (tooltipOptions) => {
@@ -699,12 +699,11 @@ see [TooltipShowOptions](/docs/common/custom-tooltip)
 
 * Partial configuration ( options )
 
-  [Tooltip part configuration, see TooltipOptions](/docs/common/custom-tooltip#tooltipoptions) `tooltip` details
+  [Tooltip part configuration, see TooltipOptions](/api/general/s2options#tooltipoptions#tooltipoptions) `tooltip` details
 
 * Operation Bar ( operator )
 
-      Operable configuration, refer to [TooltipOperatorOptions](/docs/common/custom-tooltip#tooltipoperatoroptions)
-
+      Operable configuration, refer to [TooltipOperatorOptions](/api/general/s2options#tooltipoptions#tooltipoperatoroptions)
       for details
 
       ```tsx

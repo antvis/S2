@@ -4,6 +4,7 @@ import {
   each,
   get,
   includes,
+  isArray,
   isBoolean,
   isEmpty,
   isFunction,
@@ -33,6 +34,7 @@ import {
   type MappingResult,
   CellClipBox,
   CellBorderPosition,
+  type InteractionStateTheme,
 } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
 import {
@@ -68,6 +70,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // text control shape
   protected textShape: DisplayObject;
 
+  protected textShapes: DisplayObject[] = [];
+
   // link text underline shape
   protected linkFieldShape: DisplayObject;
 
@@ -82,6 +86,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected conditionIntervalShape: DisplayObject | undefined;
 
   protected conditionIconShape: GuiIcon;
+
+  protected conditionIconShapes: GuiIcon[] = [];
 
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, DisplayObject>();
@@ -176,7 +182,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected abstract mappingValue(
     condition: Condition,
-  ): MappingResult | undefined;
+  ): MappingResult | undefined | null;
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -311,6 +317,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       ellipsisText,
       textStyle,
     );
+    this.textShapes.push(this.textShape);
   }
 
   protected drawLinkFieldShape(
@@ -365,7 +372,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const stateStyles = get(
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
-    );
+    ) as InteractionStateTheme;
 
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
@@ -374,21 +381,22 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
       targetShapeNames.forEach((shapeName) => {
         const isStateShape = this.stateShapes.has(shapeName);
-        const shape = isStateShape
+        const shapeGroup = isStateShape
           ? this.stateShapes.get(shapeName)
           : // @ts-ignore
             (this[shapeName] as DisplayObject);
 
-        if (!shape) {
-          return;
-        }
+        // 兼容多列文本 (MultiData)
+        const shapes = !isArray(shapeGroup) ? [shapeGroup] : shapeGroup;
 
         // stateShape 默认 visible 为 false
-        if (isStateShape && shape.parsedStyle.visibility !== 'visible') {
-          shape.setAttribute('visibility', 'visible');
+        if (isStateShape) {
+          shapes.forEach((shape) => {
+            shape.setAttribute('visibility', 'visible');
+          });
         }
 
-        // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
+        // 根据 borderWidth 更新 borderShape 大小 https://github.com/antvis/S2/pull/705
         if (
           shapeName === 'interactiveBorderShape' &&
           styleKey === 'borderWidth'
@@ -396,11 +404,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           if (isNumber(style)) {
             const marginStyle = this.getInteractiveBorderShapeStyle(style);
             each(marginStyle, (currentStyle, currentStyleKey) => {
-              updateShapeAttr(shape, currentStyleKey, currentStyle);
+              updateShapeAttr(shapes, currentStyleKey, currentStyle);
             });
           }
         }
-        updateShapeAttr(shape, get(SHAPE_STYLE_MAP, styleKey), style);
+
+        // @ts-ignore
+        updateShapeAttr(shapes, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
   }
@@ -430,12 +440,43 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public clearUnselectedState() {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
-    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
+    updateShapeAttr(this.textShapes, SHAPE_STYLE_MAP.textOpacity, 1);
     updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
   }
 
-  public getTextShape() {
+  public getTextShape(): DisplayObject {
     return this.textShape;
+  }
+
+  public getTextShapes(): DisplayObject[] {
+    return this.textShapes || [this.textShape];
+  }
+
+  public addTextShape(textShape: DisplayObject) {
+    if (!textShape) {
+      return;
+    }
+    this.textShapes.push(textShape);
+  }
+
+  public getConditionIconShape(): GuiIcon {
+    return this.conditionIconShape;
+  }
+
+  public getConditionIconShapes(): GuiIcon[] {
+    return this.conditionIconShapes || [this.conditionIconShape];
+  }
+
+  public addConditionIconShape(iconShape: GuiIcon) {
+    if (!iconShape) {
+      return;
+    }
+    this.conditionIconShapes.push(iconShape);
+  }
+
+  public resetTextAndConditionIconShapes() {
+    this.textShapes = [];
+    this.conditionIconShapes = [];
   }
 
   public get cellConditions() {
@@ -456,6 +497,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           height: size,
           fill: attrs?.fill,
         });
+        this.addConditionIconShape(this.conditionIconShape);
       }
     }
   }

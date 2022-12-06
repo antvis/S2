@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { getMockSheetInstance } from 'tests/util/helpers';
 import { Header } from '@/components/header';
 
-describe('header component test', () => {
+describe('Header Component Tests', () => {
   test('should render basic header without extra', () => {
     const sheet = getMockSheetInstance();
     const title = 'this is title';
@@ -38,5 +38,27 @@ describe('header component test', () => {
 
     // 高级排序组件
     expect(container.querySelector('.antv-s2-advanced-sort-btn')).toBeDefined();
+  });
+
+  test('should render component', () => {
+    const className = 'test';
+    const sheet = getMockSheetInstance();
+
+    const result = render(
+      <Header
+        sheet={sheet}
+        title={'title'}
+        extra="extra"
+        className={className}
+        exportCfg={{ open: true }}
+        advancedSortCfg={{ open: true }}
+        switcherCfg={{ open: true }}
+      />,
+    );
+
+    expect(result.asFragment()).toMatchSnapshot();
+    expect(result.container.querySelector(className)).toBeDefined();
+    expect(screen.getByText('高级排序')).toBeDefined();
+    expect(screen.getByText('行列切换')).toBeDefined();
   });
 });

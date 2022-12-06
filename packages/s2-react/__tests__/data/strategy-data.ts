@@ -390,6 +390,7 @@ export const StrategyOptions: SheetComponentOptions = {
     return placeholder;
   },
   interaction: {
+    selectedCellsSpotlight: true,
     resize: {
       disable: (resizeInfo) => {
         return (
@@ -411,13 +412,15 @@ export const StrategyOptions: SheetComponentOptions = {
     text: [
       {
         mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
+          const { colIndex } = cellInfo;
           const isNilValue = isNil(value) || value === '';
-          if (meta?.fieldValue?.values[0][0] === value || isNilValue) {
+
+          if (colIndex === 0 || isNilValue) {
             return {
               fill: '#000',
             };
           }
+
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
           };
@@ -427,7 +430,12 @@ export const StrategyOptions: SheetComponentOptions = {
     icon: [
       {
         position: 'right',
-        mapping(value) {
+        mapping(value, cellInfo) {
+          const { colIndex } = cellInfo;
+          if (colIndex === 0) {
+            return null;
+          }
+
           return isUpDataValue(value)
             ? {
                 // icon 用于指定图标条件格式所使用的 icon 类型

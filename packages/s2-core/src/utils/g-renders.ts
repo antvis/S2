@@ -18,7 +18,7 @@ import {
   Text,
   type TextStyleProps,
 } from '@antv/g';
-import { forEach, isEmpty, isFunction } from 'lodash';
+import { forEach, isArray, isEmpty, isFunction } from 'lodash';
 import type { SimpleBBox } from '../engine';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
@@ -66,7 +66,7 @@ export function renderText(
   x: number,
   y: number,
   text: string,
-  textStyle: TextTheme,
+  textStyle: TextTheme | null,
   extraStyle?: TextStyleProps,
 ): DisplayObject {
   if (!isEmpty(shapes) && group) {
@@ -113,12 +113,19 @@ export function renderLine(
   );
 }
 
-export function updateShapeAttr<
-  T extends DisplayObject,
-  K extends keyof T['style'],
->(shape: T, styleName: K, styleValue: T['style'][K]) {
-  // https://g-next.antv.vision/zh/docs/api/basic/display-object#%E8%8E%B7%E5%8F%96%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC
-  shape?.style.setProperty(styleName, styleValue);
+export function updateShapeAttr(
+  shapeGroup: DisplayObject | undefined | (DisplayObject | undefined)[],
+  styleName: DisplayObject['style'],
+  styleValue: string | number,
+) {
+  if (isEmpty(shapeGroup)) {
+    return;
+  }
+  const shapes = isArray(shapeGroup) ? shapeGroup : [shapeGroup];
+  shapes.forEach((shape) => {
+    // https://g-next.antv.vision/zh/docs/api/basic/display-object#%E8%8E%B7%E5%8F%96%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC
+    shape?.style?.setProperty(styleName, styleValue);
+  });
 }
 
 export function renderIcon(group: Group, iconCfg: GuiIconCfg) {

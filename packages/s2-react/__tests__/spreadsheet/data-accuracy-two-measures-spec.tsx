@@ -101,7 +101,6 @@ const getDataCfg = (index: number) => {
 
 const getOptions = (): SheetComponentsProps['options'] => {
   return {
-    debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'grid',

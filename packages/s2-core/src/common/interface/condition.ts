@@ -24,7 +24,7 @@ export interface MappingResult extends ValueRange {
 export type MappingFunction = (
   fieldValue: number | string,
   data: Record<string, any>,
-) => MappingResult | undefined;
+) => MappingResult | undefined | null;
 
 /**
  * One field can hold a condition

@@ -1,17 +1,10 @@
-const { execSync } = require('child_process');
 const corePkg = require('@antv/s2/package.json');
 const reactPkg = require('../packages/s2-react/package.json');
 const vuePkg = require('../packages/s2-vue/package.json');
 const sharedPkg = require('@antv/s2-shared/package.json');
+const { getCurrentBranch } = require('./util');
 
-const branchList = ['alpha', 'beta'];
-
-function getCurrentBranch() {
-  return execSync('git symbolic-ref --short -q HEAD')
-    .toString()
-    .trim()
-    .toLowerCase();
-}
+const branchList = ['alpha', 'next', 'beta'];
 
 function bootstrap() {
   const branch = getCurrentBranch();

@@ -17,7 +17,9 @@ export interface RenderProps {
 
 export type SheetComponentOptions = S2Options<
   ReactNode,
-  Pagination & AntdPaginationProps
+  Pagination & AntdPaginationProps,
+  ReactNode,
+  ReactNode
 >;
 
 export type SheetComponentsProps = BaseSheetComponentProps<

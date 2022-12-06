@@ -53,6 +53,10 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.MERGED_CELL,
     ];
 
+    test('should get default theme', () => {
+      expect(s2.theme).toMatchSnapshot();
+    });
+
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
       (cellType: CellTypes) => {
@@ -467,5 +471,67 @@ describe('SpreadSheet Theme Tests', () => {
         expect(textOfSeriesCell?.attr('textBaseline')).toEqual(textBaseline);
       },
     );
+  });
+
+  // https://github.com/antvis/S2/issues/1892
+  describe('ScrollBar Tests', () => {
+    beforeEach(() => {
+      // 保证滚动条很小
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            width: 5000,
+          },
+          cellCfg: {
+            width: 5000,
+            height: 5000,
+          },
+        },
+      });
+      s2.render();
+    });
+
+    test('should render default min scrollbar size', () => {
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).toEqual(30);
+      expect(s2.facet.hScrollBar.thumbLen).toEqual(32);
+      expect(s2.facet.vScrollBar.thumbLen).toEqual(32);
+    });
+
+    test('should render min scrollbar size', () => {
+      s2.setTheme({
+        scrollBar: {
+          thumbHorizontalMinSize: 20,
+          thumbVerticalMinSize: 10,
+        },
+      });
+
+      s2.render();
+
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).toEqual(18);
+      expect(s2.facet.hScrollBar.thumbLen).toEqual(20);
+      expect(s2.facet.vScrollBar.thumbLen).toEqual(10);
+    });
+
+    test('should render real scrollbar size', () => {
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            width: 400,
+          },
+          cellCfg: {
+            width: 200,
+            height: 50,
+          },
+        },
+      });
+      s2.render();
+
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).not.toBeLessThanOrEqual(30);
+      expect(s2.facet.hScrollBar.thumbLen).not.toBeLessThanOrEqual(32);
+      expect(s2.facet.vScrollBar.thumbLen).not.toBeLessThanOrEqual(32);
+    });
   });
 });

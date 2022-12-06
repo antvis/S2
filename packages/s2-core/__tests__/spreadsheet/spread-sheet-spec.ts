@@ -135,6 +135,27 @@ describe('SpreadSheet Tests', () => {
 
       s2.destroy();
     });
+
+    test.each([PivotSheet, TableSheet])(
+      'should not crash if style config is empty',
+      (Sheet) => {
+        function render() {
+          const s2 = new Sheet(container, mockDataConfig, {
+            width: 400,
+            height: 400,
+            style: {
+              rowCfg: null,
+              colCfg: null,
+              cellCfg: null,
+            },
+          });
+
+          s2.render();
+        }
+
+        expect(render).not.toThrowError();
+      },
+    );
   });
 
   describe('Destroy Sheet Tests', () => {
