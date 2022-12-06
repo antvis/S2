@@ -114,5 +114,5 @@ object **必选**,_default：null_
 
 | 属性名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------- | ---------| -------| ------|------|
-| name | 列字段 id 或分组 id   | string |       | ✓ |
+| key | 列字段 id 或分组 id   | string |       | ✓ |
 | children | 分组下面的子级  | `Array\<ColumnNode \| string\>` |       |  |
