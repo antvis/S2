@@ -16,9 +16,9 @@ import {
   trim,
 } from 'lodash';
 import {
-  ID_SEPARATOR,
+  NODE_ID_SEPARATOR,
   ROOT_BEGINNING_REGEX,
-  ROOT_ID,
+  KEY_ROOT_NODE,
 } from '../../common/constant';
 import {
   CornerNodeType,
@@ -285,8 +285,8 @@ const getNodeFormatLabel = (node: Node) => {
 const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line: string[] = [];
   const getRowNodeFormatterLabel = (node: Node): string | undefined => {
-    // node.id === ROOT_ID 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === ROOT_ID) {
+    // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === KEY_ROOT_NODE) {
       return;
     }
     const formatterLabel = getNodeFormatLabel(node);
@@ -364,7 +364,7 @@ export const copyData = (
         // Removing the space at the beginning of the line of the label.
         rowNode.label = trim(rowNode?.label);
         const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-        tempLine = id.split(ID_SEPARATOR);
+        tempLine = id.split(NODE_ID_SEPARATOR);
       }
       // TODO 兼容下钻，需要获取下钻最大层级
       const totalLevel = maxRowsHeaderLevel + 1;

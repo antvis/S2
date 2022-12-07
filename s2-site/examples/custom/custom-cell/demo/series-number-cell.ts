@@ -2,7 +2,7 @@ import {
   PivotSheet,
   SeriesNumberCell,
   Node,
-  SERIES_NUMBER_FIELD,
+  KEY_SERIES_NUMBER_NODE,
 } from '@antv/s2';
 
 /**
@@ -29,7 +29,7 @@ const layoutSeriesNumberNodes = (
   return leaves.map((node, idx) => {
     const sNode = new Node({
       id: '',
-      key: SERIES_NUMBER_FIELD,
+      key: KEY_SERIES_NUMBER_NODE,
       rowIndex: idx,
       value: `${String.fromCharCode(97 + idx)}`, // 序号从 a 开始递增，在大量数据下，需要更完善的处理
     });

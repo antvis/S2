@@ -63,7 +63,6 @@ fetch(
           const nextUniqueId = generateId(parentNode.id, nextLabel);
           const preNode = new Node({
             ...node,
-            ...node.config,
             id: preUniqueId,
             label: preLabel,
             value: preLabel,
@@ -72,7 +71,6 @@ fetch(
 
           const nextNode = new Node({
             ...node,
-            ...node.config,
             id: nextUniqueId,
             label: nextLabel,
             value: nextLabel,

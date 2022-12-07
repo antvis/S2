@@ -2,8 +2,8 @@ import { forEach, has, intersection, last, set } from 'lodash';
 import type { CellData } from '../../data-set/cell-data';
 import {
   EXTRA_FIELD,
-  ID_SEPARATOR,
-  ROOT_ID,
+  NODE_ID_SEPARATOR,
+  KEY_ROOT_NODE,
   TOTAL_VALUE,
   MULTI_VALUE,
 } from '../../common/constant';
@@ -42,7 +42,7 @@ export function shouldQueryMultiData(pathValue: string | number) {
  */
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
-    const splitArr = item?.split(ID_SEPARATOR);
+    const splitArr = item?.split(NODE_ID_SEPARATOR);
     return splitArr?.[splitArr?.length! - 1] || item;
   });
 }
@@ -77,7 +77,7 @@ export function getDimensionsWithParentPath(
   );
   return dimensions
     .map((item) =>
-      measure.map((i) => item.getValueByKey(i)).join(`${ID_SEPARATOR}`),
+      measure.map((i) => item.getValueByKey(i)).join(`${NODE_ID_SEPARATOR}`),
     )
     ?.filter(Boolean);
 }
@@ -238,7 +238,7 @@ export function transformIndexesData(params: Param) {
     ).push(
       // 拼接维度路径
       // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
-      dimensionPath.map((it) => `${it}`).join(ID_SEPARATOR),
+      dimensionPath.map((it) => `${it}`).join(NODE_ID_SEPARATOR),
     );
   };
 
@@ -283,7 +283,7 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   if (!meta || !nodeId) {
     return;
   }
-  const paths = nodeId.split(ID_SEPARATOR);
+  const paths = nodeId.split(NODE_ID_SEPARATOR);
   const deletePath = last(paths);
   let currentMeta = meta;
   forEach(paths, (path, idx) => {
@@ -299,6 +299,6 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     }
 
     // exit iteration early when pathMeta not exists
-    return idx === 0 && path === ROOT_ID;
+    return idx === 0 && path === KEY_ROOT_NODE;
   });
 }

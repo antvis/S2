@@ -1,12 +1,22 @@
-import { head, isEmpty, isEqual, omit } from 'lodash';
-import { ROOT_ID } from '../../common/constant/basic';
+import { head, isEmpty, isEqual } from 'lodash';
+import { KEY_ROOT_NODE } from '../../common/constant/node';
 import type { CornerNodeType, S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
+  /**
+   * id 只在行头、列头 node 以及 hierarchy 中有用，是当前 node query 的拼接产物
+   */
   id: string;
+  /**
+   * 当前 node 属于哪部分，比如 series number, header, corner 等，和 field 区分开
+   */
   key: string;
+  /**
+   * 当前 node 的 field 属性， 在角头、行列头中 node 使用，和 dataCfg.fields 对应
+   */
+  field?: string;
   value: string;
   label?: string;
   level?: number;
@@ -20,7 +30,6 @@ export interface BaseNodeConfig {
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
-  field?: string;
   spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
   belongsCell?: S2CellType;
@@ -43,8 +52,6 @@ export interface BaseNodeConfig {
 export class Node {
   // node represent total measure
   public isTotalMeasure: boolean;
-
-  public config: BaseNodeConfig;
 
   constructor(cfg: BaseNodeConfig) {
     const {
@@ -73,6 +80,7 @@ export class Node {
     } = cfg;
     this.id = id;
     this.key = key;
+    this.field = field!;
     this.value = value;
     this.label = label || value;
     this.parent = parent;
@@ -83,28 +91,14 @@ export class Node {
     this.hierarchy = hierarchy!;
     this.isPivotMode = isPivotMode!;
     this.seriesNumberWidth = seriesNumberWidth!;
-    this.field = field!;
     this.spreadsheet = spreadsheet!;
     this.query = query;
-    this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
     this.isTotalMeasure = isTotalMeasure!;
     this.isLeaf = isLeaf!;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
-    this.config = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      colIndex: -1,
-      children: [],
-      padding: 0,
-      id: '',
-      key: '',
-      value: '',
-      label: '',
-    };
+    this.belongsCell = belongsCell;
     this.extra = extra;
   }
 
@@ -119,7 +113,7 @@ export class Node {
       // total nodes don't need rows from node self except in drill down mode
       let parent = node.parent;
       const fieldPath = [node.field];
-      while (parent && parent.id !== ROOT_ID) {
+      while (parent && parent.id !== KEY_ROOT_NODE) {
         fieldPath.push(parent.field);
         parent = parent.parent;
       }
@@ -315,14 +309,10 @@ export class Node {
 
   public static rootNode(): Node {
     return new Node({
-      id: 'root',
+      id: KEY_ROOT_NODE,
       key: '',
       value: '',
     });
-  }
-
-  public toJSON() {
-    return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 
   public getHeadLeafChild() {

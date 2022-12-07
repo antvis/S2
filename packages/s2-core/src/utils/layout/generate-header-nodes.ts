@@ -1,5 +1,9 @@
 import { includes, isBoolean } from 'lodash';
-import type { CustomHeaderFields, CustomTreeNode } from '../../common';
+import {
+  KEY_HEADER_NODE,
+  type CustomHeaderFields,
+  type CustomTreeNode,
+} from '../../common';
 import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
@@ -90,7 +94,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: uniqueId,
-      key: adjustedField,
+      key: KEY_HEADER_NODE,
       value,
       level,
       field: adjustedField,

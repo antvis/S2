@@ -1,7 +1,10 @@
 import { Rect, type Group, type PointLike } from '@antv/g';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
+import {
+  KEY_CORNER_NODE,
+  KEY_CORNER_SERIES_NUMBER_NODE,
+} from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
@@ -125,7 +128,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (seriesNumberWidth && leafNode) {
       const sNode: Node = new Node({
         id: '',
-        key: KEY_SERIES_NUMBER_NODE, // mark series node
+        key: KEY_CORNER_SERIES_NUMBER_NODE, // mark series node
         value: spreadsheet.options.seriesNumberText ?? i18n('序号'),
       });
       sNode.x = position?.x;
@@ -145,8 +148,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       if (spreadsheet.isHierarchyTreeType()) {
         const cornerText = this.getTreeCornerText(options);
         const cornerNode: Node = new Node({
-          key: '',
           id: '',
+          key: KEY_CORNER_NODE,
           value: cornerText,
         });
         cornerNode.x = position.x + seriesNumberWidth;
@@ -173,8 +176,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           const value = dataSet.getFieldName(field);
 
           const cornerNode: Node = new Node({
-            key: field,
             id: '',
+            key: KEY_CORNER_NODE,
+            field,
             value,
           });
 
@@ -182,7 +186,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cornerNode.y = leafNode?.y;
           cornerNode.width = rowNode.width;
           cornerNode.height = leafNode?.height;
-          cornerNode.field = field;
           cornerNode.isPivotMode = true;
           cornerNode.cornerType = CornerNodeType.Row;
           cornerNode.spreadsheet = spreadsheet;
@@ -203,8 +206,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const value = dataSet.getFieldName(field);
 
         const cNode = new Node({
-          key: field,
           id: '',
+          key: KEY_CORNER_NODE,
+          field,
           value,
         });
         cNode.x = position.x;

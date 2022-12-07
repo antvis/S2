@@ -1,5 +1,5 @@
 import { get, isEmpty } from 'lodash';
-import { EXTRA_FIELD } from '../../common/constant';
+import { EXTRA_FIELD, KEY_HEADER_NODE } from '../../common/constant';
 import { generateId } from '../../utils/layout/generate-id';
 import type { CustomTreeHeaderParams } from '../layout/interface';
 import { Node } from '../layout/node';
@@ -47,7 +47,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
 
     const node = new Node({
       id: nodeId,
-      key,
+      key: KEY_HEADER_NODE,
       label: title,
       value: title!,
       level,
