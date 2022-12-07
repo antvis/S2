@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Custom Tree Tests should calc correctly row index of leaf nodes 1`] = `
+Array [
+  Object {
+    "label": "自定义节点 a-1",
+    "rowIndex": 0,
+  },
+  Object {
+    "label": "自定义节点 a-1-1",
+    "rowIndex": 1,
+  },
+  Object {
+    "label": "指标1",
+    "rowIndex": 2,
+  },
+  Object {
+    "label": "指标2",
+    "rowIndex": 3,
+  },
+  Object {
+    "label": "自定义节点 a-1-2",
+    "rowIndex": 4,
+  },
+  Object {
+    "label": "自定义节点 a-2",
+    "rowIndex": 5,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should collapse node 1`] = `
+Array [
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]自定义节点A",
+  },
+  Object {
+    "iconName": "Plus",
+    "id": "root[&]指标E",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Tree Tests should render custom layout row nodes 1`] = `
+Array [
+  Object {
+    "description": "a-1 描述",
+    "height": 30,
+    "label": "自定义节点 a-1",
+    "width": 400,
+  },
+  Object {
+    "description": "a-1-1 描述",
+    "height": 30,
+    "label": "自定义节点 a-1-1",
+    "width": 400,
+  },
+  Object {
+    "description": "指标1描述",
+    "height": 30,
+    "label": "指标1",
+    "width": 400,
+  },
+  Object {
+    "description": "指标2描述",
+    "height": 30,
+    "label": "指标2",
+    "width": 400,
+  },
+  Object {
+    "description": "a-1-2 描述",
+    "height": 30,
+    "label": "自定义节点 a-1-2",
+    "width": 400,
+  },
+  Object {
+    "description": "a-2 描述",
+    "height": 30,
+    "label": "自定义节点 a-2",
+    "width": 400,
+  },
+]
+`;

@@ -11,7 +11,7 @@ describe('MobileSheet Tests', () => {
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
-        options={{ height: 300 }}
+        options={{ height: 300, devicePixelRatio: 2 }}
         onMounted={(s) => {
           s2 = s;
         }}
@@ -29,15 +29,17 @@ describe('MobileSheet Tests', () => {
   });
 
   test('get mobile default fragment', () => {
-    const { asFragment, container } = render(
+    const { asFragment } = render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
-        options={{ height: 300, width: 300, hdAdapter: false }}
+        options={{
+          height: 300,
+          width: 300,
+          hdAdapter: false,
+          devicePixelRatio: 2,
+        }}
       />,
     );
-    // 防止环境不同导致 deviceRatio 不同, 无法通过 snapshot 比较
-    container.querySelector('canvas')!.setAttribute('width', '300');
-    container.querySelector('canvas')!.setAttribute('height', '300');
     expect(asFragment()).toMatchSnapshot();
   });
 });

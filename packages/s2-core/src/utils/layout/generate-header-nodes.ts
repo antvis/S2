@@ -1,9 +1,6 @@
 import { includes, isBoolean } from 'lodash';
-import {
-  KEY_HEADER_NODE,
-  type CustomHeaderFields,
-  type CustomTreeNode,
-} from '../../common';
+import type { CustomHeaderFields, CustomTreeNode } from '../../common';
+import { KEY_HEADER_NODE } from '../../common/constant';
 import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';

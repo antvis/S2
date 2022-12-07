@@ -337,7 +337,7 @@ export const copyData = (
   const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
-    sheetInstance.dataSet.getFieldName(item.key),
+    sheetInstance.dataSet.getFieldName(item.field),
   );
 
   // get max query property length

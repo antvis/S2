@@ -1,3 +1,18 @@
+# [@antv/s2-react-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.1...@antv/s2-react-v2.0.0-next.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* **interaction:** 修复趋势分析表选中高亮效果无效 close [#1960](https://github.com/antvis/S2/issues/1960) ([#1961](https://github.com/antvis/S2/issues/1961)) ([5140b60](https://github.com/antvis/S2/commit/5140b6060d03b0290ddb4b314e7892520038f369))
+* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
+* 修复所有lint错误 ([9b62503](https://github.com/antvis/S2/commit/9b62503ebdf1ef9aa94470c8d18be99122d0c2dc))
+* 增加 style 配置为空时的容错 ([#1967](https://github.com/antvis/S2/issues/1967)) ([9250487](https://github.com/antvis/S2/commit/92504874e5f925a2fc2a640194f676c2bd32b55e))
+
+
+### Features
+
+* **header:** 去除 antd PageHeader 组件依赖 & Header 组件重构 close [#1981](https://github.com/antvis/S2/issues/1981) ([#1957](https://github.com/antvis/S2/issues/1957)) ([a3addd7](https://github.com/antvis/S2/commit/a3addd7494a2002e40c0cd00871bee47bedefb17))
+
 # [@antv/s2-react-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.32.0...@antv/s2-react-v2.0.0-next.1) (2022-11-25)
 
 * feat!: 2.0 next 预览版发布 ([de5a406](https://github.com/antvis/S2/commit/de5a406f4fd5e0db23eea46c8e7185589215c195))

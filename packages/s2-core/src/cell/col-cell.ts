@@ -221,7 +221,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getColResizeAreaKey() {
-    return this.meta.key;
+    return this.meta.field;
   }
 
   protected getColResizeArea(): Group | undefined {
@@ -232,7 +232,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getHorizontalResizeAreaName() {
-    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
+    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.field}`;
   }
 
   protected drawHorizontalResizeArea() {

@@ -3,22 +3,22 @@
 exports[`Header Component Tests should render component 1`] = `
 <DocumentFragment>
   <div
-    class="s2-header test"
+    class="antv-s2-header test"
   >
     <div
-      class="s2-header-heading"
+      class="antv-s2-header-heading"
     >
       <div
-        class="s2-header-heading-left"
+        class="antv-s2-header-heading-left"
       >
         <div
-          class="s2-header-heading-title"
+          class="antv-s2-header-heading-title"
         >
           title
         </div>
       </div>
       <div
-        class="s2-header-heading-extra"
+        class="antv-s2-header-heading-extra"
       >
         <div
           class="ant-space ant-space-horizontal ant-space-align-center"
@@ -75,7 +75,7 @@ exports[`Header Component Tests should render component 1`] = `
       </div>
     </div>
     <div
-      class="s2-header-content"
+      class="antv-s2-header-content"
     />
   </div>
 </DocumentFragment>

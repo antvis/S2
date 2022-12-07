@@ -3,6 +3,7 @@ const reactPkg = require('../packages/s2-react/package.json');
 const vuePkg = require('../packages/s2-vue/package.json');
 const sharedPkg = require('@antv/s2-shared/package.json');
 const { getCurrentBranch } = require('./util');
+const semver = require('semver');
 
 const branchList = ['alpha', 'next', 'beta'];
 
@@ -27,7 +28,7 @@ function bootstrap() {
       return {
         name,
         devDepVersion,
-        pass: devDepVersion.includes(corePkg.version),
+        pass: semver.satisfies(corePkg.version, devDepVersion),
       };
     },
   );

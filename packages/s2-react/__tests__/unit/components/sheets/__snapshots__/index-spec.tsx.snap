@@ -12,21 +12,21 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
         class="antv-s2-wrapper"
       >
         <div
-          class="s2-header"
+          class="antv-s2-header"
           style="width: 200px;"
         >
           <div
-            class="s2-header-heading"
+            class="antv-s2-header-heading"
           >
             <div
-              class="s2-header-heading-left"
+              class="antv-s2-header-heading-left"
             >
               <div
-                class="s2-header-heading-title"
+                class="antv-s2-header-heading-title"
               />
             </div>
             <div
-              class="s2-header-heading-extra"
+              class="antv-s2-header-heading-extra"
             >
               <div
                 class="ant-space ant-space-horizontal ant-space-align-center"
@@ -77,11 +77,12 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
             </div>
           </div>
           <div
-            class="s2-header-content"
+            class="antv-s2-header-content"
           />
         </div>
         <div
           class="antv-s2-container"
+          style="position: relative;"
         >
           <canvas
             height="400"
@@ -93,7 +94,7 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
+            class="ant-pagination ant-pagination-mini"
             unselectable="unselectable"
           >
             <li
@@ -274,21 +275,21 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
         class="antv-s2-wrapper"
       >
         <div
-          class="s2-header"
+          class="antv-s2-header"
           style="width: 200px;"
         >
           <div
-            class="s2-header-heading"
+            class="antv-s2-header-heading"
           >
             <div
-              class="s2-header-heading-left"
+              class="antv-s2-header-heading-left"
             >
               <div
-                class="s2-header-heading-title"
+                class="antv-s2-header-heading-title"
               />
             </div>
             <div
-              class="s2-header-heading-extra"
+              class="antv-s2-header-heading-extra"
             >
               <div
                 class="ant-space ant-space-horizontal ant-space-align-center"
@@ -339,11 +340,12 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
             </div>
           </div>
           <div
-            class="s2-header-content"
+            class="antv-s2-header-content"
           />
         </div>
         <div
           class="antv-s2-container"
+          style="position: relative;"
         >
           <canvas
             height="400"
@@ -355,7 +357,7 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
+            class="ant-pagination ant-pagination-mini"
             unselectable="unselectable"
           >
             <li
@@ -526,21 +528,21 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
         class="antv-s2-wrapper"
       >
         <div
-          class="s2-header"
+          class="antv-s2-header"
           style="width: 200px;"
         >
           <div
-            class="s2-header-heading"
+            class="antv-s2-header-heading"
           >
             <div
-              class="s2-header-heading-left"
+              class="antv-s2-header-heading-left"
             >
               <div
-                class="s2-header-heading-title"
+                class="antv-s2-header-heading-title"
               />
             </div>
             <div
-              class="s2-header-heading-extra"
+              class="antv-s2-header-heading-extra"
             >
               <div
                 class="ant-space ant-space-horizontal ant-space-align-center"
@@ -591,11 +593,12 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
             </div>
           </div>
           <div
-            class="s2-header-content"
+            class="antv-s2-header-content"
           />
         </div>
         <div
           class="antv-s2-container"
+          style="position: relative;"
         >
           <canvas
             height="400"
@@ -607,7 +610,7 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
+            class="ant-pagination ant-pagination-mini"
             unselectable="unselectable"
           >
             <li
@@ -778,21 +781,21 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
         class="antv-s2-wrapper"
       >
         <div
-          class="s2-header"
+          class="antv-s2-header"
           style="width: 200px;"
         >
           <div
-            class="s2-header-heading"
+            class="antv-s2-header-heading"
           >
             <div
-              class="s2-header-heading-left"
+              class="antv-s2-header-heading-left"
             >
               <div
-                class="s2-header-heading-title"
+                class="antv-s2-header-heading-title"
               />
             </div>
             <div
-              class="s2-header-heading-extra"
+              class="antv-s2-header-heading-extra"
             >
               <div
                 class="ant-space ant-space-horizontal ant-space-align-center"
@@ -843,11 +846,12 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
             </div>
           </div>
           <div
-            class="s2-header-content"
+            class="antv-s2-header-content"
           />
         </div>
         <div
           class="antv-s2-container"
+          style="position: relative;"
         >
           <canvas
             height="400"
@@ -859,7 +863,7 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
+            class="ant-pagination ant-pagination-mini"
             unselectable="unselectable"
           >
             <li
@@ -1030,21 +1034,21 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
         class="antv-s2-wrapper"
       >
         <div
-          class="s2-header"
+          class="antv-s2-header"
           style="width: 200px;"
         >
           <div
-            class="s2-header-heading"
+            class="antv-s2-header-heading"
           >
             <div
-              class="s2-header-heading-left"
+              class="antv-s2-header-heading-left"
             >
               <div
-                class="s2-header-heading-title"
+                class="antv-s2-header-heading-title"
               />
             </div>
             <div
-              class="s2-header-heading-extra"
+              class="antv-s2-header-heading-extra"
             >
               <div
                 class="ant-space ant-space-horizontal ant-space-align-center"
@@ -1095,11 +1099,12 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
             </div>
           </div>
           <div
-            class="s2-header-content"
+            class="antv-s2-header-content"
           />
         </div>
         <div
           class="antv-s2-container"
+          style="position: relative;"
         >
           <canvas
             height="400"
@@ -1111,7 +1116,7 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
           class="antv-s2-pagination"
         >
           <ul
-            class="ant-pagination mini"
+            class="ant-pagination ant-pagination-mini"
             unselectable="unselectable"
           >
             <li

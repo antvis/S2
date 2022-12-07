@@ -462,7 +462,7 @@ export class TableFacet extends BaseFacet {
       const colLabel = col.label;
 
       const allLabels =
-        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
+        datas?.map((data) => `${data[col.field]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         spreadsheet.measureTextWidthRoughly(label),

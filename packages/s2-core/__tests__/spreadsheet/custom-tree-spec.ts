@@ -81,44 +81,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       height: node.height,
       description: node.extra.description,
     }));
-    expect(rowNodes).toEqual([
-      {
-        description: 'a-1 描述',
-        height: 30,
-        label: '自定义节点 a-1',
-        width: 400,
-      },
-      {
-        description: 'a-1-1 描述',
-        height: 30,
-        label: '自定义节点 a-1-1',
-        width: 400,
-      },
-      {
-        description: '指标1描述',
-        height: 30,
-        label: '指标1',
-        width: 400,
-      },
-      {
-        description: '指标2描述',
-        height: 30,
-        label: '指标2',
-        width: 400,
-      },
-      {
-        description: 'a-1-2 描述',
-        height: 30,
-        label: '自定义节点 a-1-2',
-        width: 400,
-      },
-      {
-        description: 'a-2 描述',
-        height: 30,
-        label: '自定义节点 a-2',
-        width: 400,
-      },
-    ]);
+    expect(rowNodes).toMatchSnapshot();
   });
 
   test('should calc correctly row index of leaf nodes', () => {
@@ -126,32 +89,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       label: node.label,
       rowIndex: node.rowIndex,
     }));
-    expect(rowLeafNodes).toEqual([
-      {
-        label: '自定义节点 a-1',
-        rowIndex: 0,
-      },
-      {
-        label: '自定义节点 a-1-1',
-        rowIndex: 1,
-      },
-      {
-        label: '指标1',
-        rowIndex: 2,
-      },
-      {
-        label: '指标2',
-        rowIndex: 3,
-      },
-      {
-        label: '自定义节点 a-1-2',
-        rowIndex: 4,
-      },
-      {
-        label: '自定义节点 a-2',
-        rowIndex: 5,
-      },
-    ]);
+    expect(rowLeafNodes).toMatchSnapshot();
   });
 
   test('should select custom row header cell', () => {
@@ -280,7 +218,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     });
     s2.render(true);
 
-    const ids = s2.facet.layoutResult.rowNodes.map((node) => {
+    const nodes = s2.facet.layoutResult.rowNodes.map((node) => {
       const iconName = get(node.belongsCell, 'treeIcon.config.name');
       return {
         id: node.id,
@@ -288,15 +226,6 @@ describe('SpreadSheet Custom Tree Tests', () => {
       };
     });
 
-    expect(ids).toEqual([
-      {
-        id: 'root[&]自定义节点A',
-        iconName: 'Plus',
-      },
-      {
-        id: 'root[&]指标E',
-        iconName: 'Plus',
-      },
-    ]);
+    expect(nodes).toMatchSnapshot();
   });
 });

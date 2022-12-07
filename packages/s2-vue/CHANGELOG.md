@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.1...@antv/s2-vue-v2.0.0-next.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
+
 # [@antv/s2-vue-v2.0.0-next.1](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v2.0.0-next.1) (2022-11-25)
 
 

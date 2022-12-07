@@ -66,7 +66,7 @@ fetch(
             id: preUniqueId,
             label: preLabel,
             value: preLabel,
-            query: { ...parentNode.query, [node.key]: preLabel },
+            query: { ...parentNode.query, [node.field]: preLabel },
           });
 
           const nextNode = new Node({
@@ -74,7 +74,7 @@ fetch(
             id: nextUniqueId,
             label: nextLabel,
             value: nextLabel,
-            query: { ...parentNode.query, [node.key]: nextLabel },
+            query: { ...parentNode.query, [node.field]: nextLabel },
           });
 
           return {

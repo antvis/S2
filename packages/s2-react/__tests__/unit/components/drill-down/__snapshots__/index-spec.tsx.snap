@@ -3,10 +3,10 @@
 exports[`DrillDown Component Tests should render component 1`] = `
 <DocumentFragment>
   <div
-    class="s2-drill-down test"
+    class="antv-s2-drill-down test"
   >
     <header
-      class="s2-drill-down-header"
+      class="antv-s2-drill-down-header"
     >
       <div>
         选择下钻维度
@@ -22,7 +22,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       </button>
     </header>
     <span
-      class="ant-input-affix-wrapper s2-drill-down-search"
+      class="ant-input-affix-wrapper antv-s2-drill-down-search"
     >
       <span
         class="ant-input-prefix"
@@ -66,7 +66,7 @@ exports[`DrillDown Component Tests should render component 1`] = `
       </span>
     </span>
     <div
-      class="ant-empty s2-drill-down-empty"
+      class="ant-empty antv-s2-drill-down-empty"
     >
       <div
         class="ant-empty-image"
@@ -135,12 +135,12 @@ exports[`DrillDown Component Tests should render component 1`] = `
       <div
         class="ant-empty-description"
       >
-        No Data
+        No data
       </div>
     </div>
     extra
     <ul
-      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light s2-drill-down-menu"
+      class="ant-menu ant-menu-root ant-menu-vertical ant-menu-light antv-s2-drill-down-menu"
       data-menu-list="true"
       role="menu"
       tabindex="0"

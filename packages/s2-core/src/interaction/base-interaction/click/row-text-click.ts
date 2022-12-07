@@ -24,11 +24,11 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
       }
 
       const { cellData } = this.getCellAppendInfo(event.target);
-      const key = cellData!.key;
+      const field = cellData!.field;
       const rowData = this.getRowData(cellData!);
 
       this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
-        key,
+        field,
         record: rowData,
       });
     });

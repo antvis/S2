@@ -186,8 +186,8 @@ export class CornerCell extends HeaderCell {
       fill!,
       hierarchyCollapse,
       () => {
-        this.headerConfig.spreadsheet.store.set('scrollY', 0);
-        this.headerConfig.spreadsheet.emit(
+        this.spreadsheet.store.set('scrollY', 0);
+        this.spreadsheet.emit(
           S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
           hierarchyCollapse,
         );
