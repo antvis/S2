@@ -168,9 +168,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
         // spreadsheet type grid mode
         rowNodes.forEach((rowNode) => {
-          // 自定义行头直接取采样的行头 key 值即可, 可通过 s2DataCfg.meta.name 自定义名称
+          // 自定义行头直接取采样的行头 field 值即可, 可通过 s2DataCfg.meta.name 自定义名称
           const field = isCustomRow
-            ? rowNode.key
+            ? rowNode.field
             : (rows[rowNode.level] as string);
 
           const value = dataSet.getFieldName(field);
@@ -201,7 +201,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
         const field = isCustomColumn
-          ? colNode.key
+          ? colNode.field
           : (columns[colNode.level] as string);
         const value = dataSet.getFieldName(field);
 
