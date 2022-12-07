@@ -81,44 +81,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         description: node.extra.description,
       }));
 
-      expect(rowNodes).toEqual([
-        {
-          description: 'a-1 描述',
-          height: 90,
-          label: '自定义节点 a-1',
-          width: 119,
-        },
-        {
-          description: 'a-1-1 描述',
-          height: 60,
-          label: '自定义节点 a-1-1',
-          width: 119,
-        },
-        {
-          description: '指标1描述',
-          height: 30,
-          label: '指标1',
-          width: 119,
-        },
-        {
-          description: '指标2描述',
-          height: 30,
-          label: '指标2',
-          width: 119,
-        },
-        {
-          description: 'a-1-2 描述',
-          height: 30,
-          label: '自定义节点 a-1-2',
-          width: 238,
-        },
-        {
-          description: 'a-2 描述',
-          height: 30,
-          label: '自定义节点 a-2',
-          width: 357,
-        },
-      ]);
+      expect(rowNodes).toMatchSnapshot();
     });
 
     test('should calc correctly row index of leaf nodes', () => {
@@ -126,24 +89,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         label: node.label,
         rowIndex: node.rowIndex,
       }));
-      expect(rowLeafNodes).toEqual([
-        {
-          label: '指标1',
-          rowIndex: 0,
-        },
-        {
-          label: '指标2',
-          rowIndex: 1,
-        },
-        {
-          label: '自定义节点 a-1-2',
-          rowIndex: 2,
-        },
-        {
-          label: '自定义节点 a-2',
-          rowIndex: 3,
-        },
-      ]);
+      expect(rowLeafNodes).toMatchSnapshot();
     });
 
     test('should calc correctly leaf nodes width after row resized', () => {
@@ -168,35 +114,9 @@ describe('SpreadSheet Custom Grid Tests', () => {
         width: node.width,
       }));
 
-      expect(rowLeafNodes).toEqual([
-        {
-          field: 'measure-1',
-          width: 119,
-        },
-        {
-          field: 'measure-2',
-          width: 119,
-        },
-        {
-          field: 'a-1-2',
-          width: 159,
-        },
-        {
-          field: 'a-2',
-          width: 278,
-        },
-      ]);
+      expect(rowLeafNodes).toMatchSnapshot();
 
-      expect(colLeafNodes).toEqual([
-        {
-          field: 'sub_type',
-          width: 160,
-        },
-        {
-          field: 'sub_type',
-          width: 160,
-        },
-      ]);
+      expect(colLeafNodes).toMatchSnapshot();
     });
 
     test('should select custom row header cell', () => {
@@ -263,24 +183,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           };
         });
 
-      expect(cornerCellLabels).toEqual([
-        {
-          field: 'a-1',
-          label: '层级1',
-        },
-        {
-          field: 'a-1-1',
-          label: '层级2',
-        },
-        {
-          field: 'measure-1',
-          label: '层级3',
-        },
-        {
-          field: 'type',
-          label: '类型',
-        },
-      ]);
+      expect(cornerCellLabels).toMatchSnapshot();
     });
   });
 
@@ -316,44 +219,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         description: node.extra.description,
       }));
 
-      expect(colNodes).toEqual([
-        {
-          description: 'a-1 描述',
-          height: 30,
-          label: '自定义节点 a-1',
-          width: 300,
-        },
-        {
-          description: 'a-1-1 描述',
-          height: 30,
-          label: '自定义节点 a-1-1',
-          width: 200,
-        },
-        {
-          description: '指标1描述',
-          height: 30,
-          label: '指标1',
-          width: 100,
-        },
-        {
-          description: '指标2描述',
-          height: 30,
-          label: '指标2',
-          width: 100,
-        },
-        {
-          description: 'a-1-2 描述',
-          height: 60,
-          label: '自定义节点 a-1-2',
-          width: 100,
-        },
-        {
-          description: 'a-2 描述',
-          height: 90,
-          label: '自定义节点 a-2',
-          width: 100,
-        },
-      ]);
+      expect(colNodes).toMatchSnapshot();
     });
 
     test('should calc correctly col index of leaf nodes', () => {
@@ -362,24 +228,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         colIndex: node.colIndex,
       }));
 
-      expect(colLeafNodes).toEqual([
-        {
-          label: '指标1',
-          colIndex: 0,
-        },
-        {
-          label: '指标2',
-          colIndex: 1,
-        },
-        {
-          label: '自定义节点 a-1-2',
-          colIndex: 2,
-        },
-        {
-          label: '自定义节点 a-2',
-          colIndex: 3,
-        },
-      ]);
+      expect(colLeafNodes).toMatchSnapshot();
     });
 
     test('should calc correctly leaf nodes width after column resized', () => {
@@ -399,32 +248,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         height: node.height,
       }));
 
-      expect(colNodes).toEqual([
-        {
-          height: 30,
-          label: '自定义节点 a-1',
-        },
-        {
-          height: 40,
-          label: '自定义节点 a-1-1',
-        },
-        {
-          height: 30,
-          label: '指标1',
-        },
-        {
-          height: 30,
-          label: '指标2',
-        },
-        {
-          height: 70,
-          label: '自定义节点 a-1-2',
-        },
-        {
-          height: 100,
-          label: '自定义节点 a-2',
-        },
-      ]);
+      expect(colNodes).toMatchSnapshot();
     });
 
     test('should select custom col header cell', () => {
@@ -491,24 +315,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           };
         });
 
-      expect(cornerCellLabels).toEqual([
-        {
-          field: 'type',
-          label: '类型',
-        },
-        {
-          field: 'sub_type',
-          label: '子类型',
-        },
-        {
-          field: 'a-1',
-          label: '层级1',
-        },
-        {
-          field: 'a-1-1',
-          label: '层级2',
-        },
-      ]);
+      expect(cornerCellLabels).toMatchSnapshot();
     });
 
     test('should hide columns', () => {

@@ -9,7 +9,7 @@ Object {
   "colCell": Object {
     "bolderText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "opacity": 1,
@@ -72,7 +72,7 @@ Object {
     },
     "measureText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "opacity": 1,
@@ -81,7 +81,7 @@ Object {
     },
     "text": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "opacity": 1,
@@ -92,7 +92,7 @@ Object {
   "cornerCell": Object {
     "bolderText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "opacity": 1,
@@ -125,7 +125,7 @@ Object {
     },
     "text": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "opacity": 1,
@@ -136,7 +136,7 @@ Object {
   "dataCell": Object {
     "bolderText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "opacity": 1,
@@ -249,7 +249,7 @@ Object {
     },
     "text": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "opacity": 1,
@@ -260,7 +260,7 @@ Object {
   "mergedCell": Object {
     "bolderText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "opacity": 1,
@@ -373,7 +373,7 @@ Object {
     },
     "text": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "opacity": 1,
@@ -405,7 +405,7 @@ Object {
   "rowCell": Object {
     "bolderText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": 700,
       "linkTextFill": "#326EF4",
@@ -467,7 +467,7 @@ Object {
     },
     "measureText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "linkTextFill": "#326EF4",
@@ -478,17 +478,17 @@ Object {
     "seriesNumberWidth": 80,
     "seriesText": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "linkTextFill": "#326EF4",
       "opacity": 1,
       "textAlign": "center",
-      "textBaseline": "middle",
+      "textBaseline": "top",
     },
     "text": Object {
       "fill": "#000000",
-      "fontFamily": "Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif",
+      "fontFamily": "Roboto, PingFangSC, Microsoft YaHei, Arial, sans-serif",
       "fontSize": 12,
       "fontWeight": "normal",
       "linkTextFill": "#326EF4",

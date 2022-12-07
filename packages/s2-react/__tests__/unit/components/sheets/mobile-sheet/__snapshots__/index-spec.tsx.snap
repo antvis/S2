@@ -16,9 +16,9 @@ exports[`MobileSheet Tests get mobile default fragment 1`] = `
           style="position: relative;"
         >
           <canvas
-            height="300"
+            height="600"
             style="width: 300px; height: 300px; display: block;"
-            width="300"
+            width="600"
           />
         </div>
       </div>

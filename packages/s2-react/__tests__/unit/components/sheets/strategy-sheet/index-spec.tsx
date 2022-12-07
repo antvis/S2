@@ -12,15 +12,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { get } from 'lodash';
-import {
-  SheetComponent,
-  type SheetComponentOptions,
-} from '../../../../../src/components';
 import { getContainer } from '../../../../util/helpers';
 import {
   StrategySheetDataConfig,
   StrategyOptions,
 } from '../../../../data/strategy-data';
+import { SheetComponent, type SheetComponentOptions } from '@/components';
 
 describe('<StrategySheet/> Tests', () => {
   let s2: SpreadSheet;
@@ -184,38 +181,33 @@ describe('<StrategySheet/> Tests', () => {
       get(element, 'actualText'),
     );
 
-    expect(textList).toEqual(['数值', '日期']);
+    expect(textList).toEqual(['自定义节点A/指标E/数值', '日期']);
   });
 
-  test.each([{ isCustomCornerText: true }, { isCustomCornerText: false }])(
-    'should format corner date field for %o',
-    ({ isCustomCornerText }) => {
-      renderStrategySheet(
-        {
-          width: 600,
-          height: 600,
-          cornerText: isCustomCornerText ? '测试' : undefined,
-        },
-        {
-          ...StrategySheetDataConfig,
-          meta: [
-            {
-              field: 'date',
-              name: '日期',
-            },
-          ],
-        },
-      );
+  test('should format corner date field for custom corner text', () => {
+    renderStrategySheet(
+      {
+        width: 600,
+        height: 600,
+        cornerText: '测试',
+      },
+      {
+        ...StrategySheetDataConfig,
+        meta: [
+          {
+            field: 'date',
+            name: '日期',
+          },
+        ],
+      },
+    );
 
-      const textList = s2.facet.cornerHeader.children.map((element) =>
-        get(element, 'actualText'),
-      );
+    const textList = s2.facet.cornerHeader.children.map((element) =>
+      get(element, 'actualText'),
+    );
 
-      const cornerText = isCustomCornerText ? '测试' : '自定义节点A/指标E/数值';
-
-      expect(textList).toEqual([cornerText, '日期']);
-    },
-  );
+    expect(textList).toEqual(['测试', '日期']);
+  });
 
   test('should render correctly row nodes', () => {
     renderStrategySheet(
@@ -230,48 +222,7 @@ describe('<StrategySheet/> Tests', () => {
       field: node.field,
       label: node.label,
     }));
-    expect(rowNodes).toStrictEqual([
-      {
-        field: 'custom-node-1',
-        label: '自定义节点A',
-      },
-      {
-        field: 'measure-a',
-        label: '指标A',
-      },
-      {
-        field: 'measure-b',
-        label: '指标B',
-      },
-      {
-        field: 'custom-node-2',
-        label: '自定义节点B',
-      },
-      {
-        field: 'measure-c',
-        label: '指标C',
-      },
-      {
-        field: 'measure-d',
-        label: '指标D',
-      },
-      {
-        field: 'custom-node-5',
-        label: '自定义节点E',
-      },
-      {
-        field: 'measure-e',
-        label: '指标E',
-      },
-      {
-        field: 'custom-node-3',
-        label: '自定义节点C',
-      },
-      {
-        field: 'custom-node-4',
-        label: '自定义节点D',
-      },
-    ]);
+    expect(rowNodes).toMatchSnapshot();
   });
 
   describe('StrategySheet Export Tests', () => {

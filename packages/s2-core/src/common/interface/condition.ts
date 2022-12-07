@@ -1,3 +1,4 @@
+import type { RawData } from './s2DataConfig';
 import type { IconTheme } from './theme';
 
 export interface ValueRange {
@@ -23,7 +24,7 @@ export interface MappingResult extends ValueRange {
 
 export type MappingFunction = (
   fieldValue: number | string,
-  data: Record<string, any>,
+  data: RawData,
 ) => MappingResult | undefined | null;
 
 /**

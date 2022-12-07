@@ -33,6 +33,8 @@ import {
   FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
+import type { RawData } from './../common/interface/s2DataConfig';
 
 /**
  * DataCell for panelGroup area
@@ -381,11 +383,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       ? this.spreadsheet.dataSet.getCellData({
           query: { rowIndex: this.meta.rowIndex },
         })
-      : this.meta.data;
-    return condition?.mapping(
-      value,
-      rowDataInfo as unknown as Record<string, any>,
-    );
+      : getFieldValueOfViewMetaData(this.meta.data);
+    return condition?.mapping(value, rowDataInfo as RawData);
   }
 
   public updateByState(stateName: InteractionStateName) {
