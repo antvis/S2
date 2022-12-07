@@ -22,7 +22,7 @@ const BASIC_COLOR_COUNT = 15;
  * 智能反色使用
  * @param color
  */
-export const isReverse = (color: string) => {
+export const shouldReverseFontColor = (color: string) => {
   return tinycolor(color).getLuminance() <= 0.5;
 };
 
@@ -99,7 +99,9 @@ export const generatePalette = (
 
   // 根据背景明暗设置字体颜色
   FONT_COLOR_RELATIONS.forEach(({ fontColorIndex, bgColorIndex }) => {
-    basicColors[fontColorIndex] = isReverse(basicColors[bgColorIndex])
+    basicColors[fontColorIndex] = shouldReverseFontColor(
+      basicColors[bgColorIndex],
+    )
       ? REVERSE_FONT_COLOR
       : DEFAULT_FONT_COLOR;
   });

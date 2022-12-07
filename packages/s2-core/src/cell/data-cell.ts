@@ -31,7 +31,7 @@ import {
   DEFAULT_FONT_COLOR,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import { isReverse } from '../utils/color';
+import { shouldReverseFontColor } from '../utils/color';
 
 /**
  * DataCell for panelGroup area
@@ -195,7 +195,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
-      isReverse(backgroundColor) &&
+      shouldReverseFontColor(backgroundColor) &&
       textStyle.fill === DEFAULT_FONT_COLOR &&
       intelligentReverseTextColor
     ) {
