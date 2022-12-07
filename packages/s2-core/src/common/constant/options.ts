@@ -30,13 +30,12 @@ export const DEFAULT_STYLE: Readonly<S2Style> = {
     height: 30,
   },
   rowCfg: {
-    width: null,
     widthByField: {},
     heightByField: {},
   },
   colCfg: {
     height: 30,
-    widthByFieldValue: {},
+    widthByField: {},
     heightByField: {},
   },
   device: DeviceType.PC,

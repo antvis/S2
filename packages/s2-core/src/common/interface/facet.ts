@@ -16,9 +16,9 @@ export interface ScrollChangeParams {
 }
 
 export type GetCellMeta = (
-  rowIndex?: number,
-  colIndex?: number,
-) => ViewMeta | null;
+  rowIndex: number,
+  colIndex: number,
+) => ViewMeta | null | undefined;
 
 export interface LayoutResult {
   colNodes: Node[];

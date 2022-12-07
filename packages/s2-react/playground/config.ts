@@ -88,9 +88,11 @@ export const s2Options: SheetComponentOptions = {
   style: {
     rowCfg: {
       width: isMobile() ? 60 : 200,
+      height: 150,
     },
     cellCfg: {
-      height: 50,
+      width: 100,
+      height: 40,
     },
   },
 };

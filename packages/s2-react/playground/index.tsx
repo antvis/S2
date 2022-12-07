@@ -35,6 +35,7 @@ import {
   Tag,
   Tooltip,
   type RadioChangeEvent,
+  version,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce, isEmpty } from 'lodash';
@@ -938,6 +939,9 @@ function MainLayout() {
                     </span>
                     <span>
                       {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                    </span>
+                    <span>
+                      antd: <Tag>{version}</Tag>
                     </span>
                     <span>
                       lang: <Tag>{getLang()}</Tag>

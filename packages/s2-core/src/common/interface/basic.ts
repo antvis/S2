@@ -231,9 +231,9 @@ export interface S2Style {
   collapsedRows?: Record<string, boolean> | null;
   // col header collapse nodes
   collapsedCols?: Record<string, boolean>;
-  cellCfg?: CellCfg | null | undefined;
-  colCfg?: ColCfg | null | undefined;
-  rowCfg?: RowCfg | null | undefined;
+  cellCfg?: CellCfg | null;
+  colCfg?: ColCfg | null;
+  rowCfg?: RowCfg | null;
   /**
    * @deprecated use options.deviceType instead
    */
@@ -339,7 +339,11 @@ export type HierarchyCallback = (
   node: Node,
 ) => HierarchyResult;
 
-export type CellCustomWidth = null | number | ((node: Node | null) => number);
+export type CellCustomSize =
+  | null
+  | undefined
+  | number
+  | ((node: Node | null) => number);
 
 export interface CellCfg {
   width?: number;
@@ -357,10 +361,12 @@ export interface CellCfg {
 
 export interface RowCfg {
   // row's cell width
-  width?: CellCustomWidth;
+  width?: CellCustomSize;
+  // row's cell height
+  height?: CellCustomSize;
   // specific some row field's width
-  widthByField?: Record<string, number>;
-  heightByField?: Record<string, number>;
+  widthByField?: Record<string, number> | null;
+  heightByField?: Record<string, number> | null;
   /**
    * @deprecated (已废弃, 请使用 style.treeRowsWidth 代替) tree row width(拖拽产生的，无需主动设置)
    */
@@ -369,25 +375,15 @@ export interface RowCfg {
 
 export interface ColCfg {
   // custom column width
-  width?: CellCustomWidth;
+  width?: CellCustomSize;
   // columns height(for normal state)
-  height?: number;
+  height?: CellCustomSize;
   // specific some col field's width
-  widthByFieldValue?: Record<string, number>;
+  widthByField?: Record<string, number> | null;
   // specific some col field's height
-  heightByField?: Record<string, number>;
+  heightByField?: Record<string, number> | null;
   // hide last column(measure values), only work when has one value
   hideMeasureColumn?: boolean;
-}
-
-/**
- * the label names of rows or columns.
- * Using the ID_SEPARATOR('[&]') to join two labels
- * when there are hierarchical relations between them.
- */
-export interface CustomHeaderCells {
-  cellLabels: string[];
-  mode?: 'pick' | 'omit';
 }
 
 /**

@@ -289,7 +289,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
             colCfg: {
-              widthByFieldValue: {
+              widthByField: {
                 [resizeInfo.id]: displayWidth!,
               },
             },
@@ -345,7 +345,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           };
         } else {
           rowCellStyle = {
-            cellCfg: {
+            rowCfg: {
               height,
             },
           };
