@@ -87,7 +87,7 @@ const getValueFromMeta = (
         colNode.isTotals ||
         colNode.isTotalMeasure,
     });
-    return cell[VALUE_FIELD];
+    return cell?.[VALUE_FIELD] ?? '';
   }
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId];
@@ -337,7 +337,10 @@ const getDataMatrix = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
-      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+      return getFormat(
+        colNode.colIndex,
+        spreadsheet,
+      )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
 };
