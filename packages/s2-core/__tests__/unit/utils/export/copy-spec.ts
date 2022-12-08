@@ -319,27 +319,29 @@ describe('Pivot Table Core Data Process', () => {
   // 2 = ['province', 'city'].length 列头宽度
   const ROW_HEADER_WIDTH = 2;
 
-  const s2 = new PivotSheet(
-    getContainer(),
-    assembleDataCfg({
+  function getDataCfg() {
+    return assembleDataCfg({
       meta: [],
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
         values: ['number'],
       },
-    }),
-    assembleOptions({
+    });
+  }
+
+  function getOptions() {
+    return assembleOptions({
       hierarchyType: 'grid',
       interaction: {
         enableCopy: true,
       },
       totals: TOTALS_OPTIONS,
-    }),
-  );
-  beforeEach(() => {
-    s2.render();
-  });
+    });
+  }
+
+  const s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+  s2.render();
 
   it('should copy no data in grid mode', () => {
     s2.interaction.changeState({
@@ -394,14 +396,7 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy row data in grid mode', () => {
     const ss = new PivotSheet(
       getContainer(),
-      assembleDataCfg({
-        meta: [],
-        fields: {
-          columns: ['type', 'sub_type'],
-          rows: ['province', 'city'],
-          values: ['number'],
-        },
-      }),
+      getDataCfg(),
       assembleOptions({
         hierarchyType: 'grid',
         interaction: {
@@ -711,22 +706,23 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   it('should get correct data with hideMeasureColumn is true', () => {
-    s2.setOptions({
+    const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+    ss.setOptions({
       style: {
         colCfg: {
           hideMeasureColumn: true,
         },
       },
     });
-    s2.render();
-    const cells = s2.interaction
+    ss.render();
+    const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
-    s2.interaction.changeState({
+    ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getSelectedData(ss);
     expect(data).toMatchInlineSnapshot(`
       "7789	5343	13132	945	1343
       2367	632	2999	1304	1354
@@ -744,7 +740,8 @@ describe('Pivot Table Core Data Process', () => {
 
   // https://github.com/antvis/S2/issues/1955
   it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
-    s2.setOptions({
+    const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+    ss.setOptions({
       style: {
         colCfg: {
           hideMeasureColumn: true,
@@ -756,15 +753,15 @@ describe('Pivot Table Core Data Process', () => {
       },
       showSeriesNumber: true,
     });
-    s2.render();
-    const cells = s2.interaction
+    ss.render();
+    const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
-    s2.interaction.changeState({
+    ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(s2);
+    const data = getSelectedData(ss);
     expect(data).toMatchInlineSnapshot(`
       "		家具	家具	家具	办公用品
       		桌子	沙发	小计	笔
