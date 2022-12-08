@@ -337,7 +337,9 @@ describe('Pivot Table Core Data Process', () => {
       totals: TOTALS_OPTIONS,
     }),
   );
-  s2.render();
+  beforeEach(() => {
+    s2.render();
+  });
 
   it('should copy no data in grid mode', () => {
     s2.interaction.changeState({
@@ -706,6 +708,78 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getSelectedData(s2New);
     expect(data).toBe(convertString(`7789\n元`));
+  });
+
+  it('should get correct data with hideMeasureColumn is true', () => {
+    s2.setOptions({
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
+    });
+    s2.render();
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2);
+    expect(data).toMatchInlineSnapshot(`
+      "7789	5343	13132	945	1343
+      2367	632	2999	1304	1354
+      3877	7234	11111	1145	1523
+      4342	834	5176	1432	1634
+      18375	14043	32418	4826	5854
+      1723	2451	4174	2335	4004
+      1822	2244	4066	245	3077
+      1943	2333	4276	2457	3551
+      2330	2445	4775	2458	352
+      7818	9473	17291	7495	10984
+      26193	23516	49709	12321	16838"
+    `);
+  });
+
+  // https://github.com/antvis/S2/issues/1955
+  it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
+    s2.setOptions({
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
+      interaction: {
+        enableCopy: true,
+        copyWithHeader: true,
+      },
+      showSeriesNumber: true,
+    });
+    s2.render();
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    s2.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2);
+    expect(data).toMatchInlineSnapshot(`
+      "		家具	家具	家具	办公用品
+      		桌子	沙发	小计	笔
+      浙江省	杭州市	7789	5343	13132	945
+      浙江省	绍兴市	2367	632	2999	1304
+      浙江省	宁波市	3877	7234	11111	1145
+      浙江省	舟山市	4342	834	5176	1432
+      浙江省	小计	18375	14043	32418	4826
+      四川省	成都市	1723	2451	4174	2335
+      四川省	绵阳市	1822	2244	4066	245
+      四川省	南充市	1943	2333	4276	2457
+      四川省	乐山市	2330	2445	4775	2458
+      四川省	小计	7818	9473	17291	7495
+      总计		26193	23516	49709	12321"
+    `);
   });
 });
 
