@@ -8,13 +8,13 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       fields: {
         columns: [
           {
-            key: 'area',
+            field: 'area',
             children: ['province', 'city'],
           },
           'type',
           {
-            key: 'money',
-            children: [{ key: 'price' }, 'cost'],
+            field: 'money',
+            children: [{ field: 'price' }, 'cost'],
           },
         ],
       },

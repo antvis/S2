@@ -145,16 +145,16 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test.each([
-      { key: 'a-1', count: 6, sum: 34 },
-      { key: 'a-1-1', count: 4, sum: 34 },
-      { key: 'measure-1', count: 2, sum: 24 },
-      { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: null },
-      { key: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1', count: 6, sum: 34 },
+      { field: 'a-1-1', count: 4, sum: 34 },
+      { field: 'measure-1', count: 2, sum: 24 },
+      { field: 'measure-2', count: 2, sum: 10 },
+      { field: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
-      ({ key, count, sum }) => {
-        const rowNode = s2.getRowNodes().find((node) => node.field === key)!;
+      ({ field, count, sum }) => {
+        const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
@@ -277,16 +277,18 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test.each([
-      { key: 'a-1', count: 6, sum: 34 },
-      { key: 'a-1-1', count: 4, sum: 34 },
-      { key: 'measure-1', count: 2, sum: 24 },
-      { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: null },
-      { key: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1', count: 6, sum: 34 },
+      { field: 'a-1-1', count: 4, sum: 34 },
+      { field: 'measure-1', count: 2, sum: 24 },
+      { field: 'measure-2', count: 2, sum: 10 },
+      { field: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
-      ({ key, count, sum }) => {
-        const colNode = s2.getColumnNodes().find((node) => node.field === key)!;
+      ({ field, count, sum }) => {
+        const colNode = s2
+          .getColumnNodes()
+          .find((node) => node.field === field)!;
 
         // 选中
         s2.interaction.selectHeaderCell({

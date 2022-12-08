@@ -307,35 +307,35 @@ export const StrategySheetDataConfig: S2DataConfig = {
     ],
     rows: [
       {
-        key: 'custom-node-1',
+        field: 'custom-node-1',
         title: '自定义节点A',
         description: '自定义节点A描述',
         children: [
           {
-            key: 'measure-a',
+            field: 'measure-a',
             title: '指标A',
             description: '指标A描述',
             children: [
               {
-                key: 'measure-b',
+                field: 'measure-b',
                 title: '指标B',
                 children: [],
                 description: '指标B描述',
               },
               {
-                key: 'custom-node-2',
+                field: 'custom-node-2',
                 title: '自定义节点B',
                 description: '自定义节点B描述',
                 children: [],
               },
               {
-                key: 'measure-c',
+                field: 'measure-c',
                 title: '指标C',
                 description: '指标C描述',
                 children: [],
               },
               {
-                key: 'measure-d',
+                field: 'measure-d',
                 title: '指标D',
                 description: '指标D描述',
                 children: [],
@@ -343,7 +343,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
             ],
           },
           {
-            key: 'custom-node-5',
+            field: 'custom-node-5',
             title: '自定义节点E',
             description: '自定义节点E描述',
             children: [],
@@ -351,23 +351,23 @@ export const StrategySheetDataConfig: S2DataConfig = {
         ],
       },
       {
-        key: 'measure-e',
+        field: 'measure-e',
         title: '指标E',
         description: '指标E描述',
         children: [
           {
-            key: 'custom-node-3',
+            field: 'custom-node-3',
             title: '自定义节点C',
             description: '自定义节点C描述',
             children: [],
           },
           {
-            key: 'custom-node-4',
+            field: 'custom-node-4',
             title: '自定义节点D',
             description: '自定义节点D描述',
             children: [
               {
-                key: 'measure-f',
+                field: 'measure-f',
                 title: '指标F',
                 description: '指标F描述',
                 children: [],

@@ -889,7 +889,7 @@ describe('PivotSheet Tests', () => {
         forceRender: options?.forceRender,
       }));
 
-    const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
+    const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });
 
     s2.handleGroupSort(
       {
@@ -940,7 +940,7 @@ describe('PivotSheet Tests', () => {
   test('should handle group sort when hideMeasureColumn', () => {
     const nodeMeta = new Node({
       id: '1',
-      key: '1',
+      field: '1',
       value: 'testValue',
       query: {
         type: '笔',
@@ -1171,8 +1171,8 @@ describe('PivotSheet Tests', () => {
   test('should get custom header fields status', () => {
     const newDataCfg: S2DataConfig = {
       fields: {
-        rows: [{ key: '1', title: '1' }],
-        columns: [{ key: '2', title: '2' }],
+        rows: [{ field: '1', title: '1' }],
+        columns: [{ field: '2', title: '2' }],
       },
       data: [],
     };

@@ -3,7 +3,7 @@ import type { CellData } from '../../data-set/cell-data';
 import {
   EXTRA_FIELD,
   NODE_ID_SEPARATOR,
-  KEY_ROOT_NODE,
+  ROOT_NODE_ID,
   TOTAL_VALUE,
   MULTI_VALUE,
 } from '../../common/constant';
@@ -77,7 +77,7 @@ export function getDimensionsWithParentPath(
   );
   return dimensions
     .map((item) =>
-      measure.map((i) => item.getValueByKey(i)).join(`${NODE_ID_SEPARATOR}`),
+      measure.map((i) => item.getValueByField(i)).join(`${NODE_ID_SEPARATOR}`),
     )
     ?.filter(Boolean);
 }
@@ -299,6 +299,6 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
     }
 
     // exit iteration early when pathMeta not exists
-    return idx === 0 && path === KEY_ROOT_NODE;
+    return idx === 0 && path === ROOT_NODE_ID;
   });
 }

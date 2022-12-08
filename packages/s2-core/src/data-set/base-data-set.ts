@@ -63,7 +63,7 @@ export abstract class BaseDataSet {
   protected displayData: RawData[];
 
   private getField = (field: CustomHeaderField): string => {
-    const realField = isString(field) ? field : field?.key;
+    const realField = isString(field) ? field : field?.field;
     return realField || (field as string);
   };
 

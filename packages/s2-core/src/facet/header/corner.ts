@@ -1,10 +1,6 @@
 import { Rect, type Group, type PointLike } from '@antv/g';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import {
-  KEY_CORNER_NODE,
-  KEY_CORNER_SERIES_NUMBER_NODE,
-} from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
@@ -128,7 +124,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (seriesNumberWidth && leafNode) {
       const sNode: Node = new Node({
         id: '',
-        key: KEY_CORNER_SERIES_NUMBER_NODE, // mark series node
+        field: '',
         value: spreadsheet.options.seriesNumberText ?? i18n('序号'),
       });
       sNode.x = position?.x;
@@ -149,7 +145,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const cornerText = this.getTreeCornerText(options);
         const cornerNode: Node = new Node({
           id: '',
-          key: KEY_CORNER_NODE,
+          field: '',
           value: cornerText,
         });
         cornerNode.x = position.x + seriesNumberWidth;
@@ -177,7 +173,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
           const cornerNode: Node = new Node({
             id: '',
-            key: KEY_CORNER_NODE,
             field,
             value,
           });
@@ -207,7 +202,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
         const cNode = new Node({
           id: '',
-          key: KEY_CORNER_NODE,
           field,
           value,
         });

@@ -50,17 +50,15 @@ describe('Drill Down Test', () => {
     hierarchyType: 'tree',
   } as S2Options;
 
-  const root = new Node({ id: `root`, key: '', value: '', children: [] });
+  const root = new Node({ id: `root`, field: '', value: '', children: [] });
   const provinceNode = new Node({
     id: `root[&]浙江省`,
-    key: '',
     value: '',
     field: 'province',
     parent: root,
   });
   const cityNode = new Node({
     id: `root[&]浙江省[&]杭州市`,
-    key: '',
     value: '',
     field: 'city',
     parent: provinceNode,
@@ -211,7 +209,6 @@ describe('Drill Down Test', () => {
     // 准备数据
     const SXCityNode = new Node({
       id: `root[&]浙江省[&]绍兴市`,
-      key: '',
       value: '',
       field: 'city',
       parent: provinceNode,

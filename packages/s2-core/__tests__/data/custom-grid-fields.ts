@@ -2,29 +2,29 @@ import type { CustomTreeNode, S2DataConfig } from '@antv/s2';
 
 export const customGridTreeNodes: CustomTreeNode[] = [
   {
-    key: 'a-1',
+    field: 'a-1',
     title: '自定义节点 a-1',
     description: 'a-1 描述',
     children: [
       {
-        key: 'a-1-1',
+        field: 'a-1-1',
         title: '自定义节点 a-1-1',
         description: 'a-1-1 描述',
         children: [
           {
-            key: 'measure-1',
+            field: 'measure-1',
             title: '指标1',
             description: '指标1描述',
             children: [],
           },
           {
-            key: 'a-1-1-1',
+            field: 'a-1-1-1',
             title: '自定义节点 a-1-1-1',
             description: 'a-1-1-1 描述',
             children: [],
           },
           {
-            key: 'measure-2',
+            field: 'measure-2',
             title: '指标2',
             description: '指标2描述',
             children: [],
@@ -32,7 +32,7 @@ export const customGridTreeNodes: CustomTreeNode[] = [
         ],
       },
       {
-        key: 'a-1-2',
+        field: 'a-1-2',
         title: '自定义节点 a-1-2',
         description: 'a-1-2 描述',
         children: [],
@@ -40,22 +40,22 @@ export const customGridTreeNodes: CustomTreeNode[] = [
     ],
   },
   {
-    key: 'a-2',
+    field: 'a-2',
     title: '自定义节点 a-2',
     children: [
       {
-        key: 'a-2-1',
+        field: 'a-2-1',
         title: '自定义节点 a-2-1',
         description: 'a-2-1 描述',
         children: [],
       },
       {
-        key: 'a-2-2',
+        field: 'a-2-2',
         title: '自定义节点 a-2-2',
         description: 'a-1-2 描述',
         children: [
           {
-            key: 'measure-3',
+            field: 'measure-3',
             title: '指标3',
             description: '指标3描述',
             children: [],
@@ -66,23 +66,23 @@ export const customGridTreeNodes: CustomTreeNode[] = [
     ],
   },
   {
-    key: 'a-3',
+    field: 'a-3',
     title: '自定义节点 a-3',
     description: 'a-3 描述',
     children: [
       {
-        key: 'a-3-1',
+        field: 'a-3-1',
         title: '自定义节点 a-3-1',
         description: 'a-3-1 描述',
         children: [],
       },
       {
-        key: 'a-3-2',
+        field: 'a-3-2',
         title: '自定义节点 a-3-2',
         description: 'a-3-2 描述',
         children: [
           {
-            key: 'measure-4',
+            field: 'measure-4',
             title: '指标4',
             description: '指标4描述',
             children: [],
@@ -91,7 +91,7 @@ export const customGridTreeNodes: CustomTreeNode[] = [
         collapsed: false,
       },
       {
-        key: 'measure-5',
+        field: 'measure-5',
         title: '指标5',
         description: '指标5描述',
         children: [],

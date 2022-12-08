@@ -2,7 +2,7 @@ import { isNull, isUndefined } from 'lodash';
 import {
   NODE_ID_SEPARATOR,
   NULL_SYMBOL_ID,
-  KEY_ROOT_NODE,
+  ROOT_NODE_ID,
   UNDEFINED_SYMBOL_ID,
 } from '../../common/constant';
 /**
@@ -27,7 +27,7 @@ export const resolveId = (id = '') => {
   return id
     .split(NODE_ID_SEPARATOR)
     .reduce<(string | null | undefined)[]>((result, current) => {
-      if (current === KEY_ROOT_NODE) {
+      if (current === ROOT_NODE_ID) {
         return result;
       }
 

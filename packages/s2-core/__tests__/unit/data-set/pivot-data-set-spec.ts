@@ -412,17 +412,15 @@ describe('Pivot Dataset Test', () => {
   });
 
   describe('test for part-drill-down', () => {
-    const root = new Node({ id: `root`, key: '', value: '', children: [] });
+    const root = new Node({ id: `root`, field: '', value: '', children: [] });
     const provinceNode = new Node({
       id: `root[&]浙江省`,
-      key: '',
       value: '',
       field: 'province',
       parent: root,
     });
     const cityNode = new Node({
       id: `root[&]浙江省[&]杭州市`,
-      key: '',
       value: '',
       field: 'city',
       parent: provinceNode,
@@ -430,7 +428,6 @@ describe('Pivot Dataset Test', () => {
 
     const districtNode = new Node({
       id: `root[&]浙江省[&]杭州市[&]西湖区`,
-      key: '',
       value: '',
       field: 'district',
       parent: cityNode,
@@ -472,7 +469,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
-      expect(cellData!.getValueByKey('number')).toEqual(110);
+      expect(cellData!.getValueByField('number')).toEqual(110);
     });
 
     test('clearDrillDownData function with totalData', () => {
@@ -552,7 +549,7 @@ describe('Pivot Dataset Test', () => {
     });
 
     test('should return correct custom field name', () => {
-      expect(dataSet.getFieldName({ key: '1', title: '测试' })).toStrictEqual(
+      expect(dataSet.getFieldName({ field: '1', title: '测试' })).toStrictEqual(
         '测试',
       );
       expect(

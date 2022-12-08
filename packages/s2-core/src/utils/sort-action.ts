@@ -56,8 +56,8 @@ export const sortAction = (
     let a = pre as string | number;
     let b = next as string | number;
     if (key) {
-      a = (pre as CellData).getValueByKey(key) as string | number;
-      b = (next as CellData).getValueByKey(key) as string | number;
+      a = (pre as CellData).getValueByField(key) as string | number;
+      b = (next as CellData).getValueByField(key) as string | number;
       if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
       }

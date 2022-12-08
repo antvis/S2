@@ -114,27 +114,30 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test.each([
-    { key: 'a-1', count: 2, sum: null },
-    { key: 'a-1-1', count: 2, sum: null },
-    { key: 'measure-1', count: 2, sum: 24 },
-    { key: 'measure-2', count: 2, sum: 10 },
-    { key: 'a-1-2', count: 2, sum: null },
-    { key: 'a-1-2', count: 2, sum: null },
-  ])('should get selected cell summary infos for %o', ({ key, count, sum }) => {
-    const rowNode = s2.getRowNodes().find((node) => node.field === key)!;
+    { field: 'a-1', count: 2, sum: null },
+    { field: 'a-1-1', count: 2, sum: null },
+    { field: 'measure-1', count: 2, sum: 24 },
+    { field: 'measure-2', count: 2, sum: 10 },
+    { field: 'a-1-2', count: 2, sum: null },
+    { field: 'a-1-2', count: 2, sum: null },
+  ])(
+    'should get selected cell summary infos for %o',
+    ({ field, count, sum }) => {
+      const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
 
-    // 选中
-    s2.interaction.selectHeaderCell({
-      cell: rowNode.belongsCell!,
-    });
+      // 选中
+      s2.interaction.selectHeaderCell({
+        cell: rowNode.belongsCell!,
+      });
 
-    const tooltipData = getTestTooltipData(s2, rowNode.belongsCell!);
+      const tooltipData = getTestTooltipData(s2, rowNode.belongsCell!);
 
-    // 选中个数
-    expect(getSelectedCount(tooltipData.summaries)).toEqual(count);
-    // 汇总数据总和
-    expect(getSelectedSum(tooltipData.summaries)).toEqual(sum);
-  });
+      // 选中个数
+      expect(getSelectedCount(tooltipData.summaries)).toEqual(count);
+      // 汇总数据总和
+      expect(getSelectedSum(tooltipData.summaries)).toEqual(sum);
+    },
+  );
 
   test('should render custom corner text by default title', () => {
     s2.setDataCfg({

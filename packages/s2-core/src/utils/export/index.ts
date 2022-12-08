@@ -18,7 +18,7 @@ import {
 import {
   NODE_ID_SEPARATOR,
   ROOT_BEGINNING_REGEX,
-  KEY_ROOT_NODE,
+  ROOT_NODE_ID,
 } from '../../common/constant';
 import {
   CornerNodeType,
@@ -286,7 +286,7 @@ const getRowNodeFormatData = (rowLeafNode: Node) => {
   const line: string[] = [];
   const getRowNodeFormatterLabel = (node: Node): string | undefined => {
     // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === KEY_ROOT_NODE) {
+    if (node.id === ROOT_NODE_ID) {
       return;
     }
     const formatterLabel = getNodeFormatLabel(node);
