@@ -127,7 +127,7 @@ export const download = (str: string, fileName: string) => {
  * use the '$' to divide different lines
  */
 const processObjectValueInCol = (data: Record<string, unknown>) => {
-  const tempCells = data?.label ? [data?.label] : [];
+  const tempCells = data?.value ? [data?.value] : [];
   const values = data?.values as (string | number)[][];
   if (!isEmpty(values)) {
     forEach(values, (value) => {
@@ -251,7 +251,7 @@ const getPlaceholder = (
   leafNode: Node,
   sheetInstance: SpreadSheet,
 ) => {
-  const label = getHeaderLabel(leafNode.label);
+  const label = getHeaderLabel(leafNode.value);
   const labelLength = isArray(label) ? label.length : 1;
   const placeholder = sheetInstance.options.placeholder;
   const placeholderStr = isFunction(placeholder)
@@ -275,7 +275,7 @@ const processColHeaders = (headers: any[][]) => {
 
 const getNodeFormatLabel = (node: Node) => {
   const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
-  return formatter?.(node.label) ?? node.label;
+  return formatter?.(node.value) ?? node.value;
 };
 
 /**
@@ -361,8 +361,8 @@ export const copyData = (
       if (isFormatHeader) {
         tempLine = getRowNodeFormatData(rowNode);
       } else {
-        // Removing the space at the beginning of the line of the label.
-        rowNode.label = trim(rowNode?.label);
+        // Removing the space at the beginning of the line of the value.
+        rowNode.value = trim(rowNode?.value);
         const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
         tempLine = id.split(NODE_ID_SEPARATOR);
       }
@@ -425,17 +425,17 @@ export const copyData = (
 
       // Generate the column dimensions.
       while (currentLeafNode.level !== undefined) {
-        let label = getHeaderLabel(currentLeafNode.label);
-        if (isArray(label)) {
-          arrayLength = max([arrayLength, size(label)])!;
+        let value = getHeaderLabel(currentLeafNode.value);
+        if (isArray(value)) {
+          arrayLength = max([arrayLength, size(value)])!;
         } else {
           // label 为数组时不进行格式化
-          label =
+          value =
             isFormatHeader && sheetInstance.isPivotMode()
               ? getNodeFormatLabel(currentLeafNode)
-              : label;
+              : value;
         }
-        tempCol.push(label);
+        tempCol.push(value);
         currentLeafNode = currentLeafNode.parent!;
       }
       return tempCol;
@@ -480,7 +480,7 @@ export const copyData = (
         if (index < colHeader.length - 1) {
           const fillTempStrings: string[] = Array(maxRowsHeaderLevel).fill('');
           const colNodeLabel =
-            colNodes.find(({ field }) => field === columns[index])?.label || '';
+            colNodes.find(({ field }) => field === columns[index])?.value || '';
           return [...fillTempStrings, colNodeLabel, ...item];
         }
         // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份

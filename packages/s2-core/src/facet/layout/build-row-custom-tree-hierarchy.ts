@@ -48,7 +48,6 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const node = new Node({
       id: nodeId,
       field,
-      label: title,
       value: title!,
       level,
       parent: parentNode,

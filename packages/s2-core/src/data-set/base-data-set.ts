@@ -110,11 +110,14 @@ export abstract class BaseDataSet {
       const row = find(this.spreadsheet.getRowNodes(), {
         rowIndex: meta?.rowIndex,
       });
-      return row?.label || this.getFieldName(row?.field as CustomHeaderField);
+      return row?.value || this.getFieldName(row?.field as CustomHeaderField);
     }
 
     // 行/列头单元格, 取节点本身标题
-    return meta?.label || this.getFieldName(meta?.field as CustomHeaderField);
+    return (
+      (meta as Node)?.value ||
+      this.getFieldName(meta?.field as CustomHeaderField)
+    );
   }
 
   /**

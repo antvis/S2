@@ -46,8 +46,8 @@ describe('PivotSheet Tests', () => {
   };
 
   const s2Options: S2Options = {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     hierarchyType: 'grid',
     customSVGIcons: [customSVGIcon],
     tooltip: {
@@ -696,7 +696,6 @@ describe('PivotSheet Tests', () => {
       s2Options,
     );
     pivotSheet.render();
-
     const extraField = last(
       pivotSheet.facet.cornerHeader.getChildren(),
     ) as CornerCell;

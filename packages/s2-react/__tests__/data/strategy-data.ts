@@ -394,7 +394,7 @@ export const StrategyOptions: SheetComponentOptions = {
     resize: {
       disable: (resizeInfo) => {
         return (
-          resizeInfo.meta.label === '净增完成度' &&
+          resizeInfo.meta.value === '净增完成度' &&
           resizeInfo.resizedWidth! < resizeInfo.width
         );
       },

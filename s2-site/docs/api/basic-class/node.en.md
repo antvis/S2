@@ -9,7 +9,6 @@ Function description: layout node. [details](https://github.com/antvis/S2/blob/m
 | id                | node id                                | `string`                                            |
 | key               | node key                               | `string`                                            |
 | value             | node value                             | `string`                                            |
-| label             | node title                             | `string`                                            |
 | level             | node level                             | `number`                                            |
 | rowIndex          | row header index                       | `number`                                            |
 | colIndex          | header index                           | `number`                                            |

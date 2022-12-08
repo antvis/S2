@@ -76,7 +76,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should render custom layout row nodes', () => {
     const rowNodes = s2.getRowNodes().map((node) => ({
-      label: node.label,
+      value: node.value,
       width: node.width,
       height: node.height,
       description: node.extra.description,
@@ -86,7 +86,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
 
   test('should calc correctly row index of leaf nodes', () => {
     const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-      label: node.label,
+      value: node.value,
       rowIndex: node.rowIndex,
     }));
     expect(rowLeafNodes).toMatchSnapshot();

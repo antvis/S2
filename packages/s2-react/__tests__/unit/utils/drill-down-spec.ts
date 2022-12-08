@@ -201,10 +201,10 @@ describe('Drill Down Test', () => {
     const rowLeftNodes = mockInstance.facet.layoutResult.rowLeafNodes;
 
     expect(rowLeftNodes).toHaveLength(13);
-    expect(rowLeftNodes[1].label).toEqual('杭州市');
-    expect(rowLeftNodes[2].label).toEqual('西湖区');
-    expect(rowLeftNodes[3].label).toEqual('下沙区');
-    expect(rowLeftNodes[4].label).toEqual('余杭区');
+    expect(rowLeftNodes[1].value).toEqual('杭州市');
+    expect(rowLeftNodes[2].value).toEqual('西湖区');
+    expect(rowLeftNodes[3].value).toEqual('下沙区');
+    expect(rowLeftNodes[4].value).toEqual('余杭区');
 
     // 准备数据
     const SXCityNode = new Node({
@@ -229,9 +229,9 @@ describe('Drill Down Test', () => {
       mockInstance.facet.layoutResult.rowLeafNodes;
 
     expect(secondDrillDownRowLeftNodes).toHaveLength(16);
-    expect(secondDrillDownRowLeftNodes[5].label).toEqual('绍兴市');
-    expect(secondDrillDownRowLeftNodes[6].label).toEqual('下沙区');
-    expect(secondDrillDownRowLeftNodes[7].label).toEqual('余杭区');
-    expect(secondDrillDownRowLeftNodes[8].label).toEqual('西湖区');
+    expect(secondDrillDownRowLeftNodes[5].value).toEqual('绍兴市');
+    expect(secondDrillDownRowLeftNodes[6].value).toEqual('下沙区');
+    expect(secondDrillDownRowLeftNodes[7].value).toEqual('余杭区');
+    expect(secondDrillDownRowLeftNodes[8].value).toEqual('西湖区');
   });
 });

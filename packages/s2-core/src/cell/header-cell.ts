@@ -77,7 +77,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
+    const { value } = this.meta;
 
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(
       this.meta.field,
@@ -87,12 +87,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
     // 如果是 table mode，列头不需要被格式化
     const formattedValue =
       formatter! && !isTableMode
-        ? formatter(label, undefined, this.meta)
-        : label;
+        ? formatter(value, undefined, this.meta)
+        : value;
 
     return {
       formattedValue,
-      value: label,
+      value,
     };
   }
 
@@ -399,7 +399,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public mappingValue(condition: Condition): MappingResult {
-    const value = this.getMeta().label;
+    const value = this.getMeta().value;
     return condition?.mapping(value, this.meta)!;
   }
 

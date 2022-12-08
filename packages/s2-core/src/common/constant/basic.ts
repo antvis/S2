@@ -73,8 +73,6 @@ export const MIN_CELL_HEIGHT = 16;
 // data precision
 export const PRECISION = 16;
 
-export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
-
 export const IMAGE = 'image';
 
 // 角头最大占整个容器的比例 (0-1)

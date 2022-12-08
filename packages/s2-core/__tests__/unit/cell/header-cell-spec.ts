@@ -19,14 +19,12 @@ describe('header cell formatter test', () => {
     value: '浙江',
     field: 'province',
     parent: root,
-    label: '浙江',
   });
   const rowNode = new Node({
     id: `root[&]杭州`,
     value: '杭州',
     field: 'city',
     parent: root,
-    label: '杭州',
   });
 
   let s2: SpreadSheet;

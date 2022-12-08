@@ -38,13 +38,13 @@ describe('build row tree hierarchy', () => {
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
     expect(rowLeafNodes.length).toBe(7);
-    expect(rowLeafNodes[0].label).toEqual('浙江');
-    expect(rowLeafNodes[1].label).toEqual('杭州');
-    expect(rowLeafNodes[2].label).toEqual('舟山');
-    expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('长春');
-    expect(rowLeafNodes[5].label).toEqual('白山');
-    expect(rowLeafNodes[6].label).toEqual('总计');
+    expect(rowLeafNodes[0].value).toEqual('浙江');
+    expect(rowLeafNodes[1].value).toEqual('杭州');
+    expect(rowLeafNodes[2].value).toEqual('舟山');
+    expect(rowLeafNodes[3].value).toEqual('吉林');
+    expect(rowLeafNodes[4].value).toEqual('长春');
+    expect(rowLeafNodes[5].value).toEqual('白山');
+    expect(rowLeafNodes[6].value).toEqual('总计');
   });
   test('should get order hierarchy when order is group desc', () => {
     const s2DataConfig: S2DataConfig = {
@@ -66,12 +66,12 @@ describe('build row tree hierarchy', () => {
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
     expect(rowLeafNodes.length).toBe(7);
-    expect(rowLeafNodes[0].label).toEqual('浙江');
-    expect(rowLeafNodes[1].label).toEqual('舟山');
-    expect(rowLeafNodes[2].label).toEqual('杭州');
-    expect(rowLeafNodes[3].label).toEqual('吉林');
-    expect(rowLeafNodes[4].label).toEqual('长春');
-    expect(rowLeafNodes[5].label).toEqual('白山');
-    expect(rowLeafNodes[6].label).toEqual('总计');
+    expect(rowLeafNodes[0].value).toEqual('浙江');
+    expect(rowLeafNodes[1].value).toEqual('舟山');
+    expect(rowLeafNodes[2].value).toEqual('杭州');
+    expect(rowLeafNodes[3].value).toEqual('吉林');
+    expect(rowLeafNodes[4].value).toEqual('长春');
+    expect(rowLeafNodes[5].value).toEqual('白山');
+    expect(rowLeafNodes[6].value).toEqual('总计');
   });
 });

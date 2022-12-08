@@ -145,7 +145,6 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
-
     expect(rows).toHaveLength(5);
     expect(rows[0].split('\t').length).toEqual(5);
     expect(rows[0].split('\t')[0]).toEqual('"类别"');

@@ -95,7 +95,7 @@ describe('Pivot Table Core Data Process', () => {
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
       // 叶子节点正确
-      expect(rowsHierarchy.getLeaves().map((node) => node.label)).toEqual([
+      expect(rowsHierarchy.getLeaves().map((node) => node.value)).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -106,7 +106,7 @@ describe('Pivot Table Core Data Process', () => {
         '乐山市',
       ]);
       // 层级正确
-      expect(rowsHierarchy.getNodes().map((node) => node.label)).toEqual([
+      expect(rowsHierarchy.getNodes().map((node) => node.value)).toEqual([
         '浙江省',
         '杭州市',
         '绍兴市',
@@ -118,11 +118,11 @@ describe('Pivot Table Core Data Process', () => {
         '南充市',
         '乐山市',
       ]);
-      expect(rowsHierarchy.getNodes(0).map((node) => node.label)).toEqual([
+      expect(rowsHierarchy.getNodes(0).map((node) => node.value)).toEqual([
         '浙江省',
         '四川省',
       ]);
-      expect(rowsHierarchy.getNodes(1).map((node) => node.label)).toEqual([
+      expect(rowsHierarchy.getNodes(1).map((node) => node.value)).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -135,15 +135,15 @@ describe('Pivot Table Core Data Process', () => {
       // 父子关系正确
       const leavesNodes = rowsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
-      expect(firstLeafNode.label).toEqual('杭州市');
-      expect(firstLeafNode.parent!.label).toEqual('浙江省');
-      expect(firstLeafNode.parent!.children?.map((node) => node.label)).toEqual(
+      expect(firstLeafNode.value).toEqual('杭州市');
+      expect(firstLeafNode.parent!.value).toEqual('浙江省');
+      expect(firstLeafNode.parent!.children?.map((node) => node.value)).toEqual(
         ['杭州市', '绍兴市', '宁波市', '舟山市'],
       );
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
-      expect(lastLeafNode.label).toEqual('乐山市');
-      expect(lastLeafNode.parent!.label).toEqual('四川省');
-      expect(lastLeafNode.parent!.children?.map((node) => node.label)).toEqual([
+      expect(lastLeafNode.value).toEqual('乐山市');
+      expect(lastLeafNode.parent!.value).toEqual('四川省');
+      expect(lastLeafNode.parent!.children?.map((node) => node.value)).toEqual([
         '成都市',
         '绵阳市',
         '南充市',
@@ -155,14 +155,14 @@ describe('Pivot Table Core Data Process', () => {
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
       expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]number
       // 叶子节点正确
-      expect(colsHierarchy.getLeaves().map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getLeaves().map((node) => node.value)).toEqual([
         'number',
         'number',
         'number',
         'number',
       ]);
       // 层级正确
-      expect(colsHierarchy.getNodes().map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getNodes().map((node) => node.value)).toEqual([
         '家具',
         '桌子',
         'number',
@@ -174,17 +174,17 @@ describe('Pivot Table Core Data Process', () => {
         '纸张',
         'number',
       ]);
-      expect(colsHierarchy.getNodes(0).map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getNodes(0).map((node) => node.value)).toEqual([
         '家具',
         '办公用品',
       ]);
-      expect(colsHierarchy.getNodes(1).map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getNodes(1).map((node) => node.value)).toEqual([
         '桌子',
         '沙发',
         '笔',
         '纸张',
       ]);
-      expect(colsHierarchy.getNodes(2).map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getNodes(2).map((node) => node.value)).toEqual([
         'number',
         'number',
         'number',
@@ -193,18 +193,18 @@ describe('Pivot Table Core Data Process', () => {
       // 父子关系正确
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
-      expect(firstLeafNode.label).toEqual('number');
-      expect(firstLeafNode.parent!.label).toEqual('桌子');
-      expect(firstLeafNode.parent!.parent?.label).toEqual('家具');
+      expect(firstLeafNode.value).toEqual('number');
+      expect(firstLeafNode.parent!.value).toEqual('桌子');
+      expect(firstLeafNode.parent!.parent?.value).toEqual('家具');
       expect(
-        firstLeafNode.parent!.parent?.children?.map((node) => node.label),
+        firstLeafNode.parent!.parent?.children?.map((node) => node.value),
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
-      expect(lastLeafNode.label).toEqual('number');
-      expect(lastLeafNode.parent!.label).toEqual('纸张');
-      expect(lastLeafNode.parent!.parent?.label).toEqual('办公用品');
+      expect(lastLeafNode.value).toEqual('number');
+      expect(lastLeafNode.parent!.value).toEqual('纸张');
+      expect(lastLeafNode.parent!.parent?.value).toEqual('办公用品');
       expect(
-        lastLeafNode.parent!.parent?.children?.map((node) => node.label),
+        lastLeafNode.parent!.parent?.children?.map((node) => node.value),
       ).toEqual(['笔', '纸张']);
     });
   });

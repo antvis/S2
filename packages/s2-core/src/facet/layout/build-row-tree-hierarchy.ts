@@ -122,7 +122,6 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     const node = new Node({
       id: uniqueId,
-      label: value,
       value,
       level,
       parent: parentNode,

@@ -209,7 +209,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.y = colNode.y;
         cNode.width = width;
         cNode.height = colNode.height;
-        cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
         cNode.spreadsheet = spreadsheet;

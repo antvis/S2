@@ -18,7 +18,7 @@ describe('Multi-Values Test', () => {
   s2.render();
   test('should get right order of multi-values', () => {
     const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
-    expect(colLeafNodes[0].label).toEqual('price');
-    expect(colLeafNodes[1].label).toEqual('cost');
+    expect(colLeafNodes[0].value).toEqual('price');
+    expect(colLeafNodes[1].value).toEqual('cost');
   });
 });

@@ -14,7 +14,6 @@ export interface BaseNodeConfig {
    */
   field: string;
   value: string;
-  label?: string;
   level?: number;
   rowIndex?: number;
   colIndex?: number;
@@ -49,6 +48,11 @@ export class Node {
   // node unique id: {parent fieldName - fieldName(total name)}
   public id: string;
 
+  public value: string;
+
+  // field key
+  public field: string;
+
   // node top-left x-coordinate
   public x = 0;
 
@@ -60,12 +64,6 @@ export class Node {
 
   // node height
   public height = 0;
-
-  // node real display text label
-  public label: string;
-
-  // the same as {@see label}
-  public value: string;
 
   // cell index in layout list(TODO What's use for?)
   public colIndex = -1;
@@ -108,9 +106,6 @@ export class Node {
   // series number width
   public seriesNumberWidth: number;
 
-  // field key
-  public field: string;
-
   // spreadsheet instance
   public spreadsheet: SpreadSheet;
 
@@ -133,7 +128,6 @@ export class Node {
     id,
     field,
     value,
-    label,
     parent,
     level,
     rowIndex,
@@ -155,7 +149,6 @@ export class Node {
     this.id = id;
     this.field = field;
     this.value = value;
-    this.label = label || value;
     this.parent = parent;
     this.level = level!;
     this.rowIndex = rowIndex!;

@@ -28,7 +28,6 @@ const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') => {
 describe('Data Cell Tests', () => {
   const meta = {
     fieldValue: 'fieldValue',
-    label: 'label',
     value: 'value',
     data: {
       city: 'chengdu',

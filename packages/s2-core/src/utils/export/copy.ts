@@ -607,11 +607,11 @@ function getCellMatrix(
 ) {
   return map(lastLevelCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
-    const { id, label, isTotals, level } = meta;
+    const { id, value, isTotals, level } = meta;
     let cellId = id;
     // 为总计小计补齐高度
     if (isTotals && level !== maxLevel) {
-      cellId = id + NODE_ID_SEPARATOR + repeat(label, maxLevel - level);
+      cellId = id + NODE_ID_SEPARATOR + repeat(value, maxLevel - level);
     }
     return getHeaderList(cellId, allLevel.size);
   });

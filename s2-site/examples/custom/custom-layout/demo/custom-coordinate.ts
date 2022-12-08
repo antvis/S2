@@ -23,7 +23,7 @@ fetch(
         // 改变「宁波市」节点高度
         console.log(rowNode);
         console.log(colNode);
-        if (rowNode?.label === '宁波市') {
+        if (rowNode?.value === '宁波市') {
           rowNode.height = 100;
         }
       },
