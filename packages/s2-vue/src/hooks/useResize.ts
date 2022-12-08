@@ -12,15 +12,15 @@ export const useResize = (
   },
 ) => {
   const unobserve = ref<() => void>();
-
+  //去掉s2Ref，不然报错replace is not function
   watch(
-    [s2Ref, () => props.adaptive],
-    ([s2, adaptive], _, onCleanup) => {
-      if (!s2) {
+    [() => props.adaptive],
+    ([adaptive], _, onCleanup) => {
+      if (!s2Ref) {
         return;
       }
       unobserve.value = createResizeObserver({
-        s2,
+        s2: s2Ref.value,
         adaptive,
         wrapper: dom.wrapperRef.value!,
         container: dom.containerRef.value!,
