@@ -216,11 +216,17 @@ export abstract class BaseFacet {
   }
 
   protected getRowCellDraggedWidth(node: Node): number | undefined {
-    return this.cfg.rowCfg?.widthByField?.[node?.field];
+    const { rowCfg } = this.cfg;
+    return (
+      rowCfg?.widthByField?.[node?.id] ?? rowCfg?.widthByField?.[node?.field]
+    );
   }
 
   protected getRowCellDraggedHeight(node: Node): number | undefined {
-    return this.cfg.rowCfg?.heightByField?.[node?.field];
+    const { rowCfg } = this.cfg;
+    return (
+      rowCfg?.heightByField?.[node?.id] ?? rowCfg?.heightByField?.[node?.field]
+    );
   }
 
   protected getRowCellHeight(node: Node): number {
@@ -235,11 +241,17 @@ export abstract class BaseFacet {
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
-    return this.cfg.colCfg?.widthByField?.[node?.field];
+    const { colCfg } = this.cfg;
+    return (
+      colCfg?.widthByField?.[node?.id] ?? colCfg?.widthByField?.[node?.field]
+    );
   }
 
   protected getColCellDraggedHeight(node: Node): number | undefined {
-    return this.cfg.colCfg?.heightByField?.[node?.field];
+    const { colCfg } = this.cfg;
+    return (
+      colCfg?.heightByField?.[node?.id] ?? colCfg?.heightByField?.[node?.field]
+    );
   }
 
   protected getDefaultColNodeHeight(colNode: Node): number {

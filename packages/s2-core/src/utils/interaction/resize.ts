@@ -15,7 +15,6 @@ export const getResizeAreaAttrs = (
 } => {
   const {
     type,
-    id,
     theme,
     width: resizeAreaWidth,
     height: resizeAreaHeight,
@@ -37,7 +36,6 @@ export const getResizeAreaAttrs = (
       ...otherOptions,
       isResizeArea: true,
       type,
-      id,
       width: resizeAreaWidth,
       height: resizeAreaHeight,
       size: theme.size,

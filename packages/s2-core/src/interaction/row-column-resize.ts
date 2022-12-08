@@ -6,12 +6,7 @@ import {
   Path,
 } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
-import type {
-  ResizeInteractionOptions,
-  ResizeParams,
-  RowCfg,
-  S2Style,
-} from '../common';
+import type { ResizeInteractionOptions, ResizeParams, RowCfg } from '../common';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
@@ -253,6 +248,25 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
   }
 
+  private getResizeCellField(resizeInfo: ResizeInfo) {
+    const {
+      options: { interaction },
+      isTableMode,
+    } = this.spreadsheet;
+
+    const resizeType = interaction?.resize as ResizeInteractionOptions;
+    const isOnlyEffectCurrent =
+      resizeInfo.type === ResizeDirectionType.Vertical
+        ? resizeType?.rowResizeType === ResizeType.CURRENT
+        : resizeType?.colResizeType === ResizeType.CURRENT;
+
+    if (isTableMode()) {
+      return resizeInfo?.meta?.rowId || String(resizeInfo?.meta?.rowIndex);
+    }
+
+    return isOnlyEffectCurrent ? resizeInfo?.meta.id : resizeInfo?.meta.field;
+  }
+
   private getResizeWidthDetail(): ResizeDetail | null {
     const resizeInfo = this.getResizeInfo();
     const { displayWidth } = this.getDisAllowResizeInfo();
@@ -264,7 +278,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             rowCfg: {
               widthByField: {
-                [resizeInfo.id]: displayWidth!,
+                [resizeInfo.meta.field!]: displayWidth!,
               },
             },
           },
@@ -290,7 +304,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           style: {
             colCfg: {
               widthByField: {
-                [resizeInfo.id]: displayWidth!,
+                [this.getResizeCellField(resizeInfo)]: displayWidth!,
               },
             },
           },
@@ -308,17 +322,13 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail | null {
-    const {
-      options: { interaction, style },
-      theme,
-    } = this.spreadsheet;
+    const { theme } = this.spreadsheet;
     const { padding: rowCellPadding } = theme.rowCell!.cell!;
     const resizeInfo = this.getResizeInfo();
     const { displayHeight } = this.getDisAllowResizeInfo();
     const height =
       displayHeight! - rowCellPadding!.top! - rowCellPadding!.bottom!;
 
-    let rowCellStyle: S2Style;
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
@@ -331,28 +341,15 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         };
 
       case ResizeAreaEffect.Cell:
-        if (
-          style?.rowCfg?.heightByField?.[String(resizeInfo.id)] ||
-          (interaction?.resize as ResizeInteractionOptions)?.rowResizeType ===
-            ResizeType.CURRENT
-        ) {
-          rowCellStyle = {
-            rowCfg: {
-              heightByField: {
-                [resizeInfo.id]: height,
-              },
-            },
-          };
-        } else {
-          rowCellStyle = {
-            rowCfg: {
-              height,
-            },
-          };
-        }
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
-          style: rowCellStyle,
+          style: {
+            rowCfg: {
+              heightByField: {
+                [this.getResizeCellField(resizeInfo)]: height,
+              },
+            },
+          },
         };
 
       default:
@@ -376,7 +373,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     }
 
     return {
-      [resizeInfo.id]: displayHeight,
+      [resizeInfo.meta.field!]: displayHeight,
     };
   }
 

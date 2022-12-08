@@ -140,7 +140,7 @@ export interface InteractionOptions {
   // highlight all row header cells and column header cells to which the hovered cell belongs
   hoverHighlight?: boolean;
   // keep cell hovered after 800ms duration
-  hoverFocus?: boolean | HoverFocusOptions;
+  hoverFocus?: HoverFocusOptions | boolean;
   // enable Command + C to copy spread data
   enableCopy?: boolean;
   // copy with filed format
@@ -153,9 +153,9 @@ export interface InteractionOptions {
   // the ratio to control scroll speed, default set to 1
   scrollSpeedRatio?: ScrollSpeedRatio;
   // enable resize area, default set to all enable
-  resize?: boolean | ResizeInteractionOptions;
+  resize?: ResizeInteractionOptions | boolean;
   // enable mouse drag brush selection on data cell, row cell, col cell
-  brushSelection?: boolean | BrushSelection;
+  brushSelection?: BrushSelection | boolean;
   // enable Command / Ctrl + click multi selection
   multiSelection?: boolean;
   // enable Shift + click multi selection

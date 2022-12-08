@@ -1,4 +1,8 @@
-import type { CustomHeaderField, S2DataConfig } from '@antv/s2';
+import {
+  ResizeType,
+  type CustomHeaderField,
+  type S2DataConfig,
+} from '@antv/s2';
 import { isMobile } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -9,6 +13,7 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+import { EXTRA_FIELD } from './../../s2-core/src/common/constant/basic';
 
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
@@ -61,6 +66,10 @@ export const s2Options: SheetComponentOptions = {
       col: true,
       row: true,
     },
+    resize: {
+      rowResizeType: ResizeType.CURRENT,
+      colResizeType: ResizeType.CURRENT,
+    },
   },
   tooltip: {
     operation: {
@@ -89,10 +98,28 @@ export const s2Options: SheetComponentOptions = {
     rowCfg: {
       width: isMobile() ? 60 : 200,
       height: 150,
+      widthByField: {
+        city: 200,
+        [EXTRA_FIELD]: 100,
+      },
+      heightByField: {
+        city: 40,
+        [EXTRA_FIELD]: 100,
+      },
+    },
+    colCfg: {
+      heightByField: {
+        sub_type: 60,
+        [EXTRA_FIELD]: 50,
+      },
+      widthByField: {
+        [EXTRA_FIELD]: 100,
+      },
+      width: 300,
     },
     cellCfg: {
       width: 100,
-      height: 40,
+      height: 70,
     },
   },
 };

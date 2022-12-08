@@ -1,5 +1,5 @@
 import { Group, Rect } from '@antv/g';
-import { get, isBoolean, isEmpty, isNil, last, maxBy, set } from 'lodash';
+import { get, isBoolean, isEmpty, isNil, keys, last, maxBy, set } from 'lodash';
 import { FrozenGroup } from '../group/frozen-group';
 import { TableDataCell } from '../cell';
 import {
@@ -250,7 +250,7 @@ export class TableFacet extends BaseFacet {
     const getCellMeta: GetCellMeta = (rowIndex: number, colIndex: number) => {
       const showSeriesNumber = this.cfg.showSeriesNumber;
       const col = colLeafNodes[colIndex];
-      const cellHeight = this.getCellHeight(rowIndex);
+      const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
       const cellRange = this.getCellRange();
       const { frozenTrailingRowCount = 0 } = getValidFrozenOptions(
@@ -513,33 +513,23 @@ export class TableFacet extends BaseFacet {
   }
 
   protected getDefaultCellHeight(): number {
-    return this.cfg.cellCfg?.height ?? 0;
+    return this.getRowCellHeight(null);
   }
 
-  public getCellHeight(index: number) {
-    if (this.rowOffsets) {
-      const heightByField =
-        this.spreadsheet.options.style?.rowCfg?.heightByField;
-
-      const customHeight = heightByField?.[String(index)];
-      if (customHeight) {
-        return customHeight;
-      }
-    }
-    return this.getDefaultCellHeight();
+  public getCellHeightByRowIndex(rowIndex: number) {
+    return this.getRowCellHeight({ id: String(rowIndex) });
   }
 
   protected initRowOffsets() {
     const { dataSet } = this.cfg;
     const heightByField = this.spreadsheet.options.style?.rowCfg?.heightByField;
 
-    if (Object.keys(heightByField!).length) {
+    if (keys(heightByField!).length) {
       const data = dataSet.getDisplayDataSet();
       this.rowOffsets = [0];
       let lastOffset = 0;
-      data.forEach((_, idx) => {
-        const currentHeight =
-          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
+      data.forEach((_, rowIndex) => {
+        const currentHeight = this.getCellHeightByRowIndex(rowIndex);
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;

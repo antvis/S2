@@ -88,7 +88,9 @@ const ActionIconTooltip = ({ name }: { name: React.ReactNode }) => (
 function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
+  const [sheetType, setSheetType] = React.useState<SheetType>(
+    localStorage.getItem('debugSheetType') || 'pivot',
+  );
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
@@ -99,8 +101,9 @@ function MainLayout() {
   const [adaptive, setAdaptive] = React.useState<Adaptive>(false);
   const [options, setOptions] =
     React.useState<Partial<SheetComponentOptions>>(defaultOptions);
-  const [dataCfg, setDataCfg] =
-    React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
+  const [dataCfg, setDataCfg] = React.useState<Partial<S2DataConfig>>(
+    sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg,
+  );
   const [columnOptions, setColumnOptions] = React.useState<CustomHeaderFields>(
     [],
   );
@@ -913,7 +916,11 @@ function MainLayout() {
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="宽高调整热区配置" key="resize">
-              <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
+              <ResizeConfig
+                options={mergedOptions}
+                setOptions={setOptions}
+                setThemeCfg={setThemeCfg}
+              />
             </Collapse.Panel>
           </Collapse>
           {render && (

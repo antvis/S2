@@ -240,7 +240,7 @@ export class CornerCell extends HeaderCell {
       height: headerHeight,
     } = this.headerConfig;
     const { x, y, width, height } = this.getBBoxByType();
-    const { field, cornerType } = this.meta;
+    const { cornerType } = this.meta;
 
     const resizeAreaBBox = {
       x: x + width - resizeStyle.size!,
@@ -272,7 +272,6 @@ export class CornerCell extends HeaderCell {
 
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,
-      id: field,
       type: ResizeDirectionType.Horizontal,
       effect: this.getResizeAreaEffect(),
       offsetX,
