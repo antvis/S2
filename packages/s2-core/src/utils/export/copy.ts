@@ -377,13 +377,17 @@ function getPivotCopyData(
     : getPivotWithoutHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes);
 }
 
+function isTreeMode(spreadsheet: SpreadSheet) {
+  return spreadsheet.options.hierarchyType === 'tree';
+}
+
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || isTreeMode(spreadsheet));
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -436,7 +440,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || isTreeMode(spreadsheet));
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -636,10 +640,10 @@ function getDataCellCopyable(
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-    // 树状模式透视表之后实现
-    return;
-  }
+  // if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
+  //   // 树状模式透视表之后实现
+  //   return;
+  // }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
