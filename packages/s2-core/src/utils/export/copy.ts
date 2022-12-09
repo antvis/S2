@@ -643,10 +643,6 @@ function getDataCellCopyable(
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  // if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-  //   // 树状模式透视表之后实现
-  //   return;
-  // }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
