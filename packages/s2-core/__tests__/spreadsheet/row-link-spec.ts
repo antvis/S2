@@ -96,6 +96,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'province',
+      id: 'root[&]浙江',
       record: {
         province: '浙江',
         type: '笔',
@@ -124,6 +125,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'city',
+      id: 'root[&]浙江[&]义乌1',
       record: {
         province: '浙江',
         city: '义乌1',
@@ -152,6 +154,7 @@ describe('Row Text Link Tests', () => {
 
     expect(linkFieldJump).toBeCalledWith({
       key: 'province',
+      id: 'root[&]四川',
       record: {
         province: '四川',
         type: '笔',
