@@ -319,24 +319,28 @@ describe('Pivot Table Core Data Process', () => {
   // 2 = ['province', 'city'].length 列头宽度
   const ROW_HEADER_WIDTH = 2;
 
-  const s2 = new PivotSheet(
-    getContainer(),
-    assembleDataCfg({
+  function getDataCfg() {
+    return assembleDataCfg({
       meta: [],
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
         values: ['number'],
       },
-    }),
-    assembleOptions({
+    });
+  }
+
+  function getOptions() {
+    return assembleOptions({
       hierarchyType: 'grid',
       interaction: {
         enableCopy: true,
       },
       totals: TOTALS_OPTIONS,
-    }),
-  );
+    });
+  }
+
+  const s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
   s2.render();
 
   it('should copy no data in grid mode', () => {
@@ -392,14 +396,7 @@ describe('Pivot Table Core Data Process', () => {
   it('should copy row data in grid mode', () => {
     const ss = new PivotSheet(
       getContainer(),
-      assembleDataCfg({
-        meta: [],
-        fields: {
-          columns: ['type', 'sub_type'],
-          rows: ['province', 'city'],
-          values: ['number'],
-        },
-      }),
+      getDataCfg(),
       assembleOptions({
         hierarchyType: 'grid',
         interaction: {
@@ -706,6 +703,80 @@ describe('Pivot Table Core Data Process', () => {
     });
     const data = getSelectedData(s2New);
     expect(data).toBe(convertString(`7789\n元`));
+  });
+
+  it('should get correct data with hideMeasureColumn is true', () => {
+    const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+    ss.setOptions({
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
+    });
+    ss.render();
+    const cells = ss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(ss);
+    expect(data).toMatchInlineSnapshot(`
+      "7789	5343	13132	945	1343
+      2367	632	2999	1304	1354
+      3877	7234	11111	1145	1523
+      4342	834	5176	1432	1634
+      18375	14043	32418	4826	5854
+      1723	2451	4174	2335	4004
+      1822	2244	4066	245	3077
+      1943	2333	4276	2457	3551
+      2330	2445	4775	2458	352
+      7818	9473	17291	7495	10984
+      26193	23516	49709	12321	16838"
+    `);
+  });
+
+  // https://github.com/antvis/S2/issues/1955
+  it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
+    const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+    ss.setOptions({
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
+      interaction: {
+        enableCopy: true,
+        copyWithHeader: true,
+      },
+      showSeriesNumber: true,
+    });
+    ss.render();
+    const cells = ss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    ss.interaction.changeState({
+      cells: map(cells, getCellMeta),
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(ss);
+    expect(data).toMatchInlineSnapshot(`
+      "		家具	家具	家具	办公用品
+      		桌子	沙发	小计	笔
+      浙江省	杭州市	7789	5343	13132	945
+      浙江省	绍兴市	2367	632	2999	1304
+      浙江省	宁波市	3877	7234	11111	1145
+      浙江省	舟山市	4342	834	5176	1432
+      浙江省	小计	18375	14043	32418	4826
+      四川省	成都市	1723	2451	4174	2335
+      四川省	绵阳市	1822	2244	4066	245
+      四川省	南充市	1943	2333	4276	2457
+      四川省	乐山市	2330	2445	4775	2458
+      四川省	小计	7818	9473	17291	7495
+      总计		26193	23516	49709	12321"
+    `);
   });
 });
 
