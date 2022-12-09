@@ -135,10 +135,11 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
   private emitLinkFieldClickEvent(event: CanvasEvent) {
     const { cellData } = this.getCellAppendInfo(event.target);
-    const { valueField: key, data: record } = cellData;
+    const { valueField: key, id, data: record } = cellData;
 
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
       key,
+      id,
       record: Object.assign({ rowIndex: cellData.rowIndex }, record),
     });
   }
