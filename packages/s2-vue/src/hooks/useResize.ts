@@ -30,6 +30,6 @@ export const useResize = (
         unobserve.value?.();
       });
     },
-    { deep: true },
+    // 这是好像不用deep，deep会导致g-lite一个错误, 不知道啥原因 { deep: true },
   );
 };
