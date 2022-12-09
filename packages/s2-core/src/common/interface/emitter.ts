@@ -78,6 +78,7 @@ export interface EmitterType {
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
     key: string;
+    cellData: Node;
     record: Data;
   }) => void;
 

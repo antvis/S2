@@ -28,6 +28,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
 
       this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         key,
+        cellData,
         record: rowData,
       });
     });
