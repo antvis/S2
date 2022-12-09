@@ -108,7 +108,7 @@ const getValueFromMeta = (
         colNode.isTotals ||
         colNode.isTotalMeasure,
     });
-    return cell[VALUE_FIELD];
+    return cell?.[VALUE_FIELD] ?? '';
   }
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId];
@@ -358,7 +358,10 @@ const getDataMatrix = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
-      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+      return getFormat(
+        colNode.colIndex,
+        spreadsheet,
+      )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
 };
@@ -404,7 +407,7 @@ const processPivotColSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -457,7 +460,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -657,10 +660,6 @@ function getDataCellCopyable(
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-    // 树状模式透视表之后实现
-    return;
-  }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
