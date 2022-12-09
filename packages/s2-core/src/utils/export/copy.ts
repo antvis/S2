@@ -380,17 +380,13 @@ function getPivotCopyData(
     : getPivotWithoutHeaderCopyData(spreadsheet, allRowLeafNodes, colNodes);
 }
 
-function isTreeMode(spreadsheet: SpreadSheet) {
-  return spreadsheet.options.hierarchyType === 'tree';
-}
-
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf || isTreeMode(spreadsheet));
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -443,7 +439,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf || isTreeMode(spreadsheet));
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
