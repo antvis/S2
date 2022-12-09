@@ -13,12 +13,12 @@ object **必选**,_default：null_ 功能描述： tooltip 显示配置
 | data      | [TooltipData](#tooltipdata)      |       |        | tooltip 数据        |
 | cellInfos | `Record<string, any>`        |       |        | 单元格信息          |
 | options   | [TooltipOptions](#tooltipoptions)    |       |        | tooltip 部分配置    |
-| content   | `React.ReactNode | string` \| `(cell, defaultTooltipShowOptions: TooltipShowOptions) => React.ReactNode | string` |       |        | 自定义 tooltip 内容 |
+| content   | `ReactNode \| string` \| 或者 `(cell, defaultTooltipShowOptions: TooltipShowOptions) => ReactNode \| string` |       |        | 自定义 tooltip 内容 |
 | event     | `Event`  |       |        | 当前事件 Event      |
 
 ### TooltipPosition
 
-object **必选**,_default：null_ 功能描述： tooltip 显示位置
+object **必选**,_default：null_ 功能描述： tooltip 坐标
 
 | 参数 | 类型     | 必选  | 默认值 | 功能描述 |
 | ---- | -------- | ------ | ------ | -------- |
@@ -45,7 +45,7 @@ object **可选**,_default：null_ 功能描述： tooltip 所选项统计（按
 | 参数         | 类型                  | 必选  | 默认值 | 功能描述           |
 | ------------ | --------------------- | ------ | ------ | ------------------ |
 | name         | `string`              |   ✓   |        | 名称               |
-| value        | `number | string`     |   ✓   |        | 值                 |
+| value        | `number \| string`     |   ✓   |        | 值                 |
 | selectedData | `Record<string, any>` |   ✓   |        | 当前选择的数据列表 |
 
 #### TooltipHeadInfo
@@ -64,8 +64,8 @@ object **可选**,_default：null_ 功能描述： tooltip 数据点明细数据
 | 参数  | 类型              | 必选  | 默认值 | 功能描述       |
 | ----- | ----------------- | ------ | ------ | -------------- |
 | name  | `string`          |   ✓   |        | 名称           |
-| value | `string | number` |   ✓   |        | 值             |
-| icon  | `React.ReactNode` |       |        | 自定义图标组件 |
+| value | `string \| number` |   ✓   |        | 值             |
+| icon  | `ReactNode` |       |        | 自定义图标组件 |
 
 ### TooltipOptions
 
@@ -99,8 +99,8 @@ object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 | 参数     | 类型                                        | 必选  | 默认值 | 功能描述       |
 | -------- | ------------------------------------------- | ------ | ------ | -------------- |
 | key      | `string`                                    |   ✓   |        | 唯一标识       |
-| text     | `string`   |       |        | 名称           |
-| icon     | `React.ReactNode \| string`   |       |        | 自定义图标     |
+| text     | `ReactNode \| string`   |       |        | 名称           |
+| icon     | `ReactNode \| string`   |       |        | 自定义图标     |
 | visible  | `boolean \| (cell) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
 | onClick  | (`cell`: [S2CellType](/docs/api/basic-class/base-cell): ) => void                           |       |        | 点击事件回调  (cell 为当前 tooltip 对应的单元格）   |
 | children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |
