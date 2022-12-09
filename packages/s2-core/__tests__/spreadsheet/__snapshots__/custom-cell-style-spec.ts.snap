@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]笔",
+    "width": 300,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]cost",
+    "width": 150,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style by custom hook 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]笔",
+    "width": 300,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]cost",
+    "width": 150,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style by field 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]笔",
+    "width": 300,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]cost",
+    "width": 150,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style by field id 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #DataCell should get custom data cell style 1`] = `
+Array [
+  Object {
+    "height": 90,
+    "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
+    "width": 300,
+  },
+  Object {
+    "height": 90,
+    "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
+    "width": 300,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by custom hook 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by field 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by field id 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by heightByField > rowCfg.height > cellCfg.height 1`] = `
+Array [
+  Object {
+    "height": 66,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 33,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 33,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style priority by heightByField > rowCfg.height > cellCfg.height 1`] = `
+Array [
+  Object {
+    "height": 66,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 33,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 33,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests should render default cell style 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "root[&]浙江",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌",
+    "width": 149,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州",
+    "width": 149,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests should render default cell style 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]笔",
+    "width": 300,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]笔[&]cost",
+    "width": 150,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests should render default cell style 3`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌-root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州-root[&]笔[&]price",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]义乌-root[&]笔[&]cost",
+    "width": 150,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]浙江[&]杭州-root[&]笔[&]cost",
+    "width": 150,
+  },
+]
+`;

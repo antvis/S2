@@ -62,7 +62,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     afterEach(() => {
-      // s2.destroy();
+      s2.destroy();
     });
 
     test('should disable valueInCols', () => {
