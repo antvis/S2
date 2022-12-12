@@ -1066,6 +1066,11 @@ export abstract class BaseFacet {
       );
     });
     this.preCellIndexes = indexes;
+    this.spreadsheet.emit(S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER, {
+      add,
+      remove,
+      spreadsheet: this.spreadsheet,
+    });
   };
 
   protected init() {

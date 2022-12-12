@@ -319,6 +319,12 @@ export const useEvents = (
     useS2Event(
       s2Ref,
       emit,
+      S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER,
+      'layoutAfterRealDataCellRender',
+    );
+    useS2Event(
+      s2Ref,
+      emit,
       S2Event.ROW_CELL_BRUSH_SELECTION,
       'rowCellBrushSelection',
     );

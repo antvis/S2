@@ -230,7 +230,7 @@ export class RowCell extends HeaderCell {
     const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
     const isLinkField = linkFields.some(
-      (field) => field === this.meta.key || this.meta.id,
+      (field) => field === this.meta.key || field === this.meta.id,
     );
     super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
