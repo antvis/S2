@@ -1,212 +1,479 @@
-import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer, sleep } from 'tests/util/helpers';
+import { pick } from 'lodash';
+import { PivotSheet, TableSheet } from '@/sheet-type';
 import {
-  TableSheet,
+  DEFAULT_OPTIONS,
+  S2Event,
   type S2Options,
-  type S2DataConfig,
-  ResizeType,
-  ColCell,
-} from '@/index';
+  type TextTheme,
+} from '@/common';
 
-const data = getMockData(
-  '../../../s2-react/__tests__/data/tableau-supermarket.csv',
-);
-
-const columns = [
-  'order_id',
-  'order_date',
-  'ship_date',
-  'express_type',
-  'customer_name',
-  'customer_type',
-  'city',
-  'province',
-  'counter',
-  'area',
-  'type',
-  'sub_type',
-  'product_name',
-  'sale_amt',
-  'count',
-  'discount',
-  'profit',
-];
-
-const meta = [
-  {
-    field: 'count',
-    name: '销售个数',
-  },
-  {
-    field: 'profit',
-    name: '利润',
-    formatter: (v: number) => `${v}元`,
-  },
-];
-
-const newLineText = `1\t\n2`;
-
-const dataCfg: S2DataConfig = {
-  fields: {
-    columns,
-  },
-  meta,
-  data: data.map((e) => ({ ...e, express_type: newLineText })),
-  sortParams: [
-    {
-      sortFieldId: 'count',
-      sortMethod: 'DESC',
-    },
-    {
-      sortFieldId: 'profit',
-      sortMethod: 'ASC',
-    },
-  ],
+const s2Options: S2Options = {
+  width: 200,
+  height: 200,
+  hierarchyType: 'grid',
+  hdAdapter: true,
 };
 
-const options: S2Options = {
-  width: 800,
-  height: 600,
-  showSeriesNumber: true,
-  placeholder: '',
-  style: {
-    layoutWidthType: 'compact',
-    cellCfg: {
-      height: 32,
-    },
-    device: 'pc',
-  },
-  interaction: {
-    enableCopy: true,
-    hoverHighlight: false,
-    selectedCellHighlight: true,
-    linkFields: ['order_id', 'customer_name'],
-    hiddenColumnFields: ['order_date'],
-    resize: {
-      rowResizeType: ResizeType.CURRENT,
-    },
-  },
-  frozenRowCount: 2,
-  frozenColCount: 2,
-  frozenTrailingColCount: 2,
-  frozenTrailingRowCount: 2,
-  showDefaultHeaderActionIcon: true,
-  tooltip: {
-    operation: {
-      hiddenColumns: true,
-    },
-  },
-};
+describe('SpreadSheet Tests', () => {
+  describe('Mount Sheet Tests', () => {
+    let container: HTMLElement;
 
-describe('TableSheet normal spec', () => {
-  test('scrollWithAnimation with duration and callback', async () => {
-    const s2 = new TableSheet(getContainer(), dataCfg, options);
-    const onScrollFinish = jest.fn();
-
-    s2.render();
-    s2.facet.scrollWithAnimation(
-      {
-        offsetX: {
-          value: 10,
-          animate: true,
-        },
-        offsetY: {
-          value: 10,
-          animate: true,
-        },
-      },
-      10,
-      onScrollFinish,
-    );
-    await sleep(30);
-
-    expect(s2.facet.getScrollOffset()).toStrictEqual({
-      scrollY: 10,
-      scrollX: 10,
-      hRowScrollX: 0,
-    });
-    expect(onScrollFinish).toBeCalled();
-
-    s2.destroy();
-  });
-
-  test('should be able to resize frozen col when there is a vertical scroll width', async () => {
-    const s2 = new TableSheet(getContainer(), dataCfg, options);
-    s2.render();
-
-    const onScrollFinish = jest.fn();
-    s2.facet.scrollWithAnimation(
-      {
-        offsetX: {
-          value: 100,
-          animate: true,
-        },
-      },
-      10,
-      onScrollFinish,
-    );
-    await sleep(30);
-
-    const firstColCell = s2.getColumnNodes()[1].belongsCell as any;
-
-    expect(firstColCell.shouldAddVerticalResizeArea()).toBe(true);
-    expect(firstColCell.getVerticalResizeAreaOffset()).toEqual({ x: 80, y: 0 });
-
-    s2.destroy();
-  });
-
-  test('should support custom layoutCoordinate calls', () => {
-    const s2 = new TableSheet(getContainer(), dataCfg, {
-      ...options,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
+    beforeAll(() => {
+      container = getContainer();
     });
 
-    s2.setOptions({
-      layoutCoordinate: (s2, rowNode, colNode) => {
-        colNode.width = 50;
-      },
+    afterAll(() => {
+      container?.remove();
     });
-    s2.render();
-    expect(s2.facet.layoutResult.colsHierarchy.width).toBe(850);
 
-    s2.destroy();
+    test('should init sheet by dom container', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+
+      expect(s2.container).toBeDefined();
+      expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+      expect(container.querySelector('canvas')).toBeDefined();
+
+      s2.destroy();
+    });
+
+    test('should init sheet by selector container', () => {
+      const CONTAINER_ID = 'container';
+      container.id = CONTAINER_ID;
+
+      const containerSelector = `#${CONTAINER_ID}`;
+      const s2 = new PivotSheet(containerSelector, mockDataConfig, s2Options);
+      s2.render();
+
+      expect(s2.container).toBeDefined();
+      expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+      expect(container.querySelector('canvas')).toBeDefined();
+
+      s2.destroy();
+    });
+
+    test('should throw error when init sheet by selector container if container not found', () => {
+      const mountContainer = null;
+
+      function init() {
+        const s2 = new PivotSheet(mountContainer, mockDataConfig, s2Options);
+        s2.render();
+        s2.destroy();
+        s2.render();
+      }
+
+      expect(init).toThrowError('Target mount container is not a DOM element');
+    });
+
+    // https://github.com/antvis/S2/issues/1050
+    test.each([
+      { devicePixelRatio: 1 },
+      { devicePixelRatio: 2 },
+      { devicePixelRatio: 3 },
+    ])('should render sheet by custom DPR by %s', ({ devicePixelRatio }) => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2Options,
+        devicePixelRatio,
+      });
+      s2.render();
+
+      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      expect(canvas.width).toEqual(s2Options.width * devicePixelRatio);
+      expect(canvas.height).toEqual(s2Options.height * devicePixelRatio);
+      expect(canvas.style.width).toEqual(`${s2Options.width}px`);
+      expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+
+      s2.destroy();
+    });
+
+    test('should render sheet if custom DPR less than zero', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2Options,
+        devicePixelRatio: 0,
+      });
+      s2.render();
+
+      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      expect(canvas.width).toEqual(s2Options.width);
+      expect(canvas.height).toEqual(s2Options.height);
+      expect(canvas.style.width).toEqual(`${s2Options.width}px`);
+      expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+
+      s2.destroy();
+    });
+
+    test('should update scroll offset immediately', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+
+      expect(s2.facet.hScrollBar.current()).toEqual(0);
+
+      s2.updateScrollOffset({
+        offsetX: { value: 30 },
+      });
+      expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
+    });
+
+    // https://github.com/antvis/S2/issues/1197
+    test('should not rerender when window or visual viewport resize', async () => {
+      const render = jest.fn();
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
+      s2.on(S2Event.LAYOUT_BEFORE_RENDER, render);
+      s2.render();
+
+      window.dispatchEvent(new Event('resize'));
+      visualViewport.dispatchEvent(new Event('resize'));
+
+      // await debounce
+      await sleep(1000);
+
+      expect(render).toHaveBeenCalledTimes(1);
+
+      s2.destroy();
+    });
+
+    test.each([PivotSheet, TableSheet])(
+      'should not crash if style config is empty',
+      (Sheet) => {
+        function render() {
+          const s2 = new Sheet(container, mockDataConfig, {
+            width: 400,
+            height: 400,
+            style: {
+              rowCfg: null,
+              colCfg: null,
+              cellCfg: null,
+            },
+          });
+
+          s2.render();
+        }
+
+        expect(render).not.toThrowError();
+      },
+    );
   });
 
-  test('should be able to resize last column', async () => {
-    const s2 = new TableSheet(getContainer(), dataCfg, options);
-    s2.render();
+  describe('Destroy Sheet Tests', () => {
+    let container: HTMLElement;
 
-    await sleep(30);
+    beforeAll(() => {
+      container = getContainer();
+    });
 
-    const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
-    s2.getCanvasElement().dispatchEvent(
-      new MouseEvent('mousedown', {
-        clientX: x + width - 1,
-        clientY: top + 25,
-      }),
+    afterAll(() => {
+      container?.remove();
+    });
+
+    test.each([PivotSheet, TableSheet])(
+      'should destroy sheet correctly',
+      (Sheet) => {
+        const s2 = new Sheet(container, mockDataConfig, s2Options);
+        s2.render();
+
+        expect(s2.container).toBeDefined();
+        expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+        expect(container.querySelectorAll('canvas')).toHaveLength(1);
+
+        s2.destroy();
+
+        expect(s2.container.get('el')).not.toBeDefined();
+        expect(container.querySelectorAll('canvas')).toHaveLength(0);
+        expect(document.body.style.overscrollBehavior).toBeFalsy();
+      },
     );
 
-    window.dispatchEvent(
-      new MouseEvent('mousemove', {
-        clientX: x + width + 100,
-        clientY: top + 25,
-      }),
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when repeat render after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
+
+          Array.from({ length: 10 }).forEach(() => {
+            s2.render();
+          });
+        }
+
+        expect(init).not.toThrowError();
+      },
     );
-    await sleep(300);
 
-    window.dispatchEvent(
-      new MouseEvent('mouseup', {
-        clientX: x + width + 100,
-        clientY: top + 25,
-      }),
+    // https://github.com/antvis/S2/issues/1349
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when change sheet size after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
+          s2.changeSheetSize(200, 200);
+        }
+
+        expect(init).not.toThrowError();
+      },
     );
 
-    await sleep(300);
+    test.each([PivotSheet, TableSheet])(
+      'should not throw error when window resize after sheet destroyed',
+      (Sheet) => {
+        function init() {
+          const s2 = new Sheet(container, mockDataConfig, s2Options);
+          s2.render();
+          s2.destroy();
 
-    const columnNodes = s2.getColumnNodes();
-    const lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
+          visualViewport.dispatchEvent(new Event('resize'));
+        }
 
-    expect(lastColumnCell.getMeta().width).toBe(199);
+        expect(init).not.toThrowError();
+      },
+    );
+
+    test.each([PivotSheet, TableSheet])(
+      'should not build sheet when sheet destroy before sheet render',
+      (Sheet) => {
+        const s2 = new Sheet(container, mockDataConfig, s2Options);
+
+        const beforeRender = jest.fn();
+        const afterRender = jest.fn();
+
+        const clearDrillDownDataSpy = jest
+          .spyOn(s2, 'clearDrillDownData')
+          .mockImplementationOnce(() => {});
+
+        s2.on(S2Event.LAYOUT_BEFORE_RENDER, beforeRender);
+        s2.on(S2Event.LAYOUT_AFTER_RENDER, afterRender);
+        s2.destroy();
+
+        Array.from({ length: 10 }).forEach(() => {
+          s2.render();
+        });
+
+        expect(beforeRender).toHaveBeenCalledTimes(0);
+        expect(afterRender).toHaveBeenCalledTimes(0);
+        expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(0);
+      },
+    );
+
+    // https://github.com/antvis/S2/issues/1011
+    test.each([PivotSheet, TableSheet])(
+      'should delay destroy sheet correctly',
+      async (Sheet) => {
+        const s2 = new Sheet(container, mockDataConfig, s2Options);
+        s2.render();
+
+        expect(s2.container.get('el')).toBeInstanceOf(HTMLCanvasElement);
+        expect(container.querySelectorAll('canvas')).toHaveLength(1);
+
+        await new Promise((resolve) =>
+          setTimeout(() => {
+            s2.destroy();
+            resolve(true);
+          }, 1000),
+        );
+
+        expect(s2.container.get('el')).not.toBeDefined();
+        expect(container.querySelectorAll('canvas')).toHaveLength(0);
+
+        s2.destroy();
+      },
+    );
+
+    // https://github.com/antvis/S2/issues/1011
+    test('should toggle sheet type', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+
+      expect(s2).toBeInstanceOf(PivotSheet);
+      expect(container.querySelectorAll('canvas')).toHaveLength(1);
+
+      s2.destroy();
+      const tableSheet = new TableSheet(container, mockDataConfig, s2Options);
+      tableSheet.render();
+
+      expect(tableSheet).toBeInstanceOf(TableSheet);
+      expect(container.querySelectorAll('canvas')).toHaveLength(1);
+    });
+  });
+
+  describe('Sheet Config Change Tests', () => {
+    let container: HTMLElement;
+
+    beforeAll(() => {
+      container = getContainer();
+    });
+
+    afterAll(() => {
+      container?.remove();
+    });
+
+    test('should update all Data Config when reset is true', () => {
+      const totalData = [
+        {
+          province: '浙江',
+          type: '笔',
+          price: 3,
+          cost: 6,
+        },
+      ];
+      const s2 = new PivotSheet(
+        container,
+        { ...mockDataConfig, totalData },
+        s2Options,
+      );
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([
+        {
+          $$extra$$: 'price',
+          $$value$$: 3,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+        {
+          $$extra$$: 'cost',
+          $$value$$: 6,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ]);
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+
+      // 改变 totalData 为 undefined 再次渲染
+      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, true);
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual([]);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual([]);
+      s2.destroy();
+    });
+
+    test('should update all Data Config when reset is false', () => {
+      const totalData = [
+        {
+          province: '浙江',
+          type: '笔',
+          price: 3,
+          cost: 6,
+        },
+      ];
+      const s2 = new PivotSheet(
+        container,
+        { ...mockDataConfig, totalData },
+        s2Options,
+      );
+      s2.render();
+
+      const totalDataSet = [
+        {
+          $$extra$$: 'price',
+          $$value$$: 3,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+        {
+          $$extra$$: 'cost',
+          $$value$$: 6,
+          cost: 6,
+          price: 3,
+          province: '浙江',
+          type: '笔',
+        },
+      ];
+
+      // 改变 totalData 为 undefined 再次渲染
+      s2.setDataCfg({ ...mockDataConfig, totalData: undefined }, false);
+      s2.render();
+
+      expect(s2.dataSet.totalData).toEqual(totalDataSet);
+      expect(s2.dataCfg.fields).toEqual({
+        ...mockDataConfig.fields,
+        customTreeItems: [],
+      });
+      expect(s2.dataCfg.totalData).toEqual(totalData);
+      s2.destroy();
+    });
+
+    test('should update all Options when reset is true', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+      const partialOptions = pick(s2.options, emitAttrs);
+      expect(partialOptions).toEqual(s2Options);
+
+      s2.setOptions(
+        {
+          width: 300,
+          hdAdapter: false,
+        },
+        true,
+      );
+      expect(pick(s2.options, emitAttrs)).toEqual({
+        height: DEFAULT_OPTIONS.height,
+        hierarchyType: DEFAULT_OPTIONS.hierarchyType,
+        width: 300,
+        hdAdapter: false,
+      });
+    });
+
+    test('should update all Options when reset is false', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      s2.render();
+      const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
+
+      s2.setOptions(
+        {
+          width: 300,
+          hdAdapter: false,
+        },
+        false,
+      );
+
+      expect(pick(s2.options, emitAttrs)).toEqual({
+        height: s2Options.height,
+        hierarchyType: s2Options.hierarchyType,
+        width: 300,
+        hdAdapter: false,
+      });
+    });
+
+    describe('Measure Text Tests', () => {
+      const text = '测试';
+      const font: TextTheme = {
+        textAlign: 'center',
+        fontSize: 12,
+      };
+      const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+      s2.render();
+
+      test('should measure text', () => {
+        expect(s2.measureText(text, null)).toBeNull();
+        expect(s2.measureText(text, font)).toBeInstanceOf(TextMetrics);
+      });
+
+      test('should measure text width', () => {
+        expect(s2.measureTextWidth(text, null)).toEqual(0);
+        expect(s2.measureTextWidth(text, font)).not.toBeLessThanOrEqual(0);
+      });
+
+      test('should measure text height', () => {
+        expect(s2.measureTextHeight(text, null)).toEqual(0);
+        expect(s2.measureTextHeight(text, font)).not.toBeLessThanOrEqual(0);
+      });
+    });
   });
 });
