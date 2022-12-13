@@ -20,7 +20,7 @@ export class TableDataCell extends DataCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields } = this.spreadsheet.options.interaction;
+    const { linkFields = [] } = this.spreadsheet.options.interaction;
     const linkTextFill = this.theme.rowCell.text.linkTextFill;
 
     const isLinkField =

@@ -227,7 +227,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields } = this.headerConfig;
+    const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
     const isLinkField =
       typeof linkFields === 'function'
