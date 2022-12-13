@@ -239,6 +239,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     return iconCfg;
   }
 
+  protected drawConditionIntervalShape() {
+    this.conditionIntervalShape = drawInterval(this);
+  }
+
   protected shouldHideRowSubtotalData() {
     const { row = {} } = this.spreadsheet.options.totals ?? {};
     const { rowIndex } = this.meta;
@@ -282,40 +286,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
-  }
-
-  public drawConditionIconShapes() {
-    if (this.shouldHideRowSubtotalData()) {
-      return;
-    }
-    const iconCondition: IconCondition = this.findFieldCondition(
-      this.conditions?.icon,
-    );
-    if (iconCondition && iconCondition.mapping) {
-      const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
-      const { size } = this.theme.dataCell.icon;
-      if (!isEmpty(attrs?.icon)) {
-        this.conditionIconShape = renderIcon(this, {
-          ...position,
-          name: attrs.icon,
-          width: size,
-          height: size,
-          fill: attrs.fill,
-        });
-      }
-    }
-  }
-
-  /**
-   * Draw interval condition shape
-   * @protected
-   */
-  protected drawConditionIntervalShape() {
-    if (this.shouldHideRowSubtotalData()) {
-      return;
-    }
-    this.conditionIntervalShape = drawInterval(this);
   }
 
   public getBackgroundColor() {
