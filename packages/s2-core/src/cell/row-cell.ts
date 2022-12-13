@@ -27,6 +27,7 @@ import {
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
+import { checkIfLinkField } from '../utils/interaction/link-field';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -229,12 +230,7 @@ export class RowCell extends HeaderCell {
   protected drawLinkFieldShape() {
     const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
-    const isLinkField =
-      typeof linkFields === 'function'
-        ? linkFields(this.meta)
-        : linkFields.some(
-            (field) => field === this.meta.key || field === this.meta.id,
-          );
+    const isLinkField = checkIfLinkField(linkFields, this.meta);
     super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 

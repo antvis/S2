@@ -13,6 +13,8 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { checkIfLinkField } from '../utils/interaction/link-field';
+
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
     super.drawTextShape();
@@ -23,12 +25,7 @@ export class TableDataCell extends DataCell {
     const { linkFields = [] } = this.spreadsheet.options.interaction;
     const linkTextFill = this.theme.rowCell.text.linkTextFill;
 
-    const isLinkField =
-      typeof linkFields === 'function'
-        ? linkFields(this.meta)
-        : linkFields.some(
-            (field) => field === this.meta.key || field === this.meta.id,
-          );
+    const isLinkField = checkIfLinkField(linkFields, this.meta);
 
     super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
