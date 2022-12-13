@@ -227,11 +227,14 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.headerConfig;
+    const { linkFields } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
-    const isLinkField = linkFields.some(
-      (field) => field === this.meta.key || field === this.meta.id,
-    );
+    const isLinkField =
+      typeof linkFields === 'function'
+        ? linkFields(this.meta)
+        : linkFields.some(
+            (field) => field === this.meta.key || field === this.meta.id,
+          );
     super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 

@@ -20,13 +20,17 @@ export class TableDataCell extends DataCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction;
+    const { linkFields } = this.spreadsheet.options.interaction;
     const linkTextFill = this.theme.rowCell.text.linkTextFill;
 
-    super.drawLinkFieldShape(
-      linkFields.includes(this.meta.valueField),
-      linkTextFill,
-    );
+    const isLinkField =
+      typeof linkFields === 'function'
+        ? linkFields(this.meta)
+        : linkFields.some(
+            (field) => field === this.meta.key || field === this.meta.id,
+          );
+
+    super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
   protected drawBorderShape() {
