@@ -9,8 +9,8 @@ import { FrozenGroup } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
+import { DEFAULT_STYLE, Node } from '@/index';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
-import { DEFAULT_STYLE } from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
 
@@ -566,6 +566,29 @@ describe('Custom Column Width Tests', () => {
       }
     },
   );
+
+  test('should get hidden columns info', () => {
+    const s2: SpreadSheet = new MockSpreadSheet();
+    const dataSet: TableDataSet = new MockTableDataSet(s2);
+    const facet: TableFacet = new TableFacet({
+      spreadsheet: s2,
+      dataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+    });
+    const node = new Node({ id: '1', key: '1', value: '1' });
+
+    expect(facet.getHiddenColumnsInfo(node)).toBeNull();
+
+    const hiddenColumnsInfo = {
+      hideColumnNodes: [node],
+      displaySiblingNode: null,
+    };
+
+    s2.store.set('hiddenColumnsDetail', [hiddenColumnsInfo]);
+
+    expect(facet.getHiddenColumnsInfo(node)).toEqual(hiddenColumnsInfo);
+  });
 });
 
 describe('Table Mode Facet With Column Grouping Test', () => {

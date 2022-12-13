@@ -17,13 +17,18 @@ order: 8
 | ----------- | :----: | :---: | :-----: | :---: | :---: | :----: | :---: | :------------: | :------------: |
 | **AntV S2** |   40   |  12   |   85    |   9   |  40   |   14   |  6.2  |       12       |      7.3       |
 
+`@antv/s2-react` 和 `@antv/s2-vue` 见官方 [React JavaScript 环境要求](https://zh-hans.reactjs.org/docs/javascript-environment-requirements.html) 和 [Vite 浏览器兼容性](https://cn.vitejs.dev/guide/build.html#browser-compatibility)
+
 ### 浏览器引入
 
-`markdown:docs/common/browser.zh.md`
+<embed src="@/docs/common/browser.zh.md"></embed>
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
-有，国内镜像部署在 `gitee` 上面 [点击访问](https://antv-s2.gitee.io/)
+原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 不再维护，推荐访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
+
+[旧版官网](https://s2.antv.vision/)
+[新版官网](https://s2.antv.antgroup.com/)
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
@@ -31,7 +36,7 @@ order: 8
 
 ```ts
 const s2Options = {
-   supportCSSTransform: true
+  supportCSSTransform: true
 }
 ```
 
@@ -51,21 +56,35 @@ s2.render(false)
 const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
 ```
 
-更新 options: [可选项](/zh/docs/api/general/S2Options)
+更新 options: [可选项](/docs/api/general/S2Options)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setOptions({ ... })
 pivotSheet.render(false) // 重新渲染，不更新数据
 ```
 
-更新 dataCfg: [可选项](/zh/docs/api/general/S2DataConfig)
+重置 options: [可选项](/docs/api/general/S2Options)，直接使用传入的 option，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setOptions({ ... }, true)
+pivotSheet.render(false) // 重新渲染，不更新数据
+```
+
+更新 dataCfg: [可选项](/docs/api/general/S2DataConfig)，会与上次的数据进行合并
 
 ```ts
 pivotSheet.setDataCfg({ ... })
 pivotSheet.render(true) // 重新渲染，且更新数据
 ```
 
-更新 theme: [可选项](/zh/docs/api/general/S2Theme)
+重置 dataCfg: [可选项](/docs/api/general/S2DataConfig)，直接使用传入的 dataCfg，不会与上次的数据进行合并
+
+```ts
+pivotSheet.setDataCfg({ ... }, true)
+pivotSheet.render(true) // 重新渲染，且更新数据
+```
+
+更新 theme: [可选项](/docs/api/general/S2Theme)
 
 ```ts
 pivotSheet.setThemeCfg({ ... })
@@ -104,23 +123,23 @@ s2.render(false)
 
 ### 表格可以根据外部容器的宽高自动撑满吗？
 
-可以，请查看 [这篇文章](/zh/docs/manual/advanced/adaptive)
+可以，请查看 [这篇文章](/docs/manual/advanced/adaptive)
 
 ### 如何获取单元格数据？
 
-请查看 [这篇文章](/zh/docs/manual/advanced/get-cell-data)
+请查看 [这篇文章](/docs/manual/advanced/get-cell-data)
 
 ### 为什么 tooltip 在 `@antv/s2` 中不显示，在 `@antv/s2-react` `@antv/s2-vue` 中可以正常显示？
 
-请查看 [Tooltip 注意事项](/zh/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
+请查看 [Tooltip 注意事项](/docs/manual/basic/tooltip#%E7%AE%80%E4%BB%8B)
 
-### 如何在 Vue 中自定义 Tooltip
+### 如何在 Vue 中自定义 Tooltip?
 
-可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/zh/docs/manual/basic/tooltip/#在-vue3-中自定义)
+可直接使用 S2 的 Vue3 版本 `@antv/s2-vue`, 或查看 [在 Vue3 中自定义](/docs/manual/basic/tooltip/#在-vue3-中自定义)
 
 ### 表格支持导出 `Excel` 吗？
 
-支持，请查看 [这篇文章](/zh/docs/manual/basic/analysis/export), 或者 [示例](/zh/examples/react-component/export#export)
+支持，请查看 [这篇文章](/docs/manual/basic/analysis/export), 或者 [示例](/examples/react-component/export#export)
 
 ### 表格导出乱码怎么办？
 
@@ -128,9 +147,21 @@ s2.render(false)
 
 ![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
 
-### 鼠标滚轮如何进行水平滚动
+### 鼠标滚轮如何进行水平滚动？
 
 按住 `Shift` 键的同时滚动鼠标
+
+### 如何自定义文字的大小和对齐方式？
+
+可以配置自定义主题，查看 [使用文档](/docs/manual/basic/theme) 和 [示例](/examples/theme/custom#custom-manual-palette)
+
+### 如何自定义单元格宽高？
+
+请查看 [使用文档](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E5%88%97%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) 和 [示例](/examples/gallery#category-%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E5%88%97%E5%AE%BD%E9%AB%98)
+
+### S2 支持对表格进行编辑吗？
+
+请查看 [编辑模式示例](/examples/case/data-preview#excel)
 
 ### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
 
@@ -140,17 +171,17 @@ s2.render(false)
 - `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
 - `@antv/s2-vue`: 基于 `Vue3` 和 `@antv/s2` 封装，提供配套的分析组件
 
-也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
+也就是说 `@antv/s2` 和**框架无关**，你可以在 `Vue`, `Angular` 等框架中使用。
 
 以下是版本概览：
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.zh.md"></embed>
 
-配套的 [分析组件](/zh/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
-### 怎样贡献代码？
+### 如何贡献代码？
 
-请查看 [贡献指南](/zh/docs/manual/contribution)
+请查看 [贡献指南](/docs/manual/contribution)
 
 ### 为什么在小程序上面表格无法显示？
 
@@ -158,7 +189,7 @@ s2.render(false)
 
 ### 为什么我的 Issue 被关闭了？
 
-请严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
+请阅读 [提 Issue 前必读](https://github.com/antvis/S2/issues/1904), 并严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
 
 - 你**实际**安装的版本号：
 
@@ -178,11 +209,11 @@ s2.render(false)
 
 - 你的预期是什么？目前的行为是什么？
 
-> 预期是 "没问题", 目前是 "有问题", 这种描述和没说没什么区别，请尽量的描述的具体一点
+> 预期是 "没问题", 目前是 "有问题", 这种描述和没说没什么区别，请尽量的描述的具体一点，如：`数据不正确：预期应该是 xx, 实际是 xx. 布局错误：节点应该显示在行头，实际出现在了列头。`
 
 - 尽量抹去一些带有你自己业务语义的一些名词和描述
 
-在提出问题前，请确保你已经阅读过 [官方文档](/zh/docs/manual/introduction) 和 [常见问题](/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed)
+在提出问题前，请确保你已经阅读过 [官方文档](/docs/manual/introduction) 和 [常见问题](/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed).
 
 强烈建议阅读：
 
@@ -198,5 +229,9 @@ s2.render(false)
 ### 我想反馈 Bug, 如何提供一个可复现的在线 demo 呢？
 
 推荐使用 `codesandbox`, 我们提供了各种版本的模板，方便你反馈问题。[查看所有模板](https://www.yuque.com/antv/vo4vyz/bam4vz)
+
+### 有讨论群吗？
+
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 2. 错误和警告

@@ -9,7 +9,7 @@ import * as dataConfig from 'tests/data/mock-dataset.json';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
@@ -58,13 +58,24 @@ export const createFakeSpreadSheet = () => {
     meta: null,
     data: [],
     fields: {},
+    sortParams: [],
   };
   s2.container = new Canvas({
     width: DEFAULT_OPTIONS.width,
     height: DEFAULT_OPTIONS.height,
     container,
   });
-  s2.facet = {} as BaseFacet;
+  s2.dataSet = {
+    getMultiData() {
+      return [];
+    },
+  } as unknown as any;
+  s2.facet = {
+    layoutResult: {
+      getCellMeta: jest.fn(),
+      rowLeafNodes: [],
+    },
+  } as unknown as BaseFacet;
   s2.facet.panelBBox = {
     maxX: s2.options.width,
     maxY: s2.options.height,
@@ -131,6 +142,11 @@ export const createMockCellInfo = (
       dataSet: {
         getFieldDescription: jest.fn(),
       },
+      facet: {
+        layoutResult: {
+          getCellMeta: jest.fn(),
+        },
+      } as unknown as BaseFacet,
     } as unknown as SpreadSheet,
   };
   const mockCellMeta = omit(mockCellViewMeta, [
@@ -160,6 +176,17 @@ export const createPivotSheet = (
   { useSimpleData } = { useSimpleData: true },
 ) => {
   return new PivotSheet(
+    getContainer(),
+    useSimpleData ? simpleDataConfig : dataConfig,
+    s2Options,
+  );
+};
+
+export const createTableSheet = (
+  s2Options: S2Options,
+  { useSimpleData } = { useSimpleData: true },
+) => {
+  return new TableSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
     s2Options,

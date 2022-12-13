@@ -6,18 +6,21 @@ import type { BaseTooltip } from '../../ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
-export interface TooltipOperatorMenu {
+export interface TooltipOperatorMenu<Icon = Element | string, Text = string> {
   key: string;
-  icon?: Element | string;
-  text?: string;
+  icon?: Icon;
+  text?: Text;
   onClick?: (cell: S2CellType) => void;
   visible?: boolean | ((cell: S2CellType) => boolean);
-  children?: TooltipOperatorMenu[];
+  children?: TooltipOperatorMenu<Icon, Text>[];
 }
 
-export interface TooltipOperatorOptions {
+export interface TooltipOperatorOptions<
+  Icon = Element | string,
+  Text = string,
+> {
   onClick?: (...args: unknown[]) => void;
-  menus?: TooltipOperatorMenu[];
+  menus?: TooltipOperatorMenu<Icon, Text>[];
   defaultSelectedKeys?: string[];
 }
 
@@ -26,21 +29,17 @@ export interface TooltipPosition {
   y: number;
 }
 
-export type ListItem = {
+export type TooltipDetailListItem = {
   name: string;
   value: string | number;
   icon?: Element | string;
 };
 
-export interface SortQuery {
-  [key: string]: string;
-}
-
-export interface TooltipOptions {
+export interface TooltipOptions<Icon = Element | string, Text = string> {
   // 隐藏汇总
   hideSummary?: boolean;
   // 顶部操作项
-  operator?: TooltipOperatorOptions;
+  operator?: TooltipOperatorOptions<Icon, Text>;
   enterable?: boolean;
   // 是否是小计
   isTotals?: boolean;
@@ -65,7 +64,9 @@ export interface TooltipNameTipsOptions {
 export interface TooltipOperationOptions {
   plot: SpreadSheet;
   sortFieldId: string;
-  sortQuery: SortQuery;
+  sortQuery: {
+    [key: string]: string;
+  };
 }
 
 export interface TooltipOperationState {
@@ -73,7 +74,7 @@ export interface TooltipOperationState {
 }
 
 export type TooltipDetailProps = {
-  list: ListItem[];
+  list: TooltipDetailListItem[];
 };
 
 export type TooltipInterpretationOptions = {
@@ -83,15 +84,19 @@ export type TooltipInterpretationOptions = {
   render?: Element | string;
 };
 
-export type TooltipShowOptions<T = TooltipContentType> = {
+export type TooltipShowOptions<
+  T = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> = {
   position: TooltipPosition;
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
-  options?: TooltipOptions;
+  options?: TooltipOptions<Icon, Text>;
   content?:
     | ((
         cell: S2CellType,
-        defaultTooltipShowOptions: TooltipShowOptions<T>,
+        defaultTooltipShowOptions: TooltipShowOptions<T, Icon, Text>,
       ) => T)
     | T;
   event?: CanvasEvent | MouseEvent;
@@ -99,7 +104,7 @@ export type TooltipShowOptions<T = TooltipContentType> = {
 
 export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
-  details?: ListItem[];
+  details?: TooltipDetailListItem[];
   headInfo?: TooltipHeadInfo;
   name?: string;
   tips?: string;
@@ -111,8 +116,8 @@ export type TooltipData = {
 };
 
 export type TooltipHeadInfo = {
-  rows: ListItem[];
-  cols: ListItem[];
+  rows: TooltipDetailListItem[];
+  cols: TooltipDetailListItem[];
 };
 
 export type TooltipDataParams = {
@@ -125,12 +130,7 @@ export type TooltipDataParams = {
   ) => string | number; // 自定义value
 };
 
-export type TooltipIconProps = {
-  icon: Element | string;
-  [key: string]: unknown;
-};
-
-export interface SummaryProps {
+export interface TooltipSummaryProps {
   summaries: TooltipSummaryOptions[];
 }
 
@@ -152,12 +152,16 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 
 export type TooltipContentType = Element | string;
 
-export interface BaseTooltipConfig<T = TooltipContentType> {
+export interface BaseTooltipConfig<
+  T = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> {
   showTooltip?: boolean;
   // Custom content
   content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
-  operation?: TooltipOperation;
+  operation?: TooltipOperation<Icon, Text>;
   // Tooltip Boundary
   autoAdjustBoundary?: TooltipAutoAdjustBoundary;
   // Custom tooltip
@@ -177,14 +181,19 @@ export interface TooltipPositionInfo {
   event: CanvasEvent | MouseEvent;
 }
 
-export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
-  row?: BaseTooltipConfig<T>;
-  col?: BaseTooltipConfig<T>;
-  corner?: BaseTooltipConfig<T>;
-  data?: BaseTooltipConfig<T>;
+export interface Tooltip<
+  T = TooltipContentType,
+  Icon = Element | string,
+  Text = string,
+> extends BaseTooltipConfig<T, Icon, Text> {
+  row?: BaseTooltipConfig<T, Icon, Text>;
+  col?: BaseTooltipConfig<T, Icon, Text>;
+  corner?: BaseTooltipConfig<T, Icon, Text>;
+  data?: BaseTooltipConfig<T, Icon, Text>;
 }
 
-export interface TooltipOperation extends TooltipOperatorOptions {
+export interface TooltipOperation<Icon = Element | string, Text = string>
+  extends TooltipOperatorOptions<Icon, Text> {
   // 隐藏列 (明细表有效)
   hiddenColumns?: boolean;
   // 趋势图

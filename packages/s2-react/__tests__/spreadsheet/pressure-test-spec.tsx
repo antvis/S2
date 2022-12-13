@@ -19,7 +19,7 @@ for (let i = 0; i < 1000; i++) {
     });
   }
 }
-const getSpreadSheet = (
+const onMounted = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -49,7 +49,6 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    debug: true,
     width: 800,
     height: 600,
     hierarchyType: 'grid',
@@ -102,7 +101,7 @@ function MainLayout(props) {
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={onMounted}
       />
     </div>
   );

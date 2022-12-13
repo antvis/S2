@@ -388,12 +388,13 @@ class CustomFrame extends Frame {
 }
 
 class CustomCornelCell extends CornerCell {
-  drawCellText() {
+  drawTextShape() {
     if (this.meta.cornerType === 'col') {
       return;
     }
-    super.drawCellText();
+    super.drawTextShape();
   }
+
   drawBackgroundShape() {
     const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
     const attrs = {
@@ -408,7 +409,7 @@ class CustomCornelCell extends CornerCell {
   drawBorderShape() {}
 }
 
-fetch('../data/index-comparison.json')
+fetch('https://assets.antv.antgroup.com/s2/index-comparison.json')
   .then((res) => res.json())
   .then((data) => {
     const s2DataConfig = {

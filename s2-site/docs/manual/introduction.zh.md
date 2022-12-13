@@ -5,7 +5,7 @@ redirect_from:
   - /zh/docs/manual
 ---
 
-<div align="center">
+<div>
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
@@ -23,7 +23,6 @@ redirect_from:
     <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"/>
   </a>
 </p>
-
 </div>
 
 ## ❓ 什么是 S2
@@ -44,6 +43,7 @@ redirect_from:
 
 ```bash
 npm install @antv/s2
+# yarn add @antv/s2
 ```
 
 ## 🔨 使用
@@ -51,7 +51,7 @@ npm install @antv/s2
 ### 1. 数据准备
 
 <details>
-  <summary> s2DataConfig</summary>
+  <summary>s2DataConfig</summary>
 
 ```ts
 const s2DataConfig = {
@@ -175,7 +175,7 @@ const s2Options = {
 ### 3. 渲染
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ```ts
@@ -194,7 +194,7 @@ s2.render();
 
 ## 📦 版本
 
-`markdown:docs/common/packages.zh.md`
+<embed src="@/docs/common/packages.zh.md"></embed>
 
 ## 👤 作者
 
@@ -202,43 +202,11 @@ s2.render();
 
 ## 🤝 参与贡献
 
-```bash
-git clone git@github.com:antvis/S2.git
-
-cd S2
-
-# 安装依赖
-yarn # 或者 yarn bootstrap
-
-# 调试 s2-core
-yarn core:start
-
-# 调试 s2-react
-yarn react:playground
-
-# 调试 s2-vue
-yarn vue:playground
-
-# 单元测试
-yarn test
-
-# 可视化调试单元测试
-yarn core:start
-
-# 打包
-yarn build
-
-# 代码风格和类型检测
-yarn lint
-
-# 本地启动官网
-yarn site:bootstrap
-yarn site:start
-```
+<embed src="@/docs/common/development.zh.md"></embed>
 
 ## 📧 联系我们
 
-<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
+<embed src="@/docs/common/contact-us.zh.md"></embed>
 
 ## 👬 Contributors
 

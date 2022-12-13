@@ -1,19 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  SpreadSheet,
-  type S2Options,
-  BaseTooltip,
-  S2Event,
-  GEvent,
-} from '@antv/s2';
+import { SpreadSheet, BaseTooltip, S2Event, GEvent } from '@antv/s2';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { act } from 'react-dom/test-utils';
+import { StarOutlined } from '@ant-design/icons';
 import { SheetComponent } from '@/components/sheets';
+import type { SheetComponentOptions } from '@/components/sheets/interface';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 
-const s2Options: S2Options = {
+const s2Options: SheetComponentOptions = {
   width: 200,
   height: 200,
   hdAdapter: false,
@@ -35,7 +31,7 @@ function MainLayout() {
       dataCfg={mockDataConfig}
       options={s2Options}
       themeCfg={{ name: 'default' }}
-      getSpreadSheet={(instance) => {
+      onMounted={(instance) => {
         s2 = instance;
       }}
     />
@@ -206,4 +202,30 @@ describe('SheetComponent Tooltip Tests', () => {
       );
     },
   );
+
+  test('should support render ReactNode for operator menus', async () => {
+    await sleep(1000);
+
+    s2.showTooltip({
+      position: { x: 0, y: 0 },
+      options: {
+        operator: {
+          menus: [
+            {
+              key: 'menu-a',
+              text: <div className="menu-text">text</div>,
+              icon: <StarOutlined className="menu-icon" />,
+            },
+          ],
+        },
+      },
+    });
+
+    const { container } = s2.tooltip;
+    const customMenuTextNode = container.querySelector('.menu-text');
+
+    expect(customMenuTextNode).toBeTruthy();
+    expect(customMenuTextNode?.innerHTML).toEqual('text');
+    expect(container.querySelector('.menu-icon')).toBeTruthy();
+  });
 });

@@ -30,7 +30,7 @@ function createSlider(s2) {
   document.querySelector('#container > canvas').before(slider);
 }
 
-fetch('../data/basic.json')
+fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');

@@ -12,7 +12,6 @@ export class CustomDataCell extends DataCell {
   /**
    * Render cell main text
    */
-
   protected drawTextShape() {
     if (isObject(this.getMeta().fieldValue)) {
       drawObjectText(this);

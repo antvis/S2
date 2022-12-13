@@ -359,17 +359,26 @@ export abstract class SpreadSheet extends EE {
    * Group sort params kept in {@see store} and
    * Priority: group sort > advanced sort
    * @param dataCfg
+   * @param reset reset: true, 直接使用用户传入的 DataCfg ，不再与上次数据进行合并
    */
-  public setDataCfg(dataCfg: S2DataConfig) {
+  public setDataCfg(dataCfg: S2DataConfig, reset?: boolean) {
     this.store.set('originalDataCfg', dataCfg);
-    this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    if (reset) {
+      this.dataCfg = getSafetyDataConfig(dataCfg);
+    } else {
+      this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
+    }
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
 
-  public setOptions(options: Partial<S2Options>) {
+  public setOptions(options: Partial<S2Options>, reset?: boolean) {
     this.hideTooltip();
-    this.options = customMerge(this.options, options);
+    if (reset) {
+      this.options = getSafetyOptions(options);
+    } else {
+      this.options = customMerge(this.options, options);
+    }
     this.registerIcons();
   }
 
@@ -681,15 +690,15 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 计算文本在画布中的宽度
+   * 获取文本在画布中的测量信息
    * @param text 待计算的文本
    * @param font 文本 css 样式
-   * @returns 文本宽度
+   * @returns 文本测量信息 TextMetrics
    */
-  public measureTextWidth = memoize(
-    (text: number | string = '', font: unknown): number => {
+  public measureText = memoize(
+    (text: number | string = '', font: unknown): TextMetrics => {
       if (!font) {
-        return 0;
+        return null;
       }
 
       const ctx = this.getCanvasElement()?.getContext('2d');
@@ -706,10 +715,43 @@ export abstract class SpreadSheet extends EE {
         .join(' ')
         .trim();
 
-      return ctx.measureText(String(text)).width;
+      return ctx.measureText(String(text));
     },
     (text: any, font) => [text, ...values(font)].join(''),
   );
+
+  /**
+   * 计算文本在画布中的宽度
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本宽度
+   */
+  public measureTextWidth = (
+    text: number | string = '',
+    font: unknown,
+  ): number => {
+    const textMetrics = this.measureText(text, font);
+    return textMetrics?.width || 0;
+  };
+
+  /**
+   * 计算文本在画布中的宽度 https://developer.mozilla.org/zh-CN/docs/Web/API/TextMetrics
+   * @param text 待计算的文本
+   * @param font 文本 css 样式
+   * @returns 文本高度
+   */
+  public measureTextHeight = (
+    text: number | string = '',
+    font: unknown,
+  ): number => {
+    const textMetrics = this.measureText(text, font);
+    if (!textMetrics) {
+      return 0;
+    }
+    return (
+      textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+    );
+  };
 
   /**
    * 粗略计算文本在画布中的宽度

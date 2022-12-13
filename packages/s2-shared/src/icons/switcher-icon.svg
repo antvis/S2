@@ -1,9 +1,10 @@
 <svg
-        width="16px"
-        height="16px"
-        viewBox="0 0 16 16"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
+    class="antv-s2-icon"
+    width="16px"
+    height="16px"
+    viewBox="0 0 16 16"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
 >
     <g
             transform="translate(8.056364, 8.000227) rotate(-270.000000) translate(-8.056364, -8.000227) translate(3.057045, 3.070227)"

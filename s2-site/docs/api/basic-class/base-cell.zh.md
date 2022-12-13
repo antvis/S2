@@ -5,12 +5,16 @@ order: 4
 
 功能描述：单元格基类。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/cell/base-cell.ts)
 
+```ts
+cell.getActualText()
+```
+
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
 | getMeta | 获取单元格元数据 | () => [ViewMeta](#viewmeta) |
 | setMeta | 设置单元格元数据 | (vieMeta: [ViewMeta](#viewmeta)) => void |
-| getIconStyle | 获取单元格图标样式 | () => [IconTheme](/zh/docs/api/general/S2Theme#icontheme) |
-| getStyle | 获取单元格样式 | () => [DefaultCellTheme](/zh/docs/api/general/S2Theme#defaultcelltheme) |
+| getIconStyle | 获取单元格图标样式 | () => [IconTheme](/docs/api/general/S2Theme#icontheme) |
+| getStyle | 获取单元格样式 | () => [DefaultCellTheme](/docs/api/general/S2Theme#defaultcelltheme) |
 | getTextAndIconPosition | 获取单元格文本和图标的位置 | (iconCount: `number`) => [TextAndIconPosition](#textandiconposition) |
 | getActualText | 获取绘制的文本 | `() => string` |
 | cellType | 单元格类型 | [CellTypes](#celltypes) |
@@ -24,30 +28,14 @@ order: 4
 | updateByState | 根据状态更新单元格样式 | `(stateName: InteractionStateName, cell: S2CellType) => void` |
 | hideInteractionShape | 隐藏单元格的交互图层 | `() => void` |
 | clearUnselectedState | 清空未选中状态 | `() => void` |
+| getTextShape | 获取文字图层 | `() => IShape` |
+| getTextShapes | 获取所有文字图层 | `() => IShape[]` |
+| addTextShape | 添加文字图层 | `(shape: IShape) => void` |
+| getConditionIconShape | 获取 icon 图层 | `() => GuiIcon` |
+| getConditionIconShapes | 获取所有 icon 图层 | `() => GuiIcon[]` |
+| addConditionIconShape | 添加 icon 图层 | `(shape: GuiIcon) => void` |
 
-### ViewMeta
-
-```ts
-interface ViewMeta {
-  spreadsheet: SpreadSheet;
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  data: Record<string, any>;
-  rowIndex: number;
-  colIndex: number;
-  valueField: string;
-  fieldValue: DataItem;
-  isTotals?: boolean;
-  rowQuery?: Record<string, any>;
-  colQuery?: Record<string, any>;
-  rowId?: string;
-  colId?: string;
-  [key: string]: any;
-}
-```
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ### Point
 

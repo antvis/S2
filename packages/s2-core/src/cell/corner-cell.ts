@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import {
   cond,
   constant,
@@ -11,6 +11,7 @@ import {
 } from 'lodash';
 import {
   CellTypes,
+  ELLIPSIS_SYMBOL,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
@@ -41,8 +42,6 @@ import { HeaderCell } from './header-cell';
 export class CornerCell extends HeaderCell {
   protected declare headerConfig: CornerHeaderConfig;
 
-  protected textShapes: IShape[] = [];
-
   protected isBolderText() {
     const { cornerType } = this.meta;
     return cornerType === CornerNodeType.Col;
@@ -59,7 +58,7 @@ export class CornerCell extends HeaderCell {
 
   protected initCell() {
     super.initCell();
-    this.textShapes = [];
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
@@ -69,7 +68,14 @@ export class CornerCell extends HeaderCell {
     this.drawResizeArea();
   }
 
+  /**
+   * @deprecated 已废弃, 请使用 drawTextShape
+   */
   protected drawCellText() {
+    this.drawTextShape();
+  }
+
+  protected drawTextShape() {
     const { x } = this.getContentArea();
     const { y, height } = this.getCellArea();
 
@@ -92,7 +98,7 @@ export class CornerCell extends HeaderCell {
       placeholder: emptyPlaceholder,
     });
     this.actualText = text;
-    const ellipseIndex = text.indexOf('...');
+    const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
 
     let firstLine = text;
     let secondLine = '';
@@ -124,7 +130,7 @@ export class CornerCell extends HeaderCell {
 
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
     // first line
-    this.textShapes.push(
+    this.addTextShape(
       renderText(
         this,
         [this.textShapes[0]],
@@ -137,7 +143,7 @@ export class CornerCell extends HeaderCell {
 
     // second line
     if (!isEmpty(secondLine)) {
-      this.textShapes.push(
+      this.addTextShape(
         renderText(
           this,
           [this.textShapes[1]],
@@ -295,9 +301,7 @@ export class CornerCell extends HeaderCell {
 
   protected showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
-    return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
-    );
+    return this.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0;
   }
 
   protected getIconPosition(): Point {

@@ -6,18 +6,10 @@ import {
   SpreadSheet,
   i18n,
 } from '@antv/s2';
-import { Dropdown, Menu, message } from 'antd';
+import { Dropdown, Menu, message, type DropDownProps } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import { DotIcon } from '../icons';
-
-export interface DataSet {
-  icon?: React.ReactNode;
-  name: string;
-  value: string;
-  type?: 'text' | 'location' | 'date';
-  disabled?: boolean;
-}
 
 export interface ExportCfgProps {
   open: boolean;
@@ -31,6 +23,8 @@ export interface ExportCfgProps {
   errorText?: string;
   fileName?: string;
   syncCopy?: boolean;
+  // ref: https://ant.design/components/dropdown-cn/#API
+  dropdown?: DropDownProps;
 }
 
 export interface ExportProps extends ExportCfgProps {
@@ -50,6 +44,8 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
     errorText = i18n('操作失败'),
     sheet,
     fileName,
+    open,
+    dropdown,
     ...restProps
   } = props;
 
@@ -102,6 +98,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
       trigger={['click']}
       className={cx(PRE_CLASS, className)}
       {...restProps}
+      {...dropdown}
     >
       <a
         className="ant-dropdown-link"

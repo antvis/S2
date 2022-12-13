@@ -1,8 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { createPivotSheet } from 'tests/util/helpers';
-import type { IGroup } from '@antv/g-canvas';
+import type { IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { get } from 'lodash';
-import type { ShapeAttrs } from '@antv/g-canvas';
 import type {
   TextBaseline,
   TextTheme,
@@ -50,7 +49,12 @@ describe('SpreadSheet Theme Tests', () => {
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
       CellTypes.CORNER_CELL,
+      CellTypes.MERGED_CELL,
     ];
+
+    test('should get default theme', () => {
+      expect(s2.theme).toMatchSnapshot();
+    });
 
     test.each(CELL_TYPES)(
       "should assign the same color for %s's text and icon",
@@ -63,8 +67,19 @@ describe('SpreadSheet Theme Tests', () => {
 
         expect(cellTheme.bolderText.fill).toEqual(cellTheme.icon.fill);
         expect(cellTheme.text.fill).toEqual(cellTheme.icon.fill);
+        expect(cellTheme.cell).toBeTruthy();
       },
     );
+
+    test.each(CELL_TYPES)('should set cell for %s', (cellType: CellTypes) => {
+      s2.setThemeCfg({
+        name: 'colorful',
+      });
+      s2.render();
+      const cellTheme = s2.theme[cellType];
+
+      expect(cellTheme.cell).toBeTruthy();
+    });
 
     test('should set theme correctly', () => {
       s2.setTheme({
@@ -356,7 +371,7 @@ describe('SpreadSheet Theme Tests', () => {
 
         expectTextAlign({
           textAlign,
-          fontWight: 500,
+          fontWight: 700,
           customNodes: isRowCell ? rowTotalNodes : colTotalNodes,
         });
       },
@@ -453,5 +468,67 @@ describe('SpreadSheet Theme Tests', () => {
         expect(textOfRowCell.attr('y')).toEqual(textOfSeriesCell.attr('y'));
       },
     );
+  });
+
+  // https://github.com/antvis/S2/issues/1892
+  describe('ScrollBar Tests', () => {
+    beforeEach(() => {
+      // 保证滚动条很小
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            width: 5000,
+          },
+          cellCfg: {
+            width: 5000,
+            height: 5000,
+          },
+        },
+      });
+      s2.render();
+    });
+
+    test('should render default min scrollbar size', () => {
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).toEqual(30);
+      expect(s2.facet.hScrollBar.thumbLen).toEqual(32);
+      expect(s2.facet.vScrollBar.thumbLen).toEqual(32);
+    });
+
+    test('should render min scrollbar size', () => {
+      s2.setTheme({
+        scrollBar: {
+          thumbHorizontalMinSize: 20,
+          thumbVerticalMinSize: 10,
+        },
+      });
+
+      s2.render();
+
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).toEqual(18);
+      expect(s2.facet.hScrollBar.thumbLen).toEqual(20);
+      expect(s2.facet.vScrollBar.thumbLen).toEqual(10);
+    });
+
+    test('should render real scrollbar size', () => {
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            width: 400,
+          },
+          cellCfg: {
+            width: 200,
+            height: 50,
+          },
+        },
+      });
+      s2.render();
+
+      // 行头有分割线, 会减去分割线的宽度 (2px)
+      expect(s2.facet.hRowScrollBar.thumbLen).not.toBeLessThanOrEqual(30);
+      expect(s2.facet.hScrollBar.thumbLen).not.toBeLessThanOrEqual(32);
+      expect(s2.facet.vScrollBar.thumbLen).not.toBeLessThanOrEqual(32);
+    });
   });
 });

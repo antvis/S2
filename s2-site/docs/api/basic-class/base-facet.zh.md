@@ -6,14 +6,14 @@ order: 7
 功能描述：当前可视渲染区域。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/facet/base-facet.ts)
 
 ```ts
-s2.facet.xx()
+s2.facet.getRealWidth()
 ```
 
-| 参数 | 说明 | 类型 |
-| --- | --- | --- |
-| spreadsheet | 表格实例 |  [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |
-| cornerBBox | 角头区域包围盒 |  [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox) |
-| panelBBox | 数值区域包围盒 | [BBox](/zh/docs/api/basic-class/spreadsheet/#bbox) |
+| 参数 | 说明 | 类型 | 版本 |
+| --- | --- | --- | --- |
+| spreadsheet | 表格实例 |  [SpreadSheet](/docs/api/basic-class/spreadsheet) |
+| cornerBBox | 角头区域包围盒 |  [BBox](/docs/api/basic-class/spreadsheet/#bbox) |
+| panelBBox | 数值区域包围盒 | [BBox](/docs/api/basic-class/spreadsheet/#bbox) |
 | backgroundGroup | 背景区域 |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | panelGroup | 数值区域 | [Group](https://g.antv.vision/zh/docs/api/group) |
 | foregroundGroup | 前景区域 |  [Group](https://g.antv.vision/zh/docs/api/group) |
@@ -29,7 +29,7 @@ s2.facet.xx()
 | centerFrame | 框架 |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | gridInfo | 网格信息 |  [GridInfo](#gridinfo) |
 | getViewCellHeights | 获取单元格高度信息 | (`layoutResult`: [LayoutResult](#layoutresult)) => [ViewCellHeights](#viewcellheights) |
-| scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/zh/docs/api/general/S2Theme/#scrollbartheme) |
+| scrollBarTheme | 滚动条主题 | [ScrollBarTheme](/docs/api/general/S2Theme/#scrollbartheme) |
 | scrollBarSize | 滚动条大小 | `number` |
 | hideScrollBar | 隐藏滚动条 | () => void |
 | delayHideScrollBar | 延迟隐藏滚动条 (1s 后） | () => void |
@@ -62,8 +62,9 @@ s2.facet.xx()
 | isScrollOverTheViewport | 是否在数值单元格区域滚动 | (cellScrollOffset: [CellScrollOffset](#cellscrolloffset)) => boolean |
 | cancelScrollFrame | 取消当前滚动帧 | () => void |
 | clearScrollFrameIdOnMobile | 取消当前滚动帧 （移动端） | () => void |
-| addCell | 添加单元格 | (cell: [BaseCell](/zh/docs/api/basic-class/base-cell)) => void |
+| addCell | 添加单元格 | (cell: [BaseCell](/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
+| getHiddenColumnsInfo | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/docs/api/basic-class/node)) => [HiddenColumnsInfo](/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  | `1.34.1` |
 
 ### CellScrollOffset
 

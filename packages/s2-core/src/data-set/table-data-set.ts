@@ -1,4 +1,4 @@
-import { each, orderBy, filter, includes, isFunction } from 'lodash';
+import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig } from '../common/interface';
 import type { CellDataParams, DataType } from './interface';
@@ -63,7 +63,7 @@ export class TableDataSet extends BaseDataSet {
   handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
       const defaultFilterFunc = (row: DataType) =>
-        row[filterKey] && !includes(filteredValues, row[filterKey]);
+        !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
         ...filter(this.getMovableRows(), (row) => {
@@ -158,7 +158,7 @@ export class TableDataSet extends BaseDataSet {
 
     const rowData = this.displayData[query.rowIndex];
 
-    if (!('col' in query)) {
+    if (!('col' in query) || !isObject(rowData)) {
       return rowData;
     }
     return rowData[query.col];

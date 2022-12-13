@@ -15,7 +15,11 @@ import {
 } from 'lodash';
 import type { SimpleBBox } from '@antv/g-canvas';
 import type { ColCell } from '../cell';
-import { CellTypes, EMPTY_PLACEHOLDER } from '../common/constant';
+import {
+  CellTypes,
+  ELLIPSIS_SYMBOL,
+  EMPTY_PLACEHOLDER,
+} from '../common/constant';
 import type {
   CellCfg,
   Condition,
@@ -70,7 +74,7 @@ export const getEllipsisTextInner = (
   font: CSSStyleDeclaration,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
 
   let leftText;
 
@@ -243,18 +247,18 @@ export const getEllipsisText = ({
   subTexts = leftSubTexts.concat(subTexts);
 
   let result = finalText;
-  const DOT_WIDTH = measureTextWidth('...', font);
+  const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
   let remainWidth = maxWidth;
   subTexts.forEach((subText) => {
     if (remainWidth <= 0) {
       const originIdx = result.indexOf(subText);
       const prev = result.slice(originIdx - 3, originIdx);
-      if (prev && prev !== '...') {
+      if (prev && prev !== ELLIPSIS_SYMBOL) {
         const subWidth = measureTextWidth(subText, font);
         // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
         result = result.replace(
           subText,
-          subWidth > DOT_WIDTH ? '...' : subText,
+          subWidth > DOT_WIDTH ? ELLIPSIS_SYMBOL : subText,
         );
       } else {
         result = result.replace(subText, '');
@@ -476,7 +480,7 @@ export const drawObjectText = (
     // const { padding } = dataCellStyle.cell;
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    renderText(
+    const textShape = renderText(
       cell,
       [],
       x,
@@ -489,6 +493,8 @@ export const drawObjectText = (
       }),
       labelStyle,
     );
+
+    cell.addTextShape(textShape);
   }
 
   // 绘制指标
@@ -554,7 +560,7 @@ export const drawObjectText = (
         iconCondition ? 1 : 0,
       );
 
-      renderText(
+      const textShape = renderText(
         cell,
         [],
         position.text.x,
@@ -562,6 +568,7 @@ export const drawObjectText = (
         ellipsisText,
         curStyle,
       );
+      cell.addTextShape(textShape);
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
@@ -571,13 +578,14 @@ export const drawObjectText = (
           meta: cell?.getMeta() as ViewMeta,
         });
         if (attrs) {
-          renderIcon(cell, {
+          const iconShape = renderIcon(cell, {
             ...position.icon,
             name: attrs.icon,
             width: iconStyle?.size,
             height: iconStyle?.size,
             fill: attrs.fill,
           });
+          cell.addConditionIconShape(iconShape);
         }
       }
     }
@@ -588,9 +596,7 @@ export const drawObjectText = (
  * 根据 cellCfg 配置获取当前单元格宽度
  */
 export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
-  const { width } = cellCfg;
-  const cellWidth = width;
-  return cellWidth * labelSize;
+  return cellCfg?.width * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {

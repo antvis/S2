@@ -1,7 +1,11 @@
 import { TableSheet } from '@antv/s2';
 
+import { SheetComponent } from '@antv/s2-react';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 fetch(
-  '../data/basic-table-mode.json',
+  '../../../../examples/data/basic-table-mode.json',
 )
   .then((res) => res.json())
   .then((res) => {
@@ -46,7 +50,8 @@ fetch(
       frozenTrailingColCount: 1, // 列尾冻结数量
     };
 
-    const tableSheet = new TableSheet(container, s2DataConfig, s2Options);
-
-    tableSheet.render();
+    ReactDOM.render(
+      React.createElement(SheetComponent, { dataCfg: s2DataConfig, options: s2Options }),
+      container,
+    );
   });

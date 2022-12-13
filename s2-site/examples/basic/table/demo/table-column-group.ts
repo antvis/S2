@@ -1,8 +1,6 @@
 import { TableSheet } from '@antv/s2';
 
-fetch(
-  '../data/basic-table-mode.json',
-)
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
@@ -11,14 +9,14 @@ fetch(
         columns: [
           {
             key: 'area',
-            children: ['province', 'city']
+            children: ['province', 'city'],
           },
           'type',
           {
             key: 'money',
-            children: [{ key: 'price'}, 'cost']
-          }
-        ]
+            children: [{ key: 'price' }, 'cost'],
+          },
+        ],
       },
       meta: [
         {
@@ -43,12 +41,12 @@ fetch(
         },
         {
           field: 'area',
-          name: '位置'
+          name: '位置',
         },
         {
           field: 'money',
-          name: '金额'
-        }
+          name: '金额',
+        },
       ],
       data,
     };

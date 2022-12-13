@@ -15,7 +15,7 @@ order: 2
 
 <img alt="s2-table-group" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*5q2TQJjNy2cAAAAAAAAAAAAAARQnAQ" width="800" alt="preview">
 
-明细表的[列头布局算法](/zh/docs/manual/advanced/layout/pivot#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84)、内容区域的[按需渲染](/zh/docs/manual/advanced/layout/pivot#按需渲染)和透视表保持一致，在此不再赘述。
+明细表的[列头布局算法](/docs/manual/advanced/layout/pivot#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84)、内容区域的[按需渲染](/docs/manual/advanced/layout/pivot#按需渲染)和透视表保持一致，在此不再赘述。
 
 ## 序列号
 

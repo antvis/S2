@@ -1,1 +1,1 @@
-`markdown:examples/case/comparison/design.zh.md`
+<embed src="@/examples/case/comparison/design.zh.md"></embed>

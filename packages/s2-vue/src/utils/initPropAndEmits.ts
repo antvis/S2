@@ -32,7 +32,9 @@ export const initBaseSheetProps = () => ({
     default: false as Adaptive,
   },
   onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
+  /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
   onGetSpreadSheet: Function as PropType<SheetComponentProps['getSpreadSheet']>,
+  onMounted: Function as PropType<SheetComponentProps['onMounted']>,
 });
 
 export const initDrillDownProps = () => ({
@@ -144,6 +146,7 @@ export const initBaseSheetEmits = () => {
     'layoutColsHidden',
     'beforeRender',
     'afterRender',
+    'mounted',
     'destroy',
 
     // ============== Resize ====================
@@ -177,6 +180,7 @@ export const initBaseSheetEmits = () => {
     'scroll',
     'hover',
     // ============== Auto 自动生成的 ================
+    'layoutAfterRealDataCellRender',
     'rowCellBrushSelection',
     'colCellBrushSelection',
   ];

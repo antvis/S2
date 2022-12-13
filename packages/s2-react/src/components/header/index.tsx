@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, type PageHeaderProps } from 'antd';
+import { Space } from 'antd';
 import cx from 'classnames';
 import type { S2DataConfig, SpreadSheet } from '@antv/s2';
 import { Export, type ExportCfgProps } from '../export';
@@ -8,12 +8,19 @@ import { type SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
 import type { SheetComponentOptions } from '../sheets/interface';
 
-export interface HeaderCfgProps extends PageHeaderProps {
+export interface HeaderCfgProps {
+  style?: React.CSSProperties;
+  className?: string;
+  /**
+   * @deprecated 已废弃, 请使用 style 代替
+   */
   width?: React.CSSProperties['width'];
+  title?: React.ReactNode;
   description?: React.ReactNode;
   exportCfg?: ExportCfgProps;
   advancedSortCfg?: AdvancedSortCfgProps;
   switcherCfg?: SwitcherCfgProps;
+  extra?: React.ReactNode;
 }
 
 export interface HeaderProps extends HeaderCfgProps {
@@ -25,6 +32,7 @@ export interface HeaderProps extends HeaderCfgProps {
 export const Header: React.FC<HeaderProps> = React.memo(
   ({
     className,
+    style,
     title,
     width,
     description,
@@ -39,9 +47,9 @@ export const Header: React.FC<HeaderProps> = React.memo(
   }) => {
     const PRE_CLASS = 's2-header';
 
-    const getExtraComponents = () => {
+    const renderExtra = () => {
       return (
-        <>
+        <Space align="center">
           {extra}
           {switcherCfg.open && (
             <SwitcherHeader
@@ -54,24 +62,21 @@ export const Header: React.FC<HeaderProps> = React.memo(
           {advancedSortCfg.open && (
             <AdvancedSort sheet={sheet} {...advancedSortCfg} />
           )}
-          {exportCfg.open && (
-            <Export key={'export'} sheet={sheet} {...exportCfg} />
-          )}
-        </>
+          {exportCfg.open && <Export sheet={sheet} {...exportCfg} />}
+        </Space>
       );
     };
 
     return (
-      <PageHeader
-        className={cx(PRE_CLASS, className)}
-        style={{ width }}
-        ghost={false}
-        title={title}
-        extra={getExtraComponents()}
-        {...restProps}
-      >
-        {description}
-      </PageHeader>
+      <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>
+        <div className={`${PRE_CLASS}-heading`}>
+          <div className={`${PRE_CLASS}-heading-left`}>
+            <div className={`${PRE_CLASS}-heading-title`}>{title}</div>
+          </div>
+          <div className={`${PRE_CLASS}-heading-extra`}>{renderExtra()}</div>
+        </div>
+        <div className={`${PRE_CLASS}-content`}>{description}</div>
+      </div>
     );
   },
 );

@@ -18,7 +18,7 @@ const data = getMockData('../data/tableau-supermarket.csv');
 
 let spreadSheet: SpreadSheet;
 
-const getSpreadSheet =
+const onMounted =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
     const s2 = new TableSheet(dom, dataCfg, options);
@@ -125,7 +125,7 @@ function MainLayout() {
         adaptive={false}
         options={options}
         sheetType={'table'}
-        spreadsheet={getSpreadSheet(s2Ref)}
+        spreadsheet={onMounted(s2Ref)}
       />
     </Space>
   );
@@ -172,6 +172,17 @@ describe('table sheet filter spec', () => {
 
     spreadSheet.emit(S2Event.RANGE_FILTER, {
       filterKey: 'customer_type',
+      filteredValues: ['消费者'],
+    });
+  });
+
+  test('falsy/nullish data should not be filtered with irrelavent filter params', () => {
+    spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
+      expect(data.length).toStrictEqual(468);
+    });
+
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'express_type',
       filteredValues: ['消费者'],
     });
   });

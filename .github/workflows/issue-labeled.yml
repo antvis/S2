@@ -29,9 +29,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请按照 issue 模板填写相关信息 (参考 #852 #848), 提供 gif, 截图, 代码片段, 配置信息, 版本号, 可复现链接等方式, 详细说明复现步骤, 感谢配合, 谢谢! 15 天内未回复issue自动关闭。
+            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请按照 issue 模板填写相关信息, 提供 gif, 截图, 代码片段, 配置信息, 版本号, 可复现链接等方式, 详细说明复现步骤, 感谢配合, 谢谢! 15 天内未回复issue自动关闭。
 
-            Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to troubleshoot the problem. Please complete the issue description (refer #852 #848), provide gifs, screenshots, config, version. And explain the reproduction steps in detail. Thanks so much for your cooperation! The issue will be closed without any replay within 15 days.
+            Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to troubleshoot the problem. Please complete the issue description, provide gifs, screenshots, config, version. And explain the reproduction steps in detail. Thanks so much for your cooperation! The issue will be closed without any replay within 15 days.
 
       - name: Invalid
         if: github.event.label.name == '⛔ invalid'
@@ -41,9 +41,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息 (参考 #852 #848), 方便大家高效沟通。
+            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息, 方便大家高效沟通, 强烈推荐你阅读 [提 Issue 前必读](https://github.com/antvis/S2/issues/1904) 和 [如何向开源项目提交无法解答的问题](https://zhuanlan.zhihu.com/p/25795393)。
 
-            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template to facilitate communication efficiently (refer #852 #848). Thanks so much!
+            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template to facilitate communication efficiently. recommend you to read [提 Issue 前必读](https://github.com/antvis/S2/issues/1904) and [如何向开源项目提交无法解答的问题](https://zhuanlan.zhihu.com/p/25795393), Thanks so much!
 
       - name: Enhancement
         if: github.event.label.name == '⚡ enhancement'
@@ -54,8 +54,10 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             你好 @${{ github.event.issue.user.login }}，感谢你的建议, 我们会及时评估和排期, 谢谢!
+            当然, 如果能贡献 PR 帮助我们改进, 不胜感激！
 
             Hello, @${{ github.event.issue.user.login }}, thanks for your advice. We will evaluate and schedule in time. Thank you!
+            you could implement it by yourself through the customization capabilities provided by S2. Thanks so much for your understanding.
 
       - name: Bug
         if: github.event.label.name == '🐛 bug'

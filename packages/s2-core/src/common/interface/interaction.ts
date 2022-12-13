@@ -37,6 +37,7 @@ export interface CellMeta {
   type: CellTypes;
   [key: string]: unknown;
 }
+
 export type OnUpdateCells = (
   root: RootInteraction,
   defaultOnUpdateCells: () => void,
@@ -70,6 +71,13 @@ export type InteractionConstructor = new (
 export interface CustomInteraction {
   key: string;
   interaction: InteractionConstructor;
+}
+
+export interface Rect {
+  maxX: number;
+  minX: number;
+  maxY: number;
+  minY: number;
 }
 
 export interface BrushPoint {

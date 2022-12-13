@@ -1,5 +1,3 @@
-import { values } from 'lodash';
-
 export enum InteractionName {
   CORNER_CELL_CLICK = 'cornerCellClick',
   DATA_CELL_CLICK = 'dataCellClick',
@@ -53,6 +51,7 @@ export const SHAPE_STYLE_MAP = {
 // 设置属性的时候实际对应改变的shape映射
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
+  textShapes: ['textOpacity'],
   linkFieldShape: ['opacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
   interactiveBorderShape: ['borderColor', 'borderOpacity', 'borderWidth'],

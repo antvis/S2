@@ -3,6 +3,6 @@ title: API
 order: 0
 ---
 
-`markdown:docs/api/basic-class/interaction.zh.md`
+<embed src="@/docs/api/basic-class/interaction.zh.md"></embed>
 
-`markdown:docs/common/header-action-icon.zh.md`
+<embed src="@/docs/common/header-action-icon.zh.md"></embed>

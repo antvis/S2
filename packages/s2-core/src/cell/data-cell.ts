@@ -1,12 +1,16 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import {
+  CellBorderPosition,
+  type InteractionStateTheme,
+} from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -21,14 +25,14 @@ import type {
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
 import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
-import {
-  renderIcon,
-  renderLine,
-  renderRect,
-  updateShapeAttr,
-} from '../utils/g-renders';
+import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
+import {
+  DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
+  REVERSE_FONT_COLOR,
+} from '../common/constant/condition';
 
 /**
  * DataCell for panelGroup area
@@ -165,6 +169,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawInteractiveBorderShape();
@@ -179,13 +184,42 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.update();
   }
 
+  /**
+   * 获取默认字体颜色：根据字段标记背景颜色，设置字体颜色
+   * @param textStyle
+   * @private
+   */
+  private getDefaultTextFill(textStyle: TextTheme) {
+    let textFill = textStyle.fill;
+    const { backgroundColor, intelligentReverseTextColor } =
+      this.getBackgroundColor();
+
+    const isMoreThanThreshold =
+      tinycolor(backgroundColor).getBrightness() <=
+      FONT_COLOR_BRIGHTNESS_THRESHOLD;
+
+    // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
+    if (
+      isMoreThanThreshold &&
+      textStyle.fill === DEFAULT_FONT_COLOR &&
+      intelligentReverseTextColor
+    ) {
+      textFill = REVERSE_FONT_COLOR;
+    }
+    return textFill;
+  }
+
   protected getTextStyle(): TextTheme {
     const { isTotals } = this.meta;
     const textStyle = isTotals
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
 
-    const fill = this.getTextConditionFill(textStyle);
+    // 优先级：默认字体颜色（已经根据背景反色后的） < 用户配置字体颜色
+    const fill = this.getTextConditionFill({
+      ...textStyle,
+      fill: this.getDefaultTextFill(textStyle),
+    });
 
     return { ...textStyle, fill };
   }
@@ -302,13 +336,19 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background);
+    let intelligentReverseTextColor = false;
     if (bgCondition && bgCondition.mapping) {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
+        intelligentReverseTextColor = attrs.intelligentReverseTextColor;
       }
     }
-    return { backgroundColor, backgroundColorOpacity };
+    return {
+      backgroundColor,
+      backgroundColorOpacity,
+      intelligentReverseTextColor,
+    };
   }
 
   /**
@@ -430,47 +470,42 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    const rowDataInfo = this.spreadsheet.isTableMode()
+      ? this.spreadsheet.dataSet.getCellData({
+          query: { rowIndex: this.meta.rowIndex },
+        })
+      : this.meta.data;
+    return condition?.mapping(value, rowDataInfo);
   }
 
   public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
-      const stateStyles = get(
+      const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
-      if (stateStyles) {
-        updateShapeAttr(
-          this.conditionIntervalShape,
-          SHAPE_STYLE_MAP.backgroundOpacity,
-          stateStyles.backgroundOpacity,
-        );
+      ) as InteractionStateTheme;
 
-        updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
-          SHAPE_STYLE_MAP.opacity,
-          stateStyles.opacity,
-        );
+      if (interactionStateTheme) {
+        this.toggleConditionIntervalShapeOpacity(interactionStateTheme.opacity);
       }
     }
   }
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+    this.toggleConditionIntervalShapeOpacity(1);
+  }
 
+  private toggleConditionIntervalShapeOpacity(opacity: number) {
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
+      opacity,
     );
 
-    updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
-      SHAPE_STYLE_MAP.opacity,
-      1,
-    );
+    updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 
   protected drawLeftBorder() {

@@ -1,14 +1,14 @@
 {
   "private": false,
   "name": "@antv/s2-vue",
-  "version": "1.4.0-alpha.1",
+  "version": "1.4.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
   "types": "esm/index.d.ts",
   "description": "use S2 with vue",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",

@@ -284,7 +284,7 @@ export class TableFacet extends BaseFacet {
     const { colCfg } = this.cfg;
     // 明细表所有列节点高度保持一致
     const userDragHeight = values(colCfg?.heightByField)[0];
-    const height = userDragHeight || colCfg.height;
+    const height = userDragHeight || colCfg?.height;
     if (!totalHeight) {
       return height;
     }
@@ -322,6 +322,7 @@ export class TableFacet extends BaseFacet {
           currentNode,
           adaptiveColWitdth,
         );
+        layoutCoordinate(this.cfg, null, currentNode);
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
       }
@@ -335,7 +336,6 @@ export class TableFacet extends BaseFacet {
         currentNode,
         colsHierarchy.height,
       );
-      layoutCoordinate(this.cfg, null, currentNode);
     }
     const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
     const { frozenTrailingColCount } = getValidFrozenOptions(
@@ -469,7 +469,7 @@ export class TableFacet extends BaseFacet {
         {},
       );
 
-      const customHeight = heightByField[String(index)];
+      const customHeight = heightByField?.[String(index)];
       if (customHeight) {
         return customHeight;
       }
@@ -490,7 +490,7 @@ export class TableFacet extends BaseFacet {
       let lastOffset = 0;
       data.forEach((_, idx) => {
         const currentHeight =
-          heightByField[String(idx)] ?? this.getDefaultCellHeight();
+          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;

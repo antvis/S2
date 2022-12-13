@@ -1,15 +1,50 @@
-# [@antv/s2-react-v1.30.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.29.0...@antv/s2-react-v1.30.0-alpha.1) (2022-10-27)
+# [@antv/s2-react-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.32.0...@antv/s2-react-v1.33.0) (2022-12-02)
+
+
+### Bug Fixes
+
+* **interaction:** 修复趋势分析表选中高亮效果无效 close [#1960](https://github.com/antvis/S2/issues/1960) ([#1961](https://github.com/antvis/S2/issues/1961)) ([5140b60](https://github.com/antvis/S2/commit/5140b6060d03b0290ddb4b314e7892520038f369))
+* 增加 style 配置为空时的容错 ([#1967](https://github.com/antvis/S2/issues/1967)) ([9250487](https://github.com/antvis/S2/commit/92504874e5f925a2fc2a640194f676c2bd32b55e))
 
 
 ### Features
 
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
-* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
+* **header:** 去除 antd PageHeader 组件依赖 & Header 组件重构 close [#1981](https://github.com/antvis/S2/issues/1981) ([#1957](https://github.com/antvis/S2/issues/1957)) ([a3addd7](https://github.com/antvis/S2/commit/a3addd7494a2002e40c0cd00871bee47bedefb17))
+
+# [@antv/s2-react-v1.32.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.31.0...@antv/s2-react-v1.32.0) (2022-11-21)
+
+
+### Features
+
+* 明细表支持多级表头 ([#1921](https://github.com/antvis/S2/issues/1921)) ([47cdbdc](https://github.com/antvis/S2/commit/47cdbdccafbd7f19a05550a483a42aac11a93778)), closes [#1687](https://github.com/antvis/S2/issues/1687) [#1801](https://github.com/antvis/S2/issues/1801)
+* 编辑表格新增拖拽填充功能 ([#1858](https://github.com/antvis/S2/issues/1858)) ([c607d55](https://github.com/antvis/S2/commit/c607d554208137631b75c5a03bb268d9afa901dd)), closes [#1811](https://github.com/antvis/S2/issues/1811)
+
+# [@antv/s2-react-v1.31.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.30.0...@antv/s2-react-v1.31.0) (2022-11-11)
+
+
+### Features
+
+* **interaction:** 角头有省略号时 hover 后显示 tooltip ([#1889](https://github.com/antvis/S2/issues/1889)) ([1bd307a](https://github.com/antvis/S2/commit/1bd307ae913c82fd241057366530d16b51abfe69))
+
+# [@antv/s2-react-v1.30.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.29.0...@antv/s2-react-v1.30.0) (2022-10-24)
+
+
+### Bug Fixes
+
+* customFilter执行时不再执行defaultFilter ([#1814](https://github.com/antvis/S2/issues/1814)) ([21710b2](https://github.com/antvis/S2/commit/21710b260dc41039e832d48d673a63dc21c60454))
+* **interaction:** 修复滚动刷选 onDataCellBrushSelection 未透出正确的单元格 close [#1817](https://github.com/antvis/S2/issues/1817) ([#1825](https://github.com/antvis/S2/issues/1825)) ([5866ba1](https://github.com/antvis/S2/commit/5866ba1d33daa144a18f2771f77785c524fe67c3))
+* 修复 SheetComponent 未使用 getSpreadSheet 也会报 warning 的问题 ([#1843](https://github.com/antvis/S2/issues/1843)) ([47765b8](https://github.com/antvis/S2/commit/47765b8eca7cdfe580ad341a7b4da9cfc4097b24))
+* 修复open属性冲突的问题 close [#1736](https://github.com/antvis/S2/issues/1736) ([#1831](https://github.com/antvis/S2/issues/1831)) ([71b19b9](https://github.com/antvis/S2/commit/71b19b9377ea94527bdb32d7e293a58bf0cedce4))
+
+
+### Features
+
+* 组件层新增 onMounted 事件 ([#1830](https://github.com/antvis/S2/issues/1830)) ([0758160](https://github.com/antvis/S2/commit/0758160833c6be06c96dc851cab4605dd709e8ad))
 
 
 ### Reverts
 
-* Revert "refactor: 趋势表tooltip类名不再使用css-modules (#1501)" ([ac580de](https://github.com/antvis/S2/commit/ac580de58f82cfd8540dcc75bebc26f137327e4a)), closes [#1501](https://github.com/antvis/S2/issues/1501)
+* Revert "chore(release): 🔖@antv/s2@1.32.0 @antv/s2-react@1.29.0 @antv/s2-vue@1…" (#1846) ([7b0bcea](https://github.com/antvis/S2/commit/7b0bceab42acf8dae4a437f86148207848502c8b)), closes [#1846](https://github.com/antvis/S2/issues/1846) [#1844](https://github.com/antvis/S2/issues/1844)
 
 # [@antv/s2-react-v1.29.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.28.0...@antv/s2-react-v1.29.0) (2022-10-14)
 
