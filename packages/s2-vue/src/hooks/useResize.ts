@@ -30,6 +30,5 @@ export const useResize = (
         unobserve.value?.();
       });
     },
-    { deep: true },
   );
 };
