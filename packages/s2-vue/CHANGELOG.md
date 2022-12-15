@@ -1,3 +1,15 @@
+# [@antv/s2-vue-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v1.5.0) (2022-12-09)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
+
+
+### Features
+
+* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
+
 # [@antv/s2-vue-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.3.0...@antv/s2-vue-v1.4.0) (2022-10-24)
 
 

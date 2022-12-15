@@ -105,6 +105,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
     expect(linkFieldJump).toHaveBeenCalledWith({
       key: mockCellData.valueField,
+      cellData: mockCellData,
       record: mockCellData.data,
     });
     expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();
