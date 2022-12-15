@@ -692,7 +692,7 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏数值"
                   unCheckedChildren="显示数值"
-                  defaultChecked={mergedOptions.style.colCfg.hideMeasureColumn}
+                  defaultChecked={mergedOptions.style.colCfg?.hideMeasureColumn}
                   onChange={(checked) => {
                     updateOptions({
                       style: {
@@ -1031,7 +1031,7 @@ function MainLayout() {
               onRowCellScroll={logHandler('onRowCellScroll')}
               onLinkFieldJump={logHandler('onLinkFieldJump', () => {
                 window.open(
-                  'https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
+                  'https://s2.antv.antgroup.com/zh/docs/manual/advanced/interaction/link-jump#%E6%A0%87%E8%AE%B0%E9%93%BE%E6%8E%A5%E5%AD%97%E6%AE%B5',
                 );
               })}
               onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}

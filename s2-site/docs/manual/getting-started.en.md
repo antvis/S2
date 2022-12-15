@@ -279,20 +279,4 @@ import "@antv/s2-vue/dist/style.min.css";
 
 ## ⌨️ Local development
 
-```shell
-git clone git@github.com:antvis/S2.git
-cd S2
-
-# 安装依赖
-yarn
-# 调试 s2-core
-yarn core:start
-# 调试 s2-react
-yarn react:playground
-# 调试 s2-vue
-yarn vue:playground
-
-# 本地启动官网
-yarn site:bootstrap
-yarn site:start
-```
+<embed data-mdast="html" src="@/docs/common/development.en.md"></embed>

@@ -119,6 +119,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // different type different height
       sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
       sNode.isPivotMode = true;
+      sNode.spreadsheet = s2;
       sNode.cornerType = CornerNodeType.Series;
       cornerNodes.push(sNode);
     }

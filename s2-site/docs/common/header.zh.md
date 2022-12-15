@@ -5,8 +5,6 @@ order: 0
 
 ### HeaderCfgProps
 
-<description> **optional**  _HeaderCfgProps_   default: `{}` </description>
-
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | title           | 自定义标题           | `React.ReactNode`      | -      |      |

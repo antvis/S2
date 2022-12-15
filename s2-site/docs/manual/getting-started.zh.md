@@ -184,7 +184,7 @@ s2.render();
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/gallery#category-表格组件), 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/examples/gallery#category-表格组件）, 还有丰富的配套 [分析组件](/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 #### 表格组件使用
 
@@ -283,20 +283,4 @@ import "@antv/s2-vue/dist/style.min.css";
 
 ## ⌨️ 本地开发
 
-```shell
-git clone git@github.com:antvis/S2.git
-cd S2
-
-# 安装依赖
-yarn
-# 调试 s2-core
-yarn core:start
-# 调试 s2-react
-yarn react:playground
-# 调试 s2-vue
-yarn vue:playground
-
-# 本地启动官网
-yarn site:bootstrap
-yarn site:start
-```
+<embed src="@/docs/common/development.zh.md"></embed>

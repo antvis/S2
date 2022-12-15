@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@antv/s2",
-  "version": "1.31.0",
+  "version": "1.37.0",
   "main": "lib/index.js",
   "unpkg": "dist/index.min.js",
   "module": "esm/index.js",
@@ -9,7 +9,7 @@
   "src": "src/index.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",

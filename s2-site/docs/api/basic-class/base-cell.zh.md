@@ -28,6 +28,12 @@ cell.getActualText()
 | updateByState | 根据状态更新单元格样式 | `(stateName: InteractionStateName, cell: S2CellType) => void` |
 | hideInteractionShape | 隐藏单元格的交互图层 | `() => void` |
 | clearUnselectedState | 清空未选中状态 | `() => void` |
+| getTextShape | 获取文字图层 | `() => IShape` |
+| getTextShapes | 获取所有文字图层 | `() => IShape[]` |
+| addTextShape | 添加文字图层 | `(shape: IShape) => void` |
+| getConditionIconShape | 获取 icon 图层 | `() => GuiIcon` |
+| getConditionIconShapes | 获取所有 icon 图层 | `() => GuiIcon[]` |
+| addConditionIconShape | 添加 icon 图层 | `(shape: GuiIcon) => void` |
 
 <embed src="@/docs/common/view-meta.zh.md"></embed>
 

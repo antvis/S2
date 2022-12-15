@@ -27,9 +27,9 @@ const s2Options = {
       {
         field: 'number',
         mapping: (value, cellInfo) => {
-          const { meta } = cellInfo;
+          const { meta, colIndex } = cellInfo;
           if (
-            meta?.fieldValue?.values[0][0] === value ||
+            colIndex === 0 ||
             !value ||
             !meta?.fieldValue
           ) {
@@ -89,8 +89,8 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------------- | ----------------- | --------- | ----- | --- |
-| values           | 格式化后的数据，直接展示在 dataCfg 中 | (string | number)[][]   |  ✓   |
-| originalValues | 原始数据，用于原始数据导出 | (string | number)[][]  |  |      |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string \| number)[][]`   |  ✓   |
+| originalValues | 原始数据，用于原始数据导出 | `(string \| number)[][]` |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
@@ -180,4 +180,4 @@ const s2Options = {
 
 <embed src="@/docs/common/mini-chart.zh.md"></embed>
 
-如果想要更换 Mini 图样式配置，可以参考[主题配置]('/zh/api/general/s2theme#minicharttheme')
+如果想要更换 Mini 图样式配置，可以参考 [主题配置]('/zh/api/general/s2theme#minicharttheme')

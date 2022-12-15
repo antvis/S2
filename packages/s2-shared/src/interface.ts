@@ -204,6 +204,11 @@ export interface BaseSheetComponentProps<
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================
+  onLayoutAfterRealDataCellRender?: (options: {
+    add: [number, number][];
+    remove: [number, number][];
+    spreadsheet: SpreadSheet;
+  }) => void;
   onRowCellBrushSelection?: (event: GEvent) => void;
   onColCellBrushSelection?: (event: GEvent) => void;
 }
@@ -217,8 +222,8 @@ export interface ResizeEffectParams {
 }
 
 // Tooltip 操作项
-export interface TooltipOperatorProps
-  extends Omit<TooltipOperatorOptions, 'onClick'> {
+export interface TooltipOperatorProps<Icon = Element | string, Text = string>
+  extends Omit<TooltipOperatorOptions<Icon, Text>, 'onClick'> {
   onlyMenu: boolean;
   cell: S2CellType;
 }

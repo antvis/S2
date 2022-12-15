@@ -10,7 +10,7 @@
     "site"
   ],
   "license": "MIT",
-  "homepage": "https://s2.antv.vision",
+  "homepage": "https://s2.antv.antgroup.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/s2"
@@ -24,7 +24,7 @@
     "build": "dumi build",
     "clean": "rimraf .dumi",
     "preview": "dumi preview",
-    "deploy": "dumi build && gh-pages -d dist",
+    "deploy": "dumi build &&  cp ./CNAME ./dist/CNAME && gh-pages -d dist",
     "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"
   },
   "dependencies": {

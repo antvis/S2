@@ -16,9 +16,9 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🚀 官网部署成功",
+                "title": "✅ 官网部署成功",
                 "text": "点击访问",
-                "messageUrl": "https://s2.antv.vision",
+                "messageUrl": "https://s2.antv.antgroup.com",
                 "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
               }
             }

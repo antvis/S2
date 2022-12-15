@@ -295,3 +295,9 @@ dataCell: {
     </tr>
   </tbody>
 </table>
+
+## 自定义特定单元格对齐方式
+
+有时我们想达到类似 [`字段标记`](https://s2.antv.antgroup.com/manual/basic/conditions) 的效果，对特定**满足条件**的单元格进行 `自定义对齐方式`, 而不是改变所有，这时我们可以通过 [`自定义单元格`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), 通过 S2 提供的 `dataCell`, `colCell`, `rowCell` 等自定义 Hook 来做自定义。
+
+<Playground path='custom/custom-cell/demo/custom-specified-cell.ts' rid='container' height='400'></playground>

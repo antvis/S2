@@ -68,7 +68,7 @@ object **必选**,_default：null_
 | columns        | 列维度列表         | [Columns[]](#columns) | `[]`   |      |
 | values         | 指标维度列表       | `string[]` | `[]`   |      |
 | valueInCols    | 指标维度是否在列头   | `boolean`  | `true` |      |
-| customValueOrder | 自定义指标维度在行列头中的位置顺序 | `number`  | - |      |
+| customValueOrder | 自定义指标维度在行列头中的层级顺序 （即 `values` 的 顺序，从 `0` 开始） [查看示例](/zh/examples/custom/custom-layout/#custom-value-order) | `number`  | - |      |
 
 ### Meta
 
@@ -81,7 +81,7 @@ array object **必选**,_default：null_
 | field  | 字段 id | `string` | |    |
 | name | 字段名称 | `string`|  |   |
 | description | 字段描述，会显示在行头、列头、单元格对应的 tooltip 中 | `string`|  |   |
-| formatter | 格式化 <br/> 单元格、行头和列头支持格式化，角头不支持格式化。只有单元格存在第二个参数。 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | `(value: unknown, data?: Data | Data[], meta?: Node | ViewMeta) => string` | | |
+| formatter | 格式化 <br/> 单元格、行头和列头支持格式化，角头不支持格式化。只有单元格存在第二个参数。 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | `(value: unknown, data?: Data \| Data[], meta?: Node \| ViewMeta) => string` | | |
 
 ### MiniChartData
 
@@ -95,8 +95,8 @@ object **必选**,_default：null_
 
 | 配置项名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------------- | ----------------- | --------- | ----- | --- |
-| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string/number)[][]`   |  ✓   |
-| originalValues | 原始数据，用于原始数据导出 | `(string/number)[][]`  |  |      |
+| values           | 格式化后的数据，直接展示在 dataCfg 中 | `(string \| number)[][]`   |  ✓   |
+| originalValues | 原始数据，用于原始数据导出 | `(string \| number)[][]`  |  |      |
 | label        | 用作单元格小标题，单独占一行展示    | `string` |    |      |
 | [key: string]       | 其他透传字段，用于自定义单元格的定制化展示       | `unknown` | ``   |      |
 
@@ -114,5 +114,5 @@ object **必选**,_default：null_
 
 | 属性名称 | 说明     | 类型   | 默认值 | 必选 |
 | ------- | ---------| -------| ------|------|
-| name | 列字段 id 或分组 id   | string |       | ✓ |
-| children | 分组下面的子级  | `Array\<ColumnNode \| string\>` |       |  |
+| key | 列字段 id 或分组 id   | string |       | ✓ |
+| children | 分组下面的子级  | `Array<ColumnNode \| string>` |       |  |

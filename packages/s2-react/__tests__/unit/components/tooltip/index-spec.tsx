@@ -8,7 +8,7 @@ describe('Tooltip Component Tests', () => {
   test.each(getTooltipOperatorSortMenus())(
     'should render sort menu and select %o menu',
     ({ key, text }) => {
-      render(
+      const { asFragment, container } = render(
         <TooltipComponent
           options={{
             onlyMenu: true,
@@ -22,12 +22,14 @@ describe('Tooltip Component Tests', () => {
         />,
       );
 
+      expect(asFragment).toMatchSnapshot();
+
       expect(screen.getByText('组内升序')).toBeDefined();
       expect(screen.getByText('组内降序')).toBeDefined();
       expect(screen.getByText('不排序')).toBeDefined();
 
       const selectedMenu = [
-        ...document.querySelectorAll('.ant-menu-item-selected'),
+        ...container.querySelectorAll('.ant-menu-item-selected'),
       ];
       expect(selectedMenu).toHaveLength(1);
       expect(selectedMenu[0]?.textContent).toContain(text);

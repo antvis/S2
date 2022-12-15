@@ -154,6 +154,24 @@ describe('TableSheet normal spec', () => {
     s2.destroy();
   });
 
+  test('should support custom layoutCoordinate calls', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+    });
+
+    s2.setOptions({
+      layoutCoordinate: (s2, rowNode, colNode) => {
+        colNode.width = 50;
+      },
+    });
+    s2.render();
+    expect(s2.facet.layoutResult.colsHierarchy.width).toBe(850);
+
+    s2.destroy();
+  });
+
   test('should be able to resize last column', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();

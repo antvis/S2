@@ -3,13 +3,11 @@ title: 表头
 order: 4
 ---
 
-# React 表头组件
-
-> **optional** _HeaderCfgProps_ default: `{}`
+## React 表头组件
 
 表格页头，位于表格容器顶部，起到了内容概览和表格工具栏的作用。由表标题、描述、导出、高级排序、指标切换和自定操作区组成。
 
-## 使用方式
+### 使用方式
 
 ```tsx
 <SheetComponent
@@ -26,12 +24,14 @@ order: 4
 />
 ```
 
+<br/>
+
 <Playground path='react-component/header/demo/default.tsx' rid='container' height='400'></playground>
 
-## API
+### API
 
 <embed src="@/docs/common/header.zh.md"></embed>
 
-# Vue 表头组件
+## Vue 表头组件
 
 开发中，敬请期待

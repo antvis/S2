@@ -1,9 +1,18 @@
-import type { SimpleDataItem } from '@antv/s2';
-import type { Node, S2CellType, TooltipShowOptions, ViewMeta } from '@antv/s2';
+import type {
+  Node,
+  S2CellType,
+  SimpleDataItem,
+  TooltipShowOptions,
+  ViewMeta,
+} from '@antv/s2';
 
 export interface CustomTooltipProps {
   cell: S2CellType<Node | ViewMeta>;
-  defaultTooltipShowOptions?: TooltipShowOptions<React.ReactNode>;
+  defaultTooltipShowOptions?: TooltipShowOptions<
+    React.ReactNode,
+    React.ReactNode,
+    React.ReactNode
+  >;
   label?:
     | React.ReactNode
     | ((
