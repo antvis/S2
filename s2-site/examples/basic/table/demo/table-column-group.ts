@@ -14,7 +14,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
           'type',
           {
             key: 'money',
-            children: [{ key: 'price' }, 'cost'],
+            children: [{ key: 'price' }],
           },
         ],
       },
