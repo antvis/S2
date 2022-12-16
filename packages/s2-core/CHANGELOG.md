@@ -1,3 +1,10 @@
+# [@antv/s2-v2.0.0-next.3](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.2...@antv/s2-v2.0.0-next.3) (2022-12-16)
+
+
+### Bug Fixes
+
+* 暂时修复g版本冲突问题 ([#2003](https://github.com/antvis/S2/issues/2003)) ([1de7ec2](https://github.com/antvis/S2/commit/1de7ec215bc96c28e7493c8a32fe1764fd08cb2d))
+
 # [@antv/s2-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.1...@antv/s2-v2.0.0-next.2) (2022-12-07)
 
 
