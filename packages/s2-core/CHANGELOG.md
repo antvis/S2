@@ -1,3 +1,11 @@
+# [@antv/s2-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-v1.37.0...@antv/s2-v1.38.0) (2022-12-16)
+
+
+### Features
+
+* 增加 linkFields 参数传入类型 ([#1992](https://github.com/antvis/S2/issues/1992)) ([66bce2a](https://github.com/antvis/S2/commit/66bce2ae77635b530058f56b0545bd5558c119e1))
+* 新增链接跳转配置 ([5e08055](https://github.com/antvis/S2/commit/5e08055b52a125e75cbc41bb748d247ef25ba016))
+
 # [@antv/s2-v1.37.0](https://github.com/antvis/S2/compare/@antv/s2-v1.36.0...@antv/s2-v1.37.0) (2022-12-09)
 
 
