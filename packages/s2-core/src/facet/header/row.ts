@@ -1,7 +1,7 @@
 import type { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import type { S2CellType, S2Options } from '../../common/interface';
+import type { S2CellType, S2Options, ViewMeta } from '../../common/interface';
 import type { Node } from '../layout/node';
 import { translateGroup } from '../utils';
 import { BaseHeader, type BaseHeaderConfig } from './base';
@@ -10,7 +10,7 @@ export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
   hierarchyType: S2Options['hierarchyType'];
   // field ids that click to navigate
-  linkFields: string[];
+  linkFields: string[] | ((meta: Node | ViewMeta) => boolean);
   // series number group's width, will be 0 when not exists
   seriesNumberWidth: number;
 }

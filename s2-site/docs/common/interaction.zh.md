@@ -7,7 +7,7 @@ order: 5
 
 | 参数    | 说明   | 类型     | 默认值   |        必选        |
 | -------- | ----------- | -------------- | -------- | ---------------- |
-| linkFields  | 标记字段为链接样式，用于外链跳转  | `string[]`     |    |    |
+| linkFields  | 标记字段为链接样式，用于外链跳转  | `string[]` \| (meta: [Node](/docs/api/basic-class/node) \| ViewMeta) => boolean    |    |    |
 | selectedCellsSpotlight               | 是否开启选中高亮聚光灯效果    | `boolean`   | `false`      |                  |
 | hoverHighlight                       | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头                                                                                                               | `boolean`                                 | `true`                                                |                  |
 | hoverFocus                           | 鼠标悬停在当前单元格超过默认 800ms 后，保持当前高亮，显示 tooltip，悬停时间通过设置 `duration` 来控制   | `boolean  \| {duration: number}`                                   |      `true`      |       |
