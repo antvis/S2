@@ -1,3 +1,10 @@
+# [@antv/s2-vue-v2.0.0-next.3](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.2...@antv/s2-vue-v2.0.0-next.3) (2022-12-16)
+
+
+### Bug Fixes
+
+* 解决S2.0next版本Vue报错bug ([#1988](https://github.com/antvis/S2/issues/1988)) ([3aa0758](https://github.com/antvis/S2/commit/3aa07581629251c98ca61f39484b27e86f2f0d9a))
+
 # [@antv/s2-vue-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.1...@antv/s2-vue-v2.0.0-next.2) (2022-12-07)
 
 
