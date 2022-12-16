@@ -207,9 +207,9 @@ describe('Pivot Mode Facet Test', () => {
         (getCellMeta(1, 1)?.data as CellData)?.getValueByKey('number'),
       ).toBe(632);
 
-      expect((getCellMeta(1)?.data as CellData)?.getValueByKey('number')).toBe(
-        2367,
-      );
+      expect(
+        (getCellMeta(1, -1)?.data as CellData)?.getValueByKey('number'),
+      ).toBe(2367);
     });
   });
 

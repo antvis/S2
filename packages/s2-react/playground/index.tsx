@@ -89,7 +89,7 @@ function MainLayout() {
   //  ================== State ========================
   const [render, setRender] = React.useState(true);
   const [sheetType, setSheetType] = React.useState<SheetType>(
-    localStorage.getItem('debugSheetType') || 'pivot',
+    (localStorage.getItem('debugSheetType') as SheetType) || 'pivot',
   );
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);

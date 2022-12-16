@@ -25,6 +25,7 @@ import {
   Node,
   type ViewMeta,
   type S2DataConfig,
+  type ResizeParams,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 import { CustomRect } from '@/engine';
@@ -88,7 +89,7 @@ describe('Interaction Row Column Resize Tests', () => {
     effect: ResizeAreaEffect,
     meta?: Partial<ViewMeta>,
   ) => {
-    const resizeInfo = {
+    const resizeInfo: ResizeInfo = {
       theme: {},
       type: directionType,
       offsetX: 2,
@@ -97,10 +98,12 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect,
-      id: 'testId',
-      meta,
       size: 3,
-    } as ResizeInfo;
+      meta: {
+        id: 'testId',
+        ...meta,
+      } as ResizeInfo['meta'],
+    };
 
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
@@ -205,7 +208,6 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      id: '',
       size: 3,
     } as ResizeInfo;
     emitResizeEvent(
@@ -238,7 +240,7 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.on(S2Event.LAYOUT_RESIZE, resize);
     s2.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, colWidthResize);
 
-    const resizeInfo = {
+    const resizeInfo: ResizeInfo = {
       theme: {},
       type: ResizeDirectionType.Horizontal,
       offsetX: 2,
@@ -247,11 +249,13 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 0,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      id: '',
       resizedWidth: 40,
       resizedHeight: 0,
       size: 3,
-    } as ResizeInfo;
+      meta: {
+        id: 'test-1',
+      } as ResizeInfo['meta'],
+    };
 
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
@@ -284,12 +288,12 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     // emit resize event
-    const resizeDetail = {
+    const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style: {
         colCfg: {
-          widthByFieldValue: {
-            [resizeInfo.id]: 40,
+          widthByField: {
+            [resizeInfo.meta.id]: 40,
           },
         },
       },
@@ -301,8 +305,8 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(s2.options.style!.colCfg).toEqual({
       height: 30,
       heightByField: {},
-      widthByFieldValue: {
-        [resizeInfo.id]: 40,
+      widthByField: {
+        [resizeInfo.meta.id]: 40,
       },
     });
 
@@ -329,7 +333,6 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      id: '',
       size: 3,
     } as ResizeInfo;
     emitResizeEvent(
@@ -370,7 +373,6 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      id: '',
       resizedWidth: 0,
       resizedHeight: 2,
       size: 3,
@@ -434,8 +436,8 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.colCfg!.widthByFieldValue).toEqual({
-      [resizeInfo.id]: resizeInfo.width,
+    expect(s2.options.style!.colCfg!.widthByField).toEqual({
+      [resizeInfo.meta.id]: resizeInfo.width,
     });
   });
 
@@ -478,12 +480,12 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Field,
     );
 
-    const newResizeInfo = {
+    const newResizeInfo: ResizeParams = {
       info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
       style: {
         rowCfg: {
           widthByField: {
-            [resizeInfo.id]: 5,
+            [resizeInfo.meta.id]: 5,
           },
         },
       },
@@ -492,7 +494,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(rowWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style!.rowCfg!.widthByField).toEqual({
-      [resizeInfo.id]: resizeInfo.width,
+      [resizeInfo.meta.id]: resizeInfo.width,
     });
   });
 
@@ -557,7 +559,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     expect(s2.options.style!.colCfg!.heightByField).toEqual({
-      [resizeInfo.id]: resizeInfo.height,
+      [resizeInfo.meta.id]: resizeInfo.height,
     });
   });
 
@@ -595,7 +597,6 @@ describe('Interaction Row Column Resize Tests', () => {
       height: 2,
       isResizeArea: true,
       effect: ResizeAreaEffect.Cell,
-      id: '',
       size: 3,
     } as ResizeInfo;
 
@@ -625,7 +626,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     expect(s2.options.style!.rowCfg!.widthByField).toEqual({
-      [resizeInfo.id]: resizeInfo.width,
+      [resizeInfo.meta.id]: resizeInfo.width,
     });
   });
 
@@ -651,7 +652,6 @@ describe('Interaction Row Column Resize Tests', () => {
       effect: ResizeAreaEffect.Cell,
       resizedHeight: 0,
       resizedWidth: 0,
-      id: '',
       size: 3,
     } as ResizeInfo;
 

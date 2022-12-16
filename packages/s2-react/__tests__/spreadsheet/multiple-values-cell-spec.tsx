@@ -131,7 +131,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
     style: {
       hierarchyCollapse: false,
       colCfg: {
-        widthByFieldValue: {},
+        widthByField: {},
         heightByField: {},
       },
       cellCfg: {

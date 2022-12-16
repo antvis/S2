@@ -247,7 +247,7 @@ export class TableFacet extends BaseFacet {
       });
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
-    const getCellMeta: GetCellMeta = (rowIndex: number, colIndex: number) => {
+    const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
       const showSeriesNumber = this.cfg.showSeriesNumber;
       const col = colLeafNodes[colIndex];
       const cellHeight = this.getCellHeightByRowIndex(rowIndex);
@@ -513,11 +513,11 @@ export class TableFacet extends BaseFacet {
   }
 
   protected getDefaultCellHeight(): number {
-    return this.getRowCellHeight(null);
+    return this.getRowCellHeight(null as unknown as Node);
   }
 
   public getCellHeightByRowIndex(rowIndex: number) {
-    return this.getRowCellHeight({ id: String(rowIndex) });
+    return this.getRowCellHeight({ id: String(rowIndex) } as Node);
   }
 
   protected initRowOffsets() {

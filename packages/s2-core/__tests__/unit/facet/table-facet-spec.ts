@@ -632,7 +632,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     expect(nodes[5].height).toEqual(colCfg!.height);
 
     expect(nodes[6].y).toBe(0);
-    expect(nodes[6].height).toEqual(colCfg!.height! * 2);
+    expect(nodes[6].height).toEqual((colCfg!.height! as number) * 2);
   });
 });
 

@@ -82,7 +82,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
       treeRowsWidth: 100,
       collapsedRows: {},
       colCfg: {
-        widthByFieldValue: {},
+        widthByField: {},
         heightByField: {},
       },
       cellCfg: {

@@ -279,3 +279,159 @@ Array [
   },
 ]
 `;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should render default cell style 1`] = `Array []`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should render default cell style 2`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]子类别",
+    "width": 299,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should render default cell style 3`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "0-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "1-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "2-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "3-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "4-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "5-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "6-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "7-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "8-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "9-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "10-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "11-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "12-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "0-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "1-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "2-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "3-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "4-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "5-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "6-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "7-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "8-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "9-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "10-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "11-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "12-root[&]子类别",
+    "width": 299,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by height 1`] = `Array []`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by row index 1`] = `Array []`;

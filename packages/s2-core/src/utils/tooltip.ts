@@ -136,7 +136,7 @@ export const getTooltipDefaultOptions = <
   };
 };
 
-export const getMergedQuery = (meta: ViewMeta | null) => {
+export const getMergedQuery = (meta: ViewMeta | null | undefined) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
@@ -381,7 +381,7 @@ export const getSelectedCellsData = (
    *  - 3.2 如果部分是, 如何处理? 小计/总计不应该被选中, 还是数据不参与计算?
    *  - 3.3 如果选中的含有小计, 并且有总计, 数据参与计算也没有意义, 如何处理?
    */
-  const isBelongTotalCell = (cellMeta: ViewMeta | null) => {
+  const isBelongTotalCell = (cellMeta: ViewMeta | null | undefined) => {
     if (!cellMeta) {
       return false;
     }

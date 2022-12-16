@@ -1,4 +1,4 @@
-import { createPivotSheet } from 'tests/util/helpers';
+import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { EXTRA_FIELD } from '../../src/common';
 import type { ViewMeta } from '@/common/interface/basic';
 import type { Node } from '@/facet/layout/node';
@@ -374,6 +374,72 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           expect(node.width).toEqual(200);
         });
       });
+    });
+  });
+
+  describe('TableSheet Custom Cell Style Tests', () => {
+    beforeAll(() => {
+      s2 = createTableSheet(s2Options, {
+        useSimpleData: false,
+      });
+      s2.render();
+    });
+
+    afterEach(() => {
+      s2.destroy();
+    });
+
+    test('should render default cell style', () => {
+      expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
+      expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
+      expect(
+        mapNodeSize(
+          s2.interaction
+            .getPanelGroupAllDataCells()
+            .map((cell) => cell.getMeta()),
+        ),
+      ).toMatchSnapshot();
+    });
+
+    test('should set row cell style by height', () => {
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            height: 60,
+          },
+        },
+      });
+      s2.render(false);
+
+      expect(
+        mapNodeSize(
+          s2.interaction
+            .getPanelGroupAllDataCells()
+            .map((cell) => cell.getMeta()),
+        ),
+      ).toMatchSnapshot();
+    });
+
+    test('should set row cell style by row index', () => {
+      s2.setOptions({
+        style: {
+          rowCfg: {
+            heightByField: {
+              0: 40,
+              '2': 100,
+            },
+          },
+        },
+      });
+      s2.render(false);
+
+      expect(
+        mapNodeSize(
+          s2.interaction
+            .getPanelGroupAllDataCells()
+            .map((cell) => cell.getMeta()),
+        ),
+      ).toMatchSnapshot();
     });
   });
 });

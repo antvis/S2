@@ -69,7 +69,7 @@ export class PivotFacet extends BaseFacet {
 
     const { dataSet, spreadsheet } = this.cfg;
 
-    const getCellMeta: GetCellMeta = (rowIndex?: number, colIndex?: number) => {
+    const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
       const row = rowLeafNodes[i];

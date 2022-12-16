@@ -108,7 +108,6 @@ export class TableDataCell extends DataCell {
       headerWidth + Frame.getVerticalBorderWidth(this.spreadsheet);
 
     const attrs = getResizeAreaAttrs({
-      id: String(this.meta.rowIndex),
       theme: resizeStyle,
       type: ResizeDirectionType.Vertical,
       effect: ResizeAreaEffect.Cell,
