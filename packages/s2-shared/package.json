@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@antv/s2-shared",
-  "version": "1.0.0",
+  "version": "2.0.0-next.3",
   "main": "src/index.ts",
   "types": "temp/index.d.ts",
   "description": "internal utility functions and constants shared across s2 packages.",
