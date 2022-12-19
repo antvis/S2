@@ -4,7 +4,7 @@ import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  '../data/basic-table-mode.json',
+  'https://assets.antv.antgroup.com/s2/basic-table-mode.json',
 )
   .then((res) => res.json())
   .then((res) => {

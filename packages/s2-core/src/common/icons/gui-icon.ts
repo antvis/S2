@@ -106,6 +106,10 @@ export class GuiIcon extends Group {
     } else {
       this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
+          // 加载完成后，当前 Cell 可能已经销毁了
+          if (this.destroyed) {
+            return;
+          }
           image.attr('img', value);
           this.addShape('image', image);
         })

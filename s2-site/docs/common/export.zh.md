@@ -29,22 +29,22 @@ download(data, 'filename')
 
 ### copyData
 
-| 参数          | 说明                                           | 类型                                                           | 默认值                        | 必选 |
-|:------------|:---------------------------------------------|:-------------------------------------------------------------|:---------------------------| :--- |
-| spreadsheet | s2 实例                                        | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)          |                            | ✓    |
-| split       | 分隔符                                          | `string`                                                     |                            | ✓    |
+| 参数          | 说明     | 类型     | 默认值      | 必选 |
+| ------------| ------------------ | ------------- | --------------------------- | --- |
+| spreadsheet | s2 实例       | [SpreadSheet](/docs/api/basic-class/spreadsheet)          |                            | ✓    |
+| split       | 分隔符    | `string`    |     | ✓    |
 | formatOptions  | 是否格式化，可以分别对数据单元格和行列头进行格式化，传布尔值会同时对单元格和行列头生效。 |  <code> boolean \|  { isFormatHeader?: boolean, isFormatData?: boolean} </code>    | `false` |      |
 
 ### copyToClipboard
 
 | 参数 | 说明     | 类型     | 默认值 | 必选 |
-| :--- | :------- | :------- | :----- | :--- |
+| --- | --- | ------- | ----- | --- |
 | data | 数据源 | `string` |        | ✓    |
 | sync | 是否同步复制数据 （默认异步） | `boolean` |   `false`     |     |
 
 ### download
 
 | 参数     | 说明     | 类型     | 默认值 | 必选 |
-| :------- | :------- | :------- | :----- | :--- |
+| ------- | ------- | ------- | ----- | --- |
 | data     | 数据源 | `string` |        | ✓    |
 | filename | 文件名称 | `string` |        | ✓    |

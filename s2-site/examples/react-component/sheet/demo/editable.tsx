@@ -2,7 +2,7 @@ import { SheetComponent } from '@antv/s2-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-fetch('../../examples/data/basic-table-mode.json')
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
     const s2DataConfig = {

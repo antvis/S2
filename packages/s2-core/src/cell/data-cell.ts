@@ -1,13 +1,15 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
-import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
   InteractionStateName,
   SHAPE_STYLE_MAP,
 } from '../common/constant/interaction';
-import { CellBorderPosition } from '../common/interface';
+import {
+  CellBorderPosition,
+  type InteractionStateTheme,
+} from '../common/interface';
 import type {
   CellMeta,
   Condition,
@@ -27,12 +29,13 @@ import {
 } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
+import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
-  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
+import { shouldReverseFontColor } from '../utils/color';
 
 /**
  * DataCell for panelGroup area
@@ -172,6 +175,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawInteractiveBorderShape();
@@ -196,13 +200,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
-    const isMoreThanThreshold =
-      tinycolor(backgroundColor).getBrightness() <=
-      FONT_COLOR_BRIGHTNESS_THRESHOLD;
-
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
-      isMoreThanThreshold &&
+      shouldReverseFontColor(backgroundColor) &&
       textStyle.fill === DEFAULT_FONT_COLOR &&
       intelligentReverseTextColor
     ) {
@@ -260,6 +260,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
+    if (this.shouldHideRowSubtotalData()) {
+      return {
+        value: null,
+        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+        formattedValue: EMPTY_PLACEHOLDER,
+      };
+    }
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     const fieldId = rowMeta ? rowId : valueField;
@@ -376,9 +384,21 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find(
-      (cell) => get(cell, indexType) === currentIndex,
-    );
+    let isEqualIndex = false;
+    // 明细表模式多级表头计算索引换一种策略
+    if (this.spreadsheet.isTableMode() && nodes.length) {
+      const leafs = nodes[0].hierarchy.getLeaves();
+      isEqualIndex = leafs.some((cell, i) => {
+        if (nodes.some((node) => node === cell)) {
+          return i === currentIndex;
+        }
+        return false;
+      });
+    } else {
+      isEqualIndex = [...nodes, ...cells].some(
+        (cell) => get(cell, indexType) === currentIndex,
+      );
+    }
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {
@@ -422,47 +442,42 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   public mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, this.meta.data);
+    const rowDataInfo = this.spreadsheet.isTableMode()
+      ? this.spreadsheet.dataSet.getCellData({
+          query: { rowIndex: this.meta.rowIndex },
+        })
+      : this.meta.data;
+    return condition?.mapping(value, rowDataInfo);
   }
 
   public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
-      const stateStyles = get(
+      const interactionStateTheme = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
-      if (stateStyles) {
-        updateShapeAttr(
-          this.conditionIntervalShape,
-          SHAPE_STYLE_MAP.backgroundOpacity,
-          stateStyles.backgroundOpacity,
-        );
+      ) as InteractionStateTheme;
 
-        updateShapeAttr(
-          this.conditionIconShape as unknown as IShape,
-          SHAPE_STYLE_MAP.opacity,
-          stateStyles.opacity,
-        );
+      if (interactionStateTheme) {
+        this.toggleConditionIntervalShapeOpacity(interactionStateTheme.opacity);
       }
     }
   }
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+    this.toggleConditionIntervalShapeOpacity(1);
+  }
 
+  private toggleConditionIntervalShapeOpacity(opacity: number) {
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
-      1,
+      opacity,
     );
 
-    updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
-      SHAPE_STYLE_MAP.opacity,
-      1,
-    );
+    updateShapeAttr(this.conditionIconShapes, SHAPE_STYLE_MAP.opacity, opacity);
   }
 
   protected drawLeftBorder() {

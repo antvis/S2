@@ -3,7 +3,6 @@ import tinycolor from 'tinycolor2';
 import type { Palette, PaletteMeta } from '../common/interface/theme';
 import {
   DEFAULT_FONT_COLOR,
-  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 
@@ -18,6 +17,14 @@ const STANDARD_COLOR_MIX_PERCENT = [95, 85, 75, 30, 15, 0, 15, 30, 45, 60, 80];
  * @see Palette.basicColors
  */
 const BASIC_COLOR_COUNT = 15;
+
+/**
+ * 智能反色使用
+ * @param color
+ */
+export const shouldReverseFontColor = (color: string) => {
+  return tinycolor(color).getLuminance() <= 0.5;
+};
 
 const FONT_COLOR_RELATIONS: Array<{
   fontColorIndex: number;
@@ -92,11 +99,11 @@ export const generatePalette = (
 
   // 根据背景明暗设置字体颜色
   FONT_COLOR_RELATIONS.forEach(({ fontColorIndex, bgColorIndex }) => {
-    basicColors[fontColorIndex] =
-      tinycolor(basicColors[bgColorIndex]).getBrightness() >
-      FONT_COLOR_BRIGHTNESS_THRESHOLD
-        ? DEFAULT_FONT_COLOR
-        : REVERSE_FONT_COLOR;
+    basicColors[fontColorIndex] = shouldReverseFontColor(
+      basicColors[bgColorIndex],
+    )
+      ? REVERSE_FONT_COLOR
+      : DEFAULT_FONT_COLOR;
   });
 
   return {

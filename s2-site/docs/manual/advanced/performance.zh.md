@@ -9,7 +9,7 @@ order: 6
 
 `S2` 可以用于实现明细表，也可以实现透视表，还可以实现趋势分析表等。
 
-为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/zh/docs/manual/basic/base-concept) 有初步认知。
+为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/docs/manual/basic/base-concept) 有初步认知。
 
 ## 性能解读
 
@@ -139,8 +139,8 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 查看 `100w` 条数据实际性能表现：
 
-- [透视表](/zh/examples/case/performance-compare#pivot)
-- [明细表](/zh/examples/case/performance-compare#table)
+- [透视表](/examples/case/performance-compare#pivot)
+- [明细表](/examples/case/performance-compare#table)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview"  />
 

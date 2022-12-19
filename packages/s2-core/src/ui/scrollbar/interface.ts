@@ -9,8 +9,6 @@ export interface ScrollBarCfg {
   readonly thumbLen: number;
   // scrollBar 的位置
   readonly position: PointObject;
-  // 最小滑块长度
-  readonly minThumbLen?: number;
   // 滑块相对滑道的偏移量
   readonly thumbOffset?: number;
   // 滚动对象的长度

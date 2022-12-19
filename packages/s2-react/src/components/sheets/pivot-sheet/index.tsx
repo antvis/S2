@@ -71,7 +71,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     React.useEffect(() => {
       s2Ref.current?.hideTooltip();
       if (isEmpty(drillFields)) {
-        clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
+        clearDrillDownInfo(s2Ref.current?.store.get('drillDownNode')?.id);
       } else {
         // 执行下钻
         handleDrillDown({

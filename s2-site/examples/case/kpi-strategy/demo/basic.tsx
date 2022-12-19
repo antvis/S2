@@ -159,7 +159,7 @@ class KpiStrategyDataCell extends DataCell {
   }
 }
 
-fetch('../data/kpi-strategy.json')
+fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
   .then((res) => res.json())
   .then(({ data }) => {
     const s2DataConfig = {

@@ -9,7 +9,7 @@ import * as dataConfig from 'tests/data/mock-dataset.json';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotSheet, SpreadSheet, TableSheet } from '@/sheet-type';
 import type { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
@@ -178,6 +178,17 @@ export const createPivotSheet = (
   { useSimpleData } = { useSimpleData: true },
 ) => {
   return new PivotSheet(
+    getContainer(),
+    useSimpleData ? simpleDataConfig : dataConfig,
+    s2Options,
+  );
+};
+
+export const createTableSheet = (
+  s2Options: S2Options,
+  { useSimpleData } = { useSimpleData: true },
+) => {
+  return new TableSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
     s2Options,

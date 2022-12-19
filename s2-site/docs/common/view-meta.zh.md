@@ -8,8 +8,8 @@ order: 6
 object 必选，_default：{}_ 功能描述：单元格数据和位置等信息
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |   | 表类实例，可以访问任意的配置信息 |
+| --- | --- | ---  | --- | --- |
+| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |   | 表类实例，可以访问任意的配置信息 |
 | id | `string` |  |   | 单元格唯一标识 |
 | x | `number` |  |   | 单元格 x 坐标 |
 | y | `number` |  |   | 单元格 y 坐标 |
@@ -20,7 +20,7 @@ object 必选，_default：{}_ 功能描述：单元格数据和位置等信息
 | colIndex | `number` |  |  |   单元格在列叶子节点中的索引 |
 | valueField | `string` |  |    | 度量 id |
 | fieldValue | [DataItem](#dataitem) |  |    | 度量展示的真实值 |
-| isTotals | `boolean` |  |    |   是否为总计：true为总计  false为小计 |
+| isTotals | `boolean` |  |    |   是否为总计：true 为总计  false 为小计 |
 | rowQuery | `Record<string, any>`|   |  | 行查询条件 |
 | colQuery | `Record<string, any>` |    |  | 列查询条件 |
 | rowId | `string` |  |  |   单元格的行 id |

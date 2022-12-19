@@ -173,4 +173,4 @@ ReactDOM.render(
 效果如图：
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-[playground 地址](/zh/examples/react-component/sheet#editable)
+[playground 地址](/examples/react-component/sheet#editable)

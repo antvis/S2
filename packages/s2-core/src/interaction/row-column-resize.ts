@@ -309,7 +309,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         };
       case ResizeAreaEffect.Cell:
         if (
-          heightByField[String(resizeInfo.id)] ||
+          heightByField?.[String(resizeInfo.id)] ||
           (resize as ResizeInteractionOptions)?.rowResizeType ===
             ResizeType.CURRENT
         ) {

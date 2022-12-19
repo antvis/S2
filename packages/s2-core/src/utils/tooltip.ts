@@ -61,6 +61,7 @@ import type {
 } from '../common/interface/tooltip';
 import type { SpreadSheet } from '../sheet-type';
 import { getDataSumByField, isNotNumber } from '../utils/number-calculate';
+import { getLeafColumnsWithKey } from '../facet/utils';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
@@ -119,13 +120,18 @@ export const getAutoAdjustPosition = ({
   };
 };
 
-export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
+export const getTooltipDefaultOptions = <
+  Icon = Element | string,
+  Text = string,
+>(
+  options?: TooltipOptions<Icon, Text>,
+): TooltipOptions<Icon, Text> => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
     enableFormat: true,
     ...options,
-  } as TooltipOptions;
+  };
 };
 
 export const getMergedQuery = (meta: ViewMeta) => {
@@ -241,7 +247,11 @@ export const getHeadInfo = (
   if (activeData) {
     const colFields = spreadsheet?.dataSet?.fields?.columns;
     const rowFields = spreadsheet?.dataSet?.fields?.rows;
-    colList = getFieldList(spreadsheet, colFields, activeData);
+    colList = getFieldList(
+      spreadsheet,
+      getLeafColumnsWithKey(colFields || []),
+      activeData,
+    );
     rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
 

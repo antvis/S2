@@ -2,7 +2,7 @@
 title: 透视表
 order: 1
 ---
-## 透视表简介
+## 简介
 
 透视表也叫做交叉表或多维表，显示多变量之间相互关系的一种表格，可以帮助用户发现它们之间的相互作用，帮助业务进行交叉探索分析，是目前商业 BI 分析领域中使用频率最高的图表之一。
 
@@ -11,7 +11,7 @@ order: 1
 ## 使用
 
 ```html
-<div id="container"></div>
+<div id="container" />
 ```
 
 ### React 组件方式
@@ -55,7 +55,7 @@ const data = [
 ];
 
 // 2. 配置数据
-const dataCfg = {
+const s2DataConfig = {
   fields: {
     rows: ["province", "city"],
     columns: ["type", "sub_type"],
@@ -65,7 +65,7 @@ const dataCfg = {
 };
 
 // 3. 添加配置
-const options = {
+const s2Options = {
   width: 600,
   height: 600,
 };
@@ -73,15 +73,15 @@ const options = {
 // 4. 渲染
 ReactDOM.render(
   <SheetComponent
-    dataCfg={dataCfg}
-    options={options}
+    dataCfg={s2DataConfig}
+    options={s2Options}
   />,
   document.getElementById('container')
 );
 
 ```
 
-​📊 查看 demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
+​📊 查看 [React 版本透视表示例](/examples/react-component/sheet#pivot) 和 [API 文档](/api/components/sheet-component)。
 
 ### 类方式
 
@@ -91,8 +91,8 @@ ReactDOM.render(
 import { PivotSheet } from "@antv/s2";
 
 const container = document.getElementById('container');
-const pivotSheet = new PivotSheet(container, dataCfg, options);
-pivotSheet.render();
+const s2 = new PivotSheet(container, dataCfg, options);
+s2.render();
 ```
 
-​📊 查看 demo [类方式透视表](/zh/examples/basic/pivot#grid)。
+​📊 查看 [类方式透视表示例](/examples/basic/pivot#grid) 和 [API 文档](/api/general/s2options)。

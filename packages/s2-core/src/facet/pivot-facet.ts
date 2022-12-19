@@ -348,7 +348,7 @@ export class PivotFacet extends BaseFacet {
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
     const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
-    return userDraggedHeight || colCfg.height;
+    return userDraggedHeight || colCfg?.height;
   }
 
   /**
@@ -442,7 +442,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          (heightByField[currentNode.id] ?? cellCfg.height) +
+          (heightByField?.[currentNode.id] ?? cellCfg?.height) +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;

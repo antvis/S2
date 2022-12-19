@@ -3,7 +3,7 @@ title: 自定义单元格对齐方式
 order: 4
 ---
 
-> **在阅读本节内容前，请确保你已经阅读 [主题配置](/zh/docs/manual/basic/theme) 文档**
+> **在阅读本节内容前，请确保你已经阅读 [主题配置](/docs/manual/basic/theme) 文档**
 
 为方便用户查看数据，S2 交叉表会在滑动过程中，保证行头和列头的最大可见性
 
@@ -13,8 +13,8 @@ order: 4
 
 ## 角头对齐方式
 
-* 行头单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 列头单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 行头单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 列头单元格（蓝色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/6wPCHImDZ/b36ca38e-aa8e-4ef6-a903-b9d605204de0.png)
 
@@ -82,9 +82,9 @@ cornerCell: {
 
 ## 行头对齐方式
 
-* 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 叶子节点单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 序号单元格可单独控制，默认和行头对齐，对齐方式受 [seriesText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 非叶子节点和小计总计单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 叶子节点单元格（蓝色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 序号单元格可单独控制，默认和行头对齐，对齐方式受 [seriesText](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/GPEd6w4pj/f2bb3ba9-e4a4-4304-a7b6-a1b9e59e768a.png)
 
@@ -154,8 +154,8 @@ rowCell: {
 
 为保证滑动下最大可见的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `middle`，`textAlign` 不受限制可按需要自定义。
 
-* 指标单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 其他维度单元格（蓝色部分）对齐方式受 [measureText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
+* 指标单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 其他维度单元格（蓝色部分）对齐方式受 [measureText](/docs/api/general/S2Theme#defaultcelltheme) 控制 （默认和数据单元格对齐）
 
 <image alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400" />
 
@@ -223,8 +223,8 @@ colCell: {
 
 ## 数据单元格对齐方式
 
-* 小计总计单元格（红色部分）对齐方式受 [bolderText](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
-* 其他节点单元格（蓝色部分）对齐方式受 [text](/zh/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 小计总计单元格（红色部分）对齐方式受 [bolderText](/docs/api/general/S2Theme#defaultcelltheme) 控制
+* 其他节点单元格（蓝色部分）对齐方式受 [text](/docs/api/general/S2Theme#defaultcelltheme) 控制
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/WHa%26eKOrP/00951ab0-b25c-4512-a056-541efff7c9dc.png)
 
@@ -295,3 +295,9 @@ dataCell: {
     </tr>
   </tbody>
 </table>
+
+## 自定义特定单元格对齐方式
+
+有时我们想达到类似 [`字段标记`](https://s2.antv.antgroup.com/manual/basic/conditions) 的效果，对特定**满足条件**的单元格进行 `自定义对齐方式`, 而不是改变所有，这时我们可以通过 [`自定义单元格`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), 通过 S2 提供的 `dataCell`, `colCell`, `rowCell` 等自定义 Hook 来做自定义。
+
+<Playground path='custom/custom-cell/demo/custom-specified-cell.ts' rid='container' height='400'></playground>

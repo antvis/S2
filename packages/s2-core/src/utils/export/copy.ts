@@ -17,6 +17,7 @@ import {
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
+  EXTRA_FIELD,
   ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
@@ -75,6 +76,23 @@ const getFormat = (colIndex: number, spreadsheet: SpreadSheet) => {
   return (v: string) => v;
 };
 
+/**
+ * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
+ * https://github.com/antvis/S2/issues/1955
+ * @param spreadsheet
+ */
+const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
+  const isHideMeasureColumn =
+    spreadsheet.options?.style?.colCfg?.hideMeasureColumn &&
+    spreadsheet.isValueInCols();
+  // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
+  return isHideMeasureColumn
+    ? {
+        [EXTRA_FIELD]: spreadsheet.dataCfg.fields.values[0],
+      }
+    : {};
+};
+
 const getValueFromMeta = (
   meta: CellMeta,
   displayData: DataType[],
@@ -82,10 +100,13 @@ const getValueFromMeta = (
 ) => {
   if (spreadsheet.isPivotMode()) {
     const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const measureQuery = compatibleHideMeasureColumn(spreadsheet);
+
     const cell = spreadsheet.dataSet.getCellData({
       query: {
         ...rowNode.query,
         ...colNode.query,
+        ...measureQuery,
       },
       rowNode,
       isTotals:
@@ -94,7 +115,7 @@ const getValueFromMeta = (
         colNode.isTotals ||
         colNode.isTotalMeasure,
     });
-    return cell[VALUE_FIELD];
+    return cell?.[VALUE_FIELD] ?? '';
   }
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId];
@@ -344,7 +365,10 @@ const getDataMatrix = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
-      return getFormat(colNode.colIndex, spreadsheet)(cellData[VALUE_FIELD]);
+      return getFormat(
+        colNode.colIndex,
+        spreadsheet,
+      )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
 };
@@ -390,7 +414,7 @@ const processPivotColSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -443,7 +467,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -696,10 +720,6 @@ function getDataCellCopyable(
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-    // 树状模式透视表之后实现
-    return;
-  }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED

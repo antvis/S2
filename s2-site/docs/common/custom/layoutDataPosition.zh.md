@@ -12,8 +12,8 @@ LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => Get
 功能描述：自定义数据
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | ---  | --- |
-| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
+| --- | --- | --- | ---  | --- |
+| spreadsheet | [SpreadSheet](/docs/api/basic-class/spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
 | getCellData | [GetCellMeta](#viewmeta) | ✓ |    | 获取单元格数据和位置等信息|
 
 ```ts

@@ -75,6 +75,13 @@ export interface CustomInteraction {
   interaction: InteractionConstructor;
 }
 
+export interface Rect {
+  maxX: number;
+  minX: number;
+  maxY: number;
+  minY: number;
+}
+
 export interface BrushPoint {
   rowIndex: number;
   colIndex: number;
@@ -130,7 +137,7 @@ export interface BrushSelectionInfo {
 
 export interface InteractionOptions {
   // record which row/col field need extra link info
-  linkFields?: string[];
+  linkFields?: string[] | ((meta: Node | ViewMeta) => boolean);
   // focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs

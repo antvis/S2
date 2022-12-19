@@ -10,6 +10,7 @@ import {
   each,
   find,
   get,
+  isEmpty,
   isFunction,
   isUndefined,
   last,
@@ -22,7 +23,6 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  MIN_SCROLL_BAR_HEIGHT,
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
@@ -35,6 +35,7 @@ import type {
   CellCustomWidth,
   FrameConfig,
   GridInfo,
+  HiddenColumnsInfo,
   LayoutResult,
   OffsetConfig,
   S2CellType,
@@ -489,9 +490,9 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
+   * @param skipScrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
    */
-  startScroll = (skipSrollEvent = false) => {
+  startScroll = (skipScrollEvent = false) => {
     const { scrollX, scrollY } = this.getScrollOffset();
 
     this.hScrollBar?.onlyUpdateThumbOffset(
@@ -501,7 +502,7 @@ export abstract class BaseFacet {
     this.vScrollBar?.onlyUpdateThumbOffset(
       this.getScrollBarOffset(scrollY, this.vScrollBar),
     );
-    this.dynamicRenderCell(skipSrollEvent);
+    this.dynamicRenderCell(skipScrollEvent);
   };
 
   getRendererHeight = () => {
@@ -539,14 +540,16 @@ export abstract class BaseFacet {
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
       const { maxY } = this.getScrollbarPosition();
-      const { verticalBorderWidth } = this.spreadsheet.theme.splitLine;
+      const { splitLine, scrollBar } = this.spreadsheet.theme;
 
-      const thumbSize =
+      const thumbSize = Math.max(
         (this.cornerBBox.width * this.cornerBBox.width) /
-        this.cornerBBox.originalWidth;
+          this.cornerBBox.originalWidth,
+        scrollBar?.thumbHorizontalMinSize,
+      );
 
       // 行头有分割线, 滚动条应该预留分割线的宽度
-      const displayThumbSize = thumbSize - verticalBorderWidth;
+      const displayThumbSize = thumbSize - splitLine?.verticalBorderWidth;
 
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
@@ -621,8 +624,13 @@ export abstract class BaseFacet {
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
           ? this.cornerBBox.width
           : 0);
+
+      const { scrollBar } = this.spreadsheet.theme;
       const maxOffset = finaleRealWidth - finalWidth;
-      const thumbLen = (finalWidth / finaleRealWidth) * finalWidth;
+      const thumbLen = Math.max(
+        (finalWidth / finaleRealWidth) * finalWidth,
+        scrollBar?.thumbHorizontalMinSize,
+      );
 
       // TODO abstract
       this.hScrollBar = new ScrollBar({
@@ -672,9 +680,10 @@ export abstract class BaseFacet {
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {
-      const thumbHeight = Math.max(
+      const { scrollBar } = this.spreadsheet.theme;
+      const thumbLen = Math.max(
         (height / realHeight) * height,
-        MIN_SCROLL_BAR_HEIGHT,
+        scrollBar?.thumbVerticalMinSize,
       );
       const maxOffset = realHeight - height;
       const { maxX } = this.getScrollbarPosition();
@@ -682,8 +691,8 @@ export abstract class BaseFacet {
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
         trackLen: height,
-        thumbLen: thumbHeight,
-        thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
+        thumbLen,
+        thumbOffset: (scrollY * (height - thumbLen)) / maxOffset,
         position: {
           x: maxX,
           y: this.panelBBox.minY,
@@ -889,7 +898,17 @@ export abstract class BaseFacet {
 
   onWheel = (event: WheelEvent) => {
     const { interaction } = this.spreadsheet.options;
-    const { deltaX, deltaY, offsetX, offsetY } = event;
+    let { deltaX, deltaY, offsetX, offsetY } = event;
+    const { shiftKey } = event;
+
+    // 按住shift时，固定为水平方向滚动
+    if (shiftKey) {
+      offsetX = offsetX - deltaX + deltaY;
+      deltaX = deltaY;
+      offsetY -= deltaY;
+      deltaY = 0;
+    }
+
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
       deltaY,
@@ -1047,6 +1066,11 @@ export abstract class BaseFacet {
       );
     });
     this.preCellIndexes = indexes;
+    this.spreadsheet.emit(S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER, {
+      add,
+      remove,
+      spreadsheet: this.spreadsheet,
+    });
   };
 
   protected init() {
@@ -1246,11 +1270,11 @@ export abstract class BaseFacet {
 
   /**
    *
-   * @param skipSrollEvent: 如true则不触发GLOBAL_SCROLL事件
+   * @param skipScrollEvent: 如true则不触发GLOBAL_SCROLL事件
    * During scroll behavior, first call to this method fires immediately and then on interval.
    * @protected
    */
-  protected dynamicRenderCell(skipSrollEvent?: boolean) {
+  protected dynamicRenderCell(skipScrollEvent?: boolean) {
     const {
       scrollX,
       scrollY: originalScrollY,
@@ -1270,7 +1294,7 @@ export abstract class BaseFacet {
     this.updatePanelScrollGroup();
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
     this.clip(scrollX, scrollY);
-    if (!skipSrollEvent) {
+    if (!skipScrollEvent) {
       this.emitScrollEvent({ scrollX, scrollY });
     }
     this.onAfterScroll();
@@ -1302,5 +1326,20 @@ export abstract class BaseFacet {
     if (originalColumnsLength !== initColumnLeafNodes.length) {
       store.set('initColumnLeafNodes', columnNodes);
     }
+  }
+
+  public getHiddenColumnsInfo(columnNode: Node): HiddenColumnsInfo | null {
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    if (isEmpty(hiddenColumnsDetail)) {
+      return null;
+    }
+
+    return hiddenColumnsDetail.find((detail) =>
+      detail.hideColumnNodes.some((node) => node.id === columnNode.id),
+    );
   }
 }

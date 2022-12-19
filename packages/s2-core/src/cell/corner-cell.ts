@@ -1,4 +1,4 @@
-import type { IShape, Point } from '@antv/g-canvas';
+import type { Point } from '@antv/g-canvas';
 import {
   cond,
   constant,
@@ -42,8 +42,6 @@ import { HeaderCell } from './header-cell';
 export class CornerCell extends HeaderCell {
   protected declare headerConfig: CornerHeaderConfig;
 
-  protected textShapes: IShape[] = [];
-
   protected isBolderText() {
     const { cornerType } = this.meta;
     return cornerType === CornerNodeType.Col;
@@ -60,7 +58,7 @@ export class CornerCell extends HeaderCell {
 
   protected initCell() {
     super.initCell();
-    this.textShapes = [];
+    this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
@@ -132,7 +130,7 @@ export class CornerCell extends HeaderCell {
 
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
     // first line
-    this.textShapes.push(
+    this.addTextShape(
       renderText(
         this,
         [this.textShapes[0]],
@@ -145,7 +143,7 @@ export class CornerCell extends HeaderCell {
 
     // second line
     if (!isEmpty(secondLine)) {
-      this.textShapes.push(
+      this.addTextShape(
         renderText(
           this,
           [this.textShapes[1]],

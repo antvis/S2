@@ -66,7 +66,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerOriginalWidth,
       cornerOriginalHeight,
       cfg.rows,
-      cfg.columns,
+      cfg.columns as string[],
       layoutResult.rowsHierarchy,
       layoutResult.colsHierarchy,
       cfg.dataSet,
@@ -85,7 +85,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
       rows: cfg.rows,
-      columns: cfg.columns,
+      columns: cfg.columns as string[],
       seriesNumberWidth,
       spreadsheet: s2,
     });
@@ -119,6 +119,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // different type different height
       sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
       sNode.isPivotMode = true;
+      sNode.spreadsheet = s2;
       sNode.cornerType = CornerNodeType.Series;
       cornerNodes.push(sNode);
     }
@@ -228,11 +229,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       return;
     }
 
-    data.forEach((item: Node) => {
+    data.forEach((node: Node) => {
       let cell: Group;
       if (cornerCell) {
         cell = cornerCell(
-          item,
+          node,
           this.headerConfig.spreadsheet,
           this.headerConfig,
         );
@@ -240,7 +241,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
       if (isEmpty(cell)) {
         cell = new CornerCell(
-          item,
+          node,
           this.headerConfig.spreadsheet,
           this.headerConfig,
         );
