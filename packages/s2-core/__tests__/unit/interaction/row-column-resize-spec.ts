@@ -47,6 +47,12 @@ describe('Interaction Row Column Resize Tests', () => {
   const s2Options: S2Options = {
     width: 300,
     height: 200,
+    interaction: {
+      resize: {
+        colResizeType: ResizeType.ALL,
+        rowResizeType: ResizeType.ALL,
+      },
+    },
   };
 
   const emitResizeEvent = (
@@ -257,7 +263,8 @@ describe('Interaction Row Column Resize Tests', () => {
       resizedHeight: 0,
       size: 3,
       meta: {
-        field: 'test-1',
+        field: 'testField',
+        id: 'testFieldId',
       } as ResizeInfo['meta'],
     };
 
