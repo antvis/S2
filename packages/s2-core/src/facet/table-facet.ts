@@ -1,6 +1,5 @@
 import { Group, Rect } from '@antv/g';
 import { get, isBoolean, isEmpty, isNil, keys, last, maxBy, set } from 'lodash';
-import { FrozenGroup } from '../group/frozen-group';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -22,7 +21,6 @@ import {
 import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
-  DataItem,
   FilterParam,
   GetCellMeta,
   LayoutResult,
@@ -33,9 +31,9 @@ import type {
   SpreadSheetFacetCfg,
   TableSortParam,
   ViewMeta,
-  ViewMetaData,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
+import { FrozenGroup } from '../group/frozen-group';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
@@ -48,7 +46,6 @@ import {
 } from '../utils/grid';
 import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
-import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
 import { Frame, type SeriesNumberHeader } from './header';
@@ -259,7 +256,7 @@ export class TableFacet extends BaseFacet {
         cellRange.end - cellRange.start + 1,
       );
 
-      let data: DataItem;
+      let data;
 
       const x = col.x;
       let y = this.viewCellHeights.getCellOffsetY(rowIndex);
@@ -275,14 +272,12 @@ export class TableFacet extends BaseFacet {
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
         data = rowIndex + 1;
       } else {
-        data = getFieldValueOfViewMetaData(
-          dataSet.getCellData({
-            query: {
-              col: col.field,
-              rowIndex,
-            },
-          }),
-        );
+        data = dataSet.getCellData({
+          query: {
+            col: col.field,
+            rowIndex,
+          },
+        });
       }
       return {
         spreadsheet,
@@ -292,7 +287,7 @@ export class TableFacet extends BaseFacet {
         height: cellHeight,
         data: {
           [col.field]: data,
-        } as ViewMetaData,
+        },
         rowIndex,
         colIndex,
         isTotals: false,
@@ -301,7 +296,7 @@ export class TableFacet extends BaseFacet {
         valueField: col.field,
         fieldValue: data,
         id: getDataCellId(String(rowIndex), col.id),
-      };
+      } as ViewMeta;
     };
 
     return {

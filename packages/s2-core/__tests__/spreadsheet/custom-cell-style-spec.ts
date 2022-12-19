@@ -303,7 +303,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         const width = 100;
         const height = 200;
 
-        const subTypeId = `root[&]笔[&]`;
+        const subTypeId = `root[&]笔[&]sub_type`;
 
         s2.setOptions({
           style: {
@@ -440,6 +440,57 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             .map((cell) => cell.getMeta()),
         ),
       ).toMatchSnapshot();
+    });
+
+    test('should set col cell style by width', () => {
+      s2.setOptions({
+        style: {
+          colCfg: {
+            width: 100,
+          },
+        },
+      });
+      s2.render(false);
+
+      expect(mapNodeSize(s2.getColumnNodes())).toMatchSnapshot();
+    });
+
+    test('should set col cell style by field', () => {
+      const sheet = createTableSheet(s2Options, {
+        useSimpleData: false,
+      });
+      sheet.setOptions({
+        style: {
+          colCfg: {
+            widthByField: {
+              type: 50,
+              sub_type: 120,
+            },
+          },
+        },
+      });
+      sheet.render();
+
+      expect(mapNodeSize(sheet.getColumnNodes())).toMatchSnapshot();
+    });
+
+    test('should set col cell style by field id', () => {
+      const sheet = createTableSheet(s2Options, {
+        useSimpleData: false,
+      });
+      sheet.setOptions({
+        style: {
+          colCfg: {
+            widthByField: {
+              'root[&]类别': 100,
+              'root[&]子类别': 200,
+            },
+          },
+        },
+      });
+      sheet.render();
+
+      expect(mapNodeSize(sheet.getColumnNodes())).toMatchSnapshot();
     });
   });
 });

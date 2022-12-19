@@ -230,8 +230,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const {
       width: originalWidth,
       height: originalHeight,
-      resizedWidth,
-      resizedHeight,
+      resizedWidth = 0,
+      resizedHeight = 0,
     } = resizeInfo;
 
     const isDisabled = (resize as ResizeInteractionOptions)?.disable?.(
@@ -249,22 +249,32 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeCellField(resizeInfo: ResizeInfo) {
-    const {
-      options: { interaction },
-      isTableMode,
-    } = this.spreadsheet;
+    const isVertical = resizeInfo.type === ResizeDirectionType.Vertical;
+    const isOnlyEffectCurrent = isVertical
+      ? this.isOnlyEffectCurrentRow()
+      : this.isOnlyEffectCurrentCol();
 
-    const resizeType = interaction?.resize as ResizeInteractionOptions;
-    const isOnlyEffectCurrent =
-      resizeInfo.type === ResizeDirectionType.Vertical
-        ? resizeType?.rowResizeType === ResizeType.CURRENT
-        : resizeType?.colResizeType === ResizeType.CURRENT;
-
-    if (isTableMode()) {
-      return resizeInfo?.meta?.rowId || String(resizeInfo?.meta?.rowIndex);
+    if (this.spreadsheet.isTableMode()) {
+      return isVertical
+        ? resizeInfo?.meta?.rowId || String(resizeInfo?.meta?.rowIndex)
+        : resizeInfo?.meta?.field;
     }
 
-    return isOnlyEffectCurrent ? resizeInfo?.meta.id : resizeInfo?.meta.field;
+    return isOnlyEffectCurrent ? resizeInfo?.meta?.id : resizeInfo?.meta?.field;
+  }
+
+  private isOnlyEffectCurrentRow() {
+    return (
+      (this.spreadsheet.options.interaction?.resize as ResizeInteractionOptions)
+        ?.rowResizeType === ResizeType.CURRENT
+    );
+  }
+
+  private isOnlyEffectCurrentCol() {
+    return (
+      (this.spreadsheet.options.interaction?.resize as ResizeInteractionOptions)
+        ?.colResizeType === ResizeType.CURRENT
+    );
   }
 
   private getResizeWidthDetail(): ResizeDetail | null {
@@ -303,8 +313,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
             colCfg: {
+              width: this.isOnlyEffectCurrentCol() ? null : displayWidth,
               widthByField: {
-                [this.getResizeCellField(resizeInfo)]: displayWidth!,
+                [this.getResizeCellField(resizeInfo)!]: displayWidth,
               },
             },
           },
@@ -345,8 +356,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
             rowCfg: {
+              height: this.isOnlyEffectCurrentRow() ? null : height,
               heightByField: {
-                [this.getResizeCellField(resizeInfo)]: height,
+                [this.getResizeCellField(resizeInfo)!]: height,
               },
             },
           },
@@ -361,8 +373,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     resizeInfo: ResizeInfo,
     displayHeight: number,
   ): RowCfg['heightByField'] {
-    // 如果是自定义列头, 给同一 level 的字段设置高度
-    if (this.spreadsheet.isCustomColumnFields()) {
+    // 1. 自定义列头: 给同一 level 的字段设置高度. 2. 明细表: 列高一致
+    if (
+      this.spreadsheet.isCustomColumnFields() ||
+      this.spreadsheet.isTableMode()
+    ) {
       return this.spreadsheet
         .getColumnNodes()
         .filter((node) => node.level === resizeInfo.meta?.level)

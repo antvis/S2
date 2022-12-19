@@ -66,8 +66,8 @@ export const s2Options: SheetComponentOptions = {
       row: true,
     },
     resize: {
-      rowResizeType: ResizeType.CURRENT,
-      colResizeType: ResizeType.CURRENT,
+      rowResizeType: ResizeType.ALL,
+      colResizeType: ResizeType.ALL,
     },
   },
   tooltip: {
@@ -95,12 +95,12 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: isMobile() ? 60 : 200,
-      height: 150,
+      width: isMobile() ? 60 : 160,
+      height: 50,
     },
     cellCfg: {
       width: 100,
-      height: 70,
+      height: 40,
     },
   },
 };

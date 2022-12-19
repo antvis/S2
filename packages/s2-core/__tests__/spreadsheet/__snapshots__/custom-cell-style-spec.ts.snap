@@ -175,46 +175,6 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by heightByField > rowCfg.height > cellCfg.height 1`] = `
-Array [
-  Object {
-    "height": 66,
-    "id": "root[&]浙江",
-    "width": 149,
-  },
-  Object {
-    "height": 33,
-    "id": "root[&]浙江[&]义乌",
-    "width": 149,
-  },
-  Object {
-    "height": 33,
-    "id": "root[&]浙江[&]杭州",
-    "width": 149,
-  },
-]
-`;
-
-exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style priority by heightByField > rowCfg.height > cellCfg.height 1`] = `
-Array [
-  Object {
-    "height": 66,
-    "id": "root[&]浙江",
-    "width": 149,
-  },
-  Object {
-    "height": 33,
-    "id": "root[&]浙江[&]义乌",
-    "width": 149,
-  },
-  Object {
-    "height": 33,
-    "id": "root[&]浙江[&]杭州",
-    "width": 149,
-  },
-]
-`;
-
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests should render default cell style 1`] = `
 Array [
   Object {
@@ -427,6 +387,51 @@ Array [
   Object {
     "height": 30,
     "id": "12-root[&]子类别",
+    "width": 299,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by field 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]类别",
+    "width": 50,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]子类别",
+    "width": 120,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by field id 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]类别",
+    "width": 100,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]子类别",
+    "width": 200,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set col cell style by width 1`] = `
+Array [
+  Object {
+    "height": 30,
+    "id": "root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "root[&]子类别",
     "width": 299,
   },
 ]
