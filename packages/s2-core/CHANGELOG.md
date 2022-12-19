@@ -1,3 +1,15 @@
+# [@antv/s2-v1.39.0](https://github.com/antvis/S2/compare/@antv/s2-v1.38.0...@antv/s2-v1.39.0) (2022-12-19)
+
+
+### Bug Fixes
+
+* gui icon 加载完成后，增加检测步骤，避免无意义的渲染 warning ([#1997](https://github.com/antvis/S2/issues/1997)) ([6f13aa4](https://github.com/antvis/S2/commit/6f13aa43d8910f9ed83d59a9c958b26a0eb163d6))
+
+
+### Features
+
+* 添加字段标记中，定制柱状图的长度的功能 （filedValue） ([#2002](https://github.com/antvis/S2/issues/2002)) ([457e5e7](https://github.com/antvis/S2/commit/457e5e7989ce460e445f46925eaee79b49f56615))
+
 # [@antv/s2-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-v1.37.0...@antv/s2-v1.38.0) (2022-12-16)
 
 
