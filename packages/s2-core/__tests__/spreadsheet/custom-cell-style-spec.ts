@@ -374,6 +374,25 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           expect(node.width).toEqual(200);
         });
       });
+
+      test('should get custom col cell style if measure column hidden', () => {
+        const sheet = createPivotSheet({
+          ...s2Options,
+          style: {
+            colCfg: {
+              hideMeasureColumn: true,
+              widthByField: {
+                'root[&]笔': 100,
+              },
+            },
+          },
+        });
+        sheet.render();
+
+        sheet.getColumnLeafNodes().forEach((node) => {
+          expect(node.width).toEqual(100);
+        });
+      });
     });
   });
 

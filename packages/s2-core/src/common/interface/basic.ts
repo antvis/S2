@@ -301,20 +301,6 @@ export interface HeaderActionIcon {
   onHover?: (headerIconHoverParams: HeaderIconHoverParams) => void;
 }
 
-// Hook 渲染和布局相关的函数类型定义
-export type LayoutArrangeCallback = (
-  spreadsheet: SpreadSheet,
-  parent: Node,
-  field: string,
-  fieldValues: string[],
-) => string[];
-
-export type LayoutCallback = (
-  spreadsheet: SpreadSheet,
-  rowNode: Node,
-  colNode: Node,
-) => void;
-
 export type CellCallback<T extends BaseHeaderConfig> = (
   node: Node,
   spreadsheet: SpreadSheet,
@@ -331,19 +317,38 @@ export type CornerHeaderCallback = (
   ...restOptions: unknown[]
 ) => void;
 
-// 行列结构的自定义
-export type HierarchyResult = { nodes: Node[]; push: boolean };
-
-export type HierarchyCallback = (
-  spreadsheet: SpreadSheet,
-  node: Node,
-) => HierarchyResult;
-
 export type CellCustomSize =
   | null
   | undefined
   | number
-  | ((node: Node | null) => number);
+  | ((node: Node | null) => number | null);
+
+export interface BaseCellStyle {
+  /**
+   * 自定义宽度
+   * 1. [静态数值] width: 100
+   * 2. [动态计算] width: (node) => 100
+   */
+  width?: CellCustomSize;
+  /**
+   * 自定义高度
+   * 1. [静态数值] height: 100
+   * 2. [动态计算] height: (node) => 100
+   */
+  height?: CellCustomSize;
+  /**
+   * 自定义指定的单元格宽度
+   * 1. 根据 field { city: 20, type: 100 }
+   * 2. 根据 单元格 ID { 'root[&]杭州市': 20, 'root[&]类别': 100 }
+   */
+  widthByField?: Record<string, number> | null;
+  /**
+   * 自定义指定的单元格高度
+   * 1. 根据 field { city: 20, type: 100 }
+   * 2. 根据 单元格 ID { 'root[&]杭州市': 20, 'root[&]类别': 100 }
+   */
+  heightByField?: Record<string, number> | null;
+}
 
 export interface CellCfg {
   width?: number;
@@ -359,29 +364,14 @@ export interface CellCfg {
   };
 }
 
-export interface RowCfg {
-  // row's cell width
-  width?: CellCustomSize;
-  // row's cell height
-  height?: CellCustomSize;
-  // specific some row field's width
-  widthByField?: Record<string, number> | null;
-  heightByField?: Record<string, number> | null;
+export interface RowCfg extends BaseCellStyle {
   /**
    * @deprecated (已废弃, 请使用 style.treeRowsWidth 代替) tree row width(拖拽产生的，无需主动设置)
    */
   treeRowsWidth?: number;
 }
 
-export interface ColCfg {
-  // custom column width
-  width?: CellCustomSize;
-  // columns height(for normal state)
-  height?: CellCustomSize;
-  // specific some col field's width
-  widthByField?: Record<string, number> | null;
-  // specific some col field's height
-  heightByField?: Record<string, number> | null;
+export interface ColCfg extends BaseCellStyle {
   // hide last column(measure values), only work when has one value
   hideMeasureColumn?: boolean;
 }
