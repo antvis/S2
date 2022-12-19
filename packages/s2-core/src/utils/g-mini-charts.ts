@@ -3,7 +3,7 @@
  * https://github.com/antvis/g
  */
 
-import { get, isEmpty, map, max, min } from 'lodash';
+import { get, isEmpty, isNil, map, max, min } from 'lodash';
 import type {
   BaseChartData,
   BulletValue,
@@ -251,9 +251,9 @@ export const drawInterval = (cell: DataCell) => {
     const minValue = parseNumberWithPrecision(valueRange.minValue);
     const maxValue = parseNumberWithPrecision(valueRange.maxValue);
 
-    const fieldValue = parseNumberWithPrecision(
-      cell.getMeta().fieldValue as number,
-    );
+    const fieldValue = isNil(attrs?.fieldValue)
+      ? parseNumberWithPrecision(cell.getMeta().fieldValue as number)
+      : parseNumberWithPrecision(attrs?.fieldValue);
     // 对于超出设定范围的值不予显示
     if (fieldValue < minValue || fieldValue > maxValue) {
       return;
