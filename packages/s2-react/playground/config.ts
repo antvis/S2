@@ -13,6 +13,7 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+import { EXTRA_FIELD } from './../../s2-core/src/common/constant/basic';
 
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
@@ -97,6 +98,15 @@ export const s2Options: SheetComponentOptions = {
     rowCfg: {
       width: isMobile() ? 60 : 160,
       height: 50,
+    },
+    colCfg: {
+      widthByField: {
+        [EXTRA_FIELD]: 80,
+        'root[&]家具[&]沙发[&]number': 120,
+      },
+      heightByField: {
+        [EXTRA_FIELD]: 60,
+      },
     },
     cellCfg: {
       width: 100,
