@@ -459,7 +459,7 @@ export class TableFacet extends BaseFacet {
     let colWidth: number;
     if (layoutWidthType === LayoutWidthTypes.Compact) {
       const datas = dataSet.getDisplayDataSet();
-      const colLabel = colNode.label;
+      const colLabel = colNode.value;
 
       const allLabels =
         datas?.map((data) => `${data[colNode.field]}`)?.slice(0, 50) || []; // 采样取了前50

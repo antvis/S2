@@ -1,6 +1,6 @@
 import { filter, forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
-import { ID_SEPARATOR, InteractionStateName } from '../../common/constant';
+import { NODE_ID_SEPARATOR, InteractionStateName } from '../../common/constant';
 import { generateId } from '../layout/generate-id';
 
 /**
@@ -15,7 +15,7 @@ export const getActiveHoverRowColCells = (
   isRowInHierarchyTreeType?: boolean,
 ) => {
   let allHeaderIds: string[];
-  const ids = id.split(ID_SEPARATOR);
+  const ids = id.split(NODE_ID_SEPARATOR);
   if (isRowInHierarchyTreeType) {
     allHeaderIds = [id];
   } else {

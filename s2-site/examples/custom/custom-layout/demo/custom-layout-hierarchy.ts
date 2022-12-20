@@ -53,30 +53,26 @@ fetch(
       layoutHierarchy: (s2, node) => {
         // layoutHierarchy 用于手动控制行列结构的增加、删除的特殊场景。
         // 以 「宁波市」为例，删除其节点，增加宁波A和宁波B节点。
-        const { field, label } = node;
-        if (field === 'city' && label === '宁波市') {
-          const preLabel = '宁波A';
-          const nextLabel = '宁波B';
+        const { field, value } = node;
+        if (field === 'city' && value === '宁波市') {
+          const preValue = '宁波A';
+          const nextValue = '宁波B';
 
           const parentNode = node.parent;
-          const preUniqueId = generateId(parentNode.id, preLabel);
-          const nextUniqueId = generateId(parentNode.id, nextLabel);
+          const preUniqueId = generateId(parentNode.id, preValue);
+          const nextUniqueId = generateId(parentNode.id, nextValue);
           const preNode = new Node({
             ...node,
-            ...node.config,
             id: preUniqueId,
-            label: preLabel,
-            value: preLabel,
-            query: { ...parentNode.query, [node.key]: preLabel },
+            value: preValue,
+            query: { ...parentNode.query, [node.field]: preValue },
           });
 
           const nextNode = new Node({
             ...node,
-            ...node.config,
             id: nextUniqueId,
-            label: nextLabel,
-            value: nextLabel,
-            query: { ...parentNode.query, [node.key]: nextLabel },
+            value: nextValue,
+            query: { ...parentNode.query, [node.field]: nextValue },
           });
 
           return {

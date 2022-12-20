@@ -30,7 +30,7 @@ describe('List Table Core Data Process', () => {
       expect(colsHierarchy.getIndexNodes()).toHaveLength(5);
       expect(colsHierarchy.getLeaves()).toHaveLength(5);
       // 层级正确
-      expect(colsHierarchy.getNodes().map((node) => node.label)).toEqual([
+      expect(colsHierarchy.getNodes().map((node) => node.value)).toEqual([
         'province',
         'city',
         'type',

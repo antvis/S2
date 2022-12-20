@@ -401,14 +401,14 @@ describe('RootInteraction Tests', () => {
 
       const mockNodeA = new Node({
         id: 'test',
-        key: 'test',
+        field: 'test',
         value: '1',
         belongsCell,
       });
 
       const mockNodeB = new Node({
         id: 'test',
-        key: 'test',
+        field: 'test',
         value: '1',
         belongsCell,
       });

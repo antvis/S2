@@ -24,13 +24,13 @@ export const tableSheetSingleColumns: CustomHeaderField[] = [
 
 export const tableSheetMultipleColumns: CustomHeaderField[] = [
   {
-    key: 'area',
-    children: [{ key: 'province' }, { key: 'city' }],
+    field: 'area',
+    children: [{ field: 'province' }, { field: 'city' }],
   },
   'type',
   {
-    key: 'money',
-    children: [{ key: 'price' }, { key: 'number' }],
+    field: 'money',
+    children: [{ field: 'price' }, { field: 'number' }],
   },
 ];
 

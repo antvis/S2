@@ -60,7 +60,7 @@ const CustomLayoutArrange = (
 ): string[] => {
   // 针对city进行顺序的调整. 比如如下是将「 广东 」下[珠海，海门，东莞]进行顺序的调整为
   // [东莞，珠海，海门]
-  if (field === 'city' && parent.label === '广东') {
+  if (field === 'city' && parent.value === '广东') {
     const index1 = fieldValues.indexOf('珠海');
     const index2 = fieldValues.indexOf('海门');
     const index3 = fieldValues.indexOf('东莞');
@@ -77,8 +77,8 @@ const CustomLayoutHierarchy = (
 ): LayoutHierarchyReturnType => {
   // 删除「广州」节点，并且在「广州」节点前添加「前序节点A」，
   // 节点后添加「后续节点B」
-  const { field, label } = node;
-  if (field === 'city' && label === '广州') {
+  const { field, value } = node;
+  if (field === 'city' && value === '广州') {
     const preValue = '前序节点A';
     const nextValue = '后序节点A';
     const parentNode = node.parent;
@@ -87,8 +87,7 @@ const CustomLayoutHierarchy = (
     const preNode = new Node({
       ...node.config,
       id: preUniqueId,
-      key: node.key,
-      label: preValue,
+      field: node.field,
       value: preValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
@@ -98,8 +97,7 @@ const CustomLayoutHierarchy = (
     const nextNode = new Node({
       ...node.config,
       id: nextUniqueId,
-      key: node.key,
-      label: nextValue,
+      field: node.field,
       value: nextValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
@@ -123,7 +121,7 @@ const CustomLayoutCoordinate = (
   colNode: Node | null,
 ) => {
   // 东莞 这行高度调整为70
-  if (rowNode?.label === '东莞') {
+  if (rowNode?.value === '东莞') {
     rowNode.height = 70;
   }
 };
@@ -199,9 +197,9 @@ describe('layout hooks spec', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
     let arrangeValues;
     if (innerSS.options.hierarchyType === 'tree') {
-      arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.label);
+      arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.value);
     } else {
-      arrangeValues = rowLeafNodes.slice(0, 3).map((v) => v.label);
+      arrangeValues = rowLeafNodes.slice(0, 3).map((v) => v.value);
     }
     expect(arrangeValues).toEqual(['东莞', '珠海', '海门']);
   });
@@ -210,16 +208,16 @@ describe('layout hooks spec', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
     let addValues;
     if (innerSS.options.hierarchyType === 'tree') {
-      addValues = rowLeafNodes.slice(5, 8).map((v) => v.label);
+      addValues = rowLeafNodes.slice(5, 8).map((v) => v.value);
     } else {
-      addValues = rowLeafNodes.slice(3, 6).map((v) => v.label);
+      addValues = rowLeafNodes.slice(3, 6).map((v) => v.value);
     }
     expect(addValues).toEqual(['前序节点A', '广州', '后序节点A']);
   });
 
   test('layout coordinate hook', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
-    const item = rowLeafNodes.find((rn) => rn.label === '东莞');
+    const item = rowLeafNodes.find((rn) => rn.value === '东莞');
     expect(item?.height).toEqual(70);
   });
 

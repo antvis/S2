@@ -111,7 +111,6 @@ describe('Col Cell Tests', () => {
   describe('Col Cell Formatter Test', () => {
     const node = {
       id: 1,
-      label: 'label',
       fieldValue: 'fieldValue',
       value: 'value',
     } as unknown as Node;
@@ -123,7 +122,7 @@ describe('Col Cell Tests', () => {
       // eslint-disable-next-line no-new
       new ColCell(node, s2);
 
-      expect(formatter).toHaveBeenCalledWith(node.label, undefined, node);
+      expect(formatter).toHaveBeenCalledWith(node.value, undefined, node);
     });
 
     test('should return correct formatted value', () => {

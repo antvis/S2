@@ -111,12 +111,12 @@ describe('Spreadsheet Totals Tests', () => {
 
     const findSubTotalNode = (
       nodes: Node[],
-      parentLabel: string,
+      parentValue: string,
       subTotalDimension: string,
     ) => {
       return nodes.find(
         (node) =>
-          node.parent?.label === parentLabel &&
+          node.parent?.value === parentValue &&
           node.field === subTotalDimension &&
           node.isSubTotals,
       );

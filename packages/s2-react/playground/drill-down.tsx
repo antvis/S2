@@ -38,7 +38,7 @@ export const partDrillDown: PartDrillDown = {
         .getMultiData(meta.query, {}, [preDrillDownfield])
         .filter(
           (item) =>
-            item.getValueByKey('type') && item.getValueByKey('sub_type'),
+            item.getValueByField('type') && item.getValueByField('sub_type'),
         );
 
       const drillDownData: RawData[] = [];

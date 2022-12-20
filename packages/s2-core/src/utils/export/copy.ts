@@ -15,7 +15,7 @@ import {
   CellTypes,
   CopyType,
   EMPTY_PLACEHOLDER,
-  ID_SEPARATOR,
+  NODE_ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
   type Data,
@@ -131,7 +131,7 @@ export const convertString = (value: DataItem) => {
  * @param startLevel 层级
  */
 const getHeaderList = (headerId: string, startLevel?: number) => {
-  const headerList = headerId.split(ID_SEPARATOR);
+  const headerList = headerId.split(NODE_ID_SEPARATOR);
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }
@@ -607,11 +607,11 @@ function getCellMatrix(
 ) {
   return map(lastLevelCells, (cell: RowCell | ColCell) => {
     const meta = cell.getMeta();
-    const { id, label, isTotals, level } = meta;
+    const { id, value, isTotals, level } = meta;
     let cellId = id;
     // 为总计小计补齐高度
     if (isTotals && level !== maxLevel) {
-      cellId = id + ID_SEPARATOR + repeat(label, maxLevel - level);
+      cellId = id + NODE_ID_SEPARATOR + repeat(value, maxLevel - level);
     }
     return getHeaderList(cellId, allLevel.size);
   });

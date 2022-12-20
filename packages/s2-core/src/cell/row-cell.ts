@@ -190,7 +190,10 @@ export class RowCell extends HeaderCell {
     const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
 
-    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill!);
+    super.drawLinkFieldShape(
+      linkFields.includes(this.meta.field),
+      linkTextFill!,
+    );
   }
 
   protected drawResizeAreaInLeaf() {

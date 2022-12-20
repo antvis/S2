@@ -1,8 +1,8 @@
 import { isNull, isUndefined } from 'lodash';
 import {
-  ID_SEPARATOR,
+  NODE_ID_SEPARATOR,
   NULL_SYMBOL_ID,
-  ROOT_ID,
+  ROOT_NODE_ID,
   UNDEFINED_SYMBOL_ID,
 } from '../../common/constant';
 /**
@@ -20,14 +20,14 @@ export const generateId = (...ids: string[]): string => {
       }
       return String(value);
     })
-    .join(ID_SEPARATOR);
+    .join(NODE_ID_SEPARATOR);
 };
 
 export const resolveId = (id = '') => {
   return id
-    .split(ID_SEPARATOR)
+    .split(NODE_ID_SEPARATOR)
     .reduce<(string | null | undefined)[]>((result, current) => {
-      if (current === ROOT_ID) {
+      if (current === ROOT_NODE_ID) {
         return result;
       }
 

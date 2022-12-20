@@ -1,7 +1,6 @@
 import { Rect, type Group, type PointLike } from '@antv/g';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import { KEY_SERIES_NUMBER_NODE } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
@@ -125,7 +124,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (seriesNumberWidth && leafNode) {
       const sNode: Node = new Node({
         id: '',
-        key: KEY_SERIES_NUMBER_NODE, // mark series node
+        field: '',
         value: spreadsheet.options.seriesNumberText ?? i18n('序号'),
       });
       sNode.x = position?.x;
@@ -145,8 +144,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       if (spreadsheet.isHierarchyTreeType()) {
         const cornerText = this.getTreeCornerText(options);
         const cornerNode: Node = new Node({
-          key: '',
           id: '',
+          field: '',
           value: cornerText,
         });
         cornerNode.x = position.x + seriesNumberWidth;
@@ -165,16 +164,16 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
         // spreadsheet type grid mode
         rowNodes.forEach((rowNode) => {
-          // 自定义行头直接取采样的行头 key 值即可, 可通过 s2DataCfg.meta.name 自定义名称
+          // 自定义行头直接取采样的行头 field 值即可, 可通过 s2DataCfg.meta.name 自定义名称
           const field = isCustomRow
-            ? rowNode.key
+            ? rowNode.field
             : (rows[rowNode.level] as string);
 
           const value = dataSet.getFieldName(field);
 
           const cornerNode: Node = new Node({
-            key: field,
             id: '',
+            field,
             value,
           });
 
@@ -182,7 +181,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cornerNode.y = leafNode?.y;
           cornerNode.width = rowNode.width;
           cornerNode.height = leafNode?.height;
-          cornerNode.field = field;
           cornerNode.isPivotMode = true;
           cornerNode.cornerType = CornerNodeType.Row;
           cornerNode.spreadsheet = spreadsheet;
@@ -198,20 +196,19 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
         const field = isCustomColumn
-          ? colNode.key
+          ? colNode.field
           : (columns[colNode.level] as string);
         const value = dataSet.getFieldName(field);
 
         const cNode = new Node({
-          key: field,
           id: '',
+          field,
           value,
         });
         cNode.x = position.x;
         cNode.y = colNode.y;
         cNode.width = width;
         cNode.height = colNode.height;
-        cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
         cNode.spreadsheet = spreadsheet;

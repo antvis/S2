@@ -44,7 +44,7 @@ describe('TableSheet Tests', () => {
 
       const nodeMeta = new Node({
         id: '1',
-        key: '1',
+        field: '1',
         value: 'testValue',
       });
 

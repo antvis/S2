@@ -597,7 +597,7 @@ describe('Custom Column Width Tests', () => {
       ...assembleDataCfg().fields,
       ...assembleOptions(),
     });
-    const node = new Node({ id: '1', key: '1', value: '1' });
+    const node = new Node({ id: '1', field: '1', value: '1' });
 
     expect(facet.getHiddenColumnsInfo(node)).toBeUndefined();
 
@@ -625,11 +625,11 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     ...DEFAULT_STYLE,
     columns: [
       {
-        key: 'area',
+        field: 'area',
         children: ['province', 'city'],
       },
       {
-        key: 'all_type',
+        field: 'all_type',
         children: ['type', 'sub_type'],
       },
       'price',
@@ -688,12 +688,12 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       ...DEFAULT_STYLE,
       columns: [
         {
-          key: 'area',
+          field: 'area',
           children: ['province', 'city'],
         },
         'price',
         {
-          key: 'all_type',
+          field: 'all_type',
           children: ['type', 'sub_type'],
         },
       ],

@@ -1,5 +1,4 @@
 import { isNil } from 'lodash';
-import { SERIES_NUMBER_FIELD } from '../../common/constant/basic';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
 import { Node } from '../layout/node';
@@ -29,7 +28,7 @@ export const getSeriesNumberNodes = (
   return rootNodes.map((node: Node, idx: number) => {
     const sNode = new Node({
       id: '',
-      key: SERIES_NUMBER_FIELD,
+      field: '',
       rowIndex: idx,
       value: `${idx + 1}`,
     });

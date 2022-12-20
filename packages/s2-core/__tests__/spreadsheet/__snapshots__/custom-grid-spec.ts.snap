@@ -4,19 +4,19 @@ exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should calc correct
 Array [
   Object {
     "colIndex": 0,
-    "label": "指标1",
+    "value": "指标1",
   },
   Object {
     "colIndex": 1,
-    "label": "指标2",
+    "value": "指标2",
   },
   Object {
     "colIndex": 2,
-    "label": "自定义节点 a-1-2",
+    "value": "自定义节点 a-1-2",
   },
   Object {
     "colIndex": 3,
-    "label": "自定义节点 a-2",
+    "value": "自定义节点 a-2",
   },
 ]
 `;
@@ -25,27 +25,27 @@ exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should calc correct
 Array [
   Object {
     "height": 30,
-    "label": "自定义节点 a-1",
+    "value": "自定义节点 a-1",
   },
   Object {
     "height": 40,
-    "label": "自定义节点 a-1-1",
+    "value": "自定义节点 a-1-1",
   },
   Object {
     "height": 30,
-    "label": "指标1",
+    "value": "指标1",
   },
   Object {
     "height": 30,
-    "label": "指标2",
+    "value": "指标2",
   },
   Object {
     "height": 70,
-    "label": "自定义节点 a-1-2",
+    "value": "自定义节点 a-1-2",
   },
   Object {
     "height": 100,
-    "label": "自定义节点 a-2",
+    "value": "自定义节点 a-2",
   },
 ]
 `;
@@ -54,19 +54,19 @@ exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should render custo
 Array [
   Object {
     "field": "type",
-    "label": "类型",
+    "value": "类型",
   },
   Object {
     "field": "sub_type",
-    "label": "子类型",
+    "value": "子类型",
   },
   Object {
     "field": "a-1",
-    "label": "层级1",
+    "value": "层级1",
   },
   Object {
     "field": "a-1-1",
-    "label": "层级2",
+    "value": "层级2",
   },
 ]
 `;
@@ -76,37 +76,37 @@ Array [
   Object {
     "description": "a-1 描述",
     "height": 30,
-    "label": "自定义节点 a-1",
+    "value": "自定义节点 a-1",
     "width": 300,
   },
   Object {
     "description": "a-1-1 描述",
     "height": 30,
-    "label": "自定义节点 a-1-1",
+    "value": "自定义节点 a-1-1",
     "width": 200,
   },
   Object {
     "description": "指标1描述",
     "height": 30,
-    "label": "指标1",
+    "value": "指标1",
     "width": 100,
   },
   Object {
     "description": "指标2描述",
     "height": 30,
-    "label": "指标2",
+    "value": "指标2",
     "width": 100,
   },
   Object {
     "description": "a-1-2 描述",
     "height": 60,
-    "label": "自定义节点 a-1-2",
+    "value": "自定义节点 a-1-2",
     "width": 100,
   },
   Object {
     "description": "a-2 描述",
     "height": 90,
-    "label": "自定义节点 a-2",
+    "value": "自定义节点 a-2",
     "width": 100,
   },
 ]
@@ -149,20 +149,20 @@ Array [
 exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should calc correctly row index of leaf nodes 1`] = `
 Array [
   Object {
-    "label": "指标1",
     "rowIndex": 0,
+    "value": "指标1",
   },
   Object {
-    "label": "指标2",
     "rowIndex": 1,
+    "value": "指标2",
   },
   Object {
-    "label": "自定义节点 a-1-2",
     "rowIndex": 2,
+    "value": "自定义节点 a-1-2",
   },
   Object {
-    "label": "自定义节点 a-2",
     "rowIndex": 3,
+    "value": "自定义节点 a-2",
   },
 ]
 `;
@@ -171,19 +171,19 @@ exports[`SpreadSheet Custom Grid Tests Custom Row Grid Tests should render custo
 Array [
   Object {
     "field": "a-1",
-    "label": "层级1",
+    "value": "层级1",
   },
   Object {
     "field": "a-1-1",
-    "label": "层级2",
+    "value": "层级2",
   },
   Object {
     "field": "measure-1",
-    "label": "层级3",
+    "value": "层级3",
   },
   Object {
     "field": "type",
-    "label": "类型",
+    "value": "类型",
   },
 ]
 `;
@@ -193,37 +193,37 @@ Array [
   Object {
     "description": "a-1 描述",
     "height": 90,
-    "label": "自定义节点 a-1",
+    "value": "自定义节点 a-1",
     "width": 119,
   },
   Object {
     "description": "a-1-1 描述",
     "height": 60,
-    "label": "自定义节点 a-1-1",
+    "value": "自定义节点 a-1-1",
     "width": 119,
   },
   Object {
     "description": "指标1描述",
     "height": 30,
-    "label": "指标1",
+    "value": "指标1",
     "width": 119,
   },
   Object {
     "description": "指标2描述",
     "height": 30,
-    "label": "指标2",
+    "value": "指标2",
     "width": 119,
   },
   Object {
     "description": "a-1-2 描述",
     "height": 30,
-    "label": "自定义节点 a-1-2",
+    "value": "自定义节点 a-1-2",
     "width": 238,
   },
   Object {
     "description": "a-2 描述",
     "height": 30,
-    "label": "自定义节点 a-2",
+    "value": "自定义节点 a-2",
     "width": 357,
   },
 ]

@@ -433,7 +433,7 @@ export const getDisplayedColumnsTree = (
 ): CustomTreeNode[] => {
   return columnsTree.reduce<CustomTreeNode[]>((tree, column) => {
     if (typeof column === 'string') {
-      column = { key: column } as CustomTreeNode;
+      column = { field: column } as CustomTreeNode;
     }
     const copyColumn = { ...column };
     // 分支节点显示
@@ -446,7 +446,7 @@ export const getDisplayedColumnsTree = (
       return tree;
     }
     // 非分支节点判断是否显示
-    if (fieldsMap[copyColumn.key]) {
+    if (fieldsMap[copyColumn.field]) {
       tree.push(copyColumn);
     }
     return tree;
@@ -509,7 +509,7 @@ export const getLeafColumnsWithKey = (
     if (typeof column === 'string') {
       return column;
     }
-    return column.key;
+    return column.field;
   });
 };
 

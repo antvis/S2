@@ -220,7 +220,7 @@ describe('<StrategySheet/> Tests', () => {
 
     const rowNodes = s2.facet.layoutResult.rowNodes.map((node) => ({
       field: node.field,
-      label: node.label,
+      value: node.value,
     }));
     expect(rowNodes).toMatchSnapshot();
   });

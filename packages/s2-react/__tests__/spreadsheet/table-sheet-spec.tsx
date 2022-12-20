@@ -156,8 +156,8 @@ function MainLayout({ callback }: Props) {
 
   useEffect(() => {
     s2Ref.current!.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current!.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
-      message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
+    s2Ref.current!.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ field, record }) => {
+      message.info(`key: ${field}, name: ${JSON.stringify(record)}`);
     });
     s2Ref.current!.on(S2Event.LAYOUT_COLS_EXPANDED, logData);
     s2Ref.current!.on(S2Event.LAYOUT_COLS_HIDDEN, logData);

@@ -146,7 +146,7 @@ describe('Text Utils Tests', () => {
     const meta = {
       id: 'root',
       value: '',
-      key: '',
+      field: '',
     };
 
     const placeholder = getEmptyPlaceholder(meta, '*');

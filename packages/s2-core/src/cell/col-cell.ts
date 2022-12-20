@@ -76,7 +76,7 @@ export class ColCell extends HeaderCell {
       return super.getIconPosition(this.getActionIconsCount());
     }
 
-    // 非叶子节点，因 label 滚动展示，需要适配不同 align情况
+    // 非叶子节点，因 value 滚动展示，需要适配不同 align情况
     const iconStyle = this.getIconStyle();
     const iconMarginLeft = iconStyle!.margin!.left;
 

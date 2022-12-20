@@ -1,14 +1,19 @@
-import { head, isEmpty, isEqual, omit } from 'lodash';
-import { ROOT_ID } from '../../common/constant/basic';
+import { head, isEmpty, isEqual } from 'lodash';
+import { ROOT_NODE_ID } from '../../common/constant/node';
 import type { CornerNodeType, S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
+  /**
+   * id 只在行头、列头 node 以及 hierarchy 中有用，是当前 node query 的拼接产物
+   */
   id: string;
-  key: string;
+  /**
+   * 当前 node 的 field 属性， 在角头、行列头中 node 使用，和 dataCfg.fields 对应
+   */
+  field: string;
   value: string;
-  label?: string;
   level?: number;
   rowIndex?: number;
   colIndex?: number;
@@ -20,7 +25,6 @@ export interface BaseNodeConfig {
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
-  field?: string;
   spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
   belongsCell?: S2CellType;
@@ -41,40 +45,110 @@ export interface BaseNodeConfig {
  * Node for cornerHeader, colHeader, rowHeader
  */
 export class Node {
+  // node unique id: {parent fieldName - fieldName(total name)}
+  public id: string;
+
+  public value: string;
+
+  // field key
+  public field: string;
+
+  // node top-left x-coordinate
+  public x = 0;
+
+  // node top-left y-coordinate
+  public y = 0;
+
+  // node width
+  public width = 0;
+
+  // node height
+  public height = 0;
+
+  // cell index in layout list(TODO What's use for?)
+  public colIndex = -1;
+
+  // node's level in tree hierarchy
+  public level = 0;
+
+  // list table row index.
+  public rowIndex: number;
+
+  // node's parent node
+  public parent: Node | undefined;
+
+  // check if node is leaf(the max level in tree)
+  public isLeaf = false;
+
+  // node is grand total or subtotal(not normal node)
+  public isTotals: boolean;
+
+  public colId: string;
+
   // node represent total measure
   public isTotalMeasure: boolean;
 
-  public config: BaseNodeConfig;
+  // node is collapsed
+  public isCollapsed: boolean;
 
-  constructor(cfg: BaseNodeConfig) {
-    const {
-      id,
-      key,
-      value,
-      label,
-      parent,
-      level,
-      rowIndex,
-      isTotals,
-      isGrandTotals,
-      isSubTotals,
-      isCollapsed,
-      hierarchy,
-      isPivotMode,
-      seriesNumberWidth,
-      field,
-      spreadsheet,
-      query,
-      belongsCell,
-      inCollapseNode,
-      isTotalMeasure,
-      isLeaf,
-      extra,
-    } = cfg;
+  // node's children
+  public children: Node[] = [];
+
+  // node width adaptive mode need paddingLeft = paddingRight
+  public padding = 0;
+
+  // node's hierarchy
+  public hierarchy: Hierarchy;
+
+  // is pivot mode
+  public isPivotMode: boolean;
+
+  // series number width
+  public seriesNumberWidth: number;
+
+  // spreadsheet instance
+  public spreadsheet: SpreadSheet;
+
+  // node self's query condition(represent where node stay)
+  public query?: Record<string, any>;
+
+  public belongsCell?: S2CellType | null | undefined;
+
+  public inCollapseNode?: boolean;
+
+  public cornerType?: CornerNodeType;
+
+  public isGrandTotals?: boolean;
+
+  public isSubTotals?: boolean;
+
+  [key: string]: any;
+
+  constructor({
+    id,
+    field,
+    value,
+    parent,
+    level,
+    rowIndex,
+    isTotals,
+    isGrandTotals,
+    isSubTotals,
+    isCollapsed,
+    hierarchy,
+    isPivotMode,
+    seriesNumberWidth,
+    spreadsheet,
+    query,
+    belongsCell,
+    inCollapseNode,
+    isTotalMeasure,
+    isLeaf,
+    extra,
+  }: BaseNodeConfig) {
     this.id = id;
-    this.key = key;
+    this.field = field;
     this.value = value;
-    this.label = label || value;
     this.parent = parent;
     this.level = level!;
     this.rowIndex = rowIndex!;
@@ -83,28 +157,14 @@ export class Node {
     this.hierarchy = hierarchy!;
     this.isPivotMode = isPivotMode!;
     this.seriesNumberWidth = seriesNumberWidth!;
-    this.field = field!;
     this.spreadsheet = spreadsheet!;
     this.query = query;
-    this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
     this.isTotalMeasure = isTotalMeasure!;
     this.isLeaf = isLeaf!;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
-    this.config = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      colIndex: -1,
-      children: [],
-      padding: 0,
-      id: '',
-      key: '',
-      value: '',
-      label: '',
-    };
+    this.belongsCell = belongsCell;
     this.extra = extra;
   }
 
@@ -119,7 +179,7 @@ export class Node {
       // total nodes don't need rows from node self except in drill down mode
       let parent = node.parent;
       const fieldPath = [node.field];
-      while (parent && parent.id !== ROOT_ID) {
+      while (parent && parent.id !== ROOT_NODE_ID) {
         fieldPath.push(parent.field);
         parent = parent.parent;
       }
@@ -222,107 +282,20 @@ export class Node {
     return all;
   }
 
-  // node unique id: {parent fieldName - fieldName(total name)}
-  public id: string;
-
-  // node top-left x-coordinate
-  public x = 0;
-
-  // node top-left y-coordinate
-  public y = 0;
-
-  // node width
-  public width = 0;
-
-  // node height
-  public height = 0;
-
-  // node real display text label
-  public label: string;
-
-  // node field name
-  public key: string;
-
-  // the same as {@see label}
-  public value: string;
-
-  // cell index in layout list(TODO What's use for?)
-  public colIndex = -1;
-
-  // node's level in tree hierarchy
-  public level = 0;
-
-  // list table row index.
-  public rowIndex: number;
-
-  // node's parent node
-  public parent: Node | undefined;
-
-  // check if node is leaf(the max level in tree)
-  public isLeaf = false;
-
-  // node is grand total or subtotal(not normal node)
-  public isTotals: boolean;
-
-  public colId: string;
-
   public static blankNode(): Node {
     return new Node({
       id: '',
-      key: '',
+      field: '',
       value: '',
     });
   }
-
-  // node is collapsed
-  public isCollapsed: boolean;
-
-  // node's children
-  public children: Node[] = [];
-
-  // node width adaptive mode need paddingLeft = paddingRight
-  public padding = 0;
-
-  // node's hierarchy
-  public hierarchy: Hierarchy;
-
-  // is pivot mode
-  public isPivotMode: boolean;
-
-  // series number width
-  public seriesNumberWidth: number;
-
-  // field key
-  public field: string;
-
-  // spreadsheet instance
-  public spreadsheet: SpreadSheet;
-
-  // node self's query condition(represent where node stay)
-  public query?: Record<string, any>;
-
-  public belongsCell?: S2CellType | null | undefined;
-
-  public inCollapseNode?: boolean;
-
-  public cornerType?: CornerNodeType;
-
-  public isGrandTotals?: boolean;
-
-  public isSubTotals?: boolean;
-
-  [key: string]: any;
 
   public static rootNode(): Node {
     return new Node({
-      id: 'root',
-      key: '',
+      id: ROOT_NODE_ID,
+      field: '',
       value: '',
     });
-  }
-
-  public toJSON() {
-    return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 
   public getHeadLeafChild() {

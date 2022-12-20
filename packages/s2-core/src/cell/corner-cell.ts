@@ -1,19 +1,8 @@
 import type { PointLike } from '@antv/g';
-import {
-  cond,
-  constant,
-  isEmpty,
-  isEqual,
-  last,
-  matches,
-  max,
-  stubTrue,
-} from 'lodash';
+import { cond, constant, isEmpty, last, matches, max, stubTrue } from 'lodash';
 import {
   CellTypes,
   ELLIPSIS_SYMBOL,
-  EXTRA_FIELD,
-  getDefaultCornerText,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -37,7 +26,7 @@ import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
-  /* 角头 label 类型 */
+  /* 角头类型 */
   public cornerType: CornerNodeType;
 
   protected declare headerConfig: CornerHeaderConfig;
@@ -355,15 +344,11 @@ export class CornerCell extends HeaderCell {
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
-      this.spreadsheet.dataSet.getFieldName(this.meta.label),
+      this.spreadsheet.dataSet.getFieldName(this.meta.field),
     );
   }
 
   protected getCornerText(): string {
-    if (isEqual(this.meta.label, EXTRA_FIELD)) {
-      return this.spreadsheet.options?.cornerText ?? getDefaultCornerText();
-    }
-
     const { formattedValue } = this.getFormattedFieldValue();
     return formattedValue;
   }

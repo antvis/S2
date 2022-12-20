@@ -13,11 +13,11 @@ export class CellData {
     return this.raw;
   }
 
-  getValueByKey(key: string) {
-    if (key === VALUE_FIELD || key === EXTRA_FIELD) {
-      return this[key];
+  getValueByField(field: string) {
+    if (field === VALUE_FIELD || field === EXTRA_FIELD) {
+      return this[field];
     }
-    return this.raw?.[key];
+    return this.raw?.[field];
   }
 
   get [EXTRA_FIELD]() {
@@ -29,9 +29,9 @@ export class CellData {
   }
 }
 
-export const getFieldValueOfViewMetaData = (data: ViewMetaData, key = '') => {
+export const getFieldValueOfViewMetaData = (data: ViewMetaData, field = '') => {
   if (data instanceof CellData) {
-    return key ? data.getValueByKey(key) : data.getOrigin();
+    return field ? data.getValueByField(field) : data.getOrigin();
   }
-  return data?.[key];
+  return data?.[field];
 };

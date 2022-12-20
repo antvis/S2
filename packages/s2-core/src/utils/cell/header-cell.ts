@@ -74,17 +74,17 @@ export const formattedFieldValue = (
   meta: Node,
   fieldName: string,
 ): FormatResult => {
-  const { label, field } = meta;
+  const { value, field } = meta;
 
   if (!isEqual(field, EXTRA_FIELD)) {
     return {
-      formattedValue: label,
-      value: label,
+      formattedValue: value,
+      value,
     };
   }
 
   return {
-    formattedValue: fieldName || label,
-    value: label,
+    formattedValue: fieldName || value,
+    value,
   };
 };
