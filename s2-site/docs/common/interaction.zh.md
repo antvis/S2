@@ -27,7 +27,6 @@ order: 5
 | selectedCellHighlight                | 选中格子后的高亮行为<br/>rowHeader：是否高亮选中格子所在行头<br/>colHeader：是否高亮选中格子所在列头<br/>rowCells：是否高亮选中格子所在行<br/>colCells：是否高亮选中格子所在列<br/>true：同{rowHeader: true, colHeader: true}                                                                                                                         | `boolean | { rowHeader?: boolean, colHeader?: boolean, rowCells?: boolean, colCells?: boolean }` |                                  | `false`                                               |                  |
 | overscrollBehavior                   | 控制滚动至边界的行为，可禁用浏览器的默认滚动行为。[详情](/docs/manual/advanced/interaction/basic/#修改滚动至边界行为)  | `auto \| contain \| none \| null`  |  `auto` |
 
-
 ### CustomInteraction
 
 功能描述：自定义交互，继承 baseEvent:  [具体例子](/docs/manual/advanced/interaction/custom)

@@ -696,7 +696,7 @@ export const getDataByRowData = (
     const rowDataFlatten = flattenDeep(rowData);
     // 去掉小计
     const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
-      [...rows, ...columns].every((field) => !isNil(data[field])),
+      [...rows, ...columns].every((field) => !isNil(data[field as string])),
     );
     datas = reduce(
       rowDataFlattenWithoutTotal,
