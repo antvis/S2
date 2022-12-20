@@ -20,7 +20,7 @@ import {
 } from 'lodash';
 import {
   EXTRA_FIELD,
-  ID_SEPARATOR,
+  NODE_ID_SEPARATOR,
   TOTAL_VALUE,
   MULTI_VALUE,
   VALUE_FIELD,
@@ -328,7 +328,7 @@ export class PivotDataSet extends BaseDataSet {
       for (const dimension of dimensions) {
         const value: string = get(query, dimension as string);
         dimensionValuePath.push(`${value}`);
-        const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
+        const cacheKey = dimensionValuePath.join(`${NODE_ID_SEPARATOR}`);
         if (meta.has(value) && !isUndefined(value)) {
           const childField = meta.get(value)?.childField;
           meta = meta.get(value)!.children;

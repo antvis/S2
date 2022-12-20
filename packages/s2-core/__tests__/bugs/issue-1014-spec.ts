@@ -78,16 +78,13 @@ describe('Formatter Tests', () => {
     );
 
     expect(get(provinceCornerNode, 'meta.value')).toStrictEqual('省份');
-    expect(get(provinceCornerNode, 'meta.label')).toStrictEqual('省份');
     expect(get(cityCornerNode, 'meta.value')).toStrictEqual('城市');
-    expect(get(cityCornerNode, 'meta.label')).toStrictEqual('城市');
   });
 
   test('row should not be formatted', () => {
     const rowNodes = s2.getRowNodes();
     const provinceRowNode = rowNodes.find(({ field }) => field === 'province');
 
-    expect(provinceRowNode!.label).toStrictEqual('浙江');
     expect(provinceRowNode!.value).toStrictEqual('浙江');
   });
 
@@ -96,7 +93,6 @@ describe('Formatter Tests', () => {
 
     const cityColNode = colNodes.find(({ field }) => field === 'city');
 
-    expect(cityColNode!.label).toStrictEqual('义乌');
     expect(cityColNode!.value).toStrictEqual('义乌');
   });
 

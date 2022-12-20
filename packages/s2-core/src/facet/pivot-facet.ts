@@ -261,7 +261,7 @@ export class PivotFacet extends BaseFacet {
       const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
         col.field,
       );
-      const leafNodeLabel = cellFormatter?.(col.value) ?? col.label;
+      const leafNodeLabel = cellFormatter?.(col.value) ?? col.value;
       const iconWidth = this.getExpectedCellIconWidth(
         CellTypes.COL_CELL,
         this.spreadsheet.isValueInCols() &&

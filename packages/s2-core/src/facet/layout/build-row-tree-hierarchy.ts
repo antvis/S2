@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash';
-import { i18n, ID_SEPARATOR, ROOT_ID } from '../../common';
+import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import { filterTotal, getListBySorted } from '../../utils/data-set-operate';
@@ -24,7 +24,7 @@ const addTotals = (
   }
 };
 
-const NODE_ID_PREFIX_LEN = (ROOT_ID + ID_SEPARATOR).length;
+const NODE_ID_PREFIX_LEN = (ROOT_NODE_ID + NODE_ID_SEPARATOR).length;
 
 /**
  * Only row header has tree hierarchy, in this scene:
@@ -61,7 +61,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       // 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
       // unsortedDimValues：['成都', '绵阳']
       // sortedDimensionValues: ['四川[&]成都']
-      if (ROOT_ID === parentId) {
+      if (ROOT_NODE_ID === parentId) {
         return dimVal;
       }
       return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
@@ -122,8 +122,6 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     const node = new Node({
       id: uniqueId,
-      key: currentField,
-      label: value,
       value,
       level,
       parent: parentNode,

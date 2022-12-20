@@ -89,7 +89,7 @@ class CustomColCell extends ColCell {
     }
 
     // 指定文本
-    if (this.meta.label === '办公用品') {
+    if (this.meta.value === '办公用品') {
       return {
         ...defaultTextStyle,
         fontSize: 22,

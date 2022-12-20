@@ -19,11 +19,11 @@ fetch(
     s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
       console.log(data);
 
-      const { key, record } = data;
-      const value = record[key];
+      const { field, record } = data;
+      const value = record[field];
       const a = document.createElement('a');
       a.target = '_blank';
-      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${key}=${value}`;
+      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${field}=${value}`;
       a.click();
       a.remove();
     });

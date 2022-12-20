@@ -22,17 +22,17 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     spreadsheet.store.get('hiddenColumnsDetail') || [];
 
   tree.forEach((treeNode) => {
-    const { key, title, collapsed, children, ...rest } = treeNode;
+    const { field, title, collapsed, children, ...rest } = treeNode;
 
     const isHiddenNode = hiddenColumnsDetail.some(({ hideColumnNodes }) =>
-      hideColumnNodes.find((hideNode) => hideNode.key === key),
+      hideColumnNodes.find((hideNode) => hideNode.field === field),
     );
     if (isHiddenNode) {
       return;
     }
 
     // query只与值本身有关，不会涉及到 parent节点
-    const valueQuery = { [EXTRA_FIELD]: key };
+    const valueQuery = { [EXTRA_FIELD]: field };
     // 保持和其他场景头部生成id的格式一致
     const nodeId = generateId(parentNode.id, title!);
 
@@ -47,12 +47,10 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
 
     const node = new Node({
       id: nodeId,
-      key,
-      label: title,
+      field,
       value: title!,
       level,
       parent: parentNode,
-      field: key,
       isTotals: false, // 自定义行头不会存在总计概念
       isCollapsed: isCollapsedNode,
       hierarchy,

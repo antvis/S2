@@ -54,17 +54,12 @@ export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_GROUP_GRID_GROUP = 'gridGroup';
 
-// key of series number node in corner header
-export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
-
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 export const TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY =
   'table-col-horizontal-resize-area';
 
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
-export const ROOT_ID = 'root';
-export const ID_SEPARATOR = '[&]';
 export const EMPTY_PLACEHOLDER = '-';
 
 export const PADDING_TOP = 0;
@@ -77,8 +72,6 @@ export const MIN_CELL_HEIGHT = 16;
 
 // data precision
 export const PRECISION = 16;
-
-export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
 
 export const IMAGE = 'image';
 

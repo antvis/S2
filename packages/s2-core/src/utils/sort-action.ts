@@ -12,7 +12,11 @@ import {
   toUpper,
   uniq,
 } from 'lodash';
-import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '../common/constant';
+import {
+  EXTRA_FIELD,
+  NODE_ID_SEPARATOR,
+  TOTAL_VALUE,
+} from '../common/constant';
 import type { Fields, SortMethod, SortParam } from '../common/interface';
 import type { PivotDataSet, Query } from '../data-set';
 import type { CellData } from '../data-set/cell-data';
@@ -52,8 +56,8 @@ export const sortAction = (
     let a = pre as string | number;
     let b = next as string | number;
     if (key) {
-      a = (pre as CellData).getValueByKey(key) as string | number;
-      b = (next as CellData).getValueByKey(key) as string | number;
+      a = (pre as CellData).getValueByField(key) as string | number;
+      b = (next as CellData).getValueByField(key) as string | number;
       if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
       }
@@ -97,9 +101,9 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   );
   // 将 id 拆分为父节点和目标节点
   const idListWithPre = idWithPre.map((idStr) => {
-    const ids = idStr.split(ID_SEPARATOR);
+    const ids = idStr.split(NODE_ID_SEPARATOR);
     if (ids.length > 1) {
-      const parentId = ids.slice(0, ids.length - 1).join(ID_SEPARATOR);
+      const parentId = ids.slice(0, ids.length - 1).join(NODE_ID_SEPARATOR);
       return [parentId, ids[ids.length - 1]];
     }
     return ids;
@@ -123,7 +127,7 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   });
   // 拼接 id
   const sortedIdWithPre = idListWithPre.map((idArr) =>
-    idArr.join(ID_SEPARATOR),
+    idArr.join(NODE_ID_SEPARATOR),
   );
 
   return getListBySorted(originValues, sortedIdWithPre);
@@ -145,7 +149,7 @@ export const sortByFunc = (params: SortActionParams): string[] => {
   if (
     (dataSet!.fields.rows!.indexOf(sortFieldId) > 0 ||
       dataSet!.fields.columns!.indexOf(sortFieldId) > 0) &&
-    !includes(sortResult[0], ID_SEPARATOR)
+    !includes(sortResult[0], NODE_ID_SEPARATOR)
   ) {
     /**
      * 当被排序字段为 行、列维度的非首维度，且用户返回的结果没有 [&] 连接符，把使用 sortResult 按照手动排序进行兜底处理
@@ -226,11 +230,11 @@ const createTotalParams = (
   sortFieldId: string,
 ) => {
   const totalParams: Query = {};
-  const isMultipleDimensionValue = includes(originValue, ID_SEPARATOR);
+  const isMultipleDimensionValue = includes(originValue, NODE_ID_SEPARATOR);
 
   if (isMultipleDimensionValue) {
     // 获取行/列小计时，需要将所有行/列维度的值作为 params
-    const realOriginValue = split(originValue, ID_SEPARATOR);
+    const realOriginValue = split(originValue, NODE_ID_SEPARATOR);
     const currentFields = (
       fields?.rows?.includes(sortFieldId)
         ? fields.rows

@@ -90,7 +90,6 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: uniqueId,
-      key: adjustedField,
       value,
       level,
       field: adjustedField,
@@ -170,15 +169,17 @@ export const DFSGenerateHeaderNodes = (
 
   columns.forEach((column, i) => {
     if (typeof column === 'string') {
-      column = { key: column } as CustomTreeNode;
+      column = { field: column } as CustomTreeNode;
     }
-    const { key } = column;
+    const { field } = column;
     const value =
-      key === SERIES_NUMBER_FIELD ? i18n('序号') : dataSet.getFieldName(key);
+      field === SERIES_NUMBER_FIELD
+        ? i18n('序号')
+        : dataSet.getFieldName(field);
     const currentParent = pNode || parentNode;
     generateHeaderNodes({
-      currentField: key,
-      fields: [key],
+      currentField: field,
+      fields: [field],
       fieldValues: [value],
       facetCfg,
       hierarchy,

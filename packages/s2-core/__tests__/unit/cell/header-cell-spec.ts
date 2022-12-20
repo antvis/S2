@@ -12,23 +12,19 @@ const MockTableSheet = TableSheet as unknown as jest.Mock<TableSheet>;
 const MockTableDataSet = TableDataSet as unknown as jest.Mock<TableDataSet>;
 
 describe('header cell formatter test', () => {
-  const root = new Node({ id: `root`, key: '', value: '', children: [] });
+  const root = new Node({ id: `root`, field: '', value: '', children: [] });
 
   const colNode = new Node({
     id: `root[&]浙江`,
-    key: '',
     value: '浙江',
     field: 'province',
     parent: root,
-    label: '浙江',
   });
   const rowNode = new Node({
     id: `root[&]杭州`,
-    key: '',
     value: '杭州',
     field: 'city',
     parent: root,
-    label: '杭州',
   });
 
   let s2: SpreadSheet;

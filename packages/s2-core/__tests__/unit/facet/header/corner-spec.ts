@@ -39,12 +39,12 @@ describe('Corner Tests', () => {
 
   test('should get default series number text', () => {
     const cornerNode = createCornerNode();
-    expect(cornerNode.label).toEqual('序号');
+    expect(cornerNode.value).toEqual('序号');
   });
 
   test('should get custom series number text', () => {
     s2.options.seriesNumberText = 'test';
     const cornerNode = createCornerNode();
-    expect(cornerNode.label).toEqual('test');
+    expect(cornerNode.value).toEqual('test');
   });
 });

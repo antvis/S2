@@ -2,23 +2,23 @@ import { PivotSheet } from '@antv/s2';
 
 const customTree = [
   {
-    key: 'a-1',
+    field: 'a-1',
     title: '自定义节点 a-1',
     description: 'a-1 描述',
     children: [
       {
-        key: 'a-1-1',
+        field: 'a-1-1',
         title: '自定义节点 a-1-1',
         description: 'a-1-1 描述',
         children: [
           {
-            key: 'measure-1',
+            field: 'measure-1',
             title: '指标 1',
             description: '指标 1 描述',
             children: [],
           },
           {
-            key: 'measure-2',
+            field: 'measure-2',
             title: '指标 2',
             description: '指标 2 描述',
             children: [],
@@ -26,7 +26,7 @@ const customTree = [
         ],
       },
       {
-        key: 'a-1-2',
+        field: 'a-1-2',
         title: '自定义节点 a-1-2',
         description: 'a-1-2 描述',
         children: [],
@@ -34,7 +34,7 @@ const customTree = [
     ],
   },
   {
-    key: 'a-2',
+    field: 'a-2',
     title: '自定义节点 a-2',
     description: 'a-2 描述',
     children: [],

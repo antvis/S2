@@ -49,43 +49,43 @@ exports[`<StrategySheet/> Tests should render correctly row nodes 1`] = `
 Array [
   Object {
     "field": "custom-node-1",
-    "label": "自定义节点A",
+    "value": "自定义节点A",
   },
   Object {
     "field": "measure-a",
-    "label": "指标A",
+    "value": "指标A",
   },
   Object {
     "field": "measure-b",
-    "label": "指标B",
+    "value": "指标B",
   },
   Object {
     "field": "custom-node-2",
-    "label": "自定义节点B",
+    "value": "自定义节点B",
   },
   Object {
     "field": "measure-c",
-    "label": "指标C",
+    "value": "指标C",
   },
   Object {
     "field": "measure-d",
-    "label": "指标D",
+    "value": "指标D",
   },
   Object {
     "field": "custom-node-5",
-    "label": "自定义节点E",
+    "value": "自定义节点E",
   },
   Object {
     "field": "measure-e",
-    "label": "指标E",
+    "value": "指标E",
   },
   Object {
     "field": "custom-node-3",
-    "label": "自定义节点C",
+    "value": "自定义节点C",
   },
   Object {
     "field": "custom-node-4",
-    "label": "自定义节点D",
+    "value": "自定义节点D",
   },
 ]
 `;

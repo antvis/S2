@@ -205,7 +205,7 @@ export interface BaseSheetComponentProps<
   onMouseMove?: (event: MouseEvent) => void;
   onSelected?: (cells: S2CellType[]) => void;
   onReset?: (event: KeyboardEvent) => void;
-  onLinkFieldJump?: (data: { key: string; record: RawData }) => void;
+  onLinkFieldJump?: (data: { field: string; record: RawData }) => void;
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================

@@ -76,7 +76,7 @@ export class ColCell extends HeaderCell {
       return super.getIconPosition(this.getActionIconsCount());
     }
 
-    // 非叶子节点，因 label 滚动展示，需要适配不同 align情况
+    // 非叶子节点，因 value 滚动展示，需要适配不同 align情况
     const iconStyle = this.getIconStyle();
     const iconMarginLeft = iconStyle!.margin!.left;
 
@@ -221,7 +221,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getColResizeAreaKey() {
-    return this.meta.key;
+    return this.meta.field;
   }
 
   protected getColResizeArea(): Group | undefined {
@@ -232,7 +232,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getHorizontalResizeAreaName() {
-    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
+    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.field}`;
   }
 
   protected drawHorizontalResizeArea() {
@@ -347,7 +347,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { label, width, height } = this.meta;
+    const { value, width, height } = this.meta;
 
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
@@ -364,7 +364,7 @@ export class ColCell extends HeaderCell {
       theme: resizeStyle,
       type: ResizeDirectionType.Horizontal,
       effect: ResizeAreaEffect.Cell,
-      id: label,
+      id: value,
       offsetX,
       offsetY,
       width,

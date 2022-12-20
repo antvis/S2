@@ -20,7 +20,7 @@ fetch(
       height: 480,
       layoutArrange: (s2, parent, field, fieldValues) => {
         console.log(fieldValues);
-        if (field === 'city' && parent.label === '浙江省') {
+        if (field === 'city' && parent.value === '浙江省') {
           // layoutArrange 可手动设置行、列顺序，适用于局部调整，非规则调整。
           // 手动设置浙江省内部市的顺序，比如指定「宁波市」在第一位。
           const keyIndex = fieldValues.indexOf('宁波市');

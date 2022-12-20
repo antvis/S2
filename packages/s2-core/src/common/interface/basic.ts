@@ -382,7 +382,7 @@ export interface ColCfg {
 
 /**
  * the label names of rows or columns.
- * Using the ID_SEPARATOR('[&]') to join two labels
+ * Using the NODE_ID_SEPARATOR('[&]') to join two labels
  * when there are hierarchical relations between them.
  */
 export interface CustomHeaderCells {

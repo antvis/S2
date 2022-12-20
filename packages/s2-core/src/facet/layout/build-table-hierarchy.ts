@@ -28,7 +28,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   const fieldsMap: Record<string, boolean> = {};
   if (showSeriesNumber) {
     tree.unshift({
-      key: SERIES_NUMBER_FIELD,
+      field: SERIES_NUMBER_FIELD,
     } as CustomTreeNode);
     // @ts-ignore
     fieldsMap[SERIES_NUMBER_FIELD] = true;

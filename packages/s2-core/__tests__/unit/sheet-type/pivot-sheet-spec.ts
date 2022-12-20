@@ -46,8 +46,8 @@ describe('PivotSheet Tests', () => {
   };
 
   const s2Options: S2Options = {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     hierarchyType: 'grid',
     customSVGIcons: [customSVGIcon],
     tooltip: {
@@ -696,7 +696,6 @@ describe('PivotSheet Tests', () => {
       s2Options,
     );
     pivotSheet.render();
-
     const extraField = last(
       pivotSheet.facet.cornerHeader.getChildren(),
     ) as CornerCell;
@@ -889,7 +888,7 @@ describe('PivotSheet Tests', () => {
         forceRender: options?.forceRender,
       }));
 
-    const nodeMeta = new Node({ id: '1', key: '1', value: 'testValue' });
+    const nodeMeta = new Node({ id: '1', field: '1', value: 'testValue' });
 
     s2.handleGroupSort(
       {
@@ -940,7 +939,7 @@ describe('PivotSheet Tests', () => {
   test('should handle group sort when hideMeasureColumn', () => {
     const nodeMeta = new Node({
       id: '1',
-      key: '1',
+      field: '1',
       value: 'testValue',
       query: {
         type: '笔',
@@ -1171,8 +1170,8 @@ describe('PivotSheet Tests', () => {
   test('should get custom header fields status', () => {
     const newDataCfg: S2DataConfig = {
       fields: {
-        rows: [{ key: '1', title: '1' }],
-        columns: [{ key: '2', title: '2' }],
+        rows: [{ field: '1', title: '1' }],
+        columns: [{ field: '2', title: '2' }],
       },
       data: [],
     };

@@ -201,15 +201,15 @@ describe('Pivot Mode Facet Test', () => {
 
     test('should get correct cell meta', () => {
       expect(
-        (getCellMeta(0, 1)?.data as CellData)?.getValueByKey('number'),
+        (getCellMeta(0, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(5343);
       expect(
-        (getCellMeta(1, 1)?.data as CellData)?.getValueByKey('number'),
+        (getCellMeta(1, 1)?.data as CellData)?.getValueByField('number'),
       ).toBe(632);
 
-      expect((getCellMeta(1)?.data as CellData)?.getValueByKey('number')).toBe(
-        2367,
-      );
+      expect(
+        (getCellMeta(1)?.data as CellData)?.getValueByField('number'),
+      ).toBe(2367);
     });
   });
 
@@ -408,7 +408,7 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   test('should get hidden columns info', () => {
-    const node = new Node({ id: '1', key: '1', value: '1' });
+    const node = new Node({ id: '1', field: '1', value: '1' });
 
     expect(facet.getHiddenColumnsInfo(node)).toBeUndefined();
 

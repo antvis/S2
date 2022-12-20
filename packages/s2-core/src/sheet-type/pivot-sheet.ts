@@ -198,7 +198,7 @@ export class PivotSheet extends SpreadSheet {
       sortQuery![EXTRA_FIELD] = sortValue;
     }
 
-    const sortFieldId = isString(sortField) ? sortField : sortField!.key;
+    const sortFieldId = isString(sortField) ? sortField : sortField!.field;
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,

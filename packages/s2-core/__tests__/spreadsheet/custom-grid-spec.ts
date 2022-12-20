@@ -75,7 +75,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should render custom layout row nodes', () => {
       const rowNodes = s2.getRowNodes().map((node) => ({
-        label: node.label,
+        value: node.value,
         width: node.width,
         height: node.height,
         description: node.extra.description,
@@ -86,7 +86,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should calc correctly row index of leaf nodes', () => {
       const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-        label: node.label,
+        value: node.value,
         rowIndex: node.rowIndex,
       }));
       expect(rowLeafNodes).toMatchSnapshot();
@@ -145,16 +145,16 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test.each([
-      { key: 'a-1', count: 6, sum: 34 },
-      { key: 'a-1-1', count: 4, sum: 34 },
-      { key: 'measure-1', count: 2, sum: 24 },
-      { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: null },
-      { key: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1', count: 6, sum: 34 },
+      { field: 'a-1-1', count: 4, sum: 34 },
+      { field: 'measure-1', count: 2, sum: 24 },
+      { field: 'measure-2', count: 2, sum: 10 },
+      { field: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
-      ({ key, count, sum }) => {
-        const rowNode = s2.getRowNodes().find((node) => node.field === key)!;
+      ({ field, count, sum }) => {
+        const rowNode = s2.getRowNodes().find((node) => node.field === field)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
@@ -175,10 +175,10 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .getCornerHeader()
         .getChildren()
         .map((cell: HeaderCell) => {
-          const label = cell.getActualText();
+          const value = cell.getActualText();
           const meta = cell.getMeta();
           return {
-            label,
+            value,
             field: meta.field,
           };
         });
@@ -213,7 +213,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should render custom layout column nodes', () => {
       const colNodes = s2.getColumnNodes().map((node) => ({
-        label: node.label,
+        value: node.value,
         width: node.width,
         height: node.height,
         description: node.extra.description,
@@ -224,7 +224,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
 
     test('should calc correctly col index of leaf nodes', () => {
       const colLeafNodes = s2.getColumnLeafNodes().map((node) => ({
-        label: node.label,
+        value: node.value,
         colIndex: node.colIndex,
       }));
 
@@ -244,7 +244,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
       s2.render(false);
 
       const colNodes = s2.getColumnNodes().map((node) => ({
-        label: node.label,
+        value: node.value,
         height: node.height,
       }));
 
@@ -277,16 +277,18 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test.each([
-      { key: 'a-1', count: 6, sum: 34 },
-      { key: 'a-1-1', count: 4, sum: 34 },
-      { key: 'measure-1', count: 2, sum: 24 },
-      { key: 'measure-2', count: 2, sum: 10 },
-      { key: 'a-1-2', count: 2, sum: null },
-      { key: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1', count: 6, sum: 34 },
+      { field: 'a-1-1', count: 4, sum: 34 },
+      { field: 'measure-1', count: 2, sum: 24 },
+      { field: 'measure-2', count: 2, sum: 10 },
+      { field: 'a-1-2', count: 2, sum: null },
+      { field: 'a-1-2', count: 2, sum: null },
     ])(
       'should get selected cell summary infos for %o',
-      ({ key, count, sum }) => {
-        const colNode = s2.getColumnNodes().find((node) => node.field === key)!;
+      ({ field, count, sum }) => {
+        const colNode = s2
+          .getColumnNodes()
+          .find((node) => node.field === field)!;
 
         // 选中
         s2.interaction.selectHeaderCell({
@@ -307,10 +309,10 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .getCornerHeader()
         .getChildren()
         .map((cell: HeaderCell) => {
-          const label = cell.getActualText();
+          const value = cell.getActualText();
           const meta = cell.getMeta();
           return {
-            label,
+            value,
             field: meta.field,
           };
         });

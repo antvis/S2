@@ -47,7 +47,7 @@ export const generateSwitcherFields = (
       return config;
     }
     const items = map(values, (item) => {
-      const id = typeof item === 'string' ? item : item.key;
+      const id = typeof item === 'string' ? item : item.field;
       const target = find(meta, ['field', id]);
       return {
         id,

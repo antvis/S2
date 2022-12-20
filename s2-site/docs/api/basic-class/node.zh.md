@@ -14,7 +14,6 @@ node.isTotals // false
 | id | 节点 id | `string` |
 | key | 节点 key | `string` |
 | value | 节点值 | `string` |
-| label | 节点标题 | `string` |
 | level | 节点等级 | `number` |
 | rowIndex | 行头索引 | `number` |
 | colIndex | 列头索引 | `number` |
