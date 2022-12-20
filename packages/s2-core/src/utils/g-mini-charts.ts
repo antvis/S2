@@ -22,7 +22,7 @@ import { CellTypes, MiniChartTypes } from '../common/constant';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import { getIntervalScale } from '../utils/condition/condition';
 import type { DataCell } from '..';
-import { getEllipsisText } from './text';
+import { getEllipsisText, getEmptyPlaceholder } from './text';
 
 interface FractionDigitsOptions {
   min: number;
@@ -284,13 +284,22 @@ export const drawInterval = (cell: DataCell) => {
  *  绘制单元格内的 mini子弹图
  */
 export const drawBullet = (value: BulletValue, cell: S2CellType) => {
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const { x, y, height, width, spreadsheet } = cell.getMeta();
+
   if (isEmpty(value)) {
+    renderText(
+      cell,
+      [],
+      x + width - dataCellStyle.cell.padding.right,
+      height / 2,
+      getEmptyPlaceholder(cell, spreadsheet.options.placeholder),
+      dataCellStyle.text,
+    );
     return;
   }
 
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
-  const { x, y, height, width, spreadsheet } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
 
