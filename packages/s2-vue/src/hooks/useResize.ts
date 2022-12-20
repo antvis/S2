@@ -13,23 +13,19 @@ export const useResize = (
 ) => {
   const unobserve = ref<() => void>();
 
-  watch(
-    [s2Ref, () => props.adaptive],
-    ([s2, adaptive], _, onCleanup) => {
-      if (!s2) {
-        return;
-      }
-      unobserve.value = createResizeObserver({
-        s2,
-        adaptive,
-        wrapper: dom.wrapperRef.value!,
-        container: dom.containerRef.value!,
-      });
+  watch([s2Ref, () => props.adaptive], ([s2, adaptive], _, onCleanup) => {
+    if (!s2) {
+      return;
+    }
+    unobserve.value = createResizeObserver({
+      s2,
+      adaptive,
+      wrapper: dom.wrapperRef.value!,
+      container: dom.containerRef.value!,
+    });
 
-      onCleanup(() => {
-        unobserve.value?.();
-      });
-    },
-    { deep: true },
-  );
+    onCleanup(() => {
+      unobserve.value?.();
+    });
+  });
 };
