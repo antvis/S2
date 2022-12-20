@@ -7,7 +7,7 @@ import { omit } from 'lodash';
 import * as simpleDataConfig from 'tests/data/simple-data.json';
 import * as dataConfig from 'tests/data/mock-dataset.json';
 import { Renderer } from '@antv/g-canvas';
-import type { BaseDataSet } from '../../src';
+import type { BaseDataSet, Node } from '../../src';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
 import type { S2CellType, S2Options, ViewMeta } from '@/common/interface';
@@ -195,10 +195,13 @@ export const createMockCellInfo = (
     updateByState: jest.fn(),
   } as unknown as S2CellType;
 
+  const getNode = () => mockCellViewMeta as unknown as Node;
+
   return {
     mockCell,
     mockCellMeta,
     mockCellViewMeta,
+    getNode,
   };
 };
 

@@ -1,6 +1,6 @@
 import type { Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
-import { CustomRect } from '../engine';
+import { CustomRect, type SimpleBBox } from '../engine';
 import {
   CellTypes,
   SPLIT_LINE_WIDTH,
@@ -220,10 +220,6 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  protected getColResizeAreaKey() {
-    return this.meta.field;
-  }
-
   protected getColResizeArea(): Group | undefined {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
@@ -273,7 +269,6 @@ export class ColCell extends HeaderCell {
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,
       type: ResizeDirectionType.Vertical,
-      id: this.getColResizeAreaKey(),
       effect: ResizeAreaEffect.Field,
       offsetX: 0,
       offsetY: y,
@@ -310,14 +305,14 @@ export class ColCell extends HeaderCell {
 
     const resizeStyle = this.getResizeAreaStyle();
 
-    const resizeAreaBBox = {
+    const resizeAreaBBox: SimpleBBox = {
       x: x + width - resizeStyle.size!,
       y,
       width: resizeStyle.size!,
       height,
     };
 
-    const resizeClipAreaBBox = {
+    const resizeClipAreaBBox: SimpleBBox = {
       x: scrollContainsRowHeader ? -cornerWidth : 0,
       y: 0,
       width: scrollContainsRowHeader ? cornerWidth + headerWidth : headerWidth,
@@ -347,8 +342,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { value, width, height } = this.meta;
-
+    const { width, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
@@ -364,13 +358,13 @@ export class ColCell extends HeaderCell {
       theme: resizeStyle,
       type: ResizeDirectionType.Horizontal,
       effect: ResizeAreaEffect.Cell,
-      id: value,
       offsetX,
       offsetY,
       width,
       height,
       meta: this.meta,
     });
+
     resizeArea.appendChild(
       new CustomRect(
         {

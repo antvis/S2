@@ -30,14 +30,13 @@ export const DEFAULT_STYLE: Readonly<S2Style> = {
     height: 30,
   },
   rowCfg: {
-    width: null,
-    widthByField: {},
-    heightByField: {},
+    widthByField: null,
+    heightByField: null,
   },
   colCfg: {
     height: 30,
-    widthByFieldValue: {},
-    heightByField: {},
+    widthByField: null,
+    heightByField: null,
   },
   device: DeviceType.PC,
 };
@@ -83,7 +82,8 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       cornerCellHorizontal: true,
       colCellHorizontal: true,
       colCellVertical: true,
-      rowResizeType: ResizeType.ALL,
+      rowResizeType: ResizeType.CURRENT,
+      colResizeType: ResizeType.CURRENT,
     },
     eventListenerOptions: false,
     selectedCellHighlight: false,

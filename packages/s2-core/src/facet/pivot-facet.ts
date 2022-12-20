@@ -19,13 +19,14 @@ import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
   type AdjustLeafNodesParams,
+  type GetCellMeta,
   type IconTheme,
   type MultiData,
 } from '../common';
 import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
-import type { LayoutResult, ViewMeta } from '../common/interface';
+import type { LayoutResult } from '../common/interface';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
@@ -68,10 +69,7 @@ export class PivotFacet extends BaseFacet {
 
     const { dataSet, spreadsheet } = this.cfg;
 
-    const getCellMeta = (
-      rowIndex?: number,
-      colIndex?: number,
-    ): ViewMeta | null => {
+    const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
       const row = rowLeafNodes[i];
@@ -88,7 +86,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotalMeasure;
 
       const hideMeasure =
-        get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
+        spreadsheet.options.style?.colCfg?.hideMeasureColumn ?? false;
       // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query
@@ -104,7 +102,7 @@ export class PivotFacet extends BaseFacet {
         isTotals,
       });
 
-      const valueField: string | undefined = dataQuery[EXTRA_FIELD];
+      const valueField = dataQuery[EXTRA_FIELD]!;
       const fieldValue = get(data, VALUE_FIELD, null);
 
       return {
@@ -124,7 +122,7 @@ export class PivotFacet extends BaseFacet {
         rowId: row.id,
         colId: col.id,
         id: getDataCellId(row.id, col.id),
-      } as ViewMeta;
+      };
     };
 
     const layoutResult: LayoutResult = {
@@ -159,9 +157,9 @@ export class PivotFacet extends BaseFacet {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
 
-    colsHierarchy.sampleNodesForAllLevels.forEach((levelSample) => {
-      levelSample.height = this.getColNodeHeight(levelSample);
-      colsHierarchy.height += levelSample.height;
+    colsHierarchy.sampleNodesForAllLevels.forEach((levelSampleNode) => {
+      levelSampleNode.height = this.getColNodeHeight(levelSampleNode);
+      colsHierarchy.height += levelSampleNode.height;
     });
 
     let currentCollIndex = 0;
@@ -244,7 +242,7 @@ export class PivotFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width!);
+    const cellCustomWidth = this.getCellCustomSize(col, colCfg?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -336,9 +334,7 @@ export class PivotFacet extends BaseFacet {
   }
 
   private getColNodeHeight(colNode: Node): number {
-    const { colCfg } = this.cfg;
-    const userDraggedHeight = colCfg?.heightByField?.[colNode?.field];
-    return userDraggedHeight || colCfg?.height!;
+    return this.getDefaultColNodeHeight(colNode);
   }
 
   /**
@@ -389,9 +385,8 @@ export class PivotFacet extends BaseFacet {
    */
   private calculateRowNodesCoordinate(layoutResult: LayoutResult) {
     const { rowsHierarchy, rowLeafNodes, colLeafNodes } = layoutResult;
-    const { cellCfg, spreadsheet } = this.cfg;
+    const { spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
-    const heightByField = spreadsheet.options.style?.rowCfg?.heightByField;
 
     const sampleNodeByLevel = rowsHierarchy.sampleNodesForAllLevels || [];
 
@@ -424,8 +419,7 @@ export class PivotFacet extends BaseFacet {
       if (isLeaf) {
         // 1. 普通树状结构, 叶子节点各占一行, 2. 自定义树状结构 (平铺模式)
         const rowIndex = (preLeafNode?.rowIndex ?? -1) + 1;
-        const nodeHeight =
-          (heightByField?.[currentNode.id] ?? cellCfg?.height) || 0;
+        const nodeHeight = this.getRowCellHeight(currentNode);
 
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
@@ -659,7 +653,7 @@ export class PivotFacet extends BaseFacet {
       return cellDraggedWidth;
     }
 
-    const cellCustomWidth = this.getCellCustomWidth(node, rowCfg?.width!);
+    const cellCustomWidth = this.getCellCustomSize(node, rowCfg?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -788,7 +782,7 @@ export class PivotFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义
-    const customRowWidth = this.getCellCustomWidth(null, rowCfg?.width!);
+    const customRowWidth = this.getCellCustomSize(null, rowCfg?.width!);
     if (customRowWidth) {
       return customRowWidth;
     }

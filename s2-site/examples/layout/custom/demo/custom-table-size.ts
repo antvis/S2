@@ -1,11 +1,11 @@
-import { TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
     // 详情请查看: https://s2.antv.antgroup.com/zh/docs/manual/advanced/custom/cell-size
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['type', 'province', 'city', 'price', 'cost'],
       },
@@ -34,7 +34,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       style: {

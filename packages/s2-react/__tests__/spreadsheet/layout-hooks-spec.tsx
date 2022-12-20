@@ -130,7 +130,7 @@ const CustomLayoutDataPosition = (
   spreadsheet: SpreadSheet,
   getCellData: GetCellMeta,
 ): GetCellMeta => {
-  return (rowIndex?: number, colIndex?: number): ViewMeta | null => {
+  return (rowIndex: number, colIndex: number): ViewMeta | null => {
     const viewMeta = getCellData(rowIndex, colIndex);
     // 更改0，0 坐标的值为 999
     if (rowIndex === 0 && colIndex === 0) {
@@ -161,7 +161,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
       hierarchyCollapse: false,
       collapsedRows: {},
       colCfg: {
-        widthByFieldValue: {},
+        widthByField: {},
         heightByField: {},
       },
       cellCfg: {

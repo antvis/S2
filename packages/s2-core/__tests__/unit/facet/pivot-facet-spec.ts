@@ -140,6 +140,7 @@ describe('Pivot Mode Facet Test', () => {
       DEFAULT_STYLE.cellCfg!.width!,
       DEFAULT_OPTIONS.width! / (size(rows) + size(colLeafNodes)),
     );
+
     test('row hierarchy', () => {
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(8);
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
@@ -169,6 +170,7 @@ describe('Pivot Mode Facet Test', () => {
           .reduce((sum, current) => sum + current),
       );
     });
+
     test('col hierarchy', () => {
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
       expect(colsHierarchy.getLeaves()).toHaveLength(4);
@@ -208,7 +210,7 @@ describe('Pivot Mode Facet Test', () => {
       ).toBe(632);
 
       expect(
-        (getCellMeta(1)?.data as CellData)?.getValueByField('number'),
+        (getCellMeta(1, 0)?.data as CellData)?.getValueByField('number'),
       ).toBe(2367);
     });
   });

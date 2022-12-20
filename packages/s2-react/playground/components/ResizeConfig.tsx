@@ -1,5 +1,10 @@
-import { customMerge, type ThemeCfg, ResizeType } from '@antv/s2';
-import { Checkbox, Switch } from 'antd';
+import { ResizeType } from '@antv/s2';
+import {
+  customMerge,
+  type ThemeCfg,
+  type ResizeInteractionOptions,
+} from '@antv/s2';
+import { Checkbox, Space, Switch, Tooltip } from 'antd';
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React from 'react';
 import type { SheetComponentOptions } from '../../src/components';
@@ -15,14 +20,13 @@ const RESIZE_CONFIG: Array<{
 ];
 
 export const ResizeConfig: React.FC<{
+  options: SheetComponentOptions;
   setThemeCfg: (cb: (theme: ThemeCfg) => ThemeCfg) => void;
   setOptions: (
     cb: (prev: SheetComponentOptions) => SheetComponentOptions,
   ) => void;
-}> = ({ setThemeCfg, setOptions }) => {
+}> = ({ options, setThemeCfg, setOptions }) => {
   const [showResizeArea, setShowResizeArea] = React.useState(false);
-  const [rowResizeAffectCurrent, setRowResizeAffectCurrent] =
-    React.useState(false);
 
   const onShowResizeAreaChange = (enable: boolean) => {
     const theme = {
@@ -34,17 +38,27 @@ export const ResizeConfig: React.FC<{
     setThemeCfg((prev) => customMerge({}, prev, { theme }));
   };
 
-  const onSwitchRowResizeType = (enable: boolean) => {
-    const opts = {
-      interaction: {
-        resize: {
-          rowResizeType: enable ? ResizeType.CURRENT : ResizeType.ALL,
+  const onSwitchRowResizeType =
+    (type: 'rowResizeType' | 'colResizeType') => (enable: boolean) => {
+      const options: SheetComponentOptions = {
+        interaction: {
+          resize: {
+            [type]: enable ? ResizeType.CURRENT : ResizeType.ALL,
+          },
         },
-      },
+        style: {
+          rowCfg: {
+            heightByField: null,
+            widthByField: null,
+          },
+          colCfg: {
+            heightByField: null,
+            widthByField: null,
+          },
+        },
+      };
+      setOptions((prev) => customMerge({}, prev, options));
     };
-    setRowResizeAffectCurrent(enable);
-    setOptions((prev) => customMerge({}, prev, opts));
-  };
 
   const onResizeActiveChange = (checkedAreas: CheckboxValueType[]) => {
     const resize = RESIZE_CONFIG.reduce((cfg, item) => {
@@ -63,8 +77,9 @@ export const ResizeConfig: React.FC<{
     setOptions((prev) => customMerge({}, prev, updatedOptions));
   };
 
+  const resizeConfig = options.interaction?.resize as ResizeInteractionOptions;
   return (
-    <>
+    <Space>
       <Switch
         checkedChildren="宽高调整热区开"
         unCheckedChildren="宽高调整热区关"
@@ -76,12 +91,22 @@ export const ResizeConfig: React.FC<{
         defaultValue={RESIZE_CONFIG.map((item) => item.value)}
         onChange={onResizeActiveChange}
       />
-      <Switch
-        checkedChildren="行高单行调整开"
-        unCheckedChildren="行高单行调整关"
-        defaultChecked={rowResizeAffectCurrent}
-        onChange={onSwitchRowResizeType}
-      />
-    </>
+      <Tooltip title="行头高度调整时只影响当前行, 还是所有行">
+        <Switch
+          checkedChildren="行高单行调整开"
+          unCheckedChildren="行高单行调整关"
+          defaultChecked={resizeConfig?.rowResizeType === ResizeType.CURRENT}
+          onChange={onSwitchRowResizeType('rowResizeType')}
+        />
+      </Tooltip>
+      <Tooltip title="列头宽度调整时只影响当前列, 还是所有列">
+        <Switch
+          checkedChildren="列宽单行调整开"
+          unCheckedChildren="列宽单行调整关"
+          defaultChecked={resizeConfig?.colResizeType === ResizeType.CURRENT}
+          onChange={onSwitchRowResizeType('colResizeType')}
+        />
+      </Tooltip>
+    </Space>
   );
 };

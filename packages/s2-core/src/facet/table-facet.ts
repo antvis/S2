@@ -1,6 +1,5 @@
 import { Group, Rect } from '@antv/g';
-import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
-import { FrozenGroup } from '../group/frozen-group';
+import { get, isBoolean, isEmpty, isNil, keys, last, maxBy, set } from 'lodash';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -23,6 +22,7 @@ import { FrozenCellGroupMap, FrozenGroupType } from '../common/constant/frozen';
 import { DebuggerUtil } from '../common/debug';
 import type {
   FilterParam,
+  GetCellMeta,
   LayoutResult,
   ResizeInteractionOptions,
   S2CellType,
@@ -33,6 +33,7 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
+import { FrozenGroup } from '../group/frozen-group';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
@@ -66,7 +67,7 @@ import {
 } from './utils';
 
 export class TableFacet extends BaseFacet {
-  public rowOffsets: number[];
+  public declare rowOffsets: number[];
 
   public frozenGroupInfo: Record<
     FrozenGroupType,
@@ -243,10 +244,10 @@ export class TableFacet extends BaseFacet {
       });
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
-    const getCellMeta = (rowIndex: number, colIndex: number) => {
+    const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
       const showSeriesNumber = this.cfg.showSeriesNumber;
       const col = colLeafNodes[colIndex];
-      const cellHeight = this.getCellHeight(rowIndex);
+      const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
       const cellRange = this.getCellRange();
       const { frozenTrailingRowCount = 0 } = getValidFrozenOptions(
@@ -298,7 +299,7 @@ export class TableFacet extends BaseFacet {
       } as ViewMeta;
     };
 
-    const layoutResult = {
+    return {
       colNodes: colsHierarchy.getNodes(),
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
@@ -307,14 +308,13 @@ export class TableFacet extends BaseFacet {
       colLeafNodes,
       getCellMeta,
       spreadsheet,
-    } as LayoutResult;
-
-    return layoutResult;
+    };
   }
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { cellCfg } = this.cfg;
     const { showSeriesNumber } = this.cfg;
+
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
       const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
@@ -322,29 +322,30 @@ export class TableFacet extends BaseFacet {
         this.getCanvasSize().width -
         seriesNumberWidth -
         Frame.getVerticalBorderWidth(this.spreadsheet);
+
       return Math.max(
         cellCfg?.width!,
         Math.floor(canvasW / Math.max(1, colHeaderColSize)),
       );
     }
-    return cellCfg?.width!;
+    return cellCfg?.width ?? 0;
   }
 
-  private getColNodeHeight(col: Node, totalHeight?: number) {
-    const { colCfg } = this.cfg;
-    // 明细表所有列节点高度保持一致
-    const userDragHeight = values(colCfg?.heightByField)[0];
-    const height = userDragHeight! || colCfg?.height!;
+  private getColNodeHeight(colNode: Node, totalHeight?: number) {
+    const height = this.getDefaultColNodeHeight(colNode);
+
     if (!totalHeight) {
       return height;
     }
+
     // 如果传递了总高，则需要根据层级情况获得高度
-    if (col.children && col.children.length) {
+    if (!isEmpty(colNode?.children)) {
       return height;
     }
-    while (col.parent) {
-      totalHeight -= isTopLevelNode(col) ? 0 : height;
-      col = col.parent;
+
+    while (colNode.parent) {
+      totalHeight -= isTopLevelNode(colNode) ? 0 : height;
+      colNode = colNode.parent;
     }
     return totalHeight;
   }
@@ -437,13 +438,12 @@ export class TableFacet extends BaseFacet {
   }
 
   private calculateColLeafNodesWidth(
-    col: Node,
+    colNode: Node,
     adaptiveColWidth: number,
   ): number {
     const { colCfg, dataSet, spreadsheet } = this.cfg;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
-
-    const cellDraggedWidth = this.getColCellDraggedWidth(col);
+    const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
     // 1. 拖拽后的宽度优先级最高
     if (cellDraggedWidth) {
@@ -451,7 +451,7 @@ export class TableFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width!);
+    const cellCustomWidth = this.getCellCustomSize(colNode, colCfg?.width);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -459,10 +459,10 @@ export class TableFacet extends BaseFacet {
     let colWidth: number;
     if (layoutWidthType === LayoutWidthTypes.Compact) {
       const datas = dataSet.getDisplayDataSet();
-      const colLabel = col.value;
+      const colLabel = colNode.value;
 
       const allLabels =
-        datas?.map((data) => `${data[col.field]}`)?.slice(0, 50) || []; // 采样取了前50
+        datas?.map((data) => `${data[colNode.field]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         spreadsheet.measureTextWidthRoughly(label),
@@ -474,7 +474,7 @@ export class TableFacet extends BaseFacet {
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
-        col.field,
+        colNode.field,
         maxLabel,
       );
 
@@ -484,7 +484,7 @@ export class TableFacet extends BaseFacet {
           spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
           getOccupiedWidthForTableCol(
             this.spreadsheet,
-            col,
+            colNode,
             spreadsheet.theme.colCell!,
           );
       } else {
@@ -500,7 +500,7 @@ export class TableFacet extends BaseFacet {
       colWidth = adaptiveColWidth;
     }
 
-    if (col.field === SERIES_NUMBER_FIELD) {
+    if (colNode.field === SERIES_NUMBER_FIELD) {
       colWidth = this.getSeriesNumberWidth();
     }
 
@@ -508,41 +508,26 @@ export class TableFacet extends BaseFacet {
   }
 
   protected getDefaultCellHeight(): number {
-    const { cellCfg } = this.cfg;
-
-    return cellCfg?.height!;
+    return this.getRowCellHeight(null as unknown as Node);
   }
 
-  public getCellHeight(index: number) {
+  public getCellHeightByRowIndex(rowIndex: number) {
     if (this.rowOffsets) {
-      const heightByField = get(
-        this.spreadsheet,
-        'options.style.rowCfg.heightByField',
-        {},
-      );
-
-      const customHeight = heightByField?.[String(index)];
-      if (customHeight) {
-        return customHeight;
-      }
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
     }
     return this.getDefaultCellHeight();
   }
 
   protected initRowOffsets() {
     const { dataSet } = this.cfg;
-    const heightByField = get(
-      this.spreadsheet,
-      'options.style.rowCfg.heightByField',
-      {},
-    );
-    if (Object.keys(heightByField).length) {
+    const heightByField = this.spreadsheet.options.style?.rowCfg?.heightByField;
+
+    if (keys(heightByField!).length) {
       const data = dataSet.getDisplayDataSet();
       this.rowOffsets = [0];
       let lastOffset = 0;
-      data.forEach((_, idx) => {
-        const currentHeight =
-          heightByField?.[String(idx)] ?? this.getDefaultCellHeight();
+      data.forEach((_, rowIndex) => {
+        const currentHeight = this.getCellHeightByRowIndex(rowIndex);
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;

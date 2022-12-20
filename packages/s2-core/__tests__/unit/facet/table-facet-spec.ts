@@ -437,11 +437,43 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
 
   test('should get correct rowOffsets when custom row height is set', () => {
     const rowOffsets = facet.rowOffsets;
-    expect(rowOffsets).toStrictEqual([
-      0, 30, 60, 360, 560, 590, 620, 650, 680, 710, 740, 800, 830, 860, 890,
-      920, 940, 970, 1000, 1030, 1060, 1090, 1120, 1150, 1180, 1210, 1240, 1270,
-      1300, 1330, 1360, 1390, 1420,
-    ]);
+    expect(rowOffsets).toMatchInlineSnapshot(`
+      Array [
+        0,
+        30,
+        60,
+        360,
+        560,
+        590,
+        620,
+        650,
+        680,
+        710,
+        740,
+        800,
+        830,
+        860,
+        890,
+        920,
+        940,
+        970,
+        1000,
+        1030,
+        1060,
+        1090,
+        1120,
+        1150,
+        1180,
+        1210,
+        1240,
+        1270,
+        1300,
+        1330,
+        1360,
+        1390,
+        1420,
+      ]
+    `);
   });
 
   test('should get correct viewCellHeights result when custom row height is set', () => {
@@ -632,7 +664,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     expect(nodes[5].height).toEqual(colCfg!.height);
 
     expect(nodes[6].y).toBe(0);
-    expect(nodes[6].height).toEqual(colCfg!.height! * 2);
+    expect(nodes[6].height).toEqual((colCfg!.height! as number) * 2);
   });
 });
 

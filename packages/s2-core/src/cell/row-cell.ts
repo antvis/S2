@@ -254,7 +254,6 @@ export class RowCell extends HeaderCell {
       : width;
 
     const attrs = getResizeAreaAttrs({
-      id: this.meta.id,
       theme: resizeStyle,
       type: ResizeDirectionType.Vertical,
       effect: ResizeAreaEffect.Cell,

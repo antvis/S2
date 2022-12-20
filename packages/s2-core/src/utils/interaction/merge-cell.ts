@@ -118,8 +118,8 @@ export const getInvisibleInfo = (
   let viewMeta: ViewMeta | undefined;
   forEach(invisibleCellInfo, (cellInfo) => {
     const meta = sheet?.facet?.layoutResult?.getCellMeta(
-      cellInfo.rowIndex,
-      cellInfo.colIndex,
+      cellInfo.rowIndex!,
+      cellInfo.colIndex!,
     );
     if (meta) {
       const cell = sheet?.facet?.cfg?.dataCell?.(meta);

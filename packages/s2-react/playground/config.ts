@@ -1,5 +1,9 @@
-import type { CustomHeaderField, S2DataConfig } from '@antv/s2';
-import { isMobile } from '@antv/s2';
+import {
+  isMobile,
+  ResizeType,
+  type CustomHeaderField,
+  type S2DataConfig,
+} from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
 import type { SheetComponentOptions } from '../src/components';
@@ -9,6 +13,7 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+import { EXTRA_FIELD } from './../../s2-core/src/common/constant/basic';
 
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
@@ -61,6 +66,10 @@ export const s2Options: SheetComponentOptions = {
       col: true,
       row: true,
     },
+    resize: {
+      rowResizeType: ResizeType.ALL,
+      colResizeType: ResizeType.ALL,
+    },
   },
   tooltip: {
     operation: {
@@ -87,10 +96,21 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: isMobile() ? 60 : 200,
+      width: isMobile() ? 60 : 160,
+      height: 50,
+    },
+    colCfg: {
+      widthByField: {
+        [EXTRA_FIELD]: 80,
+        'root[&]家具[&]沙发[&]number': 120,
+      },
+      heightByField: {
+        [EXTRA_FIELD]: 60,
+      },
     },
     cellCfg: {
-      height: 50,
+      width: 100,
+      height: 40,
     },
   },
 };
