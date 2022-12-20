@@ -67,7 +67,7 @@ import {
 } from './utils';
 
 export class TableFacet extends BaseFacet {
-  public rowOffsets: number[];
+  public declare rowOffsets: number[];
 
   public frozenGroupInfo: Record<
     FrozenGroupType,
@@ -462,7 +462,7 @@ export class TableFacet extends BaseFacet {
       const colLabel = colNode.label;
 
       const allLabels =
-        datas?.map((data) => `${data[colNode.key]}`)?.slice(0, 50) || []; // 采样取了前50
+        datas?.map((data) => `${data[colNode.field]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         spreadsheet.measureTextWidthRoughly(label),
@@ -512,7 +512,10 @@ export class TableFacet extends BaseFacet {
   }
 
   public getCellHeightByRowIndex(rowIndex: number) {
-    return this.getRowCellHeight({ id: String(rowIndex) } as Node);
+    if (this.rowOffsets) {
+      return this.getRowCellHeight({ id: String(rowIndex) } as Node);
+    }
+    return this.getDefaultCellHeight();
   }
 
   protected initRowOffsets() {

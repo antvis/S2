@@ -216,21 +216,21 @@ export abstract class BaseFacet {
   }
 
   protected getRowCellDraggedWidth(node: Node): number | undefined {
-    const { rowCfg } = this.cfg;
+    const { rowCfg } = this.spreadsheet.options.style!;
     return (
       rowCfg?.widthByField?.[node?.id] ?? rowCfg?.widthByField?.[node?.field]
     );
   }
 
   protected getRowCellDraggedHeight(node: Node): number | undefined {
-    const { rowCfg } = this.cfg;
+    const { rowCfg } = this.spreadsheet.options.style!;
     return (
       rowCfg?.heightByField?.[node?.id] ?? rowCfg?.heightByField?.[node?.field]
     );
   }
 
   protected getRowCellHeight(node: Node): number {
-    const { rowCfg, cellCfg } = this.cfg;
+    const { rowCfg, cellCfg } = this.spreadsheet.options.style!;
     // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
     return (
       this.getRowCellDraggedHeight(node) ??
@@ -241,21 +241,21 @@ export abstract class BaseFacet {
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
-    const { colCfg } = this.cfg;
+    const { colCfg } = this.spreadsheet.options.style!;
     return (
       colCfg?.widthByField?.[node?.id] ?? colCfg?.widthByField?.[node?.field]
     );
   }
 
   protected getColCellDraggedHeight(node: Node): number | undefined {
-    const { colCfg } = this.cfg;
+    const { colCfg } = this.spreadsheet.options.style!;
     return (
       colCfg?.heightByField?.[node?.id] ?? colCfg?.heightByField?.[node?.field]
     );
   }
 
   protected getDefaultColNodeHeight(colNode: Node): number {
-    const { colCfg } = this.cfg;
+    const { colCfg } = this.spreadsheet.options.style!;
     // 优先级: 列头拖拽 > 列头自定义高度 > 通用单元格高度
     return (
       this.getColCellDraggedHeight(colNode) ??
