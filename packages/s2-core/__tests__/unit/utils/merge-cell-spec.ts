@@ -202,7 +202,7 @@ describe('Merge Cells Test', () => {
     mockInstance.facet.layoutResult.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
-    Object.defineProperty(mockInstance.facet.cfg, 'dataCell', {
+    Object.defineProperty(mockInstance.options, 'dataCell', {
       value: jest.fn().mockImplementation((scalar) => scalar),
     });
 
@@ -234,7 +234,7 @@ describe('Merge Cells Test', () => {
     mockInstance.facet.layoutResult.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
-    Object.defineProperty(mockInstance.facet.cfg, 'dataCell', {
+    Object.defineProperty(mockInstance.options, 'dataCell', {
       value: jest.fn().mockImplementation((scalar) => {
         return {
           getMeta: jest.fn().mockReturnValue(scalar),

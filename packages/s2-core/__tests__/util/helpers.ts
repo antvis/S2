@@ -59,7 +59,11 @@ export const createFakeSpreadSheet = () => {
   s2.dataCfg = {
     meta: [],
     data: [],
-    fields: {},
+    fields: {
+      rows: [],
+      columns: [],
+      values: [],
+    },
     sortParams: [],
   };
   s2.container = new Canvas({
@@ -69,6 +73,7 @@ export const createFakeSpreadSheet = () => {
     renderer: new Renderer(),
   });
   s2.dataSet = {
+    ...s2.dataCfg,
     getMultiData() {
       return [];
     },
@@ -118,6 +123,7 @@ export const createFakeSpreadSheet = () => {
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
+  s2.isScrollContainsRowHeader = jest.fn(() => true);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;

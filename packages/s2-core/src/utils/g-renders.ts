@@ -138,7 +138,7 @@ export function renderTreeIcon(
   group: Group,
   area: SimpleBBox,
   fill: string,
-  isCollapse: boolean,
+  isCollapse: boolean | undefined,
   onClick?: () => void,
 ) {
   const icon = new GuiIcon({

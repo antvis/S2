@@ -140,13 +140,10 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): PointLike {
     const { isLeaf } = this.meta;
-    const {
-      width,
-      scrollContainsRowHeader,
-      cornerWidth = 0,
-      scrollX = 0,
-    } = this.headerConfig;
+    const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig;
 
+    const scrollContainsRowHeader =
+      this.spreadsheet.isScrollContainsRowHeader();
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle();
@@ -297,12 +294,13 @@ export class ColCell extends HeaderCell {
     const {
       scrollX,
       scrollY,
-      scrollContainsRowHeader,
       cornerWidth = 0,
       height: headerHeight,
       width: headerWidth,
+      spreadsheet,
     } = this.headerConfig;
 
+    const scrollContainsRowHeader = spreadsheet.isScrollContainsRowHeader();
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox: SimpleBBox = {

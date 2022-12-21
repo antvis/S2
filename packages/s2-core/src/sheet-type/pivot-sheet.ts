@@ -3,9 +3,9 @@ import { clone, isString, last, some } from 'lodash';
 import { DataCell } from '../cell';
 import {
   EXTRA_FIELD,
+  getTooltipOperatorSortMenus,
   InterceptType,
   S2Event,
-  getTooltipOperatorSortMenus,
 } from '../common/constant';
 import type {
   Fields,
@@ -13,7 +13,6 @@ import type {
   S2Options,
   SortMethod,
   SortParam,
-  SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
@@ -112,27 +111,13 @@ export class PivotSheet extends SpreadSheet {
     }
   }
 
-  protected getFacetCfgFromDataSetAndOptions(): SpreadSheetFacetCfg {
-    const { fields, meta } = this.dataSet;
-    const { style, dataCell } = this.options;
-    // 默认单元格实现
-    const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
-
-    return {
-      ...this.options,
-      ...fields,
-      ...style,
-      meta,
-      spreadsheet: this,
-      dataSet: this.dataSet,
-      dataCell: dataCell ?? defaultCell,
-    };
-  }
-
   protected buildFacet() {
-    const facetCfg = this.getFacetCfgFromDataSetAndOptions();
+    const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
+    this.setOptions({
+      dataCell: this.options.dataCell ?? defaultCell,
+    });
     this.facet?.destroy();
-    this.facet = new PivotFacet(facetCfg);
+    this.facet = new PivotFacet(this);
     this.facet.render();
   }
 
@@ -172,8 +157,8 @@ export class PivotSheet extends SpreadSheet {
     });
   }
 
-  protected handleTreeRowsCollapseAll(isCollapsed: boolean) {
-    const options: Partial<S2Options> = {
+  protected handleTreeRowsCollapseAll(isCollapsed: boolean | undefined) {
+    const options: S2Options = {
       style: {
         hierarchyCollapse: !isCollapsed,
         collapsedRows: null,

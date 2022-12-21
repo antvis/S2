@@ -13,8 +13,6 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
-import { EXTRA_FIELD } from './../../s2-core/src/common/constant/basic';
-
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
   'city',
@@ -96,20 +94,15 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: isMobile() ? 60 : 160,
+      width: isMobile() ? 60 : 100,
       height: 50,
     },
     colCfg: {
-      widthByField: {
-        [EXTRA_FIELD]: 80,
-        'root[&]家具[&]沙发[&]number': 120,
-      },
-      heightByField: {
-        [EXTRA_FIELD]: 60,
-      },
+      width: 140,
+      height: 30,
     },
     cellCfg: {
-      width: 100,
+      width: 150,
       height: 40,
     },
   },

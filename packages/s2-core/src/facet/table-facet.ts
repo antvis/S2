@@ -27,13 +27,12 @@ import type {
   ResizeInteractionOptions,
   S2CellType,
   SortParams,
-  SplitLine,
-  SpreadSheetFacetCfg,
   TableSortParam,
   ViewMeta,
 } from '../common/interface';
 import type { TableDataSet } from '../data-set';
 import { FrozenGroup } from '../group/frozen-group';
+import type { SpreadSheet } from '../sheet-type';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getOccupiedWidthForTableCol } from '../utils/cell/table-col-cell';
 import { getIndexRangeWithOffsets } from '../utils/facet';
@@ -93,12 +92,11 @@ export class TableFacet extends BaseFacet {
 
   public panelScrollGroupIndexes: Indexes = [] as unknown as Indexes;
 
-  public constructor(cfg: SpreadSheetFacetCfg) {
-    super(cfg);
+  public constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
 
-    const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, this.onSortHandler);
-    s2.on(S2Event.RANGE_FILTER, this.onFilterHandler);
+    this.spreadsheet.on(S2Event.RANGE_SORT, this.onSortHandler);
+    this.spreadsheet.on(S2Event.RANGE_FILTER, this.onFilterHandler);
   }
 
   protected override initPanelGroups(): void {
@@ -234,24 +232,22 @@ export class TableFacet extends BaseFacet {
   }
 
   protected doLayout(): LayoutResult {
-    const { dataSet, spreadsheet } = this.cfg;
-
     const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: false,
-        facetCfg: this.cfg,
+        spreadsheet: this.spreadsheet,
       });
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
-      const showSeriesNumber = this.cfg.showSeriesNumber;
+      const { showSeriesNumber } = this.spreadsheet.options;
       const col = colLeafNodes[colIndex];
       const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
       const cellRange = this.getCellRange();
       const { frozenTrailingRowCount = 0 } = getValidFrozenOptions(
-        this.cfg,
+        this.spreadsheet.options,
         colLeafNodes.length,
         cellRange.end - cellRange.start + 1,
       );
@@ -272,7 +268,7 @@ export class TableFacet extends BaseFacet {
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
         data = rowIndex + 1;
       } else {
-        data = dataSet.getCellData({
+        data = this.spreadsheet.dataSet.getCellData({
           query: {
             col: col.field,
             rowIndex,
@@ -280,7 +276,7 @@ export class TableFacet extends BaseFacet {
         });
       }
       return {
-        spreadsheet,
+        spreadsheet: this.spreadsheet,
         x,
         y,
         width: col.width,
@@ -307,13 +303,13 @@ export class TableFacet extends BaseFacet {
       rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
       getCellMeta,
-      spreadsheet,
+      spreadsheet: this.spreadsheet,
     };
   }
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
-    const { cellCfg } = this.cfg;
-    const { showSeriesNumber } = this.cfg;
+    const { cellCfg } = this.spreadsheet.options.style!;
+    const { showSeriesNumber } = this.spreadsheet.options;
 
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
@@ -373,7 +369,7 @@ export class TableFacet extends BaseFacet {
           currentNode,
           adaptiveColWidth,
         );
-        layoutCoordinate(this.cfg, null, currentNode);
+        layoutCoordinate(this.spreadsheet, null, currentNode);
         colsHierarchy.width += currentNode.width;
         preLeafNode = currentNode;
       }
@@ -441,7 +437,7 @@ export class TableFacet extends BaseFacet {
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
-    const { colCfg, dataSet, spreadsheet } = this.cfg;
+    const { colCfg } = this.spreadsheet.options.style!;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
     const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
@@ -458,19 +454,19 @@ export class TableFacet extends BaseFacet {
 
     let colWidth: number;
     if (layoutWidthType === LayoutWidthTypes.Compact) {
-      const datas = dataSet.getDisplayDataSet();
+      const datas = this.spreadsheet.dataSet.getDisplayDataSet();
       const colLabel = colNode.value;
 
       const allLabels =
         datas?.map((data) => `${data[colNode.field]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
-        spreadsheet.measureTextWidthRoughly(label),
+        this.spreadsheet.measureTextWidthRoughly(label),
       );
 
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell!;
+      const { bolderText: colCellTextStyle } = this.spreadsheet.theme.colCell!;
       const { text: dataCellTextStyle, cell: cellStyle } =
-        spreadsheet.theme.dataCell!;
+        this.spreadsheet.theme.dataCell!;
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
@@ -481,17 +477,17 @@ export class TableFacet extends BaseFacet {
       // 最长的 Label 如果是列名，按列名的标准计算宽度
       if (colLabel === maxLabel) {
         colWidth =
-          spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
+          this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
           getOccupiedWidthForTableCol(
             this.spreadsheet,
             colNode,
-            spreadsheet.theme.colCell!,
+            this.spreadsheet.theme.colCell!,
           );
       } else {
         // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
         const EXTRA_PIXEL = 1;
         colWidth =
-          spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
+          this.spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
           cellStyle!.padding!.left! +
           cellStyle!.padding!.right! +
           EXTRA_PIXEL;
@@ -519,11 +515,10 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initRowOffsets() {
-    const { dataSet } = this.cfg;
     const heightByField = this.spreadsheet.options.style?.rowCfg?.heightByField;
 
     if (keys(heightByField!).length) {
-      const data = dataSet.getDisplayDataSet();
+      const data = this.spreadsheet.dataSet.getDisplayDataSet();
       this.rowOffsets = [0];
       let lastOffset = 0;
       data.forEach((_, rowIndex) => {
@@ -536,8 +531,6 @@ export class TableFacet extends BaseFacet {
   }
 
   public getViewCellHeights() {
-    const { dataSet } = this.cfg;
-
     this.initRowOffsets();
 
     const defaultCellHeight = this.getDefaultCellHeight();
@@ -547,7 +540,10 @@ export class TableFacet extends BaseFacet {
         if (this.rowOffsets) {
           return last(this.rowOffsets) || 0;
         }
-        return defaultCellHeight * dataSet.getDisplayDataSet().length;
+        return (
+          defaultCellHeight *
+          this.spreadsheet.dataSet.getDisplayDataSet().length
+        );
       },
 
       getCellOffsetY: (offset: number) => {
@@ -565,7 +561,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getTotalLength: () => {
-        return dataSet.getDisplayDataSet().length;
+        return this.spreadsheet.dataSet.getDisplayDataSet().length;
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
@@ -628,8 +624,8 @@ export class TableFacet extends BaseFacet {
   };
 
   private getShadowFill = (angle: number) => {
-    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
-    return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
+    const { splitLine } = this.spreadsheet.theme;
+    return `l (${angle}) 0:${splitLine?.shadowColors?.left} 1:${splitLine?.shadowColors?.right}`;
   };
 
   protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
@@ -672,7 +668,7 @@ export class TableFacet extends BaseFacet {
     // remove previous splitline group
     this.foregroundGroup.getElementById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
 
-    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+    const { splitLine } = this.spreadsheet.theme;
     const splitLineGroup = this.foregroundGroup.appendChild(
       new Group({
         id: KEY_GROUP_FROZEN_SPLIT_LINE,
@@ -684,14 +680,14 @@ export class TableFacet extends BaseFacet {
 
     const verticalBorderStyle = {
       lineWidth: SPLIT_LINE_WIDTH,
-      stroke: style?.verticalBorderColor,
-      opacity: style?.verticalBorderColorOpacity,
+      stroke: splitLine?.verticalBorderColor,
+      opacity: splitLine?.verticalBorderColorOpacity,
     };
 
     const horizontalBorderStyle = {
       lineWidth: SPLIT_LINE_WIDTH,
-      stroke: style?.horizontalBorderColor,
-      opacity: style?.horizontalBorderColorOpacity,
+      stroke: splitLine?.horizontalBorderColor,
+      opacity: splitLine?.horizontalBorderColorOpacity,
     };
 
     const frameVerticalBorderWidth = Frame.getVerticalBorderWidth(
@@ -721,13 +717,13 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && scrollX > 0) {
+      if (splitLine?.showShadow && scrollX > 0) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
               x: x + panelBBoxStartX,
               y: panelBBoxStartY,
-              width: style.shadowWidth!,
+              width: splitLine?.shadowWidth!,
               height,
               fill: this.getShadowFill(0),
             },
@@ -757,14 +753,14 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && relativeScrollY > 0) {
+      if (splitLine?.showShadow && relativeScrollY > 0) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
               x: 0,
               y,
               width: width + frameVerticalBorderWidth,
-              height: style.shadowWidth!,
+              height: splitLine?.shadowWidth!,
               fill: this.getShadowFill(90),
             },
           }),
@@ -794,13 +790,16 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && Math.floor(scrollX) < Math.floor(maxScrollX)) {
+      if (
+        splitLine?.showShadow &&
+        Math.floor(scrollX) < Math.floor(maxScrollX)
+      ) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
-              x: x - style.shadowWidth!,
+              x: x - splitLine.shadowWidth!,
               y: panelBBoxStartY,
-              width: style.shadowWidth!,
+              width: splitLine.shadowWidth!,
               height,
               fill: this.getShadowFill(180),
             },
@@ -830,14 +829,14 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
+      if (splitLine?.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
         splitLineGroup.appendChild(
           new Rect({
             style: {
               x: 0,
-              y: y - style.shadowWidth!,
+              y: y - splitLine.shadowWidth!,
               width: width + frameVerticalBorderWidth,
-              height: style.shadowWidth!,
+              height: splitLine.shadowWidth!,
               fill: this.getShadowFill(270),
             },
           }),
@@ -899,7 +898,7 @@ export class TableFacet extends BaseFacet {
     const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
     if (viewMeta) {
       viewMeta.isFrozenCorner = true;
-      const cell = this.cfg.dataCell!(viewMeta);
+      const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
       group.appendChild(cell);
     }
   };
@@ -968,11 +967,9 @@ export class TableFacet extends BaseFacet {
         cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        sortParam: this.cfg.spreadsheet.store.get('sortParam'),
+        sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
-      }) as ColHeader;
+      });
     }
     return this.columnHeader;
   }
@@ -1022,7 +1019,7 @@ export class TableFacet extends BaseFacet {
     const cellRange = this.getCellRange();
 
     return getValidFrozenOptions(
-      this.cfg,
+      this.spreadsheet.options,
       colLength,
       cellRange.end - cellRange.start + 1,
     );

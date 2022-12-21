@@ -29,7 +29,6 @@ import type { Node } from '../../facet/layout/node';
 import { getLeafColumnsWithKey } from '../../facet/utils';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
-import type { CustomHeaderFields } from './../../common/interface/basic';
 import { getCsvString } from './export-worker';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 
@@ -467,12 +466,8 @@ export const copyData = (
     // Generate the table header.
     headers = colHeader.map((item, index) => {
       if (sheetInstance.isPivotMode()) {
-        const { columns, rows, data } =
-          sheetInstance.facet.cornerHeader.getHeaderConfig() as {
-            columns: CustomHeaderFields;
-            rows: CustomHeaderFields;
-            data: Node[];
-          };
+        const { data } = sheetInstance.facet.cornerHeader.getHeaderConfig();
+        const { columns = [], rows = [] } = sheetInstance.dataSet.fields;
         const colNodes = data.filter(
           ({ cornerType }) => cornerType === CornerNodeType.Col,
         );

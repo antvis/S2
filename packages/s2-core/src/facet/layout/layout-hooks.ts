@@ -1,24 +1,21 @@
 import { each, isBoolean, isEmpty } from 'lodash';
-import type { LayoutResult, SpreadSheetFacetCfg } from '../../common/interface';
+import type { LayoutResult } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
 import type { Node } from '../layout/node';
 
 /**
  * re-arrange field values by custom arrange hooks
- * @param fieldValues
- * @param facetCfg
- * @param parent
- * @param field
  */
 export const layoutArrange = (
+  spreadsheet: SpreadSheet,
   fieldValues: string[],
-  facetCfg: SpreadSheetFacetCfg,
   parent: Node,
   field: string,
 ): string[] => {
-  if (facetCfg.layoutArrange) {
-    return facetCfg.layoutArrange(
-      facetCfg.spreadsheet,
+  if (spreadsheet.options.layoutArrange) {
+    return spreadsheet.options.layoutArrange(
+      spreadsheet,
       parent,
       field,
       fieldValues,
@@ -29,19 +26,15 @@ export const layoutArrange = (
 
 /**
  * Push node directly or custom push according to Hierarchy Hooks
- * @param facetCfg
- * @param parentNode
- * @param currentNode
- * @param hierarchy
  */
 export const layoutHierarchy = (
-  facetCfg: SpreadSheetFacetCfg,
+  spreadsheet: SpreadSheet,
   parentNode: Node,
   currentNode: Node,
   hierarchy: Hierarchy,
 ): boolean => {
   const hiddenColumnNode =
-    facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(currentNode);
+    spreadsheet?.facet?.getHiddenColumnsInfo(currentNode);
 
   if (hiddenColumnNode) {
     return false;
@@ -58,9 +51,9 @@ export const layoutHierarchy = (
       hierarchy.pushNode(node, hierarchyIndex);
     }
   };
-  if (facetCfg.layoutHierarchy) {
-    const facetLayoutHierarchy = facetCfg.layoutHierarchy(
-      facetCfg.spreadsheet,
+  if (spreadsheet.options.layoutHierarchy) {
+    const facetLayoutHierarchy = spreadsheet.options.layoutHierarchy(
+      spreadsheet,
       currentNode,
     );
     if (facetLayoutHierarchy) {
@@ -97,36 +90,31 @@ export const layoutHierarchy = (
 
 /**
  * custom control every header node's coordinates
- * @param facetCfg
- * @param rowNode
- * @param colNode
  */
 export const layoutCoordinate = (
-  facetCfg: SpreadSheetFacetCfg,
+  spreadsheet: SpreadSheet,
   rowNode: Node | null,
   colNode: Node | null,
 ) => {
-  if (facetCfg?.layoutCoordinate) {
+  if (spreadsheet.options?.layoutCoordinate) {
     // only leaf node's coordinates can be modified
     if (rowNode?.isLeaf || colNode?.isLeaf) {
-      facetCfg?.layoutCoordinate(facetCfg.spreadsheet, rowNode, colNode);
+      spreadsheet.options?.layoutCoordinate(spreadsheet, rowNode, colNode);
     }
   }
 };
 
 /**
  * Custom position cell's data
- * @param facetCfg
- * @param layoutResult
  */
 export const layoutDataPosition = (
-  facetCfg: SpreadSheetFacetCfg,
+  spreadsheet: SpreadSheet,
   layoutResult: LayoutResult,
 ): LayoutResult => {
-  const dataPosition = facetCfg?.layoutDataPosition;
+  const dataPosition = spreadsheet.options?.layoutDataPosition;
   if (dataPosition) {
     const { getCellMeta } = layoutResult;
-    const handledGetCellMeta = dataPosition(facetCfg.spreadsheet, getCellMeta);
+    const handledGetCellMeta = dataPosition(spreadsheet, getCellMeta);
     return {
       ...layoutResult,
       getCellMeta: handledGetCellMeta,

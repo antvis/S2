@@ -17,6 +17,7 @@ import type {
   ViewMeta,
 } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
+
 /**
  *  according to the coordinates of the starting point of the rectangle,
  * return the four sides of the rectangle in a clockwise direction.
@@ -122,7 +123,7 @@ export const getInvisibleInfo = (
       cellInfo.colIndex!,
     );
     if (meta) {
-      const cell = sheet?.facet?.cfg?.dataCell?.(meta);
+      const cell = sheet?.options?.dataCell?.(meta);
       viewMeta = cellInfo?.showText ? meta : viewMeta;
       cells.push(cell!);
     }

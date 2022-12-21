@@ -37,7 +37,6 @@ import type {
   S2RenderOptions,
   S2Theme,
   SortMethod,
-  SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipContentType,
   TooltipData,
@@ -54,6 +53,7 @@ import { RootInteraction } from '../interaction/root';
 import { getTheme } from '../theme';
 import { HdAdapter } from '../ui/hd-adapter';
 import { BaseTooltip } from '../ui/tooltip';
+import { removeOffscreenCanvas } from '../utils/canvas';
 import { clearValueRangeState } from '../utils/condition/state-controller';
 import { hideColumnsByThunkGroup } from '../utils/hide-columns';
 import {
@@ -62,7 +62,6 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
-import { removeOffscreenCanvas } from '../utils/canvas';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -248,12 +247,6 @@ export abstract class SpreadSheet extends EE {
    * Check if the value is in the columns
    */
   public abstract isValueInCols(): boolean;
-
-  /**
-   * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg
-   * 要多出定义匹配的问题，直接按需&部分拆分options/dataSet合并为facetCfg
-   */
-  protected abstract getFacetCfgFromDataSetAndOptions(): SpreadSheetFacetCfg;
 
   protected abstract buildFacet(): void;
 
@@ -482,7 +475,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   public getLayoutWidthType(): LayoutWidthType {
-    return this.options.style!.layoutWidthType!;
+    return this.options.style?.layoutWidthType!;
   }
 
   public getRowNodes(level = -1): Node[] {

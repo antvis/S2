@@ -4,7 +4,6 @@ import {
   type CustomHeaderFields,
   type CustomTreeNode,
 } from '../../common';
-import type { SpreadSheetFacetCfg } from '../../common/interface';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
 import { buildGridHierarchy } from '../layout/build-gird-hierarchy';
@@ -22,25 +21,24 @@ interface HeaderParams {
   hierarchy: Hierarchy;
   rootNode: Node;
   spreadsheet: SpreadSheet;
-  facetCfg: SpreadSheetFacetCfg;
   fields: CustomHeaderFields;
   isRowHeader: boolean;
   isCustomTreeFields: boolean;
 }
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
-  const { facetCfg, rootNode, hierarchy, fields } = params;
+  const { rootNode, hierarchy, fields, spreadsheet } = params;
 
   // 自定义行/列 需要去除额外添加的 EXTRA_FIELD 虚拟数值字段, 即不参与布局, 只用于定位数据
   const withoutExtraFieldsTree = filter(
     fields,
     (field) => field !== EXTRA_FIELD,
-  ) as CustomTreeNode[];
+  ) as unknown as CustomTreeNode[];
 
   // custom tree header
   buildCustomTreeHierarchy({
+    spreadsheet,
     tree: withoutExtraFieldsTree,
-    facetCfg,
     level: 0,
     parentNode: rootNode,
     hierarchy,
@@ -52,11 +50,11 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     isValueInCols,
     moreThanOneValue,
     rootNode,
-    facetCfg,
     hierarchy,
     fields,
     isRowHeader,
     isCustomTreeFields,
+    spreadsheet,
   } = params;
   // add new total measure in total node
   let addTotalMeasureInTotal: boolean;
@@ -74,30 +72,30 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     handleCustomTreeHierarchy(params);
   } else {
     buildGridHierarchy({
+      spreadsheet,
       addTotalMeasureInTotal,
       addMeasureInTotalQuery,
       parentNode: rootNode,
       currentField: (fields as string[])[0],
       fields: fields as string[],
-      facetCfg,
       hierarchy,
     });
   }
 };
 
 const handleTreeRowHierarchy = (params: HeaderParams) => {
-  const { facetCfg, rootNode, hierarchy, isCustomTreeFields } = params;
-  const { hierarchyType, rows, dataSet } = facetCfg;
+  const { spreadsheet, rootNode, hierarchy, isCustomTreeFields } = params;
+  const { rows } = spreadsheet.dataSet.fields;
 
-  if (hierarchyType === 'tree' && !isCustomTreeFields) {
+  if (spreadsheet.isHierarchyTreeType() && !isCustomTreeFields) {
     // row tree hierarchy(value must stay in colHeader)
     buildRowTreeHierarchy({
       level: 0,
       currentField: rows?.[0] as string,
-      pivotMeta: (dataSet as PivotDataSet).rowPivotMeta,
-      facetCfg,
+      pivotMeta: (spreadsheet.dataSet as PivotDataSet).rowPivotMeta,
       parentNode: rootNode,
       hierarchy,
+      spreadsheet,
     });
   } else {
     handleCustomTreeHierarchy(params);
@@ -115,14 +113,14 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
 };
 
 const handleColHeaderHierarchy = (params: HeaderParams) => {
-  const { isPivotMode, hierarchy, rootNode, facetCfg } = params;
+  const { isPivotMode, hierarchy, rootNode, spreadsheet } = params;
   if (isPivotMode) {
     handleGridRowColHierarchy(params);
   } else {
     buildTableHierarchy({
       parentNode: rootNode,
       hierarchy,
-      facetCfg,
+      spreadsheet,
     });
   }
 };
@@ -147,11 +145,11 @@ const handleColHeaderHierarchy = (params: HeaderParams) => {
 export const buildHeaderHierarchy = (
   params: BuildHeaderParams,
 ): BuildHeaderResult => {
-  const { isRowHeader, facetCfg } = params;
-  const { spreadsheet, rows = [], columns = [] } = facetCfg;
+  const { isRowHeader, spreadsheet } = params;
+  const { rows = [], columns = [] } = spreadsheet.dataSet.fields;
   const isValueInCols = spreadsheet.isValueInCols();
   const isPivotMode = spreadsheet.isPivotMode();
-  const moreThanOneValue = facetCfg.dataSet.moreThanOneValue();
+  const moreThanOneValue = spreadsheet.dataSet.moreThanOneValue();
   const rootNode = Node.rootNode();
   const hierarchy = new Hierarchy();
   const fields = isRowHeader ? rows : columns;
@@ -166,7 +164,6 @@ export const buildHeaderHierarchy = (
     rootNode,
     hierarchy,
     spreadsheet,
-    facetCfg,
     fields,
     isRowHeader,
     isCustomTreeFields,
@@ -190,5 +187,5 @@ export const buildHeaderHierarchy = (
   return {
     hierarchy,
     leafNodes: getLeafNodes(),
-  } as BuildHeaderResult;
+  };
 };

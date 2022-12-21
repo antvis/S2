@@ -16,7 +16,7 @@ import type { DeviceType } from '../../common/interface';
 import type { S2CellType } from './interaction';
 import type { DataItem } from './s2DataConfig';
 
-export type { GetCellMeta, LayoutResult, SpreadSheetFacetCfg } from './facet';
+export type { GetCellMeta, LayoutResult } from './facet';
 
 // 第二个参数在以下情况会传入：
 // 1. data cell 格式化

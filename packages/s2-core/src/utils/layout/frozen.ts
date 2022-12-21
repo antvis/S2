@@ -1,17 +1,18 @@
 import type { S2TableSheetOptions } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
+
 export const getValidFrozenOptions = (
-  options: S2TableSheetOptions,
+  s2Options: S2TableSheetOptions,
   colLength: number,
   dataLength = 0,
 ) => {
   // 如果没有传行列冻结选项，提前返回
-  if (!Object.values(options).find((item) => item > 0)) {
-    return options;
+  if (!Object.values(s2Options).find((item) => item > 0)) {
+    return s2Options;
   }
 
   const newOptions: S2TableSheetOptions = {
-    ...options,
+    ...s2Options,
   };
 
   if (newOptions.frozenColCount! >= colLength) {

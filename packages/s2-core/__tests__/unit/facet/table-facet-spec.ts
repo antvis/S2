@@ -2,16 +2,21 @@
  * table mode pivot test.
  */
 import { Canvas, Group } from '@antv/g';
-import { merge } from 'lodash';
-import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { Renderer } from '@antv/g-canvas';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { data } from '../../data/mock-dataset.json';
 import { FrozenGroupType } from '@/common/constant';
 import { Store } from '@/common/store';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
-import { DEFAULT_STYLE, Node, type HiddenColumnsInfo } from '@/index';
 import { getFrozenLeafNodesCount } from '@/facet/utils';
+import {
+  customMerge,
+  Node,
+  type HiddenColumnsInfo,
+  type S2DataConfig,
+  type S2Options,
+} from '@/index';
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
 
@@ -26,9 +31,7 @@ jest.mock('@/sheet-type', () => {
       });
 
       return {
-        dataCfg: {
-          ...assembleDataCfg(),
-        },
+        dataCfg: assembleDataCfg(),
         options: assembleOptions(),
         panelScrollGroup: {
           setClip: jest.fn(),
@@ -59,6 +62,8 @@ jest.mock('@/sheet-type', () => {
         },
         isValueInCols: jest.fn(),
         isCustomHeaderFields: jest.fn(),
+        measureTextWidthRoughly: jest.fn(),
+        measureTextWidth: jest.fn(),
       };
     }),
   };
@@ -79,20 +84,41 @@ jest.mock('@/data-set/table-data-set', () => {
     }),
   };
 });
+
 const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 const MockTableDataSet = TableDataSet as any as jest.Mock<TableDataSet>;
 
-describe('Table Mode Facet Test', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...assembleOptions(),
-    ...DEFAULT_STYLE,
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+const createMockTableFacet = (
+  options?: S2Options | null,
+  fields?: S2DataConfig['fields'],
+  before?: (s2: SpreadSheet) => void,
+) => {
+  const s2 = new MockSpreadSheet();
+
+  before?.(s2);
+
+  s2.options = customMerge(assembleOptions(), options);
+  s2.dataCfg = assembleDataCfg({
+    fields: customMerge(
+      {
+        columns: ['province', 'city', 'type', 'sub_type', 'price'],
+      },
+      fields,
+    ),
   });
+  s2.dataSet = new MockTableDataSet(s2);
+  s2.dataSet.fields = s2.dataCfg.fields;
+  const facet = new TableFacet(s2);
+  s2.facet = facet;
+
+  return {
+    facet,
+    s2,
+  };
+};
+
+describe('Table Mode Facet Test', () => {
+  const { facet } = createMockTableFacet();
 
   describe('should get correct row hierarchy', () => {
     const { rowsHierarchy } = facet.layoutResult;
@@ -105,24 +131,11 @@ describe('Table Mode Facet Test', () => {
 });
 
 describe('Table Mode Facet Test With Adaptive Layout', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  const options = {
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...assembleOptions({}),
-    ...DEFAULT_STYLE,
-    layoutWidthType: 'adaptive',
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
-  };
-
   describe('should get correct col layout', () => {
-    const facet: TableFacet = new TableFacet({
-      ...options,
+    const { facet, s2 } = createMockTableFacet({
       showSeriesNumber: false,
     });
-    const { colCfg } = facet.cfg;
+    const { colCfg } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -139,15 +152,10 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const s2: SpreadSheet = new MockSpreadSheet();
-    const s2DataSet: TableDataSet = new MockTableDataSet(s2);
-    const facet = new TableFacet({
-      ...options,
-      spreadsheet: s2,
-      dataSet: s2DataSet,
+    const { facet, s2 } = createMockTableFacet({
       showSeriesNumber: true,
     });
-    const { colCfg } = facet.cfg;
+    const { colCfg } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -174,11 +182,6 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
 describe('Table Mode Facet Test With Compact Layout', () => {
   describe('should get correct col layout', () => {
     const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
-    const ss: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(ss);
-    ss.getLayoutWidthType = () => {
-      return 'compact';
-    };
 
     const mockMeasureFunc = (text: string | number) => {
       switch (text) {
@@ -196,19 +199,19 @@ describe('Table Mode Facet Test With Compact Layout', () => {
           return 0;
       }
     };
-    ss.measureTextWidth =
-      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
-    ss.measureTextWidthRoughly = mockMeasureFunc;
 
-    const facet: TableFacet = new TableFacet({
-      spreadsheet: ss,
-      dataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
-      ...DEFAULT_STYLE,
-      columns: ['province', 'city', 'type', 'sub_type', 'price'],
-    });
-    const { colCfg } = facet.cfg;
+    const { facet, s2 } = createMockTableFacet(
+      {
+        showSeriesNumber: false,
+      },
+      undefined,
+      (spreadsheet) => {
+        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.measureTextWidth =
+          mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+        spreadsheet.measureTextWidthRoughly = mockMeasureFunc;
+      },
+    );
 
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -219,7 +222,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg!.height);
+        expect(node.height).toBe(s2.options!.style!.colCfg!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -227,11 +230,6 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
   describe('should get correct col layout with seriesNumber', () => {
     const LABEL_WIDTH = [36, 36, 48, 24, 56]; // 采样的文本宽度
-    const ss: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(ss);
-    ss.getLayoutWidthType = () => {
-      return 'compact';
-    };
     const mockMeasureFunc = (text: string | number) => {
       switch (text) {
         case '浙江省':
@@ -242,26 +240,27 @@ describe('Table Mode Facet Test With Compact Layout', () => {
           return LABEL_WIDTH[2];
         case '沙发':
           return LABEL_WIDTH[3];
-        case 'undefined': // seriesnumber & price
+        case 'undefined': // serialnumber & price
           return LABEL_WIDTH[4];
         default:
           return 0;
       }
     };
-    ss.measureTextWidth =
-      mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
-    ss.measureTextWidthRoughly = mockMeasureFunc;
 
-    const facet: TableFacet = new TableFacet({
-      spreadsheet: ss,
-      dataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
-      ...DEFAULT_STYLE,
-      columns: ['province', 'city', 'type', 'sub_type', 'price'],
-      showSeriesNumber: true,
-    });
-    const { colCfg } = facet.cfg;
+    const { facet, s2 } = createMockTableFacet(
+      {
+        showSeriesNumber: true,
+      },
+      undefined,
+      (spreadsheet) => {
+        spreadsheet.getLayoutWidthType = () => 'compact';
+        spreadsheet.measureTextWidth =
+          mockMeasureFunc as unknown as SpreadSheet['measureTextWidth'];
+        spreadsheet.measureTextWidthRoughly = mockMeasureFunc;
+      },
+    );
+
+    const { colCfg } = s2.options.style!;
 
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -281,20 +280,11 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 });
 
 describe('Table Mode Facet With Frozen Test', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...assembleOptions({
-      frozenColCount: 2,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
-    }),
-    ...DEFAULT_STYLE,
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  const { facet, s2 } = createMockTableFacet({
+    frozenColCount: 2,
+    frozenRowCount: 2,
+    frozenTrailingColCount: 2,
+    frozenTrailingRowCount: 2,
   });
 
   test('should get correct frozenInfo', () => {
@@ -338,8 +328,9 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenTrailingColCount = 0 } = facet.cfg;
+    const { frozenTrailingColCount = 0 } = s2.options;
     const { colLeafNodes } = facet.layoutResult;
+
     expect(
       colLeafNodes
         .slice(-frozenTrailingColCount)
@@ -349,23 +340,21 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { frozenTrailingColCount } = facet.cfg;
-    const { colLeafNodes, getCellMeta } = facet.layoutResult;
+    const { frozenTrailingColCount } = s2.options;
+    const { colLeafNodes } = facet.layoutResult;
 
     expect(
       colLeafNodes
         .slice(-frozenTrailingColCount!)
         .reverse()
-        .map(
-          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index)!.x,
-        ),
+        .map((node) => node.x),
     ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount } = facet.cfg;
+    const { frozenTrailingRowCount } = s2.options;
     const { getCellMeta } = facet.layoutResult;
-    const displayData = dataSet.getDisplayDataSet();
+    const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
       displayData
@@ -412,9 +401,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 });
 
 describe('Table Mode Facet Test With Custom Row Height', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  ss.options = merge({}, assembleOptions(), {
+  const { facet } = createMockTableFacet({
     style: {
       rowCfg: {
         heightByField: {
@@ -425,14 +412,6 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
         },
       },
     },
-  });
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...merge({}, assembleOptions()),
-    ...DEFAULT_STYLE,
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
   });
 
   test('should get correct rowOffsets when custom row height is set', () => {
@@ -496,19 +475,9 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
 });
 
 describe('Table Mode Facet Test With Zero Height', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  ss.options = merge({}, assembleOptions(), {
+  const { facet } = createMockTableFacet({
     width: 0,
     height: 0,
-  });
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: ss,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...merge({}, assembleOptions()),
-    ...DEFAULT_STYLE,
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
   });
 
   test('should get correct panelBBox', () => {
@@ -525,20 +494,11 @@ describe('Table Mode Facet Test With Zero Height', () => {
 });
 
 describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
-  const s2: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(s2);
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: s2,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...assembleOptions({
-      frozenColCount: 2,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
-    }),
-    ...DEFAULT_STYLE,
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  const { facet } = createMockTableFacet({
+    frozenColCount: 2,
+    frozenRowCount: 2,
+    frozenTrailingColCount: 2,
+    frozenTrailingRowCount: 2,
     layoutCoordinate: (_, __, currentNode) => {
       currentNode!.width = 200;
     },
@@ -559,44 +519,34 @@ describe('Custom Column Width Tests', () => {
   ])(
     'should render custom column leaf node width by %o',
     ({ width, useFunc }) => {
-      const s2: SpreadSheet = new MockSpreadSheet();
-      const dataSet: TableDataSet = new MockTableDataSet(s2);
       const widthFn = jest.fn(() => width);
-      const customWidthFacet = new TableFacet({
-        spreadsheet: s2,
-        dataSet,
-        ...assembleDataCfg().fields,
-        ...assembleOptions(),
-        ...DEFAULT_STYLE,
-        colCfg: {
-          width: useFunc ? widthFn : width,
+      const { facet } = createMockTableFacet({
+        style: {
+          colCfg: {
+            width: useFunc ? widthFn : width,
+          },
         },
       });
 
-      customWidthFacet.layoutResult.colNodes.forEach((node) => {
+      facet.layoutResult.colNodes.forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
-      customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
+      facet.layoutResult.colLeafNodes.forEach((node) => {
         expect(node.width).toStrictEqual(width);
       });
 
       if (useFunc) {
         // eslint-disable-next-line jest/no-conditional-expect
-        expect(widthFn).toHaveReturnedTimes(2);
+        expect(widthFn).toHaveBeenCalled();
       }
     },
   );
 
   test('should get hidden columns info', () => {
-    const s2: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(s2);
-    const facet: TableFacet = new TableFacet({
-      spreadsheet: s2,
-      dataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
-    });
+    const s2 = new MockSpreadSheet();
+    s2.dataSet = new MockTableDataSet(s2);
+    const facet = new TableFacet(s2);
     const node = new Node({ id: '1', field: '1', value: '1' });
 
     expect(facet.getHiddenColumnsInfo(node)).toBeUndefined();
@@ -616,13 +566,7 @@ describe('Custom Column Width Tests', () => {
 });
 
 describe('Table Mode Facet With Column Grouping Test', () => {
-  const s2: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(s2);
-  const facet: TableFacet = new TableFacet({
-    spreadsheet: s2,
-    dataSet,
-    ...assembleDataCfg().fields,
-    ...DEFAULT_STYLE,
+  const { facet, s2 } = createMockTableFacet(null, {
     columns: [
       {
         field: 'area',
@@ -635,7 +579,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
       'price',
     ],
   });
-  const { colCfg } = facet.cfg;
+  const { colCfg } = s2.options.style!;
 
   test('should get correct group', () => {
     const leafNodes = facet.layoutResult.colLeafNodes;
@@ -645,6 +589,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     expect(leafNodes[3].parent!.field).toEqual('all_type');
     expect(leafNodes[4].parent!.id).toEqual('root');
   });
+
   test('should has correct col hierarchy', () => {
     expect(facet.layoutResult.colNodes).toHaveLength(7);
     expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
@@ -669,23 +614,14 @@ describe('Table Mode Facet With Column Grouping Test', () => {
 });
 
 describe('Table Mode Facet With Column Grouping Frozen Test', () => {
-  const ss: SpreadSheet = new MockSpreadSheet();
-  const dataSet: TableDataSet = new MockTableDataSet(ss);
-  let facet: TableFacet;
-
-  beforeAll(async () => {
-    await ss.container.ready;
-    facet = new TableFacet({
-      spreadsheet: ss,
-      dataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions({
-        frozenColCount: 1,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 1,
-        frozenTrailingRowCount: 2,
-      }),
-      ...DEFAULT_STYLE,
+  const { facet, s2 } = createMockTableFacet(
+    {
+      frozenColCount: 1,
+      frozenRowCount: 2,
+      frozenTrailingColCount: 1,
+      frozenTrailingRowCount: 2,
+    },
+    {
       columns: [
         {
           field: 'area',
@@ -697,8 +633,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
           children: ['type', 'sub_type'],
         },
       ],
-    });
-  });
+    },
+  );
 
   test('should get correct frozenInfo', () => {
     facet.calculateFrozenGroupInfo();
@@ -723,7 +659,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenColCount } = facet.cfg;
+    const { frozenColCount } = s2.options;
     const { colNodes } = facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
     let prevWidth = 0;
@@ -734,8 +670,8 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { frozenTrailingColCount } = facet.cfg;
-    const { colNodes, colLeafNodes, getCellMeta } = facet.layoutResult;
+    const { frozenTrailingColCount } = s2.options;
+    const { colNodes, colLeafNodes } = s2.facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
     const { trailingColCount } = getFrozenLeafNodesCount(
       topLevelNodes,
@@ -747,16 +683,14 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       colLeafNodes
         .slice(-trailingColCount)
         .reverse()
-        .map(
-          (node, index) => getCellMeta(1, colLeafNodes.length - 1 - index)!.x,
-        ),
+        .map((node) => node.x),
     ).toEqual([476, 357]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount } = facet.cfg;
+    const { frozenTrailingRowCount } = s2.options;
     const { getCellMeta } = facet.layoutResult;
-    const displayData = dataSet.getDisplayDataSet();
+    const displayData = s2.dataSet.getDisplayDataSet();
     expect(
       displayData
         .slice(-frozenTrailingRowCount!)

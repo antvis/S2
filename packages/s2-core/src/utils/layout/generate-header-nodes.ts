@@ -18,15 +18,15 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     currentField,
     fields,
     fieldValues,
-    facetCfg,
     hierarchy,
     parentNode,
     level,
     query,
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
+    spreadsheet,
   } = params;
-  const { spreadsheet, collapsedCols, colCfg } = facetCfg;
+  const { collapsedCols, colCfg } = spreadsheet.options.style!;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -106,7 +106,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     });
 
     const expandCurrentNode = layoutHierarchy(
-      facetCfg,
+      spreadsheet,
       parentNode,
       node,
       hierarchy,
@@ -120,8 +120,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       !parentNode.isSubTotals &&
       !node.isSubTotals
     ) {
-      const hiddenColumnNode =
-        facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(node);
+      const hiddenColumnNode = spreadsheet?.facet?.getHiddenColumnsInfo(node);
 
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.maxLevel = level;
@@ -144,8 +143,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         parentNode: node,
         currentField: fields[level + 1],
         fields,
-        facetCfg,
         hierarchy,
+        spreadsheet,
       });
     }
   }
@@ -164,8 +163,7 @@ export const DFSGenerateHeaderNodes = (
   level: number,
   pNode?: Node | null,
 ) => {
-  const { facetCfg, hierarchy, parentNode } = params;
-  const { dataSet } = facetCfg;
+  const { hierarchy, parentNode, spreadsheet } = params;
 
   columns.forEach((column, i) => {
     if (typeof column === 'string') {
@@ -175,13 +173,13 @@ export const DFSGenerateHeaderNodes = (
     const value =
       field === SERIES_NUMBER_FIELD
         ? i18n('序号')
-        : dataSet.getFieldName(field);
+        : spreadsheet.dataSet.getFieldName(field);
     const currentParent = pNode || parentNode;
     generateHeaderNodes({
+      spreadsheet,
       currentField: field,
       fields: [field],
       fieldValues: [value],
-      facetCfg,
       hierarchy,
       parentNode: currentParent,
       level,

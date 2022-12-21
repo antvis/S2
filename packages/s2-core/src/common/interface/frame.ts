@@ -11,7 +11,5 @@ export interface FrameConfig {
   viewportHeight: number;
   showViewportLeftShadow: boolean;
   showViewportRightShadow: boolean;
-  scrollContainsRowHeader: boolean;
-  isPivotMode: boolean;
   spreadsheet: SpreadSheet;
 }

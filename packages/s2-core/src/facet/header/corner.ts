@@ -29,7 +29,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       panelBBox,
       cornerBBox,
       seriesNumberWidth,
-      facetCfg,
       layoutResult,
       spreadsheet,
     } = options;
@@ -48,7 +47,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       },
       width: cornerOriginalWidth,
       height: cornerOriginalHeight,
-      facetCfg,
       layoutResult,
       seriesNumberWidth,
       spreadsheet,
@@ -62,18 +60,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       originalWidth: cornerOriginalWidth,
       viewportWidth: width,
       viewportHeight: height,
-      hierarchyType: facetCfg.hierarchyType, // 是否为树状布局
-      hierarchyCollapse: facetCfg.hierarchyCollapse!,
-      rows: facetCfg.rows,
-      columns: facetCfg.columns,
       seriesNumberWidth,
       spreadsheet,
     });
   }
 
   public static getTreeCornerText(options: BaseCornerOptions) {
-    const { spreadsheet, facetCfg } = options;
-    const { dataSet, rows = [] } = facetCfg;
+    const { spreadsheet } = options;
+    const { rows = [] } = spreadsheet.dataSet.fields;
 
     const { cornerText: defaultCornerText } = spreadsheet.options;
 
@@ -90,7 +84,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     // 角头过滤下钻的维度
     const treeLabel = rows
       .filter((value) => !includes(drillFields, value))
-      .map((field): string => dataSet.getFieldName(field))
+      .map((field): string => spreadsheet.dataSet.getFieldName(field))
       .join('/');
 
     if (treeLabel) {
@@ -107,16 +101,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       height: number;
     },
   ): Node[] {
-    const {
-      position,
-      width,
-      facetCfg,
-      layoutResult,
-      seriesNumberWidth,
-      spreadsheet,
-    } = options;
+    const { position, width, layoutResult, seriesNumberWidth, spreadsheet } =
+      options;
     const { rowsHierarchy, colsHierarchy } = layoutResult;
-    const { rows = [], columns = [], dataSet } = facetCfg;
+    const { rows = [], columns = [] } = spreadsheet?.dataSet?.fields || {};
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
     // check if show series number node
@@ -169,7 +157,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             ? rowNode.field
             : (rows[rowNode.level] as string);
 
-          const value = dataSet.getFieldName(field);
+          const value = spreadsheet.dataSet.getFieldName(field);
 
           const cornerNode: Node = new Node({
             id: '',
@@ -198,7 +186,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         const field = isCustomColumn
           ? colNode.field
           : (columns[colNode.level] as string);
-        const value = dataSet.getFieldName(field);
+        const value = spreadsheet.dataSet.getFieldName(field);
 
         const cNode = new Node({
           id: '',
@@ -241,8 +229,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected renderCells() {
     const { data, spreadsheet } = this.headerConfig;
-    const cornerHeader = spreadsheet?.facet?.cfg?.cornerHeader;
-    const cornerCell = spreadsheet?.facet?.cfg?.cornerCell;
+    const cornerHeader = spreadsheet.options?.cornerHeader;
+    const cornerCell = spreadsheet?.options?.cornerCell;
+
     if (cornerHeader) {
       cornerHeader(
         this as unknown as S2CellType,
