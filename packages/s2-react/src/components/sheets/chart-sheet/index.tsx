@@ -7,7 +7,7 @@ import {
 } from '@antv/s2';
 import { isEmpty, isFunction } from 'lodash';
 import { BaseSheet } from '../base-sheet';
-import type { SheetComponentsProps } from '../interface';
+import type { SheetComponentOptions, SheetComponentsProps } from '../interface';
 import { ChartCell } from './chart-cell';
 
 export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
@@ -15,7 +15,7 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, renderConfig, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet | null>(null);
     const s2Options = React.useMemo(() => {
-      return customMerge(options, {
+      return customMerge<SheetComponentOptions>(options, {
         dataCell: ChartCell,
         showDefaultHeaderActionIcon: false,
       });

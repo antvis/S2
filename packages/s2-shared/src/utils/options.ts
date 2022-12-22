@@ -9,7 +9,7 @@ import { SHEET_COMPONENT_DEFAULT_OPTIONS } from '../constant/option';
 export const getBaseSheetComponentOptions = <Options = S2Options>(
   ...options: Partial<Options>[]
 ): Options => {
-  return customMerge(
+  return customMerge<Options>(
     DEFAULT_OPTIONS,
     SHEET_COMPONENT_DEFAULT_OPTIONS,
     ...options,
@@ -19,7 +19,7 @@ export const getBaseSheetComponentOptions = <Options = S2Options>(
 export const getMobileSheetComponentOptions = <Options = S2Options>(
   ...options: Partial<Options>[]
 ): Options => {
-  return customMerge(
+  return customMerge<Options>(
     DEFAULT_OPTIONS,
     DEFAULT_MOBILE_OPTIONS,
     SHEET_COMPONENT_DEFAULT_OPTIONS,

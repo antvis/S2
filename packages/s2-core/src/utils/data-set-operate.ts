@@ -114,7 +114,10 @@ export function isTotalData(ids: string[], data: RawData): boolean {
 }
 
 export function getTotalSelection(totals = {} as TotalSelectionsOfMultiData) {
-  return customMerge(DEFAULT_TOTAL_SELECTIONS, totals);
+  return customMerge<TotalSelectionsOfMultiData>(
+    DEFAULT_TOTAL_SELECTIONS,
+    totals,
+  );
 }
 
 export function flattenIndexesData(

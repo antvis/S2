@@ -233,7 +233,7 @@ describe('Pivot Dataset Total Test', () => {
           height: 600,
           totals: {
             row: {
-              ...TOTALS_OPTIONS.row,
+              ...TOTALS_OPTIONS?.row,
               calcTotals: {
                 aggregation: Aggregation.SUM,
               },
@@ -242,7 +242,7 @@ describe('Pivot Dataset Total Test', () => {
               },
             },
             col: {
-              ...TOTALS_OPTIONS.col,
+              ...TOTALS_OPTIONS?.col,
               calcTotals: {
                 aggregation: Aggregation.SUM,
               },
@@ -433,7 +433,7 @@ describe('Pivot Dataset Total Test', () => {
           height: 600,
           totals: {
             row: {
-              ...TOTALS_OPTIONS.row,
+              ...TOTALS_OPTIONS?.row,
               calcTotals: {
                 calcFunc: calcFunc1,
               },
@@ -442,7 +442,7 @@ describe('Pivot Dataset Total Test', () => {
               },
             },
             col: {
-              ...TOTALS_OPTIONS.col,
+              ...TOTALS_OPTIONS?.col,
               calcTotals: {
                 calcFunc: calcFunc2,
               },

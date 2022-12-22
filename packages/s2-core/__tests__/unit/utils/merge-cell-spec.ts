@@ -1,4 +1,5 @@
 import type { Group } from '@antv/g';
+import type { DataCellCallback } from '@/common/interface/basic';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -21,6 +22,7 @@ import type {
   MergedCellInfo,
   S2CellType,
   TempMergedCell,
+  ViewMeta,
 } from '@/common/interface';
 import type { BaseFacet } from '@/facet';
 import type { MergedCell } from '@/cell';
@@ -202,9 +204,10 @@ describe('Merge Cells Test', () => {
     mockInstance.facet.layoutResult.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
-    Object.defineProperty(mockInstance.options, 'dataCell', {
-      value: jest.fn().mockImplementation((scalar) => scalar),
-    });
+
+    mockInstance.options = {
+      dataCell: ((meta: ViewMeta) => meta) as unknown as DataCellCallback,
+    };
 
     const { cells, cellsMeta } = getInvisibleInfo(
       mockMergeCellInfo,
@@ -234,13 +237,6 @@ describe('Merge Cells Test', () => {
     mockInstance.facet.layoutResult.getCellMeta = jest
       .fn()
       .mockImplementation((scalar) => mockMergeCellInfo[scalar]);
-    Object.defineProperty(mockInstance.options, 'dataCell', {
-      value: jest.fn().mockImplementation((scalar) => {
-        return {
-          getMeta: jest.fn().mockReturnValue(scalar),
-        };
-      }),
-    });
 
     const tempMergedCell = getTempMergedCell(
       mockAllVisibleCells,
