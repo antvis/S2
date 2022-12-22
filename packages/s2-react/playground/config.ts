@@ -1,5 +1,4 @@
 import {
-  isMobile,
   ResizeType,
   type CustomHeaderField,
   type S2DataConfig,
@@ -94,7 +93,7 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: isMobile() ? 60 : 100,
+      width: 160,
       height: 50,
     },
     colCfg: {
@@ -102,7 +101,7 @@ export const s2Options: SheetComponentOptions = {
       height: 30,
     },
     cellCfg: {
-      width: 150,
+      width: 100,
       height: 40,
     },
   },
