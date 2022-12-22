@@ -1,6 +1,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer, sleep } from 'tests/util/helpers';
 import { pick } from 'lodash';
+import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import {
   DEFAULT_OPTIONS,
@@ -8,6 +9,64 @@ import {
   type S2Options,
   type TextTheme,
 } from '@/common';
+import type { S2DataConfig, TableDataCell } from '@/index';
+import type { PanelScrollGroup } from '@/group/panel-scroll-group';
+
+const data = getMockData(
+  '../../../s2-react/__tests__/data/tableau-supermarket.csv',
+);
+
+const columns = [
+  'order_id',
+  'order_date',
+  'ship_date',
+  'express_type',
+  'customer_name',
+  'customer_type',
+  'city',
+  'province',
+  'counter',
+  'area',
+  'type',
+  'sub_type',
+  'product_name',
+  'sale_amt',
+  'count',
+  'discount',
+  'profit',
+];
+
+const meta = [
+  {
+    field: 'count',
+    name: '销售个数',
+  },
+  {
+    field: 'profit',
+    name: '利润',
+    formatter: (v: number) => `${v}元`,
+  },
+];
+
+const newLineText = `1\t\n2`;
+
+const dataCfg: S2DataConfig = {
+  fields: {
+    columns,
+  },
+  meta,
+  data: data.map((e) => ({ ...e, express_type: newLineText })),
+  sortParams: [
+    {
+      sortFieldId: 'count',
+      sortMethod: 'DESC',
+    },
+    {
+      sortFieldId: 'profit',
+      sortMethod: 'ASC',
+    },
+  ],
+};
 
 const s2Options: S2Options = {
   width: 200,
@@ -475,5 +534,28 @@ describe('SpreadSheet Tests', () => {
         expect(s2.measureTextHeight(text, font)).not.toBeLessThanOrEqual(0);
       });
     });
+  });
+
+  test('should render link shape', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...s2Options,
+      frozenRowCount: 0,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+      frozenTrailingRowCount: 0,
+    });
+    s2.render();
+
+    const orderIdDataCell = (
+      s2.facet.panelGroup.findAllByName(
+        'panelScrollGroup',
+      )[0] as PanelScrollGroup
+    )
+      .getChildren()
+      .find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
+
+    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+
+    s2.destroy();
   });
 });

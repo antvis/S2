@@ -1,4 +1,4 @@
-# [@antv/s2-v1.37.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.36.0...@antv/s2-v1.37.0-alpha.1) (2022-12-13)
+# [@antv/s2-v1.39.1](https://github.com/antvis/S2/compare/@antv/s2-v1.39.0...@antv/s2-v1.39.1) (2022-12-20)
 
 
 ### Bug Fixes
@@ -6,47 +6,28 @@
 * body样式影响measureTextWidth测量结果 ([af578a8](https://github.com/antvis/S2/commit/af578a876d6d0ec811c72e1608b3ed8e4c248931))
 * import remove alias ([4b75925](https://github.com/antvis/S2/commit/4b759251cb1af519f2feedff6179dc49a56792e7))
 * **s2:** 如果是 table mode，列头不需要被格式化 ([#1249](https://github.com/antvis/S2/issues/1249)) ([d3141d3](https://github.com/antvis/S2/commit/d3141d3b2ca5bc8a68e7333e3e8f720bc121e52d))
-* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
-* 为第一个子层级时，parentNode.id === ROOT_ID 时，不需要通过分割获取当前节点的真实 value ([#1285](https://github.com/antvis/S2/issues/1285)) ([d488615](https://github.com/antvis/S2/commit/d488615fb68788e316f757eb1ff7da92ebf97628))
-* 修复 enableCopy 和 hideMeasureColumn 都开启为 true 时，复制报错问题 ([#1984](https://github.com/antvis/S2/issues/1984)) ([528d2b6](https://github.com/antvis/S2/commit/528d2b6b6b912f790449aaef015fc27d2e0e33c9))
-* 修复lint报错 ([cbba5d9](https://github.com/antvis/S2/commit/cbba5d9c3ef0dee5026472aac51b3c0e13eadda2))
-* 修复条件格式 ([e41d31b](https://github.com/antvis/S2/commit/e41d31baa5749956ea07e3057c97578f149ada12))
-* 列头text未适配left/right对齐方式 ([cad4ed7](https://github.com/antvis/S2/commit/cad4ed7c0e1778625d83fdf194e0813e797fffaf))
-* 总计行文本testcase ([c33fda1](https://github.com/antvis/S2/commit/c33fda1154008f2fbc954563b6ac47db75c8ea44))
-* 明细表多级表头固定多行和多列后数据和界面渲染不正确 ([#1801](https://github.com/antvis/S2/issues/1801)) ([4421ce4](https://github.com/antvis/S2/commit/4421ce4519de122a1cb59bb79a621cadb7e5ec91)), closes [#1797](https://github.com/antvis/S2/issues/1797) [/github.com/antvis/S2/pull/1687#issuecomment-1231084465](https://github.com//github.com/antvis/S2/pull/1687/issues/issuecomment-1231084465)
-* 添加当多个数值在行头显示时，小计展示被遮挡的问题 ([#1267](https://github.com/antvis/S2/issues/1267)) ([87127d0](https://github.com/antvis/S2/commit/87127d08cfa3be1a34922a619e4244475f0aa8ff))
-
-
-### Features
-
-* hsl分量作用方式从 ([2edce7b](https://github.com/antvis/S2/commit/2edce7be4d7e0cf7719dc3988d3a6d6b34ec0b86))
-* 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
-* 增加 linkFields 参数传入类型 ([#1992](https://github.com/antvis/S2/issues/1992)) ([66bce2a](https://github.com/antvis/S2/commit/66bce2ae77635b530058f56b0545bd5558c119e1))
-* 增加搜索高亮交互状态及主题色 ([#1240](https://github.com/antvis/S2/issues/1240)) ([0897888](https://github.com/antvis/S2/commit/0897888772172b1afe38f815d95994433cc68915))
-* 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
-* 实现树状模式下可复制 ([#1986](https://github.com/antvis/S2/issues/1986)) ([96ccb1e](https://github.com/antvis/S2/commit/96ccb1ee14908fc1daf82d1eccb3bd852e642f7d))
-* 新增链接跳转配置 ([5e08055](https://github.com/antvis/S2/commit/5e08055b52a125e75cbc41bb748d247ef25ba016))
-* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
-* 趋势分析表支持配置图标条件 ([#1683](https://github.com/antvis/S2/issues/1683)) ([2137372](https://github.com/antvis/S2/commit/213737269d8453d8fa2af6f7d589005b3d331064)), closes [#1590](https://github.com/antvis/S2/issues/1590) [#1583](https://github.com/antvis/S2/issues/1583) [#1571](https://github.com/antvis/S2/issues/1571) [#1599](https://github.com/antvis/S2/issues/1599) [#1594](https://github.com/antvis/S2/issues/1594) [#1601](https://github.com/antvis/S2/issues/1601) [#1606](https://github.com/antvis/S2/issues/1606) [#1607](https://github.com/antvis/S2/issues/1607) [#1610](https://github.com/antvis/S2/issues/1610) [#1611](https://github.com/antvis/S2/issues/1611) [#1618](https://github.com/antvis/S2/issues/1618) [#1616](https://github.com/antvis/S2/issues/1616) [#1640](https://github.com/antvis/S2/issues/1640) [#1644](https://github.com/antvis/S2/issues/1644) [#1633](https://github.com/antvis/S2/issues/1633) [#1647](https://github.com/antvis/S2/issues/1647) [#1638](https://github.com/antvis/S2/issues/1638) [#1623](https://github.com/antvis/S2/issues/1623) [#1649](https://github.com/antvis/S2/issues/1649) [#1622](https://github.com/antvis/S2/issues/1622) [#1646](https://github.com/antvis/S2/issues/1646) [#1622](https://github.com/antvis/S2/issues/1622) [#1650](https://github.com/antvis/S2/issues/1650) [#1654](https://github.com/antvis/S2/issues/1654) [#1652](https://github.com/antvis/S2/issues/1652) [#1655](https://github.com/antvis/S2/issues/1655) [#1653](https://github.com/antvis/S2/issues/1653) [#1661](https://github.com/antvis/S2/issues/1661) [#1664](https://github.com/antvis/S2/issues/1664) [#1673](https://github.com/antvis/S2/issues/1673) [#1675](https://github.com/antvis/S2/issues/1675) [#1678](https://github.com/antvis/S2/issues/1678) [#1677](https://github.com/antvis/S2/issues/1677)
-* 适配链接跳转的判断方式 ([#1983](https://github.com/antvis/S2/issues/1983)) ([2a26259](https://github.com/antvis/S2/commit/2a2625971bcefd119d2e2a280608d1acf56b5d32))
-
-# [@antv/s2-v1.37.0](https://github.com/antvis/S2/compare/@antv/s2-v1.36.0...@antv/s2-v1.37.0) (2022-12-09)
 
 
 ### Bug Fixes
 
-* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
-* 修复 enableCopy 和 hideMeasureColumn 都开启为 true 时，复制报错问题 ([#1984](https://github.com/antvis/S2/issues/1984)) ([528d2b6](https://github.com/antvis/S2/commit/528d2b6b6b912f790449aaef015fc27d2e0e33c9))
+* gui icon 加载完成后，增加检测步骤，避免无意义的渲染 warning ([#1997](https://github.com/antvis/S2/issues/1997)) ([6f13aa4](https://github.com/antvis/S2/commit/6f13aa43d8910f9ed83d59a9c958b26a0eb163d6))
 
 
 ### Features
 
-* 实现树状模式下可复制 ([#1986](https://github.com/antvis/S2/issues/1986)) ([96ccb1e](https://github.com/antvis/S2/commit/96ccb1ee14908fc1daf82d1eccb3bd852e642f7d))
-* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
-* 适配链接跳转的判断方式 ([#1983](https://github.com/antvis/S2/issues/1983)) ([2a26259](https://github.com/antvis/S2/commit/2a2625971bcefd119d2e2a280608d1acf56b5d32))
+* 添加字段标记中，定制柱状图的长度的功能 （filedValue） ([#2002](https://github.com/antvis/S2/issues/2002)) ([457e5e7](https://github.com/antvis/S2/commit/457e5e7989ce460e445f46925eaee79b49f56615))
+
+# [@antv/s2-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-v1.37.0...@antv/s2-v1.38.0) (2022-12-16)
+
+
+### Features
+* 增加 linkFields 参数传入类型 ([#1992](https://github.com/antvis/S2/issues/1992)) ([66bce2a](https://github.com/antvis/S2/commit/66bce2ae77635b530058f56b0545bd5558c119e1))
+* 新增链接跳转配置 ([5e08055](https://github.com/antvis/S2/commit/5e08055b52a125e75cbc41bb748d247ef25ba016))
+
+# [@antv/s2-v1.37.0](https://github.com/antvis/S2/compare/@antv/s2-v1.36.0...@antv/s2-v1.37.0) (2022-12-09)
+
 
 # [@antv/s2-v1.36.0](https://github.com/antvis/S2/compare/@antv/s2-v1.35.1...@antv/s2-v1.36.0) (2022-12-02)
-
 
 ### Bug Fixes
 

@@ -1,4 +1,4 @@
-import { getPalette } from '@/utils';
+import { getPalette, shouldReverseFontColor } from '@/utils';
 import { generatePalette, generateStandardColors } from '@/utils/color';
 
 const expectThemeColor = '#F1535F';
@@ -51,6 +51,7 @@ describe('Theme Color Tests', () => {
     function renderEmptyPalette() {
       generatePalette();
     }
+
     expect(renderEmptyPalette).not.toThrowError();
   });
 
@@ -58,6 +59,7 @@ describe('Theme Color Tests', () => {
     function renderStandardColors() {
       generateStandardColors(undefined);
     }
+
     expect(renderStandardColors).not.toThrowError();
   });
 
@@ -77,5 +79,34 @@ describe('Theme Color Tests', () => {
     ];
     expect(generateStandardColors(undefined)).toEqual(colors);
     expect(generateStandardColors('')).toEqual(colors);
+  });
+
+  // 主要测试一些主题色和亮度中间区域的颜色，保证修改后自带主题色不受影响
+  test('should use reverse font color when background colors are these', () => {
+    const backgroundColors = [
+      '#4174f0',
+      '#999999',
+      '#7F7F7F',
+      '#404040',
+      '#000000',
+    ];
+
+    backgroundColors.forEach((color) => {
+      expect(shouldReverseFontColor(color)).toBeTruthy();
+    });
+  });
+
+  test('should use default font color when background colors are these', () => {
+    const backgroundColors = [
+      '#c4e0fa',
+      '#f2f2f2',
+      '#ffffff',
+      '#C0C0C0',
+      '#e1e9fb',
+      '#f0f2f4',
+    ];
+    backgroundColors.forEach((color) => {
+      expect(shouldReverseFontColor(color)).toBeFalsy();
+    });
   });
 });
