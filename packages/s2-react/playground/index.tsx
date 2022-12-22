@@ -60,6 +60,7 @@ import {
 } from './config';
 import { partDrillDown } from './drill-down';
 import './index.less';
+import { MobileSheetComponent } from './components/Mobile';
 
 const { TabPane } = Tabs;
 
@@ -1028,6 +1029,9 @@ function MainLayout() {
             themeCfg={themeCfg}
             onMounted={onSheetMounted}
           />
+        </TabPane>
+        <TabPane tab="移动端表格" key="mobile">
+          <MobileSheetComponent />
         </TabPane>
       </Tabs>
     </div>

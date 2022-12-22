@@ -97,7 +97,7 @@ export const s2Options: SheetComponentOptions = {
   style: {
     rowCfg: {
       width: isMobile() ? 60 : 160,
-      height: 50,
+      height: isMobile() ? undefined : 50,
     },
     colCfg: {
       widthByField: {
@@ -109,8 +109,8 @@ export const s2Options: SheetComponentOptions = {
       },
     },
     cellCfg: {
-      width: 100,
-      height: 40,
+      width: isMobile() ? 60 : 100,
+      height: isMobile() ? undefined : 40,
     },
   },
 };

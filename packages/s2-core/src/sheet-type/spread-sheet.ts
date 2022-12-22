@@ -6,6 +6,7 @@ import {
 } from '@antv/g';
 import { Renderer } from '@antv/g-canvas';
 import {
+  delay,
   forEach,
   forIn,
   get,
@@ -63,6 +64,7 @@ import {
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
 import { removeOffscreenCanvas } from '../utils/canvas';
+import { isMobile } from '../utils/is-mobile';
 
 export abstract class SpreadSheet extends EE {
   // theme config
@@ -273,10 +275,20 @@ export abstract class SpreadSheet extends EE {
       ? content(cell!, showOptions)
       : content;
 
-    this.tooltip.show?.({
-      ...showOptions,
-      content: displayContent,
-    });
+    if (isMobile()) {
+      // S2 的在点击会触发两次，一次在 Canvas 上，一次会在 Drawer mask 上。
+      delay(() => {
+        this.tooltip.show?.({
+          ...showOptions,
+          content: displayContent,
+        });
+      }, 50);
+    } else {
+      this.tooltip.show?.({
+        ...showOptions,
+        content: displayContent,
+      });
+    }
   }
 
   public showTooltipWithInfo(

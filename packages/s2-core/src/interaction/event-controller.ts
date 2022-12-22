@@ -21,7 +21,7 @@ import type { SpreadSheet } from '../sheet-type';
 import { getSelectedData, keyEqualTo } from '../utils/export/copy';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
-import { GuiIcon } from '..';
+import { GuiIcon, isMobile } from '..';
 
 interface EventListener {
   target: EventTarget;
@@ -73,6 +73,9 @@ export class EventController {
     // canvas events
     this.addCanvasEvent(OriginEventType.CLICK, this.onCanvasClick);
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
+    this.addCanvasEvent(OriginEventType.TOUCH_START, (event) => {
+      this.target = event.target;
+    });
     this.addCanvasEvent(OriginEventType.POINTER_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.POINTER_UP, this.onCanvasMouseup);
@@ -387,8 +390,8 @@ export class EventController {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
-
     const cell = this.spreadsheet.getCell(event.target);
+
     if (cell) {
       const cellType = cell.cellType;
       // target相同，说明是一个cell内的 click 事件
@@ -450,7 +453,9 @@ export class EventController {
 
   private onCanvasClick = (event: CanvasEvent) => {
     this.spreadsheet.emit(S2Event.GLOBAL_CLICK, event);
-
+    if (isMobile()) {
+      this.onCanvasMouseup(event);
+    }
     // 双击的 detail 是 2
     if (event.detail === 2) {
       this.onCanvasDoubleClick(event);
