@@ -110,7 +110,7 @@ export const s2Options: SheetComponentOptions = {
     },
     cellCfg: {
       width: 100,
-      height: 40,
+      height: isMobile() ? undefined : 40,
     },
   },
 };
