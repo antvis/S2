@@ -1,5 +1,9 @@
 import { includes, isBoolean } from 'lodash';
-import type { CustomHeaderFields, CustomTreeNode } from '../../common';
+import {
+  getDefaultSeriesNumberText,
+  type CustomHeaderFields,
+  type CustomTreeNode,
+} from '../../common';
 import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
@@ -172,7 +176,7 @@ export const DFSGenerateHeaderNodes = (
     const { field } = column;
     const value =
       field === SERIES_NUMBER_FIELD
-        ? i18n('序号')
+        ? getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText)
         : spreadsheet.dataSet.getFieldName(field);
     const currentParent = pNode || parentNode;
     generateHeaderNodes({

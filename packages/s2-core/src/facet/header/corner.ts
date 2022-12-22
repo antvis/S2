@@ -1,14 +1,16 @@
 import { Rect, type Group, type PointLike } from '@antv/g';
 import { includes, isEmpty } from 'lodash';
 import { CornerCell } from '../../cell/corner-cell';
-import { i18n } from '../../common/i18n';
 import type { S2CellType } from '../../common/interface';
 import { CornerNodeType } from '../../common/interface/node';
 import type { CornerBBox } from '../bbox/cornerBBox';
 import type { PanelBBox } from '../bbox/panelBBox';
 import { Node } from '../layout/node';
 import { translateGroupX } from '../utils';
-import { getDefaultCornerText } from './../../common/constant/basic';
+import {
+  getDefaultCornerText,
+  getDefaultSeriesNumberText,
+} from './../../common/constant/basic';
 import { BaseHeader } from './base';
 import type { BaseCornerOptions, CornerHeaderConfig } from './interface';
 
@@ -113,7 +115,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       const sNode: Node = new Node({
         id: '',
         field: '',
-        value: spreadsheet.options.seriesNumberText ?? i18n('序号'),
+        value: getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText),
       });
       sNode.x = position?.x;
       // different type different y

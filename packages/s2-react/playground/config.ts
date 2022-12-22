@@ -48,11 +48,35 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
+export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
+  text: [],
+  interval: [
+    {
+      field: 'number',
+      mapping() {
+        return {
+          fill: '#80BFFF',
+          // 自定义柱状图范围
+          isCompare: true,
+          maxValue: 8000,
+          minValue: 300,
+        };
+      },
+    },
+  ],
+};
+
+export const tableSheetFrozenOptions: SheetComponentOptions = {
+  frozenColCount: 1,
+  frozenTrailingColCount: 1,
+};
+
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 400,
   showSeriesNumber: false,
+  frozenRowHeader: true,
   cornerText: '测试',
   interaction: {
     enableCopy: true,
@@ -73,23 +97,7 @@ export const s2Options: SheetComponentOptions = {
       trend: true,
     },
   },
-  conditions: {
-    text: [],
-    interval: [
-      {
-        field: 'number',
-        mapping() {
-          return {
-            fill: '#80BFFF',
-            // 自定义柱状图范围
-            isCompare: true,
-            maxValue: 8000,
-            minValue: 300,
-          };
-        },
-      },
-    ],
-  },
+  conditions: s2ConditionsOptions,
   hierarchyType: 'grid',
   style: {
     rowCfg: {

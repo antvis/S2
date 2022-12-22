@@ -684,7 +684,7 @@ export const getTooltipOptions = (
     return null;
   }
   const cellType = spreadsheet.getCellType?.(event?.target);
-  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType!);
+  return getTooltipOptionsByCellType(spreadsheet.options.tooltip!, cellType!);
 };
 
 export const getTooltipVisibleOperator = (

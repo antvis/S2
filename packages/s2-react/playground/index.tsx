@@ -5,6 +5,7 @@ import {
   customMerge,
   DEFAULT_STYLE,
   generatePalette,
+  getDefaultSeriesNumberText,
   getLang,
   getPalette,
   Node,
@@ -53,8 +54,10 @@ import { StrategySheet } from './components/StrategySheet';
 import {
   defaultOptions,
   pivotSheetDataCfg,
+  s2ConditionsOptions,
   sliderOptions,
   tableSheetDataCfg,
+  tableSheetFrozenOptions,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
 } from './config';
@@ -684,17 +687,39 @@ function MainLayout() {
                   }}
                   disabled={sheetType === 'table'}
                 />
-                <Switch
-                  checkedChildren="冻结行头开"
-                  unCheckedChildren="冻结行头关"
-                  defaultChecked={mergedOptions.frozenRowHeader}
-                  onChange={(checked) => {
-                    updateOptions({
-                      frozenRowHeader: checked,
-                    });
-                  }}
-                  disabled={sheetType === 'table'}
-                />
+                <Tooltip title="透视表有效">
+                  <Switch
+                    checkedChildren="冻结行头开"
+                    unCheckedChildren="冻结行头关"
+                    defaultChecked={mergedOptions.frozenRowHeader}
+                    onChange={(checked) => {
+                      updateOptions({
+                        frozenRowHeader: checked,
+                      });
+                    }}
+                    disabled={sheetType === 'table'}
+                  />
+                </Tooltip>
+                <Tooltip title="透视表有效">
+                  <Switch
+                    checkedChildren="冻结列头开"
+                    unCheckedChildren="冻结列头关"
+                    defaultChecked={!!mergedOptions.frozenTrailingColCount}
+                    onChange={(checked) => {
+                      if (checked) {
+                        updateOptions(tableSheetFrozenOptions);
+                      } else {
+                        updateOptions({
+                          frozenRowCount: 0,
+                          frozenColCount: 0,
+                          frozenTrailingColCount: 0,
+                          frozenTrailingRowCount: 0,
+                        });
+                      }
+                    }}
+                    disabled={sheetType === 'pivot'}
+                  />
+                </Tooltip>
                 <Switch
                   checkedChildren="容器宽高自适应开"
                   unCheckedChildren="容器宽高自适应关"
@@ -710,6 +735,19 @@ function MainLayout() {
                       showSeriesNumber: checked,
                     });
                   }}
+                />
+                <Switch
+                  checkedChildren="自定义序号文本"
+                  unCheckedChildren="默认序号文本"
+                  checked={mergedOptions.seriesNumberText === '自定义序号文本'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      seriesNumberText: checked
+                        ? '自定义序号文本'
+                        : getDefaultSeriesNumberText(),
+                    });
+                  }}
+                  disabled={!mergedOptions.showSeriesNumber}
                 />
                 <Switch
                   checkedChildren="分页"
@@ -778,12 +816,12 @@ function MainLayout() {
                   }}
                 />
                 <Switch
-                  checkedChildren="自定义序号文本"
-                  unCheckedChildren="默认序号文本"
-                  checked={mergedOptions.seriesNumberText === '自定义序号文本'}
+                  checkedChildren="字段标记开"
+                  unCheckedChildren="字段标记关"
+                  checked={!!mergedOptions.conditions}
                   onChange={(checked) => {
                     updateOptions({
-                      seriesNumberText: checked ? '自定义序号文本' : '序号',
+                      conditions: checked ? s2ConditionsOptions : null,
                     });
                   }}
                 />

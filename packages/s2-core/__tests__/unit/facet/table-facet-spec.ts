@@ -118,15 +118,28 @@ const createMockTableFacet = (
 };
 
 describe('Table Mode Facet Test', () => {
-  const { facet } = createMockTableFacet();
-
-  describe('should get correct row hierarchy', () => {
+  test('should get correct row hierarchy', () => {
+    const { facet } = createMockTableFacet();
     const { rowsHierarchy } = facet.layoutResult;
-    test('row hierarchy structure', () => {
-      expect(rowsHierarchy.height).toBe(0);
-      expect(rowsHierarchy.width).toBe(0);
-      expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
+    expect(rowsHierarchy.height).toBe(0);
+    expect(rowsHierarchy.width).toBe(0);
+    expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
+  });
+
+  test('should get default seriesNumberText', () => {
+    const { facet } = createMockTableFacet({
+      showSeriesNumber: true,
     });
+    expect(facet.layoutResult.colLeafNodes[0].value).toEqual('序号');
+  });
+
+  test('should get custom seriesNumberText', () => {
+    const seriesNumberText = 'test';
+    const { facet } = createMockTableFacet({
+      showSeriesNumber: true,
+      seriesNumberText,
+    });
+    expect(facet.layoutResult.colLeafNodes[0].value).toEqual(seriesNumberText);
   });
 });
 
@@ -328,15 +341,15 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenTrailingColCount = 0 } = s2.options;
+    const { frozenColCount = 0 } = s2.options;
     const { colLeafNodes } = facet.layoutResult;
 
     expect(
       colLeafNodes
-        .slice(-frozenTrailingColCount)
+        .slice(-frozenColCount)
         .reverse()
         .map((node) => node.x),
-    ).toEqual([476, 357]);
+    ).toEqual([481, 362]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -348,7 +361,7 @@ describe('Table Mode Facet With Frozen Test', () => {
         .slice(-frozenTrailingColCount!)
         .reverse()
         .map((node) => node.x),
-    ).toEqual([476, 357]);
+    ).toEqual([481, 362]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
@@ -662,11 +675,10 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const { frozenColCount } = s2.options;
     const { colNodes } = facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
-    let prevWidth = 0;
-    topLevelNodes.slice(0, frozenColCount).forEach((node) => {
-      expect(node.x).toBe(prevWidth);
-      prevWidth += node.width;
-    });
+
+    expect(
+      topLevelNodes.slice(0, frozenColCount).map((node) => node.x),
+    ).toStrictEqual([0]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
@@ -684,7 +696,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
         .slice(-trailingColCount)
         .reverse()
         .map((node) => node.x),
-    ).toEqual([476, 357]);
+    ).toEqual([481, 362]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
