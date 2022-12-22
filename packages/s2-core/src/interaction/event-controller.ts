@@ -456,8 +456,6 @@ export class EventController {
     if (isMobile()) {
       this.onCanvasMouseup(event);
     }
-  };
-
     // 双击的 detail 是 2
     if (event.detail === 2) {
       this.onCanvasDoubleClick(event);
