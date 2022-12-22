@@ -1,3 +1,11 @@
+# [@antv/s2-v1.39.1](https://github.com/antvis/S2/compare/@antv/s2-v1.39.0...@antv/s2-v1.39.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* 明细表linkField失效 ([#2007](https://github.com/antvis/S2/issues/2007)) ([122552b](https://github.com/antvis/S2/commit/122552bdd25aa538cfd38a6210e9979698c13188))
+* 明细表紧凑模式宽度计算错误 ([#2006](https://github.com/antvis/S2/issues/2006)) ([89f5c9e](https://github.com/antvis/S2/commit/89f5c9eb7719834ce9a55d340bf04415639cc277))
+
 # [@antv/s2-v1.39.0](https://github.com/antvis/S2/compare/@antv/s2-v1.38.0...@antv/s2-v1.39.0) (2022-12-19)
 
 
