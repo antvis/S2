@@ -77,12 +77,9 @@ export class Frame extends Group {
   }
 
   private addCornerRightBorder() {
-    const cfg = this.cfg;
-    // 是否是透视表
-    const { isPivotMode } = cfg;
     // 交叉表一条竖线拉通即可
     const { cornerWidth, cornerHeight, viewportHeight, position, spreadsheet } =
-      cfg;
+      this.cfg;
     const {
       verticalBorderColor,
       verticalBorderColorOpacity,
@@ -92,7 +89,7 @@ export class Frame extends Group {
     const frameVerticalWidth = Frame.getVerticalBorderWidth(spreadsheet);
     const x = position.x + cornerWidth + frameVerticalWidth! / 2;
 
-    if (isPivotMode) {
+    if (spreadsheet.isPivotMode()) {
       const y2 =
         position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
       renderLine(
@@ -154,7 +151,6 @@ export class Frame extends Group {
       viewportWidth,
       position,
       scrollX = 0,
-      scrollContainsRowHeader,
       spreadsheet,
     } = cfg;
     const {
@@ -168,7 +164,7 @@ export class Frame extends Group {
       cornerWidth +
       Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth +
-      (scrollContainsRowHeader ? scrollX : 0);
+      (spreadsheet.isScrollContainsRowHeader() ? scrollX : 0);
     const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
     renderLine(
@@ -189,11 +185,11 @@ export class Frame extends Group {
 
   private addSplitLineShadow() {
     const cfg = this.cfg;
-    const { isPivotMode, spreadsheet } = cfg;
+    const { spreadsheet } = cfg;
     const splitLine = spreadsheet.theme?.splitLine;
 
     if (
-      !isPivotMode ||
+      !spreadsheet.isPivotMode() ||
       !splitLine?.showShadow ||
       !spreadsheet.isFrozenRowHeader()
     ) {

@@ -1,9 +1,7 @@
-import type { BaseDataSet } from '../../data-set';
 import type { Hierarchy } from '../../facet/layout/hierarchy';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
-import type { Fields, Meta, S2Style, ViewMeta } from './basic';
-import type { S2BasicOptions, S2TableSheetOptions } from './s2Options';
+import type { ViewMeta } from './basic';
 
 export interface AdjustLeafNodesParams {
   leafNodes: Node[];
@@ -29,17 +27,4 @@ export interface LayoutResult {
   colLeafNodes: Node[];
   getCellMeta: GetCellMeta;
   spreadsheet: SpreadSheet;
-}
-
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    S2BasicOptions,
-    S2TableSheetOptions,
-    S2Style {
-  // spreadsheet interface
-  spreadsheet: SpreadSheet;
-  // data set of spreadsheet
-  dataSet: BaseDataSet;
-  // field's meta info
-  meta?: Meta[];
 }

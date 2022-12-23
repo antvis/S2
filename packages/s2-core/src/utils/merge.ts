@@ -8,7 +8,7 @@ import type {
   CustomHeaderFields,
 } from '../common/interface';
 
-export const customMerge = (...objects: unknown[]) => {
+export const customMerge = <T = unknown>(...objects: unknown[]): T => {
   const customize = (origin: unknown, updated: unknown) => {
     if (isArray(origin) && isArray(updated)) {
       return updated;
@@ -41,10 +41,10 @@ const uniqueFields = (fields: Fields): Fields => {
 export const getSafetyDataConfig = (
   ...dataConfig: (Partial<S2DataConfig> | null)[]
 ) => {
-  const mergedDataCfg = customMerge(
+  const mergedDataCfg = customMerge<S2DataConfig>(
     DEFAULT_DATA_CONFIG,
     ...dataConfig,
-  ) as S2DataConfig;
+  );
 
   // fields 去重
   mergedDataCfg.fields = uniqueFields(mergedDataCfg.fields);
@@ -63,5 +63,5 @@ export const getSafetyDataConfig = (
 };
 
 export const getSafetyOptions = (options: Partial<S2Options> | null) => {
-  return customMerge(DEFAULT_OPTIONS, options);
+  return customMerge<S2Options>(DEFAULT_OPTIONS, options);
 };

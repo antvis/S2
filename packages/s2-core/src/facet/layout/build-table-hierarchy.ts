@@ -5,11 +5,11 @@ import type { TableHeaderParams } from '../layout/interface';
 import type { CustomTreeNode } from '../../common';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
-  const { facetCfg } = params;
-  const { columns = [], spreadsheet } = facetCfg;
+  const { spreadsheet } = params;
+  const { columns = [] } = spreadsheet.dataSet.fields;
 
   const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
-  const showSeriesNumber = facetCfg?.showSeriesNumber;
+  const showSeriesNumber = spreadsheet.options?.showSeriesNumber;
   // 获取所有叶子结点
   const leafs = getLeafColumnsWithKey(columns);
   const displayedColumns = leafs.filter((column) => {

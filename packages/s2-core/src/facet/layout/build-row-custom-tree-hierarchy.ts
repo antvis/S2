@@ -1,4 +1,5 @@
 import { get, isEmpty } from 'lodash';
+import type { CustomTreeNode } from '../../common';
 import { EXTRA_FIELD } from '../../common/constant';
 import { generateId } from '../../utils/layout/generate-id';
 import type { CustomTreeHeaderParams } from '../layout/interface';
@@ -15,8 +16,8 @@ import { layoutHierarchy } from './layout-hooks';
  * @param params
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
-  const { facetCfg, tree = [], level, parentNode, hierarchy } = params;
-  const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
+  const { tree = [], level, parentNode, hierarchy, spreadsheet } = params;
+  const { collapsedRows, hierarchyCollapse } = spreadsheet.options.style!;
 
   const hiddenColumnsDetail =
     spreadsheet.store.get('hiddenColumnsDetail') || [];
@@ -68,7 +69,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     }
 
     const expandCurrentNode = layoutHierarchy(
-      facetCfg,
+      spreadsheet,
       parentNode,
       node,
       hierarchy,
@@ -76,11 +77,11 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
 
     if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
       buildCustomTreeHierarchy({
-        facetCfg,
+        spreadsheet,
         parentNode: node,
         level: level + 1,
         hierarchy,
-        tree: children || [],
+        tree: (children || []) as CustomTreeNode[],
       });
     }
   });

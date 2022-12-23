@@ -68,7 +68,7 @@ export interface CustomTreeNode {
   // 是否收起（默认都展开）
   collapsed?: boolean;
   description?: string;
-  children?: CustomTreeNode[];
+  children?: string[] | CustomTreeNode[];
 }
 
 export interface S2DataConfig {

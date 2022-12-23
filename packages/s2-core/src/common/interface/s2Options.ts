@@ -43,11 +43,11 @@ export interface S2BasicOptions<
   // row header hierarchy type only work in pivot mode
   hierarchyType?: 'grid' | 'tree';
   // conditions config
-  conditions?: Conditions;
+  conditions?: Conditions | null;
   // total config
   totals?: Totals | null;
   // tooltip configs
-  tooltip?: Tooltip<T, Icon, Text>;
+  tooltip?: Tooltip<T, Icon, Text> | null;
   // interaction configs
   interaction?: InteractionOptions;
   // pagination config

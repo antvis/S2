@@ -26,7 +26,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       position,
     } = this.headerConfig;
 
-    const rowCell = spreadsheet?.facet?.cfg?.rowCell;
+    const rowCell = spreadsheet?.options?.rowCell;
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {
       return (

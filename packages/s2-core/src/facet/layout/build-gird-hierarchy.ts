@@ -1,6 +1,6 @@
 import { isEmpty, isUndefined } from 'lodash';
 import { EXTRA_FIELD } from '../../common/constant';
-import type { SpreadSheetFacetCfg } from '../../common/interface';
+import type { SpreadSheet } from '../../sheet-type';
 import { addTotals } from '../../utils/layout/add-totals';
 import { generateHeaderNodes } from '../../utils/layout/generate-header-nodes';
 import { getDimsCondition } from '../../utils/layout/get-dims-condition-by-node';
@@ -9,14 +9,15 @@ import { layoutArrange } from '../layout/layout-hooks';
 import { TotalMeasure } from '../layout/total-measure';
 
 const hideMeasureColumn = (
+  spreadsheet: SpreadSheet,
   fieldValues: FieldValue[],
   field: string,
-  cfg: SpreadSheetFacetCfg,
 ) => {
-  const hideMeasure = cfg.colCfg?.hideMeasureColumn ?? false;
-  const valueInCol = cfg.dataSet.fields.valueInCols;
+  const hideMeasure =
+    spreadsheet.options.style?.colCfg?.hideMeasureColumn ?? false;
+  const { valueInCols } = spreadsheet.dataSet.fields;
   for (const value of fieldValues) {
-    if (hideMeasure && valueInCol && field === EXTRA_FIELD) {
+    if (hideMeasure && valueInCols && field === EXTRA_FIELD) {
       fieldValues.splice(fieldValues.indexOf(value), 1);
     }
   }
@@ -34,13 +35,13 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     parentNode,
     currentField,
     fields,
-    facetCfg,
     hierarchy,
+    spreadsheet,
   } = params;
 
   const index = fields.indexOf(currentField);
 
-  const { dataSet, values = [], spreadsheet } = facetCfg;
+  const { values = [] } = spreadsheet.dataSet.fields;
   const fieldValues: FieldValue[] = [];
 
   let query = {};
@@ -55,11 +56,14 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     // field(dimension)'s all values
     query = getDimsCondition(parentNode, true);
 
-    const dimValues = dataSet.getDimensionValues(currentField, query);
+    const dimValues = spreadsheet.dataSet.getDimensionValues(
+      currentField,
+      query,
+    );
 
     const arrangedValues = layoutArrange(
+      spreadsheet,
       dimValues,
-      facetCfg,
       parentNode,
       currentField,
     );
@@ -67,17 +71,17 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
 
     // add skeleton for empty data
 
-    const fieldName = dataSet.getFieldName(currentField);
+    const fieldName = spreadsheet.dataSet.getFieldName(currentField);
 
     if (isEmpty(fieldValues)) {
       if (currentField === EXTRA_FIELD) {
-        fieldValues.push(...(dataSet.fields?.values || []));
+        fieldValues.push(...(values || []));
       } else {
         fieldValues.push(fieldName);
       }
     }
     // hide measure in columns
-    hideMeasureColumn(fieldValues, currentField, facetCfg);
+    hideMeasureColumn(spreadsheet, fieldValues, currentField);
     // add totals if needed
     addTotals({
       currentField,
@@ -91,10 +95,10 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   const displayFieldValues = fieldValues.filter((value) => !isUndefined(value));
 
   generateHeaderNodes({
+    spreadsheet,
     currentField,
     fields,
     fieldValues: displayFieldValues,
-    facetCfg,
     hierarchy,
     parentNode,
     level: index,

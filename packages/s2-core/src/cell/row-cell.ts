@@ -187,7 +187,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFields = [] } = this.headerConfig;
+    const { linkFields = [] } = this.spreadsheet.options.interaction!;
     const { linkTextFill } = this.getTextStyle();
 
     super.drawLinkFieldShape(

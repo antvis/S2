@@ -155,6 +155,7 @@ describe('Interaction Event Controller Tests', () => {
       GEventType.RIGHT_MOUSE_UP,
       OriginEventType.DOUBLE_CLICK,
       OriginEventType.CLICK,
+      OriginEventType.TOUCH_START,
     ];
     expect(eventController.canvasEventHandlers).toHaveLength(
       canvasEventTypes.length,

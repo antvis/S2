@@ -1,10 +1,5 @@
 import type { PointLike } from '@antv/g';
-import type {
-  LayoutResult,
-  S2Options,
-  SortParam,
-  SpreadSheetFacetCfg,
-} from '../../common/interface';
+import type { LayoutResult, SortParam } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Node } from '../layout/node';
 
@@ -41,32 +36,17 @@ export interface BaseHeaderConfig {
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
-  scrollContainsRowHeader?: boolean;
 }
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
-  // header's hierarchy type
-  hierarchyType: S2Options['hierarchyType'];
-  // the hierarchy collapse or not
-  hierarchyCollapse: boolean;
-  // rows fields
-  rows: SpreadSheetFacetCfg['rows'];
-  // column fields
-  columns: SpreadSheetFacetCfg['columns'];
   // series number width
   seriesNumberWidth: number;
 }
 
 export interface BaseCornerOptions {
   seriesNumberWidth: number;
-  facetCfg: SpreadSheetFacetCfg;
   layoutResult: LayoutResult;
   spreadsheet: SpreadSheet;
 }
 
-export interface RowHeaderConfig extends BaseHeaderConfig {
-  // type of hierarchy
-  hierarchyType: S2Options['hierarchyType'];
-  // field ids that click to navigate
-  linkFields: string[];
-}
+export type RowHeaderConfig = BaseHeaderConfig;

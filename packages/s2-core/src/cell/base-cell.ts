@@ -194,6 +194,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return get(this.theme, name || this.cellType);
   }
 
+  public getLinkFieldShape() {
+    return this.linkFieldShape;
+  }
+
   protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea') as ResizeArea;
   }

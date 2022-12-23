@@ -1,8 +1,9 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
-import { SheetComponent } from '@antv/s2-react';
-import { DataCell, Frame } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
+import { DataCell, Frame, S2Theme } from '@antv/s2';
 import '@antv/s2-react/dist/style.min.css';
 
 const paletteLegendMap = [
@@ -52,6 +53,7 @@ class CustomDataCell extends DataCell {
     }
     this.update();
   }
+
   drawCircle() {
     const radius = 12;
     const { x, y, height, width, fieldValue, colQuery } = this.meta;
@@ -60,9 +62,9 @@ class CustomDataCell extends DataCell {
 
     let fill;
     let opacity = 1;
-    if (!isNaN(fieldValue)) {
+    if (!Number.isNaN(fieldValue as number)) {
       fill =
-        paletteLegendMap.find((v) => v.text === colQuery['时刻'])?.color ??
+        paletteLegendMap.find((v) => v.text === colQuery?.['时刻'])?.color ??
         '#FAD5BB';
       opacity = 0.5;
     } else {
@@ -92,6 +94,7 @@ class CustomFrame extends Frame {
     // 垂直二级分割线
     this.addVerticalSplitLine();
   }
+
   addHorizontalSplitLine() {
     const cfg = this.cfg;
     const {
@@ -99,10 +102,10 @@ class CustomFrame extends Frame {
       height,
       viewportWidth,
       position,
-      scrollX,
-      scrollContainsRowHeader,
+      scrollX = 0,
       spreadsheet,
     } = cfg;
+    const scrollContainsRowHeader = spreadsheet.isScrollContainsRowHeader();
     const splitLine = spreadsheet.theme?.splitLine;
     const { rowsHierarchy } = spreadsheet.facet.layoutResult;
     const rootNodes = rowsHierarchy.getNodesLessThanLevel(0);
@@ -120,9 +123,9 @@ class CustomFrame extends Frame {
             y1: y,
             x2,
             y2: y,
-            stroke: splitLine.verticalBorderColor,
+            stroke: splitLine?.verticalBorderColor,
             lineWidth: 1,
-            opacity: splitLine.verticalBorderColorOpacity,
+            opacity: splitLine?.verticalBorderColorOpacity,
           },
         });
       }
@@ -148,9 +151,9 @@ class CustomFrame extends Frame {
             y1,
             x2: x,
             y2,
-            stroke: splitLine.verticalBorderColor,
+            stroke: splitLine?.verticalBorderColor,
             lineWidth: 1,
-            opacity: splitLine.verticalBorderColorOpacity,
+            opacity: splitLine?.verticalBorderColorOpacity,
           },
         });
       }
@@ -185,7 +188,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
         green: '#29A294',
       },
     };
-    const s2Theme = {
+    const s2Theme: S2Theme = {
       colCell: {
         bolderText: {
           fontSize: 12,
@@ -236,7 +239,7 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       },
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 1150,
       height: 420,
       showDefaultHeaderActionIcon: false,
@@ -302,7 +305,7 @@ insertCss(`
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    
+
   }
   .palette-text {
     color: #FFF;

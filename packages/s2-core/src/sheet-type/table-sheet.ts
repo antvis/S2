@@ -8,7 +8,6 @@ import {
 import type {
   SortMethod,
   SortParam,
-  SpreadSheetFacetCfg,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../common/interface';
@@ -101,31 +100,18 @@ export class TableSheet extends SpreadSheet {
 
   protected bindEvents() {}
 
-  protected getFacetCfgFromDataSetAndOptions(): SpreadSheetFacetCfg {
-    const { fields, meta } = this.dataSet;
-    const { style, dataCell } = this.options;
-    // 默认单元格实现
+  protected buildFacet() {
     const defaultCell = (facet: ViewMeta) => {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
         return new TableSeriesCell(facet, this);
       }
       return new TableDataCell(facet, this);
     };
-    return {
-      ...this.options,
-      ...fields,
-      ...style,
-      meta,
-      spreadsheet: this,
-      dataSet: this.dataSet,
-      dataCell: dataCell ?? defaultCell,
-    };
-  }
-
-  protected buildFacet() {
-    const facetCfg = this.getFacetCfgFromDataSetAndOptions();
+    this.setOptions({
+      dataCell: this.options.dataCell ?? defaultCell,
+    });
     this.facet?.destroy();
-    this.facet = new TableFacet(facetCfg);
+    this.facet = new TableFacet(this);
     this.facet.render();
   }
 

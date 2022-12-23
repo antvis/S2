@@ -75,18 +75,11 @@ describe('header cell formatter test', () => {
 
       s2 = new MockTableSheet(container);
       s2.dataSet = new MockTableDataSet(s2);
-      s2.dataSet.getDisplayDataSet = jest.fn().mockReturnValue([]);
-      s2.facet = new TableFacet({
-        spreadsheet: s2,
-        dataSet: s2.dataSet,
-        colCfg: {
-          heightByField: {},
-        },
-        cellCfg: {
-          width: 0,
-        },
+      s2.dataSet.fields = {
         columns: ['province', 'city'],
-      });
+      };
+      s2.dataSet.getDisplayDataSet = jest.fn().mockReturnValue([]);
+      s2.facet = new TableFacet(s2);
     });
 
     test('table col cell not formatter', () => {

@@ -1,5 +1,4 @@
 import {
-  isMobile,
   ResizeType,
   type CustomHeaderField,
   type S2DataConfig,
@@ -13,8 +12,6 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
-import { EXTRA_FIELD } from './../../s2-core/src/common/constant/basic';
-
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
   'city',
@@ -51,11 +48,35 @@ export const pivotSheetDataCfg: S2DataConfig = {
   fields,
 };
 
+export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
+  text: [],
+  interval: [
+    {
+      field: 'number',
+      mapping() {
+        return {
+          fill: '#80BFFF',
+          // 自定义柱状图范围
+          isCompare: true,
+          maxValue: 8000,
+          minValue: 300,
+        };
+      },
+    },
+  ],
+};
+
+export const tableSheetFrozenOptions: SheetComponentOptions = {
+  frozenColCount: 1,
+  frozenTrailingColCount: 1,
+};
+
 export const s2Options: SheetComponentOptions = {
   debug: true,
   width: 600,
   height: 400,
   showSeriesNumber: false,
+  frozenRowHeader: true,
   cornerText: '测试',
   interaction: {
     enableCopy: true,
@@ -76,41 +97,20 @@ export const s2Options: SheetComponentOptions = {
       trend: true,
     },
   },
-  conditions: {
-    text: [],
-    interval: [
-      {
-        field: 'number',
-        mapping() {
-          return {
-            fill: '#80BFFF',
-            // 自定义柱状图范围
-            isCompare: true,
-            maxValue: 8000,
-            minValue: 300,
-          };
-        },
-      },
-    ],
-  },
+  conditions: s2ConditionsOptions,
   hierarchyType: 'grid',
   style: {
     rowCfg: {
-      width: isMobile() ? 60 : 160,
-      height: isMobile() ? undefined : 50,
+      width: 160,
+      height: 50,
     },
     colCfg: {
-      widthByField: {
-        [EXTRA_FIELD]: 80,
-        'root[&]家具[&]沙发[&]number': 120,
-      },
-      heightByField: {
-        [EXTRA_FIELD]: 60,
-      },
+      width: 140,
+      height: 30,
     },
     cellCfg: {
-      width: isMobile() ? 60 : 100,
-      height: isMobile() ? undefined : 40,
+      width: 100,
+      height: 40,
     },
   },
 };

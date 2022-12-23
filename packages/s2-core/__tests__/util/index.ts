@@ -8,14 +8,14 @@ import {
 import { customMerge } from '@/utils';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  customMerge(
+  customMerge<S2Options>(
     DEFAULT_OPTIONS,
     { debug: false, width: 600, height: 600 },
     ...options,
   );
 
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  customMerge(
+  customMerge<S2DataConfig>(
     DEFAULT_DATA_CONFIG,
     {
       fields: {
@@ -30,7 +30,7 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     ...dataCfg,
   );
 
-export const TOTALS_OPTIONS = {
+export const TOTALS_OPTIONS: S2Options['totals'] = {
   row: {
     showGrandTotals: true,
     showSubTotals: true,

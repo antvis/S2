@@ -1,7 +1,4 @@
-import type {
-  CustomTreeNode,
-  SpreadSheetFacetCfg,
-} from '../../common/interface';
+import type { CustomTreeNode } from '../../common/interface';
 import type { PivotMeta } from '../../data-set/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
@@ -13,17 +10,17 @@ export type FieldValue = string | TotalClass | TotalMeasure;
 
 export interface BuildHeaderParams {
   isRowHeader: boolean;
-  facetCfg: SpreadSheetFacetCfg;
   isTreeHierarchy?: boolean;
+  spreadsheet: SpreadSheet;
 }
 
 export interface GridHeaderParams {
+  spreadsheet: SpreadSheet;
   addTotalMeasureInTotal: boolean;
   addMeasureInTotalQuery: boolean;
   parentNode: Node;
   currentField: string;
   fields: string[];
-  facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
 }
 
@@ -43,12 +40,12 @@ export interface TotalParams {
 }
 
 export interface HeaderNodesParams {
+  spreadsheet: SpreadSheet;
   currentField: string;
   fields: string[];
   fieldValues: FieldValue[];
   addTotalMeasureInTotal: boolean;
   addMeasureInTotalQuery: boolean;
-  facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
   parentNode: Node;
   level: number;
@@ -56,8 +53,8 @@ export interface HeaderNodesParams {
 }
 
 export interface TreeHeaderParams {
+  spreadsheet: SpreadSheet;
   parentNode: Node;
-  facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
   currentField: string | undefined;
   level: number;
@@ -65,8 +62,8 @@ export interface TreeHeaderParams {
 }
 
 export interface TableHeaderParams {
+  spreadsheet: SpreadSheet;
   parentNode: Node;
-  facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
 }
 
@@ -87,7 +84,7 @@ export interface ViewCellHeights {
 }
 
 export interface CustomTreeHeaderParams {
-  facetCfg: SpreadSheetFacetCfg;
+  spreadsheet: SpreadSheet;
   parentNode: Node;
   level: number;
   hierarchy: Hierarchy;

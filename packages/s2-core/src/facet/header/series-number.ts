@@ -31,7 +31,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const { height, viewportHeight } = panelBBox;
 
     const layoutSeriesNumberNodes =
-      spreadsheet.facet.cfg?.layoutSeriesNumberNodes ?? getSeriesNumberNodes;
+      spreadsheet.options?.layoutSeriesNumberNodes ?? getSeriesNumberNodes;
 
     return new SeriesNumberHeader({
       width: cornerWidth,
@@ -71,7 +71,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       viewportHeight,
       spreadsheet,
     } = this.headerConfig;
-    const seriesNumberCell = spreadsheet?.facet?.cfg?.seriesNumberCell;
+    const seriesNumberCell = spreadsheet?.options?.seriesNumberCell;
 
     each(data, (item) => {
       const { y, height: cellHeight } = item;

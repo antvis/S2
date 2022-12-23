@@ -122,23 +122,24 @@ describe('Pivot Mode Facet Test', () => {
   s2.isCustomHeaderFields = jest.fn();
   s2.isCustomColumnFields = jest.fn();
   s2.isCustomRowFields = jest.fn();
+  s2.options = assembleOptions({
+    dataCell: (viewMeta) => new DataCell(viewMeta, s2),
+  });
 
-  const facet: PivotFacet = new PivotFacet({
-    spreadsheet: s2,
-    dataSet,
-    dataCell: (fct) => new DataCell(fct, s2),
-    ...assembleDataCfg().fields,
-    ...assembleOptions(),
-    ...DEFAULT_STYLE,
+  const facet: PivotFacet = new PivotFacet(s2);
+
+  beforeAll(async () => {
+    await s2.container.ready;
   });
 
   describe('should get correct hierarchy', () => {
-    const { cellCfg, colCfg, rows, spreadsheet } = facet.cfg;
+    const { cellCfg, colCfg } = s2.options.style!;
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
-    const rowCellStyle = spreadsheet.theme.rowCell!.cell;
+    const rowCellStyle = s2.theme.rowCell!.cell;
     const width = Math.max(
       DEFAULT_STYLE.cellCfg!.width!,
-      DEFAULT_OPTIONS.width! / (size(rows) + size(colLeafNodes)),
+      DEFAULT_OPTIONS.width! /
+        (size(s2.dataSet.fields.rows) + size(colLeafNodes)),
     );
 
     test('row hierarchy', () => {
@@ -217,16 +218,12 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct result when tree mode', () => {
     s2.isHierarchyTreeType = jest.fn().mockReturnValue(true);
-    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
-    const mockDataSet = new MockPivotDataSet(s2);
-    const treeFacet = new PivotFacet({
-      spreadsheet: s2,
-      dataSet: mockDataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
-      ...DEFAULT_STYLE,
+    s2.options = assembleOptions({
       hierarchyType: 'tree',
     });
+    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
+    s2.dataSet = new MockPivotDataSet(s2);
+    const treeFacet = new PivotFacet(s2);
     const { rowsHierarchy } = treeFacet.layoutResult;
 
     afterAll(() => {
@@ -234,14 +231,13 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('row hierarchy when tree mode', () => {
-      const { cellCfg, spreadsheet } = facet.cfg;
-      const rowCellStyle = spreadsheet.theme.rowCell!.cell;
-      const width = facet.cfg.treeRowsWidth;
+      const { cellCfg, treeRowsWidth } = s2.options.style!;
+      const rowCellStyle = s2.theme.rowCell!.cell;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
       expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_WIDTH);
-      expect(width).toBeUndefined();
+      expect(treeRowsWidth).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
@@ -273,7 +269,7 @@ describe('Pivot Mode Facet Test', () => {
       expect(rowHeader!.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(cornerHeader instanceof CornerHeader).toBeTrue();
-      expect(cornerHeader.children).toHaveLength(2);
+      expect(cornerHeader.children.length).toBe(3);
       expect(cornerHeader.parsedStyle.visibility).not.toEqual('hidden');
 
       expect(columnHeader instanceof ColHeader).toBeTrue();
@@ -291,17 +287,14 @@ describe('Pivot Mode Facet Test', () => {
     });
   });
 
-  describe('should get correct result when enable seriesnumber', () => {
+  describe('should get correct result when enable series number', () => {
     const mockDataSet = new MockPivotDataSet(s2);
-    const seriesNumberFacet = new PivotFacet({
-      spreadsheet: s2,
-      dataSet: mockDataSet,
-      dataCell: (fct) => new DataCell(fct, s2),
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
-      ...DEFAULT_STYLE,
+    s2.options = assembleOptions({
       showSeriesNumber: true,
+      dataCell: (fct) => new DataCell(fct, s2),
     });
+    s2.dataSet = mockDataSet;
+    const seriesNumberFacet = new PivotFacet(s2);
 
     beforeAll(() => {
       seriesNumberFacet.render();
@@ -360,17 +353,15 @@ describe('Pivot Mode Facet Test', () => {
   ])(
     'should render custom column leaf node width by %o',
     ({ width, useFunc }) => {
-      const mockDataSet = new MockPivotDataSet(s2);
       const widthFn = jest.fn(() => width);
-      const customWidthFacet = new PivotFacet({
-        spreadsheet: s2,
-        dataSet: mockDataSet,
-        ...assembleDataCfg().fields,
-        ...assembleOptions(),
-        colCfg: {
-          width: useFunc ? widthFn : width,
+      s2.options = assembleOptions({
+        style: {
+          colCfg: {
+            width: useFunc ? widthFn : width,
+          },
         },
       });
+      const customWidthFacet = new PivotFacet(s2);
 
       customWidthFacet.layoutResult.colLeafNodes.forEach((node) => {
         expect(node.width).toStrictEqual(width);
@@ -385,24 +376,22 @@ describe('Pivot Mode Facet Test', () => {
 
   // https://github.com/antvis/S2/issues/1622
   test('should render custom column leaf node width and use treeRowsWidth first for tree mode', () => {
-    const mockDataSet = new MockPivotDataSet(s2);
-    const customWidthFacet = new PivotFacet({
-      spreadsheet: s2,
-      dataSet: mockDataSet,
-      ...assembleDataCfg().fields,
-      ...assembleOptions(),
+    s2.options = assembleOptions({
       hierarchyType: 'tree',
-      cellCfg: {},
-      colCfg: {},
-      rowCfg: {
-        // 行头宽度
-        width: 200,
-        // 已废弃
-        treeRowsWidth: 300,
+      style: {
+        cellCfg: {},
+        colCfg: {},
+        rowCfg: {
+          // 行头宽度
+          width: 200,
+          // 已废弃
+          treeRowsWidth: 300,
+        },
+        // 树状结构下行头宽度 (优先级最高)
+        treeRowsWidth: 400,
       },
-      // 树状结构下行头宽度 (优先级最高)
-      treeRowsWidth: 400,
     });
+    const customWidthFacet = new PivotFacet(s2);
 
     customWidthFacet.layoutResult.rowNodes.forEach((node) => {
       expect(node.width).toStrictEqual(400);

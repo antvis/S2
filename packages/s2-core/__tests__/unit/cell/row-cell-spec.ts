@@ -1,7 +1,6 @@
 import { get } from 'lodash';
 import { createPivotSheet } from 'tests/util/helpers';
 import type { RowCell } from '@antv/s2';
-import type { Rect } from '@antv/g';
 import type { SpreadSheet } from '@/sheet-type';
 import type { TextAlign } from '@/common';
 
@@ -19,7 +18,7 @@ describe('Row Cell Tests', () => {
       ['center', 77],
       ['right', 129],
     ] as [TextAlign, number][])(
-      'should align link shape with text',
+      'should align link shape with text by %o',
       (textAlign, textCenterX) => {
         s2.setOptions({
           interaction: {
@@ -36,9 +35,9 @@ describe('Row Cell Tests', () => {
         s2.render();
 
         const provinceCell = s2.facet.rowHeader!.children[0] as RowCell;
-        const { left: minX, right: maxX } = (
-          get(provinceCell, 'linkFieldShape') as Rect
-        ).getBBox();
+        const { left: minX, right: maxX } = provinceCell
+          .getLinkFieldShape()
+          .getBBox();
 
         // 宽度相当
         const linkLength = maxX - minX;

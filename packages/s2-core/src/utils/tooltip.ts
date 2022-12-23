@@ -655,7 +655,7 @@ export const getTooltipOptionsByCellType = (
   cellType: CellTypes,
 ): Tooltip => {
   const getOptionsByCell = (cellConfig?: BaseTooltipConfig) => {
-    return customMerge(cellTooltipConfig, cellConfig);
+    return customMerge<BaseTooltipConfig>(cellTooltipConfig, cellConfig);
   };
 
   const { col, row, data, corner } = cellTooltipConfig;
@@ -684,7 +684,7 @@ export const getTooltipOptions = (
     return null;
   }
   const cellType = spreadsheet.getCellType?.(event?.target);
-  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType!);
+  return getTooltipOptionsByCellType(spreadsheet.options.tooltip!, cellType!);
 };
 
 export const getTooltipVisibleOperator = (

@@ -50,7 +50,6 @@ import type {
   OffsetConfig,
   S2CellType,
   ScrollChangeParams,
-  SpreadSheetFacetCfg,
   ViewMeta,
 } from '../common/interface';
 import type {
@@ -120,8 +119,6 @@ export abstract class BaseFacet {
   // render header/corner/scrollbar/resize
   public foregroundGroup: Group;
 
-  public cfg: SpreadSheetFacetCfg;
-
   public layoutResult: LayoutResult;
 
   public viewCellWidths: number[];
@@ -169,9 +166,8 @@ export abstract class BaseFacet {
 
   protected preCellIndexes: PanelIndexes | null;
 
-  public constructor(cfg: SpreadSheetFacetCfg) {
-    this.cfg = cfg;
-    this.spreadsheet = cfg.spreadsheet;
+  public constructor(spreadsheet: SpreadSheet) {
+    this.spreadsheet = spreadsheet;
     this.init();
   }
 
@@ -353,16 +349,17 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.cfg;
+    const { showSeriesNumber } = this.spreadsheet.options;
     return showSeriesNumber
       ? this.spreadsheet.theme.rowCell?.seriesNumberWidth ?? 0
       : 0;
   }
 
   public getCanvasSize() {
+    const { width = 0, height = 0 } = this.spreadsheet.options!;
     return {
-      width: this.cfg.width!,
-      height: this.cfg.height!,
+      width,
+      height,
     };
   }
 
@@ -391,7 +388,7 @@ export abstract class BaseFacet {
   }
 
   public getPaginationScrollY(): number {
-    const { pagination } = this.cfg;
+    const { pagination } = this.spreadsheet.options!;
     if (pagination) {
       const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
       const heights = this.viewCellHeights;
@@ -427,14 +424,14 @@ export abstract class BaseFacet {
   };
 
   emitPaginationEvent = () => {
-    const { pagination } = this.cfg;
+    const { pagination } = this.spreadsheet.options!;
     if (pagination) {
       const { current = DEFAULT_PAGE_INDEX, pageSize } = pagination;
       const total = this.viewCellHeights.getTotalLength();
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
-      this.cfg.spreadsheet.emit(S2Event.LAYOUT_PAGINATION, {
+      this.spreadsheet.emit(S2Event.LAYOUT_PAGINATION, {
         pageSize,
         pageCount,
         total,
@@ -495,9 +492,7 @@ export abstract class BaseFacet {
   }
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) => {
-    return this.cfg.spreadsheet.isScrollContainsRowHeader()
-      ? scrollX
-      : hRowScroll;
+    return this.spreadsheet.isScrollContainsRowHeader() ? scrollX : hRowScroll;
   };
 
   protected calculateCornerBBox() {
@@ -513,12 +508,12 @@ export abstract class BaseFacet {
   };
 
   getCellRange() {
-    const { pagination } = this.cfg;
+    const { pagination } = this.spreadsheet.options!;
     return getCellRange(this.viewCellHeights, pagination);
   }
 
   getRealHeight = (): number => {
-    const { pagination } = this.cfg;
+    const { pagination } = this.spreadsheet.options!;
     const heights = this.viewCellHeights;
 
     if (pagination) {
@@ -530,7 +525,7 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup() {
-    const children = this.panelGroup.children;
+    const { children = [] } = this.panelGroup;
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
       if (child instanceof Group) {
@@ -631,7 +626,7 @@ export abstract class BaseFacet {
 
   renderRowScrollBar = (rowScrollX: number) => {
     if (
-      !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
+      !this.spreadsheet.isScrollContainsRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
@@ -705,24 +700,20 @@ export abstract class BaseFacet {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
       const { maxY } = this.getScrollbarPosition();
+      const isScrollContainsRowHeader =
+        this.spreadsheet.isScrollContainsRowHeader();
       const finalWidth =
-        width +
-        (this.cfg.spreadsheet.isScrollContainsRowHeader()
-          ? this.cornerBBox.width
-          : 0);
+        width + (isScrollContainsRowHeader ? this.cornerBBox.width : 0);
       const finalPosition = {
         x:
           this.panelBBox.minX +
-          (this.cfg.spreadsheet.isScrollContainsRowHeader()
+          (isScrollContainsRowHeader
             ? -this.cornerBBox.width + halfScrollSize
             : halfScrollSize),
         y: maxY,
       };
       const finaleRealWidth =
-        realWidth +
-        (this.cfg.spreadsheet.isScrollContainsRowHeader()
-          ? this.cornerBBox.width
-          : 0);
+        realWidth + (isScrollContainsRowHeader ? this.cornerBBox.width : 0);
 
       const { scrollBar } = this.spreadsheet.theme;
       const maxOffset = finaleRealWidth - finalWidth;
@@ -1116,7 +1107,7 @@ export abstract class BaseFacet {
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
     DebuggerUtil.getInstance().logger(
-      'renderIndex:',
+      'realCellRender:',
       this.preCellIndexes,
       indexes,
     );
@@ -1127,7 +1118,7 @@ export abstract class BaseFacet {
       each(add, ([i, j]) => {
         const viewMeta = this.layoutResult.getCellMeta(j, i);
         if (viewMeta) {
-          const cell = this.cfg.dataCell?.(viewMeta)!;
+          const cell = this.spreadsheet.options.dataCell?.(viewMeta)!;
           // mark cell for removing
           cell.name = `${i}-${j}`;
           this.addCell(cell);
@@ -1251,8 +1242,6 @@ export abstract class BaseFacet {
         viewportHeight,
         position: { x: seriesNumberWidth, y },
         data: this.layoutResult.rowNodes,
-        hierarchyType: this.cfg.hierarchyType,
-        linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
         spreadsheet: this.spreadsheet,
       });
     }
@@ -1270,9 +1259,7 @@ export abstract class BaseFacet {
         viewportHeight,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        sortParam: this.cfg.spreadsheet.store.get('sortParam'),
+        sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
     }
@@ -1285,7 +1272,6 @@ export abstract class BaseFacet {
         panelBBox: this.panelBBox,
         cornerBBox: this.cornerBBox,
         seriesNumberWidth: this.getSeriesNumberWidth(),
-        facetCfg: this.cfg,
         layoutResult: this.layoutResult,
         spreadsheet: this.spreadsheet,
       });
@@ -1308,7 +1294,7 @@ export abstract class BaseFacet {
       const { viewportWidth, viewportHeight } = this.panelBBox;
       const cornerWidth = this.cornerBBox.width;
       const cornerHeight = this.cornerBBox.height;
-      const frame = this.cfg?.frame;
+      const frame = this.spreadsheet.options?.frame;
       const frameCfg: FrameConfig = {
         position: {
           x: this.cornerBBox.x,
@@ -1320,10 +1306,7 @@ export abstract class BaseFacet {
         viewportHeight,
         showViewportLeftShadow: false,
         showViewportRightShadow: false,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        isPivotMode: this.cfg.spreadsheet.isPivotMode(),
-        spreadsheet: this.cfg.spreadsheet,
+        spreadsheet: this.spreadsheet,
       };
       return frame ? frame(frameCfg) : new Frame(frameCfg);
     }

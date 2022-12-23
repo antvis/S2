@@ -37,21 +37,18 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     parentNode,
     currentField = '',
     level,
-    facetCfg,
     hierarchy,
     pivotMeta,
-  } = params;
-  const {
     spreadsheet,
-    dataSet,
-    collapsedRows,
-    hierarchyCollapse,
-    rowExpandDepth,
-  } = facetCfg;
+  } = params;
+  const { collapsedRows, hierarchyCollapse, rowExpandDepth } =
+    spreadsheet.options.style!;
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
   const sortedDimensionValues =
-    (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
+    (spreadsheet.dataSet as PivotDataSet)?.sortedDimensionValues?.[
+      currentField
+    ] || [];
 
   const unsortedDimValues = filterTotal(Array.from(pivotMeta.keys()));
   const dimValues = getListBySorted(
@@ -69,8 +66,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   );
 
   let fieldValues: FieldValue[] = layoutArrange(
+    spreadsheet,
     dimValues,
-    facetCfg,
     parentNode,
     currentField,
   );
@@ -148,7 +145,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     }
 
     const expandCurrentNode = layoutHierarchy(
-      facetCfg,
+      spreadsheet,
       parentNode,
       node,
       hierarchy,
@@ -159,9 +156,9 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         level: level + 1,
         currentField: pivotMetaValue.childField!,
         pivotMeta: pivotMetaValue.children,
-        facetCfg,
         parentNode: node,
         hierarchy,
+        spreadsheet,
       });
     }
   }

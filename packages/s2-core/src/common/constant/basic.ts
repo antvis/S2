@@ -91,7 +91,8 @@ export enum MiniChartTypes {
 // 线条 linecap 样式
 export const SQUARE_LINE_CAP = 'square';
 
-export const getDefaultSeriesNumberText = () => i18n('序号');
+export const getDefaultSeriesNumberText = (defaultText?: string) =>
+  defaultText ?? i18n('序号');
 
 export const getDefaultCornerText = () => i18n('指标');
 // 省略号

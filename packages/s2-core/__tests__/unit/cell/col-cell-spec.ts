@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { get, set } from 'lodash';
-import { createPivotSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createPivotSheet } from 'tests/util/helpers';
+import type { ColHeaderConfig } from '../../../src/facet/header';
+import { getContainer } from './../../util/helpers';
 import type { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
@@ -14,11 +16,9 @@ describe('Col Cell Tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {
-    const container = document.createElement('div');
-
-    s2 = new MockPivotSheet(container);
-    const dataSet: PivotDataSet = new MockPivotDataSet(s2);
-    s2.dataSet = dataSet;
+    s2 = new MockPivotSheet(getContainer());
+    s2.isScrollContainsRowHeader = () => true;
+    s2.dataSet = new MockPivotDataSet(s2);
   });
 
   describe('None-leaf Nodes Tests', () => {
@@ -30,9 +30,8 @@ describe('Col Cell Tests', () => {
       width: 200,
     } as unknown as Node;
 
-    const headerConfig = {
+    const headerConfig: Partial<ColHeaderConfig> = {
       width: 500, // col header width
-      scrollContainsRowHeader: true,
       cornerWidth: 100,
       scrollX: 30, // 模拟滚动了 30px
     };
@@ -56,7 +55,7 @@ describe('Col Cell Tests', () => {
           },
         });
 
-        const colCell = new ColCell(node, s2, { ...headerConfig });
+        const colCell = new ColCell(node, s2, headerConfig);
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
         const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
@@ -115,12 +114,16 @@ describe('Col Cell Tests', () => {
       value: 'value',
     } as unknown as Node;
 
+    const headerConfig: Partial<ColHeaderConfig> = {
+      spreadsheet: createFakeSpreadSheet(),
+    };
+
     test('should get correct col cell formatter', () => {
       const formatter = jest.fn();
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       // eslint-disable-next-line no-new
-      new ColCell(node, s2);
+      new ColCell(node, s2, headerConfig);
 
       expect(formatter).toHaveBeenCalledWith(node.value, undefined, node);
     });
@@ -130,7 +133,7 @@ describe('Col Cell Tests', () => {
 
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
-      const colCell = new ColCell(node, s2);
+      const colCell = new ColCell(node, s2, headerConfig);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

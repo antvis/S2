@@ -158,7 +158,7 @@ export class CornerCell extends HeaderCell {
     if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
-    const { hierarchyCollapse } = this.headerConfig;
+    const { hierarchyCollapse } = this.spreadsheet.options.style!;
 
     const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();
@@ -178,7 +178,7 @@ export class CornerCell extends HeaderCell {
         this.spreadsheet.store.set('scrollY', 0);
         this.spreadsheet.emit(
           S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-          hierarchyCollapse,
+          hierarchyCollapse!,
         );
       },
     );
@@ -186,7 +186,7 @@ export class CornerCell extends HeaderCell {
 
   protected isLastRowCornerCell() {
     const { cornerType, field } = this.meta;
-    const { rows } = this.headerConfig;
+    const { rows } = this.spreadsheet.dataSet.fields;
     return (
       cornerType === CornerNodeType.Row &&
       (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)

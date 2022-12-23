@@ -1,8 +1,4 @@
-import type {
-  LayoutResult,
-  SpreadSheet,
-  SpreadSheetFacetCfg,
-} from '../../../../src';
+import type { LayoutResult, SpreadSheet } from '../../../../src';
 import { CornerHeader } from '../../../../src/facet/header/corner';
 import { createFakeSpreadSheet } from '../../../util/helpers';
 
@@ -17,7 +13,6 @@ describe('Corner Tests', () => {
       },
       width: 100,
       height: 50,
-      facetCfg: {} as SpreadSheetFacetCfg,
       layoutResult: {
         colsHierarchy: {
           sampleNodesForAllLevels: [],
@@ -28,7 +23,7 @@ describe('Corner Tests', () => {
         },
       } as unknown as LayoutResult,
       seriesNumberWidth: 50,
-      spreadsheet: s2,
+      spreadsheet: createFakeSpreadSheet(),
     });
     return cornerNodes[0];
   }
