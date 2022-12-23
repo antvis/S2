@@ -22,7 +22,11 @@ import type {
   ViewMetaIndexType,
 } from '../common/interface';
 import { getBorderPositionAndStyle, getMaxTextWidth } from '../utils/cell/cell';
-import { includeCell } from '../utils/cell/data-cell';
+import {
+  includeCell,
+  shouldUpdateBySelectedCellsHighlight,
+  updateBySelectedCellsHighlight,
+} from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { renderLine, renderRect, updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
@@ -80,6 +84,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
+
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -91,7 +96,9 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includeCell(cells, this)) {
+        if (shouldUpdateBySelectedCellsHighlight(this.spreadsheet)) {
+          updateBySelectedCellsHighlight(cells, this, this.spreadsheet);
+        } else if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (
           this.spreadsheet.options.interaction.selectedCellsSpotlight
@@ -134,7 +141,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getCells();
+    const cells = this.spreadsheet.interaction.getCells([CellTypes.DATA_CELL]);
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);
