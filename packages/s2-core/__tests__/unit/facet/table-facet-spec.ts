@@ -148,7 +148,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
     const { facet, s2 } = createMockTableFacet({
       showSeriesNumber: false,
     });
-    const { colCfg } = s2.options.style!;
+    const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -159,7 +159,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith);
         expect(Math.round(node.width)).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg!.height);
+        expect(node.height).toBe(colCell!.height);
       });
     });
   });
@@ -168,7 +168,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
     const { facet, s2 } = createMockTableFacet({
       showSeriesNumber: true,
     });
-    const { colCfg } = s2.options.style!;
+    const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -180,13 +180,13 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.y).toBe(0);
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
-      expect(seriesNumberNode.height).toBe(colCfg!.height);
+      expect(seriesNumberNode.height).toBe(colCell!.height);
 
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
         expect(node.width).toBe(adaptiveWith);
-        expect(node.height).toBe(colCfg!.height);
+        expect(node.height).toBe(colCell!.height);
       });
     });
   });
@@ -235,7 +235,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(s2.options!.style!.colCfg!.height);
+        expect(node.height).toBe(s2.options!.style!.colCell!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -273,7 +273,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       },
     );
 
-    const { colCfg } = s2.options.style!;
+    const { colCell } = s2.options.style!;
 
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
@@ -285,7 +285,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
         expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
-        expect(node.height).toBe(colCfg!.height);
+        expect(node.height).toBe(colCell!.height);
         lastX += COMPACT_WIDTH[index];
       });
     });
@@ -416,7 +416,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 describe('Table Mode Facet Test With Custom Row Height', () => {
   const { facet } = createMockTableFacet({
     style: {
-      rowCfg: {
+      rowCell: {
         heightByField: {
           '2': 300,
           '3': 200,
@@ -535,7 +535,7 @@ describe('Custom Column Width Tests', () => {
       const widthFn = jest.fn(() => width);
       const { facet } = createMockTableFacet({
         style: {
-          colCfg: {
+          colCell: {
             width: useFunc ? widthFn : width,
           },
         },
@@ -592,7 +592,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
       'price',
     ],
   });
-  const { colCfg } = s2.options.style!;
+  const { colCell } = s2.options.style!;
 
   test('should get correct group', () => {
     const leafNodes = facet.layoutResult.colLeafNodes;
@@ -608,21 +608,21 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
     const nodes = facet.layoutResult.colNodes;
     expect(nodes[0].y).toBe(0);
-    expect(nodes[0].height).toEqual(colCfg!.height);
-    expect(nodes[1].y).toBe(colCfg!.height);
-    expect(nodes[1].height).toEqual(colCfg!.height);
-    expect(nodes[2].y).toBe(colCfg!.height);
-    expect(nodes[2].height).toEqual(colCfg!.height);
+    expect(nodes[0].height).toEqual(colCell!.height);
+    expect(nodes[1].y).toBe(colCell!.height);
+    expect(nodes[1].height).toEqual(colCell!.height);
+    expect(nodes[2].y).toBe(colCell!.height);
+    expect(nodes[2].height).toEqual(colCell!.height);
 
     expect(nodes[3].y).toBe(0);
-    expect(nodes[3].height).toEqual(colCfg!.height);
-    expect(nodes[4].y).toBe(colCfg!.height);
-    expect(nodes[4].height).toEqual(colCfg!.height);
-    expect(nodes[5].y).toBe(colCfg!.height);
-    expect(nodes[5].height).toEqual(colCfg!.height);
+    expect(nodes[3].height).toEqual(colCell!.height);
+    expect(nodes[4].y).toBe(colCell!.height);
+    expect(nodes[4].height).toEqual(colCell!.height);
+    expect(nodes[5].y).toBe(colCell!.height);
+    expect(nodes[5].height).toEqual(colCell!.height);
 
     expect(nodes[6].y).toBe(0);
-    expect(nodes[6].height).toEqual((colCfg!.height! as number) * 2);
+    expect(nodes[6].height).toEqual((colCell!.height! as number) * 2);
   });
 });
 

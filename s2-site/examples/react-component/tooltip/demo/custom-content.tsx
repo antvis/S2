@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
@@ -12,17 +12,17 @@ fetch(
     const CustomTooltip = (
       <div className="tooltip-custom-component">content</div>
     );
-    const RowTooltip = (
-      <div className="tooltip-custom-component">rowTooltip</div>
+    const RowCellTooltip = (
+      <div className="tooltip-custom-component">rowCellTooltip</div>
     );
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       tooltip: {
         content: CustomTooltip,
-        row: {
-          content: RowTooltip,
+        rowCell: {
+          content: RowCellTooltip,
         },
       },
     };

@@ -131,14 +131,14 @@ const getOptions = () => {
       treeRowsWidth: 100,
       hierarchyCollapse: false,
       collapsedRows: {},
-      colCfg: {
+      colCell: {
         widthByFieldValue: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
-      rowCfg: {
+      rowCell: {
         // widthByField: {
         //   province: 200
         // }

@@ -15,7 +15,7 @@ const s2Options: S2Options = {
   height: 400,
   style: {
     // 显示滚动条
-    cellCfg: {
+    dataCell: {
       width: 200,
     },
   },

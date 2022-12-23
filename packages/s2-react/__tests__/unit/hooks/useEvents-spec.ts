@@ -18,14 +18,10 @@ const s2Options: SheetComponentsProps['options'] = {
   hdAdapter: false,
 };
 
-const S2EventCases = [
+const S2EventCases: Array<{ event: S2Event; name: string }> = [
   {
     event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
     name: 'onRowCellCollapseTreeRows',
-  },
-  {
-    event: S2Event.DATA_CELL_TREND_ICON_CLICK,
-    name: 'onDataCellTrendIconClick',
   },
   {
     event: S2Event.DATA_CELL_BRUSH_SELECTION,

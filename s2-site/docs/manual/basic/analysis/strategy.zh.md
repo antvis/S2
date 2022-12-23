@@ -59,7 +59,7 @@ const s2Options = {
     ],
   },
   style: {
-    cellCfg: {
+    dataCell: {
       valuesCfg: {
         // 原始数据字段，用于原始数据导出和 tooltip 展示
         originalValueField: 'originalValues',

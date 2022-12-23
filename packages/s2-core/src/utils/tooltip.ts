@@ -658,19 +658,19 @@ export const getTooltipOptionsByCellType = (
     return customMerge<BaseTooltipConfig>(cellTooltipConfig, cellConfig);
   };
 
-  const { col, row, data, corner } = cellTooltipConfig;
+  const { colCell, rowCell, dataCell, cornerCell } = cellTooltipConfig;
 
   if (cellType === CellTypes.COL_CELL) {
-    return getOptionsByCell(col);
+    return getOptionsByCell(colCell);
   }
   if (cellType === CellTypes.ROW_CELL) {
-    return getOptionsByCell(row);
+    return getOptionsByCell(rowCell);
   }
   if (cellType === CellTypes.DATA_CELL) {
-    return getOptionsByCell(data);
+    return getOptionsByCell(dataCell);
   }
   if (cellType === CellTypes.CORNER_CELL) {
-    return getOptionsByCell(corner);
+    return getOptionsByCell(cornerCell);
   }
 
   return { ...cellTooltipConfig };
@@ -707,10 +707,10 @@ export const getTooltipVisibleOperator = (
         return menu;
       });
   };
-  const displayMenus = getDisplayMenus(operation.menus);
+  const displayMenus = getDisplayMenus(operation?.menus);
 
   return {
-    onClick: operation.onClick,
+    onClick: operation?.onClick,
     menus: compact([...defaultMenus, ...displayMenus]),
   };
 };

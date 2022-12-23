@@ -75,10 +75,10 @@ describe('PivotSheet Tests', () => {
   describe('PivotSheet Tooltip Tests', () => {
     const getCellNameByType = (cellType: CellTypes) => {
       return {
-        [CellTypes.ROW_CELL]: 'row',
-        [CellTypes.COL_CELL]: 'col',
-        [CellTypes.DATA_CELL]: 'data',
-        [CellTypes.CORNER_CELL]: 'corner',
+        [CellTypes.ROW_CELL]: 'rowCell',
+        [CellTypes.COL_CELL]: 'colCell',
+        [CellTypes.DATA_CELL]: 'dataCell',
+        [CellTypes.CORNER_CELL]: 'cornerCell',
         [CellTypes.HEADER_CELL]: 'header',
         [CellTypes.MERGED_CELL]: 'merged',
       }[cellType];
@@ -945,7 +945,7 @@ describe('PivotSheet Tests', () => {
         type: '笔',
       },
     });
-    s2.options.style!.colCfg!.hideMeasureColumn = true;
+    s2.options.style!.colCell!.hideMeasureColumn = true;
     s2.groupSortByMethod('asc', nodeMeta);
 
     expect(s2.dataCfg.sortParams).toEqual([

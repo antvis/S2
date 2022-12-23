@@ -28,13 +28,13 @@ fetch(
       },
       style: {
         layoutWidthType: 'compact',
-        colCfg: {
+        colCell: {
           height: 0,
           widthByFieldValue: {
             color: 23,
           },
         },
-        cellCfg: {
+        dataCell: {
           height: 23,
         },
       },

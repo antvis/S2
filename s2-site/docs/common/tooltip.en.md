@@ -45,7 +45,6 @@ object is **required** , *default: null* Function description: tooltip operation
 | parameter     | illustrate                                              | type                                         | Defaults | required |
 | ------------- | ------------------------------------------------------- | -------------------------------------------- | -------- | :------: |
 | hiddenColumns | Whether to enable hidden columns (leaf nodes are valid) | `boolean`                                    | `false`  |          |
-| trend         | Whether to display the trend chart icon                 | `boolean`                                    | `false`  |          |
 | sort          | Whether to enable sorting within the group              | `boolean`                                    | `false`  |          |
 | tableSort     | Whether to enable sorting of list column headers        | `boolean`                                    | `false`  |          |
 | menus         | Custom Action Configuration Items                       | `boolean`                                    | `-`      |          |

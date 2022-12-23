@@ -14,7 +14,7 @@ const hideMeasureColumn = (
   field: string,
 ) => {
   const hideMeasure =
-    spreadsheet.options.style?.colCfg?.hideMeasureColumn ?? false;
+    spreadsheet.options.style?.colCell?.hideMeasureColumn ?? false;
   const { valueInCols } = spreadsheet.dataSet.fields;
   for (const value of fieldValues) {
     if (hideMeasure && valueInCols && field === EXTRA_FIELD) {

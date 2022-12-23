@@ -87,7 +87,6 @@ field, which supports [customization](#%E8%87%AA%E5%AE%9A%E4%B9%89-tooltip-%E6%9
  const s2Options = {
   tooltip: {
     operation: {
-      trend: true, // 显示趋势图按钮
       hiddenColumns: true, //开启隐藏列（叶子节点有效）
     },
   }

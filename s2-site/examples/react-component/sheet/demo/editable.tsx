@@ -1,11 +1,12 @@
-import { SheetComponent } from '@antv/s2-react';
+import { S2DataConfig } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((res) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },
@@ -34,13 +35,13 @@ fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
       data: res,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 480,
       height: 480,
       showSeriesNumber: true,
       frozenRowCount: 1, // 行头冻结数量
       frozenColCount: 1, // 列头冻结数量
-      frozenTrailingRowCount: 1, // 列尾冻结数量
+      frozenTrailingRowCount: 1, // 行尾冻结数量
       frozenTrailingColCount: 1, // 列尾冻结数量
     };
 

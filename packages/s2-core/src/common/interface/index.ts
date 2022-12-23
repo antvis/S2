@@ -14,3 +14,4 @@ export * from './store';
 export * from './theme';
 export * from './tooltip';
 export * from './facet';
+export * from './style';

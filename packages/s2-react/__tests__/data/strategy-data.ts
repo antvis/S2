@@ -451,7 +451,7 @@ export const StrategyOptions: SheetComponentOptions = {
     ],
   },
   style: {
-    cellCfg: {
+    dataCell: {
       height: 76,
       valuesCfg: {
         originalValueField: 'originalValues',

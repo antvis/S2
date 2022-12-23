@@ -171,7 +171,7 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
-    const { hideMeasureColumn } = this.options.style!.colCfg!;
+    const { hideMeasureColumn } = this.options.style!.colCell!;
     const sortField = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
     const sortQuery = clone(query);

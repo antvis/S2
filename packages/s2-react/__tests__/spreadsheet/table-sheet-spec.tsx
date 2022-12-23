@@ -119,7 +119,7 @@ function MainLayout({ callback }: Props) {
     showSeriesNumber: true,
     placeholder: '',
     style: {
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
       device: DeviceType.PC,

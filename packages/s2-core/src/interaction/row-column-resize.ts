@@ -6,7 +6,11 @@ import {
   Path,
 } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
-import type { ResizeInteractionOptions, ResizeParams, RowCfg } from '../common';
+import type {
+  ResizeInteractionOptions,
+  ResizeParams,
+  RowCellStyle,
+} from '../common';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
@@ -286,7 +290,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
           style: {
-            rowCfg: {
+            rowCell: {
               widthByField: {
                 [resizeInfo.meta.field!]: displayWidth!,
               },
@@ -299,7 +303,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
             treeRowsWidth: displayWidth,
-            rowCfg: {
+            rowCell: {
               /**
                * @deprecated 已废弃, 以 style.treeRowsWidth 为准, 保持兼容, 暂时保留
                */
@@ -312,7 +316,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
-            colCfg: {
+            colCell: {
               width: this.isOnlyEffectCurrentCol() ? null : displayWidth,
               widthByField: {
                 [this.getResizeCellField(resizeInfo)!]: displayWidth,
@@ -345,7 +349,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
-            colCfg: {
+            colCell: {
               heightByField: this.getHeightByField(resizeInfo, displayHeight!),
             },
           },
@@ -355,7 +359,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
-            rowCfg: {
+            rowCell: {
               height: this.isOnlyEffectCurrentRow() ? null : height,
               heightByField: {
                 [this.getResizeCellField(resizeInfo)!]: height,
@@ -372,7 +376,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getHeightByField(
     resizeInfo: ResizeInfo,
     displayHeight: number,
-  ): RowCfg['heightByField'] {
+  ): RowCellStyle['heightByField'] {
     // 1. 自定义列头: 给同一 level 的字段设置高度. 2. 明细表: 列高一致
     if (
       this.spreadsheet.isCustomColumnFields() ||
@@ -381,7 +385,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return this.spreadsheet
         .getColumnNodes()
         .filter((node) => node.level === resizeInfo.meta?.level)
-        .reduce<RowCfg['heightByField']>((result, node) => {
+        .reduce<RowCellStyle['heightByField']>((result, node) => {
           result![node.field] = displayHeight;
           return result;
         }, {});

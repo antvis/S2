@@ -1,7 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import type { GEvent } from '@/index';
 import type { S2CellType } from '@/common/interface/interaction';
-import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
@@ -24,14 +23,6 @@ describe('Interaction Range Selection Tests', () => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
     rangeSelection = new RangeSelection(s2);
-    s2.options = {
-      ...s2.options,
-      tooltip: {
-        operation: {
-          trend: false,
-        },
-      },
-    } as S2Options;
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
     s2.interaction.getInteractedCells = () => [mockCell];

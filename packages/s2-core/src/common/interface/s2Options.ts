@@ -5,7 +5,6 @@ import type {
   FrameCallback,
   MergedCellInfo,
   Pagination,
-  S2Style,
   Totals,
 } from '../../common/interface/basic';
 import type {
@@ -26,6 +25,7 @@ import type { SpreadSheet } from '../../sheet-type';
 import type { CustomSVGIcon, HeaderActionIcon } from './basic';
 import type { Conditions } from './condition';
 import type { InteractionOptions } from './interaction';
+import type { S2Style } from './style';
 import type { Tooltip, TooltipContentType } from './tooltip';
 
 export interface S2BasicOptions<
@@ -34,82 +34,129 @@ export interface S2BasicOptions<
   Icon = Element | string,
   Text = string,
 > {
-  // canvas's width
+  /**
+   * 表格宽度
+   */
   width?: number;
-  // canvas's height
+  /**
+   * 表格高度
+   */
   height?: number;
-  // debug info for developer
+  /**
+   * 开启调试模式
+   */
   debug?: boolean;
-  // row header hierarchy type only work in pivot mode
-  hierarchyType?: 'grid' | 'tree';
-  // conditions config
+  /**
+   * 字段标记
+   */
   conditions?: Conditions | null;
-  // total config
-  totals?: Totals | null;
-  // tooltip configs
+  /**
+   * 提示信息
+   */
   tooltip?: Tooltip<T, Icon, Text> | null;
-  // interaction configs
+  /**
+   * 交互配置
+   */
   interaction?: InteractionOptions;
-  // pagination config
+  /**
+   * 分页配置
+   */
   pagination?: P;
-  // freeze row header
-  frozenRowHeader?: boolean;
-  // custom series number text
+  /**
+   * 自定义序号列文本, 默认为 "序号"
+   */
   seriesNumberText?: string;
-  // show series Number
+  /**
+   * 是否显示序号
+   */
   showSeriesNumber?: boolean;
-  // if show the default header actionIcons
+  /**
+   * 是否显示表头默认操作图标
+   */
   showDefaultHeaderActionIcon?: boolean;
-  // header cells including ColCell, RowCell, CornerCell action icon's config
+  /**
+   * 自定义表头图标配置
+   */
   headerActionIcons?: HeaderActionIcon[];
-  // register custom svg icons
+  /**
+   * 自定义 SVG 图标
+   */
   customSVGIcons?: CustomSVGIcon[];
-  // extra styles
+  /**
+   * 表格单元格宽高配置
+   */
   style?: S2Style;
+  /**
+   * 是否开启高清适配
+   */
   hdAdapter?: boolean;
-  // the collection of row id and column id of cells which to be merged
-  mergedCellsInfo?: MergedCellInfo[][];
-  // empty cell placeholder
+  /**
+   * 空值单元格占位符
+   */
   placeholder?: ((meta: Record<string, any>) => string) | string;
-  // custom corner text
-  cornerText?: string;
-  // custom virtual extra field text
-  cornerExtraFieldText?: string;
+  /**
+   * 是否支持 CSS 的 transform 属性
+   */
   supportCSSTransform?: boolean;
-  // custom device pixel ratio, default "window.devicePixelRatio"
+  /**
+   * 自定义 DPR, 默认 "window.devicePixelRatio"
+   */
   devicePixelRatio?: number;
-
-  /** ***********Mobile Options Config**************** */
-  // use mobile options and mobile components
+  /**
+   * 设备类型: pc / mobile
+   */
   device?: DeviceType;
 
-  /** ***********CUSTOM CELL/HEADER HOOKS**************** */
-  // custom data cell
+  /** *********** 自定义单元格 hooks **************** */
+  /**
+   * 自定义数值单元格
+   */
   dataCell?: DataCellCallback;
-  // custom corner cell
+  /**
+   * 自定义角头单元格
+   */
   cornerCell?: CellCallback<CornerHeaderConfig>;
-  // custom series number cell for pivot mode
+  /**
+   * 自定义序号单元格
+   */
   seriesNumberCell?: CellCallback<BaseHeaderConfig>;
-  // custom row cell
+  /**
+   * 自定义行头单元格
+   */
   rowCell?: CellCallback<RowHeaderConfig>;
-  // custom col cell
+  /**
+   * 自定义列头单元格
+   */
   colCell?: CellCallback<ColHeaderConfig>;
-  // custom frame
+  /**
+   * 自定义表格框架/边框
+   */
   frame?: FrameCallback;
-  // custom corner header
+  /**
+   * 自定义角头
+   */
   cornerHeader?: CornerHeaderCallback;
 
-  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
-  // determine what does row/column tree hierarchy look like
-  // eg: add/delete some nodes in specified position
+  /** *********** 自定义布局 hooks **************** */
+  /**
+   * 自定义单元格层级, 动态增加/删除单元格
+   */
   layoutHierarchy?: LayoutHierarchy;
-  // determine the order of every row/column tree branch
+  /**
+   * 自定义节点排列顺序 (树状模式有效)
+   */
   layoutArrange?: LayoutArrange;
-  // determine the location(x,y,width,height eg..) of every node
+  /**
+   * 自定义单元格对应节点坐标/宽高
+   */
   layoutCoordinate?: LayoutCoordinate;
-  // determine the data of cells in Cartesian coordinates
+  /**
+   * 自定义数据坐标, 动态修改单元格数值
+   */
   layoutDataPosition?: LayoutDataPosition;
-  // determine the series number cell coordinates
+  /**
+   * 自定义序号节点
+   */
   layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
 }
 
@@ -118,18 +165,52 @@ export enum DeviceType {
   PC = 'pc',
   MOBILE = 'mobile',
 }
-// Table sheet options
+
 export interface S2TableSheetOptions {
-  // frozen row & cols
+  /**
+   * 行头冻结数量
+   */
   frozenRowCount?: number;
+  /**
+   * 列头冻结数量
+   */
   frozenColCount?: number;
+  /**
+   * 行尾冻结数量
+   */
   frozenTrailingRowCount?: number;
+  /**
+   * 列尾冻结数量
+   */
   frozenTrailingColCount?: number;
 }
 
-// Pivot sheet options
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface S2PivotSheetOptions {}
+export interface S2PivotSheetOptions {
+  /**
+   * 行头布局类型, grid: 平铺网格 | tree: 树状结构
+   */
+  hierarchyType?: 'grid' | 'tree';
+  /**
+   * 小计/总计配置
+   */
+  totals?: Totals | null;
+  /**
+   * 是否冻结行头
+   */
+  frozenRowHeader?: boolean;
+  /**
+   * 合并单元格配置
+   */
+  mergedCellsInfo?: MergedCellInfo[][];
+  /**
+   * 自定义角头文本
+   */
+  cornerText?: string;
+  /**
+   * 自定义数值虚拟字段文本, 默认 [数值]
+   */
+  cornerExtraFieldText?: string;
+}
 
 export interface S2Options<
   T = TooltipContentType,
@@ -139,12 +220,23 @@ export interface S2Options<
 > extends S2BasicOptions<T, P, Icon, Text>,
     S2TableSheetOptions,
     S2PivotSheetOptions {
-  // custom data set
+  /**
+   * 自定义数据集
+   */
   dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 }
 
 export interface S2RenderOptions {
+  /**
+   * 是否重新加载数据
+   */
   reloadData?: boolean;
+  /**
+   * 是否重新生成数据集
+   */
   reBuildDataSet?: boolean;
+  /**
+   * 是否重新生成列头隐藏信息
+   */
   reBuildHiddenColumnsDetail?: boolean;
 }

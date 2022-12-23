@@ -4,11 +4,9 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
-  getTooltipOperatorTrendMenu,
 } from '../../../common/constant';
 import type {
   TooltipData,
-  TooltipOperatorMenu,
   TooltipOperatorOptions,
   ViewMeta,
 } from '../../../common/interface';
@@ -89,31 +87,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getTooltipOperator(
-    event: CanvasEvent,
-    meta: ViewMeta,
-  ): TooltipOperatorOptions {
-    const TOOLTIP_OPERATOR_TREND_MENU = getTooltipOperatorTrendMenu();
+  private getTooltipOperator(event: CanvasEvent): TooltipOperatorOptions {
     const cell = this.spreadsheet.getCell(event.target)!;
     const { operation } = getTooltipOptions(this.spreadsheet, event)!;
-    const trendMenu: TooltipOperatorMenu = {
-      ...TOOLTIP_OPERATOR_TREND_MENU,
-      onClick: () => {
-        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, {
-          ...meta,
-          // record 只有明细模式下存在
-          record: this.spreadsheet.isTableMode()
-            ? this.spreadsheet.dataSet.getCellData({
-                query: { rowIndex: meta.rowIndex },
-              })
-            : undefined,
-        });
-        this.spreadsheet.hideTooltip();
-      },
-    };
 
     return getTooltipVisibleOperator(operation!, {
-      defaultMenus: operation?.trend ? [trendMenu] : [],
+      defaultMenus: [],
       cell,
     });
   }
@@ -139,7 +118,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },
     ];
-    const operator = this.getTooltipOperator(event, meta);
+    const operator = this.getTooltipOperator(event);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       isTotals,

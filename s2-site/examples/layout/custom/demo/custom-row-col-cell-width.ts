@@ -13,7 +13,7 @@ fetch(
       height: 480,
       hierarchyType: 'grid',
       style: {
-        rowCfg: {
+        rowCell: {
           // 固定配置: 行头单元格 100px
           // width: 100,
           // 动态配置: 叶子节点 300px, 非叶子节点 200px
@@ -22,7 +22,7 @@ fetch(
             return row.isLeaf ? 300 : 200;
           },
         },
-        colCfg: {
+        colCell: {
           // 固定配置: 每列 100px
           // width: 100,
           // 动态配置: 偶数列 100px, 奇数列 200px
@@ -31,7 +31,7 @@ fetch(
             return col.colIndex % 2 === 0 ? 100 : 200;
           },
         },
-        cellCfg: {
+        dataCell: {
           height: 50,
         },
       },

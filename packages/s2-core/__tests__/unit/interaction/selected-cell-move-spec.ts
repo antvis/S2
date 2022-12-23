@@ -1,6 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import type { BaseFacet } from '../../../src/facet';
-import type { OffsetConfig, S2Options } from '@/common/interface';
+import type { OffsetConfig } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { SelectedCellMove } from '@/interaction/selected-cell-move';
@@ -25,14 +25,6 @@ describe('Interaction Keyboard Move Tests', () => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     keyboardMove = new SelectedCellMove(s2);
-    s2.options = {
-      ...s2.options,
-      tooltip: {
-        operation: {
-          trend: false,
-        },
-      },
-    } as S2Options;
     s2.theme = {
       splitLine: {
         verticalBorderWidth: 1,

@@ -133,11 +133,11 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct hierarchy', () => {
-    const { cellCfg, colCfg } = s2.options.style!;
+    const { dataCell, colCell } = s2.options.style!;
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
     const rowCellStyle = s2.theme.rowCell!.cell;
     const width = Math.max(
-      DEFAULT_STYLE.cellCfg!.width!,
+      DEFAULT_STYLE.dataCell!.width!,
       DEFAULT_OPTIONS.width! /
         (size(s2.dataSet.fields.rows) + size(colLeafNodes)),
     );
@@ -151,7 +151,7 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(99);
         expect(node.height).toBe(
-          cellCfg!.height! +
+          dataCell!.height! +
             rowCellStyle!.padding?.top! +
             rowCellStyle!.padding?.bottom!,
         );
@@ -180,7 +180,7 @@ describe('Pivot Mode Facet Test', () => {
 
       colsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(width);
-        expect(node.height).toBe(colCfg!.height);
+        expect(node.height).toBe(colCell!.height);
         expect(node.x).toBe(width * index);
         expect(node.y).toBe(node.height * node.level);
       });
@@ -231,7 +231,7 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('row hierarchy when tree mode', () => {
-      const { cellCfg, treeRowsWidth } = s2.options.style!;
+      const { dataCell, treeRowsWidth } = s2.options.style!;
       const rowCellStyle = s2.theme.rowCell!.cell;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
@@ -242,7 +242,7 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
         expect(node.height).toBe(
-          cellCfg!.height! +
+          dataCell!.height! +
             rowCellStyle!.padding?.top! +
             rowCellStyle!.padding?.bottom!,
         );
@@ -356,7 +356,7 @@ describe('Pivot Mode Facet Test', () => {
       const widthFn = jest.fn(() => width);
       s2.options = assembleOptions({
         style: {
-          colCfg: {
+          colCell: {
             width: useFunc ? widthFn : width,
           },
         },
@@ -379,9 +379,9 @@ describe('Pivot Mode Facet Test', () => {
     s2.options = assembleOptions({
       hierarchyType: 'tree',
       style: {
-        cellCfg: {},
-        colCfg: {},
-        rowCfg: {
+        dataCell: {},
+        colCell: {},
+        rowCell: {
           // 行头宽度
           width: 200,
           // 已废弃

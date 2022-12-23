@@ -1,4 +1,5 @@
 import {
+  CellTypes,
   ResizeType,
   type CustomHeaderField,
   type S2DataConfig,
@@ -12,6 +13,7 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
   'city',
@@ -94,21 +96,33 @@ export const s2Options: SheetComponentOptions = {
   },
   tooltip: {
     operation: {
-      trend: true,
+      hiddenColumns: true,
+      menus: [
+        {
+          key: 'trend',
+          text: '趋势',
+          icon: 'Trend',
+          visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          onClick: (cell) => {
+            // eslint-disable-next-line no-console
+            console.log('趋势图 icon 点击: ', cell);
+          },
+        },
+      ],
     },
   },
   conditions: s2ConditionsOptions,
   hierarchyType: 'grid',
   style: {
-    rowCfg: {
+    rowCell: {
       width: 160,
       height: 50,
     },
-    colCfg: {
+    colCell: {
       width: 140,
       height: 30,
     },
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 40,
     },

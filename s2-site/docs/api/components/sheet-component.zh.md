@@ -45,7 +45,6 @@ order: 0
 | onDataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onDataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onDataCellTrendIconClick | 数值单元格的趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | onDataCellBrushSelection | 数值单元格刷选事件 | ( dataCells: [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | onDataCellSelectMove | 数值单元格键盘方向键移动事件 | (metas: CellMeta[]) => void |  |  |
 | onCornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -168,7 +167,6 @@ type SheetComponentOptions = S2Options<
 | dataCellMouseDown | 数值单元格鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseUp | 数值单元格鼠标松开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | dataCellMouseMove | 数值单元格鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| dataCellTrendIconClick | 数值趋势图 icon 点击事件 | (meta: [ViewMeta](/docs/api/basic-class/node)) => void |  |  |
 | dataCellBrushSelection | 数值单元格刷选事件 | (brushRangeDataCells: ( [DataCell](/docs/api/basic-class/base-cell)[] ) => void |  |  |
 | dataCellScroll | 数值单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | cornerCellHover | 角头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

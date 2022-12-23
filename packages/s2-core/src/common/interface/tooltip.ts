@@ -191,21 +191,37 @@ export interface Tooltip<
   Icon = Element | string,
   Text = string,
 > extends BaseTooltipConfig<T, Icon, Text> {
-  row?: BaseTooltipConfig<T, Icon, Text>;
-  col?: BaseTooltipConfig<T, Icon, Text>;
-  corner?: BaseTooltipConfig<T, Icon, Text>;
-  data?: BaseTooltipConfig<T, Icon, Text>;
+  /**
+   * Tooltip 行头单元格配置
+   */
+  rowCell?: BaseTooltipConfig<T, Icon, Text>;
+  /**
+   * Tooltip 列头单元格配置
+   */
+  colCell?: BaseTooltipConfig<T, Icon, Text>;
+  /**
+   * Tooltip 角头单元格配置
+   */
+  cornerCell?: BaseTooltipConfig<T, Icon, Text>;
+  /**
+   * Tooltip 数值单元格配置
+   */
+  dataCell?: BaseTooltipConfig<T, Icon, Text>;
 }
 
 export interface TooltipOperation<Icon = Element | string, Text = string>
   extends TooltipOperatorOptions<Icon, Text> {
-  // 隐藏列 (明细表有效)
+  /**
+   * 隐藏列 (叶子节点有效)
+   */
   hiddenColumns?: boolean;
-  // 趋势图
-  trend?: boolean;
-  // 组内排序
+  /**
+   * 透视表组内排序
+   */
   sort?: boolean;
-  // 明细表排序
+  /**
+   * 明细表排序
+   */
   tableSort?: boolean;
 }
 

@@ -133,11 +133,11 @@ describe('Text Utils Tests', () => {
   );
 
   test('should get correct cell width', () => {
-    const cellCfg = {
+    const dataCell = {
       width: 90,
     };
 
-    const width = getCellWidth(cellCfg);
+    const width = getCellWidth(dataCell);
 
     expect(width).toEqual(90);
   });

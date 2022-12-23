@@ -212,50 +212,52 @@ export abstract class BaseFacet {
   }
 
   protected getRowCellDraggedWidth(node: Node): number | undefined {
-    const { rowCfg } = this.spreadsheet.options.style!;
+    const { rowCell } = this.spreadsheet.options.style!;
     return (
-      rowCfg?.widthByField?.[node?.id] ?? rowCfg?.widthByField?.[node?.field]
+      rowCell?.widthByField?.[node?.id] ?? rowCell?.widthByField?.[node?.field]
     );
   }
 
   protected getRowCellDraggedHeight(node: Node): number | undefined {
-    const { rowCfg } = this.spreadsheet.options.style!;
+    const { rowCell } = this.spreadsheet.options.style!;
     return (
-      rowCfg?.heightByField?.[node?.id] ?? rowCfg?.heightByField?.[node?.field]
+      rowCell?.heightByField?.[node?.id] ??
+      rowCell?.heightByField?.[node?.field]
     );
   }
 
   protected getRowCellHeight(node: Node): number {
-    const { rowCfg, cellCfg } = this.spreadsheet.options.style!;
+    const { rowCell, dataCell } = this.spreadsheet.options.style!;
     // 优先级: 行头拖拽 > 行头自定义高度 > 通用单元格高度
     return (
       this.getRowCellDraggedHeight(node) ??
-      this.getCellCustomSize(node, rowCfg?.height) ??
-      cellCfg?.height ??
+      this.getCellCustomSize(node, rowCell?.height) ??
+      dataCell?.height ??
       0
     );
   }
 
   protected getColCellDraggedWidth(node: Node): number | undefined {
-    const { colCfg } = this.spreadsheet.options.style!;
+    const { colCell } = this.spreadsheet.options.style!;
     return (
-      colCfg?.widthByField?.[node?.id] ?? colCfg?.widthByField?.[node?.field]
+      colCell?.widthByField?.[node?.id] ?? colCell?.widthByField?.[node?.field]
     );
   }
 
   protected getColCellDraggedHeight(node: Node): number | undefined {
-    const { colCfg } = this.spreadsheet.options.style!;
+    const { colCell } = this.spreadsheet.options.style!;
     return (
-      colCfg?.heightByField?.[node?.id] ?? colCfg?.heightByField?.[node?.field]
+      colCell?.heightByField?.[node?.id] ??
+      colCell?.heightByField?.[node?.field]
     );
   }
 
   protected getDefaultColNodeHeight(colNode: Node): number {
-    const { colCfg } = this.spreadsheet.options.style!;
+    const { colCell } = this.spreadsheet.options.style!;
     // 优先级: 列头拖拽 > 列头自定义高度 > 通用单元格高度
     return (
       this.getColCellDraggedHeight(colNode) ??
-      this.getCellCustomSize(colNode, colCfg?.height) ??
+      this.getCellCustomSize(colNode, colCell?.height) ??
       0
     );
   }

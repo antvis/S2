@@ -45,7 +45,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         const hideMeasureColumn = size(dataCfg?.fields?.values) === 1;
 
         const getContent =
-          (cellType: 'row' | 'col' | 'data') =>
+          (cellType: 'rowCell' | 'colCell' | 'dataCell') =>
           (
             cell: S2CellType,
             tooltipOptions: TooltipShowOptions<React.ReactNode>,
@@ -75,7 +75,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             new StrategyDataSet(spreadSheet),
           showDefaultHeaderActionIcon: false,
           style: {
-            colCfg: {
+            colCell: {
               hideMeasureColumn,
             },
           },
@@ -91,23 +91,23 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
             operation: {
               hiddenColumns: true,
             },
-            row: {
+            rowCell: {
               content: (cell, tooltipOptions) =>
-                getContent('row')(cell, tooltipOptions) ?? (
+                getContent('rowCell')(cell, tooltipOptions) ?? (
                   <StrategySheetRowTooltip cell={cell} />
                 ),
             },
-            col: {
+            colCell: {
               content: (cell, tooltipOptions) =>
-                getContent('row')(cell, tooltipOptions) ?? (
+                getContent('colCell')(cell, tooltipOptions) ?? (
                   <StrategySheetColTooltip cell={cell} />
                 ),
             },
-            data: {
+            dataCell: {
               content: (cell, tooltipOptions) => {
                 const meta = cell.getMeta() as ViewMeta;
                 const fieldValue = meta.fieldValue as MultiData;
-                const content = getContent('data')(cell, tooltipOptions);
+                const content = getContent('dataCell')(cell, tooltipOptions);
 
                 // 自定义内容优先级最高
                 if (!isNil(content)) {

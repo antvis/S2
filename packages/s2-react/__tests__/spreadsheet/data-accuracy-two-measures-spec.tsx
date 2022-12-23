@@ -125,14 +125,14 @@ const getOptions = (): SheetComponentsProps['options'] => {
     style: {
       treeRowsWidth: 100,
       collapsedRows: {},
-      colCfg: {
+      colCell: {
         widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
-      rowCfg: {
+      rowCell: {
         // widthByField: {
         //   province: 200
         // }

@@ -95,7 +95,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     test('should calc correctly leaf nodes width after row resized', () => {
       s2.setOptions({
         style: {
-          rowCfg: {
+          rowCell: {
             widthByField: {
               'a-1-1': 40,
             },
@@ -234,7 +234,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
     test('should calc correctly leaf nodes width after column resized', () => {
       s2.setOptions({
         style: {
-          colCfg: {
+          colCell: {
             heightByField: {
               'a-1-1': 40,
             },

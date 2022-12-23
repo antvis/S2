@@ -20,7 +20,7 @@ fetch(
         },
         style: {
           layoutWidthType: 'colAdaptive',
-          cellCfg: {
+          dataCell: {
             width: 400,
             height: 100,
             valuesCfg: {

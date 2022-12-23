@@ -22,7 +22,7 @@ import {
 } from '../common/constant';
 import {
   CellClipBox,
-  type CellCfg,
+  type DataCellStyle,
   type Condition,
   type MultiData,
   type S2CellType,
@@ -471,7 +471,7 @@ export const drawObjectText = (
     return;
   }
 
-  const widthPercent = options.style?.cellCfg?.valuesCfg?.widthPercent;
+  const widthPercent = options.style?.dataCell?.valuesCfg?.widthPercent;
 
   let labelHeight = 0;
   // 绘制单元格主标题
@@ -591,10 +591,10 @@ export const drawObjectText = (
 };
 
 /**
- * 根据 cellCfg 配置获取当前单元格宽度
+ * 根据 dataCell 配置获取当前单元格宽度
  */
-export const getCellWidth = (cellCfg: CellCfg, labelSize = 1) => {
-  return cellCfg?.width! * labelSize;
+export const getCellWidth = (dataCell: DataCellStyle, labelSize = 1) => {
+  return dataCell?.width! * labelSize;
 };
 
 export const safeJsonParse = (val: string) => {

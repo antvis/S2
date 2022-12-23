@@ -11,7 +11,7 @@ fetch(
       width: 600,
       height: 480,
       style: {
-        cellCfg: {
+        dataCell: {
           // 让表格显示滚动条
           width: 200,
           height: 100,

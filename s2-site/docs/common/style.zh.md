@@ -11,13 +11,13 @@ object **必选**,_default：null_ 功能描述：样式设置
 | --- | --- | ---  | --- | --- |
 | layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 `Canvas` 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
 | showTreeLeafNodeAlignDot | `boolean` |  |  false  | 树状模式下叶子节点是否显示层级占位点 |
-| treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 （优先级大于 `rowCfg.width` 和 `rowCfg.treeRowsWidth （已废弃）`) |
+| treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 （优先级大于 `rowCell.width` 和 `rowCell.treeRowsWidth （已废弃）`) |
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | rowExpandDepth | `number` |  |    | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）。 |
 | collapsedRows | `Record<string, boolean>` |  |  | 树状模式下行头自定义折叠、收起状态（透视表使用）。<br> key 值的生成需遵守指定的规则：`root[&] 行头维度值`。 [查看 demo](/examples/basic/pivot#tree) |
-| cellCfg | [CellCfg](#cellcfg) |  |  | 数值单元格配置 |
-| colCfg | [ColCfg](#colcfg) |  |  |   列头单元格配置 |
-| rowCfg | [RowCfg](#rowcfg) |  |  |   行头单元格配置 |
+| dataCell | [CellCfg](#cellcfg) |  |  | 数值单元格配置 |
+| colCell | [ColCfg](#colcfg) |  |  |   列头单元格配置 |
+| rowCell | [RowCfg](#rowcfg) |  |  |   行头单元格配置 |
 | device | `pc` \| `mobile` | |  `pc` | 设备类型 |
 
 ## CellCfg

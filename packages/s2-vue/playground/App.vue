@@ -1,6 +1,6 @@
 <script lang="ts">
 /* eslint-disable no-console */
-import type { DataType, S2DataConfig, S2Options } from '@antv/s2';
+import { CellTypes, DataType, S2DataConfig, S2Options } from '@antv/s2';
 import type {
   PartDrillDown,
   PartDrillDownInfo,
@@ -590,13 +590,22 @@ export default defineComponent({
       },
       tooltip: {
         operation: {
-          trend: true,
           hiddenColumns: true,
           sort: true,
           onClick: (...args: any[]) => {
             console.log('menuClick', ...args);
           },
           menus: [
+            {
+              key: 'trend',
+              text: '趋势',
+              icon: 'Trend',
+              visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+              onClick(cell) {
+                // eslint-disable-next-line no-console
+                console.log('趋势图 icon 点击: ', cell);
+              },
+            },
             {
               key: '1',
               icon: 'Trend',

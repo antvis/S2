@@ -105,7 +105,7 @@ describe('SpreadSheet Resize Active Tests', () => {
 
     s2.setOptions({
       style: {
-        colCfg: {
+        colCell: {
           height: 0,
         },
       },

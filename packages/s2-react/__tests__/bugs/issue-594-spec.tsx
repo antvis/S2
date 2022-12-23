@@ -37,11 +37,6 @@ function MainLayout(
     });
   }, [sheetType]);
 
-  React.useEffect(() => {
-    s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
-    s2?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {});
-  }, [sheetType]);
-
   return (
     <>
       {props.toggleSheetType && (
@@ -99,7 +94,6 @@ describe('SheetComponent Ref Tests', () => {
     });
 
     // should don't miss events
-    expect(s2?.getEvents()[S2Event.DATA_CELL_TREND_ICON_CLICK]).toBeDefined();
     expect(mockRef.current?.getEvents()[S2Event.COL_CELL_CLICK]).toBeDefined();
   });
 });

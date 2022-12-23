@@ -130,11 +130,11 @@ const getOptions = (): SheetComponentsProps['options'] => {
     },
     style: {
       hierarchyCollapse: false,
-      colCfg: {
+      colCell: {
         widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
       device: DeviceType.PC,

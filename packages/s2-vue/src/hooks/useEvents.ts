@@ -112,12 +112,6 @@ export const useEvents = (
     useS2Event(
       s2Ref,
       emit,
-      S2Event.DATA_CELL_TREND_ICON_CLICK,
-      'dataCellTrendIconClick',
-    );
-    useS2Event(
-      s2Ref,
-      emit,
       S2Event.DATA_CELL_BRUSH_SELECTION,
       'dataCellBrushSelection',
     );

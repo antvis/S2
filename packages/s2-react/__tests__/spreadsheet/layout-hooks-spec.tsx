@@ -160,11 +160,11 @@ const getOptions = (): SheetComponentsProps['options'] => {
       treeRowsWidth: 120,
       hierarchyCollapse: false,
       collapsedRows: {},
-      colCfg: {
+      colCell: {
         widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
     },

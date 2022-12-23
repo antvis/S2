@@ -39,15 +39,15 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       height: 480,
       style: {
         // 列头宽度始终和数值单元格一致
-        cellCfg: {
+        dataCell: {
           width: 200,
           height: 50,
         },
-        colCfg: {
+        colCell: {
           height: 50,
         },
         // 每一行根据指标单独设置
-        rowCfg: {
+        rowCell: {
           heightByField: {
             '1': 130,
             '3': 60,

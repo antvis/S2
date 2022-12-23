@@ -4,7 +4,6 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { GEvent } from '@/index';
-import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import { InterceptType, S2Event } from '@/common/constant';
 import { CornerCellClick } from '@/interaction';
@@ -19,13 +18,6 @@ describe('Interaction Corner Cell Click Tests', () => {
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCellInfo.mockCell as any;
-    s2.options = {
-      tooltip: {
-        operation: {
-          trend: false,
-        },
-      },
-    } as S2Options;
     s2.isTableMode = jest.fn(() => true);
     s2.interaction.reset = jest.fn();
     cornerCellClick = new CornerCellClick(s2);

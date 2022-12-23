@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
-import { ColCell } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { ColCell, S2DataConfig, S2Theme } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 const PALETTE_COLORS = [
@@ -128,7 +128,7 @@ const PaletteLegend = () => {
 fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
   .then((res) => res.json())
   .then(({ data }) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['type', 'job'],
         columns: ['age', 'city'],
@@ -171,12 +171,11 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       tooltip: {
         operation: {
-          trend: true,
           hiddenColumns: true,
         },
       },
@@ -186,7 +185,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       },
       style: {
         layoutWidthType: 'colAdaptive',
-        cellCfg: {
+        dataCell: {
           width: 100,
         },
       },
@@ -219,7 +218,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
       },
     };
 
-    const theme = {
+    const theme: S2Theme = {
       dataCell: {
         // 父节点
         bolderText: {
@@ -240,7 +239,7 @@ fetch('https://assets.antv.antgroup.com/s2/multiple-people-comparison.json')
         themeCfg={{ theme }}
         header={{
           title: '多人群对比表',
-          extra: [<PaletteLegend />],
+          extra: <PaletteLegend />,
         }}
       />,
       document.getElementById('container'),

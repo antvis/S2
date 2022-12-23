@@ -84,7 +84,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotalMeasure;
 
       const hideMeasure =
-        this.spreadsheet.options.style?.colCfg?.hideMeasureColumn ?? false;
+        this.spreadsheet.options.style?.colCell?.hideMeasureColumn ?? false;
       // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query
@@ -230,7 +230,7 @@ export class PivotFacet extends BaseFacet {
     rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ): number {
-    const { colCfg } = this.spreadsheet.options.style!;
+    const { colCell } = this.spreadsheet.options.style!;
 
     const cellDraggedWidth = this.getColCellDraggedWidth(col);
 
@@ -240,7 +240,7 @@ export class PivotFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomSize(col, colCfg?.width!);
+    const cellCustomWidth = this.getCellCustomSize(col, colCell?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -644,7 +644,7 @@ export class PivotFacet extends BaseFacet {
    * @returns
    */
   private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
-    const { rowCfg } = this.spreadsheet.options.style!;
+    const { rowCell } = this.spreadsheet.options.style!;
 
     const cellDraggedWidth = this.getRowCellDraggedWidth(node);
 
@@ -652,7 +652,7 @@ export class PivotFacet extends BaseFacet {
       return cellDraggedWidth;
     }
 
-    const cellCustomWidth = this.getCellCustomSize(node, rowCfg?.width!);
+    const cellCustomWidth = this.getCellCustomSize(node, rowCell?.width!);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -687,9 +687,9 @@ export class PivotFacet extends BaseFacet {
     );
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
-    const { cellCfg } = this.spreadsheet.options.style!;
+    const { dataCell } = this.spreadsheet.options.style!;
     return Math.max(
-      getCellWidth(cellCfg!, this.getColLabelLength(col, rowLeafNodes)),
+      getCellWidth(dataCell!, this.getColLabelLength(col, rowLeafNodes)),
       Math.floor((availableWidth - rowHeaderWidth) / colSize),
     );
   }
@@ -744,7 +744,7 @@ export class PivotFacet extends BaseFacet {
    */
   private getAdaptGridColWidth(colLeafNodes: Node[], rowHeaderWidth?: number) {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
-    const { cellCfg } = this.spreadsheet.options.style!;
+    const { dataCell } = this.spreadsheet.options.style!;
     const rowHeaderColSize = rows.length;
     const colHeaderColSize = colLeafNodes.length;
     const { width } = this.getCanvasSize();
@@ -756,13 +756,13 @@ export class PivotFacet extends BaseFacet {
     const colSize = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
       return Math.max(
-        getCellWidth(cellCfg!),
+        getCellWidth(dataCell!),
         Math.floor(availableWidth / colSize),
       );
     }
 
     return Math.max(
-      getCellWidth(cellCfg!),
+      getCellWidth(dataCell!),
       Math.floor((availableWidth - rowHeaderWidth) / colHeaderColSize),
     );
   }
@@ -772,18 +772,18 @@ export class PivotFacet extends BaseFacet {
    * @returns number
    */
   private getTreeRowHeaderWidth(): number {
-    const { rowCfg, treeRowsWidth } = this.spreadsheet.options.style!;
+    const { rowCell, treeRowsWidth } = this.spreadsheet.options.style!;
     const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCfg.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
-    const currentTreeRowsWidth = treeRowsWidth ?? rowCfg?.treeRowsWidth;
+    // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCell.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
+    const currentTreeRowsWidth = treeRowsWidth ?? rowCell?.treeRowsWidth;
     if (currentTreeRowsWidth) {
       return currentTreeRowsWidth;
     }
 
     // 2. 其次是自定义
-    const customRowWidth = this.getCellCustomSize(null, rowCfg?.width!);
+    const customRowWidth = this.getCellCustomSize(null, rowCell?.width!);
     if (customRowWidth) {
       return customRowWidth;
     }

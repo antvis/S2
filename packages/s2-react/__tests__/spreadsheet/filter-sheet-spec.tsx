@@ -82,7 +82,7 @@ function MainLayout() {
       enableCopy: true,
     },
     style: {
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
       device: DeviceType.PC,

@@ -15,18 +15,18 @@ const s2Options = {
     // 树状模式下行头宽度
     treeRowsWidth: 100,
     // 数值单元格配置
-    cellCfg: {},
+    dataCell: {},
     // 列头配置
-    colCfg: {},
+    colCell: {},
     // 行头配置
-    rowCfg: {},
+    rowCell: {},
   },
 }
 ```
 
 ## Adjust line header width in tree mode
 
-> Priority is greater than `style.rowCfg.width`
+> Priority is greater than `style.rowCell.width`
 
 ```ts
 const s2Options = {
@@ -44,7 +44,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 90
     },
@@ -63,7 +63,7 @@ Since the **height** of the row header cell is always the same as the value cell
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       width: 50,
     },
   },
@@ -75,7 +75,7 @@ It can also be dynamically adjusted according to the current row header node inf
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       width: (row) => {
         console.log('row: ', row);
         // 动态配置：叶子节点 300px, 非叶子节点 200px
@@ -88,12 +88,12 @@ const s2Options = {
 
 <img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/YKhvdW8Xs/eb290abb-7cf0-44a2-bb79-66334d1f5438.png" alt="preview" width="600">
 
-If you want to set a different height for each row, you can use `rowCfg` 's `heightByField` preset height to achieve it. The `field` here corresponds to the unique ID corresponding to each row header node after the row and column cross [(how to get it)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+If you want to set a different height for each row, you can use `rowCell` 's `heightByField` preset height to achieve it. The `field` here corresponds to the unique ID corresponding to each row header node after the row and column cross [(how to get it)](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       heightByField: {
         'root[&] 浙江省 [&] 杭州市': 60,
         'root[&] 浙江省 [&] 宁波市': 100,
@@ -110,7 +110,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       width: 200,
       height: 60,
     },
@@ -129,7 +129,7 @@ If you want to set a **different** width for each column, you can dynamically ad
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       width: (colNode) => {
         console.log('colNode: ', colNode);
         return colNode.colIndex <= 2 ? 100 : 50
@@ -139,12 +139,12 @@ const s2Options = {
 }
 ```
 
-You can also use `colCfg.widthByFieldValue` to preset the width. This property is used internally in the S2 table for dragging and dropping to adjust the width and height of data storage. At this time, `fieldValue` corresponds to the column header value configured in `s2DataConfig.fields.columns`
+You can also use `colCell.widthByFieldValue` to preset the width. This property is used internally in the S2 table for dragging and dropping to adjust the width and height of data storage. At this time, `fieldValue` corresponds to the column header value configured in `s2DataConfig.fields.columns`
 
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       widthByFieldValue: {
         number: 200,
       }
@@ -162,7 +162,7 @@ You can also set the height to `0` to achieve the effect of **hiding the column 
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       height: 0,
     },
   },

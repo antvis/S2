@@ -157,7 +157,6 @@ describe('merge test', () => {
         autoAdjustBoundary: 'body',
         operation: {
           hiddenColumns: false,
-          trend: false,
           sort: false,
           menus: [],
         },
@@ -229,7 +228,6 @@ describe('merge test', () => {
       autoAdjustBoundary: 'body',
       operation: {
         hiddenColumns: false,
-        trend: false,
         sort: false,
         menus: [
           {

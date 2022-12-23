@@ -81,11 +81,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.DATA_CELL_MOUSE_UP, props.onDataCellMouseUp, s2);
   useCellEvent(S2Event.DATA_CELL_MOUSE_MOVE, props.onDataCellMouseMove, s2);
   useS2Event(
-    S2Event.DATA_CELL_TREND_ICON_CLICK,
-    props.onDataCellTrendIconClick,
-    s2,
-  );
-  useS2Event(
     S2Event.DATA_CELL_BRUSH_SELECTION,
     props.onDataCellBrushSelection,
     s2,

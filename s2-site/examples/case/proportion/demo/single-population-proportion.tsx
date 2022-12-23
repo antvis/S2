@@ -120,10 +120,10 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       },
       style: {
         layoutWidthType: 'colAdaptive',
-        colCfg: {
+        colCell: {
           hideMeasureColumn: true,
         },
-        cellCfg: {
+        dataCell: {
           width: 100,
         },
       },

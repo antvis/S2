@@ -24,7 +24,7 @@ describe('Row width Test in grid mode', () => {
     s2.setOptions({
       style: {
         layoutWidthType: 'compact',
-        rowCfg: { width: 50 },
+        rowCell: { width: 50 },
       },
     });
     s2.render();
@@ -36,7 +36,7 @@ describe('Row width Test in grid mode', () => {
     s2.setOptions({
       style: {
         layoutWidthType: 'compact',
-        rowCfg: { width: 20 },
+        rowCell: { width: 20 },
       },
     });
     s2.render();

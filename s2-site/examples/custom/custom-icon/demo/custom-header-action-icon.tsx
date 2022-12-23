@@ -71,7 +71,7 @@ fetch(
         },
       ],
       style: {
-        colCfg: {
+        colCell: {
           hideMeasureColumn: true,
         },
       },

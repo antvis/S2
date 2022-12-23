@@ -1,9 +1,9 @@
 import { ResizeType } from '../../common/constant/resize';
-import type { S2Style } from '../../common/interface/basic';
 import {
   HOVER_FOCUS_DURATION,
   ScrollbarPositionType,
 } from '../constant/interaction';
+import type { S2Style } from '../interface';
 import type { S2Options } from '../interface/s2Options';
 import { DeviceType } from '../interface/s2Options';
 import { EMPTY_PLACEHOLDER } from './basic';
@@ -25,15 +25,15 @@ export const DEFAULT_STYLE: Readonly<S2Style> = {
   showTreeLeafNodeAlignDot: false,
   collapsedRows: {},
   collapsedCols: {},
-  cellCfg: {
+  dataCell: {
     width: 96,
     height: 30,
   },
-  rowCfg: {
+  rowCell: {
     widthByField: null,
     heightByField: null,
   },
-  colCfg: {
+  colCell: {
     height: 30,
     widthByField: null,
     heightByField: null,
@@ -53,7 +53,6 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     autoAdjustBoundary: 'body',
     operation: {
       hiddenColumns: false,
-      trend: false,
       sort: false,
       menus: [],
     },

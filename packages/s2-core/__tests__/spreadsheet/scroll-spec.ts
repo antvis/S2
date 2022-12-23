@@ -23,10 +23,10 @@ const s2Options: S2Options = {
   hierarchyType: 'grid',
   // display scroll bar
   style: {
-    colCfg: {
+    colCell: {
       height: 60,
     },
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 50,
     },
@@ -497,7 +497,7 @@ describe('Scroll Tests', () => {
       frozenRowHeader: true,
       style: {
         layoutWidthType: 'compact',
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
       },
@@ -646,7 +646,7 @@ describe('Scroll Tests', () => {
         frozenRowHeader: true,
         style: {
           layoutWidthType: 'compact',
-          rowCfg: {
+          rowCell: {
             width: 200,
           },
         },
@@ -735,10 +735,10 @@ describe('Scroll Tests', () => {
     // rowCell 显示滚动条, dataCell 无滚动条, 然后在 dataCell 区域滚动
     s2.setOptions({
       style: {
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
-        cellCfg: {
+        dataCell: {
           width: 30,
         },
       },

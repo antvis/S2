@@ -212,7 +212,7 @@ describe('Pivot Table Core Data Process', () => {
   describe('3、Calculate row & col coordinates', () => {
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
       s2.facet.layoutResult;
-    const { cellCfg, colCfg } = s2.options.style!;
+    const { dataCell, colCell } = s2.options.style!;
     test('should calc correct row & cell width', () => {
       expect(rowLeafNodes[0].width).toEqual(99);
       expect(colLeafNodes[0].width).toEqual(100);
@@ -229,7 +229,7 @@ describe('Pivot Table Core Data Process', () => {
       rowLeafNodes.forEach((node, index) => {
         const { padding } = s2.theme.rowCell!.cell!;
         expect(node.height).toEqual(
-          cellCfg?.height! + padding?.top! + padding?.bottom!,
+          dataCell?.height! + padding?.top! + padding?.bottom!,
         );
         expect(node.y).toEqual(node.height * index);
         expect(node.x).toEqual(99);
@@ -249,24 +249,24 @@ describe('Pivot Table Core Data Process', () => {
     test('should calc correct col node size and coordinate', () => {
       // sample height
       expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(
-        colCfg?.height,
+        colCell?.height,
       );
       expect(colsHierarchy.sampleNodesForAllLevels[1]?.height).toEqual(
-        colCfg?.height,
+        colCell?.height,
       );
       expect(colsHierarchy.sampleNodesForAllLevels[2]?.height).toEqual(
-        colCfg?.height,
+        colCell?.height,
       );
       // all height
       expect(uniq(colsHierarchy.getNodes().map((node) => node.height))).toEqual(
-        [colCfg?.height],
+        [colCell?.height],
       );
       // leaf node
       colLeafNodes.forEach((node, index) => {
         const width = Math.floor(node.width);
         expect(width).toEqual(100);
         expect(node.x).toEqual(node.width * index);
-        expect(node.y).toEqual(node.level * (colCfg!.height as number));
+        expect(node.y).toEqual(node.level * (colCell!.height as number));
       });
       // level = 0;
       const typeNodes = colsHierarchy.getNodes(0);

@@ -72,7 +72,7 @@ const options: S2Options = {
   placeholder: '',
   style: {
     layoutWidthType: 'compact',
-    cellCfg: {
+    dataCell: {
       height: 32,
     },
     device: DeviceType.PC,

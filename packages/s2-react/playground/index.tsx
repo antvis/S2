@@ -632,12 +632,12 @@ function MainLayout() {
                   checkedChildren="隐藏数值"
                   unCheckedChildren="显示数值"
                   defaultChecked={
-                    mergedOptions.style?.colCfg?.hideMeasureColumn
+                    mergedOptions.style?.colCell?.hideMeasureColumn
                   }
                   onChange={(checked) => {
                     updateOptions({
                       style: {
-                        colCfg: {
+                        colCell: {
                           hideMeasureColumn: checked,
                         },
                       },
@@ -804,12 +804,12 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏列头"
                   unCheckedChildren="显示列头"
-                  checked={mergedOptions.style?.colCfg?.height === 0}
+                  checked={mergedOptions.style?.colCell?.height === 0}
                   onChange={(checked) => {
                     updateOptions({
                       style: {
-                        colCfg: {
-                          height: checked ? 0 : DEFAULT_STYLE.colCfg?.height,
+                        colCell: {
+                          height: checked ? 0 : DEFAULT_STYLE.colCell?.height,
                         },
                       },
                     });
@@ -1000,7 +1000,6 @@ function MainLayout() {
                   open: true,
                 },
               }}
-              onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
               onMounted={onSheetMounted}

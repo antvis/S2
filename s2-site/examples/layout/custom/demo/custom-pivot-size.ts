@@ -13,11 +13,11 @@ fetch(
       height: 480,
       hierarchyType: 'grid',
       style: {
-        cellCfg: {
+        dataCell: {
           width: 100,
           height: 90,
         },
-        rowCfg: {
+        rowCell: {
           width: 100,
           // width: (rowNode) => 100,
           // height: (rowNode) => 100,
@@ -26,7 +26,7 @@ fetch(
             'root[&]浙江省[&]宁波市': 100,
           },
         },
-        colCfg: {
+        colCell: {
           // width: (colNode) => 100,
           // height: (colNode) => 100,
           widthByField: {

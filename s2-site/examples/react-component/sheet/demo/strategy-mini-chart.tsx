@@ -32,7 +32,7 @@ fetch(
         ],
       },
       style: {
-        cellCfg: {
+        dataCell: {
           valuesCfg: {
             originalValueField: 'originalValues',
           },

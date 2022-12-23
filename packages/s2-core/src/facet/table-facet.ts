@@ -308,7 +308,7 @@ export class TableFacet extends BaseFacet {
   }
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
-    const { cellCfg } = this.spreadsheet.options.style!;
+    const { dataCell } = this.spreadsheet.options.style!;
     const { showSeriesNumber } = this.spreadsheet.options;
 
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
@@ -320,11 +320,11 @@ export class TableFacet extends BaseFacet {
         Frame.getVerticalBorderWidth(this.spreadsheet);
 
       return Math.max(
-        cellCfg?.width!,
+        dataCell?.width!,
         Math.floor(canvasW / Math.max(1, colHeaderColSize)),
       );
     }
-    return cellCfg?.width ?? 0;
+    return dataCell?.width ?? 0;
   }
 
   private getColNodeHeight(colNode: Node, totalHeight?: number) {
@@ -437,7 +437,7 @@ export class TableFacet extends BaseFacet {
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
-    const { colCfg } = this.spreadsheet.options.style!;
+    const { colCell } = this.spreadsheet.options.style!;
     const layoutWidthType = this.spreadsheet.getLayoutWidthType();
     const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
@@ -447,7 +447,7 @@ export class TableFacet extends BaseFacet {
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
-    const cellCustomWidth = this.getCellCustomSize(colNode, colCfg?.width);
+    const cellCustomWidth = this.getCellCustomSize(colNode, colCell?.width);
     if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
@@ -515,7 +515,8 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initRowOffsets() {
-    const heightByField = this.spreadsheet.options.style?.rowCfg?.heightByField;
+    const heightByField =
+      this.spreadsheet.options.style?.rowCell?.heightByField;
 
     if (keys(heightByField!).length) {
       const data = this.spreadsheet.dataSet.getDisplayDataSet();
