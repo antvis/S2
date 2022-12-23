@@ -139,20 +139,22 @@ export class PivotSheet extends SpreadSheet {
     const { id, isCollapsed } = data;
     const options: Partial<S2Options> = {
       style: {
-        collapsedRows: {
-          [id]: isCollapsed,
+        rowCell: {
+          collapsedRows: {
+            [id]: isCollapsed,
+          },
         },
       },
     };
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
-      collapsedRows: options.style!.collapsedRows!,
+      collapsedRows: options.style?.rowCell?.collapsedRows!,
       meta: data?.node,
     });
 
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-      collapsedRows: options.style!.collapsedRows!,
+      collapsedRows: options.style?.rowCell?.collapsedRows!,
       meta: data?.node,
     });
   }
@@ -160,9 +162,11 @@ export class PivotSheet extends SpreadSheet {
   protected handleTreeRowsCollapseAll(isCollapsed: boolean | undefined) {
     const options: S2Options = {
       style: {
-        hierarchyCollapse: !isCollapsed,
-        collapsedRows: null,
-        rowExpandDepth: null,
+        rowCell: {
+          hierarchyCollapse: !isCollapsed,
+          collapsedRows: null,
+          expandDepth: null,
+        },
       },
     };
     this.setOptions(options);

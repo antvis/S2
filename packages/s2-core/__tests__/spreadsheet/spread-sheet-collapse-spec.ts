@@ -9,7 +9,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
     container = getContainer();
   });
 
-  test('should init rows with rowExpandDepth config', () => {
+  test('should init rows with expandDepth config', () => {
     const s2 = new PivotSheet(
       container,
       {
@@ -26,7 +26,9 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
         height: 200,
         hierarchyType: 'tree',
         style: {
-          rowExpandDepth: 0,
+          rowCell: {
+            expandDepth: 0,
+          },
         },
       },
     );
@@ -35,8 +37,32 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
     const { rowLeafNodes } = s2.facet.layoutResult;
 
     expect(rowLeafNodes).toHaveLength(3);
-    expect(rowLeafNodes[0].id).toEqual('root[&]浙江');
-    expect(rowLeafNodes[1].id).toEqual('root[&]浙江[&]义乌');
-    expect(rowLeafNodes[2].id).toEqual('root[&]浙江[&]杭州');
+    expect(rowLeafNodes.map((node) => node.id)).toMatchInlineSnapshot(`
+      Array [
+        "root[&]浙江",
+        "root[&]浙江[&]义乌",
+        "root[&]浙江[&]杭州",
+      ]
+    `);
+
+    s2.setOptions({
+      style: {
+        rowCell: {
+          expandDepth: 1,
+        },
+      },
+    });
+    s2.render();
+
+    expect(s2.facet.layoutResult.rowLeafNodes.map((node) => node.id))
+      .toMatchInlineSnapshot(`
+      Array [
+        "root[&]浙江",
+        "root[&]浙江[&]义乌",
+        "root[&]浙江[&]义乌[&]笔",
+        "root[&]浙江[&]杭州",
+        "root[&]浙江[&]杭州[&]笔",
+      ]
+    `);
   });
 });

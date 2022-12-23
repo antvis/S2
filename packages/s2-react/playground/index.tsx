@@ -605,11 +605,13 @@ function MainLayout() {
                     checkedChildren="收起子节点"
                     unCheckedChildren="展开子节点"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.style?.hierarchyCollapse}
+                    checked={mergedOptions.style?.rowCell?.hierarchyCollapse}
                     onChange={(checked) => {
                       updateOptions({
                         style: {
-                          hierarchyCollapse: checked,
+                          rowCell: {
+                            hierarchyCollapse: checked,
+                          },
                         },
                       });
                     }}
@@ -904,12 +906,14 @@ function MainLayout() {
                 <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
                   <Select
                     style={{ width: 180 }}
-                    defaultValue={mergedOptions?.style?.rowExpandDepth}
+                    defaultValue={mergedOptions?.style?.rowCell?.expandDepth}
                     placeholder="默认行头展开层级"
                     onChange={(level) => {
                       updateOptions({
                         style: {
-                          rowExpandDepth: level,
+                          rowCell: {
+                            expandDepth: level,
+                          },
                         },
                       });
                     }}

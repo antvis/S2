@@ -138,7 +138,9 @@ describe('PivotSheet Export Test', () => {
       assembleOptions({
         hierarchyType: 'tree',
         style: {
-          hierarchyCollapse: true,
+          rowCell: {
+            hierarchyCollapse: true,
+          },
         },
       }),
     );
@@ -163,7 +165,9 @@ describe('PivotSheet Export Test', () => {
       assembleOptions({
         hierarchyType: 'tree',
         style: {
-          hierarchyCollapse: false,
+          rowCell: {
+            hierarchyCollapse: false,
+          },
         },
       }),
     );

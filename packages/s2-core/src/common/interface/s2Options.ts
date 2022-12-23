@@ -158,6 +158,12 @@ export interface S2BasicOptions<
    * 自定义序号节点
    */
   layoutSeriesNumberNodes?: LayoutSeriesNumberNodes;
+
+  /** *********** 数据集 **************** */
+  /**
+   * 自定义数据集
+   */
+  dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 }
 
 // 设备，pc || mobile
@@ -219,12 +225,7 @@ export interface S2Options<
   Text = string,
 > extends S2BasicOptions<T, P, Icon, Text>,
     S2TableSheetOptions,
-    S2PivotSheetOptions {
-  /**
-   * 自定义数据集
-   */
-  dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
-}
+    S2PivotSheetOptions {}
 
 export interface S2RenderOptions {
   /**

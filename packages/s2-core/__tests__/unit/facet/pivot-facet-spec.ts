@@ -231,13 +231,13 @@ describe('Pivot Mode Facet Test', () => {
     });
 
     test('row hierarchy when tree mode', () => {
-      const { dataCell, treeRowsWidth } = s2.options.style!;
+      const { dataCell, rowCell } = s2.options.style!;
       const rowCellStyle = s2.theme.rowCell!.cell;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
       expect(rowsHierarchy.width).toBe(DEFAULT_TREE_ROW_WIDTH);
-      expect(treeRowsWidth).toBeUndefined();
+      expect(rowCell?.treeWidth).toBeUndefined();
 
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
@@ -375,7 +375,7 @@ describe('Pivot Mode Facet Test', () => {
   );
 
   // https://github.com/antvis/S2/issues/1622
-  test('should render custom column leaf node width and use treeRowsWidth first for tree mode', () => {
+  test('should render custom column leaf node width and use treeWidth first for tree mode', () => {
     s2.options = assembleOptions({
       hierarchyType: 'tree',
       style: {
@@ -384,11 +384,9 @@ describe('Pivot Mode Facet Test', () => {
         rowCell: {
           // 行头宽度
           width: 200,
-          // 已废弃
-          treeRowsWidth: 300,
+          // 树状结构下行头宽度 (优先级最高)
+          treeWidth: 400,
         },
-        // 树状结构下行头宽度 (优先级最高)
-        treeRowsWidth: 400,
       },
     });
     const customWidthFacet = new PivotFacet(s2);

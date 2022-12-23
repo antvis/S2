@@ -129,7 +129,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
       showTooltip: true,
     },
     style: {
-      hierarchyCollapse: false,
+      rowCell: {
+        hierarchyCollapse: false,
+      },
       colCell: {
         widthByField: {},
         heightByField: {},

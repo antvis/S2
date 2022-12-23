@@ -225,13 +225,13 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom row cell style priority by treeRowsWidth > rowCell.width', () => {
+      test('should get custom row cell style priority by rowCell.treeWidth > rowCell.width', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           hierarchyType: 'tree',
           style: {
-            treeRowsWidth: 200,
             rowCell: {
+              treeWidth: 200,
               width: 100,
               height: 30,
             },

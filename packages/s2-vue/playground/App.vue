@@ -586,7 +586,9 @@ export default defineComponent({
       width: 600,
       height: 400,
       style: {
-        hierarchyCollapse: false,
+        rowCell: {
+          hierarchyCollapse: false,
+        },
       },
       tooltip: {
         operation: {

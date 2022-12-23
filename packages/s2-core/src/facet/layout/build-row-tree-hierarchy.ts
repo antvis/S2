@@ -41,8 +41,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     pivotMeta,
     spreadsheet,
   } = params;
-  const { collapsedRows, hierarchyCollapse, rowExpandDepth } =
-    spreadsheet.options.style!;
+  const { collapsedRows, hierarchyCollapse, expandDepth } =
+    spreadsheet.options.style?.rowCell!;
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
   const sortedDimensionValues =
@@ -106,15 +106,13 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     }
     const uniqueId = generateId(parentId, value);
 
-    // 行头收起/展开配置优先级:collapseRows -> rowExpandDepth -> hierarchyCollapse
+    // 行头收起/展开配置优先级:collapseRows -> expandDepth -> hierarchyCollapse
     // 优先从读取 collapseRows 中的特定 node 的值
     // 如果没有特定配置，再查看是否配置了层级展开配置，
     // 最后再降级到 hierarchyCollapse 中
     const isCollapsedRow = collapsedRows?.[uniqueId];
     // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回null，保证能正确降级到 hierarchyCollapse
-    const isLevelCollapsed = isNumber(rowExpandDepth)
-      ? level > rowExpandDepth
-      : null;
+    const isLevelCollapsed = isNumber(expandDepth) ? level > expandDepth : null;
     const isCollapse = isCollapsedRow ?? isLevelCollapsed ?? hierarchyCollapse;
 
     const node = new Node({

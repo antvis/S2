@@ -437,6 +437,7 @@ describe('Interaction Row Column Resize Tests', () => {
         [resizeInfo.meta.field!]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
     expect(s2.options.style!.dataCell).toEqual({
       width: 96,
@@ -483,15 +484,13 @@ describe('Interaction Row Column Resize Tests', () => {
       info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
       style: {
         rowCell: {
-          treeRowsWidth: 5,
+          treeWidth: 5,
         },
-        treeRowsWidth: 5,
       },
     };
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style!.rowCell!.treeRowsWidth).toEqual(resizeInfo.width);
-    expect(s2.options.style!.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style!.rowCell!.treeWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {
@@ -578,6 +577,7 @@ describe('Interaction Row Column Resize Tests', () => {
         [resizeInfo.meta.field!]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
     expect(s2.options.style!.colCell).toEqual({
       height: 30,
@@ -711,6 +711,7 @@ describe('Interaction Row Column Resize Tests', () => {
       heightByField: {
         [resizeInfo.meta.id]: resizeInfo.height,
       },
+      showTreeLeafNodeAlignDot: false,
     });
   });
 
@@ -815,6 +816,7 @@ describe('Interaction Row Column Resize Tests', () => {
         [resizeInfo.meta.rowId]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
   });
 

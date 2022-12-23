@@ -1,13 +1,12 @@
 import type { S2CellType } from '@antv/s2';
 import {
-  type ColHeaderConfig,
   customMerge,
   Node,
-  type S2Options,
   SpreadSheet,
-  type ViewMeta,
+  type ColHeaderConfig,
   type MultiData,
   type TooltipShowOptions,
+  type ViewMeta,
 } from '@antv/s2';
 import { isArray, isEmpty, isFunction, isNil, size } from 'lodash';
 import React from 'react';
@@ -36,7 +35,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2Ref = React.useRef<SpreadSheet | null>(null);
 
     const strategySheetOptions =
-      React.useMemo<S2Options<React.ReactNode> | null>(() => {
+      React.useMemo<SheetComponentOptions | null>(() => {
         if (isEmpty(dataCfg)) {
           return null;
         }

@@ -1,6 +1,6 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
 
-function createRadioGroup(s2) {
+function createRadioGroup(s2: SpreadSheet) {
   [
     [0, '展开一级节点（省份）'],
     [1, '展开二级节点（城市）'],
@@ -9,7 +9,7 @@ function createRadioGroup(s2) {
     const radio = document.createElement('input');
 
     radio.type = 'radio';
-    radio.name = 'rowExpandDepth';
+    radio.name = 'expandDepth';
     radio.value = value;
     radio.checked = value === 0;
 
@@ -20,7 +20,9 @@ function createRadioGroup(s2) {
 
       s2.setOptions({
         style: {
-          rowExpandDepth: Number(value),
+          rowCell: {
+            expandDepth: Number(value),
+          },
         },
       });
       s2.render(false);
@@ -42,12 +44,14 @@ fetch(
   .then((dataCfg) => {
     const container = document.getElementById('container');
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       hierarchyType: 'tree',
       style: {
-        rowExpandDepth: 0, // 展开一级维度的子节点
+        rowCell: {
+          expandDepth: 0, // 展开一级维度的子节点
+        },
       },
     };
 

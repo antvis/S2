@@ -22,14 +22,12 @@ export const DEFAULT_TREE_ROW_WIDTH = 120;
 
 export const DEFAULT_STYLE: Readonly<S2Style> = {
   layoutWidthType: LayoutWidthTypes.Adaptive,
-  showTreeLeafNodeAlignDot: false,
-  collapsedRows: {},
-  collapsedCols: {},
   dataCell: {
     width: 96,
     height: 30,
   },
   rowCell: {
+    showTreeLeafNodeAlignDot: false,
     widthByField: null,
     heightByField: null,
   },

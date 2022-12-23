@@ -53,9 +53,25 @@ export interface DataCellStyle {
 
 export interface RowCellStyle extends BaseCellStyle {
   /**
-   * @deprecated (已废弃, 请使用 style.treeRowsWidth 代替) tree row width(拖拽产生的，无需主动设置)
+   * 是否展示树状分层下的层级占位点
    */
-  treeRowsWidth?: number;
+  showTreeLeafNodeAlignDot?: boolean;
+  /**
+   * 树状结构下行头宽度
+   */
+  treeWidth?: number;
+  /**
+   * 树状结构下的全局收起展开属性，对应角头收起展开按钮
+   */
+  hierarchyCollapse?: boolean;
+  /**
+   * 树状结构下，行头默认展开到第几层 (从 0 开始)
+   */
+  expandDepth?: number | null;
+  /**
+   * 树状结构下，行头展开节点
+   */
+  collapsedRows?: Record<string, boolean> | null;
 }
 
 export interface ColCellStyle extends BaseCellStyle {
@@ -70,26 +86,6 @@ export interface S2Style {
    * 布局类型
    */
   layoutWidthType?: LayoutWidthType;
-  /**
-   * 是否展示树状分层下的层级占位点
-   */
-  showTreeLeafNodeAlignDot?: boolean;
-  /**
-   * 树状结构下行头宽度
-   */
-  treeRowsWidth?: number;
-  /**
-   * 树状结构下的全局收起展开属性，对应角头收起展开按钮
-   */
-  hierarchyCollapse?: boolean;
-  /**
-   * 树状结构下，行头默认展开到第几层
-   */
-  rowExpandDepth?: number | null;
-  /**
-   * 树状结构下，行头展开节点
-   */
-  collapsedRows?: Record<string, boolean> | null;
   /**
    * 树状结构下，列头展开节点
    */

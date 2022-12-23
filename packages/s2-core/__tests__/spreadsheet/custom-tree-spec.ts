@@ -19,7 +19,9 @@ const s2Options: S2Options = {
   height: 400,
   hierarchyType: 'tree',
   style: {
-    treeRowsWidth: 400,
+    rowCell: {
+      treeWidth: 400,
+    },
   },
 };
 
@@ -194,7 +196,9 @@ describe('SpreadSheet Custom Tree Tests', () => {
   test('should render custom tree row node width', () => {
     s2.setOptions({
       style: {
-        treeRowsWidth: 50,
+        rowCell: {
+          treeWidth: 50,
+        },
       },
     });
 

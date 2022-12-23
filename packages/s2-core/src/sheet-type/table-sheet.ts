@@ -1,9 +1,9 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
+  getTooltipOperatorTableSortMenus,
   InterceptType,
   S2Event,
-  getTooltipOperatorTableSortMenus,
 } from '../common/constant';
 import type {
   SortMethod,

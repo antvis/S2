@@ -157,9 +157,10 @@ const getOptions = (): SheetComponentsProps['options'] => {
     hierarchyType: 'grid',
     frozenRowHeader: true,
     style: {
-      treeRowsWidth: 120,
-      hierarchyCollapse: false,
-      collapsedRows: {},
+      rowCell: {
+        hierarchyCollapse: false,
+        treeWidth: 120,
+      },
       colCell: {
         widthByField: {},
         heightByField: {},

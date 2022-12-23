@@ -13,7 +13,7 @@ We can modify the background color, font size and other configurations of the ce
 const s2Options = {
   style: {
     // 树状模式下行头宽度
-    treeRowsWidth: 100,
+    treeWidth: 100,
     // 数值单元格配置
     dataCell: {},
     // 列头配置
@@ -32,7 +32,7 @@ const s2Options = {
 const s2Options = {
   hierarchyType: 'tree',
   style: {
-    treeRowsWidth: 200,
+    treeWidth: 200,
   },
 }
 ```
@@ -58,7 +58,7 @@ Since the **height** of the row header cell is always the same as the value cell
 
 ## Adjust row header cell width and height
 
-> Priority is less than `style.treeRowsWidth`
+> Priority is less than `style.treeWidth`
 
 ```ts
 const s2Options = {

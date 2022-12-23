@@ -772,19 +772,17 @@ export class PivotFacet extends BaseFacet {
    * @returns number
    */
   private getTreeRowHeaderWidth(): number {
-    const { rowCell, treeRowsWidth } = this.spreadsheet.options.style!;
+    const { rowCell } = this.spreadsheet.options.style!;
     const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    // TODO: 由于历史原因, 存在两个行头宽度, (1. style.rowCell.treeRowsWidth  2.style.treeRowsWidth) 暂时保持兼容
-    const currentTreeRowsWidth = treeRowsWidth ?? rowCell?.treeRowsWidth;
-    if (currentTreeRowsWidth) {
-      return currentTreeRowsWidth;
+    if (!isNil(rowCell?.treeWidth)) {
+      return rowCell?.treeWidth!;
     }
 
     // 2. 其次是自定义
     const customRowWidth = this.getCellCustomSize(null, rowCell?.width!);
-    if (customRowWidth) {
+    if (!isNil(customRowWidth)) {
       return customRowWidth;
     }
 
@@ -804,7 +802,7 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme?.padding?.right!;
 
     return Math.max(
-      currentTreeRowsWidth ?? DEFAULT_TREE_ROW_WIDTH,
+      rowCell?.treeWidth ?? DEFAULT_TREE_ROW_WIDTH,
       maxLabelWidth,
     );
   }

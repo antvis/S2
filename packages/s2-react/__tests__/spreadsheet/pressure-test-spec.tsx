@@ -79,8 +79,6 @@ const getOptions = (): SheetComponentsProps['options'] => {
       },
     },
     style: {
-      treeRowsWidth: 100,
-      collapsedRows: {},
       colCell: {
         widthByField: {},
         heightByField: {},
@@ -89,9 +87,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
         height: 32,
       },
       rowCell: {
-        // widthByField: {
-        //   province: 200
-        // }
+        treeWidth: 100,
       },
       device: DeviceType.PC,
     },

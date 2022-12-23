@@ -14,8 +14,6 @@ S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等
 ```ts
 const s2Options = {
   style: {
-    // 树状模式下行头宽度
-    treeRowsWidth: 100,
     // 行头单元格配置
     rowCell: {},
     // 列头单元格配置
@@ -34,7 +32,9 @@ const s2Options = {
 const s2Options = {
   hierarchyType: 'tree',
   style: {
-    treeRowsWidth: 200,
+    rowCell: {
+      treeWidth: 200,
+    }
   },
 }
 ```
@@ -64,7 +64,7 @@ const s2Options = {
 
 ## 调整行头单元格宽高
 
-> 优先级小于 `style.treeRowsWidth`
+> 优先级小于 `style.treeWidth`
 
 行头单元格高度调整**作用于叶子节点** （非叶子节点的高度是所有子节点高度度总和）, 且高度始终和 **数值单元格** 高度一致。
 

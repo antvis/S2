@@ -756,7 +756,7 @@ describe('PivotSheet Tests', () => {
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
       expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
-      expect(s2.options.style!.collapsedRows).toEqual(
+      expect(s2.options.style?.rowCell?.collapsedRows).toEqual(
         collapsedRowsType.collapsedRows,
       );
       expect(renderSpy).toHaveBeenCalledTimes(1);
@@ -765,7 +765,10 @@ describe('PivotSheet Tests', () => {
     });
 
     test('should collapse all rows with tree mode', () => {
-      s2.setOptions({ hierarchyType: 'tree', style: { collapsedRows: null } });
+      s2.setOptions({
+        hierarchyType: 'tree',
+        style: { rowCell: { collapsedRows: null } },
+      });
 
       const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
@@ -773,13 +776,13 @@ describe('PivotSheet Tests', () => {
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
 
-      expect(s2.options.style!.collapsedRows).toEqual(null);
-      expect(s2.options.style!.hierarchyCollapse).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapsedRows).toEqual(null);
+      expect(s2.options.style!.rowCell!.hierarchyCollapse).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
-      expect(s2.options.style!.collapsedRows).toEqual(null);
-      expect(s2.options.style!.hierarchyCollapse).toBeTruthy();
+      expect(s2.options.style!.rowCell!.collapsedRows).toEqual(null);
+      expect(s2.options.style!.rowCell!.hierarchyCollapse).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -790,7 +793,9 @@ describe('PivotSheet Tests', () => {
         ...s2Options,
         hierarchyType: 'tree',
         style: {
-          hierarchyCollapse: true,
+          rowCell: {
+            hierarchyCollapse: true,
+          },
         },
       });
       tree.render();
@@ -801,7 +806,9 @@ describe('PivotSheet Tests', () => {
 
       tree.setOptions({
         style: {
-          hierarchyCollapse: false,
+          rowCell: {
+            hierarchyCollapse: false,
+          },
         },
       });
       tree.render();
