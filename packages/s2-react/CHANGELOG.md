@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.35.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.35.0-alpha.1...@antv/s2-react-v1.35.0-alpha.2) (2022-12-26)
+
+
+### Bug Fixes
+
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+
 # [@antv/s2-react-v1.35.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.34.0...@antv/s2-react-v1.35.0-alpha.1) (2022-12-22)
 
 
