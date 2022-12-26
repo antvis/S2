@@ -292,7 +292,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
       cell,
       [],
       x + width - dataCellStyle.cell.padding.right,
-      height / 2,
+      y + height / 2,
       getEmptyPlaceholder(cell, spreadsheet.options.placeholder),
       dataCellStyle.text,
     );
