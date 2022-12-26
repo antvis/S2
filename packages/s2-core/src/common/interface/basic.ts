@@ -515,3 +515,5 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
+
+export type RowData = Data | DataType;

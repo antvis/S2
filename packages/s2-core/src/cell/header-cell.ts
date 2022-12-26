@@ -325,10 +325,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(cells: Array<CellMeta>, nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
+
     const selectedNodeIds = map(nodes, 'id');
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
@@ -382,7 +383,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells();
+    const cells = interaction?.getCells([
+      CellTypes.COL_CELL,
+      CellTypes.ROW_CELL,
+    ]);
 
     if (!first(cells)) {
       return;

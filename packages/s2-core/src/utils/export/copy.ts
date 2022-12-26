@@ -4,8 +4,11 @@ import {
   filter,
   forEach,
   isEmpty,
+  isNil,
   map,
   max,
+  orderBy,
+  reduce,
   repeat,
   zip,
 } from 'lodash';
@@ -18,12 +21,16 @@ import {
   ID_SEPARATOR,
   InteractionStateName,
   VALUE_FIELD,
+  SERIES_NUMBER_FIELD,
+  type RowData,
 } from '../../common';
 import type { DataType } from '../../data-set/interface';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
+import { getEmptyPlaceholder } from '../text';
+import { flattenDeep } from '../data-set-operate';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -649,6 +656,59 @@ function getBrushHeaderCopyable(
   ];
 }
 
+const tilePivotData = (
+  data,
+  columnOrdered,
+  defaultDataValue,
+): Array<string> => {
+  return map(columnOrdered, (field) => data[field] ?? defaultDataValue);
+};
+
+export const getDataByRowData = (
+  spreadsheet: SpreadSheet,
+  rowData: RowData,
+): Copyable => {
+  const {
+    options: { placeholder },
+    dataCfg: {
+      fields: { rows, columns, values },
+    },
+  } = spreadsheet;
+  const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
+  const column = spreadsheet.getColumnLeafNodes();
+  let datas: string[][] = [];
+
+  if (spreadsheet.isTableMode()) {
+    const columnWithoutSeriesNumber = filter(
+      column,
+      (node) => node.field !== SERIES_NUMBER_FIELD,
+    );
+    // 按列头顺序复制
+    datas = map(rowData, (rowDataItem) => {
+      return map(
+        columnWithoutSeriesNumber,
+        (node) => rowDataItem?.[node.field] ?? defaultDataValue,
+      );
+    });
+  } else if (spreadsheet.isPivotMode()) {
+    // 透视表的数据加上行头、列头才有意义，这里会以行头、列头、数据值的顺序将每一个单元格构造成一行
+    const columnOrdered = [...rows, ...columns, ...values];
+    const rowDataFlatten = flattenDeep(rowData);
+    // 去掉小计
+    const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
+      [...rows, ...columns].every((field) => !isNil(data[field as string])),
+    );
+    datas = reduce(
+      rowDataFlattenWithoutTotal,
+      (ret, data) => {
+        return [...ret, tilePivotData(data, columnOrdered, defaultDataValue)];
+      },
+      [],
+    );
+  }
+  return matrixPlainTextTransformer(datas);
+};
+
 function getDataCellCopyable(
   spreadsheet: SpreadSheet,
   cells: CellMeta[],
@@ -675,8 +735,14 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
+    const { rowCells } = spreadsheet.interaction.getSelectedCellHighlight();
 
-    if (spreadsheet.options.interaction?.copyWithHeader) {
+    if (rowCells) {
+      const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
+        spreadsheet.dataSet.getRowData(cell),
+      );
+      data = getDataByRowData(spreadsheet, rowData);
+    } else if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData,

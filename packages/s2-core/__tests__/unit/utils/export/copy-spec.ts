@@ -308,6 +308,27 @@ describe('List Table Core Data Process', () => {
     const data = getSelectedData(sss);
     expect(data).toBe(convertString(newLineText));
   });
+
+  it('should copy row data when select data row cell', () => {
+    s2.setOptions({
+      interaction: {
+        selectedCellHighlight: {
+          rowCells: true,
+        },
+      },
+    });
+
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getSelectedData(s2).split('\t').length).toBe(5);
+  });
 });
 
 describe('Pivot Table Core Data Process', () => {
