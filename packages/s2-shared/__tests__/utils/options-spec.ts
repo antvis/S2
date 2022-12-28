@@ -27,6 +27,13 @@ describe('Options Tests', () => {
         autoAdjustBoundary: 'body',
         operation: { hiddenColumns: true, sort: true, menus: [] },
       },
+      frozen: {
+        rowHeader: true,
+        rowCount: 0,
+        colCount: 0,
+        trailingRowCount: 0,
+        trailingColCount: 0,
+      },
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
@@ -63,13 +70,6 @@ describe('Options Tests', () => {
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
-      frozen: {
-        rowHeader: true,
-        frozenRowCount: 0,
-        frozenColCount: 0,
-        frozenTrailingRowCount: 0,
-        frozenTrailingColCount: 0,
-      },
       hdAdapter: true,
       cornerText: '',
       cornerExtraFieldText: '',
