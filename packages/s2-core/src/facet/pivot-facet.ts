@@ -84,7 +84,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotalMeasure;
 
       const hideMeasure =
-        this.spreadsheet.options.style?.colCell?.hideMeasureColumn ?? false;
+        this.spreadsheet.options.style?.colCell?.hideValue ?? false;
       // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query

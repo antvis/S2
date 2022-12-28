@@ -41,7 +41,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         }
 
         // 单指标非自定义树结构隐藏指标列
-        const hideMeasureColumn = size(dataCfg?.fields?.values) === 1;
+        const shouldHideValue = size(dataCfg?.fields?.values) === 1;
 
         const getContent =
           (cellType: 'rowCell' | 'colCell' | 'dataCell') =>
@@ -75,7 +75,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           showDefaultHeaderActionIcon: false,
           style: {
             colCell: {
-              hideMeasureColumn,
+              hideValue: shouldHideValue,
             },
           },
           interaction: {

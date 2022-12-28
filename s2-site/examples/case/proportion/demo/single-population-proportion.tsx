@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { S2Options } from '@antv/s2';
+import { S2DataConfig, S2Options } from '@antv/s2';
 
 const PALETTE_COLORS = [
   {
@@ -49,7 +49,7 @@ const PALETTE_COLORS = [
 ];
 
 const getTargetColor = (value) => {
-  if (isNaN(Number(value))) {
+  if (Number.isNaN(Number(value))) {
     return PALETTE_COLORS[0].background;
   }
   return PALETTE_COLORS[Math.floor(Number(value) / 10)].background;
@@ -74,7 +74,7 @@ const PaletteLegend = () => {
 fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
   .then((res) => res.json())
   .then(({ data }) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['type', 'job'],
         columns: ['age', 'city'],
@@ -105,7 +105,8 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       ],
       data,
     };
-    const s2Options = {
+
+    const s2Options: SheetComponentOptions = {
       width: 800,
       height: 600,
       tooltip: {
@@ -121,7 +122,7 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       style: {
         layoutWidthType: 'colAdaptive',
         colCell: {
-          hideMeasureColumn: true,
+          hideValue: true,
         },
         dataCell: {
           width: 100,
@@ -156,12 +157,12 @@ fetch('https://assets.antv.antgroup.com/s2/single-population-proportion.json')
       <div className="root">
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2Options as S2Options}
+          options={s2Options}
           sheetType="pivot"
           adaptive={false}
           header={{
             title: '单人群占比表',
-            extra: [<PaletteLegend />],
+            extra: <PaletteLegend />,
           }}
         />
       </div>,

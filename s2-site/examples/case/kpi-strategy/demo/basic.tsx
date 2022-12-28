@@ -211,7 +211,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观
       style: {
         colCell: {
-          hideMeasureColumn: true,
+          hideValue: true,
         },
         dataCell: {
           width: 150,

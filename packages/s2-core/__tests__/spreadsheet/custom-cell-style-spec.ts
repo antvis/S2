@@ -400,7 +400,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           ...s2Options,
           style: {
             colCell: {
-              hideMeasureColumn: true,
+              hideValue: true,
               widthByField: {
                 'root[&]笔': 100,
               },

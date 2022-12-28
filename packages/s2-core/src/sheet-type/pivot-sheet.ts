@@ -175,14 +175,14 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
-    const { hideMeasureColumn } = this.options.style!.colCell!;
+    const { hideValue } = this.options.style!.colCell!;
     const sortField = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
     const sortQuery = clone(query);
 
     let sortValue = value;
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
-    if (hideMeasureColumn && this.isValueInCols()) {
+    if (hideValue && this.isValueInCols()) {
       sortValue = this.dataSet.fields.values![0];
       sortQuery![EXTRA_FIELD] = sortValue;
     }

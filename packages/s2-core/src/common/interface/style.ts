@@ -60,6 +60,7 @@ export interface RowCellStyle extends BaseCellStyle {
    * 树状结构下行头宽度
    */
   treeWidth?: number;
+  // TODO: 下面三个命名不用加  tree 的前缀, 等平铺模式支持展开/收起可以共用 API
   /**
    * 树状结构下的全局收起展开属性，对应角头收起展开按钮
    */
@@ -70,15 +71,16 @@ export interface RowCellStyle extends BaseCellStyle {
   expandDepth?: number | null;
   /**
    * 树状结构下，行头展开节点
+   * { "root[&]浙江省": true, "root[&]四川省": false }
    */
   collapsedRows?: Record<string, boolean> | null;
 }
 
 export interface ColCellStyle extends BaseCellStyle {
   /**
-   * 是否隐藏数值列 (只有一个数值时生效)
+   * 数值挂列头时, 是否隐藏数值 (即 s2DataConfig.fields.values 只有一个数值时生效)
    */
-  hideMeasureColumn?: boolean;
+  hideValue?: boolean;
 }
 
 export interface S2Style {

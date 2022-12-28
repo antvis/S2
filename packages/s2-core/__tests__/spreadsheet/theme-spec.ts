@@ -382,11 +382,11 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    it('should not align column headers with data cells and render normal font wight leaf node text if hideMeasureColumn', () => {
+    it('should not align column headers with data cells and render normal font wight leaf node text if hideValue', () => {
       s2.setOptions({
         style: {
           colCell: {
-            hideMeasureColumn: true,
+            hideValue: true,
           },
         },
         totals: null,
@@ -422,7 +422,7 @@ describe('SpreadSheet Theme Tests', () => {
         s2.setOptions({
           style: {
             colCell: {
-              hideMeasureColumn: true,
+              hideValue: true,
             },
           },
         });

@@ -943,7 +943,7 @@ describe('PivotSheet Tests', () => {
     renderSpy.mockRestore();
   });
 
-  test('should handle group sort when hideMeasureColumn', () => {
+  test('should handle group sort when hideValue', () => {
     const nodeMeta = new Node({
       id: '1',
       field: '1',
@@ -952,7 +952,7 @@ describe('PivotSheet Tests', () => {
         type: '笔',
       },
     });
-    s2.options.style!.colCell!.hideMeasureColumn = true;
+    s2.options.style!.colCell!.hideValue = true;
     s2.groupSortByMethod('asc', nodeMeta);
 
     expect(s2.dataCfg.sortParams).toEqual([
