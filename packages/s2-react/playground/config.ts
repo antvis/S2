@@ -1,5 +1,7 @@
 import {
+  CellTypes,
   ResizeType,
+  type S2TableSheetFrozenOptions,
   type CustomHeaderField,
   type S2DataConfig,
 } from '@antv/s2';
@@ -12,6 +14,7 @@ import {
   meta,
   totalData,
 } from '../__tests__/data/mock-dataset.json';
+
 export const tableSheetSingleColumns: CustomHeaderField[] = [
   'province',
   'city',
@@ -66,9 +69,9 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   ],
 };
 
-export const tableSheetFrozenOptions: SheetComponentOptions = {
-  frozenColCount: 1,
-  frozenTrailingColCount: 1,
+export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
+  colCount: 1,
+  trailingColCount: 1,
 };
 
 export const s2Options: SheetComponentOptions = {
@@ -76,7 +79,9 @@ export const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
   showSeriesNumber: false,
-  frozenRowHeader: true,
+  frozen: {
+    rowHeader: true,
+  },
   cornerText: '测试',
   interaction: {
     enableCopy: true,
@@ -94,21 +99,33 @@ export const s2Options: SheetComponentOptions = {
   },
   tooltip: {
     operation: {
-      trend: true,
+      hiddenColumns: true,
+      menus: [
+        {
+          key: 'trend',
+          text: '趋势',
+          icon: 'Trend',
+          visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          onClick: (cell) => {
+            // eslint-disable-next-line no-console
+            console.log('趋势图 icon 点击: ', cell);
+          },
+        },
+      ],
     },
   },
   conditions: s2ConditionsOptions,
   hierarchyType: 'grid',
   style: {
-    rowCfg: {
+    rowCell: {
       width: 160,
       height: 50,
     },
-    colCfg: {
+    colCell: {
       width: 140,
       height: 30,
     },
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 40,
     },

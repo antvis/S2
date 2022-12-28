@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { merge } from 'lodash';
-import { DataCell, measureTextWidth } from '@antv/s2';
-import { SheetComponent } from '@antv/s2-react';
+import { DataCell, measureTextWidth, S2DataConfig, S2Theme } from '@antv/s2';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 // 进度条
@@ -162,7 +162,7 @@ class KpiStrategyDataCell extends DataCell {
 fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
   .then((res) => res.json())
   .then(({ data }) => {
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['type', 'subType'],
         columns: ['name'],
@@ -190,13 +190,12 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       hierarchyType: 'tree',
       tooltip: {
         operation: {
-          trend: true,
           hiddenColumns: true,
         },
       },
@@ -211,10 +210,10 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
       },
       // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观
       style: {
-        colCfg: {
-          hideMeasureColumn: true,
+        colCell: {
+          hideValue: true,
         },
-        cellCfg: {
+        dataCell: {
           width: 150,
         },
       },
@@ -226,7 +225,7 @@ fetch('https://assets.antv.antgroup.com/s2/kpi-strategy.json')
     };
 
     // 覆盖默认主题, 让单元格文字靠左显示
-    const theme = {
+    const theme: S2Theme = {
       dataCell: {
         // 父节点
         bolderText: {

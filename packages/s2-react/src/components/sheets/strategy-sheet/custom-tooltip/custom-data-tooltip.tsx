@@ -40,7 +40,7 @@ export const StrategySheetDataTooltip: React.FC<CustomTooltipProps> = ({
   }, [leftColNode?.value]);
 
   const { placeholder, style } = spreadsheet.options;
-  const valuesCfg = style?.cellCfg?.valuesCfg;
+  const valuesCfg = style?.dataCell?.valuesCfg;
 
   const [value, ...derivedValues] = first(metaFieldValue?.values) || [
     metaFieldValue,

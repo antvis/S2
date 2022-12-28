@@ -14,9 +14,6 @@ const s2Options: SheetComponentOptions = {
   height: 200,
   hdAdapter: false,
   tooltip: {
-    operation: {
-      trend: true,
-    },
     showTooltip: true,
   },
 };

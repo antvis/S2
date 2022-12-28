@@ -37,7 +37,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       width: 600,
       height: 480,
       style: {
-        colCfg: {
+        colCell: {
           height: 0,
         },
       },

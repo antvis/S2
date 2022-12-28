@@ -402,10 +402,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
       brushSelectionInstance;
     mockSpreadSheetInstance.setOptions({
-      frozenColCount: 1,
-      frozenRowCount: 1,
-      frozenTrailingColCount: 1,
-      frozenTrailingRowCount: 1,
+      frozen: {
+        colCount: 1,
+        rowCount: 1,
+        trailingColCount: 1,
+        trailingRowCount: 1,
+      },
     });
     mockSpreadSheetInstance.dataSet.getDisplayDataSet = () => {
       return Array.from(new Array(10)).map(() => {

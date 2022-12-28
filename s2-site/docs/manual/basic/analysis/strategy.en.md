@@ -44,7 +44,7 @@ const s2Options = {
     ],
   },
   style: {
-    cellCfg: {
+    dataCell: {
       valuesCfg: {
         originalValueField: 'originalValues',
       },

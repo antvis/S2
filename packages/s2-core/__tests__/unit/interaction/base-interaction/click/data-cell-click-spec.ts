@@ -4,7 +4,6 @@ import {
   sleep,
 } from 'tests/util/helpers';
 import type { GEvent } from '@/index';
-import type { S2Options } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   HOVER_FOCUS_DURATION,
@@ -27,13 +26,13 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.options = {
       tooltip: {
         operation: {
-          trend: false,
+          menus: [],
         },
       },
       interaction: {
         hoverHighlight: true,
       },
-    } as S2Options;
+    };
     s2.isTableMode = jest.fn(() => true);
   });
 
@@ -48,6 +47,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
+
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellInfo.mockCellMeta],
       stateName: InteractionStateName.SELECTED,

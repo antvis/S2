@@ -56,7 +56,6 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 鼠标按下       | `S2Event.DATA_CELL_MOUSE_DOWN`       | 数值单元格鼠标按下                      |
 | 鼠标移动       | `S2Event.DATA_CELL_MOUSE_MOVE`       | 数值单元格鼠标移动                      |
 | 鼠标松开       | `S2Event.DATA_CELL_MOUSE_UP`         | 数值单元格鼠标松开                      |
-| 趋势 icon 点击 | `S2Event.DATA_CELL_TREND_ICON_CLICK` | 数值单元格 tooltip 里面的趋势 icon 点击 |
 | 刷选           | `S2Event.DATA_CELL_BRUSH_SELECTION`  | 数值单元格刷选                          |
 
 ### 角头

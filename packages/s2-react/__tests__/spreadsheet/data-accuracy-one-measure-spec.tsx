@@ -25,7 +25,11 @@ import {
   totalData5,
   totalData6,
 } from '../data/data-accuracy';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentsProps,
+} from '@/components';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
@@ -104,13 +108,15 @@ const getDataCfg = (index: number) => {
   } as SheetComponentsProps['dataCfg'];
 };
 
-const getOptions = () => {
+const getOptions = (): SheetComponentOptions => {
   return {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
     showSeriesNumber: false,
-    frozenRowHeader: false,
+    frozen: {
+      rowHeader: false,
+    },
     totals: {
       row: {
         showGrandTotals: true,
@@ -128,27 +134,22 @@ const getOptions = () => {
       },
     },
     style: {
-      treeRowsWidth: 100,
-      hierarchyCollapse: false,
-      collapsedRows: {},
-      colCfg: {
-        widthByFieldValue: {},
+      colCell: {
+        widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
-      rowCfg: {
-        // widthByField: {
-        //   province: 200
-        // }
+      rowCell: {
+        hierarchyCollapse: false,
+        treeWidth: 100,
       },
-      device: 'pc',
     },
     tooltip: {
       showTooltip: true,
     },
-  } as SheetComponentsProps['options'];
+  };
 };
 
 const wrapComponent = (text: string, component: React.ReactNode) => {

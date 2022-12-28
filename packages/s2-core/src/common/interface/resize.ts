@@ -5,8 +5,9 @@ import type {
   ResizeType,
 } from '../../common/constant/resize';
 import type { Node } from '../../facet/layout/node';
-import type { S2Style, ViewMeta } from './basic';
+import type { ViewMeta } from './basic';
 import type { S2CellType } from './interaction';
+import type { S2Style } from './style';
 import type { ResizeArea } from './theme';
 
 export type ResizeGuideLinePath = [operation: 'M' | 'L', x: number, y: number];
@@ -38,7 +39,7 @@ export interface ResizePosition {
 
 export interface ResizeDetail {
   eventType: ResizeEvent;
-  style?: S2Style | undefined;
+  style?: S2Style;
   seriesNumberWidth?: number;
 }
 

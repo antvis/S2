@@ -85,7 +85,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
     height: 600,
     hierarchyType: 'tree',
     showSeriesNumber: true,
-    frozenRowHeader: false,
+    frozen: {
+      rowHeader: false,
+    },
     conditions: {
       interval: [
         {
@@ -129,12 +131,14 @@ const getOptions = (): SheetComponentsProps['options'] => {
       showTooltip: true,
     },
     style: {
-      hierarchyCollapse: false,
-      colCfg: {
+      rowCell: {
+        hierarchyCollapse: false,
+      },
+      colCell: {
         widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
       device: DeviceType.PC,

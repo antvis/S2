@@ -45,7 +45,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
-            cellCfg: {
+            dataCell: {
               width: 300,
               height: 90,
             },
@@ -80,7 +80,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom row cell style', () => {
         s2.setOptions({
           style: {
-            rowCfg: {
+            rowCell: {
               width: 50,
               height: 60,
             },
@@ -94,7 +94,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom row cell style by custom hook', () => {
         s2.setOptions({
           style: {
-            rowCfg: {
+            rowCell: {
               width: (node) => {
                 expect(node?.id).toInclude('root[&]浙江');
                 return 100;
@@ -114,7 +114,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom row cell style by field', () => {
         s2.setOptions({
           style: {
-            rowCfg: {
+            rowCell: {
               widthByField: {
                 city: 66,
               },
@@ -134,7 +134,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
 
         s2.setOptions({
           style: {
-            rowCfg: {
+            rowCell: {
               widthByField: {
                 [cityId]: 50,
               },
@@ -157,7 +157,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
 
         s2.setOptions({
           style: {
-            rowCfg: {
+            rowCell: {
               widthByField: {
                 province: width,
                 [provinceId]: width,
@@ -182,36 +182,36 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom row cell style priority by rowCfg.heightByField > rowCfg.height > cellCfg.height', () => {
+      test('should get custom row cell style priority by rowCell.heightByField > rowCell.height > dataCell.height', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
-            rowCfg: {
+            rowCell: {
               heightByField: {
                 city: 40,
               },
               height: 20,
             },
-            cellCfg: {
+            dataCell: {
               height: 50,
             },
           },
         });
         sheet.render();
 
-        // 1. rowCfg.heightByField > rowCfg.height > cellCfg.height
+        // 1. rowCell.heightByField > rowCell.height > dataCell.height
         sheet.getRowLeafNodes().forEach((node) => {
           expect(node.height).toEqual(40);
         });
 
-        // 2. rowCfg.height > cellCfg.height
+        // 2. rowCell.height > dataCell.height
         sheet.setOptions(
           {
             style: {
-              rowCfg: {
+              rowCell: {
                 height: 20,
               },
-              cellCfg: {
+              dataCell: {
                 height: 50,
               },
             },
@@ -225,13 +225,13 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom row cell style priority by treeRowsWidth > rowCfg.width', () => {
+      test('should get custom row cell style priority by rowCell.treeWidth > rowCell.width', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           hierarchyType: 'tree',
           style: {
-            treeRowsWidth: 200,
-            rowCfg: {
+            rowCell: {
+              treeWidth: 200,
               width: 100,
               height: 30,
             },
@@ -250,7 +250,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom col cell style', () => {
         s2.setOptions({
           style: {
-            colCfg: {
+            colCell: {
               width: 50,
               height: 60,
             },
@@ -264,7 +264,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom col cell style by custom hook', () => {
         s2.setOptions({
           style: {
-            colCfg: {
+            colCell: {
               width: (node) => {
                 expect(node?.id).toInclude('root[&]笔');
                 return 100;
@@ -284,7 +284,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       test('should get custom col cell style by field', () => {
         s2.setOptions({
           style: {
-            colCfg: {
+            colCell: {
               widthByField: {
                 sub_type: 66,
               },
@@ -304,7 +304,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
 
         s2.setOptions({
           style: {
-            colCfg: {
+            colCell: {
               widthByField: {
                 [priceId]: 50,
               },
@@ -327,7 +327,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
 
         s2.setOptions({
           style: {
-            colCfg: {
+            colCell: {
               widthByField: {
                 sub_type: width,
                 [subTypeId]: width,
@@ -352,36 +352,36 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         });
       });
 
-      test('should get custom col cell style priority by colCfg.widthByField > colCfg.width > cellCfg.width', () => {
+      test('should get custom col cell style priority by colCell.widthByField > colCell.width > dataCell.width', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
-            colCfg: {
+            colCell: {
               width: 200,
               widthByField: {
                 [EXTRA_FIELD]: 300,
               },
             },
-            cellCfg: {
+            dataCell: {
               width: 100,
             },
           },
         });
         sheet.render();
 
-        // 1. colCfg.widthByField > colCfg.width > cellCfg.width
+        // 1. colCell.widthByField > colCell.width > dataCell.width
         sheet.getColumnLeafNodes().forEach((node) => {
           expect(node.width).toEqual(300);
         });
 
-        // 2. colCfg.width > cellCfg.width
+        // 2. colCell.width > dataCell.width
         sheet.setOptions(
           {
             style: {
-              colCfg: {
+              colCell: {
                 width: 200,
               },
-              cellCfg: {
+              dataCell: {
                 width: 100,
               },
             },
@@ -399,8 +399,8 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
         const sheet = createPivotSheet({
           ...s2Options,
           style: {
-            colCfg: {
-              hideMeasureColumn: true,
+            colCell: {
+              hideValue: true,
               widthByField: {
                 'root[&]笔': 100,
               },
@@ -443,7 +443,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     test('should set row cell style by height', () => {
       s2.setOptions({
         style: {
-          rowCfg: {
+          rowCell: {
             height: 60,
           },
         },
@@ -462,7 +462,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     test('should set row cell style by row index', () => {
       s2.setOptions({
         style: {
-          rowCfg: {
+          rowCell: {
             heightByField: {
               0: 40,
               '2': 100,
@@ -484,7 +484,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     test('should set col cell style by width', () => {
       s2.setOptions({
         style: {
-          colCfg: {
+          colCell: {
             width: 100,
           },
         },
@@ -500,7 +500,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       });
       sheet.setOptions({
         style: {
-          colCfg: {
+          colCell: {
             widthByField: {
               type: 50,
               sub_type: 120,
@@ -519,7 +519,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       });
       sheet.setOptions({
         style: {
-          colCfg: {
+          colCell: {
             widthByField: {
               'root[&]类别': 100,
               'root[&]子类别': 200,

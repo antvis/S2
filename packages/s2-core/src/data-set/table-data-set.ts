@@ -20,12 +20,12 @@ export class TableDataSet extends BaseDataSet {
    * @returns
    */
   protected getStartRows() {
-    const { frozenRowCount } = this.spreadsheet.options || {};
-    if (!frozenRowCount) {
+    const { rowCount } = this.spreadsheet.options.frozen!;
+    if (!rowCount) {
       return [];
     }
     const { displayData } = this;
-    return displayData.slice(0, frozenRowCount);
+    return displayData.slice(0, rowCount);
   }
 
   /**
@@ -33,14 +33,14 @@ export class TableDataSet extends BaseDataSet {
    * @returns
    */
   protected getEndRows() {
-    const { frozenTrailingRowCount } = this.spreadsheet.options || {};
+    const { trailingRowCount } = this.spreadsheet.options.frozen!;
     // 没有冻结行时返回空数组
-    if (!frozenTrailingRowCount) {
+    if (!trailingRowCount) {
       return [];
     }
     const { displayData } = this;
 
-    return displayData.slice(-frozenTrailingRowCount);
+    return displayData.slice(-trailingRowCount);
   }
 
   /**
@@ -48,12 +48,10 @@ export class TableDataSet extends BaseDataSet {
    * @returns
    */
   protected getMovableRows(): RawData[] {
-    const { displayData } = this;
-    const { frozenTrailingRowCount, frozenRowCount } =
-      this.spreadsheet.options || {};
-    return displayData.slice(
-      frozenRowCount || 0,
-      -frozenTrailingRowCount! || undefined,
+    const { trailingRowCount, rowCount } = this.spreadsheet.options.frozen!;
+    return this.displayData.slice(
+      rowCount || 0,
+      -trailingRowCount! || undefined,
     );
   }
 

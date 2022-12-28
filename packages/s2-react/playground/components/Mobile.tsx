@@ -12,14 +12,14 @@ export const MobileSheetComponent = () => {
   const mobileOptions: SheetComponentOptions = {
     width: 400,
     style: {
-      rowCfg: {
+      rowCell: {
         width: 60,
       },
-      colCfg: {
+      colCell: {
         width: 140,
         height: 30,
       },
-      cellCfg: {
+      dataCell: {
         width: 60,
       },
     },

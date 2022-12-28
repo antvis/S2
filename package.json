@@ -39,7 +39,7 @@
     "build:umd": "lerna run build:umd --include-dependencies --stream",
     "bundle:size": "lerna run bundle:size --stream",
     "release": "lerna exec --ignore @antv/s2-shared --concurrency 1 -- npx --no-install semantic-release",
-    "release:bump-latest":"node ./scripts/latest-bump-version.js",
+    "release:bump-latest": "node ./scripts/latest-bump-version.js",
     "release:preview": "yarn release --dry-run --no-ci",
     "prepublish:manual": "yarn build",
     "publish:manual": "lerna publish",
@@ -177,5 +177,6 @@
     "vite-plugin-imp": "^2.3.1",
     "vue-jest": "^5.0.0-alpha.10"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "git@github.com:antvis/S2.git"
 }

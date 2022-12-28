@@ -7,7 +7,6 @@ import type {
   Node,
   SpreadSheet,
   ThemeCfg,
-  ViewMeta,
   LayoutResult,
   SortParams,
   DataCell,
@@ -115,7 +114,6 @@ export interface BaseSheetComponentProps<
   onDataCellMouseDown?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onDataCellMouseMove?: (data: TargetCellInfo) => void;
-  onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
   onDataCellSelectMove?: (metas: ViewMetaData[]) => void;
 

@@ -25,7 +25,14 @@ describe('Options Tests', () => {
       tooltip: {
         showTooltip: true,
         autoAdjustBoundary: 'body',
-        operation: { hiddenColumns: true, trend: false, sort: true, menus: [] },
+        operation: { hiddenColumns: true, sort: true, menus: [] },
+      },
+      frozen: {
+        rowHeader: true,
+        rowCount: 0,
+        colCount: 0,
+        trailingRowCount: 0,
+        trailingColCount: 0,
       },
       interaction: {
         linkFields: [],
@@ -63,11 +70,6 @@ describe('Options Tests', () => {
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
-      frozenRowHeader: true,
-      frozenRowCount: 0,
-      frozenColCount: 0,
-      frozenTrailingRowCount: 0,
-      frozenTrailingColCount: 0,
       hdAdapter: true,
       cornerText: '',
       cornerExtraFieldText: '',
@@ -98,7 +100,6 @@ describe('Options Tests', () => {
       autoAdjustBoundary: 'body',
       operation: {
         hiddenColumns: true,
-        trend: false,
         sort: false,
         menus: [
           {
@@ -118,7 +119,7 @@ describe('Options Tests', () => {
     ]);
     const interactionOptions = pick(
       options.interaction,
-      Object.keys(DEFAULT_MOBILE_OPTIONS.interaction),
+      Object.keys(DEFAULT_MOBILE_OPTIONS.interaction!),
     );
 
     expect(interactionOptions).toEqual({
@@ -132,7 +133,9 @@ describe('Options Tests', () => {
       multiSelection: false,
       rangeSelection: false,
     });
-    expect(options.style.layoutWidthType).toEqual(LayoutWidthTypes.ColAdaptive);
+    expect(options.style?.layoutWidthType).toEqual(
+      LayoutWidthTypes.ColAdaptive,
+    );
     expect(firstLevelOptions).toEqual({
       height: 380,
       device: DeviceType.MOBILE,

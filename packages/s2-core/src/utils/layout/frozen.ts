@@ -1,57 +1,59 @@
-import type { S2TableSheetOptions } from '../../common/interface';
+import type { S2TableSheetFrozenOptions } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 
 export const getValidFrozenOptions = (
-  s2Options: S2TableSheetOptions,
+  defaultFrozenOptions: S2TableSheetFrozenOptions,
   colLength: number,
   dataLength = 0,
 ) => {
   // 如果没有传行列冻结选项，提前返回
-  if (!Object.values(s2Options).find((item) => item > 0)) {
-    return s2Options;
+  if (!Object.values(defaultFrozenOptions).find((item) => item > 0)) {
+    return defaultFrozenOptions;
   }
 
-  const newOptions: S2TableSheetOptions = {
-    ...s2Options,
+  const frozenOptions: S2TableSheetFrozenOptions = {
+    ...defaultFrozenOptions,
   };
 
-  if (newOptions.frozenColCount! >= colLength) {
-    newOptions.frozenColCount = colLength;
+  if (frozenOptions.colCount! >= colLength) {
+    frozenOptions.colCount = colLength;
   }
 
-  const remainFrozenColCount = colLength - newOptions.frozenColCount!;
+  const remainFrozenColCount = colLength - frozenOptions.colCount!;
 
-  if (newOptions.frozenTrailingColCount! > remainFrozenColCount) {
-    newOptions.frozenTrailingColCount = remainFrozenColCount;
+  if (frozenOptions.trailingColCount! > remainFrozenColCount) {
+    frozenOptions.trailingColCount = remainFrozenColCount;
   }
 
-  if (newOptions.frozenRowCount! >= dataLength) {
-    newOptions.frozenRowCount = dataLength;
+  if (frozenOptions.rowCount! >= dataLength) {
+    frozenOptions.rowCount = dataLength;
   }
 
-  const remainFrozenRowCount = dataLength - newOptions.frozenRowCount!;
-  if (newOptions.frozenTrailingRowCount! > remainFrozenRowCount) {
-    newOptions.frozenTrailingRowCount = remainFrozenRowCount;
+  const remainFrozenRowCount = dataLength - frozenOptions.rowCount!;
+  if (frozenOptions.trailingRowCount! > remainFrozenRowCount) {
+    frozenOptions.trailingRowCount = remainFrozenRowCount;
   }
 
-  return newOptions;
+  return frozenOptions;
 };
 
 export const getFrozenColWidth = (
   colLeafNodes: Node[],
-  options: S2TableSheetOptions,
+  options: S2TableSheetFrozenOptions,
 ) => {
   const result = {
     frozenColWidth: 0,
     frozenTrailingColWidth: 0,
   };
 
-  if (!options.frozenColCount && !options.frozenTrailingColCount) {
+  if (!options.colCount && !options.trailingColCount) {
     return result;
   }
 
-  const { frozenColCount = 0, frozenTrailingColCount = 0 } =
-    getValidFrozenOptions(options, colLeafNodes.length);
+  const {
+    colCount: frozenColCount = 0,
+    trailingColCount: frozenTrailingColCount = 0,
+  } = getValidFrozenOptions(options, colLeafNodes.length);
 
   for (let i = 0; i < frozenColCount; i++) {
     result.frozenColWidth += colLeafNodes[i].width;

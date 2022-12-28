@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2DataConfig } from '@antv/s2';
 
 fetch('https://assets.antv.antgroup.com/s2/basic.json')
   .then((res) => res.json())
   .then((data) => {
-    const dataCfg = {
+    const dataCfg: S2DataConfig = {
       meta: [
         {
           field: 'price',
@@ -38,7 +39,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
       data,
     };
 
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 600,
       height: 480,
       tooltip: {

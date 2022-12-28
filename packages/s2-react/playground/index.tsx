@@ -57,7 +57,7 @@ import {
   s2ConditionsOptions,
   sliderOptions,
   tableSheetDataCfg,
-  tableSheetFrozenOptions,
+  TableSheetFrozenOptions,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
 } from './config';
@@ -605,11 +605,13 @@ function MainLayout() {
                     checkedChildren="收起子节点"
                     unCheckedChildren="展开子节点"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.style?.hierarchyCollapse}
+                    checked={mergedOptions.style?.rowCell?.hierarchyCollapse}
                     onChange={(checked) => {
                       updateOptions({
                         style: {
-                          hierarchyCollapse: checked,
+                          rowCell: {
+                            hierarchyCollapse: checked,
+                          },
                         },
                       });
                     }}
@@ -631,14 +633,12 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏数值"
                   unCheckedChildren="显示数值"
-                  defaultChecked={
-                    mergedOptions.style?.colCfg?.hideMeasureColumn
-                  }
+                  defaultChecked={mergedOptions.style?.colCell?.hideValue}
                   onChange={(checked) => {
                     updateOptions({
                       style: {
-                        colCfg: {
-                          hideMeasureColumn: checked,
+                        colCell: {
+                          hideValue: checked,
                         },
                       },
                     });
@@ -691,10 +691,12 @@ function MainLayout() {
                   <Switch
                     checkedChildren="冻结行头开"
                     unCheckedChildren="冻结行头关"
-                    defaultChecked={mergedOptions.frozenRowHeader}
+                    defaultChecked={mergedOptions.frozen?.rowHeader}
                     onChange={(checked) => {
                       updateOptions({
-                        frozenRowHeader: checked,
+                        frozen: {
+                          rowHeader: checked,
+                        },
                       });
                     }}
                     disabled={sheetType === 'table'}
@@ -704,16 +706,20 @@ function MainLayout() {
                   <Switch
                     checkedChildren="冻结列头开"
                     unCheckedChildren="冻结列头关"
-                    defaultChecked={!!mergedOptions.frozenTrailingColCount}
+                    defaultChecked={!!mergedOptions.frozen?.trailingColCount}
                     onChange={(checked) => {
                       if (checked) {
-                        updateOptions(tableSheetFrozenOptions);
+                        updateOptions({
+                          frozen: TableSheetFrozenOptions,
+                        });
                       } else {
                         updateOptions({
-                          frozenRowCount: 0,
-                          frozenColCount: 0,
-                          frozenTrailingColCount: 0,
-                          frozenTrailingRowCount: 0,
+                          frozen: {
+                            rowCount: 0,
+                            colCount: 0,
+                            trailingColCount: 0,
+                            trailingRowCount: 0,
+                          },
                         });
                       }
                     }}
@@ -804,12 +810,12 @@ function MainLayout() {
                 <Switch
                   checkedChildren="隐藏列头"
                   unCheckedChildren="显示列头"
-                  checked={mergedOptions.style?.colCfg?.height === 0}
+                  checked={mergedOptions.style?.colCell?.height === 0}
                   onChange={(checked) => {
                     updateOptions({
                       style: {
-                        colCfg: {
-                          height: checked ? 0 : DEFAULT_STYLE.colCfg?.height,
+                        colCell: {
+                          height: checked ? 0 : DEFAULT_STYLE.colCell?.height,
                         },
                       },
                     });
@@ -904,12 +910,14 @@ function MainLayout() {
                 <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
                   <Select
                     style={{ width: 180 }}
-                    defaultValue={mergedOptions?.style?.rowExpandDepth}
+                    defaultValue={mergedOptions?.style?.rowCell?.expandDepth}
                     placeholder="默认行头展开层级"
                     onChange={(level) => {
                       updateOptions({
                         style: {
-                          rowExpandDepth: level,
+                          rowCell: {
+                            expandDepth: level,
+                          },
                         },
                       });
                     }}
@@ -1000,7 +1008,6 @@ function MainLayout() {
                   open: true,
                 },
               }}
-              onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
               onAfterRender={logHandler('onAfterRender')}
               onRangeSort={logHandler('onRangeSort')}
               onMounted={onSheetMounted}

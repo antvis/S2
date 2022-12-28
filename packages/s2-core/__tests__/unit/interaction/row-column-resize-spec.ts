@@ -302,7 +302,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style: {
-        colCfg: {
+        colCell: {
           width: 40,
           widthByField: {
             [resizeInfo.meta.field!]: 40,
@@ -314,7 +314,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(colWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style!.colCfg).toEqual({
+    expect(s2.options.style!.colCell).toEqual({
       width: 40,
       height: 30,
       heightByField: null,
@@ -419,7 +419,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const resizeDetail: ResizeParams = {
       info: resizeInfo,
       style: {
-        rowCfg: {
+        rowCell: {
           height: 2,
           heightByField: {
             [resizeInfo.meta.field!]: 2,
@@ -431,14 +431,15 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(rowWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
     // update style options
-    expect(s2.options.style!.rowCfg).toEqual({
+    expect(s2.options.style!.rowCell).toEqual({
       height: 2,
       heightByField: {
         [resizeInfo.meta.field!]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
-    expect(s2.options.style!.cellCfg).toEqual({
+    expect(s2.options.style!.dataCell).toEqual({
       width: 96,
       height: 30,
     });
@@ -462,7 +463,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.colCfg!.widthByField).toEqual({
+    expect(s2.options.style!.colCell!.widthByField).toEqual({
       [resizeInfo.meta.field!]: resizeInfo.width,
     });
   });
@@ -479,19 +480,17 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Tree,
     );
 
-    const newResizeInfo = {
+    const newResizeInfo: ResizeParams = {
       info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
       style: {
-        rowCfg: {
-          treeRowsWidth: 5,
+        rowCell: {
+          treeWidth: 5,
         },
-        treeRowsWidth: 5,
       },
     };
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style!.rowCfg!.treeRowsWidth).toEqual(resizeInfo.width);
-    expect(s2.options.style!.treeRowsWidth).toEqual(resizeInfo.width);
+    expect(s2.options.style!.rowCell!.treeWidth).toEqual(resizeInfo.width);
   });
 
   test('should get horizontal filed resize style', () => {
@@ -509,7 +508,7 @@ describe('Interaction Row Column Resize Tests', () => {
     const newResizeInfo: ResizeParams = {
       info: { ...resizeInfo, resizedWidth: 5, resizedHeight: 0 },
       style: {
-        rowCfg: {
+        rowCell: {
           widthByField: {
             [resizeInfo.meta.field!]: 5,
           },
@@ -519,7 +518,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(rowWidthResize).toHaveBeenCalledWith(newResizeInfo);
-    expect(s2.options.style!.rowCfg!.widthByField).toEqual({
+    expect(s2.options.style!.rowCell!.widthByField).toEqual({
       [resizeInfo.meta.field!]: resizeInfo.width,
     });
   });
@@ -572,19 +571,20 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.rowCfg).toEqual({
+    expect(s2.options.style!.rowCell).toEqual({
       height: 2,
       heightByField: {
         [resizeInfo.meta.field!]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
-    expect(s2.options.style!.colCfg).toEqual({
+    expect(s2.options.style!.colCell).toEqual({
       height: 30,
       heightByField: null,
       widthByField: null,
     });
-    expect(s2.options.style!.cellCfg).toEqual({
+    expect(s2.options.style!.dataCell).toEqual({
       width: 96,
       height: 30,
     });
@@ -596,7 +596,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Field,
     );
 
-    expect(s2.options.style!.colCfg!.heightByField).toEqual({
+    expect(s2.options.style!.colCell!.heightByField).toEqual({
       [resizeInfo.meta.field!]: resizeInfo.height,
     });
   });
@@ -618,7 +618,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     // 获取同 level 的 style
-    expect(s2.options.style!.colCfg!.heightByField).toEqual({
+    expect(s2.options.style!.colCell!.heightByField).toEqual({
       'test-a': resizeInfo.height,
       'test-b': resizeInfo.height,
     });
@@ -662,7 +662,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Field,
     );
 
-    expect(s2.options.style!.rowCfg!.widthByField).toEqual({
+    expect(s2.options.style!.rowCell!.widthByField).toEqual({
       [resizeInfo.meta.field!]: resizeInfo.width,
     });
   });
@@ -681,7 +681,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.colCfg).toEqual({
+    expect(s2.options.style!.colCell).toEqual({
       height: 30,
       heightByField: null,
       width: null,
@@ -705,12 +705,13 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.rowCfg).toEqual({
+    expect(s2.options.style!.rowCell).toEqual({
       widthByField: null,
       height: null,
       heightByField: {
         [resizeInfo.meta.id]: resizeInfo.height,
       },
+      showTreeLeafNodeAlignDot: false,
     });
   });
 
@@ -794,7 +795,7 @@ describe('Interaction Row Column Resize Tests', () => {
     );
 
     // 所有子节点都应该被设置高度
-    expect(s2.options.style!.colCfg!.heightByField).toEqual({
+    expect(s2.options.style!.colCell!.heightByField).toEqual({
       'test-a': resizeInfo.height,
       'test-b': resizeInfo.height,
       'test-c': resizeInfo.height,
@@ -809,12 +810,13 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.rowCfg).toEqual({
+    expect(s2.options.style!.rowCell).toEqual({
       height: 2,
       heightByField: {
         [resizeInfo.meta.rowId]: 2,
       },
       widthByField: null,
+      showTreeLeafNodeAlignDot: false,
     });
   });
 
@@ -831,7 +833,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.colCfg).toEqual({
+    expect(s2.options.style!.colCell).toEqual({
       height: 30,
       heightByField: null,
       width: null,
@@ -854,7 +856,7 @@ describe('Interaction Row Column Resize Tests', () => {
       ResizeAreaEffect.Cell,
     );
 
-    expect(s2.options.style!.colCfg).toEqual({
+    expect(s2.options.style!.colCell).toEqual({
       height: 30,
       heightByField: null,
       width: 5,

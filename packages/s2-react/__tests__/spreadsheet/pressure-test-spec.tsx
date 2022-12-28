@@ -61,7 +61,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
     height: 600,
     hierarchyType: 'grid',
     showSeriesNumber: false,
-    frozenRowHeader: false,
+    frozen: {
+      rowHeader: false,
+    },
     totals: {
       row: {
         showGrandTotals: true,
@@ -79,19 +81,15 @@ const getOptions = (): SheetComponentsProps['options'] => {
       },
     },
     style: {
-      treeRowsWidth: 100,
-      collapsedRows: {},
-      colCfg: {
+      colCell: {
         widthByField: {},
         heightByField: {},
       },
-      cellCfg: {
+      dataCell: {
         height: 32,
       },
-      rowCfg: {
-        // widthByField: {
-        //   province: 200
-        // }
+      rowCell: {
+        treeWidth: 100,
       },
       device: DeviceType.PC,
     },

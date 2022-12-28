@@ -10,7 +10,6 @@ export const EN_US = {
   共计: 'Total',
   条: '',
   隐藏: 'Hide',
-  趋势: 'Trend',
   组内升序: 'Group ASC',
   组内降序: 'Group DESC',
   升序: 'ASC',

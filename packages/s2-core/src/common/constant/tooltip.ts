@@ -25,12 +25,6 @@ export const getTooltipOperatorHiddenColumnsMenu = (): TooltipOperatorMenu => ({
   icon: 'EyeOutlined',
 });
 
-export const getTooltipOperatorTrendMenu = (): TooltipOperatorMenu => ({
-  key: 'trend',
-  text: i18n('趋势'),
-  icon: 'Trend',
-});
-
 export const getTooltipOperatorSortMenus = (): TooltipOperatorMenu[] => [
   {
     key: 'asc',

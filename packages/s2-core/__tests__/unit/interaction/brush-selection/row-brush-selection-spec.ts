@@ -80,10 +80,10 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
           },
         },
         style: {
-          colCfg: {
+          colCell: {
             height: 30,
           },
-          rowCfg: {
+          rowCell: {
             width: 90,
           },
         },
@@ -238,7 +238,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   test('should get brush selection range cells when row header is scroll', () => {
     mockSpreadSheetInstance.setOptions({
       style: {
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
       },

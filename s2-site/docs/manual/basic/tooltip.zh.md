@@ -37,18 +37,18 @@ const s2Options = {
 
 还可以对不同类型的单元格单独配置：
 
-- `corner`: 角头
-- `row`: 行头
-- `col`: 列头
-- `data`: 数值
+- `cornerCell`: 角头单元格
+- `rowCell`: 行头单元格
+- `colCell`: 列头单元格
+- `dataCell`: 数值单元格
 
 ```ts
 const s2Options = {
   tooltip: {
-    corner: {},
-    row: {},
-    col: {},
-    data: {},
+    cornerCell: {},
+    rowCell: {},
+    colCell: {},
+    dataCell: {},
   }
 };
 ```
@@ -61,7 +61,7 @@ const s2Options = {
 const s2Options = {
   tooltip: {
     showTooltip: true,
-    row: {
+    rowCell: {
       // 单独设置行头不显示
       showTooltip: false,
     }
@@ -77,7 +77,6 @@ const s2Options = {
 const s2Options = {
   tooltip: {
     operation: {
-      trend: true, // 显示趋势图按钮
       hiddenColumns: true, //开启隐藏列（叶子节点有效）
     },
   }
@@ -170,36 +169,36 @@ const s2Options = {
 
 ##### 1. 配置级
 
-对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
+对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `rowCell.content`, `colCell.content`, `dataCell.content`, `cornerCell.content`
 
 ```tsx
 const TooltipContent = (
   <div>content</div>
 );
 
-const RowTooltipContent = (
-  <div>rowTooltip</div>
+const RowCellTooltipContent = (
+  <div>rowCellTooltip</div>
 );
 
-const ColTooltipContent = (
-  <div>colTooltip</div>
+const ColCellTooltipContent = (
+  <div>colCellTooltip</div>
 );
 
-const DataTooltipContent = (
+const DataCellTooltipContent = (
   <div>dataTooltip</div>
 );
 
 const s2Options = {
   tooltip: {
     content: TooltipContent,
-    row: {
-      content: RowTooltipContent,
+    rowCell: {
+      content: RowCellTooltipContent,
     },
-    col: {
-      content: ColTooltipContent
+    colCell: {
+      content: ColCellTooltipContent
     }
-    data: {
-      content: DataTooltipContent
+    dataCell: {
+      content: DataCellTooltipContent
     }
   },
 };

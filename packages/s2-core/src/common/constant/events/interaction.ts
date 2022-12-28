@@ -5,5 +5,4 @@ export enum InteractionEvent {
   ROW_COLUMN_CLICK_EVENT = 'interaction:row-column-click',
   ROW_TEXT_CLICK_EVENT = 'interaction:row-text-click',
   HOVER_EVENT = 'interaction:hover',
-  TREND_ICON_CLICK = 'interaction:trend-icon-click',
 }

@@ -251,10 +251,10 @@ fetch('https://assets.antv.antgroup.com/s2/time-spend.json')
       },
       style: {
         layoutWidthType: 'compact',
-        colCfg: {
-          hideMeasureColumn: true,
+        colCell: {
+          hideValue: true,
         },
-        cellCfg: {
+        dataCell: {
           width: 40,
           height: 40,
         },

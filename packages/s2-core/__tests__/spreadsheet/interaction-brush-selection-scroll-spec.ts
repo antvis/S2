@@ -48,7 +48,7 @@ const options: S2Options = {
   placeholder: '',
   style: {
     layoutWidthType: 'compact',
-    cellCfg: {
+    dataCell: {
       height: 32,
     },
     device: DeviceType.PC,
@@ -119,10 +119,12 @@ describe('Brush selection scroll spec', () => {
     expect(brushRange.end.rowIndex).toBe(lastCell.rowIndex);
 
     s2.setOptions({
-      frozenColCount: 2,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
+      frozen: {
+        colCount: 2,
+        rowCount: 2,
+        trailingColCount: 2,
+        trailingRowCount: 2,
+      },
     });
     s2.render();
     s2.interaction.reset();

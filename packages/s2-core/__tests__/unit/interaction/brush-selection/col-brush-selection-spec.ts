@@ -81,11 +81,11 @@ describe('Interaction Col Cell Brush Selection Tests', () => {
           },
         },
         style: {
-          colCfg: {
+          colCell: {
             width: 90,
             height: 30,
           },
-          rowCfg: {
+          rowCell: {
             width: 90,
           },
         },

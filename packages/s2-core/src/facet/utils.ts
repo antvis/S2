@@ -2,11 +2,12 @@ import type { Group } from '@antv/g';
 import { findIndex, isNil } from 'lodash';
 import type { SimpleBBox } from '../engine';
 import { FrozenCellType } from '../common/constant/frozen';
-import type { FrozenCellIndex, FrozenOpts } from '../common/constant/frozen';
+import type { FrozenCellIndex } from '../common/constant/frozen';
 import type {
   CustomHeaderFields,
   CustomTreeNode,
   Pagination,
+  S2TableSheetFrozenOptions,
   ScrollSpeedRatio,
 } from '../common/interface';
 import type { Indexes } from '../utils/indexes';
@@ -164,7 +165,7 @@ export const getFrozenDataCellType = (
     colIndex: number;
     rowIndex: number;
   },
-  frozenOpts: FrozenOpts,
+  frozenOptions: S2TableSheetFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -172,25 +173,26 @@ export const getFrozenDataCellType = (
   },
 ) => {
   const {
-    frozenColCount,
-    frozenRowCount,
-    frozenTrailingColCount,
-    frozenTrailingRowCount,
-  } = frozenOpts;
+    colCount = 0,
+    rowCount = 0,
+    trailingColCount = 0,
+    trailingRowCount = 0,
+  } = frozenOptions;
   const { colIndex, rowIndex } = meta;
-  if (isFrozenRow(rowIndex, cellRange.start, frozenRowCount)) {
+
+  if (isFrozenRow(rowIndex, cellRange.start, rowCount)) {
     return FrozenCellType.ROW;
   }
 
-  if (isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)) {
+  if (isFrozenTrailingRow(rowIndex, cellRange.end, trailingRowCount)) {
     return FrozenCellType.TRAILING_ROW;
   }
 
-  if (isFrozenCol(colIndex, frozenColCount)) {
+  if (isFrozenCol(colIndex, colCount)) {
     return FrozenCellType.COL;
   }
 
-  if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
+  if (isFrozenTrailingCol(colIndex, trailingColCount, colLength)) {
     return FrozenCellType.TRAILING_COL;
   }
   return FrozenCellType.SCROLL;
@@ -200,7 +202,7 @@ export const getFrozenDataCellType = (
  * @description calculate all cells in frozen group's intersection region
  */
 export const calculateFrozenCornerCells = (
-  opts: FrozenOpts,
+  frozenOptions: S2TableSheetFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -208,11 +210,11 @@ export const calculateFrozenCornerCells = (
   },
 ) => {
   const {
-    frozenColCount,
-    frozenRowCount,
-    frozenTrailingColCount,
-    frozenTrailingRowCount,
-  } = opts;
+    colCount: frozenColCount = 0,
+    rowCount: frozenRowCount = 0,
+    trailingColCount: frozenTrailingColCount = 0,
+    trailingRowCount: frozenTrailingRowCount = 0,
+  } = frozenOptions;
 
   const result: {
     [key: string]: FrozenCellIndex[];
@@ -268,7 +270,7 @@ export const calculateFrozenCornerCells = (
 export const isFrozenCell = (
   colIndex: number,
   rowIndex: number,
-  frozenOpts: FrozenOpts,
+  frozenOptions: S2TableSheetFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -276,11 +278,12 @@ export const isFrozenCell = (
   },
 ) => {
   const {
-    frozenColCount,
-    frozenRowCount,
-    frozenTrailingColCount,
-    frozenTrailingRowCount,
-  } = frozenOpts;
+    colCount: frozenColCount = 0,
+    rowCount: frozenRowCount = 0,
+    trailingColCount: frozenTrailingColCount = 0,
+    trailingRowCount: frozenTrailingRowCount = 0,
+  } = frozenOptions;
+
   return (
     isFrozenCol(colIndex, frozenColCount) ||
     isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
@@ -294,7 +297,7 @@ export const isFrozenCell = (
  */
 export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
-  frozenOpts: FrozenOpts,
+  frozenOptions: S2TableSheetFrozenOptions,
   colLength: number,
   cellRange: {
     start: number;
@@ -302,11 +305,11 @@ export const splitInViewIndexesWithFrozen = (
   },
 ) => {
   const {
-    frozenColCount,
-    frozenRowCount,
-    frozenTrailingColCount,
-    frozenTrailingRowCount,
-  } = frozenOpts;
+    colCount: frozenColCount = 0,
+    rowCount: frozenRowCount = 0,
+    trailingColCount: frozenTrailingColCount = 0,
+    trailingRowCount: frozenTrailingRowCount = 0,
+  } = frozenOptions;
 
   const centerIndexes: Indexes = [...indexes];
 

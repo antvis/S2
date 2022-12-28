@@ -9,13 +9,8 @@ import type {
   HiddenColumnsInfo,
   LayoutResult,
   S2CellType,
-  ViewMeta,
 } from '../../common/interface';
-import type {
-  FilterParam,
-  SortParams,
-  S2Style,
-} from '../../common/interface/basic';
+import type { FilterParam, SortParams, S2Style } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
@@ -88,7 +83,6 @@ export interface EmitterType {
   [S2Event.DATA_CELL_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_CONTEXT_MENU]: CanvasEventHandler;
-  [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
   [S2Event.DATA_CELL_BRUSH_SELECTION]: (cells: (DataCell | CellMeta)[]) => void;
   [S2Event.DATA_CELL_SELECT_MOVE]: (metas: CellMeta[]) => void;
 

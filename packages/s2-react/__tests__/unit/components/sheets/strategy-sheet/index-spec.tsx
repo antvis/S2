@@ -62,7 +62,7 @@ describe('<StrategySheet/> Tests', () => {
 
     const s2Options: SheetComponentOptions = {
       tooltip: {
-        data: {
+        dataCell: {
           content,
         },
       },
@@ -70,10 +70,10 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options);
 
-    expect(s2!.options.tooltip!.data!.content).toEqual(content);
+    expect(s2!.options.tooltip!.dataCell!.content).toEqual(content);
   });
 
-  test('should hideMeasureColumn if only one value field', () => {
+  test('should hide value if only one value field', () => {
     const s2Options: SheetComponentOptions = {
       hierarchyType: 'grid',
     };
@@ -87,7 +87,7 @@ describe('<StrategySheet/> Tests', () => {
 
     renderStrategySheet(s2Options, s2DataConfig);
 
-    expect(s2.options!.style!.colCfg!.hideMeasureColumn).toBeTruthy();
+    expect(s2.options!.style!.colCell!.hideValue).toBeTruthy();
   });
 
   test('should enable hidden columns operation', () => {

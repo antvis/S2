@@ -24,16 +24,12 @@ const s2Options = {
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 配置 |
 | interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
-| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 （透视表有效） |
+| frozen | [Frozen](#frozen) |  |    | 行列头冻结配置 |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
 | style | [Style](#style) |  |    | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等 |
-| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 （明细表有效） |
-| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
-| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
-| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题。[查看更多](/manual/advanced/hd-adapter) |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
 | placeholder |  `string \| (meta: Record<string, any>) => string` |    |  | 空单元格的填充内容 |
@@ -53,6 +49,8 @@ const s2Options = {
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
 | supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 | devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
+
+<embed src="@/docs/common/frozen.zh.md"></embed>
 
 <embed src="@/docs/common/interaction.zh.md"></embed>
 

@@ -40,7 +40,7 @@ fetch(
         ],
       },
       style: {
-        cellCfg: {
+        dataCell: {
           valuesCfg: {
             // 非必填: 指定原始字段, 用于 导出和 tooltip 展示
             originalValueField: 'originalValues',

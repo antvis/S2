@@ -23,10 +23,10 @@ const s2Options: S2Options = {
   hierarchyType: 'grid',
   // display scroll bar
   style: {
-    colCfg: {
+    colCell: {
       height: 60,
     },
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 50,
     },
@@ -150,7 +150,7 @@ describe('Scroll Tests', () => {
     s2.on(S2Event.GLOBAL_SCROLL, onScroll);
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
-    s2.setOptions({ frozenRowHeader: true });
+    s2.setOptions({ frozen: { rowHeader: true } });
     s2.render(false);
 
     // 模拟在行头滚动
@@ -183,7 +183,7 @@ describe('Scroll Tests', () => {
         scrollX: 20,
         scrollY: 0,
       },
-      frozenRowHeader: true,
+      rowHeader: true,
     },
     {
       type: 'vertical',
@@ -191,7 +191,7 @@ describe('Scroll Tests', () => {
         scrollX: 0,
         scrollY: 20,
       },
-      frozenRowHeader: true,
+      rowHeader: true,
     },
     {
       type: 'horizontal',
@@ -199,7 +199,7 @@ describe('Scroll Tests', () => {
         scrollX: 20,
         scrollY: 0,
       },
-      frozenRowHeader: false,
+      rowHeader: false,
     },
     {
       type: 'vertical',
@@ -207,11 +207,11 @@ describe('Scroll Tests', () => {
         scrollX: 0,
         scrollY: 20,
       },
-      frozenRowHeader: false,
+      rowHeader: false,
     },
   ])(
     'should scroll if scroll over the panel viewport by %o',
-    async ({ type, offset, frozenRowHeader }) => {
+    async ({ type, offset, rowHeader }) => {
       const onScroll = jest.fn();
       const onRowScroll = jest.fn();
       const onDeprecatedLayoutCellScroll = jest.fn();
@@ -220,8 +220,8 @@ describe('Scroll Tests', () => {
       s2.on(S2Event.GLOBAL_SCROLL, onScroll);
       s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
-      // toggle frozenRowHeader mode
-      s2.setOptions({ frozenRowHeader });
+      // toggle rowHeader mode
+      s2.setOptions({ frozen: { rowHeader } });
       s2.render(false);
 
       const showHorizontalScrollBarSpy = jest
@@ -258,7 +258,7 @@ describe('Scroll Tests', () => {
       expect(onDeprecatedLayoutCellScroll).toHaveBeenCalled();
       expect(onRowScroll).not.toHaveBeenCalled();
 
-      if (frozenRowHeader) {
+      if (rowHeader) {
         // show scrollbar
         expect(
           type === 'vertical'
@@ -494,10 +494,12 @@ describe('Scroll Tests', () => {
 
   test('should trigger scroll if only contain row header scrollbar', async () => {
     s2.setOptions({
-      frozenRowHeader: true,
+      frozen: {
+        rowHeader: true,
+      },
       style: {
         layoutWidthType: 'compact',
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
       },
@@ -643,10 +645,12 @@ describe('Scroll Tests', () => {
 
     test('should scroll horizontally when shift key is held', async () => {
       s2.setOptions({
-        frozenRowHeader: true,
+        frozen: {
+          rowHeader: true,
+        },
         style: {
           layoutWidthType: 'compact',
-          rowCfg: {
+          rowCell: {
             width: 200,
           },
         },
@@ -735,10 +739,10 @@ describe('Scroll Tests', () => {
     // rowCell 显示滚动条, dataCell 无滚动条, 然后在 dataCell 区域滚动
     s2.setOptions({
       style: {
-        rowCfg: {
+        rowCell: {
           width: 200,
         },
-        cellCfg: {
+        dataCell: {
           width: 30,
         },
       },

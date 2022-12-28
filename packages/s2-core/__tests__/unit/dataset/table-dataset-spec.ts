@@ -7,8 +7,10 @@ import { assembleDataCfg } from '../../util';
 import type { S2DataConfig, SortParam } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
+
 jest.mock('@/sheet-type');
 jest.mock('@/facet/layout/node');
+
 const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
@@ -23,7 +25,11 @@ describe('Table Mode Dataset Test', () => {
   };
   beforeEach(() => {
     MockTableSheet.mockClear();
-    dataSet = new TableDataSet(new MockTableSheet());
+    const s2 = new MockTableSheet();
+    s2.options = {
+      frozen: {},
+    };
+    dataSet = new TableDataSet(s2);
 
     dataSet.setDataCfg(dataCfg);
   });

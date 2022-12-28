@@ -158,7 +158,7 @@ export class CornerCell extends HeaderCell {
     if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
-    const { hierarchyCollapse } = this.spreadsheet.options.style!;
+    const { hierarchyCollapse } = this.spreadsheet.options.style?.rowCell!;
 
     const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();

@@ -15,8 +15,8 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
         dataCell: GridAnalysisDataCell,
         showDefaultHeaderActionIcon: false,
         style: {
-          colCfg: {
-            hideMeasureColumn: true,
+          colCell: {
+            hideValue: true,
           },
         },
       });

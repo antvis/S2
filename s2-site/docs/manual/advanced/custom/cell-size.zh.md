@@ -14,27 +14,27 @@ S2 可以手动拖拽动态改变单元格的宽高，同时内置了 `行列等
 ```ts
 const s2Options = {
   style: {
-    // 树状模式下行头宽度
-    treeRowsWidth: 100,
     // 行头单元格配置
-    rowCfg: {},
+    rowCell: {},
     // 列头单元格配置
-    colCfg: {},
+    colCell: {},
     // 数值单元格配置
-    cellCfg: {},
+    dataCell: {},
   },
 }
 ```
 
 ## 调整树状模式下行头宽度
 
-> 优先级大于 `style.rowCfg.width`
+> 优先级大于 `style.rowCell.width`
 
 ```ts
 const s2Options = {
   hierarchyType: 'tree',
   style: {
-    treeRowsWidth: 200,
+    rowCell: {
+      treeWidth: 200,
+    }
   },
 }
 ```
@@ -45,12 +45,12 @@ const s2Options = {
 
 ## 调整数值单元格宽高
 
-> 优先级小于 `rowCfg.height` 和 `colCfg.width`
+> 优先级小于 `rowCell.height` 和 `colCell.width`
 
 ```ts
 const s2Options = {
   style: {
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 90
     },
@@ -64,14 +64,14 @@ const s2Options = {
 
 ## 调整行头单元格宽高
 
-> 优先级小于 `style.treeRowsWidth`
+> 优先级小于 `style.treeWidth`
 
 行头单元格高度调整**作用于叶子节点** （非叶子节点的高度是所有子节点高度度总和）, 且高度始终和 **数值单元格** 高度一致。
 
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       width: 50,
       height: 50
     },
@@ -84,7 +84,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       width: (rowNode) => {
         // 例：叶子节点 300px, 非叶子节点 200px
         return rowNode.isLeaf ? 300 : 200;
@@ -104,7 +104,7 @@ const s2Options = {
 
 <br/>
 
-如果想给特定某一行/列设置不同的宽高，可以通过 `rowCfg` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
+如果想给特定某一行/列设置不同的宽高，可以通过 `rowCell` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
 
 - **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
@@ -112,7 +112,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    rowCfg: {
+    rowCell: {
       widthByField: {
         city: 100
       },
@@ -138,7 +138,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       width: 200,
       height: 60,
     },
@@ -157,7 +157,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       width: (colNode) => {
         // 例：前两列宽度 100px, 其他 50px
         return colNode.colIndex <= 2 ? 100 : 50
@@ -171,7 +171,7 @@ const s2Options = {
 }
 ```
 
-如果想给特定某一列设置不同的宽高，可以通过 `colCfg` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
+如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
 - **fieldId** （例：`root[&]家具[&]沙发[&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
@@ -181,7 +181,7 @@ import { EXTRA_FIELD } from '@antv/s2'
 
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
        widthByField: {
         // 默认 [数值挂列头], EXTRA_FIELD 为内部虚拟数值列
         [EXTRA_FIELD]: 60,
@@ -208,7 +208,7 @@ const s2Options = {
 ```ts
 const s2Options = {
   style: {
-    colCfg: {
+    colCell: {
       height: 0,
     },
   },

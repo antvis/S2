@@ -230,7 +230,7 @@ export class ColCell extends HeaderCell {
 
   protected drawHorizontalResizeArea() {
     // 隐藏列头时不绘制水平热区 https://github.com/antvis/S2/issues/1603
-    const isHiddenCol = this.spreadsheet.options.style?.colCfg?.height === 0;
+    const isHiddenCol = this.spreadsheet.options.style?.colCell?.height === 0;
 
     if (
       isHiddenCol ||

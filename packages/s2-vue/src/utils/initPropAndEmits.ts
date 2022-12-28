@@ -105,7 +105,6 @@ export const initBaseSheetEmits = () => {
     'dataCellMouseDown',
     'dataCellMouseUp',
     'dataCellMouseMove',
-    'dataCellTrendIconClick',
     'dataCellBrushSelection',
     'dataCellSelectMove',
 

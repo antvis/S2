@@ -144,9 +144,9 @@ describe('SpreadSheet Tests', () => {
             width: 400,
             height: 400,
             style: {
-              rowCfg: null,
-              colCfg: null,
-              cellCfg: null,
+              rowCell: null,
+              colCell: null,
+              dataCell: null,
             },
           });
 

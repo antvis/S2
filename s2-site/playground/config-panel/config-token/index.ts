@@ -5,85 +5,85 @@ export default {
       toAttributeId: 'valueLocation',
       action: 'disable',
       value: [],
-      operator: 'EMPTY'
+      operator: 'EMPTY',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'valueLocation',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'hierarchyType',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'frozenRowHeader',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'rowSubTotals',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'rowGrandTotals',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'columnSubTotals',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'sheetType',
       toAttributeId: 'columnGrandTotals',
       action: 'disable',
       value: 'table',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'widthChange',
       toAttributeId: 'adaptive',
       action: 'disable',
       value: 'compact',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'widthChange',
       toAttributeId: 'sheetWidth',
       action: 'disable',
       value: 'compact',
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'adaptive',
       toAttributeId: 'sheetWidth',
       action: 'disable',
       value: true,
-      operator: 'EQUAL'
+      operator: 'EQUAL',
     },
     {
       fromAttributeId: 'adaptive',
       toAttributeId: 'sheetHeight',
       action: 'disable',
       value: true,
-      operator: 'EQUAL'
-    }
+      operator: 'EQUAL',
+    },
   ],
   config: {
     type: 'tab',
@@ -100,13 +100,13 @@ export default {
             options: [
               {
                 label: '省份',
-                value: 'province'
+                value: 'province',
               },
               {
                 label: '城市',
-                value: 'city'
-              }
-            ]
+                value: 'city',
+              },
+            ],
           },
           {
             type: 'select',
@@ -116,13 +116,13 @@ export default {
             options: [
               {
                 label: '类别',
-                value: 'type'
+                value: 'type',
               },
               {
                 label: '子类别',
-                value: 'sub_type'
-              }
-            ]
+                value: 'sub_type',
+              },
+            ],
           },
           {
             type: 'select',
@@ -132,13 +132,13 @@ export default {
             options: [
               {
                 label: '数量',
-                value: 'number'
+                value: 'number',
               },
               {
                 label: '价格',
-                value: 'price'
-              }
-            ]
+                value: 'price',
+              },
+            ],
           },
           {
             type: 'radio',
@@ -148,13 +148,13 @@ export default {
             options: [
               {
                 label: '行头',
-                value: 'row'
+                value: 'row',
               },
               {
                 label: '列头',
-                value: 'column'
-              }
-            ]
+                value: 'column',
+              },
+            ],
           },
           {
             type: 'radio',
@@ -164,15 +164,15 @@ export default {
             options: [
               {
                 label: '透视',
-                value: 'pivot'
+                value: 'pivot',
               },
               {
                 label: '明细',
-                value: 'table'
-              }
-            ]
+                value: 'table',
+              },
+            ],
           },
-        ]
+        ],
       },
       {
         type: 'tab-pane',
@@ -198,8 +198,8 @@ export default {
                       {
                         label: '树状',
                         value: 'tree',
-                      }
-                    ]
+                      },
+                    ],
                   },
                   {
                     type: 'radio',
@@ -218,16 +218,16 @@ export default {
                       {
                         label: '多彩蓝',
                         value: 'colorful',
-                      }
-                    ]
+                      },
+                    ],
                   },
                   {
                     type: 'color-picker',
                     displayName: '主题色',
                     attributeId: 'themeColor',
-                    defaultColor: '#E0E9FD'
-                  }
-                ]
+                    defaultColor: '#E0E9FD',
+                  },
+                ],
               },
               {
                 type: 'collapse-panel',
@@ -241,13 +241,13 @@ export default {
                     options: [
                       {
                         label: '列等宽',
-                        value: 'colAdaptive'
+                        value: 'colAdaptive',
                       },
                       {
                         label: '列紧凑',
-                        value: 'compact'
-                      }
-                    ]
+                        value: 'compact',
+                      },
+                    ],
                   },
                   {
                     type: 'input-number',
@@ -255,7 +255,7 @@ export default {
                     attributeId: 'sheetWidth',
                     defaultValue: 600,
                     step: 1,
-                    min: 0
+                    min: 0,
                   },
                   {
                     type: 'input-number',
@@ -263,21 +263,21 @@ export default {
                     attributeId: 'sheetHeight',
                     defaultValue: 480,
                     step: 1,
-                    min: 0
+                    min: 0,
                   },
                   {
                     type: 'switcher',
                     displayName: '冻结行头',
                     attributeId: 'frozenRowHeader',
-                    defaultChecked: true
+                    defaultChecked: true,
                   },
                   {
                     type: 'switcher',
                     displayName: '宽高自适应',
                     attributeId: 'adaptive',
-                    defaultChecked: true
-                  }
-                ]
+                    defaultChecked: true,
+                  },
+                ],
               },
               {
                 type: 'collapse-panel',
@@ -286,14 +286,14 @@ export default {
                   {
                     type: 'switcher',
                     displayName: '显示行序号',
-                    attributeId: 'showSeriesNumber'
+                    attributeId: 'showSeriesNumber',
                   },
                   {
                     type: 'switcher',
                     displayName: '显示分页',
-                    attributeId: 'showPagination'
-                  }
-                ]
+                    attributeId: 'showPagination',
+                  },
+                ],
               },
               {
                 type: 'collapse-panel',
@@ -302,14 +302,14 @@ export default {
                   {
                     type: 'switcher',
                     displayName: '行小计',
-                    attributeId: 'rowSubTotals'
+                    attributeId: 'rowSubTotals',
                   },
                   {
                     type: 'switcher',
                     displayName: '行总计',
-                    attributeId: 'rowGrandTotals'
-                  }
-                ]
+                    attributeId: 'rowGrandTotals',
+                  },
+                ],
               },
               {
                 type: 'collapse-panel',
@@ -318,19 +318,19 @@ export default {
                   {
                     type: 'switcher',
                     displayName: '列小计',
-                    attributeId: 'columnSubTotals'
+                    attributeId: 'columnSubTotals',
                   },
                   {
                     type: 'switcher',
                     displayName: '列总计',
-                    attributeId: 'columnGrandTotals'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-}
+                    attributeId: 'columnGrandTotals',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+};

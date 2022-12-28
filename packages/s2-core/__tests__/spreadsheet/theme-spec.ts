@@ -382,11 +382,11 @@ describe('SpreadSheet Theme Tests', () => {
       },
     );
 
-    it('should not align column headers with data cells and render normal font wight leaf node text if hideMeasureColumn', () => {
+    it('should not align column headers with data cells and render normal font wight leaf node text if hideValue', () => {
       s2.setOptions({
         style: {
-          colCfg: {
-            hideMeasureColumn: true,
+          colCell: {
+            hideValue: true,
           },
         },
         totals: null,
@@ -421,8 +421,8 @@ describe('SpreadSheet Theme Tests', () => {
 
         s2.setOptions({
           style: {
-            colCfg: {
-              hideMeasureColumn: true,
+            colCell: {
+              hideValue: true,
             },
           },
         });
@@ -479,10 +479,10 @@ describe('SpreadSheet Theme Tests', () => {
       // 保证滚动条很小
       s2.setOptions({
         style: {
-          rowCfg: {
+          rowCell: {
             width: 5000,
           },
-          cellCfg: {
+          dataCell: {
             width: 5000,
             height: 5000,
           },
@@ -517,10 +517,10 @@ describe('SpreadSheet Theme Tests', () => {
     test('should render real scrollbar size', () => {
       s2.setOptions({
         style: {
-          rowCfg: {
+          rowCell: {
             width: 400,
           },
-          cellCfg: {
+          dataCell: {
             width: 200,
             height: 50,
           },

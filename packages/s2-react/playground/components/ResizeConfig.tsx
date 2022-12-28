@@ -47,11 +47,11 @@ export const ResizeConfig: React.FC<{
           },
         },
         style: {
-          rowCfg: {
+          rowCell: {
             heightByField: null,
             widthByField: null,
           },
-          colCfg: {
+          colCell: {
             heightByField: null,
             widthByField: null,
           },

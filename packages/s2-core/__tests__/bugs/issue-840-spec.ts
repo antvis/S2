@@ -14,10 +14,10 @@ const s2Options: S2Options = {
   width: 300,
   height: 200,
   style: {
-    colCfg: {
+    colCell: {
       height: 60,
     },
-    cellCfg: {
+    dataCell: {
       width: 100,
       height: 50,
     },

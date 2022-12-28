@@ -1,3 +1,4 @@
+import type { S2TableSheetFrozenOptions } from '@/common/interface/s2Options';
 import { getValidFrozenOptions } from '@/utils/layout/frozen';
 import {
   getFrozenDataCellType,
@@ -43,11 +44,11 @@ describe('Frozen util test', () => {
         start: 0,
         end: 499,
       };
-      const frozenOpts = {
-        frozenColCount: 2,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 2,
-        frozenTrailingRowCount: 2,
+      const frozenOptions: S2TableSheetFrozenOptions = {
+        colCount: 2,
+        rowCount: 2,
+        trailingColCount: 2,
+        trailingRowCount: 2,
       };
 
       const colType = getFrozenDataCellType(
@@ -55,7 +56,7 @@ describe('Frozen util test', () => {
           rowIndex: 100,
           colIndex: 1,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -67,7 +68,7 @@ describe('Frozen util test', () => {
           rowIndex: 1,
           colIndex: 5,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -79,7 +80,7 @@ describe('Frozen util test', () => {
           rowIndex: 100,
           colIndex: 9,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -91,7 +92,7 @@ describe('Frozen util test', () => {
           rowIndex: 499,
           colIndex: 5,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -103,7 +104,7 @@ describe('Frozen util test', () => {
           rowIndex: 2,
           colIndex: 2,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -115,7 +116,7 @@ describe('Frozen util test', () => {
           rowIndex: 2,
           colIndex: 7,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -127,7 +128,7 @@ describe('Frozen util test', () => {
           rowIndex: 497,
           colIndex: 7,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -139,7 +140,7 @@ describe('Frozen util test', () => {
           rowIndex: 497,
           colIndex: 2,
         },
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -150,11 +151,11 @@ describe('Frozen util test', () => {
 
   describe('calculateFrozenCornerCells', () => {
     it('should return correct frozen corner cell', () => {
-      const frozenOpts = {
-        frozenColCount: 1,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 1,
-        frozenTrailingRowCount: 1,
+      const frozenOptions: S2TableSheetFrozenOptions = {
+        colCount: 1,
+        rowCount: 2,
+        trailingColCount: 1,
+        trailingRowCount: 1,
       };
       const colLength = 4;
       const cellRange = {
@@ -163,7 +164,7 @@ describe('Frozen util test', () => {
       };
 
       expect(
-        calculateFrozenCornerCells(frozenOpts, colLength, cellRange),
+        calculateFrozenCornerCells(frozenOptions, colLength, cellRange),
       ).toStrictEqual({
         bottom: [
           {
@@ -205,16 +206,16 @@ describe('Frozen util test', () => {
         start: 0,
         end: 999,
       };
-      const frozenOpts = {
-        frozenColCount: 1,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 1,
-        frozenTrailingRowCount: 1,
+      const frozenOptions: S2TableSheetFrozenOptions = {
+        colCount: 1,
+        rowCount: 2,
+        trailingColCount: 1,
+        trailingRowCount: 1,
       };
 
       const result = splitInViewIndexesWithFrozen(
         indexes,
-        frozenOpts,
+        frozenOptions,
         colLength,
         cellRange,
       );
@@ -230,81 +231,81 @@ describe('Frozen util test', () => {
   });
 
   describe('getValidFrozenOptions', () => {
-    it('should return valid frozen options when forzenCount overflow', () => {
+    it('should return valid frozen options when frozenCount overflow', () => {
       expect(
         getValidFrozenOptions(
           {
-            frozenColCount: 10,
-            frozenRowCount: 10,
-            frozenTrailingColCount: 10,
-            frozenTrailingRowCount: 10,
+            colCount: 10,
+            rowCount: 10,
+            trailingColCount: 10,
+            trailingRowCount: 10,
           },
           5,
           5,
         ),
       ).toStrictEqual({
-        frozenColCount: 5,
-        frozenRowCount: 5,
-        frozenTrailingColCount: 0,
-        frozenTrailingRowCount: 0,
+        colCount: 5,
+        rowCount: 5,
+        trailingColCount: 0,
+        trailingRowCount: 0,
       });
 
       expect(
         getValidFrozenOptions(
           {
-            frozenColCount: 2,
-            frozenRowCount: 2,
-            frozenTrailingColCount: 10,
-            frozenTrailingRowCount: 10,
+            colCount: 2,
+            rowCount: 2,
+            trailingColCount: 10,
+            trailingRowCount: 10,
           },
           5,
           5,
         ),
       ).toStrictEqual({
-        frozenColCount: 2,
-        frozenRowCount: 2,
-        frozenTrailingColCount: 3,
-        frozenTrailingRowCount: 3,
+        colCount: 2,
+        rowCount: 2,
+        trailingColCount: 3,
+        trailingRowCount: 3,
       });
     });
 
-    it('should return original frozen options when forzenCount is all zero', () => {
+    it('should return original frozen options when frozenCount is all zero', () => {
       expect(
         getValidFrozenOptions(
           {
-            frozenColCount: 0,
-            frozenRowCount: 0,
-            frozenTrailingColCount: 0,
-            frozenTrailingRowCount: 0,
+            colCount: 0,
+            rowCount: 0,
+            trailingColCount: 0,
+            trailingRowCount: 0,
           },
           30,
           30,
         ),
       ).toStrictEqual({
-        frozenColCount: 0,
-        frozenRowCount: 0,
-        frozenTrailingColCount: 0,
-        frozenTrailingRowCount: 0,
+        colCount: 0,
+        rowCount: 0,
+        trailingColCount: 0,
+        trailingRowCount: 0,
       });
     });
 
-    it('should return original frozen options when forzenCount is exact fit', () => {
+    it('should return original frozen options when frozenCount is exact fit', () => {
       expect(
         getValidFrozenOptions(
           {
-            frozenColCount: 10,
-            frozenRowCount: 10,
-            frozenTrailingColCount: 10,
-            frozenTrailingRowCount: 10,
+            colCount: 10,
+            rowCount: 10,
+            trailingColCount: 10,
+            trailingRowCount: 10,
           },
           20,
           20,
         ),
       ).toStrictEqual({
-        frozenColCount: 10,
-        frozenRowCount: 10,
-        frozenTrailingColCount: 10,
-        frozenTrailingRowCount: 10,
+        colCount: 10,
+        rowCount: 10,
+        trailingColCount: 10,
+        trailingRowCount: 10,
       });
     });
   });

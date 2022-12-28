@@ -6,7 +6,6 @@ export const SHEET_COMPONENT_DEFAULT_OPTIONS: S2Options = {
     autoAdjustBoundary: 'body',
     operation: {
       hiddenColumns: true,
-      trend: false,
       sort: true,
     },
   },

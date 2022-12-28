@@ -220,10 +220,10 @@ describe('Tooltip Utils Tests', () => {
     const getCellNameByType = (cellType: CellTypes) => {
       return (
         {
-          [CellTypes.ROW_CELL]: 'row',
-          [CellTypes.COL_CELL]: 'col',
-          [CellTypes.DATA_CELL]: 'data',
-          [CellTypes.CORNER_CELL]: 'corner',
+          [CellTypes.ROW_CELL]: 'rowCell',
+          [CellTypes.COL_CELL]: 'colCell',
+          [CellTypes.DATA_CELL]: 'dataCell',
+          [CellTypes.CORNER_CELL]: 'cornerCell',
           [CellTypes.MERGED_CELL]: 'merge',
           [CellTypes.HEADER_CELL]: 'header',
         }[cellType] || ''
@@ -280,7 +280,6 @@ describe('Tooltip Utils Tests', () => {
           content: '',
           operation: {
             hiddenColumns: true,
-            trend: true,
             sort: true,
             tableSort: true,
             menus: [{ key: 'menu-a', text: 'menu-a' }],
@@ -310,7 +309,6 @@ describe('Tooltip Utils Tests', () => {
           content: '',
           operation: {
             hiddenColumns: false,
-            trend: true,
             sort: true,
             tableSort: true,
             menus: [{ key: 'menu-b', text: 'menu-b' }],

@@ -31,8 +31,10 @@ export class TableColHeader extends ColHeader {
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    const { frozenColCount, frozenTrailingColCount } =
-      this.headerConfig.spreadsheet?.options;
+    const {
+      colCount: frozenColCount,
+      trailingColCount: frozenTrailingColCount,
+    } = this.headerConfig.spreadsheet?.options.frozen!;
 
     if (frozenColCount) {
       this.frozenColGroup = this.appendChild(
@@ -55,8 +57,10 @@ export class TableColHeader extends ColHeader {
 
   protected isFrozenCell(meta: Node) {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
-      spreadsheet?.options;
+    const {
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = this.headerConfig.spreadsheet?.options.frozen!;
     const { colIndex } = meta;
     const colLeafNodes = spreadsheet?.facet.layoutResult.colLeafNodes;
     return (
@@ -89,8 +93,10 @@ export class TableColHeader extends ColHeader {
 
   protected getCellGroup(node: Node) {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
-      spreadsheet?.options;
+    const {
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = this.headerConfig.spreadsheet?.options.frozen!;
     const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
       (cell) => {
         return isTopLevelNode(cell);
@@ -118,8 +124,10 @@ export class TableColHeader extends ColHeader {
 
   protected isColCellInRect(item: Node): boolean {
     const { spreadsheet } = this.headerConfig;
-    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
-      spreadsheet?.options;
+    const {
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = spreadsheet?.options.frozen!;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
     const topLevelNodes = spreadsheet?.facet?.layoutResult.colNodes.filter(
       (cell) => {
@@ -147,10 +155,12 @@ export class TableColHeader extends ColHeader {
 
   public getScrollGroupClipBBox = () => {
     const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
-    const options = spreadsheet.options;
 
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
-    const frozenWidth = getFrozenColWidth(colLeafNodes, options);
+    const frozenWidth = getFrozenColWidth(
+      colLeafNodes,
+      spreadsheet.options.frozen!,
+    );
     return {
       x: scrollX + frozenWidth.frozenColWidth,
       y: 0,

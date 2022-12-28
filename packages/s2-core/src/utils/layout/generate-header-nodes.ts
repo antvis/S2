@@ -30,7 +30,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
     spreadsheet,
   } = params;
-  const { collapsedCols, colCfg } = spreadsheet.options.style!;
+  const { collapsedCols, colCell } = spreadsheet.options.style!;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -76,11 +76,9 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
       nodeQuery = { ...query, [currentField]: value };
       const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
-      const isHideMeasure =
-        colCfg?.hideMeasureColumn &&
-        isValueInCols &&
-        includes(fields, EXTRA_FIELD);
-      const extraSize = isHideMeasure ? 2 : 1;
+      const isHideValue =
+        colCell?.hideValue && isValueInCols && includes(fields, EXTRA_FIELD);
+      const extraSize = isHideValue ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
     const uniqueId = generateId(parentNode.id, value);

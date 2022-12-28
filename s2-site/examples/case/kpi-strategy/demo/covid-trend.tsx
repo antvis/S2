@@ -16,10 +16,10 @@ fetch(
       height: 600,
       placeholder: '',
       style: {
-        cellCfg: {
+        dataCell: {
           height: 60,
         },
-        colCfg: {
+        colCell: {
           widthByFieldValue: { 近14日趋势图: 300 },
         },
       },

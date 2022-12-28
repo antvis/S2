@@ -1,9 +1,9 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
 import { TableDataCell, TableSeriesCell } from '../cell';
 import {
+  getTooltipOperatorTableSortMenus,
   InterceptType,
   S2Event,
-  getTooltipOperatorTableSortMenus,
 } from '../common/constant';
 import type {
   SortMethod,
@@ -40,11 +40,12 @@ export class TableSheet extends SpreadSheet {
 
   public enableFrozenHeaders(): boolean {
     const {
-      frozenRowCount = 0,
-      frozenTrailingRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingColCount = 0,
-    } = this.options;
+      rowCount: frozenRowCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = this.options.frozen!;
+
     return (
       frozenRowCount > 0 ||
       frozenTrailingRowCount > 0 ||

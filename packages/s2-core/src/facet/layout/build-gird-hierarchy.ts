@@ -8,13 +8,12 @@ import type { FieldValue, GridHeaderParams } from '../layout/interface';
 import { layoutArrange } from '../layout/layout-hooks';
 import { TotalMeasure } from '../layout/total-measure';
 
-const hideMeasureColumn = (
+const hideValueColumn = (
   spreadsheet: SpreadSheet,
   fieldValues: FieldValue[],
   field: string,
 ) => {
-  const hideMeasure =
-    spreadsheet.options.style?.colCfg?.hideMeasureColumn ?? false;
+  const hideMeasure = spreadsheet.options.style?.colCell?.hideValue ?? false;
   const { valueInCols } = spreadsheet.dataSet.fields;
   for (const value of fieldValues) {
     if (hideMeasure && valueInCols && field === EXTRA_FIELD) {
@@ -80,8 +79,8 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
         fieldValues.push(fieldName);
       }
     }
-    // hide measure in columns
-    hideMeasureColumn(spreadsheet, fieldValues, currentField);
+    // hide value in columns
+    hideValueColumn(spreadsheet, fieldValues, currentField);
     // add totals if needed
     addTotals({
       currentField,

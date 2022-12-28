@@ -117,10 +117,12 @@ const s2Options = {
 
 ```ts
 const s2Options = {
-  frozenRowCount: number; // 冻结行的数量，从顶部开始计数
-  frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
-  frozenColCount: number; // 冻结列的数量，从左侧开始计数
-  frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
+  frozen: {
+    rowCount: number; // 冻结行的数量，从顶部开始计数
+    trailingRowCount: number; // 冻结行数量，从底部开始计数
+    colCount: number; // 冻结列的数量，从左侧开始计数
+    trailingColCount: number; // 冻结列的数量，从右侧开始计数
+  }
 }
 ```
 

@@ -117,7 +117,7 @@ function calcCellWidth() {
     const colHeaderColSize = colLeafNodes.length; // 列叶子节点，结果是 2
     const { width } = this.getCanvasSize(); // 画布宽度
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize); // 行+列 总数量，结果是 4
-    return Math.max(cellCfg.width, canvasW / size); // 用户配置的宽度和计算宽度取最大值
+    return Math.max(dataCell.width, canvasW / size); // 用户配置的宽度和计算宽度取最大值
 }
 ```
 
@@ -137,7 +137,7 @@ for (let i = 0; i < rowsHierarchy.getNodes().length; i++) {
         // 叶子节点
         currentNode.x = 0;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-        currentNode.height = cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+        currentNode.height = dataCell.height + dataCell.padding?.top + dataCell.padding?.bottom;
         preLeafNode = currentNode; // 更改前一个叶子节点
         rowsHierarchy.height += currentNode.height; // 更新 rowsHierarchy 高度
     } else {

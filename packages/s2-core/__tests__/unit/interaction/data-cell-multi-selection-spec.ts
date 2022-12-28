@@ -1,7 +1,7 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import type { GEvent } from '@/index';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
-import type { CellMeta, S2Options } from '@/common/interface';
+import type { CellMeta } from '@/common/interface';
 import type { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
@@ -27,14 +27,6 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       },
     };
     dataCellMultiSelection = new DataCellMultiSelection(s2);
-    s2.options = {
-      ...s2.options,
-      tooltip: {
-        operation: {
-          trend: false,
-        },
-      },
-    } as S2Options;
     s2.isTableMode = jest.fn(() => true);
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;

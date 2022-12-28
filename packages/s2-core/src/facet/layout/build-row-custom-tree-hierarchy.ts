@@ -17,7 +17,8 @@ import { layoutHierarchy } from './layout-hooks';
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
   const { tree = [], level, parentNode, hierarchy, spreadsheet } = params;
-  const { collapsedRows, hierarchyCollapse } = spreadsheet.options.style!;
+  const { collapsedRows, hierarchyCollapse } =
+    spreadsheet.options.style?.rowCell!;
 
   const hiddenColumnsDetail =
     spreadsheet.store.get('hiddenColumnsDetail') || [];

@@ -16,6 +16,7 @@ import {
 } from '../utils/interaction/resize';
 import { CustomRect } from '../engine';
 import { BaseCell } from './base-cell';
+
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
     super.drawTextShape();
@@ -64,8 +65,10 @@ export class TableDataCell extends DataCell {
     const { y, height } = this.getBBoxByType();
     const rowIndex = this.meta.rowIndex;
     const resizeStyle = this.getResizeAreaStyle();
-    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
-      this.spreadsheet.options;
+    const {
+      rowCount: frozenRowCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+    } = this.spreadsheet.options.frozen!;
     const cellRange = this.spreadsheet.facet.getCellRange();
     const isFrozenRow = isFrozenRowUtil(
       rowIndex,

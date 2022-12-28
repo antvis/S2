@@ -166,11 +166,11 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   private getMoveInfo(code: string, cell: CellMeta | null, isJump: boolean) {
     const { spreadsheet } = this;
     const {
-      frozenColCount = 0,
-      frozenRowCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
-    } = spreadsheet.options;
+      rowCount: frozenRowCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = spreadsheet.options.frozen!;
     const { rowLeafNodes, colLeafNodes } = spreadsheet.facet.layoutResult;
 
     const [minCol, maxCol] = [
@@ -233,8 +233,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     rowIndex: number,
     colIndex: number,
   ) {
-    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
-      spreadsheet.options;
+    const {
+      rowCount: frozenRowCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+    } = spreadsheet.options.frozen!;
     const facet = spreadsheet.facet;
     const {
       frozenColGroup,

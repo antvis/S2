@@ -68,7 +68,7 @@ export class RowCell extends HeaderCell {
 
   protected showTreeLeafNodeAlignDot() {
     return (
-      this.spreadsheet.options.style?.showTreeLeafNodeAlignDot &&
+      this.spreadsheet.options.style?.rowCell?.showTreeLeafNodeAlignDot &&
       this.spreadsheet.isHierarchyTreeType()
     );
   }

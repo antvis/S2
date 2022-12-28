@@ -77,7 +77,9 @@ export const CustomSheet: React.FC<Props> = (props) => {
       style: { layoutWidthType: widthChange },
       width: sheetWidth,
       height: sheetHeight,
-      frozenRowHeader,
+      frozen: {
+        rowHeader: frozenRowHeader,
+      },
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -105,7 +107,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
     sheetConfig?.widthChange,
     sheetConfig?.sheetWidth,
     sheetConfig?.sheetHeight,
-    sheetConfig?.frozenRowHeader,
+    sheetConfig?.rowHeader,
     showPagination,
     sheetConfig?.rowSubTotals,
     sheetConfig?.rowGrandTotals,

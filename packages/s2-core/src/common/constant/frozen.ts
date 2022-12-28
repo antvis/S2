@@ -25,13 +25,6 @@ export const FrozenCellGroupMap = {
   [FrozenCellType.BOTTOM]: 'frozenBottomGroup',
 };
 
-export interface FrozenOpts {
-  frozenRowCount: number;
-  frozenColCount: number;
-  frozenTrailingRowCount: number;
-  frozenTrailingColCount: number;
-}
-
 export interface FrozenCellIndex {
   x: number;
   y: number;

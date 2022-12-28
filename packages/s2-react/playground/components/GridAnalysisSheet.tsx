@@ -12,7 +12,7 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
   height: 600,
   style: {
     layoutWidthType: 'colAdaptive',
-    cellCfg: {
+    dataCell: {
       width: 400,
       height: 100,
       valuesCfg: {
