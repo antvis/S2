@@ -42,13 +42,15 @@ export class PanelBBox extends BaseBBox {
       return;
     }
 
-    const { frozenTrailingColCount, frozenTrailingRowCount } =
-      this.spreadsheet.options;
-    if (frozenTrailingColCount! > 0) {
+    const { trailingColCount, trailingRowCount } =
+      this.spreadsheet.options.frozen!;
+
+    if (trailingColCount! > 0) {
       this.viewportWidth = this.width;
       this.maxX = this.x + this.width;
     }
-    if (frozenTrailingRowCount! > 0) {
+
+    if (trailingRowCount! > 0) {
       this.viewportHeight = this.height;
       this.maxY = this.y + this.height;
     }

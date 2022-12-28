@@ -87,10 +87,12 @@ const options: S2Options = {
       rowResizeType: ResizeType.CURRENT,
     },
   },
-  frozenRowCount: 2,
-  frozenColCount: 2,
-  frozenTrailingColCount: 2,
-  frozenTrailingRowCount: 2,
+  frozen: {
+    rowCount: 2,
+    colCount: 2,
+    trailingColCount: 2,
+    trailingRowCount: 2,
+  },
   showDefaultHeaderActionIcon: true,
   tooltip: {
     operation: {
@@ -159,8 +161,10 @@ describe('TableSheet normal spec', () => {
   test('should support custom layoutCoordinate calls', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...options,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
+      frozen: {
+        colCount: 0,
+        trailingColCount: 0,
+      },
     });
 
     s2.setOptions({

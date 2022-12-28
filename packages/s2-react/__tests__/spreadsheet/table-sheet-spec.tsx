@@ -1,25 +1,29 @@
 /* eslint-disable no-console */
+import '@/components/tooltip/index.less';
+import {
+  DeviceType,
+  S2Event,
+  SpreadSheet,
+  TableSheet,
+  type RawData,
+  type S2DataConfig,
+  type S2MountContainer,
+  type S2Options,
+} from '@antv/s2';
 import { message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  type S2DataConfig,
-  S2Event,
-  type S2Options,
-  SpreadSheet,
-  TableSheet,
-  DeviceType,
-  type RawData,
-  type S2MountContainer,
-} from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
-import { Switcher } from '@/components/switcher';
 import type { SwitcherFields } from '@/components/switcher/interface';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
-import '@/components/tooltip/index.less';
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentsProps,
+} from '@/components';
+import { Switcher } from '@/components/switcher';
 
 let s2: TableSheet;
 
@@ -113,7 +117,7 @@ function MainLayout({ callback }: Props) {
     ],
   } as unknown as S2DataConfig;
 
-  const options: SheetComponentsProps['options'] = {
+  const options: SheetComponentOptions = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -136,10 +140,12 @@ function MainLayout({ callback }: Props) {
       linkFields: ['order_id', 'customer_name'],
       hiddenColumnFields,
     },
-    frozenRowCount: 2,
-    frozenColCount: 1,
-    frozenTrailingColCount: 1,
-    frozenTrailingRowCount: 1,
+    frozen: {
+      rowCount: 2,
+      colCount: 1,
+      trailingColCount: 1,
+      trailingRowCount: 1,
+    },
     tooltip: {
       showTooltip: true,
       operation: {

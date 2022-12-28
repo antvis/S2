@@ -1,4 +1,4 @@
-import type { ThemeCfg } from '@/common';
+import type { S2Options, ThemeCfg } from '@/common';
 import type { BaseFacet } from '@/facet/base-facet';
 import { PanelBBox } from '@/facet/bbox/panelBBox';
 
@@ -6,7 +6,7 @@ describe('PanelBBox test', () => {
   const getMockFacet = (
     realWidth: number,
     realHeight: number,
-    extraOptions = {},
+    extraOptions: S2Options = {},
     shouldEnableFrozenHeaders = true,
   ) => {
     return {
@@ -55,6 +55,7 @@ describe('PanelBBox test', () => {
         options: {
           width: 600,
           height: 600,
+          frozen: {},
           ...extraOptions,
         },
       },
@@ -91,8 +92,10 @@ describe('PanelBBox test', () => {
 
   test('should return full viewport when frozen trailing col and row', () => {
     const facet = getMockFacet(200, 200, {
-      frozenTrailingColCount: 2,
-      frozenTrailingRowCount: 2,
+      frozen: {
+        trailingColCount: 2,
+        trailingRowCount: 2,
+      },
     });
 
     const bbox = new PanelBBox(facet, true);
@@ -111,8 +114,10 @@ describe('PanelBBox test', () => {
       200,
       200,
       {
-        frozenTrailingColCount: 2,
-        frozenTrailingRowCount: 2,
+        frozen: {
+          trailingColCount: 2,
+          trailingRowCount: 2,
+        },
       },
       false,
     );

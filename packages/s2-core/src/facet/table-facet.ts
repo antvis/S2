@@ -246,11 +246,12 @@ export class TableFacet extends BaseFacet {
       const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
       const cellRange = this.getCellRange();
-      const { frozenTrailingRowCount = 0 } = getValidFrozenOptions(
-        this.spreadsheet.options,
-        colLeafNodes.length,
-        cellRange.end - cellRange.start + 1,
-      );
+      const { trailingRowCount: frozenTrailingRowCount = 0 } =
+        getValidFrozenOptions(
+          this.spreadsheet.options.frozen!,
+          colLeafNodes.length,
+          cellRange.end - cellRange.start + 1,
+        );
 
       let data;
 
@@ -386,10 +387,11 @@ export class TableFacet extends BaseFacet {
       );
     }
     const topLevelNodes = allNodes.filter((node) => isTopLevelNode(node));
-    const { frozenTrailingColCount = 0 } = getValidFrozenOptions(
-      this.spreadsheet?.options,
-      topLevelNodes.length,
-    );
+    const { trailingColCount: frozenTrailingColCount = 0 } =
+      getValidFrozenOptions(
+        this.spreadsheet.options.frozen!,
+        topLevelNodes.length,
+      );
     preLeafNode = Node.blankNode();
 
     const { width } = this.getCanvasSize();
@@ -644,12 +646,12 @@ export class TableFacet extends BaseFacet {
     const cellRange = this.getCellRange();
     const dataLength = cellRange.end - cellRange.start;
     const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
+      rowCount: frozenRowCount = 0,
+      colCount: frozenColCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
     } = getValidFrozenOptions(
-      this.spreadsheet.options,
+      this.spreadsheet.options.frozen!,
       colLeafNodes.length,
       dataLength,
     );
@@ -855,12 +857,12 @@ export class TableFacet extends BaseFacet {
     const cellRange = this.getCellRange();
 
     const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingRowCount = 0,
-      frozenTrailingColCount = 0,
+      rowCount: frozenRowCount = 0,
+      colCount: frozenColCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
     } = getValidFrozenOptions(
-      this.spreadsheet.options,
+      this.spreadsheet.options.frozen!,
       topLevelNodes.length,
       cellRange.end - cellRange.start + 1,
     );
@@ -873,10 +875,10 @@ export class TableFacet extends BaseFacet {
 
     const result = calculateFrozenCornerCells(
       {
-        frozenRowCount,
-        frozenColCount: colCount,
-        frozenTrailingRowCount,
-        frozenTrailingColCount: trailingColCount,
+        rowCount: frozenRowCount,
+        colCount,
+        trailingRowCount: frozenTrailingRowCount,
+        trailingColCount,
       },
       this.layoutResult.colLeafNodes.length,
       cellRange,
@@ -924,11 +926,11 @@ export class TableFacet extends BaseFacet {
 
   addCell = (cell: S2CellType<ViewMeta>) => {
     const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingRowCount = 0,
-      frozenTrailingColCount = 0,
-    } = this.spreadsheet.options;
+      rowCount: frozenRowCount = 0,
+      colCount: frozenColCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+    } = this.spreadsheet.options.frozen!;
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
     const cellRange = this.getCellRange();
 
@@ -940,10 +942,10 @@ export class TableFacet extends BaseFacet {
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
       {
-        frozenRowCount,
-        frozenColCount: colCount,
-        frozenTrailingRowCount,
-        frozenTrailingColCount: trailingColCount,
+        rowCount: frozenRowCount,
+        trailingRowCount: frozenTrailingRowCount,
+        colCount,
+        trailingColCount,
       },
       colLength,
       cellRange,
@@ -1020,7 +1022,7 @@ export class TableFacet extends BaseFacet {
     const cellRange = this.getCellRange();
 
     return getValidFrozenOptions(
-      this.spreadsheet.options,
+      this.spreadsheet.options.frozen!,
       colLength,
       cellRange.end - cellRange.start + 1,
     );
@@ -1028,10 +1030,10 @@ export class TableFacet extends BaseFacet {
 
   public calculateFrozenGroupInfo() {
     const {
-      frozenColCount = 0,
-      frozenRowCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
+      colCount: frozenColCount = 0,
+      rowCount: frozenRowCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
     } = this.getFrozenOptions();
 
     const colLeafNodes = this.layoutResult.colNodes.filter((node) => {
@@ -1107,10 +1109,10 @@ export class TableFacet extends BaseFacet {
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const {
-      frozenColCount = 0,
-      frozenRowCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
+      colCount: frozenColCount = 0,
+      rowCount: frozenRowCount = 0,
+      trailingColCount: frozenTrailingColCount = 0,
+      trailingRowCount: frozenTrailingRowCount = 0,
     } = this.getFrozenOptions();
 
     const finalViewport = {
@@ -1160,10 +1162,10 @@ export class TableFacet extends BaseFacet {
     return splitInViewIndexesWithFrozen(
       indexes,
       {
-        frozenColCount: colCount,
-        frozenRowCount,
-        frozenTrailingColCount: trailingColCount,
-        frozenTrailingRowCount,
+        colCount,
+        rowCount: frozenRowCount,
+        trailingColCount,
+        trailingRowCount: frozenTrailingRowCount,
       },
       colLength,
       cellRange,

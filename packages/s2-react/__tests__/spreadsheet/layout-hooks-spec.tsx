@@ -155,7 +155,9 @@ const getOptions = (): SheetComponentsProps['options'] => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
-    frozenRowHeader: true,
+    frozen: {
+      rowHeader: true,
+    },
     style: {
       rowCell: {
         hierarchyCollapse: false,

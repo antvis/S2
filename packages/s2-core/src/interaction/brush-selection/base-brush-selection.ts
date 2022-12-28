@@ -253,11 +253,10 @@ export class BaseBrushSelection
     const dataLength = dataSet.getDisplayDataSet().length;
     const colLength = facet.layoutResult.colLeafNodes.length;
 
-    const { frozenTrailingColCount, frozenColCount } = getValidFrozenOptions(
-      options,
-      colLength,
-      dataLength,
-    );
+    const {
+      trailingColCount: frozenTrailingColCount,
+      colCount: frozenColCount,
+    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
     if (
@@ -286,11 +285,10 @@ export class BaseBrushSelection
     const dataLength = dataSet.getDisplayDataSet().length;
     const colLength = facet.layoutResult.colLeafNodes.length;
     const cellRange = facet.getCellRange();
-    const { frozenTrailingRowCount, frozenRowCount } = getValidFrozenOptions(
-      options,
-      colLength,
-      dataLength,
-    );
+    const {
+      trailingRowCount: frozenTrailingRowCount,
+      rowCount: frozenRowCount,
+    } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
     if (

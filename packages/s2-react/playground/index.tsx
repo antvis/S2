@@ -57,7 +57,7 @@ import {
   s2ConditionsOptions,
   sliderOptions,
   tableSheetDataCfg,
-  tableSheetFrozenOptions,
+  TableSheetFrozenOptions,
   tableSheetMultipleColumns,
   tableSheetSingleColumns,
 } from './config';
@@ -691,10 +691,12 @@ function MainLayout() {
                   <Switch
                     checkedChildren="冻结行头开"
                     unCheckedChildren="冻结行头关"
-                    defaultChecked={mergedOptions.frozenRowHeader}
+                    defaultChecked={mergedOptions.frozen?.rowHeader}
                     onChange={(checked) => {
                       updateOptions({
-                        frozenRowHeader: checked,
+                        frozen: {
+                          rowHeader: checked,
+                        },
                       });
                     }}
                     disabled={sheetType === 'table'}
@@ -704,16 +706,20 @@ function MainLayout() {
                   <Switch
                     checkedChildren="冻结列头开"
                     unCheckedChildren="冻结列头关"
-                    defaultChecked={!!mergedOptions.frozenTrailingColCount}
+                    defaultChecked={!!mergedOptions.frozen?.trailingColCount}
                     onChange={(checked) => {
                       if (checked) {
-                        updateOptions(tableSheetFrozenOptions);
+                        updateOptions({
+                          frozen: TableSheetFrozenOptions,
+                        });
                       } else {
                         updateOptions({
-                          frozenRowCount: 0,
-                          frozenColCount: 0,
-                          frozenTrailingColCount: 0,
-                          frozenTrailingRowCount: 0,
+                          frozen: {
+                            rowCount: 0,
+                            colCount: 0,
+                            trailingColCount: 0,
+                            trailingRowCount: 0,
+                          },
                         });
                       }
                     }}

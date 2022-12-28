@@ -39,8 +39,8 @@ export class TableColCell extends ColCell {
   }
 
   protected isFrozenCell() {
-    const { frozenColCount = 0, frozenTrailingColCount = 0 } =
-      this.spreadsheet.options;
+    const { colCount = 0, trailingColCount = 0 } =
+      this.spreadsheet.options.frozen!;
     const colNodes = this.spreadsheet.facet.layoutResult.colNodes.filter(
       (node) => {
         return isTopLevelNode(node);
@@ -49,8 +49,8 @@ export class TableColCell extends ColCell {
     const { colIndex } = getNodeRoot(this.meta);
 
     return (
-      isFrozenCol(colIndex, frozenColCount) ||
-      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colNodes.length)
+      isFrozenCol(colIndex, colCount) ||
+      isFrozenTrailingCol(colIndex, trailingColCount, colNodes.length)
     );
   }
 
@@ -80,7 +80,7 @@ export class TableColCell extends ColCell {
 
     const frozenWidth = getFrozenColWidth(
       this.spreadsheet.facet.layoutResult.colLeafNodes,
-      this.spreadsheet.options,
+      this.spreadsheet.options.frozen!,
     );
     const resizeClipAreaBBox = {
       x: frozenWidth.frozenColWidth,

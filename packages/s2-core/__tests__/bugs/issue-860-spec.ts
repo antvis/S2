@@ -12,7 +12,9 @@ import type { S2Options } from '@/common/interface';
 const s2Options: S2Options = {
   width: 600,
   height: 400,
-  frozenRowHeader: false,
+  frozen: {
+    rowHeader: false,
+  },
 };
 
 describe('Empty String Row Value Tests', () => {

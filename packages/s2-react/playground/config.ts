@@ -1,6 +1,7 @@
 import {
   CellTypes,
   ResizeType,
+  type S2TableSheetFrozenOptions,
   type CustomHeaderField,
   type S2DataConfig,
 } from '@antv/s2';
@@ -68,9 +69,9 @@ export const s2ConditionsOptions: SheetComponentOptions['conditions'] = {
   ],
 };
 
-export const tableSheetFrozenOptions: SheetComponentOptions = {
-  frozenColCount: 1,
-  frozenTrailingColCount: 1,
+export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
+  colCount: 1,
+  trailingColCount: 1,
 };
 
 export const s2Options: SheetComponentOptions = {
@@ -78,7 +79,9 @@ export const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
   showSeriesNumber: false,
-  frozenRowHeader: true,
+  frozen: {
+    rowHeader: true,
+  },
   cornerText: '测试',
   interaction: {
     enableCopy: true,

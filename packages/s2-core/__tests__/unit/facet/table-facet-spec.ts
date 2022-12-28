@@ -294,10 +294,12 @@ describe('Table Mode Facet Test With Compact Layout', () => {
 
 describe('Table Mode Facet With Frozen Test', () => {
   const { facet, s2 } = createMockTableFacet({
-    frozenColCount: 2,
-    frozenRowCount: 2,
-    frozenTrailingColCount: 2,
-    frozenTrailingRowCount: 2,
+    frozen: {
+      colCount: 2,
+      rowCount: 2,
+      trailingColCount: 2,
+      trailingRowCount: 2,
+    },
   });
 
   test('should get correct frozenInfo', () => {
@@ -341,37 +343,37 @@ describe('Table Mode Facet With Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenColCount = 0 } = s2.options;
+    const { colCount = 0 } = s2.options.frozen!;
     const { colLeafNodes } = facet.layoutResult;
 
     expect(
       colLeafNodes
-        .slice(-frozenColCount)
+        .slice(-colCount)
         .reverse()
         .map((node) => node.x),
     ).toEqual([481, 362]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { frozenTrailingColCount } = s2.options;
+    const { trailingColCount } = s2.options.frozen!;
     const { colLeafNodes } = facet.layoutResult;
 
     expect(
       colLeafNodes
-        .slice(-frozenTrailingColCount!)
+        .slice(-trailingColCount!)
         .reverse()
         .map((node) => node.x),
     ).toEqual([481, 362]);
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount } = s2.options;
+    const { trailingRowCount } = s2.options.frozen!;
     const { getCellMeta } = facet.layoutResult;
     const displayData = s2.dataSet.getDisplayDataSet();
 
     expect(
       displayData
-        .slice(-frozenTrailingRowCount!)
+        .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([532, 502]);
@@ -508,10 +510,12 @@ describe('Table Mode Facet Test With Zero Height', () => {
 
 describe('Table Mode Facet With Frozen layoutCoordinate Test', () => {
   const { facet } = createMockTableFacet({
-    frozenColCount: 2,
-    frozenRowCount: 2,
-    frozenTrailingColCount: 2,
-    frozenTrailingRowCount: 2,
+    frozen: {
+      colCount: 2,
+      rowCount: 2,
+      trailingColCount: 2,
+      trailingRowCount: 2,
+    },
     layoutCoordinate: (_, __, currentNode) => {
       currentNode!.width = 200;
     },
@@ -629,10 +633,12 @@ describe('Table Mode Facet With Column Grouping Test', () => {
 describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   const { facet, s2 } = createMockTableFacet(
     {
-      frozenColCount: 1,
-      frozenRowCount: 2,
-      frozenTrailingColCount: 1,
-      frozenTrailingRowCount: 2,
+      frozen: {
+        colCount: 1,
+        rowCount: 2,
+        trailingColCount: 1,
+        trailingRowCount: 2,
+      },
     },
     {
       columns: [
@@ -672,17 +678,17 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   });
 
   test('should get correct col layout with frozen col', () => {
-    const { frozenColCount } = s2.options;
+    const { colCount } = s2.options.frozen!;
     const { colNodes } = facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
 
     expect(
-      topLevelNodes.slice(0, frozenColCount).map((node) => node.x),
+      topLevelNodes.slice(0, colCount).map((node) => node.x),
     ).toStrictEqual([0]);
   });
 
   test('should get correct cell layout with frozenTrailingCol', () => {
-    const { frozenTrailingColCount } = s2.options;
+    const { trailingColCount: frozenTrailingColCount } = s2.options.frozen!;
     const { colNodes, colLeafNodes } = s2.facet.layoutResult;
     const topLevelNodes = colNodes.filter((node) => node.parent!.id === 'root');
     const { trailingColCount } = getFrozenLeafNodesCount(
@@ -700,12 +706,12 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
   });
 
   test('should get correct cell layout with frozenTrailingRow', () => {
-    const { frozenTrailingRowCount } = s2.options;
+    const { trailingRowCount } = s2.options.frozen!;
     const { getCellMeta } = facet.layoutResult;
     const displayData = s2.dataSet.getDisplayDataSet();
     expect(
       displayData
-        .slice(-frozenTrailingRowCount!)
+        .slice(-trailingRowCount!)
         .reverse()
         .map((_, idx) => getCellMeta(displayData.length - 1 - idx, 1)!.y),
     ).toEqual([502, 472]);

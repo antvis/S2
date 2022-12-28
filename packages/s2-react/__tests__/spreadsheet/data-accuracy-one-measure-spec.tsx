@@ -114,7 +114,9 @@ const getOptions = (): SheetComponentOptions => {
     height: 600,
     hierarchyType: 'grid',
     showSeriesNumber: false,
-    frozenRowHeader: false,
+    frozen: {
+      rowHeader: false,
+    },
     totals: {
       row: {
         showGrandTotals: true,

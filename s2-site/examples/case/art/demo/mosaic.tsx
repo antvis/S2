@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2-react';
+import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
 // more Info https://observablehq.com/@pearmini/mosaic-antv-s2
@@ -10,10 +10,12 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2Options = {
+    const s2Options: SheetComponentOptions = {
       width: 700,
       height: 575,
-      frozenRowHeader: false,
+      frozen: {
+        rowHeader: false,
+      },
       conditions: {
         background: [
           {
@@ -30,7 +32,7 @@ fetch(
         layoutWidthType: 'compact',
         colCell: {
           height: 0,
-          widthByFieldValue: {
+          widthByField: {
             color: 23,
           },
         },

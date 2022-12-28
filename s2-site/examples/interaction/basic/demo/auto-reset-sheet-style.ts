@@ -1,12 +1,10 @@
-import { TableSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, TableSheet } from '@antv/s2';
 
-fetch(
-  'https://assets.antv.antgroup.com/s2/basic-table-mode.json',
-)
+fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         columns: ['province', 'city', 'type', 'price', 'cost'],
       },
@@ -35,7 +33,7 @@ fetch(
       data,
     };
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
       interaction: {

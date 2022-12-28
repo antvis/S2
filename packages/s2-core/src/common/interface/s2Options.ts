@@ -172,23 +172,30 @@ export enum DeviceType {
   MOBILE = 'mobile',
 }
 
-export interface S2TableSheetOptions {
+export interface S2PivotSheetFrozenOptions {
   /**
-   * 行头冻结数量
+   * 是否冻结行头 (含角头区域, 透视表有效)
    */
-  frozenRowCount?: number;
+  rowHeader?: boolean;
+}
+
+export interface S2TableSheetFrozenOptions {
   /**
-   * 列头冻结数量
+   * 行头冻结数量 (明细表有效)
    */
-  frozenColCount?: number;
+  rowCount?: number;
   /**
-   * 行尾冻结数量
+   * 列头冻结数量 (明细表有效)
    */
-  frozenTrailingRowCount?: number;
+  colCount?: number;
   /**
-   * 列尾冻结数量
+   * 行尾冻结数量 (明细表有效)
    */
-  frozenTrailingColCount?: number;
+  trailingRowCount?: number;
+  /**
+   * 列尾冻结数量 (明细表有效)
+   */
+  trailingColCount?: number;
 }
 
 export interface S2PivotSheetOptions {
@@ -200,10 +207,6 @@ export interface S2PivotSheetOptions {
    * 小计/总计配置
    */
   totals?: Totals | null;
-  /**
-   * 是否冻结行头
-   */
-  frozenRowHeader?: boolean;
   /**
    * 合并单元格配置
    */
@@ -224,8 +227,9 @@ export interface S2Options<
   Icon = Element | string,
   Text = string,
 > extends S2BasicOptions<T, P, Icon, Text>,
-    S2TableSheetOptions,
-    S2PivotSheetOptions {}
+    S2PivotSheetOptions {
+  frozen?: S2PivotSheetFrozenOptions & S2TableSheetFrozenOptions;
+}
 
 export interface S2RenderOptions {
   /**

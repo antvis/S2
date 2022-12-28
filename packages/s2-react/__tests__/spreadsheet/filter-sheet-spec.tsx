@@ -1,19 +1,23 @@
 /* eslint-disable no-console */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { Button, Space } from 'antd';
 import {
-  type S2DataConfig,
+  DeviceType,
   S2Event,
   SpreadSheet,
   TableSheet,
-  DeviceType,
+  type S2DataConfig,
   type S2MountContainer,
   type S2Options,
 } from '@antv/s2';
+import { Button, Space } from 'antd';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent, type SheetComponentsProps } from '@/components';
+import {
+  SheetComponent,
+  type SheetComponentOptions,
+  type SheetComponentsProps,
+} from '@/components';
 
 import 'antd/dist/antd.min.css';
 const data = getMockData('../data/tableau-supermarket.csv');
@@ -74,7 +78,7 @@ function MainLayout() {
     data,
   } as unknown as S2DataConfig;
 
-  const options: SheetComponentsProps['options'] = {
+  const options: SheetComponentOptions = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -87,11 +91,12 @@ function MainLayout() {
       },
       device: DeviceType.PC,
     },
-
-    frozenRowCount: 2,
-    frozenColCount: 1,
-    frozenTrailingColCount: 1,
-    frozenTrailingRowCount: 1,
+    frozen: {
+      rowCount: 2,
+      colCount: 1,
+      trailingColCount: 1,
+      trailingRowCount: 1,
+    },
     tooltip: {
       showTooltip: true,
       operation: {},
