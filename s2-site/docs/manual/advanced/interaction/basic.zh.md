@@ -187,8 +187,20 @@ const s2Options = {
 ```ts
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader
   }
+};
+
+// 同时还可以分别配置 selectedCellHighlight 中 header 和 cells 的高亮
+const S2Options = {
+  interaction: {
+    selectedCellHighlight: {
+      rowHeader: true,
+      colHeader: true,
+      rowCells: false,
+      colCells: false,
+    },
+  },
 };
 ```
 
