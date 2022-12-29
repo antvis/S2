@@ -27,6 +27,8 @@ describe('Data Cell Tests', () => {
       [VALUE_FIELD]: 'value',
       [EXTRA_FIELD]: 12,
     },
+    width: 100,
+    height: 100,
   } as unknown as ViewMeta;
 
   let s2: SpreadSheet;
@@ -93,6 +95,15 @@ describe('Data Cell Tests', () => {
           rowLeafNodes: [],
         },
       } as PivotFacet;
+    });
+
+    test("shouldn't init when width or height is not positive", () => {
+      const dataCell = new DataCell({ ...meta, width: 0, height: 0 }, s2);
+      expect(dataCell.getTextShape()).toBeUndefined();
+      // @ts-ignore
+      expect(dataCell.backgroundShape).toBeUndefined();
+      // @ts-ignore
+      expect([...dataCell.stateShapes.keys()]).toBeEmpty();
     });
 
     test('should get text shape', () => {
@@ -206,6 +217,7 @@ describe('Data Cell Tests', () => {
       const fieldValue = 27.334666666666667;
       const anotherMeta = {
         width: cellWidth,
+        height: 100,
         valueField: 'value',
         fieldValue,
         data: {
