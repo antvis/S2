@@ -57,6 +57,9 @@ export class CornerCell extends HeaderCell {
   public update() {}
 
   protected initCell() {
+    if (!this.shouldInit()) {
+      return;
+    }
     super.initCell();
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();

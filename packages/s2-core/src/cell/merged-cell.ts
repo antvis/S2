@@ -33,6 +33,9 @@ export class MergedCell extends DataCell {
   public update() {}
 
   protected initCell() {
+    if (!this.shouldInit()) {
+      return;
+    }
     this.resetTextAndConditionIconShapes();
     // TODO：1、交互态扩展； 2、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
     this.conditions = this.spreadsheet.options.conditions;
