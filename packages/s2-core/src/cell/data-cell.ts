@@ -82,7 +82,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleSelect(cells: CellMeta[]) {
+  public handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
 
     switch (currentCellType) {
@@ -141,7 +141,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getCells([CellTypes.DATA_CELL]);
+    // 获取当前 interaction 记录的 Cells 元信息列表，不仅仅是数据单元格，也可能是行头或者列头。
+    const cells = this.spreadsheet.interaction.getCells();
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);

@@ -113,6 +113,7 @@ export const updateBySelectedCellsHighlight = (
     s2.interaction.getSelectedCellHighlight();
 
   const isRowCell = dataCell.cellType === CellTypes.ROW_CELL;
+  // 高亮序号
   const showSNWhenRowHeaderHighlight =
     s2.isTableMode() && s2.options.showSeriesNumber && rowHeader && isRowCell;
 

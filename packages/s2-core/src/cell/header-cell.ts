@@ -325,7 +325,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  protected handleSelect(cells: Array<CellMeta>, nodes: Node[]) {
+  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
@@ -387,7 +387,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
       CellTypes.COL_CELL,
       CellTypes.ROW_CELL,
     ]);
-
     if (!first(cells)) {
       return;
     }
