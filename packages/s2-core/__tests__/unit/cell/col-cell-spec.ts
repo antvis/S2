@@ -114,6 +114,8 @@ describe('Col Cell Tests', () => {
       label: 'label',
       fieldValue: 'fieldValue',
       value: 'value',
+      width: 100,
+      height: 10,
     } as unknown as Node;
 
     test('should get correct col cell formatter', () => {
