@@ -2,7 +2,8 @@ import type { BaseFacet } from '@/facet/base-facet';
 import { CornerBBox } from '@/facet/bbox/cornerBBox';
 
 describe('cornerBBox test', () => {
-  let mockFacet;
+  let mockFacet: BaseFacet;
+
   beforeEach(() => {
     mockFacet = {
       layoutResult: {
@@ -24,6 +25,11 @@ describe('cornerBBox test', () => {
         },
         options: {
           width: 400,
+          style: {
+            colCfg: {
+              hideMeasureColumn: false,
+            },
+          },
         },
       },
     } as BaseFacet;
