@@ -82,7 +82,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  public handleSelect(cells: CellMeta[]) {
+  protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
 
     switch (currentCellType) {
