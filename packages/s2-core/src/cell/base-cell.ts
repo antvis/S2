@@ -98,7 +98,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.theme = spreadsheet.theme;
     this.conditions = this.spreadsheet.options.conditions;
     this.handleRestOptions(...restOptions);
-    this.initCell();
+    if (this.shouldInit()) {
+      this.initCell();
+    }
   }
 
   public getMeta(): T {

@@ -46,9 +46,6 @@ export class RowCell extends HeaderCell {
   }
 
   protected initCell() {
-    if (!this.shouldInit()) {
-      return;
-    }
     super.initCell();
     // 绘制单元格背景
     this.drawBackgroundShape();

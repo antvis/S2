@@ -40,9 +40,6 @@ export class ColCell extends HeaderCell {
   }
 
   protected initCell() {
-    if (!this.shouldInit()) {
-      return;
-    }
     super.initCell();
     // 1、draw rect background
     this.drawBackgroundShape();
