@@ -1,7 +1,7 @@
-const corePkg = require('@antv/s2/package.json');
+const corePkg = require('../packages/s2-core/package.json');
 const reactPkg = require('../packages/s2-react/package.json');
 const vuePkg = require('../packages/s2-vue/package.json');
-const sharedPkg = require('@antv/s2-shared/package.json');
+const sharedPkg = require('../packages/s2-shared/package.json');
 const { getCurrentBranch } = require('./util');
 const semver = require('semver');
 
