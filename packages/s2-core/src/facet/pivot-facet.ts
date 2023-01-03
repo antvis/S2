@@ -4,7 +4,7 @@ import {
   get,
   isArray,
   isEmpty,
-  isNil,
+  isNumber,
   keys,
   last,
   map,
@@ -250,13 +250,13 @@ export class PivotFacet extends BaseFacet {
     const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
-    if (cellDraggedWidth) {
+    if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
-    if (!isNil(cellCustomWidth)) {
+    if (isNumber(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
@@ -348,7 +348,7 @@ export class PivotFacet extends BaseFacet {
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
     const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
-    return userDraggedHeight || colCfg?.height;
+    return userDraggedHeight ?? colCfg?.height;
   }
 
   /**
@@ -612,12 +612,12 @@ export class PivotFacet extends BaseFacet {
 
     const cellDraggedWidth = get(rowCfg, `widthByField.${node.key}`);
 
-    if (cellDraggedWidth) {
+    if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;
     }
 
     const cellCustomWidth = this.getCellCustomWidth(node, rowCfg?.width);
-    if (!isNil(cellCustomWidth)) {
+    if (isNumber(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
