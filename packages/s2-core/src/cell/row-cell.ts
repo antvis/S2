@@ -23,6 +23,7 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
 import { CustomRect } from '../engine';
+import type { SimpleBBox } from './../engine/interface';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -82,8 +83,44 @@ export class RowCell extends HeaderCell {
     ) {
       return;
     }
+
     // TODO: 是否正常返回样式
-    return get(this.meta, 'parent.belongsCell.treeIcon.style');
+    const treeIcon = (
+      this.meta.parent?.belongsCell as HeaderCell
+    ).getTreeIcon();
+    return treeIcon?.style;
+  }
+
+  private onTreeIconClick() {
+    const { isCollapsed, id, hierarchy } = this.meta;
+
+    if (isMobile()) {
+      return;
+    }
+
+    // 折叠行头时因scrollY没变，导致底层出现空白
+    if (!isCollapsed) {
+      const { scrollY: oldScrollY } = this.spreadsheet.facet.getScrollOffset();
+      // 可视窗口高度
+      const viewportHeight =
+        this.spreadsheet.facet.panelBBox.viewportHeight || 0;
+      // 被折叠项的高度
+      const deleteHeight = getAllChildrenNodeHeight(this.meta);
+      // 折叠后真实高度
+      const realHeight = hierarchy.height - deleteHeight;
+      if (oldScrollY > 0 && oldScrollY + viewportHeight > realHeight) {
+        const currentScrollY = realHeight - viewportHeight;
+        this.spreadsheet.facet.setScrollOffset({
+          scrollY: currentScrollY > 0 ? currentScrollY : 0,
+        });
+      }
+    }
+
+    this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
+      id,
+      isCollapsed: !isCollapsed,
+      node: this.meta,
+    });
   }
 
   // draw tree icon
@@ -92,7 +129,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const { isCollapsed, id, hierarchy } = this.meta;
+    const { isCollapsed, id } = this.meta;
     const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
     const { size } = this.getStyle()!.icon!;
@@ -102,45 +139,20 @@ export class RowCell extends HeaderCell {
     const iconX = x + contentIndent;
     const iconY = this.getIconYPosition();
 
-    this.treeIcon = renderTreeIcon(
-      this,
-      {
+    this.treeIcon = renderTreeIcon({
+      group: this,
+      iconCfg: {
         x: iconX,
         y: iconY,
         width: size!,
         height: size!,
+        fill,
       },
-      fill!,
       isCollapsed,
-      () => {
-        if (isMobile()) {
-          return;
-        }
-        // 折叠行头时因scrollY没变，导致底层出现空白
-        if (!isCollapsed) {
-          const oldScrollY = this.spreadsheet.store.get('scrollY');
-          // 可视窗口高度
-          const viewportHeight =
-            this.spreadsheet.facet.panelBBox.viewportHeight || 0;
-          // 被折叠项的高度
-          const deleteHeight = getAllChildrenNodeHeight(this.meta);
-          // 折叠后真实高度
-          const realHeight = hierarchy.height - deleteHeight;
-          if (oldScrollY > 0 && oldScrollY + viewportHeight > realHeight) {
-            const currentScrollY = realHeight - viewportHeight;
-            this.spreadsheet.store.set(
-              'scrollY',
-              currentScrollY > 0 ? currentScrollY : 0,
-            );
-          }
-        }
-        this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
-          id,
-          isCollapsed: !isCollapsed,
-          node: this.meta,
-        });
+      onClick: () => {
+        this.onTreeIconClick();
       },
-    );
+    });
 
     // in mobile, we use this cell
     if (isMobile()) {
@@ -165,6 +177,7 @@ export class RowCell extends HeaderCell {
 
     const { fill, fontSize } = this.getTextStyle();
     const r = size! / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
+
     this.treeLeafNodeAlignDot = renderCircle(this, {
       cx: x + size! / 2, // 和收起展开 icon 保持居中对齐
       cy: textY + (fontSize! - r) / 2,
@@ -223,14 +236,14 @@ export class RowCell extends HeaderCell {
       scrollY = 0,
     } = this.headerConfig;
 
-    const resizeAreaBBox = {
+    const resizeAreaBBox: SimpleBBox = {
       x,
       y: y + height - resizeStyle.size!,
       width,
       height: resizeStyle.size!,
     };
 
-    const resizeClipAreaBBox = {
+    const resizeClipAreaBBox: SimpleBBox = {
       x: 0,
       y: 0,
       width: headerWidth,

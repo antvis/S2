@@ -407,7 +407,7 @@ export abstract class BaseFacet {
     cancelAnimationFrame(this.scrollFrameId!);
   }
 
-  setScrollOffset = (scrollOffset: ScrollOffset) => {
+  public setScrollOffset = (scrollOffset: ScrollOffset) => {
     Object.keys(scrollOffset).forEach((key) => {
       const offset = get(scrollOffset, key);
       if (!isUndefined(offset)) {
@@ -416,13 +416,29 @@ export abstract class BaseFacet {
     });
   };
 
-  getScrollOffset = (): Required<ScrollOffset> => {
+  public getScrollOffset = (): Required<ScrollOffset> => {
     const { store } = this.spreadsheet;
     return {
       scrollX: store.get<keyof ScrollOffset>('scrollX', 0),
       scrollY: store.get<keyof ScrollOffset>('scrollY', 0),
       hRowScrollX: store.get<keyof ScrollOffset>('hRowScrollX', 0),
     };
+  };
+
+  public resetScrollX = () => {
+    this.setScrollOffset({ scrollX: 0 });
+  };
+
+  public resetRowScrollY = () => {
+    this.setScrollOffset({ hRowScrollX: 0 });
+  };
+
+  public resetScrollY = () => {
+    this.setScrollOffset({ scrollY: 0 });
+  };
+
+  public resetScrollOffset = () => {
+    this.setScrollOffset({ scrollX: 0, scrollY: 0, hRowScrollX: 0 });
   };
 
   emitPaginationEvent = () => {

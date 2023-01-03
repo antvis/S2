@@ -3,23 +3,22 @@
  * https://github.com/antvis/g
  */
 import {
+  Circle,
   Group,
-  type DisplayObject,
-  type RectStyleProps,
-  Rect,
-  type PolygonStyleProps,
+  Line,
   Polygon,
   Polyline,
-  type PolylineStyleProps,
-  Circle,
-  type CircleStyleProps,
-  type LineStyleProps,
-  Line,
+  Rect,
   Text,
+  type CircleStyleProps,
+  type DisplayObject,
+  type LineStyleProps,
+  type PolygonStyleProps,
+  type PolylineStyleProps,
+  type RectStyleProps,
   type TextStyleProps,
 } from '@antv/g';
 import { forEach, isArray, isEmpty, isFunction } from 'lodash';
-import type { SimpleBBox } from '../engine';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 import type { TextTheme } from '../common/interface/theme';
 
@@ -134,21 +133,20 @@ export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   return iconShape;
 }
 
-export function renderTreeIcon(
-  group: Group,
-  area: SimpleBBox,
-  fill: string,
-  isCollapse: boolean | undefined,
-  onClick?: () => void,
-) {
-  const icon = new GuiIcon({
-    name: isCollapse ? 'Plus' : 'Minus',
-    ...area,
-    fill,
+export function renderTreeIcon(options: {
+  group: Group;
+  isCollapsed: boolean | undefined;
+  iconCfg: Omit<GuiIconCfg, 'name'>;
+  onClick?: () => void;
+}) {
+  const { group, iconCfg, isCollapsed, onClick } = options;
+  const iconShape = renderIcon(group, {
+    ...iconCfg,
+    name: isCollapsed ? 'Plus' : 'Minus',
+    cursor: 'pointer',
   });
   if (isFunction(onClick)) {
-    icon.addEventListener('click', onClick);
+    iconShape.addEventListener('click', onClick);
   }
-  group?.appendChild(icon);
-  return icon;
+  return iconShape;
 }

@@ -56,10 +56,6 @@ export interface RowCellStyle extends BaseCellStyle {
    * 是否展示树状分层下的层级占位点
    */
   showTreeLeafNodeAlignDot?: boolean;
-  /**
-   * 树状结构下行头宽度
-   */
-  treeWidth?: number;
   // TODO: 下面三个命名不用加  tree 的前缀, 等平铺模式支持展开/收起可以共用 API
   /**
    * 树状结构下的全局收起展开属性，对应角头收起展开按钮
