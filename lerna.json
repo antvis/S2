@@ -31,8 +31,5 @@
       "pr(test)": ":white_check_mark: Test Case"
     },
     "cacheDir": ".changelog"
-  },
-  "packages": [
-    "packages/*"
-  ]
+  }
 }
