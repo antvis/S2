@@ -1,5 +1,14 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
-import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
+import {
+  get,
+  isBoolean,
+  isNil,
+  isNumber,
+  last,
+  maxBy,
+  set,
+  values,
+} from 'lodash';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -309,7 +318,7 @@ export class TableFacet extends BaseFacet {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
-    const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
+    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
     let currentCollIndex = 0;
 
     for (let i = 0; i < allNodes.length; i++) {
@@ -320,7 +329,7 @@ export class TableFacet extends BaseFacet {
         currentNode.x = preLeafNode.x + preLeafNode.width;
         currentNode.width = this.calculateColLeafNodesWidth(
           currentNode,
-          adaptiveColWitdth,
+          adaptiveColWidth,
         );
         layoutCoordinate(this.cfg, null, currentNode);
         colsHierarchy.width += currentNode.width;
@@ -394,13 +403,13 @@ export class TableFacet extends BaseFacet {
     const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
-    if (cellDraggedWidth) {
+    if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
-    if (!isNil(cellCustomWidth)) {
+    if (isNumber(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
@@ -471,7 +480,7 @@ export class TableFacet extends BaseFacet {
       );
 
       const customHeight = heightByField?.[String(index)];
-      if (customHeight) {
+      if (isNumber(customHeight)) {
         return customHeight;
       }
     }

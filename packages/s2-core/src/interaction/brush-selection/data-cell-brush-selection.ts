@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isEmpty, range } from 'lodash';
+import { isBoolean, isEmpty, range } from 'lodash';
 import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
@@ -8,7 +8,8 @@ import {
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
-import { updateRowColCells } from '../../utils';
+import { getInteractionCellsBySelectedCells } from '../../utils';
+import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -105,15 +106,13 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     interaction.changeState({
-      cells: selectedCellMetas,
+      cells: getInteractionCellsBySelectedCells(
+        selectedCellMetas,
+        this.spreadsheet,
+      ),
       stateName: InteractionStateName.SELECTED,
+      onUpdateCells: afterSelectDataCells,
     });
-
-    if (options.interaction.selectedCellHighlight) {
-      selectedCellMetas.forEach((meta) => {
-        updateRowColCells(meta as unknown as ViewMeta);
-      });
-    }
 
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedCellMetas);

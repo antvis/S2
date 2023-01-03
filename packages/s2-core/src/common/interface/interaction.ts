@@ -4,6 +4,7 @@ import type {
   CellTypes,
   InterceptType,
   ScrollbarPositionType,
+  InteractionCellSelectedHighlightType,
 } from '../constant';
 import type {
   BaseCell,
@@ -35,6 +36,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }
 
@@ -169,7 +171,7 @@ export interface InteractionOptions {
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // highlight col and row header for selected cell
-  selectedCellHighlight?: boolean;
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain';
   /** ***********CUSTOM INTERACTION HOOKS**************** */

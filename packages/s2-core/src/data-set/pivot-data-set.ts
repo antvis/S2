@@ -34,6 +34,7 @@ import type {
   PartDrillDownFieldInLevel,
   S2DataConfig,
   ViewMeta,
+  RowData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
@@ -56,6 +57,7 @@ import {
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
+import type { CellMeta } from '../common';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
@@ -617,5 +619,9 @@ export class PivotDataSet extends BaseDataSet {
   // 是否开启自定义度量组位置值
   private isCustomMeasuresPosition(customValueOrder?: number) {
     return isNumber(customValueOrder);
+  }
+
+  public getRowData(cell: CellMeta): RowData {
+    return this.getMultiData(cell.rowQuery);
   }
 }

@@ -185,10 +185,24 @@ const s2Options = {
 <img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600" />
 
 ```ts
+// selectedCellHighlight 的类型为  boolean | { rowHeader: boolean, colHeader: boolean, rowCells: boolean, colCells: boolean }
+// 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader (兼容未拓展类型前的设计)
   }
+};
+
+// 同时还可以分别配置 selectedCellHighlight 中 header 和 cells 的高亮
+const S2Options = {
+  interaction: {
+    selectedCellHighlight: {
+      rowHeader: true,  // 选中单元格时，高亮行头
+      colHeader: true,  // 选中单元格时，高亮列头
+      rowCells: false,  // 选中单元格时，高亮当前行 
+      colCells: false,  // 选中单元格时，高亮当前列
+    },
+  },
 };
 ```
 
