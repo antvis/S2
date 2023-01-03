@@ -313,7 +313,7 @@ describe('List Table Core Data Process', () => {
     s2.setOptions({
       interaction: {
         selectedCellHighlight: {
-          rowCells: true,
+          currentRow: true,
         },
       },
     });

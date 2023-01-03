@@ -878,8 +878,8 @@ function MainLayout() {
                         selectedCellHighlight = {
                           rowHeader: false,
                           colHeader: false,
-                          rowCells: false,
-                          colCells: false,
+                          currentCol: false,
+                          currentRow: false,
                         };
                         type.forEach((i) => {
                           selectedCellHighlight[i] = true;

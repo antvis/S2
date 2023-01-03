@@ -98,8 +98,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockRootInteraction.getSelectedCellHighlight = () => ({
       rowHeader: false,
       colHeader: false,
-      rowCells: false,
-      colCells: false,
+      currentRow: false,
+      currentCol: false,
     });
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
@@ -144,8 +144,8 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockRootInteraction.getSelectedCellHighlight = () => ({
       rowHeader: true,
       colHeader: true,
-      rowCells: false,
-      colCells: false,
+      currentRow: false,
+      currentCol: false,
     });
 
     brushSelectionInstance.getBrushRange = () => {
