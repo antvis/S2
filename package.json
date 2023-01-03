@@ -17,6 +17,7 @@
     "spreadsheet"
   ],
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "bootstrap": "yarn",
     "clean": "lerna clean -y && rimraf node_modules",
     "clean:lock-file": "rm -rf yarn.lock",
