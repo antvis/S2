@@ -159,7 +159,7 @@ export class CornerCell extends HeaderCell {
       return;
     }
 
-    const { hierarchyCollapse } = this.spreadsheet.options.style?.rowCell!;
+    const { collapseAll } = this.spreadsheet.options.style?.rowCell!;
     const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();
     const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
@@ -173,12 +173,12 @@ export class CornerCell extends HeaderCell {
         height: size,
         fill,
       },
-      isCollapsed: hierarchyCollapse,
+      isCollapsed: collapseAll,
       onClick: () => {
         this.spreadsheet.facet.resetScrollY();
         this.spreadsheet.emit(
           S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-          hierarchyCollapse!,
+          collapseAll!,
         );
       },
     });

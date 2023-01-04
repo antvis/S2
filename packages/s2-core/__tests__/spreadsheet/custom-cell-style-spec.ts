@@ -224,26 +224,6 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           expect(node.height).toEqual(20);
         });
       });
-
-      test('should get custom row cell style priority by rowCell.treeWidth > rowCell.width', () => {
-        const sheet = createPivotSheet({
-          ...s2Options,
-          hierarchyType: 'tree',
-          style: {
-            rowCell: {
-              treeWidth: 200,
-              width: 100,
-              height: 30,
-            },
-          },
-        });
-        sheet.render();
-
-        sheet.getRowLeafNodes().forEach((node) => {
-          expect(node.width).toEqual(200);
-          expect(node.height).toEqual(30);
-        });
-      });
     });
 
     describe('#ColCell', () => {

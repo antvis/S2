@@ -160,8 +160,8 @@ const getOptions = (): SheetComponentsProps['options'] => {
     },
     style: {
       rowCell: {
-        hierarchyCollapse: false,
-        treeWidth: 120,
+        collapseAll: false,
+        width: 120,
       },
       colCell: {
         widthByField: {},

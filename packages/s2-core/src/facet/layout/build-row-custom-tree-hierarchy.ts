@@ -1,4 +1,4 @@
-import { get, isEmpty } from 'lodash';
+import { includes, isEmpty } from 'lodash';
 import type { CustomTreeNode } from '../../common';
 import { EXTRA_FIELD } from '../../common/constant';
 import { generateId } from '../../utils/layout/generate-id';
@@ -17,8 +17,7 @@ import { layoutHierarchy } from './layout-hooks';
  */
 export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
   const { tree = [], level, parentNode, hierarchy, spreadsheet } = params;
-  const { collapsedRows, hierarchyCollapse } =
-    spreadsheet.options.style?.rowCell!;
+  const { collapsedFields, collapseAll } = spreadsheet.options.style?.rowCell!;
 
   const hiddenColumnsDetail =
     spreadsheet.store.get('hiddenColumnsDetail') || [];
@@ -39,9 +38,10 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const nodeId = generateId(parentNode.id, title!);
 
     const defaultCollapsed = collapsed ?? false;
-    const isCollapsedRow = get(collapsedRows, nodeId);
-    const isCollapsed =
-      isCollapsedRow ?? (hierarchyCollapse || defaultCollapsed);
+    const isCollapsedRow =
+      collapsedFields &&
+      (includes(collapsedFields, nodeId) || includes(collapsedFields, field));
+    const isCollapsed = isCollapsedRow ?? (collapseAll || defaultCollapsed);
 
     // TODO: 平铺模式支持 折叠/展开
     const isCollapsedNode = spreadsheet.isHierarchyTreeType() && isCollapsed;

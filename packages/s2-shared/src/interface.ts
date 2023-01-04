@@ -12,7 +12,7 @@ import type {
   DataCell,
   GEvent,
   HiddenColumnsInfo,
-  CollapsedRowsType,
+  CollapsedRowsParams,
   ResizeInfo,
   S2CellType,
   TooltipOperatorOptions,
@@ -152,9 +152,9 @@ export interface BaseSheetComponentProps<
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCellMounted?: (cell: S2CellType) => void;
-  onLayoutCollapseRows?: (data: CollapsedRowsType) => void;
-  onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
-  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
+  onLayoutCollapseRows?: (data: CollapsedRowsParams) => void;
+  onLayoutAfterCollapseRows?: (data: CollapsedRowsParams) => void;
+  onCollapseRowsAll?: (collapseAll: boolean) => void;
   onLayoutColsExpanded?: (node: Node) => void;
   onLayoutColsHidden?: (data: {
     currentHiddenColumnsInfo: HiddenColumnsInfo;

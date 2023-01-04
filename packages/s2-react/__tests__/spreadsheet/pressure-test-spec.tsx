@@ -89,7 +89,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
         height: 32,
       },
       rowCell: {
-        treeWidth: 100,
+        width: 100,
       },
       device: DeviceType.PC,
     },

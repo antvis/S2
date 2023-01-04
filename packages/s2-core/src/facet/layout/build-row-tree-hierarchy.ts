@@ -1,4 +1,4 @@
-import { isNumber } from 'lodash';
+import { includes, isNumber } from 'lodash';
 import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
@@ -41,7 +41,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     pivotMeta,
     spreadsheet,
   } = params;
-  const { collapsedRows, hierarchyCollapse, expandDepth } =
+  const { collapsedFields, collapseAll, expandDepth } =
     spreadsheet.options.style?.rowCell!;
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
@@ -104,19 +104,22 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         [currentField]: value,
       };
     }
-    const uniqueId = generateId(parentId, value);
+    const nodeId = generateId(parentId, value);
 
-    // 行头收起/展开配置优先级:collapseRows -> expandDepth -> hierarchyCollapse
-    // 优先从读取 collapseRows 中的特定 node 的值
+    // 行头收起/展开配置优先级:collapsedFields -> expandDepth -> collapseAll
+    // 优先从读取 collapsedFields 中的特定 node 的值
     // 如果没有特定配置，再查看是否配置了层级展开配置，
-    // 最后再降级到 hierarchyCollapse 中
-    const isCollapsedRow = collapsedRows?.[uniqueId];
-    // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回null，保证能正确降级到 hierarchyCollapse
+    // 最后再降级到 collapseAll 中
+    const isDefaultCollapsed =
+      collapsedFields &&
+      (includes(collapsedFields, nodeId) ||
+        includes(collapsedFields, currentField));
+    // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
     const isLevelCollapsed = isNumber(expandDepth) ? level > expandDepth : null;
-    const isCollapse = isCollapsedRow ?? isLevelCollapsed ?? hierarchyCollapse;
+    const isCollapsed = isDefaultCollapsed ?? isLevelCollapsed ?? collapseAll;
 
     const node = new Node({
-      id: uniqueId,
+      id: nodeId,
       value,
       level,
       parent: parentNode,
@@ -124,7 +127,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       isTotals,
       isGrandTotals,
       isSubTotals,
-      isCollapsed: isCollapse,
+      isCollapsed,
       hierarchy,
       query: nodeQuery,
       spreadsheet,
@@ -149,7 +152,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       hierarchy,
     );
 
-    if (!emptyChildren && !isCollapse && !isTotals && expandCurrentNode) {
+    if (!emptyChildren && !isCollapsed && !isTotals && expandCurrentNode) {
       buildRowTreeHierarchy({
         level: level + 1,
         currentField: pivotMetaValue.childField!,

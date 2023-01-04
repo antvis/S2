@@ -1,4 +1,4 @@
-import { includes, isBoolean } from 'lodash';
+import { includes } from 'lodash';
 import {
   getDefaultSeriesNumberText,
   type CustomHeaderFields,
@@ -30,7 +30,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
     spreadsheet,
   } = params;
-  const { collapsedCols, colCell } = spreadsheet.options.style!;
+  const { colCell } = spreadsheet.options.style!;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -85,10 +85,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     if (!uniqueId) {
       return;
     }
-    // TODO need merge with collapsedRows
-    const isCollapsed = isBoolean(collapsedCols?.[uniqueId])
-      ? collapsedCols?.[uniqueId]
-      : false;
+    // TODO need merge with collapsedFields
+    const isCollapsed = false;
     // create new header nodes
     const node = new Node({
       id: uniqueId,

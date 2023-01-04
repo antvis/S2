@@ -8,8 +8,9 @@ import {
   S2Event,
 } from '../common/constant';
 import type {
+  CollapsedRowsParams,
   Fields,
-  RowCellCollapseTreeRowsType,
+  RowCellCollapseTreeRowsParams,
   S2Options,
   SortMethod,
   SortParam,
@@ -135,37 +136,39 @@ export class PivotSheet extends SpreadSheet {
     );
   }
 
-  protected handleRowCellCollapseTreeRows(data: RowCellCollapseTreeRowsType) {
-    const { id, isCollapsed } = data;
-    const options: Partial<S2Options> = {
+  protected handleRowCellCollapseTreeRows(data: RowCellCollapseTreeRowsParams) {
+    const { id, isCollapsed, node } = data;
+    const { collapsedFields: defaultCollapsedFields = [] } =
+      this.options.style?.rowCell!;
+
+    const collapsedFields = isCollapsed
+      ? defaultCollapsedFields.concat(id)
+      : defaultCollapsedFields.filter((field) => field !== id);
+
+    const params: CollapsedRowsParams = {
+      collapsedFields,
+      node,
+    };
+
+    this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, params);
+    this.setOptions({
       style: {
         rowCell: {
-          collapsedRows: {
-            [id]: isCollapsed,
-          },
+          collapsedFields,
         },
       },
-    };
-    this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
-      collapsedRows: options.style?.rowCell?.collapsedRows!,
-      meta: data?.node,
     });
-
-    this.setOptions(options);
     this.render(false);
-    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-      collapsedRows: options.style?.rowCell?.collapsedRows!,
-      meta: data?.node,
-    });
+    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, params);
   }
 
   protected handleTreeRowsCollapseAll(isCollapsed: boolean | undefined) {
     const options: S2Options = {
       style: {
         rowCell: {
-          hierarchyCollapse: !isCollapsed,
-          collapsedRows: null,
-          expandDepth: null,
+          collapseAll: !isCollapsed,
+          collapsedFields: undefined,
+          expandDepth: undefined,
         },
       },
     };

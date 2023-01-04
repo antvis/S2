@@ -1,16 +1,15 @@
 import { getContainer } from 'tests/util/helpers';
-import { get } from 'lodash';
+import { CustomTreePivotDataSet } from '../../src';
+import type { HeaderCell } from '../../src/cell/header-cell';
 import { customRowGridSimpleFields } from '../data/custom-grid-simple-fields';
+import { customTreeNodes } from '../data/custom-tree-nodes';
+import { CustomGridData } from '../data/data-custom-grid';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import type { HeaderCell } from '../../src/cell/header-cell';
-import { customTreeNodes } from '../data/custom-tree-nodes';
-import { CustomGridData } from '../data/data-custom-grid';
-import { CustomTreePivotDataSet } from '../../src';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common/interface';
 
@@ -20,7 +19,7 @@ const s2Options: S2Options = {
   hierarchyType: 'tree',
   style: {
     rowCell: {
-      treeWidth: 400,
+      width: 400,
     },
   },
 };
@@ -34,6 +33,16 @@ describe('SpreadSheet Custom Tree Tests', () => {
       .getChildren()
       .map((cell: HeaderCell) => cell.getActualText());
   };
+
+  const mapRowNodes = (spreadsheet: SpreadSheet) =>
+    spreadsheet.getRowLeafNodes().map((node) => {
+      const iconName = (node.belongsCell as HeaderCell).getTreeIcon()?.config
+        .name;
+      return {
+        id: node.id,
+        iconName,
+      };
+    });
 
   const customRowDataCfg: S2DataConfig = {
     data: CustomGridData,
@@ -64,7 +73,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   test('should disable valueInCols', () => {
@@ -197,7 +206,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.setOptions({
       style: {
         rowCell: {
-          treeWidth: 50,
+          width: 50,
         },
       },
     });
@@ -210,7 +219,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expect(rowNodes.every((node) => node.width === 50)).toBeTruthy();
   });
 
-  test('should collapse node', () => {
+  test('should collapse node by collapsed', () => {
     s2.setDataCfg({
       ...customRowDataCfg,
       fields: {
@@ -225,14 +234,60 @@ describe('SpreadSheet Custom Tree Tests', () => {
     });
     s2.render(true);
 
-    const nodes = s2.facet.layoutResult.rowNodes.map((node) => {
-      const iconName = get(node.belongsCell, 'treeIcon.config.name');
-      return {
-        id: node.id,
-        iconName,
-      };
+    expect(mapRowNodes(s2)).toMatchSnapshot();
+  });
+
+  test('should collapse node by collapsed fields id', () => {
+    s2.setOptions({
+      style: {
+        rowCell: {
+          collapsedFields: ['root[&]自定义节点 a-1'],
+        },
+      },
+    });
+    s2.render(true);
+
+    expect(mapRowNodes(s2)).toMatchSnapshot();
+  });
+
+  test('should collapse node by collapsed field', () => {
+    s2.setOptions({
+      style: {
+        rowCell: {
+          collapsedFields: ['a-1-1'],
+        },
+      },
+    });
+    s2.render(true);
+
+    expect(mapRowNodes(s2)).toMatchSnapshot();
+  });
+
+  test('should collapse node by user collapsedFields first', () => {
+    const collapsedField = 'custom-node-1';
+
+    s2.setDataCfg({
+      ...customRowDataCfg,
+      fields: {
+        ...s2.dataSet.fields,
+        rows: customTreeNodes.map((node) => {
+          return {
+            ...node,
+            collapsed: node.field !== collapsedField,
+          };
+        }),
+      },
     });
 
-    expect(nodes).toMatchSnapshot();
+    s2.setOptions({
+      style: {
+        rowCell: {
+          collapsedFields: [collapsedField],
+        },
+      },
+    });
+    s2.render(true);
+
+    expect(mapRowNodes(s2)).toMatchSnapshot();
   });
 });

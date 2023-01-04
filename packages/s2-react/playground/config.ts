@@ -120,6 +120,7 @@ export const s2Options: SheetComponentOptions = {
     rowCell: {
       width: 160,
       height: 50,
+      expandDepth: 1,
     },
     colCell: {
       width: 140,

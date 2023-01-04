@@ -15,14 +15,12 @@ import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
 
-export type CollapsedRowsType = {
-  collapsedRows: Record<string, boolean> & {
-    [x: number]: any;
-  };
-  meta?: Node;
+export type CollapsedRowsParams = {
+  collapsedFields: string[];
+  node?: Node | null;
 };
 
-export type RowCellCollapseTreeRowsType = {
+export type RowCellCollapseTreeRowsParams = {
   id: string;
   isCollapsed: boolean;
   node: Node;
@@ -95,7 +93,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
-    data: RowCellCollapseTreeRowsType,
+    data: RowCellCollapseTreeRowsParams,
   ) => void;
   [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.ROW_CELL_BRUSH_SELECTION]: (cells: RowCell[]) => void;
@@ -129,9 +127,9 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
 
   /** ================ Layout ================  */
-  [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (hierarchyCollapse: boolean) => void;
+  [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsParams) => void;
+  [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsParams) => void;
+  [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (collapseAll: boolean) => void;
   [S2Event.LAYOUT_PAGINATION]: (data: {
     pageSize: number;
     pageCount: number;
