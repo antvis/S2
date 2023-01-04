@@ -1096,10 +1096,8 @@ function MainLayout() {
               onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}
               onColCellBrushSelection={logHandler('onColCellBrushSelection')}
               onRowCellBrushSelection={logHandler('onRowCellBrushSelection')}
-              onLayoutAfterCollapseRows={logHandler(
-                'onLayoutAfterCollapseRows',
-              )}
-              onCollapseRowsAll={logHandler('onCollapseRowsAll')}
+              onRowCellCollapsed={logHandler('onRowCellCollapsed')}
+              onRowCellAllCollapsed={logHandler('onRowCellAllCollapsed')}
             />
           )}
         </TabPane>

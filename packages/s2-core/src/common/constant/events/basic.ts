@@ -7,9 +7,13 @@ export enum S2Event {
   ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
-  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
   ROW_CELL_SCROLL = 'row-cell:scroll',
   ROW_CELL_BRUSH_SELECTION = 'row-cell:brush-selection',
+  ROW_CELL_COLLAPSED = 'row-cell:collapsed',
+  ROW_CELL_ALL_COLLAPSED = 'row-cell:all-collapsed',
+  // 内部用来通信的 event
+  ROW_CELL_COLLAPSED__PRIVATE = 'row-cell:collapsed__private',
+  ROW_CELL_ALL_COLLAPSED__PRIVATE = 'row-cell:all-collapsed__private',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
@@ -64,9 +68,6 @@ export enum S2Event {
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
   LAYOUT_PAGINATION = 'layout:pagination',
-  LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
-  LAYOUT_AFTER_COLLAPSE_ROWS = 'layout:after-collapsed-rows',
-  LAYOUT_TREE_ROWS_COLLAPSE_ALL = 'layout:toggle-collapse-all',
   LAYOUT_COLS_EXPANDED = 'layout:cols-expanded',
   LAYOUT_COLS_HIDDEN = 'layout:cols-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',

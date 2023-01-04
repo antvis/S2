@@ -31,7 +31,8 @@ order: 0
 | onRowCellMouseDown | 行头鼠标按下事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseUp | 行头鼠标放开事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
-| onRowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/docs/api/basic-class/node)}) => void |  |  |
+| onRowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapsedFields: `string[]`, node: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| onRowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
 | onRowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
 | onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -155,6 +156,8 @@ type SheetComponentOptions = S2Options<
 | rowCellMouseMove | 行头鼠标移动事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellCollapseTreeRows | 树状结构下点击行头收起展开按钮 | (params: {id: `number`; isCollapsed: `boolean`; node: [Node](/docs/api/basic-class/node)}) => void |  |  |
 | rowCellScroll | 行头单元格滚动事件 | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
+| rowCellCollapsed | 节点展开/收起事件回调 | ({ isCollapsed: `boolean`, collapsedFields: `string[]`, node: [Node](/docs/api/basic-class/node) ) => void; |  |  |
+| rowCellAllCollapsed | 节点全部展开/收起的事件回调 | (isCollapsed: boolean ) => void; |  |  |
 | colCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | colCellDoubleClick | 列头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -188,8 +191,6 @@ type SheetComponentOptions = S2Options<
 | layoutAfterHeaderLayout | 表头布局结构准备完成事件 | (layoutResult: [LayoutResult](/docs/api/general/S2Options/#layoutresult) ) => void; |  |  |
 | layoutPagination | 分页事件 | ({ pageSize: number; pageCount: number; total: number; current: number;} ) => void; |  |  |
 | layoutCellScroll | 单元格滚动事件 (**已废弃，请使用 `onScroll` 代替**) | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; |  |  |
-| layoutAfterCollapseRows | 树状模式下收起行头后的事件回调 | ({collapsedFields: `Record<string, boolean>`, meta: [Node](/docs/api/basic-class/node) ) => void; |  |  |
-| collapseRowsAll | 树状模式下收起全部的事件回调 | ({collapseAll: boolean ) => void; |  |  |
 | layoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({collapseAll: boolean ) => void; |  |  |
 | layoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调 | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; |  |  |
 | beforeRender | 开始 render 前的事件 | () => void; |  |  |

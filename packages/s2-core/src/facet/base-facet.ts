@@ -429,7 +429,7 @@ export abstract class BaseFacet {
     this.setScrollOffset({ scrollX: 0 });
   };
 
-  public resetRowScrollY = () => {
+  public resetRowScrollX = () => {
     this.setScrollOffset({ hRowScrollX: 0 });
   };
 

@@ -21,7 +21,8 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 | 名称         | 事件名                                | 描述                       |
 | ----------- | ------------------------------------ | ------------------------- |
-| 展开树状结构 | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | 树状结构下，行头单元格展开 |
+| 展开收起  | `S2Event.ROW_CELL_COLLAPSED` | 树状结构下，行头单元格展开/收起 |
+| 全部展开/收起  | `S2Event.ROW_CELL_ALL_COLLAPSED` | 树状结构下，行头单元格全部展开/收起 |
 | 点击         | `S2Event.ROW_CELL_CLICK`              | 行头单元格点击             |
 | 双击         | `S2Event.ROW_CELL_DOUBLE_CLICK`       | 行头单元格双击             |
 | 右键         | `S2Event.ROW_CELL_CONTEXT_MENU`       | 行头单元格右键             |
@@ -92,8 +93,6 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 表头布局完成                 | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                  |
 | 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
 | 分页                 | `S2Event.LAYOUT_PAGINATION`       | 分页事件           |
-| 收起行头                 | `S2Event.LAYOUT_COLLAPSE_ROWS`       |     树状模式下收起行头的事件回调           |
-| 收起行头后                 | `S2Event.LAYOUT_AFTER_COLLAPSE_ROWS`       | 树状模式下收起行头后的事件回调              |
 | 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发                  |
 | 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发                  |
 | 开始渲染                 | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()`                   |

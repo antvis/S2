@@ -20,8 +20,12 @@ const s2Options: SheetComponentsProps['options'] = {
 
 const S2EventCases: Array<{ event: S2Event; name: string }> = [
   {
-    event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-    name: 'onRowCellCollapseTreeRows',
+    event: S2Event.ROW_CELL_COLLAPSED,
+    name: 'onRowCellCollapsed',
+  },
+  {
+    event: S2Event.ROW_CELL_ALL_COLLAPSED,
+    name: 'onRowCellAllCollapsed',
   },
   {
     event: S2Event.DATA_CELL_BRUSH_SELECTION,
@@ -54,14 +58,6 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
   {
     event: S2Event.LAYOUT_PAGINATION,
     name: 'onLayoutPagination',
-  },
-  {
-    event: S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
-    name: 'onLayoutAfterCollapseRows',
-  },
-  {
-    event: S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-    name: 'onCollapseRowsAll',
   },
   {
     event: S2Event.LAYOUT_COLS_EXPANDED,
@@ -194,10 +190,6 @@ const cellEventCases = [
   {
     event: S2Event.ROW_CELL_MOUSE_MOVE,
     name: 'onRowCellMouseMove',
-  },
-  {
-    event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-    name: 'onRowCellCollapseTreeRows',
   },
   {
     event: S2Event.COL_CELL_HOVER,

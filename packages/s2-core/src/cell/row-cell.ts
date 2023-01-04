@@ -92,7 +92,7 @@ export class RowCell extends HeaderCell {
   }
 
   private onTreeIconClick() {
-    const { isCollapsed, id, hierarchy } = this.meta;
+    const { isCollapsed, hierarchy } = this.meta;
 
     if (isMobile()) {
       return;
@@ -116,9 +116,12 @@ export class RowCell extends HeaderCell {
       }
     }
 
-    this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
-      id,
-      isCollapsed: !isCollapsed,
+    this.emitCollapseEvent();
+  }
+
+  private emitCollapseEvent() {
+    this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, {
+      isCollapsed: !this.meta.isCollapsed,
       node: this.meta,
     });
   }
@@ -129,7 +132,7 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const { isCollapsed, id } = this.meta;
+    const { isCollapsed } = this.meta;
     const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fill } = this.getTextStyle();
     const { size } = this.getStyle()!.icon!;
@@ -157,11 +160,7 @@ export class RowCell extends HeaderCell {
     // in mobile, we use this cell
     if (isMobile()) {
       this.addEventListener('click', () => {
-        this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
-          id,
-          isCollapsed: !isCollapsed,
-          node: this.meta,
-        });
+        this.emitCollapseEvent();
       });
     }
   }

@@ -56,12 +56,9 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.ROW_CELL_MOUSE_DOWN, props.onRowCellMouseDown, s2);
   useCellEvent(S2Event.ROW_CELL_MOUSE_UP, props.onRowCellMouseUp, s2);
   useCellEvent(S2Event.ROW_CELL_MOUSE_MOVE, props.onRowCellMouseMove, s2);
-  useS2Event(
-    S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-    props.onRowCellCollapseTreeRows,
-    s2,
-  );
   useS2Event(S2Event.ROW_CELL_SCROLL, props.onRowCellScroll, s2);
+  useS2Event(S2Event.ROW_CELL_COLLAPSED, props.onRowCellCollapsed, s2);
+  useS2Event(S2Event.ROW_CELL_ALL_COLLAPSED, props.onRowCellAllCollapsed, s2);
 
   // ============== Col Cell ====================
   useCellEvent(S2Event.COL_CELL_HOVER, props.onColCellHover, s2);
@@ -148,16 +145,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
   useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);
-  useS2Event(
-    S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
-    props.onLayoutAfterCollapseRows,
-    s2,
-  );
-  useS2Event(
-    S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-    props.onCollapseRowsAll,
-    s2,
-  );
   useS2Event(S2Event.LAYOUT_COLS_EXPANDED, props.onLayoutColsExpanded, s2);
   useS2Event(S2Event.LAYOUT_COLS_HIDDEN, props.onLayoutColsHidden, s2);
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);

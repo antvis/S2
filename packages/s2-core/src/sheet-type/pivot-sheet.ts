@@ -8,10 +8,8 @@ import {
   S2Event,
 } from '../common/constant';
 import type {
-  CollapsedRowsParams,
   Fields,
-  RowCellCollapseTreeRowsParams,
-  S2Options,
+  RowCellCollapsedParams,
   SortMethod,
   SortParam,
   TooltipOperatorOptions,
@@ -123,34 +121,24 @@ export class PivotSheet extends SpreadSheet {
   }
 
   protected bindEvents() {
-    this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
-    this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
+    this.off(S2Event.ROW_CELL_COLLAPSED__PRIVATE);
+    this.off(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE);
+    this.on(S2Event.ROW_CELL_COLLAPSED__PRIVATE, this.handleRowCellCollapsed);
     this.on(
-      S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-      this.handleRowCellCollapseTreeRows,
-    );
-    // 收起、展开按钮
-    this.on(
-      S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-      this.handleTreeRowsCollapseAll,
+      S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
+      this.handleRowCellToggleCollapseAll,
     );
   }
 
-  protected handleRowCellCollapseTreeRows(data: RowCellCollapseTreeRowsParams) {
-    const { id, isCollapsed, node } = data;
+  protected handleRowCellCollapsed(data: RowCellCollapsedParams) {
+    const { isCollapsed, node } = data;
     const { collapsedFields: defaultCollapsedFields = [] } =
       this.options.style?.rowCell!;
 
     const collapsedFields = isCollapsed
-      ? defaultCollapsedFields.concat(id)
-      : defaultCollapsedFields.filter((field) => field !== id);
+      ? defaultCollapsedFields.concat(node.id)
+      : defaultCollapsedFields.filter((field) => field !== node.id);
 
-    const params: CollapsedRowsParams = {
-      collapsedFields,
-      node,
-    };
-
-    this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, params);
     this.setOptions({
       style: {
         rowCell: {
@@ -159,21 +147,25 @@ export class PivotSheet extends SpreadSheet {
       },
     });
     this.render(false);
-    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, params);
+    this.emit(S2Event.ROW_CELL_COLLAPSED, {
+      isCollapsed,
+      collapsedFields,
+      node,
+    });
   }
 
-  protected handleTreeRowsCollapseAll(isCollapsed: boolean | undefined) {
-    const options: S2Options = {
+  protected handleRowCellToggleCollapseAll(isCollapsed: boolean) {
+    this.setOptions({
       style: {
         rowCell: {
-          collapseAll: !isCollapsed,
+          collapseAll: isCollapsed,
           collapsedFields: undefined,
           expandDepth: undefined,
         },
       },
-    };
-    this.setOptions(options);
+    });
     this.render(false);
+    this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, isCollapsed);
   }
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {

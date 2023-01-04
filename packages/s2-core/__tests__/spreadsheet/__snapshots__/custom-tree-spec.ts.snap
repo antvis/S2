@@ -29,19 +29,6 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Custom Tree Tests should collapse node 1`] = `
-Array [
-  Object {
-    "iconName": "Plus",
-    "id": "root[&]自定义节点A",
-  },
-  Object {
-    "iconName": "Plus",
-    "id": "root[&]指标E",
-  },
-]
-`;
-
 exports[`SpreadSheet Custom Tree Tests should collapse node by collapsed 1`] = `
 Array [
   Object {

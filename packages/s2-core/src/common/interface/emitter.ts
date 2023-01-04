@@ -8,23 +8,13 @@ import type {
   CellScrollPosition,
   HiddenColumnsInfo,
   LayoutResult,
+  RowCellCollapsedParams,
   S2CellType,
 } from '../../common/interface';
 import type { FilterParam, SortParams, S2Style } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
-
-export type CollapsedRowsParams = {
-  collapsedFields: string[];
-  node?: Node | null;
-};
-
-export type RowCellCollapseTreeRowsParams = {
-  id: string;
-  isCollapsed: boolean;
-  node: Node;
-};
 
 type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -92,11 +82,12 @@ export interface EmitterType {
   [S2Event.ROW_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.ROW_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
-  [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
-    data: RowCellCollapseTreeRowsParams,
-  ) => void;
   [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.ROW_CELL_BRUSH_SELECTION]: (cells: RowCell[]) => void;
+  [S2Event.ROW_CELL_COLLAPSED]: (data: RowCellCollapsedParams) => void;
+  [S2Event.ROW_CELL_COLLAPSED__PRIVATE]: (data: RowCellCollapsedParams) => void;
+  [S2Event.ROW_CELL_ALL_COLLAPSED]: (isCollapsed: boolean) => void;
+  [S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE]: (isCollapsed: boolean) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -127,9 +118,6 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
 
   /** ================ Layout ================  */
-  [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsParams) => void;
-  [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsParams) => void;
-  [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (collapseAll: boolean) => void;
   [S2Event.LAYOUT_PAGINATION]: (data: {
     pageSize: number;
     pageCount: number;

@@ -13,7 +13,6 @@ import {
   getIcon,
   InterceptType,
   KEY_GROUP_PANEL_SCROLL,
-  type RowCellCollapseTreeRowsParams,
   type S2DataConfig,
   S2Event,
   type S2Options,
@@ -22,7 +21,7 @@ import {
   setLang,
   type LangType,
   type HiddenColumnsInfo,
-  type CollapsedRowsParams,
+  type RowCellCollapsedParams,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
 import { customMerge, getSafetyDataConfig } from '@/utils';
@@ -735,26 +734,24 @@ describe('PivotSheet Tests', () => {
       const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
 
       const collapseRows = jest.fn();
-      const afterCollapseRows = jest.fn();
 
-      s2.on(S2Event.LAYOUT_COLLAPSE_ROWS, collapseRows);
-      s2.on(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, afterCollapseRows);
+      s2.on(S2Event.ROW_CELL_COLLAPSED, collapseRows);
 
-      const treeRowType: RowCellCollapseTreeRowsParams = {
-        id: 'testId',
+      const node = { id: 'testId' } as unknown as Node;
+      const treeRowType: RowCellCollapsedParams = {
         isCollapsed: false,
-        node: null as unknown as Node,
+        node,
       };
 
-      const collapsedRowsType: CollapsedRowsParams = {
+      const collapsedRowsType: RowCellCollapsedParams = {
+        isCollapsed: false,
         collapsedFields: [],
-        node: null,
+        node,
       };
 
-      s2.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, treeRowType);
+      s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
-      expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
       expect(s2.options.style?.rowCell?.collapsedFields).toEqual(
         collapsedRowsType.collapsedFields,
       );
@@ -773,15 +770,15 @@ describe('PivotSheet Tests', () => {
 
       const isCollapsed = true;
 
-      s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
+      s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
-      expect(s2.options.style!.rowCell!.collapsedFields).toBeEmpty();
-      expect(s2.options.style!.rowCell!.collapseAll).toBeFalsy();
-      expect(renderSpy).toHaveBeenCalledTimes(1);
-
-      s2.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
       expect(s2.options.style!.rowCell!.collapsedFields).toBeEmpty();
       expect(s2.options.style!.rowCell!.collapseAll).toBeTruthy();
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+
+      s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
+      expect(s2.options.style!.rowCell!.collapsedFields).toBeEmpty();
+      expect(s2.options.style!.rowCell!.collapseAll).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -826,15 +823,15 @@ describe('PivotSheet Tests', () => {
       });
       tree.render();
 
-      const isCollapsed = true;
+      const isCollapsed = false;
 
-      tree.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, isCollapsed);
+      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
       expect(
         tree.facet.layoutResult.rowNodes.map(({ field }) => field),
       ).toEqual(['province', 'city', 'city']);
 
-      tree.emit(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, !isCollapsed);
+      tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
       expect(
         tree.facet.layoutResult.rowNodes.map(({ field }) => field),
       ).toEqual(['province']);

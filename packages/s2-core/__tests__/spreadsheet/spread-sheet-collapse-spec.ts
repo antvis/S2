@@ -1,6 +1,9 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
+import type { RowCellCollapsedParams } from '../../src/common/interface';
+import { S2Event } from './../../src/common/constant/events/basic';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import type { Node } from '@/facet/layout/node';
 
 describe('SpreadSheet Collapse/Expand Tests', () => {
   let container: HTMLElement;
@@ -37,7 +40,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   describe('Tree Mode', () => {
@@ -122,12 +125,12 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapsedFields: ['root[&]浙江[&]义务'],
+            collapsedFields: ['root[&]浙江[&]义乌'],
           },
         },
       });
 
-      s2.render(false);
+      s2.render();
 
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
               Array [
@@ -242,6 +245,38 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           "root[&]浙江",
         ]
       `);
+    });
+
+    test('should emit collapse event', () => {
+      const onCollapsed = jest.fn();
+
+      s2.on(S2Event.ROW_CELL_COLLAPSED, onCollapsed);
+
+      const node = { id: 'testId' } as unknown as Node;
+      const treeRowType: RowCellCollapsedParams = {
+        isCollapsed: false,
+        node,
+      };
+
+      const params: RowCellCollapsedParams = {
+        isCollapsed: false,
+        collapsedFields: [],
+        node,
+      };
+
+      s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
+
+      expect(onCollapsed).toHaveBeenCalledWith(params);
+    });
+
+    test('should emit collapse all event', () => {
+      const onCollapsed = jest.fn();
+
+      s2.on(S2Event.ROW_CELL_ALL_COLLAPSED, onCollapsed);
+
+      s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, true);
+
+      expect(onCollapsed).toHaveBeenCalledWith(true);
     });
   });
 });

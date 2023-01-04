@@ -12,7 +12,6 @@ import type {
   DataCell,
   GEvent,
   HiddenColumnsInfo,
-  CollapsedRowsParams,
   ResizeInfo,
   S2CellType,
   TooltipOperatorOptions,
@@ -90,11 +89,12 @@ export interface BaseSheetComponentProps<
   onRowCellMouseDown?: (data: TargetCellInfo) => void;
   onRowCellMouseUp?: (data: TargetCellInfo) => void;
   onRowCellMouseMove?: (data: TargetCellInfo) => void;
-  onRowCellCollapseTreeRows?: (params: {
+  onRowCellCollapsed?: (params: {
     id: number;
     isCollapsed: boolean;
     node: Node;
   }) => void;
+  onRowCellAllCollapsed?: (a: boolean) => void;
   onRowCellScroll?: (position: CellScrollPosition) => void;
 
   // ============== Col Cell ====================
@@ -152,8 +152,6 @@ export interface BaseSheetComponentProps<
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCellMounted?: (cell: S2CellType) => void;
-  onLayoutCollapseRows?: (data: CollapsedRowsParams) => void;
-  onLayoutAfterCollapseRows?: (data: CollapsedRowsParams) => void;
   onCollapseRowsAll?: (collapseAll: boolean) => void;
   onLayoutColsExpanded?: (node: Node) => void;
   onLayoutColsHidden?: (data: {
