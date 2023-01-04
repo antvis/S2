@@ -66,7 +66,7 @@ export interface RowCellStyle extends BaseCellStyle {
    * id 级别 ['root[&]浙江省']: 即 只有 浙江省 对应的节点才会被折叠
    * field 级别 ['city'] : 即 所有 city 对应的维值都会被折叠
    */
-  collapsedFields?: string[];
+  collapsedFields?: string[] | null;
   /**
    * 行头默认展开到第几层 (从 0 开始)
    */

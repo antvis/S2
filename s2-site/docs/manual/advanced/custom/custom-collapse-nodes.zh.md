@@ -31,7 +31,7 @@ const s2Options = {
 
 ## 折叠指定节点
 
-配置 `collapsedFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&]浙江省` 和 `city`
+配置 `collapsedFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&] 浙江省` 和 `city`
 
 ```ts
 const s2Options = {
@@ -45,13 +45,13 @@ const s2Options = {
 
 ### 根据节点对应维值 id
 
-指定 `id` 可以折叠指定节点，如配置为 `root[&]浙江省`, 那么 `浙江省` 下所有节点都会被折叠
+指定 `id` 可以折叠指定节点，如配置为 `root[&] 浙江省`, 那么 `浙江省` 下所有节点都会被折叠
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: ['root[&]浙江省'],
+      collapsedFields: ['root[&] 浙江省'],
     },
   },
 }
@@ -160,15 +160,15 @@ const s2Options = {
 }
 ```
 
-上面的代码预期是 `不折叠`, 如果想让 `collapseAll` 生效，可将 `collapsedFields` 和 `expandDepth` 置为 `null` 或 `undefined` 即可
+上面的代码预期是 `不折叠`, 如果想让 `collapseAll` 生效，可将 `collapsedFields` 和 `expandDepth` 置为 `null` 即可
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: undefined, // 无效
+      collapsedFields: null, // 无效
       collapseAll: true, // 生效
-      expandDepth: undefined, // 无效
+      expandDepth: null, // 无效
     },
   },
 }

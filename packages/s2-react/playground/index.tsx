@@ -845,7 +845,7 @@ function MainLayout() {
                         style: {
                           rowCell: {
                             collapseAll: checked,
-                            collapsedFields: undefined,
+                            collapsedFields: null,
                           },
                         },
                       });
@@ -861,6 +861,7 @@ function MainLayout() {
                       style: {
                         rowCell: {
                           collapseAll: false,
+                          expandDepth: null,
                           collapsedFields: checked ? ['root[&]浙江省'] : [],
                         },
                       },
@@ -876,6 +877,7 @@ function MainLayout() {
                       style: {
                         rowCell: {
                           collapseAll: false,
+                          expandDepth: null,
                           collapsedFields: checked ? ['city'] : [],
                         },
                       },
@@ -892,8 +894,9 @@ function MainLayout() {
                       updateOptions({
                         style: {
                           rowCell: {
+                            collapseAll: false,
                             expandDepth: level,
-                            collapsedFields: undefined,
+                            collapsedFields: null,
                           },
                         },
                       });

@@ -274,7 +274,7 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       s2.on(S2Event.ROW_CELL_ALL_COLLAPSED, onCollapsed);
 
-      s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, true);
+      s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, false);
 
       expect(onCollapsed).toHaveBeenCalledWith(true);
     });

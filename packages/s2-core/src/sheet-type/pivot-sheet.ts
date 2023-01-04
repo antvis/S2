@@ -135,13 +135,15 @@ export class PivotSheet extends SpreadSheet {
     const { collapsedFields: defaultCollapsedFields = [] } =
       this.options.style?.rowCell!;
 
-    const collapsedFields = isCollapsed
-      ? defaultCollapsedFields.concat(node.id)
-      : defaultCollapsedFields.filter((field) => field !== node.id);
+    const collapsedFields =
+      (isCollapsed
+        ? defaultCollapsedFields?.concat(node.id)
+        : defaultCollapsedFields?.filter((field) => field !== node.id)) || [];
 
     this.setOptions({
       style: {
         rowCell: {
+          collapseAll: false,
           collapsedFields,
         },
       },
@@ -155,17 +157,18 @@ export class PivotSheet extends SpreadSheet {
   }
 
   protected handleRowCellToggleCollapseAll(isCollapsed: boolean) {
+    const collapseAll = !isCollapsed;
     this.setOptions({
       style: {
         rowCell: {
-          collapseAll: isCollapsed,
-          collapsedFields: undefined,
-          expandDepth: undefined,
+          collapseAll,
+          collapsedFields: null,
+          expandDepth: null,
         },
       },
     });
     this.render(false);
-    this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, isCollapsed);
+    this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, collapseAll);
   }
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {

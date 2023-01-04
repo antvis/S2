@@ -178,7 +178,7 @@ export class CornerCell extends HeaderCell {
         this.spreadsheet.facet.resetScrollY();
         this.spreadsheet.emit(
           S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
-          !collapseAll,
+          collapseAll!,
         );
       },
     });

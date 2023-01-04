@@ -772,13 +772,13 @@ describe('PivotSheet Tests', () => {
 
       s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
-      expect(s2.options.style!.rowCell!.collapsedFields).toBeEmpty();
-      expect(s2.options.style!.rowCell!.collapseAll).toBeTruthy();
+      expect(s2.options.style!.rowCell!.collapsedFields).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapseAll).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
-      expect(s2.options.style!.rowCell!.collapsedFields).toBeEmpty();
-      expect(s2.options.style!.rowCell!.collapseAll).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapsedFields).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapseAll).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 
       renderSpy.mockRestore();
@@ -823,7 +823,7 @@ describe('PivotSheet Tests', () => {
       });
       tree.render();
 
-      const isCollapsed = false;
+      const isCollapsed = true;
 
       tree.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
