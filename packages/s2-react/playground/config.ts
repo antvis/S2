@@ -118,7 +118,6 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'tree',
   style: {
     rowCell: {
-      width: 160,
       height: 50,
     },
     colCell: {

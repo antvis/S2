@@ -94,7 +94,7 @@ export interface BaseSheetComponentProps<
     isCollapsed: boolean;
     node: Node;
   }) => void;
-  onRowCellAllCollapsed?: (a: boolean) => void;
+  onRowCellAllCollapsed?: (isCollapsed: boolean) => void;
   onRowCellScroll?: (position: CellScrollPosition) => void;
 
   // ============== Col Cell ====================
@@ -152,7 +152,6 @@ export interface BaseSheetComponentProps<
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCellMounted?: (cell: S2CellType) => void;
-  onCollapseRowsAll?: (collapseAll: boolean) => void;
   onLayoutColsExpanded?: (node: Node) => void;
   onLayoutColsHidden?: (data: {
     currentHiddenColumnsInfo: HiddenColumnsInfo;
