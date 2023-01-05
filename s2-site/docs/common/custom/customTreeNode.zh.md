@@ -3,7 +3,7 @@ title: 自定义树状结构
 order: 8
 ---
 
-## CustomTreeNode
+### CustomTreeNode
 
 功能描述：自定义树状结构的配置。查看 [详细说明](/zh/docs/manual/advanced/custom/custom-tree) 或 [例子](/zh/examples/custom/custom-tree#custom-tree)
 

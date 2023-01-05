@@ -9,7 +9,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2DataCfg: S2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
@@ -54,7 +54,7 @@ fetch(
     ReactDOM.render(
       <SheetComponent
         sheetType="strategy"
-        dataCfg={s2DataCfg}
+        dataCfg={s2DataConfig}
         options={s2Options}
       />,
       document.getElementById('container'),

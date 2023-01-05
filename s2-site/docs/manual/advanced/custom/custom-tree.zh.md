@@ -9,7 +9,7 @@ order: 2
 
 ```ts
 const s2Options = {
-  hierarchyType: 'customTree', // grid 平铺模式，tree 树状模式
+  hierarchyType: 'tree', // grid 平铺模式，tree 树状模式
 };
 ```
 
@@ -17,7 +17,7 @@ const s2Options = {
 
 ## 前提
 
-1、数值需要置于行头，即 `valueInCols: false` （无论配置与否都会强制置于行头，修改无效）
+1、数值需要**置于行头**，即 `valueInCols: false` （无论配置与否都会强制置于行头，修改无效）
 
 ```ts
 const s2DataConfig = {
@@ -27,15 +27,7 @@ const s2DataConfig = {
 }
 ```
 
-2、行头需要为空，即 `rows: []` （无论配置与否行头都会强制清空，修改无效）
-
-```ts
-const s2DataConfig = {
-  fields: {
-    rows: [],
-  }
-}
-```
+2、行头需要为**标准树状结构**, 见下文 [数据结构说明](#customtreenode)
 
 ## 配置
 
@@ -43,33 +35,33 @@ const s2DataConfig = {
 
 ```ts
 const s2Options = {
-  hierarchyType: 'customTree',
+  hierarchyType: 'tree',
 };
 
-const customTreeItems = [
+const customTreeNodes = [
   {
     title: '自定义节点 A',
-    key: 'custom-node-1',
+    field: 'custom-node-1',
     children: [
       {
         title: '指标 A',
-        key: 'measure-a',
+        field: 'measure-a',
       },
       {
         title: '指标 B',
-        key: 'measure-b',
+        field: 'measure-b',
       },
     ],
   },
   {
     title: '自定义节点 B',
-    key: 'custom-node-2',
+    field: 'custom-node-2',
     children: [
       {
         title: '自定义节点 D',
-        key: 'custom-node-2-1',
+        field: 'custom-node-2-1',
         collapsed: true,
-        children: [{ title: '指标 F', key: 'measure-f' }],
+        children: [{ title: '指标 F', field: 'measure-f' }],
       },
     ],
   },
@@ -77,17 +69,46 @@ const customTreeItems = [
 
 const s2DataConfig = {
   fields: {
-    rows: [],
+    rows: customTreeNodes,
     valueInCols: false,
     columns: ['type', 'sub_type'],
     values: [
       'measure-a',
     ],
-    customTreeItems
   },
   data,
 };
 
+```
+
+## 节点名称格式化
+
+默认使用 `customTreeNode.title` 作为节点名称，也可以使用通用的格式化函数处理特定节点
+
+```ts
+const s2DataConfig = {
+  ...,
+  meta: [
+    {
+      field: 'custom-node-1',
+      name: '名称 1'
+    }
+  ]
+};
+```
+
+## 节点展开/收起
+
+默认使用 `customTreeNode.collapsed` 作为展开/收起状态，也可以使用通用的配置，具体请查看 [自定义折叠/展开节点](/manual/advanced/custom/custom-collapse-nodes) 章节
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      collapsedFields: ['custom-node-1'],
+    },
+  },
+}
 ```
 
 ## 自定义角头文本
@@ -104,4 +125,4 @@ const s2Options = {
 
 ## 自定义树结构说明
 
-<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
+<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>

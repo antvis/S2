@@ -27,6 +27,7 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'tree',
+      // cornerText: '自定义角头标题',
     };
 
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);

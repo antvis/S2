@@ -11,6 +11,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   const s2Options: S2Options = {
     width: 600,
     height: 400,
+    devicePixelRatio: 2,
     hierarchyType: 'grid',
   };
 
