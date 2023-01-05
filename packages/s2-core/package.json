@@ -57,8 +57,7 @@
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
     "test:watch": "pnpm test -- --watch",
-    "tsc": "tsc --noEmit",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3",

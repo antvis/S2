@@ -53,8 +53,7 @@
     "test:ci": "pnpm test -- --maxWorkers=3",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
     "test:watch": "pnpm test -- --watch",
-    "tsc": "vue-tsc --noEmit",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "tsc": "vue-tsc --noEmit"
   },
   "peerDependencies": {
     "@antv/s2": ">=1.0.0",

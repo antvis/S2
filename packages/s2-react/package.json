@@ -54,8 +54,7 @@
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
     "test:live": "node ./scripts/test-live.mjs",
     "test:watch": "pnpm test -- --watch",
-    "tsc": "tsc --noEmit",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "tsc": "tsc --noEmit"
   },
   "peerDependencies": {
     "@ant-design/icons": ">=4.7.0",
