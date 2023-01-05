@@ -71,7 +71,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           labels: '🚨 test failed'
-
+  
       - name: Remove test failed label
         if: ${{ success() && github.event.pull_request.number != '' }}
         uses: actions-cool/issues-helper@main
