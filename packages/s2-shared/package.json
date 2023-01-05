@@ -11,7 +11,7 @@
     "clean": "rimraf temp",
     "build:dts": "tsc -p tsconfig.declaration.json",
     "test": "jest",
-    "test:coverage": "pnpm test --coverage",
+    "test:coverage": "pnpm test -- --coverage",
     "test:ci-coverage": "pnpm test:coverage --maxWorkers=3"
   },
   "devDependencies": {

@@ -269,6 +269,7 @@ importers:
       '@antv/s2': workspace:*
       '@antv/s2-shared': workspace:*
       '@testing-library/vue': ^6.6.1
+      '@vue/shared': ^3.2.45
       '@vue/tsconfig': ^0.1.3
       '@vueuse/core': ^9.5.0
       ant-design-vue: ^3.2.15
@@ -283,6 +284,7 @@ importers:
       '@antv/s2': link:../s2-core
       '@antv/s2-shared': link:../s2-shared
       '@testing-library/vue': 6.6.1_vue@3.2.45
+      '@vue/shared': 3.2.45
       '@vue/tsconfig': 0.1.3
       ant-design-vue: 3.2.15_vue@3.2.45
       vite-svg-loader: 3.6.0
