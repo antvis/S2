@@ -134,12 +134,24 @@ const fields = {
 虚拟例和普通字段一样，可以自定义格式化
 
 ```ts
-const meta = {
-  field: EXTRA_COLUMN_FIELD,
-  formatter: () => {
-    return '自定义名字'
-  }
-}
+const s2DataConfig = {
+  meta: [
+    // 日期列头 格式化
+    {
+      field: 'date',
+      name: '时间',
+      formatter: (value) => `${value}年`,
+    },
+    // 同环比名称（虚拟列头） 格式化
+    {
+      field: EXTRA_COLUMN_FIELD,
+      formatter: (value, data, meta) => {
+        console.log(data, meta);
+        return meta?.colIndex === 0 ? '自定义标题' : value;
+      },
+    },
+  ],
+};
 ```
 
 **⚠️ 注意项：**

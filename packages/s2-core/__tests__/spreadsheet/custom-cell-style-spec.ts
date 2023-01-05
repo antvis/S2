@@ -398,7 +398,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   });
 
   describe('TableSheet Custom Cell Style Tests', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       s2 = createTableSheet(s2Options, {
         useSimpleData: false,
       });

@@ -49,4 +49,4 @@ object **必选**,_default：null_ 功能描述： 行头单元格配置
 | expandDepth | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）,  设置为 `null` 时优先级最低 |  `number` |  | |
 | showTreeLeafNodeAlignDot | 树状模式下行头叶子节点是否显示层级占位点 | `boolean` | `false` |  |
 | withByField | 根据 `field` 设置每行的宽度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
-| heightByField | 根据 `field` 设置每行的高度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
+| heightByField | 根据 `field` 设置每行的高度。<br/> 1. 透视表：`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id. <br/> 2. 明细表：`field` 对应 行序号，从 `1` 开始。[查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |

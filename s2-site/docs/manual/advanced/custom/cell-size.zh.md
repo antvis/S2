@@ -92,6 +92,8 @@ const s2Options = {
 - **fieldId** （例：`root[&] 浙江省 [&] 杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
+<br/>
+
 ```ts
 const s2Options = {
   style: {
@@ -113,6 +115,26 @@ const s2Options = {
 <img src="https://gw.alipayobjects.com/zos/antfincdn/oaGLPvya5/bf8b9dfe-1873-4567-9c4b-400632cebbe3.png" alt="preview" width="600"/>
 
 <br/>
+
+明细表有一点特殊，由于只有列头，如果想给特定行设置不同的高度，则可以根据行序号调整
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      // 给第一行和第三行设置不同的高度
+      heightByField: {
+        '1': 130,
+        '3': 60,
+      },
+    },
+  },
+}
+```
+
+<br/>
+
+<Playground path='layout/custom/demo/custom-table-size.ts' rid='container' height='400'></playground>
 
 ## 调整树状模式下行头宽度
 
