@@ -121,7 +121,7 @@ const s2Options = {
 
 ## 默认展开层级
 
-表格默认展开全部节点，`collapsedFields` 需要预先知道对应的 节点 `id` 或 `field`, 当不关心具体节点，只关心节点层级时，可以使用 `expandDepth` 预发糖，配置展开层级 （从 0 开始）**优先级小于** `collapsedFields`, 详见 [配置优先级](#配置优先级)
+表格默认展开全部节点，`collapsedFields` 需要预先知道对应的 节点 `id` 或 `field`, 当不关心具体节点，只关心节点层级时，可以使用 `expandDepth` 语法糖，配置展开层级 （从 0 开始）**优先级小于** `collapsedFields`, 详见 [配置优先级](#配置优先级)
 
 ```ts
 const s2Options = {

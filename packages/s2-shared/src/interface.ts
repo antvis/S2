@@ -21,6 +21,7 @@ import type {
   Pagination,
   ViewMetaData,
   RawData,
+  RowCellCollapsedParams,
 } from '@antv/s2';
 
 // 是否开启自适应宽高，并指定容器
@@ -89,11 +90,7 @@ export interface BaseSheetComponentProps<
   onRowCellMouseDown?: (data: TargetCellInfo) => void;
   onRowCellMouseUp?: (data: TargetCellInfo) => void;
   onRowCellMouseMove?: (data: TargetCellInfo) => void;
-  onRowCellCollapsed?: (params: {
-    id: number;
-    isCollapsed: boolean;
-    node: Node;
-  }) => void;
+  onRowCellCollapsed?: (params: RowCellCollapsedParams) => void;
   onRowCellAllCollapsed?: (isCollapsed: boolean) => void;
   onRowCellScroll?: (position: CellScrollPosition) => void;
 
@@ -105,6 +102,11 @@ export interface BaseSheetComponentProps<
   onColCellMouseDown?: (data: TargetCellInfo) => void;
   onColCellMouseUp?: (data: TargetCellInfo) => void;
   onColCellMouseMove?: (data: TargetCellInfo) => void;
+  onColCellExpanded?: (node: Node) => void;
+  onColCellHidden?: (data: {
+    currentHiddenColumnsInfo: HiddenColumnsInfo;
+    hiddenColumnsDetail: HiddenColumnsInfo[];
+  }) => void;
 
   // ============== Data Cell ====================
   onDataCellHover?: (data: TargetCellInfo) => void;
@@ -152,11 +154,6 @@ export interface BaseSheetComponentProps<
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCellMounted?: (cell: S2CellType) => void;
-  onLayoutColsExpanded?: (node: Node) => void;
-  onLayoutColsHidden?: (data: {
-    currentHiddenColumnsInfo: HiddenColumnsInfo;
-    hiddenColumnsDetail: HiddenColumnsInfo[];
-  }) => void;
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
   onMounted?: (spreadsheet: SpreadSheet) => void;

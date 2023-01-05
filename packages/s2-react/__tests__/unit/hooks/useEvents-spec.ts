@@ -60,14 +60,6 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
     name: 'onLayoutPagination',
   },
   {
-    event: S2Event.LAYOUT_COLS_EXPANDED,
-    name: 'onLayoutColsExpanded',
-  },
-  {
-    event: S2Event.LAYOUT_COLS_HIDDEN,
-    name: 'onLayoutColsHidden',
-  },
-  {
     event: S2Event.LAYOUT_BEFORE_RENDER,
     name: 'onBeforeRender',
   },
@@ -214,6 +206,14 @@ const cellEventCases = [
   {
     event: S2Event.COL_CELL_MOUSE_MOVE,
     name: 'onColCellMouseMove',
+  },
+  {
+    event: S2Event.COL_CELL_EXPANDED,
+    name: 'onColCellExpanded',
+  },
+  {
+    event: S2Event.COL_CELL_HIDDEN,
+    name: 'onColCellHidden',
   },
   {
     event: S2Event.DATA_CELL_HOVER,

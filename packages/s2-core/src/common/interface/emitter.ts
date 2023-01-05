@@ -98,6 +98,11 @@ export interface EmitterType {
   [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.COL_CELL_BRUSH_SELECTION]: (cells: ColCell[]) => void;
+  [S2Event.COL_CELL_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.COL_CELL_HIDDEN]: (
+    currentHiddenColumnsInfo: HiddenColumnsInfo,
+    hiddenColumnsDetail: HiddenColumnsInfo[],
+  ) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
@@ -128,11 +133,6 @@ export interface EmitterType {
   /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
   [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;
-  [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
-  [S2Event.LAYOUT_COLS_HIDDEN]: (
-    currentHiddenColumnsInfo: HiddenColumnsInfo,
-    hiddenColumnsDetail: HiddenColumnsInfo[],
-  ) => void;
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
   [S2Event.LAYOUT_DESTROY]: () => void;

@@ -1086,8 +1086,8 @@ function MainLayout() {
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}
-              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
-              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              onColCellHidden={logHandler('onColCellHidden')}
+              onColCellExpanded={logHandler('onColCellExpanded')}
               onSelected={logHandler('onSelected')}
               onScroll={logHandler('onScroll')}
               onRowCellScroll={logHandler('onRowCellScroll')}

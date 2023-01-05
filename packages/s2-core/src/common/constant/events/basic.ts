@@ -24,6 +24,8 @@ export enum S2Event {
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
   COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
+  COL_CELL_EXPANDED = 'col-cell:expanded',
+  COL_CELL_HIDDEN = 'col-cell:hidden',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
@@ -68,11 +70,8 @@ export enum S2Event {
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
   LAYOUT_PAGINATION = 'layout:pagination',
-  LAYOUT_COLS_EXPANDED = 'layout:cols-expanded',
-  LAYOUT_COLS_HIDDEN = 'layout:cols-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
-
   LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */

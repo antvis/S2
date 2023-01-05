@@ -68,6 +68,8 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useCellEvent(S2Event.COL_CELL_MOUSE_DOWN, props.onColCellMouseDown, s2);
   useCellEvent(S2Event.COL_CELL_MOUSE_UP, props.onColCellMouseUp, s2);
   useCellEvent(S2Event.COL_CELL_MOUSE_MOVE, props.onColCellMouseMove, s2);
+  useS2Event(S2Event.COL_CELL_EXPANDED, props.onColCellExpanded, s2);
+  useS2Event(S2Event.COL_CELL_HIDDEN, props.onColCellHidden, s2);
 
   // ============== Data Cell ====================
   useCellEvent(S2Event.DATA_CELL_HOVER, props.onDataCellHover, s2);
@@ -145,8 +147,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
   useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);
-  useS2Event(S2Event.LAYOUT_COLS_EXPANDED, props.onLayoutColsExpanded, s2);
-  useS2Event(S2Event.LAYOUT_COLS_HIDDEN, props.onLayoutColsHidden, s2);
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);
   useS2Event(S2Event.LAYOUT_DESTROY, props.onDestroy, s2, true);

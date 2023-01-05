@@ -93,8 +93,8 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | 表头布局完成                 | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`     | 行头和列头布局完成后触发                  |
 | 单元格虚拟滚动                 | `S2Event.LAYOUT_CELL_SCROLL`       | 已废弃，请使用 `S2Event.GLOBAL_SCROLL` 替代               |
 | 分页                 | `S2Event.LAYOUT_PAGINATION`       | 分页事件           |
-| 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED`     | 列头展开时触发                  |
-| 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`       | 列头隐藏时触发                  |
+| 列头展开                 | `S2Event.COL_CELL_EXPANDED`     | 列头展开时触发                  |
+| 列头隐藏                 | `S2Event.COL_CELL_HIDDEN`       | 列头隐藏时触发                  |
 | 开始渲染                 | `S2Event.LAYOUT_BEFORE_RENDER`       | 开始 render 前的事件，即 `s2.render()`                   |
 | 渲染完成                 | `S2Event.LAYOUT_AFTER_RENDER`       | render 完成的事件，即 `s2.render()`                  |
 | 表格销毁                 | `S2Event.LAYOUT_DESTROY`       | 表格销毁后或 调用 `s2.destroy()` 触发                  |
