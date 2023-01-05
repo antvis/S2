@@ -218,10 +218,13 @@ importers:
   packages/s2-react:
     specifiers:
       '@ant-design/icons': ^4.7.0
+      '@antv/event-emitter': ^0.1.3
+      '@antv/g': ^5.15.2
       '@antv/s2': workspace:*
       '@antv/s2-shared': workspace:*
       '@testing-library/react': ^12.1.4
       '@testing-library/react-hooks': ^7.0.2
+      '@types/d3-dsv': ^3.0.0
       '@types/react': 17.0.52
       '@types/react-beautiful-dnd': ^13.1.2
       '@types/react-color': ^3.0.6
@@ -229,6 +232,7 @@ importers:
       ahooks: ^3.1.13
       antd: ^4.24.1
       classnames: ^2.3.1
+      d3-dsv: ^1.1.1
       lodash: ^4.17.21
       react: ^17.0.2
       react-beautiful-dnd: ^13.1.0
@@ -242,15 +246,19 @@ importers:
       react-beautiful-dnd: 13.1.1_sfoxds7t5ydpegc3knd667wn6m
     devDependencies:
       '@ant-design/icons': 4.8.0_sfoxds7t5ydpegc3knd667wn6m
+      '@antv/event-emitter': 0.1.3
+      '@antv/g': 5.15.8
       '@antv/s2': link:../s2-core
       '@antv/s2-shared': link:../s2-shared
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/react-hooks': 7.0.2_sfoxds7t5ydpegc3knd667wn6m
+      '@types/d3-dsv': 3.0.1
       '@types/react': 17.0.52
       '@types/react-beautiful-dnd': 13.1.3
       '@types/react-color': 3.0.6
       '@types/react-dom': 17.0.14
       antd: 4.24.7_sfoxds7t5ydpegc3knd667wn6m
+      d3-dsv: 1.2.0
       react: 17.0.2
       react-color: 2.19.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -352,7 +360,6 @@ packages:
 
   /@antv/event-emitter/0.1.3:
     resolution: {integrity: sha512-4ddpsiHN9Pd4UIlWuKVK1C4IiZIdbwQvy9i7DUSI3xNJ89FPUFt8lxDYj8GzzfdllV0NkJTRxnG+FvLk0llidg==}
-    dev: false
 
   /@antv/g-camera-api/1.0.24_@antv+g-lite@1.0.28:
     resolution: {integrity: sha512-GdjPwpFfDUBy2fUQYJmuuIMw4CZE6bEMOmH9k33o4znk1gWAKPeSah82mJimPo/LWVZeYu7bF8ote0EZXl5XVA==}
@@ -362,7 +369,6 @@ packages:
       '@antv/g-lite': 1.0.28
       '@antv/util': 3.3.2
       gl-matrix: 3.4.3
-    dev: false
 
   /@antv/g-canvas/1.9.24:
     resolution: {integrity: sha512-1d6qWrFp/wEFBROTQRsjkQN9Ohmyg1P7pGkCUJTAnfH8aaULSoD15kB44/SIbmchK814dXT0RixbnXoPMHDfqQ==}
@@ -386,7 +392,6 @@ packages:
       '@antv/g-lite': ^1.0.0
     dependencies:
       '@antv/g-lite': 1.0.28
-    dev: false
 
   /@antv/g-css-typed-om-api/1.0.24_@antv+g-lite@1.0.28:
     resolution: {integrity: sha512-yunoV3rjoIKJ3gk6ovMk1JpsiaZ4RWCng78hk55HAePm5Jl/Ww/V/gw7NtdH0R7+5CLxZXrny9L2q8vpQs165g==}
@@ -394,7 +399,6 @@ packages:
       '@antv/g-lite': ^1.0.0
     dependencies:
       '@antv/g-lite': 1.0.28
-    dev: false
 
   /@antv/g-dom-mutation-observer-api/1.0.24_@antv+g-lite@1.0.28:
     resolution: {integrity: sha512-qNpUiQzsCXnPWXjDGkba8iekX40h0ePjSZsOD35FbQ4EYv+csJ0+x9Rnt5iFxIaDnOPaKbnDdlJQo3dWoszLHQ==}
@@ -402,7 +406,6 @@ packages:
       '@antv/g-lite': ^1.0.0
     dependencies:
       '@antv/g-lite': 1.0.28
-    dev: false
 
   /@antv/g-lite/1.0.28:
     resolution: {integrity: sha512-Yiu3TJNy5RYd00AoutW8e+oZuWCgk+2kj6TpS3GbHHYMCY15EQsNO9Uu7YwirwQramvXLuNpqxTLkZ6746YF1w==}
@@ -415,14 +418,12 @@ packages:
       gl-matrix: 3.4.3
       rbush: 3.0.1
       tslib: 2.4.1
-    dev: false
 
   /@antv/g-math/1.7.35:
     resolution: {integrity: sha512-hacNVMH+J416Bi4Nw1euAbxf8mSDALaZahXa2D4/3WSlig6M+SFIQsmQCP4zw0pypjlUXesNNeHcZzF81wYiag==}
     dependencies:
       gl-matrix: 3.4.3
       tslib: 2.4.1
-    dev: false
 
   /@antv/g-plugin-canvas-path-generator/1.1.35:
     resolution: {integrity: sha512-AzLoBWDCH/R0TmSoRQlnKeql0YeV56cPZb7dtq4w4CVFtSXEZfIsi6mOxn9NQGMLEAZLIfrBWuU0TBwkg21adQ==}
@@ -492,7 +493,6 @@ packages:
     dependencies:
       '@antv/g-lite': 1.0.28
       '@antv/util': 3.3.2
-    dev: false
 
   /@antv/g/5.15.8:
     resolution: {integrity: sha512-2XmBC6UVpUlpBkKCOMNiKDl9CdPhGSDahHhzTw7L/+lEIflJSZyh9UsNUmpbkXafbeh8uEOVoPYBVKPDDNDidg==}
@@ -503,7 +503,6 @@ packages:
       '@antv/g-dom-mutation-observer-api': 1.0.24_@antv+g-lite@1.0.28
       '@antv/g-lite': 1.0.28
       '@antv/g-web-animations-api': 1.0.24_@antv+g-lite@1.0.28
-    dev: false
 
   /@antv/util/3.3.2:
     resolution: {integrity: sha512-uvyQxEOugdJs/FVlpz/+8pKxn70z8jEVydPqv+LI62cpIF7YDjVnMfNIsoMqwEoTzPUJ9TJalyLqZhT5rYez0w==}
@@ -511,7 +510,6 @@ packages:
       fast-deep-equal: 3.1.3
       gl-matrix: 3.4.3
       tslib: 2.4.1
-    dev: false
 
   /@babel/code-frame/7.12.11:
     resolution: {integrity: sha512-Zt1yodBx1UcyiePMSkWnU4hPqhwq7hGi2nFL1LeA3EUl+q2LQx16MISgJ0+z7dnmgvP9QtIleuETGOiOH1RcIw==}
@@ -3537,7 +3535,6 @@ packages:
 
   /@types/offscreencanvas/2019.7.0:
     resolution: {integrity: sha512-PGcyveRIpL1XIqK8eBsmRBt76eFgtzuPiSTyKHZxnGemp2yzGzWpjYKAfK3wIMiU7eH+851yEpiuP8JZerTmWg==}
-    dev: false
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -6086,7 +6083,6 @@ packages:
 
   /d3-color/1.4.1:
     resolution: {integrity: sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==}
-    dev: false
 
   /d3-dsv/1.2.0:
     resolution: {integrity: sha512-9yVlqvZcSOMhCYzniHE7EVUws7Fa1zgw+/EAV2BxJoG3ME19V6BQFBwI855XQDsxyOuG7NibqRMTtiF/Qup46g==}
@@ -8333,7 +8329,6 @@ packages:
 
   /gl-matrix/3.4.3:
     resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
-    dev: false
 
   /glob-base/0.3.0:
     resolution: {integrity: sha512-ab1S1g1EbO7YzauaJLkgLp7DZVAqj9M/dvKlTt8DkXA2tiOIcSMrlVI2J1RZyB5iJVccEscjGn+kpOG9788MHA==}
@@ -13336,7 +13331,6 @@ packages:
 
   /quickselect/2.0.0:
     resolution: {integrity: sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==}
-    dev: false
 
   /raf-schd/4.0.3:
     resolution: {integrity: sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ==}
@@ -13365,7 +13359,6 @@ packages:
     resolution: {integrity: sha512-XRaVO0YecOpEuIvbhbpTrZgoiI6xBlz6hnlr6EHhd+0x9ase6EmeN+hdwwUaJvLcsFFQ8iWVF1GAK1yB0BWi0w==}
     dependencies:
       quickselect: 2.0.0
-    dev: false
 
   /rc-align/4.0.15_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-wqJtVH60pka/nOX7/IspElA8gjPNQKIx/ZqJ6heATCkXpe1Zg4cPVrMD2vC96wjsFFL8WsmhPbx9tdMo1qqlIA==}
