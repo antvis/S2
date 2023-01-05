@@ -73,7 +73,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   afterEach(() => {
-    // s2.destroy();
+    s2.destroy();
   });
 
   test('should disable valueInCols', () => {
