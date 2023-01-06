@@ -1,3 +1,18 @@
+# [@antv/s2-v1.40.0](https://github.com/antvis/S2/compare/@antv/s2-v1.39.1...@antv/s2-v1.40.0) (2023-01-03)
+
+
+### Bug Fixes
+
+* bullet占位符绘制错误 ([#2022](https://github.com/antvis/S2/issues/2022)) ([c95c446](https://github.com/antvis/S2/commit/c95c446219216b190bf6af632104edd125a82ff3))
+* 修复单元格宽高为0时的无意义渲染 ([#2024](https://github.com/antvis/S2/issues/2024)) ([9f952fd](https://github.com/antvis/S2/commit/9f952fd4bfd280b657b589e5912399f89bb1f0ea))
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+* 子弹图为空时使用placeholder占位 ([#2010](https://github.com/antvis/S2/issues/2010)) ([8d28254](https://github.com/antvis/S2/commit/8d28254aa9aa29d9b2a9e24efb21f185cb5ffe4c))
+
 # [@antv/s2-v1.39.1](https://github.com/antvis/S2/compare/@antv/s2-v1.39.0...@antv/s2-v1.39.1) (2022-12-20)
 
 

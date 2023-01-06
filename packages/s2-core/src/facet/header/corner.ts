@@ -73,6 +73,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       seriesNumberWidth,
       s2,
     );
+
     return new CornerHeader({
       data: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
@@ -125,51 +126,51 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     // spreadsheet type tree mode
-    if (colsHierarchy?.sampleNodeForLastLevel) {
-      if (s2.isHierarchyTreeType()) {
-        const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
-        const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
+    if (s2.isHierarchyTreeType()) {
+      const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
+      const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
 
+      const cNode: Node = new Node({
+        key: '',
+        id: '',
+        // 角头过滤下钻的维度
+        value: rows
+          .filter((value) => !includes(drillFields, value))
+          .map((key: string): string => dataSet.getFieldName(key))
+          .join('/'),
+      });
+      cNode.x = position.x + seriesNumberWidth;
+      cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+      // cNode should subtract series width
+      cNode.width = width - seriesNumberWidth;
+      cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+      cNode.seriesNumberWidth = seriesNumberWidth;
+      cNode.isPivotMode = true;
+      cNode.spreadsheet = s2;
+      cNode.cornerType = CornerNodeType.Row;
+      cornerNodes.push(cNode);
+    } else {
+      // spreadsheet type grid mode
+      rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
+        const { colCfg } = s2.options.style;
+        const field = rows[rowNode.level];
         const cNode: Node = new Node({
-          key: '',
+          key: field,
           id: '',
-          // 角头过滤下钻的维度
-          value: rows
-            .filter((value) => !includes(drillFields, value))
-            .map((key: string): string => dataSet.getFieldName(key))
-            .join('/'),
+          value: dataSet.getFieldName(field),
         });
-        cNode.x = position.x + seriesNumberWidth;
-        cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
-        // cNode should subtract series width
-        cNode.width = width - seriesNumberWidth;
-        cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
-        cNode.seriesNumberWidth = seriesNumberWidth;
-        cNode.isPivotMode = true;
-        cNode.spreadsheet = s2;
-        cNode.cornerType = CornerNodeType.Row;
-        cornerNodes.push(cNode);
-      } else {
-        // spreadsheet type grid mode
-        rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-          const field = rows[rowNode.level];
-          const cNode: Node = new Node({
-            key: field,
-            id: '',
-            value: dataSet.getFieldName(field),
-          });
 
-          cNode.x = rowNode.x + seriesNumberWidth;
-          cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = rowNode.width;
-          cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
-          cNode.field = field;
-          cNode.isPivotMode = true;
-          cNode.cornerType = CornerNodeType.Row;
-          cNode.spreadsheet = s2;
-          cornerNodes.push(cNode);
-        });
-      }
+        cNode.x = rowNode.x + seriesNumberWidth;
+        cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y ?? 0;
+        cNode.width = rowNode.width;
+        cNode.height =
+          colsHierarchy?.sampleNodeForLastLevel?.height ?? colCfg?.height;
+        cNode.field = field;
+        cNode.isPivotMode = true;
+        cNode.cornerType = CornerNodeType.Row;
+        cNode.spreadsheet = s2;
+        cornerNodes.push(cNode);
+      });
     }
 
     colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
@@ -266,5 +267,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
       },
     });
+  }
+
+  public getNodes(): Node[] {
+    return this.headerConfig.data || [];
   }
 }

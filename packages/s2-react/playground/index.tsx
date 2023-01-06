@@ -60,6 +60,7 @@ import {
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
+  s2Options,
   sliderOptions,
   tableSheetDataCfg,
   tableSheetMultipleColumns,
@@ -834,7 +835,10 @@ function MainLayout() {
                     updateOptions({
                       style: {
                         colCfg: {
-                          height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
+                          height: checked
+                            ? 0
+                            : s2Options.style.colCfg.height ??
+                              DEFAULT_STYLE.colCfg.height,
                         },
                       },
                     });
