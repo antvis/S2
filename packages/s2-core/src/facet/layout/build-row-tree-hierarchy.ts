@@ -1,4 +1,4 @@
-import { includes, isNumber } from 'lodash';
+import { isNumber } from 'lodash';
 import { i18n, NODE_ID_SEPARATOR, ROOT_NODE_ID } from '../../common';
 import type { PivotDataSet } from '../../data-set';
 import type { SpreadSheet } from '../../sheet-type';
@@ -41,7 +41,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     pivotMeta,
     spreadsheet,
   } = params;
-  const { collapsedFields, collapseAll, expandDepth } =
+  const { collapseFields, collapseAll, expandDepth } =
     spreadsheet.options.style?.rowCell!;
   const { query, id: parentId } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length! <= level;
@@ -106,14 +106,12 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     }
     const nodeId = generateId(parentId, value);
 
-    // 行头收起/展开配置优先级:collapsedFields -> expandDepth -> collapseAll
-    // 优先从读取 collapsedFields 中的特定 node 的值
+    // 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
+    // 优先从读取 collapseFields 中的特定 node 的值
     // 如果没有特定配置，再查看是否配置了层级展开配置，
     // 最后再降级到 collapseAll 中
     const isDefaultCollapsed =
-      collapsedFields &&
-      (includes(collapsedFields, nodeId) ||
-        includes(collapsedFields, currentField));
+      collapseFields?.[nodeId] ?? collapseFields?.[currentField];
     // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
     const isLevelCollapsed = isNumber(expandDepth) ? level > expandDepth : null;
     const isCollapsed = isDefaultCollapsed ?? isLevelCollapsed ?? collapseAll;

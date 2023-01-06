@@ -85,7 +85,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     if (!uniqueId) {
       return;
     }
-    // TODO need merge with collapsedFields
+    // TODO need merge with collapseFields
     const isCollapsed = false;
     // create new header nodes
     const node = new Node({

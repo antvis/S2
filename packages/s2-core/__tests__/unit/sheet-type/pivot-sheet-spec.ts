@@ -745,15 +745,17 @@ describe('PivotSheet Tests', () => {
 
       const collapsedRowsType: RowCellCollapsedParams = {
         isCollapsed: false,
-        collapsedFields: [],
+        collapseFields: {
+          [node.id]: false,
+        },
         node,
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSED__PRIVATE, treeRowType);
 
       expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
-      expect(s2.options.style?.rowCell?.collapsedFields).toEqual(
-        collapsedRowsType.collapsedFields,
+      expect(s2.options.style?.rowCell?.collapseFields).toEqual(
+        collapsedRowsType.collapseFields,
       );
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
@@ -763,7 +765,7 @@ describe('PivotSheet Tests', () => {
     test('should collapse all rows with tree mode', () => {
       s2.setOptions({
         hierarchyType: 'tree',
-        style: { rowCell: { collapsedFields: undefined } },
+        style: { rowCell: { collapseFields: undefined } },
       });
 
       const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
@@ -772,12 +774,12 @@ describe('PivotSheet Tests', () => {
 
       s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, isCollapsed);
 
-      expect(s2.options.style!.rowCell!.collapsedFields).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapseFields).toBeFalsy();
       expect(s2.options.style!.rowCell!.collapseAll).toBeFalsy();
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       s2.emit(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE, !isCollapsed);
-      expect(s2.options.style!.rowCell!.collapsedFields).toBeFalsy();
+      expect(s2.options.style!.rowCell!.collapseFields).toBeFalsy();
       expect(s2.options.style!.rowCell!.collapseAll).toBeTruthy();
       expect(renderSpy).toHaveBeenCalledTimes(2);
 

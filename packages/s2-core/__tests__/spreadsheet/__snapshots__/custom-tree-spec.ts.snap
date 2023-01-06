@@ -76,27 +76,15 @@ Array [
 ]
 `;
 
-exports[`SpreadSheet Custom Tree Tests should collapse node by user collapsedFields first 1`] = `
+exports[`SpreadSheet Custom Tree Tests should collapse node by user collapseFields first 1`] = `
 Array [
   Object {
     "iconName": "Plus",
     "id": "root[&]自定义节点A",
   },
   Object {
-    "iconName": "Minus",
+    "iconName": "Plus",
     "id": "root[&]指标E",
-  },
-  Object {
-    "iconName": undefined,
-    "id": "root[&]指标E[&]自定义节点C",
-  },
-  Object {
-    "iconName": "Minus",
-    "id": "root[&]指标E[&]自定义节点D",
-  },
-  Object {
-    "iconName": undefined,
-    "id": "root[&]指标E[&]自定义节点D[&]指标F",
   },
 ]
 `;

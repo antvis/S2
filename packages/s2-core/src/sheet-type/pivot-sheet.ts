@@ -10,6 +10,7 @@ import {
 import type {
   Fields,
   RowCellCollapsedParams,
+  RowCellStyle,
   SortMethod,
   SortParam,
   TooltipOperatorOptions,
@@ -132,26 +133,26 @@ export class PivotSheet extends SpreadSheet {
 
   protected handleRowCellCollapsed(data: RowCellCollapsedParams) {
     const { isCollapsed, node } = data;
-    const { collapsedFields: defaultCollapsedFields = [] } =
+    const { collapseFields: defaultCollapsedFields } =
       this.options.style?.rowCell!;
 
-    const collapsedFields =
-      (isCollapsed
-        ? defaultCollapsedFields?.concat(node.id)
-        : defaultCollapsedFields?.filter((field) => field !== node.id)) || [];
+    const collapseFields: RowCellStyle['collapseFields'] = {
+      ...defaultCollapsedFields,
+      [node.id]: isCollapsed,
+    };
 
     this.setOptions({
       style: {
         rowCell: {
           collapseAll: false,
-          collapsedFields,
+          collapseFields,
         },
       },
     });
     this.render(false);
     this.emit(S2Event.ROW_CELL_COLLAPSED, {
       isCollapsed,
-      collapsedFields,
+      collapseFields,
       node,
     });
   }
@@ -162,7 +163,7 @@ export class PivotSheet extends SpreadSheet {
       style: {
         rowCell: {
           collapseAll,
-          collapsedFields: null,
+          collapseFields: null,
           expandDepth: null,
         },
       },

@@ -105,7 +105,10 @@ const s2DataConfig = {
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: ['custom-node-1'],
+      collapseFields: {
+        'custom-node-1': true,
+        'custom-node-2': false,
+      },
     },
   },
 }

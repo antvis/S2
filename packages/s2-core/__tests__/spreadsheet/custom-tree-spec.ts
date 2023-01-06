@@ -73,7 +73,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   afterEach(() => {
-    s2.destroy();
+    // s2.destroy();
   });
 
   test('should disable valueInCols', () => {
@@ -241,7 +241,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.setOptions({
       style: {
         rowCell: {
-          collapsedFields: ['root[&]自定义节点 a-1'],
+          collapseFields: {
+            'root[&]自定义节点 a-1': true,
+            'root[&]自定义节点 a-2': false,
+          },
         },
       },
     });
@@ -254,7 +257,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.setOptions({
       style: {
         rowCell: {
-          collapsedFields: ['a-1-1'],
+          collapseFields: { 'a-1-1': true, 'a-1-2': false },
         },
       },
     });
@@ -263,7 +266,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
     expect(mapRowNodes(s2)).toMatchSnapshot();
   });
 
-  test('should collapse node by user collapsedFields first', () => {
+  test('should collapse node by user collapseFields first', () => {
     const collapsedField = 'custom-node-1';
 
     s2.setDataCfg({
@@ -282,7 +285,9 @@ describe('SpreadSheet Custom Tree Tests', () => {
     s2.setOptions({
       style: {
         rowCell: {
-          collapsedFields: [collapsedField],
+          collapseFields: {
+            [collapsedField]: true,
+          },
         },
       },
     });

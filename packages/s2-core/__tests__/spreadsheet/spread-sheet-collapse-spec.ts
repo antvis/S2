@@ -107,7 +107,9 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapsedFields: ['province'],
+            collapseFields: {
+              province: true,
+            },
           },
         },
       });
@@ -125,7 +127,9 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapsedFields: ['root[&]浙江[&]义乌'],
+            collapseFields: {
+              'root[&]浙江[&]义乌': true,
+            },
           },
         },
       });
@@ -142,12 +146,14 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use collapsedFields first', () => {
+    test('should collapse use collapseFields first', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapseAll: true,
-            collapsedFields: ['city'],
+            collapseAll: false,
+            collapseFields: {
+              city: true,
+            },
           },
         },
       });
@@ -185,13 +191,15 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should collapse use collapsedFields first when contain collapseAll and expandDepth config', () => {
+    test('should collapse use collapseFields first when contain collapseAll and expandDepth config', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapseAll: true,
-            collapsedFields: ['root[&]浙江[&]杭州'],
-            expandDepth: -1,
+            collapseAll: false,
+            collapseFields: {
+              'root[&]浙江[&]杭州': true,
+            },
+            expandDepth: null,
           },
         },
       });
@@ -207,12 +215,14 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
           `);
     });
 
-    test('should not collapse all nodes if collapseAll is true and collapsedFields is empty', () => {
+    test('should collapse use collapseFields by node id first', () => {
       s2.setOptions({
         style: {
           rowCell: {
-            collapseAll: true,
-            collapsedFields: [],
+            collapseFields: {
+              province: false,
+              'root[&]浙江': true,
+            },
           },
         },
       });
@@ -221,20 +231,16 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
       expect(mapNodes(s2)).toMatchInlineSnapshot(`
         Array [
           "root[&]浙江",
-          "root[&]浙江[&]义乌",
-          "root[&]浙江[&]义乌[&]笔",
-          "root[&]浙江[&]杭州",
-          "root[&]浙江[&]杭州[&]笔",
         ]
       `);
     });
 
-    test('should collapse all nodes if collapseAll is true and collapsedFields is undefined', () => {
+    test('should collapse all nodes if collapseAll is true and collapseFields is undefined', () => {
       s2.setOptions({
         style: {
           rowCell: {
             collapseAll: true,
-            collapsedFields: undefined,
+            collapseFields: undefined,
           },
         },
       });
@@ -260,7 +266,9 @@ describe('SpreadSheet Collapse/Expand Tests', () => {
 
       const params: RowCellCollapsedParams = {
         isCollapsed: false,
-        collapsedFields: [],
+        collapseFields: {
+          [node.id]: false,
+        },
         node,
       };
 

@@ -135,7 +135,7 @@ export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
 
 export function renderTreeIcon(options: {
   group: Group;
-  isCollapsed: boolean | undefined;
+  isCollapsed?: boolean | null;
   iconCfg: Omit<GuiIconCfg, 'name'>;
   onClick?: () => void;
 }) {

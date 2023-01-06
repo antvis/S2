@@ -44,7 +44,7 @@ object **必选**,_default：null_ 功能描述： 行头单元格配置
 | --- | --- | --- | --- | ---  |
 | width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` | 平铺：`96`, 树状：`120` |  |
 | height | 行单元格高度，可根据当前行头节点动态设置 | `number \| (rowNode: Node) => number` | 30 |  |
-| collapsedFields | 树状模式下行头自定义折叠节点。<br> 支持 id (`collapsedFields: ['root[&] 行头维度值']`) 和 维度 field (`collapsedFields: ['city']`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 [查看 demo](/examples/basic/pivot#tree) | `string[]` |  | |
+| collapseFields | 树状模式下行头自定义折叠节点。<br> 支持 id (`'root[&] 行头维度值'`) 和 维度 field (`'city'`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 [查看 demo](/examples/basic/pivot#tree) | `Record<string, boolean>` |  | |
 | collapseAll | 在树状结构模式下行头是否默认收起全部。 | `boolean` |   `false` | |
 | expandDepth | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）,  设置为 `null` 时优先级最低 |  `number` |  | |
 | showTreeLeafNodeAlignDot | 树状模式下行头叶子节点是否显示层级占位点 | `boolean` | `false` |  |

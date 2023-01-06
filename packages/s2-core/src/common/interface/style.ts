@@ -59,14 +59,14 @@ export interface RowCellStyle extends BaseCellStyle {
   /**
    * 收起所有 (对应角头收起展开按钮)
    */
-  collapseAll?: boolean;
+  collapseAll?: boolean | null;
   /**
    * 折叠节点
    * 优先级大于 collapseAll 和 expandDepth
-   * id 级别 ['root[&]浙江省']: 即 只有 浙江省 对应的节点才会被折叠
-   * field 级别 ['city'] : 即 所有 city 对应的维值都会被折叠
+   * id 级别: { ['root[&]浙江省']: true, ['root[&]河南省']: false } 即 只有 浙江省 对应的节点才会被折叠
+   * field 级别: { city: true, type: false } : 即 所有 city 对应的维值都会被折叠
    */
-  collapsedFields?: string[] | null;
+  collapseFields?: Record<string, boolean> | null;
   /**
    * 行头默认展开到第几层 (从 0 开始)
    */

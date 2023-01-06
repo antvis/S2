@@ -17,7 +17,7 @@ const s2Options = {
   style: {
     rowCell: {
       // 折叠节点
-      collapsedFields: [],
+      collapseFields: {},
       // 展开层级
       expandDepth: 0,
       // 折叠所有
@@ -31,13 +31,13 @@ const s2Options = {
 
 ## 折叠指定节点
 
-配置 `collapsedFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&] 浙江省` 和 `city`
+配置 `collapseFields`, 支持 `维值 id` 和 `维度 field` 两种方式，即可以是 `root[&] 浙江省` 和 `city`
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: [],
+      collapseFields: {},
     },
   },
 }
@@ -51,7 +51,7 @@ const s2Options = {
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: ['root[&] 浙江省'],
+      collapseFields: { 'root[&] 浙江省': true },
     },
   },
 }
@@ -65,7 +65,7 @@ const s2Options = {
 
 ### 根据节点对应维度 field
 
-指定 `field` 可以折叠节点对应维度的节点，如行头配置了 `province`, `city` 两个维度，`collapsedFields` 配置为 `['city']`, 那么所有城市都会被折叠
+指定 `field` 可以折叠节点对应维度的节点，如行头配置了 `province`, `city` 两个维度，`collapseFields` 配置为 `['city']`, 那么所有城市都会被折叠
 
 ```ts
 const s2DataConfig = {
@@ -76,7 +76,7 @@ const s2DataConfig = {
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: ['city'],
+      collapseFields: { province: false, city: true }
     },
   },
 }
@@ -101,7 +101,7 @@ const s2Options = {
 
 ## 折叠所有节点
 
-配置 `collapseAll` 即可，**优先级小于** `collapsedFields`, 详见 [配置优先级](#配置优先级)
+配置 `collapseAll` 即可，**优先级小于** `collapseFields`, 详见 [配置优先级](#配置优先级)
 
 ```ts
 const s2Options = {
@@ -121,7 +121,7 @@ const s2Options = {
 
 ## 默认展开层级
 
-表格默认展开全部节点，`collapsedFields` 需要预先知道对应的 节点 `id` 或 `field`, 当不关心具体节点，只关心节点层级时，可以使用 `expandDepth` 语法糖，配置展开层级 （从 0 开始）**优先级小于** `collapsedFields`, 详见 [配置优先级](#配置优先级)
+表格默认展开全部节点，`collapseFields` 需要预先知道对应的 节点 `id` 或 `field`, 当不关心具体节点，只关心节点层级时，可以使用 `expandDepth` 语法糖，配置展开层级 （从 0 开始）**优先级小于** `collapseFields`, 详见 [配置优先级](#配置优先级)
 
 ```ts
 const s2Options = {
@@ -144,29 +144,15 @@ const s2Options = {
 
 S2 提供了三个 折叠/展开相关配置，已满足不同的使用场景，优先级如下：
 
-`collapsedFields` > `expandDepth` > `collapseAll`
+`collapseFields` > `expandDepth` > `collapseAll`
 
-为什么有优先级？举个例子，比如同时配置了这三个属性，那么预期到底是 `折叠所有`, 还是 `不折叠`, 还是 `展开两层` ?
-
-```ts
-const s2Options = {
-  style: {
-    rowCell: {
-      collapsedFields: [], // 生效
-      collapseAll: true, // 无效
-      expandDepth: 1, // 无效
-    },
-  },
-}
-```
-
-上面的代码预期是 `不折叠`, 如果想让 `collapseAll` 生效，可将 `collapsedFields` 和 `expandDepth` 置为 `null` 即可
+如果想让 `collapseAll` 生效，可将 `collapseFields` 和 `expandDepth` 置为 `null` 即可
 
 ```ts
 const s2Options = {
   style: {
     rowCell: {
-      collapsedFields: null, // 无效
+      collapseFields: null, // 无效
       collapseAll: true, // 生效
       expandDepth: null, // 无效
     },

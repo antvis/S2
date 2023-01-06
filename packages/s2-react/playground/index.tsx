@@ -839,13 +839,14 @@ function MainLayout() {
                     checkedChildren="收起所有"
                     unCheckedChildren="展开所有"
                     disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.style?.rowCell?.collapseAll}
+                    checked={mergedOptions.style?.rowCell?.collapseAll!}
                     onChange={(checked) => {
                       updateOptions({
                         style: {
                           rowCell: {
                             collapseAll: checked,
-                            collapsedFields: null,
+                            collapseFields: null,
+                            expandDepth: null,
                           },
                         },
                       });
@@ -860,25 +861,31 @@ function MainLayout() {
                     updateOptions({
                       style: {
                         rowCell: {
-                          collapseAll: false,
+                          collapseAll: null,
                           expandDepth: null,
-                          collapsedFields: checked ? ['root[&]浙江省'] : [],
+                          collapseFields: {
+                            'root[&]浙江省': checked,
+                          },
                         },
                       },
                     });
                   }}
                 />
                 <Switch
-                  checkedChildren="折叠 city 所有维值"
-                  unCheckedChildren="展开 city 所有维值"
+                  checkedChildren="折叠省份(province) 所有维值"
+                  unCheckedChildren="展开省份(province) 所有维值"
                   disabled={mergedOptions.hierarchyType !== 'tree'}
                   onChange={(checked) => {
                     updateOptions({
                       style: {
                         rowCell: {
-                          collapseAll: false,
+                          collapseAll: null,
                           expandDepth: null,
-                          collapsedFields: checked ? ['city'] : [],
+                          collapseFields: {
+                            'root[&]浙江省': checked,
+                            'root[&]四川省': checked,
+                            province: checked,
+                          },
                         },
                       },
                     });
@@ -896,7 +903,7 @@ function MainLayout() {
                           rowCell: {
                             collapseAll: false,
                             expandDepth: level,
-                            collapsedFields: null,
+                            collapseFields: null,
                           },
                         },
                       });

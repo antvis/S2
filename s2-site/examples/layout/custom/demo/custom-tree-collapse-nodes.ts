@@ -14,15 +14,15 @@ fetch(
       style: {
         rowCell: {
           // 方式1: 折叠浙江省下面所有的城市 (根据节点 id)
-          collapsedFields: ['root[&]浙江省'],
+          collapseFields: { 'root[&]浙江省': true },
 
           // 方式2: 折叠所有城市 (根据维度, 即 (S2DataConfig.fields.rows 配置的维度))
-          // collapsedFields: ['city'],
+          // collapseFields: { city: true },
 
-          // 方式3: 配置展开层级 (优先级小于 collapsedFields, 当 collapsedFields 未配置, 或为 null 时有效)
+          // 方式3: 配置展开层级 (优先级小于 collapseFields, 当 collapseFields 未配置, 或为 null 时有效)
           // expandDepth: 0,
 
-          // 方式4: 折叠所有 (优先级小于 collapsedFields, expandDepth,  当 collapsedFields 和 expandDepth 未配置, 或为 null 时有效)
+          // 方式4: 折叠所有 (优先级小于 collapseFields, expandDepth,  当 collapseFields 和 expandDepth 未配置, 或为 null 时有效)
           // collapseAll: true,
         },
       },
