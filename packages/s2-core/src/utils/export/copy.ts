@@ -735,9 +735,9 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
-    const { rowCells } = spreadsheet.interaction.getSelectedCellHighlight();
+    const { currentRow } = spreadsheet.interaction.getSelectedCellHighlight();
 
-    if (rowCells) {
+    if (currentRow) {
       const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
         spreadsheet.dataSet.getRowData(cell),
       );

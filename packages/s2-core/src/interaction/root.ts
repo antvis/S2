@@ -576,23 +576,23 @@ export class RootInteraction {
       return {
         rowHeader: selectedCellHighlight,
         colHeader: selectedCellHighlight,
-        rowCells: false,
-        colCells: false,
+        currentRow: false,
+        currentCol: false,
       };
     }
 
     const {
       rowHeader = false,
       colHeader = false,
-      rowCells = false,
-      colCells = false,
+      currentRow = false,
+      currentCol = false,
     } = selectedCellHighlight ?? {};
 
     return {
       rowHeader,
       colHeader,
-      rowCells,
-      colCells,
+      currentRow,
+      currentCol,
     };
   }
 }
