@@ -17,7 +17,7 @@
     "preinstall": "npx only-allow pnpm",
     "bootstrap": "pnpm install",
     "prepare": "husky install",
-    "clean": "find . -name 'node_modules' -type d -exec rm -rf '{}' +",
+    "clean": "pnpm -r --parallel exec rimraf node_modules && rimraf node_modules",
     "clean:lock-file": "rm -rf pnpm-lock.yaml",
     "update:deps": "pnpm update -i",
     "core:start": "pnpm --filter @antv/s2 start",
