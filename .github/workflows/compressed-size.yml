@@ -28,4 +28,4 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/**/dist/**/*.{js,css}"
         build-script: "build:umd"
-        # clean-script: "clean:lock-file"
+        clean-script: "clean"
