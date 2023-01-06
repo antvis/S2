@@ -8,7 +8,7 @@ import {
 } from '@antv/s2';
 import type { SheetType, Adaptive } from '@antv/s2-shared';
 import '@antv/s2-react/dist/style.min.css';
-import { concat, merge } from 'lodash';
+import { concat, isEmpty, merge } from 'lodash';
 import { sheetDataCfg, subTotalsDimensions } from './config';
 import './index.less';
 
@@ -18,7 +18,7 @@ type Props = {
 
 export const CustomSheet: React.FC<Props> = (props) => {
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
-  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(sheetDataCfg);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>();
   const [options, setOptions] = React.useState<SheetComponentOptions>();
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
     name: 'default',
@@ -29,14 +29,7 @@ export const CustomSheet: React.FC<Props> = (props) => {
 
   const { sheetConfig } = props;
 
-  useEffect(() => {
-    if (!sheetConfig?.sheetType) {
-      return;
-    }
-    setSheetType(sheetConfig?.sheetType);
-  }, [sheetConfig?.sheetType]);
-
-  useEffect(() => {
+  const getExampleDataCfg = () => {
     const { rows, columns, values, valueLocation } = sheetConfig;
     const pivotFields = {
       rows,
@@ -47,15 +40,56 @@ export const CustomSheet: React.FC<Props> = (props) => {
     const tableFields = {
       columns: concat([], rows || [], columns || [], values || []),
     };
-    setDataCfg(
-      sheetType === 'pivot'
-        ? { ...sheetDataCfg, fields: pivotFields }
-        : { ...sheetDataCfg, fields: tableFields },
-    );
+    if (sheetType === 'pivot') {
+      return { ...sheetDataCfg, fields: pivotFields };
+    }
+    return { ...sheetDataCfg, fields: tableFields };
+  };
+
+  const getImportDataCfg = () => {
+    const { importData, valueLocation } = sheetConfig;
+    const { fields } = importData;
+    const pivotFields = {
+      ...fields,
+      valueInCols: valueLocation && valueLocation === 'column',
+    };
+    const { rows, columns, values } = fields;
+    const tableFields = {
+      columns: concat([], rows || [], columns || [], values || []),
+    };
+    if (sheetType === 'pivot') {
+      return { ...importData, fields: pivotFields };
+    }
+    return { ...importData, fields: tableFields };
+  };
+
+  useEffect(() => {
+    if (!sheetConfig?.sheetType) {
+      return;
+    }
+    setSheetType(sheetConfig?.sheetType);
+  }, [sheetConfig?.sheetType]);
+
+  useEffect(() => {
+    const dataCfg = getExampleDataCfg();
+    setDataCfg(dataCfg);
+  }, [sheetConfig?.rows, sheetConfig?.columns, sheetConfig?.values]);
+
+  useEffect(() => {
+    if (
+      isEmpty(sheetConfig?.dataSource) ||
+      sheetConfig?.dataSource === 'exampleData' ||
+      isEmpty(sheetConfig?.importData)
+    ) {
+      const dataCfg = getExampleDataCfg();
+      setDataCfg(dataCfg);
+    } else if (!isEmpty(sheetConfig?.importData)) {
+      const dataCfg = getImportDataCfg();
+      setDataCfg(dataCfg);
+    }
   }, [
-    sheetConfig?.rows,
-    sheetConfig?.columns,
-    sheetConfig?.values,
+    sheetConfig?.importData,
+    sheetConfig?.dataSource,
     sheetConfig?.valueLocation,
     sheetType,
   ]);
