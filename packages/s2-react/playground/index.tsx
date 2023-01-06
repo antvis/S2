@@ -906,11 +906,11 @@ function MainLayout() {
                     <Select.Option value="colHeader">
                       colHeader: 高亮所在列头
                     </Select.Option>
-                    <Select.Option value="rowCells">
-                      rowCells: 高亮所在行
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
                     </Select.Option>
-                    <Select.Option value="colCells">
-                      colCells: 高亮所在列
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
                     </Select.Option>
                   </Select>
                 </Tooltip>
