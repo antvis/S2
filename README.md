@@ -181,35 +181,36 @@ s2.render();
 
 ## 🤝 参与贡献
 
+> S2 使用 pnpm 作为包管理器
+
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
 # 安装依赖
-yarn # 或者 yarn bootstrap
+pnpm install # 或者 pnpm bootstrap
 
 # 打包
-yarn build
+pnpm build
 
 # 调试 s2-core
-yarn core:start
+pnpm core:start
 
 # 调试 s2-react
-yarn react:playground
+pnpm react:playground
 
 # 调试 s2-vue
-yarn vue:playground
+pnpm vue:playground
 
 # 单元测试
-yarn test
+pnpm test
 
 # 代码风格和类型检测
-yarn lint
+pnpm lint
 
 # 本地启动官网
-yarn site:bootstrap
-yarn site:start
+pnpm site:start
 ```
 
 ## 👁️ 洞察

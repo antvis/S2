@@ -37,7 +37,7 @@ order: 7
 > 示例 [PR](https://github.com/antvis/S2/pull/1652) (pr 描述参考）
 
 1. fork 项目 并 clone 下来 （或者使用 GitHub 的 Codespace 功能，非常方便）
-2. 安装依赖：`yarn bootstrap` 或者 `yarn`
+2. 安装依赖：`pnpm install` 或者 `pnpm bootstrap`
 3. 提交你的改动，commit 请遵守 [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
 4. 如果你的改动是修复 bug, 还可以在提交信息后面加上 `close #issue 号`, 这样可以在 pr 合并后，可以自动关闭对应的 issue, 比如 `fix: render bug close #123`
 5. 确保加上了对应的单元测试和文档 （如有必要）
@@ -47,19 +47,18 @@ order: 7
 
 ## 开发流程
 
-我们使用 `yarn@v1` 作为包管理
+我们使用 `pnpm@v7` 作为包管理
 
 ```bash
-npm i -g yarn
+npm i -g pnpm
 ```
 
-1. `yarn` 安装依赖
-2. `yarn site:bootstrap` 安装网站相关依赖
-3. `yarn site:start` 启动本地的 `S2` 网站
-4. `yarn core:start` 使用可视化的方式调试 core 层的单测 （基于 jest-electron)
-5. `yarn react:start` 可用可视化的方式调试 React 版本的单测 （基于 jest-electron)
-6. `yarn react:playground` 启动本地的交互式 React 版本 Demo （基于 vite)
-7. `yarn vue:playground` 启动本地的交互式 Vue3 版本 Demo （基于 vite)
-8. `yarn build` 构建 `@antv/s2`, `@antv/s2-react` 和 `@antv/s2-vue` 3 个包，分别输出 `umd`, `esm` 和 `lib` 目录
-9. `yarn test` 运行单元测试
-10. `yarn lint` 静态代码检测
+1. `pnpm install` 安装依赖
+2. `pnpm site:start` 启动本地的 `S2` 网站
+3. `pnpm core:start` 使用可视化的方式调试 core 层的单测 （基于 jest-electron)
+4. `pnpm react:start` 可用可视化的方式调试 React 版本的单测 （基于 jest-electron)
+5. `pnpm react:playground` 启动本地的交互式 React 版本 Demo （基于 vite)
+6. `pnpm vue:playground` 启动本地的交互式 Vue3 版本 Demo （基于 vite)
+7. `pnpm build` 构建 `@antv/s2`, `@antv/s2-react` 和 `@antv/s2-vue` 3 个包，分别输出 `umd`, `esm` 和 `lib` 目录
+8. `pnpm test` 运行单元测试
+9. `pnpm lint` 静态代码检测

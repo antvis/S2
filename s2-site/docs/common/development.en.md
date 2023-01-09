@@ -1,30 +1,30 @@
+> S2 use pnpm as package manager
+
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
-# install
-yarn # yarn bootstrap
+pnpm install # or pnpm bootstrap
 
-# s2-core
-yarn core:start
+# build all
+pnpm build
 
-# s2-react
-yarn react:playground
+# debug s2-core
+pnpm core:start
 
-# s2-vue
-yarn vue:playground
+# debug s2-react
+pnpm react:playground
+
+# debug s2-vue
+pnpm vue:playground
 
 # unit test
-yarn test
+pnpm test
 
-# build bundle
-yarn build
+# check the code style and the type definition
+pnpm lint
 
-# eslint
-yarn lint
-
-# site
-yarn site:bootstrap
-yarn site:start
+# start the website
+pnpm site:start
 ```
