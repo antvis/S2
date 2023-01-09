@@ -4,6 +4,7 @@ import type {
   CellTypes,
   InterceptType,
   ScrollbarPositionType,
+  InteractionCellSelectedHighlightType,
 } from '../constant';
 import type {
   BaseCell,
@@ -41,6 +42,7 @@ export interface CellMeta {
   colIndex: number;
   rowIndex: number;
   type: CellTypes;
+  rowQuery?: Record<string, any>;
   [key: string]: unknown;
 }
 
@@ -134,7 +136,7 @@ export interface BrushSelectionInfo {
 
 export interface InteractionOptions {
   // record which row/col field need extra link info
-  linkFields?: string[];
+  linkFields?: string[] | ((meta: Node | ViewMeta) => boolean);
   // focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
@@ -168,7 +170,7 @@ export interface InteractionOptions {
   // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // highlight col and row header for selected cell
-  selectedCellHighlight?: boolean;
+  selectedCellHighlight?: boolean | InteractionCellSelectedHighlightType;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
   /** ***********CUSTOM INTERACTION HOOKS**************** */

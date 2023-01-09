@@ -97,6 +97,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
+    mockRootInteraction.getSelectedCellHighlight = () => ({
+      rowHeader: false,
+      colHeader: false,
+      currentRow: false,
+      currentCol: false,
+    });
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
@@ -137,6 +143,12 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   test('should highlight relevant col&row header cell with selectedCellHighlight option toggled on', () => {
     mockSpreadSheetInstance.setOptions({
       interaction: { selectedCellHighlight: true },
+    });
+    mockRootInteraction.getSelectedCellHighlight = () => ({
+      rowHeader: true,
+      colHeader: true,
+      currentRow: false,
+      currentCol: false,
     });
 
     brushSelectionInstance.getBrushRange = () => {

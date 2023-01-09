@@ -34,9 +34,9 @@ export default defineConfig({
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
-      apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
-      indexName: 's2-antv-vision',
-      appId: 'D73DOU8RXD',
+      apiKey: '74b99a09199729fd4ac472746ada8456',
+      indexName: 's2-antv-antgroup',
+      appId: 'LWCKDMVZ87',
     },
     internalSite: {
       url: 'https://s2.antv.antgroup.com',

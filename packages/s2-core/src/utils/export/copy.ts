@@ -5,8 +5,11 @@ import {
   filter,
   forEach,
   isEmpty,
+  isNil,
   map,
   max,
+  orderBy,
+  reduce,
   repeat,
   zip,
 } from 'lodash';
@@ -16,15 +19,21 @@ import {
   CopyType,
   EMPTY_PLACEHOLDER,
   NODE_ID_SEPARATOR,
+  EXTRA_FIELD,
   InteractionStateName,
   VALUE_FIELD,
   type Data,
   type DataItem,
+  SERIES_NUMBER_FIELD,
+  type RowData,
+  type CustomHeaderField,
 } from '../../common';
 import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
 import { copyToClipboard } from '../../utils/export';
 import type { ColCell, RowCell } from '../../cell';
+import { getEmptyPlaceholder } from '../text';
+import { flattenDeep } from '../data-set-operate';
 import {
   type Copyable,
   CopyMIMEType,
@@ -78,6 +87,23 @@ const getFormat = (colIndex: number | undefined, spreadsheet: SpreadSheet) => {
   return (value: DataItem) => value;
 };
 
+/**
+ * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
+ * https://github.com/antvis/S2/issues/1955
+ * @param spreadsheet
+ */
+const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
+  const isHideValue =
+    spreadsheet.options?.style?.colCell?.hideValue &&
+    spreadsheet.isValueInCols();
+  // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
+  return isHideValue
+    ? {
+        [EXTRA_FIELD]: spreadsheet.dataCfg.fields.values?.[0],
+      }
+    : {};
+};
+
 const getValueFromMeta = (
   meta: CellMeta,
   displayData: Data[],
@@ -85,10 +111,13 @@ const getValueFromMeta = (
 ) => {
   if (spreadsheet.isPivotMode()) {
     const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const measureQuery = compatibleHideMeasureColumn(spreadsheet);
+
     const cell = spreadsheet.dataSet.getCellData({
       query: {
         ...rowNode?.query,
         ...colNode?.query,
+        ...measureQuery,
       },
       rowNode,
       isTotals:
@@ -97,7 +126,7 @@ const getValueFromMeta = (
         colNode?.isTotals ||
         colNode?.isTotalMeasure,
     });
-    return cell?.[VALUE_FIELD];
+    return cell?.[VALUE_FIELD] ?? '';
   }
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldId!];
@@ -342,7 +371,10 @@ const getDataMatrix = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
-      return getFormat(colNode.colIndex, spreadsheet)(cellData?.[VALUE_FIELD]);
+      return getFormat(
+        colNode.colIndex,
+        spreadsheet,
+      )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
 };
@@ -394,7 +426,7 @@ const processPivotColSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -449,7 +481,7 @@ const processPivotRowSelected = (
 ): Copyable => {
   const allRowLeafNodes = spreadsheet
     .getRowNodes()
-    .filter((node) => node.isLeaf);
+    .filter((node) => node.isLeaf || spreadsheet.isHierarchyTreeType());
   const allColLeafNodes = spreadsheet
     .getColumnNodes()
     .filter((node) => node.isLeaf);
@@ -642,6 +674,61 @@ function getBrushHeaderCopyable(
   ];
 }
 
+const tilePivotData = (
+  data: any,
+  columnOrdered: CustomHeaderField[],
+  defaultDataValue?: string,
+): Array<string> => {
+  // @ts-ignore
+  return map(columnOrdered, (field) => data[field] ?? defaultDataValue);
+};
+
+export const getDataByRowData = (
+  spreadsheet: SpreadSheet,
+  rowData: RowData,
+): Copyable => {
+  const {
+    options: { placeholder },
+    dataCfg: {
+      fields: { rows = [], columns = [], values = [] },
+    },
+  } = spreadsheet;
+  const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
+  const column = spreadsheet.getColumnLeafNodes();
+  let datas: string[][] = [];
+
+  if (spreadsheet.isTableMode()) {
+    const columnWithoutSeriesNumber = filter(
+      column,
+      (node) => node.field !== SERIES_NUMBER_FIELD,
+    );
+    // 按列头顺序复制
+    datas = map(rowData, (rowDataItem) => {
+      return map(
+        columnWithoutSeriesNumber,
+        // @ts-ignore
+        (node) => rowDataItem?.[node.field] ?? defaultDataValue,
+      );
+    });
+  } else if (spreadsheet.isPivotMode()) {
+    // 透视表的数据加上行头、列头才有意义，这里会以行头、列头、数据值的顺序将每一个单元格构造成一行
+    const columnOrdered = [...rows, ...columns, ...values];
+    const rowDataFlatten = flattenDeep(rowData as unknown as Array<RowData>);
+    // 去掉小计
+    const rowDataFlattenWithoutTotal = rowDataFlatten.filter((data) =>
+      [...rows, ...columns].every((field) => !isNil(data[field as string])),
+    );
+    datas = reduce(
+      rowDataFlattenWithoutTotal,
+      (ret: unknown[], data) => {
+        return [...ret, tilePivotData(data, columnOrdered, defaultDataValue)];
+      },
+      [],
+    ) as string[][];
+  }
+  return matrixPlainTextTransformer(datas);
+};
+
 function getDataCellCopyable(
   spreadsheet: SpreadSheet,
   cells: CellMeta[],
@@ -653,10 +740,6 @@ function getDataCellCopyable(
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
-    // 树状模式透视表之后实现
-    return;
-  }
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
@@ -672,8 +755,14 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
+    const { currentRow } = spreadsheet.interaction.getSelectedCellHighlight();
 
-    if (spreadsheet.options.interaction?.copyWithHeader) {
+    if (currentRow) {
+      const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
+        spreadsheet.dataSet.getRowData(cell),
+      );
+      data = getDataByRowData(spreadsheet, rowData as unknown as RowData);
+    } else if (spreadsheet.options.interaction?.copyWithHeader) {
       data = getDataWithHeaderMatrix(
         selectedCellsMeta,
         displayData as Data[],
