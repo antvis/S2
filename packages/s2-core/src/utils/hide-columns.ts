@@ -157,7 +157,7 @@ export const hideColumns = (
   ];
 
   spreadsheet.emit(
-    S2Event.LAYOUT_COLS_HIDDEN,
+    S2Event.COL_CELL_HIDDEN,
     currentHiddenColumnsInfo,
     hiddenColumnsDetail,
   );

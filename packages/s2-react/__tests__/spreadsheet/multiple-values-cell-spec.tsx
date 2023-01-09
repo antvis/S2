@@ -132,7 +132,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
     },
     style: {
       rowCell: {
-        hierarchyCollapse: false,
+        collapseAll: false,
       },
       colCell: {
         widthByField: {},

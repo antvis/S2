@@ -10,12 +10,11 @@ object **必选**,_default：null_ 功能描述：样式设置
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | ---  | --- | --- |
 | layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 `Canvas` 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
-| dataCell | [CellCfg](#cellcfg) |  |  | 数值单元格配置 |
-| colCell | [ColCfg](#colcfg) |  |  |   列头单元格配置 |
-| rowCell | [RowCfg](#rowcfg) |  |  |   行头单元格配置 |
-| device | `pc` \| `mobile` | |  `pc` | 设备类型 |
+| dataCell | [DataCell](#dataCell) |  |  | 数值单元格配置 |
+| colCell | [ColCell](#colCell) |  |  |   列头单元格配置 |
+| rowCell | [RowCell](#rowCell) |  |  |   行头单元格配置 |
 
-## CellCfg
+### DataCell
 
 object **必选**,_default：null_ 功能描述：数值单元格配置
 
@@ -25,7 +24,7 @@ object **必选**,_default：null_ 功能描述：数值单元格配置
 | height  | 单元格高度   | `number` |    30 | - |
 | valuesCfg  | 单元格配置   | `{ originalValueField?: string, widthPercent?: number[], showOriginalValue?: boolean }` |   | - |
 
-## ColCfg
+### ColCell
 
 object **必选**,_default：null_ 功能描述： 列头单元格配置
 
@@ -37,18 +36,17 @@ object **必选**,_default：null_ 功能描述： 列头单元格配置
 | heightByField | 根据度量值设置高度（拖拽或者预设高度场景）, `field` 对应 `s2DataConfig.fields.columns` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>`   | - |  |
 | hideValue | 默认数值挂列头，会同时显示列头和数值，隐藏数值，使其更美观。（即 `s2DataConfig.fields.values` 且仅在单数值时有效，多数值时推荐使用 [隐藏列头](https://s2.antv.vision/manual/advanced/interaction/hide-columns#2-%E9%80%8F%E8%A7%86%E8%A1%A8)) | `boolean` | false |  |
 
-## RowCfg
+### RowCell
 
 object **必选**,_default：null_ 功能描述： 行头单元格配置
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | ---  |
-| width | 行单元格宽度，可根据当前行头节点动态设置，如果是树状结构，请使用 `styles.treeWidth` | `number \| (rowNode: Node) => number` | 96 |  |
+| width | 行单元格宽度，可根据当前行头节点动态设置，树状结构同样适用 | `number \| (rowNode: Node) => number` | 平铺：`96`, 树状：`120` |  |
 | height | 行单元格高度，可根据当前行头节点动态设置 | `number \| (rowNode: Node) => number` | 30 |  |
-| collapsedRows | 树状模式下行头自定义折叠、收起状态。<br> key 值的生成需遵守指定的规则：`root[&] 行头维度值`。 [查看 demo](/examples/basic/pivot#tree) | `Record<string, boolean>` |  | |
-| hierarchyCollapse | 在树状结构模式下行头是否默认收起。 | `boolean` |   `false` | |
-| treeWidth | 树状结构下，行单元格宽度 （优先级大于 `rowCell.width`)  | `number` | 120 |  |
-| expandDepth | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始） |  `number` |  | |
+| collapseFields | 树状模式下行头自定义折叠节点。<br> 支持 id (`'root[&] 行头维度值'`) 和 维度 field (`'city'`) 两种格式，优先级大于 `collapseAll` 和 `expandDepth`, 设置为 `null` 时优先级最低。 [查看 demo](/examples/basic/pivot#tree) | `Record<string, boolean>` |  | |
+| collapseAll | 在树状结构模式下行头是否默认收起全部。 | `boolean` |   `false` | |
+| expandDepth | 在树状结构模式下行头默认展开展开的层级（层级从 0 开始）,  设置为 `null` 时优先级最低 |  `number` |  | |
 | showTreeLeafNodeAlignDot | 树状模式下行头叶子节点是否显示层级占位点 | `boolean` | `false` |  |
 | withByField | 根据 `field` 设置每行的宽度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
-| heightByField | 根据 `field` 设置每行的高度。`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id, [查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |
+| heightByField | 根据 `field` 设置每行的高度。<br/> 1. 透视表：`field` 对应 `s2DataConfig.fields.rows` 中的 `field` 或 列头 id. <br/> 2. 明细表：`field` 对应 行序号，从 `1` 开始。[查看详情](/docs/manual/advanced/custom/cell-size#%E8%B0%83%E6%95%B4%E8%A1%8C%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E5%AE%BD%E9%AB%98) | `Record<string, number>` | - |  |

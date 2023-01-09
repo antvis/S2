@@ -152,7 +152,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindTableColExpand() {
-    this.spreadsheet.on(S2Event.LAYOUT_COLS_EXPANDED, (node) => {
+    this.spreadsheet.on(S2Event.COL_CELL_EXPANDED, (node) => {
       this.handleExpandIconClick(node);
     });
   }

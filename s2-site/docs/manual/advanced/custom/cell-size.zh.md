@@ -24,21 +24,6 @@ const s2Options = {
 }
 ```
 
-## 调整树状模式下行头宽度
-
-> 优先级大于 `style.rowCell.width`
-
-```ts
-const s2Options = {
-  hierarchyType: 'tree',
-  style: {
-    rowCell: {
-      treeWidth: 200,
-    }
-  },
-}
-```
-
 <br/>
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/%24peMHWxZX/d20c9c80-d8d0-4fae-8d88-d31fe83c8072.png" alt="preview" width="600"/>
@@ -63,8 +48,6 @@ const s2Options = {
 <img src="https://gw.alipayobjects.com/zos/antfincdn/NGkbpdMTE/dc5b22e3-84af-4620-a4ba-3d28c2e29603.png" alt="preview" width="600"/>
 
 ## 调整行头单元格宽高
-
-> 优先级小于 `style.treeWidth`
 
 行头单元格高度调整**作用于叶子节点** （非叶子节点的高度是所有子节点高度度总和）, 且高度始终和 **数值单元格** 高度一致。
 
@@ -106,8 +89,10 @@ const s2Options = {
 
 如果想给特定某一行/列设置不同的宽高，可以通过 `rowCell` 的 `widthByField` 和 `heightByField` 预设高度来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&]浙江省[&]杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&] 浙江省 [&] 杭州市`):  行列交叉后每一个行头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.rows` 中配置的 `field`, 适用于精确到某一类维值的单元格
+
+<br/>
 
 ```ts
 const s2Options = {
@@ -117,8 +102,8 @@ const s2Options = {
         city: 100
       },
       heightByField: {
-        'root[&]浙江省[&]杭州市': 60,
-        'root[&]浙江省[&]宁波市': 100,
+        'root[&] 浙江省 [&] 杭州市': 60,
+        'root[&] 浙江省 [&] 宁波市': 100,
       },
     },
   },
@@ -130,6 +115,41 @@ const s2Options = {
 <img src="https://gw.alipayobjects.com/zos/antfincdn/oaGLPvya5/bf8b9dfe-1873-4567-9c4b-400632cebbe3.png" alt="preview" width="600"/>
 
 <br/>
+
+明细表有一点特殊，由于只有列头，如果想给特定行设置不同的高度，则可以根据行序号调整
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      // 给第一行和第三行设置不同的高度
+      heightByField: {
+        '1': 130,
+        '3': 60,
+      },
+    },
+  },
+}
+```
+
+<br/>
+
+<Playground path='layout/custom/demo/custom-table-size.ts' rid='container' height='400'></playground>
+
+## 调整树状模式下行头宽度
+
+和平铺模式配置无区别
+
+```ts
+const s2Options = {
+  hierarchyType: 'tree',
+  style: {
+    rowCell: {
+      width: 200,
+    }
+  },
+}
+```
 
 ## 调整列头单元格宽高
 
@@ -173,7 +193,7 @@ const s2Options = {
 
 如果想给特定某一列设置不同的宽高，可以通过 `colCell` 的 `widthByField` 和 `heightByField` 预设宽高来实现，支持两种类型的配置：
 
-- **fieldId** （例：`root[&]家具[&]沙发[&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
+- **fieldId** （例：`root[&] 家具 [&] 沙发 [&]number`):  行列交叉后每一个列头节点对应的唯一 ID, 适用于宽高精确到具体的单元格 [（如何获取 ID）](/docs/manual/advanced/get-cell-data#%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E5%8C%BA%E5%9F%9F%E5%8D%95%E5%85%83%E6%A0%BC)
 - **field** （例：`city`): 对应 `s2DataConfig.fields.columns` 中配置的 `field`, 适用于精确到某一类维值的单元格
 
 ```ts
@@ -185,7 +205,7 @@ const s2Options = {
        widthByField: {
         // 默认 [数值挂列头], EXTRA_FIELD 为内部虚拟数值列
         [EXTRA_FIELD]: 60,
-        'root[&]家具[&]沙发[&]number': 120,
+        'root[&] 家具 [&] 沙发 [&]number': 120,
       },
       heightByField: {
         [EXTRA_FIELD]: 80,

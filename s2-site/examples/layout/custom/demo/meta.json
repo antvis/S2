@@ -37,6 +37,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/y%26PAejhkm/e9b18b27-a6c9-4c05-b75c-83b25030d0c6.png"
     },
     {
+      "filename": "custom-tree-collapse-nodes.ts",
+      "title": {
+        "zh": "自定义树状结构折叠/展开节点",
+        "en": "Custom Tree Collapse Nodes"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*C36jTrhZBAsAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
       "filename": "hide-columns.ts",
       "title": {
         "zh": "隐藏列头",

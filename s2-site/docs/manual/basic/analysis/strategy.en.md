@@ -95,7 +95,7 @@ Function description: used to support custom data cell rendering of multiple ind
 * If it does not involve the original data copy and export class requirements, `originalValues` may not be provided
 * The order of column header indicators corresponds to the display order of cell indicators
 
-<embed data-mdast="html" src="@/docs/common/custom/customTreeItem.en.md"></embed>
+<embed data-mdast="html" src="@/docs/common/custom/customTreeNode.en.md"></embed>
 
 ### S2Options configuration
 

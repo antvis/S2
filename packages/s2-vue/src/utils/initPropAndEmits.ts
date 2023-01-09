@@ -85,7 +85,8 @@ export const initBaseSheetEmits = () => {
     'rowCellMouseDown',
     'rowCellMouseUp',
     'rowCellMouseMove',
-    'rowCellCollapseTreeRows',
+    'rowCellCollapsed',
+    'rowCellAllCollapsed',
     'rowCellScroll',
 
     // ============== Col Cell ====================
@@ -96,6 +97,8 @@ export const initBaseSheetEmits = () => {
     'colCellMouseDown',
     'colCellMouseUp',
     'colCellMouseMove',
+    'colCellExpanded',
+    'colCellHidden',
 
     // ============== Data Cell ====================
     'dataCellHover',
@@ -138,11 +141,6 @@ export const initBaseSheetEmits = () => {
     'layoutAfterHeaderLayout',
     'layoutPagination',
     'layoutCellScroll',
-    'layoutCollapseRows',
-    'layoutAfterCollapseRows',
-    'collapseRowsAll',
-    'layoutColsExpanded',
-    'layoutColsHidden',
     'beforeRender',
     'afterRender',
     'mounted',

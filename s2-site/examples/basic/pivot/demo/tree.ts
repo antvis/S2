@@ -11,12 +11,8 @@ fetch(
       width: 600,
       height: 480,
       hierarchyType: 'tree',
-      style: {
-        collapsedRows: {
-          'root[&]浙江省': true, // 折叠浙江省下面所有的城市
-        },
-      },
     };
+
     const s2 = new PivotSheet(container, dataCfg, s2Options);
 
     s2.render();

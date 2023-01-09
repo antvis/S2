@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
@@ -324,7 +325,9 @@ class CustomFrame extends Frame {
     const x = position.x + width;
     const y1 = position.y;
     const y2 = position.y + height + viewportHeight;
-    if (spreadsheet.store.get('scrollX') > 0) {
+    const { scrollX } = spreadsheet.facet.getScrollOffset();
+
+    if (scrollX > 0) {
       // 滚动时使用默认的颜色
       this.addShape('line', {
         attrs: {
@@ -361,7 +364,9 @@ class CustomFrame extends Frame {
       spreadsheet,
       showViewPortRightShadow,
     } = this.cfg;
-    if (!isPivotMode || spreadsheet.store.get('scrollX') === 0) {
+
+    const { scrollX } = spreadsheet.facet.getScrollOffset();
+    if (!isPivotMode || scrollX === 0) {
       return;
     }
     // 滚动时使用默认的颜色
@@ -406,6 +411,7 @@ class CustomCornelCell extends CornerCell {
       attrs,
     });
   }
+
   drawBorderShape() {}
 }
 
