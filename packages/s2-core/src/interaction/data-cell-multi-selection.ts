@@ -91,10 +91,7 @@ export class DataCellMultiSelection
         this.spreadsheet.hideTooltip();
 
         interaction.changeState({
-          cells: getInteractionCellsBySelectedCells(
-            selectedCells,
-            this.spreadsheet,
-          ),
+          cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
           onUpdateCells: afterSelectDataCells,
         });
