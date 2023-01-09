@@ -9,8 +9,8 @@ import {
 } from '../common/constant';
 import type {
   Fields,
-  RowCellCollapseTreeRowsType,
-  S2Options,
+  RowCellCollapsedParams,
+  RowCellStyle,
   SortMethod,
   SortParam,
   TooltipOperatorOptions,
@@ -122,55 +122,54 @@ export class PivotSheet extends SpreadSheet {
   }
 
   protected bindEvents() {
-    this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
-    this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
+    this.off(S2Event.ROW_CELL_COLLAPSED__PRIVATE);
+    this.off(S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE);
+    this.on(S2Event.ROW_CELL_COLLAPSED__PRIVATE, this.handleRowCellCollapsed);
     this.on(
-      S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-      this.handleRowCellCollapseTreeRows,
-    );
-    // 收起、展开按钮
-    this.on(
-      S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-      this.handleTreeRowsCollapseAll,
+      S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
+      this.handleRowCellToggleCollapseAll,
     );
   }
 
-  protected handleRowCellCollapseTreeRows(data: RowCellCollapseTreeRowsType) {
-    const { id, isCollapsed } = data;
-    const options: Partial<S2Options> = {
+  protected handleRowCellCollapsed(data: RowCellCollapsedParams) {
+    const { isCollapsed, node } = data;
+    const { collapseFields: defaultCollapsedFields } =
+      this.options.style?.rowCell!;
+
+    const collapseFields: RowCellStyle['collapseFields'] = {
+      ...defaultCollapsedFields,
+      [node.id]: isCollapsed,
+    };
+
+    this.setOptions({
       style: {
         rowCell: {
-          collapsedRows: {
-            [id]: isCollapsed,
-          },
+          collapseAll: false,
+          collapseFields,
         },
       },
-    };
-    this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
-      collapsedRows: options.style?.rowCell?.collapsedRows!,
-      meta: data?.node,
     });
-
-    this.setOptions(options);
     this.render(false);
-    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-      collapsedRows: options.style?.rowCell?.collapsedRows!,
-      meta: data?.node,
+    this.emit(S2Event.ROW_CELL_COLLAPSED, {
+      isCollapsed,
+      collapseFields,
+      node,
     });
   }
 
-  protected handleTreeRowsCollapseAll(isCollapsed: boolean | undefined) {
-    const options: S2Options = {
+  protected handleRowCellToggleCollapseAll(isCollapsed: boolean) {
+    const collapseAll = !isCollapsed;
+    this.setOptions({
       style: {
         rowCell: {
-          hierarchyCollapse: !isCollapsed,
-          collapsedRows: null,
+          collapseAll,
+          collapseFields: null,
           expandDepth: null,
         },
       },
-    };
-    this.setOptions(options);
+    });
     this.render(false);
+    this.emit(S2Event.ROW_CELL_ALL_COLLAPSED, collapseAll);
   }
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {

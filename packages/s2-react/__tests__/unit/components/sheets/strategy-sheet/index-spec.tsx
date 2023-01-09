@@ -104,16 +104,11 @@ describe('<StrategySheet/> Tests', () => {
     'should overwrite strategy sheet default custom tooltip and render custom %s tooltip',
     (cellType) => {
       const content = `${cellType} test content`;
-      const cell = {
-        [CellTypes.ROW_CELL]: 'row',
-        [CellTypes.COL_CELL]: 'col',
-        [CellTypes.DATA_CELL]: 'data',
-      }[cellType];
 
       renderStrategySheet({
         tooltip: {
           showTooltip: true,
-          [cell]: {
+          [cellType]: {
             content: () => <div>{content}</div>,
           },
         },

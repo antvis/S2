@@ -124,17 +124,17 @@ s2.interaction.hideColumns(hiddenColumnFields)
 
 ## Get hidden column header data
 
-`LAYOUT_COLS_EXPANDED` and `LAYOUT_COLS_HIDDEN` that can be exposed through `S2Event` monitor the expansion and hiding of the column header respectively
+`COL_CELL_EXPANDED` and `COL_CELL_HIDDEN` that can be exposed through `S2Event` monitor the expansion and hiding of the column header respectively
 
 ```ts
 const s2 = new PivotSheet(...);
 
-s2.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
+s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
   console.log('列头展开', cell);
 });
 
 s2.on(
-  S2Event.LAYOUT_COLS_HIDDEN,
+  S2Event.COL_CELL_HIDDEN,
   (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
     console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
   },

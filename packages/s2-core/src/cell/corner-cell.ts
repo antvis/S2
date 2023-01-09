@@ -158,30 +158,30 @@ export class CornerCell extends HeaderCell {
     if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
-    const { hierarchyCollapse } = this.spreadsheet.options.style?.rowCell!;
 
+    const { collapseAll } = this.spreadsheet.options.style?.rowCell!;
     const { size = 0 } = this.getStyle()!.icon!;
     const { textBaseline, fill } = this.getTextStyle();
     const area = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
-    this.treeIcon = renderTreeIcon(
-      this,
-      {
+    this.treeIcon = renderTreeIcon({
+      group: this,
+      iconCfg: {
         x: area.x,
         y: getVerticalPosition(area, textBaseline!, size),
         width: size,
         height: size,
+        fill,
       },
-      fill!,
-      hierarchyCollapse,
-      () => {
-        this.spreadsheet.store.set('scrollY', 0);
+      isCollapsed: collapseAll,
+      onClick: () => {
+        this.spreadsheet.facet.resetScrollY();
         this.spreadsheet.emit(
-          S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-          hierarchyCollapse!,
+          S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE,
+          collapseAll!,
         );
       },
-    );
+    });
   }
 
   protected isLastRowCornerCell() {

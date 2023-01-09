@@ -127,19 +127,19 @@ s2.interaction.hideColumns(hiddenColumnFields)
 
 ## 获取隐藏列头数据
 
-可通过 `S2Event` 透出的 `LAYOUT_COLS_EXPANDED` 和 `LAYOUT_COLS_HIDDEN` 分别监听列头的展开和隐藏
+可通过 `S2Event` 透出的 `COL_CELL_EXPANDED` 和 `COL_CELL_HIDDEN` 分别监听列头的展开和隐藏
 
 ```ts
 import { S2Event } from '@antv/s2'
 
 const s2 = new PivotSheet(...);
 
-s2.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
+s2.on(S2Event.COL_CELL_EXPANDED, (cell) => {
   console.log('列头展开', cell);
 });
 
 s2.on(
-  S2Event.LAYOUT_COLS_HIDDEN,
+  S2Event.COL_CELL_HIDDEN,
   (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
     console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
   },
