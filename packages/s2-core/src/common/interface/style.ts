@@ -57,23 +57,20 @@ export interface RowCellStyle extends BaseCellStyle {
    */
   showTreeLeafNodeAlignDot?: boolean;
   /**
-   * 树状结构下行头宽度
+   * 收起所有 (对应角头收起展开按钮)
    */
-  treeWidth?: number;
-  // TODO: 下面三个命名不用加  tree 的前缀, 等平铺模式支持展开/收起可以共用 API
+  collapseAll?: boolean | null;
   /**
-   * 树状结构下的全局收起展开属性，对应角头收起展开按钮
+   * 折叠节点
+   * 优先级大于 collapseAll 和 expandDepth
+   * id 级别: { ['root[&]浙江省']: true, ['root[&]河南省']: false } 即 只有 浙江省 对应的节点才会被折叠
+   * field 级别: { city: true, type: false } : 即 所有 city 对应的维值都会被折叠
    */
-  hierarchyCollapse?: boolean;
+  collapseFields?: Record<string, boolean> | null;
   /**
-   * 树状结构下，行头默认展开到第几层 (从 0 开始)
+   * 行头默认展开到第几层 (从 0 开始)
    */
   expandDepth?: number | null;
-  /**
-   * 树状结构下，行头展开节点
-   * { "root[&]浙江省": true, "root[&]四川省": false }
-   */
-  collapsedRows?: Record<string, boolean> | null;
 }
 
 export interface ColCellStyle extends BaseCellStyle {
@@ -88,10 +85,6 @@ export interface S2Style {
    * 布局类型
    */
   layoutWidthType?: LayoutWidthType;
-  /**
-   * 树状结构下，列头展开节点
-   */
-  collapsedCols?: Record<string, boolean>;
   /**
    * 数值单元格配置
    */

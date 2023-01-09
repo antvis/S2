@@ -104,7 +104,7 @@ Function description: used to support custom data cell rendering of multiple ind
 
 <embed src="@/docs/common/sort-param.zh.md"></embed>
 
-<embed src="@/docs/common/custom/customTreeItem.zh.md"></embed>
+<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
 
 ### Columns
 

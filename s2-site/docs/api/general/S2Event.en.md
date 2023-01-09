@@ -90,8 +90,8 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | paging                  | `S2Event.LAYOUT_PAGINATION`          | pagination event                                                 |
 | Put away your outfit    | `S2Event.LAYOUT_COLLAPSE_ROWS`       | Event callback for collapsing row headers in tree mode           |
 | after packing away      | `S2Event.LAYOUT_AFTER_COLLAPSE_ROWS` | Event callback after the line head is collapsed in tree mode     |
-| column header expansion | `S2Event.LAYOUT_COLS_EXPANDED`       | Triggered when the column header is expanded                     |
-| column header hidden    | `S2Event.LAYOUT_COLS_HIDDEN`         | Triggered when the column header is hidden                       |
+| column header expansion | `S2Event.COL_CELL_EXPANDED`       | Triggered when the column header is expanded                     |
+| column header hidden    | `S2Event.COL_CELL_HIDDEN`         | Triggered when the column header is hidden                       |
 | start rendering         | `S2Event.LAYOUT_BEFORE_RENDER`       | The event before starting render, that is, `s2.render()`         |
 | rendering complete      | `S2Event.LAYOUT_AFTER_RENDER`        | The event that render is completed, that is, `s2.render()`       |
 | form destruction        | `S2Event.LAYOUT_DESTROY`             | Triggered after the table is destroyed or calling `s2.destroy()` |
