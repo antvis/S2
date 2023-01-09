@@ -1,4 +1,5 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import { get } from 'lodash';
 import {
   ColCell,
   DeviceType,
@@ -7,7 +8,11 @@ import {
   type RawData,
   type S2DataConfig,
   type S2Options,
+  ResizeType,
+  ColCell,
+  TableDataCell,
 } from '@/index';
+import type { PanelScrollGroup } from '@/group/panel-scroll-group';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -222,5 +227,28 @@ describe('TableSheet normal spec', () => {
       .belongsCell as ColCell;
 
     expect(lastColumnCell.getMeta().width).toBe(198);
+  });
+
+  test('should render link shape', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenRowCount: 0,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+      frozenTrailingRowCount: 0,
+    });
+    s2.render();
+
+    const orderIdDataCell = (
+      s2.facet.panelGroup.findAllByName(
+        'panelScrollGroup',
+      )[0] as PanelScrollGroup
+    )
+      .getChildren()
+      .find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
+
+    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+
+    s2.destroy();
   });
 });

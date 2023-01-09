@@ -207,6 +207,11 @@ export interface BaseSheetComponentProps<
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================
+  onLayoutAfterRealDataCellRender?: (options: {
+    add: [number, number][];
+    remove: [number, number][];
+    spreadsheet: SpreadSheet;
+  }) => void;
   onRowCellBrushSelection?: (event: GEvent) => void;
   onColCellBrushSelection?: (event: GEvent) => void;
 }

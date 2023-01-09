@@ -1,5 +1,30 @@
 # [@antv/s2-react-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.1...@antv/s2-react-v2.0.0-next.2) (2022-12-07)
 
+
+### Bug Fixes
+
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+
+# [@antv/s2-react-v1.34.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.33.0...@antv/s2-react-v1.34.0) (2022-12-09)
+
+
+### Bug Fixes
+
+* **tooltip:** 修复自定义操作菜单传入自定义 ReactNode 不显示 ([#1969](https://github.com/antvis/S2/issues/1969)) ([3eff993](https://github.com/antvis/S2/commit/3eff9932438cc95093686c03510b57648ff44391))
+
+
+### Features
+
+* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
+
+# [@antv/s2-react-v1.33.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.32.0...@antv/s2-react-v1.33.0) (2022-12-02)
+
+
 ### Bug Fixes
 
 * **interaction:** 修复趋势分析表选中高亮效果无效 close [#1960](https://github.com/antvis/S2/issues/1960) ([#1961](https://github.com/antvis/S2/issues/1961)) ([5140b60](https://github.com/antvis/S2/commit/5140b6060d03b0290ddb4b314e7892520038f369))
