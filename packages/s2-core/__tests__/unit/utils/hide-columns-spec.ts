@@ -259,7 +259,7 @@ describe('hide-columns test', () => {
 
   test('should hide columns correctly', () => {
     const columnsHidden = jest.fn();
-    mockSpreadSheetInstance.on(S2Event.LAYOUT_COLS_HIDDEN, columnsHidden);
+    mockSpreadSheetInstance.on(S2Event.COL_CELL_HIDDEN, columnsHidden);
 
     hideColumns(mockSpreadSheetInstance, ['5']);
 

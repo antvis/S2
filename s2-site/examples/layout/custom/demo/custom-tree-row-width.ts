@@ -14,7 +14,7 @@ fetch(
       hierarchyType: 'tree',
       style: {
         rowCell: {
-          treeWidth: 200,
+          width: 200,
         },
       },
     };

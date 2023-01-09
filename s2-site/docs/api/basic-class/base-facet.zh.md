@@ -46,6 +46,10 @@ s2.facet.getRealWidth()
 | destroy | 卸载 | () => void |
 | getScrollOffset | 获取当前滚动偏移 | () => [ScrollOffset](#scrolloffset) |
 | setScrollOffset | 设置当前滚动偏移 | (scrollOffset: [ScrollOffset](#scrolloffset)) => void |
+| resetScrollOffset | 重置当前滚动偏移 | () => void |
+| resetScrollX | 重置水平滚动偏移 | () => void |
+| resetScrollY | 重置垂直滚动偏移 | () => void |
+| resetRowScrollX | 重置行头水平滚动偏移 | () => void |
 | emitPaginationEvent | 触发分页事件 | () => void |
 | clipPanelGroup | 裁剪数值区域 Group | () => void |
 | getRealWidth | 获取实际渲染的宽度 | () => number |

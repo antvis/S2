@@ -2,8 +2,9 @@
 title: 自定义排序操作
 order: 6
 ---
-虽然，`S2` 表格有默认的[排序操作](/examples/analysis/sort#group-sort)和 `React header`
-组件中的[高级排序排序](/examples/analysis/sort#advanced)功能。
+
+虽然，`S2` 表格有默认的 [排序操作](/examples/analysis/sort#group-sort) 和 `React Header`
+组件中的 [高级排序排序](/examples/analysis/sort#advanced) 功能。
 
 但在某些业务场景下，我们仍需要自定义排序，我们将它分为**自定义排序 `icon`**，**自定义排序 `tooltip`**，**自定义排序操作**三个部分。接下来，我将带大家实现如👇 动图中的自定义排序功能。
 
@@ -11,7 +12,7 @@ order: 6
 
 ## 自定义排序 icon
 
-相关章节：[自定义icon](/examples/custom/custom-icon#custom-header-action-icon)
+相关章节：[自定义 icon](/examples/custom/custom-icon#custom-header-action-icon)
 
 ### 配置
 
@@ -19,7 +20,7 @@ order: 6
 
 ```jsx
 const s2Options = {
-  // 关闭默认icon
+  // 关闭默认 icon
   showDefaultHeaderActionIcon: false,
   ...
 }
@@ -47,7 +48,7 @@ const s2Options = {
   // 配置 icon 展示位置
   headerActionIcons: [
     {
-      // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
+      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
       iconNames: [ 'customKingIcon' ],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
@@ -94,7 +95,7 @@ const s2Options = {
   // 设置自定义 `icon` 的展示条件
   headerActionIcons: [
     {
-      // 选择icon,可以是 S2 自带的，也可以是自定义的 icon
+      // 选择 icon, 可以是 S2 自带的，也可以是自定义的 icon
       iconNames: [ 'customKingIcon' ],
       // 通过 belongsCell + displayCondition 设置 icon 的展示位置
       belongsCell: 'colCell',
@@ -179,6 +180,6 @@ const s2Options = {
 
 点击自定义排序，表格就会按照我们设置的排序进行展示。
 
-类别按手动排序：[办公用品, 家具], 城市 🏙 按首字母升序组内排列。
+类别按手动排序：[办公用品，家具], 城市 🏙 按首字母升序组内排列。
 
 ![after](https://gw.alipayobjects.com/zos/antfincdn/g8H01taL6/zidingyipaixucaozuo.gif)

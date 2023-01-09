@@ -3,19 +3,19 @@
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style 1`] = `
 Array [
   Object {
-    "height": 30,
+    "height": 60,
     "id": "root[&]笔",
-    "width": 300,
+    "width": 100,
   },
   Object {
-    "height": 30,
+    "height": 60,
     "id": "root[&]笔[&]price",
-    "width": 150,
+    "width": 50,
   },
   Object {
-    "height": 30,
+    "height": 60,
     "id": "root[&]笔[&]cost",
-    "width": 150,
+    "width": 50,
   },
 ]
 `;
@@ -23,19 +23,19 @@ Array [
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #ColCell should get custom col cell style by custom hook 1`] = `
 Array [
   Object {
-    "height": 30,
+    "height": 40,
     "id": "root[&]笔",
-    "width": 300,
+    "width": 200,
   },
   Object {
-    "height": 30,
+    "height": 40,
     "id": "root[&]笔[&]price",
-    "width": 150,
+    "width": 100,
   },
   Object {
-    "height": 30,
+    "height": 40,
     "id": "root[&]笔[&]cost",
-    "width": 150,
+    "width": 100,
   },
 ]
 `;
@@ -98,19 +98,19 @@ Array [
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style 1`] = `
 Array [
   Object {
-    "height": 60,
+    "height": 120,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 50,
   },
   Object {
-    "height": 30,
+    "height": 60,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 50,
   },
   Object {
-    "height": 30,
+    "height": 60,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 50,
   },
 ]
 `;
@@ -118,19 +118,19 @@ Array [
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by custom hook 1`] = `
 Array [
   Object {
-    "height": 60,
+    "height": 80,
     "id": "root[&]浙江",
-    "width": 149,
+    "width": 100,
   },
   Object {
-    "height": 30,
+    "height": 40,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 100,
   },
   Object {
-    "height": 30,
+    "height": 40,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 100,
   },
 ]
 `;
@@ -138,19 +138,19 @@ Array [
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by field 1`] = `
 Array [
   Object {
-    "height": 60,
+    "height": 66,
     "id": "root[&]浙江",
     "width": 149,
   },
   Object {
-    "height": 30,
+    "height": 33,
     "id": "root[&]浙江[&]义乌",
-    "width": 149,
+    "width": 66,
   },
   Object {
-    "height": 30,
+    "height": 33,
     "id": "root[&]浙江[&]杭州",
-    "width": 149,
+    "width": 66,
   },
 ]
 `;
@@ -158,7 +158,7 @@ Array [
 exports[`SpreadSheet Custom Cell Style Tests PivotSheet Custom Cell Style Tests #RowCell should get custom row cell style by field id 1`] = `
 Array [
   Object {
-    "height": 60,
+    "height": 330,
     "id": "root[&]浙江",
     "width": 149,
   },
@@ -168,7 +168,7 @@ Array [
     "width": 149,
   },
   Object {
-    "height": 30,
+    "height": 300,
     "id": "root[&]浙江[&]杭州",
     "width": 149,
   },
@@ -427,16 +427,192 @@ Array [
   Object {
     "height": 30,
     "id": "root[&]类别",
-    "width": 299,
+    "width": 100,
   },
   Object {
     "height": 30,
     "id": "root[&]子类别",
+    "width": 100,
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by height 1`] = `
+Array [
+  Object {
+    "height": 60,
+    "id": "0-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "1-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "2-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "3-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "4-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "5-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "6-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "0-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "1-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "2-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "3-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "4-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "5-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 60,
+    "id": "6-root[&]子类别",
     "width": 299,
   },
 ]
 `;
 
-exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by height 1`] = `Array []`;
-
-exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by row index 1`] = `Array []`;
+exports[`SpreadSheet Custom Cell Style Tests TableSheet Custom Cell Style Tests should set row cell style by row index 1`] = `
+Array [
+  Object {
+    "height": 40,
+    "id": "0-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "1-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 100,
+    "id": "2-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "3-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "4-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "5-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "6-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "7-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "8-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "9-root[&]类别",
+    "width": 299,
+  },
+  Object {
+    "height": 40,
+    "id": "0-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "1-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 100,
+    "id": "2-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "3-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "4-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "5-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "6-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "7-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "8-root[&]子类别",
+    "width": 299,
+  },
+  Object {
+    "height": 30,
+    "id": "9-root[&]子类别",
+    "width": 299,
+  },
+]
+`;

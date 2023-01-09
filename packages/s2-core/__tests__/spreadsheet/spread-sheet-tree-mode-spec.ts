@@ -1,13 +1,11 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
-import { PivotSheet } from '@/sheet-type';
+import { createPivotSheet, getContainer } from 'tests/util/helpers';
 import type { S2DataConfig, S2Options } from '@/common';
 
 const s2Options: S2Options = {
   width: 200,
   height: 200,
   hierarchyType: 'tree',
-  hdAdapter: true,
 };
 
 describe('SpreadSheet Tree Mode Tests', () => {
@@ -22,7 +20,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
 
   describe('Facet Tests', () => {
     test('should re-calc row header width', () => {
-      const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+      const s2 = createPivotSheet(s2Options);
       s2.render();
 
       const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;

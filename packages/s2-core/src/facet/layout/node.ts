@@ -20,7 +20,7 @@ export interface BaseNodeConfig {
   parent?: Node;
   isTotals?: boolean;
   isSubTotals?: boolean;
-  isCollapsed?: boolean;
+  isCollapsed?: boolean | null;
   isGrandTotals?: boolean;
   hierarchy?: Hierarchy;
   isPivotMode?: boolean;

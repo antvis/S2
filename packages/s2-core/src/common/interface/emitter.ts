@@ -10,25 +10,13 @@ import type {
   Data,
   HiddenColumnsInfo,
   LayoutResult,
+  RowCellCollapsedParams,
   S2CellType,
 } from '../../common/interface';
 import type { FilterParam, SortParams, S2Style } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
-
-export type CollapsedRowsType = {
-  collapsedRows: Record<string, boolean> & {
-    [x: number]: any;
-  };
-  meta?: Node;
-};
-
-export type RowCellCollapseTreeRowsType = {
-  id: string;
-  isCollapsed: boolean;
-  node: Node;
-};
 
 type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -97,11 +85,12 @@ export interface EmitterType {
   [S2Event.ROW_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.ROW_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
-  [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
-    data: RowCellCollapseTreeRowsType,
-  ) => void;
   [S2Event.ROW_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.ROW_CELL_BRUSH_SELECTION]: (cells: RowCell[]) => void;
+  [S2Event.ROW_CELL_COLLAPSED]: (data: RowCellCollapsedParams) => void;
+  [S2Event.ROW_CELL_COLLAPSED__PRIVATE]: (data: RowCellCollapsedParams) => void;
+  [S2Event.ROW_CELL_ALL_COLLAPSED]: (isCollapsed: boolean) => void;
+  [S2Event.ROW_CELL_ALL_COLLAPSED__PRIVATE]: (isCollapsed: boolean) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
@@ -112,6 +101,11 @@ export interface EmitterType {
   [S2Event.COL_CELL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.COL_CELL_BRUSH_SELECTION]: (cells: ColCell[]) => void;
+  [S2Event.COL_CELL_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.COL_CELL_HIDDEN]: (
+    currentHiddenColumnsInfo: HiddenColumnsInfo,
+    hiddenColumnsDetail: HiddenColumnsInfo[],
+  ) => void;
 
   /** ================ Corner Cell ================  */
   [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
@@ -132,9 +126,6 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
 
   /** ================ Layout ================  */
-  [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (hierarchyCollapse: boolean) => void;
   [S2Event.LAYOUT_PAGINATION]: (data: {
     pageSize: number;
     pageCount: number;
@@ -150,11 +141,6 @@ export interface EmitterType {
   /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
   [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;
-  [S2Event.LAYOUT_COLS_EXPANDED]: (expandedNode: Node) => void;
-  [S2Event.LAYOUT_COLS_HIDDEN]: (
-    currentHiddenColumnsInfo: HiddenColumnsInfo,
-    hiddenColumnsDetail: HiddenColumnsInfo[],
-  ) => void;
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
   [S2Event.LAYOUT_DESTROY]: () => void;

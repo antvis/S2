@@ -142,8 +142,8 @@ const getOptions = (): SheetComponentOptions => {
         height: 32,
       },
       rowCell: {
-        hierarchyCollapse: false,
-        treeWidth: 100,
+        collapseAll: false,
+        width: 100,
       },
     },
     tooltip: {

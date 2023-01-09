@@ -413,4 +413,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
         : item.field === this.meta.field;
     });
   }
+
+  public getTreeIcon() {
+    return this.treeIcon;
+  }
 }

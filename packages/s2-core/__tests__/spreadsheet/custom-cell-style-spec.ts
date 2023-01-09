@@ -1,5 +1,5 @@
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
-import { EXTRA_FIELD } from '../../src/common';
+import { EXTRA_FIELD } from '@/common';
 import type { ViewMeta } from '@/common/interface/basic';
 import type { Node } from '@/facet/layout/node';
 import type { S2Options } from '@/common/interface';
@@ -11,6 +11,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   const s2Options: S2Options = {
     width: 600,
     height: 400,
+    devicePixelRatio: 1,
     hierarchyType: 'grid',
   };
 
@@ -19,7 +20,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   };
 
   describe('PivotSheet Custom Cell Style Tests', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       s2 = createPivotSheet(s2Options);
       s2.render();
     });
@@ -86,7 +87,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
       });
@@ -106,7 +107,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
       });
@@ -124,7 +125,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
       });
@@ -144,7 +145,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
       });
@@ -169,7 +170,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         const rootRowNodes = s2
           .getRowNodes()
@@ -177,7 +178,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
 
         expect(rootRowNodes).toHaveLength(1);
         rootRowNodes.forEach((node) => {
-          expect(node.width).not.toStrictEqual(width);
+          expect(node.width).toStrictEqual(width);
           expect(node.height).not.toStrictEqual(height);
         });
       });
@@ -224,26 +225,6 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           expect(node.height).toEqual(20);
         });
       });
-
-      test('should get custom row cell style priority by rowCell.treeWidth > rowCell.width', () => {
-        const sheet = createPivotSheet({
-          ...s2Options,
-          hierarchyType: 'tree',
-          style: {
-            rowCell: {
-              treeWidth: 200,
-              width: 100,
-              height: 30,
-            },
-          },
-        });
-        sheet.render();
-
-        sheet.getRowLeafNodes().forEach((node) => {
-          expect(node.width).toEqual(200);
-          expect(node.height).toEqual(30);
-        });
-      });
     });
 
     describe('#ColCell', () => {
@@ -256,7 +237,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
       });
@@ -276,7 +257,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
       });
@@ -294,7 +275,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.colNodes)).toMatchSnapshot();
       });
@@ -314,7 +295,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         expect(mapNodeSize(s2.facet.layoutResult.rowNodes)).toMatchSnapshot();
       });
@@ -339,7 +320,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
-        s2.render(false);
+        s2.render();
 
         const rootColNodes = s2
           .getColumnNodes()
@@ -417,7 +398,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   });
 
   describe('TableSheet Custom Cell Style Tests', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       s2 = createTableSheet(s2Options, {
         useSimpleData: false,
       });
@@ -448,7 +429,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render(false);
+      s2.render();
 
       expect(
         mapNodeSize(
@@ -470,7 +451,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render(false);
+      s2.render();
 
       expect(
         mapNodeSize(
@@ -489,7 +470,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
           },
         },
       });
-      s2.render(false);
+      s2.render();
 
       expect(mapNodeSize(s2.getColumnNodes())).toMatchSnapshot();
     });

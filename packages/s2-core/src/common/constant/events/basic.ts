@@ -7,9 +7,13 @@ export enum S2Event {
   ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
-  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
   ROW_CELL_SCROLL = 'row-cell:scroll',
   ROW_CELL_BRUSH_SELECTION = 'row-cell:brush-selection',
+  ROW_CELL_COLLAPSED = 'row-cell:collapsed',
+  ROW_CELL_ALL_COLLAPSED = 'row-cell:all-collapsed',
+  // 内部用来通信的 event
+  ROW_CELL_COLLAPSED__PRIVATE = 'row-cell:collapsed__private',
+  ROW_CELL_ALL_COLLAPSED__PRIVATE = 'row-cell:all-collapsed__private',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
@@ -20,6 +24,8 @@ export enum S2Event {
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
   COL_CELL_BRUSH_SELECTION = 'col-cell:brush-selection',
+  COL_CELL_EXPANDED = 'col-cell:expanded',
+  COL_CELL_HIDDEN = 'col-cell:hidden',
 
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
@@ -72,7 +78,6 @@ export enum S2Event {
   LAYOUT_COLS_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
-
   LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */
