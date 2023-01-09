@@ -1,4 +1,4 @@
-import { forEach } from 'lodash';
+import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
 import { getDataCellId } from '../cell/data-cell';
 import {
@@ -14,6 +14,12 @@ import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
 } from './hover-event';
+import type { RootInteraction } from './../../interaction';
+
+type HeaderGetter = {
+  getter: typeof getRowHeaderByCellId;
+  shouldGet?: boolean;
+};
 
 export const isMultiSelectionKey = (e: KeyboardEvent) => {
   return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
@@ -131,7 +137,7 @@ export const getInteractionCells = (
 ): Array<CellMeta> => {
   const { colHeader, rowHeader } = s2.interaction.getSelectedCellHighlight();
 
-  const headerGetters = [
+  const headerGetters: HeaderGetter[] = [
     {
       shouldGet: rowHeader,
       getter: getRowHeaderByCellId,
@@ -144,9 +150,9 @@ export const getInteractionCells = (
 
   const selectedHeaderCells = headerGetters
     .filter((item) => item.shouldGet)
-    .reduce((nodes, i) => [...nodes, ...i.getter(cell.id, s2)], [])
+    .reduce((acc: Node[], i) => [...acc, ...i.getter(cell.id, s2)], [])
     .filter((node) => !!node.belongsCell)
-    .map((node) => getCellMeta(node.belongsCell));
+    .map((node) => getCellMeta(node.belongsCell!));
 
   return [cell, ...selectedHeaderCells];
 };
@@ -157,7 +163,7 @@ export const getInteractionCellsBySelectedCells = (
 ): Array<CellMeta> => {
   const headerSelectedCell: CellMeta[] = reduce(
     selectedCells,
-    (_cells, selectedCell) => {
+    (_cells: CellMeta[], selectedCell) => {
       return [..._cells, ...getInteractionCells(selectedCell, s2)];
     },
     [],
@@ -167,7 +173,10 @@ export const getInteractionCellsBySelectedCells = (
   return uniqBy([...selectedCells, ...headerSelectedCell], 'id');
 };
 
-export const afterSelectDataCells = (root, updateDataCells) => {
+export const afterSelectDataCells = (
+  root: RootInteraction,
+  updateDataCells: () => void,
+) => {
   const { colHeader, rowHeader } = root.getSelectedCellHighlight();
   if (colHeader) {
     root.updateCells(root.getAllColHeaderCells());

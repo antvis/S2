@@ -748,8 +748,8 @@ describe('Pivot Table Core Data Process', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
     ss.setOptions({
       style: {
-        colCfg: {
-          hideMeasureColumn: true,
+        colCell: {
+          hideValue: true,
         },
       },
     });
@@ -782,8 +782,8 @@ describe('Pivot Table Core Data Process', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
     ss.setOptions({
       style: {
-        colCfg: {
-          hideMeasureColumn: true,
+        colCell: {
+          hideValue: true,
         },
       },
       interaction: {

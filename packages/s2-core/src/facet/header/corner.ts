@@ -64,7 +64,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       viewportHeight: height,
       seriesNumberWidth,
       spreadsheet,
-    });
+    } as CornerHeaderConfig);
   }
 
   public static getTreeCornerText(options: BaseCornerOptions) {

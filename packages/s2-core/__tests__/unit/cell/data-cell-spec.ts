@@ -424,7 +424,7 @@ describe('Data Cell Tests', () => {
         return cell.cellType === CellTypes.ROW_CELL;
       });
       expect(interactedCells.length).toBe(7);
-      expect(firstRowCell.getMeta().id).toBe(mockCell.getMeta().id);
+      expect(firstRowCell!.getMeta().id).toBe(mockCell.getMeta().id);
     });
 
     test('should be highlight entire column data cells when the column header is clicked', () => {
@@ -442,7 +442,7 @@ describe('Data Cell Tests', () => {
         return cell.cellType === CellTypes.COL_CELL;
       });
       expect(interactedCells.length).toBe(8);
-      expect(firstColCell.getMeta().id).toBe(mockCell.getMeta().id);
+      expect(firstColCell!.getMeta().id).toBe(mockCell.getMeta().id);
     });
 
     test('should be highlight data cell when the data cell is clicked', () => {

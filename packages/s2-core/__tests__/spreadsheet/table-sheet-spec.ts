@@ -1,9 +1,7 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import { get } from 'lodash';
 import {
-  ColCell,
   DeviceType,
-  ResizeType,
   TableSheet,
   type RawData,
   type S2DataConfig,
@@ -236,16 +234,16 @@ describe('TableSheet normal spec', () => {
       frozenColCount: 0,
       frozenTrailingColCount: 0,
       frozenTrailingRowCount: 0,
-    });
+    } as S2Options);
     s2.render();
 
     const orderIdDataCell = (
-      s2.facet.panelGroup.findAllByName(
-        'panelScrollGroup',
-      )[0] as PanelScrollGroup
-    )
-      .getChildren()
-      .find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
+      (
+        s2.facet.panelGroup.getElementById(
+          'panelScrollGroup',
+        ) as PanelScrollGroup
+      ).children as TableDataCell[]
+    ).find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
 
     expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
 

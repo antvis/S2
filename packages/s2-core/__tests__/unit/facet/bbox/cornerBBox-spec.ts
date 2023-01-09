@@ -77,7 +77,7 @@ describe('cornerBBox test', () => {
   });
 
   test('should use default column height when columns is empty', () => {
-    mockFacet.spreadsheet.options.style.colCfg.height = 20;
+    mockFacet.spreadsheet.options.style!.colCell!.height = 20;
     mockFacet.layoutResult.colsHierarchy.sampleNodeForLastLevel = null;
 
     const bbox = new CornerBBox(mockFacet, true);

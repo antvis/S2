@@ -214,8 +214,8 @@ describe('Interaction Data Cell Click Tests', () => {
     });
 
     const mockHeaderCellInfo = createMockCellInfo(headerCellId0, {
-      colIndex: columnNode[0].belongsCell.getMeta().colIndex,
-      rowIndex: columnNode[0].belongsCell.getMeta().rowIndex,
+      colIndex: columnNode[0].belongsCell!.getMeta().colIndex,
+      rowIndex: columnNode[0].belongsCell!.getMeta().rowIndex,
     });
 
     s2.interaction.getAllColHeaderCells = jest.fn();

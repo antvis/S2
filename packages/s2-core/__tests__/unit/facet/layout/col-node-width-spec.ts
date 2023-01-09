@@ -1,4 +1,5 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
+import * as mockTableDataConfig from 'tests/data/simple-table-data.json';
 import { getContainer } from 'tests/util/helpers';
 import type { S2DataConfig, S2Options } from '@/common';
 import { PivotSheet, TableSheet } from '@/sheet-type';

@@ -14,7 +14,7 @@ export class CornerBBox extends BaseBBox {
 
   private getCornerBBoxOriginalHeight() {
     const { colsHierarchy } = this.layoutResult;
-    const { colCfg } = this.spreadsheet.options.style;
+    const { colCell } = this.spreadsheet.options.style!;
 
     /**
      * 角头分为两部分, 一部分对应行头, 一部分对应列头, 角头的叶子节点对应行头节点, 以下极端情况让没有列头的时候也能 [行头对应的角头] 正常显示
@@ -22,13 +22,13 @@ export class CornerBBox extends BaseBBox {
      * 2. 配置了 rows, values, 此时存在一级列头 (即 EXTRA_FIELD 数值节点), 但是隐藏了数值 (hideMeasureColumn), 此时列头为空
      */
     if (!colsHierarchy.sampleNodeForLastLevel) {
-      return colCfg?.height;
+      return colCell?.height;
     }
     return Math.floor(colsHierarchy.height);
   }
 
   private getCornerBBoxHeight() {
-    this.originalHeight = this.getCornerBBoxOriginalHeight();
+    this.originalHeight = this.getCornerBBoxOriginalHeight() as number;
 
     return this.originalHeight;
   }
