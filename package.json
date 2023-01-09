@@ -40,7 +40,7 @@
     "bundle:size": "pnpm -r --filter './packages/*' --stream bundle:size",
     "release": "pnpm -r --filter !@antv/s2-shared --filter !@antv/s2-site --workspace-concurrency=1 exec npx --no-install semantic-release",
     "release:preview": "pnpm release --dry-run --no-ci",
-    "release:bump-latest": "node ./scripts/latest-bump-version.js",
+    "release:bump-version": "node ./scripts/bump-version.js",
     "test": "pnpm -r --filter './packages/*' --stream test",
     "test:coverage": "pnpm -r --filter './packages/*' --stream test:coverage",
     "test:ci": "pnpm -r --filter './packages/*' --stream test:ci",
