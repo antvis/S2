@@ -348,7 +348,6 @@ export interface ViewMeta {
   label?: string;
   value?: string | number;
   query?: Query;
-
   [key: string]: unknown;
 }
 
@@ -415,5 +414,3 @@ export interface Point {
   x: number;
   y: number;
 }
-
-export type RowData = Data | CellData[];

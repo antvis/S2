@@ -1,8 +1,6 @@
 import { each, orderBy, filter, includes, isFunction, isObject } from 'lodash';
 import { isAscSort, isDescSort } from '..';
 import type { S2DataConfig, RawData, Data } from '../common/interface';
-import type { CellMeta } from '../common';
-import type { RowData } from '../common/interface/basic';
 import type { CellDataParams, Query } from './interface';
 import { BaseDataSet } from './base-data-set';
 
@@ -164,9 +162,5 @@ export class TableDataSet extends BaseDataSet {
 
   public getMultiData(): Data[] {
     return this.displayData as Data[];
-  }
-
-  public getRowData(cell: CellMeta): RowData {
-    return this.getCellData({ query: { rowIndex: cell.rowIndex } });
   }
 }

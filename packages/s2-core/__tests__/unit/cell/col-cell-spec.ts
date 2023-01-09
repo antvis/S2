@@ -112,8 +112,6 @@ describe('Col Cell Tests', () => {
       id: 1,
       fieldValue: 'fieldValue',
       value: 'value',
-      width: 100,
-      height: 10,
     } as unknown as Node;
 
     const headerConfig: Partial<ColHeaderConfig> = {

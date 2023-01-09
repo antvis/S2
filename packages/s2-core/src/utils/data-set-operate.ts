@@ -1,4 +1,4 @@
-import { every, flatMap, get, has, isArray, keys } from 'lodash';
+import { every, flatMap, has, isArray } from 'lodash';
 import {
   DataSelectType,
   DEFAULT_TOTAL_SELECTIONS,
@@ -137,46 +137,3 @@ export function flattenIndexesData(
     return dimensionData.slice(startIdx, length).filter(Boolean);
   });
 }
-
-export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
-  const result = [];
-
-  if (Array.isArray(data)) {
-    // 总计小计在数组里面，以 undefine作为key, 直接forEach的话会漏掉总计小计
-    const containsTotal = 'undefined' in data;
-    const itemLength = data.length + (containsTotal ? 1 : 0);
-
-    let i = 0;
-    while (i < itemLength) {
-      // eslint-disable-next-line dot-notation
-      const current =
-        i === data.length ? data['undefined' as unknown as number] : data[i];
-      i++;
-
-      if (current && 'undefined' in current) {
-        keys(current).forEach((ki) => {
-          result.push(current[ki]);
-        });
-      } else if (Array.isArray(current)) {
-        result.push(...current);
-      } else {
-        result.push(current);
-      }
-    }
-  } else {
-    result.push(data);
-  }
-  return result;
-};
-
-export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
-  keys(data)?.reduce((pre, next) => {
-    const item = get(data, next);
-    if (Array.isArray(item)) {
-      pre = pre.concat(flattenDeep(item));
-    } else {
-      pre?.push(item as unknown as never);
-    }
-
-    return pre;
-  }, []);

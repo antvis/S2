@@ -30,8 +30,7 @@ import {
   getValueRangeState,
   setValueRangeState,
 } from '../utils/condition/state-controller';
-import { CellTypes } from '../common';
-import type { CellMeta, RowData, CustomHeaderField } from '../common';
+import { CellTypes, type CustomHeaderField } from '../common';
 import type { Query, TotalSelectionsOfMultiData } from './interface';
 import type { CellData } from './cell-data';
 import type { CellDataParams } from './index';
@@ -258,10 +257,4 @@ export abstract class BaseDataSet {
   public moreThanOneValue() {
     return this.fields?.values?.length! > 1;
   }
-
-  /**
-   * get a row cells data including cell
-   * @param cells
-   */
-  public abstract getRowData(cells: CellMeta): RowData;
 }

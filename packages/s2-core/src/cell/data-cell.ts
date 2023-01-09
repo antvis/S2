@@ -1,5 +1,6 @@
 import type { PointLike } from '@antv/g';
 import { find, findLast, first, get, isEmpty, isEqual } from 'lodash';
+import tinycolor from 'tinycolor2';
 import { BaseCell } from '../cell/base-cell';
 import {
   CellTypes,
@@ -22,20 +23,16 @@ import type {
   ViewMetaIndexType,
 } from '../common/interface';
 import { getMaxTextWidth } from '../utils/cell/cell';
-import {
-  includeCell,
-  shouldUpdateBySelectedCellsHighlight,
-  updateBySelectedCellsHighlight,
-} from '../utils/cell/data-cell';
+import { includeCell } from '../utils/cell/data-cell';
 import { getIconPositionCfg } from '../utils/condition/condition';
 import { updateShapeAttr } from '../utils/g-renders';
 import { EMPTY_PLACEHOLDER } from '../common/constant/basic';
 import { drawInterval } from '../utils/g-mini-charts';
 import {
   DEFAULT_FONT_COLOR,
+  FONT_COLOR_BRIGHTNESS_THRESHOLD,
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
-import { shouldReverseFontColor } from '../utils/color';
 import { getFieldValueOfViewMetaData } from '../data-set/cell-data';
 import type { RawData } from './../common/interface/s2DataConfig';
 
@@ -90,7 +87,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
-
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -102,9 +98,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (shouldUpdateBySelectedCellsHighlight(this.spreadsheet)) {
-          updateBySelectedCellsHighlight(cells, this, this.spreadsheet);
-        } else if (includeCell(cells, this)) {
+        if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (
           this.spreadsheet.options.interaction?.selectedCellsSpotlight
@@ -147,7 +141,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    // 获取当前 interaction 记录的 Cells 元信息列表，不仅仅是数据单元格，也可能是行头或者列头。
     const cells = this.spreadsheet.interaction.getCells();
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
@@ -209,9 +202,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { backgroundColor, intelligentReverseTextColor } =
       this.getBackgroundColor();
 
+    const isMoreThanThreshold =
+      tinycolor(backgroundColor).getBrightness() <=
+      FONT_COLOR_BRIGHTNESS_THRESHOLD;
+
     // text 默认为黑色，当背景颜色亮度过低时，修改 text 为白色
     if (
-      shouldReverseFontColor(backgroundColor as string) &&
+      isMoreThanThreshold &&
       textStyle.fill === DEFAULT_FONT_COLOR &&
       intelligentReverseTextColor
     ) {

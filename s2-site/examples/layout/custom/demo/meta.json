@@ -51,22 +51,6 @@
         "en": "Hide Columns"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7uLsxYg0N/b85dc985-6a07-40fd-a73e-4f0f17e63b72.png"
-    },
-    {
-      "filename": "hide-value.ts",
-      "title": {
-        "zh": "数值挂列头时隐藏数值",
-        "en": "Hide Value"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*dmQ5R401jjAAAAAAAAAAAAAADmJ7AQ/original"
-    },
-    {
-      "filename": "only-show-row-header.ts",
-      "title": {
-        "zh": "只显示行头",
-        "en": "Only Show Row Header"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pezZTI9lp50AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }

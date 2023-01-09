@@ -3,15 +3,8 @@ import type { Rect } from '@antv/g';
 import { find, get } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { DataCell } from '@/cell';
-import {
-  GuiIcon,
-  type Formatter,
-  type ViewMeta,
-  S2Event,
-  type OriginalEvent,
-  type S2CellType,
-  CellTypes,
-} from '@/common';
+import type { Formatter, ViewMeta } from '@/common';
+import { GuiIcon } from '@/common';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
   DEFAULT_FONT_COLOR,
@@ -42,8 +35,6 @@ describe('Data Cell Tests', () => {
       [VALUE_FIELD]: 'value',
       [EXTRA_FIELD]: 12,
     },
-    width: 100,
-    height: 100,
   } as unknown as ViewMeta;
 
   let s2: SpreadSheet;
@@ -110,15 +101,6 @@ describe('Data Cell Tests', () => {
           rowLeafNodes: [],
         },
       } as unknown as PivotFacet;
-    });
-
-    test("shouldn't init when width or height is not positive", () => {
-      const dataCell = new DataCell({ ...meta, width: 0, height: 0 }, s2);
-      expect(dataCell.getTextShape()).toBeUndefined();
-      // @ts-ignore
-      expect(dataCell.backgroundShape).toBeUndefined();
-      // @ts-ignore
-      expect([...dataCell.stateShapes.keys()]).toBeEmpty();
     });
 
     test('should get text shape', () => {
@@ -229,7 +211,6 @@ describe('Data Cell Tests', () => {
       const fieldValue = 27.334666666666667;
       const anotherMeta = {
         width: cellWidth,
-        height: 100,
         valueField: 'value',
         fieldValue,
         data: {
@@ -385,81 +366,6 @@ describe('Data Cell Tests', () => {
         },
       });
       table.render();
-    });
-  });
-
-  describe('Data Cell Interaction', () => {
-    let s2: SpreadSheet;
-
-    beforeEach(() => {
-      s2 = createPivotSheet({
-        showSeriesNumber: true,
-        interaction: {
-          enableCopy: true,
-        },
-      });
-      s2.render();
-    });
-    const emitEvent = (type: S2Event, event: Partial<OriginalEvent>) => {
-      s2.emit(type, {
-        originalEvent: event,
-        preventDefault() {},
-        stopPropagation() {},
-        ...event,
-      } as any);
-    };
-
-    test('should be highlight entire row data cells when the row header is clicked', () => {
-      const allRowCells = s2.interaction.getAllRowHeaderCells();
-      const mockCell = allRowCells[0];
-      s2.getCell = jest.fn().mockReturnValue(mockCell);
-
-      emitEvent(S2Event.ROW_CELL_CLICK, {
-        x: 2,
-        y: 2,
-      });
-
-      const interactedCells = s2.interaction.getInteractedCells();
-      const firstRowCell = find(interactedCells, (cell: S2CellType) => {
-        return cell.cellType === CellTypes.ROW_CELL;
-      });
-      expect(interactedCells.length).toBe(7);
-      expect(firstRowCell!.getMeta().id).toBe(mockCell.getMeta().id);
-    });
-
-    test('should be highlight entire column data cells when the column header is clicked', () => {
-      const allColumnCells = s2.interaction.getAllColHeaderCells();
-      const mockCell = allColumnCells[0];
-      s2.getCell = jest.fn().mockReturnValue(mockCell);
-
-      emitEvent(S2Event.COL_CELL_CLICK, {
-        x: mockCell.getMeta().x + 5,
-        y: mockCell.getMeta().y + 5,
-      });
-
-      const interactedCells = s2.interaction.getInteractedCells();
-      const firstColCell = find(interactedCells, (cell: S2CellType) => {
-        return cell.cellType === CellTypes.COL_CELL;
-      });
-      expect(interactedCells.length).toBe(8);
-      expect(firstColCell!.getMeta().id).toBe(mockCell.getMeta().id);
-    });
-
-    test('should be highlight data cell when the data cell is clicked', () => {
-      const allDataCells = s2.interaction.getAllCells();
-      const mockCell = allDataCells[0];
-      s2.getCell = jest.fn().mockReturnValue(mockCell);
-
-      emitEvent(S2Event.DATA_CELL_CLICK, {
-        x: mockCell.getMeta().x + 5,
-        y: mockCell.getMeta().y + 5,
-      });
-
-      const activeCells = s2.interaction.getInteractedCells();
-
-      expect(activeCells.length).toBe(1);
-      expect(activeCells[0].getActualText()).toBe('1');
-      expect(activeCells[0].getMeta().id).toBe(mockCell.getMeta().id);
     });
   });
 });

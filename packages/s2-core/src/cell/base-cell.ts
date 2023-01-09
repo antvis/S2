@@ -103,9 +103,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.theme = spreadsheet.theme;
     this.conditions = this.spreadsheet.options.conditions!;
     this.handleRestOptions(...restOptions);
-    if (this.shouldInit()) {
-      this.initCell();
-    }
+    this.initCell();
   }
 
   public getMeta(): T {
@@ -189,11 +187,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
-
-  protected shouldInit() {
-    const { width, height } = this.meta;
-    return width > 0 && height > 0;
-  }
 
   public getStyle<K extends keyof S2Theme = keyof CellThemes>(
     name?: K,

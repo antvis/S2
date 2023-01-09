@@ -1,14 +1,5 @@
 import { Group, Rect } from '@antv/g';
-import {
-  get,
-  isBoolean,
-  isEmpty,
-  isNumber,
-  keys,
-  last,
-  maxBy,
-  set,
-} from 'lodash';
+import { get, isBoolean, isEmpty, isNil, keys, last, maxBy, set } from 'lodash';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -56,7 +47,7 @@ import type { Indexes, PanelIndexes } from '../utils/indexes';
 import { getValidFrozenOptions } from '../utils/layout/frozen';
 import { BaseFacet } from './base-facet';
 import { CornerBBox } from './bbox/cornerBBox';
-import { type ColHeaderConfig, Frame, type SeriesNumberHeader } from './header';
+import { Frame, type SeriesNumberHeader } from './header';
 import type { ColHeader } from './header/col';
 import { TableColHeader } from './header/table-col';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
@@ -251,7 +242,7 @@ export class TableFacet extends BaseFacet {
 
     const getCellMeta: GetCellMeta = (rowIndex, colIndex) => {
       const { showSeriesNumber } = this.spreadsheet.options;
-      const colNode = colLeafNodes[colIndex];
+      const col = colLeafNodes[colIndex];
       const cellHeight = this.getCellHeightByRowIndex(rowIndex);
 
       const cellRange = this.getCellRange();
@@ -264,7 +255,7 @@ export class TableFacet extends BaseFacet {
 
       let data;
 
-      const x = colNode.x;
+      const x = col.x;
       let y = this.viewCellHeights.getCellOffsetY(rowIndex);
 
       if (
@@ -275,12 +266,12 @@ export class TableFacet extends BaseFacet {
           this.getTotalHeightForRange(rowIndex, cellRange.end);
       }
 
-      if (showSeriesNumber && colNode.field === SERIES_NUMBER_FIELD) {
+      if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
         data = rowIndex + 1;
       } else {
         data = this.spreadsheet.dataSet.getCellData({
           query: {
-            colNode: colNode.field,
+            col: col.field,
             rowIndex,
           },
         });
@@ -289,19 +280,19 @@ export class TableFacet extends BaseFacet {
         spreadsheet: this.spreadsheet,
         x,
         y,
-        width: colNode.width,
+        width: col.width,
         height: cellHeight,
         data: {
-          [colNode.field]: data,
+          [col.field]: data,
         },
         rowIndex,
         colIndex,
         isTotals: false,
-        colId: colNode.id,
+        colId: col.id,
         rowId: String(rowIndex),
-        valueField: colNode.field,
+        valueField: col.field,
         fieldValue: data,
-        id: getDataCellId(String(rowIndex), colNode.id),
+        id: getDataCellId(String(rowIndex), col.id),
       } as ViewMeta;
     };
 
@@ -448,38 +439,36 @@ export class TableFacet extends BaseFacet {
     colNode: Node,
     adaptiveColWidth: number,
   ): number {
-    const { spreadsheet } = this;
-    const { dataSet } = spreadsheet;
-    const { colCell } = spreadsheet.options.style!;
-    const layoutWidthType = spreadsheet.getLayoutWidthType();
+    const { colCell } = this.spreadsheet.options.style!;
+    const layoutWidthType = this.spreadsheet.getLayoutWidthType();
     const cellDraggedWidth = this.getColCellDraggedWidth(colNode);
 
     // 1. 拖拽后的宽度优先级最高
-    if (isNumber(cellDraggedWidth)) {
+    if (cellDraggedWidth) {
       return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomSize(colNode, colCell?.width);
-    if (isNumber(cellCustomWidth)) {
+    if (!isNil(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
     let colWidth: number;
     if (layoutWidthType === LayoutWidthTypes.Compact) {
-      const datas = dataSet.getDisplayDataSet();
-      const formatter = dataSet.getFieldFormatter(colNode.field);
+      const datas = this.spreadsheet.dataSet.getDisplayDataSet();
+      const colLabel = colNode.value;
 
-      // 采样前50，找出表身最长的数据
-      const maxLabel = maxBy(
-        datas
-          ?.slice(0, 50)
-          .map(
-            (data) =>
-              `${formatter?.(data[colNode.field]) ?? data[colNode.field]}`,
-          ),
-        (label) => spreadsheet.measureTextWidthRoughly(label),
+      const allLabels =
+        datas?.map((data) => `${data[colNode.field]}`)?.slice(0, 50) || []; // 采样取了前50
+      allLabels.push(colLabel);
+      const maxLabel = maxBy(allLabels, (label) =>
+        this.spreadsheet.measureTextWidthRoughly(label),
       );
+
+      const { bolderText: colCellTextStyle } = this.spreadsheet.theme.colCell!;
+      const { text: dataCellTextStyle, cell: cellStyle } =
+        this.spreadsheet.theme.dataCell!;
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
@@ -487,28 +476,24 @@ export class TableFacet extends BaseFacet {
         maxLabel,
       );
 
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell!;
-      const { text: dataCellTextStyle, cell: cellStyle } =
-        spreadsheet.theme.dataCell!;
-
-      // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
-      const EXTRA_PIXEL = 1;
-      const maxLabelWidth =
-        spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
-        cellStyle!.padding!.left! +
-        cellStyle!.padding!.right! +
-        EXTRA_PIXEL;
-
-      // 计算表头 label+icon 占用的空间
-      const colHeaderNodeWidth =
-        spreadsheet.measureTextWidth(colNode.label, colCellTextStyle) +
-        getOccupiedWidthForTableCol(
-          this.spreadsheet,
-          colNode,
-          spreadsheet.theme.colCell!,
-        );
-
-      colWidth = Math.max(colHeaderNodeWidth, maxLabelWidth);
+      // 最长的 Label 如果是列名，按列名的标准计算宽度
+      if (colLabel === maxLabel) {
+        colWidth =
+          this.spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
+          getOccupiedWidthForTableCol(
+            this.spreadsheet,
+            colNode,
+            this.spreadsheet.theme.colCell!,
+          );
+      } else {
+        // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
+        const EXTRA_PIXEL = 1;
+        colWidth =
+          this.spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
+          cellStyle!.padding!.left! +
+          cellStyle!.padding!.right! +
+          EXTRA_PIXEL;
+      }
     } else {
       colWidth = adaptiveColWidth;
     }
@@ -987,7 +972,7 @@ export class TableFacet extends BaseFacet {
         data: this.layoutResult.colNodes,
         sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
-      } as unknown as ColHeaderConfig);
+      });
     }
     return this.columnHeader;
   }

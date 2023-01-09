@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 import {
   customMerge,
+  DEFAULT_STYLE,
   generatePalette,
   getDefaultSeriesNumberText,
   getLang,
@@ -16,8 +17,6 @@ import {
   type TargetCellInfo,
   type ThemeCfg,
   type TooltipAutoAdjustBoundary,
-  DEFAULT_STYLE,
-  type InteractionCellSelectedHighlightType,
 } from '@antv/s2';
 import type { Adaptive, SheetType } from '@antv/s2-shared';
 import corePkg from '@antv/s2/package.json';
@@ -41,7 +40,7 @@ import {
   Divider,
 } from 'antd';
 import 'antd/dist/antd.min.css';
-import { debounce, isEmpty, isBoolean } from 'lodash';
+import { debounce, isEmpty } from 'lodash';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import ReactDOM from 'react-dom';
@@ -57,7 +56,6 @@ import {
   defaultOptions,
   pivotSheetDataCfg,
   s2ConditionsOptions,
-  s2Options,
   sliderOptions,
   tableSheetDataCfg,
   TableSheetFrozenOptions,
@@ -594,10 +592,7 @@ function MainLayout() {
                     updateOptions({
                       style: {
                         colCell: {
-                          height: checked
-                            ? 0
-                            : s2Options?.style?.colCell?.height ??
-                              DEFAULT_STYLE.colCell?.height,
+                          height: checked ? 0 : DEFAULT_STYLE.colCell?.height,
                         },
                       },
                     });
@@ -939,59 +934,19 @@ function MainLayout() {
                     }}
                   />
                 </Tooltip>
-                <Tooltip title="高亮选中单元格行为，演示这里旧配置优先级最高">
-                  <Select
-                    style={{ width: 260 }}
-                    placeholder="单元格选中高亮"
-                    allowClear
-                    mode="multiple"
-                    onChange={(type) => {
-                      let selectedCellHighlight:
-                        | boolean
-                        | InteractionCellSelectedHighlightType = false;
-                      const oldIdx = type.findIndex((typeItem: any) =>
-                        isBoolean(typeItem),
-                      );
-
-                      if (oldIdx > -1) {
-                        selectedCellHighlight = type[oldIdx];
-                      } else {
-                        selectedCellHighlight = {
-                          rowHeader: false,
-                          colHeader: false,
-                          currentCol: false,
-                          currentRow: false,
-                        };
-                        type.forEach((i: number) => {
-                          // @ts-ignore
-                          selectedCellHighlight[i] = true;
-                        });
-                      }
-
+                <Tooltip title="高亮选中单元格">
+                  <Switch
+                    checkedChildren="选中高亮开"
+                    unCheckedChildren="选中高亮关"
+                    checked={mergedOptions.interaction?.selectedCellHighlight}
+                    onChange={(checked) => {
                       updateOptions({
                         interaction: {
-                          // @ts-ignore
-                          selectedCellHighlight,
+                          selectedCellHighlight: checked,
                         },
                       });
                     }}
-                  >
-                    <Select.Option value={true}>
-                      （旧）高亮选中单元格所在行列头
-                    </Select.Option>
-                    <Select.Option value="rowHeader">
-                      rowHeader: 高亮所在行头
-                    </Select.Option>
-                    <Select.Option value="colHeader">
-                      colHeader: 高亮所在列头
-                    </Select.Option>
-                    <Select.Option value="currentRow">
-                      currentRow: 高亮所在行
-                    </Select.Option>
-                    <Select.Option value="currentCol">
-                      currentCol: 高亮所在列
-                    </Select.Option>
-                  </Select>
+                  />
                 </Tooltip>
                 <Tooltip title="高亮当前行列单元格">
                   <Switch

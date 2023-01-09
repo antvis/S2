@@ -45,7 +45,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         spreadsheet,
       ),
       spreadsheet,
-    } as BaseHeaderConfig);
+    });
   }
 
   constructor(cfg: BaseHeaderConfig) {

@@ -485,19 +485,6 @@ describe('PivotSheet Tests', () => {
     expect(afterRender).toHaveBeenCalledTimes(1);
   });
 
-  test('should emit after real dataCell render', () => {
-    const afterRealDataCellRender = jest.fn();
-    const sheet = new PivotSheet(container, dataCfg, s2Options);
-
-    sheet.on(
-      S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER,
-      afterRealDataCellRender,
-    );
-    sheet.render();
-
-    expect(afterRealDataCellRender).toHaveBeenCalledTimes(1);
-  });
-
   test('should updatePagination', () => {
     s2.updatePagination({
       current: 2,

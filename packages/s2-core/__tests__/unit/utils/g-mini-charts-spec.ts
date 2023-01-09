@@ -1,16 +1,10 @@
-import { assembleDataCfg, assembleOptions } from 'tests/util';
-import { getContainer } from 'tests/util/helpers';
-import { forEach, map } from 'lodash';
 import type { RangeColors } from '../../../src/common/interface/theme';
-import { PivotSheet } from '@/sheet-type';
-import { CellTypes, MiniChartTypes, type S2CellType } from '@/common';
 import {
   getBulletRangeColor,
   transformRatioToPercent,
   scale,
-  drawInterval,
 } from '@/utils/g-mini-charts';
-import type { DataCell } from '@/cell';
+import { MiniChartTypes, type S2CellType } from '@/common';
 
 describe('MiniCharts Utils Tests', () => {
   const padding = {
@@ -306,129 +300,5 @@ describe('MiniCharts Utils Tests', () => {
     expect(transformRatioToPercent(0.09, { min: 0, max: 2 })).toEqual('9%');
     expect(transformRatioToPercent(0.09)).toEqual('9%');
     expect(transformRatioToPercent(0.09, 2)).toEqual('9.00%');
-  });
-});
-
-describe('drawInterval Test', () => {
-  const dataCfg = assembleDataCfg({
-    meta: [],
-    fields: {
-      columns: ['type', 'sub_type'],
-      rows: ['province', 'city'],
-      values: ['number'],
-    },
-  });
-  const options = assembleOptions({
-    conditions: {
-      interval: [
-        {
-          field: 'number',
-          mapping() {
-            return {
-              isCompare: true,
-              minValue: 0,
-              maxValue: 300,
-              fieldValue: 100,
-              fill: 'pink',
-            };
-          },
-        },
-      ],
-    },
-  });
-
-  const s2 = new PivotSheet(getContainer(), dataCfg, options);
-  beforeEach(() => {
-    s2.render();
-  });
-
-  test('should get right condition interval when only set fill', () => {
-    s2.setOptions({
-      conditions: {
-        interval: [
-          {
-            field: 'number',
-            mapping() {
-              return {
-                fill: 'pink',
-              };
-            },
-          },
-        ],
-      },
-    });
-    s2.render();
-
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
-
-    const allIntervalWidth = map(
-      cells,
-      (cell) => drawInterval(cell as DataCell)?.attr()?.width ?? 0,
-    );
-
-    expect(allIntervalWidth).toMatchSnapshot();
-  });
-
-  test('should get right condition interval when minValue and maxValue is custom', () => {
-    s2.setOptions({
-      conditions: {
-        interval: [
-          {
-            field: 'number',
-            mapping() {
-              return {
-                fill: 'pink',
-                isCompare: true,
-                minValue: 0,
-                maxValue: 400,
-              };
-            },
-          },
-        ],
-      },
-    });
-    s2.render();
-
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
-
-    const firstIntervalInfo = drawInterval(cells[0] as DataCell);
-    const lastIntervalInfo = drawInterval(cells[cells.length - 1] as DataCell);
-
-    expect(firstIntervalInfo?.attr().width).toEqual(undefined);
-    expect(lastIntervalInfo?.attr().width).toEqual(88);
-  });
-
-  test('should get right condition interval when filedValue is custom', () => {
-    s2.setOptions({
-      conditions: {
-        interval: [
-          {
-            field: 'number',
-            mapping() {
-              return {
-                isCompare: true,
-                minValue: 0,
-                maxValue: 400,
-                fieldValue: 200,
-                fill: 'pink',
-              };
-            },
-          },
-        ],
-      },
-    });
-    s2.render();
-
-    const cells = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
-    forEach(cells, (cell) => {
-      const intervalInfo = drawInterval(cell as DataCell);
-      expect(intervalInfo?.attr().width).toEqual(50);
-    });
   });
 });

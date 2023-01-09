@@ -1,5 +1,4 @@
 import type { FederatedPointerEvent as CanvasEvent } from '@antv/g';
-import type { SpreadSheet } from '../../sheet-type';
 import type { DataCell } from '../../cell/data-cell';
 import type { RowCell } from '../../cell/row-cell';
 import type { ColCell } from '../../cell/col-cell';
@@ -7,7 +6,6 @@ import type { S2Event } from '../../common/constant';
 import type {
   CellMeta,
   CellScrollPosition,
-  Data,
   HiddenColumnsInfo,
   LayoutResult,
   RowCellCollapsedParams,
@@ -61,9 +59,8 @@ export interface EmitterType {
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
-    cellData: Node;
     field: string;
-    record: Data;
+    record: RawData;
   }) => void;
 
   /** ================ Date Cell ================  */
@@ -133,11 +130,6 @@ export interface EmitterType {
     current: number;
   }) => void;
   [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
-  [S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER]: (options: {
-    add: [number, number][];
-    remove: [number, number][];
-    spreadsheet: SpreadSheet;
-  }) => void;
   /** @deprecated 请使用 S2Event.GLOBAL_SCROLL 代替 */
   [S2Event.LAYOUT_CELL_SCROLL]: (position: CellScrollPosition) => void;
   [S2Event.LAYOUT_CELL_MOUNTED]: (cell: S2CellType) => void;

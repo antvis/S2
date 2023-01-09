@@ -8,8 +8,7 @@ import {
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
-import { getInteractionCellsBySelectedCells } from '../../utils';
-import { afterSelectDataCells } from '../../utils/interaction/select-event';
+import { updateRowColCells } from '../../utils';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -43,8 +42,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas?.x - this.endBrushPoint?.x;
-        const deltaY = pointInCanvas?.y - this.endBrushPoint?.y;
+        const deltaX = pointInCanvas.x - this.endBrushPoint.x;
+        const deltaY = pointInCanvas.y - this.endBrushPoint.y;
         this.handleScroll(deltaX, deltaY);
         return;
       }
@@ -103,19 +102,21 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const { interaction, options } = this.spreadsheet;
 
     const brushRange = this.getBrushRange();
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     interaction.changeState({
-      cells: getInteractionCellsBySelectedCells(
-        selectedCellMetas,
-        this.spreadsheet,
-      ),
+      cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
-      onUpdateCells: afterSelectDataCells,
     });
+
+    if (options.interaction?.selectedCellHighlight) {
+      selectedCellMetas.forEach((meta) => {
+        updateRowColCells(meta as unknown as ViewMeta);
+      });
+    }
 
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedCellMetas);

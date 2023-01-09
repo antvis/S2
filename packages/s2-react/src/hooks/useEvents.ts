@@ -204,11 +204,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
   // ============== Auto 自动生成的 ================
   useS2Event(
-    S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER,
-    props.onLayoutAfterRealDataCellRender,
-    s2,
-  );
-  useS2Event(
     S2Event.ROW_CELL_BRUSH_SELECTION,
     props.onRowCellBrushSelection,
     s2,

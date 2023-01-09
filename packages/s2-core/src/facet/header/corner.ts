@@ -64,7 +64,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       viewportHeight: height,
       seriesNumberWidth,
       spreadsheet,
-    } as CornerHeaderConfig);
+    });
   }
 
   public static getTreeCornerText(options: BaseCornerOptions) {
@@ -133,7 +133,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     if (leafNode) {
       if (spreadsheet.isHierarchyTreeType()) {
         const cornerText = this.getTreeCornerText(options);
-
         const cornerNode: Node = new Node({
           id: '',
           field: '',
@@ -177,7 +176,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cornerNode.spreadsheet = spreadsheet;
           cornerNodes.push(cornerNode);
         });
-        // spreadsheet type grid mode
       }
     }
 
@@ -281,9 +279,5 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
       },
     });
-  }
-
-  public getNodes(): Node[] {
-    return this.headerConfig.data || [];
   }
 }

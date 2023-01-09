@@ -17,14 +17,13 @@ fetch(
         interval: [
           {
             field: 'number',
-            mapping(value) {
+            mapping() {
               return {
                 fill: '#80BFFF',
                 // 自定义柱状图范围
                 isCompare: true,
                 maxValue: 8000,
                 minValue: 300,
-                fieldValue: value > 7900 ? 10 : value,
               };
             },
           },

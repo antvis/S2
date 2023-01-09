@@ -29,14 +29,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aygNlbA0fu/link-table.gif"
     },
     {
-      "filename": "custom-tree-link-jump.ts",
-      "title": {
-        "zh": "链接跳转 - 自定义目录树",
-        "en": "Link jump"
-      },
-      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*f6e6S4OUSdMAAAAAAAAAAAAADmJ7AQ/original"
-    },
-    {
       "filename": "pivot-hide-columns.ts",
       "title": {
         "zh": "隐藏列头 - 透视表",
