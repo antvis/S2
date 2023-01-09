@@ -2,19 +2,35 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent, SheetComponentOptions } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
-import { S2DataConfig } from '@antv/s2';
+import { EXTRA_COLUMN_FIELD, S2DataConfig } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/3c2009ce-8c2a-451d-b29a-619a796c7903.json',
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const s2DataCfg: S2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       ...dataCfg,
       fields: {
         ...dataCfg.fields,
         rows: dataCfg.customTreeItems,
       },
+      meta: [
+        // 日期列头 格式化
+        {
+          field: 'date',
+          name: '时间',
+          formatter: (value) => `${value}年`,
+        },
+        // 同环比名称(虚拟列头) 格式化
+        // {
+        //   field: EXTRA_COLUMN_FIELD,
+        //   formatter: (value, data, meta) => {
+        //     console.log(data, meta);
+        //     return meta?.colIndex === 0 ? '自定义标题' : value;
+        //   },
+        // },
+      ],
     };
 
     const s2Options: SheetComponentOptions = {
@@ -54,7 +70,7 @@ fetch(
     ReactDOM.render(
       <SheetComponent
         sheetType="strategy"
-        dataCfg={s2DataCfg}
+        dataCfg={s2DataConfig}
         options={s2Options}
       />,
       document.getElementById('container'),

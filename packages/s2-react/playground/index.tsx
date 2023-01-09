@@ -37,6 +37,7 @@ import {
   Tooltip,
   type RadioChangeEvent,
   version,
+  Divider,
 } from 'antd';
 import 'antd/dist/antd.min.css';
 import { debounce, isEmpty } from 'lodash';
@@ -375,44 +376,8 @@ function MainLayout() {
                     <Radio.Button value="compact">紧凑</Radio.Button>
                   </Radio.Group>
                 </Tooltip>
-                <Tooltip title="主题">
-                  <Radio.Group onChange={onThemeChange} defaultValue="default">
-                    <Radio.Button value="default">默认</Radio.Button>
-                    <Radio.Button value="gray">简约灰</Radio.Button>
-                    <Radio.Button value="colorful">多彩蓝</Radio.Button>
-                  </Radio.Group>
-                </Tooltip>
-              </Space>
-              <Space>
-                <Popover
-                  placement="bottomRight"
-                  content={
-                    <>
-                      <ChromePicker
-                        color={themeColor}
-                        onChangeComplete={(color) => {
-                          setThemeColor(color.hex);
-                          const palette = getPalette(themeCfg.name);
-                          const newPalette = generatePalette({
-                            ...palette,
-                            brandColor: color.hex,
-                          });
-                          setThemeCfg({
-                            name: themeCfg.name,
-                            palette: newPalette,
-                          });
-                        }}
-                      />
-                    </>
-                  }
-                >
-                  <Button size="small" style={{ marginLeft: 20 }}>
-                    主题色调整
-                  </Button>
-                </Popover>
                 <Button
                   danger
-                  size="small"
                   onClick={() => {
                     s2Ref.current?.destroy();
                     s2Ref.current?.render();
@@ -421,160 +386,7 @@ function MainLayout() {
                   卸载组件 (s2.destroy)
                 </Button>
               </Space>
-              <Space style={{ margin: '20px 0', display: 'flex' }}>
-                <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
-                  <Select
-                    defaultValue={mergedOptions.tooltip?.autoAdjustBoundary}
-                    onChange={onAutoAdjustBoundaryChange}
-                    style={{ width: 230 }}
-                    size="small"
-                  >
-                    <Select.Option value="container">
-                      container (表格区域)
-                    </Select.Option>
-                    <Select.Option value="body">
-                      body (浏览器可视区域)
-                    </Select.Option>
-                    <Select.Option value="">关闭</Select.Option>
-                  </Select>
-                </Tooltip>
-                <Input
-                  style={{ width: 150 }}
-                  onChange={onSizeChange('width')}
-                  defaultValue={mergedOptions.width}
-                  suffix="px"
-                  prefix="宽度"
-                  size="small"
-                />
-                <Input
-                  style={{ width: 150 }}
-                  onChange={onSizeChange('height')}
-                  defaultValue={mergedOptions.height}
-                  suffix="px"
-                  prefix="高度"
-                  size="small"
-                />
-                <Button
-                  size="small"
-                  onClick={() => {
-                    s2Ref.current?.changeSheetSize(400, 400);
-                    s2Ref.current?.render(false);
-                  }}
-                >
-                  改变表格大小 (s2.changeSheetSize)
-                </Button>
-                <Popover
-                  placement="bottomRight"
-                  content={
-                    <>
-                      <div style={{ width: '600px' }}>
-                        水平滚动速率 ：
-                        <Slider
-                          {...sliderOptions}
-                          defaultValue={
-                            mergedOptions.interaction!.scrollSpeedRatio!
-                              .horizontal
-                          }
-                          onChange={onScrollSpeedRatioChange('horizontal')}
-                        />
-                        垂直滚动速率 ：
-                        <Slider
-                          {...sliderOptions}
-                          defaultValue={
-                            mergedOptions.interaction!.scrollSpeedRatio!
-                              .vertical
-                          }
-                          onChange={onScrollSpeedRatioChange('vertical')}
-                        />
-                      </div>
-                    </>
-                  }
-                >
-                  <Button size="small">滚动速率调整</Button>
-                </Popover>
-                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
-                  <Select
-                    defaultValue={mergedOptions.interaction!.overscrollBehavior}
-                    onChange={onOverscrollBehaviorChange}
-                    style={{ width: 150 }}
-                    size="small"
-                  >
-                    <Select.Option value="auto">auto</Select.Option>
-                    <Select.Option value="contain">contain</Select.Option>
-                    <Select.Option value="none">none</Select.Option>
-                  </Select>
-                </Tooltip>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    const rowNode = s2Ref.current
-                      ?.getRowNodes()
-                      .find(({ id }) => id === 'root[&]四川省[&]成都市');
-
-                    clearInterval(scrollTimer.current!);
-                    s2Ref.current?.updateScrollOffset({
-                      offsetY: {
-                        value: rowNode?.y,
-                        animate: true,
-                      },
-                    });
-                  }}
-                >
-                  滚动至 [成都市]
-                </Button>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    clearInterval(scrollTimer.current!);
-                    s2Ref.current?.updateScrollOffset({
-                      offsetY: {
-                        value: 0,
-                        animate: true,
-                      },
-                    });
-                  }}
-                >
-                  滚动到顶部
-                </Button>
-                <Button
-                  size="small"
-                  danger
-                  onClick={() => {
-                    if (
-                      scrollTimer.current ||
-                      !s2Ref.current?.facet.vScrollBar
-                    ) {
-                      clearInterval(scrollTimer.current!);
-                      return;
-                    }
-                    scrollTimer.current = setInterval(() => {
-                      const { scrollY } =
-                        s2Ref.current?.facet.getScrollOffset()!;
-                      if (s2Ref.current?.facet.isScrollToBottom(scrollY)) {
-                        console.log('滚动到底部');
-                        s2Ref.current.updateScrollOffset({
-                          offsetY: {
-                            value: 0,
-                            animate: false,
-                          },
-                        });
-                        return;
-                      }
-                      s2Ref.current!.updateScrollOffset({
-                        offsetY: {
-                          value: scrollY + 50,
-                          animate: true,
-                        },
-                      });
-                    }, 500);
-                  }}
-                >
-                  {scrollTimer.current ? '停止滚动' : '循环滚动'}
-                </Button>
-              </Space>
-              <Space
-                style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap' }}
-              >
+              <Space className="filter-container">
                 <Switch
                   checkedChildren="渲染组件"
                   unCheckedChildren="卸载组件"
@@ -600,23 +412,6 @@ function MainLayout() {
                   }}
                   disabled={sheetType === 'table'}
                 />
-                <Tooltip title="树状模式生效">
-                  <Switch
-                    checkedChildren="收起子节点"
-                    unCheckedChildren="展开子节点"
-                    disabled={mergedOptions.hierarchyType !== 'tree'}
-                    checked={mergedOptions.style?.rowCell?.hierarchyCollapse}
-                    onChange={(checked) => {
-                      updateOptions({
-                        style: {
-                          rowCell: {
-                            hierarchyCollapse: checked,
-                          },
-                        },
-                      });
-                    }}
-                  />
-                </Tooltip>
                 <Switch
                   checkedChildren="数值挂列头"
                   unCheckedChildren="数值挂行头"
@@ -778,24 +573,6 @@ function MainLayout() {
                   }}
                 />
                 <Switch
-                  checkedChildren="开启Tooltip"
-                  unCheckedChildren="关闭Tooltip"
-                  checked={mergedOptions.tooltip?.showTooltip}
-                  onChange={(checked) => {
-                    updateOptions({
-                      tooltip: {
-                        showTooltip: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="自定义Tooltip"
-                  unCheckedChildren="默认Tooltip"
-                  checked={showCustomTooltip}
-                  onChange={setShowCustomTooltip}
-                />
-                <Switch
                   checkedChildren="打开链接跳转"
                   unCheckedChildren="无链接跳转"
                   checked={!isEmpty(mergedOptions.interaction?.linkFields)}
@@ -831,6 +608,314 @@ function MainLayout() {
                     });
                   }}
                 />
+              </Space>
+              <Space className="filter-container">
+                <span className="label">
+                  主题配置
+                  <Divider type="vertical" />
+                </span>
+                <Radio.Group onChange={onThemeChange} defaultValue="default">
+                  <Radio.Button value="default">默认</Radio.Button>
+                  <Radio.Button value="gray">简约灰</Radio.Button>
+                  <Radio.Button value="colorful">多彩蓝</Radio.Button>
+                </Radio.Group>
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <ChromePicker
+                        color={themeColor}
+                        onChangeComplete={(color) => {
+                          setThemeColor(color.hex);
+                          const palette = getPalette(themeCfg.name);
+                          const newPalette = generatePalette({
+                            ...palette,
+                            brandColor: color.hex,
+                          });
+                          setThemeCfg({
+                            name: themeCfg.name,
+                            palette: newPalette,
+                          });
+                        }}
+                      />
+                    </>
+                  }
+                >
+                  <Button>主题色调整</Button>
+                </Popover>
+              </Space>
+              <Space className="filter-container">
+                <span className="label">
+                  Tooltip 配置
+                  <Divider type="vertical" />
+                </span>
+                <Switch
+                  checkedChildren="开启Tooltip"
+                  unCheckedChildren="关闭Tooltip"
+                  checked={mergedOptions.tooltip?.showTooltip}
+                  onChange={(checked) => {
+                    updateOptions({
+                      tooltip: {
+                        showTooltip: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="自定义Tooltip"
+                  unCheckedChildren="默认Tooltip"
+                  checked={showCustomTooltip}
+                  onChange={setShowCustomTooltip}
+                />
+                <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
+                  <Select
+                    defaultValue={mergedOptions.tooltip?.autoAdjustBoundary}
+                    onChange={onAutoAdjustBoundaryChange}
+                    style={{ width: 230 }}
+                    size="small"
+                  >
+                    <Select.Option value="container">
+                      container (表格区域)
+                    </Select.Option>
+                    <Select.Option value="body">
+                      body (浏览器可视区域)
+                    </Select.Option>
+                    <Select.Option value="">关闭</Select.Option>
+                  </Select>
+                </Tooltip>
+              </Space>
+              <Space className="filter-container">
+                <span className="label">
+                  宽高配置
+                  <Divider type="vertical" />
+                </span>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('width')}
+                  defaultValue={mergedOptions.width}
+                  suffix="px"
+                  prefix="宽度"
+                  size="small"
+                />
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('height')}
+                  defaultValue={mergedOptions.height}
+                  suffix="px"
+                  prefix="高度"
+                  size="small"
+                />
+                <Button
+                  size="small"
+                  onClick={() => {
+                    s2Ref.current?.changeSheetSize(400, 400);
+                    s2Ref.current?.render(false);
+                  }}
+                >
+                  改变表格大小 (s2.changeSheetSize)
+                </Button>
+              </Space>
+              <Space className="filter-container">
+                <span className="label">
+                  滚动
+                  <Divider type="vertical" />
+                </span>
+                <Popover
+                  placement="bottomRight"
+                  content={
+                    <>
+                      <div style={{ width: '600px' }}>
+                        水平滚动速率 ：
+                        <Slider
+                          {...sliderOptions}
+                          defaultValue={
+                            mergedOptions.interaction!.scrollSpeedRatio!
+                              .horizontal
+                          }
+                          onChange={onScrollSpeedRatioChange('horizontal')}
+                        />
+                        垂直滚动速率 ：
+                        <Slider
+                          {...sliderOptions}
+                          defaultValue={
+                            mergedOptions.interaction!.scrollSpeedRatio!
+                              .vertical
+                          }
+                          onChange={onScrollSpeedRatioChange('vertical')}
+                        />
+                      </div>
+                    </>
+                  }
+                >
+                  <Button size="small">滚动速率调整</Button>
+                </Popover>
+                <Tooltip title="滚动链控制(overscrollBehavior): https://developer.mozilla.org/zh-CN/docs/Web/CSS/overscroll-behavior">
+                  <Select
+                    defaultValue={mergedOptions.interaction!.overscrollBehavior}
+                    onChange={onOverscrollBehaviorChange}
+                    style={{ width: 150 }}
+                    size="small"
+                  >
+                    <Select.Option value="auto">auto</Select.Option>
+                    <Select.Option value="contain">contain</Select.Option>
+                    <Select.Option value="none">none</Select.Option>
+                  </Select>
+                </Tooltip>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    const rowNode = s2Ref.current
+                      ?.getRowNodes()
+                      .find(({ id }) => id === 'root[&]四川省[&]成都市');
+
+                    clearInterval(scrollTimer.current!);
+                    s2Ref.current?.updateScrollOffset({
+                      offsetY: {
+                        value: rowNode?.y,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动至 [成都市]
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current!);
+                    s2Ref.current?.updateScrollOffset({
+                      offsetY: {
+                        value: 0,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动到顶部
+                </Button>
+                <Button
+                  size="small"
+                  danger
+                  onClick={() => {
+                    if (
+                      scrollTimer.current ||
+                      !s2Ref.current?.facet.vScrollBar
+                    ) {
+                      clearInterval(scrollTimer.current!);
+                      return;
+                    }
+                    scrollTimer.current = setInterval(() => {
+                      const { scrollY } =
+                        s2Ref.current?.facet.getScrollOffset()!;
+                      if (s2Ref.current?.facet.isScrollToBottom(scrollY)) {
+                        console.log('滚动到底部');
+                        s2Ref.current.updateScrollOffset({
+                          offsetY: {
+                            value: 0,
+                            animate: false,
+                          },
+                        });
+                        return;
+                      }
+                      s2Ref.current!.updateScrollOffset({
+                        offsetY: {
+                          value: scrollY + 50,
+                          animate: true,
+                        },
+                      });
+                    }, 500);
+                  }}
+                >
+                  {scrollTimer.current ? '停止滚动' : '循环滚动'}
+                </Button>
+              </Space>
+              <Space className="filter-container">
+                <span className="label">
+                  折叠 / 展开
+                  <Divider type="vertical" />
+                </span>
+                <Tooltip title="树状模式生效 (平铺模式 TODO)">
+                  <Switch
+                    checkedChildren="收起所有"
+                    unCheckedChildren="展开所有"
+                    disabled={mergedOptions.hierarchyType !== 'tree'}
+                    checked={mergedOptions.style?.rowCell?.collapseAll!}
+                    onChange={(checked) => {
+                      updateOptions({
+                        style: {
+                          rowCell: {
+                            collapseAll: checked,
+                            collapseFields: null,
+                            expandDepth: null,
+                          },
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Switch
+                  checkedChildren="折叠浙江省"
+                  unCheckedChildren="展开浙江省"
+                  disabled={mergedOptions.hierarchyType !== 'tree'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        rowCell: {
+                          collapseAll: null,
+                          expandDepth: null,
+                          collapseFields: {
+                            'root[&]浙江省': checked,
+                          },
+                        },
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="折叠省份(province) 所有维值"
+                  unCheckedChildren="展开省份(province) 所有维值"
+                  disabled={mergedOptions.hierarchyType !== 'tree'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        rowCell: {
+                          collapseAll: null,
+                          expandDepth: null,
+                          collapseFields: {
+                            'root[&]浙江省': checked,
+                            'root[&]四川省': checked,
+                            province: checked,
+                          },
+                        },
+                      },
+                    });
+                  }}
+                />
+                <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
+                  <Select
+                    style={{ width: 180 }}
+                    defaultValue={mergedOptions?.style?.rowCell?.expandDepth}
+                    placeholder="默认行头展开层级"
+                    size="small"
+                    onChange={(level) => {
+                      updateOptions({
+                        style: {
+                          rowCell: {
+                            collapseAll: false,
+                            expandDepth: level,
+                            collapseFields: null,
+                          },
+                        },
+                      });
+                    }}
+                  >
+                    {pivotSheetDataCfg.fields.rows?.map((_, i) => (
+                      <Select.Option value={i} key={i}>
+                        第 {i + 1} 级
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Tooltip>
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="交互配置" key="interaction">
@@ -906,26 +991,6 @@ function MainLayout() {
                       });
                     }}
                   />
-                </Tooltip>
-                <Tooltip title={<p>透视表树状模式默认行头展开层级配置</p>}>
-                  <Select
-                    style={{ width: 180 }}
-                    defaultValue={mergedOptions?.style?.rowCell?.expandDepth}
-                    placeholder="默认行头展开层级"
-                    onChange={(level) => {
-                      updateOptions({
-                        style: {
-                          rowCell: {
-                            expandDepth: level,
-                          },
-                        },
-                      });
-                    }}
-                  >
-                    <Select.Option value={0}>第一级</Select.Option>
-                    <Select.Option value={1}>第二级</Select.Option>
-                    <Select.Option value={2}>第三级</Select.Option>
-                  </Select>
                 </Tooltip>
                 <Tooltip
                   title={
@@ -1028,8 +1093,8 @@ function MainLayout() {
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}
-              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
-              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              onColCellHidden={logHandler('onColCellHidden')}
+              onColCellExpanded={logHandler('onColCellExpanded')}
               onSelected={logHandler('onSelected')}
               onScroll={logHandler('onScroll')}
               onRowCellScroll={logHandler('onRowCellScroll')}
@@ -1041,6 +1106,8 @@ function MainLayout() {
               onDataCellBrushSelection={logHandler('onDataCellBrushSelection')}
               onColCellBrushSelection={logHandler('onColCellBrushSelection')}
               onRowCellBrushSelection={logHandler('onRowCellBrushSelection')}
+              onRowCellCollapsed={logHandler('onRowCellCollapsed')}
+              onRowCellAllCollapsed={logHandler('onRowCellAllCollapsed')}
             />
           )}
         </TabPane>

@@ -429,8 +429,7 @@ export abstract class SpreadSheet extends EE {
     });
 
     // 清空滚动进度
-    this.store.set('scrollX', 0);
-    this.store.set('scrollY', 0);
+    this.facet.resetScrollOffset();
   }
 
   /**

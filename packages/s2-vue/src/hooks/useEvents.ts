@@ -54,11 +54,12 @@ export const useEvents = (
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_DOWN, 'rowCellMouseDown');
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_UP, 'rowCellMouseUp');
     useCellEvent(s2Ref, emit, S2Event.ROW_CELL_MOUSE_MOVE, 'rowCellMouseMove');
+    useS2Event(s2Ref, emit, S2Event.ROW_CELL_COLLAPSED, 'rowCellCollapsed');
     useS2Event(
       s2Ref,
       emit,
-      S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
-      'rowCellCollapseTreeRows',
+      S2Event.ROW_CELL_ALL_COLLAPSED,
+      'rowCellAllCollapsed',
     );
     useS2Event(s2Ref, emit, S2Event.ROW_CELL_SCROLL, 'rowCellScroll');
 
@@ -80,6 +81,8 @@ export const useEvents = (
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_DOWN, 'colCellMouseDown');
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_UP, 'colCellMouseUp');
     useCellEvent(s2Ref, emit, S2Event.COL_CELL_MOUSE_MOVE, 'colCellMouseMove');
+    useS2Event(s2Ref, emit, S2Event.COL_CELL_EXPANDED, 'colCellExpanded');
+    useS2Event(s2Ref, emit, S2Event.COL_CELL_HIDDEN, 'colCellHidden');
 
     // ============== Data Cell ====================
     useCellEvent(s2Ref, emit, S2Event.DATA_CELL_HOVER, 'dataCellHover');
@@ -208,20 +211,6 @@ export const useEvents = (
     useS2Event(s2Ref, emit, S2Event.LAYOUT_PAGINATION, 'layoutPagination');
     /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
     useS2Event(s2Ref, emit, S2Event.LAYOUT_CELL_SCROLL, 'layoutCellScroll');
-    useS2Event(
-      s2Ref,
-      emit,
-      S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
-      'layoutAfterCollapseRows',
-    );
-    useS2Event(
-      s2Ref,
-      emit,
-      S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
-      'collapseRowsAll',
-    );
-    useS2Event(s2Ref, emit, S2Event.LAYOUT_COLS_EXPANDED, 'layoutColsExpanded');
-    useS2Event(s2Ref, emit, S2Event.LAYOUT_COLS_HIDDEN, 'layoutColsHidden');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_BEFORE_RENDER, 'beforeRender');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_AFTER_RENDER, 'afterRender');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_DESTROY, 'destroy');

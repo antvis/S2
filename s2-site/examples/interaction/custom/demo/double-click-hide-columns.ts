@@ -9,12 +9,12 @@ class HiddenInteraction extends BaseEvent {
       this.spreadsheet.interaction.hideColumns([meta.field]);
     });
 
-    this.spreadsheet.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
+    this.spreadsheet.on(S2Event.COL_CELL_EXPANDED, (cell) => {
       console.log('列头展开:', cell);
     });
 
     this.spreadsheet.on(
-      S2Event.LAYOUT_COLS_HIDDEN,
+      S2Event.COL_CELL_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏:', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },

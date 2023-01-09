@@ -234,7 +234,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
 
   test('should expand columns correctly', () => {
     const columnsExpand = jest.fn();
-    s2.on(S2Event.LAYOUT_COLS_EXPANDED, columnsExpand);
+    s2.on(S2Event.COL_CELL_EXPANDED, columnsExpand);
 
     const mockNode: Partial<Node> = {
       field: 'a',
@@ -248,7 +248,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
     ];
     s2.store.set('hiddenColumnsDetail', defaultColumnsDetail);
 
-    s2.emit(S2Event.LAYOUT_COLS_EXPANDED, mockNode as Node);
+    s2.emit(S2Event.COL_CELL_EXPANDED, mockNode as Node);
 
     // emit hook
     expect(columnsExpand).toHaveBeenCalled();
@@ -275,7 +275,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
       .mockImplementationOnce(() => {});
 
     const columnsHidden = jest.fn();
-    s2.on(S2Event.LAYOUT_COLS_HIDDEN, columnsHidden);
+    s2.on(S2Event.COL_CELL_HIDDEN, columnsHidden);
 
     // trigger hidden icon click
     rowColumnClick.hideSelectedColumns();

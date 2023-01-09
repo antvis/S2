@@ -46,7 +46,7 @@ fetch('https://assets.antv.antgroup.com/s2/basic.json')
         colCell: {
           height: 50,
         },
-        // 每一行根据指标单独设置
+        // 明细表每一行根据行序号单独设置
         rowCell: {
           heightByField: {
             '1': 130,

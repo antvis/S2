@@ -776,17 +776,12 @@ export class PivotFacet extends BaseFacet {
     const { rows = [] } = this.spreadsheet.dataSet.fields;
 
     // 1. 用户拖拽或手动指定的行头宽度优先级最高
-    if (!isNil(rowCell?.treeWidth)) {
-      return rowCell?.treeWidth!;
-    }
-
-    // 2. 其次是自定义
     const customRowWidth = this.getCellCustomSize(null, rowCell?.width!);
     if (!isNil(customRowWidth)) {
       return customRowWidth;
     }
 
-    // 3. 然后是计算 (+ icon province/city/level)
+    // 2. 然后是计算 (+ icon province/city/level)
     const treeHeaderLabel = rows
       .map((field) => this.spreadsheet.dataSet.getFieldName(field))
       .join('/');
@@ -801,10 +796,7 @@ export class PivotFacet extends BaseFacet {
       this.rowCellTheme?.padding?.left! +
       this.rowCellTheme?.padding?.right!;
 
-    return Math.max(
-      rowCell?.treeWidth ?? DEFAULT_TREE_ROW_WIDTH,
-      maxLabelWidth,
-    );
+    return Math.max(DEFAULT_TREE_ROW_WIDTH, maxLabelWidth);
   }
 
   /**

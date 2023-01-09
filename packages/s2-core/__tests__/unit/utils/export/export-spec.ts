@@ -131,7 +131,7 @@ describe('PivotSheet Export Test', () => {
 
   // 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
   // https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
-  it('should export correct data in tree mode and hierarchyCollapse is true', () => {
+  it('should export correct data in tree mode and collapseAll is true', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -139,7 +139,7 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'tree',
         style: {
           rowCell: {
-            hierarchyCollapse: true,
+            collapseAll: true,
           },
         },
       }),
@@ -158,7 +158,7 @@ describe('PivotSheet Export Test', () => {
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
-  it('should export correct data in tree mode and hierarchyCollapse is false', () => {
+  it('should export correct data in tree mode and collapseAll is false', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -166,7 +166,7 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'tree',
         style: {
           rowCell: {
-            hierarchyCollapse: false,
+            collapseAll: false,
           },
         },
       }),
