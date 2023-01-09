@@ -24,23 +24,27 @@ jobs:
         with:
           python-version: '3.10'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm bootstrap
 
       - name: Lint scripts, type, style and docs
-        run: yarn lint
+        run: pnpm lint
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       - name: Bundle size
-        run: yarn bundle:size
+        run: pnpm bundle:size
         env:
           CI: true
           BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
