@@ -52,7 +52,7 @@ export const customGridTreeNodes: CustomTreeNode[] = [
       {
         field: 'a-2-2',
         title: '自定义节点 a-2-2',
-        description: 'a-1-2 描述',
+        description: 'a-2-2 描述',
         children: [
           {
             field: 'measure-3',
