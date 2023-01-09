@@ -13,14 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     # 自动发布成功后
     if: github.event.workflow_run.conclusion == 'success'
+    defaults:
+      run:
+        working-directory: s2-site
     steps:
       - uses: actions/checkout@v3
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
 
       - name: Git bootstrap
         run: |
@@ -50,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
 
       # 开始部署官网
-      - name: 🔊 Delpoy start notify
+      - name: 🔊 Deploy start notify
         uses: zcong1993/actions-ding@master
         with:
           dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
@@ -66,16 +63,22 @@ jobs:
               }
             }
 
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          
       # 安装官网依赖
       - name: Install Dependencies
-        run: yarn site:bootstrap
+        run: yarn
 
       # 部署官网
-      - name: Delpoy Site
-        run: yarn site:deploy
+      - name: Deploy Site
+        run: yarn deploy
 
       # 失败通知
-      - name: 🔊 Delpoy failed notify
+      - name: 🔊 Deploy failed notify
         if: ${{ failure() }}
         uses: zcong1993/actions-ding@master
         with:

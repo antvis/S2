@@ -21,11 +21,15 @@ jobs:
         with:
           python-version: '3.10'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
           node-version: 16 # semantic-release 需要 >= 16 的 Node.js 环境
-          cache: 'yarn'
+          cache: 'pnpm'
 
       # 发布开始通知
       - name: Release start ding talk dev group notify
@@ -45,10 +49,10 @@ jobs:
             }
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm bootstrap
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       # 自动发布完成后 触发 github.release.published 事件
       # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
@@ -57,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           npm_config_legacy_peer_deps: true
-        run: yarn release
+        run: pnpm release
 
       # 发布失败通知内部开发群
       - name: Release failed ding talk dev group notify

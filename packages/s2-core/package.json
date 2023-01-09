@@ -38,7 +38,7 @@
     "table"
   ],
   "scripts": {
-    "start": "yarn test:live",
+    "start": "pnpm test:live",
     "clean": "rimraf lib esm dist temp",
     "build": "npm-run-all clean --parallel build:umd build:cjs build:esm build:dts",
     "build:esm": "cross-env FORMAT=es rollup -c rollup.config.js",
@@ -49,16 +49,15 @@
     "dts:build": "tsc -p tsconfig.declaration.json",
     "dts:extract": "cross-env LIB=s2-core node ../../scripts/dts.js",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && yarn build:esm -w",
+    "watch": "rimraf esm && pnpm build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
     "sync-event": "node ./scripts/sync-event.mjs",
     "test": "jest --passWithNoTests",
-    "test:coverage": "yarn test --coverage",
-    "test:ci": "yarn test --maxWorkers=3",
-    "test:ci-coverage": "yarn test:coverage --maxWorkers=3",
-    "test:watch": "yarn test --watch",
-    "tsc": "tsc --noEmit",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "test:coverage": "pnpm test -- --coverage",
+    "test:ci": "pnpm test -- --maxWorkers=3",
+    "test:ci-coverage": "pnpm test:coverage --maxWorkers=3",
+    "test:watch": "pnpm test -- --watch",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@antv/event-emitter": "^0.1.3",
@@ -79,8 +78,6 @@
     "@types/tinycolor2": "^1.4.3",
     "csstype": "^3.0.11",
     "d3-dsv": "^1.1.1",
-    "inquirer": "^8.2.0",
-    "inquirer-autocomplete-prompt": "^2.0.0",
     "tinycolor2": "^1.4.2"
   },
   "sideEffects": [

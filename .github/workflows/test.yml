@@ -26,18 +26,22 @@ jobs:
         with:
           python-version: '3.10'
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm bootstrap
 
       - name: Test
         run: |
-          yarn test:ci-coverage
+          pnpm test:ci-coverage
 
       - name: Upload test coverage
         uses: codecov/codecov-action@v2
@@ -67,7 +71,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           labels: '🚨 test failed'
-
+  
       - name: Remove test failed label
         if: ${{ success() && github.event.pull_request.number != '' }}
         uses: actions-cool/issues-helper@main

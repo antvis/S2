@@ -187,20 +187,35 @@ s2.render()
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
 
+> S2 use pnpm as package manager
+
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
-yarn
+pnpm install # or pnpm bootstrap
 
-yarn core:start
+# build all
+pnpm build
+
+# debug s2-core
+pnpm core:start
+
+# debug s2-react
+pnpm react:playground
+
+# debug s2-vue
+pnpm vue:playground
+
+# unit test
+pnpm test
+
+# check the code style and the type definition
+pnpm lint
 
 # start the website
-
-yarn site:bootstrap
-
-yarn site:start
+pnpm site:start
 ```
 
 ## 📧 Contact Us

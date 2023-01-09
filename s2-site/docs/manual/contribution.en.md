@@ -28,7 +28,7 @@ Fill in the relevant information according to the Issue template. Yes, these ste
 > Example[PR](https://github.com/antvis/S2/pull/1652) (pr description reference)
 
 1. Fork the project and clone it (or use GitHub's Codespace feature, which is very convenient)
-2. Install dependencies:`yarn bootstrap` or `yarn`
+2. Install dependencies:`pnpm install` or `pnpm bootstrap`
 3. Submit your changes, commit please follow[AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
 4. If your change is to fix a bug, you can also add it after the commit message`close #issue 号`, so that after pr is merged, the corresponding issue can be closed automatically, for example`fix: render bug close #123`
 5. Make sure to include the corresponding unit tests and documentation (if necessary)
@@ -38,19 +38,18 @@ Fill in the relevant information according to the Issue template. Yes, these ste
 
 ## Development Process
 
-We use `yarn@v1` Managed as a package
+We use `pnpm@v7` as a package manager
 
 ```bash
-npm i -g yarn
+npm i -g pnpm
 ```
 
-1. `yarn` Install dependencies
-2. `yarn site:bootstrap` Install website dependencies
-3. `yarn site:start` start local`S2` website
-4. `yarn core:start` Use a visual way to debug the single test of the core layer (based on jest-electron)
-5. `yarn react:start` Debug React version unit tests in a visual way (based on jest-electron)
-6. `yarn react:playground` Start a local interactive React version Demo (vite based)
-7. `yarn vue:playground` Start a local interactive Vue3 version Demo (based on vite)
-8. `yarn build` Construct `@antv/s2`,`@antv/s2-react` and `@antv/s2-vue` 3 packets, output separately`umd`,`esm` and `lib` Table of contents
-9. `yarn test` run unit tests
-10. `yarn lint` Static code detection
+1. `pnpm` Install dependencies
+2. `pnpm site:start` start local`S2` website
+3. `pnpm core:start` Use a visual way to debug the single test of the core layer (based on jest-electron)
+4. `pnpm react:start` Debug React version unit tests in a visual way (based on jest-electron)
+5. `pnpm react:playground` Start a local interactive React version Demo (vite based)
+6. `pnpm vue:playground` Start a local interactive Vue3 version Demo (based on vite)
+7. `pnpm build` Construct `@antv/s2`,`@antv/s2-react` and `@antv/s2-vue` 3 packets, output separately`umd`,`esm` and `lib` Table of contents
+8. `pnpm test` run unit tests
+9. `pnpm lint` Static code detection

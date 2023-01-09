@@ -42,7 +42,7 @@ const onMounted =
   };
 
 const canConvertToNumber = (sortKey: string) =>
-  data.every((item) => {
+  data.every((item: any) => {
     const v = item[sortKey];
     return typeof v === 'string' && !Number.isNaN(Number(v));
   });
