@@ -32,20 +32,22 @@ import { safeJsonParse } from '../../utils/text';
 import { getCsvString } from './export-worker';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 
-export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
-  return new Promise((resolve, reject) => {
+export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> =>
+  new Promise((resolve, reject) => {
     let content: string;
+
     if (Array.isArray(data)) {
       content = get(
         data.filter((item) => item.type === CopyMIMEType.PLAIN),
         '[0].content',
         '',
-      );
+      ) as string;
     } else {
       content = data.content || '';
     }
 
     const textarea = document.createElement('textarea');
+
     textarea.value = content;
     document.body.appendChild(textarea);
     // 开启 preventScroll, 防止页面有滚动条时触发滚动
@@ -53,6 +55,7 @@ export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
     textarea.select();
 
     const success = document.execCommand('copy');
+
     document.body.removeChild(textarea);
 
     if (success) {
@@ -61,14 +64,14 @@ export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> => {
       reject();
     }
   });
-};
 
-export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
-  return navigator.clipboard
+export const copyToClipboardByClipboard = (data: Copyable): Promise<void> =>
+  navigator.clipboard
     .write([
       new ClipboardItem(
         concat(data).reduce((prev, copyable: CopyableItem) => {
           const { type, content } = copyable;
+
           return {
             ...prev,
             [type]: new Blob([content], { type }),
@@ -76,16 +79,14 @@ export const copyToClipboardByClipboard = (data: Copyable): Promise<void> => {
         }, {}),
       ),
     ])
-    .catch(() => {
-      return copyToClipboardByExecCommand(data);
-    });
-};
+    .catch(() => copyToClipboardByExecCommand(data));
 
 export const copyToClipboard = (
   data: Copyable | string,
   sync = false,
 ): Promise<void> => {
   let copyableItem: Copyable;
+
   if (typeof data === 'string') {
     copyableItem = {
       content: data,
@@ -98,12 +99,14 @@ export const copyToClipboard = (
   if (!navigator.clipboard || !window.ClipboardItem || sync) {
     return copyToClipboardByExecCommand(copyableItem);
   }
+
   return copyToClipboardByClipboard(copyableItem);
 };
 
 export const download = (str: string, fileName: string) => {
   try {
     const link = document.createElement('a');
+
     link.download = `${fileName}.csv`;
     // Avoid errors in Chinese encoding.
     const dataBlob = new Blob([`\ufeff${str}`], {
@@ -128,11 +131,13 @@ export const download = (str: string, fileName: string) => {
 const processObjectValueInCol = (data: Record<string, unknown>) => {
   const tempCells = data?.value ? [data?.value] : [];
   const values = data?.values as (string | number)[][];
+
   if (!isEmpty(values)) {
     forEach(values, (value) => {
       tempCells.push(value.join(' '));
     });
   }
+
   return tempCells.join('$');
 };
 
@@ -146,6 +151,7 @@ const processObjectValueInRow = (
   if (!isFormat) {
     return get(data?.originalValues, 0) ?? get(data?.values, 0);
   }
+
   return get(data?.values, 0);
 };
 
@@ -159,22 +165,27 @@ const processValueInDetail = (
   const { columns } = sheetInstance.dataCfg?.fields;
   const leafColumns = getLeafColumnsWithKey(columns || []);
   const res = [];
+
   for (const [index, record] of data.entries()) {
     let tempRows = [];
+
     if (!isFormat) {
       tempRows = leafColumns.map((v: string) => getCsvString(record[v]));
     } else {
       tempRows = leafColumns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
+
         return getCsvString(mainFormatter(record[v], record as ViewMetaData));
       });
     }
+
     if (sheetInstance.options.showSeriesNumber) {
       tempRows = [getCsvString(index + 1)].concat(tempRows);
     }
 
     res.push(tempRows.join(split));
   }
+
   return res;
 };
 
@@ -188,6 +199,7 @@ const processValueInCol = (
     // If the meta equals null, replacing it with blank line.
     return '';
   }
+
   const { fieldValue, valueField, data } = viewMeta;
 
   if (isObject(fieldValue)) {
@@ -197,7 +209,9 @@ const processValueInCol = (
   if (!isFormat) {
     return `${fieldValue}`;
   }
+
   const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
+
   return mainFormatter(fieldValue, data);
 };
 
@@ -212,36 +226,44 @@ const processValueInRow = (
 
   if (viewMeta) {
     const { fieldValue, valueField, data } = viewMeta;
+
     if (isObject(fieldValue)) {
       tempCells = processObjectValueInRow(fieldValue, isFormat);
+
       return tempCells;
     }
 
     // 如果本身格子的数据是 null， 但是一个格子又需要绘制多个指标时，需要使用placeholder填充
     if (isNil(fieldValue) && placeholder.length > 1) {
       tempCells.push(...placeholder);
+
       return tempCells;
     }
+
     // The main measure.
     if (!isFormat) {
       tempCells.push(fieldValue);
     } else {
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
+
       tempCells.push(mainFormatter(fieldValue, data));
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
     tempCells.push(...placeholder);
   }
+
   return tempCells.join('    ');
 };
 
 /* Get the label name for the header. */
 const getHeaderLabel = (val: string) => {
   const label = safeJsonParse(val);
+
   if (isArray(label)) {
     return label;
   }
+
   return val;
 };
 
@@ -256,6 +278,7 @@ const getPlaceholder = (
   const placeholderStr = isFunction(placeholder)
     ? placeholder(viewMeta)
     : placeholder;
+
   return Array(labelLength).fill(placeholderStr);
 };
 
@@ -269,11 +292,13 @@ const processColHeaders = (headers: any[][]) => {
       isArray(item) ? item : [item, ...new Array(header[0].length - 1)],
     ),
   );
+
   return result;
 };
 
 const getNodeFormatLabel = (node: Node) => {
   const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+
   return formatter?.(node.value) ?? node.value;
 };
 
@@ -288,13 +313,17 @@ const getRowNodeFormatData = (rowLeafNode: Node) => {
     if (node.id === ROOT_NODE_ID) {
       return;
     }
+
     const formatterLabel = getNodeFormatLabel(node);
+
     line.unshift(formatterLabel);
     if (node?.parent) {
       return getRowNodeFormatterLabel(node.parent);
     }
   };
+
   getRowNodeFormatterLabel(rowLeafNode);
+
   return line;
 };
 
@@ -305,6 +334,7 @@ const getFormatOptions = (isFormat: FormatOptions) => {
       isFormatData: isFormat.isFormatData ?? false,
     };
   }
+
   return {
     isFormatHeader: isFormat ?? false,
     isFormatData: isFormat ?? false,
@@ -317,12 +347,14 @@ type FormatOptions =
       isFormatHeader?: boolean;
       isFormatData?: boolean;
     };
+
 /**
  * Copy data
  * @param sheetInstance
  * @param formatOptions 是否格式化数据
  * @param split
  */
+// eslint-disable-next-line max-lines-per-function
 export const copyData = (
   sheetInstance: SpreadSheet,
   split: string,
@@ -343,6 +375,7 @@ export const copyData = (
   const maxRowDepth = rowLeafNodes.reduce((maxDepth, node) => {
     // 第一层的level为0
     const depth = (node.level ?? 0) + 1;
+
     return depth > maxDepth ? depth : maxDepth;
   }, 0);
   // Generate the table body.
@@ -357,28 +390,34 @@ export const copyData = (
 
     for (const rowNode of caredRowLeafNodes) {
       let tempLine = [];
+
       if (isFormatHeader) {
         tempLine = getRowNodeFormatData(rowNode);
       } else {
         // Removing the space at the beginning of the line of the value.
         rowNode.value = trim(rowNode?.value);
         const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
+
         tempLine = id.split(NODE_ID_SEPARATOR);
       }
+
       // TODO 兼容下钻，需要获取下钻最大层级
       const totalLevel = maxRowsHeaderLevel + 1;
       const emptyLength = totalLevel - tempLine.length;
+
       if (emptyLength > 0) {
         tempLine.push(...new Array(emptyLength));
       }
 
       // 指标挂行头且为平铺模式下，获取指标名称
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine)!);
+
       tempLine[tempLine.length - 1] = lastLabel;
 
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex)!;
+
           tempLine.push(
             processValueInCol(viewMeta, sheetInstance, isFormatData),
           );
@@ -391,6 +430,7 @@ export const copyData = (
             placeholder,
             isFormatData,
           );
+
           if (isArray(lintItem)) {
             tempLine = tempLine.concat(...lintItem);
           } else {
@@ -425,6 +465,7 @@ export const copyData = (
       // Generate the column dimensions.
       while (currentLeafNode.level !== undefined) {
         let value = getHeaderLabel(currentLeafNode.value);
+
         if (isArray(value)) {
           arrayLength = max([arrayLength, size(value)])!;
         } else {
@@ -434,9 +475,11 @@ export const copyData = (
               ? getNodeFormatLabel(currentLeafNode)
               : value;
         }
+
         tempCol.push(value);
         currentLeafNode = currentLeafNode.parent!;
       }
+
       return tempCol;
     });
 
@@ -448,6 +491,7 @@ export const copyData = (
     const colLevel = max(colLevels)!;
 
     const colHeader: string[][] = [];
+
     // Convert the number of column dimension levels to the corresponding array.
     for (let i = colLevel - 1; i >= 0; i -= 1) {
       // The map of data set: key-name
@@ -460,6 +504,7 @@ export const copyData = (
         )
         .map((item) => item[i])
         .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
+
       colHeader.push(flatten(colHeaderItem));
     }
 
@@ -476,12 +521,14 @@ export const copyData = (
           const fillTempStrings: string[] = Array(maxRowsHeaderLevel).fill('');
           const colNodeLabel =
             colNodes.find(({ field }) => field === columns[index])?.value || '';
+
           return [...fillTempStrings, colNodeLabel, ...item];
         }
         // 行头展开多少层，则复制多少层的内容。不进行全量复制。 eg: 树结构下，行头为 省份/城市, 折叠所有城市，则只复制省份
 
         const withoutCustomFieldRows = rows.filter((field) => isString(field));
         const copiedRows = withoutCustomFieldRows.slice(0, maxRowDepth);
+
         // 在趋势分析表中，行头只有一个 extra的维度，但是有多个层级
         if (copiedRows.length < maxRowDepth) {
           copiedRows.unshift(
@@ -492,6 +539,7 @@ export const copyData = (
         const copiedRowLabels = copiedRows.map(
           (rowField) => sheetInstance.dataSet.getFieldName(rowField) || '',
         );
+
         return [...copiedRowLabels, ...item];
       }
 
@@ -506,14 +554,17 @@ export const copyData = (
   const headerRow = headers
     .map((header) => {
       const emptyLength = maxRowLength - header.length;
+
       if (emptyLength > 0) {
         header.unshift(...new Array(emptyLength));
       }
+
       return header.map((h) => getCsvString(h)).join(split);
     })
     .join('\r\n');
 
   const data = [headerRow].concat(detailRows);
   const result = data.join('\r\n');
+
   return result;
 };

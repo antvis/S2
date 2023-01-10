@@ -22,36 +22,43 @@ describe('Sort Action Test', () => {
   describe('Sort Action', () => {
     test('sort action with number arr', () => {
       const data = [1, 3, 2];
+
       expect(sortAction(data, 'ASC')).toEqual([1, 2, 3]);
       expect(sortAction(data, 'DESC')).toEqual([3, 2, 1]);
     });
 
     test('sort action with number-string and number arr', () => {
       const data2 = ['11', '3', '2'];
+
       expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '3']);
       expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
     });
 
     test('sort action with zero and number arr', () => {
       const data1 = [1, 6, -2, 0];
+
       expect(sortAction(data1, 'ASC')).toEqual([-2, 0, 1, 6]);
       expect(sortAction(data1, 'DESC')).toEqual([6, 1, 0, -2]);
 
       const data2 = ['0', 0, 2, -2];
+
       expect(sortAction(data2, 'ASC')).toEqual([-2, '0', 0, 2]);
       expect(sortAction(data2, 'DESC')).toEqual([2, '0', 0, -2]);
     });
 
     test('sort action with string arr', () => {
       const data = ['a', 'c', 'b'];
+
       expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
       expect(sortAction(data, 'DESC')).toEqual(['c', 'b', 'a']);
 
       const data1 = ['啊', '哦', '嗯'];
+
       expect(sortAction(data1, 'ASC')).toEqual(['啊', '嗯', '哦']);
       expect(sortAction(data1, 'DESC')).toEqual(['哦', '嗯', '啊']);
 
       const data2 = ['啊', '11', '2'];
+
       expect(sortAction(data2, 'ASC')).toEqual(['11', '2', '啊']);
       expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
     });
@@ -75,6 +82,7 @@ describe('Sort Action Test', () => {
       ).toEqual([2, 1, 0, -3]);
 
       const data2 = createCellData([1, 3, 2]);
+
       expect(
         unwrapCellData(sortAction(data2, 'ASC', 'a') as CellData[]),
       ).toEqual([1, 2, 3]);
@@ -83,6 +91,7 @@ describe('Sort Action Test', () => {
       ).toEqual([3, 2, 1]);
 
       const data3 = createCellData(['11', 2, '3']);
+
       expect(
         unwrapCellData(sortAction(data3, 'ASC', 'a') as CellData[]),
       ).toEqual([2, '3', '11']);
@@ -91,6 +100,7 @@ describe('Sort Action Test', () => {
       ).toEqual(['11', '3', 2]);
 
       const data4 = createCellData(['-', 2, '3']);
+
       expect(
         unwrapCellData(sortAction(data4, 'ASC', 'a') as CellData[]),
       ).toEqual(['-', 2, '3']);
@@ -118,6 +128,7 @@ describe('Sort Action Test', () => {
       ).toEqual(['3', 2, '-', undefined]);
 
       const data6 = createCellData(['', 2, '3']);
+
       expect(
         unwrapCellData(sortAction(data6, 'ASC', 'a') as CellData[]),
       ).toEqual(['', 2, '3']);
@@ -142,6 +153,7 @@ describe('Sort By Custom Test', () => {
         ],
         sortByValues: ['morning', 'noon', 'afternoon'],
       };
+
       expect(sortByCustom(params)).toEqual([
         'Monday[&]morning',
         'Monday[&]noon',
@@ -164,6 +176,7 @@ describe('Sort By Custom Test', () => {
         ],
         sortByValues: ['morning', 'noon', 'afternoon'],
       };
+
       expect(sortByCustom(params)).toEqual([
         'Monday[&]noon',
         'Monday[&]afternoon',
@@ -187,6 +200,7 @@ describe('Sort By Custom Test', () => {
         ],
         sortByValues: ['morning', 'noon', 'afternoon'],
       };
+
       expect(sortByCustom(params)).toEqual([
         'Monday[&]noon',
         'Monday[&]afternoon',
@@ -252,8 +266,10 @@ describe('Sort By Func Tests', () => {
       } as unknown as PivotDataSet,
     });
 
-    // asc 升序时
-    // sortFunc 没返回的值在前，返回的值在后
+    /*
+     * asc 升序时
+     * sortFunc 没返回的值在前，返回的值在后
+     */
     expect(result).toEqual(['四川[&]成都', '四川[&]绵阳', '浙江[&]杭州']);
   });
 
@@ -314,6 +330,7 @@ describe('GetSortByMeasureValues Tests', () => {
         },
       ] as any),
     };
+
     s2 = new PivotSheet(getContainer(), dataCfg, {
       totals: {
         row: {
@@ -335,8 +352,10 @@ describe('GetSortByMeasureValues Tests', () => {
   });
 
   test('should return detail data', () => {
-    // 对城市（最后一个维度）进行按指标排序
-    // query 会包含所有列维度，才能指向明细数据格（无汇总数据）
+    /*
+     * 对城市（最后一个维度）进行按指标排序
+     * query 会包含所有列维度，才能指向明细数据格（无汇总数据）
+     */
     const sortParam: SortParam = {
       sortFieldId: 'city',
       sortByMeasure: 'price',
@@ -373,8 +392,10 @@ describe('GetSortByMeasureValues Tests', () => {
   });
 
   test('should return sub-total data', () => {
-    // 对省维度（非最后一个维度）进行按指标排序
-    // 排序数据需要取汇总值
+    /*
+     * 对省维度（非最后一个维度）进行按指标排序
+     * 排序数据需要取汇总值
+     */
     const sortParam: SortParam = {
       sortFieldId: 'province',
       sortByMeasure: TOTAL_VALUE,
@@ -382,8 +403,10 @@ describe('GetSortByMeasureValues Tests', () => {
       query: { type: '笔', [EXTRA_FIELD]: 'price' },
     };
 
-    // query 限定了 type
-    // 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
+    /*
+     * query 限定了 type
+     * 所以取出的数据为，'省'的维值 与 type='笔' 这一列交叉的汇总数据
+     */
     const measureValues = getSortByMeasureValues({
       dataSet: s2.dataSet as PivotDataSet,
       sortParam,
@@ -411,8 +434,10 @@ describe('GetSortByMeasureValues Tests', () => {
   });
 
   test('should return grand-total data', () => {
-    // 对省维度（非最后一个维度）进行按指标排序
-    // 排序数据需要取汇总值
+    /*
+     * 对省维度（非最后一个维度）进行按指标排序
+     * 排序数据需要取汇总值
+     */
     const sortParam: SortParam = {
       sortFieldId: 'province',
       sortByMeasure: TOTAL_VALUE,
@@ -420,8 +445,10 @@ describe('GetSortByMeasureValues Tests', () => {
       query: { [EXTRA_FIELD]: 'price' },
     };
 
-    // query 为限定任何列维度
-    // 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
+    /*
+     * query 为限定任何列维度
+     * 所以取出的数据为，'省'的维值 与 列总计这一列交叉的汇总数据
+     */
     const measureValues = getSortByMeasureValues({
       dataSet: s2.dataSet as PivotDataSet,
       sortParam,
@@ -487,7 +514,8 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
     const sortParam: SortParam = {
       sortFieldId: 'type',
       sortByMeasure: TOTAL_VALUE,
-      sortMethod: 'desc', // getSortByMeasureValues 的返回值还没有进行排序
+      // getSortByMeasureValues 的返回值还没有进行排序
+      sortMethod: 'desc',
       query: { [EXTRA_FIELD]: 'price' },
     };
 
@@ -497,6 +525,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       originValues: ['纸张', '笔'],
     };
     const measureValues = getSortByMeasureValues(params);
+
     expect(measureValues).toEqual([
       new CellData(
         {
@@ -532,6 +561,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       originValues: ['吉林', '浙江'],
     };
     const measureValues = getSortByMeasureValues(params);
+
     expect(measureValues).toEqual([
       new CellData(
         {
@@ -575,6 +605,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       ],
     };
     const measureValues = getSortByMeasureValues(params);
+
     expect(measureValues).toEqual([
       new CellData(
         {
@@ -637,6 +668,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       ],
     };
     const measureValues = getSortByMeasureValues(params);
+
     expect(measureValues).toEqual([
       new CellData(
         {
@@ -699,6 +731,7 @@ describe('GetSortByMeasureValues Total Fallback Tests', () => {
       ],
     };
     const measureValues = getSortByMeasureValues(params);
+
     expect(measureValues).toEqual([
       new CellData(
         {

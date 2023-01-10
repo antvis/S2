@@ -26,6 +26,7 @@ describe('Tooltip Tests', () => {
 
   test('should init tooltip', () => {
     const container = document.querySelector(`.${TOOLTIP_CONTAINER_CLS}`);
+
     expect(tooltip).toBeDefined();
     expect(tooltip.position).toEqual({
       x: 0,
@@ -45,6 +46,7 @@ describe('Tooltip Tests', () => {
     });
 
     const container = document.querySelector(`.${TOOLTIP_CONTAINER_CLS}`);
+
     expect(container).toBeDefined();
     expect(tooltip.container).toEqual(container);
   });
@@ -114,6 +116,7 @@ describe('Tooltip Tests', () => {
     });
 
     const containerId = 'testId';
+
     tooltip.container!.setAttribute('id', containerId);
     tooltip.destroy();
 
@@ -204,6 +207,7 @@ describe('Tooltip Tests', () => {
 
   test('should display custom dom content', () => {
     const element = document.createElement('span');
+
     element.className = 'text';
 
     Object.defineProperty(s2.options, 'tooltip', {
@@ -326,6 +330,7 @@ describe('Tooltip Tests', () => {
     const MAX_WIDTH = 640;
 
     const node = document.createElement('div');
+
     node.innerHTML = '我很宽,很长';
     node.style.width = `${contentSize.width}px`;
     node.style.height = `${contentSize.height}px`;
@@ -387,6 +392,7 @@ describe('Tooltip Tests', () => {
 
   test('should set custom container class name list', () => {
     const classList = ['custom1', 'custom2'];
+
     s2.options.tooltip!.className = classList;
 
     tooltip = new BaseTooltip(s2);

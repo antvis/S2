@@ -136,6 +136,7 @@ describe('<StrategySheet/> Tests', () => {
       .getPanelGroupAllDataCells()
       .filter((cell) => {
         const meta = cell.getMeta();
+
         return meta.colIndex === 3 && meta.fieldValue;
       });
 
@@ -143,6 +144,7 @@ describe('<StrategySheet/> Tests', () => {
       const textShape = cell.children.find(
         (child) => child.nodeName === 'text',
       );
+
       return textShape?.textContent;
     });
 
@@ -217,6 +219,7 @@ describe('<StrategySheet/> Tests', () => {
       field: node.field,
       value: node.value,
     }));
+
     expect(rowNodes).toMatchSnapshot();
   });
 
@@ -226,9 +229,11 @@ describe('<StrategySheet/> Tests', () => {
     });
 
     test('should export correct data', () => {
-      // 角头部分展示如下：
-      // ["", "","日期"]
-      // ["", "","数值"]
+      /*
+       * 角头部分展示如下：
+       * ["", "","日期"]
+       * ["", "","数值"]
+       */
       const result = copyData(s2, '\t');
 
       const rows = result.split('\n');
@@ -241,10 +246,12 @@ describe('<StrategySheet/> Tests', () => {
     });
 
     test('should export correct data for multi different cycle compare data', () => {
-      // 列头部分不同粒度的列头包含不同的同环比个数
-      // 2022-09 包含 [数值，环比，同比]
-      // 2022-10 包含 [数值，环比]
-      // 它们都应和各自的列头数值一栏对齐
+      /*
+       * 列头部分不同粒度的列头包含不同的同环比个数
+       * 2022-09 包含 [数值，环比，同比]
+       * 2022-10 包含 [数值，环比]
+       * 它们都应和各自的列头数值一栏对齐
+       */
       const result = copyData(s2, '\t');
 
       const rows = result.split('\n');
@@ -255,15 +262,19 @@ describe('<StrategySheet/> Tests', () => {
       expect(col1.length).toEqual(col2.length);
       // 2022-09 对齐其数值
       const idx1 = col1.findIndex((col) => col === `"2022-09"`);
+
       expect(col2[idx1]).toEqual(`"数值"`);
       // 2022-10 对齐其数值
       const idx2 = col1.findIndex((col) => col === `"2022-10"`);
+
       expect(col2[idx2]).toEqual(`"数值"`);
     });
 
     test('should export correct data for empty cell', () => {
-      // 2022-09 包含 [数值，环比，同比], 但是数值均为空
-      // 对应数据应该空三格
+      /*
+       * 2022-09 包含 [数值，环比，同比], 但是数值均为空
+       * 对应数据应该空三格
+       */
       const result = copyData(s2, '\t');
 
       const rows = result.split('\n');
@@ -313,6 +324,7 @@ describe('<StrategySheet/> Tests', () => {
         .filter((cell) => cell.getTextShape())
         .forEach((cell) => {
           const textShape = cell.getTextShape();
+
           expect(textShape.attr('fillOpacity')).toEqual(0.3);
         });
     });

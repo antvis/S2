@@ -89,6 +89,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         value: node.value,
         rowIndex: node.rowIndex,
       }));
+
       expect(rowLeafNodes).toMatchSnapshot();
     });
 
@@ -177,6 +178,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .map((cell: HeaderCell) => {
           const value = cell.getActualText();
           const meta = cell.getMeta();
+
           return {
             value,
             field: meta.field,
@@ -207,9 +209,11 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.dataSet.fields.valueInCols).toBeTruthy();
     });
 
-    // test('should use custom grid pivot dataSet', () => {
-    //   expect(s2.dataSet).toBeInstanceOf(CustomGridPivotDataSet);
-    // });
+    /*
+     * test('should use custom grid pivot dataSet', () => {
+     *   expect(s2.dataSet).toBeInstanceOf(CustomGridPivotDataSet);
+     * });
+     */
 
     test('should render custom layout column nodes', () => {
       const colNodes = s2.getColumnNodes().map((node) => ({
@@ -311,6 +315,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .map((cell: HeaderCell) => {
           const value = cell.getActualText();
           const meta = cell.getMeta();
+
           return {
             value,
             field: meta.field,

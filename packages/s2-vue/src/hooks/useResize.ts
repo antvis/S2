@@ -17,6 +17,7 @@ export const useResize = (
     if (!s2) {
       return;
     }
+
     unobserve.value = createResizeObserver({
       s2,
       adaptive,

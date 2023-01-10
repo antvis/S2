@@ -17,10 +17,12 @@ import type { DataItem } from './s2DataConfig';
 
 export type { GetCellMeta, LayoutResult } from './facet';
 
-// 第二个参数在以下情况会传入：
-// 1. data cell 格式化
-// 2. copy/export
-// 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
+/*
+ * 第二个参数在以下情况会传入：
+ * 1. data cell 格式化
+ * 2. copy/export
+ * 3. tooltip, 且仅在选择多个单元格时，data 类型为数组
+ */
 export type Formatter = (
   v: unknown,
   data?: ViewMetaData | ViewMetaData[],
@@ -73,12 +75,26 @@ export enum CellClipBox {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  field?: string; // 字段 id
-  name?: string; // 字段名称
-  description?: string; // 字段描述
-  // 格式化
-  // 数值字段：一般用于格式化数字单位
-  // 文本字段：一般用于做字段枚举值的别名
+  /**
+   * 字段 id
+   */
+  field?: string;
+
+  /**
+   * 字段名称
+   */
+  name?: string;
+
+  /**
+   * 字段描述
+   */
+  description?: string;
+
+  /*
+   * 格式化
+   * 数值字段：一般用于格式化数字单位
+   * 文本字段：一般用于做字段枚举值的别名
+   */
   formatter?: Formatter;
 }
 
@@ -145,13 +161,15 @@ export enum Aggregation {
 }
 
 export interface CalcTotals {
-  aggregation?: Aggregation; // 聚合方式
+  // 聚合方式
+  aggregation?: Aggregation;
   calcFunc?: (query: Query, arr: CellData[]) => number;
 }
 
 export interface Total {
   /** 是否显示总计 */
   showGrandTotals: boolean;
+
   /** 是否显示小计 */
   showSubTotals:
     | boolean
@@ -163,10 +181,13 @@ export interface Total {
   calcTotals?: CalcTotals;
   // 前端计算小计
   calcSubTotals?: CalcTotals;
+
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
+
   /** 总计布局位置，默认是下或右 */
   reverseLayout: boolean;
+
   /** 小计布局位置，默认下或者右 */
   reverseSubLayout: boolean;
   // total's display name default = '总计'
@@ -189,12 +210,16 @@ export interface Sort {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
   sortMethod?: SortMethod;
+
   /** 自定义排序 */
   sortBy?: string[];
+
   /** 按照数值字段排序 */
   sortByMeasure?: string;
+
   /** 筛选条件，缩小排序范围 */
   query?: Record<string, any>;
+
   /** 组内排序用来显示icon */
   type?: string;
 }
@@ -219,8 +244,8 @@ export type SortParams = SortParam[];
 export interface Pagination {
   // 每页数量
   pageSize: number;
-  // 当前页
-  current: number; // 从 1 开始
+  // 当前页 (从 1 开始)
+  current: number;
   // 数据总条数
   total?: number;
 }
@@ -228,9 +253,12 @@ export interface Pagination {
 export interface CustomSVGIcon {
   // icon 类型名
   name: string;
-  // 1、base 64
-  // 2、svg本地文件（兼容老方式，可以改颜色）
-  // 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
+
+  /*
+   * 1、base 64
+   * 2、svg本地文件（兼容老方式，可以改颜色）
+   * 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
+   */
   svg: string;
 }
 
@@ -250,6 +278,7 @@ export interface HeaderActionIconOptions {
   iconName: string;
   x: number;
   y: number;
+
   /** @deprecated 使用 onClick 代替 */
   action?: (props: HeaderIconClickParams) => void;
   onClick?: (headerIconClickParams: HeaderIconClickParams) => void;
@@ -266,6 +295,7 @@ export interface HeaderActionIcon {
   defaultHide?: boolean | ((meta: Node, iconName: string) => boolean);
   // 是否展示当前 iconNames 配置的 icon
   displayCondition?: (mete: Node, iconName: string) => boolean;
+
   /**
    * 点击后的执行函数
    * @deprecated 使用 onClick 代替

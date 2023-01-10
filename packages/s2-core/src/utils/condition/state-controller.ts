@@ -25,6 +25,7 @@ export const setValueRangeState = (
     VALUE_RANGES_KEY,
     DEFAULT_VALUE_RANGES,
   );
+
   spreadsheet.store.set(VALUE_RANGES_KEY, { ...valueRanges, ...updatedRanges });
 };
 
@@ -41,5 +42,6 @@ export const getValueRangeState = (
     VALUE_RANGES_KEY,
     DEFAULT_VALUE_RANGES,
   );
+
   return valueRanges[valueField];
 };

@@ -28,6 +28,7 @@ export default defineComponent({
       if (props.showPagination && !isBoolean(props.showPagination)) {
         props.showPagination.onChange?.(nextCurrent);
       }
+
       pagination.change(nextCurrent);
     };
 
@@ -35,6 +36,7 @@ export default defineComponent({
       if (props.showPagination && !isBoolean(props.showPagination)) {
         props.showPagination.onShowSizeChange?.(nextSize);
       }
+
       pagination.showSizeChange(nextSize);
     };
 

@@ -10,6 +10,7 @@ export class GridGroup extends Group {
 
   constructor(cfg: GridGroupConstructorParameters) {
     const { name, s2, ...rest } = cfg;
+
     super({
       name,
       style: rest,
@@ -44,12 +45,15 @@ export class GridGroup extends Group {
 
     this.gridInfo = gridInfo;
 
-    // line 在绘制时，包围盒计算有点问题，会带入lineWidth
-    // 比如传入的 x1=0, x2=10, lineWidth=20
-    // 最后line得出来的包围盒 minX=-10, maxX=20，会将lineWidth/2纳入计算中
-    // 最后就会导致更新过程中，GridGroup的包围盒不断被放大
-    // 因此在传入时，将这部分坐标减去，并结合lineCap将这部分绘制出来，达到内容区域绘制不变，包围盒计算正确的目的
+    /*
+     * line 在绘制时，包围盒计算有点问题，会带入lineWidth
+     * 比如传入的 x1=0, x2=10, lineWidth=20
+     * 最后line得出来的包围盒 minX=-10, maxX=20，会将lineWidth/2纳入计算中
+     * 最后就会导致更新过程中，GridGroup的包围盒不断被放大
+     * 因此在传入时，将这部分坐标减去，并结合lineCap将这部分绘制出来，达到内容区域绘制不变，包围盒计算正确的目的
+     */
     const halfVerticalBorderWidthBorderWidth = verticalBorderWidth! / 2;
+
     this.gridInfo.cols.forEach((x) => {
       renderLine(
         this.gridGroup,
@@ -70,6 +74,7 @@ export class GridGroup extends Group {
 
     const horizontalBorderWidth = style?.horizontalBorderWidth;
     const halfHorizontalBorderWidth = horizontalBorderWidth! / 2;
+
     this.gridInfo.rows.forEach((y) => {
       renderLine(
         this.gridGroup,

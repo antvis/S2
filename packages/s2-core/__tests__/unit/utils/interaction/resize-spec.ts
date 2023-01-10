@@ -104,6 +104,7 @@ describe('Resize Utils Tests', () => {
         width: 100,
         height: 200,
       });
+
       expect(attrs.appendInfo.width).toStrictEqual(100);
       expect(attrs.appendInfo.height).toStrictEqual(200);
     });
@@ -114,6 +115,7 @@ describe('Resize Utils Tests', () => {
         type: ResizeDirectionType.Vertical,
         width: 100,
       });
+
       expect(attrs.appendInfo.width).toStrictEqual(100);
       expect(attrs.style.height).toStrictEqual(resizeAreaTheme.size);
     });
@@ -124,6 +126,7 @@ describe('Resize Utils Tests', () => {
         type: ResizeDirectionType.Horizontal,
         height: 100,
       });
+
       expect(attrs.style.width).toStrictEqual(resizeAreaTheme.size);
       expect(attrs.appendInfo.height).toStrictEqual(100);
     });
@@ -133,6 +136,7 @@ describe('Resize Utils Tests', () => {
         ...commonConfig,
         type: ResizeDirectionType.Horizontal,
       });
+
       expect(attrs.style.cursor).toStrictEqual('col-resize');
     });
 
@@ -141,6 +145,7 @@ describe('Resize Utils Tests', () => {
         ...commonConfig,
         type: ResizeDirectionType.Vertical,
       });
+
       expect(attrs.style.cursor).toStrictEqual('row-resize');
     });
   });
@@ -148,6 +153,7 @@ describe('Resize Utils Tests', () => {
   describe('#getResizeAreaGroupById()', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
       const group = getOrCreateResizeAreaGroupById(s2, 'id');
+
       expect(group?.add).toBeDefined();
       expect(s2.facet.foregroundGroup.children).toHaveLength(1);
     });

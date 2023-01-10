@@ -62,16 +62,20 @@ export const moveItem = (
   if (droppableDestination.droppableId === droppableSource.droppableId) {
     const updatingDestination = [...destination];
     const [removed] = updatingDestination.splice(droppableSource.index, 1);
+
     updatingDestination.splice(droppableDestination.index, 0, removed);
+
     return {
       [droppableDestination.droppableId]: updatingDestination,
     };
   }
+
   // move to other column
   const updatingSource = [...source];
   const updatingDestination = [...destination];
 
   const [removed] = updatingSource.splice(droppableSource.index, 1);
+
   updatingDestination.splice(droppableDestination.index, 0, removed);
 
   return {
@@ -113,9 +117,10 @@ export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
   ): SwitcherResultItem => {
     const flattenValues = (list: SwitcherItem[] = []): SwitcherItem[] =>
       flatten(
-        map(list, ({ children, ...rest }) => {
-          return [{ ...rest }, ...flattenValues(children)];
-        }),
+        map(list, ({ children, ...rest }) => [
+          { ...rest },
+          ...flattenValues(children),
+        ]),
       );
 
     const allItems = flattenValues(items);
@@ -125,6 +130,7 @@ export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
       allItems,
       (item: SwitcherItem) => item.checked === false,
     );
+
     return {
       items: allItems,
       hideItems,

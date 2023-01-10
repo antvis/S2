@@ -22,22 +22,21 @@ describe('useSpreadSheet tests', () => {
   const container = getContainer();
   const getConfig = (
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
-  ): SheetComponentsProps => {
-    return {
-      spreadsheet: () =>
-        new PivotSheet(container, mockDataConfig, s2Options as S2Options),
-      options: s2Options,
-      dataCfg: {
-        fields,
-        data: mockDataConfig.data,
-      },
-    };
-  };
+  ): SheetComponentsProps => ({
+    spreadsheet: () =>
+      new PivotSheet(container, mockDataConfig, s2Options as S2Options),
+    options: s2Options,
+    dataCfg: {
+      fields,
+      data: mockDataConfig.data,
+    },
+  });
 
   test('should build spreadSheet', () => {
     const { result } = renderHook(() =>
       useSpreadSheet({ ...getConfig(), sheetType: 'pivot' }),
     );
+
     expect(result.current.s2Ref).toBeDefined();
   });
 
@@ -54,6 +53,7 @@ describe('useSpreadSheet tests', () => {
     });
 
     const canvas = s2.getCanvasElement();
+
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
 
@@ -81,17 +81,21 @@ describe('useSpreadSheet tests', () => {
 
     expect(s2!.getInitColumnLeafNodes()).toHaveLength(2);
 
-    // 很奇怪, rerender 之后始终拿到的两次 dataCfg 是一样的, 暂时先注释了
-    // act(() => {
-    //   const fields: S2DataConfig['fields'] = {
-    //     rows: ['province', 'city'],
-    //     columns: ['type'],
-    //     values: ['price'],
-    //     valueInCols: false,
-    //   };
+    /*
+     * 很奇怪, rerender 之后始终拿到的两次 dataCfg 是一样的, 暂时先注释了
+     * act(() => {
+     *   const fields: S2DataConfig['fields'] = {
+     *     rows: ['province', 'city'],
+     *     columns: ['type'],
+     *     values: ['price'],
+     *     valueInCols: false,
+     *   };
+     */
 
-    //   rerender(getConfig(fields));
-    // });
+    /*
+     *   rerender(getConfig(fields));
+     * });
+     */
 
     // expect(s2.store.get('initColumnLeafNodes')).toEqual([]);
   });

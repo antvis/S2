@@ -30,6 +30,7 @@ describe('Cell Content Test', () => {
       left: 8,
     },
   };
+
   test('should return border area', () => {
     const results = getCellBoxByType(
       cfg,
@@ -456,6 +457,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
     width: 100,
   };
   const textWidth = 20;
+
   test('should get center position when content is larger than viewport', () => {
     expect(
       getTextAreaRange(
@@ -549,6 +551,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       horizontalBorderColorOpacity: 1,
       horizontalBorderWidth: 2,
     };
+
     expect(
       getBorderPositionAndStyle(
         CellBorderPosition.LEFT,

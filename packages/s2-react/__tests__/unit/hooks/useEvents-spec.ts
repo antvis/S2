@@ -320,6 +320,7 @@ describe('useEvents tests', () => {
       spreadsheet: () => s2,
     };
     const { result } = renderHook(() => useEvents(mockBaseSheetProps, s2));
+
     expect(result.current).toBeUndefined();
   });
 
@@ -351,6 +352,7 @@ describe('useEvents tests', () => {
         stopPropagation: () => {},
       } as unknown as GEvent);
     };
+
     // emit
     act(MockEmitFn);
     expect(props[name]).toHaveBeenCalledTimes(1);
@@ -365,6 +367,7 @@ describe('useEvents tests', () => {
       ...props,
       [name]: jest.fn(),
     };
+
     rerender({ props: newProps });
     expect(newProps[name]).toHaveBeenCalledTimes(0);
   });

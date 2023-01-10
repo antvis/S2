@@ -41,8 +41,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     let isGrandTotals = false;
     let isSubTotals = false;
     let adjustedField = currentField;
+
     if (isTotals) {
       const totalClass = fieldValue as TotalClass;
+
       isGrandTotals = totalClass.isGrandTotals;
       isSubTotals = totalClass.isSubTotals;
       value = i18n((fieldValue as TotalClass).label);
@@ -79,12 +81,16 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       const isHideValue =
         colCell?.hideValue && isValueInCols && includes(fields, EXTRA_FIELD);
       const extraSize = isHideValue ? 2 : 1;
+
       isLeaf = level === fields.length - extraSize;
     }
+
     const uniqueId = generateId(parentNode.id, value);
+
     if (!uniqueId) {
       return;
     }
+
     // TODO need merge with collapseFields
     const isCollapsed = false;
     // create new header nodes
@@ -132,6 +138,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     }
 
     const isLeafNode = isLeaf || isCollapsed || !expandCurrentNode;
+
     if (isLeafNode) {
       node.isLeaf = true;
       hierarchy.pushIndexNode(node);
@@ -169,12 +176,14 @@ export const DFSGenerateHeaderNodes = (
     if (typeof column === 'string') {
       column = { field: column } as CustomTreeNode;
     }
+
     const { field } = column;
     const value =
       field === SERIES_NUMBER_FIELD
         ? getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText)
         : spreadsheet.dataSet.getFieldName(field);
     const currentParent = pNode || parentNode;
+
     generateHeaderNodes({
       spreadsheet,
       currentField: field,
@@ -189,6 +198,7 @@ export const DFSGenerateHeaderNodes = (
     });
     if (column.children && column.children.length) {
       const generateNode = currentParent.children[i];
+
       generateNode.isLeaf = false;
       DFSGenerateHeaderNodes(column.children, params, level + 1, generateNode);
     }

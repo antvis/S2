@@ -24,6 +24,7 @@ export default defineComponent({
     // 执行下钻操作
     const setDrillFields = (fields: string[]) => {
       const instance = s2Ref?.value?.instance;
+
       drillFields.value = fields;
       instance?.hideTooltip();
       if (isEmpty(fields)) {
@@ -45,6 +46,7 @@ export default defineComponent({
      */
     const onDrillDownIconClick = (params: ActionIconCallbackParams) => {
       const { event, disabledFields } = params;
+
       if (event) {
         const instance = s2Ref?.value?.instance;
         const drillDownNode = createVNode(DrillDown, {

@@ -66,6 +66,7 @@ S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数�
 ```bash
 $ npm install @antv/s2
 # yarn add @antv/s2
+# pnpm install @antv/s2
 ```
 
 ## 🔨 使用
@@ -73,7 +74,7 @@ $ npm install @antv/s2
 ### 1. 数据准备
 
 <details>
-  <summary> s2DataConfig</summary>
+  <summary>s2DataConfig</summary>
 
 ```ts
 const s2DataConfig = {

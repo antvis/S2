@@ -48,6 +48,7 @@ const findDrillDownIcon = (instance: SpreadSheet) => {
 
 describe('Spread Sheet Drill Down Tests', () => {
   let container: HTMLDivElement;
+
   beforeEach(() => {
     container = getContainer();
   });
@@ -90,9 +91,7 @@ describe('Spread Sheet Drill Down Tests', () => {
               {
                 iconNames: ['SortDown'],
                 belongsCell: 'colCell',
-                displayCondition: (meta: Node) => {
-                  return meta.isLeaf;
-                },
+                displayCondition: (meta: Node) => meta.isLeaf,
                 action: noop,
               },
             ],

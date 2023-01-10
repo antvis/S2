@@ -73,23 +73,20 @@ describe('Interaction Row Column Resize Tests', () => {
     } as any);
   };
 
-  const getStartGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
+  const getStartGuideLine = () =>
+    rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_START_GUIDE_LINE_ID,
     ) as DisplayObject;
-  };
 
-  const getEndGuideLine = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
+  const getEndGuideLine = () =>
+    rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_END_GUIDE_LINE_ID,
     ) as DisplayObject;
-  };
 
-  const getResizeMask = () => {
-    return rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
+  const getResizeMask = () =>
+    rowColumnResizeInstance.resizeReferenceGroup?.getElementById(
       RESIZE_MASK_ID,
     ) as DisplayObject;
-  };
 
   const emitResize = (
     directionType: ResizeDirectionType,
@@ -187,6 +184,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const startGuideLine = getStartGuideLine() as Path;
     const endGuideLine = getEndGuideLine();
+
     // add resize group
     expect(rowColumnResizeInstance.resizeReferenceGroup).toBeDefined();
     // add start guide line
@@ -220,6 +218,7 @@ describe('Interaction Row Column Resize Tests', () => {
       effect: ResizeAreaEffect.Cell,
       size: 3,
     } as ResizeInfo;
+
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
       {
@@ -310,6 +309,7 @@ describe('Interaction Row Column Resize Tests', () => {
         },
       },
     };
+
     expect(resize).toHaveBeenLastCalledWith(resizeDetail);
     expect(colWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
@@ -348,6 +348,7 @@ describe('Interaction Row Column Resize Tests', () => {
       effect: ResizeAreaEffect.Cell,
       size: 3,
     } as ResizeInfo;
+
     emitResizeEvent(
       S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
       {
@@ -427,6 +428,7 @@ describe('Interaction Row Column Resize Tests', () => {
         },
       },
     };
+
     expect(resize).toHaveBeenLastCalledWith(resizeDetail);
     expect(rowWidthResize).toHaveBeenLastCalledWith(resizeDetail);
 
@@ -488,6 +490,7 @@ describe('Interaction Row Column Resize Tests', () => {
         },
       },
     };
+
     expect(resize).toHaveBeenCalledWith(newResizeInfo);
     expect(treeWidthResize).toHaveBeenCalledWith(newResizeInfo);
     expect(s2.options.style!.rowCell!.width).toEqual(resizeInfo.width);

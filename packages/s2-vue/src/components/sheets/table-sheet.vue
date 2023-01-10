@@ -10,6 +10,7 @@ export default defineComponent({
   emits: [] as unknown as BaseSheetInitEmits,
   setup(props, ctx) {
     const s2Ref = useExpose(ctx.expose);
+
     return { s2Ref };
   },
   components: {

@@ -15,6 +15,7 @@ const hideValueColumn = (
 ) => {
   const hideMeasure = spreadsheet.options.style?.colCell?.hideValue ?? false;
   const { valueInCols } = spreadsheet.dataSet.fields;
+
   for (const value of fieldValues) {
     if (hideMeasure && valueInCols && field === EXTRA_FIELD) {
       fieldValues.splice(fieldValues.indexOf(value), 1);
@@ -44,6 +45,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   const fieldValues: FieldValue[] = [];
 
   let query = {};
+
   if (parentNode.isTotals) {
     // add total measures
     if (addTotalMeasureInTotal) {
@@ -66,6 +68,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       parentNode,
       currentField,
     );
+
     fieldValues.push(...(arrangedValues || []));
 
     // add skeleton for empty data
@@ -79,6 +82,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
         fieldValues.push(fieldName);
       }
     }
+
     // hide value in columns
     hideValueColumn(spreadsheet, fieldValues, currentField);
     // add totals if needed

@@ -56,9 +56,11 @@ export class DataCellMultiSelection
     const { interaction } = this.spreadsheet;
     let selectedCells = interaction.getCells();
     let cells: CellMeta[] = [];
+
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {
       selectedCells = [];
     }
+
     if (selectedCells.find((meta) => meta.id === id)) {
       cells = selectedCells.filter((item) => item.id !== id);
     } else {
@@ -81,6 +83,7 @@ export class DataCellMultiSelection
         if (isEmpty(selectedCells)) {
           interaction.clearState();
           this.spreadsheet.hideTooltip();
+
           return;
         }
 

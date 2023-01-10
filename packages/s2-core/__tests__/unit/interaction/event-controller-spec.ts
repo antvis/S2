@@ -32,6 +32,7 @@ jest.mock('@/interaction/base-interaction/click/data-cell-click');
 jest.mock('@/interaction/base-interaction/hover');
 jest.mock('@/utils/export/copy', () => {
   const originalModule = jest.requireActual('@/utils/export/copy');
+
   return {
     __esModule: true,
     ...originalModule,
@@ -68,6 +69,7 @@ describe('Interaction Event Controller Tests', () => {
     ) =>
     (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
+
       spreadsheet.getCellType = () => type;
       spreadsheet.getCell = () =>
         ({
@@ -77,6 +79,7 @@ describe('Interaction Event Controller Tests', () => {
 
       const dispatchEvent = () => {
         const evt = createFederatedMouseEvent(spreadsheet, eventType);
+
         evt.client.x = MOCK_CLIENT.x;
         evt.client.y = MOCK_CLIENT.y;
 
@@ -86,9 +89,8 @@ describe('Interaction Event Controller Tests', () => {
       };
 
       eventNames.forEach((eventName) => {
-        const eventHandler = jest.fn((evt) => {
-          return evt.client;
-        });
+        const eventHandler = jest.fn((evt) => evt.client);
+
         spreadsheet.once(eventName, eventHandler);
 
         dispatchEvent();
@@ -99,6 +101,7 @@ describe('Interaction Event Controller Tests', () => {
 
   beforeEach(() => {
     const container = document.createElement('div');
+
     spreadsheet = createFakeSpreadSheet();
     spreadsheet.container = new Canvas({
       ...s2Options,
@@ -157,6 +160,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.CLICK,
       OriginEventType.TOUCH_START,
     ];
+
     expect(eventController.canvasEventHandlers).toHaveLength(
       canvasEventTypes.length,
     );
@@ -184,6 +188,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.POINTER_UP,
       OriginEventType.POINTER_MOVE,
     ];
+
     expect(eventController.domEventListeners).toHaveLength(
       domEventTypes.length,
     );
@@ -367,15 +372,15 @@ describe('Interaction Event Controller Tests', () => {
   );
 
   test('should emit global context menu event', () => {
-    const contextMenu = jest.fn((evt) => {
-      return evt.client;
-    });
+    const contextMenu = jest.fn((evt) => evt.client);
+
     spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, contextMenu);
 
     const evt = createFederatedPointerEvent(
       spreadsheet,
       GEventType.RIGHT_MOUSE_UP,
     );
+
     evt.client.x = MOCK_CLIENT.x;
     evt.client.y = MOCK_CLIENT.y;
 
@@ -385,6 +390,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should emit global mouse up event', () => {
     const mouseUp = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, mouseUp);
 
     window.document.body.dispatchEvent(
@@ -398,6 +404,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should emit global keyboard up event', () => {
     const keyboardUp = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, keyboardUp);
 
     window.dispatchEvent(new KeyboardEvent('keyup', { key: 'q' }));
@@ -407,6 +414,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should emit global keyboard down event', () => {
     const keyboardDown = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, keyboardDown);
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'q' }));
@@ -415,6 +423,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should copy data', () => {
     const copied = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_COPIED, copied);
 
     window.dispatchEvent(
@@ -437,6 +446,7 @@ describe('Interaction Event Controller Tests', () => {
     window.dispatchEvent(new Event('click', {}));
 
     const copied = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_COPIED, copied);
 
     window.dispatchEvent(
@@ -451,6 +461,7 @@ describe('Interaction Event Controller Tests', () => {
   test('should not reset if current interaction has brush selection', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(new Event('click', {}));
@@ -465,6 +476,7 @@ describe('Interaction Event Controller Tests', () => {
       .mockImplementation(() => true);
 
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(
@@ -483,10 +495,12 @@ describe('Interaction Event Controller Tests', () => {
     const containsMock = jest
       .spyOn(HTMLElement.prototype, 'contains')
       .mockImplementation(() => true);
+
     spreadsheet.hideTooltip = jest.fn();
     const reset = jest.fn().mockImplementation(() => {
       spreadsheet.hideTooltip();
     });
+
     spreadsheet.tooltip.show = jest.fn();
 
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -513,6 +527,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should reset if current mouse outside the canvas container', () => {
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(
@@ -534,6 +549,7 @@ describe('Interaction Event Controller Tests', () => {
       } as BBox,
     } as BaseFacet;
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(
@@ -555,6 +571,7 @@ describe('Interaction Event Controller Tests', () => {
       } as BBox,
     } as BaseFacet;
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(
@@ -567,6 +584,7 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should not reset if current mouse on the tooltip and outside the canvas container', () => {
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
     spreadsheet.tooltip.container!.getBoundingClientRect = () =>
       ({
@@ -589,11 +607,13 @@ describe('Interaction Event Controller Tests', () => {
 
   test('should not reset if current mouse not on the tooltip container but on the tooltip children container', () => {
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     // https://github.com/antvis/S2/pull/1352
     const cTooltipParent = document.createElement('div');
     const cTooltipChild = document.createElement('div');
+
     cTooltipParent.setAttribute(
       'style',
       'position: relative; width: 200px; height: 200px;',
@@ -632,6 +652,7 @@ describe('Interaction Event Controller Tests', () => {
   // https://github.com/antvis/S2/issues/363
   test('should reset if current mouse outside the canvas container and disable tooltip', () => {
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
     Object.defineProperty(spreadsheet.options.tooltip, 'showTooltip', {
       get() {
@@ -663,6 +684,7 @@ describe('Interaction Event Controller Tests', () => {
       },
     });
     const reset = jest.fn();
+
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
     window.dispatchEvent(
@@ -854,6 +876,7 @@ describe('Interaction Event Controller Tests', () => {
 
       // 内部的 GuiIcon
       const { iconImageShape } = guiIcon;
+
       Object.defineProperty(eventController, 'target', {
         value: iconImageShape,
         writable: true,
@@ -899,6 +922,7 @@ describe('Interaction Event Controller Tests', () => {
           img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
         },
       });
+
       spreadsheet.container.appendChild(image); // 加入 g 渲染树才有事件传递
 
       Object.defineProperty(eventController, 'target', {

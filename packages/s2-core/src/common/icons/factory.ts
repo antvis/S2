@@ -8,12 +8,11 @@ export const registerIcon = (name: string, svg: string) => {
   SVGMap[lowerCase(name)] = svg;
 };
 
-export const getIcon = (name: string): string => {
-  return SVGMap[lowerCase(name)];
-};
+export const getIcon = (name: string): string => SVGMap[lowerCase(name)];
 
 // 缓存内置 Icon 信息
 keys(InternalSvgIcons).forEach((name) => {
   const icon = get(InternalSvgIcons, name);
+
   registerIcon(name, icon);
 });

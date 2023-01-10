@@ -436,6 +436,7 @@ describe('switcher util test', () => {
         items: [{ id: 'value' }],
       },
     };
+
     expect(getSwitcherState(fields)).toEqual({
       rows: [{ id: 'row' }],
       columns: [{ id: 'column' }],

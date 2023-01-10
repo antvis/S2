@@ -44,7 +44,9 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       if (!this.isPointInCanvas(pointInCanvas)) {
         const deltaX = pointInCanvas.x - this.endBrushPoint.x;
         const deltaY = pointInCanvas.y - this.endBrushPoint.y;
+
         this.handleScroll(deltaX, deltaY);
+
         return;
       }
 
@@ -55,6 +57,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   protected isInBrushRange(meta: ViewMeta) {
     const { start, end } = this.getBrushRange();
     const { rowIndex, colIndex } = meta;
+
     return (
       rowIndex >= start.rowIndex &&
       rowIndex <= end.rowIndex &&
@@ -142,6 +145,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     return selectedCellMetas.map((meta) => {
       const visibleCell = this.brushRangeCells.find((cell) => {
         const visibleCellMeta = cell.getMeta();
+
         return visibleCellMeta?.id === meta.id;
       });
 
@@ -153,6 +157,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
         meta.rowIndex,
         meta.colIndex,
       )!;
+
       return new DataCell(viewMeta, this.spreadsheet);
     });
   }

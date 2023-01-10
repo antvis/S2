@@ -11,6 +11,7 @@ import type { SheetComponentOptions } from '../sheets/interface';
 export interface HeaderCfgProps {
   style?: React.CSSProperties;
   className?: string;
+
   /**
    * @deprecated 已废弃, 请使用 style 代替
    */
@@ -48,25 +49,23 @@ export const Header: React.FC<HeaderProps> = React.memo(
   }) => {
     const PRE_CLASS = `${S2_PREFIX_CLS}-header`;
 
-    const renderExtra = () => {
-      return (
-        <Space align="center">
-          {extra}
-          {switcherCfg?.open && (
-            <SwitcherHeader
-              sheet={sheet}
-              dataCfg={dataCfg!}
-              options={options!}
-              {...switcherCfg}
-            />
-          )}
-          {advancedSortCfg?.open && (
-            <AdvancedSort sheet={sheet} {...advancedSortCfg} />
-          )}
-          {exportCfg?.open && <Export sheet={sheet} {...exportCfg} />}
-        </Space>
-      );
-    };
+    const renderExtra = () => (
+      <Space align="center">
+        {extra}
+        {switcherCfg?.open && (
+          <SwitcherHeader
+            sheet={sheet}
+            dataCfg={dataCfg!}
+            options={options!}
+            {...switcherCfg}
+          />
+        )}
+        {advancedSortCfg?.open && (
+          <AdvancedSort sheet={sheet} {...advancedSortCfg} />
+        )}
+        {exportCfg?.open && <Export sheet={sheet} {...exportCfg} />}
+      </Space>
+    );
 
     return (
       <div className={cx(PRE_CLASS, className)} style={style} {...restProps}>

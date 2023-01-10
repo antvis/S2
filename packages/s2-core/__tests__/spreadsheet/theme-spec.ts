@@ -131,6 +131,7 @@ describe('SpreadSheet Theme Tests', () => {
         size: 30,
         fill: 'red',
       };
+
       s2.setOptions({
         customSVGIcons: [
           {
@@ -172,20 +173,18 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Row Header Icon Tests', () => {
-    const getRowCellThemeCfg = (textAlign: TextAlign) => {
-      return {
-        theme: {
-          rowCell: {
-            text: {
-              textAlign,
-            },
-            bolderText: {
-              textAlign,
-            },
+    const getRowCellThemeCfg = (textAlign: TextAlign) => ({
+      theme: {
+        rowCell: {
+          text: {
+            textAlign,
+          },
+          bolderText: {
+            textAlign,
           },
         },
-      };
-    };
+      },
+    });
 
     const TEXT_ALIGNS: TextAlign[] = ['left', 'center', 'right'];
 
@@ -231,23 +230,25 @@ describe('SpreadSheet Theme Tests', () => {
         expect(
           targetNodes.every((node) => {
             const nodeTextShape = node.belongsCell!.getTextShape();
+
             return (
               nodeTextShape.attr('textAlign') === textAlign &&
               nodeTextShape.attr('fontWeight') === fontWight
             );
           }),
         ).toBeTruthy();
+
         return;
       }
 
       targetNodes.forEach((node) => {
         const nodeTextShape = node.belongsCell!.getTextShape();
-        const isEqualTextAlign = dataCells.every((cell) => {
-          return (
+        const isEqualTextAlign = dataCells.every(
+          (cell) =>
             cell.getTextShape().attr('textAlign') ===
-            nodeTextShape.attr('textAlign')
-          );
-        });
+            nodeTextShape.attr('textAlign'),
+        );
+
         expect(isEqualTextAlign).toBeTruthy();
         expect(nodeTextShape.attr('fontWeight')).toStrictEqual(fontWight);
       });
@@ -435,9 +436,8 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Series Cell Tests', () => {
-    const getTextShape = (group: Group) => {
-      return group.children.find((child) => child instanceof Text) as Text;
-    };
+    const getTextShape = (group: Group) =>
+      group.children.find((child) => child instanceof Text) as Text;
 
     test.each(['top', 'middle', 'bottom'] as TextBaseline[])(
       'should render %s text align for column nodes',

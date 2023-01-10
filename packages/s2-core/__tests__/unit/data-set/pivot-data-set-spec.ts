@@ -42,6 +42,7 @@ describe('Pivot Dataset Test', () => {
   beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
+
     mockSheet.store = new Store();
     mockSheet.interaction = new MockRootInteraction(mockSheet);
     dataSet = new PivotDataSet(mockSheet);
@@ -64,6 +65,7 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
+
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
       expect(rowPivotMeta.get('浙江省')!.level).toEqual(1);
       expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
@@ -83,6 +85,7 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct col pivot meta', () => {
       const colPivotMeta = dataSet.colPivotMeta;
+
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
       expect(colPivotMeta.get('家具')!.level).toEqual(1);
@@ -102,6 +105,7 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
+
       expect(get(indexesData, '1.1.1.1')).toEqual({
         province: '浙江省',
         city: '杭州市',
@@ -127,6 +131,7 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct sorted dimension value', () => {
       const sortedDimensionValues = dataSet.sortedDimensionValues;
+
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
@@ -168,6 +173,7 @@ describe('Pivot Dataset Test', () => {
         },
         isTotals: true,
       });
+
       expect(cell1!.getOrigin()).toContainEntries([['number', 7789]]);
 
       const cell2 = dataSet.getCellData({
@@ -180,6 +186,7 @@ describe('Pivot Dataset Test', () => {
         },
         isTotals: true,
       });
+
       expect(cell2!.getOrigin()).toContainEntries([['number', 352]]);
     });
 
@@ -195,6 +202,7 @@ describe('Pivot Dataset Test', () => {
           sub_type: '桌子',
           [EXTRA_FIELD]: 'number',
         };
+
         expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
         expect(
           dataSet.getMultiData(specialQuery)[0].getOrigin(),
@@ -340,6 +348,7 @@ describe('Pivot Dataset Test', () => {
         '成都市',
       ]);
       const sortMethod = 'none' as SortMethod;
+
       dataCfg.sortParams = [
         { sortFieldId: 'province', sortMethod },
         { sortFieldId: 'city', sortMethod },
@@ -438,6 +447,7 @@ describe('Pivot Dataset Test', () => {
       const metaMap = dataSet.rowPivotMeta
         .get('浙江省')!
         .children.get('杭州市');
+
       expect(metaMap!.childField).toEqual('district');
       expect(metaMap!.children.get('西湖区')).not.toBeEmpty();
     });
@@ -448,6 +458,7 @@ describe('Pivot Dataset Test', () => {
       const metaMap = dataSet.rowPivotMeta
         .get('浙江省')!
         .children.get('杭州市');
+
       expect(metaMap!.childField).toBeUndefined();
       expect(metaMap!.children).toBeEmpty();
     });
@@ -469,6 +480,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
+
       expect(cellData!.getValueByField('number')).toEqual(110);
     });
 
@@ -490,6 +502,7 @@ describe('Pivot Dataset Test', () => {
         isTotals: true,
         rowNode: districtNode,
       });
+
       expect(cellData).toBeUndefined();
     });
   });
@@ -599,11 +612,13 @@ describe('Pivot Dataset Test', () => {
       const priceFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'price' },
       } as unknown as ViewMeta);
+
       expect(priceFormatter).toEqual(mockPriceFormatter);
 
       const costFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'cost' },
       } as unknown as ViewMeta);
+
       expect(costFormatter).toEqual(mockCostFormatter);
     });
 
@@ -611,6 +626,7 @@ describe('Pivot Dataset Test', () => {
       const defaultFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: {},
       } as unknown as ViewMeta);
+
       expect(defaultFormatter).toEqual(mockPriceFormatter);
     });
   });
@@ -624,6 +640,7 @@ describe('Pivot Dataset Test', () => {
         },
       });
       const newData = dataSet.processDataCfg(mockDataCfg);
+
       expect(newData.fields.rows).toEqual(['province', EXTRA_FIELD, 'city']);
       expect(newData.fields.columns).toEqual(['type', 'sub_type']);
       expect(newData.fields.values).toEqual(['number']);
@@ -636,6 +653,7 @@ describe('Pivot Dataset Test', () => {
         },
       });
       const newData = dataSet.processDataCfg(mockDataCfg);
+
       expect(newData.fields.rows).toEqual(['province', 'city']);
       expect(newData.fields.columns).toEqual([EXTRA_FIELD, 'type', 'sub_type']);
       expect(newData.fields.values).toEqual(['number']);
@@ -648,6 +666,7 @@ describe('Pivot Dataset Test', () => {
         },
       });
       const newData = dataSet.processDataCfg(mockDataCfg);
+
       expect(newData.fields.rows).toEqual(['province', 'city']);
       expect(newData.fields.columns).toEqual(['type', 'sub_type', EXTRA_FIELD]);
       expect(newData.fields.values).toEqual(['number']);
@@ -660,6 +679,7 @@ describe('Pivot Dataset Test', () => {
         },
       });
       const newData = dataSet.processDataCfg(mockDataCfg);
+
       expect(newData.fields.rows).toEqual(['province', 'city']);
       expect(newData.fields.columns).toEqual(['type', 'sub_type', EXTRA_FIELD]);
       expect(newData.fields.values).toEqual(['number']);

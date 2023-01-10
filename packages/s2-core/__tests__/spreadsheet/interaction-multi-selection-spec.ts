@@ -52,6 +52,7 @@ describe('Interaction Multi Selection Tests', () => {
       .filter((cell) => {
         const targetCellMeta = colRootCell.getMeta();
         const meta = cell.getMeta();
+
         return meta.colIndex === targetCellMeta.colIndex;
       })
       .forEach((cell) => {

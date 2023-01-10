@@ -8,8 +8,8 @@ describe('PanelBBox test', () => {
     realHeight: number,
     extraOptions: S2Options = {},
     shouldEnableFrozenHeaders = true,
-  ) => {
-    return {
+  ) =>
+    ({
       layoutResult: {
         rowsHierarchy: {
           height: 100,
@@ -59,8 +59,7 @@ describe('PanelBBox test', () => {
           ...extraOptions,
         },
       },
-    } as BaseFacet;
-  };
+    } as BaseFacet);
 
   test('should return correct bbox when no scroll bar exist(small dataset)', () => {
     const facet = getMockFacet(200, 200);
@@ -99,6 +98,7 @@ describe('PanelBBox test', () => {
     });
 
     const bbox = new PanelBBox(facet, true);
+
     expect(bbox.width).toBe(578);
     expect(bbox.height).toBe(573);
     expect(bbox.viewportWidth).toBe(578);
@@ -123,6 +123,7 @@ describe('PanelBBox test', () => {
     );
 
     const bbox = new PanelBBox(facet, true);
+
     expect(bbox.width).toBe(578);
     expect(bbox.height).toBe(573);
     expect(bbox.viewportWidth).toBe(200);

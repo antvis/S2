@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { S2Event, type SpreadSheet, getBaseCellData, GEvent } from '@antv/s2';
 import { onMounted, type Ref } from 'vue';
 import type { BaseSheetInitEmits, EmitFn } from './../interface';
@@ -10,8 +11,10 @@ const useCellEvent = (
 ) => {
   const handler = (event: GEvent) => {
     const param = getBaseCellData(event);
+
     emit(emitName as any, param);
   };
+
   s2Ref.value?.on(eventName, handler);
 };
 
@@ -24,6 +27,7 @@ const useS2Event = (
   const handler = (params: any) => {
     emit(emitName as any, params);
   };
+
   s2Ref.value?.on(eventName, handler);
 };
 
@@ -209,6 +213,7 @@ export const useEvents = (
       'layoutAfterHeaderLayout',
     );
     useS2Event(s2Ref, emit, S2Event.LAYOUT_PAGINATION, 'layoutPagination');
+
     /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
     useS2Event(s2Ref, emit, S2Event.LAYOUT_CELL_SCROLL, 'layoutCellScroll');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_BEFORE_RENDER, 'beforeRender');

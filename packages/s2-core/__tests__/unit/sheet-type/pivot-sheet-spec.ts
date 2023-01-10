@@ -73,16 +73,15 @@ describe('PivotSheet Tests', () => {
   });
 
   describe('PivotSheet Tooltip Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) => {
-      return {
+    const getCellNameByType = (cellType: CellTypes) =>
+      ({
         [CellTypes.ROW_CELL]: 'rowCell',
         [CellTypes.COL_CELL]: 'colCell',
         [CellTypes.DATA_CELL]: 'dataCell',
         [CellTypes.CORNER_CELL]: 'cornerCell',
         [CellTypes.HEADER_CELL]: 'header',
         [CellTypes.MERGED_CELL]: 'merged',
-      }[cellType];
-    };
+      }[cellType]);
 
     test('should support callback tooltip content for string', () => {
       s2.showTooltip({
@@ -100,6 +99,7 @@ describe('PivotSheet Tests', () => {
 
     test('should support callback tooltip content for element', () => {
       const content = document.createElement('div');
+
       s2.showTooltip({
         position: {
           x: 10,
@@ -231,6 +231,7 @@ describe('PivotSheet Tests', () => {
             } as S2Options['tooltip'],
           }),
         );
+
         sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
@@ -263,6 +264,7 @@ describe('PivotSheet Tests', () => {
             } as S2Options['tooltip'],
           }),
         );
+
         sheet.render();
         sheet.showTooltip({
           position: { x: 0, y: 0 },
@@ -299,6 +301,7 @@ describe('PivotSheet Tests', () => {
             } as S2Options['tooltip'],
           }),
         );
+
         sheet.render();
         sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
 
@@ -334,6 +337,7 @@ describe('PivotSheet Tests', () => {
             } as S2Options['tooltip'],
           }),
         );
+
         sheet.render();
         sheet.showTooltip({
           position: { x: 0, y: 0 },
@@ -400,6 +404,7 @@ describe('PivotSheet Tests', () => {
       const warnSpy = jest
         .spyOn(console, 'warn')
         .mockImplementationOnce(() => {});
+
       class CustomTooltip {}
 
       const sheet = new PivotSheet(
@@ -439,6 +444,7 @@ describe('PivotSheet Tests', () => {
       },
       data: [],
     };
+
     s2.setDataCfg(newDataCfg);
 
     // save original data cfg
@@ -695,10 +701,12 @@ describe('PivotSheet Tests', () => {
       }),
       s2Options,
     );
+
     pivotSheet.render();
     const extraField = last(
       pivotSheet.facet.cornerHeader.getChildren(),
     ) as CornerCell;
+
     expect(get(extraField, 'actualText')).toEqual('数值');
   });
 
@@ -718,11 +726,13 @@ describe('PivotSheet Tests', () => {
         cornerExtraFieldText,
       },
     );
+
     pivotSheet.render();
 
     const extraField = last(
       pivotSheet.facet.cornerHeader.getChildren(),
     ) as CornerCell;
+
     expect(get(extraField, 'actualText')).toEqual(cornerExtraFieldText);
   });
 
@@ -796,6 +806,7 @@ describe('PivotSheet Tests', () => {
           },
         },
       });
+
       tree.render();
 
       expect(
@@ -823,6 +834,7 @@ describe('PivotSheet Tests', () => {
         ...s2Options,
         hierarchyType: 'tree',
       });
+
       tree.render();
 
       const isCollapsed = true;
@@ -846,6 +858,7 @@ describe('PivotSheet Tests', () => {
     (lang) => {
       setLang(lang);
       const sheet = new PivotSheet(container, dataCfg, s2Options);
+
       sheet.render();
 
       const showTooltipWithInfoSpy = jest
@@ -950,6 +963,7 @@ describe('PivotSheet Tests', () => {
         type: '笔',
       },
     });
+
     s2.options.style!.colCell!.hideValue = true;
     s2.groupSortByMethod('asc', nodeMeta);
 
@@ -994,6 +1008,7 @@ describe('PivotSheet Tests', () => {
       null as unknown as BaseEvent,
     );
     const destroyFn = jest.fn();
+
     s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
     s2.destroy();
 
@@ -1038,6 +1053,7 @@ describe('PivotSheet Tests', () => {
         },
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+
       sheet.render();
 
       const { layoutResult } = sheet.facet;
@@ -1058,6 +1074,7 @@ describe('PivotSheet Tests', () => {
         },
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+
       sheet.render();
 
       const { layoutResult } = sheet.facet;
@@ -1082,9 +1099,11 @@ describe('PivotSheet Tests', () => {
         ],
       } as S2DataConfig;
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+
       sheet.render();
 
       const { layoutResult } = sheet.facet;
+
       expect(layoutResult.rowNodes).toHaveLength(2);
     });
 
@@ -1096,6 +1115,7 @@ describe('PivotSheet Tests', () => {
         },
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+
       sheet.render();
 
       const { layoutResult } = sheet.facet;
@@ -1117,9 +1137,11 @@ describe('PivotSheet Tests', () => {
         },
       } as unknown as S2DataConfig);
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+
       sheet.render();
 
       const { layoutResult } = sheet.facet;
+
       // if value empty, not render value cell in row leaf nodes
       expect(layoutResult.rowLeafNodes).toHaveLength(0);
       expect(layoutResult.colNodes).toHaveLength(
@@ -1152,10 +1174,12 @@ describe('PivotSheet Tests', () => {
         showDefaultHeaderActionIcon: true,
         hierarchyType: 'tree',
       });
+
       sheet.render();
 
       sheet.getRowLeafNodes().forEach((node) => {
         const rowCell = node.belongsCell;
+
         expect(get(rowCell, 'actionIcons')).toHaveLength(0);
       });
 
@@ -1165,6 +1189,7 @@ describe('PivotSheet Tests', () => {
 
   test('should emit destroy event', () => {
     const onDestroy = jest.fn();
+
     s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
 
     s2.destroy();
@@ -1180,6 +1205,7 @@ describe('PivotSheet Tests', () => {
       },
       data: [],
     };
+
     s2.setDataCfg(newDataCfg);
     s2.render();
 

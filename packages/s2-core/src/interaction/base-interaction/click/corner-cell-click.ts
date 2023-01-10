@@ -21,6 +21,7 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
         if (tooltip.visible) {
           return;
         }
+
         interaction.removeIntercepts([InterceptType.HOVER]);
       });
     });

@@ -60,6 +60,7 @@ export interface InteractionStateInfo {
   nodes?: Node[];
   // for empty cells, updates are ignored, use `force` to skip ignore
   force?: boolean;
+
   /** 交互行为改变后，会被更新和重绘的单元格回调 */
   onUpdateCells?: OnUpdateCells;
 }
@@ -86,6 +87,7 @@ export interface BrushPoint {
   y: number;
   scrollX?: number;
   scrollY?: number;
+
   /** 用于标记 row cell 和 col cell 点的 x, y 坐标 */
   headerX?: number;
   headerY?: number;
@@ -164,13 +166,17 @@ export interface InteractionOptions {
   selectedCellMove?: boolean;
   // controls scrollbar's position type
   scrollbarPosition?: ScrollbarPositionType;
-  // An object that specifies characteristics about the event listener
-  // https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+
+  /*
+   * An object that specifies characteristics about the event listener
+   * https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener
+   */
   eventListenerOptions?: boolean | AddEventListenerOptions;
   // highlight col and row header for selected cell
   selectedCellHighlight?: boolean;
   // https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
   overscrollBehavior?: 'auto' | 'none' | 'contain' | null;
+
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

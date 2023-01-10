@@ -36,6 +36,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   };
 
   const startBrushDataCell = new MockDataCell();
+
   startBrushDataCell.getMeta = () => startBrushDataCellMeta as ViewMeta;
 
   const emitEvent = (type: S2Event, event: Partial<OriginalEvent>) => {
@@ -103,6 +104,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   // https://github.com/antvis/S2/issues/852
   test('should clear brush selection state when mouse down and context menu clicked', () => {
     const globalMouseUp = jest.fn();
+
     mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
 
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
@@ -113,6 +115,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: canvasRect.left + 12,
       clientY: canvasRect.top + 22,
@@ -172,6 +175,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxY: 15,
     } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
 
@@ -189,6 +193,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxY: 15,
     } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeTruthy();
   });
 
@@ -206,6 +211,7 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
       maxY: 15,
     } as BBox;
     const baseBrushSelection = new BaseBrushSelection(mockSpreadSheetInstance);
+
     expect(baseBrushSelection.rectanglesIntersect(rect1, rect2)).toBeFalsy();
   });
 });

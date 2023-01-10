@@ -61,8 +61,10 @@ export default defineConfig({
       },
     },
     modules: {
-      // 样式小驼峰转化
-      // css: goods-list => tsx: goodsList
+      /*
+       * 样式小驼峰转化
+       * css: goods-list => tsx: goodsList
+       */
       localsConvention: 'camelCase',
     },
   },

@@ -15,6 +15,7 @@ export const renderToMountedCell = (
 ) => {
   const { fieldValue } = cell.getMeta();
   const { x, y, width, height } = cell.getBBoxByType(CellClipBox.CONTENT_BOX);
+
   render(
     {
       x,

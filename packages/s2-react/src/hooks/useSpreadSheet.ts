@@ -41,12 +41,15 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
       const s2Options = getSheetComponentOptions(options!);
+
       if (customSpreadSheet) {
         return customSpreadSheet(container, dataCfg, s2Options);
       }
+
       if (sheetType === 'table') {
         return new TableSheet(container, dataCfg, s2Options as S2Options);
       }
+
       return new PivotSheet(container, dataCfg, s2Options as S2Options);
     },
     [sheetType, options, dataCfg, customSpreadSheet],
@@ -59,8 +62,10 @@ export function useSpreadSheet(props: SheetComponentsProps) {
     s2Ref.current.render();
     setLoading(false);
 
-    // 子 hooks 内使用了 s2Ref.current 作为 dep
-    // forceUpdate 一下保证子 hooks 能 rerender
+    /*
+     * 子 hooks 内使用了 s2Ref.current 作为 dep
+     * forceUpdate 一下保证子 hooks 能 rerender
+     */
     forceUpdate();
 
     if (props.getSpreadSheet) {
@@ -70,12 +75,14 @@ export function useSpreadSheet(props: SheetComponentsProps) {
       );
       props.getSpreadSheet(s2Ref.current);
     }
+
     props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
   // init
   React.useEffect(() => {
     buildSpreadSheet();
+
     return () => {
       s2Ref.current?.destroy?.();
     };
@@ -84,10 +91,12 @@ export function useSpreadSheet(props: SheetComponentsProps) {
   // 重渲 effect：dataCfg, options or theme changed
   useUpdateEffect(() => {
     const [prevDataCfg, prevOptions, prevThemeCfg] = updatePrevDepsRef.current;
+
     updatePrevDepsRef.current = [dataCfg, options!, themeCfg!];
 
     let reloadData = false;
     let reBuildDataSet = false;
+
     if (!Object.is(prevDataCfg, dataCfg)) {
       // 列头变化需要重新计算初始叶子节点
       if (
@@ -108,6 +117,7 @@ export function useSpreadSheet(props: SheetComponentsProps) {
         reloadData = true;
         s2Ref.current?.setDataCfg(dataCfg);
       }
+
       s2Ref.current?.setOptions(options as S2Options);
       s2Ref.current?.changeSheetSize(options!.width, options!.height);
     }

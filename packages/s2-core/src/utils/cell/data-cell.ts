@@ -8,11 +8,9 @@ import type { CellMeta, S2CellType } from '../../common/interface';
  */
 export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   const currentId = currentCell.getMeta().id;
-  return cells.some((cell) => {
-    return isEqual(cell.id, currentId);
-  });
+
+  return cells.some((cell) => isEqual(cell.id, currentId));
 };
 
-export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}-${colIndex}`;
-};
+export const getDataCellId = (rowIndex: string, colIndex: string) =>
+  `${rowIndex}-${colIndex}`;

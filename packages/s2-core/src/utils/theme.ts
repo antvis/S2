@@ -7,5 +7,6 @@ import type { Palette, ThemeName } from '../common/interface/theme';
  */
 export const getPalette = (type?: ThemeName): Palette => {
   const themeName = type || 'default';
+
   return PALETTE_MAP[themeName.toLowerCase()];
 };

@@ -23,9 +23,11 @@ describe('Table Mode Dataset Test', () => {
     },
     data,
   };
+
   beforeEach(() => {
     MockTableSheet.mockClear();
     const s2 = new MockTableSheet();
+
     s2.options = {
       frozen: {},
     };
@@ -87,6 +89,7 @@ describe('Table Mode Dataset Test', () => {
     test('should handle getCellData when no data', () => {
       MockTableSheet.mockClear();
       const emptyDataSet = new TableDataSet(new MockTableSheet());
+
       emptyDataSet.setDataCfg({
         ...dataCfg,
         data: [],
@@ -192,17 +195,17 @@ describe('Table Mode Dataset Test', () => {
         [sortFieldId],
         [sortMethod.toLocaleLowerCase() as 'asc' | 'desc'],
       );
+
       dataSet.sortParams = [
         {
           sortFieldId,
           sortMethod,
-          sortFunc: ({ data, sortMethod, sortFieldId }) => {
-            return orderBy(
+          sortFunc: ({ data, sortMethod, sortFieldId }) =>
+            orderBy(
               data,
               [sortFieldId],
               [sortMethod!.toLocaleLowerCase() as 'asc' | 'desc'],
-            );
-          },
+            ),
         },
       ];
       dataSet.handleDimensionValuesSort();
@@ -222,6 +225,7 @@ describe('Table Mode Dataset Test', () => {
         '乐山市',
         '南充市',
       ];
+
       dataSet.sortParams = [
         {
           sortFieldId,
@@ -239,6 +243,7 @@ describe('Table Mode Dataset Test', () => {
       const sortFieldId = 'number';
 
       let result = orderBy(dataSet.getDisplayDataSet(), [sortFieldId], 'asc');
+
       dataSet.sortParams = [
         {
           sortFieldId,

@@ -16,16 +16,16 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
     if (!hiddenColumnsDetail) {
       return true;
     }
-    return hiddenColumnsDetail.every((detail) => {
-      return detail.hideColumnNodes.every((node) => {
-        return node.field !== column;
-      });
-    });
+
+    return hiddenColumnsDetail.every((detail) =>
+      detail.hideColumnNodes.every((node) => node.field !== column),
+    );
   });
   const fields = [...displayedColumns] as string[];
 
   const tree = [...columns];
   const fieldsMap: Record<string, boolean> = {};
+
   if (showSeriesNumber) {
     tree.unshift({
       field: SERIES_NUMBER_FIELD,
@@ -37,6 +37,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   fields.reduce((prev, field) => {
     // @ts-ignore
     prev[field] = true;
+
     return prev;
   }, fieldsMap);
 

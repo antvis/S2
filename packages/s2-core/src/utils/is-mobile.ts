@@ -8,6 +8,7 @@ export function isMobile(device?: string) {
   if (device === DeviceType.MOBILE) {
     return true;
   }
+
   return /(iPhone|iPad|SymbianOS|Windows Phone|iPod|iOS|Android)/i.test(
     navigator.userAgent,
   );

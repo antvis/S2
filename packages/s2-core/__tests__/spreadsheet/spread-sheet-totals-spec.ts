@@ -21,18 +21,21 @@ describe('Spreadsheet Totals Tests', () => {
     const totalNodes = spreadsheet.facet.layoutResult.rowNodes.filter(
       (node) => node.isTotals,
     );
+
     expect(totalNodes).toHaveLength(3);
 
     // grand total
     const grandTotalNode = totalNodes.filter(
       (node) => node.isGrandTotals && node.level === 0,
     );
+
     expect(grandTotalNode).toBeDefined();
 
     // sub total
     const provinceSubTotalNodes = totalNodes.filter(
       (node) => node.field === 'city' && node.level === 1,
     );
+
     expect(provinceSubTotalNodes).toHaveLength(2); // 四川、浙江
   });
 
@@ -42,18 +45,21 @@ describe('Spreadsheet Totals Tests', () => {
     const totalNodes = spreadsheet.facet.layoutResult.colNodes.filter(
       (node) => node.isTotals,
     );
+
     expect(totalNodes).toHaveLength(3);
 
     // grand total
     const grandTotalNode = totalNodes.filter(
       (node) => node.isGrandTotals && node.level === 0,
     );
+
     expect(grandTotalNode).toBeDefined();
 
     // sub total
     const typeSubTotalNodes = totalNodes.filter(
       (node) => node.field === 'sub_type' && node.level === 1,
     );
+
     expect(typeSubTotalNodes).toHaveLength(2); // 家具、办公用品
   });
 
@@ -71,9 +77,9 @@ describe('Spreadsheet Totals Tests', () => {
     spreadsheet.render();
 
     const { rowNodes, colNodes } = spreadsheet.facet.layoutResult;
-    const totalNodes = flatMap([rowNodes, colNodes], (nodes) => {
-      return nodes.filter((node) => node.isTotals);
-    });
+    const totalNodes = flatMap([rowNodes, colNodes], (nodes) =>
+      nodes.filter((node) => node.isTotals),
+    );
 
     expect(totalNodes.filter((node) => node.isGrandTotals)).toHaveLength(0);
     expect(totalNodes).toHaveLength(4);
@@ -81,6 +87,7 @@ describe('Spreadsheet Totals Tests', () => {
 
   test('should not render sub total nodes when always=false', () => {
     const anotherDataCfg = assembleDataCfg() as S2DataConfig;
+
     /**
      * 构建专用数据集
      * 行头：浙江省下有多个城市、四川省下只有成都
@@ -113,14 +120,13 @@ describe('Spreadsheet Totals Tests', () => {
       nodes: Node[],
       parentValue: string,
       subTotalDimension: string,
-    ) => {
-      return nodes.find(
+    ) =>
+      nodes.find(
         (node) =>
           node.parent?.value === parentValue &&
           node.field === subTotalDimension &&
           node.isSubTotals,
       );
-    };
 
     const { rowNodes, colNodes } = spreadsheet.facet.layoutResult;
 
@@ -151,6 +157,7 @@ describe('Spreadsheet Totals Tests', () => {
           child instanceof DataCell &&
           get(child, 'meta.rowId') === 'root[&]总计',
       ) as DataCell;
+
     // @ts-ignore
     expect(grandTotal.textShape.attr('text')).toEqual('26193');
 
@@ -161,6 +168,7 @@ describe('Spreadsheet Totals Tests', () => {
           child instanceof DataCell &&
           get(child, 'meta.rowId') === 'root[&]浙江省',
       ) as DataCell;
+
     // @ts-ignore
     expect(rowSubtotal1.textShape).toBeUndefined();
 
@@ -171,6 +179,7 @@ describe('Spreadsheet Totals Tests', () => {
           child instanceof DataCell &&
           get(child, 'meta.rowId') === 'root[&]浙江省',
       ) as DataCell;
+
     // @ts-ignore
     expect(rowSubtotal2.textShape).toBeUndefined();
   });

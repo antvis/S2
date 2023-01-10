@@ -8,21 +8,19 @@ import { ColCell } from '@/cell';
 
 import { InteractionStateName } from '@/common';
 
-jest.mock('@/cell', () => {
-  return {
-    ColCell: class ColCell {
-      stateName: InteractionStateName;
+jest.mock('@/cell', () => ({
+  ColCell: class ColCell {
+    stateName: InteractionStateName;
 
-      getMeta = () => ({
-        id: 'root[&]city',
-      });
+    getMeta = () => ({
+      id: 'root[&]city',
+    });
 
-      updateByState = (name: InteractionStateName) => {
-        this.stateName = name;
-      };
-    },
-  };
-});
+    updateByState = (name: InteractionStateName) => {
+      this.stateName = name;
+    };
+  },
+}));
 
 describe('Hover Event Utils Tests', () => {
   describe('getActiveHoverRowColCells test', () => {
@@ -31,6 +29,7 @@ describe('Hover Event Utils Tests', () => {
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
       let result = getActiveHoverRowColCells('root[&]city', cells, false);
+
       expect(result.map((cell) => cell.getMeta()?.id)).toStrictEqual([
         'root[&]city',
       ]);
@@ -47,6 +46,7 @@ describe('Hover Event Utils Tests', () => {
       const cells = [
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
+
       updateAllColHeaderCellState(
         'root[&]city',
         cells,

@@ -5,6 +5,7 @@ import {
   getDataExtremumByField,
   getDataAvgByField,
 } from '@/utils/number-calculate';
+
 describe('Number Calculate Test', () => {
   describe('isNotNumber', () => {
     test('should return correct result', () => {
@@ -40,6 +41,7 @@ describe('Number Calculate Test', () => {
         new CellData({ price: '-' }, 'price'),
         new CellData({ type: '笔' }, 'price'),
       ];
+
       expect(getDataSumByField(data, 'price')).toEqual(10000002);
       expect(
         getDataSumByField(
@@ -85,6 +87,7 @@ describe('Number Calculate Test', () => {
         new CellData({ type: 'antv' }, 'price'),
         new CellData({ price: '0.001' }, 'price'),
       ];
+
       expect(getDataExtremumByField('min', data, 'price')).toEqual(0.001);
     });
 
@@ -109,6 +112,7 @@ describe('Number Calculate Test', () => {
         new CellData({ type: 'antv' }, 'price'),
         new CellData({ price: '-0.001' }, 'price'),
       ];
+
       expect(getDataExtremumByField('max', data, 'price')).toEqual(-0.001);
     });
   });
@@ -126,6 +130,7 @@ describe('Number Calculate Test', () => {
         new CellData({ price: '-' }, 'price'),
         new CellData({ type: '笔' }, 'price'),
       ];
+
       expect(getDataAvgByField(data, 'price')).toEqual(375.375);
     });
   });

@@ -23,6 +23,7 @@ describe('Interaction Keyboard Move Tests', () => {
     mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
     mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
     const mockCell = createMockCellInfo('testId1').mockCell as any;
+
     s2 = createFakeSpreadSheet();
     keyboardMove = new SelectedCellMove(s2);
     s2.theme = {
@@ -48,12 +49,10 @@ describe('Interaction Keyboard Move Tests', () => {
         s2.store.set('scrollX', data?.offsetX?.value!);
         s2.store.set('scrollY', data?.offsetY?.value!);
       },
-      getScrollOffset: () => {
-        return {
-          scrollX: s2.store.get('scrollX', 0),
-          scrollY: s2.store.get('scrollY', 0),
-        };
-      },
+      getScrollOffset: () => ({
+        scrollX: s2.store.get('scrollX', 0),
+        scrollY: s2.store.get('scrollY', 0),
+      }),
       panelBBox: {
         viewportHeight: 200,
         viewportWidth: 200,
@@ -81,7 +80,7 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell right', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
-    // select cell
+
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -108,7 +107,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell left', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -135,7 +133,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell up', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell10.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell10.mockCell;
     // @ts-ignore
@@ -162,7 +159,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected cell down', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -189,7 +185,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected with meta', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -243,7 +238,6 @@ describe('Interaction Keyboard Move Tests', () => {
 
     s2.interaction.changeState = jest.fn();
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -282,7 +276,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should move selected with shift and meta', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell00.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell00.mockCell;
     // @ts-ignore
@@ -320,7 +313,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should not move selected cell down when isCanvasEffect is false', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore
@@ -339,7 +331,6 @@ describe('Interaction Keyboard Move Tests', () => {
   test('should scroll to active cell', () => {
     s2.interaction.changeState = jest.fn(() => {});
     s2.interaction.getCells = () => [mockCell01.mockCell as any];
-    // select cell
     // @ts-ignore
     keyboardMove.startCell = mockCell01.mockCell;
     // @ts-ignore

@@ -30,11 +30,10 @@ describe('Interaction Tooltip Tests', () => {
   });
 
   test('should display tooltip when data cell clicked', () => {
-    const isContains = () => {
-      return s2.tooltip.container?.classList?.contains(
+    const isContains = () =>
+      s2.tooltip.container?.classList?.contains(
         'antv-s2-tooltip-container-show',
       );
-    };
 
     expect(isContains()).toBeFalsy();
 

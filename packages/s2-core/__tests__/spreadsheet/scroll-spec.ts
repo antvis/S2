@@ -393,6 +393,7 @@ describe('Scroll Tests', () => {
     const sheet = new PivotSheet(getContainer(), mockDataConfig, {
       ...s2Options,
     });
+
     sheet.render();
 
     jest.spyOn(sheet.facet as any, 'dynamicRenderCell');
@@ -465,6 +466,7 @@ describe('Scroll Tests', () => {
     const scrollBar = s2.facet[name] as ScrollBar;
     // @ts-ignore
     const positon = scrollBar.getCoordinatesWithBBoxExtraPadding();
+
     expect(
       Math.round(scrollBar.thumbShape.getBBox()[key] as number),
     ).toStrictEqual(Math.round(positon.end - positon.start));
@@ -484,6 +486,7 @@ describe('Scroll Tests', () => {
     });
 
     const { hScrollBar, vScrollBar, panelBBox } = s2.facet;
+
     expect(
       hScrollBar.thumbLen + hScrollBar.thumbOffset + panelBBox.minX,
     ).toStrictEqual(panelBBox.maxX);
@@ -721,6 +724,7 @@ describe('Scroll Tests', () => {
             overscrollBehavior,
           },
         });
+
         sheet.render();
 
         expect(sheet.store.get('initOverscrollBehavior')).toBeUndefined();

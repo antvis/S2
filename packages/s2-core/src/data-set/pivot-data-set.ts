@@ -105,6 +105,7 @@ export class PivotDataSet extends BaseDataSet {
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
       });
+
       this.indexesData = indexesData;
     });
 
@@ -130,6 +131,7 @@ export class PivotDataSet extends BaseDataSet {
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
+
     if (idPathMap.has(rowNodeId)) {
       // the current node has a drill-down field, clean it
       forEach(idPathMap.get(rowNodeId), (path) => {
@@ -155,13 +157,16 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
+
     this.indexesData = indexesData;
     this.rowPivotMeta = rowPivotMeta!;
     this.colPivotMeta = colPivotMeta!;
     this.sortedDimensionValues = sortedDimensionValues;
 
-    // 4、record data paths by nodeId
-    // set new drill-down data path
+    /*
+     * 4、record data paths by nodeId
+     * set new drill-down data path
+     */
     idPathMap.set(rowNodeId, drillDownDataPaths);
     store.set('drillDownIdPathMap', idPathMap);
   }
@@ -174,9 +179,11 @@ export class PivotDataSet extends BaseDataSet {
   public clearDrillDownData(rowNodeId?: string) {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
+
     if (!idPathMap) {
       return;
     }
+
     const drillDownDataCache = store.get(
       'drillDownDataCache',
       [],
@@ -185,11 +192,13 @@ export class PivotDataSet extends BaseDataSet {
     if (rowNodeId) {
       // 1. 删除 indexesData 当前下钻层级对应数据
       const currentIdPathMap = idPathMap.get(rowNodeId);
+
       if (currentIdPathMap) {
         forEach(currentIdPathMap, (path) => {
           unset(this.indexesData, path);
         });
       }
+
       // 2. 删除 rowPivotMeta 当前下钻层级对应 meta 信息
       deleteMetaById(this.rowPivotMeta, rowNodeId);
       // 3. 删除下钻缓存路径
@@ -199,6 +208,7 @@ export class PivotDataSet extends BaseDataSet {
       const restDataCache = filter(drillDownDataCache, (cache) =>
         idPathMap.has(cache?.rowId),
       );
+
       store.set('drillDownDataCache', restDataCache);
 
       // 5. 过滤清除的下钻层级
@@ -214,9 +224,13 @@ export class PivotDataSet extends BaseDataSet {
       store.set('drillDownFieldInLevel', restFieldInLevel);
     } else {
       idPathMap.clear();
-      // 需要对应清空所有下钻后的dataCfg信息
-      // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
+
+      /*
+       * 需要对应清空所有下钻后的dataCfg信息
+       * 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
+       */
       const originalDataCfg = this.spreadsheet.store.get('originalDataCfg');
+
       if (!isEmpty(originalDataCfg)) {
         this.spreadsheet.setDataCfg(originalDataCfg);
       }
@@ -239,10 +253,12 @@ export class PivotDataSet extends BaseDataSet {
   handleDimensionValuesSort = () => {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortByMeasure } = item;
+
       // 万物排序的前提
       if (!sortFieldId) {
         return;
       }
+
       const originValues = [...(this.sortedDimensionValues[sortFieldId] || [])];
       const result = handleSortAction({
         dataSet: this,
@@ -250,6 +266,7 @@ export class PivotDataSet extends BaseDataSet {
         originValues,
         isSortByMeasure: !isEmpty(sortByMeasure),
       });
+
       this.sortedDimensionValues[sortFieldId] = result;
     });
   };
@@ -266,6 +283,7 @@ export class PivotDataSet extends BaseDataSet {
 
     let newColumns = columns;
     let newRows = rows;
+
     if (valueInCols) {
       newColumns = this.isCustomMeasuresPosition(customValueOrder)
         ? this.handleCustomMeasuresOrder(customValueOrder!, newColumns)
@@ -294,6 +312,7 @@ export class PivotDataSet extends BaseDataSet {
   public processMeta(meta: Meta[]) {
     const valueFormatter = (value: string) => {
       const currentMeta = find(meta, ({ field }: Meta) => field === value);
+
       return get(currentMeta, 'name', value);
     };
 
@@ -314,6 +333,7 @@ export class PivotDataSet extends BaseDataSet {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
     let dimensions: CustomHeaderFields = [];
+
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
@@ -325,12 +345,16 @@ export class PivotDataSet extends BaseDataSet {
     if (!isEmpty(query)) {
       let sortedMeta: string[] = [];
       const dimensionValuePath = [];
+
       for (const dimension of dimensions) {
         const value: string = get(query, dimension as string);
+
         dimensionValuePath.push(`${value}`);
         const cacheKey = dimensionValuePath.join(`${NODE_ID_SEPARATOR}`);
+
         if (meta.has(value) && !isUndefined(value)) {
           const childField = meta.get(value)?.childField;
+
           meta = meta.get(value)!.children;
           if (
             find(this.sortParams, (item) => item.sortFieldId === childField) &&
@@ -339,6 +363,7 @@ export class PivotDataSet extends BaseDataSet {
             const dimensionValues = this.sortedDimensionValues[
               childField!
             ]?.filter((item) => item?.includes(cacheKey));
+
             sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
           } else {
             sortedMeta = [...meta.keys()];
@@ -348,6 +373,7 @@ export class PivotDataSet extends BaseDataSet {
       if (isEmpty(sortedMeta)) {
         return [];
       }
+
       return filterTotal(getListBySorted([...meta.keys()], sortedMeta));
     }
 
@@ -395,8 +421,10 @@ export class PivotDataSet extends BaseDataSet {
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
 
-    // 判断当前是否为下钻节点
-    // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
+    /*
+     * 判断当前是否为下钻节点
+     * 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
+     */
     const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
       (parentPath) => rowNode?.id.startsWith(parentPath),
     );
@@ -405,6 +433,7 @@ export class PivotDataSet extends BaseDataSet {
     if (!isTotals || isDrillDown) {
       rows = Node.getFieldPath(rowNode!, isDrillDown) ?? originRows;
     }
+
     const rowDimensionValues = transformDimensionsValues(
       query,
       rows as string[],
@@ -421,6 +450,7 @@ export class PivotDataSet extends BaseDataSet {
     });
 
     const rawData = get(this.indexesData, path);
+
     if (rawData) {
       // 如果已经有数据则取已有数据
       return new CellData(rawData, query[EXTRA_FIELD]);
@@ -436,8 +466,10 @@ export class PivotDataSet extends BaseDataSet {
     const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
       if (isSubTotal) {
         const firstDimension = find(dimensions, (item) => !has(query, item));
+
         return firstDimension && firstDimension !== first(dimensions);
       }
+
       return every(dimensions, (item) => !has(query, item));
     };
 
@@ -473,11 +505,13 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
+
     return { path, rows: totalRows, columns };
   }
 
   protected getQueryExtraFields(query: Query) {
     const { values } = this.fields;
+
     return query[EXTRA_FIELD] ? [query[EXTRA_FIELD]] : values;
   }
 
@@ -492,14 +526,17 @@ export class PivotDataSet extends BaseDataSet {
     ) => {
       const { grandTotalOnly, subTotalOnly, totalDimensions } =
         totalSelection || ({} as TotalSelection);
+
       return filterExtraDimension(dimensions).map((dimension, idx) => {
         let type = DataSelectType.DetailOnly;
+
         if (
           totalDimensions === true ||
           includes(totalDimensions as string[], dimension)
         ) {
           type = DataSelectType.All;
         }
+
         // 如果当前可以选择总计/小计数据，则进一步根据 grandTotalOnly 以及 subTotalOnly 收缩范围
         if (
           type === DataSelectType.All &&
@@ -507,6 +544,7 @@ export class PivotDataSet extends BaseDataSet {
         ) {
           type = DataSelectType.TotalOnly;
         }
+
         return type;
       });
     };
@@ -515,6 +553,7 @@ export class PivotDataSet extends BaseDataSet {
 
     const rowSelectTypes = getTotalSelectTypes(rows, totals?.row);
     const columnSelectTypes = getTotalSelectTypes(columns, totals?.column);
+
     return rowSelectTypes.concat(columnSelectTypes);
   }
 
@@ -536,12 +575,16 @@ export class PivotDataSet extends BaseDataSet {
 
     let hadMultiField = false;
     let result: FlattingIndexesData = this.indexesData;
-    // TODO: 原本的展开逻辑在有下钻的情况下,应该是有问题的,
-    // 因为下钻数据是放在原本的明细数据里面, 在对象里面添加了 1,2,3 这样的属性值来储存下钻数据
-    // 由于对下钻整体的逻辑还不是很清楚，这里只是对原来的逻辑进行效率优化
-    // 后续如果需要进行下钻优化，这里也需要同时处理
+
+    /*
+     * TODO: 原本的展开逻辑在有下钻的情况下,应该是有问题的,
+     * 因为下钻数据是放在原本的明细数据里面, 在对象里面添加了 1,2,3 这样的属性值来储存下钻数据
+     * 由于对下钻整体的逻辑还不是很清楚，这里只是对原来的逻辑进行效率优化
+     * 后续如果需要进行下钻优化，这里也需要同时处理
+     */
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
+
       if (hadMultiField) {
         if (shouldQueryMultiData(current)) {
           result = flattenIndexesData(
@@ -577,11 +620,13 @@ export class PivotDataSet extends BaseDataSet {
     if (field === TOTAL_VALUE) {
       return this.getFieldFormatterForTotalValue(cellMeta);
     }
+
     return super.getFieldFormatter(field);
   }
 
   private getFieldFormatterForTotalValue(cellMeta?: ViewMeta) {
     let valueField = '';
+
     // 当数据置于行头时，小计总计列尝试去找对应的指标
     if (!this.spreadsheet.isValueInCols() && cellMeta) {
       valueField = get(cellMeta.rowQuery, EXTRA_FIELD);
@@ -603,10 +648,13 @@ export class PivotDataSet extends BaseDataSet {
     fields: CustomHeaderFields,
   ) {
     const newFields = uniq([...fields]);
+
     if (fields.length >= customValueOrder) {
       newFields.splice(customValueOrder, 0, EXTRA_FIELD);
+
       return newFields;
     }
+
     // 当用户配置的度量组位置大于等于度量组数量时，默认放在最后
     return [...newFields, EXTRA_FIELD];
   }

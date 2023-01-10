@@ -56,6 +56,7 @@ describe('Column Formatter Tests', () => {
     const colNodes = s2.getColumnNodes();
     const typeColNode = colNodes.find(({ field }) => field === 'type');
     const costColNode = colNodes.find(({ field }) => field === 'cost');
+
     expect(typeColNode!.value).toStrictEqual('类型');
     expect(costColNode!.value).toStrictEqual('成本');
   });

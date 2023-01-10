@@ -18,6 +18,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
   beforeEach(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
+
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
     s2.dataCfg = {
@@ -74,6 +75,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         rowIndex: 0,
         colIndex: 0,
       });
+
       s2.interaction.getCells = () => [mockCellA.mockCellMeta as CellMeta];
 
       const mockCellB = createMockCellInfo('testId3', {
@@ -87,6 +89,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
         [mockCellA.mockCell, mockCellB.mockCell] as any;
 
       const selected = jest.fn();
+
       s2.on(S2Event.GLOBAL_SELECTED, selected);
 
       s2.emit(S2Event.DATA_CELL_CLICK, {

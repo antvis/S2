@@ -20,8 +20,8 @@ export const getListBySorted = (
   list: string[],
   sorted: string[],
   mapValue?: (val: string) => string,
-) => {
-  return list.sort((a, b) => {
+) =>
+  list.sort((a, b) => {
     if (mapValue) {
       a = mapValue(a);
       b = mapValue(b);
@@ -29,28 +29,31 @@ export const getListBySorted = (
 
     const ia = sorted.indexOf(a);
     const ib = sorted.indexOf(b);
+
     if (ia === -1 && ib === -1) {
       return 0;
     }
+
     if (ia === -1) {
       return 1;
     }
+
     if (ib === -1) {
       return -1;
     }
+
     return ia - ib;
   });
-};
 
-export const filterTotal = (values: string[] = []) => {
-  return values.filter((v) => v !== TOTAL_VALUE);
-};
+export const filterTotal = (values: string[] = []) =>
+  values.filter((v) => v !== TOTAL_VALUE);
 
 export const getFieldKeysByDimensionValues = (
   dimensionValues: string[] | undefined[],
   dimensions: CustomHeaderFields,
 ) => {
   const result: string[] = [];
+
   dimensionValues?.forEach((item, index) => {
     if (item === undefined) {
       if (dimensions[index]) {
@@ -66,9 +69,8 @@ export const getFieldKeysByDimensionValues = (
  * arr1包含arr2，将arr2排到最后
  *
  */
-export const sortByItems = (arr1: string[], arr2: string[]) => {
-  return arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
-};
+export const sortByItems = (arr1: string[], arr2: string[]) =>
+  arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
 
 export function getAggregationAndCalcFuncByQuery(
   totalsStatus: TotalsStatus,
@@ -127,13 +129,16 @@ export function flattenIndexesData(
   if (!isArray(data)) {
     return [data];
   }
+
   return flatMap(data, (dimensionData) => {
     if (!isArray(dimensionData)) {
       return [dimensionData];
     }
+
     // 数组的第 0 项是总计/小计专位，从第 1 项开始是明细数据
     const startIdx = selectType === DataSelectType.DetailOnly ? 1 : 0;
     const length = selectType === DataSelectType.TotalOnly ? 1 : undefined;
+
     return dimensionData.slice(startIdx, length).filter(Boolean);
   });
 }

@@ -13,6 +13,7 @@ export const TooltipIcon: React.FC<TooltipIconProps> = (props) => {
 
   if (getIcon(icon as string)) {
     const name = icon as string;
+
     return <HtmlIcon name={name} {...attrs} />;
   }
 

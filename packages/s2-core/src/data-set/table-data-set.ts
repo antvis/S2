@@ -21,10 +21,13 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getStartRows() {
     const { rowCount } = this.spreadsheet.options.frozen!;
+
     if (!rowCount) {
       return [];
     }
+
     const { displayData } = this;
+
     return displayData.slice(0, rowCount);
   }
 
@@ -34,10 +37,12 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getEndRows() {
     const { trailingRowCount } = this.spreadsheet.options.frozen!;
+
     // 没有冻结行时返回空数组
     if (!trailingRowCount) {
       return [];
     }
+
     const { displayData } = this;
 
     return displayData.slice(-trailingRowCount);
@@ -49,6 +54,7 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getMovableRows(): RawData[] {
     const { trailingRowCount, rowCount } = this.spreadsheet.options.frozen!;
+
     return this.displayData.slice(
       rowCount || 0,
       -trailingRowCount! || undefined,
@@ -66,6 +72,7 @@ export class TableDataSet extends BaseDataSet {
           if (customFilter) {
             return customFilter(row) && defaultFilterFunc(row);
           }
+
           return defaultFilterFunc(row);
         }),
         ...this.getEndRows(),
@@ -77,6 +84,7 @@ export class TableDataSet extends BaseDataSet {
   handleDimensionValuesSort = () => {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortFunc, sortMethod, query } = item;
+
       // 排序的前提
       if (!sortFieldId) {
         return;
@@ -85,13 +93,17 @@ export class TableDataSet extends BaseDataSet {
       let data = this.getMovableRows();
 
       const restData: RawData[] = [];
+
       if (query) {
         const scopedData: RawData[] = [];
+
         data.forEach((record) => {
           const keys = Object.keys(query);
           let inScope = true;
+
           for (let index = 0; index < keys.length; index++) {
             const k = keys[index];
+
             if (record[k] !== query[k]) {
               inScope = false;
               restData.push(record);
@@ -115,6 +127,7 @@ export class TableDataSet extends BaseDataSet {
         }) as RawData[];
       } else if (sortBy && !isFunction(sortBy)) {
         const reversedSortBy = [...sortBy].reverse();
+
         sortedData = data.sort((a, b) => {
           const idxA = reversedSortBy.indexOf(a[sortFieldId] as string);
           const idxB = reversedSortBy.indexOf(b[sortFieldId] as string);
@@ -123,6 +136,7 @@ export class TableDataSet extends BaseDataSet {
         });
       } else if (isAscSort(sortMethod!) || isDescSort(sortMethod!)) {
         const func = isFunction(sortBy) ? sortBy : null;
+
         sortedData = orderBy(
           data,
           [func || sortFieldId],
@@ -157,6 +171,7 @@ export class TableDataSet extends BaseDataSet {
     if (!('col' in query) || !isObject(rowData)) {
       return rowData as Data;
     }
+
     return rowData[query.col] as unknown as Data;
   }
 

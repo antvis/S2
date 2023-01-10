@@ -52,30 +52,37 @@ export const sortAction = (
 ) => {
   const sort = isAscSort(sortMethod!) ? 1 : -1;
   const specialValues = ['-', undefined];
+
   return list?.sort((pre, next) => {
     let a = pre as string | number;
     let b = next as string | number;
+
     if (key) {
       a = (pre as CellData).getValueByField(key) as string | number;
       b = (next as CellData).getValueByField(key) as string | number;
       if (canConvertToNumber(a) && canConvertToNumber(b)) {
         return (Number(a) - Number(b)) * sort;
       }
+
       if (a && specialValues?.includes(a?.toString())) {
         return -sort;
       }
+
       if (Number(a) && specialValues?.includes(b?.toString())) {
         return sort;
       }
     }
+
     // 没有参数 key 时，需要理解成按字典序（首字母）进行排序，用于排维度值的。（我也不理解为啥要把这两个逻辑写在一起，很容易误解
     if (!isNil(a) && !isNil(b)) {
       // 数据健全兼容，用户数据不全时，能够展示.
       return a.toString().localeCompare(b.toString(), 'zh') * sort;
     }
+
     if (a) {
       return sort;
     }
+
     return -sort;
   });
 };
@@ -89,6 +96,7 @@ const mergeDataWhenASC = (
     // 如果是升序，需要将无数据的项放到前面
     return sortByItems(originValues, uniq(sortedValues));
   }
+
   return [...new Set([...sortedValues, ...originValues])];
 };
 
@@ -102,27 +110,35 @@ export const sortByCustom = (params: SortActionParams): string[] => {
   // 将 id 拆分为父节点和目标节点
   const idListWithPre = idWithPre.map((idStr) => {
     const ids = idStr.split(NODE_ID_SEPARATOR);
+
     if (ids.length > 1) {
       const parentId = ids.slice(0, ids.length - 1).join(NODE_ID_SEPARATOR);
+
       return [parentId, ids[ids.length - 1]];
     }
+
     return ids;
   });
   // 获取父节点顺序
   const parentOrder = Array.from(new Set(idListWithPre.map((id) => id[0])));
+
   // 排序
   idListWithPre.sort((a: string[], b: string[]) => {
     const aParent = a.slice(0, a.length - 1);
     const bParent = b.slice(0, b.length - 1);
+
     // 父节点不同时，按 parentOrder 排序
     if (aParent.join() !== bParent.join()) {
       const aParentIndex = parentOrder.indexOf(aParent[0]);
       const bParentIndex = parentOrder.indexOf(bParent[0]);
+
       return aParentIndex - bParentIndex;
     }
+
     // 父节点相同时，按 sortByValues 排序
     const aIndex = sortByValues.indexOf(a[a.length - 1]);
     const bIndex = sortByValues.indexOf(b[b.length - 1]);
+
     return aIndex - bIndex;
   });
   // 拼接 id
@@ -183,6 +199,7 @@ const sortByMethod = (params: SortActionParams): string[] => {
     const fields = (
       isInRows ? rows : getLeafColumnsWithKey(columns)
     ) as string[];
+
     result = getDimensionsWithParentPath(
       sortFieldId,
       fields!,
@@ -206,6 +223,7 @@ const processSort = (params: SortActionParams): string[] => {
     sortParam,
     dataSet,
   };
+
   if (sortFunc) {
     result = sortByFunc(sortActionParams);
   } else if (sortBy) {
@@ -215,6 +233,7 @@ const processSort = (params: SortActionParams): string[] => {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
   }
+
   return result;
 };
 
@@ -247,6 +266,7 @@ const createTotalParams = (
   } else {
     totalParams[sortFieldId] = originValue;
   }
+
   return totalParams;
 };
 
@@ -264,8 +284,10 @@ export const getSortByMeasureValues = (
   const { dataSet, sortParam, originValues } = params;
   const { fields } = dataSet!;
   const { sortByMeasure, query, sortFieldId } = sortParam!;
-  const dataList = dataSet!.getMultiData(query); // 按 query 查出所有数据
+  // 按 query 查出所有数据
+  const dataList = dataSet!.getMultiData(query);
   const columns = getLeafColumnsWithKey(fields.columns);
+
   /**
    * 按明细数据
    * 需要过滤查询出的总/小计“汇总数据”
@@ -273,11 +295,14 @@ export const getSortByMeasureValues = (
   if (sortByMeasure !== TOTAL_VALUE) {
     const rowColFields = concat(fields.rows, columns) as string[];
 
-    return dataList.filter((dataItem) => {
-      // 过滤出包含所有行列维度的数据
-      // 若缺失任意 field，则是汇总数据，需要过滤掉
-      return !isTotalData(rowColFields, dataItem.getOrigin());
-    });
+    return dataList.filter(
+      (dataItem) =>
+        /*
+         * 过滤出包含所有行列维度的数据
+         * 若缺失任意 field，则是汇总数据，需要过滤掉
+         */
+        !isTotalData(rowColFields, dataItem.getOrigin()),
+    );
   }
 
   /**
@@ -298,31 +323,38 @@ export const getSortByMeasureValues = (
 
   const fieldAfterSortField = sortFields[sortFields.indexOf(sortFieldId) + 1];
   const queryKeys = keys(query);
-  const missedOppositeFields = oppositeFields.filter((field) => {
-    return !queryKeys.includes(field);
-  });
+  const missedOppositeFields = oppositeFields.filter(
+    (field) => !queryKeys.includes(field),
+  );
 
   const totalDataList = dataList.filter((dataItem) => {
     const dataItemKeys = new Set(keys(dataItem.getOrigin()));
+
     if (!dataItemKeys.has(sortFieldId)) {
-      // 若排序数据中都不含被排序字段，则过滤
-      // 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
-      // 查询出的数据会包含 “行总计x列总计” 数据，需要过滤
+      /*
+       * 若排序数据中都不含被排序字段，则过滤
+       * 如按`省`排序，query={[EXTRA_FIELD]: 'price'} 时
+       * 查询出的数据会包含 “行总计x列总计” 数据，需要过滤
+       */
       return false;
     }
 
     if (dataItemKeys.has(fieldAfterSortField)) {
-      // 若排序数据包含`排序字段`的后一个维度字段，则过滤
-      // 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
+      /*
+       * 若排序数据包含`排序字段`的后一个维度字段，则过滤
+       * 不需要比排序字段更 “明细” 的数据，只需取到 sortFieldId 当级的汇总
+       */
       return false;
     }
 
-    // 当排序字段这一侧的维度匹配完成
-    // 另一侧维度参考 query 中的维度缺失情况，过滤出汇总数据即可
-    // 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
-    const allMissed = missedOppositeFields.every((missedField) => {
-      return !dataItemKeys.has(missedField);
-    });
+    /*
+     * 当排序字段这一侧的维度匹配完成
+     * 另一侧维度参考 query 中的维度缺失情况，过滤出汇总数据即可
+     * 如 query={ type: 'xx',EXTRA_FIELD=price }，代表了最高可以取到 type 的小计汇总数据
+     */
+    const allMissed = missedOppositeFields.every(
+      (missedField) => !dataItemKeys.has(missedField),
+    );
 
     // 返回符合要求的汇总数据
     return allMissed;
@@ -351,6 +383,7 @@ export const getSortByMeasureValues = (
 export const handleSortAction = (params: SortActionParams): string[] => {
   const { dataSet, sortParam, originValues, isSortByMeasure } = params;
   let measureValues;
+
   if (isSortByMeasure) {
     // 根据指标排序，需要首先找到指标的对应的值
     measureValues = getSortByMeasureValues(params);
@@ -375,10 +408,12 @@ export const getSortTypeIcon = (
     if (isAscSort(sortParam?.sortMethod)) {
       return 'groupAsc';
     }
+
     if (isDescSort(sortParam?.sortMethod)) {
       return 'groupDesc';
     }
   }
+
   if (isSortCell) {
     return 'SortDown';
   }

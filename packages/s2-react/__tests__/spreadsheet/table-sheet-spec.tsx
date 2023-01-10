@@ -38,12 +38,14 @@ const onMounted =
   ) => {
     s2 = new TableSheet(dom, dataCfg, options as S2Options);
     ref.current = s2;
+
     return s2;
   };
 
 const canConvertToNumber = (sortKey: string) =>
   data.every((item: any) => {
     const v = item[sortKey];
+
     return typeof v === 'string' && !Number.isNaN(Number(v));
   });
 
@@ -175,6 +177,7 @@ function MainLayout({ callback }: Props) {
     });
 
     s2Ref.current!.on(S2Event.GLOBAL_SELECTED, logData);
+
     return () => {
       s2Ref.current!.off(S2Event.GLOBAL_COPIED);
       s2Ref.current!.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
@@ -186,15 +189,14 @@ function MainLayout({ callback }: Props) {
   const switcherFields: SwitcherFields = {
     columns: {
       selectable: true,
-      items: columns.map((field) => {
-        return {
-          id: field,
-          displayName: find(meta, { field })?.name,
-          checked: true,
-        };
-      }),
+      items: columns.map((field) => ({
+        id: field,
+        displayName: find(meta, { field })?.name,
+        checked: true,
+      })),
     },
   };
+
   useEffect(() => {
     callback({
       setShowPagination,
@@ -209,6 +211,7 @@ function MainLayout({ callback }: Props) {
           onSubmit={(result) => {
             console.log('result: ', result);
             const { hideItems } = result.columns;
+
             setHiddenColumnFields(hideItems.map((i) => i.id));
           }}
         />
@@ -241,6 +244,7 @@ function MainLayout({ callback }: Props) {
 
 describe('table sheet normal spec', () => {
   let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
+
   act(() => {
     ReactDOM.render(
       <MainLayout

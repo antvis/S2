@@ -173,6 +173,7 @@ describe('TableSheet Tests', () => {
         setLang(lang);
 
         const sheet = new TableSheet(container, dataCfg, s2Options);
+
         sheet.render();
 
         const showTooltipWithInfoSpy = jest
@@ -229,6 +230,7 @@ describe('TableSheet Tests', () => {
 
   test('should emit destroy event', () => {
     const onDestroy = jest.fn();
+
     s2.on(S2Event.LAYOUT_DESTROY, onDestroy);
 
     s2.destroy();

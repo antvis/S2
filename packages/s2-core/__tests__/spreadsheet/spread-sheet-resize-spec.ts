@@ -14,6 +14,7 @@ function renderSheet(options: S2Options) {
     height: 150,
     ...options,
   });
+
   s2.setThemeCfg({
     theme: {
       resizeArea: {
@@ -22,6 +23,7 @@ function renderSheet(options: S2Options) {
     },
   });
   s2.render();
+
   return s2;
 }
 
@@ -60,6 +62,7 @@ describe('SpreadSheet Resize Active Tests', () => {
     } as S2Options);
 
     const group = s2.facet.foregroundGroup;
+
     expect(group.getElementById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
   });
 
@@ -172,6 +175,7 @@ describe('SpreadSheet Resize Active Tests', () => {
         resize: {
           visible: (cell) => {
             const meta = cell.getMeta();
+
             return meta.id === 'root[&]笔[&]price';
           },
         },

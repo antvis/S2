@@ -57,12 +57,15 @@ export const getRectangleEdges = (
  */
 export const unique = (edges: [number, number][][]) => {
   const result: [number, number][][] = [];
+
   forEach(edges, (edge) => {
     const reverseEdge = [edge[1], edge[0]];
+
     if (!JSON.stringify(edges).includes(JSON.stringify(reverseEdge))) {
       result.push(edge);
     }
   });
+
   return result;
 };
 
@@ -75,9 +78,8 @@ export const unique = (edges: [number, number][][]) => {
 export const getNextEdge = (
   curEdge: [number, number][],
   edges: [number, number][][],
-): [number, number][] | undefined => {
-  return find(edges, (edge) => isEqual(edge[0], curEdge[1]));
-};
+): [number, number][] | undefined =>
+  find(edges, (edge) => isEqual(edge[0], curEdge[1]));
 
 /**
  * return all the points of the polygon
@@ -89,6 +91,7 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   cells.forEach((cell) => {
     const meta = cell.getMeta();
     const { x, y, width, height } = meta;
+
     allEdges = allEdges.concat(getRectangleEdges(x, y, width, height));
   });
   allEdges = unique(allEdges);
@@ -103,6 +106,7 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
     nextEdge = getNextEdge(curEdge, allEdges);
     curEdge = nextEdge!;
   }
+
   return allPoints;
 };
 
@@ -117,17 +121,21 @@ export const getInvisibleInfo = (
 ) => {
   const cells: S2CellType[] = [];
   let viewMeta: ViewMeta | undefined;
+
   forEach(invisibleCellInfo, (cellInfo) => {
     const meta = sheet?.facet?.layoutResult?.getCellMeta(
       cellInfo.rowIndex!,
       cellInfo.colIndex!,
     );
+
     if (meta) {
       const cell = sheet?.options?.dataCell?.(meta);
+
       viewMeta = cellInfo?.showText ? meta : viewMeta;
       cells.push(cell!);
     }
   });
+
   return { cells, cellsMeta: viewMeta };
 };
 
@@ -144,9 +152,11 @@ export const getVisibleInfo = (
   const cells: S2CellType[] = [];
   const invisibleCellInfo: MergedCellInfo[] = [];
   let cellsMeta: ViewMeta | Node | undefined;
+
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allVisibleCells, (cell: S2CellType) => {
       const meta = cell?.getMeta?.();
+
       if (
         meta?.colIndex === cellInfo?.colIndex &&
         meta?.rowIndex === cellInfo?.rowIndex
@@ -154,6 +164,7 @@ export const getVisibleInfo = (
         return cell;
       }
     }) as S2CellType;
+
     if (findCell) {
       cells.push(findCell);
       cellsMeta = cellInfo?.showText
@@ -163,6 +174,7 @@ export const getVisibleInfo = (
       invisibleCellInfo.push(cellInfo);
     }
   });
+
   return { cells, invisibleCellInfo, cellsMeta };
 };
 
@@ -187,6 +199,7 @@ export const getTempMergedCell = (
   const isPartiallyVisible =
     invisibleCellInfo?.length > 0 &&
     invisibleCellInfo.length < cellsInfos.length;
+
   // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
   if (isPartiallyVisible) {
     const { cells: invisibleCells, cellsMeta: invisibleMeta } =
@@ -197,7 +210,8 @@ export const getTempMergedCell = (
   }
 
   if (!isEmpty(cells) && !viewMeta) {
-    viewMeta = mergedAllCells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
+    // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
+    viewMeta = mergedAllCells[0]?.getMeta() as ViewMeta;
   }
 
   return {
@@ -214,16 +228,19 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
   const { interaction } = sheet;
   const cells = interaction.getActiveCells();
   const mergedCellsInfo: MergedCellInfo[] = [];
+
   forEach(cells, (cell, index) => {
     const meta = cell.getMeta();
     // 在合并单元格中，第一个单元格被标标记为展示数据。
     const showText = index === 0 ? { showText: true } : {};
+
     mergedCellsInfo.push({
       ...showText,
       colIndex: meta?.colIndex,
       rowIndex: meta?.rowIndex,
     });
   });
+
   return mergedCellsInfo;
 };
 
@@ -243,6 +260,7 @@ export const mergeCell = (
   if (mergeCellInfo?.length <= 1) {
     // eslint-disable-next-line no-console
     console.error('then merged cells must be more than one');
+
     return;
   }
 
@@ -252,13 +270,16 @@ export const mergeCell = (
     sheet,
     mergeCellInfo,
   );
+
   if (!isEmpty(cells)) {
     const mergedCellInfoList = sheet.options?.mergedCellsInfo || [];
+
     mergedCellInfoList.push(mergeCellInfo);
     sheet.setOptions({
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
+
     sheet.facet.panelScrollGroup.addMergeCell(
       new MergedCell(sheet, cells, meta),
     );
@@ -274,12 +295,11 @@ export const removeUnmergedCellsInfo = (
   removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
 ): MergedCellInfo[][] => {
-  const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
-    return {
-      colIndex: cell.getMeta().colIndex,
-      rowIndex: cell.getMeta().rowIndex,
-    };
-  });
+  const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => ({
+    colIndex: cell.getMeta().colIndex,
+    rowIndex: cell.getMeta().rowIndex,
+  }));
+
   return filter(mergedCellsInfo, (mergedCellInfo) => {
     const newMergedCellInfo = mergedCellInfo.map((info) => {
       if (info.showText) {
@@ -288,8 +308,10 @@ export const removeUnmergedCellsInfo = (
           rowIndex: info.rowIndex,
         };
       }
+
       return info;
     });
+
     return !isEqual(newMergedCellInfo, removeCellInfo);
   });
 };
@@ -303,12 +325,15 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
   if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELL) {
     // eslint-disable-next-line no-console
     console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
+
     return;
   }
+
   const newMergedCellsInfo = removeUnmergedCellsInfo(
     removedCells,
     sheet.options?.mergedCellsInfo || [],
   );
+
   if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
     sheet.setOptions({
       mergedCellsInfo: newMergedCellsInfo,
@@ -327,9 +352,11 @@ export const mergeTempMergedCell = (
   otherTempMergedCells: TempMergedCell[],
 ) => {
   const mergedTempMergedCells: Record<string, TempMergedCell> = {};
+
   [...TempMergedCells, ...otherTempMergedCells].forEach((cell) => {
     mergedTempMergedCells[cell.viewMeta.id] = cell;
   });
+
   return Object.values(mergedTempMergedCells);
 };
 
@@ -340,14 +367,11 @@ export const mergeTempMergedCell = (
  */
 export const MergedCellConvertTempMergedCells = (
   oldMergedCells: MergedCell[],
-) => {
-  return map(oldMergedCells, (mergedCell) => {
-    return {
-      cells: mergedCell.cells,
-      viewMeta: mergedCell.getMeta(),
-    };
-  });
-};
+) =>
+  map(oldMergedCells, (mergedCell) => ({
+    cells: mergedCell.cells,
+    viewMeta: mergedCell.getMeta(),
+  }));
 
 /**
  * 对比两个TempMergedCell，返回 mainTempMergedCells 中存在的，但是 otherTempMergedCells 中不存在的的 TempMergedCell
@@ -357,15 +381,10 @@ export const MergedCellConvertTempMergedCells = (
 export const differenceTempMergedCells = (
   mainTempMergedCells: TempMergedCell[],
   compareTempMergedCells: TempMergedCell[],
-): TempMergedCell[] => {
-  return differenceWith(
-    mainTempMergedCells,
-    compareTempMergedCells,
-    (main, compare) => {
-      return isEqual(main.viewMeta.id, compare.viewMeta.id);
-    },
+): TempMergedCell[] =>
+  differenceWith(mainTempMergedCells, compareTempMergedCells, (main, compare) =>
+    isEqual(main.viewMeta.id, compare.viewMeta.id),
   );
-};
 
 /**
  * update the mergedCell
@@ -376,6 +395,7 @@ export const updateMergedCells = (
   mergedCellsGroup: Group,
 ) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
+
   if (isEmpty(mergedCellsInfo)) {
     return;
   }
@@ -389,8 +409,10 @@ export const updateMergedCells = (
 
   // allVisibleTempMergedCells 所有可视区域的 mergedCell
   const allVisibleTempMergedCells: TempMergedCell[] = [];
+
   mergedCellsInfo!.forEach((cellsInfo: MergedCellInfo[]) => {
     const tempMergedCell = getTempMergedCell(allCells, sheet, cellsInfo);
+
     if (tempMergedCell.cells.length > 0) {
       allVisibleTempMergedCells.push(tempMergedCell);
     }
@@ -413,9 +435,10 @@ export const updateMergedCells = (
 
   // remove old MergedCells
   forEach(removeTempMergedCells, (tempMergedCell) => {
-    const oldMergedCell = find(oldMergedCells, (mergedCell) => {
-      return isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id);
-    });
+    const oldMergedCell = find(oldMergedCells, (mergedCell) =>
+      isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id),
+    );
+
     oldMergedCell?.remove();
   });
   // add new MergedCells

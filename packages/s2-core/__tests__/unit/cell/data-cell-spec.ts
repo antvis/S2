@@ -18,12 +18,11 @@ import { renderText } from '@/utils/g-renders';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') => {
-  return s2.facet.panelGroup.children[0].find<DataCell>(
+const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') =>
+  s2.facet.panelGroup.children[0].find<DataCell>(
     (item) =>
       item instanceof DataCell && item.getMeta().valueField === valueField,
   );
-};
 
 describe('Data Cell Tests', () => {
   const meta = {
@@ -57,6 +56,7 @@ describe('Data Cell Tests', () => {
 
     test('should pass complete data into formatter', () => {
       const formatter = jest.fn();
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       // eslint-disable-next-line no-new
@@ -66,6 +66,7 @@ describe('Data Cell Tests', () => {
 
     test('should return correct formatted value', () => {
       const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       const dataCell = new DataCell(meta, s2);
 
@@ -74,6 +75,7 @@ describe('Data Cell Tests', () => {
 
     test('should get correct text fill color', () => {
       const dataCell = new DataCell(meta, s2);
+
       expect(dataCell.getTextShape().attr('fill')).toEqual(DEFAULT_FONT_COLOR);
     });
   });
@@ -105,11 +107,13 @@ describe('Data Cell Tests', () => {
 
     test('should get text shape', () => {
       const dataCell = new DataCell(meta, s2);
+
       expect(dataCell.getTextShapes()).toEqual([dataCell.getTextShape()]);
     });
 
     test('should add icon shape', () => {
       const dataCell = new DataCell(meta, s2);
+
       dataCell.addConditionIconShape(icon);
 
       expect(dataCell.getConditionIconShapes()).toEqual([icon]);
@@ -118,6 +122,7 @@ describe('Data Cell Tests', () => {
     test('should add text shape', () => {
       const dataCell = new DataCell(meta, s2);
       const textShape = renderText(dataCell, [], 0, 0, 'test', null);
+
       dataCell.addTextShape(textShape);
 
       expect(dataCell.getTextShapes()).toHaveLength(2);
@@ -125,6 +130,7 @@ describe('Data Cell Tests', () => {
 
     test('should reset shape after cell init', () => {
       const dataCell = new DataCell(meta, s2);
+
       dataCell.addConditionIconShape(icon);
 
       expect(dataCell.getConditionIconShapes()).toHaveLength(1);
@@ -151,6 +157,7 @@ describe('Data Cell Tests', () => {
         ],
       },
     });
+
     test('should draw right condition text shape', () => {
       s2.render();
       const dataCell = findDataCell(s2, 'price');
@@ -176,6 +183,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(get(dataCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(dataCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -198,6 +206,7 @@ describe('Data Cell Tests', () => {
       s2.render();
 
       const dataCell = findDataCell(s2, 'cost');
+
       expect(
         (get(dataCell, 'backgroundShape') as Rect).parsedStyle.fill,
       ).toBeColor('#fffae6');
@@ -238,6 +247,7 @@ describe('Data Cell Tests', () => {
       });
 
       const dataCell = new DataCell(anotherMeta, s2);
+
       expect(
         get(dataCell, 'conditionIntervalShape.parsedStyle.width') +
           s2.theme.dataCell!.cell!.horizontalBorderWidth,
@@ -262,6 +272,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         REVERSE_FONT_COLOR,
       );
@@ -287,6 +298,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         DEFAULT_FONT_COLOR,
       );
@@ -313,6 +325,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         DEFAULT_FONT_COLOR,
       );
@@ -330,9 +343,11 @@ describe('Data Cell Tests', () => {
               mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
                 const resultData = find(originData, dataInfo);
+
                 expect(resultData).toEqual(dataInfo);
                 // @ts-ignore
                 expect(value).toEqual(resultData.cost);
+
                 return {
                   fill: '#fffae6',
                 };
@@ -346,6 +361,7 @@ describe('Data Cell Tests', () => {
 
     test('should test condition mapping params when the sheet is table', () => {
       const table = createTableSheet({});
+
       table.setOptions({
         conditions: {
           background: [
@@ -354,9 +370,11 @@ describe('Data Cell Tests', () => {
               mapping(value, dataInfo) {
                 const originData = table.dataSet.originData;
                 const resultData = find(originData, dataInfo);
+
                 expect(resultData).toEqual(dataInfo);
                 // @ts-ignore
                 expect(value).toEqual(resultData?.type);
+
                 return {
                   fill: '#fffae6',
                 };

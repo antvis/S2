@@ -78,6 +78,7 @@ export class WheelEvent extends EE {
 
       const deltaX = this.preX - evt.x;
       const deltaY = this.preY - evt.y;
+
       this.speedX = deltaX / deltaMS;
       this.speedY = deltaY / deltaMS;
 
@@ -99,6 +100,7 @@ export class WheelEvent extends EE {
     this.panning = false;
 
     const pointerUpMS = now();
+
     if (
       !this.speedX ||
       !this.speedY ||
@@ -117,6 +119,7 @@ export class WheelEvent extends EE {
         if (ratio < 1) {
           const currentRatio = easeFunc(1 - ratio);
           const t = ms - loopStartMS;
+
           this.emit('wheel', {
             ...evt.clone(),
             x: evt.x,

@@ -38,6 +38,7 @@ export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
     return false;
   }
+
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
@@ -46,9 +47,11 @@ const newTab = '\t';
 
 const getColNodeField = (spreadsheet: SpreadSheet, id: string | undefined) => {
   const colNode = spreadsheet.getColumnNodes().find((col) => col.id === id);
+
   if (spreadsheet.isPivotMode()) {
     return colNode?.value;
   }
+
   return colNode?.field;
 };
 
@@ -56,11 +59,13 @@ const getFiledIdFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
   const colNode = spreadsheet
     .getColumnNodes()
     .find((col) => col.colIndex === colIndex);
+
   return getColNodeField(spreadsheet, colNode?.id);
 };
 
 const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   const { rowIndex, colIndex } = meta;
+
   return [
     spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
     spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
@@ -72,9 +77,11 @@ const getFormat = (colIndex: number | undefined, spreadsheet: SpreadSheet) => {
     .getColumnNodes()
     .find((col) => col.colIndex === colIndex);
   const fieldId = getColNodeField(spreadsheet, colNode?.id);
+
   if (spreadsheet.options.interaction?.copyWithFormat) {
     return spreadsheet.dataSet.getFieldFormatter(fieldId!);
   }
+
   return (value: DataItem) => value;
 };
 
@@ -97,9 +104,12 @@ const getValueFromMeta = (
         colNode?.isTotals ||
         colNode?.isTotalMeasure,
     });
+
     return cell?.[VALUE_FIELD];
   }
+
   const fieldId = getFiledIdFromMeta(meta.colIndex, spreadsheet);
+
   return displayData[meta.rowIndex]?.[fieldId!];
 };
 
@@ -109,16 +119,16 @@ const format = (
   spreadsheet: SpreadSheet,
 ) => {
   const formatter = getFormat(meta.colIndex, spreadsheet);
+
   return formatter(getValueFromMeta(meta, displayData, spreadsheet)!);
 };
 
 export const convertString = (value: DataItem) => {
   if (/\n/.test(value as string)) {
     // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
-    return (
-      '"' + (value as string).replace(/\r\n?/g, '\n').replace(/"/g, "'") + '"'
-    );
+    return `"${(value as string).replace(/\r\n?/g, '\n').replace(/"/g, "'")}"`;
   }
+
   return value;
 };
 
@@ -132,10 +142,14 @@ export const convertString = (value: DataItem) => {
  */
 const getHeaderList = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(NODE_ID_SEPARATOR);
+
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }
-  headerList.shift(); // 去除 root
+
+  // 去除 root
+  headerList.shift();
+
   return headerList;
 };
 
@@ -160,6 +174,7 @@ function pickDataFromCopyable(
       .filter((item) => type.includes(item.type))
       .map((item) => item.content);
   }
+
   return (
     (concat(copyable) as CopyableItem[])
       .filter((item) => item?.type === type)
@@ -170,12 +185,10 @@ function pickDataFromCopyable(
 // 把 DataItem[][] 矩阵转换成 CopyableItem
 const matrixPlainTextTransformer: MatrixTransformer = (
   dataMatrix: DataItem[][],
-) => {
-  return {
-    type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
-  };
-};
+) => ({
+  type: CopyMIMEType.PLAIN,
+  content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
+});
 
 // 把 string[][] 矩阵转换成 CopyableItem
 const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
@@ -192,6 +205,7 @@ const matrixHtmlTransformer: MatrixTransformer = (dataMatrix) => {
   }
 
   const body = createBody(dataMatrix, 'tr');
+
   return {
     type: CopyMIMEType.HTML,
     content: `<meta charset="utf-8"><table><tbody>${body}</tbody></table>`,
@@ -216,17 +230,20 @@ const assembleMatrix = (
     () => new Array(matrixWidth),
   );
 
-  matrix = map(matrix, (heightArr, y) => {
-    return map(heightArr, (_, x) => {
+  matrix = map(matrix, (heightArr, y) =>
+    map(heightArr, (_, x) => {
       if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
         return '';
       }
+
       if (x >= rowWidth && x <= matrixWidth && y >= 0 && y < colHeight) {
         return colMatrix[y][x - rowWidth];
       }
+
       if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
         return rowMatrix[y - colHeight][x];
       }
+
       if (
         x >= rowWidth &&
         x <= matrixWidth &&
@@ -235,9 +252,10 @@ const assembleMatrix = (
       ) {
         return dataMatrix[y - colHeight][x - rowWidth];
       }
+
       return undefined;
-    });
-  });
+    }),
+  );
 
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
@@ -268,9 +286,11 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
     { row: Infinity, col: Infinity },
     { row: 0, col: 0 },
   ];
+
   // get left-top cell and right-bottom cell position
   cells.forEach((e) => {
     const { rowIndex, colIndex } = e;
+
     minCell.col = Math.min(colIndex, minCell.col);
     minCell.row = Math.min(rowIndex, minCell.row);
     maxCell.col = Math.max(colIndex, maxCell.col);
@@ -287,8 +307,10 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   cells.forEach((e) => {
     const { rowIndex, colIndex } = e;
     const [diffRow, diffCol] = [rowIndex - minCell.row, colIndex - minCell.col];
+
     twoDimDataArray[diffRow][diffCol] = e;
   });
+
   return twoDimDataArray;
 };
 const processTableColSelected = (
@@ -311,11 +333,11 @@ const processTableColSelected = (
           formatter: getFormat(node?.colIndex, spreadsheet),
         }));
 
-  const dataMatrix = displayData.map((row) => {
-    return selectedFields.map(({ field, formatter }) =>
+  const dataMatrix = displayData.map((row) =>
+    selectedFields.map(({ field, formatter }) =>
       convertString(formatter(row[field!]) as string),
-    );
-  });
+    ),
+  );
 
   return [
     matrixPlainTextTransformer(dataMatrix),
@@ -327,9 +349,9 @@ const getDataMatrix = (
   leafRowNodes: Node[],
   leafColNodes: Node[],
   spreadsheet: SpreadSheet,
-) => {
-  return map(leafRowNodes, (rowNode) => {
-    return leafColNodes.map((colNode) => {
+) =>
+  map(leafRowNodes, (rowNode) =>
+    leafColNodes.map((colNode) => {
       const cellData = spreadsheet.dataSet.getCellData({
         query: {
           ...rowNode.query,
@@ -342,10 +364,10 @@ const getDataMatrix = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
+
       return getFormat(colNode.colIndex, spreadsheet)(cellData?.[VALUE_FIELD]);
-    });
-  });
-};
+    }),
+  );
 
 const getPivotWithoutHeaderCopyData = (
   spreadsheet: SpreadSheet,
@@ -353,6 +375,7 @@ const getPivotWithoutHeaderCopyData = (
   leafCols: Node[],
 ): Copyable => {
   const dataMatrix = getDataMatrix(leafRows, leafCols, spreadsheet);
+
   return [
     matrixPlainTextTransformer(dataMatrix),
     matrixHtmlTransformer(dataMatrix),
@@ -373,6 +396,7 @@ const getPivotWithHeaderCopyData = (
     leafColNodes,
     spreadsheet,
   ) as string[][];
+
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
@@ -404,6 +428,7 @@ const processPivotColSelected = (
         nodes.push(
           ...allColLeafNodes.filter((node) => node.id.startsWith(cellMeta.id)),
         );
+
         return nodes;
       }, [])
     : allColLeafNodes;
@@ -418,6 +443,7 @@ const processColSelected = (
   if (spreadsheet.isPivotMode()) {
     return processPivotColSelected(spreadsheet, selectedCols);
   }
+
   return processTableColSelected(spreadsheet, selectedCols);
 };
 
@@ -428,18 +454,20 @@ const processTableRowSelected = (
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const matrix = displayData
     .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
-    .map((entry) => {
-      return Object.keys(entry)
+    .map((entry) =>
+      Object.keys(entry)
         .map((cName) =>
           spreadsheet.getColumnNodes().find((n) => n.field === cName),
         )
-        .filter(Boolean) // 过滤掉空值，如行头cell
+        // 过滤掉空值，如行头 cell
+        .filter(Boolean)
         .map((node) =>
           convertString(
             getFormat(node?.colIndex, spreadsheet)(entry[node?.field!]),
           ),
-        );
-    });
+        ),
+    );
+
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
@@ -457,8 +485,10 @@ const processPivotRowSelected = (
     nodes.push(
       ...allRowLeafNodes.filter((node) => node.id.startsWith(cellMeta.id)),
     );
+
     return nodes;
   }, []);
+
   return getPivotCopyData(spreadsheet, rowNodes, allColLeafNodes);
 };
 
@@ -469,6 +499,7 @@ const processRowSelected = (
   if (spreadsheet.isPivotMode()) {
     return processPivotRowSelected(spreadsheet, selectedRows);
   }
+
   return processTableRowSelected(spreadsheet, selectedRows);
 };
 
@@ -495,6 +526,7 @@ export function getCopyData(
   copyFormat: CopyMIMEType[] | CopyMIMEType = CopyMIMEType.PLAIN,
 ): string[] | string | undefined {
   const cells = spreadsheet.interaction.getState().cells || [];
+
   if (copyType === CopyType.ALL) {
     return pickDataFromCopyable(
       processColSelected(spreadsheet, []),
@@ -507,6 +539,7 @@ export function getCopyData(
       if (!pre.find((item) => item === cur.colIndex)) {
         pre.push(cur.colIndex);
       }
+
       return pre;
     }, []);
     const colNodes = spreadsheet.facet.layoutResult.colLeafNodes
@@ -517,6 +550,7 @@ export function getCopyData(
         rowIndex: node.rowIndex,
         type: CellTypes.COL_CELL,
       }));
+
     return pickDataFromCopyable(
       processColSelected(spreadsheet, colNodes),
       copyFormat,
@@ -528,16 +562,16 @@ export function getCopyData(
       if (!pre.find((item) => item === cur.rowIndex)) {
         pre.push(cur.rowIndex);
       }
+
       return pre;
     }, []);
-    const rowNodes = rowIndexes.map((index) => {
-      return {
-        id: index + '-' + spreadsheet.facet.layoutResult.colLeafNodes[0].id,
-        colIndex: 0,
-        rowIndex: index,
-        type: CellTypes.ROW_CELL,
-      };
-    });
+    const rowNodes = rowIndexes.map((index) => ({
+      id: `${index}-${spreadsheet.facet.layoutResult.colLeafNodes[0].id}`,
+      colIndex: 0,
+      rowIndex: index,
+      type: CellTypes.ROW_CELL,
+    }));
+
     return pickDataFromCopyable(
       processRowSelected(spreadsheet, rowNodes),
       copyFormat,
@@ -560,31 +594,37 @@ const getDataWithHeaderMatrix = (
   const colMatrix = zip(
     ...map(cellMetaMatrix[0], (cellMeta) => {
       const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+
       return getHeaderList(colId);
     }),
   ) as string[][];
 
   const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
     const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+
     return getHeaderList(rowId);
   });
 
-  const dataMatrix = map(cellMetaMatrix, (cellsMeta) => {
-    return map(cellsMeta, (it) => format(it, displayData, spreadsheet));
-  }) as string[][];
+  const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
+    map(cellsMeta, (it) => format(it, displayData, spreadsheet)),
+  ) as string[][];
 
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
 
 function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
   const allLevels = new Set<number>();
+
   forEach(interactedCells, (cell: RowCell | ColCell) => {
     const level = cell.getMeta().level;
+
     if (allLevels.has(level)) {
       return;
     }
+
     allLevels.add(level);
   });
+
   return allLevels;
 }
 
@@ -596,6 +636,7 @@ function getLastLevelCells(
     const meta = cell.getMeta();
     const isLastLevel = meta.level === maxLevel;
     const isLastTotal = meta.isTotals && isEmpty(meta.children);
+
     return isLastLevel || isLastTotal;
   });
 }
@@ -609,10 +650,12 @@ function getCellMatrix(
     const meta = cell.getMeta();
     const { id, value, isTotals, level } = meta;
     let cellId = id;
+
     // 为总计小计补齐高度
     if (isTotals && level !== maxLevel) {
       cellId = id + NODE_ID_SEPARATOR + repeat(value, maxLevel - level);
     }
+
     return getHeaderList(cellId, allLevel.size);
   });
 }
@@ -636,6 +679,7 @@ function getBrushHeaderCopyable(
   if (isCol) {
     cellMatrix = zip(...cellMatrix) as string[][];
   }
+
   return [
     matrixPlainTextTransformer(cellMatrix),
     matrixHtmlTransformer(cellMatrix),
@@ -657,6 +701,7 @@ function getDataCellCopyable(
     // 树状模式透视表之后实现
     return;
   }
+
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
@@ -670,6 +715,7 @@ function getDataCellCopyable(
     if (!cells.length) {
       return;
     }
+
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
@@ -687,6 +733,7 @@ function getDataCellCopyable(
       );
     }
   }
+
   return data;
 }
 
@@ -698,12 +745,12 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   const interactedCells = interaction.getInteractedCells() ?? [];
   const isBrushHeader = isEmpty(interactedCells)
     ? false
-    : every(interactedCells, (cell) => {
-        return (
+    : every(
+        interactedCells,
+        (cell) =>
           cell.cellType === CellTypes.ROW_CELL ||
-          cell.cellType === CellTypes.COL_CELL
-        );
-      });
+          cell.cellType === CellTypes.COL_CELL,
+      );
 
   // 行列头圈选复制 和 单元格复制不同
   if (isBrushHeader) {
@@ -715,5 +762,6 @@ export const getSelectedData = (spreadsheet: SpreadSheet): string => {
   if (data) {
     copyToClipboard(data);
   }
+
   return pickDataFromCopyable(data, CopyMIMEType.PLAIN);
 };

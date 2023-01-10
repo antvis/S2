@@ -7,19 +7,15 @@ import { InteractionKeyboardKey } from '@/common/constant';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import type { ViewMeta } from '@/common';
 
-jest.mock('@/cell', () => {
-  return {
-    // eslint-disable-next-line object-shorthand
-    TableSeriesCell: function () {
-      // @ts-ignore
-      this.getMeta = () => {
-        return {
-          id: '5-序号',
-        };
-      };
-    },
-  };
-});
+jest.mock('@/cell', () => ({
+  // eslint-disable-next-line object-shorthand
+  TableSeriesCell: function () {
+    // @ts-ignore
+    this.getMeta = () => ({
+      id: '5-序号',
+    });
+  },
+}));
 
 describe('Select Event Utils Tests', () => {
   describe('isMultiSelection test', () => {
@@ -44,6 +40,7 @@ describe('Select Event Utils Tests', () => {
         {} as unknown as ViewMeta,
         {} as unknown as SpreadSheet,
       );
+
       expect(
         getRowCellForSelectedCell(
           { colId: 'city', rowIndex: 5 } as unknown as ViewMeta,
@@ -52,9 +49,7 @@ describe('Select Event Utils Tests', () => {
               showSeriesNumber: true,
             },
             interaction: {
-              getAllCells: () => {
-                return [cell];
-              },
+              getAllCells: () => [cell],
             },
             facet: {
               layoutResult: {

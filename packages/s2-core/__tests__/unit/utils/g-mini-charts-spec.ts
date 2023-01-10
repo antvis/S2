@@ -15,26 +15,22 @@ describe('MiniCharts Utils Tests', () => {
   };
 
   const cell = {
-    getMeta: () => {
-      return {
-        x: 0,
-        y: 0,
-        height: 108,
-        width: 208,
-      };
-    },
-    getStyle: () => {
-      return {
-        cell: {
-          padding,
+    getMeta: () => ({
+      x: 0,
+      y: 0,
+      height: 108,
+      width: 208,
+    }),
+    getStyle: () => ({
+      cell: {
+        padding,
+      },
+      miniChart: {
+        bar: {
+          intervalPadding: 4,
         },
-        miniChart: {
-          bar: {
-            intervalPadding: 4,
-          },
-        },
-      };
-    },
+      },
+    }),
   };
 
   test('should get right points of line', () => {

@@ -9,6 +9,7 @@ export const getHiddenColumnFieldKey = (field: string) => {
   const targetFieldKey = (
     field.includes(NODE_ID_SEPARATOR) ? 'id' : 'field'
   ) as keyof Node;
+
   return targetFieldKey;
 };
 
@@ -20,9 +21,11 @@ export const getHiddenColumnNodes = (
   hiddenColumnFields: string[] = [],
 ): Node[] => {
   const columnNodes = spreadsheet.getInitColumnLeafNodes();
+
   return compact(
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
+
       return columnNodes.find((node) => node[targetFieldKey] === field);
     }),
   );
@@ -32,8 +35,8 @@ export const getHiddenColumnNodes = (
  * @name 获取隐藏列兄弟节点
  * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点
  * @param hideColumns 经过分组的连续隐藏列
-   [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
-  [ 1, 2, 3, (4 √), - ]
+ * [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
+ * [ 1, 2, 3, (4 √), - ]
  */
 export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
@@ -45,6 +48,7 @@ export const getHiddenColumnDisplaySiblingNode = (
       next: null,
     };
   }
+
   const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
@@ -58,6 +62,7 @@ export const getHiddenColumnDisplaySiblingNode = (
   const prevSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
+
   return {
     prev: prevSiblingNode || null,
     next: nextSiblingNode || null,
@@ -67,7 +72,7 @@ export const getHiddenColumnDisplaySiblingNode = (
 /**
  * @name 获取隐藏列组
  * @description 如果给定的隐藏列不是连续的, 比如原始列是 [1,2,3,4,5,6,7], 隐藏列是 [2,3,6], 那么其实在表格上需要显示两个展开按钮
-   [[2,3],[6]]
+ * [[2,3],[6]]
  */
 export const getHiddenColumnsThunkGroup = (
   columns: string[],
@@ -76,20 +81,27 @@ export const getHiddenColumnsThunkGroup = (
   if (isEmpty(hiddenColumnFields)) {
     return [];
   }
+
   // 上一个需要隐藏项的序号
   let prevHiddenIndex = Number.NEGATIVE_INFINITY;
+
   return columns.reduce<string[][]>((result, field, index) => {
     if (!hiddenColumnFields.includes(field)) {
       return result;
     }
+
     if (index === prevHiddenIndex + 1) {
       const lastGroup = last(result);
+
       lastGroup?.push(field);
     } else {
       const group = [field];
+
       result.push(group);
     }
+
     prevHiddenIndex = index;
+
     return result;
   }, []);
 };
@@ -97,9 +109,9 @@ export const getHiddenColumnsThunkGroup = (
 /**
  * @name 隐藏指定列
  * @description 1. 通过分析组件隐藏, 2. 点击列头隐藏
-   存储: 1.隐藏列所对应的兄弟节点 (显示展开按钮), 2.当前隐藏列 (点击展开按钮恢复隐藏)
-   重置交互: 比如选中当前列, 显示高亮背景色, 隐藏后需要取消高亮
-   钩子: 提供当前被隐藏的列, 和全量的隐藏组
+ * 存储: 1.隐藏列所对应的兄弟节点 (显示展开按钮), 2.当前隐藏列 (点击展开按钮恢复隐藏)
+ * 重置交互: 比如选中当前列, 显示高亮背景色, 隐藏后需要取消高亮
+ * 钩子: 提供当前被隐藏的列, 和全量的隐藏组
  */
 export const hideColumns = (
   spreadsheet: SpreadSheet,
@@ -122,6 +134,7 @@ export const hideColumns = (
 
   if (isEmpty(selectedColumnFields) && forceRender) {
     renderByHiddenColumns();
+
     return;
   }
 
@@ -202,6 +215,7 @@ export const hideColumnsByThunkGroup = (
     leafs,
     hiddenColumnFields,
   );
+
   hiddenColumnsGroup.forEach((fields) => {
     hideColumns(spreadsheet, fields, forceRender);
   });
@@ -223,20 +237,17 @@ export const isLastColumnAfterHidden = (
 
 export const getValidDisplaySiblingNode = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
-) => {
-  return displaySiblingNode?.next || displaySiblingNode?.prev;
-};
+) => displaySiblingNode?.next || displaySiblingNode?.prev;
 
 export const getValidDisplaySiblingNodeId = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
 ) => {
   const node = getValidDisplaySiblingNode(displaySiblingNode);
+
   return node?.id;
 };
 
 export const isEqualDisplaySiblingNodeId = (
   displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
   nodeId: string,
-) => {
-  return getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;
-};
+) => getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;

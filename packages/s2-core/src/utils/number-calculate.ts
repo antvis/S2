@@ -6,12 +6,15 @@ export const isNotNumber = (value: unknown) => {
   if (typeof value === 'number') {
     return Number.isNaN(value);
   }
+
   if (!value) {
     return true;
   }
+
   if (typeof value === 'string') {
     return Number.isNaN(Number(value));
   }
+
   return true;
 };
 
@@ -47,6 +50,7 @@ const processFieldValues = (
     }
 
     const val = notNumber ? 0 : fieldValue;
+
     resultArr.push(new Decimal(val));
 
     return resultArr;
@@ -64,6 +68,7 @@ export const getDataSumByField = (
   field: string,
 ): number => {
   const fieldValues = processFieldValues(data, field);
+
   if (!fieldValues.length) {
     return 0;
   }
@@ -85,6 +90,7 @@ export const getDataExtremumByField = (
 ): number | undefined => {
   // 防止预处理时默认值 0 影响极值结果，处理时需过滤非法值
   const fieldValues = processFieldValues(data, field, true);
+
   if (!fieldValues?.length) {
     return;
   }
@@ -103,6 +109,7 @@ export const getDataAvgByField = (
   field: string,
 ): number => {
   const fieldValues = processFieldValues(data, field);
+
   if (!fieldValues?.length) {
     return 0;
   }

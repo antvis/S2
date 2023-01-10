@@ -16,6 +16,7 @@ export class Store {
     defaultValue?: StoreKey[T],
   ): StoreKey[T] {
     const value = this.store.get(key);
+
     return (value as StoreKey[T]) ?? defaultValue;
   }
 

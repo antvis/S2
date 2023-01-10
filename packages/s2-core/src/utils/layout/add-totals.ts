@@ -11,6 +11,7 @@ export const addTotals = (params: TotalParams) => {
   );
   let action: 'unshift' | 'push' | undefined;
   let totalValue: TotalClass | undefined;
+
   if (isFirstField) {
     // check to see if grand total is added
     if (totalsConfig?.showGrandTotals) {

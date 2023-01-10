@@ -30,6 +30,7 @@ export const getValidFrozenOptions = (
   }
 
   const remainFrozenRowCount = dataLength - frozenOptions.rowCount!;
+
   if (frozenOptions.trailingRowCount! > remainFrozenRowCount) {
     frozenOptions.trailingRowCount = remainFrozenRowCount;
   }

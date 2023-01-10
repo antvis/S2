@@ -42,6 +42,7 @@ export class GuiIcon extends Group {
   ): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject): void => {
       const img = new Image();
+
       // 成功
       img.onload = () => {
         ImageCache[cacheKey] = img;
@@ -53,43 +54,52 @@ export class GuiIcon extends Group {
       };
       let svg = getIcon(name);
 
-      // 兼容三种情况
-      // 1、base 64
-      // 2、svg本地文件（兼容老方式，可以改颜色）
-      // 3、线上支持的图片地址
+      /*
+       * 兼容三种情况
+       * 1、base 64
+       * 2、svg本地文件（兼容老方式，可以改颜色）
+       * 3、线上支持的图片地址
+       */
       if (
         svg &&
         (svg.includes('data:image/svg+xml') || this.hasSupportSuffix(svg))
       ) {
-        // 传入 base64 字符串
-        // 或者 online 链接
+        /*
+         * 传入 base64 字符串
+         * 或者 online 链接
+         */
         img.src = svg;
       } else if (svg) {
         // 传入 svg 字符串（支持颜色fill）
         if (fill) {
-          // 如果有fill，移除原来的 fill
-          // 这里有一个潜在的问题，不同的svg里面的schema不尽相同，导致这个正则考虑不全
-          // 1、fill='' 2、fill 3、fill-***(不需要处理)
+          /*
+           * 如果有fill，移除原来的 fill
+           * 这里有一个潜在的问题，不同的svg里面的schema不尽相同，导致这个正则考虑不全
+           * 1、fill='' 2、fill 3、fill-***(不需要处理)
+           */
+          // 移除 fill="red|#fff"
           // eslint-disable-next-line no-useless-escape
-          svg = svg.replace(/fill=[\'\"]#?\w+[\'\"]/g, ''); // 移除 fill="red|#fff"
-          svg = svg.replace(/fill>/g, '>'); // fill> 替换为 >
+          svg = svg.replace(/fill=[\'\"]#?\w+[\'\"]/g, '');
+          // fill> 替换为 >
+          svg = svg.replace(/fill>/g, '>');
         }
+
         svg = svg.replace(
           STYLE_PLACEHOLDER,
           `${STYLE_PLACEHOLDER} fill="${fill}"`,
         );
-        // 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
-        // https://www.chromestatus.com/features/5656049583390720
+
+        /*
+         * 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
+         * https://www.chromestatus.com/features/5656049583390720
+         */
         img.src = `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`;
       }
     });
   }
 
-  hasSupportSuffix = (image: string) => {
-    return ['.png', '.jpg', '.gif', '.svg'].some((suffix) =>
-      image?.endsWith(suffix),
-    );
-  };
+  hasSupportSuffix = (image: string) =>
+    ['.png', '.jpg', '.gif', '.svg'].some((suffix) => image?.endsWith(suffix));
 
   private render() {
     const { name, fill } = this.cfg;
@@ -100,6 +110,7 @@ export class GuiIcon extends Group {
 
     const cacheKey = `${name}-${fill}`;
     const img = ImageCache[cacheKey];
+
     if (img) {
       // already in cache
       image.attr('img', img);
@@ -115,6 +126,7 @@ export class GuiIcon extends Group {
           console.warn(`GuiIcon ${name} load error`, err);
         });
     }
+
     this.iconImageShape = image;
   }
 }

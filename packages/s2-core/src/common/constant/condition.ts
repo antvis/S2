@@ -1,5 +1,6 @@
 export const VALUE_RANGES_KEY = 'valueRanges';
 export const DEFAULT_VALUE_RANGES = {};
+
 /**
  * 亮度范围 0~255
  * @see https://github.com/bgrins/TinyColor#getbrightness

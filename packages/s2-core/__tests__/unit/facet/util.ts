@@ -11,6 +11,7 @@ export function getMockPivotMeta() {
   const rawColPivotMeta = new Map();
   const rawIndexesData: RawData[][] | RawData[] = [];
   const { fields, data } = assembleDataCfg();
+
   return transformIndexesData({
     rows: fields.rows,
     columns: fields.columns,

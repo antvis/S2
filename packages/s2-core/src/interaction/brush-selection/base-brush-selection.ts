@@ -82,11 +82,14 @@ export class BaseBrushSelection
 
   protected initPrepareSelectMaskShape() {
     const { foregroundGroup } = this.spreadsheet.facet;
+
     if (!foregroundGroup) {
       return;
     }
+
     this.prepareSelectMaskShape?.remove();
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
+
     this.prepareSelectMaskShape = foregroundGroup.appendChild(
       new Rect({
         style: {
@@ -151,7 +154,8 @@ export class BaseBrushSelection
     let needScrollForX = true;
     let needScrollForY = true;
     const vScrollBarWidth = facet.vScrollBar?.getBBox()?.width;
-    const extraPixel = 2; // 额外加缩进，保证 getShape 在 panelBox 内
+    // 额外加缩进，保证 getShape 在 panelBox 内
+    const extraPixel = 2;
 
     if (newX > maxX) {
       newX = maxX - vScrollBarWidth - extraPixel;
@@ -184,14 +188,11 @@ export class BaseBrushSelection
   private autoScrollIntervalId: ReturnType<typeof setInterval> | null = null;
 
   // 矩形相交算法: 通过判断两矩形左右上下的线是否相交
-  public rectanglesIntersect = (rect1: BBox, rect2: BBox) => {
-    return (
-      rect1.maxX > rect2.minX &&
-      rect1.minX < rect2.maxX &&
-      rect1.minY < rect2.maxY &&
-      rect1.maxY > rect2.minY
-    );
-  };
+  public rectanglesIntersect = (rect1: BBox, rect2: BBox) =>
+    rect1.maxX > rect2.minX &&
+    rect1.minX < rect2.maxX &&
+    rect1.minY < rect2.maxY &&
+    rect1.maxY > rect2.minY;
 
   protected autoScrollConfig: BrushAutoScrollConfig = cloneDeep(
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
@@ -202,18 +203,22 @@ export class BaseBrushSelection
     const frozenInfo = (facet as unknown as TableFacet).frozenGroupInfo;
     let min = 0;
     const frozenRowRange = frozenInfo?.frozenRow?.range;
+
     if (frozenRowRange) {
       min = frozenRowRange[1] + 1;
     }
+
     if (yIndex < min) {
       return null;
     }
 
     let max = facet.getCellRange().end;
     const frozenTrailingRowRange = frozenInfo?.frozenTrailingRow?.range;
+
     if (frozenTrailingRowRange) {
       max = frozenTrailingRowRange[0] - 1;
     }
+
     if (yIndex > max) {
       return null;
     }
@@ -227,21 +232,26 @@ export class BaseBrushSelection
 
     let min = 0;
     const frozenColRange = frozenInfo?.frozenCol?.range;
+
     if (frozenColRange) {
       min = frozenColRange[1] + 1;
     }
+
     if (xIndex < min) {
       return null;
     }
 
     let max = facet.layoutResult.colLeafNodes.length - 1;
     const frozenTrailingColRange = frozenInfo?.frozenTrailingCol?.range;
+
     if (frozenTrailingColRange) {
       max = frozenTrailingColRange[0] - 1;
     }
+
     if (xIndex > max) {
       return null;
     }
+
     return xIndex;
   };
 
@@ -259,6 +269,7 @@ export class BaseBrushSelection
     } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
+
     if (
       frozenTrailingColCount! > 0 &&
       dir === ScrollDirection.TRAILING &&
@@ -274,6 +285,7 @@ export class BaseBrushSelection
     ) {
       return panelIndexes[0];
     }
+
     return colIndex;
   };
 
@@ -291,6 +303,7 @@ export class BaseBrushSelection
     } = getValidFrozenOptions(options.frozen!, colLength, dataLength);
     const panelIndexes = (facet as unknown as TableFacet)
       .panelScrollGroupIndexes;
+
     if (
       frozenTrailingRowCount! > 0 &&
       dir === ScrollDirection.TRAILING &&
@@ -306,6 +319,7 @@ export class BaseBrushSelection
     ) {
       return panelIndexes[2];
     }
+
     return rowIndex;
   };
 
@@ -326,6 +340,7 @@ export class BaseBrushSelection
       const nextIndex = this.validateYIndex(
         rowIndex + (config.y.value > 0 ? 1 : -1),
       );
+
       y = isNil(nextIndex)
         ? 0
         : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
@@ -341,6 +356,7 @@ export class BaseBrushSelection
       const nextIndex = this.validateXIndex(
         colIndex + (config.x.value > 0 ? 1 : -1),
       );
+
       x = isNil(nextIndex)
         ? 0
         : getScrollOffsetForCol(nextIndex, dir, this.spreadsheet) - scrollX;
@@ -368,6 +384,7 @@ export class BaseBrushSelection
     ) {
       return;
     }
+
     const config = this.autoScrollConfig;
     const scrollOffset = this.spreadsheet.facet.getScrollOffset();
     const offsetCfg = {
@@ -382,14 +399,17 @@ export class BaseBrushSelection
     };
 
     const { x: deltaX, y: deltaY } = this.getNextScrollDelta(config);
+
     if (deltaY === 0 && deltaX === 0) {
       this.clearAutoScroll();
+
       return;
     }
 
     if (config.y.scroll) {
       offsetCfg.offsetY.value! += deltaY;
     }
+
     if (config.x.scroll) {
       offsetCfg.offsetX.value! += deltaX;
       if (offsetCfg.offsetX.value! < 0) {
@@ -399,6 +419,7 @@ export class BaseBrushSelection
 
     this.scrollAnimationComplete = false;
     let ratio = 3;
+
     // x 轴滚动速度慢
     if (config.x.scroll) {
       ratio = 1;
@@ -424,10 +445,12 @@ export class BaseBrushSelection
     } = this.formatBrushPointForScroll({ x, y });
 
     const config = this.autoScrollConfig;
+
     if (needScrollForY) {
       config.y.value = y;
       config.y.scroll = true;
     }
+
     if (needScrollForX) {
       config.x.value = x;
       config.x.scroll = true;
@@ -476,6 +499,7 @@ export class BaseBrushSelection
 
   protected updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
+
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
       y: brushRange.start.y,
@@ -542,8 +566,10 @@ export class BaseBrushSelection
     const minY = Math.min(startYInView, this.endBrushPoint?.y);
     const maxY = Math.max(startYInView, this.endBrushPoint?.y);
 
-    // x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
-    // 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
+    /*
+     * x, y: 表示从整个表格（包含表头）从左上角作为 (0, 0) 的画布区域。
+     * 这个 x, y 只有在绘制虚拟画布 和 是否有效移动时有效。
+     */
     return {
       start: {
         rowIndex: minRowIndex,
@@ -565,15 +591,16 @@ export class BaseBrushSelection
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
   protected getBrushRangeCells(): S2CellType[] {
     this.setDisplayedCells();
+
     return this.displayedCells.filter((cell) => {
       const meta = cell.getMeta();
+
       return this.isInBrushRange(meta);
     });
   }
 
-  protected onUpdateCells: OnUpdateCells = (_, defaultOnUpdateCells) => {
-    return defaultOnUpdateCells();
-  };
+  protected onUpdateCells: OnUpdateCells = (_, defaultOnUpdateCells) =>
+    defaultOnUpdateCells();
 
   // 刷选过程中高亮的cell
   private showPrepareSelectedCells = () => {
@@ -581,9 +608,12 @@ export class BaseBrushSelection
     this.spreadsheet.interaction.changeState({
       cells: map(this.brushRangeCells, (item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
-      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
-      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
-      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+
+      /*
+       * 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
+       * 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
+       * 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+       */
       force: true,
       onUpdateCells: this.onUpdateCells,
     });
@@ -594,6 +624,7 @@ export class BaseBrushSelection
     if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
       return;
     }
+
     this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
     this.initPrepareSelectMaskShape();
     this.setDisplayedCells();
@@ -609,6 +640,7 @@ export class BaseBrushSelection
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
         this.resetDrag();
+
         return;
       }
 
@@ -621,6 +653,7 @@ export class BaseBrushSelection
         this.updateSelectedCells();
 
         const tooltipData = getCellsTooltipData(this.spreadsheet);
+
         this.spreadsheet.showTooltipWithInfo(event, tooltipData);
       }
 
@@ -641,6 +674,7 @@ export class BaseBrushSelection
       ) {
         return;
       }
+
       this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
       this.resetDrag();
     });
@@ -677,6 +711,7 @@ export class BaseBrushSelection
     };
 
     const { interaction } = this.spreadsheet;
+
     interaction.addIntercepts([InterceptType.HOVER]);
     interaction.clearStyleIndependent();
     if (this.isValidBrushSelection()) {

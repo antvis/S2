@@ -5,17 +5,15 @@ import { SheetComponent } from '../index';
 import type { SheetComponentsProps } from '../interface';
 
 export const MobileSheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
-  (props, ref) => {
-    return (
-      <>
-        <SheetComponent
-          {...props}
-          options={getMobileSheetComponentOptions(props.options!)}
-          ref={ref}
-        />
-      </>
-    );
-  },
+  (props, ref) => (
+    <>
+      <SheetComponent
+        {...props}
+        options={getMobileSheetComponentOptions(props.options!)}
+        ref={ref}
+      />
+    </>
+  ),
 );
 
 export const MobileSheetComponent = React.memo(MobileSheet);

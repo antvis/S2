@@ -14,6 +14,7 @@ export class CornerBBox extends BaseBBox {
 
   private getCornerBBoxHeight() {
     const { colsHierarchy } = this.layoutResult;
+
     this.originalHeight = Math.floor(colsHierarchy.height);
 
     return this.originalHeight;
@@ -21,6 +22,7 @@ export class CornerBBox extends BaseBBox {
 
   private getCornerBBoxWidth() {
     const { rowsHierarchy } = this.layoutResult;
+
     this.originalWidth = Math.floor(
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
     );
@@ -41,9 +43,11 @@ export class CornerBBox extends BaseBBox {
     const colsHierarchyWidth = colsHierarchy?.width;
     const panelWidthWidthUnClippedCorner = canvasWidth! - this.originalWidth;
 
-    // 不需要裁剪条件：
-    // 1. 角头的宽度没有超过最大的角头范围
-    // 2. 列头的宽度没有超过在不裁剪角头前提下的剩余范围
+    /*
+     * 不需要裁剪条件：
+     * 1. 角头的宽度没有超过最大的角头范围
+     * 2. 列头的宽度没有超过在不裁剪角头前提下的剩余范围
+     */
     if (
       this.originalWidth <= maxCornerBBoxWidth ||
       colsHierarchyWidth <= panelWidthWidthUnClippedCorner

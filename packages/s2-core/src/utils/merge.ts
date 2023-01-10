@@ -24,11 +24,14 @@ const uniqueFields = (fields: Fields): Fields => {
   const result: Partial<Fields> = keys.reduce<Fields>((r, key) => {
     const list = fields[key];
     const unique = uniq(list) as CustomHeaderFields & string[];
+
     if (!isEqual(unique, list)) {
       // eslint-disable-next-line no-console
       console.warn(`fields.${key}:[${list}] should be unique`);
     }
+
     r[key] = unique;
+
     return r;
   }, {});
 
@@ -62,6 +65,5 @@ export const getSafetyDataConfig = (
   return mergedDataCfg;
 };
 
-export const getSafetyOptions = (options: Partial<S2Options> | null) => {
-  return customMerge<S2Options>(DEFAULT_OPTIONS, options);
-};
+export const getSafetyOptions = (options: Partial<S2Options> | null) =>
+  customMerge<S2Options>(DEFAULT_OPTIONS, options);

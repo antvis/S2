@@ -29,8 +29,8 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
       | TooltipOperatorOptions<React.ReactNode, React.ReactNode>
       | undefined,
     onlyMenu?: boolean,
-  ) => {
-    return operator ? (
+  ) =>
+    operator ? (
       <TooltipOperator
         {...operator}
         onClick={operator.onClick as (params: { key: string }) => void}
@@ -38,16 +38,15 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
         cell={cell!}
       />
     ) : null;
-  };
 
   const renderNameTips = (nameTip: TooltipNameTipsOptions) => {
     const { name, tips } = nameTip || {};
+
     return <TooltipSimpleTips name={name} tips={tips} />;
   };
 
-  const renderSummary = (summaries: TooltipSummaryOptions[] | undefined) => {
-    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
-  };
+  const renderSummary = (summaries: TooltipSummaryOptions[] | undefined) =>
+    !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
 
   const renderHeadInfo = (headInfo: TooltipHeadInfoType | undefined | null) => {
     const { cols = [], rows = [] } = headInfo || {};
@@ -59,25 +58,19 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     );
   };
 
-  const renderDetail = (
-    details: TooltipDetailListItem[] | null | undefined,
-  ) => {
-    return !isEmpty(details) && <TooltipDetail list={details} />;
-  };
+  const renderDetail = (details: TooltipDetailListItem[] | null | undefined) =>
+    !isEmpty(details) && <TooltipDetail list={details} />;
 
-  const renderInfos = (infos: string | undefined) => {
-    return infos && <TooltipInfos infos={infos} />;
-  };
+  const renderInfos = (infos: string | undefined) =>
+    infos && <TooltipInfos infos={infos} />;
 
   const renderInterpretation = (
     interpretation: TooltipInterpretationOptions | undefined,
-  ) => {
-    return interpretation && <TooltipInterpretation {...interpretation} />;
-  };
+  ) => interpretation && <TooltipInterpretation {...interpretation} />;
 
-  const renderDescription = (description: string | undefined) => {
-    return <TooltipDescription description={description} />;
-  };
+  const renderDescription = (description: string | undefined) => (
+    <TooltipDescription description={description} />
+  );
 
   const renderContent = () => {
     const { operator, onlyMenu } = getTooltipDefaultOptions<

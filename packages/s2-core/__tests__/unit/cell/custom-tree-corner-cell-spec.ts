@@ -37,6 +37,7 @@ describe('test for corner text', () => {
   };
 
   const mockSheet = new PivotSheet(getContainer(), dataCfg, options);
+
   mockSheet.render();
 
   test('get correct default corner text when the corner label is empty', () => {

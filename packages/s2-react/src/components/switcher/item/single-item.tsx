@@ -38,6 +38,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   }, []);
 
   const realDisplayName = displayName ?? id;
+
   return (
     <div
       {...dragHandleProps}

@@ -18,6 +18,7 @@ const s2Options: S2Options = {
 describe('Grid Border Tests', () => {
   test('should draw left border without series number', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
+
     s2.render();
 
     const panelScrollGroup = s2.facet.panelGroup.children[0];
@@ -38,6 +39,7 @@ describe('Grid Border Tests', () => {
       newLeftBorderBbox.bottom -
       newLeftBorderBbox.top -
       (originalLeftBorderBbox.bottom - originalLeftBorderBbox.top);
+
     // g绘制时，会将坐标1变成0.5，来达到真正绘制1px的效果，因此宽高不一定完全相同，会有1px的差值
     expect(widthRatio).toBeLessThanOrEqual(1);
     expect(heightRatio).toBeLessThanOrEqual(1);

@@ -17,6 +17,7 @@ export class CellData {
     if (field === VALUE_FIELD || field === EXTRA_FIELD) {
       return this[field];
     }
+
     return this.raw?.[field];
   }
 
@@ -33,5 +34,6 @@ export const getFieldValueOfViewMetaData = (data: ViewMetaData, field = '') => {
   if (data instanceof CellData) {
     return field ? data.getValueByField(field) : data.getOrigin();
   }
+
   return data?.[field];
 };

@@ -27,6 +27,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected clearResizeAreaGroup(type: string) {
     const foregroundGroup = this.parentNode as Group;
     const resizerGroup = foregroundGroup?.getElementById<Group>(type);
+
     resizerGroup?.removeChildren();
   }
 
@@ -92,10 +93,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     cellSize: number;
     viewportPosition: number;
     viewportSize: number;
-  }) => {
-    return (
-      cellPosition + cellSize >= viewportPosition &&
-      viewportPosition + viewportSize >= cellPosition
-    );
-  };
+  }) =>
+    cellPosition + cellSize >= viewportPosition &&
+    viewportPosition + viewportSize >= cellPosition;
 }

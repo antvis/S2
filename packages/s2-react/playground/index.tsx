@@ -200,6 +200,7 @@ function MainLayout() {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
+
       callback?.();
     };
 
@@ -207,6 +208,7 @@ function MainLayout() {
     logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
       const { event } = cellInfo;
+
       s2Ref.current?.showTooltip({
         position: { x: event.clientX, y: event.clientY },
         content: <CustomColTooltip />,
@@ -218,6 +220,7 @@ function MainLayout() {
     if (type === 'table') {
       return dataCfg.fields?.columns || [];
     }
+
     return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
   };
 
@@ -632,6 +635,7 @@ function MainLayout() {
                             ...palette,
                             brandColor: color.hex,
                           });
+
                           setThemeCfg({
                             name: themeCfg.name,
                             palette: newPalette,
@@ -802,11 +806,14 @@ function MainLayout() {
                       !s2Ref.current?.facet.vScrollBar
                     ) {
                       clearInterval(scrollTimer.current!);
+
                       return;
                     }
+
                     scrollTimer.current = setInterval(() => {
                       const { scrollY } =
                         s2Ref.current?.facet.getScrollOffset()!;
+
                       if (s2Ref.current?.facet.isScrollToBottom(scrollY)) {
                         console.log('滚动到底部');
                         s2Ref.current.updateScrollOffset({
@@ -815,8 +822,10 @@ function MainLayout() {
                             animate: false,
                           },
                         });
+
                         return;
                       }
+
                       s2Ref.current!.updateScrollOffset({
                         offsetY: {
                           value: scrollY + 50,
@@ -1016,13 +1025,11 @@ function MainLayout() {
                       });
                     }}
                   >
-                    {columnOptions.map((column) => {
-                      return (
-                        <Select.Option value={column} key={column as string}>
-                          {column as string}
-                        </Select.Option>
-                      );
-                    })}
+                    {columnOptions.map((column) => (
+                      <Select.Option value={column} key={column as string}>
+                        {column as string}
+                      </Select.Option>
+                    ))}
                   </Select>
                 </Tooltip>
               </Space>

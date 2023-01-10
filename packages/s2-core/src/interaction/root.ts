@@ -54,8 +54,10 @@ export class RootInteraction {
   // 用来标记需要拦截的交互，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
   public intercepts = new Set<Intercept>();
 
-  // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
-  // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
+  /*
+   * hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
+   * 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
+   */
   private hoverTimer: number | null = null;
 
   public eventController: EventController;
@@ -114,6 +116,7 @@ export class RootInteraction {
   public setInteractedCells(cell: S2CellType) {
     const interactedCells = this.getInteractedCells().concat([cell]);
     const state = this.getState();
+
     state.interactedCells = interactedCells;
 
     this.setState(state);
@@ -121,6 +124,7 @@ export class RootInteraction {
 
   public getInteractedCells() {
     const currentState = this.getState();
+
     return currentState?.interactedCells || [];
   }
 
@@ -138,6 +142,7 @@ export class RootInteraction {
 
   private isStateOf(stateName: InteractionStateName) {
     const currentState = this.getState();
+
     return currentState?.stateName === stateName;
   }
 
@@ -168,6 +173,7 @@ export class RootInteraction {
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
   public getCells(): CellMeta[] {
     const currentState = this.getState();
+
     return currentState?.cells || [];
   }
 
@@ -175,10 +181,11 @@ export class RootInteraction {
   public getActiveCells(): S2CellType[] {
     const ids = this.getCells().map((item) => item.id);
     const allCells = this.getAllCells();
+
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     return map(ids, (id) =>
       find(allCells, (cell) => cell?.getMeta()?.id === id),
-    ).filter(Boolean) as S2CellType[]; // 去除 undefined
+    ).filter(Boolean) as S2CellType[];
   }
 
   public clearStyleIndependent() {
@@ -270,11 +277,13 @@ export class RootInteraction {
     selectHeaderCellInfo: SelectHeaderCellInfo = {} as SelectHeaderCellInfo,
   ) => {
     const { cell } = selectHeaderCellInfo;
+
     if (isEmpty(cell)) {
       return;
     }
 
     const currentCellMeta = cell?.getMeta?.() as Node;
+
     if (!currentCellMeta || isNil(currentCellMeta?.x)) {
       return;
     }
@@ -309,6 +318,7 @@ export class RootInteraction {
     if (isEmpty(selectedCells)) {
       this.reset();
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+
       return;
     }
 
@@ -326,6 +336,7 @@ export class RootInteraction {
     });
 
     const selectedCellIds = selectedCells.map(({ id }) => id);
+
     this.updateCells(this.getRowColActiveCells(selectedCellIds));
 
     // 平铺模式或者是树状模式下的列头单元格, 高亮子节点
@@ -369,6 +380,7 @@ export class RootInteraction {
         colBrushSelection: brushSelection,
       };
     }
+
     return {
       dataBrushSelection: brushSelection?.data ?? false,
       rowBrushSelection: brushSelection?.row ?? false,
@@ -457,6 +469,7 @@ export class RootInteraction {
     this.interactions.clear();
 
     const defaultInteractions = this.getDefaultInteractions();
+
     defaultInteractions.forEach(({ key, interaction: Interaction, enable }) => {
       if (enable !== false) {
         this.interactions.set(key, new Interaction(this.spreadsheet));
@@ -466,6 +479,7 @@ export class RootInteraction {
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;
+
         this.interactions.set(
           customInteraction.key,
           new CustomInteractionClass(this.spreadsheet),
@@ -505,6 +519,7 @@ export class RootInteraction {
           stateName: InteractionStateName.UNSELECTED,
         });
       }
+
       return;
     }
 
@@ -522,6 +537,7 @@ export class RootInteraction {
     } else {
       this.updatePanelGroupAllDataCells();
     }
+
     this.draw();
   }
 

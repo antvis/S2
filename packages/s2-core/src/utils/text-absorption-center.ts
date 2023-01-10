@@ -42,14 +42,17 @@ export const getAdjustPosition = (
   const viewportRight = viewportLeft + viewportWidth;
   const viewCenter = viewportLeft + viewportWidth / 2;
   const rectCenter = rectLeft + rectWidth / 2;
-  const preferLeft = rectCenter <= viewCenter; // 是偏左还是偏右
+  // 是偏左还是偏右
+  const preferLeft = rectCenter <= viewCenter;
   const intersectionArr = vennArr(
     [rectLeft, rectRight],
     [viewportLeft, viewportRight],
   );
+
   if (intersectionArr.length) {
     // 1. 有交集
     const intersectionWith = intersectionArr[1] - intersectionArr[0];
+
     if (intersectionWith > textWidth) {
       if (intersectionWith === rectWidth) {
         // 1.1 有交集，且交集宽度等于矩形宽度
@@ -93,5 +96,6 @@ export const getAdjustPosition = (
     // 2. 没有交集，居中
     textX = rectLeft + (rectWidth - textWidth) / 2;
   }
+
   return textX;
 };

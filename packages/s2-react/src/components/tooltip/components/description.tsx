@@ -7,14 +7,12 @@ interface TooltipDescriptionProps {
 
 export const TooltipDescription: React.FC<TooltipDescriptionProps> = ({
   description,
-}) => {
-  return (
-    <>
-      {description && (
-        <div className={`${TOOLTIP_PREFIX_CLS}-description`}>
-          {i18n('说明')}：{description}
-        </div>
-      )}
-    </>
-  );
-};
+}) => (
+  <>
+    {description && (
+      <div className={`${TOOLTIP_PREFIX_CLS}-description`}>
+        {i18n('说明')}：{description}
+      </div>
+    )}
+  </>
+);

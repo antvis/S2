@@ -36,18 +36,21 @@ export function useSpreadSheet(
   const { loading, setLoading } = useLoading(s2Ref, loadingProps);
   const pagination = usePagination(s2Ref, props);
 
-  // TODO: 如果onSpreadsheet属性变更了怎么办？？？
+  // TODO: 如果 onSpreadsheet 属性变更了怎么办？？？
   const renderSpreadSheet = (container: HTMLDivElement) => {
     const rawDataCfg = toRaw(dataCfg!);
     const rawOptions = toRaw(options);
 
     const s2Options = getSheetComponentOptions(rawOptions as S2Options);
+
     if (onSpreadsheet) {
       return onSpreadsheet(container, rawDataCfg, s2Options);
     }
+
     if (sheetType === 'table') {
       return new TableSheet(container, rawDataCfg, s2Options);
     }
+
     return new PivotSheet(container, rawDataCfg, s2Options);
   };
 

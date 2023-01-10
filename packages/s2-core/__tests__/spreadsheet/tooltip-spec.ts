@@ -9,15 +9,15 @@ const s2Options: S2Options = {
 const CONTAINER_CLASS_NAME = 'antv-s2-tooltip-container';
 
 describe('Tooltip Tests', () => {
-  const createS2 = (tooltipOptions: S2Options['tooltip']) => {
-    return createPivotSheet({
+  const createS2 = (tooltipOptions: S2Options['tooltip']) =>
+    createPivotSheet({
       ...s2Options,
       tooltip: tooltipOptions,
     });
-  };
 
   test('should not render tooltip in default container if disable tooltip', () => {
     const s2 = createS2({ showTooltip: false });
+
     s2.render();
 
     expect(
@@ -29,6 +29,7 @@ describe('Tooltip Tests', () => {
 
   test('should not render tooltip in default container when hide tooltip if disable tooltip', () => {
     const s2 = createS2({ showTooltip: false });
+
     s2.render();
 
     s2.hideTooltip();
@@ -42,6 +43,7 @@ describe('Tooltip Tests', () => {
 
   test('should render tooltip in default container', () => {
     const s2 = createS2({ showTooltip: true });
+
     s2.render();
 
     s2.showTooltip({ position: { x: 0, y: 0 } });
@@ -55,6 +57,7 @@ describe('Tooltip Tests', () => {
 
   test('should render tooltip in custom position', () => {
     const container = document.createElement('div');
+
     container.id = 'custom-container';
     document.body.appendChild(container);
 
@@ -62,6 +65,7 @@ describe('Tooltip Tests', () => {
       showTooltip: true,
       adjustPosition: (positionInfo) => {
         const { position } = positionInfo;
+
         return { x: position.x + 100, y: position.y + 100 };
       },
     });
@@ -77,6 +81,7 @@ describe('Tooltip Tests', () => {
 
   test('should render tooltip in custom container', () => {
     const container = document.createElement('div');
+
     container.id = 'custom-container';
     document.body.appendChild(container);
 

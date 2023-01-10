@@ -29,13 +29,16 @@ export const parseCSV = (csv: string, header?: string[]) => {
 
 export const getMockData = (dataPath: string) => {
   const data = fs.readFileSync(path.resolve(__dirname, dataPath), 'utf8');
+
   return parseCSV(data);
 };
 
 export const getContainer = () => {
   const rootContainer = document.createElement('div');
+
   rootContainer.setAttribute('style', 'margin-left: 32px');
   document.body.appendChild(rootContainer);
+
   return rootContainer;
 };
 
@@ -55,6 +58,7 @@ export const createFakeSpreadSheet = () => {
   }
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
+
   s2.options = DEFAULT_OPTIONS;
   s2.dataCfg = {
     meta: [],
@@ -126,7 +130,9 @@ export const createFakeSpreadSheet = () => {
   s2.isScrollContainsRowHeader = jest.fn(() => true);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
+
   s2.interaction = interaction;
+
   return s2;
 };
 
@@ -141,6 +147,7 @@ export function getGradient(
     const r = parseInt(color.substring(0, 2), 16);
     const g = parseInt(color.substring(2, 4), 16);
     const b = parseInt(color.substring(4, 6), 16);
+
     return [r, g, b];
   }
 
@@ -220,8 +227,8 @@ export const createPivotSheet = (
     useSimpleData: true,
     useTotalData: true,
   },
-) => {
-  return new PivotSheet(
+) =>
+  new PivotSheet(
     getContainer(),
     useSimpleData
       ? simpleDataConfig
@@ -236,7 +243,6 @@ export const createPivotSheet = (
       debug: false,
     },
   );
-};
 
 export const createFederatedPointerEvent = (
   spreadsheet: SpreadSheet,
@@ -245,6 +251,7 @@ export const createFederatedPointerEvent = (
   const evt = new FederatedPointerEvent(
     spreadsheet.container.getEventService(),
   );
+
   evt.type = eventType;
   evt.pointerType = 'mouse';
 
@@ -256,6 +263,7 @@ export const createFederatedMouseEvent = (
   eventType: string,
 ) => {
   const evt = new FederatedMouseEvent(spreadsheet.container.getEventService());
+
   evt.type = eventType;
 
   return evt;
@@ -264,10 +272,9 @@ export const createFederatedMouseEvent = (
 export const createTableSheet = (
   s2Options: S2Options,
   { useSimpleData } = { useSimpleData: true },
-) => {
-  return new TableSheet(
+) =>
+  new TableSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
     s2Options,
   );
-};

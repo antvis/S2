@@ -20,6 +20,7 @@ import {
 } from '@/components';
 
 import 'antd/dist/antd.min.css';
+
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let spreadSheet: SpreadSheet;
@@ -32,6 +33,7 @@ const onMounted =
     options: SheetComponentsProps['options'],
   ) => {
     const s2 = new TableSheet(dom, dataCfg, options as S2Options);
+
     ref.current = s2;
     spreadSheet = s2;
 

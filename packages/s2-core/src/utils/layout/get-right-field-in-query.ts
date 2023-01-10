@@ -14,11 +14,14 @@ export function getRightFieldInQuery(
   rowFields: string[],
 ): string {
   let field = '';
+
   for (let k = rowFields.length - 1; k >= 0; k--) {
     if (has(rowQuery, rowFields[k])) {
-      field = rowFields[k]; // 行头中的维度
+      // 行头中的维度
+      field = rowFields[k];
       break;
     }
   }
+
   return field;
 }

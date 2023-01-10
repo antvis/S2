@@ -31,73 +31,67 @@ const onMounted = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
   options: SheetComponentsProps['options'],
-) => {
-  return new PivotSheet(dom, dataCfg, options as S2Options);
-};
+) => new PivotSheet(dom, dataCfg, options as S2Options);
 
-const getDataCfg = (): S2DataConfig => {
-  return {
-    fields: {
-      rows: ['province', 'city'],
-      columns: ['category'],
-      values: ['price'],
-      valueInCols: true,
+const getDataCfg = (): S2DataConfig => ({
+  fields: {
+    rows: ['province', 'city'],
+    columns: ['category'],
+    values: ['price'],
+    valueInCols: true,
+  },
+  meta: [
+    {
+      field: 'price',
+      name: '单价',
+      formatter: (v: unknown) => auto(v as number),
     },
-    meta: [
-      {
-        field: 'price',
-        name: '单价',
-        formatter: (v: unknown) => auto(v as number),
-      },
-    ],
-    data,
-    sortParams: [],
-  };
-};
+  ],
+  data,
+  sortParams: [],
+});
 
-const getOptions = (): SheetComponentsProps['options'] => {
-  return {
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    showSeriesNumber: false,
-    frozen: {
-      rowHeader: false,
+const getOptions = (): SheetComponentsProps['options'] => ({
+  width: 800,
+  height: 600,
+  hierarchyType: 'grid',
+  showSeriesNumber: false,
+  frozen: {
+    rowHeader: false,
+  },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province', 'city'],
     },
-    totals: {
-      row: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['province', 'city'],
-      },
-      col: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['subCategory', 'category'],
-      },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['subCategory', 'category'],
     },
-    style: {
-      colCell: {
-        widthByField: {},
-        heightByField: {},
-      },
-      dataCell: {
-        height: 32,
-      },
-      rowCell: {
-        width: 100,
-      },
-      device: DeviceType.PC,
+  },
+  style: {
+    colCell: {
+      widthByField: {},
+      heightByField: {},
     },
-    tooltip: {
-      showTooltip: true,
+    dataCell: {
+      height: 32,
     },
-  };
-};
+    rowCell: {
+      width: 100,
+    },
+    device: DeviceType.PC,
+  },
+  tooltip: {
+    showTooltip: true,
+  },
+});
 
 function MainLayout(props: SheetComponentsProps) {
   return (

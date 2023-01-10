@@ -33,6 +33,7 @@ export class CornerCell extends HeaderCell {
 
   protected isBolderText() {
     const { cornerType } = this.meta;
+
     return cornerType === CornerNodeType.Col;
   }
 
@@ -87,6 +88,7 @@ export class CornerCell extends HeaderCell {
       fontParam: textStyle,
       placeholder: emptyPlaceholder,
     });
+
     this.actualText = text;
     const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
 
@@ -97,6 +99,7 @@ export class CornerCell extends HeaderCell {
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
       const lastIndex = ellipseIndex + (isIPhoneX() ? 1 : 0);
+
       firstLine = cornerText.slice(0, lastIndex);
       secondLine = cornerText.slice(lastIndex);
       // 第二行重新计算...逻辑
@@ -119,6 +122,7 @@ export class CornerCell extends HeaderCell {
     );
 
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
+
     // first line
     this.addTextShape(
       renderText(
@@ -187,6 +191,7 @@ export class CornerCell extends HeaderCell {
   protected isLastRowCornerCell() {
     const { cornerType, field } = this.meta;
     const { rows } = this.spreadsheet.dataSet.fields;
+
     return (
       cornerType === CornerNodeType.Row &&
       (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)
@@ -254,8 +259,11 @@ export class CornerCell extends HeaderCell {
     ) {
       return;
     }
-    // 将相对坐标映射到全局坐标系中
-    // 最后一个维度需要撑满角头高度
+
+    /*
+     * 将相对坐标映射到全局坐标系中
+     * 最后一个维度需要撑满角头高度
+     */
     const offsetX = position.x + x - scrollX;
     const offsetY = position.y + (this.isLastRowCornerCell() ? 0 : y);
 
@@ -269,6 +277,7 @@ export class CornerCell extends HeaderCell {
       height,
       meta: this.meta,
     });
+
     resizeArea.appendChild(
       new CustomRect(
         {
@@ -314,6 +323,7 @@ export class CornerCell extends HeaderCell {
 
   protected getTreeIconWidth() {
     const { size, margin } = this.getStyle()!.icon!;
+
     return this.showTreeIcon() ? size! + margin!.right! : 0;
   }
 
@@ -330,6 +340,7 @@ export class CornerCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 
@@ -350,6 +361,7 @@ export class CornerCell extends HeaderCell {
 
   protected getCornerText(): string {
     const { formattedValue } = this.getFormattedFieldValue();
+
     return formattedValue;
   }
 }

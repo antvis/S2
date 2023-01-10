@@ -54,6 +54,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   public clip(): void {
     const { width, height, viewportHeight } = this.headerConfig;
+
     this.style.clipPath = new Rect({
       style: {
         x: 0,
@@ -86,13 +87,17 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       if (!isHeaderCellInViewport) {
         return;
       }
+
       let cell: S2CellType | null = null;
+
       if (seriesNumberCell) {
         cell = seriesNumberCell(item, spreadsheet, this.headerConfig);
       }
+
       if (isEmpty(cell)) {
         cell = new SeriesNumberCell(item, spreadsheet, this.headerConfig);
       }
+
       item.belongsCell = cell;
       this.appendChild(cell);
     });
@@ -100,6 +105,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   protected offset() {
     const { scrollY = 0, scrollX = 0, position } = this.headerConfig;
+
     translateGroup(this, position.x - scrollX, position.y - scrollY);
   }
 }

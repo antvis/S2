@@ -17,6 +17,7 @@ export class CustomHover extends BaseEvent {
   private bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: GEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+
       if (isEmpty(cell)) {
         return;
       }

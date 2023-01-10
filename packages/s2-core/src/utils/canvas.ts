@@ -9,6 +9,7 @@ export const getOffscreenCanvas = () => {
   let canvas = document.getElementById(
     OFFSCREEN_CANVAS_DOM_ID,
   ) as HTMLCanvasElement;
+
   if (canvas) {
     return canvas;
   }

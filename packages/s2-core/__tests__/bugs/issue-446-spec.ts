@@ -18,6 +18,7 @@ const s2Options = {
 describe('export', () => {
   test('should export correct data with showSeriesNumber', () => {
     const s2 = new TableSheet(getContainer(), mockDataConfig, s2Options);
+
     s2.render();
     const data = copyData(s2, '\t');
 
@@ -32,6 +33,7 @@ describe('export', () => {
       ...s2Options,
       showSeriesNumber: false,
     });
+
     s2.render();
     const data = copyData(s2, '\t');
 

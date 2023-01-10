@@ -9,6 +9,7 @@ export const getCellPadding = () => {
   const right = isNil(padding[1]) ? 0 : padding[1];
   const top = isNil(padding[0]) ? 0 : padding[0];
   const bottom = isNil(padding[2]) ? 0 : padding[2];
+
   return {
     left,
     right,
@@ -32,12 +33,14 @@ export const getSeriesNumberNodes = (
       rowIndex: idx,
       value: `${idx + 1}`,
     });
+
     sNode.x = node.x;
     sNode.y = node.y;
     sNode.width = seriesNumberWidth;
     sNode.height = isHierarchyTreeType
       ? node.getTotalHeightForTreeHierarchy()
       : node.height;
+
     return sNode;
   });
 };

@@ -127,10 +127,9 @@ describe('Merge Cells Test', () => {
       rowIndex: 1,
     };
     const mockActiveCells = {
-      getMeta: () => {
-        return cellInfo;
-      },
+      getMeta: () => cellInfo,
     };
+
     mockInstance.interaction.getActiveCells = jest
       .fn()
       .mockReturnValue([mockActiveCells]);
@@ -151,12 +150,14 @@ describe('Merge Cells Test', () => {
       height: 2,
     };
     const { x, y, width, height } = mockParams;
+
     expect(getRectangleEdges(x, y, width, height)).toEqual(mockOneCellEdges);
   });
 
   test('should get the edges without overlapping edges', () => {
     const allEdges = [...mockOneCellEdges, ...mockTwoCellEdges];
     const uniqueEdges = unique(allEdges);
+
     mockOneCellEdges.splice(1, 1);
     mockTwoCellEdges.pop();
     expect(JSON.stringify(uniqueEdges)).toEqual(
@@ -169,6 +170,7 @@ describe('Merge Cells Test', () => {
       [3, 1],
       [3, 3],
     ] as [number, number][];
+
     expect(getNextEdge(curEdge, mockOneCellEdges)).toEqual([
       [3, 3],
       [1, 3],
@@ -254,6 +256,7 @@ describe('Merge Cells Test', () => {
       .mockImplementation(() => mockAllVisibleCells);
 
     const result = getActiveCellsInfo(mockInstance);
+
     expect(result).toEqual([mockMergeCellInfo[2], mockMergeCellInfo[3]]);
   });
 

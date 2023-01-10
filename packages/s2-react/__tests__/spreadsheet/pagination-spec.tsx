@@ -19,6 +19,7 @@ const s2Options: SheetComponentsProps['options'] = {
 
 describe('Pagination Tests', () => {
   let container: HTMLDivElement;
+
   beforeEach(() => {
     container = getContainer();
   });

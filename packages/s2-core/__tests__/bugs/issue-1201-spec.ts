@@ -16,6 +16,7 @@ const s2Options = {
 describe('background color opacity test', () => {
   test('should set background color opacity correctly', () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
     s2.setThemeCfg({
       theme: {
         cornerCell: {
@@ -40,16 +41,19 @@ describe('background color opacity test', () => {
 
     // corner cell
     const cornerCell = s2.facet.cornerHeader.children[0];
+
     // @ts-ignore
     expect(cornerCell.backgroundShape.attr('fillOpacity')).toEqual(0.1);
 
     // row cell
     const rowCell = s2.facet.rowHeader!.children[0];
+
     // @ts-ignore
     expect(rowCell.backgroundShape.attr('fillOpacity')).toEqual(0.2);
 
     // col cell
     const colCell = s2.facet.columnHeader.children[0].children[0];
+
     // @ts-ignore
     expect(colCell.backgroundShape.attr('fillOpacity')).toEqual(0.3);
   });

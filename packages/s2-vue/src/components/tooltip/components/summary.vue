@@ -21,6 +21,7 @@ export default defineComponent({
           if (next.value || next.name) {
             pre.summaries.push(next);
           }
+
           return pre;
         },
         { count: 0, summaries: [] } as {

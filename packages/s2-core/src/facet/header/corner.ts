@@ -53,6 +53,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       seriesNumberWidth,
       spreadsheet,
     });
+
     return new CornerHeader({
       data: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
@@ -109,14 +110,18 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const { rows = [], columns = [] } = spreadsheet?.dataSet?.fields || {};
     const cornerNodes: Node[] = [];
     const leafNode = colsHierarchy?.sampleNodeForLastLevel;
-    // check if show series number node
-    // spreadsheet must have at least one node in last level
+
+    /*
+     * check if show series number node
+     * spreadsheet must have at least one node in last level
+     */
     if (seriesNumberWidth && leafNode) {
       const sNode: Node = new Node({
         id: '',
         field: '',
         value: getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText),
       });
+
       sNode.x = position?.x;
       // different type different y
       sNode.y = leafNode?.y;
@@ -138,6 +143,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           field: '',
           value: cornerText,
         });
+
         cornerNode.x = position.x + seriesNumberWidth;
         cornerNode.y = colsHierarchy?.sampleNodeForLastLevel?.y!;
         // cNode should subtract series width
@@ -195,6 +201,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           field,
           value,
         });
+
         cNode.x = position.x;
         cNode.y = colNode.y;
         cNode.width = width;
@@ -205,6 +212,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNodes.push(cNode);
       }
     });
+
     return cornerNodes;
   }
 
@@ -240,11 +248,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         spreadsheet,
         this.headerConfig,
       );
+
       return;
     }
 
     data.forEach((node: Node) => {
       let cell: Group | null = null;
+
       if (cornerCell) {
         cell = cornerCell(
           node,
@@ -260,17 +270,20 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           this.headerConfig,
         );
       }
+
       this.appendChild(cell);
     });
   }
 
   protected offset() {
     const { scrollX = 0 } = this.headerConfig;
+
     translateGroupX(this, -scrollX);
   }
 
   protected clip(): void {
     const { width, height } = this.headerConfig;
+
     this.style.clipPath = new Rect({
       style: {
         x: 0,

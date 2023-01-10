@@ -31,9 +31,9 @@ export const usePagination = (
     pageSize.value = nextPageSize;
   };
 
-  const visible = computed(() => {
-    return props.showPagination && !isEmpty(props.options?.pagination);
-  });
+  const visible = computed(
+    () => props.showPagination && !isEmpty(props.options?.pagination),
+  );
 
   // sync state.pagination -> s2.pagination
   watch([current, pageSize], () => {
@@ -47,6 +47,7 @@ export const usePagination = (
           current: current.value,
           pageSize: pageSize.value,
         };
+
     s2Ref.value.updatePagination(nextPagination);
     s2Ref.value.render(false);
   });
@@ -76,8 +77,10 @@ export const usePagination = (
       if (isEmpty(props.options?.pagination)) {
         return;
       }
+
       total.value = data.total;
     };
+
     s2Ref.value.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
 
     onCleanup(() => {

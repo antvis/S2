@@ -88,6 +88,7 @@ export class RowCell extends HeaderCell {
     const treeIcon = (
       this.meta.parent?.belongsCell as HeaderCell
     ).getTreeIcon();
+
     return treeIcon?.style;
   }
 
@@ -108,8 +109,10 @@ export class RowCell extends HeaderCell {
       const deleteHeight = getAllChildrenNodeHeight(this.meta);
       // 折叠后真实高度
       const realHeight = hierarchy.height - deleteHeight;
+
       if (oldScrollY > 0 && oldScrollY + viewportHeight > realHeight) {
         const currentScrollY = realHeight - viewportHeight;
+
         this.spreadsheet.facet.setScrollOffset({
           scrollY: currentScrollY > 0 ? currentScrollY : 0,
         });
@@ -167,28 +170,34 @@ export class RowCell extends HeaderCell {
 
   protected drawTreeLeafNodeAlignDot() {
     const parentTreeIconCfg = this.getParentTreeIconCfg();
+
     if (!parentTreeIconCfg) {
       return;
     }
+
     const { size, margin } = this.getStyle()!.icon!;
     const x = parentTreeIconCfg.x + size + margin!.right;
     const textY = this.getTextPosition().y;
 
     const { fill, fontSize } = this.getTextStyle();
-    const r = size! / 5; // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    // 半径，暂时先写死，后面看是否有这个点点的定制需求
+    const r = size! / 5;
 
     this.treeLeafNodeAlignDot = renderCircle(this, {
-      cx: x + size! / 2, // 和收起展开 icon 保持居中对齐
+      // 和收起展开 icon 保持居中对齐
+      cx: x + size! / 2,
       cy: textY + (fontSize! - r) / 2,
       r,
       fill,
-      fillOpacity: 0.3, // 暂时先写死，后面看是否有这个点点的定制需求
+      // 暂时先写死，后面看是否有这个点点的定制需求
+      fillOpacity: 0.3,
     });
   }
 
   protected isBolderText() {
     // 非叶子节点、小计总计，均为粗体
     const { isLeaf, isTotals, level } = this.meta;
+
     return (!isLeaf && level === 0) || isTotals;
   }
 
@@ -275,6 +284,7 @@ export class RowCell extends HeaderCell {
       height,
       meta: this.meta,
     });
+
     resizeArea.appendChild(
       new CustomRect(
         {
@@ -294,15 +304,18 @@ export class RowCell extends HeaderCell {
     if (!this.spreadsheet.isHierarchyTreeType()) {
       return 0;
     }
+
     const { icon, cell } = this.getStyle()!;
     const iconWidth = icon!.size! + icon!.margin!.right!;
 
     let parent = this.meta.parent;
     let sum = 0;
+
     while (parent) {
       if (parent.height !== 0) {
         sum += iconWidth;
       }
+
       parent = parent.parent;
     }
     if (this.showTreeLeafNodeAlignDot()) {
@@ -322,6 +335,7 @@ export class RowCell extends HeaderCell {
       (this.isTreeLevel() && this.showTreeLeafNodeAlignDot())
         ? size! + margin!.right!
         : 0;
+
     return contentIndent + treeIconWidth;
   }
 
@@ -355,6 +369,7 @@ export class RowCell extends HeaderCell {
         y: textY,
       };
     }
+
     if (textAlign === 'right') {
       /**
        *           attrs.x
@@ -386,12 +401,14 @@ export class RowCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
     return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextArea() {
     const content = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const textIndent = this.getTextIndent();
+
     return {
       ...content,
       x: content.x + textIndent,
@@ -418,6 +435,7 @@ export class RowCell extends HeaderCell {
       this.getIconStyle(),
       this.getActionIconsCount(),
     ).text.x;
+
     return { x: textX, y: textY };
   }
 
@@ -425,6 +443,7 @@ export class RowCell extends HeaderCell {
     const textY = this.getTextPosition().y;
     const { size } = this.getStyle()!.icon!;
     const { fontSize } = this.getTextStyle();
+
     return textY + (fontSize! - size!) / 2;
   }
 }

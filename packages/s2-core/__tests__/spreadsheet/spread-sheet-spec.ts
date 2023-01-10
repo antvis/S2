@@ -31,6 +31,7 @@ describe('SpreadSheet Tests', () => {
 
     test('should init sheet by dom container', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
       s2.render();
 
       expect(s2.container).toBeDefined();
@@ -42,10 +43,12 @@ describe('SpreadSheet Tests', () => {
 
     test('should init sheet by selector container', () => {
       const CONTAINER_ID = 'container';
+
       container.id = CONTAINER_ID;
 
       const containerSelector = `#${CONTAINER_ID}`;
       const s2 = new PivotSheet(containerSelector, mockDataConfig, s2Options);
+
       s2.render();
 
       expect(s2.container).toBeDefined();
@@ -60,6 +63,7 @@ describe('SpreadSheet Tests', () => {
 
       function init() {
         const s2 = new PivotSheet(mountContainer!, mockDataConfig, s2Options);
+
         s2.render();
         s2.destroy();
         s2.render();
@@ -78,9 +82,11 @@ describe('SpreadSheet Tests', () => {
         ...s2Options,
         devicePixelRatio,
       });
+
       s2.render();
 
       const canvas = s2.getCanvasElement() as HTMLCanvasElement;
+
       expect(canvas.width).toEqual(s2Options.width! * devicePixelRatio);
       expect(canvas.height).toEqual(s2Options.height! * devicePixelRatio);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
@@ -94,9 +100,11 @@ describe('SpreadSheet Tests', () => {
         ...s2Options,
         devicePixelRatio: 0,
       });
+
       s2.render();
 
       const canvas = s2.getCanvasElement() as HTMLCanvasElement;
+
       expect(canvas.width).toEqual(s2Options.width);
       expect(canvas.height).toEqual(s2Options.height);
       expect(canvas.style.width).toEqual(`${s2Options.width}px`);
@@ -107,6 +115,7 @@ describe('SpreadSheet Tests', () => {
 
     test('should update scroll offset immediately', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
       s2.render();
 
       expect(s2.facet.hScrollBar.current()).toEqual(0);
@@ -174,6 +183,7 @@ describe('SpreadSheet Tests', () => {
       (Sheet) => {
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         const destroyFn = jest.fn();
+
         s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
         s2.render();
 
@@ -194,6 +204,7 @@ describe('SpreadSheet Tests', () => {
       (Sheet) => {
         function init() {
           const s2 = new Sheet(container, mockDataConfig, s2Options);
+
           s2.render();
           s2.destroy();
 
@@ -212,6 +223,7 @@ describe('SpreadSheet Tests', () => {
       (Sheet) => {
         function init() {
           const s2 = new Sheet(container, mockDataConfig, s2Options);
+
           s2.render();
           s2.destroy();
           s2.changeSheetSize(200, 200);
@@ -226,6 +238,7 @@ describe('SpreadSheet Tests', () => {
       (Sheet) => {
         function init() {
           const s2 = new Sheet(container, mockDataConfig, s2Options);
+
           s2.render();
           s2.destroy();
 
@@ -268,6 +281,7 @@ describe('SpreadSheet Tests', () => {
       async (Sheet) => {
         const s2 = new Sheet(container, mockDataConfig, s2Options);
         const destroyFn = jest.fn();
+
         s2.container.addEventListener(CanvasEvent.AFTER_DESTROY, destroyFn);
         s2.render();
 
@@ -291,6 +305,7 @@ describe('SpreadSheet Tests', () => {
     // https://github.com/antvis/S2/issues/1011
     test('should toggle sheet type', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
       s2.render();
 
       expect(s2).toBeInstanceOf(PivotSheet);
@@ -298,6 +313,7 @@ describe('SpreadSheet Tests', () => {
 
       s2.destroy();
       const tableSheet = new TableSheet(container, mockDataConfig, s2Options);
+
       tableSheet.render();
 
       expect(tableSheet).toBeInstanceOf(TableSheet);
@@ -322,6 +338,7 @@ describe('SpreadSheet Tests', () => {
         { ...mockDataConfig, meta: [{ field: 'price', name: '价格' }] },
         s2Options,
       );
+
       s2.render();
 
       expect(s2.dataSet.originData).toHaveLength(3);
@@ -342,6 +359,7 @@ describe('SpreadSheet Tests', () => {
         { ...mockDataConfig, meta: [{ field: 'price', name: '价格' }] },
         s2Options,
       );
+
       s2.render();
 
       expect(s2.dataSet.originData).toHaveLength(3);
@@ -358,9 +376,11 @@ describe('SpreadSheet Tests', () => {
 
     test('should update all Options when reset is true', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
       s2.render();
       const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
       const partialOptions = pick(s2.options, emitAttrs);
+
       expect(partialOptions).toEqual(s2Options);
 
       s2.setOptions(
@@ -380,6 +400,7 @@ describe('SpreadSheet Tests', () => {
 
     test('should update all Options when reset is false', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
       s2.render();
       const emitAttrs = ['width', 'height', 'hierarchyType', 'hdAdapter'];
 
@@ -406,6 +427,7 @@ describe('SpreadSheet Tests', () => {
         fontSize: 12,
       };
       const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
       s2.render();
 
       test('should measure text', () => {

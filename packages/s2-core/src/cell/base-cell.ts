@@ -121,6 +121,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   public getTextAndIconPosition(iconCount = 1) {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
+
     return getTextAndFollowingIconPosition(
       this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textStyle,
@@ -229,6 +230,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
     const cellStyle = (this.getStyle() ||
       this.theme.dataCell) as DefaultCellTheme;
+
     return getCellBoxByType(
       bbox,
       this.getBorderPositions(),
@@ -244,6 +246,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         this.getBBoxByType(),
         this.getStyle()?.cell!,
       );
+
       renderLine(this, position, style);
     });
   }
@@ -310,9 +313,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       fontParam: textStyle,
       placeholder: emptyPlaceholder,
     });
+
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
+
     this.textShape = renderText(
       this,
       [this.textShape],
@@ -334,12 +339,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
     const device =
       this.spreadsheet.options.device ?? this.spreadsheet.options.style?.device;
+
     // 配置了链接跳转
     if (!isMobile(device)) {
       const textStyle = this.getTextStyle();
       const position = this.getTextPosition();
 
-      let startX = position.x; // 默认居左，其他align方式需要调整
+      // 默认居左，其他align方式需要调整
+      let startX = position.x;
+
       if (textStyle.textAlign === 'center') {
         startX -= this.actualTextWidth / 2;
       } else if (textStyle.textAlign === 'right') {
@@ -347,12 +355,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       }
 
       const { bottom: maxY } = this.textShape.getBBox();
+
       this.linkFieldShape = renderLine(
         this,
         {
           x1: startX,
           y1: maxY + 1,
-          x2: startX + this.actualTextWidth, // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
+          // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
+          x2: startX + this.actualTextWidth,
           y2: maxY + 1,
         },
         { stroke: linkFillColor, lineWidth: 1 },
@@ -364,7 +374,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       fill: linkFillColor,
       cursor: 'pointer',
       appendInfo: {
-        isLinkFieldText: true, // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+        isLinkFieldText: true,
         cellData: this.meta,
       },
     });
@@ -387,7 +398,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         const isStateShape = this.stateShapes.has(shapeName);
         const shapeGroup = isStateShape
           ? this.stateShapes.get(shapeName)
-          : // @ts-ignore
+          : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             (this[shapeName] as DisplayObject);
 
         // 兼容多列文本 (MultiData)
@@ -407,6 +419,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         ) {
           if (isNumber(style)) {
             const marginStyle = this.getInteractiveBorderShapeStyle(style);
+
             each(marginStyle, (currentStyle, currentStyleKey) => {
               updateShapeAttr(shapes, currentStyleKey, currentStyle);
             });
@@ -460,6 +473,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     if (!textShape) {
       return;
     }
+
     this.textShapes.push(textShape);
   }
 
@@ -475,6 +489,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     if (!iconShape) {
       return;
     }
+
     this.conditionIconShapes.push(iconShape);
   }
 
@@ -489,10 +504,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public drawConditionIconShapes() {
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
+
     if (iconCondition?.mapping!) {
       const attrs = this.mappingValue(iconCondition);
       const position = this.getIconPosition();
       const { size } = this.theme.dataCell!.icon!;
+
       if (!isEmpty(attrs?.icon)) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
@@ -510,9 +527,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // get text condition's fill result
     let fillResult = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
+
     if (textCondition?.mapping) {
       fillResult = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
+
     return fillResult;
   }
 }

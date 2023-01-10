@@ -15,9 +15,11 @@ const s2Options = {
 
 describe('Measure Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.render();
   test('should get measure value when the data type of the row header is number', () => {
     const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
+
     expect(dataCell.getActualText()).toEqual('2');
   });
 });

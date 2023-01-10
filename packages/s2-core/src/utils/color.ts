@@ -52,6 +52,7 @@ export const generateStandardColors = (brandColor: string): string[] => {
 
   for (let index = 0; index < 11; index++) {
     const mixPercent = STANDARD_COLOR_MIX_PERCENT[index];
+
     standardColors.push(
       mixPercent === 0
         ? toUpper(brandColor)

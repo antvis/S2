@@ -9,6 +9,7 @@ import { DataSelectType } from '@/common/constant/total';
 
 describe('Data Set Operate Test', () => {
   const data: FlattingIndexesData = [];
+
   describe('flatten test', () => {
     beforeEach(() => {
       const paths = [
@@ -19,6 +20,7 @@ describe('Data Set Operate Test', () => {
         [1, 1],
         [1, 2],
       ];
+
       paths.forEach((item, index) => {
         set(data, [...item], [index, index + 1]);
       });
@@ -43,6 +45,7 @@ describe('Data Set Operate Test', () => {
 
   describe('Dataset Operate Test GetListBySorted', () => {
     let list: string[] = [];
+
     beforeEach(() => {
       list = ['浙江省', '四川省'];
     });
@@ -66,6 +69,7 @@ describe('Data Set Operate Test', () => {
 
   describe('Dataset Operate Test GetAggregationAndCalcFuncByQuery', () => {
     let totalsOptions = {};
+
     beforeEach(() => {
       totalsOptions = {
         row: {

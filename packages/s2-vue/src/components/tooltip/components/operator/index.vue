@@ -24,6 +24,7 @@ export default defineComponent({
     const onMenuClick: MenuClickEventHandler = (menuInfo) => {
       emit('click', menuInfo);
     };
+
     return {
       TOOLTIP_PREFIX_CLS,
       onMenuClick,

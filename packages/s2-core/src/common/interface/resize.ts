@@ -56,25 +56,40 @@ export interface ResizeInfo {
   width: number;
   height: number;
   size: number;
+
   /** 改动影响区域 */
   effect: ResizeAreaEffect;
   isResizeArea?: boolean;
   isResizeMask?: boolean;
+
   /** 当前拖拽热区对应的节点信息 */
   meta: Node | ViewMeta;
+
   /** 拖拽后的宽度 */
   resizedWidth?: number;
+
   /** 拖拽后的高度 */
   resizedHeight?: number;
 }
 
 export interface ResizeInteractionOptions {
-  rowCellVertical?: boolean; // 行头垂直方向resize -> 针对行头叶子节点
-  cornerCellHorizontal?: boolean; // 角头水平方向resize -> 针对角头CornerNodeType为Series和Row
-  colCellHorizontal?: boolean; // 列头水平方向resize -> 针对列头叶子节点
-  colCellVertical?: boolean; // 列头垂直方向resize -> 针对列头各层级节点
-  rowResizeType?: ResizeType; // 行高调整时，影响当前行还是全部行
-  colResizeType?: ResizeType; // 列高调整时，影响当前列还是全部列
+  /** 行头垂直方向 resize -> 针对行头叶子节点 */
+  rowCellVertical?: boolean;
+
+  /** 角头水平方向 resize -> 针对角头 CornerNodeType 为 Series 和 Row */
+  cornerCellHorizontal?: boolean;
+
+  /** 列头水平方向 resize -> 针对列头叶子节点 */
+  colCellHorizontal?: boolean;
+
+  /** 列头垂直方向 resize -> 针对列头各层级节点 */
+  colCellVertical?: boolean;
+
+  /** 行高调整时，影响当前行还是全部行 */
+  rowResizeType?: ResizeType;
+
+  /** 列高调整时，影响当前列还是全部列 */
+  colResizeType?: ResizeType;
   // 是否允许调整, 返回 false 时拖拽的宽高无效
   disable?: (resizeInfo: ResizeInfo) => boolean;
   // 是否显示热区

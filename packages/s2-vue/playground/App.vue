@@ -542,8 +542,10 @@ const partDrillDown: PartDrillDown = {
         .filter(
           (item) => item.sub_type && item.type && item[preDrillDownfield],
         );
+
       console.log(rowData);
       const drillDownData: DataType[] = [];
+
       forEach(rowData, (data: DataType) => {
         const { number, sub_type: subType, type } = data;
         const number0 = random(50, number);
@@ -555,6 +557,7 @@ const partDrillDown: PartDrillDown = {
           type,
           [field]: fieldMap[field as keyof typeof fieldMap][0],
         };
+
         drillDownData.push(dataItem0);
         const dataItem1 = {
           ...meta.query,
@@ -579,8 +582,11 @@ export default defineComponent({
     const sheetType = ref<SheetType>('pivot');
     const s2 = shallowRef();
     const dataCfgFlag = ref(1);
-    //! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
-    //  reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
+
+    /*
+     * ! !! 千万不要写成 reactive<S2Options> 这种形式, vue 内部会将 T 进一步进行 unref 拆解，S2Options默认T包含Element, 一旦有了这个类型，解析出来的类型非常的复杂，而且会出错
+     *   reference: ../S2/node_modules/@vue/runtime-core/node_modules/@vue/reactivity/dist/reactivity.d.ts L321
+     */
     const options = reactive({
       debug: true,
       width: 600,

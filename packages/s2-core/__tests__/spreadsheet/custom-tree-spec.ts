@@ -27,17 +27,17 @@ const s2Options: S2Options = {
 describe('SpreadSheet Custom Tree Tests', () => {
   let s2: SpreadSheet;
 
-  const getCornerCellLabels = () => {
-    return (s2.facet as any)
+  const getCornerCellLabels = () =>
+    (s2.facet as any)
       .getCornerHeader()
       .getChildren()
       .map((cell: HeaderCell) => cell.getActualText());
-  };
 
   const mapRowNodes = (spreadsheet: SpreadSheet) =>
     spreadsheet.getRowLeafNodes().map((node) => {
       const iconName = (node.belongsCell as HeaderCell).getTreeIcon()?.config
         .name;
+
       return {
         id: node.id,
         iconName,
@@ -92,6 +92,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       height: node.height,
       description: node.extra.description,
     }));
+
     expect(rowNodes).toMatchSnapshot();
   });
 
@@ -100,6 +101,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
       value: node.value,
       rowIndex: node.rowIndex,
     }));
+
     expect(rowLeafNodes).toMatchSnapshot();
   });
 
@@ -224,12 +226,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ...customRowDataCfg,
       fields: {
         ...s2.dataSet.fields,
-        rows: customTreeNodes.map((node) => {
-          return {
-            ...node,
-            collapsed: true,
-          };
-        }),
+        rows: customTreeNodes.map((node) => ({
+          ...node,
+          collapsed: true,
+        })),
       },
     });
     s2.render(true);
@@ -273,12 +273,10 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ...customRowDataCfg,
       fields: {
         ...s2.dataSet.fields,
-        rows: customTreeNodes.map((node) => {
-          return {
-            ...node,
-            collapsed: node.field !== collapsedField,
-          };
-        }),
+        rows: customTreeNodes.map((node) => ({
+          ...node,
+          collapsed: node.field !== collapsedField,
+        })),
       },
     });
 

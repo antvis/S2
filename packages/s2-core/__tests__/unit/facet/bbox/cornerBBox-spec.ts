@@ -3,6 +3,7 @@ import { CornerBBox } from '@/facet/bbox/cornerBBox';
 
 describe('cornerBBox test', () => {
   let mockFacet: BaseFacet;
+
   beforeEach(() => {
     mockFacet = {
       layoutResult: {
@@ -40,6 +41,7 @@ describe('cornerBBox test', () => {
 
   test('should return correct width when original width is under the limit and freeze row header', () => {
     const bbox = new CornerBBox(mockFacet, true);
+
     expect(bbox.width).toEqual(180);
   });
 
@@ -47,6 +49,7 @@ describe('cornerBBox test', () => {
     mockFacet.layoutResult.rowsHierarchy.width = 200;
 
     const bbox = new CornerBBox(mockFacet, true);
+
     expect(bbox.width).toEqual(280);
     expect(bbox.originalWidth).toEqual(280);
   });
@@ -56,6 +59,7 @@ describe('cornerBBox test', () => {
     mockFacet.layoutResult.colsHierarchy.width = 120;
 
     const bbox = new CornerBBox(mockFacet, true);
+
     expect(bbox.width).toEqual(280);
     expect(bbox.originalWidth).toEqual(280);
   });
@@ -65,6 +69,7 @@ describe('cornerBBox test', () => {
     mockFacet.layoutResult.colsHierarchy.width = 200;
 
     const bbox = new CornerBBox(mockFacet, true);
+
     expect(bbox.width).toEqual(200);
     expect(bbox.originalWidth).toEqual(280);
   });

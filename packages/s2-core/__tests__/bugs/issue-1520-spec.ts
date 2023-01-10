@@ -18,13 +18,16 @@ const s2Options = {
 
 describe('Conditions Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.render();
   test('should render icon for cell with field value 0', () => {
     const dataNodes = s2.interaction.getPanelGroupAllDataCells();
+
     dataNodes.forEach((node) => {
       const drawIcon = node
         .getChildren()
         .some((child) => child instanceof GuiIcon);
+
       expect(drawIcon).toBeTrue();
     });
   });

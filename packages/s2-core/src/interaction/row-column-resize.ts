@@ -52,6 +52,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (this.resizeReferenceGroup) {
       return;
     }
+
     this.resizeReferenceGroup =
       this.spreadsheet.facet.foregroundGroup.appendChild(new Group());
 
@@ -63,6 +64,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       stroke: guideLineColor,
       lineWidth: size,
     };
+
     // 起始参考线
     this.resizeReferenceGroup.appendChild(
       new Path({
@@ -126,6 +128,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private setResizeMaskCursor(cursor: string) {
     // TODO: 是否改成 getById?
     const [, , resizeMask] = this.getResizeShapes();
+
     resizeMask?.attr('cursor', cursor);
   }
 
@@ -148,9 +151,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     this.cursorType = `${type}-resize`;
     this.setResizeMaskCursor(this.cursorType);
 
-    // resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被clip
-    // 后续计算 resized 尺寸时，需要把收缩的部分加回来
+    /*
+     * resize guide line 向内收缩 halfSize，保证都绘制在单元格内，防止在开始和末尾的格子中有一半线段被clip
+     * 后续计算 resized 尺寸时，需要把收缩的部分加回来
+     */
     const halfSize = size / 2;
+
     if (type === ResizeDirectionType.Horizontal) {
       startResizeGuideLineShape.attr('path', [
         ['M', offsetX + halfSize, offsetY],
@@ -161,6 +167,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
       this.resizeStartPosition.offsetX = event.offsetX;
+
       return;
     }
 
@@ -181,6 +188,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
       const originalEvent = event.originalEvent as unknown as MouseEvent;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
+
       this.spreadsheet.store.set('resized', false);
 
       if (!resizeInfo?.isResizeArea) {
@@ -383,6 +391,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         .filter((node) => node.level === resizeInfo.meta?.level)
         .reduce<RowCellStyle['heightByField']>((result, node) => {
           result![node.field] = displayHeight;
+
           return result;
         }, {});
     }
@@ -430,6 +439,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (this.resizeReferenceGroup?.parsedStyle.visibility !== 'visible') {
       return;
     }
+
     event?.preventDefault?.();
 
     // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
@@ -470,6 +480,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private updateResizeGuideLineTheme(endGuideLineShape: DisplayObject) {
     const { guideLineColor, guideLineDisableColor } = this.getResizeAreaTheme();
     const { isDisabled } = this.getDisAllowResizeInfo();
+
     endGuideLineShape.attr(
       'stroke',
       isDisabled ? guideLineDisableColor : guideLineColor,
@@ -484,6 +495,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineEnd: ResizeGuideLinePath,
   ) {
     let offsetX = originalEvent.offsetX - this.resizeStartPosition.offsetX!;
+
     if (resizeInfo.width + offsetX < MIN_CELL_WIDTH) {
       // 禁止拖到最小宽度
       offsetX = -(resizeInfo.width - MIN_CELL_WIDTH);
@@ -492,6 +504,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + offsetX;
 
     const halfSize = resizeInfo.size / 2;
+
     guideLineStart[1] = resizedOffsetX - halfSize;
     guideLineEnd[1] = resizedOffsetX - halfSize;
 
@@ -515,6 +528,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + offsetY;
 
     const halfSize = resizeInfo.size / 2;
+
     guideLineStart[2] = resizedOffsetY - halfSize;
     guideLineEnd[2] = resizedOffsetY - halfSize;
 

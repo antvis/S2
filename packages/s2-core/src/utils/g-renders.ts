@@ -75,12 +75,14 @@ export function renderText(
       }
     });
   }
+
   return group?.appendChild(
     new Text({
       style: {
         x,
         y,
         text,
+
         /**
          * 补充 g5.0 内部 measureText 时的必要参数（variant|fontStyle|lineWidth）
          * 否则创建完 Text 后，实例 getBBox 返回为全 0
@@ -120,7 +122,9 @@ export function updateShapeAttr(
   if (isEmpty(shapeGroup)) {
     return;
   }
+
   const shapes = isArray(shapeGroup) ? shapeGroup : [shapeGroup];
+
   shapes.forEach((shape) => {
     // https://g-next.antv.vision/zh/docs/api/basic/display-object#%E8%8E%B7%E5%8F%96%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%80%BC
     shape?.style?.setProperty(styleName, styleValue);
@@ -129,7 +133,9 @@ export function updateShapeAttr(
 
 export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   const iconShape = new GuiIcon(iconCfg);
+
   group?.appendChild(iconShape);
+
   return iconShape;
 }
 
@@ -145,8 +151,10 @@ export function renderTreeIcon(options: {
     name: isCollapsed ? 'Plus' : 'Minus',
     cursor: 'pointer',
   });
+
   if (isFunction(onClick)) {
     iconShape.addEventListener('click', onClick);
   }
+
   return iconShape;
 }

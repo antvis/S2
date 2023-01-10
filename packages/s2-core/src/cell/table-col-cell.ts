@@ -42,9 +42,7 @@ export class TableColCell extends ColCell {
     const { colCount = 0, trailingColCount = 0 } =
       this.spreadsheet.options.frozen!;
     const colNodes = this.spreadsheet.facet.layoutResult.colNodes.filter(
-      (node) => {
-        return isTopLevelNode(node);
-      },
+      (node) => isTopLevelNode(node),
     );
     const { colIndex } = getNodeRoot(this.meta);
 
@@ -91,6 +89,7 @@ export class TableColCell extends ColCell {
         frozenWidth.frozenTrailingColWidth,
       height,
     };
+
     return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
       scrollX,
       scrollY,
@@ -107,6 +106,7 @@ export class TableColCell extends ColCell {
         y: position.y + y,
       };
     }
+
     return {
       x: position.x + x - scrollX,
       y: position.y + y,
@@ -115,9 +115,11 @@ export class TableColCell extends ColCell {
 
   protected getColResizeArea() {
     const isFrozenCell = this.isFrozenCell();
+
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
+
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
@@ -134,6 +136,7 @@ export class TableColCell extends ColCell {
 
   protected getTextStyle() {
     const style = this.getStyle();
+
     return style?.bolderText!;
   }
 
@@ -143,6 +146,7 @@ export class TableColCell extends ColCell {
 
   protected drawBackgroundShape() {
     const { backgroundColor } = this.getStyle()!.cell!;
+
     this.backgroundShape = renderRect(this, {
       ...this.getBBoxByType(),
       fill: backgroundColor,
@@ -153,6 +157,7 @@ export class TableColCell extends ColCell {
     if (this.isFrozenCell()) {
       viewport.start = 0;
     }
+
     return viewport;
   }
 }

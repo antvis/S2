@@ -24,6 +24,7 @@ describe('Header Cell Utils Tests', () => {
         rowMeta,
         CellTypes.ROW_CELL,
       );
+
       expect(rowConfig).toEqual(actionConfig[0]);
       expect(rowConfig!.displayCondition).toHaveBeenCalledWith(
         rowMeta,
@@ -67,6 +68,7 @@ describe('Header Cell Utils Tests', () => {
         null as unknown as Node,
         CellTypes.ROW_CELL,
       );
+
       expect(rowConfig!.iconNames).toEqual(['SortDown']);
     });
   });

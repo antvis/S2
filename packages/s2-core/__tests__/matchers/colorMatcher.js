@@ -16,6 +16,7 @@ function toBeColor(actual, hexString) {
       pass: true,
     };
   }
+
   return {
     message: () =>
       `expected ${this.utils.printReceived(

@@ -63,6 +63,7 @@ describe('Text Utils Tests', () => {
         maxWidth: 20,
         placeholder: '--',
       });
+
       expect(text).toEqual('--');
     });
 
@@ -101,11 +102,13 @@ describe('Text Utils Tests', () => {
 
     test('should get correct text width', () => {
       const width = measureTextWidth('test', font);
+
       expect(Math.floor(width)).toEqual(isHD ? 21 : 16);
     });
 
     test('should get correct ellipsis text inner', () => {
       const text = getEllipsisTextInner(measureTextWidth, 'test', 15, font);
+
       expect(text).toEqual('t...');
     });
   });
@@ -160,9 +163,7 @@ describe('Text Utils Tests', () => {
       value: 'test',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, (meta) => {
-      return meta.value;
-    });
+    const placeholder = getEmptyPlaceholder(meta, (meta) => meta.value);
 
     expect(placeholder).toEqual('test');
   });

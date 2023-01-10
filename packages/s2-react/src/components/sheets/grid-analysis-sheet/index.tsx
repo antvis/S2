@@ -10,21 +10,24 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, themeCfg, ...restProps } = props;
 
     const s2Ref = React.useRef<SpreadSheet | null>(null);
-    const s2Options = React.useMemo(() => {
-      return customMerge<SheetComponentOptions>(options, {
-        dataCell: GridAnalysisDataCell,
-        showDefaultHeaderActionIcon: false,
-        style: {
-          colCell: {
-            hideValue: true,
+    const s2Options = React.useMemo(
+      () =>
+        customMerge<SheetComponentOptions>(options, {
+          dataCell: GridAnalysisDataCell,
+          showDefaultHeaderActionIcon: false,
+          style: {
+            colCell: {
+              hideValue: true,
+            },
           },
-        },
-      });
-    }, [options]);
+        }),
+      [options],
+    );
 
-    const S2ThemeCfg = React.useMemo(() => {
-      return customMerge<ThemeCfg>(themeCfg, { theme: GridAnalysisTheme });
-    }, [themeCfg]);
+    const S2ThemeCfg = React.useMemo(
+      () => customMerge<ThemeCfg>(themeCfg, { theme: GridAnalysisTheme }),
+      [themeCfg],
+    );
 
     return (
       <BaseSheet

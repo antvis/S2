@@ -11,6 +11,7 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
 
     const renderSelected = () => {
       const count = sumBy(summaries, (item) => size(item?.selectedData));
+
       return (
         <div
           className={`${TOOLTIP_PREFIX_CLS}-summary-item`}
@@ -24,9 +25,10 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
       );
     };
 
-    const renderSummary = () => {
-      return summaries?.map((item) => {
+    const renderSummary = () =>
+      summaries?.map((item) => {
         const { name = '', value } = item || {};
+
         if (!name && !value) {
           return;
         }
@@ -50,7 +52,6 @@ export const TooltipSummary: React.FC<TooltipSummaryProps> = React.memo(
           </div>
         );
       });
-    };
 
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-summary`}>

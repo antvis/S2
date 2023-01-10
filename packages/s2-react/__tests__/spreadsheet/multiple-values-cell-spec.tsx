@@ -29,122 +29,119 @@ const onMounted = (
 ) => {
   sheet = new PivotSheet(dom, dataCfg, options as S2Options);
   (window as any).sheet = sheet;
+
   return sheet;
 };
 
-const getDataCfg = (): S2DataConfig => {
-  return {
-    fields: {
-      rows: ['province', 'city'],
-      columns: ['type'],
-      values: ['price', 'rc', 'ac', 'count'],
-      valueInCols: true,
+const getDataCfg = (): S2DataConfig => ({
+  fields: {
+    rows: ['province', 'city'],
+    columns: ['type'],
+    values: ['price', 'rc', 'ac', 'count'],
+    valueInCols: true,
+  },
+  meta: [
+    {
+      field: 'rc',
+      name: '同比',
+      formatter: (v: unknown) => v as string,
     },
-    meta: [
-      {
-        field: 'rc',
-        name: '同比',
-        formatter: (v: unknown) => v as string,
-      },
-      {
-        field: 'ac',
-        name: '环比',
-        formatter: (v: unknown) => v as string,
-      },
+    {
+      field: 'ac',
+      name: '环比',
+      formatter: (v: unknown) => v as string,
+    },
+    {
+      field: 'price',
+      name: '售价',
+      formatter: (v: unknown) => v as string,
+    },
+    {
+      field: 'price-ac',
+      name: '售价(同比)',
+      formatter: (v: unknown) => v as string,
+    },
+    {
+      field: 'price-rc',
+      name: '售价(环比)',
+      formatter: (v: unknown) => v as string,
+    },
+    {
+      field: 'count',
+      name: '销售个数',
+      formatter: (v: unknown) => v as string,
+    },
+  ],
+  data: multipleDataWithNormal,
+  sortParams: [
+    // { sortFieldId: 'price', sortMethod: 'DESC' }
+  ],
+});
+
+const getOptions = (): SheetComponentsProps['options'] => ({
+  width: 800,
+  height: 600,
+  hierarchyType: 'tree',
+  showSeriesNumber: true,
+  frozen: {
+    rowHeader: false,
+  },
+  conditions: {
+    interval: [
       {
         field: 'price',
-        name: '售价',
-        formatter: (v: unknown) => v as string,
-      },
-      {
-        field: 'price-ac',
-        name: '售价(同比)',
-        formatter: (v: unknown) => v as string,
-      },
-      {
-        field: 'price-rc',
-        name: '售价(环比)',
-        formatter: (v: unknown) => v as string,
-      },
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v: unknown) => v as string,
+        mapping() {
+          return {
+            fill: 'yellow',
+            maxValue: 3000,
+            minValue: 0,
+          };
+        },
       },
     ],
-    data: multipleDataWithNormal,
-    sortParams: [
-      // { sortFieldId: 'price', sortMethod: 'DESC' }
-    ],
-  };
-};
-
-const getOptions = (): SheetComponentsProps['options'] => {
-  return {
-    width: 800,
-    height: 600,
-    hierarchyType: 'tree',
-    showSeriesNumber: true,
-    frozen: {
-      rowHeader: false,
-    },
-    conditions: {
-      interval: [
-        {
-          field: 'price',
-          mapping() {
-            return {
-              fill: 'yellow',
-              maxValue: 3000,
-              minValue: 0,
-            };
-          },
-        },
-      ],
-      background: [
-        {
-          field: 'price',
-          mapping() {
-            return { fill: 'rgb(218, 251, 225)' };
-          },
-        },
-      ],
-      icon: [
-        {
-          field: 'price',
-          mapping() {
-            return { fill: 'black', icon: 'Trend' };
-          },
-        },
-      ],
-      text: [],
-    },
-    headerActionIcons: [
+    background: [
       {
-        iconNames: ['SortDown', 'SortUp'],
-        belongsCell: 'colCell',
-        displayCondition: (meta: Node) => meta.level >= 0,
-        action() {},
+        field: 'price',
+        mapping() {
+          return { fill: 'rgb(218, 251, 225)' };
+        },
       },
     ],
-    tooltip: {
-      showTooltip: true,
+    icon: [
+      {
+        field: 'price',
+        mapping() {
+          return { fill: 'black', icon: 'Trend' };
+        },
+      },
+    ],
+    text: [],
+  },
+  headerActionIcons: [
+    {
+      iconNames: ['SortDown', 'SortUp'],
+      belongsCell: 'colCell',
+      displayCondition: (meta: Node) => meta.level >= 0,
+      action() {},
     },
-    style: {
-      rowCell: {
-        collapseAll: false,
-      },
-      colCell: {
-        widthByField: {},
-        heightByField: {},
-      },
-      dataCell: {
-        height: 32,
-      },
-      device: DeviceType.PC,
+  ],
+  tooltip: {
+    showTooltip: true,
+  },
+  style: {
+    rowCell: {
+      collapseAll: false,
     },
-  };
-};
+    colCell: {
+      widthByField: {},
+      heightByField: {},
+    },
+    dataCell: {
+      height: 32,
+    },
+    device: DeviceType.PC,
+  },
+});
 
 function MainLayout(props: SheetComponentsProps) {
   const [options, setOptions] = React.useState(props.options);
@@ -178,6 +175,7 @@ function MainLayout(props: SheetComponentsProps) {
   const onArrangementChange = (value: string) => {
     setArrangement(value);
     const newData = cloneDeep(dataCfg);
+
     switch (value) {
       case 'normal':
         newData.data = multipleDataWithNormal;
@@ -241,6 +239,7 @@ describe('spreadsheet multiple values cell spec', () => {
 
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions!;
+
     expect(icon).toHaveLength(1);
     expect(text).toHaveLength(0);
 

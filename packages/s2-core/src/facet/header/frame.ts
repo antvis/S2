@@ -40,9 +40,11 @@ export class Frame extends Group {
   public static getVerticalBorderWidth(spreadsheet: SpreadSheet): number {
     // 交叉表一条竖线拉通即可
     const { splitLine, cornerCell, colCell, dataCell } = spreadsheet.theme;
+
     if (spreadsheet.isPivotMode()) {
       return splitLine?.verticalBorderWidth!;
     }
+
     /**
      * 明细表需要在最左侧绘制一条边框
      * 以前是用gridInfo处理, gridInfo会在每一个列单元格的加一条右侧竖线作为边框分隔
@@ -63,6 +65,7 @@ export class Frame extends Group {
   public onBorderScroll(scrollX: number): void {
     this.cfg.scrollX = scrollX;
     const { position } = this.cfg;
+
     translateGroup(this, position.x - scrollX, 0);
     this.render();
   }
@@ -92,6 +95,7 @@ export class Frame extends Group {
     if (spreadsheet.isPivotMode()) {
       const y2 =
         position.y + cornerHeight + horizontalBorderWidth! + viewportHeight;
+
       renderLine(
         this,
         { x1: x, y1: position.y, x2: x, y2 },
@@ -101,6 +105,7 @@ export class Frame extends Group {
           opacity: verticalBorderColorOpacity,
         },
       );
+
       return;
     }
 
@@ -213,6 +218,7 @@ export class Frame extends Group {
     const x =
       position.x + cornerWidth + Frame.getVerticalBorderWidth(spreadsheet)!;
     const y = position.y;
+
     this.appendChild(
       new Rect({
         style: {
@@ -248,6 +254,7 @@ export class Frame extends Group {
       viewportWidth -
       shadowWidth!;
     const y = position.y;
+
     this.appendChild(
       new Rect({
         style: {

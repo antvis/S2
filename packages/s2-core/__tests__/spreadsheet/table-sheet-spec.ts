@@ -104,9 +104,11 @@ const options: S2Options = {
 describe('TableSheet normal spec', () => {
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     const onScrollFinish = jest.fn();
+
     s2.facet.scrollWithAnimation(
       {
         offsetX: {
@@ -135,9 +137,11 @@ describe('TableSheet normal spec', () => {
 
   test('should be able to resize frozen col when there is a vertical scroll width', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     const onScrollFinish = jest.fn();
+
     s2.facet.scrollWithAnimation(
       {
         offsetX: {
@@ -182,6 +186,7 @@ describe('TableSheet normal spec', () => {
 
   test('should be able to resize last column', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     await sleep(30);

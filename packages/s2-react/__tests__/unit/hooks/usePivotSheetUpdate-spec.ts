@@ -1,24 +1,22 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { usePivotSheetUpdate } from '@/hooks';
 
-const getPartDrillDownConfig = () => {
-  return {
-    drillConfig: {
-      dataSet: [
-        {
-          name: '城市',
-          value: 'city',
-        },
-      ],
-    },
-    fetchData: () =>
-      Promise.resolve({
-        drillData: [],
-        drillField: 'city',
-      }),
-    drillItemsNum: 1,
-  };
-};
+const getPartDrillDownConfig = () => ({
+  drillConfig: {
+    dataSet: [
+      {
+        name: '城市',
+        value: 'city',
+      },
+    ],
+  },
+  fetchData: () =>
+    Promise.resolve({
+      drillData: [],
+      drillField: 'city',
+    }),
+  drillItemsNum: 1,
+});
 
 describe('usePivotSheetUpdate tests', () => {
   test('should update callback when only attr change', () => {
@@ -57,6 +55,7 @@ describe('usePivotSheetUpdate tests', () => {
       reloadData: false,
       reBuildDataSet: false,
     });
+
     expect(callbackResult).toEqual({ reloadData: true, reBuildDataSet: false });
 
     // 执行第二次，reload 为 false

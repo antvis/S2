@@ -11,6 +11,7 @@ describe('Table Sheet Resize Test', () => {
       height: 600,
       showSeriesNumber: true,
     });
+
     s2.render();
 
     const resizeGroup = s2.facet.foregroundGroup.getElementById(
@@ -26,6 +27,7 @@ describe('Table Sheet Resize Test', () => {
       height: 600,
       showSeriesNumber: false,
     });
+
     s2.render();
 
     const resizeGroup = s2.facet.foregroundGroup.getElementById(

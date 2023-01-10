@@ -5,14 +5,12 @@ import { EditCell } from './edit-cell';
 import { DragCopyPoint } from './drag-copy';
 
 export const EditableSheet: React.FC<SheetComponentsProps> = React.memo(
-  (props) => {
-    return (
-      <BaseSheet {...props} sheetType={'table'}>
-        <EditCell onChange={() => {}} />
-        <DragCopyPoint />
-      </BaseSheet>
-    );
-  },
+  (props) => (
+    <BaseSheet {...props} sheetType={'table'}>
+      <EditCell onChange={() => {}} />
+      <DragCopyPoint />
+    </BaseSheet>
+  ),
 );
 
 EditableSheet.displayName = 'EditableSheet';

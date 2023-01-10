@@ -67,6 +67,7 @@ describe('Drill Down Test', () => {
   const fetchData = () =>
     new Promise<PartDrillDownInfo>((resolve) => {
       const field = 'country';
+
       resolve({
         drillField: field,
         drillData: drillDownData,
@@ -134,6 +135,7 @@ describe('Drill Down Test', () => {
       fetchData,
       spreadsheet: mockInstance,
     };
+
     handleDrillDown(drillDownCfg);
     await sleep(1000);
     expect(mockInstance.store.get('drillDownDataCache')).not.toBeEmpty();
@@ -146,6 +148,7 @@ describe('Drill Down Test', () => {
       mockPartDrillDown,
       iconClickCallback,
     );
+
     expect(mergedOptions.headerActionIcons).not.toBeEmpty();
   });
 
@@ -167,18 +170,22 @@ describe('Drill Down Test', () => {
       drillField: 'district',
       drillDownData,
     };
+
     mockInstance.store.set('drillDownDataCache', [mockDrillDownDataCache]);
     const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
       mockInstance,
       cityNode,
     );
+
     expect(drillDownDataCache).not.toBeEmpty();
     expect(drillDownCurrentCache).toEqual(mockDrillDownDataCache);
   });
 
   test('should order drill down items by drillConfig.fetchData', async () => {
-    // 测试第二次下钻的数据，按照第一次下钻的顺序排序的问题。 https://github.com/antvis/S2/pull/1353
-    // 准备数据
+    /*
+     * 测试第二次下钻的数据，按照第一次下钻的顺序排序的问题。 https://github.com/antvis/S2/pull/1353
+     * 准备数据
+     */
     const mockFetchData = () =>
       new Promise<PartDrillDownInfo>((resolve) => {
         resolve({
@@ -213,6 +220,7 @@ describe('Drill Down Test', () => {
       field: 'city',
       parent: provinceNode,
     });
+
     mockInstance.store.set('drillDownNode', SXCityNode);
     drillDownCfg.fetchData = () =>
       new Promise<PartDrillDownInfo>((resolve) => {

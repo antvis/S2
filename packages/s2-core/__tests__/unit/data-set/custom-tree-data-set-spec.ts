@@ -37,6 +37,7 @@ describe('Custom Tree Dataset Test', () => {
 
   const mockSheet = new MockPivotSheet();
   const dataSet = new CustomTreePivotDataSet(mockSheet);
+
   dataSet.setDataCfg(dataCfg);
 
   describe('test base dataset structure', () => {
@@ -48,11 +49,13 @@ describe('Custom Tree Dataset Test', () => {
 
     test('should get empty row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
+
       expect([...rowPivotMeta.keys()]).toEqual([]);
     });
 
     test('should get correct col pivot meta', () => {
       const colPivotMeta = dataSet.colPivotMeta;
+
       expect([...colPivotMeta.keys()]).toEqual(['家具']);
 
       expect(colPivotMeta.get('家具')!.level).toEqual(1);
@@ -64,6 +67,7 @@ describe('Custom Tree Dataset Test', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
+
       expect(get(indexesData, '1.1')).toEqual({
         type: '家具',
         sub_type: '桌子',

@@ -34,6 +34,7 @@ export const ResizeConfig: React.FC<{
         backgroundOpacity: enable ? 1 : 0,
       },
     };
+
     setShowResizeArea(enable);
     setThemeCfg((prev) => customMerge({}, prev, { theme }));
   };
@@ -57,14 +58,17 @@ export const ResizeConfig: React.FC<{
           },
         },
       };
+
       setOptions((prev) => customMerge({}, prev, options));
     };
 
   const onResizeActiveChange = (checkedAreas: CheckboxValueType[]) => {
     const resize = RESIZE_CONFIG.reduce((cfg, item) => {
       const type = item.value;
+
       // @ts-ignore
       cfg[type] = checkedAreas.includes(type);
+
       return cfg;
     }, {});
 
@@ -78,6 +82,7 @@ export const ResizeConfig: React.FC<{
   };
 
   const resizeConfig = options.interaction?.resize as ResizeInteractionOptions;
+
   return (
     <Space>
       <Switch

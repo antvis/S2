@@ -68,6 +68,7 @@ export const Export: React.FC<ExportProps> = React.memo((props) => {
 
   const downloadData = (isFormat: boolean) => {
     const data = getSheetData(sheet, ',', isFormat);
+
     try {
       download(data, fileName);
       message.success(successText);

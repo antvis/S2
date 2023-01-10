@@ -30,6 +30,7 @@ import {
 import './index.less';
 
 const CLASS_NAME_PREFIX = 'content';
+
 export interface SwitcherContentRef {
   getResult: () => SwitcherResult;
 }
@@ -76,6 +77,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       if (!destination) {
         return;
       }
+
       // don't change position
       if (
         destination.droppableId === source.droppableId &&
@@ -92,6 +94,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
         source,
         destination,
       );
+
       setState({ ...state, ...updatedState });
     };
 
@@ -111,6 +114,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
       parentId?: string,
     ) => {
       const updatedState = checkItem(state[fieldType], checked, id, parentId);
+
       setState({
         ...state,
         [fieldType]: updatedState,
@@ -122,6 +126,7 @@ export const SwitcherContent: React.FC<SwitcherContentProps> = React.memo(
     const displayFieldItems = SWITCHER_FIELDS.filter(
       (filed) => sheetType !== 'table' || filed === FieldType.Cols,
     );
+
     return (
       <DragDropContext
         onBeforeCapture={onBeforeDragStart}

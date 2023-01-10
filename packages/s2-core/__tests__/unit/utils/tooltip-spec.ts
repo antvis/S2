@@ -217,18 +217,15 @@ describe('Tooltip Utils Tests', () => {
   });
 
   describe('Tooltip Get Options Tests', () => {
-    const getCellNameByType = (cellType: CellTypes) => {
-      return (
-        {
-          [CellTypes.ROW_CELL]: 'rowCell',
-          [CellTypes.COL_CELL]: 'colCell',
-          [CellTypes.DATA_CELL]: 'dataCell',
-          [CellTypes.CORNER_CELL]: 'cornerCell',
-          [CellTypes.MERGED_CELL]: 'merge',
-          [CellTypes.HEADER_CELL]: 'header',
-        }[cellType] || ''
-      );
-    };
+    const getCellNameByType = (cellType: CellTypes) =>
+      ({
+        [CellTypes.ROW_CELL]: 'rowCell',
+        [CellTypes.COL_CELL]: 'colCell',
+        [CellTypes.DATA_CELL]: 'dataCell',
+        [CellTypes.CORNER_CELL]: 'cornerCell',
+        [CellTypes.MERGED_CELL]: 'merge',
+        [CellTypes.HEADER_CELL]: 'header',
+      }[cellType] || '');
 
     test.each([
       CellTypes.ROW_CELL,
@@ -304,6 +301,7 @@ describe('Tooltip Utils Tests', () => {
           getTooltipOptions(spreadsheet, {} as Event),
           [type],
         );
+
         expect(tooltipOptions).toEqual({
           showTooltip: true,
           content: '',
@@ -427,8 +425,8 @@ describe('Tooltip Utils Tests', () => {
       value: number,
       isTotalCell = false,
       extraField?: Record<string, unknown>,
-    ) => {
-      return new CellData(
+    ) =>
+      new CellData(
         {
           number: value,
           province: '浙江省',
@@ -437,7 +435,6 @@ describe('Tooltip Utils Tests', () => {
         },
         'number',
       );
-    };
 
     const createTotalsPivotSheet = (totals: Totals | null) =>
       createPivotSheet(
@@ -510,12 +507,14 @@ describe('Tooltip Utils Tests', () => {
           ? [
               dataCells.find((cell) => {
                 const meta = cell.getMeta();
+
                 return meta.isTotals;
               }),
             ]
           : dataCells
               .filter((cell) => {
                 const meta = cell.getMeta();
+
                 return !meta.isTotals;
               })
               .slice(0, count);
@@ -586,6 +585,7 @@ describe('Tooltip Utils Tests', () => {
 
         const rowCell = s2.interaction.getAllRowHeaderCells().find((cell) => {
           const meta = cell.getMeta();
+
           return isTotalCell ? meta.isTotals : !meta.isTotals;
         });
 
@@ -634,6 +634,7 @@ describe('Tooltip Utils Tests', () => {
 
         const colCell = s2.interaction.getAllColHeaderCells().find((cell) => {
           const meta = cell.getMeta();
+
           return isTotalCell ? meta.isTotals : !meta.isTotals;
         });
 
@@ -659,6 +660,7 @@ describe('Tooltip Utils Tests', () => {
         .getAllRowHeaderCells()
         .find((cell) => {
           const meta = cell.getMeta();
+
           return meta.isGrandTotals;
         });
 
@@ -683,6 +685,7 @@ describe('Tooltip Utils Tests', () => {
           .getAllColHeaderCells()
           .find((cell) => {
             const meta = cell.getMeta();
+
             return (
               (isTotalCell ? meta.isTotals : !meta.isTotals) && meta.isLeaf
             );
@@ -691,6 +694,7 @@ describe('Tooltip Utils Tests', () => {
         const tooltipData = getMockTooltipData(colLeafCell!);
 
         const value = isTotalCell ? 78868 : 26193;
+
         expect(tooltipData.summaries?.[0].value).toStrictEqual(value);
 
         s2.destroy();
@@ -748,6 +752,7 @@ describe('Tooltip Utils Tests', () => {
             .getAllColHeaderCells()
             .find((cell) => {
               const meta = cell.getMeta();
+
               return meta[key];
             });
 
@@ -755,6 +760,7 @@ describe('Tooltip Utils Tests', () => {
             .getAllRowHeaderCells()
             .find((cell) => {
               const meta = cell.getMeta();
+
               return meta[key];
             });
 
@@ -783,6 +789,7 @@ describe('Tooltip Utils Tests', () => {
 
   test('should set container class name', () => {
     const container = document.createElement('div');
+
     container.className = 'a';
 
     setTooltipContainerStyle(container, {
@@ -801,6 +808,7 @@ describe('Tooltip Utils Tests', () => {
 
   test('should set container class name by visible', () => {
     const container = document.createElement('div');
+
     container.className = 'visible';
 
     setTooltipContainerStyle(container, {

@@ -40,6 +40,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,
     ) as Node;
+
     expect(grandTotalNode.height).toEqual(60);
   });
 
@@ -50,6 +51,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,
     ) as Node;
+
     expect(grandTotalNode.children[0].y).toEqual(60);
     expect(grandTotalNode.children[0].x).toEqual(0);
   });
@@ -61,6 +63,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
       hierarchy.getNodes(1),
       (node: Node) => node.isSubTotals,
     ) as Node;
+
     expect(subTotalNode.height).toEqual(30);
   });
 
@@ -70,6 +73,7 @@ describe('GrandTotal and SubTotal Cells Rendering Test', () => {
       hierarchy.getNodes(1),
       (node: Node) => node.isSubTotals,
     ) as Node;
+
     expect(subTotalNode.children[0].y).toEqual(60);
     expect(subTotalNode.children[0].x).toEqual(192);
   });

@@ -74,6 +74,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   test('should emit cell selected event when cell clicked', () => {
     const selected = jest.fn();
+
     s2.on(S2Event.GLOBAL_SELECTED, selected);
 
     s2.emit(S2Event.DATA_CELL_CLICK, {

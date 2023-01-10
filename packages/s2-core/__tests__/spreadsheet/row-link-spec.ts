@@ -85,6 +85,7 @@ describe('Row Text Link Tests', () => {
 
   test('should get correctly row leaf node when click row 浙江', () => {
     const rowNode = s2.facet.layoutResult.rowNodes[0]; // 浙江
+
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
@@ -111,6 +112,7 @@ describe('Row Text Link Tests', () => {
 
   test('should get correctly row leaf node when click row 义乌1', () => {
     const rowNode = s2.facet.layoutResult.rowNodes[2]; // 义乌1
+
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
@@ -138,6 +140,7 @@ describe('Row Text Link Tests', () => {
 
   test('should get correctly row leaf node when click row 四川', () => {
     const rowNode = s2.facet.layoutResult.rowNodes[4]; // 四川
+
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {

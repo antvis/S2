@@ -20,6 +20,7 @@ describe('Interaction Range Selection Tests', () => {
 
   beforeEach(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
+
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
     rangeSelection = new RangeSelection(s2);
@@ -73,6 +74,7 @@ describe('Interaction Range Selection Tests', () => {
     s2.store.set('lastClickedCell', null);
 
     const mockCell00 = createMockCellInfo('8-8', { rowIndex: 8, colIndex: 8 });
+
     s2.getCell = () => mockCell00.mockCell as any;
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
@@ -126,6 +128,7 @@ describe('Interaction Range Selection Tests', () => {
     s2.interaction.getActiveCells = () => activeCells;
 
     const selected = jest.fn();
+
     s2.on(S2Event.GLOBAL_SELECTED, selected);
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
@@ -192,6 +195,7 @@ describe('Interaction Range Selection Tests', () => {
     s2.interaction.getActiveCells = () => activeCells;
 
     const selected = jest.fn();
+
     s2.on(S2Event.GLOBAL_SELECTED, selected);
 
     s2.emit(S2Event.DATA_CELL_CLICK, {

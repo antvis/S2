@@ -24,19 +24,24 @@ export function invokeComponent<P>(
 ) {
   if (id) {
     const domNode = document.querySelector(`#${id}`);
+
     if (domNode) {
       const unmountResult = ReactDOM.unmountComponentAtNode(domNode);
+
       if (unmountResult && domNode.parentNode) {
         domNode.parentNode.removeChild(domNode);
+
         return;
       }
     }
   }
 
   const container = document.createElement('div');
+
   if (id) {
     container.id = id;
   }
+
   document.body.appendChild(container);
 
   let resolveCb: (value: unknown) => void;
@@ -44,6 +49,7 @@ export function invokeComponent<P>(
 
   function destroy() {
     const unmountResult = ReactDOM.unmountComponentAtNode(container);
+
     if (unmountResult && container.parentNode) {
       container.parentNode.removeChild(container);
 
@@ -63,6 +69,7 @@ export function invokeComponent<P>(
     rejectCb = reject;
   }).then((val) => {
     close();
+
     return val;
   });
 
@@ -78,5 +85,6 @@ export function invokeComponent<P>(
   }
 
   render();
+
   return prom;
 }

@@ -40,6 +40,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
   } {
     const { backgroundColor, backgroundColorOpacity } =
       this.getStyle()?.cell || {};
+
     return { backgroundColor, backgroundColorOpacity };
   }
 
@@ -62,6 +63,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
     return width;
   }
 
@@ -85,6 +87,7 @@ export class SeriesNumberCell extends BaseCell<Node> {
       this.getIconStyle(),
       0,
     ).text.x;
+
     return { x: textX, y: textY };
   }
 

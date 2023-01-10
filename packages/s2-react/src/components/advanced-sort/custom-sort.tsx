@@ -13,6 +13,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
 
   const upHandler = (value: string) => {
     const res = splitOrders.concat();
+
     res.splice(res.indexOf(value), 1);
     res.unshift(value);
     setSplitOrders(res);
@@ -21,6 +22,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
   const downHandler = (value: string) => {
     const res = splitOrders.concat();
     let index = res.indexOf(value);
+
     res.splice(res.indexOf(value), 1);
     res.splice((index += 1), 0, value);
     setSplitOrders(res);
@@ -29,6 +31,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
   const toTopHandler = (value: string) => {
     const res = splitOrders.concat();
     let index = res.indexOf(value);
+
     if (index > 0) {
       res.splice(res.indexOf(value), 1);
       res.splice((index -= 1), 0, value);
@@ -36,37 +39,35 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
     }
   };
 
-  const renderItem = (value: string) => {
-    return (
-      <>
-        <span className="split-text">{value}</span>
-        <span
-          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
-          onClick={() => {
-            upHandler(value);
-          }}
-        >
-          <HtmlIcon name="groupAsc" />
-        </span>
-        <span
-          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
-          onClick={() => {
-            downHandler(value);
-          }}
-        >
-          <HtmlIcon name="groupDesc" />
-        </span>
-        <span
-          className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
-          onClick={() => {
-            toTopHandler(value);
-          }}
-        >
-          <HtmlIcon name="globalAsc" />
-        </span>
-      </>
-    );
-  };
+  const renderItem = (value: string) => (
+    <>
+      <span className="split-text">{value}</span>
+      <span
+        className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
+        onClick={() => {
+          upHandler(value);
+        }}
+      >
+        <HtmlIcon name="groupAsc" />
+      </span>
+      <span
+        className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
+        onClick={() => {
+          downHandler(value);
+        }}
+      >
+        <HtmlIcon name="groupDesc" />
+      </span>
+      <span
+        className={`${ADVANCED_SORT_PRE_CLS}-split-icon`}
+        onClick={() => {
+          toTopHandler(value);
+        }}
+      >
+        <HtmlIcon name="globalAsc" />
+      </span>
+    </>
+  );
 
   return (
     <Card className={`${ADVANCED_SORT_PRE_CLS}-card-content`}>

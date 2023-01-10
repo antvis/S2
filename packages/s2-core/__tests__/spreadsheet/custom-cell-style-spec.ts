@@ -15,9 +15,8 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
     hierarchyType: 'grid',
   };
 
-  const mapNodeSize = (nodes: Node[] | ViewMeta[]) => {
-    return nodes.map(({ id, width, height }) => ({ id, width, height }));
-  };
+  const mapNodeSize = (nodes: Node[] | ViewMeta[]) =>
+    nodes.map(({ id, width, height }) => ({ id, width, height }));
 
   describe('PivotSheet Custom Cell Style Tests', () => {
     beforeEach(() => {
@@ -98,10 +97,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             rowCell: {
               width: (node) => {
                 expect(node?.id).toInclude('root[&]浙江');
+
                 return 100;
               },
               height: (node) => {
                 expect(node?.id).toInclude('root[&]浙江');
+
                 return 40;
               },
             },
@@ -198,6 +199,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
+
         sheet.render();
 
         // 1. rowCell.heightByField > rowCell.height > dataCell.height
@@ -248,10 +250,12 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             colCell: {
               width: (node) => {
                 expect(node?.id).toInclude('root[&]笔');
+
                 return 100;
               },
               height: (node) => {
                 expect(node?.id).toInclude('root[&]笔');
+
                 return 40;
               },
             },
@@ -348,6 +352,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
+
         sheet.render();
 
         // 1. colCell.widthByField > colCell.width > dataCell.width
@@ -388,6 +393,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
             },
           },
         });
+
         sheet.render();
 
         sheet.getColumnLeafNodes().forEach((node) => {
@@ -479,6 +485,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       const sheet = createTableSheet(s2Options, {
         useSimpleData: false,
       });
+
       sheet.setOptions({
         style: {
           colCell: {
@@ -498,6 +505,7 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
       const sheet = createTableSheet(s2Options, {
         useSimpleData: false,
       });
+
       sheet.setOptions({
         style: {
           colCell: {

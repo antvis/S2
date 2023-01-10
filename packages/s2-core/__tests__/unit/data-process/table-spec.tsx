@@ -19,6 +19,7 @@ describe('List Table Core Data Process', () => {
     }),
     assembleOptions({}),
   );
+
   s2.render();
 
   describe('1、Generate Col Hierarchy', () => {
@@ -39,6 +40,7 @@ describe('List Table Core Data Process', () => {
       ]);
       // 父子关系正确
       const nodes = colsHierarchy.getNodes();
+
       nodes.forEach((node) => {
         expect(node.children).toEqual([]);
         expect(node.parent!.id).toEqual('root');
@@ -48,6 +50,7 @@ describe('List Table Core Data Process', () => {
 
   describe('2、Calculate overlapped data cell info', () => {
     const { getCellMeta } = s2.facet.layoutResult;
+
     test('should get correct data value', () => {
       // 第一行
       expect(getCellMeta(0, 0)!.data).toEqual({ province: '浙江省' });

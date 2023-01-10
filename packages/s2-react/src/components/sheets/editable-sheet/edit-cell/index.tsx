@@ -98,6 +98,7 @@ function EditCellComponent(
       if (containerRef.current) {
         containerRef.current!.click();
       }
+
       if (inputRef.current) {
         inputRef.current!.focus();
       }
@@ -110,6 +111,7 @@ function EditCellComponent(
     }
 
     const { rowIndex, valueField } = cell.getMeta();
+
     spreadsheet.dataSet.originData[rowIndex][valueField] = inputVal;
     spreadsheet.render(true);
 
@@ -127,15 +129,16 @@ function EditCellComponent(
     }
   };
 
-  const styleProps = React.useMemo(() => {
-    return {
+  const styleProps = React.useMemo(
+    () => ({
       left: cellLeft,
       top: cellTop,
       width: cellWidth,
       height: cellHeight,
       zIndex: 1000,
-    };
-  }, []);
+    }),
+    [],
+  );
 
   const changeValue = (val: string) => {
     setInputVal(val);

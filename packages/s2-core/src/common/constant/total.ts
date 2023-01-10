@@ -14,7 +14,10 @@ export const DEFAULT_TOTAL_SELECTIONS: TotalSelectionsOfMultiData = {
 };
 
 export enum DataSelectType {
-  All = 'all', // 获取所有的数据
-  DetailOnly = 'detailOny', // 只需要明细数据
-  TotalOnly = 'totalOnly', // 只需要总计/小计数据
+  // 获取所有的数据
+  All = 'all',
+  // 只需要明细数据
+  DetailOnly = 'detailOny',
+  // 只需要总计/小计数据
+  TotalOnly = 'totalOnly',
 }

@@ -1,6 +1,7 @@
 /**
  * 透视表核心数据流程（保证基本数据正确）
- * */
+ *
+ */
 import { flattenDeep, get, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
@@ -18,13 +19,16 @@ describe('Pivot Table Core Data Process', () => {
     }),
     assembleOptions({}),
   );
+
   s2.render();
 
   describe('1、Transform indexes data', () => {
     const ds = s2.dataSet as PivotDataSet;
+
     test('should get correct pivot meta', () => {
       const rowPivotMeta = ds.rowPivotMeta;
       const colPivotMeta = ds.colPivotMeta;
+
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
       expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
@@ -135,12 +139,14 @@ describe('Pivot Table Core Data Process', () => {
       // 父子关系正确
       const leavesNodes = rowsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
+
       expect(firstLeafNode.value).toEqual('杭州市');
       expect(firstLeafNode.parent!.value).toEqual('浙江省');
       expect(firstLeafNode.parent!.children?.map((node) => node.value)).toEqual(
         ['杭州市', '绍兴市', '宁波市', '舟山市'],
       );
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
+
       expect(lastLeafNode.value).toEqual('乐山市');
       expect(lastLeafNode.parent!.value).toEqual('四川省');
       expect(lastLeafNode.parent!.children?.map((node) => node.value)).toEqual([
@@ -193,6 +199,7 @@ describe('Pivot Table Core Data Process', () => {
       // 父子关系正确
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
+
       expect(firstLeafNode.value).toEqual('number');
       expect(firstLeafNode.parent!.value).toEqual('桌子');
       expect(firstLeafNode.parent!.parent?.value).toEqual('家具');
@@ -200,6 +207,7 @@ describe('Pivot Table Core Data Process', () => {
         firstLeafNode.parent!.parent?.children?.map((node) => node.value),
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
+
       expect(lastLeafNode.value).toEqual('number');
       expect(lastLeafNode.parent!.value).toEqual('纸张');
       expect(lastLeafNode.parent!.parent?.value).toEqual('办公用品');
@@ -213,6 +221,7 @@ describe('Pivot Table Core Data Process', () => {
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
       s2.facet.layoutResult;
     const { dataCell, colCell } = s2.options.style!;
+
     test('should calc correct row & cell width', () => {
       expect(rowLeafNodes[0].width).toEqual(99);
       expect(colLeafNodes[0].width).toEqual(100);
@@ -228,6 +237,7 @@ describe('Pivot Table Core Data Process', () => {
       // leaf node
       rowLeafNodes.forEach((node, index) => {
         const { padding } = s2.theme.rowCell!.cell!;
+
         expect(node.height).toEqual(
           dataCell?.height! + padding?.top! + padding?.bottom!,
         );
@@ -236,6 +246,7 @@ describe('Pivot Table Core Data Process', () => {
       });
       // level = 0
       const provinceNodes = rowsHierarchy.getNodes(0);
+
       provinceNodes.forEach((node) => {
         expect(node.height).toEqual(
           node.children
@@ -264,12 +275,14 @@ describe('Pivot Table Core Data Process', () => {
       // leaf node
       colLeafNodes.forEach((node, index) => {
         const width = Math.floor(node.width);
+
         expect(width).toEqual(100);
         expect(node.x).toEqual(node.width * index);
         expect(node.y).toEqual(node.level * (colCell!.height as number));
       });
       // level = 0;
       const typeNodes = colsHierarchy.getNodes(0);
+
       typeNodes.forEach((node) => {
         expect(node.width).toEqual(
           node.children
@@ -280,6 +293,7 @@ describe('Pivot Table Core Data Process', () => {
       });
       // level = 1;
       const type1Nodes = colsHierarchy.getNodes(1);
+
       type1Nodes.forEach((node) => {
         expect(node.width).toEqual(
           node.children
@@ -293,6 +307,7 @@ describe('Pivot Table Core Data Process', () => {
 
   describe('4、Calculate data cell info', () => {
     const { getCellMeta } = s2.facet.layoutResult;
+
     test('should get correct data value', () => {
       const getData = (meta: ViewMeta | null) => meta?.data?.[VALUE_FIELD];
 

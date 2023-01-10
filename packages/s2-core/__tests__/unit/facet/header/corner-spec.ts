@@ -25,6 +25,7 @@ describe('Corner Tests', () => {
       seriesNumberWidth: 50,
       spreadsheet: createFakeSpreadSheet(),
     });
+
     return cornerNodes[0];
   }
 
@@ -34,12 +35,14 @@ describe('Corner Tests', () => {
 
   test('should get default series number text', () => {
     const cornerNode = createCornerNode();
+
     expect(cornerNode.value).toEqual('序号');
   });
 
   test('should get custom series number text', () => {
     s2.options.seriesNumberText = 'test';
     const cornerNode = createCornerNode();
+
     expect(cornerNode.value).toEqual('test');
   });
 });

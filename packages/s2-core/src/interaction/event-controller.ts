@@ -111,9 +111,8 @@ export class EventController {
   }
 
   // 不能单独判断是否 Image Shape, 用户如果自定义单元格绘制图片, 会导致判断错误
-  private isGuiIconShape = (target: CanvasEvent['target']) => {
-    return target instanceof CustomImage && target.imgType === GuiIcon.type;
-  };
+  private isGuiIconShape = (target: CanvasEvent['target']) =>
+    target instanceof CustomImage && target.imgType === GuiIcon.type;
 
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
@@ -125,6 +124,7 @@ export class EventController {
       (event.metaKey || event.ctrlKey)
     ) {
       const copyData = getSelectedData(this.spreadsheet);
+
       if (!isNil(copyData)) {
         this.spreadsheet.emit(S2Event.GLOBAL_COPIED, copyData);
       }
@@ -145,8 +145,10 @@ export class EventController {
       return;
     }
 
-    // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
-    // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
+    /*
+     * 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
+     * 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
+     */
     const { interaction } = this.spreadsheet;
 
     if (
@@ -161,6 +163,7 @@ export class EventController {
         InterceptType.ROW_BRUSH_SELECTION,
         InterceptType.COL_BRUSH_SELECTION,
       ]);
+
       return;
     }
 
@@ -178,27 +181,34 @@ export class EventController {
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
       const canvas = this.spreadsheet.getCanvasElement();
+
       if (!canvas) {
         return false;
       }
 
       const { x, y } = canvas.getBoundingClientRect() || {};
-      // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
-      // 比如实际 400 * 300 => hd (800 * 600)
-      // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
+
+      /*
+       * 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
+       * 比如实际 400 * 300 => hd (800 * 600)
+       * 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
+       */
       const { width, height } = this.getContainerRect();
+
       return (
         canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
         event.clientY <= y + height
       );
     }
+
     return false;
   }
 
   private getContainerRect() {
     const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
     const { width, height } = this.spreadsheet.options;
+
     return {
       width: Math.min(width!, maxX),
       height: Math.min(height!, maxY),
@@ -235,16 +245,20 @@ export class EventController {
   private isResizeArea(event: CanvasEvent) {
     // TODO: resize 是否能取到属性
     const appendInfo = getAppendInfo(event.target as DisplayObject);
+
     return appendInfo?.isResizeArea;
   }
 
   private activeResizeArea(event: CanvasEvent) {
     const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+
     if (appendInfo?.isResizeMask) {
       return;
     }
+
     this.resetResizeArea();
     const resizeArea = event.target as Group;
+
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
     resizeArea.attr(
       SHAPE_STYLE_MAP.backgroundOpacity,
@@ -255,12 +269,14 @@ export class EventController {
 
   private resetResizeArea() {
     const resizeArea = this.spreadsheet.store.get('activeResizeArea');
+
     if (!isEmpty(resizeArea)) {
       resizeArea.attr(
         SHAPE_STYLE_MAP.backgroundOpacity,
         this.spreadsheet.theme.resizeArea?.backgroundOpacity,
       );
     }
+
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
   }
 
@@ -277,6 +293,7 @@ export class EventController {
         if (!this.spreadsheet.getCanvasElement()) {
           return false;
         }
+
         if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
           // TODO: resize 逻辑，可以不用覆盖 event 的方式传递？后三行都要改
           event.client.x = mouseEvent.clientX;
@@ -295,10 +312,12 @@ export class EventController {
         },
         { once: true },
       );
+
       return;
     }
 
     const cellType = this.spreadsheet.getCellType(event.target);
+
     switch (cellType) {
       case CellTypes.DATA_CELL:
         this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_DOWN, event);
@@ -324,13 +343,17 @@ export class EventController {
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
+
       return;
     }
+
     this.resetResizeArea();
 
     const cell = this.spreadsheet.getCell(event.target);
+
     if (cell) {
       const cellType = cell.cellType;
+
       switch (cellType) {
         case CellTypes.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, event);
@@ -388,15 +411,19 @@ export class EventController {
   private onCanvasMouseup = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
+
       return;
     }
+
     const cell = this.spreadsheet.getCell(event.target);
 
     if (cell) {
       const cellType = cell.cellType;
+
       // target相同，说明是一个cell内的 click 事件
       if (this.target === event.target) {
         const isGuiIconShape = this.isGuiIconShape(event.target);
+
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
@@ -406,18 +433,21 @@ export class EventController {
             if (isGuiIconShape) {
               break;
             }
+
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellTypes.COL_CELL:
             if (isGuiIconShape) {
               break;
             }
+
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellTypes.CORNER_CELL:
             if (isGuiIconShape) {
               break;
             }
+
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
           case CellTypes.MERGED_CELL:
@@ -456,6 +486,7 @@ export class EventController {
     if (isMobile()) {
       this.onCanvasMouseup(event);
     }
+
     // 双击的 detail 是 2
     if (event.detail === 2) {
       this.onCanvasDoubleClick(event);
@@ -464,15 +495,19 @@ export class EventController {
 
   private onCanvasDoubleClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
+
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
+
       return;
     }
 
     spreadsheet.emit(S2Event.GLOBAL_DOUBLE_CLICK, event);
     const cell = spreadsheet.getCell(event.target);
+
     if (cell) {
       const cellType = cell.cellType;
+
       if (this.target === event.target) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -502,7 +537,9 @@ export class EventController {
     if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
       return;
     }
+
     const { interaction } = this.spreadsheet;
+
     // 两种情况不能重置 1. 选中单元格 2. 有 intercepts 时（重置会清空 intercepts）
     if (!interaction.isSelectedState() && !(interaction.intercepts.size > 0)) {
       interaction.reset();
@@ -511,14 +548,17 @@ export class EventController {
 
   private onCanvasContextMenu = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
+
     if (this.isResizeArea(event)) {
       spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
+
       return;
     }
 
     spreadsheet.emit(S2Event.GLOBAL_CONTEXT_MENU, event);
 
     const cellType = this.spreadsheet.getCellType(event.target);
+
     switch (cellType) {
       case CellTypes.DATA_CELL:
         this.spreadsheet.emit(S2Event.DATA_CELL_CONTEXT_MENU, event);
@@ -574,6 +614,7 @@ export class EventController {
   ) {
     if (target.addEventListener) {
       const { eventListenerOptions } = this.spreadsheet.options.interaction!;
+
       target.addEventListener(
         type,
         handler as EventListenerOrEventListenerObject,

@@ -15,9 +15,11 @@ export const getScrollOffsetForCol = (
   const frozenTrailingColWidth = info?.frozenTrailingCol.width ?? 0;
 
   const colNode = facet.layoutResult.colLeafNodes[colIndex];
+
   if (direction === ScrollDirection.LEADING) {
     return colNode.x - frozenColWidth;
   }
+
   return colNode.x + colNode.width - (width - frozenTrailingColWidth);
 };
 

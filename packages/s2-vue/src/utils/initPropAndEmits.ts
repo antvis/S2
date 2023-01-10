@@ -32,6 +32,7 @@ export const initBaseSheetProps = () => ({
     default: false as Adaptive,
   },
   onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
+
   /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
   onGetSpreadSheet: Function as PropType<SheetComponentProps['getSpreadSheet']>,
   onMounted: Function as PropType<SheetComponentProps['onMounted']>,
@@ -64,6 +65,7 @@ export const initDrillDownProps = () => ({
 
 export const initDrillDownEmits = (): BaseDrillDownEmits => {
   const keys: BaseDrillDownEmitKeys[] = ['getDrillFields', 'setDrillFields'];
+
   return keys as unknown as BaseDrillDownEmits;
 };
 
@@ -180,5 +182,6 @@ export const initBaseSheetEmits = () => {
     'rowCellBrushSelection',
     'colCellBrushSelection',
   ];
+
   return keys as unknown as BaseSheetInitEmits;
 };

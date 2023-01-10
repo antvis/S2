@@ -95,8 +95,8 @@ export const getCellBoxByType = (
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
  */
 
-const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
-  return merge(
+const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg =>
+  merge(
     {
       size: 0,
       position: 'right',
@@ -107,10 +107,10 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
     },
     iconCfg,
   );
-};
 
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
+
   return (
     contentWidth -
     iconCfg.size! -
@@ -125,6 +125,7 @@ export const getVerticalPosition = (
   size = 0,
 ) => {
   let p = 0;
+
   switch (textBaseline) {
     case 'top':
       p = y;
@@ -136,6 +137,7 @@ export const getVerticalPosition = (
       p = y + height - size;
       break;
   }
+
   return p;
 };
 
@@ -191,6 +193,7 @@ export const getTextAndFollowingIconPosition = (
         (iconPosition === 'left' ? margin!.left! : margin!.right!) +
         textWidth;
       const startX = x + width / 2 - totalWidth / 2;
+
       textX =
         startX +
         textWidth / 2 +
@@ -256,6 +259,7 @@ export const getTextAreaRange = (
 
   let position: number;
   let availableContentWidth: number;
+
   if (content.start <= viewport.start && contentEnd >= viewportEnd) {
     /**
      *     +----------------------+
@@ -276,6 +280,7 @@ export const getTextAreaRange = (
      *         +-------------------+
      */
     const restWidth = content.width - (viewport.start - content.start);
+
     position =
       restWidth < textWidth
         ? contentEnd - textWidth / 2
@@ -290,6 +295,7 @@ export const getTextAreaRange = (
      *   +-------------------+
      */
     const restWidth = content.width - (contentEnd - viewportEnd);
+
     position =
       restWidth < textWidth
         ? content.start + textWidth / 2
@@ -344,18 +350,21 @@ export const getBorderPositionAndStyle = (
   let y1 = 0;
   let x2 = 0;
   let y2 = 0;
+
   // horizontal
   if (
     position === CellBorderPosition.TOP ||
     position === CellBorderPosition.BOTTOM
   ) {
     let yPosition = y;
+
     if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
       yPosition = y + horizontalBorderWidth / 2;
     } else {
       yPosition = y + height - horizontalBorderWidth / 2;
     }
+
     y1 = yPosition;
     y2 = yPosition;
     x1 = x;
@@ -368,11 +377,13 @@ export const getBorderPositionAndStyle = (
     position === CellBorderPosition.RIGHT
   ) {
     let xPosition = x;
+
     if (position === CellBorderPosition.LEFT) {
       xPosition = x + verticalBorderWidth / 2;
     } else {
       xPosition = x + width - verticalBorderWidth / 2;
     }
+
     x1 = xPosition;
     x2 = xPosition;
     y1 = y;
@@ -470,7 +481,8 @@ export const adjustColHeaderScrollingTextPosition = (
   textAlign: TextAlign,
 ) => {
   const textAndIconSpace = actualTextWidth + actionIconSpace;
-  const startX = textAreaRange.start; // 文本&icon 区域中心点坐标 x
+  // 文本 & icon 区域中心点坐标 x
+  const startX = textAreaRange.start;
 
   if (textAlign === 'center') {
     return startX - actionIconSpace / 2;

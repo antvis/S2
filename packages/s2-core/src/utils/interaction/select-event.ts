@@ -15,11 +15,10 @@ import {
   updateAllColHeaderCellState,
 } from './hover-event';
 
-export const isMultiSelectionKey = (e: KeyboardEvent) => {
-  return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
+export const isMultiSelectionKey = (e: KeyboardEvent) =>
+  [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
     e.key as InteractionKeyboardKey,
   );
-};
 
 export const getCellMeta = (cell: S2CellType) => {
   const meta = cell.getMeta();
@@ -35,6 +34,7 @@ export const getCellMeta = (cell: S2CellType) => {
 
 export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
   const { interaction } = spreadsheet;
+
   interaction.changeState({
     stateName: InteractionStateName.SELECTED,
     cells,
@@ -73,6 +73,7 @@ export function getRowCellForSelectedCell(
     if (!options.showSeriesNumber) {
       return [];
     }
+
     const colId = facet.layoutResult.colLeafNodes[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
     const result: TableSeriesCell[] = [];
@@ -83,6 +84,7 @@ export function getRowCellForSelectedCell(
     if (rowCell && rowCell instanceof TableSeriesCell) {
       result.push(rowCell);
     }
+
     return result;
   }
 
@@ -105,6 +107,7 @@ export function updateRowColCells(meta: ViewMeta) {
 
   if (rowId) {
     const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
+
     forEach(allRowHeaderCells, (cell) => {
       cell.updateByState(InteractionStateName.SELECTED);
     });

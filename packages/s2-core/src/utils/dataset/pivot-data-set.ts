@@ -24,9 +24,9 @@ export function transformDimensionsValues(
   dimensions: string[],
   placeholder: string = TOTAL_VALUE,
 ): string[] {
-  return filterExtraDimension(dimensions).map((dimension) => {
-    return !has(record, dimension) ? placeholder : String(record[dimension]);
-  });
+  return filterExtraDimension(dimensions).map((dimension) =>
+    !has(record, dimension) ? placeholder : String(record[dimension]),
+  );
 }
 
 export function shouldQueryMultiData(pathValue: string | number) {
@@ -43,6 +43,7 @@ export function shouldQueryMultiData(pathValue: string | number) {
 export function getDimensionsWithoutPathPre(dimensions: string[]) {
   return dimensions.map((item) => {
     const splitArr = item?.split(NODE_ID_SEPARATOR);
+
     return splitArr?.[splitArr?.length! - 1] || item;
   });
 }
@@ -75,6 +76,7 @@ export function getDimensionsWithParentPath(
     0,
     defaultDimensions.indexOf(field) + 1,
   );
+
   return dimensions
     .map((item) =>
       measure.map((i) => item.getValueByField(i)).join(`${NODE_ID_SEPARATOR}`),
@@ -117,18 +119,22 @@ export function getDataPath(params: DataPathParams): DataPath {
   // TODO: extract as a layout hook
   const appendValues = () => {
     const map = new Map();
+
     values?.forEach((v, idx) => {
       map.set(v, {
         level: idx,
         children: new Map(),
       });
     });
+
     return map;
   };
 
-  // 根据行、列维度值生成对应的 path路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
-  // 如果是汇总格子: path = [0,0,0,0] path中会存在 0的值（这里在indexesData里面会映射）
-  // 如果是明细格子: path = [1,1,1] 数字均不为0
+  /*
+   * 根据行、列维度值生成对应的 path路径，始终将总计小计置于第 0 位，明细数据从第 1 位开始，有两个情况：
+   * 如果是汇总格子: path = [0,0,0,0] path中会存在 0的值（这里在indexesData里面会映射）
+   * 如果是明细格子: path = [1,1,1] 数字均不为0
+   */
   const getPath = (
     dimensions: string[],
     dimensionValues: string[],
@@ -167,9 +173,11 @@ export function getDataPath(params: DataPathParams): DataPath {
         if (shouldCreateOrUpdate && meta.childField !== dimensions?.[i + 1]) {
           meta.childField = dimensions?.[i + 1];
         }
+
         currentMeta = meta?.children;
       }
     }
+
     return path;
   };
 
@@ -227,8 +235,10 @@ export function transformIndexesData(params: Param) {
     dimensionPath: string[];
   }) => {
     if (repeatedDimensionSet.has(dimension)) {
-      // 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
-      // 所有重复字段的维度值无需再加入到 sortedDimensionValues
+      /*
+       * 当行、列都配置了同一维度字段时，因为 getDataPath 先处理行、再处理列
+       * 所有重复字段的维度值无需再加入到 sortedDimensionValues
+       */
       return;
     }
 
@@ -236,8 +246,7 @@ export function transformIndexesData(params: Param) {
       sortedDimensionValues[dimension] ||
       (sortedDimensionValues[dimension] = [])
     ).push(
-      // 拼接维度路径
-      // [1, undefined] => ['1', 'undefined'] => '1[&]undefined
+      // 拼接维度路径 [1, undefined] => ['1', 'undefined'] => '1[&]undefined
       dimensionPath.map((it) => `${it}`).join(NODE_ID_SEPARATOR),
     );
   };
@@ -247,6 +256,7 @@ export function transformIndexesData(params: Param) {
     if (!data) {
       return;
     }
+
     const rowDimensionValues = transformDimensionsValues(
       data,
       rows as string[],
@@ -266,6 +276,7 @@ export function transformIndexesData(params: Param) {
       columns,
       values,
     });
+
     paths.push(path);
     set(indexesData, path, data);
   });
@@ -283,11 +294,14 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   if (!meta || !nodeId) {
     return;
   }
+
   const paths = nodeId.split(NODE_ID_SEPARATOR);
   const deletePath = last(paths);
   let currentMeta = meta;
+
   forEach(paths, (path, idx) => {
     const pathMeta = currentMeta.get(path);
+
     if (pathMeta) {
       if (path === deletePath) {
         pathMeta.children = new Map();
@@ -295,6 +309,7 @@ export function deleteMetaById(meta: PivotMeta, nodeId: string) {
       } else {
         currentMeta = pathMeta.children;
       }
+
       return true;
     }
 

@@ -11,6 +11,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
   const activeIcons = spreadsheet.store.get('visibleActionIcons');
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
   const cellMetas = spreadsheet.interaction.getState().cells;
+
   // 如果都处于初始化状态 不需要clear
   if (
     isEmpty(allInteractedCells) &&
@@ -19,6 +20,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
   ) {
     return false;
   }
+
   forEach(activeIcons, (icon) => {
     icon.setAttribute('visibility', 'hidden');
   });
@@ -37,6 +39,7 @@ export const clearState = (spreadsheet: SpreadSheet): boolean => {
       cell.clearUnselectedState();
     });
   }
+
   return true;
 };
 
@@ -50,6 +53,7 @@ export const setState = (
   interactionStateInfo: InteractionStateInfo,
 ) => {
   const stateName = interactionStateInfo?.stateName;
+
   if (!spreadsheet.interaction.isEqualStateName(stateName!)) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);

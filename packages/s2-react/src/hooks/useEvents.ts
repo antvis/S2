@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import {
   type EmitterType,
   getBaseCellData,
@@ -18,6 +19,7 @@ export const useCellEvent = (
     const handlerFn = (event: GEvent) => {
       handler?.(getBaseCellData(event));
     };
+
     s2?.on(eventName, handlerFn);
 
     return () => {
@@ -36,12 +38,14 @@ export const useS2Event = (
     const handlerFn: EmitterType[S2Event] = (...args: any[]) => {
       handler?.(...args);
     };
+
     s2?.on(eventName, handlerFn);
 
     return () => {
       if (emitBeforeOff) {
         s2?.emit(eventName);
       }
+
       s2?.off(eventName, handlerFn);
     };
   }, [s2, handler, eventName]);
@@ -144,6 +148,7 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.LAYOUT_PAGINATION, props.onLayoutPagination, s2);
+
   /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
   useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
   useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);

@@ -34,15 +34,18 @@ const setSpreadSheet = (
   index: number,
 ) => {
   const s2 = new PivotSheet(dom, dataCfg, options as S2Options);
+
   if (index === 1) {
     spreadsheet1 = s2;
   }
+
   return s2;
 };
 
 const getData = (index: number, isTotal?: boolean) => {
   let realData: RawData[] = [];
   let totalData: RawData[] = [];
+
   // eslint-disable-next-line default-case
   switch (index) {
     case 1:
@@ -70,11 +73,12 @@ const getData = (index: number, isTotal?: boolean) => {
   if (isTotal) {
     return totalData;
   }
+
   return realData;
 };
 
-const getDataCfg = (index: number) => {
-  return {
+const getDataCfg = (index: number) =>
+  ({
     fields: {
       rows: ['province', 'city'],
       columns: ['category', 'subCategory'],
@@ -96,61 +100,56 @@ const getDataCfg = (index: number) => {
     data: getData(index),
     totalData: getData(index, true),
     sortParams: [],
-  } as SheetComponentsProps['dataCfg'];
-};
+  } as SheetComponentsProps['dataCfg']);
 
-const getOptions = (): SheetComponentsProps['options'] => {
-  return {
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    showSeriesNumber: false,
-    frozen: {
-      rowHeader: false,
+const getOptions = (): SheetComponentsProps['options'] => ({
+  width: 800,
+  height: 600,
+  hierarchyType: 'grid',
+  showSeriesNumber: false,
+  frozen: {
+    rowHeader: false,
+  },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province', 'city'],
     },
-    totals: {
-      row: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['province', 'city'],
-      },
-      col: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['subCategory', 'category'],
-      },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['subCategory', 'category'],
     },
-    style: {
-      colCell: {
-        widthByField: {},
-        heightByField: {},
-      },
-      dataCell: {
-        height: 32,
-      },
-      rowCell: {
-        width: 100,
-      },
-      device: DeviceType.PC,
+  },
+  style: {
+    colCell: {
+      widthByField: {},
+      heightByField: {},
     },
-    tooltip: {
-      showTooltip: true,
+    dataCell: {
+      height: 32,
     },
-  };
-};
+    rowCell: {
+      width: 100,
+    },
+    device: DeviceType.PC,
+  },
+  tooltip: {
+    showTooltip: true,
+  },
+});
 
-const wrapComponent = (text: string, component: React.ReactNode) => {
-  return (
-    <div>
-      <div>{text}</div>
-      <div style={{ height: '300px' }}>{component}</div>
-    </div>
-  );
-};
+const wrapComponent = (text: string, component: React.ReactNode) => (
+  <div>
+    <div>{text}</div>
+    <div style={{ height: '300px' }}>{component}</div>
+  </div>
+);
 
 function MainLayout() {
   return (
@@ -165,9 +164,7 @@ function MainLayout() {
             dom: S2MountContainer,
             dataCfg: S2DataConfig,
             options: SheetComponentsProps['options'],
-          ) => {
-            return setSpreadSheet(dom, dataCfg, options, 1);
-          }}
+          ) => setSpreadSheet(dom, dataCfg, options, 1)}
         />,
       )}
       {/* {wrapComponent(

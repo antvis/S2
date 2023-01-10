@@ -33,82 +33,76 @@ const actualDataSet = jest.requireActual(
 const { rowPivotMeta, colPivotMeta, indexesData, sortedDimensionValues } =
   getMockPivotMeta();
 
-jest.mock('@/sheet-type', () => {
-  return {
-    SpreadSheet: jest.fn().mockImplementation(() => {
-      const container = new Canvas({
-        width: 100,
-        height: 100,
-        container: document.body,
-        renderer: new Renderer(),
-      });
-      const panelScrollGroup = new Group({}) as PanelScrollGroup;
-      panelScrollGroup.update = () => {};
-      container.appendChild(panelScrollGroup);
+jest.mock('@/sheet-type', () => ({
+  SpreadSheet: jest.fn().mockImplementation(() => {
+    const container = new Canvas({
+      width: 100,
+      height: 100,
+      container: document.body,
+      renderer: new Renderer(),
+    });
+    const panelScrollGroup = new Group({}) as PanelScrollGroup;
 
-      return {
-        dataCfg: assembleDataCfg(),
-        options: assembleOptions(),
-        container,
-        theme: getTheme({}),
-        store: new Store(),
-        panelScrollGroup,
-        panelGroup: container.appendChild(new Group()),
-        foregroundGroup: container.appendChild(new Group()),
-        backgroundGroup: container.appendChild(new Group()),
-        isFrozenRowHeader: jest.fn(),
-        isTableMode: jest.fn().mockReturnValue(false),
-        isPivotMode: jest.fn().mockReturnValue(true),
-        getTotalsConfig: jest.fn().mockReturnValue({}),
-        getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
-        emit: jest.fn(),
-        getColumnLeafNodes: jest.fn().mockReturnValue([]),
-        isScrollContainsRowHeader: jest.fn(),
-        isHierarchyTreeType: jest.fn(),
-        facet: {
-          getFreezeCornerDiffWidth: jest.fn(),
-          layoutResult: {
-            rowLeafNodes: [],
-          },
-          getHiddenColumnsInfo: jest.fn(),
-        },
-        getCanvasElement: () =>
-          container.getContextService().getDomElement() as HTMLCanvasElement,
-        hideTooltip: jest.fn(),
-        interaction: {
-          clearHoverTimer: jest.fn(),
-        },
-        measureTextWidth:
-          jest.fn() as unknown as SpreadSheet['measureTextWidth'],
-        enableFrozenHeaders() {
-          return true;
-        },
-      };
-    }),
-  };
-});
+    panelScrollGroup.update = () => {};
+    container.appendChild(panelScrollGroup);
 
-jest.mock('@/data-set/pivot-data-set', () => {
-  return {
-    PivotDataSet: jest.fn().mockImplementation(() => {
-      return {
-        ...assembleDataCfg(),
-        rowPivotMeta,
-        colPivotMeta,
-        indexesData,
-        sortedDimensionValues,
-        moreThanOneValue: jest.fn(),
-        getField: jest.fn(),
-        getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
-        getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
-        getFieldName: actualPivotDataSet.prototype.getFieldName,
-        getCellData: actualPivotDataSet.prototype.getCellData,
-        getMultiData: jest.fn(),
-        getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
-      };
-    }),
-  };
-});
+    return {
+      dataCfg: assembleDataCfg(),
+      options: assembleOptions(),
+      container,
+      theme: getTheme({}),
+      store: new Store(),
+      panelScrollGroup,
+      panelGroup: container.appendChild(new Group()),
+      foregroundGroup: container.appendChild(new Group()),
+      backgroundGroup: container.appendChild(new Group()),
+      isFrozenRowHeader: jest.fn(),
+      isTableMode: jest.fn().mockReturnValue(false),
+      isPivotMode: jest.fn().mockReturnValue(true),
+      getTotalsConfig: jest.fn().mockReturnValue({}),
+      getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
+      emit: jest.fn(),
+      getColumnLeafNodes: jest.fn().mockReturnValue([]),
+      isScrollContainsRowHeader: jest.fn(),
+      isHierarchyTreeType: jest.fn(),
+      facet: {
+        getFreezeCornerDiffWidth: jest.fn(),
+        layoutResult: {
+          rowLeafNodes: [],
+        },
+        getHiddenColumnsInfo: jest.fn(),
+      },
+      getCanvasElement: () =>
+        container.getContextService().getDomElement() as HTMLCanvasElement,
+      hideTooltip: jest.fn(),
+      interaction: {
+        clearHoverTimer: jest.fn(),
+      },
+      measureTextWidth: jest.fn() as unknown as SpreadSheet['measureTextWidth'],
+      enableFrozenHeaders() {
+        return true;
+      },
+    };
+  }),
+}));
+
+jest.mock('@/data-set/pivot-data-set', () => ({
+  PivotDataSet: jest.fn().mockImplementation(() => ({
+    ...assembleDataCfg(),
+    rowPivotMeta,
+    colPivotMeta,
+    indexesData,
+    sortedDimensionValues,
+    moreThanOneValue: jest.fn(),
+    getField: jest.fn(),
+    getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
+    getFieldMeta: (field: string, meta: ViewMeta) => find(meta, { field }),
+    getFieldName: actualPivotDataSet.prototype.getFieldName,
+    getCellData: actualPivotDataSet.prototype.getCellData,
+    getMultiData: jest.fn(),
+    getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
+  })),
+}));
 
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -116,6 +110,7 @@ const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 describe('Pivot Mode Facet Test', () => {
   const s2: SpreadSheet = new MockSpreadSheet();
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
+
   s2.dataSet = dataSet;
   s2.interaction = new RootInteraction(s2);
   s2.isValueInCols = jest.fn();
@@ -221,7 +216,9 @@ describe('Pivot Mode Facet Test', () => {
     s2.options = assembleOptions({
       hierarchyType: 'tree',
     });
-    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
+    // 小于 DEFAULT_TREE_ROW_WIDTH
+    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30);
+
     s2.dataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet(s2);
     const { rowsHierarchy } = treeFacet.layoutResult;
@@ -289,6 +286,7 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct result when enable series number', () => {
     const mockDataSet = new MockPivotDataSet(s2);
+
     s2.options = assembleOptions({
       showSeriesNumber: true,
       dataCell: (fct) => new DataCell(fct, s2),
@@ -354,6 +352,7 @@ describe('Pivot Mode Facet Test', () => {
     'should render custom column leaf node width by %o',
     ({ width, useFunc }) => {
       const widthFn = jest.fn(() => width);
+
       s2.options = assembleOptions({
         style: {
           colCell: {
