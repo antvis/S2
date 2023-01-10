@@ -10,7 +10,7 @@ import {
   ColCell,
   TableDataCell,
 } from '@/index';
-import type { PanelScrollGroup } from '@/group/panel-scroll-group';
+import type { TableFacet } from '@/facet';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -238,12 +238,8 @@ describe('TableSheet normal spec', () => {
     s2.render();
 
     const orderIdDataCell = (
-      (
-        s2.facet.panelGroup.getElementById(
-          'panelScrollGroup',
-        ) as PanelScrollGroup
-      ).children as TableDataCell[]
-    ).find((item: TableDataCell) => item.getMeta().valueField === 'order_id');
+      (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
+    ).find((item) => item.getMeta().valueField === 'order_id');
 
     expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
 
