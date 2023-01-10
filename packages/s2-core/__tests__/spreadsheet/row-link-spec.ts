@@ -98,7 +98,7 @@ describe('Row Text Link Tests', () => {
     } as any);
 
     expect(linkFieldJump).toBeCalledWith({
-      key: 'province',
+      field: 'province',
       cellData: rowNode,
       record: {
         province: '浙江',
@@ -125,7 +125,7 @@ describe('Row Text Link Tests', () => {
     } as any);
 
     expect(linkFieldJump).toBeCalledWith({
-      key: 'city',
+      field: 'city',
       cellData: rowNode,
       record: {
         province: '浙江',
@@ -153,7 +153,7 @@ describe('Row Text Link Tests', () => {
     } as any);
 
     expect(linkFieldJump).toBeCalledWith({
-      key: 'province',
+      field: 'province',
       cellData: rowNode,
       record: {
         province: '四川',

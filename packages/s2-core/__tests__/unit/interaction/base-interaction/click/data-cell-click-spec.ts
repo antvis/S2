@@ -115,7 +115,7 @@ describe('Interaction Data Cell Click Tests', () => {
     } as unknown as GEvent);
 
     expect(linkFieldJump).toHaveBeenCalledWith({
-      key: mockCellData.valueField,
+      field: mockCellData.valueField,
       cellData: mockCellData,
       record: mockCellData.data,
     });
