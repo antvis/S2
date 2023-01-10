@@ -280,7 +280,7 @@ export class TableFacet extends BaseFacet {
       } else {
         data = this.spreadsheet.dataSet.getCellData({
           query: {
-            colNode: colNode.field,
+            col: colNode.field,
             rowIndex,
           },
         });

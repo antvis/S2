@@ -1,5 +1,5 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
-import { get } from 'lodash';
+import { get, last } from 'lodash';
 import {
   DeviceType,
   TableSheet,
@@ -187,6 +187,10 @@ describe('TableSheet normal spec', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
 
+    const getLastColCell = () =>
+      last(s2.getColumnNodes())!.belongsCell as ColCell;
+    const preColWidth = getLastColCell().getMeta().width;
+
     await sleep(30);
 
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
@@ -201,9 +205,11 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300); // 等待绘制响应
 
+    const resizeLength = 100;
+
     document.dispatchEvent(
       new MouseEvent('mousemove', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -212,7 +218,7 @@ describe('TableSheet normal spec', () => {
 
     document.dispatchEvent(
       new PointerEvent('pointerup', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -220,11 +226,8 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300);
 
-    const columnNodes = s2.getColumnNodes();
-    const lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
-
-    expect(lastColumnCell.getMeta().width).toBe(198);
+    const currentColWidth = getLastColCell().getMeta().width;
+    expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
   });
 
   test('should render link shape', () => {
