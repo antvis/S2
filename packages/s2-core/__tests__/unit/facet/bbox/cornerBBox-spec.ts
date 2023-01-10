@@ -27,7 +27,7 @@ describe('cornerBBox test', () => {
         options: {
           width: 400,
           style: {
-            colCfg: {
+            colCell: {
               hideMeasureColumn: false,
             },
           },
