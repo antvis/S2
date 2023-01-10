@@ -142,7 +142,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerNode.y = leafNode?.y! ?? 0;
       // cNode should subtract series width
       cornerNode.width = width - seriesNumberWidth;
-      cornerNode.height = leafNode?.height! ?? colCell?.height;
+      cornerNode.height = leafNode?.height! ?? (colCell?.height as number);
       cornerNode.seriesNumberWidth = seriesNumberWidth;
       cornerNode.isPivotMode = true;
       cornerNode.spreadsheet = spreadsheet;
@@ -169,7 +169,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cornerNode.x = rowNode.x + seriesNumberWidth;
         cornerNode.y = leafNode?.y ?? 0;
         cornerNode.width = rowNode.width;
-        cornerNode.height = leafNode?.height! ?? colCell?.height;
+        cornerNode.height = leafNode?.height! ?? (colCell?.height as number);
         cornerNode.isPivotMode = true;
         cornerNode.cornerType = CornerNodeType.Row;
         cornerNode.spreadsheet = spreadsheet;

@@ -154,7 +154,7 @@ export class TableColHeader extends ColHeader {
   }
 
   public getScrollGroupClipBBox = () => {
-    const { width, height, scrollX = 0, spreadsheet } = this.headerConfig;
+    const { width, height, spreadsheet } = this.headerConfig;
 
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
     const frozenWidth = getFrozenColWidth(
@@ -162,7 +162,7 @@ export class TableColHeader extends ColHeader {
       spreadsheet.options.frozen!,
     );
     return {
-      x: scrollX + frozenWidth.frozenColWidth,
+      x: frozenWidth.frozenColWidth,
       y: 0,
       width:
         width - frozenWidth.frozenColWidth - frozenWidth.frozenTrailingColWidth,
