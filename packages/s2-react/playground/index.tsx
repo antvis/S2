@@ -586,23 +586,43 @@ function MainLayout() {
                     });
                   }}
                 />
-                <Switch
-                  checkedChildren="隐藏列头"
-                  unCheckedChildren="显示列头"
-                  checked={mergedOptions.style?.colCell?.height === 0}
-                  onChange={(checked) => {
-                    updateOptions({
-                      style: {
-                        colCell: {
-                          height: checked
-                            ? 0
-                            : s2Options?.style?.colCell?.height ??
-                              DEFAULT_STYLE.colCell?.height,
+                <Tooltip title="将列头高度设为0">
+                  <Switch
+                    checkedChildren="隐藏列头和对应角头"
+                    unCheckedChildren="显示列头和对应角头"
+                    checked={mergedOptions.style?.colCell?.height === 0}
+                    onChange={(checked) => {
+                      updateOptions({
+                        style: {
+                          colCell: {
+                            height: checked
+                              ? 0
+                              : s2Options?.style?.colCell?.height ??
+                                DEFAULT_STYLE.colCell?.height,
+                          },
                         },
-                      },
-                    });
-                  }}
-                />
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="改变 dataConfig 配置">
+                  <Switch
+                    checkedChildren="隐藏列头但保留角头"
+                    unCheckedChildren="显示列头"
+                    checked={isEmpty(dataCfg.fields?.columns)}
+                    onChange={(checked) => {
+                      setDataCfg(
+                        customMerge(dataCfg, {
+                          fields: {
+                            columns: checked
+                              ? []
+                              : pivotSheetDataCfg.fields.columns,
+                          },
+                        }),
+                      );
+                    }}
+                  />
+                </Tooltip>
                 <Switch
                   checkedChildren="字段标记开"
                   unCheckedChildren="字段标记关"
