@@ -50,10 +50,13 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   forceRender?: boolean;
 }
 
+export type TooltipSummaryOptionsValue = number | string | undefined | null;
+
 export interface TooltipSummaryOptions {
-  name: string;
-  value: number | string;
+  name: string | null;
   selectedData: TooltipDataItem[];
+  value: TooltipSummaryOptionsValue;
+  originValue?: TooltipSummaryOptionsValue;
 }
 
 export interface TooltipNameTipsOptions {
