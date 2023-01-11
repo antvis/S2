@@ -109,7 +109,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': [1, 3],
+    'max-params': [2, 4],
     'no-unreachable': 2,
     'no-useless-computed-key': 2,
     'block-spacing': [2, 'always'],

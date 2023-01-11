@@ -119,16 +119,16 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   public getTextAndIconPosition(iconCount = 1) {
-    const textStyle = this.getTextStyle();
-    const iconCfg = this.getIconStyle();
+    const textTheme = this.getTextStyle();
+    const iconTheme = this.getIconStyle();
 
-    return getTextAndFollowingIconPosition(
-      this.getBBoxByType(CellClipBox.CONTENT_BOX),
-      textStyle,
-      this.actualTextWidth,
-      iconCfg,
+    return getTextAndFollowingIconPosition({
+      bbox: this.getBBoxByType(CellClipBox.CONTENT_BOX),
+      textStyle: textTheme,
+      textWidth: this.actualTextWidth,
+      iconStyle: iconTheme,
       iconCount,
-    );
+    });
   }
 
   public getActualText() {
@@ -318,14 +318,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
 
-    this.textShape = renderText(
-      this,
-      [this.textShape],
-      position.x,
-      position.y,
-      ellipsisText,
-      textStyle,
-    );
+    this.textShape = renderText(this, [this.textShape], {
+      x: position.x,
+      y: position.y,
+      text: ellipsisText,
+      ...textStyle,
+    });
     this.textShapes.push(this.textShape);
   }
 

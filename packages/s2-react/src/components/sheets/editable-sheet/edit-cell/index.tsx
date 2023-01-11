@@ -7,12 +7,12 @@ import React, {
 } from 'react';
 import { Input } from 'antd';
 import {
-  BaseCell,
   S2Event,
   S2_PREFIX_CLS,
   SpreadSheet,
-  type ViewMeta,
   GEvent,
+  type DataItem,
+  type S2CellType,
 } from '@antv/s2';
 import { isNil, pick } from 'lodash';
 import { useS2Event } from '../../../../hooks';
@@ -27,9 +27,9 @@ export interface CustomProps {
   style: React.CSSProperties;
   onChange: (val: string) => void;
   onSave: () => void;
-  value: any;
+  value: DataItem;
   spreadsheet: SpreadSheet;
-  cell: any;
+  cell: S2CellType | null;
 }
 
 type onChangeProps = {
@@ -46,7 +46,7 @@ function EditCellComponent(
   const { params, resolver } = props;
   const spreadsheet = useSpreadSheetRef();
   const { event, onChange, CustomComponent } = params;
-  const cell: BaseCell<ViewMeta> | null = spreadsheet.getCell(event.target);
+  const cell = spreadsheet.getCell(event.target);
 
   const { left, top, width, height } = useMemo(() => {
     const rect = spreadsheet?.getCanvasElement().getBoundingClientRect();
@@ -87,7 +87,9 @@ function EditCellComponent(
     return cellMeta;
   }, [cell, spreadsheet]);
 
-  const [inputVal, setInputVal] = useState(cell?.getMeta()?.fieldValue);
+  const [inputVal, setInputVal] = useState<DataItem>(
+    cell?.getMeta()?.fieldValue,
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -129,16 +131,13 @@ function EditCellComponent(
     }
   };
 
-  const styleProps = React.useMemo(
-    () => ({
-      left: cellLeft,
-      top: cellTop,
-      width: cellWidth,
-      height: cellHeight,
-      zIndex: 1000,
-    }),
-    [],
-  );
+  const styleProps: React.CSSProperties = {
+    left: cellLeft,
+    top: cellTop,
+    width: cellWidth,
+    height: cellHeight,
+    zIndex: 1000,
+  };
 
   const changeValue = (val: string) => {
     setInputVal(val);
@@ -189,11 +188,11 @@ function EditCell({ onChange, CustomComponent }: onChangeProps) {
 
   const onEditCell = useCallback(
     (event: GEvent) => {
-      invokeComponent(
-        EditCellComponent,
-        { event, onChange, CustomComponent },
+      invokeComponent({
+        component: EditCellComponent,
+        params: { event, onChange, CustomComponent },
         spreadsheet,
-      );
+      });
     },
     [CustomComponent, onChange, spreadsheet],
   );

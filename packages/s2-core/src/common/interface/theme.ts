@@ -99,12 +99,12 @@ export type InteractionState = {
 
 export type Margin = Padding;
 
-export interface TextAlignCfg {
+export interface TextAlignStyle {
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;
 }
 
-export interface TextTheme extends TextAlignCfg {
+export interface TextTheme extends TextAlignStyle {
   /* 字体 */
   fontFamily?: string;
 

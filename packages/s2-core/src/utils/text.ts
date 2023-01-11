@@ -514,19 +514,17 @@ export const drawObjectText = (
      */
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    const textShape = renderText(
-      cell,
-      [],
+    const textShape = renderText(cell, [], {
       x,
-      y + labelHeight / 2,
-      getEllipsisText({
+      y: y + labelHeight / 2,
+      text: getEllipsisText({
         measureTextWidth,
         text: text.label,
         maxWidth: totalTextWidth,
         fontParam: labelStyle,
       }),
-      labelStyle,
-    );
+      ...labelStyle,
+    });
 
     cell.addTextShape(textShape);
   }
@@ -582,22 +580,20 @@ export const drawObjectText = (
       });
       const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
 
-      const position = getTextAndFollowingIconPosition(
-        contentBoxes[i][j],
-        textStyle!,
-        actualTextWidth,
-        iconCfg,
-        iconCondition ? 1 : 0,
-      );
+      const position = getTextAndFollowingIconPosition({
+        bbox: contentBoxes[i][j],
+        textStyle,
+        textWidth: actualTextWidth,
+        iconStyle: iconCfg,
+        iconCount: iconCondition ? 1 : 0,
+      });
 
-      const textShape = renderText(
-        cell,
-        [],
-        position.text.x,
-        position.text.y,
-        ellipsisText,
-        curStyle!,
-      );
+      const textShape = renderText(cell, [], {
+        x: position.text.x,
+        y: position.text.y,
+        text: ellipsisText,
+        ...curStyle,
+      });
 
       cell.addTextShape(textShape);
 

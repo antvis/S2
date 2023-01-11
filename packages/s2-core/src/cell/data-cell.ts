@@ -16,7 +16,7 @@ import type {
   CellMeta,
   Condition,
   FormatResult,
-  IconCfg,
+  IconStyle,
   MappingResult,
   TextTheme,
   ViewMeta,
@@ -242,7 +242,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  public getIconStyle(): IconCfg | undefined {
+  public getIconStyle(): IconStyle | undefined {
     const { size, margin } = this.theme.dataCell!.icon!;
     const iconCondition = this.findFieldCondition(this.conditions?.icon!);
 
@@ -253,7 +253,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         position: getIconPositionCfg(iconCondition),
       };
 
-    return iconCfg as IconCfg;
+    return iconCfg as IconStyle;
   }
 
   protected drawConditionIntervalShape() {

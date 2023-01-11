@@ -4,10 +4,10 @@ import {
   CellClipBox,
   type AreaRange,
   type CellTheme,
-  type IconCfg,
+  type IconStyle,
   type Padding,
   type TextAlign,
-  type TextAlignCfg,
+  type TextAlignStyle,
   type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
@@ -95,7 +95,7 @@ export const getCellBoxByType = (
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
  */
 
-const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg =>
+const normalizeIconStyle = (iconStyle?: IconStyle): IconStyle =>
   merge(
     {
       size: 0,
@@ -105,11 +105,11 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg =>
         right: 0,
       },
     },
-    iconCfg,
+    iconStyle,
   );
 
-export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
-  iconCfg = normalizeIconCfg(iconCfg);
+export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconStyle) => {
+  iconCfg = normalizeIconStyle(iconCfg);
 
   return (
     contentWidth -
@@ -120,10 +120,11 @@ export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
 };
 
 export const getVerticalPosition = (
-  { y, height }: SimpleBBox,
+  bbox: SimpleBBox,
   textBaseline: TextBaseline,
   size = 0,
 ) => {
+  const { y, height } = bbox;
   let p = 0;
 
   switch (textBaseline) {
@@ -142,16 +143,21 @@ export const getVerticalPosition = (
 };
 
 // 获取text及其跟随icon的位置坐标
-export const getTextAndFollowingIconPosition = (
-  contentBox: SimpleBBox,
-  textCfg: TextAlignCfg,
-  textWidth = 0,
-  iconCfg?: IconCfg,
-  iconCount = 1,
-) => {
-  const { x, width } = contentBox;
-  const { textAlign, textBaseline } = textCfg;
-  const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
+export const getTextAndFollowingIconPosition = (options: {
+  bbox: SimpleBBox;
+  textStyle: TextAlignStyle | undefined;
+  textWidth?: number;
+  iconStyle?: IconStyle;
+  iconCount?: number;
+}) => {
+  const { bbox, textStyle, textWidth = 0, iconStyle, iconCount = 1 } = options;
+  const { x, width } = bbox;
+  const { textAlign, textBaseline } = textStyle!;
+  const {
+    size,
+    margin,
+    position: iconPosition,
+  } = normalizeIconStyle(iconStyle);
 
   const iconSpace =
     iconCount * (size! + margin!.left!) + (iconCount ? margin!.right! : 0);
@@ -225,8 +231,8 @@ export const getTextAndFollowingIconPosition = (
     }
   }
 
-  const textY = getVerticalPosition(contentBox, textBaseline!, 0);
-  const iconY = getVerticalPosition(contentBox, textBaseline!, size);
+  const textY = getVerticalPosition(bbox, textBaseline!, 0);
+  const iconY = getVerticalPosition(bbox, textBaseline!, size);
 
   return {
     text: { x: textX, y: textY },
@@ -236,8 +242,12 @@ export const getTextAndFollowingIconPosition = (
 
 export const getTextPosition = (
   contentBox: SimpleBBox,
-  textCfg: TextAlignCfg,
-) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
+  textCfg: TextAlignStyle,
+) =>
+  getTextAndFollowingIconPosition({
+    bbox: contentBox,
+    textStyle: textCfg,
+  }).text;
 
 /**
  * 在给定视窗和单元格的情况下，计算单元格文字区域的坐标信息

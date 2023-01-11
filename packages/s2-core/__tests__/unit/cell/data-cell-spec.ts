@@ -121,7 +121,7 @@ describe('Data Cell Tests', () => {
 
     test('should add text shape', () => {
       const dataCell = new DataCell(meta, s2);
-      const textShape = renderText(dataCell, [], 0, 0, 'test', null);
+      const textShape = renderText(dataCell, [], { x: 0, y: 0, text: 'test' });
 
       dataCell.addTextShape(textShape);
 

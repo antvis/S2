@@ -283,19 +283,19 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       ? Math.floor(frozenTrailingRowGroup.getBBox().height)
       : 0;
 
-    const indexes = calculateInViewIndexes(
+    const indexes = calculateInViewIndexes({
       scrollX,
       scrollY,
-      facet.viewCellWidths,
-      facet.viewCellHeights,
-      {
+      widths: facet.viewCellWidths,
+      heights: facet.viewCellHeights,
+      viewport: {
         width: width - frozenColWidth - frozenTrailingColWidth,
         height: height - frozenRowHeight - frozenTrailingRowHeight,
         x: frozenColWidth,
         y: frozenRowHeight,
       },
-      facet.getRealScrollX(facet.cornerBBox.width),
-    );
+      rowRemainWidth: facet.getRealScrollX(facet.cornerBBox.width),
+    });
 
     // 小于0的初始值
     let offsetX = -1;

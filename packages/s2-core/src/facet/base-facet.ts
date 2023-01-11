@@ -513,19 +513,19 @@ export abstract class BaseFacet {
   public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
     const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
-    const indexes = calculateInViewIndexes(
+    const indexes = calculateInViewIndexes({
       scrollX,
       scrollY,
-      this.viewCellWidths,
-      this.viewCellHeights,
-      {
+      widths: this.viewCellWidths,
+      heights: this.viewCellHeights,
+      viewport: {
         width,
         height,
         x: 0,
         y: 0,
       },
-      this.getRealScrollX(this.cornerBBox.width),
-    );
+      rowRemainWidth: this.getRealScrollX(this.cornerBBox.width),
+    });
 
     return {
       center: indexes,

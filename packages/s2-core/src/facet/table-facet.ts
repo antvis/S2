@@ -1198,14 +1198,14 @@ export class TableFacet extends BaseFacet {
       }
     }
 
-    const indexes = calculateInViewIndexes(
+    const indexes = calculateInViewIndexes({
       scrollX,
       scrollY,
-      this.viewCellWidths,
-      this.viewCellHeights,
-      finalViewport,
-      this.getRealScrollX(this.cornerBBox.width),
-    );
+      widths: this.viewCellWidths,
+      heights: this.viewCellHeights,
+      viewport: finalViewport,
+      rowRemainWidth: this.getRealScrollX(this.cornerBBox.width),
+    });
 
     this.panelScrollGroupIndexes = indexes;
 

@@ -92,7 +92,7 @@ export class CornerCell extends HeaderCell {
     this.actualText = text;
     const ellipseIndex = text.indexOf(ELLIPSIS_SYMBOL);
 
-    let firstLine = text;
+    let firstLine: string = text;
     let secondLine = '';
 
     // 存在文字的省略号 & 展示为tree结构
@@ -125,27 +125,23 @@ export class CornerCell extends HeaderCell {
 
     // first line
     this.addTextShape(
-      renderText(
-        this,
-        [this.textShapes[0]],
-        textX,
-        textY,
-        firstLine,
-        textStyle,
-      ),
+      renderText(this, [this.textShapes[0]], {
+        x: textX,
+        y: textY,
+        text: firstLine,
+        ...textStyle,
+      }),
     );
 
     // second line
     if (!isEmpty(secondLine)) {
       this.addTextShape(
-        renderText(
-          this,
-          [this.textShapes[1]],
-          textX,
-          y + height * 0.75,
-          secondLine,
-          textStyle,
-        ),
+        renderText(this, [this.textShapes[1]], {
+          x: textX,
+          y: y + height * 0.75,
+          text: secondLine,
+          ...textStyle,
+        }),
       );
     }
 

@@ -68,25 +68,24 @@ export class SeriesNumberCell extends BaseCell<Node> {
   }
 
   protected getTextPosition(): PointLike {
-    const textArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-
     const { scrollY, viewportHeight: height } = this.headerConfig;
 
+    const textArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const { fontSize } = this.getTextStyle();
-    const textY = getAdjustPosition(
-      textArea.y,
-      textArea.height,
-      scrollY!,
-      height,
-      fontSize!,
-    );
-    const textX = getTextAndFollowingIconPosition(
-      textArea,
-      this.getTextStyle(),
-      0,
-      this.getIconStyle(),
-      0,
-    ).text.x;
+    const textY = getAdjustPosition({
+      rectLeft: textArea.y,
+      rectWidth: textArea.height,
+      viewportLeft: scrollY!,
+      viewportWidth: height,
+      textWidth: fontSize!,
+    });
+    const textX = getTextAndFollowingIconPosition({
+      bbox: textArea,
+      textStyle: this.getTextStyle(),
+      textWidth: 0,
+      iconStyle: this.getIconStyle(),
+      iconCount: 0,
+    }).text.x;
 
     return { x: textX, y: textY };
   }

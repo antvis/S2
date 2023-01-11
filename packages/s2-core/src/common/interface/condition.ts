@@ -50,5 +50,5 @@ export interface Conditions {
   icon?: IconCondition[];
 }
 
-export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
+export type IconStyle = Pick<IconTheme, 'size' | 'margin'> &
   Pick<IconCondition, 'position'>;

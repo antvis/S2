@@ -153,13 +153,13 @@ export class ColCell extends HeaderCell {
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
-      return getTextAndFollowingIconPosition(
-        contentBox,
+      return getTextAndFollowingIconPosition({
+        bbox: contentBox,
         textStyle,
-        this.actualTextWidth,
+        textWidth: this.actualTextWidth,
         iconStyle,
-        this.getActionIconsCount(),
-      ).text;
+        iconCount: this.getActionIconsCount(),
+      }).text;
     }
 
     /**

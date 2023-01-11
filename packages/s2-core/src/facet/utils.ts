@@ -38,21 +38,18 @@ export const isFrozenTrailingRow = (
 
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引
- * @param scrollX
- * @param scrollY
- * @param widths
- * @param heights
- * @param viewport
- * @param rowRemainWidth
  */
-export const calculateInViewIndexes = (
-  scrollX: number,
-  scrollY: number,
-  widths: number[],
-  heights: ViewCellHeights,
-  viewport: SimpleBBox,
-  rowRemainWidth?: number,
-): Indexes => {
+export const calculateInViewIndexes = (options: {
+  scrollX: number;
+  scrollY: number;
+  widths: number[];
+  heights: ViewCellHeights;
+  viewport: SimpleBBox;
+  rowRemainWidth?: number;
+}): Indexes => {
+  const { scrollX, scrollY, widths, heights, viewport, rowRemainWidth } =
+    options;
+
   // 1. 计算 x min、max
   let xMin = findIndex(
     widths,
@@ -272,31 +269,6 @@ export const calculateFrozenCornerCells = (
   }
 
   return result;
-};
-
-export const isFrozenCell = (
-  colIndex: number,
-  rowIndex: number,
-  frozenOptions: S2TableSheetFrozenOptions,
-  colLength: number,
-  cellRange: {
-    start: number;
-    end: number;
-  },
-) => {
-  const {
-    colCount: frozenColCount = 0,
-    rowCount: frozenRowCount = 0,
-    trailingColCount: frozenTrailingColCount = 0,
-    trailingRowCount: frozenTrailingRowCount = 0,
-  } = frozenOptions;
-
-  return (
-    isFrozenCol(colIndex, frozenColCount) ||
-    isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
-    isFrozenRow(rowIndex, cellRange.start, frozenRowCount) ||
-    isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
-  );
 };
 
 /**

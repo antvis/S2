@@ -9,19 +9,20 @@ export type InvokeComponentProps<P> = {
   params: P;
 };
 
+export type InvokeComponentOptions<P> = {
+  component: React.ComponentType<InvokeComponentProps<P>>;
+  params: P;
+  spreadsheet: SpreadSheet;
+  id?: string;
+  onCleanup?: () => void;
+};
+
 /**
  * 挂载组件
- * @param Component
- * @param params
- * @returns
  */
-export function invokeComponent<P>(
-  Component: React.ComponentType<InvokeComponentProps<P>>,
-  params: P,
-  spreadsheet: SpreadSheet,
-  id?: string,
-  onCleanup?: () => void,
-) {
+export function invokeComponent<P>(options: InvokeComponentOptions<P>) {
+  const { id, spreadsheet, params, onCleanup, component: Component } = options;
+
   if (id) {
     const domNode = document.querySelector(`#${id}`);
 

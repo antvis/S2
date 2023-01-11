@@ -27,6 +27,7 @@ import { SheetComponent, type SheetComponentsProps } from '@/components';
 import 'antd/dist/antd.min.css';
 
 let spreadsheet1: SpreadSheet;
+
 const setSpreadSheet = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,

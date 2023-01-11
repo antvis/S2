@@ -401,19 +401,19 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 
   // 4.绘制指标
-  renderText(
-    cell,
-    [],
-    positionX - padding.right,
-    y + height / 2,
-    getEllipsisText({
-      measureTextWidth: spreadsheet.measureTextWidth,
-      text: measurePercent,
-      maxWidth: measureWidth - padding.right,
-      fontParam: dataCellStyle.text,
-    }),
-    dataCellStyle.text,
-  );
+  const text = getEllipsisText({
+    measureTextWidth: spreadsheet.measureTextWidth,
+    text: measurePercent,
+    maxWidth: measureWidth - padding.right,
+    fontParam: dataCellStyle.text,
+  });
+
+  renderText(cell, [], {
+    x: positionX - padding.right,
+    y: y + height / 2,
+    text,
+    ...dataCellStyle.text,
+  });
 };
 
 export const renderMiniChart = (cell: S2CellType, data?: MiniChartData) => {

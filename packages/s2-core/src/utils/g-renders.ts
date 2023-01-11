@@ -20,7 +20,6 @@ import {
 } from '@antv/g';
 import { forEach, isArray, isEmpty, isFunction } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
-import type { TextTheme } from '../common/interface/theme';
 
 export function renderRect(group: Group, style: RectStyleProps): DisplayObject {
   return group?.appendChild(
@@ -62,11 +61,7 @@ export function renderCircle(
 export function renderText(
   group: Group,
   shapes: DisplayObject[],
-  x: number,
-  y: number,
-  text: string,
-  textStyle: TextTheme | null,
-  extraStyle?: TextStyleProps,
+  attrs: TextStyleProps,
 ): DisplayObject {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: DisplayObject) => {
@@ -79,10 +74,6 @@ export function renderText(
   return group?.appendChild(
     new Text({
       style: {
-        x,
-        y,
-        text,
-
         /**
          * 补充 g5.0 内部 measureText 时的必要参数（variant|fontStyle|lineWidth）
          * 否则创建完 Text 后，实例 getBBox 返回为全 0
@@ -91,8 +82,7 @@ export function renderText(
         fontVariant: 'normal',
         fontStyle: 'normal',
         lineWidth: 1,
-        ...textStyle,
-        ...extraStyle,
+        ...attrs,
       },
     }),
   );
