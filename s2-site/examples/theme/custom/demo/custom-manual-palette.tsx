@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
+import { debounce, isObjectLike } from 'lodash';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import { getPalette } from '@antv/s2';
@@ -52,10 +52,11 @@ function getInitPalette() {
   try {
     return JSON.parse(localStorage.getItem(STORE_KEY) || '');
   } catch (err) {}
+
   return getPalette('colorful');
 }
 
-const savePalette = _.debounce(function (palette) {
+const savePalette = debounce((palette) => {
   localStorage.setItem(STORE_KEY, JSON.stringify(palette));
   console.log('saved');
 }, 1000);
@@ -100,6 +101,7 @@ function ColorTable({ palette, onChange }) {
                 color={val}
                 onChangeComplete={(evt) => {
                   const nextBasicColors = [...palette.basicColors];
+
                   nextBasicColors.splice(idx, 1, evt.hex);
                   onChange({
                     ...palette,
@@ -204,10 +206,13 @@ function App() {
           onClick={() => {
             try {
               const cfgObj = JSON.parse(config);
-              if (!_.isObjectLike(cfgObj)) {
+
+              if (!isObjectLike(cfgObj)) {
                 message.error('加载错误');
+
                 return;
               }
+
               setPalette(cfgObj);
               setConfig('');
               message.success('加载成功');

@@ -117,7 +117,6 @@ export abstract class SpreadSheet extends EE {
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet();
-
     this.setDebug();
     this.initTooltip();
     this.initContainer(dom);

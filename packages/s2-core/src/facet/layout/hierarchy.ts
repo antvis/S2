@@ -1,8 +1,4 @@
-// hierarchy to layout headers
-import _ from 'lodash';
 import type { Node } from './node';
-
-_.get('a', '1');
 
 /**
  * Row and Column hierarchy to handle all contained nodes

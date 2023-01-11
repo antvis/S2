@@ -131,7 +131,20 @@ module.exports = {
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
     'no-nested-ternary': [2],
-    'no-restricted-imports': [2],
+    'no-restricted-imports': [
+      2,
+      {
+        paths: [
+          {
+            name: 'lodash',
+            importNames: ['default'],
+            message:
+              '\n 请不要全量引入 lodash \n 推荐 `import { get } from "lodash"` 的方式',
+          },
+        ],
+        patterns: ['lodash/*', 'lodash-es/*', 'lodash-es'],
+      },
+    ],
     'line-comment-position': [2, { position: 'above' }],
     'new-cap': 2,
     'prefer-template': 2,
@@ -140,6 +153,7 @@ module.exports = {
     'no-unneeded-ternary': 2,
     'array-callback-return': 2,
     // 'no-magic-numbers': 1,
+    // 'no-duplicate-imports': [2, { includeExports: true }],
     'dot-notation': [2],
     'prefer-named-capture-group': 1,
     'eol-last': [2, 'always'],
