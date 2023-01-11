@@ -260,9 +260,9 @@ describe('MiniCharts Utils Tests', () => {
     expect(getBulletRangeColor(0.09788888, 0.19788888, rangeColors)).toEqual(
       'green',
     );
-    expect(getBulletRangeColor('测试', '牛批', rangeColors)).toEqual('red');
+    expect(getBulletRangeColor('测试', '牛啊', rangeColors)).toEqual('red');
     expect(getBulletRangeColor('测试', 0.2, rangeColors)).toEqual('red');
-    expect(getBulletRangeColor(0.2, '牛批', rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(0.2, '牛啊', rangeColors)).toEqual('red');
 
     // toFixed(2) 四舍五入精度问题
     expect(getBulletRangeColor(0.09775, 0.1978, rangeColors)).toEqual('yellow');
@@ -274,7 +274,7 @@ describe('MiniCharts Utils Tests', () => {
     expect(transformRatioToPercent(0.2)).toEqual('20%');
     expect(transformRatioToPercent('0.2')).toEqual('20%');
     expect(transformRatioToPercent('test')).toEqual('test');
-    expect(transformRatioToPercent('牛批')).toEqual('牛批');
+    expect(transformRatioToPercent('牛啊')).toEqual('牛啊');
     expect(transformRatioToPercent(0.02)).toEqual('2%');
     expect(transformRatioToPercent(0.02, 2)).toEqual('2.00%');
     expect(transformRatioToPercent(-122.2)).toEqual('-12220%');
@@ -365,7 +365,7 @@ describe('drawInterval Test', () => {
 
     const allIntervalWidth = map(
       cells,
-      (cell) => drawInterval(cell as DataCell)?.attr()?.width ?? 0,
+      (cell) => drawInterval(cell as DataCell)?.style?.width ?? 0,
     );
 
     expect(allIntervalWidth).toMatchSnapshot();
@@ -398,8 +398,8 @@ describe('drawInterval Test', () => {
     const firstIntervalInfo = drawInterval(cells[0] as DataCell);
     const lastIntervalInfo = drawInterval(cells[cells.length - 1] as DataCell);
 
-    expect(firstIntervalInfo?.attr().width).toEqual(undefined);
-    expect(lastIntervalInfo?.attr().width).toEqual(88);
+    expect(firstIntervalInfo?.style.width).toEqual(undefined);
+    expect(lastIntervalInfo?.style.width).toEqual(88);
   });
 
   test('should get right condition interval when filedValue is custom', () => {
@@ -428,7 +428,7 @@ describe('drawInterval Test', () => {
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
     forEach(cells, (cell) => {
       const intervalInfo = drawInterval(cell as DataCell);
-      expect(intervalInfo?.attr().width).toEqual(50);
+      expect(intervalInfo?.style.width).toEqual(50);
     });
   });
 });
