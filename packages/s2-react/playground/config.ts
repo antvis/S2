@@ -98,7 +98,7 @@ export const s2Options: SheetComponentOptions = {
   hierarchyType: 'grid',
   style: {
     colCfg: {
-      hideMeasureColumn: true,
+      hideMeasureColumn: false,
     },
     rowCfg: {
       width: 200,
