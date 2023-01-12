@@ -113,6 +113,12 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy,
     );
 
+    // 如果当前是隐藏节点, 给其父节点挂载相应信息 (兄弟节点, 当前哪个子节点隐藏了), 这样在 facet 层可以直接使用, 不用每次都去遍历
+    const hiddenColumnsInfo = spreadsheet?.facet?.getHiddenColumnsInfo(node);
+    if (hiddenColumnsInfo && parentNode) {
+      parentNode.hiddenChildNodeInfo = hiddenColumnsInfo;
+    }
+
     // omit the the whole column or row of the grandTotal or subTotals
     if (
       level > hierarchy.maxLevel &&
@@ -121,15 +127,12 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       !parentNode.isSubTotals &&
       !node.isSubTotals
     ) {
-      const hiddenColumnNode =
-        facetCfg.spreadsheet?.facet?.getHiddenColumnsInfo(node);
-
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.maxLevel = level;
       // 如果当前是隐藏节点, 则采样其兄弟节点
-      hierarchy.sampleNodeForLastLevel = hiddenColumnNode
-        ? hiddenColumnNode?.displaySiblingNode?.next ||
-          hiddenColumnNode?.displaySiblingNode?.prev
+      hierarchy.sampleNodeForLastLevel = hiddenColumnsInfo
+        ? hiddenColumnsInfo?.displaySiblingNode?.next ||
+          hiddenColumnsInfo?.displaySiblingNode?.prev
         : node;
     }
 
