@@ -66,8 +66,6 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
-  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
-  LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_AFTER_REAL_DATA_CELL_RENDER = 'layout:after-real-data-cell-render',

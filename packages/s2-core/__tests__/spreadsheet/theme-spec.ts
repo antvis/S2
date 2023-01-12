@@ -30,7 +30,7 @@ describe('SpreadSheet Theme Tests', () => {
             iconNames: ['DrillDownIcon'],
             belongsCell: 'rowCell',
             displayCondition: () => true,
-            action: () => {},
+            onClick: () => {},
           },
         ],
       },

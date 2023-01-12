@@ -32,8 +32,6 @@ export const initBaseSheetProps = () => ({
     default: false as Adaptive,
   },
   onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
-  /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
-  onGetSpreadSheet: Function as PropType<SheetComponentProps['getSpreadSheet']>,
   onMounted: Function as PropType<SheetComponentProps['onMounted']>,
 });
 
@@ -75,8 +73,6 @@ export const initBaseSheetEmits = () => {
   /** base sheet all emits */
   const keys: Array<BaseSheetInitEmitKeys> = [
     'spreadsheet',
-    'getSpreadSheet',
-
     // ============== Row Cell ====================
     'rowCellHover',
     'rowCellClick',
@@ -140,7 +136,6 @@ export const initBaseSheetEmits = () => {
     // ============== Layout ====================
     'layoutAfterHeaderLayout',
     'layoutPagination',
-    'layoutCellScroll',
     'beforeRender',
     'afterRender',
     'mounted',

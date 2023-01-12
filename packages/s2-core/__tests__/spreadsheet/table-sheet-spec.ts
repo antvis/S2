@@ -78,7 +78,6 @@ const options: S2Options = {
     dataCell: {
       height: 32,
     },
-    device: DeviceType.PC,
   },
   interaction: {
     enableCopy: true,
@@ -102,6 +101,7 @@ const options: S2Options = {
       hiddenColumns: true,
     },
   },
+  device: DeviceType.PC,
 };
 
 describe('TableSheet normal spec', () => {

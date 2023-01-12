@@ -93,7 +93,7 @@ describe('Spread Sheet Drill Down Tests', () => {
                 displayCondition: (meta: Node) => {
                   return meta.isLeaf;
                 },
-                action: noop,
+                onClick: noop,
               },
             ],
           }}

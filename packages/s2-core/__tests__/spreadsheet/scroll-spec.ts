@@ -40,18 +40,14 @@ describe('Scroll Tests', () => {
   const getScrollExpect = () => {
     const onScroll = jest.fn();
     const onRowScroll = jest.fn();
-    const onDeprecatedLayoutCellScroll = jest.fn();
 
-    s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
     s2.on(S2Event.GLOBAL_SCROLL, onScroll);
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
     return () => {
-      [onScroll, onRowScroll, onDeprecatedLayoutCellScroll].forEach(
-        (handler) => {
-          expect(handler).not.toHaveBeenCalled();
-        },
-      );
+      [onScroll, onRowScroll].forEach((handler) => {
+        expect(handler).not.toHaveBeenCalled();
+      });
     };
   };
 
@@ -144,9 +140,7 @@ describe('Scroll Tests', () => {
 
     const onScroll = jest.fn();
     const onRowScroll = jest.fn();
-    const onDeprecatedLayoutCellScroll = jest.fn();
 
-    s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
     s2.on(S2Event.GLOBAL_SCROLL, onScroll);
     s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
@@ -214,9 +208,7 @@ describe('Scroll Tests', () => {
     async ({ type, offset, rowHeader }) => {
       const onScroll = jest.fn();
       const onRowScroll = jest.fn();
-      const onDeprecatedLayoutCellScroll = jest.fn();
 
-      s2.on(S2Event.LAYOUT_CELL_SCROLL, onDeprecatedLayoutCellScroll);
       s2.on(S2Event.GLOBAL_SCROLL, onScroll);
       s2.on(S2Event.ROW_CELL_SCROLL, onRowScroll);
 
@@ -255,7 +247,6 @@ describe('Scroll Tests', () => {
 
       // emit event
       expect(onScroll).toHaveBeenCalled();
-      expect(onDeprecatedLayoutCellScroll).toHaveBeenCalled();
       expect(onRowScroll).not.toHaveBeenCalled();
 
       if (rowHeader) {

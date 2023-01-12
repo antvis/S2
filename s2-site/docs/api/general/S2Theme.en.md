@@ -169,8 +169,6 @@ Function description: Cell general theme
 | verticalBorderWidth          | cell vertical border width                                              | `number`                                        | -        |          |
 | padding                      | cell padding                                                            | [Padding](#margin--padding)                     | -        |          |
 | interactionState             | cell interaction state                                                  | [InteractionStateTheme](#interactionstatetheme) | -        |          |
-| miniBarChartHeight           | In-Cell Conditional Formatting - Sparkline Bar Height                   | `number`                                        | 12       |          |
-| miniBarChartFillColor        | In-cell conditional formatting - default fill color for mini bar charts | `string`                                        | -        |          |
 
 #### IconTheme
 

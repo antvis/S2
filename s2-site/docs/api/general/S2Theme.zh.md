@@ -171,8 +171,6 @@ s2.setTheme({
 | verticalBorderWidth          | 单元格垂直边线宽度                      | `number`                                        | -      |      |
 | padding                      | 单元格内边距                            | [Padding](#margin--padding)                     | -      |      |
 | interactionState             | 单元格交互态                            | [InteractionStateTheme](#interactionstatetheme) | -      |      |
-| miniBarChartHeight           | 单元格内条件格式-迷你条形图高度         | `number`                                        | 12     |      |
-| miniBarChartFillColor        | 单元格内条件格式-迷你条形图默认填充颜色 | `string`                                        | -      |      |
 
 #### IconTheme
 

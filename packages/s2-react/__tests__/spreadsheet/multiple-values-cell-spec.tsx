@@ -124,7 +124,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
         iconNames: ['SortDown', 'SortUp'],
         belongsCell: 'colCell',
         displayCondition: (meta: Node) => meta.level >= 0,
-        action() {},
+        onClick() {},
       },
     ],
     tooltip: {
@@ -141,8 +141,8 @@ const getOptions = (): SheetComponentsProps['options'] => {
       dataCell: {
         height: 32,
       },
-      device: DeviceType.PC,
     },
+    device: DeviceType.PC,
   };
 };
 

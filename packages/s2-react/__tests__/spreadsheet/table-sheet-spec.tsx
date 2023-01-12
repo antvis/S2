@@ -120,13 +120,13 @@ function MainLayout({ callback }: Props) {
   const options: SheetComponentOptions = {
     width: 800,
     height: 600,
+    device: DeviceType.PC,
     showSeriesNumber: true,
     placeholder: '',
     style: {
       dataCell: {
         height: 32,
       },
-      device: DeviceType.PC,
     },
     pagination: showPagination
       ? {

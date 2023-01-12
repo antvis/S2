@@ -405,7 +405,7 @@ export const StrategyOptions: SheetComponentOptions = {
       iconNames: ['Trend'],
       belongsCell: 'rowCell',
       defaultHide: true,
-      action: () => {},
+      onClick: () => {},
     },
   ],
   conditions: {
