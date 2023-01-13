@@ -105,9 +105,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     s2: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
+    const { colCfg } = s2.options.style;
+    const leafNode = colsHierarchy?.sampleNodeForLastLevel;
+    const cornerNodeY = leafNode?.y ?? 0;
+    const cornerNodeHeight = leafNode?.height ?? colCfg?.height ?? 0;
+
     // check if show series number node
-    // spreadsheet must have at least one node in last level
-    if (seriesNumberWidth && colsHierarchy?.sampleNodeForLastLevel) {
+    if (seriesNumberWidth) {
       const sNode: Node = new Node({
         id: '',
         key: KEY_SERIES_NUMBER_NODE, // mark series node
@@ -115,10 +119,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       });
       sNode.x = position?.x;
       // different type different y
-      sNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+      sNode.y = cornerNodeY;
       sNode.width = seriesNumberWidth;
       // different type different height
-      sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+      sNode.height = cornerNodeHeight;
       sNode.isPivotMode = true;
       sNode.spreadsheet = s2;
       sNode.cornerType = CornerNodeType.Series;
@@ -140,10 +144,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           .join('/'),
       });
       cNode.x = position.x + seriesNumberWidth;
-      cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
+      cNode.y = cornerNodeY;
       // cNode should subtract series width
       cNode.width = width - seriesNumberWidth;
-      cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+      cNode.height = cornerNodeHeight;
       cNode.seriesNumberWidth = seriesNumberWidth;
       cNode.isPivotMode = true;
       cNode.spreadsheet = s2;
@@ -152,7 +156,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     } else {
       // spreadsheet type grid mode
       rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-        const { colCfg } = s2.options.style;
         const field = rows[rowNode.level];
         const cNode: Node = new Node({
           key: field,
@@ -161,10 +164,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
 
         cNode.x = rowNode.x + seriesNumberWidth;
-        cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y ?? 0;
+        cNode.y = cornerNodeY;
         cNode.width = rowNode.width;
-        cNode.height =
-          colsHierarchy?.sampleNodeForLastLevel?.height ?? colCfg?.height;
+        cNode.height = cornerNodeHeight;
         cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Row;
