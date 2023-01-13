@@ -228,7 +228,8 @@ export class ColCell extends HeaderCell {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.field}`;
   }
 
-  protected isNotNormalLeafNode() {
+  // 叶子节点, 但层级不同于其他节点, 说明是任意不规则自定义节点, 此时不需要绘制热区
+  protected isCrossColumnLeafNode() {
     const { colsHierarchy } = this.spreadsheet.facet.layoutResult;
     const { level, isLeaf } = this.meta;
     return colsHierarchy?.sampleNodeForLastLevel?.level !== level && isLeaf;
@@ -249,8 +250,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    // 叶子节点, 但层级不同于其他节点, 说明是任意不规则自定义节点, 此时不需要绘制热区
-    if (!resizeArea || this.isNotNormalLeafNode()) {
+    if (!resizeArea || this.isCrossColumnLeafNode()) {
       return;
     }
 
