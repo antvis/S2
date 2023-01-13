@@ -43,6 +43,7 @@ import type {
   TooltipDetailListItem,
   Tooltip,
   ViewMeta,
+  TooltipSummaryOptionsValue,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -480,18 +481,20 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const name = getSummaryName(spreadsheet, field, options?.isTotals);
-    let value: number | string = getShowValue?.(selected, VALUE_FIELD);
+    let value: TooltipSummaryOptionsValue = '';
+    let originVal: TooltipSummaryOptionsValue = '';
 
-    if (isTableMode) {
-      value = '';
-    } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
+    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       const { placeholder } = spreadsheet.options;
       const emptyPlaceholder = getEmptyPlaceholder(summary, placeholder);
       // 如果选中的单元格都无数据，则显示"-" 或 options 里配置的占位符
       value = emptyPlaceholder;
+      originVal = emptyPlaceholder;
     } else {
       const currentFormatter = getFieldFormatter(spreadsheet, field);
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
+
+      originVal = dataSum;
       value =
         currentFormatter?.(dataSum, selected) ??
         parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems;
@@ -500,6 +503,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       selectedData: selected,
       name,
       value,
+      originValue: originVal,
     });
   });
 
