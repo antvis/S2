@@ -295,9 +295,63 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(priceDetail.hideColumnNodes[0].id).toEqual(typePriceColumnId);
     });
 
+    // https://github.com/antvis/S2/issues/1993
+    test('should render correctly x and width after hide columns grandTotals next sibling cell', () => {
+      const nodeId = 'root[&]笔[&]义乌[&]price';
+
+      pivotSheet.setOptions({
+        style: {
+          colCfg: {
+            width: 100,
+          },
+        },
+        totals: {
+          col: {
+            showGrandTotals: true,
+            showSubTotals: false,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['type'],
+          },
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['province'],
+          },
+        },
+      });
+      pivotSheet.render();
+
+      pivotSheet.interaction.hideColumns([nodeId]);
+
+      const grandTotalsNode = pivotSheet
+        .getColumnNodes()
+        .find((node) => node.isGrandTotals);
+
+      const rootNode = pivotSheet
+        .getColumnNodes()
+        .find((node) => node.id === 'root[&]笔');
+
+      const parentNode = pivotSheet
+        .getColumnNodes()
+        .find((node) => node.id === 'root[&]笔[&]义乌');
+
+      const hiddenColumnsInfo = pivotSheet.store.get('hiddenColumnsDetail')[0];
+
+      expect(rootNode.width).toEqual(100);
+      expect(rootNode.x).toEqual(100);
+      expect(grandTotalsNode.width).toEqual(100);
+      expect(grandTotalsNode.x).toEqual(0);
+      expect(hiddenColumnsInfo).toBeTruthy();
+      expect(parentNode.hiddenChildNodeInfo).toEqual(hiddenColumnsInfo);
+    });
+
     describe('Multiple Values Tests', () => {
       let sheet: PivotSheet;
-      const options = {
+
+      const options: S2Options = {
         width: 600,
         height: 480,
         totals: {
@@ -339,22 +393,22 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         sheet.destroy();
       });
 
-      test('should hide grand totals node', () => {
-        const nodeId = 'root[&]总计';
-        sheet.interaction.hideColumns([nodeId]);
+      test.each([
+        { id: 'root[&]总计', x: 0, width: 288 },
+        { id: 'root[&]家具[&]小计', x: 96, width: 192 },
+      ])('should hide totals node for %o', ({ id, x, width }) => {
+        sheet.interaction.hideColumns([id]);
 
-        const leafNodes = sheet.getColumnLeafNodes();
-        expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
-        expect(leafNodes).toHaveLength(6);
-      });
+        const totalsSiblingNode = sheet
+          .getColumnNodes()
+          .find((node) => node.id === 'root[&]家具');
 
-      test('should hide sub totals node', () => {
-        const nodeId = 'root[&]小计';
-        sheet.interaction.hideColumns([nodeId]);
-
-        const leafNodes = sheet.getColumnLeafNodes();
-        expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
-        expect(leafNodes).toHaveLength(7);
+        expect(totalsSiblingNode.x).toEqual(x);
+        expect(totalsSiblingNode.width).toEqual(width);
+        expect(
+          sheet.getColumnNodes().some((node) => node.id === id),
+        ).toBeFalsy();
+        expect(sheet.getColumnLeafNodes()).toHaveLength(6);
       });
 
       test('should hide measure node', () => {
