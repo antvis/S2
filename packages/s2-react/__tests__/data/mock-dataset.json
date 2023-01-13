@@ -3,8 +3,8 @@
   "fields": {
     "rows": ["province", "city"],
     "columns": ["type", "sub_type"],
-    "values": ["number", "test"],
-    "valueInCols": false
+    "values": ["number"],
+    "valueInCols": true
   },
   "meta": [
     {

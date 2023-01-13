@@ -209,7 +209,7 @@ export class PivotFacet extends BaseFacet {
       // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
       currentNode.height =
         currentNode.isGrandTotals && currentNode.isLeaf
-          ? colsHierarchy.height
+          ? this.getColNodeHeight(currentNode)
           : this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
     }
