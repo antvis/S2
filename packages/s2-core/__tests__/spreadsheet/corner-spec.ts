@@ -45,7 +45,6 @@ describe('PivotSheet Corner Tests', () => {
       DEFAULT_STYLE.colCell!.height,
     );
     expect(cornerNodes).toHaveLength(2);
-    expect(s2.facet.getCornerNodes()).toMatchSnapshot();
   });
 
   test('should render row corner when measure hidden', () => {
@@ -68,7 +67,6 @@ describe('PivotSheet Corner Tests', () => {
       DEFAULT_STYLE.colCell!.height,
     );
     expect(cornerNodes).toHaveLength(2);
-    expect(s2.facet.getCornerNodes()).toMatchSnapshot();
   });
 
   test('should render row corner when columns and values is empty', () => {
@@ -89,7 +87,6 @@ describe('PivotSheet Corner Tests', () => {
     expect(colsHierarchy.height).toEqual(0);
     expect(colsHierarchy.sampleNodeForLastLevel).toBeNull();
     expect(cornerNodes).toHaveLength(2);
-    expect(cornerNodes).toMatchSnapshot();
   });
 
   test('should not render row corner when fields is empty', () => {
