@@ -111,7 +111,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerNodeHeight = leafNode?.height ?? colCfg?.height ?? 0;
 
     // check if show series number node
-    // spreadsheet must have at least one node in last level
     if (seriesNumberWidth) {
       const sNode: Node = new Node({
         id: '',
