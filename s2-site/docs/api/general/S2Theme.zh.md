@@ -160,8 +160,8 @@ s2.setTheme({
 
 | 参数                         | 说明                                    | 类型                                            | 默认值 | 必选 |
 | ---------------------------- | --------------------------------------- | ----------------------------------------------- | ------ | ---- |
-| crossBackgroundColor         | 基数行单元格背景色                      | `string`                                        | -      |      |
-| backgroundColor              | 单元格背景色                            | `string`                                        | -      |      |
+| crossBackgroundColor         | 奇数行单元格背景色                      | `string`                                        | -      |      |
+| backgroundColor              | 单元格背景色 （默认斑马纹效果，如果想禁用，可将 `crossBackgroundColor` 和 `backgroundColor` 设置为同一颜色）                           | `string`                                        | -      |      |
 | backgroundColorOpacity       | 单元格背景色透明度                      | `number`                                        | 1      |      |
 | horizontalBorderColor        | 单元格水平边线颜色                      | `string`                                        | -      |      |
 | horizontalBorderColorOpacity | 单元格水平边线颜色透明度                | `number`                                        | 1      |      |
