@@ -1,17 +1,18 @@
 import { CustomGridData } from 'tests/data/data-custom-grid';
 import { getContainer } from 'tests/util/helpers';
+import type { HeaderCell } from '../../src/cell/header-cell';
+import { KEY_GROUP_COL_RESIZE_AREA } from '../../src/common/constant';
+import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
 import {
   customColGridSimpleFields,
   customRowGridSimpleFields,
 } from '../data/custom-grid-simple-fields';
-import { CustomGridPivotDataSet } from '../../src/data-set/custom-grid-pivot-data-set';
 import {
   expectHighlightActiveNodes,
   getSelectedCount,
   getSelectedSum,
   getTestTooltipData,
 } from '../util/interaction';
-import type { HeaderCell } from '../../src/cell/header-cell';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import type { S2DataConfig, S2Options } from '@/common/interface';
 
@@ -343,6 +344,22 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(measureDetail.displaySiblingNode.next?.field).toEqual('a-1-2');
       expect(measureDetail.hideColumnNodes).toHaveLength(1);
       expect(measureDetail.hideColumnNodes[0].field).toEqual('measure-2');
+    });
+
+    // https://github.com/antvis/S2/issues/1979
+    test('should render correctly resize group for custom column fields', () => {
+      s2.setTheme({
+        resizeArea: {
+          backgroundOpacity: 1,
+        },
+      });
+      s2.render(false);
+
+      const groups = s2.facet.foregroundGroup.getElementById(
+        KEY_GROUP_COL_RESIZE_AREA,
+      );
+
+      expect(groups?.childNodes).toHaveLength(8);
     });
   });
 });

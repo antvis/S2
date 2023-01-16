@@ -115,7 +115,7 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   conditions: s2ConditionsOptions,
-  hierarchyType: 'tree',
+  hierarchyType: 'grid',
   style: {
     rowCell: {
       height: 50,

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createMockCellInfo, getContainer } from '../../../../../util/helpers';
@@ -44,13 +44,15 @@ describe('StrategySheet Tooltip Tests', () => {
 
     const container = getContainer();
 
-    ReactDOM.render(
-      <StrategySheetDataTooltip
-        cell={mockCellInfo.mockCell}
-        showOriginalValue
-      />,
-      container,
-    );
+    act(() => {
+      ReactDOM.render(
+        <StrategySheetDataTooltip
+          cell={mockCellInfo.mockCell}
+          showOriginalValue
+        />,
+        container,
+      );
+    });
 
     expect(
       container.querySelector('.s2-strategy-sheet-tooltip-original-value'),
