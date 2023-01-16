@@ -23,7 +23,6 @@ order: 0
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/docs/api/general/S2Theme) |  |  |
 | loading | 控制表格的加载状态 | `boolean` |  |  |
 | header | 表头配置项 | [HeaderCfgProps](/docs/api/components/header) |  |  |
-| getSpreadSheet | 获取表实例 (1.29.0 已废弃，请使用 `onMounted`) [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | onRangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
@@ -144,7 +143,6 @@ type SheetComponentOptions = S2Options<
 | 参数 | 说明 | 类型 | 默认值 | 必选 |
 | -- | -- | -- | -- | --- |
 | spreadsheet | 自定义表 | (container: `HTMLElement \| string`, dataCfg:  [S2DataConfig](/docs/api/general/S2DataConfig), options: [SheetComponentOptions](#sheetcomponentoptions-1)) => [SpreadSheet](/docs/api/basic-class/spreadsheet) |  |  |
-| getSpreadSheet | 获取表实例 (1.4.0 已废弃，请使用 `mounted`) [详情](/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/docs/api/basic-class/spreadsheet)) => void; |  |  |
 | rangeSort | 组内排序时触发回调事件 | (params: [SortParam[]](#sortparam) ) => void; |  |  |
 | rowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |
 | rowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void |  |  |

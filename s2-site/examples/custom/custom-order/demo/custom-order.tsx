@@ -78,7 +78,7 @@ const App = () => {
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,
       // icon 点击之后的执行函数
-      action: (props) => {
+      onClick: (props) => {
         const { meta, event } = props;
         const operator = {
           onClick: ({ key }) => {

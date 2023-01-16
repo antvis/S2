@@ -26,7 +26,6 @@ export function useSpreadSheet(
     sheetType,
     onSpreadsheet,
     onMounted: onS2Mounted,
-    onGetSpreadSheet,
   } = props;
   const wrapperRef = ref<HTMLDivElement>();
   const containerRef = ref<HTMLDivElement>();
@@ -57,7 +56,6 @@ export function useSpreadSheet(
     s2Ref.value.setThemeCfg(toRaw(themeCfg));
     s2Ref.value.render();
     setLoading(false);
-    onGetSpreadSheet?.(s2Ref.value);
     onS2Mounted?.(s2Ref.value);
   };
 

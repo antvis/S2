@@ -209,8 +209,6 @@ export const useEvents = (
       'layoutAfterHeaderLayout',
     );
     useS2Event(s2Ref, emit, S2Event.LAYOUT_PAGINATION, 'layoutPagination');
-    /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
-    useS2Event(s2Ref, emit, S2Event.LAYOUT_CELL_SCROLL, 'layoutCellScroll');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_BEFORE_RENDER, 'beforeRender');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_AFTER_RENDER, 'afterRender');
     useS2Event(s2Ref, emit, S2Event.LAYOUT_DESTROY, 'destroy');

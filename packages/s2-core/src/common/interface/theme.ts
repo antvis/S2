@@ -133,10 +133,6 @@ export interface CellTheme {
   padding?: Padding;
   /* 交互态 */
   interactionState?: InteractionState;
-  /* @deprecated 已废弃， 请用 miniChartTheme.interval.height代替 */
-  miniBarChartHeight?: number;
-  /* @deprecated 已废弃， 请用 miniChartTheme.interval.fill 代替 */
-  miniBarChartFillColor?: string;
 }
 
 export interface IconTheme {
@@ -298,7 +294,6 @@ export interface BulletTheme {
     width: number;
     height: number;
     fill?: string;
-    color?: string; // @deprecated 已废弃, 请使用 fill 代替 */
     opacity?: number;
   };
 

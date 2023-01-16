@@ -10,7 +10,6 @@
 | belongsCell      | 需要增加操作图标的单元格名称   | `string[]`     |        | ✓    | 角头：'cornerCell';<br>列头：'colCell';<br>行头：'rowCell' | |
 | defaultHide      | 控制是否 hover 才展示 icon  | `boolean | (meta: Node, iconName: string) => boolean`          | false  |      | true | `1.26.0` 支持配置为一个函数 |
 | displayCondition | 展示的过滤条件，可以通过该回调函数用户自定义行列头哪些层级或单元格需要展示 icon。 所有返回值为 true 的 icon 会展示给用户。 | `(mete: Node, iconName: string) => boolean;`         |        |      |  | `1.26.0` 回传 `iconName` 并按单个 icon 控制显隐 |
-| action           | icon 点击之后的执行函数    | `(headerActionIconProps: HeaderActionIconProps) => void;` |        |     |    | 已废弃，请使用 `onClick`  |
 | onClick           | icon 点击之后的执行函数   | `(headerIconClickParams: HeaderIconClickParams) => void;` |        |     |    | `1.26.0` |
 | onHover           | icon hover 开始及结束之后的执行函数   | `(headerIconHoverParams: HeaderIconHoverParams) => void;` |        |     |    | `1.26.0` |
 

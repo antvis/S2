@@ -90,7 +90,7 @@ describe('Col Cell Tests', () => {
               displayCondition: (meta) => {
                 return !meta.isLeaf;
               },
-              action: () => true,
+              onClick: () => {},
             },
           ],
         });

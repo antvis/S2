@@ -100,7 +100,7 @@ const s2Options = {
       belongsCell: 'colCell',
       displayCondition: (meta) => meta.level === 2,
       // icon 点击之后的执行函数
-      action: (props) => {
+      onClick: (props) => {
         const { meta, event } = props;
         const operator = {
           // 配置 tooltip 中展示的内容
@@ -152,7 +152,7 @@ const s2Options = {
   // 设置自定义 `icon` 的展示条件
   headerActionIcons: [
     {
-      action: (props) => {
+      onClick: (props) => {
         const { meta, event } = props;
         const operator = {
           onClick: ({ key }) => {

@@ -5,7 +5,7 @@ order: 8
 
 ## React version
 
-For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `getSpreadSheet`
+For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `onMounted`
 
 ### ref method (recommended)
 
@@ -22,31 +22,6 @@ function App() {
 
   return (
     <SheetComponent ref={s2Ref} onMounted={onMounted}/>
-  )
-}
-```
-
-### getSpreadSheet method
-
-> ⚠️ @antv/s2-react\@1.29.0 is deprecated
-
-```tsx
-import { SpreadSheet } from '@antv/s2'
-import { SheetComponent } from '@antv/s2-react'
-
-function App() {
-  const s2Ref = React.useRef<SpreadSheet>()
-
-  const getSpreadSheet = (instance) => {
-    s2Ref.current = instance
-  }
-
-  React.useEffect(() => {
-    console.log(s2Ref.current)
-  }, [])
-
-  return (
-    <SheetComponent getSpreadSheet={getSpreadSheet} />
   )
 }
 ```
@@ -73,7 +48,7 @@ pivot => table
 - new PivotSheet()
 ```
 
-The registration event will be canceled before the change. `S2` optimizes this scenario. Whether it is `ref` or `getSpreadSheet` , the latest instance is obtained, and developers do not need to care
+The registration event will be canceled before the change. `S2` optimizes this scenario. Whether it is `ref` or `onMounted` , the latest instance is obtained, and developers do not need to care
 
 ```tsx
 import { SpreadSheet, S2Event } from '@antv/s2'
@@ -154,41 +129,6 @@ export default defineComponent({
 
 <template>
   <SheetComponent ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
-</template>
-```
-
-### getSpreadSheet method (@antv/s2-vue\@1.4.0 is obsolete)
-
-> ⚠️ @antv/s2-vue\@1.4.0 is deprecated
-
-```vue
-<script lang="ts">
-import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
-import { defineComponent, shallowRef } from 'vue';
-
-export default defineComponent({
-  setup() {
-    const s2 = shallowRef();
-
-    const getSpreadSheet = (instance:SpreadSheet) => {
-      s2.value = instance;
-    }
-
-    return {
-      s2,
-      getSpreadSheet
-    };
-  },
-
-  components: {
-    Sheet,
-  },
-});
-</script>
-
-<template>
-  <SheetComponent :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
 </template>
 ```
 

@@ -1,6 +1,5 @@
 import type { Node } from '../../facet/layout/node';
 import type { LayoutWidthType } from './basic';
-import type { DeviceType } from './s2Options';
 
 export type CellCustomSize =
   | null
@@ -97,8 +96,4 @@ export interface S2Style {
    * 行头单元格配置
    */
   rowCell?: RowCellStyle | null;
-  /**
-   * @deprecated 设备类型 use options.device instead
-   */
-  device?: DeviceType; // 设备，pc || mobile
 }

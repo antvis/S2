@@ -86,7 +86,6 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 | name                    | event name                           | describe                                                         |
 | :---------------------- | :----------------------------------- | :--------------------------------------------------------------- |
 | Header layout complete  | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT` | Triggered after row header and column header layout is completed |
-| cell virtual scrolling  | `S2Event.LAYOUT_CELL_SCROLL`         | Deprecated, please use `S2Event.GLOBAL_SCROLL` instead           |
 | paging                  | `S2Event.LAYOUT_PAGINATION`          | pagination event                                                 |
 | Put away your outfit    | `S2Event.LAYOUT_COLLAPSE_ROWS`       | Event callback for collapsing row headers in tree mode           |
 | after packing away      | `S2Event.LAYOUT_AFTER_COLLAPSE_ROWS` | Event callback after the line head is collapsed in tree mode     |

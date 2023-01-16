@@ -104,6 +104,7 @@ const getOptions = (): SheetComponentsProps['options'] => {
     width: 800,
     height: 600,
     hierarchyType: 'grid',
+    device: DeviceType.PC,
     showSeriesNumber: false,
     frozen: {
       rowHeader: false,
@@ -135,7 +136,6 @@ const getOptions = (): SheetComponentsProps['options'] => {
       rowCell: {
         width: 100,
       },
-      device: DeviceType.PC,
     },
     tooltip: {
       showTooltip: true,

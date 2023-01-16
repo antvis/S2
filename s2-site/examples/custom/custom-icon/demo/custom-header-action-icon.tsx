@@ -29,7 +29,7 @@ fetch(
           iconNames: ['SortDown'],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.level > 0,
-          action: (props) => {
+          onClick: (props) => {
             const { meta, event } = props;
             console.log(meta);
             meta.spreadsheet.handleGroupSort(event, meta);
@@ -39,7 +39,7 @@ fetch(
           iconNames: ['Filter'],
           belongsCell: 'colCell',
           displayCondition: (meta) => meta.id === 'root[&]家具',
-          action: (props) => {
+          onClick: (props) => {
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
@@ -50,7 +50,7 @@ fetch(
         {
           iconNames: ['SortUp'],
           belongsCell: 'cornerCell',
-          action: (props) => {
+          onClick: (props) => {
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
@@ -61,7 +61,7 @@ fetch(
         {
           iconNames: ['DrillDownIcon'],
           belongsCell: 'rowCell',
-          action: (props) => {
+          onClick: (props) => {
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },

@@ -267,12 +267,8 @@ export const drawInterval = (cell: DataCell) => {
     }
     const cellStyle = cell.getStyle();
 
-    const barChartHeight =
-      cellStyle?.miniChart?.interval?.height ??
-      cellStyle?.cell?.miniBarChartHeight;
-    const barChartFillColor =
-      cellStyle?.miniChart?.interval?.fill ??
-      cellStyle?.cell?.miniBarChartFillColor;
+    const barChartHeight = cellStyle?.miniChart?.interval?.height;
+    const barChartFillColor = cellStyle?.miniChart?.interval?.fill;
 
     const getScale = getIntervalScale(minValue, maxValue);
     const { zeroScale, scale: intervalScale } = getScale(fieldValue);

@@ -36,7 +36,6 @@ export const DEFAULT_STYLE: Readonly<S2Style> = {
     widthByField: null,
     heightByField: null,
   },
-  device: DeviceType.PC,
 };
 
 export const DEFAULT_OPTIONS: Readonly<S2Options> = {
@@ -44,6 +43,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   height: 480,
   debug: false,
   hierarchyType: 'grid',
+  device: DeviceType.PC,
   conditions: {},
   totals: {},
   tooltip: {

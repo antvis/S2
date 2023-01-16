@@ -286,7 +286,7 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id !== 'root[&]家具[&]桌子[&]number',
-          action: ({ event }: HeaderActionIconProps) => {
+          onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
               position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="Filter colCell" />,
@@ -298,7 +298,7 @@ function MainLayout() {
           belongsCell: 'colCell',
           displayCondition: (node: Node) =>
             node.id === 'root[&]家具[&]桌子[&]number',
-          action: ({ event }: HeaderActionIconProps) => {
+          onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
               position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="SortDown colCell" />,
@@ -308,7 +308,7 @@ function MainLayout() {
         {
           iconNames: ['FilterAsc'],
           belongsCell: 'cornerCell',
-          action: ({ event }: HeaderActionIconProps) => {
+          onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
               position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="FilterAsc cornerCell" />,
@@ -318,7 +318,7 @@ function MainLayout() {
         {
           iconNames: ['SortDown', 'Filter'],
           belongsCell: 'rowCell',
-          action: ({ event }: HeaderActionIconProps) => {
+          onClick: ({ event }: HeaderActionIconProps) => {
             s2Ref.current?.showTooltip({
               position: { x: event!.clientX, y: event!.clientY },
               content: <ActionIconTooltip name="SortDown & Filter rowCell" />,

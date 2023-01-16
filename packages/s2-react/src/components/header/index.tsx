@@ -11,10 +11,6 @@ import type { SheetComponentOptions } from '../sheets/interface';
 export interface HeaderCfgProps {
   style?: React.CSSProperties;
   className?: string;
-  /**
-   * @deprecated 已废弃, 请使用 style 代替
-   */
-  width?: React.CSSProperties['width'];
   title?: React.ReactNode;
   description?: React.ReactNode;
   exportCfg?: ExportCfgProps;
@@ -34,8 +30,6 @@ export const Header: React.FC<HeaderProps> = React.memo(
     className,
     style,
     title,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    width,
     description,
     exportCfg,
     advancedSortCfg,

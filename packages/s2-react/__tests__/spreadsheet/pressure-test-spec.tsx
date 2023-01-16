@@ -91,11 +91,11 @@ const getOptions = (): SheetComponentsProps['options'] => {
       rowCell: {
         width: 100,
       },
-      device: DeviceType.PC,
     },
     tooltip: {
       showTooltip: true,
     },
+    device: DeviceType.PC,
   };
 };
 
