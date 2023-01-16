@@ -228,7 +228,14 @@ export class ColCell extends HeaderCell {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.field}`;
   }
 
-  // 叶子节点, 但层级不同于其他节点, 说明是任意不规则自定义节点, 此时不需要绘制热区
+  /**
+   * @description 叶子节点, 但层级不同于其他节点 (如下图 a-1-1), 说明是任意不规则自定义节点, 此时不需要绘制热区
+   * --------------------------------------------------
+   * |      自定义节点 a-1          |                   |
+   * |-------------   |-----------|   自定义节点 a-1-1 |
+   * | a-1-1  | a-1-2 |  a-1-3    |                  |
+   * -------------------------------------------------
+   */
   protected isCrossColumnLeafNode() {
     const { colsHierarchy } = this.spreadsheet.facet.layoutResult;
     const { level, isLeaf } = this.meta;

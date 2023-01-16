@@ -95,7 +95,6 @@ exports[`<SheetComponent/> Tests Render Tests should render editable sheet by sn
         >
           <ul
             class="ant-pagination ant-pagination-mini"
-            unselectable="unselectable"
           >
             <li
               aria-disabled="true"
@@ -358,7 +357,6 @@ exports[`<SheetComponent/> Tests Render Tests should render gridAnalysis sheet b
         >
           <ul
             class="ant-pagination ant-pagination-mini"
-            unselectable="unselectable"
           >
             <li
               aria-disabled="true"
@@ -611,7 +609,6 @@ exports[`<SheetComponent/> Tests Render Tests should render pivot sheet by snaps
         >
           <ul
             class="ant-pagination ant-pagination-mini"
-            unselectable="unselectable"
           >
             <li
               aria-disabled="true"
@@ -864,7 +861,6 @@ exports[`<SheetComponent/> Tests Render Tests should render strategy sheet by sn
         >
           <ul
             class="ant-pagination ant-pagination-mini"
-            unselectable="unselectable"
           >
             <li
               aria-disabled="true"
@@ -1117,7 +1113,6 @@ exports[`<SheetComponent/> Tests Render Tests should render table sheet by snaps
         >
           <ul
             class="ant-pagination ant-pagination-mini"
-            unselectable="unselectable"
           >
             <li
               aria-disabled="true"

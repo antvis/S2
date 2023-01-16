@@ -49,10 +49,12 @@ describe('<SheetComponent/> Tests', () => {
       'should render successfully for %s sheet',
       (sheetType) => {
         function init() {
-          ReactDOM.render(
-            <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
-            container,
-          );
+          act(() => {
+            ReactDOM.render(
+              <SheetComponent sheetType={sheetType} {...commonSheetProps} />,
+              container,
+            );
+          });
         }
 
         expect(init).not.toThrowError();
