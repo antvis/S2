@@ -58,15 +58,13 @@ describe('Link Field Tests', () => {
 
   beforeEach(() => {
     s2 = new PivotSheet(getContainer(), dataCfg, s2options);
-    s2.setThemeCfg({
-      theme: {
-        rowCell: {
-          text: {
-            linkTextFill: 'red',
-          },
-          bolderText: {
-            linkTextFill: 'red',
-          },
+    s2.setTheme({
+      rowCell: {
+        text: {
+          linkTextFill: 'red',
+        },
+        bolderText: {
+          linkTextFill: 'red',
         },
       },
     });
@@ -75,15 +73,16 @@ describe('Link Field Tests', () => {
 
   test('province row cell should use link field style', () => {
     // 浙江省对应 cell
-    const province = s2.facet.rowHeader!.getChildByIndex(0);
+    const province = s2.facet.rowHeader?.children[0];
     // @ts-ignore
     expect(province.textShape.attr('fill')).toEqual('red');
     // @ts-ignore
     expect(province.linkFieldShape).toBeDefined();
   });
+
   test('city row cell should not use link field style', () => {
     // 义乌对应 cell
-    const city = s2.facet.rowHeader!.getChildByIndex(1);
+    const city = s2.facet.rowHeader?.children[1];
     // @ts-ignore
     expect(city.textShape.attr('fill')).not.toEqual('red');
     // @ts-ignore

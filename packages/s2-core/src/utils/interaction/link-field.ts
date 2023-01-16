@@ -9,6 +9,8 @@ export const checkIsLinkField = (
     ? linkFields(meta)
     : linkFields.some(
         (field) =>
-          field === meta.key || field === meta.id || field === meta.valueField,
+          field === meta.field ||
+          field === meta.id ||
+          field === meta.valueField,
       );
 };
