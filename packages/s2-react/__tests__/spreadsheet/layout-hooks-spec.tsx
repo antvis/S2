@@ -157,35 +157,37 @@ const CustomLayoutDataPosition =
     return viewMeta;
   };
 
-const getOptions = (): SheetComponentsProps['options'] => ({
-  width: 800,
-  height: 600,
-  hierarchyType: 'grid',
-  frozen: {
-    rowHeader: true,
-  },
-  style: {
-    rowCell: {
-      collapseAll: false,
-      width: 120,
+const getOptions = (): SheetComponentsProps['options'] => {
+  return {
+    width: 800,
+    height: 600,
+    hierarchyType: 'grid',
+    frozen: {
+      rowHeader: true,
     },
-    colCell: {
-      widthByField: {},
-      heightByField: {},
+    style: {
+      rowCell: {
+        collapseAll: false,
+        width: 120,
+      },
+      colCell: {
+        widthByField: {},
+        heightByField: {},
+      },
+      dataCell: {
+        height: 32,
+      },
     },
-    dataCell: {
-      height: 32,
+    tooltip: {
+      showTooltip: true,
     },
-  },
-  tooltip: {
-    showTooltip: true,
-  },
-  // layout hooks
-  layoutArrange: CustomLayoutArrange,
-  layoutHierarchy: CustomLayoutHierarchy,
-  layoutCoordinate: CustomLayoutCoordinate,
-  layoutDataPosition: CustomLayoutDataPosition,
-});
+    // layout hooks
+    layoutArrange: CustomLayoutArrange,
+    layoutHierarchy: CustomLayoutHierarchy,
+    layoutCoordinate: CustomLayoutCoordinate,
+    layoutDataPosition: CustomLayoutDataPosition,
+  };
+};
 
 const MainLayout = ({ options, dataCfg }: SheetComponentsProps) => (
   <div>

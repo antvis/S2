@@ -86,21 +86,25 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should render custom layout row nodes', () => {
-    const rowNodes = s2.getRowNodes().map((node) => ({
-      value: node.value,
-      width: node.width,
-      height: node.height,
-      description: node.extra.description,
-    }));
+    const rowNodes = s2.getRowNodes().map((node) => {
+      return {
+        value: node.value,
+        width: node.width,
+        height: node.height,
+        description: node.extra.description,
+      };
+    });
 
     expect(rowNodes).toMatchSnapshot();
   });
 
   test('should calc correctly row index of leaf nodes', () => {
-    const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-      value: node.value,
-      rowIndex: node.rowIndex,
-    }));
+    const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+      return {
+        value: node.value,
+        rowIndex: node.rowIndex,
+      };
+    });
 
     expect(rowLeafNodes).toMatchSnapshot();
   });
@@ -226,10 +230,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ...customRowDataCfg,
       fields: {
         ...s2.dataSet.fields,
-        rows: customTreeNodes.map((node) => ({
-          ...node,
-          collapsed: true,
-        })),
+        rows: customTreeNodes.map((node) => {
+          return {
+            ...node,
+            collapsed: true,
+          };
+        }),
       },
     });
     s2.render(true);
@@ -273,10 +279,12 @@ describe('SpreadSheet Custom Tree Tests', () => {
       ...customRowDataCfg,
       fields: {
         ...s2.dataSet.fields,
-        rows: customTreeNodes.map((node) => ({
-          ...node,
-          collapsed: node.field !== collapsedField,
-        })),
+        rows: customTreeNodes.map((node) => {
+          return {
+            ...node,
+            collapsed: node.field !== collapsedField,
+          };
+        }),
       },
     });
 

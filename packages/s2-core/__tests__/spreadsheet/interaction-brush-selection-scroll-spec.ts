@@ -51,7 +51,6 @@ const options: S2Options = {
     dataCell: {
       height: 32,
     },
-    device: DeviceType.PC,
   },
   pagination: {
     current: 1,
@@ -68,6 +67,7 @@ const options: S2Options = {
       hiddenColumns: true,
     },
   },
+  device: DeviceType.PC,
 };
 
 describe('Brush selection scroll spec', () => {

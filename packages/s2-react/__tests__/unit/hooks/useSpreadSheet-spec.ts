@@ -22,15 +22,17 @@ describe('useSpreadSheet tests', () => {
   const container = getContainer();
   const getConfig = (
     fields: S2DataConfig['fields'] = mockDataConfig.fields,
-  ): SheetComponentsProps => ({
-    spreadsheet: () =>
-      new PivotSheet(container, mockDataConfig, s2Options as S2Options),
-    options: s2Options,
-    dataCfg: {
-      fields,
-      data: mockDataConfig.data,
-    },
-  });
+  ): SheetComponentsProps => {
+    return {
+      spreadsheet: () =>
+        new PivotSheet(container, mockDataConfig, s2Options as S2Options),
+      options: s2Options,
+      dataCfg: {
+        fields,
+        data: mockDataConfig.data,
+      },
+    };
+  };
 
   test('should build spreadSheet', () => {
     const { result } = renderHook(() =>
@@ -129,29 +131,19 @@ describe('useSpreadSheet tests', () => {
     expect(onDestroyFromS2Event).toHaveBeenCalledTimes(1);
   });
 
-  test('should call onMounted and getSpreadSheet and throw deprecated warn when sheet mounted', () => {
-    const getSpreadSheet = jest.fn();
+  test('should call onMounted when sheet mounted', () => {
     const onMounted = jest.fn();
-
-    const warnSpy = jest
-      .spyOn(console, 'warn')
-      .mockImplementationOnce(() => {});
 
     const { result } = renderHook(() =>
       useSpreadSheet({
         ...getConfig(),
         sheetType: 'pivot',
-        getSpreadSheet,
         onMounted,
       }),
     );
 
     const s2 = result.current.s2Ref.current;
 
-    expect(getSpreadSheet).toHaveBeenCalledWith(s2);
     expect(onMounted).toHaveBeenCalledWith(s2);
-    expect(warnSpy).toHaveBeenCalledWith(
-      '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
-    );
   });
 });

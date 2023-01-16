@@ -20,7 +20,7 @@ describe('Corner Cell Tests', () => {
     width: 200,
   } as unknown as Node;
 
-  test('should call drawTextShape after called drawCellText', () => {
+  test('should call drawTextShape', () => {
     const cornerCell = new CornerCell(node, s2, {
       position: {},
     });
@@ -31,7 +31,7 @@ describe('Corner Cell Tests', () => {
       .mockImplementationOnce(() => true);
 
     // @ts-ignore
-    cornerCell.drawCellText();
+    cornerCell.initCell();
 
     expect(drawTextShapeSpy).toHaveBeenCalledTimes(1);
   });

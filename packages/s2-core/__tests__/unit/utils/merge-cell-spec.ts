@@ -193,8 +193,16 @@ describe('Merge Cells Test', () => {
       [1, 1],
     ];
     const mockCells = [
-      { getMeta: () => ({ x: 1, y: 1, width: 2, height: 2 }) },
-      { getMeta: () => ({ x: 3, y: 1, width: 2, height: 2 }) },
+      {
+        getMeta: () => {
+          return { x: 1, y: 1, width: 2, height: 2 };
+        },
+      },
+      {
+        getMeta: () => {
+          return { x: 3, y: 1, width: 2, height: 2 };
+        },
+      },
     ];
 
     expect(getPolygonPoints(mockCells as unknown as S2CellType[])).toEqual(

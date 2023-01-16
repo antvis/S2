@@ -34,10 +34,12 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
-jest.mock('@/utils/interaction/merge-cell', () => ({
-  mergeCell: jest.fn(),
-  unmergeCell: jest.fn(),
-}));
+jest.mock('@/utils/interaction/merge-cell', () => {
+  return {
+    mergeCell: jest.fn(),
+    unmergeCell: jest.fn(),
+  };
+});
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('RootInteraction Tests', () => {
@@ -54,12 +56,14 @@ describe('RootInteraction Tests', () => {
       clearUnselectedState: jest.fn(),
       update: jest.fn(),
       cellType: CellTypes.DATA_CELL,
-      getMeta: () => ({
-        colIndex: id,
-        rowIndex: 1,
-        id: `0-${id}`,
-        x: 1,
-      }),
+      getMeta: () => {
+        return {
+          colIndex: id,
+          rowIndex: 1,
+          id: `0-${id}`,
+          x: 1,
+        };
+      },
     } as unknown as DataCell);
 
   beforeAll(() => {

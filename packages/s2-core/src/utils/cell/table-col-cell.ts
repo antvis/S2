@@ -66,6 +66,7 @@ export const getOccupiedWidthForTableCol = (
   style: DefaultCellTheme,
 ) => {
   const padding = get(style, 'cell.padding');
+  const horizontalBorderWidth = style?.cell?.horizontalBorderWidth ?? 1;
   const expandIconPadding = getExtraPaddingForExpandIcon(s2, meta.field, style);
   const iconsWidth = getTableColIconsWidth(
     s2,
@@ -79,6 +80,7 @@ export const getOccupiedWidthForTableCol = (
     padding.right +
     iconsWidth +
     expandIconPadding.left +
-    expandIconPadding.right
+    expandIconPadding.right +
+    horizontalBorderWidth
   );
 };

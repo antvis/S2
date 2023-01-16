@@ -1,22 +1,24 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { usePivotSheetUpdate } from '@/hooks';
 
-const getPartDrillDownConfig = () => ({
-  drillConfig: {
-    dataSet: [
-      {
-        name: '城市',
-        value: 'city',
-      },
-    ],
-  },
-  fetchData: () =>
-    Promise.resolve({
-      drillData: [],
-      drillField: 'city',
-    }),
-  drillItemsNum: 1,
-});
+const getPartDrillDownConfig = () => {
+  return {
+    drillConfig: {
+      dataSet: [
+        {
+          name: '城市',
+          value: 'city',
+        },
+      ],
+    },
+    fetchData: () =>
+      Promise.resolve({
+        drillData: [],
+        drillField: 'city',
+      }),
+    drillItemsNum: 1,
+  };
+};
 
 describe('usePivotSheetUpdate tests', () => {
   test('should update callback when only attr change', () => {

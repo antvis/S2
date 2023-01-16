@@ -249,10 +249,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
         const { values = [] } = sheet.dataCfg.fields || {};
 
         // @ts-ignore
-        item.children = map(values, (field) => ({
-          label: sheet.dataSet.getFieldName(field),
-          value: field,
-        }));
+        item.children = map(values, (field) => {
+          return {
+            label: sheet.dataSet.getFieldName(field),
+            value: field,
+          };
+        });
       }
 
       return item;

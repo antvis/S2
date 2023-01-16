@@ -84,6 +84,7 @@ function MainLayout() {
     width: 800,
     height: 600,
     showSeriesNumber: true,
+    device: DeviceType.PC,
     interaction: {
       enableCopy: true,
     },
@@ -91,7 +92,6 @@ function MainLayout() {
       dataCell: {
         height: 32,
       },
-      device: DeviceType.PC,
     },
     frozen: {
       rowCount: 2,

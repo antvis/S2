@@ -52,18 +52,11 @@ export class CornerCell extends HeaderCell {
     this.resetTextAndConditionIconShapes();
     this.drawBackgroundShape();
     this.drawTreeIcon();
-    this.drawCellText();
+    this.drawTextShape();
     this.drawConditionIconShapes();
     this.drawActionIcons();
     this.drawBorders();
     this.drawResizeArea();
-  }
-
-  /**
-   * @deprecated 已废弃, 请使用 drawTextShape
-   */
-  protected drawCellText() {
-    this.drawTextShape();
   }
 
   protected drawTextShape() {

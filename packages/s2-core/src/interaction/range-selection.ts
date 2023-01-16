@@ -228,12 +228,14 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     // ROW_CELL类型 最后一个Level支持区间选择
     return this.spreadsheet.facet.layoutResult.rowNodes
       .filter(({ rowIndex }) => inRange(rowIndex, startIndex, endIndex + 1))
-      .map((e) => ({
-        id: e.id,
-        colIndex: e.colIndex,
-        rowIndex: e.rowIndex,
-        type: cell.cellType,
-      }));
+      .map((e) => {
+        return {
+          id: e.id,
+          colIndex: e.colIndex,
+          rowIndex: e.rowIndex,
+          type: cell.cellType,
+        };
+      });
   }
 
   private handleColSelected(
@@ -244,11 +246,13 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     // COL_CELL类型 最后一个Level支持区间选择
     return this.spreadsheet.facet.layoutResult.colLeafNodes
       .filter(({ colIndex }) => inRange(colIndex, startIndex, endIndex + 1))
-      .map((e) => ({
-        id: e.id,
-        colIndex: e.colIndex,
-        rowIndex: e.rowIndex,
-        type: cell.cellType,
-      }));
+      .map((e) => {
+        return {
+          id: e.id,
+          colIndex: e.colIndex,
+          rowIndex: e.rowIndex,
+          type: cell.cellType,
+        };
+      });
   }
 }

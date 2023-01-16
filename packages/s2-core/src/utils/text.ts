@@ -7,11 +7,9 @@ import {
   isNumber,
   isString,
   map,
-  memoize,
   size,
   toString,
   trim,
-  values,
 } from 'lodash';
 import type { SimpleBBox } from '../engine';
 import type { ColCell } from '../cell';
@@ -32,40 +30,8 @@ import {
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
-import { getOffscreenCanvas } from './canvas';
 import { renderMiniChart } from './g-mini-charts';
 import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
-
-/**
- * 计算文本在画布中的宽度
- * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
- */
-export const measureTextWidth = memoize(
-  (text: number | string = '', font: unknown): number => {
-    if (!font) {
-      return 0;
-    }
-
-    const ctx = getOffscreenCanvas().getContext('2d');
-
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
-      font as CSSStyleDeclaration;
-
-    // copy G 里面的处理逻辑
-    ctx!.font = [
-      fontStyle,
-      fontVariant,
-      fontWeight,
-      `${fontSize}px`,
-      fontFamily,
-    ]
-      .join(' ')
-      .trim();
-
-    return ctx!.measureText(`${text}`).width;
-  },
-  (text: any, font) => [text, ...values(font)].join(''),
-);
 
 /**
  * 获取文本的 ... 文本。
@@ -163,37 +129,6 @@ export const getEllipsisTextInner = (
   }
 
   return `${r.join('')}...`;
-};
-
-/**
- * 追求性能，粗略的计算文本的宽高！
- *
- * 算法逻辑：
- * 计算一个字符串中，符号[0-255]，中文（其他）的个数
- * 然后分别乘以中文、符号的宽度
- * @param text
- * @param font
- * @deprecated 已废弃，1.30.0 版本后移除。该方法计算宽度不准确，请使用 spreadsheet 实例上的同名方法
- */
-export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
-  const alphaWidth = measureTextWidth('a', font);
-  const chineseWidth = measureTextWidth('蚂', font);
-
-  let w = 0;
-
-  if (!text) {
-    return w;
-  }
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const char of text) {
-    const code = char.charCodeAt(0);
-
-    // /[\u0000-\u00ff]/
-    w += code >= 0 && code <= 255 ? alphaWidth : chineseWidth;
-  }
-
-  return w;
 };
 
 /**

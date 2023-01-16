@@ -18,11 +18,13 @@ describe('State Controller Utils Tests', () => {
     hideInteractionShape: jest.fn(),
     clearUnselectedState: jest.fn(),
     cellType: CellTypes.ROW_CELL,
-    getMeta: () => ({
-      colIndex: 0,
-      rowIndex: 0,
-      id: `root[&]price`,
-    }),
+    getMeta: () => {
+      return {
+        colIndex: 0,
+        rowIndex: 0,
+        id: `root[&]price`,
+      };
+    },
   } as unknown as RowCell;
 
   let mockInstance: SpreadSheet;

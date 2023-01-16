@@ -151,12 +151,14 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
     event: S2Event.GLOBAL_LINK_FIELD_JUMP,
     name: 'onLinkFieldJump',
   },
-].map((i) => ({
-  ...i,
-  eventHook: useS2Event,
-  // 在测试中，模拟 toString 方法，方便使用 %s 打印出 name
-  toString: () => i.name,
-}));
+].map((i) => {
+  return {
+    ...i,
+    eventHook: useS2Event,
+    // 在测试中，模拟 toString 方法，方便使用 %s 打印出 name
+    toString: () => i.name,
+  };
+});
 
 const cellEventCases = [
   {
@@ -295,11 +297,13 @@ const cellEventCases = [
     event: S2Event.MERGED_CELLS_MOUSE_MOVE,
     name: 'onMergedCellsMouseMove',
   },
-].map((i) => ({
-  ...i,
-  eventHook: useCellEvent,
-  toString: () => i.name,
-}));
+].map((i) => {
+  return {
+    ...i,
+    eventHook: useCellEvent,
+    toString: () => i.name,
+  };
+});
 
 describe('useEvents tests', () => {
   let s2: SpreadSheet;

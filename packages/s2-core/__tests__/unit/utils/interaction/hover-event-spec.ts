@@ -8,19 +8,23 @@ import { ColCell } from '@/cell';
 
 import { InteractionStateName } from '@/common';
 
-jest.mock('@/cell', () => ({
-  ColCell: class ColCell {
-    stateName: InteractionStateName;
+jest.mock('@/cell', () => {
+  return {
+    ColCell: class ColCell {
+      stateName: InteractionStateName;
 
-    getMeta = () => ({
-      id: 'root[&]city',
-    });
+      getMeta = () => {
+        return {
+          id: 'root[&]city',
+        };
+      };
 
-    updateByState = (name: InteractionStateName) => {
-      this.stateName = name;
-    };
-  },
-}));
+      updateByState = (name: InteractionStateName) => {
+        this.stateName = name;
+      };
+    },
+  };
+});
 
 describe('Hover Event Utils Tests', () => {
   describe('getActiveHoverRowColCells test', () => {

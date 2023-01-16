@@ -4,6 +4,7 @@ import type { RawData } from '../../../common/interface';
 import { getFieldValueOfViewMetaData } from '../../../data-set/cell-data';
 import type { Node } from '../../../facet/layout/node';
 import { BaseEvent, type BaseEventImplement } from '../../base-event';
+import type { Data } from '../../../common/interface';
 
 /**
  * Row header click navigation interaction
@@ -29,7 +30,8 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
 
       this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         field,
-        record: rowData,
+        cellData: cellData!,
+        record: rowData as Data,
       });
     });
   }

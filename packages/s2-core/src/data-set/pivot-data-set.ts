@@ -38,6 +38,7 @@ import type {
   S2DataConfig,
   TotalsStatus,
   ViewMeta,
+  RowData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
@@ -59,6 +60,7 @@ import {
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
 import { DataSelectType } from '../common/constant/total';
+import type { CellMeta } from '../common';
 import { CellData } from './cell-data';
 import { BaseDataSet } from './base-data-set';
 import type {
@@ -662,5 +664,9 @@ export class PivotDataSet extends BaseDataSet {
   // 是否开启自定义度量组位置值
   private isCustomMeasuresPosition(customValueOrder?: number) {
     return isNumber(customValueOrder);
+  }
+
+  public getRowData(cell: CellMeta): RowData {
+    return this.getMultiData(cell.rowQuery);
   }
 }

@@ -77,10 +77,6 @@ export interface BaseSheetComponentProps<
       };
   themeCfg?: ThemeCfg;
   header?: Header;
-
-  /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
-  getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
-
   /** 底表 render callback */
   onSheetUpdate?: SheetUpdateCallback;
 
@@ -153,9 +149,6 @@ export interface BaseSheetComponentProps<
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onLayoutPagination?: (data: LayoutPaginationParams) => void;
-
-  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
-  onLayoutCellScroll?: (position: CellScrollPosition) => void;
   onLayoutCellMounted?: (cell: S2CellType) => void;
   onBeforeRender?: () => void;
   onAfterRender?: () => void;
@@ -204,6 +197,11 @@ export interface BaseSheetComponentProps<
   onScroll?: (position: CellScrollPosition) => void;
 
   // ============== Auto 自动生成的 ================
+  onLayoutAfterRealDataCellRender?: (options: {
+    add: [number, number][];
+    remove: [number, number][];
+    spreadsheet: SpreadSheet;
+  }) => void;
   onRowCellBrushSelection?: (event: GEvent) => void;
   onColCellBrushSelection?: (event: GEvent) => void;
 }

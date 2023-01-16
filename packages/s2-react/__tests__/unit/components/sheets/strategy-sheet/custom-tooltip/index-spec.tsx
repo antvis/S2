@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createMockCellInfo, getContainer } from '../../../../../util/helpers';
@@ -34,23 +34,27 @@ describe('StrategySheet Tooltip Tests', () => {
     // [数值, 衍生指标1, 衍生指标2]
     const originalValues = [1.1, 0.02, 0.03];
 
-    jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => ({
-      ...mockCellInfo.mockCellMeta,
-      fieldValue: {
-        values: ['1222', '2%', '3%'],
-        originalValues,
-      },
-    }));
+    jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => {
+      return {
+        ...mockCellInfo.mockCellMeta,
+        fieldValue: {
+          values: ['1222', '2%', '3%'],
+          originalValues,
+        },
+      };
+    });
 
     const container = getContainer();
 
-    ReactDOM.render(
-      <StrategySheetDataTooltip
-        cell={mockCellInfo.mockCell}
-        showOriginalValue
-      />,
-      container,
-    );
+    act(() => {
+      ReactDOM.render(
+        <StrategySheetDataTooltip
+          cell={mockCellInfo.mockCell}
+          showOriginalValue
+        />,
+        container,
+      );
+    });
 
     expect(
       container.querySelector('.s2-strategy-sheet-tooltip-original-value'),

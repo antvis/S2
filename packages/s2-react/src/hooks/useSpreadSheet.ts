@@ -68,14 +68,6 @@ export function useSpreadSheet(props: SheetComponentsProps) {
      */
     forceUpdate();
 
-    if (props.getSpreadSheet) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        '[SheetComponent] `getSpreadSheet` is deprecated. Please use `onMounted` instead.',
-      );
-      props.getSpreadSheet(s2Ref.current);
-    }
-
     props.onMounted?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 

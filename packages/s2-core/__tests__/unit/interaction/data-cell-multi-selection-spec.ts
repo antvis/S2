@@ -104,6 +104,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],
         stateName: InteractionStateName.SELECTED,
+        onUpdateCells: expect.any(Function),
       });
 
       expect(
@@ -146,6 +147,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       expect(s2.interaction.getState()).toEqual({
         cells: [mockCellB.mockCellMeta],
         stateName: InteractionStateName.SELECTED,
+        onUpdateCells: expect.any(Function),
       });
 
       expect(

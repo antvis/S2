@@ -14,6 +14,7 @@ describe('cornerBBox test', () => {
         colsHierarchy: {
           height: 100,
           width: 100,
+          sampleNodeForLastLevel: true,
         },
       },
       getSeriesNumberWidth() {
@@ -25,9 +26,14 @@ describe('cornerBBox test', () => {
         },
         options: {
           width: 400,
+          style: {
+            colCell: {
+              hideMeasureColumn: false,
+            },
+          },
         },
       },
-    } as BaseFacet;
+    } as unknown as BaseFacet;
   });
 
   test('should return original width when scroll contains row header', () => {
@@ -72,5 +78,14 @@ describe('cornerBBox test', () => {
 
     expect(bbox.width).toEqual(200);
     expect(bbox.originalWidth).toEqual(280);
+  });
+
+  test('should use default column height when columns is empty', () => {
+    mockFacet.spreadsheet.options.style!.colCell!.height = 20;
+    mockFacet.layoutResult.colsHierarchy.sampleNodeForLastLevel = null;
+
+    const bbox = new CornerBBox(mockFacet, true);
+
+    expect(bbox.height).toEqual(20);
   });
 });

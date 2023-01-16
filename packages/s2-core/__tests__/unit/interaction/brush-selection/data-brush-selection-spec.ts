@@ -101,29 +101,43 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
+    mockRootInteraction.getSelectedCellHighlight = () => {
+      return {
+        rowHeader: false,
+        colHeader: false,
+        currentRow: false,
+        currentCol: false,
+      };
+    };
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
     mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
       new Array(10),
-    ).map((_, idx) => ({
-      colIndex: idx,
-      id: idx,
-      x: idx * 100,
-      width: 100,
-    })) as unknown[] as Node[];
+    ).map((_, idx) => {
+      return {
+        colIndex: idx,
+        id: idx,
+        x: idx * 100,
+        width: 100,
+      };
+    }) as unknown[] as Node[];
     mockSpreadSheetInstance.facet.layoutResult.rowLeafNodes = Array.from(
       new Array(10),
-    ).map((_, idx) => ({
-      rowIndex: idx,
-      id: idx,
-      y: idx * 100,
-      height: 100,
-    })) as unknown[] as Node[];
-    mockSpreadSheetInstance.facet.getCellRange = () => ({
-      start: 0,
-      end: 9,
-    });
+    ).map((_, idx) => {
+      return {
+        rowIndex: idx,
+        id: idx,
+        y: idx * 100,
+        height: 100,
+      };
+    }) as unknown[] as Node[];
+    mockSpreadSheetInstance.facet.getCellRange = () => {
+      return {
+        start: 0,
+        end: 9,
+      };
+    };
     brushSelectionInstance = new DataCellBrushSelection(
       mockSpreadSheetInstance,
     );
@@ -136,23 +150,33 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.setOptions({
       interaction: { selectedCellHighlight: true },
     });
+    mockRootInteraction.getSelectedCellHighlight = () => {
+      return {
+        rowHeader: true,
+        colHeader: true,
+        currentRow: false,
+        currentCol: false,
+      };
+    };
 
-    brushSelectionInstance.getBrushRange = () => ({
-      start: {
-        rowIndex: 0,
-        colIndex: 0,
-        x: 0,
-        y: 0,
-      },
-      end: {
-        rowIndex: 5,
-        colIndex: 5,
-        x: 200,
-        y: 200,
-      },
-      width: 200,
-      height: 200,
-    });
+    brushSelectionInstance.getBrushRange = () => {
+      return {
+        start: {
+          rowIndex: 0,
+          colIndex: 0,
+          x: 0,
+          y: 0,
+        },
+        end: {
+          rowIndex: 5,
+          colIndex: 5,
+          x: 200,
+          y: 200,
+        },
+        width: 200,
+        height: 200,
+      };
+    };
 
     (brushSelectionInstance as any).updateSelectedCells();
 
@@ -411,7 +435,9 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
       },
     });
     mockSpreadSheetInstance.dataSet.getDisplayDataSet = () =>
-      Array.from(new Array(10)).map(() => ({}));
+      Array.from(new Array(10)).map(() => {
+        return {};
+      });
     (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
       1, 8, 1, 8,
     ];

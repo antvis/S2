@@ -5,7 +5,7 @@ order: 8
 
 ## React 版本
 
-对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/docs/api/basic-class/spreadsheet)， 进行一些进阶操作时，可以使用 `React.useRef` 和 `getSpreadSheet` 两种方式
+对于使用 `React` 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](/docs/api/basic-class/spreadsheet)， 进行一些进阶操作时，可以使用 `React.useRef` 和 `onMounted` 两种方式
 
 ### ref 方式（推荐）
 
@@ -22,31 +22,6 @@ function App() {
 
   return (
     <SheetComponent ref={s2Ref} onMounted={onMounted}/>
-  )
-}
-```
-
-### getSpreadSheet 方式
-
-> ⚠️ @antv/s2-react@1.29.0 已废弃
-
-```tsx
-import { SpreadSheet } from '@antv/s2'
-import { SheetComponent } from '@antv/s2-react'
-
-function App() {
-  const s2Ref = React.useRef<SpreadSheet>()
-
-  const getSpreadSheet = (instance) => {
-    s2Ref.current = instance
-  }
-
-  React.useEffect(() => {
-    console.log(s2Ref.current)
-  }, [])
-
-  return (
-    <SheetComponent getSpreadSheet={getSpreadSheet} />
   )
 }
 ```
@@ -73,7 +48,7 @@ pivot => table
 - new PivotSheet()
 ```
 
-变更前注册事件会被注销，`S2` 对这种场景进行了优化，不管是 `ref` 还是 `getSpreadSheet` 方式，拿到的都是最新的实例，开发者无需关心
+变更前注册事件会被注销，`S2` 对这种场景进行了优化，不管是 `ref` 还是 `onMounted` 方式，拿到的都是最新的实例，开发者无需关心
 
 ```tsx
 import { SpreadSheet, S2Event } from '@antv/s2'
@@ -154,41 +129,6 @@ export default defineComponent({
 
 <template>
   <SheetComponent ref="s2" :dataCfg="your-dataCfg" :options="your-options" />
-</template>
-```
-
-### getSpreadSheet 方式 (@antv/s2-vue@1.4.0 已废弃）
-
-> ⚠️ @antv/s2-vue@1.4.0 已废弃
-
-```vue
-<script lang="ts">
-import type { S2DataConfig, S2Options } from '@antv/s2';
-import { Sheet } from '@antv/s2-vue';
-import { defineComponent, shallowRef } from 'vue';
-
-export default defineComponent({
-  setup() {
-    const s2 = shallowRef();
-
-    const getSpreadSheet = (instance:SpreadSheet) => {
-      s2.value = instance;
-    }
-
-    return {
-      s2,
-      getSpreadSheet
-    };
-  },
-
-  components: {
-    Sheet,
-  },
-});
-</script>
-
-<template>
-  <SheetComponent :dataCfg="your-dataCfg" :options="your-options"  @getSpreadSheet="getSpreadSheet"/>
 </template>
 ```
 

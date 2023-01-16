@@ -20,64 +20,70 @@ import {
 import { SpreadSheet } from '@/sheet-type';
 import { getTheme } from '@/theme';
 
-jest.mock('@/sheet-type', () => ({
-  SpreadSheet: jest.fn().mockImplementation(() => {
-    const container = new Canvas({
-      width: 100,
-      height: 100,
-      container: document.body,
-      renderer: new Renderer(),
-    });
+jest.mock('@/sheet-type', () => {
+  return {
+    SpreadSheet: jest.fn().mockImplementation(() => {
+      const container = new Canvas({
+        width: 100,
+        height: 100,
+        container: document.body,
+        renderer: new Renderer(),
+      });
 
-    return {
-      dataCfg: assembleDataCfg(),
-      options: assembleOptions(),
-      panelScrollGroup: {
-        setClip: jest.fn(),
-      },
-      container,
-      theme: getTheme({}),
-      panelGroup: container.appendChild(new Group()),
-      foregroundGroup: container.appendChild(new Group()),
-      backgroundGroup: container.appendChild(new Group()),
-      store: new Store(),
-      on: jest.fn(),
-      isTableMode: jest.fn().mockReturnValue(true),
-      isPivotMode: jest.fn(),
-      getTotalsConfig: jest.fn(),
-      getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
-      emit: jest.fn(),
-      isScrollContainsRowHeader: jest.fn(),
-      getColumnLeafNodes: jest.fn().mockReturnValue([]),
-      isHierarchyTreeType: jest.fn(),
-      getCanvasElement: () =>
-        container.getContextService().getDomElement() as HTMLCanvasElement,
-      hideTooltip: jest.fn(),
-      interaction: {
-        clearHoverTimer: jest.fn(),
-      },
-      enableFrozenHeaders() {
-        return false;
-      },
-      isValueInCols: jest.fn(),
-      isCustomHeaderFields: jest.fn(),
-      measureTextWidthRoughly: jest.fn(),
-      measureTextWidth: jest.fn(),
-    };
-  }),
-}));
-jest.mock('@/data-set/table-data-set', () => ({
-  TableDataSet: jest.fn().mockImplementation(() => ({
-    ...assembleDataCfg(),
-    originData: data,
-    displayData: data,
-    moreThanOneValue: jest.fn(),
-    getFieldName: jest.fn(),
-    getDimensionValues: jest.fn(),
-    getDisplayDataSet: jest.fn(() => data),
-    getCellData: () => 1,
-  })),
-}));
+      return {
+        dataCfg: assembleDataCfg(),
+        options: assembleOptions(),
+        panelScrollGroup: {
+          setClip: jest.fn(),
+        },
+        container,
+        theme: getTheme({}),
+        panelGroup: container.appendChild(new Group()),
+        foregroundGroup: container.appendChild(new Group()),
+        backgroundGroup: container.appendChild(new Group()),
+        store: new Store(),
+        on: jest.fn(),
+        isTableMode: jest.fn().mockReturnValue(true),
+        isPivotMode: jest.fn(),
+        getTotalsConfig: jest.fn(),
+        getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
+        emit: jest.fn(),
+        isScrollContainsRowHeader: jest.fn(),
+        getColumnLeafNodes: jest.fn().mockReturnValue([]),
+        isHierarchyTreeType: jest.fn(),
+        getCanvasElement: () =>
+          container.getContextService().getDomElement() as HTMLCanvasElement,
+        hideTooltip: jest.fn(),
+        interaction: {
+          clearHoverTimer: jest.fn(),
+        },
+        enableFrozenHeaders() {
+          return false;
+        },
+        isValueInCols: jest.fn(),
+        isCustomHeaderFields: jest.fn(),
+        measureTextWidthRoughly: jest.fn(),
+        measureTextWidth: jest.fn(),
+      };
+    }),
+  };
+});
+jest.mock('@/data-set/table-data-set', () => {
+  return {
+    TableDataSet: jest.fn().mockImplementation(() => {
+      return {
+        ...assembleDataCfg(),
+        originData: data,
+        displayData: data,
+        moreThanOneValue: jest.fn(),
+        getFieldName: jest.fn(),
+        getDimensionValues: jest.fn(),
+        getDisplayDataSet: jest.fn(() => data),
+        getCellData: () => 1,
+      };
+    }),
+  };
+});
 
 const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 const MockTableDataSet = TableDataSet as any as jest.Mock<TableDataSet>;

@@ -19,11 +19,13 @@ export const TOOLTIP_POSITION_OFFSET: TooltipPosition = {
   y: 10,
 };
 
-export const getTooltipOperatorHiddenColumnsMenu = (): TooltipOperatorMenu => ({
-  key: 'hiddenColumns',
-  text: i18n('隐藏'),
-  icon: 'EyeOutlined',
-});
+export const getTooltipOperatorHiddenColumnsMenu = (): TooltipOperatorMenu => {
+  return {
+    key: 'hiddenColumns',
+    text: i18n('隐藏'),
+    icon: 'EyeOutlined',
+  };
+};
 
 export const getTooltipOperatorSortMenus = (): TooltipOperatorMenu[] => [
   {

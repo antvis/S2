@@ -111,47 +111,49 @@ const getDataCfg = (index: number) =>
     sortParams: [],
   } as SheetComponentsProps['dataCfg']);
 
-const getOptions = (): SheetComponentOptions => ({
-  width: 800,
-  height: 600,
-  hierarchyType: 'grid',
-  showSeriesNumber: false,
-  frozen: {
-    rowHeader: false,
-  },
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province', 'city'],
+const getOptions = (): SheetComponentOptions => {
+  return {
+    width: 800,
+    height: 600,
+    hierarchyType: 'grid',
+    showSeriesNumber: false,
+    frozen: {
+      rowHeader: false,
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['subCategory', 'category'],
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province', 'city'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['subCategory', 'category'],
+      },
     },
-  },
-  style: {
-    colCell: {
-      widthByField: {},
-      heightByField: {},
+    style: {
+      colCell: {
+        widthByField: {},
+        heightByField: {},
+      },
+      dataCell: {
+        height: 32,
+      },
+      rowCell: {
+        collapseAll: false,
+        width: 100,
+      },
     },
-    dataCell: {
-      height: 32,
+    tooltip: {
+      showTooltip: true,
     },
-    rowCell: {
-      collapseAll: false,
-      width: 100,
-    },
-  },
-  tooltip: {
-    showTooltip: true,
-  },
-});
+  };
+};
 
 const wrapComponent = (text: string, component: React.ReactNode) => (
   <div style={{ marginBottom: 30 }}>

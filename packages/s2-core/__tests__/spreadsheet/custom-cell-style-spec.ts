@@ -16,7 +16,9 @@ describe('SpreadSheet Custom Cell Style Tests', () => {
   };
 
   const mapNodeSize = (nodes: Node[] | ViewMeta[]) =>
-    nodes.map(({ id, width, height }) => ({ id, width, height }));
+    nodes.map(({ id, width, height }) => {
+      return { id, width, height };
+    });
 
   describe('PivotSheet Custom Cell Style Tests', () => {
     beforeEach(() => {

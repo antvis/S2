@@ -7,6 +7,7 @@ import {
   InteractionStateName,
   InterceptType,
   S2Event,
+  type InteractionCellSelectedHighlightType,
 } from '../common/constant';
 import type {
   BrushSelection,
@@ -171,10 +172,15 @@ export class RootInteraction {
   }
 
   // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
-  public getCells(): CellMeta[] {
+  public getCells(cellType?: CellTypes[]): CellMeta[] {
     const currentState = this.getState();
+    const cells = currentState?.cells || [];
 
-    return currentState?.cells || [];
+    if (isNil(cellType)) {
+      return cells;
+    }
+
+    return cells.filter((cell) => cellType.includes(cell.type));
   }
 
   // 获取 cells 中在可视区域内的实例列表
@@ -532,10 +538,14 @@ export class RootInteraction {
     this.setState(interactionStateInfo);
 
     // 更新单元格
-    if (onUpdateCells) {
-      onUpdateCells(this, () => this.updatePanelGroupAllDataCells());
-    } else {
+    const update = () => {
       this.updatePanelGroupAllDataCells();
+    };
+
+    if (onUpdateCells) {
+      onUpdateCells(this, update);
+    } else {
+      update();
     }
 
     this.draw();
@@ -579,5 +589,33 @@ export class RootInteraction {
 
   public getHoverTimer() {
     return this.hoverTimer;
+  }
+
+  public getSelectedCellHighlight(): InteractionCellSelectedHighlightType {
+    const { selectedCellHighlight } = this.spreadsheet.options.interaction!;
+
+    if (isBoolean(selectedCellHighlight)) {
+      return {
+        rowHeader: selectedCellHighlight,
+        colHeader: selectedCellHighlight,
+        currentRow: false,
+        currentCol: false,
+      };
+    }
+
+    const {
+      rowHeader = false,
+      colHeader = false,
+      currentRow = false,
+      currentCol = false,
+    } = (selectedCellHighlight as unknown as InteractionCellSelectedHighlightType) ??
+    {};
+
+    return {
+      rowHeader,
+      colHeader,
+      currentRow,
+      currentCol,
+    };
   }
 }

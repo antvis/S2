@@ -1,4 +1,5 @@
-import type { S2DataConfig, SpreadSheet } from '@antv/s2';
+/* eslint-disable no-console */
+import type { S2DataConfig, SpreadSheet, ThemeCfg } from '@antv/s2';
 import {
   customColGridFields,
   customRowGridFields,
@@ -12,6 +13,8 @@ import {
   type SheetComponentsProps,
 } from '../../src';
 import { meta } from '../../__tests__/data/mock-dataset.json';
+import { onSheetMounted } from '../utils';
+import { ResizeConfig } from './ResizeConfig';
 
 export const customRowGridOptions: SheetComponentOptions = {
   width: 1000,
@@ -77,18 +80,24 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
       (localStorage.getItem('debugCustomType') as unknown as CustomType) ||
         CustomType.Row,
     );
-    const [hierarchyType, setHierarchyType] =
-      React.useState<SheetComponentOptions['hierarchyType']>('grid');
+    const [options, setOptions] = React.useState<SheetComponentOptions>({
+      ...customRowGridOptions,
+      hierarchyType: 'grid',
+    });
+    const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({
+      name: 'default',
+    });
+
+    const logHandler =
+      (name: string) =>
+      (...args: unknown[]) => {
+        console.log(name, ...args);
+      };
 
     const dataCfg =
       customType === CustomType.Row
         ? pivotSheetCustomRowGridDataCfg
         : pivotSheetCustomColGridDataCfg;
-
-    const options: SheetComponentOptions = {
-      ...customRowGridOptions,
-      hierarchyType,
-    };
 
     return (
       <>
@@ -108,10 +117,19 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
           <Switch
             checkedChildren="树状模式"
             unCheckedChildren="平铺模式"
-            checked={hierarchyType === 'tree'}
+            checked={options.hierarchyType === 'tree'}
             onChange={(checked) => {
-              setHierarchyType(checked ? 'tree' : 'grid');
+              setOptions({
+                hierarchyType: checked ? 'tree' : 'grid',
+              });
             }}
+          />
+        </Space>
+        <Space style={{ marginBottom: 20 }}>
+          <ResizeConfig
+            options={options}
+            setOptions={setOptions}
+            setThemeCfg={setThemeCfg}
           />
         </Space>
 
@@ -119,7 +137,10 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
           {...props}
           dataCfg={dataCfg}
           options={options}
+          themeCfg={themeCfg}
           ref={ref}
+          onMounted={onSheetMounted}
+          onLayoutResize={logHandler('onLayoutResize')}
         />
       </>
     );

@@ -127,17 +127,21 @@ export const getTooltipDefaultOptions = <
   Text = string,
 >(
   options?: TooltipOptions<Icon, Text>,
-): TooltipOptions<Icon, Text> => ({
-  operator: { onClick: noop, menus: [] },
-  enterable: true,
-  enableFormat: true,
-  ...options,
-});
+): TooltipOptions<Icon, Text> => {
+  return {
+    operator: { onClick: noop, menus: [] },
+    enterable: true,
+    enableFormat: true,
+    ...options,
+  };
+};
 
-export const getMergedQuery = (meta: ViewMeta | null | undefined) => ({
-  ...meta?.colQuery,
-  ...meta?.rowQuery,
-});
+export const getMergedQuery = (meta: ViewMeta | null | undefined) => {
+  return {
+    ...meta?.colQuery,
+    ...meta?.rowQuery,
+  };
+};
 
 export const setTooltipContainerStyle = (
   container: HTMLElement,

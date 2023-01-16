@@ -102,7 +102,9 @@ function MainLayout({ callback }: Props) {
       columns,
     },
     meta,
-    data: data.map((e) => ({ ...e, express_type: newLineText })),
+    data: data.map((e) => {
+      return { ...e, express_type: newLineText };
+    }),
     sortParams: [
       {
         sortFieldId: 'count',
@@ -122,13 +124,13 @@ function MainLayout({ callback }: Props) {
   const options: SheetComponentOptions = {
     width: 800,
     height: 600,
+    device: DeviceType.PC,
     showSeriesNumber: true,
     placeholder: '',
     style: {
       dataCell: {
         height: 32,
       },
-      device: DeviceType.PC,
     },
     pagination: showPagination
       ? {
@@ -189,11 +191,13 @@ function MainLayout({ callback }: Props) {
   const switcherFields: SwitcherFields = {
     columns: {
       selectable: true,
-      items: columns.map((field) => ({
-        id: field,
-        displayName: find(meta, { field })?.name,
-        checked: true,
-      })),
+      items: columns.map((field) => {
+        return {
+          id: field,
+          displayName: find(meta, { field })?.name,
+          checked: true,
+        };
+      }),
     },
   };
 

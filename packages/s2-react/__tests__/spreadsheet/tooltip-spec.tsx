@@ -41,7 +41,9 @@ describe('SheetComponent Tooltip Tests', () => {
   });
 
   beforeEach(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
+    act(() => {
+      ReactDOM.render(<MainLayout />, getContainer());
+    });
   });
 
   // https://github.com/antvis/S2/issues/828

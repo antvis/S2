@@ -8,7 +8,9 @@ describe('getIconLayoutPosition Test', () => {
     expect(
       getIconPositionCfg({
         field: 'value',
-        mapping: () => ({ fill: 'red' }),
+        mapping: () => {
+          return { fill: 'red' };
+        },
       }),
     ).toEqual('right');
   });
@@ -18,7 +20,9 @@ describe('getIconLayoutPosition Test', () => {
       getIconPositionCfg({
         field: 'value',
         position: 'left',
-        mapping: () => ({ fill: 'red' }),
+        mapping: () => {
+          return { fill: 'red' };
+        },
       }),
     ).toEqual('left');
   });

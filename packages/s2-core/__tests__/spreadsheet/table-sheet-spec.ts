@@ -1,8 +1,11 @@
+import { get, last } from 'lodash';
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import type { TableFacet } from '@/facet';
 import {
   ColCell,
   DeviceType,
   ResizeType,
+  TableDataCell,
   TableSheet,
   type RawData,
   type S2DataConfig,
@@ -52,7 +55,9 @@ const dataCfg: S2DataConfig = {
     columns,
   },
   meta,
-  data: data.map((e) => ({ ...e, express_type: newLineText })),
+  data: data.map((e) => {
+    return { ...e, express_type: newLineText };
+  }),
   sortParams: [
     {
       sortFieldId: 'count',
@@ -75,7 +80,6 @@ const options: S2Options = {
     dataCell: {
       height: 32,
     },
-    device: DeviceType.PC,
   },
   interaction: {
     enableCopy: true,
@@ -99,6 +103,7 @@ const options: S2Options = {
       hiddenColumns: true,
     },
   },
+  device: DeviceType.PC,
 };
 
 describe('TableSheet normal spec', () => {
@@ -189,6 +194,10 @@ describe('TableSheet normal spec', () => {
 
     s2.render();
 
+    const getLastColCell = () =>
+      last(s2.getColumnNodes())!.belongsCell as ColCell;
+    const preColWidth = getLastColCell().getMeta().width;
+
     await sleep(30);
 
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
@@ -203,9 +212,11 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300); // 等待绘制响应
 
+    const resizeLength = 100;
+
     document.dispatchEvent(
       new MouseEvent('mousemove', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -214,7 +225,7 @@ describe('TableSheet normal spec', () => {
 
     document.dispatchEvent(
       new PointerEvent('pointerup', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -222,10 +233,28 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300);
 
-    const columnNodes = s2.getColumnNodes();
-    const lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
+    const currentColWidth = getLastColCell().getMeta().width;
 
-    expect(lastColumnCell.getMeta().width).toBe(198);
+    expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
+  });
+
+  test('should render link shape', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenRowCount: 0,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+      frozenTrailingRowCount: 0,
+    } as S2Options);
+
+    s2.render();
+
+    const orderIdDataCell = (
+      (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
+    ).find((item) => item.getMeta().valueField === 'order_id');
+
+    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+
+    s2.destroy();
   });
 });

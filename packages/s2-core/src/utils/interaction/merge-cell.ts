@@ -295,10 +295,12 @@ export const removeUnmergedCellsInfo = (
   removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
 ): MergedCellInfo[][] => {
-  const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => ({
-    colIndex: cell.getMeta().colIndex,
-    rowIndex: cell.getMeta().rowIndex,
-  }));
+  const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
+    return {
+      colIndex: cell.getMeta().colIndex,
+      rowIndex: cell.getMeta().rowIndex,
+    };
+  });
 
   return filter(mergedCellsInfo, (mergedCellInfo) => {
     const newMergedCellInfo = mergedCellInfo.map((info) => {
@@ -368,10 +370,12 @@ export const mergeTempMergedCell = (
 export const MergedCellConvertTempMergedCells = (
   oldMergedCells: MergedCell[],
 ) =>
-  map(oldMergedCells, (mergedCell) => ({
-    cells: mergedCell.cells,
-    viewMeta: mergedCell.getMeta(),
-  }));
+  map(oldMergedCells, (mergedCell) => {
+    return {
+      cells: mergedCell.cells,
+      viewMeta: mergedCell.getMeta(),
+    };
+  });
 
 /**
  * 对比两个TempMergedCell，返回 mainTempMergedCells 中存在的，但是 otherTempMergedCells 中不存在的的 TempMergedCell

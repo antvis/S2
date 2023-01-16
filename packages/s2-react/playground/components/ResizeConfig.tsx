@@ -1,4 +1,4 @@
-import { ResizeType } from '@antv/s2';
+import { ResizeType, type S2Theme } from '@antv/s2';
 import {
   customMerge,
   type ThemeCfg,
@@ -29,14 +29,14 @@ export const ResizeConfig: React.FC<{
   const [showResizeArea, setShowResizeArea] = React.useState(false);
 
   const onShowResizeAreaChange = (enable: boolean) => {
-    const theme = {
+    const theme: S2Theme = {
       resizeArea: {
         backgroundOpacity: enable ? 1 : 0,
       },
     };
 
     setShowResizeArea(enable);
-    setThemeCfg((prev) => customMerge({}, prev, { theme }));
+    setThemeCfg((prev) => customMerge(prev, { theme }));
   };
 
   const onSwitchRowResizeType =
@@ -100,7 +100,7 @@ export const ResizeConfig: React.FC<{
         <Switch
           checkedChildren="行高单行调整开"
           unCheckedChildren="行高单行调整关"
-          defaultChecked={resizeConfig?.rowResizeType === ResizeType.CURRENT}
+          checked={resizeConfig?.rowResizeType === ResizeType.CURRENT}
           onChange={onSwitchRowResizeType('rowResizeType')}
         />
       </Tooltip>
@@ -108,7 +108,7 @@ export const ResizeConfig: React.FC<{
         <Switch
           checkedChildren="列宽单行调整开"
           unCheckedChildren="列宽单行调整关"
-          defaultChecked={resizeConfig?.colResizeType === ResizeType.CURRENT}
+          checked={resizeConfig?.colResizeType === ResizeType.CURRENT}
           onChange={onSwitchRowResizeType('colResizeType')}
         />
       </Tooltip>

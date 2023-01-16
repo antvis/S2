@@ -149,7 +149,11 @@ module.exports = {
     'new-cap': 2,
     'prefer-template': 2,
     'no-useless-rename': 2,
-    'arrow-body-style': [2, 'as-needed'],
+    'arrow-body-style': [
+      2,
+      'as-needed',
+      { requireReturnForObjectLiteral: true },
+    ],
     'no-unneeded-ternary': 2,
     'array-callback-return': 2,
     // 'no-magic-numbers': 1,

@@ -92,7 +92,7 @@ describe('Spread Sheet Drill Down Tests', () => {
                 iconNames: ['SortDown'],
                 belongsCell: 'colCell',
                 displayCondition: (meta: Node) => meta.isLeaf,
-                action: noop,
+                onClick: noop,
               },
             ],
           }}

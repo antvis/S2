@@ -9,7 +9,6 @@ import {
   type S2Options,
   SpreadSheet,
   type RawData,
-  DeviceType,
   type S2MountContainer,
 } from '@antv/s2';
 import {
@@ -103,47 +102,48 @@ const getDataCfg = (index: number) =>
     sortParams: [],
   } as SheetComponentsProps['dataCfg']);
 
-const getOptions = (): SheetComponentsProps['options'] => ({
-  width: 800,
-  height: 600,
-  hierarchyType: 'grid',
-  showSeriesNumber: false,
-  frozen: {
-    rowHeader: false,
-  },
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province', 'city'],
+const getOptions = (): SheetComponentsProps['options'] => {
+  return {
+    width: 800,
+    height: 600,
+    hierarchyType: 'grid',
+    showSeriesNumber: false,
+    frozen: {
+      rowHeader: false,
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['subCategory', 'category'],
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province', 'city'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['subCategory', 'category'],
+      },
     },
-  },
-  style: {
-    colCell: {
-      widthByField: {},
-      heightByField: {},
+    style: {
+      colCell: {
+        widthByField: {},
+        heightByField: {},
+      },
+      dataCell: {
+        height: 32,
+      },
+      rowCell: {
+        width: 100,
+      },
     },
-    dataCell: {
-      height: 32,
+    tooltip: {
+      showTooltip: true,
     },
-    rowCell: {
-      width: 100,
-    },
-    device: DeviceType.PC,
-  },
-  tooltip: {
-    showTooltip: true,
-  },
-});
+  };
+};
 
 const wrapComponent = (text: string, component: React.ReactNode) => (
   <div>

@@ -1,16 +1,15 @@
+import {
+  auto,
+  PivotSheet,
+  type RawData,
+  type S2DataConfig,
+  type S2MountContainer,
+  type S2Options,
+} from '@antv/s2';
 import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  auto,
-  type S2DataConfig,
-  type S2Options,
-  PivotSheet,
-  type RawData,
-  DeviceType,
-  type S2MountContainer,
-} from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
 
@@ -33,65 +32,68 @@ const onMounted = (
   options: SheetComponentsProps['options'],
 ) => new PivotSheet(dom, dataCfg, options as S2Options);
 
-const getDataCfg = (): S2DataConfig => ({
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['category'],
-    values: ['price'],
-    valueInCols: true,
-  },
-  meta: [
-    {
-      field: 'price',
-      name: '单价',
-      formatter: (v: unknown) => auto(v as number),
+const getDataCfg = (): S2DataConfig => {
+  return {
+    fields: {
+      rows: ['province', 'city'],
+      columns: ['category'],
+      values: ['price'],
+      valueInCols: true,
     },
-  ],
-  data,
-  sortParams: [],
-});
+    meta: [
+      {
+        field: 'price',
+        name: '单价',
+        formatter: (v: unknown) => auto(v as number),
+      },
+    ],
+    data,
+    sortParams: [],
+  };
+};
 
-const getOptions = (): SheetComponentsProps['options'] => ({
-  width: 800,
-  height: 600,
-  hierarchyType: 'grid',
-  showSeriesNumber: false,
-  frozen: {
-    rowHeader: false,
-  },
-  totals: {
-    row: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['province', 'city'],
+const getOptions = (): SheetComponentsProps['options'] => {
+  return {
+    width: 800,
+    height: 600,
+    hierarchyType: 'grid',
+    showSeriesNumber: false,
+    frozen: {
+      rowHeader: false,
     },
-    col: {
-      showGrandTotals: true,
-      showSubTotals: true,
-      reverseLayout: true,
-      reverseSubLayout: true,
-      subTotalsDimensions: ['subCategory', 'category'],
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province', 'city'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['subCategory', 'category'],
+      },
     },
-  },
-  style: {
-    colCell: {
-      widthByField: {},
-      heightByField: {},
+    style: {
+      colCell: {
+        widthByField: {},
+        heightByField: {},
+      },
+      dataCell: {
+        height: 32,
+      },
+      rowCell: {
+        width: 100,
+      },
     },
-    dataCell: {
-      height: 32,
+    tooltip: {
+      showTooltip: true,
     },
-    rowCell: {
-      width: 100,
-    },
-    device: DeviceType.PC,
-  },
-  tooltip: {
-    showTooltip: true,
-  },
-});
+  };
+};
 
 function MainLayout(props: SheetComponentsProps) {
   return (

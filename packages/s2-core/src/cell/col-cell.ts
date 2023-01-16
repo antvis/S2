@@ -1,18 +1,19 @@
 import type { Group, PointLike } from '@antv/g';
 import { isEmpty } from 'lodash';
-import { CustomRect, type SimpleBBox } from '../engine';
 import {
   CellTypes,
-  SPLIT_LINE_WIDTH,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
   S2Event,
+  SPLIT_LINE_WIDTH,
 } from '../common/constant';
-import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { DefaultCellTheme, IconTheme } from '../common/interface';
+import { CellBorderPosition, CellClipBox } from '../common/interface';
 import type { AreaRange } from '../common/interface/scroll';
+import { CustomRect, type SimpleBBox } from '../engine';
+import { Frame, type ColHeaderConfig } from '../facet/header';
 import {
   adjustColHeaderScrollingTextPosition,
   adjustColHeaderScrollingViewport,
@@ -26,7 +27,6 @@ import {
   getResizeAreaAttrs,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { Frame, type ColHeaderConfig } from '../facet/header';
 import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
 
@@ -237,6 +237,21 @@ export class ColCell extends HeaderCell {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.field}`;
   }
 
+  /**
+   * @description 叶子节点, 但层级不同于其他节点 (如下图 a-1-1), 说明是任意不规则自定义节点, 此时不需要绘制热区
+   * --------------------------------------------------
+   * |      自定义节点 a-1          |                   |
+   * |-------------   |-----------|   自定义节点 a-1-1 |
+   * | a-1-1  | a-1-2 |  a-1-3    |                  |
+   * -------------------------------------------------
+   */
+  protected isCrossColumnLeafNode() {
+    const { colsHierarchy } = this.spreadsheet.facet.layoutResult;
+    const { level, isLeaf } = this.meta;
+
+    return colsHierarchy?.sampleNodeForLastLevel?.level !== level && isLeaf;
+  }
+
   protected drawHorizontalResizeArea() {
     // 隐藏列头时不绘制水平热区 https://github.com/antvis/S2/issues/1603
     const isHiddenCol = this.spreadsheet.options.style?.colCell?.height === 0;
@@ -248,17 +263,15 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { cornerWidth = 0, viewportWidth: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    if (!resizeArea) {
+    if (!resizeArea || this.isCrossColumnLeafNode()) {
       return;
     }
 
     const resizeAreaName = this.getHorizontalResizeAreaName();
-
     const existedHorizontalResizeArea = resizeArea?.find(
       (element) => element.name === resizeAreaName,
     );
@@ -268,10 +281,8 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const resizeAreaWidth =
-      cornerWidth +
-      Frame.getVerticalBorderWidth(this.spreadsheet) +
-      headerWidth;
+    const resizeAreaWidth = this.getResizeAreaWidth();
+
     // 列高调整热区
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,
@@ -297,6 +308,14 @@ export class ColCell extends HeaderCell {
         },
         attrs.appendInfo,
       ),
+    );
+  }
+
+  private getResizeAreaWidth() {
+    const { cornerWidth = 0, viewportWidth: headerWidth } = this.headerConfig;
+
+    return (
+      Frame.getVerticalBorderWidth(this.spreadsheet) + cornerWidth + headerWidth
     );
   }
 
@@ -364,7 +383,7 @@ export class ColCell extends HeaderCell {
 
     /*
      * 列宽调整热区
-     * 基准线是根据container坐标来的，因此把热区画在container
+     * 基准线是根据 container 坐标来的，因此把热区画在 container
      */
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,

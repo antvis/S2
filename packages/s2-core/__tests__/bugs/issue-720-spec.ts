@@ -40,18 +40,22 @@ describe('Sync Row Scroll Offset Tests', () => {
       originalEvent: {},
       preventDefault() {},
       target: {
-        attr: () => ({
-          isResizeArea: true,
-        }),
+        attr: () => {
+          return {
+            isResizeArea: true,
+          };
+        },
       },
     } as any);
 
     s2.emit(S2Event.GLOBAL_MOUSE_UP, {
       preventDefault() {},
       target: {
-        attr: () => ({
-          isResizeArea: true,
-        }),
+        attr: () => {
+          return {
+            isResizeArea: true,
+          };
+        },
       },
     } as any);
 

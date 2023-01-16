@@ -1,24 +1,23 @@
+import {
+  Node,
+  PivotSheet,
+  SpreadSheet,
+  type S2DataConfig,
+  type S2MountContainer,
+  type S2Options,
+} from '@antv/s2';
 import { Radio, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { cloneDeep, merge } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  type S2DataConfig,
-  SpreadSheet,
-  PivotSheet,
-  Node,
-  type S2MountContainer,
-  DeviceType,
-  type S2Options,
-} from '@antv/s2';
+import { getContainer } from '../util/helpers';
 import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
-import { getContainer } from '../util/helpers';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let sheet: SpreadSheet;
@@ -33,115 +32,118 @@ const onMounted = (
   return sheet;
 };
 
-const getDataCfg = (): S2DataConfig => ({
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type'],
-    values: ['price', 'rc', 'ac', 'count'],
-    valueInCols: true,
-  },
-  meta: [
-    {
-      field: 'rc',
-      name: '同比',
-      formatter: (v: unknown) => v as string,
+const getDataCfg = (): S2DataConfig => {
+  return {
+    fields: {
+      rows: ['province', 'city'],
+      columns: ['type'],
+      values: ['price', 'rc', 'ac', 'count'],
+      valueInCols: true,
     },
-    {
-      field: 'ac',
-      name: '环比',
-      formatter: (v: unknown) => v as string,
-    },
-    {
-      field: 'price',
-      name: '售价',
-      formatter: (v: unknown) => v as string,
-    },
-    {
-      field: 'price-ac',
-      name: '售价(同比)',
-      formatter: (v: unknown) => v as string,
-    },
-    {
-      field: 'price-rc',
-      name: '售价(环比)',
-      formatter: (v: unknown) => v as string,
-    },
-    {
-      field: 'count',
-      name: '销售个数',
-      formatter: (v: unknown) => v as string,
-    },
-  ],
-  data: multipleDataWithNormal,
-  sortParams: [
-    // { sortFieldId: 'price', sortMethod: 'DESC' }
-  ],
-});
+    meta: [
+      {
+        field: 'rc',
+        name: '同比',
+        formatter: (v: unknown) => v as string,
+      },
+      {
+        field: 'ac',
+        name: '环比',
+        formatter: (v: unknown) => v as string,
+      },
+      {
+        field: 'price',
+        name: '售价',
+        formatter: (v: unknown) => v as string,
+      },
+      {
+        field: 'price-ac',
+        name: '售价(同比)',
+        formatter: (v: unknown) => v as string,
+      },
+      {
+        field: 'price-rc',
+        name: '售价(环比)',
+        formatter: (v: unknown) => v as string,
+      },
+      {
+        field: 'count',
+        name: '销售个数',
+        formatter: (v: unknown) => v as string,
+      },
+    ],
+    data: multipleDataWithNormal,
+    sortParams: [
+      // { sortFieldId: 'price', sortMethod: 'DESC' }
+    ],
+  };
+};
 
-const getOptions = (): SheetComponentsProps['options'] => ({
-  width: 800,
-  height: 600,
-  hierarchyType: 'tree',
-  showSeriesNumber: true,
-  frozen: {
-    rowHeader: false,
-  },
-  conditions: {
-    interval: [
-      {
-        field: 'price',
-        mapping() {
-          return {
-            fill: 'yellow',
-            maxValue: 3000,
-            minValue: 0,
-          };
+const getOptions = (): SheetComponentsProps['options'] => {
+  return {
+    width: 800,
+    height: 600,
+    hierarchyType: 'tree',
+    showSeriesNumber: true,
+    frozen: {
+      rowHeader: false,
+    },
+    conditions: {
+      interval: [
+        {
+          field: 'price',
+          mapping() {
+            return {
+              fill: 'yellow',
+              maxValue: 3000,
+              minValue: 0,
+            };
+          },
         },
+      ],
+      background: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'rgb(218, 251, 225)' };
+          },
+        },
+      ],
+      icon: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'black', icon: 'Trend' };
+          },
+        },
+      ],
+      text: [],
+    },
+    headerActionIcons: [
+      {
+        iconNames: ['SortDown', 'SortUp'],
+        belongsCell: 'colCell',
+        displayCondition: (meta: Node) => meta.level >= 0,
+        onClick() {},
       },
     ],
-    background: [
-      {
-        field: 'price',
-        mapping() {
-          return { fill: 'rgb(218, 251, 225)' };
-        },
+    tooltip: {
+      showTooltip: true,
+    },
+    style: {
+      rowCell: {
+        collapseAll: false,
       },
-    ],
-    icon: [
-      {
-        field: 'price',
-        mapping() {
-          return { fill: 'black', icon: 'Trend' };
-        },
+      colCell: {
+        widthByField: {},
+        heightByField: {},
       },
-    ],
-    text: [],
-  },
-  headerActionIcons: [
-    {
-      iconNames: ['SortDown', 'SortUp'],
-      belongsCell: 'colCell',
-      displayCondition: (meta: Node) => meta.level >= 0,
-      action() {},
+      dataCell: {
+        height: 32,
+      },
     },
-  ],
-  tooltip: {
-    showTooltip: true,
-  },
-  style: {
-    rowCell: {
-      collapseAll: false,
-    },
-    colCell: {
-      widthByField: {},
-      heightByField: {},
-    },
-    dataCell: {
-      height: 32,
-    },
-    device: DeviceType.PC,
-  },
-});
+  };
+};
 
 function MainLayout(props: SheetComponentsProps) {
   const [options, setOptions] = React.useState(props.options);

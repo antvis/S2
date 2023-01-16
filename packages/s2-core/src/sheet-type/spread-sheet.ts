@@ -447,18 +447,6 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * @param width
-   * @param height
-   * @deprecated 该方法将会在2.0被移除, 请使用 changeSheetSize 代替
-   */
-  public changeSize(
-    width: number = this.options.width!,
-    height: number = this.options.height!,
-  ) {
-    this.changeSheetSize(width, height);
-  }
-
-  /**
    * 修改表格画布大小，不用重新加载数据
    * @param width
    * @param height

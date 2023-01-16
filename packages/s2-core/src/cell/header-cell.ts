@@ -182,7 +182,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected addActionIcon(options: HeaderActionIconOptions) {
-    const { x, y, iconName, defaultHide, action, onClick, onHover } = options;
+    const { x, y, iconName, defaultHide, onClick, onHover } = options;
     const { icon: iconTheme, text: textTheme } = this.getStyle()!;
     const fill = this.getTextConditionFill(textTheme!);
     // 主题 icon 颜色配置优先，若无则默认为文本条件格式颜色优先
@@ -219,7 +219,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     icon.addEventListener('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-      (onClick || action)?.({
+      onClick?.({
         iconName,
         meta: this.meta,
         event,
@@ -243,7 +243,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       return;
     }
 
-    const { iconNames, action, onClick, onHover, defaultHide } = actionIconCfg;
+    const { iconNames, onClick, onHover, defaultHide } = actionIconCfg;
 
     const position = this.getIconPosition(iconNames.length);
 
@@ -267,7 +267,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
         x,
         y,
         defaultHide: iconDefaultHide,
-        action,
         onClick,
         onHover,
       });
@@ -387,7 +386,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public update() {
     const { interaction } = this.spreadsheet;
     const stateInfo = interaction?.getState();
-    const cells = interaction?.getCells();
+    const cells = interaction?.getCells([
+      CellTypes.COL_CELL,
+      CellTypes.ROW_CELL,
+    ]);
 
     if (!first(cells)) {
       return;

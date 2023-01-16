@@ -30,7 +30,7 @@ describe('SpreadSheet Theme Tests', () => {
             iconNames: ['DrillDownIcon'],
             belongsCell: 'rowCell',
             displayCondition: () => true,
-            action: () => {},
+            onClick: () => {},
           },
         ],
       },
@@ -173,18 +173,20 @@ describe('SpreadSheet Theme Tests', () => {
   });
 
   describe('Row Header Icon Tests', () => {
-    const getRowCellThemeCfg = (textAlign: TextAlign) => ({
-      theme: {
-        rowCell: {
-          text: {
-            textAlign,
-          },
-          bolderText: {
-            textAlign,
+    const getRowCellThemeCfg = (textAlign: TextAlign) => {
+      return {
+        theme: {
+          rowCell: {
+            text: {
+              textAlign,
+            },
+            bolderText: {
+              textAlign,
+            },
           },
         },
-      },
-    });
+      };
+    };
 
     const TEXT_ALIGNS: TextAlign[] = ['left', 'center', 'right'];
 

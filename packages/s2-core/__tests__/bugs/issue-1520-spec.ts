@@ -12,7 +12,14 @@ const s2Options = {
   width: 800,
   height: 600,
   conditions: {
-    icon: [{ field: 'cost', mapping: () => ({ fill: 'red', icon: 'CellUp' }) }],
+    icon: [
+      {
+        field: 'cost',
+        mapping: () => {
+          return { fill: 'red', icon: 'CellUp' };
+        },
+      },
+    ],
   },
 };
 

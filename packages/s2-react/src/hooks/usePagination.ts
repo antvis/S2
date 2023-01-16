@@ -65,7 +65,9 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
     }
 
     const totalUpdateCallback = (data: LayoutPaginationParams) => {
-      setPagination((prev) => ({ ...prev, total: data.total }));
+      setPagination((prev) => {
+        return { ...prev, total: data.total };
+      });
     };
 
     s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);

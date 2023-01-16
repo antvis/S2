@@ -10,58 +10,61 @@ import type {
   SheetComponentProps,
 } from '../interface';
 
-export const initBaseSheetProps = () => ({
-  sheetType: String as PropType<SheetType>,
-  dataCfg: Object as PropType<S2DataConfig>,
-  themeCfg: Object as PropType<ThemeCfg>,
-  showPagination: {
-    type: [Object, Boolean] as PropType<SheetComponentProps['showPagination']>,
-    default: false as SheetComponentProps['showPagination'],
-  },
-  loading: Boolean,
-  // TODO: 待后续完善
-  partDrillDown: Object,
-  header: Object,
+export const initBaseSheetProps = () => {
+  return {
+    sheetType: String as PropType<SheetType>,
+    dataCfg: Object as PropType<S2DataConfig>,
+    themeCfg: Object as PropType<ThemeCfg>,
+    showPagination: {
+      type: [Object, Boolean] as PropType<
+        SheetComponentProps['showPagination']
+      >,
+      default: false as SheetComponentProps['showPagination'],
+    },
+    loading: Boolean,
+    // TODO: 待后续完善
+    partDrillDown: Object,
+    header: Object,
 
-  options: {
-    type: Object as PropType<SheetComponentProps['options']>,
-    default: {} as SheetComponentProps['options'],
-  },
-  adaptive: {
-    type: [Object, Boolean] as PropType<Adaptive>,
-    default: false as Adaptive,
-  },
-  onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
+    options: {
+      type: Object as PropType<SheetComponentProps['options']>,
+      default: {} as SheetComponentProps['options'],
+    },
+    adaptive: {
+      type: [Object, Boolean] as PropType<Adaptive>,
+      default: false as Adaptive,
+    },
+    onSpreadsheet: Function as PropType<SheetComponentProps['spreadsheet']>,
+    onMounted: Function as PropType<SheetComponentProps['onMounted']>,
+  };
+};
 
-  /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
-  onGetSpreadSheet: Function as PropType<SheetComponentProps['getSpreadSheet']>,
-  onMounted: Function as PropType<SheetComponentProps['onMounted']>,
-});
-
-export const initDrillDownProps = () => ({
-  className: String,
-  titleText: {
-    type: String,
-    default: i18n('选择下钻维度'),
-  },
-  searchText: {
-    type: String,
-    default: i18n('搜索字段'),
-  },
-  clearButtonText: {
-    type: String,
-    default: i18n('恢复默认'),
-  },
-  extra: Node,
-  dataSet: {
-    type: Array as PropType<BaseDataSet[]>,
-    default: [],
-  },
-  drillFields: Array as PropType<string[]>,
-  disabledFields: Array as PropType<string[]>,
-  getDrillFields: Function as PropType<(drillFields: string[]) => void>,
-  setDrillFields: Function as PropType<(drillFields: string[]) => void>,
-});
+export const initDrillDownProps = () => {
+  return {
+    className: String,
+    titleText: {
+      type: String,
+      default: i18n('选择下钻维度'),
+    },
+    searchText: {
+      type: String,
+      default: i18n('搜索字段'),
+    },
+    clearButtonText: {
+      type: String,
+      default: i18n('恢复默认'),
+    },
+    extra: Node,
+    dataSet: {
+      type: Array as PropType<BaseDataSet[]>,
+      default: [],
+    },
+    drillFields: Array as PropType<string[]>,
+    disabledFields: Array as PropType<string[]>,
+    getDrillFields: Function as PropType<(drillFields: string[]) => void>,
+    setDrillFields: Function as PropType<(drillFields: string[]) => void>,
+  };
+};
 
 export const initDrillDownEmits = (): BaseDrillDownEmits => {
   const keys: BaseDrillDownEmitKeys[] = ['getDrillFields', 'setDrillFields'];
@@ -77,8 +80,6 @@ export const initBaseSheetEmits = () => {
   /** base sheet all emits */
   const keys: Array<BaseSheetInitEmitKeys> = [
     'spreadsheet',
-    'getSpreadSheet',
-
     // ============== Row Cell ====================
     'rowCellHover',
     'rowCellClick',
@@ -142,7 +143,6 @@ export const initBaseSheetEmits = () => {
     // ============== Layout ====================
     'layoutAfterHeaderLayout',
     'layoutPagination',
-    'layoutCellScroll',
     'beforeRender',
     'afterRender',
     'mounted',
@@ -179,6 +179,7 @@ export const initBaseSheetEmits = () => {
     'scroll',
     'hover',
     // ============== Auto 自动生成的 ================
+    'layoutAfterRealDataCellRender',
     'rowCellBrushSelection',
     'colCellBrushSelection',
   ];

@@ -16,8 +16,8 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
   (props, ref) => {
     const { sheetType } = props;
 
-    const sheetProps = React.useMemo<SheetComponentsProps>(
-      () => ({
+    const sheetProps = React.useMemo<SheetComponentsProps>(() => {
+      return {
         ...props,
         onMounted: (instance) => {
           if (ref) {
@@ -26,9 +26,8 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
 
           props.onMounted?.(instance);
         },
-      }),
-      [props, ref],
-    );
+      };
+    }, [props, ref]);
 
     const CurrentSheet = React.useMemo(() => {
       switch (sheetType) {

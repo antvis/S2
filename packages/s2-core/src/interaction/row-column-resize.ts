@@ -381,14 +381,18 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     resizeInfo: ResizeInfo,
     displayHeight: number,
   ): RowCellStyle['heightByField'] {
-    // 1. 自定义列头: 给同一 level 的字段设置高度. 2. 明细表: 列高一致
+    // 1. 自定义列头: 给同一层级且同高度的单元格设置高度. 2. 明细表: 列高一致
     if (
       this.spreadsheet.isCustomColumnFields() ||
       this.spreadsheet.isTableMode()
     ) {
       return this.spreadsheet
         .getColumnNodes()
-        .filter((node) => node.level === resizeInfo.meta?.level)
+        .filter(
+          (node) =>
+            node.level === resizeInfo.meta?.level &&
+            node.height === resizeInfo.meta?.height,
+        )
         .reduce<RowCellStyle['heightByField']>((result, node) => {
           result![node.field] = displayHeight;
 

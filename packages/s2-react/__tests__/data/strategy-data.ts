@@ -3,195 +3,199 @@ import { EXTRA_COLUMN_FIELD, isUpDataValue, type S2DataConfig } from '@antv/s2';
 import { isNil } from 'lodash';
 import type { SheetComponentOptions } from '../../src';
 
-const getKPIMockData = () => ({
-  'measure-a': {
-    originalValues: {
-      measure: 0.75,
-      target: 0.8,
+const getKPIMockData = () => {
+  return {
+    'measure-a': {
+      originalValues: {
+        measure: 0.75,
+        target: 0.8,
+      },
+      values: {
+        measure: '0.00251',
+        target: '0.76',
+      },
     },
-    values: {
-      measure: '0.00251',
-      target: '0.76',
+    'measure-b': {
+      originalValues: {
+        measure: -0.82607,
+        target: 0.53022,
+      },
+      values: {
+        measure: -0.82607,
+        target: 0.53022,
+      },
     },
-  },
-  'measure-b': {
-    originalValues: {
-      measure: -0.82607,
-      target: 0.53022,
+    'measure-c': {
+      originalValues: {
+        measure: 10.73922,
+        target: 0.54396,
+      },
+      values: {
+        measure: 10.73922,
+        target: 0.54396,
+      },
     },
-    values: {
-      measure: -0.82607,
-      target: 0.53022,
+    'measure-d': {
+      originalValues: {
+        measure: 0.5,
+        target: 0.3,
+      },
+      values: {
+        measure: '0.5',
+        target: '0.3',
+      },
     },
-  },
-  'measure-c': {
-    originalValues: {
-      measure: 10.73922,
-      target: 0.54396,
+    'measure-e': {
+      originalValues: {
+        measure: 0.09775,
+        target: 0.1978,
+      },
+      values: {
+        measure: 0.09775,
+        target: 0.1978,
+      },
     },
-    values: {
-      measure: 10.73922,
-      target: 0.54396,
+    'measure-f': {
+      originalValues: {
+        measure: 0.25,
+        target: 0.9,
+      },
+      values: {
+        measure: '0.25',
+        target: '0.9',
+      },
     },
-  },
-  'measure-d': {
-    originalValues: {
-      measure: 0.5,
-      target: 0.3,
-    },
-    values: {
-      measure: '0.5',
-      target: '0.3',
-    },
-  },
-  'measure-e': {
-    originalValues: {
-      measure: 0.09775,
-      target: 0.1978,
-    },
-    values: {
-      measure: 0.09775,
-      target: 0.1978,
-    },
-  },
-  'measure-f': {
-    originalValues: {
-      measure: 0.25,
-      target: 0.9,
-    },
-    values: {
-      measure: '0.25',
-      target: '0.9',
-    },
-  },
-  date: '2021年净增完成度',
-  [EXTRA_COLUMN_FIELD]: '净增完成度',
-});
+    date: '2021年净增完成度',
+    [EXTRA_COLUMN_FIELD]: '净增完成度',
+  };
+};
 
 // eslint-disable-next-line max-lines-per-function
-const getMiniChartMockData = () => ({
-  'custom-node-1': {
-    values: {
-      type: 'line',
-      data: [
-        { year: '2018', value: -1 },
-        { year: '2019', value: 1 },
-        { year: '2020', value: 2 },
-        { year: '2021', value: -100 },
-        { year: '2022', value: 2 },
-      ],
-      encode: {
-        x: 'year',
-        y: 'value',
+const getMiniChartMockData = () => {
+  return {
+    'custom-node-1': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: -1 },
+          { year: '2019', value: 1 },
+          { year: '2020', value: 2 },
+          { year: '2021', value: -100 },
+          { year: '2022', value: 2 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
       },
     },
-  },
-  'measure-a': {
-    values: {
-      type: 'line',
-      data: [
-        { year: '2018', value: 100 },
-        { year: '2019', value: 100 },
-        { year: '2020', value: 100 },
-        { year: '2021', value: 100 },
-        { year: '2022', value: 100 },
-      ],
-      encode: {
-        x: 'year',
-        y: 'value',
+    'measure-a': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 100 },
+          { year: '2019', value: 100 },
+          { year: '2020', value: 100 },
+          { year: '2021', value: 100 },
+          { year: '2022', value: 100 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
       },
     },
-  },
-  'measure-b': {
-    values: {
-      type: 'bar',
-      data: [
-        { year: '2017', value: -368 },
-        { year: '2018', value: 368 },
-        { year: '2019', value: 368 },
-        { year: '2020', value: 368 },
-        { year: '2021', value: 368 },
-        { year: '2022', value: 368 },
-      ],
-      encode: {
-        x: 'year',
-        y: 'value',
+    'measure-b': {
+      values: {
+        type: 'bar',
+        data: [
+          { year: '2017', value: -368 },
+          { year: '2018', value: 368 },
+          { year: '2019', value: 368 },
+          { year: '2020', value: 368 },
+          { year: '2021', value: 368 },
+          { year: '2022', value: 368 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
       },
     },
-  },
-  'measure-c': {
-    values: {
-      type: 'line',
-      data: [
-        {
-          date: '2022-06-30',
-          value: 0,
+    'measure-c': {
+      values: {
+        type: 'line',
+        data: [
+          {
+            date: '2022-06-30',
+            value: 0,
+          },
+          {
+            date: '2022-07-01',
+            value: 0,
+          },
+          {
+            date: '2022-07-02',
+            value: 8,
+          },
+          {
+            date: '2022-07-03',
+            value: 8,
+          },
+          {
+            date: '2022-07-04',
+            value: 8,
+          },
+          {
+            date: '2022-07-05',
+            value: 8,
+          },
+          {
+            date: '2022-07-06',
+            value: 0,
+          },
+        ],
+        encode: {
+          x: 'date',
+          y: 'value',
         },
-        {
-          date: '2022-07-01',
-          value: 0,
-        },
-        {
-          date: '2022-07-02',
-          value: 8,
-        },
-        {
-          date: '2022-07-03',
-          value: 8,
-        },
-        {
-          date: '2022-07-04',
-          value: 8,
-        },
-        {
-          date: '2022-07-05',
-          value: 8,
-        },
-        {
-          date: '2022-07-06',
-          value: 0,
-        },
-      ],
-      encode: {
-        x: 'date',
-        y: 'value',
       },
     },
-  },
-  'measure-d': {
-    values: {
-      type: 'line',
-      data: [
-        { year: '2018', value: 0 },
-        { year: '2019', value: 0 },
-        { year: '2020', value: 0 },
-        { year: '2021', value: 0 },
-        { year: '2022', value: 0 },
-      ],
-      encode: {
-        x: 'year',
-        y: 'value',
+    'measure-d': {
+      values: {
+        type: 'line',
+        data: [
+          { year: '2018', value: 0 },
+          { year: '2019', value: 0 },
+          { year: '2020', value: 0 },
+          { year: '2021', value: 0 },
+          { year: '2022', value: 0 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
       },
     },
-  },
-  'measure-e': {
-    values: {
-      type: 'bar',
-      data: [
-        { year: '2018', value: -5 },
-        { year: '2019', value: -10 },
-        { year: '2020', value: -5 },
-        { year: '2021', value: -10 },
-      ],
-      encode: {
-        x: 'year',
-        y: 'value',
+    'measure-e': {
+      values: {
+        type: 'bar',
+        data: [
+          { year: '2018', value: -5 },
+          { year: '2019', value: -10 },
+          { year: '2020', value: -5 },
+          { year: '2021', value: -10 },
+        ],
+        encode: {
+          x: 'year',
+          y: 'value',
+        },
       },
     },
-  },
-  date: '趋势',
-  [EXTRA_COLUMN_FIELD]: '趋势',
-});
+    date: '趋势',
+    [EXTRA_COLUMN_FIELD]: '趋势',
+  };
+};
 
 export const StrategySheetDataConfig: S2DataConfig = {
   // 普通数值+同环比数据
@@ -401,7 +405,7 @@ export const StrategyOptions: SheetComponentOptions = {
       iconNames: ['Trend'],
       belongsCell: 'rowCell',
       defaultHide: true,
-      action: () => {},
+      onClick: () => {},
     },
   ],
   conditions: {

@@ -148,9 +148,6 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
     s2,
   );
   useS2Event(S2Event.LAYOUT_PAGINATION, props.onLayoutPagination, s2);
-
-  /** @deprecated 已废弃, 请使用 S2Event.GLOBAL_SCROLL 代替 */
-  useS2Event(S2Event.LAYOUT_CELL_SCROLL, props.onLayoutCellScroll, s2);
   useS2Event(S2Event.LAYOUT_CELL_MOUNTED, props.onLayoutCellMounted, s2);
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);
@@ -208,6 +205,11 @@ export function useEvents(props: SheetComponentsProps, s2: SpreadSheet) {
   useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
   useS2Event(S2Event.GLOBAL_SCROLL, props.onScroll, s2);
   // ============== Auto 自动生成的 ================
+  useS2Event(
+    S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER,
+    props.onLayoutAfterRealDataCellRender,
+    s2,
+  );
   useS2Event(
     S2Event.ROW_CELL_BRUSH_SELECTION,
     props.onRowCellBrushSelection,

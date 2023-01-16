@@ -49,10 +49,12 @@ describe('Interaction Keyboard Move Tests', () => {
         s2.store.set('scrollX', data?.offsetX?.value!);
         s2.store.set('scrollY', data?.offsetY?.value!);
       },
-      getScrollOffset: () => ({
-        scrollX: s2.store.get('scrollX', 0),
-        scrollY: s2.store.get('scrollY', 0),
-      }),
+      getScrollOffset: () => {
+        return {
+          scrollX: s2.store.get('scrollX', 0),
+          scrollY: s2.store.get('scrollY', 0),
+        };
+      },
       panelBBox: {
         viewportHeight: 200,
         viewportWidth: 200,
