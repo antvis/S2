@@ -1,4 +1,4 @@
-import type { DisplayObject, PointLike } from '@antv/g';
+import type { DisplayObject, Line, PointLike, Polygon, Rect } from '@antv/g';
 import { Group } from '@antv/g';
 import {
   each,
@@ -54,7 +54,6 @@ import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
 import type { CustomText } from '../engine/CustomText';
 
-// TODO: 迁移 shape 具体类型，如 textShape 应该是 Text 而不是 displayObject
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
   protected meta: T;
@@ -66,7 +65,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected theme: S2Theme;
 
   // background control shape
-  protected backgroundShape: DisplayObject;
+  protected backgroundShape: Rect | Polygon;
 
   // text control shape
   protected textShape: CustomText;
@@ -74,7 +73,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected textShapes: CustomText[] = [];
 
   // link text underline shape
-  protected linkFieldShape: DisplayObject;
+  protected linkFieldShape: Line;
 
   // actualText
   protected actualText: string;
@@ -84,7 +83,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected conditions: Conditions;
 
-  protected conditionIntervalShape: DisplayObject | undefined;
+  protected conditionIntervalShape: Rect | undefined;
 
   protected conditionIconShape: GuiIcon;
 
