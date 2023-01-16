@@ -22,6 +22,7 @@ import { isIPhoneX } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { CornerHeaderConfig } from '../facet/header/interface';
 import { CustomRect } from '../engine';
+import type { CustomText } from '../engine/CustomText';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -123,7 +124,7 @@ export class CornerCell extends HeaderCell {
         y: textY,
         text: firstLine,
         ...textStyle,
-      }),
+      }) as CustomText,
     );
 
     // second line
@@ -134,7 +135,7 @@ export class CornerCell extends HeaderCell {
           y: y + height * 0.75,
           text: secondLine,
           ...textStyle,
-        }),
+        }) as CustomText,
       );
     }
 
@@ -288,7 +289,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getIconPosition(): PointLike {
-    const textX = this.textShapes?.[0]?.getAttribute('x');
+    const textX = +this.textShapes[0]?.getAttribute('x')! ?? 0;
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle()!.icon!;
 
@@ -299,7 +300,7 @@ export class CornerCell extends HeaderCell {
         [matches('right'), constant(0)],
         [stubTrue, constant(this.actualTextWidth)],
       ])(textAlign) +
-      margin?.left;
+      margin?.left!;
 
     const iconY = getVerticalPosition(
       this.getBBoxByType(CellClipBox.CONTENT_BOX),

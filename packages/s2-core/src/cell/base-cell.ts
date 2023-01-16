@@ -52,6 +52,7 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { GuiIcon } from '../common/icons/gui-icon';
+import type { CustomText } from '../engine/CustomText';
 
 // TODO: 迁移 shape 具体类型，如 textShape 应该是 Text 而不是 displayObject
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
@@ -68,9 +69,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected backgroundShape: DisplayObject;
 
   // text control shape
-  protected textShape: DisplayObject;
+  protected textShape: CustomText;
 
-  protected textShapes: DisplayObject[] = [];
+  protected textShapes: CustomText[] = [];
 
   // link text underline shape
   protected linkFieldShape: DisplayObject;
@@ -331,7 +332,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       y: position.y,
       text: ellipsisText,
       ...textStyle,
-    });
+    }) as CustomText;
     this.textShapes.push(this.textShape);
   }
 
@@ -374,16 +375,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       );
     }
 
-    // TODO: 迁移 appendInfo
-    this.textShape.attr({
-      fill: linkFillColor,
-      cursor: 'pointer',
-      appendInfo: {
-        // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
-        isLinkFieldText: true,
-        cellData: this.meta,
-      },
-    });
+    this.textShape.style.fill = linkFillColor;
+    this.textShape.style.cursor = 'pointer';
+    this.textShape.appendInfo = {
+      // 标记为行头(明细表行头其实就是Data Cell)文本，方便做链接跳转直接识别
+      isLinkFieldText: true,
+      cellData: this.meta,
+    };
   }
 
   // 根据当前state来更新cell的样式
@@ -466,15 +464,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
   }
 
-  public getTextShape(): DisplayObject {
+  public getTextShape(): CustomText {
     return this.textShape;
   }
 
-  public getTextShapes(): DisplayObject[] {
+  public getTextShapes(): CustomText[] {
     return this.textShapes || [this.textShape];
   }
 
-  public addTextShape(textShape: DisplayObject) {
+  public addTextShape(textShape: CustomText) {
     if (!textShape) {
       return;
     }

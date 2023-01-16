@@ -62,7 +62,7 @@ export function renderText(
   group: Group,
   shapes: DisplayObject[],
   attrs: TextStyleProps,
-): DisplayObject {
+): Text {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: DisplayObject) => {
       if (group.contains(shape)) {
