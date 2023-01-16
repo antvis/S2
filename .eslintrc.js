@@ -130,6 +130,7 @@ module.exports = {
     curly: [2, 'all'],
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
+    'dot-notation': 0,
   },
   overrides: [
     {

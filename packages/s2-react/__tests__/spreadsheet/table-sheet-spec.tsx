@@ -105,13 +105,13 @@ function MainLayout({ callback }: Props) {
       {
         sortFieldId: 'count',
         sortBy: (obj: RawData) =>
-          canConvertToNumber('count') ? Number(obj.count) : obj.count,
+          canConvertToNumber('count') ? Number(obj['count']) : obj['count'],
         sortMethod: 'DESC',
       },
       {
         sortFieldId: 'profit',
         sortBy: (obj: RawData) =>
-          canConvertToNumber('profit') ? Number(obj.profit) : obj.profit,
+          canConvertToNumber('profit') ? Number(obj) : obj['profit'],
         sortMethod: 'ASC',
       },
     ],
