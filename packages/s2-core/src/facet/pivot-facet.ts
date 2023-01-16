@@ -175,7 +175,6 @@ export class PivotFacet extends BaseFacet {
     rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ) {
-    const { spreadsheet } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
@@ -207,11 +206,15 @@ export class PivotFacet extends BaseFacet {
         );
         currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
       }
-      currentNode.height = this.getColNodeHeight(currentNode);
+      // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
+      currentNode.height =
+        currentNode.isGrandTotals && currentNode.isLeaf
+          ? colsHierarchy.height
+          : this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
-    if (!isEmpty(spreadsheet.options.totals?.col)) {
+    if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
     }

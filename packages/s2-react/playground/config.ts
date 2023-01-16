@@ -51,18 +51,6 @@ export const s2Options: SheetComponentOptions = {
   width: 600,
   height: 400,
   showSeriesNumber: false,
-  customSVGIcons: [
-    {
-      name: 'test',
-      svg: 'https://gw.alipayobjects.com/zos/antfincdn/zBWAjRerGK/filter_sort.svg',
-    },
-  ],
-  headerActionIcons: [
-    {
-      iconNames: ['test'],
-      belongsCell: 'rowCell',
-    },
-  ],
   interaction: {
     enableCopy: true,
     // 防止 mac 触摸板横向滚动触发浏览器返回, 和移动端下拉刷新
