@@ -323,7 +323,7 @@ describe('drawInterval Test', () => {
   });
 
   const horizontalBorderWidth =
-    getTheme({})?.dataCell?.cell?.horizontalBorderWidth || 1;
+    getTheme({})?.dataCell?.cell?.horizontalBorderWidth ?? 1;
   const options = assembleOptions({
     style: {
       dataCell: {

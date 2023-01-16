@@ -501,7 +501,7 @@ export class TableFacet extends BaseFacet {
 
       // 计算表头 label+icon 占用的空间
       const colHeaderNodeWidth =
-        spreadsheet.measureTextWidth(colNode.label, colCellTextStyle) +
+        spreadsheet.measureTextWidth(colNode.value, colCellTextStyle) +
         getOccupiedWidthForTableCol(
           this.spreadsheet,
           colNode,
