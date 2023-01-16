@@ -355,11 +355,6 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     width: bulletWidth,
     height: progressBar.height,
     fill: backgroundColor,
-
-    /*
-     * TODO: 这个应该不需要的吧，g5.0
-     * textBaseline: dataCellStyle.text.textBaseline,
-     */
   });
 
   // 2. 进度条
