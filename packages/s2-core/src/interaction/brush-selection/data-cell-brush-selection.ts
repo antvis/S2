@@ -40,8 +40,8 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
       this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas.x - this.endBrushPoint.x;
-        const deltaY = pointInCanvas.y - this.endBrushPoint.y;
+        const deltaX = pointInCanvas?.x - this.endBrushPoint?.x;
+        const deltaY = pointInCanvas?.y - this.endBrushPoint?.y;
         this.handleScroll(deltaX, deltaY);
         return;
       }

@@ -43,9 +43,9 @@ export const getDataCellId = (rowIndex: string, colIndex: string) => {
 };
 
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
-  const { rowCells, colCells, rowHeader, colHeader } =
+  const { currentRow, currentCol, rowHeader, colHeader } =
     s2.interaction.getSelectedCellHighlight();
-  return rowCells || colCells || rowHeader || colHeader;
+  return currentRow || currentCol || rowHeader || colHeader;
 };
 
 export const isDataCell = (cell: CellMeta) => {
@@ -109,7 +109,7 @@ export const updateBySelectedCellsHighlight = (
   dataCell: DataCell,
   s2: SpreadSheet,
 ) => {
-  const { rowHeader, colHeader, rowCells, colCells } =
+  const { rowHeader, colHeader, currentRow, currentCol } =
     s2.interaction.getSelectedCellHighlight();
 
   const isRowCell = dataCell.cellType === CellTypes.ROW_CELL;
@@ -117,10 +117,10 @@ export const updateBySelectedCellsHighlight = (
   const showSNWhenRowHeaderHighlight =
     s2.isTableMode() && s2.options.showSeriesNumber && rowHeader && isRowCell;
 
-  if (rowCells || showSNWhenRowHeaderHighlight) {
+  if (currentRow || showSNWhenRowHeaderHighlight) {
     updateCurrentRowCellState(cells, dataCell);
   }
-  if (colCells) {
+  if (currentCol) {
     updateCurrentColumnCellState(cells, dataCell);
   }
   if (rowHeader || colHeader) {

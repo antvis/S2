@@ -60,6 +60,7 @@ import {
   defaultOptions,
   mockGridAnalysisOptions,
   pivotSheetDataCfg,
+  s2Options,
   sliderOptions,
   tableSheetDataCfg,
   tableSheetMultipleColumns,
@@ -834,7 +835,10 @@ function MainLayout() {
                     updateOptions({
                       style: {
                         colCfg: {
-                          height: checked ? 0 : DEFAULT_STYLE.colCfg.height,
+                          height: checked
+                            ? 0
+                            : s2Options.style.colCfg.height ??
+                              DEFAULT_STYLE.colCfg.height,
                         },
                       },
                     });
@@ -878,8 +882,8 @@ function MainLayout() {
                         selectedCellHighlight = {
                           rowHeader: false,
                           colHeader: false,
-                          rowCells: false,
-                          colCells: false,
+                          currentCol: false,
+                          currentRow: false,
                         };
                         type.forEach((i) => {
                           selectedCellHighlight[i] = true;
@@ -902,11 +906,11 @@ function MainLayout() {
                     <Select.Option value="colHeader">
                       colHeader: 高亮所在列头
                     </Select.Option>
-                    <Select.Option value="rowCells">
-                      rowCells: 高亮所在行
+                    <Select.Option value="currentRow">
+                      currentRow: 高亮所在行
                     </Select.Option>
-                    <Select.Option value="colCells">
-                      colCells: 高亮所在列
+                    <Select.Option value="currentCol">
+                      currentCol: 高亮所在列
                     </Select.Option>
                   </Select>
                 </Tooltip>

@@ -1342,4 +1342,8 @@ export abstract class BaseFacet {
       detail.hideColumnNodes.some((node) => node.id === columnNode.id),
     );
   }
+
+  public getCornerNodes(): Node[] {
+    return this.cornerHeader?.getNodes() || [];
+  }
 }

@@ -1,6 +1,10 @@
 import { head, isEmpty, isEqual, omit } from 'lodash';
 import { ROOT_ID } from '../../common/constant/basic';
-import type { CornerNodeType, S2CellType } from '../../common/interface';
+import type {
+  CornerNodeType,
+  HiddenColumnsInfo,
+  S2CellType,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
@@ -33,6 +37,7 @@ export interface BaseNodeConfig {
   height?: number;
   padding?: number;
   children?: Node[];
+  hiddenColumnsInfo?: HiddenColumnsInfo | null;
   // 额外的节点信息
   extra?: Record<string, any>;
 }
@@ -43,8 +48,6 @@ export interface BaseNodeConfig {
 export class Node {
   // node represent total measure
   public isTotalMeasure: boolean;
-
-  public config: BaseNodeConfig;
 
   constructor(cfg: BaseNodeConfig) {
     const {
@@ -92,19 +95,6 @@ export class Node {
     this.isLeaf = isLeaf;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
-    this.config = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      colIndex: -1,
-      children: [],
-      padding: 0,
-      id: '',
-      key: '',
-      value: '',
-      label: '',
-    };
     this.extra = extra;
   }
 
@@ -310,6 +300,10 @@ export class Node {
   public isGrandTotals?: boolean;
 
   public isSubTotals?: boolean;
+
+  public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
+
+  public extra?: Record<string, any>;
 
   [key: string]: any;
 

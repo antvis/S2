@@ -65,6 +65,7 @@ s2.facet.getRealWidth()
 | addCell | 添加单元格 | (cell: [BaseCell](/docs/api/basic-class/base-cell)) => void |
 | drawGrid | 绘制网格 | () => void |
 | getHiddenColumnsInfo | 匹配当前节点是否是隐藏节点，如果是，则返回该节点隐藏信息 | (node: [Node](/docs/api/basic-class/node)) => [HiddenColumnsInfo](/docs/api/basic-class/store#hiddencolumnsinfo) \| `null`  | `1.34.1` |
+| getCornerNodes | 获取角头节点 | () => [Node](/docs/api/basic-class/node)[]  | `1.40.0` |
 
 ### CellScrollOffset
 

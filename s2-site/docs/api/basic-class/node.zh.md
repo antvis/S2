@@ -38,4 +38,5 @@ node.isTotals // false
 | width | 宽度 | `number` |
 | height | 高度 | `number` |
 | padding | 间距 | `number` |
+| hiddenChildNodeInfo | 隐藏的子节点信息 | [hiddenColumnsInfo](/api/basic-class/store#hiddencolumnsinfo) |
 | children | 子节点 | [Node[]](/docs/api/basic-class/node)  |

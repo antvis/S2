@@ -227,7 +227,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         },
       },
     });
-    const rowCells = map(new Array(8), (a, i) => {
+    const currentRow = map(new Array(8), (a, i) => {
       const customY = 30 * i + 30;
 
       return {
@@ -244,7 +244,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       } as RowCell;
     });
 
-    mockRootInteraction.getAllRowHeaderCells = () => rowCells;
+    mockRootInteraction.getAllRowHeaderCells = () => currentRow;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.facet.setScrollOffset({
       hRowScrollX: 100,
@@ -277,7 +277,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
     // get brush range selected cells
     expect(brushSelectionInstance.brushRangeCells).toHaveLength(
-      rowCells.length / 2,
+      currentRow.length / 2,
     );
   });
 });

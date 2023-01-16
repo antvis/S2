@@ -12,6 +12,7 @@ import {
   merge,
   reduce,
   size,
+  sumBy,
 } from 'lodash';
 import {
   DEFAULT_TREE_ROW_WIDTH,
@@ -174,7 +175,6 @@ export class PivotFacet extends BaseFacet {
     rowLeafNodes: Node[],
     rowHeaderWidth: number,
   ) {
-    const { spreadsheet } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
@@ -206,11 +206,15 @@ export class PivotFacet extends BaseFacet {
         );
         currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
       }
-      currentNode.height = this.getColNodeHeight(currentNode);
+      // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
+      currentNode.height =
+        currentNode.isGrandTotals && currentNode.isLeaf
+          ? colsHierarchy.height
+          : this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
-    if (!isEmpty(spreadsheet.options.totals?.col)) {
+    if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
     }
@@ -221,20 +225,27 @@ export class PivotFacet extends BaseFacet {
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+    let prevColParent: Node = null;
     const leafNodes = colLeafNodes.slice(0);
+
     while (leafNodes.length) {
       const node = leafNodes.shift();
-      const parent = node.parent;
-      if (prevColParent !== parent && parent) {
-        leafNodes.push(parent);
-        // parent's x = first child's x
-        parent.x = parent.children[0].x;
-        // parent's width = all children's width
-        parent.width = parent.children
-          .map((value: Node) => value.width)
-          .reduce((sum, current) => sum + current, 0);
-        prevColParent = parent;
+      const parentNode = node.parent;
+      if (prevColParent !== parentNode && parentNode) {
+        leafNodes.push(parentNode);
+
+        const firstVisibleChildNode = parentNode.children?.find(
+          (childNode) => !childNode.hiddenChildNodeInfo,
+        );
+        // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
+        const parentNodeX = firstVisibleChildNode?.x;
+        // 父节点宽度 = 所有子节点宽度之和
+        const parentNodeWidth = sumBy(parentNode.children, 'width');
+
+        parentNode.x = parentNodeX;
+        parentNode.width = parentNodeWidth;
+
+        prevColParent = parentNode;
       }
     }
   }
@@ -246,7 +257,6 @@ export class PivotFacet extends BaseFacet {
     rowHeaderWidth: number,
   ): number {
     const { colCfg, dataSet, filterDisplayDataItem } = this.cfg;
-
     const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
