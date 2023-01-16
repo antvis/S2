@@ -1,30 +1,22 @@
 import { filter } from 'lodash';
 import {
   EXTRA_FIELD,
-  type CustomHeaderFields,
+  getDefaultSeriesNumberText,
+  SERIES_NUMBER_FIELD,
   type CustomTreeNode,
 } from '../../common';
 import type { PivotDataSet } from '../../data-set';
-import type { SpreadSheet } from '../../sheet-type';
 import { buildGridHierarchy } from '../layout/build-gird-hierarchy';
 import { buildCustomTreeHierarchy } from '../layout/build-row-custom-tree-hierarchy';
 import { buildRowTreeHierarchy } from '../layout/build-row-tree-hierarchy';
 import { buildTableHierarchy } from '../layout/build-table-hierarchy';
 import { Hierarchy } from '../layout/hierarchy';
-import type { BuildHeaderParams, BuildHeaderResult } from '../layout/interface';
+import type {
+  BuildHeaderParams,
+  BuildHeaderResult,
+  HeaderParams,
+} from '../layout/interface';
 import { Node } from '../layout/node';
-
-interface HeaderParams {
-  isValueInCols: boolean;
-  isPivotMode: boolean;
-  moreThanOneValue: boolean;
-  hierarchy: Hierarchy;
-  rootNode: Node;
-  spreadsheet: SpreadSheet;
-  fields: CustomHeaderFields;
-  isRowHeader: boolean;
-  isCustomTreeFields: boolean;
-}
 
 const handleCustomTreeHierarchy = (params: HeaderParams) => {
   const { rootNode, hierarchy, fields, spreadsheet } = params;
@@ -114,17 +106,41 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
   }
 };
 
+const handleTableHierarchy = (params: HeaderParams) => {
+  const { isCustomTreeFields, spreadsheet } = params;
+  const { showSeriesNumber } = spreadsheet.options;
+
+  if (isCustomTreeFields) {
+    const seriesNumberField: CustomTreeNode = {
+      field: SERIES_NUMBER_FIELD,
+      title: getDefaultSeriesNumberText(),
+    };
+
+    const fields = showSeriesNumber
+      ? [seriesNumberField, ...params.fields]
+      : (params.fields as CustomTreeNode[]).filter(
+          (node) => node?.field !== SERIES_NUMBER_FIELD,
+        );
+
+    handleCustomTreeHierarchy({
+      ...params,
+      fields,
+    });
+
+    return;
+  }
+
+  buildTableHierarchy(params);
+};
+
 const handleColHeaderHierarchy = (params: HeaderParams) => {
-  const { isPivotMode, hierarchy, rootNode, spreadsheet } = params;
+  const { spreadsheet } = params;
+  const isPivotMode = spreadsheet.isPivotMode();
 
   if (isPivotMode) {
     handleGridRowColHierarchy(params);
   } else {
-    buildTableHierarchy({
-      parentNode: rootNode,
-      hierarchy,
-      spreadsheet,
-    });
+    handleTableHierarchy(params);
   }
 };
 
@@ -151,7 +167,6 @@ export const buildHeaderHierarchy = (
   const { isRowHeader, spreadsheet } = params;
   const { rows = [], columns = [] } = spreadsheet.dataSet.fields;
   const isValueInCols = spreadsheet.isValueInCols();
-  const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = spreadsheet.dataSet.moreThanOneValue();
   const rootNode = Node.rootNode();
   const hierarchy = new Hierarchy();
@@ -162,7 +177,6 @@ export const buildHeaderHierarchy = (
 
   const headerParams: HeaderParams = {
     isValueInCols,
-    isPivotMode,
     moreThanOneValue,
     rootNode,
     hierarchy,

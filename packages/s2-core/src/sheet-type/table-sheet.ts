@@ -21,14 +21,6 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
-  public isCustomColumnFields() {
-    return false;
-  }
-
-  public isCustomHeaderFields() {
-    return false;
-  }
-
   public getDataSet(): BaseDataSet {
     const { dataSet } = this.options;
 

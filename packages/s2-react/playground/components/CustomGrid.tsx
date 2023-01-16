@@ -124,6 +124,16 @@ export const CustomGrid = React.forwardRef<SpreadSheet, CustomGridProps>(
               });
             }}
           />
+          <Switch
+            checkedChildren="序号开"
+            unCheckedChildren="序号关"
+            checked={options.showSeriesNumber}
+            onChange={(checked) => {
+              setOptions({
+                showSeriesNumber: checked,
+              });
+            }}
+          />
         </Space>
         <Space style={{ marginBottom: 20 }}>
           <ResizeConfig

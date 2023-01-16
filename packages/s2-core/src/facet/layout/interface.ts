@@ -1,4 +1,4 @@
-import type { CustomTreeNode } from '../../common/interface';
+import type { CustomHeaderField, CustomTreeNode } from '../../common/interface';
 import type { PivotMeta } from '../../data-set/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from '../layout/hierarchy';
@@ -50,6 +50,17 @@ export interface HeaderNodesParams {
   parentNode: Node;
   level: number;
   query: Record<string, any>;
+}
+
+export interface HeaderParams {
+  isValueInCols: boolean;
+  moreThanOneValue: boolean;
+  hierarchy: Hierarchy;
+  rootNode: Node;
+  spreadsheet: SpreadSheet;
+  fields: CustomHeaderField[];
+  isRowHeader: boolean;
+  isCustomTreeFields: boolean;
 }
 
 export interface TreeHeaderParams {

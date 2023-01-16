@@ -109,7 +109,7 @@ function MainLayout() {
   );
   const [tableSheetColumnType, setTableSheetColumnType] = React.useState<
     'single' | 'multiple'
-  >('single');
+  >('multiple');
 
   //  ================== Refs ========================
   const s2Ref = React.useRef<SpreadSheet | null>(null);
@@ -236,7 +236,7 @@ function MainLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     setDataCfg(
       customMerge(tableSheetDataCfg, {
         fields: {
