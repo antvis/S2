@@ -1,3 +1,47 @@
+# [@antv/s2-v2.0.0-next.4](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.3...@antv/s2-v2.0.0-next.4) (2023-01-16)
+
+
+### Bug Fixes
+
+* bullet占位符绘制错误 ([#2022](https://github.com/antvis/S2/issues/2022)) ([c95c446](https://github.com/antvis/S2/commit/c95c446219216b190bf6af632104edd125a82ff3))
+* gui icon 加载完成后，增加检测步骤，避免无意义的渲染 warning ([#1997](https://github.com/antvis/S2/issues/1997)) ([6f13aa4](https://github.com/antvis/S2/commit/6f13aa43d8910f9ed83d59a9c958b26a0eb163d6))
+* **interaction:** 修复自定义列头时无法调整第一列的叶子节点高度 close [#1979](https://github.com/antvis/S2/issues/1979) ([#2038](https://github.com/antvis/S2/issues/2038)) ([a632ab1](https://github.com/antvis/S2/commit/a632ab19193b19ab80f456ab3ce19740dce0e52b))
+* 修复 enableCopy 和 hideMeasureColumn 都开启为 true 时，复制报错问题 ([#1984](https://github.com/antvis/S2/issues/1984)) ([528d2b6](https://github.com/antvis/S2/commit/528d2b6b6b912f790449aaef015fc27d2e0e33c9))
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+* 明细表linkField失效 ([#2007](https://github.com/antvis/S2/issues/2007)) ([122552b](https://github.com/antvis/S2/commit/122552bdd25aa538cfd38a6210e9979698c13188))
+* 明细表紧凑模式宽度计算错误 ([#2006](https://github.com/antvis/S2/issues/2006)) ([89f5c9e](https://github.com/antvis/S2/commit/89f5c9eb7719834ce9a55d340bf04415639cc277))
+
+
+### Code Refactoring
+
+* 调整 s2Options API 命名 ([#2015](https://github.com/antvis/S2/issues/2015)) ([e39b32f](https://github.com/antvis/S2/commit/e39b32f99befdf53569fab633087bb56edfc8720))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+* 单元格宽高配置增强 close [#1895](https://github.com/antvis/S2/issues/1895) ([#1981](https://github.com/antvis/S2/issues/1981)) ([ec6736f](https://github.com/antvis/S2/commit/ec6736f108801e1129c4d3fd29d13d1fbff2a1d2))
+* 增加 linkFields 参数传入类型 ([#1992](https://github.com/antvis/S2/issues/1992)) ([66bce2a](https://github.com/antvis/S2/commit/66bce2ae77635b530058f56b0545bd5558c119e1))
+* 子弹图为空时使用placeholder占位 ([#2010](https://github.com/antvis/S2/issues/2010)) ([8d28254](https://github.com/antvis/S2/commit/8d28254aa9aa29d9b2a9e24efb21f185cb5ffe4c))
+* 实现树状模式下可复制 ([#1986](https://github.com/antvis/S2/issues/1986)) ([96ccb1e](https://github.com/antvis/S2/commit/96ccb1ee14908fc1daf82d1eccb3bd852e642f7d))
+* 折叠展开重构 & 简化行头 tree 相关配置 ([#2030](https://github.com/antvis/S2/issues/2030)) ([0f3ea3b](https://github.com/antvis/S2/commit/0f3ea3b5c668137bc2fcb53bd186a41b34140e25))
+* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
+* 添加字段标记中，定制柱状图的长度的功能 （filedValue） ([#2002](https://github.com/antvis/S2/issues/2002)) ([457e5e7](https://github.com/antvis/S2/commit/457e5e7989ce460e445f46925eaee79b49f56615))
+* 适配链接跳转的判断方式 ([#1983](https://github.com/antvis/S2/issues/1983)) ([2a26259](https://github.com/antvis/S2/commit/2a2625971bcefd119d2e2a280608d1acf56b5d32))
+
+
+### BREAKING CHANGES
+
+* s2Options.tooltip 和 s2Options.style API 命名更改, 移除 trend 操作项
+
+* refactor: tree 相关配置移动到 rowCell 下
+
+* refactor: hideMeasureColumn => hideValue
+
+* refactor: 冻结相关配置收拢到 forzen 命名空间下
+
+* test: 修复测试
+
 # [@antv/s2-v2.0.0-next.3](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.2...@antv/s2-v2.0.0-next.3) (2022-12-16)
 
 ### Bug Fixes
