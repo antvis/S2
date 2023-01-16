@@ -129,8 +129,8 @@ export const download = (str: string, fileName: string) => {
  * use the '$' to divide different lines
  */
 const processObjectValueInCol = (data: Record<string, unknown>) => {
-  const tempCells = data?.value ? [data?.value] : [];
-  const values = data?.values as (string | number)[][];
+  const tempCells = data?.['value'] ? [data?.['value']] : [];
+  const values = data?.['values'] as (string | number)[][];
 
   if (!isEmpty(values)) {
     forEach(values, (value) => {
@@ -149,10 +149,10 @@ const processObjectValueInRow = (
   isFormat = false,
 ) => {
   if (!isFormat) {
-    return get(data?.originalValues, 0) ?? get(data?.values, 0);
+    return get(data?.['originalValues'], 0) ?? get(data?.['values'], 0);
   }
 
-  return get(data?.values, 0);
+  return get(data?.['values'], 0);
 };
 
 /* Process the data in detail mode. */

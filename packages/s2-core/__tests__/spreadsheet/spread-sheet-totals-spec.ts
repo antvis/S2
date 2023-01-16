@@ -94,8 +94,8 @@ describe('Spreadsheet Totals Tests', () => {
      * 列头：办公用品下有两个维度，家具下只有桌子
      */
     const filterCond = (item: RawData) =>
-      (item!.province === '浙江省' || item!.city === '成都市') &&
-      (item!.type === '办公用品' || item!.sub_type === '桌子');
+      (item!['province'] === '浙江省' || item!['city'] === '成都市') &&
+      (item!['type'] === '办公用品' || item!['sub_type'] === '桌子');
 
     anotherDataCfg.data = anotherDataCfg.data.filter(filterCond);
 

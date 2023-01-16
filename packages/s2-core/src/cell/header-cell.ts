@@ -301,7 +301,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     const targetCell = find(
       cells,
-      (cell: CellMeta) => cell?.isTarget,
+      (cell: CellMeta) => cell?.['isTarget'],
     ) as CellMeta;
 
     if (targetCell.id === this.getMeta().id) {

@@ -93,23 +93,21 @@ const CustomLayoutHierarchy = (
     const preUniqueId = generateId(parentNode!.id, preValue);
     const nextUniqueId = generateId(parentNode!.id, nextValue);
     const preNode = new Node({
-      ...node.config,
       id: preUniqueId,
       field: node.field,
       value: preValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
-      query: { ...parentNode!.query, [node.key]: preValue },
+      query: { ...parentNode!.query, [node.field]: preValue },
     });
 
     const nextNode = new Node({
-      ...node.config,
       id: nextUniqueId,
       field: node.field,
       value: nextValue,
       isTotals: node.isTotals,
       isLeaf: node.isLeaf,
-      query: { ...parentNode!.query, [node.key]: nextValue },
+      query: { ...parentNode!.query, [node.field]: nextValue },
     });
 
     return {

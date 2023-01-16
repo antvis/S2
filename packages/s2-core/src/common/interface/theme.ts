@@ -31,6 +31,8 @@ export interface PaletteMeta {
 
   /* 补充色值 */
   others?: {
+    results: string;
+    highlight: string;
     [key: string]: string;
   };
 }

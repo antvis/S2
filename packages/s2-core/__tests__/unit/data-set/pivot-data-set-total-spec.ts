@@ -119,9 +119,11 @@ describe('Pivot Dataset Total Test', () => {
         'sub_type',
       ]);
       expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues.province),
+        getDimensionsWithoutPathPre(sortedDimensionValues['province']),
       ).toEqual(['浙江省', '四川省', TOTAL_VALUE]);
-      expect(getDimensionsWithoutPathPre(sortedDimensionValues.city)).toEqual([
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues['city']),
+      ).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -134,13 +136,11 @@ describe('Pivot Dataset Total Test', () => {
         TOTAL_VALUE,
         TOTAL_VALUE,
       ]);
-      expect(getDimensionsWithoutPathPre(sortedDimensionValues.type)).toEqual([
-        '家具',
-        '办公用品',
-        TOTAL_VALUE,
-      ]);
       expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
+        getDimensionsWithoutPathPre(sortedDimensionValues['type']),
+      ).toEqual(['家具', '办公用品', TOTAL_VALUE]);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues['sub_type']),
       ).toEqual([
         '桌子',
         '沙发',

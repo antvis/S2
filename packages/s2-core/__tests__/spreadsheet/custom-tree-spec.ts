@@ -91,7 +91,7 @@ describe('SpreadSheet Custom Tree Tests', () => {
         value: node.value,
         width: node.width,
         height: node.height,
-        description: node.extra.description,
+        description: node.extra?.['description'],
       };
     });
 

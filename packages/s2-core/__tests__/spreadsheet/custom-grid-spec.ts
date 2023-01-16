@@ -80,7 +80,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           value: node.value,
           width: node.width,
           height: node.height,
-          description: node.extra.description,
+          description: node.extra?.['description'],
         };
       });
 
@@ -230,7 +230,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
           value: node.value,
           width: node.width,
           height: node.height,
-          description: node.extra.description,
+          description: node.extra?.['description'],
         };
       });
 

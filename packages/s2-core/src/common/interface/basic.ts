@@ -98,34 +98,6 @@ export interface Meta {
   formatter?: Formatter;
 }
 
-/**
- * Strategy mode's value type
- * data's key size must be equals fields.length
- * value can be empty
- * FieldC(Last fields is real value field)
- * example:
- * {
- *   fields: [fieldA, fieldB, fieldC],
- *   data: [
- *   {
- *     fieldA: 'valueA',
- *     fieldB: 'valueB',
- *     fieldC: 'valueC',
- *   }
- *   {
- *     fieldA: 'valueA',
- *     fieldB: '',
- *     fieldC: 'valueC',
- *   }
- *   ]
- * }
- */
-export interface Extra {
-  key: string;
-  collapse: boolean;
-  remark: string;
-}
-
 export type CustomHeaderField = CustomTreeNode | string;
 
 export type CustomHeaderFields = CustomHeaderField[];
@@ -369,6 +341,7 @@ export interface ViewMeta {
   label?: string;
   value?: string | number;
   query?: Query;
+  isLeaf?: boolean;
 
   [key: string]: unknown;
 }

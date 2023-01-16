@@ -156,9 +156,7 @@ module.exports = {
     ],
     'no-unneeded-ternary': 2,
     'array-callback-return': 2,
-    // 'no-magic-numbers': 1,
-    // 'no-duplicate-imports': [2, { includeExports: true }],
-    'dot-notation': [2],
+    'dot-notation': 0,
     'prefer-named-capture-group': 1,
     'eol-last': [2, 'always'],
     'max-lines-per-function': [

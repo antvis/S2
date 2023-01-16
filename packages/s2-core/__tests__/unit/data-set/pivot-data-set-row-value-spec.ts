@@ -130,9 +130,11 @@ describe('Pivot Mode Test When Value In Row', () => {
         'sub_type',
       ]);
       expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues.province),
+        getDimensionsWithoutPathPre(sortedDimensionValues['province']),
       ).toEqual(['浙江省', '四川省']);
-      expect(getDimensionsWithoutPathPre(sortedDimensionValues.city)).toEqual([
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues['city']),
+      ).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -142,12 +144,11 @@ describe('Pivot Mode Test When Value In Row', () => {
         '南充市',
         '乐山市',
       ]);
-      expect(getDimensionsWithoutPathPre(sortedDimensionValues.type)).toEqual([
-        '家具',
-        '办公用品',
-      ]);
       expect(
-        getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
+        getDimensionsWithoutPathPre(sortedDimensionValues['type']),
+      ).toEqual(['家具', '办公用品']);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues['sub_type']),
       ).toEqual(['桌子', '沙发', '笔', '纸张']);
     });
   });

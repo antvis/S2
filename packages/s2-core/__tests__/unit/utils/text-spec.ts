@@ -163,7 +163,7 @@ describe('Text Utils Tests', () => {
       value: 'test',
     };
 
-    const placeholder = getEmptyPlaceholder(meta, (meta) => meta.value);
+    const placeholder = getEmptyPlaceholder(meta, (meta) => meta['value']);
 
     expect(placeholder).toEqual('test');
   });

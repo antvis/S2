@@ -44,7 +44,7 @@ describe('Totals Cell Resize Tests', () => {
     expect(resizeAreaList).not.toHaveLength(0);
 
     resizeAreaList.forEach((shape) => {
-      expect(shape.appendInfo.meta.id).toBeTruthy();
+      expect(shape.appendInfo['meta'].id).toBeTruthy();
     });
   });
 });

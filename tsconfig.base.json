@@ -21,6 +21,7 @@
     "isolatedModules": true,
     "preserveValueImports": true,
     "forceConsistentCasingInFileNames": true,
+    "noPropertyAccessFromIndexSignature": true,
     "baseUrl": "packages",
     "paths": {
       "@antv/s2": ["s2-core/src/index.ts"],

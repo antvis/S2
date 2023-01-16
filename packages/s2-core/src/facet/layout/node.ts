@@ -123,6 +123,8 @@ export class Node {
 
   public isSubTotals?: boolean;
 
+  public extra?: Record<string, any>;
+
   [key: string]: any;
 
   constructor({

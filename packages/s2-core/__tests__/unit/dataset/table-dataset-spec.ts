@@ -131,7 +131,7 @@ describe('Table Mode Dataset Test', () => {
         filterParams: [
           {
             filterKey: 'province',
-            customFilter: (row) => row.province === '浙江省',
+            customFilter: (row) => row['province'] === '浙江省',
           },
         ],
       });
@@ -153,7 +153,7 @@ describe('Table Mode Dataset Test', () => {
             filterKey: 'province',
             filteredValues: ['浙江省'],
             customFilter: (row) =>
-              row.province === '浙江省' || row.province === '四川省',
+              row['province'] === '浙江省' || row['province'] === '四川省',
           },
         ],
       });
@@ -235,7 +235,7 @@ describe('Table Mode Dataset Test', () => {
       ];
       dataSet.handleDimensionValuesSort();
       expect(
-        uniq(dataSet.getDisplayDataSet().map((item) => item.city)),
+        uniq(dataSet.getDisplayDataSet().map((item) => item['city'])),
       ).toStrictEqual(sortBy);
     });
 
@@ -272,12 +272,12 @@ describe('Table Mode Dataset Test', () => {
 
       const rest = dataSet
         .getDisplayDataSet()
-        .filter((record) => record.city !== '杭州市');
+        .filter((record) => record['city'] !== '杭州市');
 
       const result = orderBy(
         dataSet
           .getDisplayDataSet()
-          .filter((record) => record.city === '杭州市'),
+          .filter((record) => record['city'] === '杭州市'),
         [sortFieldId],
         'asc',
       );

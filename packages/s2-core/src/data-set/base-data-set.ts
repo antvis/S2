@@ -153,7 +153,7 @@ export abstract class BaseDataSet {
 
     // 行/列头单元格, 取节点本身描述
     return (
-      meta?.extra?.description ||
+      (meta?.extra as Record<string, any>)?.['description'] ||
       this.getFieldDescription(meta?.field as CustomHeaderField)
     );
   };
