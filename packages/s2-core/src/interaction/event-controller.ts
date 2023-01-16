@@ -18,7 +18,8 @@ import {
 } from '../common/constant';
 import type { EmitterType, ResizeInfo } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
-import { getSelectedData, keyEqualTo } from '../utils/export/copy';
+import { getSelectedData } from '../utils/export/copy';
+import { keyEqualTo } from '../utils/export/method';
 import { getTooltipOptions, verifyTheElementInTooltip } from '../utils/tooltip';
 import { getAppendInfo } from '../utils/interaction/common';
 import { GuiIcon, isMobile } from '..';
