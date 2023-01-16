@@ -265,9 +265,15 @@ const getPlaceholder = (
  */
 const processColHeaders = (headers: any[][]) => {
   const result = headers.map((header) =>
-    header.map((item) =>
-      isArray(item) ? item : [item, ...new Array(header[0].length - 1)],
-    ),
+    header.map((item) => {
+      if (isArray(item)) {
+        return item;
+      }
+      if (isArray(header[0])) {
+        return [item, ...new Array(header[0].length - 1)];
+      }
+      return item;
+    }),
   );
   return result;
 };

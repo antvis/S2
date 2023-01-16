@@ -70,6 +70,7 @@ export enum S2Event {
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_CELL_MOUNTED = 'layout:cell-mounted',
   LAYOUT_PAGINATION = 'layout:pagination',
+  LAYOUT_AFTER_REAL_DATA_CELL_RENDER = 'layout:after-real-data-cell-render',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
   LAYOUT_DESTROY = 'layout:destroy',

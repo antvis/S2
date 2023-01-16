@@ -12,7 +12,8 @@ import type {
 } from '../../../common/interface';
 import {
   getCellMeta,
-  updateRowColCells,
+  getInteractionCells,
+  afterSelectDataCells,
 } from '../../../utils/interaction/select-event';
 import {
   getTooltipOptions,
@@ -44,7 +45,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       event.stopPropagation();
 
-      const { interaction, options } = this.spreadsheet;
+      const { interaction } = this.spreadsheet;
       interaction.clearHoverTimer();
 
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
@@ -75,15 +76,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       }
 
       interaction.changeState({
-        cells: [getCellMeta(cell)],
+        cells: getInteractionCells(getCellMeta(cell), this.spreadsheet),
         stateName: InteractionStateName.SELECTED,
+        onUpdateCells: afterSelectDataCells,
       });
       this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
-
-      if (options.interaction!.selectedCellHighlight) {
-        updateRowColCells(meta);
-      }
     });
   }
 
@@ -134,6 +132,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     const { valueField: field, data: record } = cellData!;
 
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
+      cellData: cellData!,
       field,
       record: Object.assign({ rowIndex: cellData!.rowIndex }, record),
     });

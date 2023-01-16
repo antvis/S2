@@ -273,6 +273,21 @@ describe('<StrategySheet/> Tests', () => {
       expect(result).toMatchSnapshot();
       expect(detailRow).toEqual([`"自定义节点A"`, `"指标A"`, '', '', '']);
     });
+
+    test('should export correct headers when label have array and string', () => {
+      const result = copyData(s2, '\t');
+      const rows = result.split('\n');
+      expect(rows[0].split('\t')[8]).toEqual('"2022-11"');
+      expect(rows[0].split('\t')[11]).toEqual('"2021年净增完成度"');
+      expect(rows[0].split('\t')[12]).toEqual('"趋势"');
+      expect(rows[0].split('\t')[13]).toEqual('"2022"');
+      expect(rows[1].split('\t')[8]).toEqual('"数值"');
+      expect(rows[1].split('\t')[9]).toEqual('"环比"');
+      expect(rows[1].split('\t')[10]).toEqual('"同比"');
+      expect(rows[1].split('\t')[11]).toEqual('"净增完成度"');
+      expect(rows[1].split('\t')[12]).toEqual('"趋势"');
+      expect(rows[1].split('\t')[13]).toEqual('"数值"');
+    });
   });
 
   describe('StrategySheet Interaction Tests', () => {
