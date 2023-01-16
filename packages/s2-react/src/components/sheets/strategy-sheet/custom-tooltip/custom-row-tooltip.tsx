@@ -15,7 +15,7 @@ export const StrategySheetRowTooltip: React.FC<CustomTooltipProps> = ({
   const customLabel = isFunction(label) ? label(cell, value) : label;
   const rowName = customLabel ?? value;
   const description =
-    spreadsheet.dataSet.getFieldDescription(field) || extra?.description;
+    spreadsheet.dataSet.getFieldDescription(field) || extra?.['description'];
 
   return (
     <div className={cls(tooltipCls(), tooltipCls('row'))}>

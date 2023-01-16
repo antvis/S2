@@ -341,6 +341,7 @@ export interface ViewMeta {
   label?: string;
   value?: string | number;
   query?: Query;
+  isLeaf?: boolean;
 
   [key: string]: unknown;
 }

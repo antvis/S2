@@ -386,7 +386,7 @@ export const StrategyOptions: SheetComponentOptions = {
   height: 800,
   cornerText: '指标',
   placeholder: (v) => {
-    const placeholder = v?.fieldValue ? '-' : '';
+    const placeholder = v?.['fieldValue'] ? '-' : '';
     return placeholder;
   },
   interaction: {

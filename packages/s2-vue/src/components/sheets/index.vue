@@ -14,7 +14,7 @@ export default defineComponent({
     const s2Ref = useExpose(ctx.expose);
 
     const sheetType = computed(() => {
-      const type = ctx.attrs.sheetType as SheetType;
+      const type = ctx.attrs['sheetType'] as SheetType;
 
       switch (type) {
         case 'table':

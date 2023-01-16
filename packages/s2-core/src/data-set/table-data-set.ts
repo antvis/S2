@@ -150,16 +150,16 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData({ query }: CellDataParams): Data {
-    if (this.displayData.length === 0 && query.rowIndex === 0) {
+    if (this.displayData.length === 0 && query['rowIndex'] === 0) {
       return;
     }
 
-    const rowData = this.displayData[query.rowIndex];
+    const rowData = this.displayData[query['rowIndex']];
 
     if (!('col' in query) || !isObject(rowData)) {
       return rowData as Data;
     }
-    return rowData[query.col] as unknown as Data;
+    return rowData[query['col']] as unknown as Data;
   }
 
   public getMultiData(): Data[] {
