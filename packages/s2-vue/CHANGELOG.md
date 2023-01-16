@@ -1,3 +1,29 @@
+# [@antv/s2-vue-v2.0.0-next.4](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.3...@antv/s2-vue-v2.0.0-next.4) (2023-01-16)
+
+
+### Code Refactoring
+
+* 调整 s2Options API 命名 ([#2015](https://github.com/antvis/S2/issues/2015)) ([e39b32f](https://github.com/antvis/S2/commit/e39b32f99befdf53569fab633087bb56edfc8720))
+
+
+### Features
+
+* 折叠展开重构 & 简化行头 tree 相关配置 ([#2030](https://github.com/antvis/S2/issues/2030)) ([0f3ea3b](https://github.com/antvis/S2/commit/0f3ea3b5c668137bc2fcb53bd186a41b34140e25))
+* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
+
+
+### BREAKING CHANGES
+
+* s2Options.tooltip 和 s2Options.style API 命名更改, 移除 trend 操作项
+
+* refactor: tree 相关配置移动到 rowCell 下
+
+* refactor: hideMeasureColumn => hideValue
+
+* refactor: 冻结相关配置收拢到 forzen 命名空间下
+
+* test: 修复测试
+
 # [@antv/s2-vue-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v1.5.0) (2022-12-09)
 
 ### Bug Fixes
