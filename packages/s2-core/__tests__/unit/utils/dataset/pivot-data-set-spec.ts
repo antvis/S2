@@ -32,6 +32,7 @@ describe('PivotDataSet util test', () => {
 
     deleteMetaById(meta, 'root[&]浙江省');
     const result = meta.get('浙江省');
+
     expect(result.childField).toBeUndefined();
     expect(result.children).toBeEmpty();
   });
@@ -51,6 +52,7 @@ describe('PivotDataSet util test', () => {
       rowPivotMeta,
       colPivotMeta,
     });
+
     expect(result.indexesData).toHaveLength(3);
     expect(result.paths).toHaveLength(32);
     expect(get(result.indexesData, result.paths[0])).toEqual({
@@ -77,6 +79,7 @@ describe('PivotDataSet util test', () => {
       type: '家具',
     };
     const result = transformDimensionsValues(data, rows);
+
     expect(result).toEqual(['浙江省', '杭州市']);
   });
 
@@ -90,6 +93,7 @@ describe('PivotDataSet util test', () => {
       type: '家具',
     };
     const result = transformDimensionsValues(data, rows);
+
     expect(result).toEqual(['0', '1']);
   });
 
@@ -112,6 +116,7 @@ describe('PivotDataSet util test', () => {
       columns,
       values,
     });
+
     expect(result).toEqual([1, 1, 1, 1]);
   });
 
@@ -173,6 +178,7 @@ describe('PivotDataSet util test', () => {
 
   test('for getDimensionsWithoutPathPre function', () => {
     const dimensions = ['芜湖市[&]家具[&]椅子', '芜湖市[&]家具', '芜湖市'];
+
     expect(getDimensionsWithoutPathPre(dimensions)).toEqual([
       '椅子',
       '家具',
@@ -200,6 +206,7 @@ describe('PivotDataSet util test', () => {
       defaultDimensions,
       dimensions,
     );
+
     expect(result).toEqual(['辽宁省[&]芜湖市']);
   });
 });

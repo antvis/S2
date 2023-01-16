@@ -424,8 +424,10 @@ describe('drawInterval Test', () => {
     const cells = s2.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
     forEach(cells, (cell) => {
       const intervalInfo = drawInterval(cell as DataCell);
+
       expect(intervalInfo?.style.width).toEqual(50);
     });
   });

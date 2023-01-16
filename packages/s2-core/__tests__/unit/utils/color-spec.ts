@@ -38,12 +38,14 @@ describe('Theme Color Tests', () => {
       ...testPalette,
       brandColor: '#FFFFFF',
     });
+
     expect(whiteTextPalette.basicColors[0]).toEqual('#000000');
 
     const blackTextPalette = generatePalette({
       ...testPalette,
       brandColor: '#000000',
     });
+
     expect(blackTextPalette.basicColors[0]).toEqual('#FFFFFF');
   });
 
@@ -77,6 +79,7 @@ describe('Theme Color Tests', () => {
       '#000000',
       '#000000',
     ];
+
     expect(generateStandardColors(undefined as unknown as string)).toEqual(
       colors,
     );
@@ -107,6 +110,7 @@ describe('Theme Color Tests', () => {
       '#e1e9fb',
       '#f0f2f4',
     ];
+
     backgroundColors.forEach((color) => {
       expect(shouldReverseFontColor(color)).toBeFalsy();
     });

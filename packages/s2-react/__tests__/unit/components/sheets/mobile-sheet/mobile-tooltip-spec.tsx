@@ -10,6 +10,7 @@ describe('Mobile Tooltip Different Tests', () => {
   test('SheetComponent hide tooltip do not trigger renderContent', () => {
     let s2: SpreadSheet;
     let customTooltipInstance;
+
     render(
       <SheetComponent
         dataCfg={mockDataConfig}
@@ -18,6 +19,7 @@ describe('Mobile Tooltip Different Tests', () => {
             renderTooltip: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
+
               return customTooltipInstance;
             },
           },
@@ -39,6 +41,7 @@ describe('Mobile Tooltip Different Tests', () => {
   test('hide tooltip trigger renderContent', () => {
     let s2: SpreadSheet;
     let customTooltipInstance;
+
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
@@ -47,6 +50,7 @@ describe('Mobile Tooltip Different Tests', () => {
             renderTooltip: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
+
               return customTooltipInstance;
             },
           },
@@ -68,6 +72,7 @@ describe('Mobile Tooltip Different Tests', () => {
   test('show tooltip when visible is true', () => {
     let s2: SpreadSheet;
     let customTooltipInstance;
+
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
@@ -76,6 +81,7 @@ describe('Mobile Tooltip Different Tests', () => {
             renderTooltip: (s) => {
               customTooltipInstance = new CustomTooltip(s);
               customTooltipInstance.renderContent = jest.fn();
+
               return customTooltipInstance;
             },
           },

@@ -39,12 +39,12 @@ export default defineComponent({
       setDrillFields,
       className,
     } = props as BaseDrillDownComponentProps;
-    const getOptions = () => {
-      return dataSet.map((val: BaseDataSet) => {
+    const getOptions = () =>
+      dataSet.map((val: BaseDataSet) => {
         val.disabled = !!(disabledFields && disabledFields.includes(val.value));
+
         return val;
       });
-    };
 
     const options: Ref<BaseDataSet[]> = ref(getOptions());
     const selected = ref<Key[]>([]);
@@ -57,16 +57,19 @@ export default defineComponent({
       } else {
         const reg = new RegExp(value, 'gi');
         const result = dataSet.filter((item) => reg.test(item.name));
+
         options.value = [...result];
       }
     };
 
     const handleSelect = (value: SelectInfo) => {
       const key = value?.selectedKeys;
+
       selected.value = key;
       if (getDrillFields) {
         getDrillFields(key as string[]);
       }
+
       if (setDrillFields) {
         setDrillFields(key as string[]);
       }
@@ -78,6 +81,7 @@ export default defineComponent({
       if (getDrillFields) {
         getDrillFields([]);
       }
+
       if (setDrillFields) {
         setDrillFields([]);
       }

@@ -44,6 +44,7 @@ describe('Select Event Utils Tests', () => {
         {} as unknown as ViewMeta,
         {} as unknown as SpreadSheet,
       );
+
       expect(
         getRowCellForSelectedCell(
           { colId: 'city', rowIndex: 5 } as unknown as ViewMeta,
@@ -52,9 +53,7 @@ describe('Select Event Utils Tests', () => {
               showSeriesNumber: true,
             },
             interaction: {
-              getAllCells: () => {
-                return [cell];
-              },
+              getAllCells: () => [cell],
             },
             facet: {
               layoutResult: {

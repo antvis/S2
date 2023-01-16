@@ -14,14 +14,17 @@ export const shouldShowActionIcons = (
   if (!actionIconCfg) {
     return false;
   }
+
   const { iconNames, displayCondition, belongsCell } = actionIconCfg;
 
   if (isEmpty(iconNames)) {
     return false;
   }
+
   if (belongsCell !== cellType) {
     return false;
   }
+
   if (!displayCondition) {
     // 没有展示条件参数默认全展示
     return true;
@@ -53,6 +56,7 @@ export const getActionIconConfig = (
 
   // 使用配置的 displayCondition 进一步筛选需要展示的 icon
   let nextIconNames = iconConfig.iconNames;
+
   if (iconConfig.displayCondition) {
     nextIconNames = nextIconNames.filter((iconName) =>
       iconConfig.displayCondition?.(meta, iconName),

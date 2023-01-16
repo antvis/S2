@@ -40,6 +40,7 @@ describe.skip('HD Adapter Tests', () => {
       ],
     ) => {
       const canvas: HTMLCanvasElement = s2.getCanvasElement();
+
       expect(canvas.style.width).toEqual(`${width}px`);
       expect(canvas.style.height).toEqual(`${height}px`);
       expect(canvas.width).toEqual(updatedWidth);
@@ -72,6 +73,7 @@ describe.skip('HD Adapter Tests', () => {
   // eslint-disable-next-line jest/expect-expect
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
     const scale = 2;
+
     Object.defineProperty(visualViewport, 'scale', {
       value: scale,
       configurable: true,
@@ -79,8 +81,10 @@ describe.skip('HD Adapter Tests', () => {
     visualViewport?.dispatchEvent(new Event('resize'));
     await sleep(500);
 
-    // update container width/height, not update container stylesheet width/height
-    // eg: <canvas width="1000" height="500" style="width:500px; height: 250px;" />
+    /*
+     * update container width/height, not update container stylesheet width/height
+     * eg: <canvas width="1000" height="500" style="width:500px; height: 250px;" />
+     */
     expectContainerSize(
       [s2.options.width!, s2.options.height!],
       [s2.options.width! * scale, s2.options.height! * scale],

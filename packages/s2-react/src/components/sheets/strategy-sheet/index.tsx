@@ -125,9 +125,10 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         };
       }, [dataCfg, options?.tooltip]);
 
-    const s2Options = React.useMemo<SheetComponentOptions>(() => {
-      return customMerge(options, strategySheetOptions);
-    }, [options, strategySheetOptions]);
+    const s2Options = React.useMemo<SheetComponentOptions>(
+      () => customMerge(options, strategySheetOptions),
+      [options, strategySheetOptions],
+    );
 
     return (
       <BaseSheet

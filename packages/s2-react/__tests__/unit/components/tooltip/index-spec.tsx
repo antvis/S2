@@ -43,6 +43,7 @@ describe('Tooltip Component Tests', () => {
       const selectedMenu = Array.from(
         document.querySelectorAll('.ant-menu-item-selected'),
       );
+
       expect(selectedMenu).toHaveLength(1);
       expect(selectedMenu[0]?.textContent).toContain(text);
     },
@@ -52,6 +53,7 @@ describe('Tooltip Component Tests', () => {
 describe('Tooltip Common Components Tests', () => {
   test('custom tooltip instance of CustomTooltip', () => {
     let s2: SpreadSheet;
+
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}

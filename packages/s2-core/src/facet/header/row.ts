@@ -28,27 +28,32 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
     const rowCell = spreadsheet?.options?.rowCell;
     // row'cell only show when visible
-    const rowCellInRect = (item: Node): boolean => {
-      return (
-        viewportHeight + scrollY > item.y && // bottom
-        scrollY < item.y + item.height && // top
-        width - position.x + scrollX > item.x && // left
-        scrollX - position.x < item.x + item.width
-      ); // right
-    };
+    const rowCellInRect = (item: Node): boolean =>
+      // bottom
+      viewportHeight + scrollY > item.y &&
+      // top
+      scrollY < item.y + item.height &&
+      // left
+      width - position.x + scrollX > item.x &&
+      // right
+      scrollX - position.x < item.x + item.width;
+
     each(data, (item: Node) => {
       if (rowCellInRect(item) && item.height !== 0) {
         let cell: S2CellType | null = null;
+
         // 首先由外部控制UI展示
         if (rowCell) {
           cell = rowCell(item, spreadsheet, this.headerConfig);
         }
+
         // 如果外部没处理，就用默认的
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
             cell = new RowCell(item, spreadsheet, this.headerConfig);
           }
         }
+
         item.belongsCell = cell;
 
         if (cell) {
@@ -60,6 +65,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
 
   protected offset() {
     const { scrollX = 0, scrollY = 0, position } = this.headerConfig;
+
     // 向右多移动的seriesNumberWidth是序号的宽度
     translateGroup(this, position.x - scrollX, position.y - scrollY);
   }

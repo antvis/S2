@@ -15,24 +15,21 @@ import type { CellMeta, S2CellType } from '../../common/interface';
  */
 export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
   const currentId = currentCell.getMeta().id;
-  return cells.some((cell) => {
-    return isEqual(cell.id, currentId);
-  });
+
+  return cells.some((cell) => isEqual(cell.id, currentId));
 };
 
-export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
-};
+export const getDataCellId = (rowIndex: string, colIndex: string) =>
+  `${rowIndex}${EMPTY_PLACEHOLDER}${colIndex}`;
 
 export const shouldUpdateBySelectedCellsHighlight = (s2: SpreadSheet) => {
   const { currentRow, currentCol, rowHeader, colHeader } =
     s2.interaction.getSelectedCellHighlight();
+
   return currentRow || currentCol || rowHeader || colHeader;
 };
 
-export const isDataCell = (cell: CellMeta) => {
-  return cell.type === CellTypes.DATA_CELL;
-};
+export const isDataCell = (cell: CellMeta) => cell.type === CellTypes.DATA_CELL;
 
 /**
  * highlight cells of the row
@@ -102,9 +99,11 @@ export const updateBySelectedCellsHighlight = (
   if (currentRow || showSNWhenRowHeaderHighlight) {
     updateCurrentRowCellState(cells, dataCell);
   }
+
   if (currentCol) {
     updateCurrentColumnCellState(cells, dataCell);
   }
+
   if (rowHeader || colHeader) {
     updateCurrentCellState(cells, dataCell);
   }

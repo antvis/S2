@@ -37,12 +37,14 @@ describe('Totals Tests', () => {
     const rowTotalNodes = spreadsheet.facet.layoutResult.rowNodes.filter(
       (node) => node.isTotals,
     );
+
     expect(rowTotalNodes).toHaveLength(0);
 
     // 列总计节点
     const columnTotalNodes = spreadsheet.facet.layoutResult.colNodes.filter(
       (node) => node.isTotals,
     );
+
     expect(columnTotalNodes).toHaveLength(1);
   });
 });

@@ -22,9 +22,8 @@ const BASIC_COLOR_COUNT = 15;
  * 智能反色使用
  * @param color
  */
-export const shouldReverseFontColor = (color: string) => {
-  return tinycolor(color).getLuminance() <= 0.5;
-};
+export const shouldReverseFontColor = (color: string) =>
+  tinycolor(color).getLuminance() <= 0.5;
 
 const FONT_COLOR_RELATIONS: Array<{
   fontColorIndex: number;
@@ -59,6 +58,7 @@ export const generateStandardColors = (brandColor: string): string[] => {
 
   for (let index = 0; index < 11; index++) {
     const mixPercent = STANDARD_COLOR_MIX_PERCENT[index];
+
     standardColors.push(
       mixPercent === 0
         ? toUpper(brandColor)

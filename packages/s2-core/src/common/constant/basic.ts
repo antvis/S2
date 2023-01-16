@@ -15,8 +15,11 @@ export const UNDEFINED_SYMBOL_ID = '$$undefined$$';
 
 export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 
-// foregroundGroup 上的 children 层叠顺序
-export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
+/*
+ * foregroundGroup 上的 children 层叠顺序
+ * 约定这个 z-index 为 0 的 container 作为基准
+ */
+export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
 export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;

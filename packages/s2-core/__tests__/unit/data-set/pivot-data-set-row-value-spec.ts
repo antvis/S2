@@ -29,6 +29,7 @@ describe('Pivot Mode Test When Value In Row', () => {
   beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
+
     mockSheet.store = new Store();
     dataSet = new PivotDataSet(mockSheet);
 
@@ -51,6 +52,7 @@ describe('Pivot Mode Test When Value In Row', () => {
 
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
+
       expect([...rowPivotMeta.keys()]).toEqual(['浙江省', '四川省']);
       expect(rowPivotMeta.get('浙江省')!.level).toEqual(1);
       expect([...rowPivotMeta.get('浙江省')!.children.keys()]).toEqual([
@@ -76,6 +78,7 @@ describe('Pivot Mode Test When Value In Row', () => {
 
     test('should get correct col pivot meta', () => {
       const colPivotMeta = dataSet.colPivotMeta;
+
       expect([...colPivotMeta.keys()]).toEqual(['家具', '办公用品']);
 
       expect(colPivotMeta.get('家具')!.level).toEqual(1);
@@ -93,6 +96,7 @@ describe('Pivot Mode Test When Value In Row', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
+
       expect(get(indexesData, '1.1.1.1')).toEqual({
         province: '浙江省',
         city: '杭州市',
@@ -118,6 +122,7 @@ describe('Pivot Mode Test When Value In Row', () => {
 
     test('should get correct sorted dimension value', () => {
       const sortedDimensionValues = dataSet.sortedDimensionValues;
+
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',

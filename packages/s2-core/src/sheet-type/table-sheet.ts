@@ -31,6 +31,7 @@ export class TableSheet extends SpreadSheet {
 
   public getDataSet(): BaseDataSet {
     const { dataSet } = this.options;
+
     if (dataSet) {
       return dataSet(this);
     }
@@ -106,8 +107,10 @@ export class TableSheet extends SpreadSheet {
       if (this.options.showSeriesNumber && facet.colIndex === 0) {
         return new TableSeriesCell(facet, this);
       }
+
       return new TableDataCell(facet, this);
     };
+
     this.setOptions({
       dataCell: this.options.dataCell ?? defaultCell,
     });

@@ -30,6 +30,7 @@ describe('Cell Content Test', () => {
       left: 8,
     },
   };
+
   test('should return border area', () => {
     const results = getCellBoxByType(
       cfg,
@@ -93,7 +94,7 @@ describe('Max Text Width Calculation Test', () => {
 });
 
 describe('Text and Icon area Test', () => {
-  const content: SimpleBBox = {
+  const contentBBox: SimpleBBox = {
     x: 0,
     y: 0,
     width: 100,
@@ -102,14 +103,14 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when there is no icon cfg', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'left',
           textBaseline: 'top',
         },
-        50,
-      ),
+        textWidth: 50,
+      }),
     ).toEqual({
       text: {
         x: 0,
@@ -124,19 +125,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'right',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 72,
@@ -149,20 +150,20 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'right',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 52,
@@ -177,20 +178,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'right',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 100,
@@ -203,21 +203,20 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'right',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 100,
@@ -232,20 +231,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'center',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 59,
@@ -258,21 +256,20 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'center',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 69,
@@ -287,20 +284,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'center',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 40,
@@ -313,21 +309,20 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'center',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 30,
@@ -342,20 +337,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'left',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 28,
@@ -368,21 +362,20 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'left',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'left',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 48,
@@ -397,20 +390,19 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'left',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-      ),
+      }),
     ).toEqual({
       text: {
         x: 0,
@@ -422,21 +414,20 @@ describe('Text and Icon area Test', () => {
       },
     });
     expect(
-      getTextAndFollowingIconPosition(
-        content,
-
-        {
+      getTextAndFollowingIconPosition({
+        bbox: contentBBox,
+        textStyle: {
           textAlign: 'left',
           textBaseline: 'top',
         },
-        50,
-        {
+        textWidth: 50,
+        iconStyle: {
           position: 'right',
           size: 10,
           margin: { left: 10, right: 8 },
         },
-        2,
-      ),
+        iconCount: 2,
+      }),
     ).toEqual({
       text: {
         x: 0,
@@ -456,6 +447,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
     width: 100,
   };
   const textWidth = 20;
+
   test('should get center position when content is larger than viewport', () => {
     expect(
       getTextAreaRange(
@@ -549,6 +541,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       horizontalBorderColorOpacity: 1,
       horizontalBorderWidth: 2,
     };
+
     expect(
       getBorderPositionAndStyle(
         CellBorderPosition.LEFT,

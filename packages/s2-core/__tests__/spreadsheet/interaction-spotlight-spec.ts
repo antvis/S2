@@ -48,6 +48,7 @@ describe('Interaction SelectedCellsSpotlight Tests', () => {
       .filter((cell) => cell.getTextShape())
       .forEach((cell) => {
         const textShape = cell.getTextShape();
+
         expect(textShape.attr('fillOpacity')).toEqual(0.3);
       });
   });

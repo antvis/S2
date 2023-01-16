@@ -11,6 +11,7 @@ export type TextBaseline = 'top' | 'middle' | 'bottom';
 export interface PaletteMeta {
   /** 主题色 */
   brandColor: string;
+
   /**
    * basicColors 与标准色卡 standardColors 数组下标的对应关系
    * @see generateStandardColors
@@ -19,6 +20,7 @@ export interface PaletteMeta {
     basicColorIndex: number;
     standardColorIndex: number;
   }>;
+
   /* 语义色值 */
   semanticColors: {
     red: string;
@@ -26,6 +28,7 @@ export interface PaletteMeta {
     yellow: string;
     [key: string]: string;
   };
+
   /* 补充色值 */
   others?: {
     results: string;
@@ -72,16 +75,22 @@ export interface Background {
 export interface InteractionStateTheme {
   /* 背景透明度 */
   backgroundOpacity?: number;
+
   /* 背景填充色 */
   backgroundColor?: string;
+
   /* 文本透明度 */
   textOpacity?: number;
+
   /* 边线颜色 */
   borderColor?: string;
+
   /* 边线宽度 */
   borderWidth?: number;
+
   /* 边线透明度 */
   borderOpacity?: number;
+
   /* 透明度 */
   opacity?: number;
 }
@@ -92,22 +101,27 @@ export type InteractionState = {
 
 export type Margin = Padding;
 
-export interface TextAlignCfg {
+export interface TextAlignStyle {
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;
 }
 
-export interface TextTheme extends TextAlignCfg {
+export interface TextTheme extends TextAlignStyle {
   /* 字体 */
   fontFamily?: string;
+
   /* 字体大小 */
   fontSize?: number;
+
   /* 字体粗细 */
   fontWeight?: number | 'normal' | 'bold' | 'bolder' | 'lighter';
+
   /* 字体颜色 */
   fill?: string;
+
   /* 链接文本颜色 */
   linkTextFill?: string;
+
   /* 字体透明度 */
   opacity?: number;
 }
@@ -115,24 +129,34 @@ export interface TextTheme extends TextAlignCfg {
 export interface CellTheme {
   /* 奇数行单元格背景色 */
   crossBackgroundColor?: string;
+
   /* 单元格背景色 */
   backgroundColor?: string;
+
   /* 单元格背景色透明度 */
   backgroundColorOpacity?: number;
+
   /* 单元格水平边线颜色 */
   horizontalBorderColor?: string;
+
   /* 单元格水平边线颜色透明度 */
   horizontalBorderColorOpacity?: number;
+
   /* 单元格垂直边线颜色 */
   verticalBorderColor?: string;
+
   /* 单元格垂直边线颜色透明度 */
   verticalBorderColorOpacity?: number;
+
   /* 单元格水平边线宽度 */
   horizontalBorderWidth?: number;
+
   /* 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
+
   /* 单元格内边距 */
   padding?: Padding;
+
   /* 交互态 */
   interactionState?: InteractionState;
 }
@@ -140,12 +164,16 @@ export interface CellTheme {
 export interface IconTheme {
   /* icon 填充色 */
   fill?: string;
+
   /* 下跌 icon 填充色 */
   downIconColor?: string;
+
   /* 上涨 icon 填充色 */
   upIconColor?: string;
+
   /* icon  大小 */
   size?: number;
+
   /* icon 外边距 */
   margin?: Margin;
 }
@@ -153,16 +181,22 @@ export interface IconTheme {
 export interface ResizeArea {
   /* 热区尺寸 */
   size?: number;
+
   /* 热区背景色 */
   background?: string;
+
   /* 参考线颜色 */
   guideLineColor?: string;
+
   /* 参考线不可用颜色 */
   guideLineDisableColor?: string;
+
   /* 参考线间隔 */
   guideLineDash?: number[];
+
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
+
   /* 交互态 */
   interactionState?: InteractionState;
 }
@@ -170,18 +204,25 @@ export interface ResizeArea {
 export interface ScrollBarTheme {
   /* 滚动条轨道颜色 */
   trackColor?: string;
+
   /* 滚动条 hover 态颜色 */
   thumbHoverColor?: string;
+
   /* 滚动条颜色 */
   thumbColor?: string;
+
   /* 滚动条水平最小尺寸 */
   thumbHorizontalMinSize?: number;
+
   /* 滚动条垂直最小尺寸 */
   thumbVerticalMinSize?: number;
+
   /* 滚动条尺寸 */
   size?: number;
+
   /* 滚动条 hover 态尺寸 */
   hoverSize?: number;
+
   /** 指定如何绘制每一条线段末端，lineCap?: 'butt' | 'round' | 'square'; */
   lineCap?: LineStyleProps['lineCap'];
 }
@@ -189,24 +230,33 @@ export interface ScrollBarTheme {
 export interface SplitLine {
   /* 水平分割线颜色 */
   horizontalBorderColor?: string;
+
   /* 水平分割线颜色透明度 */
   horizontalBorderColorOpacity?: number;
+
   /* 水平分割线宽度 */
   horizontalBorderWidth?: number;
+
   /* 垂直分割线颜色 */
   verticalBorderColor?: string;
+
   /* 垂直分割线颜色透明度 */
   verticalBorderColorOpacity?: number;
+
   /* 垂直分割线宽度 */
   verticalBorderWidth?: number;
+
   /* 分割线是否显示外阴影 */
   showShadow?: boolean;
+
   /* 阴影宽度 */
   shadowWidth?: number;
+
   /* 阴影线性渐变色 */
   shadowColors?: {
     /* 线性变化左侧颜色 */
     left: string;
+
     /* 线性变化右侧颜色 */
     right: string;
   };
@@ -214,18 +264,25 @@ export interface SplitLine {
 export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
+
   /* 文本样式 */
   text?: TextTheme;
+
   /* 序号样式 */
   seriesText?: TextTheme;
+
   /* 度量值文本样式 */
   measureText?: TextTheme;
+
   /* 单元格样式 */
   cell?: CellTheme;
+
   /* 图标样式 */
   icon?: IconTheme;
+
   /* mini 图样式配置 */
   miniChart?: MiniChartTheme;
+
   /* 序号列宽 */
   seriesNumberWidth?: number;
 }
@@ -249,12 +306,16 @@ export type CellThemes = {
 export interface S2Theme extends CellThemes {
   /* 列宽行高调整热区 */
   resizeArea?: ResizeArea;
+
   /* 滚动条样式 */
   scrollBar?: ScrollBarTheme;
+
   /* 分割线样式 */
   splitLine?: SplitLine;
+
   /* 刷选遮罩 */
   prepareSelectMask?: InteractionStateTheme;
+
   /* 画布背景底色 */
   background?: Background;
 }
@@ -264,8 +325,10 @@ export type ThemeName = 'default' | 'colorful' | 'gray';
 export interface ThemeCfg {
   /* 主题 */
   theme?: S2Theme;
+
   /* 色板 */
   palette?: Pick<Palette, 'basicColors' | 'semanticColors' | 'others'>;
+
   /* 主题名 */
   name?: ThemeName;
 }
@@ -274,8 +337,10 @@ export interface ThemeCfg {
 export interface RangeColors {
   /* 满意 */
   good: string;
+
   /* 良好 */
   satisfactory: string;
+
   /* 不符合预期 */
   bad: string;
 }
@@ -287,6 +352,7 @@ export interface BulletTheme {
     /* 子弹图宽度相对单元格 content 占比，小数 */
     widthPercent: number;
     height: number;
+
     /* 内高度 */
     innerHeight: number;
   };
@@ -301,6 +367,7 @@ export interface BulletTheme {
 
   /* 子弹图状态颜色 */
   rangeColors: RangeColors;
+
   /* 子弹图背景色 */
   backgroundColor: string;
 }
@@ -314,6 +381,7 @@ export interface LineTheme {
     fill?: string;
     opacity?: number;
   };
+
   /* 线 */
   linkLine?: {
     size: number;

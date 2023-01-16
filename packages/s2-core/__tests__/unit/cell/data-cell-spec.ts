@@ -25,12 +25,11 @@ import { renderText } from '@/utils/g-renders';
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
-const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') => {
-  return s2.facet.panelGroup.children[0].find<DataCell>(
+const findDataCell = (s2: SpreadSheet, valueField: 'price' | 'cost') =>
+  s2.facet.panelGroup.children[0].find<DataCell>(
     (item) =>
       item instanceof DataCell && item.getMeta().valueField === valueField,
   );
-};
 
 describe('Data Cell Tests', () => {
   const meta = {
@@ -66,6 +65,7 @@ describe('Data Cell Tests', () => {
 
     test('should pass complete data into formatter', () => {
       const formatter = jest.fn();
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       // eslint-disable-next-line no-new
@@ -75,6 +75,7 @@ describe('Data Cell Tests', () => {
 
     test('should return correct formatted value', () => {
       const formatter: Formatter = (_, data) => `${get(data, 'value') * 10}`;
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       const dataCell = new DataCell(meta, s2);
 
@@ -83,6 +84,7 @@ describe('Data Cell Tests', () => {
 
     test('should get correct text fill color', () => {
       const dataCell = new DataCell(meta, s2);
+
       expect(dataCell.getTextShape().attr('fill')).toEqual(DEFAULT_FONT_COLOR);
     });
   });
@@ -114,6 +116,7 @@ describe('Data Cell Tests', () => {
 
     test("shouldn't init when width or height is not positive", () => {
       const dataCell = new DataCell({ ...meta, width: 0, height: 0 }, s2);
+
       expect(dataCell.getTextShape()).toBeUndefined();
       // @ts-ignore
       expect(dataCell.backgroundShape).toBeUndefined();
@@ -123,11 +126,13 @@ describe('Data Cell Tests', () => {
 
     test('should get text shape', () => {
       const dataCell = new DataCell(meta, s2);
+
       expect(dataCell.getTextShapes()).toEqual([dataCell.getTextShape()]);
     });
 
     test('should add icon shape', () => {
       const dataCell = new DataCell(meta, s2);
+
       dataCell.addConditionIconShape(icon);
 
       expect(dataCell.getConditionIconShapes()).toEqual([icon]);
@@ -135,7 +140,8 @@ describe('Data Cell Tests', () => {
 
     test('should add text shape', () => {
       const dataCell = new DataCell(meta, s2);
-      const textShape = renderText(dataCell, [], 0, 0, 'test', null);
+      const textShape = renderText(dataCell, [], { x: 0, y: 0, text: 'test' });
+
       dataCell.addTextShape(textShape);
 
       expect(dataCell.getTextShapes()).toHaveLength(2);
@@ -143,6 +149,7 @@ describe('Data Cell Tests', () => {
 
     test('should reset shape after cell init', () => {
       const dataCell = new DataCell(meta, s2);
+
       dataCell.addConditionIconShape(icon);
 
       expect(dataCell.getConditionIconShapes()).toHaveLength(1);
@@ -169,6 +176,7 @@ describe('Data Cell Tests', () => {
         ],
       },
     });
+
     test('should draw right condition text shape', () => {
       s2.render();
       const dataCell = findDataCell(s2, 'price');
@@ -194,6 +202,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(get(dataCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(dataCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -216,6 +225,7 @@ describe('Data Cell Tests', () => {
       s2.render();
 
       const dataCell = findDataCell(s2, 'cost');
+
       expect(
         (get(dataCell, 'backgroundShape') as Rect).parsedStyle.fill,
       ).toBeColor('#fffae6');
@@ -250,13 +260,16 @@ describe('Data Cell Tests', () => {
           interval: [
             {
               field: 'value',
-              mapping: () => ({ fill: 'red' }),
+              mapping: () => {
+                return { fill: 'red' };
+              },
             },
           ],
         },
       });
 
       const dataCell = new DataCell(anotherMeta, s2);
+
       expect(
         get(dataCell, 'conditionIntervalShape.parsedStyle.width') +
           s2.theme.dataCell!.cell!.horizontalBorderWidth,
@@ -281,6 +294,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         REVERSE_FONT_COLOR,
       );
@@ -306,6 +320,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         DEFAULT_FONT_COLOR,
       );
@@ -332,6 +347,7 @@ describe('Data Cell Tests', () => {
       });
       s2.render();
       const dataCell = findDataCell(s2, 'cost');
+
       expect(dataCell?.getTextShape().parsedStyle.fill).toBeColor(
         DEFAULT_FONT_COLOR,
       );
@@ -349,9 +365,11 @@ describe('Data Cell Tests', () => {
               mapping(value, dataInfo) {
                 const originData = s2.dataSet.originData;
                 const resultData = find(originData, dataInfo);
+
                 expect(resultData).toEqual(dataInfo);
                 // @ts-ignore
                 expect(value).toEqual(resultData.cost);
+
                 return {
                   fill: '#fffae6',
                 };
@@ -365,6 +383,7 @@ describe('Data Cell Tests', () => {
 
     test('should test condition mapping params when the sheet is table', () => {
       const table = createTableSheet({});
+
       table.setOptions({
         conditions: {
           background: [
@@ -373,9 +392,11 @@ describe('Data Cell Tests', () => {
               mapping(value, dataInfo) {
                 const originData = table.dataSet.originData;
                 const resultData = find(originData, dataInfo);
+
                 expect(resultData).toEqual(dataInfo);
                 // @ts-ignore
                 expect(value).toEqual(resultData?.type);
+
                 return {
                   fill: '#fffae6',
                 };
@@ -412,6 +433,7 @@ describe('Data Cell Tests', () => {
     test('should be highlight entire row data cells when the row header is clicked', () => {
       const allRowCells = s2.interaction.getAllRowHeaderCells();
       const mockCell = allRowCells[0];
+
       s2.getCell = jest.fn().mockReturnValue(mockCell);
 
       emitEvent(S2Event.ROW_CELL_CLICK, {
@@ -420,9 +442,11 @@ describe('Data Cell Tests', () => {
       });
 
       const interactedCells = s2.interaction.getInteractedCells();
-      const firstRowCell = find(interactedCells, (cell: S2CellType) => {
-        return cell.cellType === CellTypes.ROW_CELL;
-      });
+      const firstRowCell = find(
+        interactedCells,
+        (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
+      );
+
       expect(interactedCells.length).toBe(7);
       expect(firstRowCell!.getMeta().id).toBe(mockCell.getMeta().id);
     });
@@ -430,6 +454,7 @@ describe('Data Cell Tests', () => {
     test('should be highlight entire column data cells when the column header is clicked', () => {
       const allColumnCells = s2.interaction.getAllColHeaderCells();
       const mockCell = allColumnCells[0];
+
       s2.getCell = jest.fn().mockReturnValue(mockCell);
 
       emitEvent(S2Event.COL_CELL_CLICK, {
@@ -438,9 +463,11 @@ describe('Data Cell Tests', () => {
       });
 
       const interactedCells = s2.interaction.getInteractedCells();
-      const firstColCell = find(interactedCells, (cell: S2CellType) => {
-        return cell.cellType === CellTypes.COL_CELL;
-      });
+      const firstColCell = find(
+        interactedCells,
+        (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
+      );
+
       expect(interactedCells.length).toBe(8);
       expect(firstColCell!.getMeta().id).toBe(mockCell.getMeta().id);
     });
@@ -448,6 +475,7 @@ describe('Data Cell Tests', () => {
     test('should be highlight data cell when the data cell is clicked', () => {
       const allDataCells = s2.interaction.getAllCells();
       const mockCell = allDataCells[0];
+
       s2.getCell = jest.fn().mockReturnValue(mockCell);
 
       emitEvent(S2Event.DATA_CELL_CLICK, {

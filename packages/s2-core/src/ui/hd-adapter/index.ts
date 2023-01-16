@@ -4,7 +4,9 @@ import type { SpreadSheet } from '../../sheet-type';
 import { isMobile } from '../../utils/is-mobile';
 
 export class HdAdapter {
-  private viewport = window as typeof window & { visualViewport: Element };
+  private viewport = window as typeof window & {
+    visualViewport: VisualViewport;
+  };
 
   private devicePixelRatioMedia: MediaQueryList;
 
@@ -57,8 +59,11 @@ export class HdAdapter {
     if (isMobile()) {
       return;
     }
-    // VisualViewport support browser zoom & mac touch tablet
-    // @ts-ignore
+
+    /*
+     * VisualViewport support browser zoom & mac touch tablet
+     * @ts-ignore
+     */
     this.viewport?.visualViewport?.addEventListener(
       'resize',
       this.renderByZoomScale,
@@ -69,7 +74,7 @@ export class HdAdapter {
     if (isMobile()) {
       return;
     }
-    // @ts-ignore
+
     this.viewport?.visualViewport?.removeEventListener(
       'resize',
       this.renderByZoomScale,
@@ -92,8 +97,10 @@ export class HdAdapter {
       return;
     }
 
-    // 缩放时, 以向上取整后的缩放比为准
-    // 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
+    /*
+     * 缩放时, 以向上取整后的缩放比为准
+     * 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
+     */
     const pixelRatio = Math.max(
       ratio,
       devicePixelRatio!,
@@ -107,13 +114,11 @@ export class HdAdapter {
     this.spreadsheet.render(false);
   };
 
-  private renderByZoomScale = debounce(
-    (event: Event & { target: VisualViewport }) => {
-      const ratio = Math.ceil(event.target.scale);
-      if (ratio >= 1) {
-        this.renderByDevicePixelRatio(ratio);
-      }
-    },
-    350,
-  );
+  private renderByZoomScale = debounce((event: Event) => {
+    const ratio = Math.ceil((event.target as VisualViewport)?.scale);
+
+    if (ratio >= 1) {
+      this.renderByDevicePixelRatio(ratio);
+    }
+  }, 350);
 }

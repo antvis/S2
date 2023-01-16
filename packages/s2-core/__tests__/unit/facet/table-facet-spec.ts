@@ -79,8 +79,8 @@ jest.mock('@/data-set/table-data-set', () => {
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
         getDisplayDataSet: jest.fn(() => data),
-        getCellData: () => 1,
         getFieldFormatter: jest.fn(),
+        getCellData: () => 1,
       };
     }),
   };
@@ -110,6 +110,7 @@ const createMockTableFacet = (
   s2.dataSet = new MockTableDataSet(s2);
   s2.dataSet.fields = s2.dataCfg.fields;
   const facet = new TableFacet(s2);
+
   s2.facet = facet;
 
   return {
@@ -122,6 +123,7 @@ describe('Table Mode Facet Test', () => {
   test('should get correct row hierarchy', () => {
     const { facet } = createMockTableFacet();
     const { rowsHierarchy } = facet.layoutResult;
+
     expect(rowsHierarchy.height).toBe(0);
     expect(rowsHierarchy.width).toBe(0);
     expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
@@ -131,6 +133,7 @@ describe('Table Mode Facet Test', () => {
     const { facet } = createMockTableFacet({
       showSeriesNumber: true,
     });
+
     expect(facet.layoutResult.colLeafNodes[0].value).toEqual('序号');
   });
 
@@ -140,6 +143,7 @@ describe('Table Mode Facet Test', () => {
       showSeriesNumber: true,
       seriesNumberText,
     });
+
     expect(facet.layoutResult.colLeafNodes[0].value).toEqual(seriesNumberText);
   });
 });
@@ -178,6 +182,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const adaptiveWith = 103;
 
       const seriesNumberNode = colLeafNodes[0];
+
       expect(seriesNumberNode.y).toBe(0);
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
@@ -232,6 +237,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       const COMPACT_WIDTH = [53, 53, 65, 41, 73];
 
       let lastX = 0;
+
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
@@ -282,6 +288,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
       const COMPACT_WIDTH = [80, 53, 53, 65, 41, 73];
 
       let lastX = 0;
+
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
@@ -382,6 +389,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct viewCellHeights result', () => {
     const viewCellHeights = facet.getViewCellHeights();
+
     expect(viewCellHeights.getIndexRange(0, 715)).toStrictEqual({
       start: 0,
       end: 23,
@@ -403,6 +411,7 @@ describe('Table Mode Facet With Frozen Test', () => {
 
   test('should get correct indexes with row height gt canvas height', () => {
     const originHeight = facet.panelBBox.viewportHeight;
+
     facet.panelBBox.viewportHeight = 10;
     expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
       center: [2, 2, 2, 0],
@@ -432,6 +441,7 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
 
   test('should get correct rowOffsets when custom row height is set', () => {
     const rowOffsets = facet.rowOffsets;
+
     expect(rowOffsets).toMatchInlineSnapshot(`
       Array [
         0,
@@ -498,12 +508,14 @@ describe('Table Mode Facet Test With Zero Height', () => {
 
   test('should get correct panelBBox', () => {
     const panelBBox = facet.panelBBox;
+
     expect(panelBBox.width).toBe(0);
     expect(panelBBox.height).toBe(0);
   });
 
   test('should get correct initial scroll position', () => {
     const { scrollX, scrollY } = facet.getScrollOffset();
+
     expect(scrollX).toBe(0);
     expect(scrollY).toBe(0);
   });
@@ -563,6 +575,7 @@ describe('Custom Column Width Tests', () => {
 
   test('should get hidden columns info', () => {
     const s2 = new MockSpreadSheet();
+
     s2.dataSet = new MockTableDataSet(s2);
     const facet = new TableFacet(s2);
     const node = new Node({ id: '1', field: '1', value: '1' });
@@ -601,6 +614,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
 
   test('should get correct group', () => {
     const leafNodes = facet.layoutResult.colLeafNodes;
+
     expect(leafNodes[0].parent!.field).toEqual('area');
     expect(leafNodes[1].parent!.field).toEqual('area');
     expect(leafNodes[2].parent!.field).toEqual('all_type');
@@ -612,6 +626,7 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     expect(facet.layoutResult.colNodes).toHaveLength(7);
     expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
     const nodes = facet.layoutResult.colNodes;
+
     expect(nodes[0].y).toBe(0);
     expect(nodes[0].height).toEqual(colCell!.height);
     expect(nodes[1].y).toBe(colCell!.height);
@@ -710,6 +725,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
     const { trailingRowCount } = s2.options.frozen!;
     const { getCellMeta } = facet.layoutResult;
     const displayData = s2.dataSet.getDisplayDataSet();
+
     expect(
       displayData
         .slice(-trailingRowCount!)
@@ -720,6 +736,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct viewCellHeights result', () => {
     const viewCellHeights = facet.getViewCellHeights();
+
     expect(viewCellHeights.getIndexRange(0, 715)).toStrictEqual({
       start: 0,
       end: 23,
@@ -741,6 +758,7 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
 
   test('should get correct indexes with row height gt canvas height', () => {
     const originHeight = facet.panelBBox.viewportHeight;
+
     facet.panelBBox.viewportHeight = 10;
     expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
       center: [2, 2, 2, 0],

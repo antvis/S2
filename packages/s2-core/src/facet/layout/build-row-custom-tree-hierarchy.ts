@@ -28,6 +28,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const isHiddenNode = hiddenColumnsDetail.some(({ hideColumnNodes }) =>
       hideColumnNodes.find((hideNode) => hideNode.field === field),
     );
+
     if (isHiddenNode) {
       return;
     }
@@ -52,7 +53,8 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       value: title!,
       level,
       parent: parentNode,
-      isTotals: false, // 自定义行头不会存在总计概念
+      // 自定义行头不会存在总计概念
+      isTotals: false,
       isCollapsed: isCollapsedNode,
       hierarchy,
       query: valueQuery,

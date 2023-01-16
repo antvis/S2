@@ -49,6 +49,7 @@ export function DragCopyPoint() {
           const pointWidth =
             pointX - newScroll.scrollX - rect.width + (vWidth + hWidth) * 2;
           let overflow = true;
+
           if (
             frozenCol.width >= pointX - newScroll.scrollX - hWidth * 2 ||
             frozenRow.height >= pointY - newScroll.scrollY - vWidth * 2 ||
@@ -59,6 +60,7 @@ export function DragCopyPoint() {
           } else {
             overflow = false;
           }
+
           setScroll({
             ...newScroll,
             overflow,
@@ -76,6 +78,7 @@ export function DragCopyPoint() {
     const isEventCellSelected = spreadsheet.interaction.isSelectedCell(
       eventCell!,
     );
+
     // 如果点击单元格时，单元格取消选中，隐藏拖拽点
     if (isEventCellSelected) {
       setCell(eventCell!);
@@ -90,6 +93,7 @@ export function DragCopyPoint() {
       spreadsheet.off(S2Event.GLOBAL_SCROLL, handleScroll);
       spreadsheet.on(S2Event.GLOBAL_SCROLL, handleScroll);
     }
+
     return () => {
       spreadsheet?.off(S2Event.GLOBAL_SCROLL, handleScroll);
     };
@@ -115,6 +119,7 @@ export function DragCopyPoint() {
         'height',
         'fieldValue',
       ]);
+
       cellMeta.x -= scroll?.scrollX!;
       cellMeta.y -=
         scroll?.scrollY! -

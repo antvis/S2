@@ -11,23 +11,16 @@ export const TooltipInterpretation: React.FC<TooltipInterpretationOptions> = (
 ) => {
   const { name, icon, text, render } = props;
 
-  const renderName = () => {
-    return (
-      name && (
-        <span className={`${TOOLTIP_PREFIX_CLS}-interpretation-name`}>
-          {name}
-        </span>
-      )
+  const renderName = () =>
+    name && (
+      <span className={`${TOOLTIP_PREFIX_CLS}-interpretation-name`}>
+        {name}
+      </span>
     );
-  };
 
-  const renderText = () => {
-    return text && <div>{text}</div>;
-  };
+  const renderText = () => text && <div>{text}</div>;
 
-  const renderElement = () => {
-    return <ReactElement content={render} />;
-  };
+  const renderElement = () => <ReactElement content={render} />;
 
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-interpretation`}>

@@ -8,6 +8,7 @@ import { MobileSheetComponent } from '../../../../../src/components/sheets/mobil
 describe('MobileSheet Tests', () => {
   test('get mobile default option', () => {
     let s2: SpreadSheet;
+
     render(
       <MobileSheetComponent
         dataCfg={mockDataConfig}
@@ -23,6 +24,7 @@ describe('MobileSheet Tests', () => {
       Object.keys(DEFAULT_MOBILE_OPTIONS.interaction!),
     );
     const { height, device } = s2!.options;
+
     expect(interactionOptions).toEqual(DEFAULT_MOBILE_OPTIONS.interaction);
     expect(height).toEqual(300);
     expect(device).toEqual(DeviceType.MOBILE);
@@ -40,6 +42,7 @@ describe('MobileSheet Tests', () => {
         }}
       />,
     );
+
     expect(asFragment()).toMatchSnapshot();
   });
 });

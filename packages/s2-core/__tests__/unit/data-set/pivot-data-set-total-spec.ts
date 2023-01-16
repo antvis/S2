@@ -27,6 +27,7 @@ describe('Pivot Dataset Total Test', () => {
   beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
+
     mockSheet.store = new Store();
     dataSet = new PivotDataSet(mockSheet);
 
@@ -39,6 +40,7 @@ describe('Pivot Dataset Total Test', () => {
   describe('test base dataset structure', () => {
     test('should get correct row pivot meta', () => {
       const rowPivotMeta = dataSet.rowPivotMeta;
+
       expect([...rowPivotMeta.keys()]).toEqual([
         '浙江省',
         '四川省',
@@ -62,6 +64,7 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct col pivot meta', () => {
       const colPivotMeta = dataSet.colPivotMeta;
+
       expect([...colPivotMeta.keys()]).toEqual([
         '家具',
         '办公用品',
@@ -83,6 +86,7 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct indexesData', () => {
       const indexesData = dataSet.indexesData;
+
       expect(get(indexesData, '1.1.0.0')).toEqual({
         province: '浙江省',
         city: '杭州市',
@@ -107,6 +111,7 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct sorted dimension value', () => {
       const sortedDimensionValues = dataSet.sortedDimensionValues;
+
       expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
@@ -226,6 +231,7 @@ describe('Pivot Dataset Total Test', () => {
       beforeEach(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
+
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
         mockSheet.options = {
@@ -342,6 +348,7 @@ describe('Pivot Dataset Total Test', () => {
         beforeEach(() => {
           MockPivotSheet.mockClear();
           const mockSheet = new MockPivotSheet();
+
           mockSheet.store = new Store();
           mockSheet.isValueInCols = () => true;
           mockSheet.options = {
@@ -412,22 +419,28 @@ describe('Pivot Dataset Total Test', () => {
       beforeEach(() => {
         MockPivotSheet.mockClear();
         const mockSheet = new MockPivotSheet();
+
         mockSheet.store = new Store();
         mockSheet.isValueInCols = () => true;
 
         const calcFunc1: CalcTotals['calcFunc'] = (_, data) => {
-          const sum = data.reduce((pre, next) => {
-            return pre + (next[VALUE_FIELD] as number);
-          }, 0);
+          const sum = data.reduce(
+            (pre, next) => pre + (next[VALUE_FIELD] as number),
+            0,
+          );
+
           return sum * 2;
         };
 
         const calcFunc2: CalcTotals['calcFunc'] = (_, data) => {
-          const sum = data.reduce((pre, next) => {
-            return pre + (next[VALUE_FIELD] as number);
-          }, 0);
+          const sum = data.reduce(
+            (pre, next) => pre + (next[VALUE_FIELD] as number),
+            0,
+          );
+
           return sum;
         };
+
         mockSheet.options = {
           width: 800,
           height: 600,
@@ -547,6 +560,7 @@ describe('Pivot Dataset Total Test', () => {
         sub_type: '桌子',
         [EXTRA_FIELD]: 'number',
       };
+
       expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
       expect(
         dataSet.getMultiData(specialQuery)[0].getOrigin(),
@@ -625,6 +639,7 @@ describe('Pivot Dataset Total Test', () => {
     beforeEach(() => {
       MockPivotSheet.mockClear();
       const mockSheet = new MockPivotSheet();
+
       mockSheet.store = new Store();
       mockSheet.isValueInCols = () => true;
       dataSet = new PivotDataSet(mockSheet);
@@ -644,6 +659,7 @@ describe('Pivot Dataset Total Test', () => {
       } = dataSet.getTotalStatus({
         [EXTRA_FIELD]: 'number',
       });
+
       expect(isRowTotal1).toBeTrue();
       expect(isRowSubTotal1).toBeFalse();
       expect(isColTotal1).toBeTrue();
@@ -658,6 +674,7 @@ describe('Pivot Dataset Total Test', () => {
         type: '家具',
         [EXTRA_FIELD]: 'number',
       });
+
       expect(isRowTotal2).toBeTrue();
       expect(isRowSubTotal2).toBeFalse();
       expect(isColTotal2).toBeFalse();
@@ -672,6 +689,7 @@ describe('Pivot Dataset Total Test', () => {
         province: '浙江',
         [EXTRA_FIELD]: 'number',
       });
+
       expect(isRowTotal3).toBeFalse();
       expect(isRowSubTotal3).toBeTrue();
       expect(isColTotal3).toBeTrue();
@@ -687,6 +705,7 @@ describe('Pivot Dataset Total Test', () => {
         type: '家具',
         [EXTRA_FIELD]: 'number',
       });
+
       expect(isRowTotal4).toBeFalse();
       expect(isRowSubTotal4).toBeTrue();
       expect(isColTotal4).toBeFalse();

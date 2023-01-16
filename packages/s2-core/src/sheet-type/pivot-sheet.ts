@@ -48,6 +48,7 @@ export class PivotSheet extends SpreadSheet {
 
   public getDataSet(): BaseDataSet {
     const { dataSet } = this.options;
+
     if (dataSet) {
       return dataSet(this);
     }
@@ -113,6 +114,7 @@ export class PivotSheet extends SpreadSheet {
 
   protected buildFacet() {
     const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
+
     this.setOptions({
       dataCell: this.options.dataCell ?? defaultCell,
     });
@@ -159,6 +161,7 @@ export class PivotSheet extends SpreadSheet {
 
   protected handleRowCellToggleCollapseAll(isCollapsed: boolean) {
     const collapseAll = !isCollapsed;
+
     this.setOptions({
       style: {
         rowCell: {
@@ -180,6 +183,7 @@ export class PivotSheet extends SpreadSheet {
     const sortQuery = clone(query);
 
     let sortValue = value;
+
     // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
     if (hideValue && this.isValueInCols()) {
       sortValue = this.dataSet.fields.values![0];
@@ -200,6 +204,7 @@ export class PivotSheet extends SpreadSheet {
     this.updateSortMethodMap(meta.id, sortMethod, true);
 
     const sortParams: SortParam[] = [...prevSortParams, sortParam];
+
     // 触发排序事件
     this.emit(S2Event.RANGE_SORT, sortParams);
     this.setDataCfg({
@@ -218,6 +223,7 @@ export class PivotSheet extends SpreadSheet {
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
         const sortMethod = key as unknown as SortMethod;
+
         this.groupSortByMethod(sortMethod, meta);
         this.emit(S2Event.RANGE_SORTED, event);
       },

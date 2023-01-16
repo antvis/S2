@@ -37,6 +37,7 @@ export class TableDataCell extends DataCell {
     if (!this.meta.isFrozenCorner) {
       return;
     }
+
     BaseCell.prototype.drawBorders.call(this);
   }
 
@@ -62,6 +63,7 @@ export class TableDataCell extends DataCell {
     if (!this.shouldDrawResizeArea()) {
       return;
     }
+
     const { y, height } = this.getBBoxByType();
     const rowIndex = this.meta.rowIndex;
     const resizeStyle = this.getResizeAreaStyle();
@@ -94,6 +96,7 @@ export class TableDataCell extends DataCell {
     if (!resizeArea) {
       return;
     }
+
     const { height: headerHeight, viewportWidth: headerWidth } =
       this.spreadsheet.facet.columnHeader.getHeaderConfig();
 

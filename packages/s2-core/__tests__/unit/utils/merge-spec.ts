@@ -73,6 +73,7 @@ describe('merge test', () => {
       values: ['1'],
       valueInCols: true,
     };
+
     expect(
       getSafetyDataConfig({
         fields,
@@ -97,6 +98,7 @@ describe('merge test', () => {
       values: [],
       valueInCols: true,
     };
+
     expect(
       getSafetyDataConfig({
         fields,
@@ -123,6 +125,7 @@ describe('merge test', () => {
       values: [],
       valueInCols: true,
     };
+
     expect(
       getSafetyDataConfig(oldDataCfg, {
         fields,
@@ -227,6 +230,7 @@ describe('merge test', () => {
         },
       },
     });
+
     expect(options.tooltip).toStrictEqual({
       autoAdjustBoundary: 'body',
       operation: {
@@ -250,6 +254,7 @@ describe('merge test', () => {
         values: ['value'],
       },
     });
+
     expect(dataConfig.fields).toStrictEqual({
       rows: ['test'],
       columns: [],

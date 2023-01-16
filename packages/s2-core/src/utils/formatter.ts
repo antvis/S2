@@ -27,6 +27,7 @@ export const auto = (
   if (typeof v !== 'number' || isNaN(v)) {
     return '';
   }
+
   // let n = Math.abs(v); // abs什么鬼。
   let n = v;
   // 语义化
@@ -44,11 +45,14 @@ export const auto = (
     } else {
       running = false;
     }
+
     loop += 1;
   }
 
-  // parseFloat 解决 toFixed 出现很多 0 结尾。
-  // 举例：123.toFixed(2) = '123.00'，需要返回 '123'
+  /*
+   * parseFloat 解决 toFixed 出现很多 0 结尾。
+   * 举例：123.toFixed(2) = '123.00'，需要返回 '123'
+   */
   n = parseFloat(n.toFixed(fixed));
 
   // 千分位
@@ -58,8 +62,9 @@ export const auto = (
   return loop === 0 ? output : `${output} ${texts[loop - 1]}`;
 };
 
-// 简单处理小数精度误差，保持和Spreadsheet统一逻辑
-// 技术细节：https://juejin.im/post/5ce373d651882532e409ea96
-export const parseNumberWithPrecision = (value: number | string) => {
-  return Number.parseFloat((toNumber(value) || 0).toPrecision(PRECISION));
-};
+/*
+ * 简单处理小数精度误差，保持和Spreadsheet统一逻辑
+ * 技术细节：https://juejin.im/post/5ce373d651882532e409ea96
+ */
+export const parseNumberWithPrecision = (value: number | string) =>
+  Number.parseFloat((toNumber(value) || 0).toPrecision(PRECISION));

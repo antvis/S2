@@ -10,6 +10,7 @@ const s2Options: S2Options = {
 
 describe('SpreadSheet Tree Mode Tests', () => {
   let container: HTMLElement;
+
   beforeAll(() => {
     container = getContainer();
   });
@@ -21,9 +22,11 @@ describe('SpreadSheet Tree Mode Tests', () => {
   describe('Facet Tests', () => {
     test('should re-calc row header width', () => {
       const s2 = createPivotSheet(s2Options);
+
       s2.render();
 
       const rowsHierarchyWidth = s2.facet.layoutResult.rowsHierarchy.width;
+
       expect(Math.round(rowsHierarchyWidth)).toEqual(120);
 
       // 行头维度均更改为较长的 name
@@ -40,6 +43,7 @@ describe('SpreadSheet Tree Mode Tests', () => {
           },
         ],
       };
+
       s2.setDataCfg(newDataCfg);
       s2.render();
 

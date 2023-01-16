@@ -25,12 +25,14 @@ describe('TableSheet Export Test', () => {
         showSeriesNumber: true,
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t', {
       isFormatHeader: true,
     });
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
+
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 6列数据 包括序列号
@@ -60,10 +62,12 @@ describe('TableSheet Export Test', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
+
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 5列数据 包括序列号
@@ -93,9 +97,11 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({ hierarchyType: 'grid' }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(14);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[1].split('\t')[1]).toEqual('"city"');
@@ -118,9 +124,11 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'tree',
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(16);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[1].split('\t')[1]).toEqual('"city"');
@@ -129,8 +137,10 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  // 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
-  // https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
+  /*
+   * 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
+   * https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
+   */
   it('should export correct data in tree mode and collapseAll is true', () => {
     const s2 = new PivotSheet(
       getContainer(),
@@ -144,9 +154,11 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(5);
     expect(rows[0].split('\t').length).toEqual(5);
     expect(rows[0].split('\t')[0]).toEqual('"类别"');
@@ -171,6 +183,7 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
@@ -200,9 +213,11 @@ describe('PivotSheet Export Test', () => {
         hierarchyType: 'grid',
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(13);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(35);
@@ -234,9 +249,11 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(17);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(53);
@@ -268,9 +285,11 @@ describe('PivotSheet Export Test', () => {
         },
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(54);
@@ -284,15 +303,11 @@ describe('PivotSheet Export Test', () => {
         meta: [
           {
             field: 'province',
-            formatter: (value) => {
-              return `${value}-province`;
-            },
+            formatter: (value) => `${value}-province`,
           },
           {
             field: 'type',
-            formatter: (value) => {
-              return `${value}-type`;
-            },
+            formatter: (value) => `${value}-type`,
           },
         ],
         fields: {
@@ -304,9 +319,11 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({}),
     );
+
     s2.render();
     const data = copyData(s2, '\t', { isFormatHeader: true });
     const rows = data.split('\n');
+
     expect(rows).toHaveLength(7);
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');

@@ -96,6 +96,7 @@ export class ScrollBar extends Group {
   private getCoordinatesName = () => {
     const from = this.isHorizontal ? 'x1' : 'y1';
     const to = this.isHorizontal ? 'x2' : 'y2';
+
     return { from, to };
   };
 
@@ -107,6 +108,7 @@ export class ScrollBar extends Group {
    */
   private getCoordinatesWithBBoxExtraPadding = () => {
     const { lineCap = 'butt', size = 0 } = this.theme;
+
     if (lineCap === 'butt') {
       return {
         start: this.thumbOffset,
@@ -142,8 +144,10 @@ export class ScrollBar extends Group {
     if (this.thumbLen === newThumbLen) {
       return;
     }
+
     this.thumbLen = newThumbLen;
     const coordinate = this.getCoordinatesName();
+
     this.thumbShape.attr(coordinate.to, this.thumbOffset + newThumbLen);
     this.emitScrollChange(
       (this.thumbOffset / (this.trackLen - this.thumbLen)) *
@@ -212,6 +216,7 @@ export class ScrollBar extends Group {
     callback: EventListenerOrEventListenerObject,
   ): EventListenerReturn => {
     target?.addEventListener(eventType, callback, false);
+
     return {
       remove: () => {
         target?.removeEventListener(eventType, callback, false);
@@ -272,6 +277,7 @@ export class ScrollBar extends Group {
         }),
       );
     }
+
     return group.appendChild(
       new Line({
         style: {
@@ -310,6 +316,7 @@ export class ScrollBar extends Group {
         }),
       );
     }
+
     return group.appendChild(
       new Line({
         style: {
@@ -325,8 +332,11 @@ export class ScrollBar extends Group {
 
   private bindEvents = () => {
     this.addEventListener('mousedown', this.onStartEvent(false));
-    // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
-    // 整个拖拽过程没有 cancel 掉。
+
+    /*
+     * 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
+     * 整个拖拽过程没有 cancel 掉。
+     */
     this.addEventListener(OriginEventType.POINTER_UP, this.onMouseUp);
     this.addEventListener('touchstart', this.onStartEvent(true));
     this.addEventListener('touchend', this.onMouseUp);
@@ -341,8 +351,10 @@ export class ScrollBar extends Group {
 
     this.isMobile = isMobile;
 
-    // TODO: 可以统一PC、移动，都用 pointerdown
-    // const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    /*
+     * TODO: 可以统一PC、移动，都用 pointerdown
+     * const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+     */
     const { clientX, clientY } = e;
 
     // 将开始的点记录下来
@@ -356,6 +368,7 @@ export class ScrollBar extends Group {
     const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
+
     if (this.isMobile) {
       events = [
         this.bindEventListener(containerDOM, 'touchmove', this.onMouseMove),
@@ -396,16 +409,21 @@ export class ScrollBar extends Group {
       : event.y - this.position.y - this.thumbLen / 2;
 
     const newOffset = this.validateRange(offset);
+
     this.updateThumbOffset(newOffset);
   };
 
-  // 拖拽滑块的事件回调
-  // 这里是 dom 原生事件，绑定在 dom 元素上的
+  /*
+   * 拖拽滑块的事件回调
+   * 这里是 dom 原生事件，绑定在 dom 元素上的
+   */
   private onMouseMove = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // TODO: 可以统一PC、移动，都用 pointerdown
-    // const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    /*
+     * TODO: 可以统一PC、移动，都用 pointerdown
+     * const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+     */
 
     const clientX = (e as FederatedPointerEvent).clientX;
     const clientY = (e as FederatedPointerEvent).clientY;
@@ -414,6 +432,7 @@ export class ScrollBar extends Group {
     const endPos = this.isHorizontal ? clientX : clientY;
     // 滑块需要移动的距离, 由于这里是对滑块监听，所以移动的距离就是 diffDis, 如果监听对象是 container dom，则需要算比例
     const diff = endPos - this.startPos;
+
     // 更新 startPos
     this.startPos = endPos;
     this.updateThumbOffset(this.thumbOffset + diff);
@@ -427,12 +446,14 @@ export class ScrollBar extends Group {
 
   private onTrackMouseOver = () => {
     const { thumbHoverColor, hoverSize } = this.theme;
+
     this.thumbShape.attr('stroke', thumbHoverColor);
     this.thumbShape.attr('lineWidth', hoverSize);
   };
 
   private onTrackMouseOut = () => {
     const { thumbColor, size } = this.theme;
+
     this.thumbShape.attr('stroke', thumbColor);
     this.thumbShape.attr('lineWidth', size);
   };
@@ -440,11 +461,13 @@ export class ScrollBar extends Group {
   // 判断滑块位置是否超出滑道区域
   private validateRange = (offset: number): number => {
     let newOffset = offset;
+
     if (offset + this.thumbLen > this.trackLen) {
       newOffset = this.trackLen - this.thumbLen;
     } else if (offset + this.thumbLen < this.thumbLen) {
       newOffset = 0;
     }
+
     return newOffset;
   };
 }

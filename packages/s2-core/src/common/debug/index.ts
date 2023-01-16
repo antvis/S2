@@ -13,6 +13,7 @@ export class DebuggerUtil {
     if (!DebuggerUtil.instance) {
       DebuggerUtil.instance = new DebuggerUtil();
     }
+
     return DebuggerUtil.instance;
   }
 
@@ -23,8 +24,10 @@ export class DebuggerUtil {
   public debugCallback = (info: string, callback: () => void) => {
     if (this.debug) {
       const start = performance.now();
+
       callback();
       const end = performance.now();
+
       console.log(info, `${end - start} ms`);
     } else {
       callback();

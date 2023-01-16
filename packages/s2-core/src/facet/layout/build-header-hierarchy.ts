@@ -60,6 +60,7 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
   let addTotalMeasureInTotal: boolean;
   // add measure info in total query
   let addMeasureInTotalQuery: boolean;
+
   if (isRowHeader) {
     addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
     addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
@@ -105,6 +106,7 @@ const handleTreeRowHierarchy = (params: HeaderParams) => {
 const handleRowHeaderHierarchy = (params: HeaderParams) => {
   // 只有透视表有行头
   const { spreadsheet } = params;
+
   if (spreadsheet.isHierarchyTreeType()) {
     handleTreeRowHierarchy(params);
   } else {
@@ -114,6 +116,7 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
 
 const handleColHeaderHierarchy = (params: HeaderParams) => {
   const { isPivotMode, hierarchy, rootNode, spreadsheet } = params;
+
   if (isPivotMode) {
     handleGridRowColHierarchy(params);
   } else {
@@ -179,6 +182,7 @@ export const buildHeaderHierarchy = (
     if (!isRowHeader) {
       return hierarchy.getLeaves();
     }
+
     return spreadsheet.isHierarchyTreeType()
       ? hierarchy.getNodes()
       : hierarchy.getLeaves();

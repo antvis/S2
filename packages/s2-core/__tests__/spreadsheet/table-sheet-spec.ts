@@ -55,7 +55,9 @@ const dataCfg: S2DataConfig = {
     columns,
   },
   meta,
-  data: data.map((e) => ({ ...e, express_type: newLineText })),
+  data: data.map((e) => {
+    return { ...e, express_type: newLineText };
+  }),
   sortParams: [
     {
       sortFieldId: 'count',
@@ -107,9 +109,11 @@ const options: S2Options = {
 describe('TableSheet normal spec', () => {
   test('scrollWithAnimation with duration and callback', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     const onScrollFinish = jest.fn();
+
     s2.facet.scrollWithAnimation(
       {
         offsetX: {
@@ -138,9 +142,11 @@ describe('TableSheet normal spec', () => {
 
   test('should be able to resize frozen col when there is a vertical scroll width', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     const onScrollFinish = jest.fn();
+
     s2.facet.scrollWithAnimation(
       {
         offsetX: {
@@ -185,6 +191,7 @@ describe('TableSheet normal spec', () => {
 
   test('should be able to resize last column', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
 
     const getLastColCell = () =>
@@ -227,6 +234,7 @@ describe('TableSheet normal spec', () => {
     await sleep(300);
 
     const currentColWidth = getLastColCell().getMeta().width;
+
     expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
   });
 
@@ -238,6 +246,7 @@ describe('TableSheet normal spec', () => {
       frozenTrailingColCount: 0,
       frozenTrailingRowCount: 0,
     } as S2Options);
+
     s2.render();
 
     const orderIdDataCell = (

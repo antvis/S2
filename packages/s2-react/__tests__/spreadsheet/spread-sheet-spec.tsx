@@ -14,6 +14,7 @@ const s2Options: SheetComponentsProps['options'] = {
 describe('Spread Sheet Tests', () => {
   const hasScrollBar = (container: HTMLElement) => {
     const s2Container = container.querySelector('.antv-s2-container')!;
+
     return (
       (s2Container.scrollWidth > s2Container.clientWidth ||
         document.body.scrollWidth > window.innerWidth) &&
@@ -23,6 +24,7 @@ describe('Spread Sheet Tests', () => {
 
   describe('Mount Sheet tests', () => {
     let container: HTMLDivElement;
+
     beforeEach(() => {
       container = getContainer();
     });

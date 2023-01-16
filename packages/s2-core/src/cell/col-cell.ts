@@ -68,6 +68,7 @@ export class ColCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
     return width - this.getActionIconsWidth();
   }
 
@@ -100,6 +101,7 @@ export class ColCell extends HeaderCell {
         y,
       };
     }
+
     if (textStyle.textAlign === 'right') {
       /**
        *         textX  x
@@ -132,9 +134,11 @@ export class ColCell extends HeaderCell {
   protected isBolderText() {
     // 非叶子节点、小计总计，均为粗体
     const { isLeaf, isTotals } = this.meta;
+
     if (isTotals || !isLeaf) {
       return true;
     }
+
     return false;
   }
 
@@ -149,13 +153,13 @@ export class ColCell extends HeaderCell {
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
-      return getTextAndFollowingIconPosition(
-        contentBox,
+      return getTextAndFollowingIconPosition({
+        bbox: contentBox,
         textStyle,
-        this.actualTextWidth,
+        textWidth: this.actualTextWidth,
         iconStyle,
-        this.getActionIconsCount(),
-      ).text;
+        iconCount: this.getActionIconsCount(),
+      }).text;
     }
 
     /**
@@ -189,14 +193,17 @@ export class ColCell extends HeaderCell {
     const actionIconSpace = this.getActionIconsWidth();
     const textAndIconSpace = this.actualTextWidth + actionIconSpace;
 
+    // icon position 默认为 right
     const textAreaRange = getTextAreaRange(
       adjustedViewport,
       { start: contentBox.x, width: contentBox.width },
-      textAndIconSpace, // icon position 默认为 right
+      textAndIconSpace,
     );
 
-    // textAreaRange.start 是 text&icon 整个区域的 center
-    // 此处按实际样式(left or right)调整计算出的文字绘制点
+    /*
+     * textAreaRange.start 是 text&icon 整个区域的 center
+     * 此处按实际样式(left or right)调整计算出的文字绘制点
+     */
     const textX = adjustColHeaderScrollingTextPosition(
       textAreaRange,
       this.actualTextWidth,
@@ -206,12 +213,14 @@ export class ColCell extends HeaderCell {
     const textY = contentBox.y + contentBox.height / 2;
 
     this.textPosition = { x: textX, y: textY };
+
     return this.textPosition;
   }
 
   protected getActionIconsWidth() {
     const { size, margin } = this.getStyle()!.icon!;
     const iconCount = this.getActionIconsCount();
+
     return (
       (size! + margin!.left!) * iconCount + (iconCount > 0 ? margin!.right! : 0)
     );
@@ -239,6 +248,7 @@ export class ColCell extends HeaderCell {
   protected isCrossColumnLeafNode() {
     const { colsHierarchy } = this.spreadsheet.facet.layoutResult;
     const { level, isLeaf } = this.meta;
+
     return colsHierarchy?.sampleNodeForLastLevel?.level !== level && isLeaf;
   }
 
@@ -303,6 +313,7 @@ export class ColCell extends HeaderCell {
 
   private getResizeAreaWidth() {
     const { cornerWidth = 0, viewportWidth: headerWidth } = this.headerConfig;
+
     return (
       Frame.getVerticalBorderWidth(this.spreadsheet) + cornerWidth + headerWidth
     );
@@ -345,6 +356,7 @@ export class ColCell extends HeaderCell {
   protected getVerticalResizeAreaOffset() {
     const { x, y } = this.meta;
     const { scrollX = 0, position } = this.headerConfig;
+
     return {
       x: position.x + x - scrollX,
       y: position.y + y,
@@ -369,8 +381,10 @@ export class ColCell extends HeaderCell {
 
     const { x: offsetX, y: offsetY } = this.getVerticalResizeAreaOffset();
 
-    // 列宽调整热区
-    // 基准线是根据 container 坐标来的，因此把热区画在 container
+    /*
+     * 列宽调整热区
+     * 基准线是根据 container 坐标来的，因此把热区画在 container
+     */
     const attrs = getResizeAreaAttrs({
       theme: resizeStyle,
       type: ResizeDirectionType.Horizontal,
@@ -418,6 +432,7 @@ export class ColCell extends HeaderCell {
     ) {
       return false;
     }
+
     return !!hiddenColumnsDetail.find((column) =>
       isEqualDisplaySiblingNodeId(column?.displaySiblingNode, this.meta.id),
     );
@@ -425,6 +440,7 @@ export class ColCell extends HeaderCell {
 
   protected getExpandIconTheme(): IconTheme {
     const themeCfg = this.getStyle() as DefaultCellTheme;
+
     return themeCfg.icon!;
   }
 
@@ -454,6 +470,7 @@ export class ColCell extends HeaderCell {
     if (!this.hasHiddenColumnCell()) {
       return;
     }
+
     this.addExpandColumnSplitLine();
     this.addExpandColumnIcon();
   }
@@ -465,6 +482,7 @@ export class ColCell extends HeaderCell {
       name: 'ExpandColIcon',
       cursor: 'pointer',
     });
+
     icon.addEventListener('click', () => {
       this.spreadsheet.emit(S2Event.COL_CELL_EXPANDED, this.meta);
     });

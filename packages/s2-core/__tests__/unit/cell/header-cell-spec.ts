@@ -28,6 +28,7 @@ describe('header cell formatter test', () => {
   });
 
   let s2: SpreadSheet;
+
   describe('pivot header cell formatter test', () => {
     beforeEach(() => {
       const container = document.createElement('div');
@@ -37,9 +38,8 @@ describe('header cell formatter test', () => {
     });
 
     test('pivot col cell and row cell formatter', () => {
-      const formatter: Formatter = (value) => {
-        return `${value}1`;
-      };
+      const formatter: Formatter = (value) => `${value}1`;
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       const rowCell = new RowCell(rowNode, s2);
@@ -50,9 +50,8 @@ describe('header cell formatter test', () => {
     });
 
     test('pivot corner cell not formatter', () => {
-      const formatter: Formatter = (value) => {
-        return `${value}1`;
-      };
+      const formatter: Formatter = (value) => `${value}1`;
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
       const cornerOption = {
         spreadsheet: {
@@ -65,6 +64,7 @@ describe('header cell formatter test', () => {
       };
 
       const cornerCell = new CornerCell(rowNode, s2, cornerOption);
+
       expect(cornerCell.getFieldValue()).toBe('杭州');
     });
   });
@@ -83,9 +83,8 @@ describe('header cell formatter test', () => {
     });
 
     test('table col cell not formatter', () => {
-      const formatter: Formatter = (value) => {
-        return `${value}1`;
-      };
+      const formatter: Formatter = (value) => `${value}1`;
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       const colCell = new TableColCell(colNode, s2);

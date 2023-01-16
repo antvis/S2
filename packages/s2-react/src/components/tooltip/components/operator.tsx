@@ -23,19 +23,17 @@ export const TooltipOperator: React.FC<TooltipOperatorProps> = React.memo(
       defaultSelectedKeys,
     } = props;
 
-    const renderTitle = (menu: TooltipOperatorMenu) => {
-      return (
-        <span onClick={() => menu.onClick?.(cell)}>
-          <TooltipIcon
-            icon={menu.icon!}
-            className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
-          />
-          <span className={`${TOOLTIP_PREFIX_CLS}-operator-text`}>
-            {menu.text}
-          </span>
+    const renderTitle = (menu: TooltipOperatorMenu) => (
+      <span onClick={() => menu.onClick?.(cell)}>
+        <TooltipIcon
+          icon={menu.icon!}
+          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
+        />
+        <span className={`${TOOLTIP_PREFIX_CLS}-operator-text`}>
+          {menu.text}
         </span>
-      );
-    };
+      </span>
+    );
 
     const renderMenu = (menu: TooltipOperatorMenu) => {
       const { key, text, children, onClick } = menu;

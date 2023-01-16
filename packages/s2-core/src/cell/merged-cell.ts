@@ -46,12 +46,16 @@ export class MergedCell extends DataCell {
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
     const cellTheme = this.theme.dataCell!.cell;
+
     this.backgroundShape = renderPolygon(this, {
       points: allPoints,
       stroke: cellTheme!.horizontalBorderColor,
       fill: cellTheme!.backgroundColor,
-      // TODO: 这个应该不需要吧，g5.0 没有lineHeight
-      // lineHeight: cellTheme.horizontalBorderWidth,
+
+      /*
+       * TODO: 这个应该不需要吧，g5.0 没有lineHeight
+       * lineHeight: cellTheme.horizontalBorderWidth,
+       */
     });
   }
 
@@ -62,6 +66,7 @@ export class MergedCell extends DataCell {
     if (isEmpty(this.meta)) {
       return;
     }
+
     if (isObject(this.meta.fieldValue)) {
       drawObjectText(this);
     } else {

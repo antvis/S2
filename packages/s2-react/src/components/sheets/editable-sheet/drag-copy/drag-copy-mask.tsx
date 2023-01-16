@@ -55,8 +55,10 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     const { frozenRow } = (spreadsheet.facet as any).frozenGroupInfo;
     const viewMinX = rect.x;
     const viewMaxX = rect.x + rect.width;
-    const viewMinY = rect.y + frozenRow.height; // 减去列头高度
+    // 减去列头高度
+    const viewMinY = rect.y + frozenRow.height;
     const viewMaxY = rect.y + rect.height;
+
     return (
       point.x <= viewMaxX &&
       point.x >= viewMinX &&
@@ -85,6 +87,7 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
     return allCells.filter((item) => {
       const itemMeta = item.getMeta();
+
       return (
         itemMeta.rowIndex <= maxY &&
         itemMeta.rowIndex >= minY &&
@@ -133,21 +136,25 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
     if (!startCell) {
       return;
     }
+
     if (!targetCell) {
       targetCell = getCurrentHoverCell(lastHoverPoint as MouseEvent);
     }
+
     const source = spreadsheet.dataSet.originData;
 
     const selectedRange = getSelectedCellRange(startCell, targetCell!);
     const { fieldValue } = startCell.getMeta();
     const changedCells = selectedRange.map((item) => {
       const { rowIndex, valueField } = item.getMeta();
+
       if (
         source[rowIndex] &&
         typeof source[rowIndex][valueField] !== undefined
       ) {
         source[rowIndex][valueField] = fieldValue;
       }
+
       return item;
     });
 
@@ -179,19 +186,22 @@ export function DragCopyMask({ onCopyFinished }: DragCopyProps) {
 
     const rect = (event.target as HTMLElement).getBoundingClientRect();
     const { top, left } = get(event, 'target.style', {});
-    const allCelles = spreadsheet.interaction.getPanelGroupAllDataCells();
-    const targetCell = allCelles.find((v) =>
+    const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+    const targetCell = allCells.find((v) =>
       isInCell({ y: parseFloat(top), x: parseFloat(left) }, v),
     );
+
     setDragPoint({ x: rect.x, y: rect.y });
     setStartCell(targetCell as DataCell);
   };
 
   useEffect(() => {
     const pointElement = document.getElementById('spreadsheet-drag-copy-point');
+
     if (pointElement && spreadsheet) {
       pointElement.addEventListener('mousedown', dragMouseDown);
     }
+
     return () => {
       pointElement?.removeEventListener('mousedown', dragMouseDown);
     };

@@ -1,24 +1,23 @@
+import {
+  Node,
+  PivotSheet,
+  SpreadSheet,
+  type S2DataConfig,
+  type S2MountContainer,
+  type S2Options,
+} from '@antv/s2';
 import { Radio, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { cloneDeep, merge } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  type S2DataConfig,
-  SpreadSheet,
-  PivotSheet,
-  Node,
-  type S2MountContainer,
-  DeviceType,
-  type S2Options,
-} from '@antv/s2';
+import { getContainer } from '../util/helpers';
 import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
-import { getContainer } from '../util/helpers';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
 
 let sheet: SpreadSheet;
@@ -29,6 +28,7 @@ const onMounted = (
 ) => {
   sheet = new PivotSheet(dom, dataCfg, options as S2Options);
   (window as any).sheet = sheet;
+
   return sheet;
 };
 
@@ -142,7 +142,6 @@ const getOptions = (): SheetComponentsProps['options'] => {
         height: 32,
       },
     },
-    device: DeviceType.PC,
   };
 };
 
@@ -178,6 +177,7 @@ function MainLayout(props: SheetComponentsProps) {
   const onArrangementChange = (value: string) => {
     setArrangement(value);
     const newData = cloneDeep(dataCfg);
+
     switch (value) {
       case 'normal':
         newData.data = multipleDataWithNormal;
@@ -241,6 +241,7 @@ describe('spreadsheet multiple values cell spec', () => {
 
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions!;
+
     expect(icon).toHaveLength(1);
     expect(text).toHaveLength(0);
 

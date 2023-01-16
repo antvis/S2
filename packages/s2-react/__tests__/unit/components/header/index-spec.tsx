@@ -7,6 +7,7 @@ describe('Header Component Tests', () => {
   test('should render basic header without extra', () => {
     const sheet = getMockSheetInstance();
     const title = 'this is title';
+
     render(<Header sheet={sheet} title={title} />);
     expect(screen.getByText(title)).toBeDefined();
   });
@@ -14,6 +15,7 @@ describe('Header Component Tests', () => {
   test('should render header with extra', () => {
     const sheet = getMockSheetInstance();
     const extra = 'this is extra';
+
     render(<Header sheet={sheet} extra={extra} />);
     expect(screen.getByText(extra)).toBeDefined();
   });

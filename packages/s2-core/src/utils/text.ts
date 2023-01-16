@@ -49,7 +49,8 @@ export const getEllipsisTextInner = (
   maxWidth: number,
   font: TextTheme,
 ) => {
-  const STEP = 16; // 每次 16，调参工程师
+  // 每次 16，调参工程师
+  const STEP = 16;
   const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
 
   let leftText;
@@ -62,7 +63,8 @@ export const getEllipsisTextInner = (
 
   let leftWidth = maxWidth;
 
-  const r = []; // 最终的分段字符串
+  // 最终的分段字符串
+  const r = [];
   let currentText;
   let currentWidth;
 
@@ -71,6 +73,7 @@ export const getEllipsisTextInner = (
   }
 
   let runningStep1 = true;
+
   // 首先通过 step 计算，找出最大的未超出长度的
   while (runningStep1) {
     // 更新字符串
@@ -100,6 +103,7 @@ export const getEllipsisTextInner = (
   }
 
   let runningStep2 = true;
+
   // 最下的最后一个 STEP，使用 1 递增（用二分效果更高）
   while (runningStep2) {
     // 更新字符串
@@ -155,30 +159,36 @@ export const getEllipsisText = ({
   // [null, undefined, ''] will return empty
   const finalText = isNil(text) || text === '' ? empty : `${text}`;
   let priority = priorityParam;
+
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
     font = fontParam || ({} as TextTheme);
   }
+
   if (!priority || !priority.length) {
     return getEllipsisTextInner(measureTextWidth, finalText, maxWidth, font);
   }
 
   const leftSubTexts: string[] = [];
   let subTexts = [finalText];
+
   priority.forEach((priorityItem) => {
     subTexts.forEach((tempSubText, index) => {
       // 处理 leftText
       let startIdx = -1;
       const matched = tempSubText.match(new RegExp(priorityItem));
+
       if (matched?.index) {
         const matchedText = matched[0];
+
         startIdx = matched.index;
         leftSubTexts.push(matchedText);
         const endIdx = startIdx + matchedText.length;
         const left = tempSubText.slice(0, startIdx);
         const right = tempSubText.slice(endIdx);
         const tmp = [left, right].filter((v) => !!v);
+
         subTexts.splice(index, 1, ...tmp);
       }
     });
@@ -190,12 +200,15 @@ export const getEllipsisText = ({
   let result = finalText;
   const DOT_WIDTH = measureTextWidth(ELLIPSIS_SYMBOL, font);
   let remainWidth = maxWidth;
+
   subTexts.forEach((subText) => {
     if (remainWidth <= 0) {
       const originIdx = result.indexOf(subText);
       const prev = result.slice(originIdx - 3, originIdx);
+
       if (prev && prev !== ELLIPSIS_SYMBOL) {
         const subWidth = measureTextWidth(subText, font);
+
         // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
         result = result.replace(
           subText,
@@ -204,9 +217,11 @@ export const getEllipsisText = ({
       } else {
         result = result.replace(subText, '');
       }
+
       remainWidth -= DOT_WIDTH;
     } else {
       const subWidth = measureTextWidth(subText, font);
+
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
         const ellipsis = getEllipsisTextInner(
@@ -215,6 +230,7 @@ export const getEllipsisText = ({
           remainWidth,
           font,
         );
+
         result = result.replace(subText, ellipsis);
         remainWidth = 0;
       } else {
@@ -235,6 +251,7 @@ export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
+
   return !!value && !trim(value).startsWith('-');
 };
 
@@ -253,9 +270,11 @@ const calX = (
 ) => {
   const { right = 0, left = 0 } = padding;
   const extra = extraWidth || 0;
+
   if (textAlign === 'left') {
     return x + right / 2 + extra;
   }
+
   if (textAlign === 'right') {
     return x - right / 2 - extra;
   }
@@ -276,6 +295,7 @@ const getDrawStyle = (cell: S2CellType) => {
   );
 
   let textStyle: TextTheme | undefined;
+
   if (isMeasureField) {
     textStyle = cellStyle?.measureText;
   } else if (isTotals) {
@@ -309,6 +329,7 @@ const getCurrentTextStyle = ({
   textCondition?: Condition;
 }) => {
   let fill = textStyle?.fill;
+
   if (textCondition?.mapping) {
     fill = textCondition?.mapping(data, {
       rowIndex,
@@ -316,6 +337,7 @@ const getCurrentTextStyle = ({
       meta,
     })?.fill;
   }
+
   return { ...textStyle, fill };
 };
 
@@ -325,9 +347,7 @@ const getCurrentTextStyle = ({
 export const getEmptyPlaceholder = (
   meta: Record<string, any>,
   placeHolder: S2Options['placeholder'],
-) => {
-  return isFunction(placeHolder) ? placeHolder(meta) : placeHolder;
-};
+) => (isFunction(placeHolder) ? placeHolder(meta) : placeHolder);
 
 /**
  * @desc 获取多指标情况下每一个指标的内容包围盒
@@ -358,12 +378,14 @@ export const getContentAreaForMultiData = (
   for (let i = 0; i < size(textValues); i++) {
     curY = y + avgHeight * i;
     const rows: SimpleBBox[] = [];
+
     curX = x;
     totalWidth = 0;
     for (let j = 0; j < size(textValues[i]); j++) {
+      // 指标个数相同，任取其一即可
       avgWidth = !isEmpty(percents)
         ? width * percents[j]
-        : width / size(textValues[0]); // 指标个数相同，任取其一即可
+        : width / size(textValues[0]);
 
       curX = calX(x, { left: 0, right: 0 }, totalWidth, 'left');
       totalWidth += avgWidth;
@@ -376,6 +398,7 @@ export const getContentAreaForMultiData = (
     }
     boxes.push(rows);
   }
+
   return boxes;
 };
 
@@ -385,6 +408,7 @@ export const getContentAreaForMultiData = (
  * @multiData 自定义文本内容
  * @useCondition 是否使用条件格式
  */
+// eslint-disable-next-line max-lines-per-function
 export const drawObjectText = (
   cell: S2CellType,
   multiData?: MultiData,
@@ -406,33 +430,36 @@ export const drawObjectText = (
 
   if (!isArray(textValues)) {
     renderMiniChart(cell, textValues);
+
     return;
   }
 
   const widthPercent = options.style?.dataCell?.valuesCfg?.widthPercent;
 
   let labelHeight = 0;
+
   // 绘制单元格主标题
   if (text?.label) {
     const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
     const labelStyle = dataCellStyle!.bolderText!;
-    // TODO 把padding计算在内
-    // const { padding } = dataCellStyle.cell;
+
+    /*
+     * TODO 把padding计算在内
+     * const { padding } = dataCellStyle.cell;
+     */
     labelHeight = totalTextHeight / (textValues.length + 1);
 
-    const textShape = renderText(
-      cell,
-      [],
+    const textShape = renderText(cell, [], {
       x,
-      y + labelHeight / 2,
-      getEllipsisText({
+      y: y + labelHeight / 2,
+      text: getEllipsisText({
         measureTextWidth,
         text: text.label,
         maxWidth: totalTextWidth,
         fontParam: labelStyle,
       }),
-      labelStyle,
-    );
+      ...labelStyle,
+    });
 
     cell.addTextShape(textShape);
   }
@@ -488,22 +515,21 @@ export const drawObjectText = (
       });
       const actualTextWidth = measureTextWidth(ellipsisText, textStyle);
 
-      const position = getTextAndFollowingIconPosition(
-        contentBoxes[i][j],
-        textStyle!,
-        actualTextWidth,
-        iconCfg,
-        iconCondition ? 1 : 0,
-      );
+      const position = getTextAndFollowingIconPosition({
+        bbox: contentBoxes[i][j],
+        textStyle,
+        textWidth: actualTextWidth,
+        iconStyle: iconCfg,
+        iconCount: iconCondition ? 1 : 0,
+      });
 
-      const textShape = renderText(
-        cell,
-        [],
-        position.text.x,
-        position.text.y,
-        ellipsisText,
-        curStyle!,
-      );
+      const textShape = renderText(cell, [], {
+        x: position.text.x,
+        y: position.text.y,
+        text: ellipsisText,
+        ...curStyle,
+      });
+
       cell.addTextShape(textShape);
 
       // 绘制条件格式的 icon
@@ -513,6 +539,7 @@ export const drawObjectText = (
           colIndex: j,
           meta: cell?.getMeta(),
         });
+
         if (attrs) {
           const iconShape = renderIcon(cell, {
             ...position.icon,
@@ -521,6 +548,7 @@ export const drawObjectText = (
             height: iconStyle?.size,
             fill: attrs.fill,
           });
+
           cell.addConditionIconShape(iconShape);
         }
       }
@@ -531,9 +559,8 @@ export const drawObjectText = (
 /**
  * 根据 dataCell 配置获取当前单元格宽度
  */
-export const getCellWidth = (dataCell: DataCellStyle, labelSize = 1) => {
-  return dataCell?.width! * labelSize;
-};
+export const getCellWidth = (dataCell: DataCellStyle, labelSize = 1) =>
+  dataCell?.width! * labelSize;
 
 export const safeJsonParse = (val: string) => {
   try {

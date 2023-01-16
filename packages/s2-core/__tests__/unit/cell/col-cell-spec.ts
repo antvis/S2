@@ -56,9 +56,11 @@ describe('Col Cell Tests', () => {
         });
 
         const colCell = new ColCell(node, s2, headerConfig);
+
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
         const getTextPosition = get(colCell, 'getTextPosition').bind(colCell);
+
         expect(getTextPosition()).toEqual({
           x: textX,
           y: 15.5,
@@ -87,18 +89,18 @@ describe('Col Cell Tests', () => {
             {
               iconNames: ['SortUp'],
               belongsCell: 'colCell',
-              displayCondition: (meta) => {
-                return !meta.isLeaf;
-              },
+              displayCondition: (meta) => !meta.isLeaf,
               onClick: () => {},
             },
           ],
         });
 
         const colCell = new ColCell(node, s2, { ...headerConfig });
+
         set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
 
         const getIconPosition = get(colCell, 'getIconPosition').bind(colCell);
+
         expect(getIconPosition()).toEqual({
           x: iconX,
           y: 10.5,
@@ -122,6 +124,7 @@ describe('Col Cell Tests', () => {
 
     test('should get correct col cell formatter', () => {
       const formatter = jest.fn();
+
       jest.spyOn(s2.dataSet, 'getFieldFormatter').mockReturnValue(formatter);
 
       // eslint-disable-next-line no-new
@@ -158,6 +161,7 @@ describe('Col Cell Tests', () => {
         ],
       },
     });
+
     test('should draw right condition text shape', () => {
       s2.render();
       const colCell = s2.facet.columnHeader.children[0].children[1] as ColCell;
@@ -186,6 +190,7 @@ describe('Col Cell Tests', () => {
       s2.render();
 
       const colCell = s2.facet.columnHeader.children[0].children[0];
+
       expect(get(colCell, 'conditionIconShape.cfg.name')).toEqual('CellUp');
       expect(get(colCell, 'conditionIconShape.cfg.fill')).toEqual('red');
     });
@@ -207,6 +212,7 @@ describe('Col Cell Tests', () => {
       });
       s2.render();
       const colCell = s2.facet.columnHeader.children[0].children[1];
+
       expect(get(colCell, 'backgroundShape.parsedStyle.fill')).toBeColor(
         '#F7B46F',
       );

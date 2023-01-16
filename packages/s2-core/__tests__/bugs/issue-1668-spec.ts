@@ -32,6 +32,7 @@ const s2Options: S2Options = {
 
 describe('Totals Cell Resize Tests', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.render();
 
   test('should render extra resize id for resize area handler', () => {

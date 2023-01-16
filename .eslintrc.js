@@ -109,7 +109,7 @@ module.exports = {
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
     'max-statements-per-line': [2, { max: 1 }],
-    'max-params': [1, 3],
+    'max-params': [2, 4],
     'no-unreachable': 2,
     'no-useless-computed-key': 2,
     'block-spacing': [2, 'always'],
@@ -130,7 +130,64 @@ module.exports = {
     curly: [2, 'all'],
     'guard-for-in': 0,
     'vue/multi-word-component-names': 0,
+    'no-nested-ternary': [2],
+    'no-restricted-imports': [
+      2,
+      {
+        paths: [
+          {
+            name: 'lodash',
+            importNames: ['default'],
+            message:
+              '\n 请不要全量引入 lodash \n 推荐 `import { get } from "lodash"` 的方式',
+          },
+        ],
+        patterns: ['lodash/*', 'lodash-es/*', 'lodash-es'],
+      },
+    ],
+    'line-comment-position': [2, { position: 'above' }],
+    'new-cap': 2,
+    'prefer-template': 2,
+    'no-useless-rename': 2,
+    'arrow-body-style': [
+      2,
+      'as-needed',
+      { requireReturnForObjectLiteral: true },
+    ],
+    'no-unneeded-ternary': 2,
+    'array-callback-return': 2,
     'dot-notation': 0,
+    'prefer-named-capture-group': 1,
+    'eol-last': [2, 'always'],
+    'max-lines-per-function': [
+      2,
+      { max: 120, skipBlankLines: true, skipComments: true },
+    ],
+    'multiline-comment-style': [2, 'starred-block'],
+    'lines-around-comment': [
+      2,
+      {
+        ignorePattern: 'pragma',
+        beforeBlockComment: false,
+        allowBlockStart: true,
+        allowObjectStart: true,
+        allowArrayStart: true,
+        allowClassStart: true,
+      },
+    ],
+    'padding-line-between-statements': [
+      2,
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+      {
+        blankLine: 'any',
+        prev: ['const', 'let', 'var'],
+        next: ['const', 'let', 'var'],
+      },
+      { blankLine: 'always', prev: 'import', next: '*' },
+      { blankLine: 'any', prev: 'import', next: 'import' },
+      { blankLine: 'always', prev: 'if', next: '*' },
+    ],
   },
   overrides: [
     {
@@ -148,6 +205,14 @@ module.exports = {
       rules: {
         'react-hooks/exhaustive-deps': 1,
         'react-hooks/rules-of-hooks': 2,
+        'max-lines-per-function': 0,
+      },
+    },
+    {
+      files: ['*-spec.tsx', '*-spec.ts'],
+      rules: {
+        'max-lines-per-function': 0,
+        'line-comment-position': 0,
       },
     },
   ],

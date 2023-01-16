@@ -42,12 +42,12 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     date: <CalendarIcon />,
   };
 
-  const getOptions = () => {
-    return dataSet.map((val: DrillDownDataSet) => {
+  const getOptions = () =>
+    dataSet.map((val: DrillDownDataSet) => {
       val.disabled = !!(disabledFields && disabledFields.includes(val.value));
+
       return val;
     });
-  };
 
   const [options, setOptions] = useState<DrillDownDataSet[]>(getOptions());
 
@@ -59,15 +59,18 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     } else {
       const reg = new RegExp(value, 'gi');
       const result = dataSet.filter((item) => reg.test(item.name));
+
       setOptions([...result]);
     }
   };
 
   const handleSelect = (value: any) => {
     const key = value?.selectedKeys;
+
     if (getDrillFields) {
       getDrillFields([...key]);
     }
+
     if (setDrillFields) {
       setDrillFields([...key]);
     }
@@ -78,6 +81,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     if (getDrillFields) {
       getDrillFields([]);
     }
+
     if (setDrillFields) {
       setDrillFields([]);
     }

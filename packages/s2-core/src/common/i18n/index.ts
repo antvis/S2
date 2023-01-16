@@ -36,6 +36,5 @@ export const extendLocale = (extraLocale: LocaleType) => {
 
 export const getLocale = () => locale;
 
-export const i18n = (key: string, defaultValue = key) => {
-  return get(locale, [lang, key], defaultValue);
-};
+export const i18n = (key: string, defaultValue = key) =>
+  get(locale, [lang, key], defaultValue);

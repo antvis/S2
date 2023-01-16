@@ -21,15 +21,15 @@ type HeaderGetter = {
   shouldGet?: boolean;
 };
 
-export const isMultiSelectionKey = (e: KeyboardEvent) => {
-  return [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
+export const isMultiSelectionKey = (e: KeyboardEvent) =>
+  [InteractionKeyboardKey.META, InteractionKeyboardKey.CONTROL].includes(
     e.key as InteractionKeyboardKey,
   );
-};
 
 export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
   const { id, colIndex, rowIndex, rowQuery } = meta;
+
   return {
     id,
     colIndex,
@@ -41,6 +41,7 @@ export const getCellMeta = (cell: S2CellType): CellMeta => {
 
 export const selectCells = (spreadsheet: SpreadSheet, cells: CellMeta[]) => {
   const { interaction } = spreadsheet;
+
   interaction.changeState({
     stateName: InteractionStateName.SELECTED,
     cells,
@@ -79,6 +80,7 @@ export function getRowCellForSelectedCell(
     if (!options.showSeriesNumber) {
       return [];
     }
+
     const colId = facet.layoutResult.colLeafNodes[0].id;
     const id = getDataCellId(String(meta.rowIndex), colId);
     const result: TableSeriesCell[] = [];
@@ -89,6 +91,7 @@ export function getRowCellForSelectedCell(
     if (rowCell && rowCell instanceof TableSeriesCell) {
       result.push(rowCell);
     }
+
     return result;
   }
 
@@ -111,25 +114,18 @@ export function updateRowColCells(meta: ViewMeta) {
 
   if (rowId) {
     const allRowHeaderCells = getRowCellForSelectedCell(meta, spreadsheet);
+
     forEach(allRowHeaderCells, (cell) => {
       cell.updateByState(InteractionStateName.SELECTED);
     });
   }
 }
 
-export const getRowHeaderByCellId = (
-  cellId: string,
-  s2: SpreadSheet,
-): Node[] => {
-  return s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
-};
+export const getRowHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
+  s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
 
-export const getColHeaderByCellId = (
-  cellId: string,
-  s2: SpreadSheet,
-): Node[] => {
-  return s2.getColumnNodes().filter((node: Node) => cellId.includes(node.id));
-};
+export const getColHeaderByCellId = (cellId: string, s2: SpreadSheet): Node[] =>
+  s2.getColumnNodes().filter((node: Node) => cellId.includes(node.id));
 
 export const getInteractionCells = (
   cell: CellMeta,
@@ -163,9 +159,10 @@ export const getInteractionCellsBySelectedCells = (
 ): Array<CellMeta> => {
   const headerSelectedCell: CellMeta[] = reduce(
     selectedCells,
-    (_cells: CellMeta[], selectedCell) => {
-      return [..._cells, ...getInteractionCells(selectedCell, s2)];
-    },
+    (_cells: CellMeta[], selectedCell) => [
+      ..._cells,
+      ...getInteractionCells(selectedCell, s2),
+    ],
     [],
   );
 
@@ -178,11 +175,14 @@ export const afterSelectDataCells = (
   updateDataCells: () => void,
 ) => {
   const { colHeader, rowHeader } = root.getSelectedCellHighlight();
+
   if (colHeader) {
     root.updateCells(root.getAllColHeaderCells());
   }
+
   if (rowHeader) {
     root.updateCells(root.getAllRowHeaderCells());
   }
+
   updateDataCells();
 };

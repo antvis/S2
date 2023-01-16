@@ -18,6 +18,7 @@ const s2Options = {
 describe('Export data in pivot tree mode', () => {
   test('should export correct col header in pivot tree mode', () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');

@@ -35,8 +35,10 @@ describe('build row tree hierarchy', () => {
       ],
     };
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
+
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+
     expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].value).toEqual('浙江');
     expect(rowLeafNodes[1].value).toEqual('杭州');
@@ -63,8 +65,10 @@ describe('build row tree hierarchy', () => {
       ],
     };
     const s2 = new PivotSheet(getContainer(), s2DataConfig, s2Options);
+
     s2.render();
     const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+
     expect(rowLeafNodes.length).toBe(7);
     expect(rowLeafNodes[0].value).toEqual('浙江');
     expect(rowLeafNodes[1].value).toEqual('舟山');

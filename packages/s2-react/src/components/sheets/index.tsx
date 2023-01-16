@@ -23,6 +23,7 @@ const Sheet = React.forwardRef<SpreadSheet, SheetComponentsProps>(
           if (ref) {
             (ref as React.MutableRefObject<SpreadSheet>).current = instance;
           }
+
           props.onMounted?.(instance);
         },
       };

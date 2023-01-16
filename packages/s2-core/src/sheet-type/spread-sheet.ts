@@ -117,7 +117,6 @@ export abstract class SpreadSheet extends EE {
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet();
-
     this.setDebug();
     this.initTooltip();
     this.initContainer(dom);
@@ -290,6 +289,7 @@ export abstract class SpreadSheet extends EE {
     options?: TooltipOptions,
   ) {
     const { showTooltip, content } = getTooltipOptions(this, event)!;
+
     if (!showTooltip) {
       return;
     }
@@ -330,6 +330,7 @@ export abstract class SpreadSheet extends EE {
 
   public registerIcons() {
     const customSVGIcons = this.options.customSVGIcons;
+
     if (isEmpty(customSVGIcons)) {
       return;
     }
@@ -353,6 +354,7 @@ export abstract class SpreadSheet extends EE {
     } else {
       this.dataCfg = getSafetyDataConfig(this.dataCfg, dataCfg);
     }
+
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
@@ -364,6 +366,7 @@ export abstract class SpreadSheet extends EE {
     } else {
       this.options = customMerge(this.options, options);
     }
+
     this.registerIcons();
   }
 
@@ -378,19 +381,23 @@ export abstract class SpreadSheet extends EE {
 
     const { reBuildDataSet = false, reBuildHiddenColumnsDetail = true } =
       options;
+
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
 
     if (reBuildDataSet) {
       this.dataSet = this.getDataSet();
     }
+
     if (reloadData) {
       this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
+
     this.buildFacet();
     if (reBuildHiddenColumnsDetail) {
       this.initHiddenColumnsDetail();
     }
+
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
@@ -481,6 +488,7 @@ export abstract class SpreadSheet extends EE {
     if (level === -1) {
       return this.facet.layoutResult.rowNodes;
     }
+
     return this.facet.layoutResult.rowNodes.filter(
       (node) => node.level === level,
     );
@@ -496,9 +504,11 @@ export abstract class SpreadSheet extends EE {
    */
   public getColumnNodes(level = -1): Node[] {
     const colNodes = this.facet?.layoutResult.colNodes || [];
+
     if (level === -1) {
       return colNodes;
     }
+
     return colNodes.filter((node) => node.level === level);
   }
 
@@ -537,20 +547,24 @@ export abstract class SpreadSheet extends EE {
   ): T | null {
     // TODO: 5.0 用 composedPath 来替换本方法
     let parent = target;
+
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
       if (parent instanceof BaseCell) {
         // 在单元格中，返回true
         return parent as T;
       }
+
       parent = (parent as DisplayObject)?.parentNode;
     }
+
     return null;
   }
 
   // 获取当前cell类型
   public getCellType(target: CellEventTarget) {
     const cell = this.getCell(target);
+
     return cell?.cellType;
   }
 
@@ -572,6 +586,7 @@ export abstract class SpreadSheet extends EE {
       includes(totalConfig.subTotalsDimensions, dimension)
         ? totalConfig.showSubTotals
         : false;
+
     return {
       showSubTotals,
       showGrandTotals: totalConfig.showGrandTotals,
@@ -598,6 +613,7 @@ export abstract class SpreadSheet extends EE {
       supportCSSTransform,
       devicePixelRatio = 1,
     } = this.options;
+
     // base canvas group
     this.container = new Canvas({
       container: this.getMountContainer(dom) as HTMLElement,
@@ -614,6 +630,7 @@ export abstract class SpreadSheet extends EE {
   // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
   protected updateContainerStyle() {
     const canvas = this.getCanvasElement();
+
     if (canvas) {
       canvas.style.display = 'block';
     }
@@ -631,15 +648,18 @@ export abstract class SpreadSheet extends EE {
   private initHiddenColumnsDetail = () => {
     const { hiddenColumnFields } = this.options.interaction!;
     const lastHiddenColumnsDetail = this.store.get('hiddenColumnsDetail');
+
     // 隐藏列为空, 并且没有操作的情况下, 则无需生成
     if (isEmpty(hiddenColumnFields) && isEmpty(lastHiddenColumnsDetail)) {
       return;
     }
+
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   };
 
   private clearCanvasEvent() {
     const canvasEvents = this.getEvents();
+
     forIn(canvasEvents, (_, event) => {
       this.off(event);
     });
@@ -687,6 +707,7 @@ export abstract class SpreadSheet extends EE {
     font: unknown,
   ): number => {
     const textMetrics = this.measureText(text, font);
+
     return textMetrics?.width || 0;
   };
 
@@ -701,9 +722,11 @@ export abstract class SpreadSheet extends EE {
     font: unknown,
   ): number => {
     const textMetrics = this.measureText(text, font);
+
     if (!textMetrics) {
       return 0;
     }
+
     return (
       textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
     );
@@ -720,6 +743,7 @@ export abstract class SpreadSheet extends EE {
     const chineseWidth = this.measureTextWidth('蚂', font);
 
     let w = 0;
+
     if (!text) {
       return w;
     }
@@ -741,6 +765,7 @@ export abstract class SpreadSheet extends EE {
     replace = false,
   ) {
     const lastSortMethodMap = !replace ? this.store.get('sortMethodMap') : null;
+
     this.store.set('sortMethodMap', {
       ...lastSortMethodMap,
       [nodeId]: sortMethod,
@@ -750,6 +775,7 @@ export abstract class SpreadSheet extends EE {
   public getMenuDefaultSelectedKeys(nodeId: string): string[] {
     const sortMethodMap = this.store.get('sortMethodMap');
     const selectedSortMethod = get(sortMethodMap, nodeId);
+
     return selectedSortMethod ? [selectedSortMethod] : [];
   }
 }

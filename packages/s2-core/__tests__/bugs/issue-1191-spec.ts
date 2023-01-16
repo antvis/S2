@@ -74,6 +74,7 @@ describe('Link Field Tests', () => {
   test('province row cell should use link field style', () => {
     // 浙江省对应 cell
     const province = s2.facet.rowHeader?.children[0];
+
     // @ts-ignore
     expect(province.textShape.attr('fill')).toEqual('red');
     // @ts-ignore
@@ -83,6 +84,7 @@ describe('Link Field Tests', () => {
   test('city row cell should not use link field style', () => {
     // 义乌对应 cell
     const city = s2.facet.rowHeader?.children[1];
+
     // @ts-ignore
     expect(city.textShape.attr('fill')).not.toEqual('red');
     // @ts-ignore

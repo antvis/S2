@@ -43,6 +43,7 @@ jest.mock('@/sheet-type', () => {
         renderer: new Renderer(),
       });
       const panelScrollGroup = new Group({}) as PanelScrollGroup;
+
       panelScrollGroup.update = () => {};
       container.appendChild(panelScrollGroup);
 
@@ -116,6 +117,7 @@ const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 describe('Pivot Mode Facet Test', () => {
   const s2: SpreadSheet = new MockSpreadSheet();
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
+
   s2.dataSet = dataSet;
   s2.interaction = new RootInteraction(s2);
   s2.isValueInCols = jest.fn();
@@ -221,7 +223,9 @@ describe('Pivot Mode Facet Test', () => {
     s2.options = assembleOptions({
       hierarchyType: 'tree',
     });
-    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30); // 小于 DEFAULT_TREE_ROW_WIDTH
+    // 小于 DEFAULT_TREE_ROW_WIDTH
+    const spy = jest.spyOn(s2, 'measureTextWidth').mockReturnValue(30);
+
     s2.dataSet = new MockPivotDataSet(s2);
     const treeFacet = new PivotFacet(s2);
     const { rowsHierarchy } = treeFacet.layoutResult;
@@ -289,6 +293,7 @@ describe('Pivot Mode Facet Test', () => {
 
   describe('should get correct result when enable series number', () => {
     const mockDataSet = new MockPivotDataSet(s2);
+
     s2.options = assembleOptions({
       showSeriesNumber: true,
       dataCell: (fct) => new DataCell(fct, s2),
@@ -354,6 +359,7 @@ describe('Pivot Mode Facet Test', () => {
     'should render custom column leaf node width by %o',
     ({ width, useFunc }) => {
       const widthFn = jest.fn(() => width);
+
       s2.options = assembleOptions({
         style: {
           colCell: {

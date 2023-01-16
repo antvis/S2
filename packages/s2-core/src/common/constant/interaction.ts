@@ -114,8 +114,12 @@ export enum ScrollDirection {
 }
 
 export interface InteractionCellSelectedHighlightType {
-  rowHeader?: boolean; // 高亮行头
-  colHeader?: boolean; // 高亮列头
-  currentRow?: boolean; // 高亮选中单元格所在行
-  currentCol?: boolean; // 高亮选中单元格所在列
+  // 高亮行头
+  rowHeader?: boolean;
+  // 高亮列头
+  colHeader?: boolean;
+  // 高亮选中单元格所在行
+  currentRow?: boolean;
+  // 高亮选中单元格所在列
+  currentCol?: boolean;
 }

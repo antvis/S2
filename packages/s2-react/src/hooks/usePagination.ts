@@ -22,6 +22,7 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
     const outerOnShowSizeChange =
       get(showPagination, 'onShowSizeChange') ??
       paginationCfg?.onShowSizeChange;
+
     outerOnShowSizeChange?.(current, pageSize);
   };
 
@@ -30,6 +31,7 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
 
     const outerOnChange =
       get(showPagination, 'onChange') ?? paginationCfg?.onChange;
+
     outerOnChange?.(current, pageSize);
   };
 
@@ -63,8 +65,11 @@ export const usePagination = (s2: SpreadSheet, props: SheetComponentsProps) => {
     }
 
     const totalUpdateCallback = (data: LayoutPaginationParams) => {
-      setPagination((prev) => ({ ...prev, total: data.total }));
+      setPagination((prev) => {
+        return { ...prev, total: data.total };
+      });
     };
+
     s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
 
     return () => {

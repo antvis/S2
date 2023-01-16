@@ -5,9 +5,7 @@ export const getColsForGrid = (
   colMin: number,
   colMax: number,
   colNodes: Node[],
-) => {
-  return colNodes.slice(colMin, colMax + 1).map((item) => item.x + item.width);
-};
+) => colNodes.slice(colMin, colMax + 1).map((item) => item.x + item.width);
 
 export const getRowsForGrid = (
   rowMin: number,
@@ -15,6 +13,7 @@ export const getRowsForGrid = (
   viewCellHeights: ViewCellHeights,
 ) => {
   const rows = [];
+
   for (let index = rowMin; index < rowMax + 1; index++) {
     rows.push(viewCellHeights.getCellOffsetY(index + 1));
   }

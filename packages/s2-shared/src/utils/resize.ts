@@ -49,9 +49,9 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     const width = adaptiveWidth
       ? Math.floor(containerWidth ?? s2.options.width)
       : s2.options.width;
+    // 去除 header 和 page 后才是 sheet 真正的高度
     const height = adaptiveHeight
-      ? // 去除 header 和 page 后才是 sheet 真正的高度
-        Math.floor(containerHeight ?? s2.options.height)
+      ? Math.floor(containerHeight ?? s2.options.height)
       : s2.options.height;
 
     if (!adaptiveWidth && !adaptiveHeight) {
@@ -61,8 +61,10 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
     if (isFirstRender) {
       render(width, height);
       isFirstRender = false;
+
       return;
     }
+
     debounceRender(width, height);
   };
 

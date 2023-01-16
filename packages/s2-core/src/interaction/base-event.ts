@@ -26,6 +26,7 @@ export abstract class BaseEvent {
 
   public isLinkFieldText = (eventTarget: CanvasEvent['target']) => {
     const cellAppendInfo = this.getCellAppendInfo(eventTarget as DisplayObject);
+
     return cellAppendInfo?.isLinkFieldText;
   };
 

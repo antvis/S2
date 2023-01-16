@@ -8,8 +8,10 @@ import type { PaginationProps } from 'ant-design-vue';
 import type { UnionToIntersection } from '@vue/shared';
 import type { TooltipContentType, S2Options, Pagination } from '@antv/s2';
 
-// 这个是vue中的类型，但是vue没有export
-// reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
+/*
+ * 这个是vue中的类型，但是vue没有export
+ * reference: @vue/runtime-core/dist/runtime-core.d.ts L1351
+ */
 interface PropOption<T = any> {
   type: PropType<T>;
   default?: T;

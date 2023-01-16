@@ -21,6 +21,7 @@ export const layoutArrange = (
       fieldValues,
     );
   }
+
   return fieldValues;
 };
 
@@ -51,19 +52,23 @@ export const layoutHierarchy = (
       hierarchy.pushNode(node, hierarchyIndex);
     }
   };
+
   if (spreadsheet.options.layoutHierarchy) {
     const facetLayoutHierarchy = spreadsheet.options.layoutHierarchy(
       spreadsheet,
       currentNode,
     );
+
     if (facetLayoutHierarchy) {
       const deleteNode = !isBoolean(facetLayoutHierarchy?.delete)
         ? false
         : facetLayoutHierarchy?.delete;
+
       expandCurrentNode = !deleteNode;
       const { push: pushNodes, unshift: unshiftNodes } = facetLayoutHierarchy;
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
+
       if (!isEmpty(unshiftNodes)) {
         each(unshiftNodes, (node) => {
           addNode(node);
@@ -71,11 +76,13 @@ export const layoutHierarchy = (
         currentIndex = parentNode.children.length;
         hierarchyIndex = hierarchy.getNodes().length;
       }
+
       if (!isEmpty(pushNodes)) {
         each(pushNodes, (node) => {
           addNode(node);
         });
       }
+
       if (!deleteNode) {
         addNode(currentNode, currentIndex, hierarchyIndex);
       }
@@ -85,6 +92,7 @@ export const layoutHierarchy = (
   } else {
     addNode(currentNode);
   }
+
   return expandCurrentNode;
 };
 
@@ -112,13 +120,16 @@ export const layoutDataPosition = (
   layoutResult: LayoutResult,
 ): LayoutResult => {
   const dataPosition = spreadsheet.options?.layoutDataPosition;
+
   if (dataPosition) {
     const { getCellMeta } = layoutResult;
     const handledGetCellMeta = dataPosition(spreadsheet, getCellMeta);
+
     return {
       ...layoutResult,
       getCellMeta: handledGetCellMeta,
     };
   }
+
   return layoutResult;
 };

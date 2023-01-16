@@ -62,6 +62,7 @@ export const diffIndexes = (
       // 都为空
       return { add, remove };
     }
+
     // target 不为空
     return { add: allIndexes(targetIndexes), remove };
   }
@@ -113,6 +114,7 @@ export const diffPanelIndexes = (
       sourceIndexes?.[key as keyof PanelIndexes] || ([] as unknown as Indexes),
       targetIndexes[key as keyof PanelIndexes]!,
     );
+
     allAdd.push(...add);
     allRemove.push(...remove);
   });

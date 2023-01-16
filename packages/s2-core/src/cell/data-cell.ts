@@ -15,7 +15,7 @@ import type {
   CellMeta,
   Condition,
   FormatResult,
-  IconCfg,
+  IconStyle,
   MappingResult,
   TextTheme,
   ViewMeta,
@@ -77,10 +77,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (!includeCell(cells, this)) {
       return;
     }
+
     const targetCell = find(
       cells,
       (cell: CellMeta) => cell?.['isTarget'],
     ) as CellMeta;
+
     if (targetCell.id === this.getMeta().id) {
       this.updateByState(InteractionStateName.HIGHLIGHT);
     } else {
@@ -111,6 +113,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         ) {
           this.updateByState(InteractionStateName.UNSELECTED);
         }
+
         break;
       default:
         break;
@@ -119,8 +122,10 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected handleHover(cells: CellMeta[]) {
     const currentHoverCell = first(cells) as CellMeta;
+
     if (currentHoverCell.type !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
+
       return;
     }
 
@@ -128,6 +133,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 如果当前是hover，要绘制出十字交叉的行列样式
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
+
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
         currentColIndex === currentHoverCell?.colIndex ||
@@ -152,6 +158,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);
+
       return;
     }
 
@@ -195,6 +202,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.drawTextShape();
       this.drawConditionIconShapes();
     }
+
     this.drawBorders();
     this.update();
   }
@@ -217,6 +225,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     ) {
       textFill = REVERSE_FONT_COLOR;
     }
+
     return textFill;
   }
 
@@ -235,7 +244,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  public getIconStyle(): IconCfg | undefined {
+  public getIconStyle(): IconStyle | undefined {
     const { size, margin } = this.theme.dataCell!.icon!;
     const iconCondition = this.findFieldCondition(this.conditions?.icon!);
 
@@ -245,7 +254,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         margin,
         position: getIconPositionCfg(iconCondition),
       };
-    return iconCfg as IconCfg;
+
+    return iconCfg as IconStyle;
   }
 
   protected drawConditionIntervalShape() {
@@ -257,8 +267,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { rowIndex } = this.meta;
     const node = this.spreadsheet.facet.layoutResult.rowLeafNodes[rowIndex];
     const isRowSubTotal = !node?.isGrandTotals && node?.isTotals;
-    // 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
-    // 不过能否查到实际的数据，都不应该展示
+
+    /*
+     * 在树状结构时，如果单元格本身是行小计，但是行小计配置又未开启时
+     * 不过能否查到实际的数据，都不应该展示
+     */
     return (
       this.spreadsheet.options.hierarchyType === 'tree' &&
       !row.showSubTotals &&
@@ -270,11 +283,15 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (this.shouldHideRowSubtotalData()) {
       return {
         value: null,
-        // 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
-        // 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+
+        /*
+         * 这里使用默认的placeholder，而不是空字符串，是为了防止后续使用用户自定义的placeholder
+         * 比如用户自定义 placeholder 为 0, 那行小计也会显示0，也很有迷惑性，显示 - 更为合理
+         */
         formattedValue: EMPTY_PLACEHOLDER,
       };
     }
+
     const { rowId, valueField, fieldValue, data } = this.meta;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId!);
     const fieldId = rowMeta ? rowId : valueField;
@@ -290,6 +307,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
+
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
@@ -304,8 +322,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     let backgroundColor = cellStyle!.backgroundColor;
 
     if (crossBackgroundColor && this.meta.rowIndex % 2 === 0) {
-      // 隔行颜色的配置
-      // 偶数行展示灰色背景，因为index是从0开始的
+      /*
+       * 隔行颜色的配置
+       * 偶数行展示灰色背景，因为index是从0开始的
+       */
       backgroundColor = crossBackgroundColor;
     }
 
@@ -316,13 +336,16 @@ export class DataCell extends BaseCell<ViewMeta> {
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background!);
     let intelligentReverseTextColor = false;
+
     if (bgCondition?.mapping!) {
       const attrs = this.mappingValue(bgCondition);
+
       if (attrs) {
         backgroundColor = attrs.fill;
         intelligentReverseTextColor = attrs.intelligentReverseTextColor!;
       }
     }
+
     return {
       backgroundColor,
       backgroundColorOpacity,
@@ -336,13 +359,16 @@ export class DataCell extends BaseCell<ViewMeta> {
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], cells = [] } = interaction.getState();
     let isEqualIndex = false;
+
     // 明细表模式多级表头计算索引换一种策略
     if (this.spreadsheet.isTableMode() && nodes.length) {
       const leafs = nodes[0].hierarchy.getLeaves();
+
       isEqualIndex = leafs.some((cell, i) => {
         if (nodes.some((node) => node === cell)) {
           return i === currentIndex;
         }
+
         return false;
       });
     } else {
@@ -350,6 +376,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         (cell) => get(cell, indexType) === currentIndex,
       );
     }
+
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.interaction?.selectedCellsSpotlight) {
@@ -369,11 +396,11 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   public findFieldCondition(conditions: Condition[]): Condition | undefined {
-    return findLast(conditions, (item) => {
-      return item.field instanceof RegExp
+    return findLast(conditions, (item) =>
+      item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
-        : item.field === this.meta.valueField;
-    });
+        : item.field === this.meta.valueField,
+    );
   }
 
   /**
@@ -387,6 +414,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           query: { rowIndex: this.meta.rowIndex },
         })
       : getFieldValueOfViewMetaData(this.meta.data);
+
     return condition?.mapping(value, rowDataInfo as RawData);
   }
 

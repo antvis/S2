@@ -73,10 +73,12 @@ const options: S2Options = {
 describe('Brush selection scroll spec', () => {
   test('Should scroll when mouse outside canvas', async () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
+
     s2.render();
     const dataCells = s2.facet.panelScrollGroup.children;
     const target = dataCells.find((item) => item instanceof DataCell);
     const offsetY = s2.getCanvasElement().getBoundingClientRect().top;
+
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
       originalEvent: { layerX: 1, layerY: 1 },
@@ -113,6 +115,7 @@ describe('Brush selection scroll spec', () => {
     const brushRange = brushInteraction.getBrushRange();
     const allCells = s2.interaction.getCells();
     const lastCell = allCells[allCells.length - 1];
+
     expect(brushRange.start.colIndex).toBe(allCells[0].colIndex);
     expect(brushRange.start.rowIndex).toBe(allCells[0].rowIndex);
     expect(brushRange.end.colIndex).toBe(lastCell.colIndex);

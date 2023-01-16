@@ -20,13 +20,13 @@ import './index.less';
 export class BaseTooltip {
   public visible = false;
 
-  public spreadsheet: SpreadSheet; // the type of Spreadsheet
+  public spreadsheet: SpreadSheet;
 
-  public container: HTMLElement | null; // the base container element
+  public container: HTMLElement | null;
 
   public options: TooltipShowOptions;
 
-  public position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
+  public position: TooltipPosition = { x: 0, y: 0 };
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -37,6 +37,7 @@ export class BaseTooltip {
     const { enterable } = getTooltipDefaultOptions(options);
     const { autoAdjustBoundary, adjustPosition } =
       this.spreadsheet.options.tooltip || {};
+
     this.visible = true;
     this.options = showOptions as unknown as TooltipShowOptions;
     const container = this.getContainer();
@@ -111,6 +112,7 @@ export class BaseTooltip {
 
     if (typeof displayContent === 'string') {
       this.container.innerHTML = displayContent;
+
       return;
     }
 
@@ -123,6 +125,7 @@ export class BaseTooltip {
     if (!this.container) {
       return;
     }
+
     this.container.innerHTML = '';
   }
 
@@ -134,6 +137,7 @@ export class BaseTooltip {
     if (this.container.style.pointerEvents === 'none') {
       return;
     }
+
     setTooltipContainerStyle(this.container, {
       style: {
         pointerEvents: 'none',
@@ -159,8 +163,10 @@ export class BaseTooltip {
       rootContainer.appendChild(container);
 
       this.container = container;
+
       return this.container;
     }
+
     return this.container;
   }
 }

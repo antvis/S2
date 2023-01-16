@@ -82,8 +82,10 @@ describe('SheetComponent adaptive Tests', () => {
     });
 
     await sleep(1000);
+
     return { newContainerHeight, newContainerWidth, options };
   };
+
   beforeEach(() => {
     s2 = null;
   });
@@ -141,8 +143,9 @@ describe('SheetComponent adaptive Tests', () => {
 
     act(() => {
       const container = document.getElementById(containerId)!;
-      container.style.width = newContainerWidth + 'px';
-      container.style.height = newContainerHeight + 'px';
+
+      container.style.width = `${newContainerWidth}px`;
+      container.style.height = `${newContainerHeight}px`;
     });
 
     act(() => {
@@ -284,6 +287,7 @@ describe('SheetComponent adaptive Tests', () => {
       'onlyWidthAdaptive',
       { height: false },
     );
+
     expect(s2!.options.height).toEqual(options.height);
     expect(s2!.options.width).toEqual(newContainerWidth);
     expect(s2!.container.getConfig().height).toEqual(options.height);
@@ -308,8 +312,8 @@ describe('SheetComponent adaptive Tests', () => {
     const newContainerHeight = 500;
     const container = getContainer();
 
-    container.style.width = newContainerWidth + 'px';
-    container.style.height = newContainerHeight + 'px';
+    container.style.width = `${newContainerWidth}px`;
+    container.style.height = `${newContainerHeight}px`;
     container.style.transform = 'scale(0.5)';
 
     act(() => {

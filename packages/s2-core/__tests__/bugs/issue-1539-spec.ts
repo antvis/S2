@@ -17,6 +17,7 @@ const s2Options: S2Options = {
 describe('Table Left Border Tests', () => {
   test('should draw left border without series number', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, s2Options);
+
     s2.render();
 
     // 左侧边框由 centerFrame进行绘制
@@ -31,6 +32,7 @@ describe('Table Left Border Tests', () => {
       ...s2Options,
       showSeriesNumber: true,
     });
+
     s2.render();
 
     const leftBorderLine = s2.facet.centerFrame.getChildren()[1];

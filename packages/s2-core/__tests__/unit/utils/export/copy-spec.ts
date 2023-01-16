@@ -26,11 +26,13 @@ const testData = originalData.map((item, i) => {
   if (i === 0) {
     return { ...item, sub_type: newLineTest };
   }
+
   return { ...item };
 });
 
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
+
   beforeEach(() => {
     s2 = new TableSheet(
       getContainer(),
@@ -136,7 +138,7 @@ describe('List Table Core Data Process', () => {
     const ss = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'province', formatter: (v) => v + '元' }],
+        meta: [{ field: 'province', formatter: (v) => `${v}元` }],
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
@@ -149,6 +151,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     ss.render();
     const cell = s2.interaction
       .getAllCells()
@@ -157,6 +160,7 @@ describe('List Table Core Data Process', () => {
           cell.cellType === CellTypes.DATA_CELL &&
           !(cell instanceof TableSeriesCell),
       )[0];
+
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
@@ -169,7 +173,7 @@ describe('List Table Core Data Process', () => {
     const ss = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'province', formatter: (v) => v + '_formatted' }],
+        meta: [{ field: 'province', formatter: (v) => `${v}_formatted` }],
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
@@ -182,6 +186,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     ss.render();
 
     const cell = ss.interaction
@@ -194,6 +199,7 @@ describe('List Table Core Data Process', () => {
     });
 
     const data = getSelectedData(ss);
+
     expect(data).toBe('2367\t浙江省_formatted\t绍兴市\t家具\t桌子');
   });
 
@@ -202,7 +208,7 @@ describe('List Table Core Data Process', () => {
     const ss = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'city', formatter: (v) => v + '_formatted' }],
+        meta: [{ field: 'city', formatter: (v) => `${v}_formatted` }],
         data: originalData,
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
@@ -215,6 +221,7 @@ describe('List Table Core Data Process', () => {
         },
       }),
     );
+
     ss.render();
 
     const cell = ss.interaction
@@ -227,6 +234,7 @@ describe('List Table Core Data Process', () => {
     });
 
     const data = getSelectedData(ss);
+
     expect(data.split('_formatted').length).toEqual(33);
   });
 
@@ -252,6 +260,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
+
     expect(data).toBe('2330\t四川省\t乐山市\t家具\t桌子');
 
     s2.interaction.changeState({
@@ -282,6 +291,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
+
     expect(data).toBe('7234\t浙江省\t宁波市\t家具\t沙发');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -295,11 +305,13 @@ describe('List Table Core Data Process', () => {
     const sss = new TableSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'province', formatter: (v) => v + '元' }],
+        meta: [{ field: 'province', formatter: (v) => `${v}元` }],
         fields: {
           columns: ['province', 'city', 'type', 'sub_type', 'number'],
         },
-        data: originalData.map((e) => ({ ...e, city: newLineText })),
+        data: originalData.map((e) => {
+          return { ...e, city: newLineText };
+        }),
       }),
       assembleOptions({
         interaction: {
@@ -308,6 +320,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     sss.render();
 
     const cell = sss.interaction
@@ -323,6 +336,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(sss);
+
     expect(data).toBe(convertString(newLineText));
   });
 
@@ -380,6 +394,7 @@ describe('Pivot Table Core Data Process', () => {
   }
 
   const s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
   s2.render();
 
   it('should copy no data in grid mode', () => {
@@ -443,6 +458,7 @@ describe('Pivot Table Core Data Process', () => {
         },
       }),
     );
+
     ss.render();
     const cell = ss.interaction
       .getAllCells()
@@ -470,7 +486,7 @@ describe('Pivot Table Core Data Process', () => {
     const ss = new PivotSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'number', formatter: (v) => v + '元' }],
+        meta: [{ field: 'number', formatter: (v) => `${v}元` }],
         fields: {
           columns: ['type', 'sub_type'],
           rows: ['province', 'city'],
@@ -485,10 +501,12 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     ss.render();
     const cell = s2.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
@@ -619,6 +637,7 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
     const node = s2.getColumnNodes().find((node) => node.isLeaf)!;
+
     s2.groupSortByMethod('ASC' as SortMethodType, node);
     s2.setDataCfg(s2.dataCfg);
     s2.render();
@@ -633,6 +652,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
+
     expect(data).toBe('2367\t632\t2999\t1304\t1354\t2658\t5657');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -644,7 +664,7 @@ describe('Pivot Table Core Data Process', () => {
     const sss = new PivotSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'number', formatter: (v) => v + '\n元' }],
+        meta: [{ field: 'number', formatter: (v) => `${v}\n元` }],
         fields: {
           columns: ['type', 'sub_type'],
           rows: ['province', 'city'],
@@ -659,6 +679,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     sss.render();
 
     const cell = sss.interaction
@@ -670,6 +691,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(sss);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
@@ -677,7 +699,7 @@ describe('Pivot Table Core Data Process', () => {
     const s2New = new PivotSheet(
       getContainer(),
       assembleDataCfg({
-        meta: [{ field: 'number', formatter: (v) => v + '\n元' }],
+        meta: [{ field: 'number', formatter: (v) => `${v}\n元` }],
         fields: {
           columns: ['type', 'sub_type'],
           rows: ['province', 'city'],
@@ -686,7 +708,7 @@ describe('Pivot Table Core Data Process', () => {
         data: originalData.map((item) => {
           return {
             ...item,
-            province: item.province + '-1',
+            province: `${item.province}-1`,
           };
         }),
       }),
@@ -698,6 +720,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2New.render();
     const cell = s2New.interaction
       .getAllCells()
@@ -708,6 +731,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2New);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
@@ -716,7 +740,7 @@ describe('Pivot Table Core Data Process', () => {
       getContainer(),
       assembleDataCfg({
         meta: [
-          { field: 'number', name: 'number-3', formatter: (v) => v + '\n元' },
+          { field: 'number', name: 'number-3', formatter: (v) => `${v}\n元` },
         ],
         fields: {
           columns: ['number', 'type', 'sub_type'],
@@ -731,6 +755,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2New.render();
     const cell = s2New.interaction
       .getAllCells()
@@ -741,11 +766,13 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2New);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
   it('should get correct data with hideMeasureColumn is true', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
     ss.setOptions({
       style: {
         colCell: {
@@ -757,11 +784,13 @@ describe('Pivot Table Core Data Process', () => {
     const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(ss);
+
     expect(data).toMatchInlineSnapshot(`
       "7789	5343	13132	945	1343
       2367	632	2999	1304	1354
@@ -780,6 +809,7 @@ describe('Pivot Table Core Data Process', () => {
   // https://github.com/antvis/S2/issues/1955
   it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
     ss.setOptions({
       style: {
         colCell: {
@@ -796,11 +826,13 @@ describe('Pivot Table Core Data Process', () => {
     const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(ss);
+
     expect(data).toMatchInlineSnapshot(`
       "		家具	家具	家具	办公用品
       		桌子	沙发	小计	笔
@@ -861,6 +893,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(s2);
+
     expect(data).toBe('');
   });
 
@@ -948,7 +981,7 @@ describe('Tree Table Core Data Process', () => {
 
   it('should copy all data in tree mode with format', () => {
     s2.setDataCfg({
-      meta: [{ field: 'number', formatter: (v) => v + '元' }],
+      meta: [{ field: 'number', formatter: (v) => `${v}元` }],
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
@@ -1010,6 +1043,7 @@ describe('Tree Table Core Data Process', () => {
 
 describe('List Table getCopyData', () => {
   let s2: TableSheet;
+
   beforeEach(() => {
     s2 = new TableSheet(
       getContainer(),
@@ -1037,18 +1071,21 @@ describe('List Table getCopyData', () => {
 
   it('should get correct data in CopyType.ALL', () => {
     const data = getCopyData(s2, CopyType.ALL);
+
     expect(data.split('\n').length).toBe(33);
     expect(data.split('\n')[2].split('\t').length).toBe(5);
   });
 
   it('should get correct data in CopyType.COL', () => {
     const data = getCopyData(s2, CopyType.COL);
+
     expect(data.split('\n').length).toBe(32);
     expect(data.split('\n')[2].split('\t').length).toBe(1);
   });
 
   it('should get correct data in CopyType.ROW', () => {
     const data = getCopyData(s2, CopyType.ROW);
+
     expect(data.split('\n').length).toBe(2);
     expect(data.split('\t').length).toBe(5);
   });
@@ -1058,6 +1095,7 @@ describe('List Table getCopyData', () => {
       CopyMIMEType.PLAIN,
       CopyMIMEType.HTML,
     ]) as string[];
+
     expect(data.length).toBe(2);
   });
 });
@@ -1080,6 +1118,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   });
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
+
   beforeEach(() => {
     s2.render();
   });
@@ -1139,12 +1178,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
       options,
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllRowHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 2 || meta.level === 3) && meta.y < 180;
     });
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1165,8 +1207,10 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     // 圈选行头前两列 中 y < 180 的区域
     const cells2 = ss.interaction.getAllRowHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 0 || meta.level === 1) && meta.y < 180;
     });
+
     ss.interaction.changeState({
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1194,12 +1238,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
       options,
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllColHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 3 || meta.level === 4) && meta.x < 480;
     });
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1215,8 +1262,10 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells2 = ss.interaction.getAllColHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 0 || meta.level === 1) && meta.x < 480;
     });
+
     ss.interaction.changeState({
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1243,9 +1292,11 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         totals: TOTALS_OPTIONS,
       }),
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllRowHeaderCells();
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1282,9 +1333,11 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         totals: TOTALS_OPTIONS,
       }),
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllColHeaderCells();
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,

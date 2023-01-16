@@ -75,21 +75,26 @@ describe('SpreadSheet Custom Grid Tests', () => {
     });
 
     test('should render custom layout row nodes', () => {
-      const rowNodes = s2.getRowNodes().map((node) => ({
-        value: node.value,
-        width: node.width,
-        height: node.height,
-        description: node.extra?.['description'],
-      }));
+      const rowNodes = s2.getRowNodes().map((node) => {
+        return {
+          value: node.value,
+          width: node.width,
+          height: node.height,
+          description: node.extra?.['description'],
+        };
+      });
 
       expect(rowNodes).toMatchSnapshot();
     });
 
     test('should calc correctly row index of leaf nodes', () => {
-      const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-        value: node.value,
-        rowIndex: node.rowIndex,
-      }));
+      const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+        return {
+          value: node.value,
+          rowIndex: node.rowIndex,
+        };
+      });
+
       expect(rowLeafNodes).toMatchSnapshot();
     });
 
@@ -105,15 +110,19 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
       s2.render(false);
 
-      const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-        field: node.field,
-        width: node.width,
-      }));
+      const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+        return {
+          field: node.field,
+          width: node.width,
+        };
+      });
 
-      const colLeafNodes = s2.getColumnLeafNodes().map((node) => ({
-        field: node.field,
-        width: node.width,
-      }));
+      const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+        return {
+          field: node.field,
+          width: node.width,
+        };
+      });
 
       expect(rowLeafNodes).toMatchSnapshot();
 
@@ -178,6 +187,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .map((cell: HeaderCell) => {
           const value = cell.getActualText();
           const meta = cell.getMeta();
+
           return {
             value,
             field: meta.field,
@@ -208,26 +218,32 @@ describe('SpreadSheet Custom Grid Tests', () => {
       expect(s2.dataSet.fields.valueInCols).toBeTruthy();
     });
 
-    // test('should use custom grid pivot dataSet', () => {
-    //   expect(s2.dataSet).toBeInstanceOf(CustomGridPivotDataSet);
-    // });
+    /*
+     * test('should use custom grid pivot dataSet', () => {
+     *   expect(s2.dataSet).toBeInstanceOf(CustomGridPivotDataSet);
+     * });
+     */
 
     test('should render custom layout column nodes', () => {
-      const colNodes = s2.getColumnNodes().map((node) => ({
-        value: node.value,
-        width: node.width,
-        height: node.height,
-        description: node.extra?.['description'],
-      }));
+      const colNodes = s2.getColumnNodes().map((node) => {
+        return {
+          value: node.value,
+          width: node.width,
+          height: node.height,
+          description: node.extra?.['description'],
+        };
+      });
 
       expect(colNodes).toMatchSnapshot();
     });
 
     test('should calc correctly col index of leaf nodes', () => {
-      const colLeafNodes = s2.getColumnLeafNodes().map((node) => ({
-        value: node.value,
-        colIndex: node.colIndex,
-      }));
+      const colLeafNodes = s2.getColumnLeafNodes().map((node) => {
+        return {
+          value: node.value,
+          colIndex: node.colIndex,
+        };
+      });
 
       expect(colLeafNodes).toMatchSnapshot();
     });
@@ -244,10 +260,12 @@ describe('SpreadSheet Custom Grid Tests', () => {
       });
       s2.render(false);
 
-      const colNodes = s2.getColumnNodes().map((node) => ({
-        value: node.value,
-        height: node.height,
-      }));
+      const colNodes = s2.getColumnNodes().map((node) => {
+        return {
+          value: node.value,
+          height: node.height,
+        };
+      });
 
       expect(colNodes).toMatchSnapshot();
     });
@@ -312,6 +330,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         .map((cell: HeaderCell) => {
           const value = cell.getActualText();
           const meta = cell.getMeta();
+
           return {
             value,
             field: meta.field,

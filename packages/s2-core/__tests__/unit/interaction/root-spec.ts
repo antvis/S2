@@ -119,6 +119,7 @@ describe('RootInteraction Tests', () => {
       width: 20,
       height: 20,
     });
+
     mockSpreadSheetInstance.store.set('visibleActionIcons', [icon]);
     rootInteraction.setState({
       cells: [getCellMeta(mockCell)],
@@ -158,6 +159,7 @@ describe('RootInteraction Tests', () => {
   test('should set header cell selected interaction state correct', () => {
     rootInteraction.selectHeaderCell({ cell: mockCell });
     const state = rootInteraction.getState();
+
     expect(state.stateName).toEqual(InteractionStateName.SELECTED);
     expect(state.cells).toEqual([getCellMeta(mockCell)]);
     expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
@@ -217,6 +219,7 @@ describe('RootInteraction Tests', () => {
 
   test('should call cancel mergedCell', () => {
     let mergedCell: MergedCell;
+
     rootInteraction.unmergeCell(mergedCell!);
     expect(unmergeCell).toHaveBeenCalled();
   });
@@ -310,6 +313,7 @@ describe('RootInteraction Tests', () => {
   describe('RootInteraction Change State', () => {
     test('should update cell style when update interaction state', () => {
       const cells = [mockCell, mockCell, mockCell];
+
       rootInteraction.changeState({
         cells: cells.map((item) => getCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
@@ -456,12 +460,14 @@ describe('RootInteraction Tests', () => {
 
     test('should get selected cell status', () => {
       const mockCellA = createMockCellInfo('cellA');
+
       expect(rootInteraction.isSelectedCell(mockCell)).toBeTruthy();
       expect(rootInteraction.isSelectedCell(mockCellA.mockCell)).toBeFalsy();
     });
 
     test('should get active cell status', () => {
       const mockCellA = createMockCellInfo('cellA');
+
       expect(rootInteraction.isActiveCell(mockCell)).toBeTruthy();
       expect(rootInteraction.isActiveCell(mockCellA.mockCell)).toBeFalsy();
     });

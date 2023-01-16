@@ -20,6 +20,7 @@ const s2Options: S2Options = {
 
 describe('Pagination Tests', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.render();
 
   test('should get correctly pagination scroll y if pagination.current is empty', () => {

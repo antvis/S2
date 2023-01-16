@@ -14,18 +14,21 @@ export interface BaseCellStyle {
    * 2. [动态计算] width: (node) => 100
    */
   width?: CellCustomSize;
+
   /**
    * 自定义高度
    * 1. [静态数值] height: 100
    * 2. [动态计算] height: (node) => 100
    */
   height?: CellCustomSize;
+
   /**
    * 自定义指定的单元格宽度
    * 1. 根据 field { city: 20, type: 100 }
    * 2. 根据 单元格 ID { 'root[&]杭州市': 20, 'root[&]类别': 100 }
    */
   widthByField?: Record<string, number> | null;
+
   /**
    * 自定义指定的单元格高度
    * 1. 根据 field { city: 20, type: 100 }
@@ -37,6 +40,7 @@ export interface BaseCellStyle {
 export interface DataCellStyle {
   width?: number;
   height?: number;
+
   /**
    * 多列数值配置
    */
@@ -55,10 +59,12 @@ export interface RowCellStyle extends BaseCellStyle {
    * 是否展示树状分层下的层级占位点
    */
   showTreeLeafNodeAlignDot?: boolean;
+
   /**
    * 收起所有 (对应角头收起展开按钮)
    */
   collapseAll?: boolean | null;
+
   /**
    * 折叠节点
    * 优先级大于 collapseAll 和 expandDepth
@@ -66,6 +72,7 @@ export interface RowCellStyle extends BaseCellStyle {
    * field 级别: { city: true, type: false } : 即 所有 city 对应的维值都会被折叠
    */
   collapseFields?: Record<string, boolean> | null;
+
   /**
    * 行头默认展开到第几层 (从 0 开始)
    */
@@ -84,14 +91,17 @@ export interface S2Style {
    * 布局类型
    */
   layoutWidthType?: LayoutWidthType;
+
   /**
    * 数值单元格配置
    */
   dataCell?: DataCellStyle | null;
+
   /**
    * 列头单元格配置
    */
   colCell?: ColCellStyle | null;
+
   /**
    * 行头单元格配置
    */

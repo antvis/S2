@@ -27,6 +27,7 @@ describe('Grid util test', () => {
           width: 50,
         },
       ] as Node[];
+
       expect(getColsForGrid(0, 1, colNodes)).toStrictEqual([50, 150]);
       expect(getColsForGrid(1, 3, colNodes)).toStrictEqual([150, 190, 240]);
     });
@@ -35,10 +36,9 @@ describe('Grid util test', () => {
   describe('getRowsForGrid', () => {
     it('should return correct range', () => {
       const viewCellHeights = {
-        getCellOffsetY: (index) => {
-          return index * 50;
-        },
+        getCellOffsetY: (index) => index * 50,
       } as ViewCellHeights;
+
       expect(getRowsForGrid(0, 3, viewCellHeights)).toStrictEqual([
         50, 100, 150, 200,
       ]);
@@ -48,11 +48,10 @@ describe('Grid util test', () => {
   describe('getFrozenRowsForGrid', () => {
     it('should return correct range', () => {
       const viewCellHeights = {
-        getCellOffsetY: (index) => {
-          return index * 50;
-        },
+        getCellOffsetY: (index) => index * 50,
       } as ViewCellHeights;
       const startY = 50;
+
       expect(getFrozenRowsForGrid(0, 3, startY, viewCellHeights)).toStrictEqual(
         [100, 150, 200, 250],
       );

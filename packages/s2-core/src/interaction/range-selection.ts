@@ -56,6 +56,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
         this.handleColClick(event);
       });
     }
+
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       this.handleColClick(event);
     });
@@ -78,6 +79,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
 
       if (!isShiftSelect) {
         this.spreadsheet.store.set('lastClickedCell', cell);
+
         return;
       }
 
@@ -89,14 +91,16 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       const cells = range(start.colIndex, end.colIndex + 1).flatMap((col) => {
         const cellIdSuffix =
           this.spreadsheet.facet.layoutResult.colLeafNodes[col].id;
+
         return range(start.rowIndex, end.rowIndex + 1).map((row) => {
           const cellIdPrefix =
             this.spreadsheet.facet.getSeriesNumberWidth() ||
             this.spreadsheet.isTableMode()
               ? String(row)
               : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
+
           return {
-            id: cellIdPrefix + '-' + cellIdSuffix,
+            id: `${cellIdPrefix}-${cellIdSuffix}`,
             colIndex: col,
             rowIndex: row,
             type: cell.cellType,
@@ -130,6 +134,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
       let selectedCells = [getCellMeta(cell!)];
       const lastCell = this.spreadsheet.store.get('lastClickedCell');
+
       // 处理shift区间多选
       if (
         this.isRangeSelection &&
@@ -142,6 +147,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
           this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
         ];
         const { start, end } = getRangeIndex(lastCell.getMeta(), meta);
+
         if (cell instanceof DataCell) {
           selectedCells = this.handleSeriesNumberRowSelected(
             start.rowIndex,
@@ -167,8 +173,11 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
             cell,
           );
         }
-        // 兼容行列多选
-        // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
+
+        /*
+         * 兼容行列多选
+         * Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
+         */
         interaction.changeState({
           cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
@@ -178,6 +187,7 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
       }
 
       const selectedCellIds = selectedCells.map(({ id }) => id);
+
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
       interaction.updateCells(
         interaction.getRowColActiveCells(selectedCellIds),
@@ -197,10 +207,12 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   ) {
     // table模式下序列号行头
     const cellIdSufFix = this.spreadsheet.facet.layoutResult.colLeafNodes[0].id;
+
     return range(startIndex, endIndex + 1).map((row) => {
       const cellIdPrefix = String(row);
+
       return {
-        id: cellIdPrefix + '-' + cellIdSufFix,
+        id: `${cellIdPrefix}-${cellIdSufFix}`,
         colIndex: 0,
         rowIndex: row,
         type: cell.cellType,
@@ -216,12 +228,14 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     // ROW_CELL类型 最后一个Level支持区间选择
     return this.spreadsheet.facet.layoutResult.rowNodes
       .filter(({ rowIndex }) => inRange(rowIndex, startIndex, endIndex + 1))
-      .map((e) => ({
-        id: e.id,
-        colIndex: e.colIndex,
-        rowIndex: e.rowIndex,
-        type: cell.cellType,
-      }));
+      .map((e) => {
+        return {
+          id: e.id,
+          colIndex: e.colIndex,
+          rowIndex: e.rowIndex,
+          type: cell.cellType,
+        };
+      });
   }
 
   private handleColSelected(
@@ -232,11 +246,13 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
     // COL_CELL类型 最后一个Level支持区间选择
     return this.spreadsheet.facet.layoutResult.colLeafNodes
       .filter(({ colIndex }) => inRange(colIndex, startIndex, endIndex + 1))
-      .map((e) => ({
-        id: e.id,
-        colIndex: e.colIndex,
-        rowIndex: e.rowIndex,
-        type: cell.cellType,
-      }));
+      .map((e) => {
+        return {
+          id: e.id,
+          colIndex: e.colIndex,
+          rowIndex: e.rowIndex,
+          type: cell.cellType,
+        };
+      });
   }
 }

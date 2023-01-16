@@ -29,6 +29,7 @@ export type ActionIconCallbackParams = {
   disabledFields?: string[];
   event?: GEvent;
 };
+
 /** 下钻 icon 点击回调 */
 export type ActionIconCallback = (params: ActionIconCallbackParams) => void;
 
@@ -52,6 +53,7 @@ export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
     [],
   ) as PartDrillDownDataCache[];
   const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
+
   return {
     drillDownDataCache,
     drillDownCurrentCache: cache,
@@ -75,6 +77,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
     ? [drillDownCurrentCache?.drillField]
     : [];
   const disabled: string[] = [];
+
   // 父节点已经下钻过的维度不应该再下钻
   drillDownDataCache.forEach((val) => {
     if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
@@ -84,6 +87,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
   if (event) {
     spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
   }
+
   callback({
     sheetInstance: spreadsheet,
     cacheDrillFields: cache,
@@ -102,8 +106,10 @@ const defaultPartDrillDownDisplayCondition = (meta: Node) => {
   const { fields } = s2.dataCfg;
   const iconLevel = size(fields.rows) - 1;
 
-  // 当 values 为空时, 会将 dataCfg.fields.valueInCols 强制置为 false, 导致下钻 icon 不显示
-  // 兼容初始 values 为空, 默认需要显示下钻 icon, 通过下钻动态改变 values 的场景  https://github.com/antvis/S2/issues/1514
+  /*
+   * 当 values 为空时, 会将 dataCfg.fields.valueInCols 强制置为 false, 导致下钻 icon 不显示
+   * 兼容初始 values 为空, 默认需要显示下钻 icon, 通过下钻动态改变 values 的场景  https://github.com/antvis/S2/issues/1514
+   */
   const isValueInCols = !isEmpty(fields.values) ? s2.isValueInCols() : true;
 
   // 只有数值置于列头且为树状分层结构时才支持下钻
@@ -140,6 +146,7 @@ export const buildDrillDownOptions = <T extends Omit<S2Options, 'tooltip'>>(
         partDrillDown.displayCondition || defaultPartDrillDownDisplayCondition,
       action: (actionIconProps: HeaderActionIconProps) => {
         const { iconName, meta, event } = actionIconProps;
+
         if (iconName === 'DrillDownIcon') {
           meta.spreadsheet.store.set('drillDownNode', meta);
           handleActionIconClick({
@@ -171,6 +178,7 @@ export const handleDrillDown = (params: DrillDownParams) => {
     meta,
   );
   let newDrillDownDataCache = clone(drillDownDataCache);
+
   // 如果当前节点已有下钻缓存，需要清除
   if (drillDownCurrentCache) {
     newDrillDownDataCache = filter(
@@ -178,11 +186,14 @@ export const handleDrillDown = (params: DrillDownParams) => {
       (cache) => cache.rowId !== meta.id,
     );
   }
+
   if (!fetchData) {
     return;
   }
+
   fetchData(meta, drillFields).then((info) => {
     const { drillData, drillField } = info;
+
     (spreadsheet.dataSet as PivotDataSet).transformDrillDownData(
       drillField,
       drillData,
@@ -198,6 +209,7 @@ export const handleDrillDown = (params: DrillDownParams) => {
         drillData,
         drillField,
       };
+
       newDrillDownDataCache.push(newDrillDownData);
       spreadsheet.store.set('drillDownDataCache', newDrillDownDataCache);
     }

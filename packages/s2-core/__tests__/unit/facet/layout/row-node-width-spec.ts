@@ -10,6 +10,7 @@ const s2options: S2Options = {
 
 describe('Row width Test in grid mode', () => {
   let s2: PivotSheet;
+
   beforeEach(() => {
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
     s2.render();
@@ -17,6 +18,7 @@ describe('Row width Test in grid mode', () => {
 
   test('get the correct custom width of row nodes when the layoutWidthType equals adaptive', () => {
     const { rowNodes } = s2.facet.layoutResult;
+
     expect(Math.round(rowNodes[0].width)).toBe(266);
   });
 
@@ -29,6 +31,7 @@ describe('Row width Test in grid mode', () => {
     });
     s2.render();
     const { rowNodes } = s2.facet.layoutResult;
+
     expect(rowNodes[0].width).toBe(50);
   });
 
@@ -41,6 +44,7 @@ describe('Row width Test in grid mode', () => {
     });
     s2.render();
     const { rowNodes } = s2.facet.layoutResult;
+
     expect(rowNodes[0].width).toBe(20);
   });
 });

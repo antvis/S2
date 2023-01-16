@@ -15,6 +15,7 @@ export const getTableColIconsWidth = (
   const iconMargin = iconStyle?.margin!;
 
   let iconCount = 0;
+
   if (s2.options.showDefaultHeaderActionIcon) {
     iconCount = 1;
   } else {
@@ -40,10 +41,12 @@ export const getExtraPaddingForExpandIcon = (
 
   let hasPrevSiblingCell = false;
   let hasNextSiblingCell = false;
+
   hiddenColumnsDetail.forEach((column) => {
     if (column?.displaySiblingNode?.prev?.field === field) {
       hasPrevSiblingCell = true;
     }
+
     if (column?.displaySiblingNode?.next?.field === field) {
       hasNextSiblingCell = true;
     }

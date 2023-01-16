@@ -36,6 +36,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (!this.isCanvasEffect()) {
           return;
         }
+
         const isShift = event.shiftKey;
         const isMeta = event.metaKey;
         const hasDirection = SelectedCellMoveMap.includes(
@@ -67,6 +68,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
             isJumpMode = false;
             isSingleSelection = true;
           }
+
           this.handleMove({
             event,
             changeStartCell,
@@ -79,6 +81,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       const cell = this.spreadsheet.getCell(event.target);
       const cellMeta = cell?.getMeta() as ViewMeta;
+
       if (cellMeta) {
         this.startCell = this.getCellMetaByViewMeta(cellMeta);
         this.endCell = this.startCell;
@@ -110,19 +113,24 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { spreadsheet, startCell, endCell } = this;
     const cell = changeStartCell ? startCell : endCell;
     const rowCol = this.getMoveInfo(event.key, cell, isJumpMode);
+
     if (!rowCol) {
       return;
     }
+
     const [rowIndex, colIndex] = [rowCol.row, rowCol.col];
+
     this.scrollToActiveCell(spreadsheet, rowIndex, colIndex);
     const movedCell = this.generateCellMeta(spreadsheet, rowIndex, colIndex);
     const selectedCells = isSingleSelection
       ? [movedCell]
       : this.getRangeCells(spreadsheet, startCell!, movedCell);
+
     selectCells(spreadsheet, selectedCells);
     if (changeStartCell) {
       this.startCell = movedCell;
     }
+
     this.endCell = movedCell;
     this.spreadsheet.emit(S2Event.DATA_CELL_SELECT_MOVE, selectedCells);
   }
@@ -155,11 +163,13 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       end: { rowIndex: endRowIndex, colIndex: endColIndex },
     } = getRangeIndex(startCell, endCell);
     const cells: CellMeta[] = [];
+
     for (let row = startRowIndex; row <= endRowIndex; row++) {
       for (let col = startColIndex; col <= endColIndex; col++) {
         cells.push(this.generateCellMeta(spreadsheet, row, col));
       }
     }
+
     return cells;
   }
 
@@ -185,6 +195,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         frozenTrailingRowCount -
         1,
     ];
+
     if (!cell) {
       return;
     }
@@ -194,6 +205,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (cell.colIndex + 1 > maxCol) {
           return;
         }
+
         return {
           row: cell.rowIndex,
           col: isJump ? maxCol : cell.colIndex + 1,
@@ -202,6 +214,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (cell.colIndex - 1 < minCol) {
           return;
         }
+
         return {
           row: cell.rowIndex,
           col: isJump ? minCol : cell.colIndex - 1,
@@ -210,6 +223,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (cell.rowIndex - 1 < minRow) {
           return;
         }
+
         return {
           row: isJump ? minRow : cell.rowIndex - 1,
           col: cell.colIndex,
@@ -218,6 +232,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (cell.rowIndex + 1 > maxRow) {
           return;
         }
+
         return {
           row: isJump ? maxRow : cell.rowIndex + 1,
           col: cell.colIndex,
@@ -268,25 +283,26 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
       ? Math.floor(frozenTrailingRowGroup.getBBox().height)
       : 0;
 
-    const indexes = calculateInViewIndexes(
+    const indexes = calculateInViewIndexes({
       scrollX,
       scrollY,
-      facet.viewCellWidths,
-      facet.viewCellHeights,
-      {
+      widths: facet.viewCellWidths,
+      heights: facet.viewCellHeights,
+      viewport: {
         width: width - frozenColWidth - frozenTrailingColWidth,
         height: height - frozenRowHeight - frozenTrailingRowHeight,
         x: frozenColWidth,
         y: frozenRowHeight,
       },
-      facet.getRealScrollX(facet.cornerBBox.width),
-    );
+      rowRemainWidth: facet.getRealScrollX(facet.cornerBBox.width),
+    });
 
     // 小于0的初始值
     let offsetX = -1;
     let offsetY = -1;
 
     const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
+
     // offsetX
     if (colIndex <= indexes[0]) {
       // scroll left
@@ -307,8 +323,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     } else if (rowIndex >= indexes[3]) {
       // scroll bottom
       const y = facet.viewCellHeights.getCellOffsetY(rowIndex + 1);
+
       offsetY = y + frozenTrailingRowHeight - height;
     }
+
     return { offsetX, offsetY };
   }
 
@@ -324,6 +342,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     );
     const { facet } = spreadsheet;
     const { scrollX, scrollY } = spreadsheet.facet.getScrollOffset();
+
     facet.scrollWithAnimation({
       offsetX: { value: offsetX > -1 ? offsetX : scrollX },
       offsetY: { value: offsetY > -1 ? offsetY : scrollY },

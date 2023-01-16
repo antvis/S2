@@ -9,6 +9,7 @@ export interface BaseNodeConfig {
    * id 只在行头、列头 node 以及 hierarchy 中有用，是当前 node query 的拼接产物
    */
   id: string;
+
   /**
    * 当前 node 的 field 属性， 在角头、行列头中 node 使用，和 dataCfg.fields 对应
    */
@@ -181,12 +182,15 @@ export class Node {
       // total nodes don't need rows from node self except in drill down mode
       let parent = node.parent;
       const fieldPath = [node.field];
+
       while (parent && parent.id !== ROOT_NODE_ID) {
         fieldPath.push(parent.field);
         parent = parent.parent;
       }
+
       return fieldPath.reverse();
     }
+
     return [];
   }
 
@@ -204,20 +208,25 @@ export class Node {
    */
   public static getAllLeaveNodes(node: Node): Node[] {
     const leaves: Node[] = [];
+
     if (node.isLeaf) {
       return [node];
     }
+
     // current root node children
     const nodes = [...node.children];
     let current = nodes.shift();
+
     while (current) {
       if (current.isLeaf) {
         leaves.push(current);
       } else {
         nodes.unshift(...current.children);
       }
+
       current = nodes.shift();
     }
+
     return leaves;
   }
 
@@ -235,17 +244,21 @@ export class Node {
    */
   public static getAllChildrenNodes(node: Node): Node[] {
     const all: Node[] = [];
+
     if (node.isLeaf) {
       return [node];
     }
+
     // current root node children
     const nodes = [...(node.children || [])];
     let current = nodes.shift();
+
     while (current) {
       all.push(current);
       nodes.unshift(...current.children);
       current = nodes.shift();
     }
+
     return all;
   }
 
@@ -266,21 +279,25 @@ export class Node {
     const leaves = this.getAllLeaveNodes(parent);
     let current = leaves.shift();
     let tempBranch = [];
+
     while (current) {
       tempBranch.unshift(current);
       let pa = current.parent;
+
       while (pa) {
         if (!isEqual(pa, parent)) {
           tempBranch.unshift(pa);
         } else {
           break;
         }
+
         pa = pa.parent;
       }
       all.push(tempBranch);
       current = leaves.shift();
       tempBranch = [];
     }
+
     return all;
   }
 
@@ -303,19 +320,23 @@ export class Node {
   public getHeadLeafChild() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let leafChild: Node | undefined = this;
+
     while (!isEmpty(leafChild?.children)) {
       leafChild = head(leafChild?.children);
     }
+
     return leafChild;
   }
 
   /**
    * 获取树状模式下，当前节点以及其所有子节点的高度总和
-   * */
+   *
+   */
   public getTotalHeightForTreeHierarchy(): number {
     if (this.height === 0 || isEmpty(this.children)) {
       return this.height;
     }
+
     return this.children.reduce(
       (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
       this.height,

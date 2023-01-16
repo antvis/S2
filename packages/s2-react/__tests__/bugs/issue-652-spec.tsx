@@ -41,6 +41,7 @@ describe('SheetComponent Correct Render Tests', () => {
     { sheetType: 'gridAnalysis', adaptive: true },
     { sheetType: 'editable', adaptive: true },
   ];
+
   test.each(sheets)(
     'should correct render %o with empty options',
     ({ sheetType, adaptive }) => {

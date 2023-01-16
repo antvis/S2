@@ -12,6 +12,7 @@ const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('Condition State Controller Test', () => {
   let mockInstance: SpreadSheet;
+
   beforeEach(() => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();

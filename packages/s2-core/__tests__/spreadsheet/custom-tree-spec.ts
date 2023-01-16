@@ -27,17 +27,17 @@ const s2Options: S2Options = {
 describe('SpreadSheet Custom Tree Tests', () => {
   let s2: SpreadSheet;
 
-  const getCornerCellLabels = () => {
-    return (s2.facet as any)
+  const getCornerCellLabels = () =>
+    (s2.facet as any)
       .getCornerHeader()
       .getChildren()
       .map((cell: HeaderCell) => cell.getActualText());
-  };
 
   const mapRowNodes = (spreadsheet: SpreadSheet) =>
     spreadsheet.getRowLeafNodes().map((node) => {
       const iconName = (node.belongsCell as HeaderCell).getTreeIcon()?.config
         .name;
+
       return {
         id: node.id,
         iconName,
@@ -86,20 +86,26 @@ describe('SpreadSheet Custom Tree Tests', () => {
   });
 
   test('should render custom layout row nodes', () => {
-    const rowNodes = s2.getRowNodes().map((node) => ({
-      value: node.value,
-      width: node.width,
-      height: node.height,
-      description: node.extra?.['description'],
-    }));
+    const rowNodes = s2.getRowNodes().map((node) => {
+      return {
+        value: node.value,
+        width: node.width,
+        height: node.height,
+        description: node.extra?.['description'],
+      };
+    });
+
     expect(rowNodes).toMatchSnapshot();
   });
 
   test('should calc correctly row index of leaf nodes', () => {
-    const rowLeafNodes = s2.getRowLeafNodes().map((node) => ({
-      value: node.value,
-      rowIndex: node.rowIndex,
-    }));
+    const rowLeafNodes = s2.getRowLeafNodes().map((node) => {
+      return {
+        value: node.value,
+        rowIndex: node.rowIndex,
+      };
+    });
+
     expect(rowLeafNodes).toMatchSnapshot();
   });
 

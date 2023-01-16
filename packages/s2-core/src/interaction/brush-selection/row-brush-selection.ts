@@ -122,7 +122,6 @@ export class RowBrushSelection extends BaseBrushSelection {
     ]);
   }
 
-  protected onUpdateCells: OnUpdateCells = (root) => {
-    return root.updateCells(root.getAllRowHeaderCells());
-  };
+  protected onUpdateCells: OnUpdateCells = (root) =>
+    root.updateCells(root.getAllRowHeaderCells());
 }

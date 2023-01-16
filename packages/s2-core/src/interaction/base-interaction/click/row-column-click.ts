@@ -100,15 +100,18 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       this.spreadsheet,
       event,
     )!;
+
     if (!showTooltip) {
       return;
     }
+
     const { interaction } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
     const operator = this.getTooltipOperator(event, operation!);
+
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
       operator,
@@ -157,9 +160,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getHideColumnField = (node: Node | ViewMeta) => {
-    return this.spreadsheet.isTableMode() ? node.field : node.id;
-  };
+  private getHideColumnField = (node: Node | ViewMeta) =>
+    this.spreadsheet.isTableMode() ? node.field : node.id;
 
   /**
    * 隐藏选中的列
@@ -181,6 +183,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const selectedColumnFields = selectedColumnNodes.map(
       this.getHideColumnField,
     ) as string[];
+
     // 兼容多选
     hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }

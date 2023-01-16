@@ -4,8 +4,11 @@ export const RESIZE_MASK_ID = 'RESIZE_MASK';
 
 // resize时鼠标移动方向类型
 export enum ResizeDirectionType {
-  Horizontal = 'col', // 水平方向resize
-  Vertical = 'row', // 垂直方向resize
+  /** 水平方向 resize */
+  Horizontal = 'col',
+
+  /** 垂直方向 resize */
+  Vertical = 'row',
 }
 
 export enum ResizeAreaEffect {

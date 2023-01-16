@@ -33,6 +33,7 @@ describe('Group Sort When Have Same Child Measure', () => {
   beforeEach(() => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
+
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });

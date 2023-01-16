@@ -46,9 +46,11 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   };
 
   const startBrushDataCell = new MockDataCell();
+
   startBrushDataCell.getMeta = () => startBrushDataCellMeta as ViewMeta;
 
   const endBrushDataCell = new MockDataCell();
+
   endBrushDataCell.getMeta = () => endBrushDataCellMeta as ViewMeta;
 
   const panelGroupAllDataCells = Array.from<number[]>({ length: 4 })
@@ -64,8 +66,10 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
             } as ViewMeta;
           },
         } as DataCell;
+
         arr.push(cell);
       });
+
       return arr;
     }, []);
 
@@ -97,12 +101,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
-    mockRootInteraction.getSelectedCellHighlight = () => ({
-      rowHeader: false,
-      colHeader: false,
-      currentRow: false,
-      currentCol: false,
-    });
+    mockRootInteraction.getSelectedCellHighlight = () => {
+      return {
+        rowHeader: false,
+        colHeader: false,
+        currentRow: false,
+        currentCol: false,
+      };
+    };
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.render();
     mockSpreadSheetInstance.facet.foregroundGroup = new Group();
@@ -144,12 +150,14 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     mockSpreadSheetInstance.setOptions({
       interaction: { selectedCellHighlight: true },
     });
-    mockRootInteraction.getSelectedCellHighlight = () => ({
-      rowHeader: true,
-      colHeader: true,
-      currentRow: false,
-      currentCol: false,
-    });
+    mockRootInteraction.getSelectedCellHighlight = () => {
+      return {
+        rowHeader: true,
+        colHeader: true,
+        currentRow: false,
+        currentCol: false,
+      };
+    };
 
     brushSelectionInstance.getBrushRange = () => {
       return {
@@ -215,6 +223,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const domRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: domRect.left + 12,
@@ -254,6 +263,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const domRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     //  全局事件，需要用全局坐标
     emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: domRect.left + 100,
@@ -293,6 +303,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     expect(brushSelectionInstance.brushRangeCells).toHaveLength(15);
     brushSelectionInstance.brushRangeCells.forEach((cell) => {
       const { rowIndex, colIndex } = cell.getMeta();
+
       expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex!);
       expect(rowIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.rowIndex!);
       expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex!);
@@ -311,6 +322,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
     const minY = 10;
     const maxY = height + 10;
     const maxX = width + 10;
+
     mockSpreadSheetInstance.facet.panelBBox = {
       minX,
       minY,
@@ -413,6 +425,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
   test('should get correct adjusted frozen rowIndex and colIndex', () => {
     const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
       brushSelectionInstance;
+
     mockSpreadSheetInstance.setOptions({
       frozen: {
         colCount: 1,
@@ -421,11 +434,10 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
         trailingRowCount: 1,
       },
     });
-    mockSpreadSheetInstance.dataSet.getDisplayDataSet = () => {
-      return Array.from(new Array(10)).map(() => {
+    mockSpreadSheetInstance.dataSet.getDisplayDataSet = () =>
+      Array.from(new Array(10)).map(() => {
         return {};
       });
-    };
     (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
       1, 8, 1, 8,
     ];
@@ -441,6 +453,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
   test('should get correct scroll offset for row and col', () => {
     const { facet } = mockSpreadSheetInstance;
+
     expect(
       getScrollOffsetForCol(
         7,
@@ -539,6 +552,7 @@ describe('Interaction Data Cell Brush Selection Tests', () => {
 
   test('should get valid x and y index', () => {
     const { validateXIndex, validateYIndex } = brushSelectionInstance;
+
     expect(validateXIndex(-1)).toBe(null);
     expect(validateXIndex(1)).toBe(1);
     expect(validateXIndex(10)).toBe(null);

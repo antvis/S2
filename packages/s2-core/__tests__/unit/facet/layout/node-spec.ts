@@ -12,6 +12,7 @@ describe('Node Test', () => {
     field: 'country',
     parent: root,
   });
+
   test('should get correct field path', () => {
     expect(Node.getFieldPath(node)).toEqual(['country']);
   });

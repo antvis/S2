@@ -30,6 +30,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
   const allRowHeaderCells = map(new Array(8), (a, i) => {
     const customY = 30 * i + 30;
+
     return {
       cellType: CellTypes.ROW_CELL,
       getMeta() {
@@ -141,6 +142,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
       clientY: canvasRect.top + 330,
       clientX: canvasRect.left + 160,
@@ -166,6 +168,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
       clientY: canvasRect.top + 14,
       clientX: canvasRect.left + 94,
@@ -202,6 +205,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
       clientX: canvasRect.left + 180,
       clientY: canvasRect.top + 400,
@@ -275,6 +279,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     const canvasRect = mockSpreadSheetInstance
       .getCanvasElement()
       .getBoundingClientRect();
+
     emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
       clientX: canvasRect.left + 150,
       clientY: canvasRect.top + 400,

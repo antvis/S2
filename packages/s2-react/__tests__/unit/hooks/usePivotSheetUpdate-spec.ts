@@ -57,6 +57,7 @@ describe('usePivotSheetUpdate tests', () => {
       reloadData: false,
       reBuildDataSet: false,
     });
+
     expect(callbackResult).toEqual({ reloadData: true, reBuildDataSet: false });
 
     // 执行第二次，reload 为 false

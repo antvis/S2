@@ -65,6 +65,7 @@ export abstract class BaseDataSet {
 
   private getField = (field: CustomHeaderField): string => {
     const realField = isString(field) ? field : field?.field;
+
     return realField || (field as string);
   };
 
@@ -74,6 +75,7 @@ export abstract class BaseDataSet {
   public getFieldMeta = memoize(
     (field: CustomHeaderField, meta?: Meta[]): Meta | undefined => {
       const realField = this.getField(field);
+
       return find(this.meta || meta, { field: realField });
     },
   );
@@ -104,6 +106,7 @@ export abstract class BaseDataSet {
     if (!cell) {
       return;
     }
+
     const meta = cell.getMeta?.();
 
     // 数值单元格, 根据 rowIndex 匹配所对应的行头单元格名字
@@ -111,6 +114,7 @@ export abstract class BaseDataSet {
       const row = find(this.spreadsheet.getRowNodes(), {
         rowIndex: meta?.rowIndex,
       });
+
       return row?.value || this.getFieldName(row?.field as CustomHeaderField);
     }
 
@@ -133,6 +137,7 @@ export abstract class BaseDataSet {
     }
 
     const meta = cell.getMeta?.();
+
     if (meta?.isTotals) {
       return;
     }
@@ -142,6 +147,7 @@ export abstract class BaseDataSet {
       const currentMeta = find(meta?.spreadsheet.dataCfg.meta, {
         field: meta?.field || meta?.value || meta?.valueField,
       });
+
       return this.getFieldDescription(currentMeta?.field as CustomHeaderField);
     }
 
@@ -158,6 +164,7 @@ export abstract class BaseDataSet {
    */
   public getFieldFormatter(field: CustomHeaderField): Formatter {
     const realField = this.getField(field);
+
     return get(this.getFieldMeta(realField, this.meta), 'formatter', identity);
   }
 
@@ -167,6 +174,7 @@ export abstract class BaseDataSet {
    */
   public getFieldDescription(field: CustomHeaderField): string | undefined {
     const realField = this.getField(field);
+
     return get(this.getFieldMeta(realField, this.meta), 'description');
   }
 
@@ -174,6 +182,7 @@ export abstract class BaseDataSet {
     this.getFieldMeta?.cache?.clear?.();
     const { fields, meta, data, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
+
     this.fields = fields;
     this.meta = meta!;
     this.originData = data;
@@ -189,12 +198,15 @@ export abstract class BaseDataSet {
 
   public getValueRangeByField(field: string): ValueRange {
     const cacheRange = getValueRangeState(this.spreadsheet, field);
+
     if (cacheRange) {
       return cacheRange;
     }
+
     const fieldValues = compact(
       map(this.originData, (item) => {
         const value = item[field] as string;
+
         return isNil(value) ? null : Number.parseFloat(value);
       }),
     );
@@ -202,9 +214,11 @@ export abstract class BaseDataSet {
       maxValue: max(fieldValues),
       minValue: min(fieldValues),
     };
+
     setValueRangeState(this.spreadsheet, {
       [field]: range,
     });
+
     return range;
   }
 

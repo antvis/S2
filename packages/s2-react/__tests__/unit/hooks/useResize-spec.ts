@@ -49,6 +49,7 @@ describe('useResize tests', () => {
     rerender();
     // adaptive 为 false 时，options.width、 options.height 修改, 不会触发 useResize 中的 render
     const canvas = s2.getCanvasElement();
+
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
 

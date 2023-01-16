@@ -16,6 +16,7 @@ export const getActiveHoverRowColCells = (
 ) => {
   let allHeaderIds: string[];
   const ids = id.split(NODE_ID_SEPARATOR);
+
   if (isRowInHierarchyTreeType) {
     allHeaderIds = [id];
   } else {
@@ -28,6 +29,7 @@ export const getActiveHoverRowColCells = (
   const allHeaderCells = filter(headerCells, (cell: ColCell | RowCell) =>
     allHeaderIds.includes(cell.getMeta()?.id),
   );
+
   return allHeaderCells;
 };
 
@@ -38,6 +40,7 @@ export const updateAllColHeaderCellState = (
 ) => {
   if (colId) {
     const allColHeaderCells = getActiveHoverRowColCells(colId, colHeaderCells);
+
     forEach(allColHeaderCells, (cell) => {
       cell.updateByState(stateName);
     });

@@ -80,12 +80,14 @@ describe('Manual Sort Tests', () => {
 
   beforeAll(() => {
     const container = getContainer();
+
     s2 = new PivotSheet(container, mockDataCfg, s2Options);
     s2.render();
   });
 
   test('getDimensionValues should include correct values', () => {
     const sortedType1 = s2.dataSet.getDimensionValues('type1', {});
+
     expect(sortedType1).toEqual(['整体访问', '小程序访问', '支付宝访问']);
 
     expect(

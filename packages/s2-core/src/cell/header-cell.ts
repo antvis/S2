@@ -53,7 +53,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams || [];
-    const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
+    // 改单元格是否为需要展示排序 icon 单元格
+    const isSortCell = this.isSortCell();
     const sortParam = find(
       [...sortParams].reverse(),
       (item) =>
@@ -114,6 +115,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (options.showDefaultHeaderActionIcon && !isEmptyValues) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
+
       // sortParam的query，和type本身可能会 undefined
       return (
         query &&
@@ -130,16 +132,21 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (this.showSortIcon()) {
       return 1;
     }
+
     const actionIconCfg = this.getActionIconCfg();
+
     if (actionIconCfg) {
       const iconNames = actionIconCfg.iconNames;
+
       return iconNames.length;
     }
+
     return 0;
   }
 
   protected getActionIconsWidth() {
     const { size, margin } = this.getStyle()!.icon!;
+
     return (size! + margin!.left!) * this.getActionIconsCount();
   }
 
@@ -160,6 +167,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: icon!.size,
       fill,
     });
+
     sortIcon.addEventListener('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       this.spreadsheet.handleGroupSort(event, this.meta);
@@ -225,10 +233,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected drawActionIcons() {
     if (this.showSortIcon()) {
       this.drawSortIcons();
+
       return;
     }
 
     const actionIconCfg = this.getActionIconCfg();
+
     if (!actionIconCfg) {
       return;
     }
@@ -238,6 +248,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const position = this.getIconPosition(iconNames.length);
 
     const { size, margin } = this.getStyle()!.icon!;
+
     forEach(iconNames, (iconName, i) => {
       const x = position.x + i * size! + i * margin!.left!;
       const y = position.y;
@@ -246,6 +257,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         typeof defaultHide === 'function'
           ? defaultHide(this.meta, iconName)
           : defaultHide;
+
       if (iconDefaultHide) {
         this.hasDefaultHiddenIcon = true;
       }
@@ -265,9 +277,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
     // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
     const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
     const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
+
     if (isValueInCols) {
       return isMaxLevel && this.cellType === CellTypes.COL_CELL;
     }
+
     return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
   }
 
@@ -284,10 +298,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (!includeCell(cells, this)) {
       return;
     }
+
     const targetCell = find(
       cells,
       (cell: CellMeta) => cell?.['isTarget'],
     ) as CellMeta;
+
     if (targetCell.id === this.getMeta().id) {
       this.updateByState(InteractionStateName.HIGHLIGHT);
     } else {
@@ -311,6 +327,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
 
     const selectedNodeIds = map(nodes, 'id');
+
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
@@ -319,6 +336,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected getTextStyle(): TextTheme {
     const { text, bolderText, measureText } = this.getStyle()!;
     let style: TextTheme | undefined;
+
     if (this.isMeasureField()) {
       style = measureText || text;
     } else if (this.isBolderText()) {
@@ -326,6 +344,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     } else {
       style = text;
     }
+
     const fill = this.getTextConditionFill(style!);
 
     return { ...style, fill };
@@ -337,18 +356,22 @@ export abstract class HeaderCell extends BaseCell<Node> {
     let fill = backgroundColor;
     // get background condition fill color
     const bgCondition = this.findFieldCondition(this.conditions?.background!);
+
     if (bgCondition?.mapping!) {
       const attrs = this.mappingValue(bgCondition);
+
       if (attrs) {
         fill = attrs.fill;
       }
     }
+
     return { backgroundColor: fill, backgroundColorOpacity };
   }
 
   public toggleActionIcon(id: string) {
     if (this.getMeta().id === id) {
       const visibleActionIcons: GuiIcon[] = [];
+
       forEach(this.actionIcons, (icon) => {
         // 仅存储当前不可见的 icon
         if (icon.parsedStyle.visibility !== 'visible') {
@@ -403,15 +426,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public mappingValue(condition: Condition): MappingResult {
     const value = this.getMeta().value;
+
     return condition?.mapping(value, this.meta)!;
   }
 
   public findFieldCondition(conditions: Condition[]): Condition | undefined {
-    return findLast(conditions, (item) => {
-      return item.field instanceof RegExp
+    return findLast(conditions, (item) =>
+      item.field instanceof RegExp
         ? item.field.test(this.meta.field)
-        : item.field === this.meta.field;
-    });
+        : item.field === this.meta.field,
+    );
   }
 
   public getTreeIcon() {

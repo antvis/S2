@@ -52,6 +52,7 @@ describe('Interaction Multi Selection Tests', () => {
       .filter((cell) => {
         const targetCellMeta = colRootCell.getMeta();
         const meta = cell.getMeta();
+
         return meta.colIndex === targetCellMeta.colIndex;
       })
       .forEach((cell) => {
@@ -73,10 +74,12 @@ describe('Interaction Multi Selection Tests', () => {
 
   // https://github.com/antvis/S2/pull/1419
   test('should always get leaf nodes at multiple row level more than 2', () => {
-    const data = mockDataConfig.data.map((item) => ({
-      ...item,
-      country: '中国',
-    }));
+    const data = mockDataConfig.data.map((item) => {
+      return {
+        ...item,
+        country: '中国',
+      };
+    });
 
     s2.setDataCfg({
       fields: {
@@ -105,10 +108,12 @@ describe('Interaction Multi Selection Tests', () => {
   });
 
   test('should always get leaf nodes at multiple column level more than 2', () => {
-    const data = mockDataConfig.data.map((item) => ({
-      ...item,
-      country: '中国',
-    }));
+    const data = mockDataConfig.data.map((item) => {
+      return {
+        ...item,
+        country: '中国',
+      };
+    });
 
     s2.setDataCfg({
       fields: {

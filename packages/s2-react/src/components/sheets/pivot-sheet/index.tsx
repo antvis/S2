@@ -33,9 +33,11 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
 
         if (event) {
           const { showTooltip } = getTooltipOptions(sheetInstance, event)!;
+
           if (!showTooltip) {
             return;
           }
+
           sheetInstance.showTooltip<React.ReactNode>({
             position: {
               x: event.clientX,
@@ -48,13 +50,15 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     );
 
     /** 基于 props.options 来构造新的 options 传递给 base-sheet */
-    const options = React.useMemo(() => {
-      return buildDrillDownOptions<SheetComponentOptions>(
-        pivotOptions!,
-        partDrillDown!,
-        (params) => onDrillDownIconClick.current(params),
-      );
-    }, [pivotOptions, partDrillDown, onDrillDownIconClick]);
+    const options = React.useMemo(
+      () =>
+        buildDrillDownOptions<SheetComponentOptions>(
+          pivotOptions!,
+          partDrillDown!,
+          (params) => onDrillDownIconClick.current(params),
+        ),
+      [pivotOptions, partDrillDown, onDrillDownIconClick],
+    );
 
     /**
      * 清空下钻信息
@@ -89,6 +93,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       if (!isObject(partDrillDown?.clearDrillDown)) {
         return;
       }
+
       clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
     }, [partDrillDown?.clearDrillDown]);
 

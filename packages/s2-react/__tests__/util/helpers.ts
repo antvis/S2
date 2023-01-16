@@ -28,13 +28,16 @@ export const parseCSV = (csv: string, header?: string[]) => {
 
 export const getMockData = (dataPath: string) => {
   const data = fs.readFileSync(path.resolve(__dirname, dataPath), 'utf8');
+
   return parseCSV(data);
 };
 
 export const getContainer = () => {
   const rootContainer = document.createElement('div');
+
   rootContainer.setAttribute('style', 'margin-left: 32px');
   document.body.appendChild(rootContainer);
+
   return rootContainer;
 };
 
@@ -54,8 +57,10 @@ export const createFakeSpreadSheet = () => {
   }
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
+
   s2.options = DEFAULT_OPTIONS;
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
+
   s2.store = new Store();
   s2.interaction = interaction;
   s2.tooltip = {
@@ -83,6 +88,7 @@ export function getGradient(
     const r = parseInt(color.substring(0, 2), 16);
     const g = parseInt(color.substring(2, 4), 16);
     const b = parseInt(color.substring(4, 6), 16);
+
     return [r, g, b];
   }
   const start = toGgb(startColor);
@@ -90,11 +96,13 @@ export function getGradient(
   const r = start[0] + (end[0] - start[0]) * rate;
   const g = start[1] + (end[1] - start[1]) * rate;
   const b = start[2] + (end[2] - start[2]) * rate;
+
   return `rgb(${r},${g},${b})`;
 }
 
 export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
   const instance = Object.create(Sheet.prototype);
+
   return instance as unknown as SpreadSheet;
 }
 

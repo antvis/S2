@@ -2,7 +2,6 @@
  * @description spec for issue #594
  * https://github.com/antvis/S2/issues/594
  * Wrong ref when sheet type changed
- *
  */
 import React, { type MutableRefObject } from 'react';
 import ReactDOM from 'react-dom';

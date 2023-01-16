@@ -5,12 +5,11 @@ export const getSubTotalNodeWidthOrHeightByLevel = (
   sampleNodesForAllLevels: Node[],
   level: number,
   key: 'width' | 'height',
-) => {
-  return sampleNodesForAllLevels
+) =>
+  sampleNodesForAllLevels
     .filter((node: Node) => node.level >= level)
     .map((value) => value[key])
     .reduce((sum, current) => sum + current, 0);
-};
 
 /**
  * 根据视窗高度计算需要展示的数据数组下标
@@ -36,6 +35,7 @@ export const getIndexRangeWithOffsets = (
     heights,
     (height: number, idx: number) => {
       const y = minHeight;
+
       return y >= height && y < heights[idx + 1];
     },
     0,
@@ -50,10 +50,12 @@ export const getIndexRangeWithOffsets = (
           heights,
           (height: number, idx: number) => {
             const y = maxHeight;
+
             return y > height && y <= heights[idx + 1];
           },
           yMin,
         );
+
   yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
 
   return {
@@ -76,6 +78,7 @@ export const getAdjustedRowScrollX = (
   if (scrollX < 0) {
     return 0;
   }
+
   return scrollX;
 };
 
@@ -85,8 +88,10 @@ export const getAdjustedScrollOffset = (
   containerLength: number,
 ): number => {
   const offset = Math.min(contentLength - containerLength, scrollY);
+
   if (offset < 0) {
     return 0;
   }
+
   return offset;
 };

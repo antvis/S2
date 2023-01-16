@@ -1,16 +1,15 @@
+import {
+  auto,
+  PivotSheet,
+  type RawData,
+  type S2DataConfig,
+  type S2MountContainer,
+  type S2Options,
+} from '@antv/s2';
 import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import {
-  auto,
-  type S2DataConfig,
-  type S2Options,
-  PivotSheet,
-  type RawData,
-  DeviceType,
-  type S2MountContainer,
-} from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetComponent, type SheetComponentsProps } from '@/components';
 
@@ -31,9 +30,7 @@ const onMounted = (
   dom: S2MountContainer,
   dataCfg: S2DataConfig,
   options: SheetComponentsProps['options'],
-) => {
-  return new PivotSheet(dom, dataCfg, options as S2Options);
-};
+) => new PivotSheet(dom, dataCfg, options as S2Options);
 
 const getDataCfg = (): S2DataConfig => {
   return {
@@ -95,7 +92,6 @@ const getOptions = (): SheetComponentsProps['options'] => {
     tooltip: {
       showTooltip: true,
     },
-    device: DeviceType.PC,
   };
 };
 

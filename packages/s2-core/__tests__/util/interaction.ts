@@ -13,20 +13,17 @@ export const expectHighlightActiveNodes = (
 ) => {
   const state = s2.interaction.getState();
   const nodeIds = state.nodes?.map((node) => node.id);
+
   expect(nodeIds).toEqual(ids);
 };
 
 export const getSelectedCount = (
   summaries: TooltipSummaryOptions[] | undefined,
-) => {
-  return sumBy(summaries, (item) => size(item?.selectedData));
-};
+) => sumBy(summaries, (item) => size(item?.selectedData));
 
 export const getSelectedSum = (
   summaries: TooltipSummaryOptions[] | undefined,
-) => {
-  return sumBy(summaries, 'value');
-};
+) => sumBy(summaries, 'value');
 
 export const getTestTooltipData = (s2: SpreadSheet, cell: S2CellType) => {
   const cellInfos = mergeCellInfo(s2.interaction.getActiveCells());

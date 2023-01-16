@@ -16,6 +16,7 @@ describe('Facet util test', () => {
         level: 0,
       },
     ];
+
     expect(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -26,6 +27,7 @@ describe('Facet util test', () => {
 
   test('should get correct index range for given offsets', () => {
     const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+
     expect(getIndexRangeWithOffsets(offsets, 0, 31)).toStrictEqual({
       start: 0,
       end: 1,
@@ -49,6 +51,7 @@ describe('Facet util test', () => {
 
   test('should get correct index range for invalid input', () => {
     const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+
     expect(getIndexRangeWithOffsets(offsets, 0, -10)).toStrictEqual({
       start: 0,
       end: 0,
@@ -57,6 +60,7 @@ describe('Facet util test', () => {
 
   test('should get correct index range with equal min and max height', () => {
     const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+
     expect(getIndexRangeWithOffsets(offsets, 60, 60)).toStrictEqual({
       start: 2,
       end: 2,
@@ -68,6 +72,7 @@ describe('Facet util test', () => {
       originalWidth: 200,
       width: 100,
     };
+
     expect(getAdjustedRowScrollX(-10, bbox)).toBe(0);
     expect(getAdjustedRowScrollX(120, bbox)).toBe(100);
     expect(getAdjustedRowScrollX(100, bbox)).toBe(100);
@@ -77,6 +82,7 @@ describe('Facet util test', () => {
   test('should get correct result for getAdjustedScrollOffset', () => {
     const content = 1000;
     const container = 500;
+
     expect(getAdjustedScrollOffset(-10, content, container)).toBe(0);
     expect(getAdjustedScrollOffset(520, content, container)).toBe(500);
     expect(getAdjustedScrollOffset(500, content, container)).toBe(500);

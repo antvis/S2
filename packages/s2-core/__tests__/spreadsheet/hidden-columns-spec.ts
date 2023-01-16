@@ -51,6 +51,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         [],
       );
       const [costDetail] = hiddenColumnsDetail;
+
       expect(tableSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
@@ -135,6 +136,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           hiddenColumnFields: hiddenColumns,
         },
       });
+
       sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
@@ -196,6 +198,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         [],
       );
       const [priceDetail] = hiddenColumnsDetail;
+
       expect(pivotSheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
@@ -244,6 +247,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       const defaultHiddenColumnsDetail = [
         null,
       ] as unknown as HiddenColumnsInfo[];
+
       pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
 
       const renderSpy = jest
@@ -262,6 +266,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       const defaultHiddenColumnsDetail = [
         null,
       ] as unknown as HiddenColumnsInfo[];
+
       pivotSheet.store.set('hiddenColumnsDetail', defaultHiddenColumnsDetail);
 
       const renderSpy = jest
@@ -284,10 +289,12 @@ describe('SpreadSheet Hidden Columns Tests', () => {
           hiddenColumnFields: hiddenColumns,
         },
       });
+
       sheet.render();
 
       const hiddenColumnsDetail = sheet.store.get('hiddenColumnsDetail', []);
       const [priceDetail] = hiddenColumnsDetail;
+
       expect(sheet.options.interaction?.hiddenColumnFields).toEqual(
         hiddenColumns,
       );
@@ -349,18 +356,22 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       test('should hide grand totals node', () => {
         const nodeId = 'root[&]总计';
+
         sheet.interaction.hideColumns([nodeId]);
 
         const leafNodes = sheet.getColumnLeafNodes();
+
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(6);
       });
 
       test('should hide sub totals node', () => {
         const nodeId = 'root[&]小计';
+
         sheet.interaction.hideColumns([nodeId]);
 
         const leafNodes = sheet.getColumnLeafNodes();
+
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(7);
       });
@@ -450,6 +461,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
         sheet.interaction.hideColumns([nodeId]);
 
         const leafNodes = sheet.getColumnLeafNodes();
+
         expect(leafNodes.some((node) => node.id === nodeId)).toBeFalsy();
         expect(leafNodes).toHaveLength(5);
       });

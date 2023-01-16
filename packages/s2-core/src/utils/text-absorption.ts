@@ -29,13 +29,16 @@
  *                    ◀- viewportWidth  -▶
  * ****************************************************************
  */
-export const getAdjustPosition = (
-  rectLeft: number,
-  rectWidth: number,
-  viewportLeft: number,
-  viewportWidth: number,
-  textWidth: number,
-): number => {
+export const getAdjustPosition = (options: {
+  rectLeft: number;
+  rectWidth: number;
+  viewportLeft: number;
+  viewportWidth: number;
+  textWidth: number;
+}): number => {
+  const { rectLeft, rectWidth, viewportLeft, viewportWidth, textWidth } =
+    options;
+
   let textX = 0;
 
   // 文本居于矩形中间时的坐标

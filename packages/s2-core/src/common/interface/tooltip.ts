@@ -195,14 +195,17 @@ export interface Tooltip<
    * Tooltip 行头单元格配置
    */
   rowCell?: BaseTooltipConfig<T, Icon, Text>;
+
   /**
    * Tooltip 列头单元格配置
    */
   colCell?: BaseTooltipConfig<T, Icon, Text>;
+
   /**
    * Tooltip 角头单元格配置
    */
   cornerCell?: BaseTooltipConfig<T, Icon, Text>;
+
   /**
    * Tooltip 数值单元格配置
    */
@@ -215,10 +218,12 @@ export interface TooltipOperation<Icon = Element | string, Text = string>
    * 隐藏列 (叶子节点有效)
    */
   hiddenColumns?: boolean;
+
   /**
    * 透视表组内排序
    */
   sort?: boolean;
+
   /**
    * 明细表排序
    */

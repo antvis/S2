@@ -15,71 +15,65 @@ import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import type { Node } from './layout/node';
 import type { ViewCellHeights } from './layout/interface';
 
-export const isFrozenCol = (colIndex: number, frozenCount: number) => {
-  return frozenCount > 0 && colIndex < frozenCount;
-};
+export const isFrozenCol = (colIndex: number, frozenCount: number) =>
+  frozenCount > 0 && colIndex < frozenCount;
 
 export const isFrozenTrailingCol = (
   colIndex: number,
   frozenCount: number,
   colLength: number,
-) => {
-  return frozenCount > 0 && colIndex >= colLength - frozenCount;
-};
+) => frozenCount > 0 && colIndex >= colLength - frozenCount;
 
 export const isFrozenRow = (
   rowIndex: number,
   minRowIndex: number,
   frozenCount: number,
-) => {
-  return frozenCount > 0 && rowIndex < minRowIndex + frozenCount;
-};
+) => frozenCount > 0 && rowIndex < minRowIndex + frozenCount;
 
 export const isFrozenTrailingRow = (
   rowIndex: number,
   maxRowIndex: number,
   frozenCount: number,
-) => {
-  return frozenCount > 0 && rowIndex >= maxRowIndex + 1 - frozenCount;
-};
+) => frozenCount > 0 && rowIndex >= maxRowIndex + 1 - frozenCount;
 
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引
- * @param scrollX
- * @param scrollY
- * @param widths
- * @param heights
- * @param viewport
- * @param rowRemainWidth
  */
-export const calculateInViewIndexes = (
-  scrollX: number,
-  scrollY: number,
-  widths: number[],
-  heights: ViewCellHeights,
-  viewport: SimpleBBox,
-  rowRemainWidth?: number,
-): Indexes => {
+export const calculateInViewIndexes = (options: {
+  scrollX: number;
+  scrollY: number;
+  widths: number[];
+  heights: ViewCellHeights;
+  viewport: SimpleBBox;
+  rowRemainWidth?: number;
+}): Indexes => {
+  const { scrollX, scrollY, widths, heights, viewport, rowRemainWidth } =
+    options;
+
   // 1. 计算 x min、max
   let xMin = findIndex(
     widths,
     (width: number, idx: number) => {
       const x =
         scrollX - (isNil(rowRemainWidth) ? 0 : rowRemainWidth) + viewport.x;
+
       return x >= width && x < widths[idx + 1];
     },
     0,
   );
+
   xMin = Math.max(xMin, 0);
 
   let xMax = findIndex(
     widths,
     (width: number, idx: number) => {
       const x = viewport.width + scrollX + viewport.x;
+
       return x >= width && x < widths[idx + 1];
     },
     xMin,
   );
+
   xMax = Math.min(xMax === -1 ? Infinity : xMax, widths.length - 2);
 
   const { start: yMin, end: yMax } = heights.getIndexRange(
@@ -87,13 +81,15 @@ export const calculateInViewIndexes = (
     viewport.height + scrollY + viewport.y,
   );
 
-  // use direction
-  // const halfWidthSize = Math.ceil(xMax - xMin / 4);
-  // const halfHeightSize = Math.ceil(yMax - yMin / 4);
-  // xMin = Math.max(0, xMin - halfWidthSize)
-  // xMax = xMax + halfWidthSize;
-  // yMin = Math.max(0, yMin - halfHeightSize);
-  // yMax = yMax + halfHeightSize;
+  /*
+   * use direction
+   * const halfWidthSize = Math.ceil(xMax - xMin / 4);
+   * const halfHeightSize = Math.ceil(yMax - yMin / 4);
+   * xMin = Math.max(0, xMin - halfWidthSize)
+   * xMax = xMax + halfWidthSize;
+   * yMin = Math.max(0, yMin - halfHeightSize);
+   * yMax = yMax + halfHeightSize;
+   */
 
   return [xMin, xMax, yMin, yMax];
 };
@@ -109,7 +105,8 @@ export const optimizeScrollXY = (
   y: number,
   ratio: ScrollSpeedRatio,
 ): [number, number] => {
-  const ANGLE = 2; // 调参工程师
+  // 调参工程师
+  const ANGLE = 2;
   const angle = Math.abs(x / y);
 
   // 经过滚动优化之后的 x, y
@@ -127,6 +124,7 @@ export const translateGroup = (
   if (group) {
     // TODO: 可能是本地 getLocalPosition
     const [preX, preY] = group.getPosition();
+
     group.translate(scrollX - preX, scrollY - preY);
   }
 };
@@ -134,6 +132,7 @@ export const translateGroup = (
 export const translateGroupX = (group: Group, scrollX: number) => {
   if (group) {
     const [preX] = group.getPosition();
+
     group.translate(scrollX - preX, 0);
   }
 };
@@ -141,6 +140,7 @@ export const translateGroupX = (group: Group, scrollX: number) => {
 export const translateGroupY = (group: Group, scrollY: number) => {
   if (group) {
     const [, preY] = group.getPosition();
+
     group?.translate(0, scrollY - preY);
   }
 };
@@ -195,6 +195,7 @@ export const getFrozenDataCellType = (
   if (isFrozenTrailingCol(colIndex, trailingColCount, colLength)) {
     return FrozenCellType.TRAILING_COL;
   }
+
   return FrozenCellType.SCROLL;
 };
 
@@ -235,6 +236,7 @@ export const calculateFrozenCornerCells = (
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
+
         result[FrozenCellType.BOTTOM].push({
           x: i,
           y: index,
@@ -246,6 +248,7 @@ export const calculateFrozenCornerCells = (
   // frozenTrailingColGroup with frozenRowGroup or frozenTrailingRowGroup. Top right and bottom right corner.
   for (let i = 0; i < frozenTrailingColCount; i++) {
     const colIndex = colLength - 1 - i;
+
     for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
         x: colIndex,
@@ -256,6 +259,7 @@ export const calculateFrozenCornerCells = (
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
         const index = cellRange.end - j;
+
         result[FrozenCellType.BOTTOM].push({
           x: colIndex,
           y: index,
@@ -265,31 +269,6 @@ export const calculateFrozenCornerCells = (
   }
 
   return result;
-};
-
-export const isFrozenCell = (
-  colIndex: number,
-  rowIndex: number,
-  frozenOptions: S2TableSheetFrozenOptions,
-  colLength: number,
-  cellRange: {
-    start: number;
-    end: number;
-  },
-) => {
-  const {
-    colCount: frozenColCount = 0,
-    rowCount: frozenRowCount = 0,
-    trailingColCount: frozenTrailingColCount = 0,
-    trailingRowCount: frozenTrailingRowCount = 0,
-  } = frozenOptions;
-
-  return (
-    isFrozenCol(colIndex, frozenColCount) ||
-    isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
-    isFrozenRow(rowIndex, cellRange.start, frozenRowCount) ||
-    isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
-  );
 };
 
 /**
@@ -336,18 +315,22 @@ export const splitInViewIndexesWithFrozen = (
 
   // Calculate indexes for four frozen groups
   const frozenRowIndexes: Indexes = [...centerIndexes];
+
   frozenRowIndexes[2] = cellRange.start;
   frozenRowIndexes[3] = cellRange.start + frozenRowCount - 1;
 
   const frozenColIndexes: Indexes = [...centerIndexes];
+
   frozenColIndexes[0] = 0;
   frozenColIndexes[1] = frozenColCount - 1;
 
   const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
+
   frozenTrailingRowIndexes[2] = cellRange.end + 1 - frozenTrailingRowCount;
   frozenTrailingRowIndexes[3] = cellRange.end;
 
   const frozenTrailingColIndexes: Indexes = [...centerIndexes];
+
   frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
   frozenTrailingColIndexes[1] = colLength - 1;
 
@@ -399,28 +382,36 @@ export const getFrozenLeafNodesCount = (
     if (node.isLeaf) {
       return 1;
     }
+
     if (node.children) {
       return node.children.reduce((pCount, item) => {
         pCount += getLeafNodesCount(item);
+
         return pCount;
       }, 0);
     }
+
     return 0;
   };
+
   if (frozenColCount) {
     colCount = nodes.slice(0, frozenColCount).reduce((count, node) => {
       count += getLeafNodesCount(node);
+
       return count;
     }, 0);
   }
+
   if (frozenTrailingColCount) {
     trailingColCount = nodes
       .slice(nodes.length - frozenTrailingColCount)
       .reduce((count, node) => {
         count += getLeafNodesCount(node);
+
         return count;
       }, 0);
   }
+
   return { colCount, trailingColCount };
 };
 
@@ -433,12 +424,14 @@ export const getFrozenLeafNodesCount = (
 export const getDisplayedColumnsTree = (
   columnsTree: CustomHeaderFields,
   fieldsMap: Record<string, boolean>,
-): CustomTreeNode[] => {
-  return columnsTree.reduce<CustomTreeNode[]>((tree, column) => {
+): CustomTreeNode[] =>
+  columnsTree.reduce<CustomTreeNode[]>((tree, column) => {
     if (typeof column === 'string') {
       column = { field: column } as CustomTreeNode;
     }
+
     const copyColumn = { ...column };
+
     // 分支节点显示
     if (copyColumn.children) {
       copyColumn.children = getDisplayedColumnsTree(
@@ -446,24 +439,25 @@ export const getDisplayedColumnsTree = (
         fieldsMap,
       );
       tree.push(copyColumn);
+
       return tree;
     }
+
     // 非分支节点判断是否显示
     if (fieldsMap[copyColumn.field]) {
       tree.push(copyColumn);
     }
+
     return tree;
   }, []);
-};
 
 /**
  * 明细表多级表头判断一个 node 是不是顶层节点
  * @param node
  * @returns {boolean}
  */
-export const isTopLevelNode = (node: Node): boolean => {
-  return node?.parent?.id === 'root';
-};
+export const isTopLevelNode = (node: Node): boolean =>
+  node?.parent?.id === 'root';
 
 /**
  * 明细表多级表头根据一个 node 返回其所属顶层节点
@@ -474,6 +468,7 @@ export const getNodeRoot = (node: Node): Node => {
   while (!isTopLevelNode(node)) {
     node = node.parent!;
   }
+
   return node;
 };
 
@@ -495,7 +490,9 @@ export const getLeafColumns = (
       }
     });
   };
+
   recursionFn(columns);
+
   return leafs;
 };
 
@@ -508,10 +505,12 @@ export const getLeafColumnsWithKey = (
   columns: CustomHeaderFields = [],
 ): string[] => {
   const leafs = getLeafColumns(columns);
+
   return leafs.map((column) => {
     if (typeof column === 'string') {
       return column;
     }
+
     return column.field;
   });
 };
@@ -523,8 +522,10 @@ export const getLeafColumnsWithKey = (
  */
 export const getLeftLeafNode = (node: Node): Node => {
   const firstNode = node.children[0];
+
   if (!firstNode) {
     return node;
   }
+
   return firstNode.isLeaf ? firstNode : getLeftLeafNode(firstNode);
 };

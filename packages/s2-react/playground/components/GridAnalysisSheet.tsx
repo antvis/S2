@@ -25,11 +25,13 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
       {
         mapping: (value, cellInfo) => {
           const { colIndex } = cellInfo;
+
           if (colIndex! <= 1) {
             return {
               fill: '#000',
             };
           }
+
           return {
             fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
           };
@@ -41,14 +43,12 @@ export const mockGridAnalysisOptions: SheetComponentOptions = {
 
 export const GridAnalysisSheet: React.FC<
   Partial<SheetComponentsProps> & React.RefAttributes<SpreadSheet>
-> = React.forwardRef((props, ref) => {
-  return (
-    <SheetComponent
-      {...props}
-      sheetType="gridAnalysis"
-      dataCfg={mockGridAnalysisDataCfg}
-      options={mockGridAnalysisOptions}
-      ref={ref}
-    />
-  );
-});
+> = React.forwardRef((props, ref) => (
+  <SheetComponent
+    {...props}
+    sheetType="gridAnalysis"
+    dataCfg={mockGridAnalysisDataCfg}
+    options={mockGridAnalysisOptions}
+    ref={ref}
+  />
+));

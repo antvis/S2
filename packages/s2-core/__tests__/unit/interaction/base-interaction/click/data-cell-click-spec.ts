@@ -78,6 +78,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   test('should emit cell selected event when cell clicked', () => {
     const selected = jest.fn();
+
     s2.on(S2Event.GLOBAL_SELECTED, selected);
 
     s2.emit(S2Event.DATA_CELL_CLICK, {
@@ -178,31 +179,37 @@ describe('Interaction Data Cell Click Tests', () => {
     const columnNode: Array<Partial<Node>> = [
       {
         belongsCell: {
-          getMeta: () => ({
-            id: headerCellId0,
-            colIndex: -1,
-            rowIndex: -1,
-          }),
+          getMeta: () => {
+            return {
+              id: headerCellId0,
+              colIndex: -1,
+              rowIndex: -1,
+            };
+          },
         } as any,
         id: headerCellId0,
       },
       {
         belongsCell: {
-          getMeta: () => ({
-            id: headerCellId1,
-            colIndex: -1,
-            rowIndex: -1,
-          }),
+          getMeta: () => {
+            return {
+              id: headerCellId1,
+              colIndex: -1,
+              rowIndex: -1,
+            };
+          },
         } as any,
         id: headerCellId1,
       },
     ];
+
     s2.getColumnNodes = jest.fn(() => columnNode) as any;
     s2.getRowNodes = jest.fn(() => []);
 
     const firstDataCellInfo = createMockCellInfo(
       `${headerCellId0}[&]first-data-cell`,
     );
+
     s2.getCell = () => firstDataCellInfo.mockCell as any;
 
     s2.setOptions({

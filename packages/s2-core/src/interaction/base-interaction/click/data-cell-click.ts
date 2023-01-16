@@ -46,6 +46,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       event.stopPropagation();
 
       const { interaction } = this.spreadsheet;
+
       interaction.clearHoverTimer();
 
       if (interaction.hasIntercepts([InterceptType.CLICK])) {
@@ -54,6 +55,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
 
       if (this.isLinkFieldText(event.target)) {
         this.emitLinkFieldClickEvent(event);
+
         return;
       }
 
@@ -67,11 +69,14 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       interaction.addIntercepts([InterceptType.HOVER]);
 
       if (interaction.isSelectedCell(cell)) {
-        // 双击时不触发选择态reset
-        // g5.0 mouseup 底层监听的是 pointerup，detail为0，需自行判断是否双击
+        /*
+         * 双击时不触发选择态reset
+         * g5.0 mouseup 底层监听的是 pointerup，detail为0，需自行判断是否双击
+         */
         if (this.clickCount <= 1) {
           interaction.reset();
         }
+
         return;
       }
 

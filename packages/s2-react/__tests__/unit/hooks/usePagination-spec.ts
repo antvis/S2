@@ -92,6 +92,7 @@ describe('usePagination tests', () => {
           price: '18',
         },
       ];
+
       s2Instance.setDataCfg({
         ...mockDataConfig,
         data: newData,

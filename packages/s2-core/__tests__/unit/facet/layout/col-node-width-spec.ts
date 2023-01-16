@@ -12,6 +12,7 @@ const s2options: S2Options = {
 describe('Col width Test', () => {
   describe('Grid Mode', () => {
     let s2: PivotSheet;
+
     beforeEach(() => {
       s2 = new PivotSheet(
         getContainer(),
@@ -35,6 +36,7 @@ describe('Col width Test', () => {
 
     test('get correct width in layoutWidthType adaptive mode', () => {
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(colLeafNodes[0].width).toBe(200);
     });
 
@@ -44,6 +46,7 @@ describe('Col width Test', () => {
       });
       s2.render();
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(colLeafNodes[0].width).toBe(180);
     });
 
@@ -53,6 +56,7 @@ describe('Col width Test', () => {
       });
       s2.render();
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(Math.round(colLeafNodes[0].width)).toBe(339);
     });
 
@@ -63,6 +67,7 @@ describe('Col width Test', () => {
       });
       s2.render();
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(Math.round(colLeafNodes[0].width)).toBe(299);
     });
 
@@ -76,6 +81,7 @@ describe('Col width Test', () => {
 
       // 无 formatter
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(Math.round(colLeafNodes[0].width)).toBe(78);
     });
 
@@ -86,9 +92,7 @@ describe('Col width Test', () => {
         meta: [
           {
             field: 'price',
-            formatter: (v) => {
-              return `${((v as number) / 1000000).toFixed(0)}百万`;
-            },
+            formatter: (v) => `${((v as number) / 1000000).toFixed(0)}百万`,
           },
         ],
       });
@@ -101,12 +105,14 @@ describe('Col width Test', () => {
 
       // 有formatter
       const { colLeafNodes } = s2.facet.layoutResult;
+
       expect(Math.round(colLeafNodes[0].width)).toBe(62);
     });
   });
 
   describe('Table Mode', () => {
     let s2: TableSheet;
+
     beforeEach(() => {
       s2 = new TableSheet(
         getContainer(),

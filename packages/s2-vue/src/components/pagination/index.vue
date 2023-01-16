@@ -32,9 +32,7 @@ export default defineComponent({
   },
   setup: (props) => {
     // only show the pagination when the pageSize > 5
-    const showQuickJumper = computed(() => {
-      return props.total / props.pageSize > 5;
-    });
+    const showQuickJumper = computed(() => props.total / props.pageSize > 5);
 
     return {
       showQuickJumper,

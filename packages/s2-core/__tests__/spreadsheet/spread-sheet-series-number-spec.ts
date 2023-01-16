@@ -13,18 +13,22 @@ const s2Options: S2Options = {
 
 describe('SpreadSheet Series Number Tests', () => {
   let container: HTMLElement;
+
   beforeEach(() => {
     container = getContainer();
   });
 
   test('series number should only contain root parent in grid mode', () => {
     const s2 = new PivotSheet(container, mockDataConfig, s2Options);
+
     s2.render();
 
     const seriesNumberHeader = s2.facet.seriesNumberHeader;
+
     expect(seriesNumberHeader?.children).toHaveLength(1);
 
     const seriesNum1 = seriesNumberHeader?.children[0] as SeriesNumberCell;
+
     // @ts-ignore
     expect(seriesNum1.meta.height).toEqual(60);
   });
@@ -34,12 +38,15 @@ describe('SpreadSheet Series Number Tests', () => {
       ...s2Options,
       hierarchyType: 'tree',
     });
+
     s2.render();
 
     const seriesNumberHeader = s2.facet.seriesNumberHeader;
+
     expect(seriesNumberHeader?.children).toHaveLength(1);
 
     const seriesNum1 = seriesNumberHeader?.children[0] as SeriesNumberCell;
+
     // @ts-ignore
     expect(seriesNum1.meta.height).toEqual(90);
   });

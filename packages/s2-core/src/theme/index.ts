@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { FONT_FAMILY, INTERVAL_BAR_HEIGHT } from '../common/constant';
 import type { DefaultCellTheme, S2Theme, ThemeCfg } from '../common/interface';
 import type { SpreadSheet } from '../sheet-type';
@@ -60,6 +61,7 @@ export const getTheme = (
           bottom: 8,
           left: 8,
         },
+
         /* ---------- interaction state ----------- */
         interactionState: {
           // -------------- hover -------------------
@@ -252,7 +254,8 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textBaseline: 'top',
-        textAlign: isTable ? 'center' : 'left', // default align center for row cell in table mode
+        // default align center for row cell in table mode
+        textAlign: isTable ? 'center' : 'left',
       },
       cell: {
         // ----------- background color -----------
@@ -273,6 +276,7 @@ export const getTheme = (
           bottom: 0,
           left: 8,
         },
+
         /* ---------- interaction state ----------- */
         interactionState: {
           // -------------- hover -------------------
@@ -367,6 +371,7 @@ export const getTheme = (
           bottom: 0,
           left: 8,
         },
+
         /* ---------- interaction state ----------- */
         interactionState: {
           // -------------- hover -------------------
@@ -426,6 +431,7 @@ export const getTheme = (
       guideLineColor: basicColors[7],
       guideLineDisableColor: 'rgba(0,0,0,0.25)',
       guideLineDash: [3, 3],
+
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {

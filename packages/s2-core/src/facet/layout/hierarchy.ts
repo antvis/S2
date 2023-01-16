@@ -1,4 +1,3 @@
-// hierarchy to layout headers
 import type { Node } from './node';
 
 /**
@@ -42,6 +41,7 @@ export class Hierarchy {
     if (level !== undefined) {
       return this.allNodesWithoutRoot.filter((value) => value.level === level);
     }
+
     return this.allNodesWithoutRoot;
   }
 

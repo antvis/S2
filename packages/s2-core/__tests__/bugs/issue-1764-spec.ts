@@ -23,6 +23,7 @@ const s2Options: S2Options = {
 
 describe('ScrollBar Track Offset Tests', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
+
   s2.render();
 
   test('should not get NaN offset when scroll track clicked', () => {
@@ -33,6 +34,7 @@ describe('ScrollBar Track Offset Tests', () => {
       .mockImplementation(() => {});
 
     const mouseEvt = new FederatedMouseEvent(s2.container.getEventService());
+
     mouseEvt.type = 'click';
     hScrollBar.trackShape.dispatchEvent(mouseEvt);
 

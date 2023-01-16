@@ -43,6 +43,7 @@ export const Dimension: React.FC<DimensionProps> = React.memo((props) => {
 
   // 开启不允许为空后，如果当前有且仅有一个item时，需要禁用拖动
   const isDragDisabled = !allowEmpty && items.length === 1;
+
   return (
     <div
       className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), {

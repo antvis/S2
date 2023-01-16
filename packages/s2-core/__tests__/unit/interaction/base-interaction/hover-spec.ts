@@ -45,6 +45,7 @@ describe('Interaction Hover Tests', () => {
             ...target,
           };
         }
+
         return mockCell;
       },
       getActualText: () => ELLIPSIS_SYMBOL,
@@ -170,6 +171,7 @@ describe('Interaction Hover Tests', () => {
       preventDefault: () => {},
       originalEvent: {},
     };
+
     s2.container.emit(OriginEventType.MOUSE_DOWN, mockEvent);
 
     await sleep(200);
@@ -189,6 +191,7 @@ describe('Interaction Hover Tests', () => {
         id: 'row-cell',
       },
     };
+
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
     s2.emit(S2Event.ROW_CELL_HOVER, rowCellEvent as unknown as GEvent);
 
@@ -212,6 +215,7 @@ describe('Interaction Hover Tests', () => {
         id: 'col-cell',
       },
     };
+
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
     s2.emit(S2Event.COL_CELL_HOVER, colCellEvent as unknown as GEvent);
 
@@ -229,6 +233,7 @@ describe('Interaction Hover Tests', () => {
         id: 'data-cell',
       },
     };
+
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
 
     await sleep(HOVER_FOCUS_DURATION + 200);
@@ -249,6 +254,7 @@ describe('Interaction Hover Tests', () => {
         id: 'data-cell',
       },
     };
+
     s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
 
     await sleep(HOVER_FOCUS_DURATION + 200);
@@ -270,6 +276,7 @@ describe('Interaction Hover Tests', () => {
           id: 'cell',
         },
       };
+
       s2.emit(eventName, cellEvent as unknown as GEvent);
 
       await sleep(HOVER_FOCUS_DURATION + 200);
@@ -295,6 +302,7 @@ describe('Interaction Hover Tests', () => {
                 ...target,
               };
             }
+
             return mockCell;
           },
           getActualText: () => 'test',
@@ -307,6 +315,7 @@ describe('Interaction Hover Tests', () => {
           id: 'cell',
         },
       };
+
       s2.emit(eventName, cellEvent as unknown as GEvent);
 
       expect(s2.showTooltipWithInfo).not.toHaveBeenCalled();

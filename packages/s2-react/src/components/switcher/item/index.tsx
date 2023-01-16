@@ -37,61 +37,59 @@ export const DimensionItem: FC<DimensionItemProps> = ({
   index,
   draggingItemId,
   onVisibleItemChange,
-}) => {
-  return (
-    <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
-      {(provided, snapshot) => (
-        <div
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          className={cx(
-            getSwitcherClassName(selectable ? 'checkable-list' : 'normal-list'),
-            {
-              dragging: snapshot.isDragging,
-              'disable-dragging': isDragDisabled,
-            },
-          )}
-        >
-          <SingleItem
-            dragHandleProps={provided.dragHandleProps}
-            fieldType={fieldType}
-            id={id}
-            displayName={displayName}
-            checked={checked}
-            onVisibleItemChange={onVisibleItemChange}
-            selectable={selectable}
-            className={cx(selectable ? 'checkable-item' : 'normal-item', {
-              'item-collapse': !expandChildren,
-            })}
-          />
+}) => (
+  <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
+    {(provided, snapshot) => (
+      <div
+        {...provided.draggableProps}
+        ref={provided.innerRef}
+        className={cx(
+          getSwitcherClassName(selectable ? 'checkable-list' : 'normal-list'),
+          {
+            dragging: snapshot.isDragging,
+            'disable-dragging': isDragDisabled,
+          },
+        )}
+      >
+        <SingleItem
+          dragHandleProps={provided.dragHandleProps}
+          fieldType={fieldType}
+          id={id}
+          displayName={displayName}
+          checked={checked}
+          onVisibleItemChange={onVisibleItemChange}
+          selectable={selectable}
+          className={cx(selectable ? 'checkable-item' : 'normal-item', {
+            'item-collapse': !expandChildren,
+          })}
+        />
 
-          {expandable &&
-            expandChildren &&
-            !isEmpty(children) &&
-            draggingItemId !== id && (
-              <div
-                className={cx('child-items', {
-                  'item-hidden': !expandChildren,
-                })}
-              >
-                {children.map((item) => (
-                  <SingleItem
-                    key={item.id}
-                    id={item.id}
-                    fieldType={fieldType}
-                    displayName={item.displayName}
-                    disabled={!checked}
-                    checked={item.checked}
-                    parentId={id}
-                    selectable={selectable}
-                    onVisibleItemChange={onVisibleItemChange}
-                    className="checkable-item"
-                  />
-                ))}
-              </div>
-            )}
-        </div>
-      )}
-    </Draggable>
-  );
-};
+        {expandable &&
+          expandChildren &&
+          !isEmpty(children) &&
+          draggingItemId !== id && (
+            <div
+              className={cx('child-items', {
+                'item-hidden': !expandChildren,
+              })}
+            >
+              {children.map((item) => (
+                <SingleItem
+                  key={item.id}
+                  id={item.id}
+                  fieldType={fieldType}
+                  displayName={item.displayName}
+                  disabled={!checked}
+                  checked={item.checked}
+                  parentId={id}
+                  selectable={selectable}
+                  onVisibleItemChange={onVisibleItemChange}
+                  className="checkable-item"
+                />
+              ))}
+            </div>
+          )}
+      </div>
+    )}
+  </Draggable>
+);

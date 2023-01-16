@@ -14,17 +14,20 @@ export const ChartSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, renderConfig, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet | null>(null);
-    const s2Options = React.useMemo(() => {
-      return customMerge<SheetComponentOptions>(options, {
-        dataCell: ChartCell,
-        showDefaultHeaderActionIcon: false,
-      });
-    }, [options]);
+    const s2Options = React.useMemo(
+      () =>
+        customMerge<SheetComponentOptions>(options, {
+          dataCell: ChartCell,
+          showDefaultHeaderActionIcon: false,
+        }),
+      [options],
+    );
 
     const onLayoutCellMounted = (cell: S2CellType) => {
       if (isEmpty(renderConfig) || !isFunction(renderConfig?.render)) {
         return;
       }
+
       renderToMountedCell(
         cell,
         renderConfig?.render,

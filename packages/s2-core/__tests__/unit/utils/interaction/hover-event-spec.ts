@@ -13,9 +13,11 @@ jest.mock('@/cell', () => {
     ColCell: class ColCell {
       stateName: InteractionStateName;
 
-      getMeta = () => ({
-        id: 'root[&]city',
-      });
+      getMeta = () => {
+        return {
+          id: 'root[&]city',
+        };
+      };
 
       updateByState = (name: InteractionStateName) => {
         this.stateName = name;
@@ -31,6 +33,7 @@ describe('Hover Event Utils Tests', () => {
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
       let result = getActiveHoverRowColCells('root[&]city', cells, false);
+
       expect(result.map((cell) => cell.getMeta()?.id)).toStrictEqual([
         'root[&]city',
       ]);
@@ -47,6 +50,7 @@ describe('Hover Event Utils Tests', () => {
       const cells = [
         new ColCell({} as unknown as Node, {} as unknown as SpreadSheet),
       ];
+
       updateAllColHeaderCellState(
         'root[&]city',
         cells,

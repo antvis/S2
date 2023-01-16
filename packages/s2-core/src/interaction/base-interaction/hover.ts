@@ -47,6 +47,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         interaction.getAllRowHeaderCells(),
         this.spreadsheet.isHierarchyTreeType(),
       );
+
       forEach(allRowHeaderCells, (cell) => {
         cell.updateByState(InteractionStateName.HOVER);
       });
@@ -74,6 +75,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (interaction.hasIntercepts([InterceptType.HOVER])) {
         return;
       }
+
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
@@ -85,14 +87,18 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         hideSummary: true,
         showSingleTips,
       };
+
       if (interactionOptions?.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
+
       const data = this.getCellData(meta, showSingleTips);
+
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     };
     let hoverFocusDuration = HOVER_FOCUS_DURATION;
+
     if (!isBoolean(hoverFocus)) {
       hoverFocusDuration = hoverFocus?.duration ?? HOVER_FOCUS_DURATION;
     }
@@ -104,6 +110,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         () => handleHoverFocus(),
         hoverFocusDuration,
       );
+
       interaction.setHoverTimer(hoverTimer);
     }
   }
@@ -114,10 +121,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    */
   private handleHeaderHover(event: CanvasEvent) {
     const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+
     if (isEmpty(cell)) {
       return;
     }
+
     const { interaction } = this.spreadsheet;
+
     interaction.clearHoverTimer();
 
     // 避免在同一单元格内鼠标移动造成的多次渲染
@@ -149,6 +159,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       enableFormat: this.spreadsheet.isPivotMode(),
     };
     const data = this.getCellData(meta, showSingleTips);
+
     this.spreadsheet.showTooltipWithInfo(event, data, options);
   }
 
@@ -184,9 +195,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+
       if (isEmpty(cell)) {
         return;
       }
+
       const { interaction, options } = this.spreadsheet;
       const { interaction: interactionOptions } = options;
       const meta = cell?.getMeta() as ViewMeta;
@@ -195,6 +208,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (interaction.isActiveCell(cell)) {
         return;
       }
+
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
@@ -204,6 +218,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
       }
+
       if (interactionOptions?.hoverFocus) {
         this.changeStateToHoverFocus(cell, event, meta);
       }
@@ -225,6 +240,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   public bindCornerCellHover() {
     this.spreadsheet.on(S2Event.CORNER_CELL_HOVER, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target);
+
       this.showEllipsisTooltip(event, cell);
     });
   }

@@ -12,5 +12,6 @@ jest.spyOn(console, 'error').mockImplementation((msg) => {
       'act error, see: https://reactjs.org/docs/test-utils.html#act',
     );
   }
+
   originalErrorLog(msg);
 });

@@ -42,6 +42,7 @@ export const partDrillDown: PartDrillDown = {
         );
 
       const drillDownData: RawData[] = [];
+
       forEach(rowData, (data) => {
         const { number, sub_type: subType, type } = data.getOrigin();
         const number0 = random(50, number as number);
@@ -53,6 +54,7 @@ export const partDrillDown: PartDrillDown = {
           type,
           [field]: DrillDownFieldMap[field][0],
         };
+
         drillDownData.push(dataItem0);
         const dataItem1: RawData = {
           ...meta.query,

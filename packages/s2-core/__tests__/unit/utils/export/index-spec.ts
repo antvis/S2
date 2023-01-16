@@ -59,9 +59,11 @@ describe('Copy Tests', () => {
     document.body.style.height = '9999px';
 
     const scrollY = 100;
+
     window.scrollTo(0, scrollY);
 
     const text = '222';
+
     await copyToClipboard(text, true);
 
     expect(window.scrollY).toEqual(scrollY);

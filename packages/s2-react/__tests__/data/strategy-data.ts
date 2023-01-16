@@ -70,6 +70,7 @@ const getKPIMockData = () => {
   };
 };
 
+// eslint-disable-next-line max-lines-per-function
 const getMiniChartMockData = () => {
   return {
     'custom-node-1': {
@@ -261,6 +262,7 @@ export const StrategySheetDataConfig: S2DataConfig = {
 
     // 净增目标完成度子弹图数据
     getKPIMockData() as unknown as RawData,
+
     // 趋势图数据
     getMiniChartMockData() as unknown as RawData,
     {
@@ -385,19 +387,13 @@ export const StrategyOptions: SheetComponentOptions = {
   width: 800,
   height: 800,
   cornerText: '指标',
-  placeholder: (v) => {
-    const placeholder = v?.['fieldValue'] ? '-' : '';
-    return placeholder;
-  },
+  placeholder: (v) => (v?.['fieldValue'] ? '-' : ''),
   interaction: {
     selectedCellsSpotlight: true,
     resize: {
-      disable: (resizeInfo) => {
-        return (
-          resizeInfo.meta.value === '净增完成度' &&
-          resizeInfo.resizedWidth! < resizeInfo.width
-        );
-      },
+      disable: (resizeInfo) =>
+        resizeInfo.meta.value === '净增完成度' &&
+        resizeInfo.resizedWidth! < resizeInfo.width,
     },
   },
   headerActionIcons: [
@@ -432,6 +428,7 @@ export const StrategyOptions: SheetComponentOptions = {
         position: 'right',
         mapping(value, cellInfo) {
           const { colIndex } = cellInfo;
+
           if (colIndex === 0) {
             return null;
           }

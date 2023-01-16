@@ -12,6 +12,7 @@ import {
 describe('headerUtil test', () => {
   test('should return correct sheetType', () => {
     const sheet = getMockSheetInstance(PivotSheet);
+
     expect(getSheetType(sheet)).toEqual('pivot');
   });
 
@@ -29,6 +30,7 @@ describe('headerUtil test', () => {
     const hiddenColumnFields: string[] = [];
 
     const cfg = generateSwitcherFields(sheet, dataCfg, hiddenColumnFields);
+
     expect(cfg).toEqual({
       rows: {
         items: [
@@ -87,6 +89,7 @@ describe('headerUtil test', () => {
     const hiddenColumnFields: string[] = [];
 
     const cfg = generateSwitcherFields(sheet, dataCfg, hiddenColumnFields);
+
     expect(cfg).toEqual({
       columns: {
         items: [
@@ -121,6 +124,7 @@ describe('headerUtil test', () => {
     const hiddenColumnFields = ['col-a'];
 
     const cfg = generateSwitcherFields(sheet, dataCfg, hiddenColumnFields);
+
     expect(cfg).toEqual({
       columns: {
         items: [
@@ -218,6 +222,7 @@ describe('headerUtil test', () => {
     };
 
     const cfg = generateSwitcherFieldsCfgFromResult(sheet, result, [], []);
+
     expect(cfg).toEqual({
       columns: {
         items: [
@@ -276,6 +281,7 @@ describe('headerUtil test', () => {
     };
 
     const cfg = generateSwitcherFieldsCfgFromResult(sheet, result, [], []);
+
     expect(cfg).toEqual({
       columns: {
         items: [

@@ -41,6 +41,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
   const measures: number[] = [];
   const encodedData = map(data, (item) => {
     measures.push(item?.[encode!.y] as number);
+
     return {
       x: item[encode!.x],
       y: item[encode!.y],
@@ -79,6 +80,7 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
       } else {
         positionY = minMeasure > 0 ? yStart : yEnd;
       }
+
       if (type === MiniChartTypes.Bar) {
         let baseLinePositionY: number;
         let barHeight: number;
@@ -89,7 +91,8 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
             yEnd - ((0 - minMeasure) / measureRange) * heightRange;
           barHeight = Math.abs(positionY - baseLinePositionY);
           if (item?.y < 0) {
-            positionY = baseLinePositionY; // 如果值小于 0 需要从基准线为起始 y 坐标开始绘制
+            // 如果值小于 0 需要从基准线为起始 y 坐标开始绘制
+            positionY = baseLinePositionY;
           }
         } else {
           // TODO 之后看需不需要把基准线画出来
@@ -103,8 +106,10 @@ export const scale = (chartData: BaseChartData, cell: S2CellType) => {
         }
 
         const barWidth = intervalX - intervalPadding;
+
         box.push([barWidth, barHeight]);
       }
+
       return [positionX, positionY];
     },
   ) as unknown as [number, number][];
@@ -164,13 +169,15 @@ export const drawBar = (chartData: BaseChartData, cell: S2CellType) => {
   const { bar } = miniChart;
 
   const { points, box } = scale(chartData, cell);
+
   for (let i = 0; i < points.length; i++) {
     renderRect(cell, {
       x: points[i][0],
       y: points[i][1],
       width: box[i][0],
       height: box[i][1],
-      fill: bar.fill, // TODO 支持色板配置
+      // TODO: 支持色板配置
+      fill: bar.fill,
       fillOpacity: bar.opacity,
     });
   }
@@ -209,6 +216,7 @@ export const transformRatioToPercent = (
   fractionDigits: FractionDigitsOptions | number = { min: 0, max: 0 },
 ) => {
   const value = Number(ratio);
+
   if (Number.isNaN(value)) {
     return ratio;
   }
@@ -249,6 +257,7 @@ export const drawInterval = (cell: DataCell) => {
 
   if (intervalCondition?.mapping!) {
     const attrs = cell.mappingValue(intervalCondition);
+
     if (!attrs) {
       return;
     }
@@ -261,10 +270,12 @@ export const drawInterval = (cell: DataCell) => {
     const fieldValue = isNil(attrs?.fieldValue)
       ? parseNumberWithPrecision(cell.getMeta().fieldValue as number)
       : parseNumberWithPrecision(attrs?.fieldValue);
+
     // 对于超出设定范围的值不予显示
     if (fieldValue < minValue || fieldValue > maxValue) {
       return;
     }
+
     const cellStyle = cell.getStyle();
 
     const barChartHeight = cellStyle?.miniChart?.interval?.height;
@@ -293,14 +304,13 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const { x, y, height, width, spreadsheet } = cell.getMeta();
 
   if (isEmpty(value)) {
-    renderText(
-      cell,
-      [],
-      x + width - dataCellStyle.cell.padding.right,
-      y + height / 2,
-      getEmptyPlaceholder(cell, spreadsheet.options.placeholder) as string,
-      dataCellStyle.text,
-    );
+    renderText(cell, [], {
+      x: x + width - dataCellStyle.cell.padding.right,
+      y: y + height / 2,
+      text: getEmptyPlaceholder(cell, spreadsheet.options.placeholder)!,
+      ...dataCellStyle.text,
+    });
+
     return;
   }
 
@@ -313,9 +323,11 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const displayMeasure = Math.max(Number(measure), 0);
   const displayTarget = Math.max(Number(target), 0);
 
-  // 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
-  // 所以子弹图需要为数值预留宽度
-  // 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
+  /*
+   * 原本是 "0%", 需要精确到浮点数后两位, 保证数值很小时能正常显示, 显示的百分比格式为 "0.22%"
+   * 所以子弹图需要为数值预留宽度
+   * 对于负数, 进度条计算按照 0 处理, 但是展示还是要显示原来的百分比
+   */
   const measurePercent = transformRatioToPercent(measure, 2);
   const widthPercent =
     progressBar?.widthPercent > 1
@@ -329,9 +341,11 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   const bulletWidth = widthPercent * contentWidth;
   const measureWidth = contentWidth - bulletWidth;
 
-  // TODO 先支持默认右对齐
-  // 绘制子弹图
-  // 1. 背景
+  /*
+   * TODO 先支持默认右对齐
+   * 绘制子弹图
+   * 1. 背景
+   */
   const positionX = x + width - padding.right - bulletWidth;
   const positionY = y + height / 2 - progressBar.height / 2;
 
@@ -341,8 +355,11 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
     width: bulletWidth,
     height: progressBar.height,
     fill: backgroundColor,
-    // TODO: 这个应该不需要的吧，g5.0
-    // textBaseline: dataCellStyle.text.textBaseline,
+
+    /*
+     * TODO: 这个应该不需要的吧，g5.0
+     * textBaseline: dataCellStyle.text.textBaseline,
+     */
   });
 
   // 2. 进度条
@@ -368,6 +385,7 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
 
   // 3.测量标记线
   const lineX = positionX + bulletWidth * displayTarget;
+
   renderLine(
     cell,
     {
@@ -387,19 +405,19 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   );
 
   // 4.绘制指标
-  renderText(
-    cell,
-    [],
-    positionX - padding.right,
-    y + height / 2,
-    getEllipsisText({
-      measureTextWidth: spreadsheet.measureTextWidth,
-      text: measurePercent,
-      maxWidth: measureWidth - padding.right,
-      fontParam: dataCellStyle.text,
-    }),
-    dataCellStyle.text,
-  );
+  const text = getEllipsisText({
+    measureTextWidth: spreadsheet.measureTextWidth,
+    text: measurePercent,
+    maxWidth: measureWidth - padding.right,
+    fontParam: dataCellStyle.text,
+  });
+
+  renderText(cell, [], {
+    x: positionX - padding.right,
+    y: y + height / 2,
+    text,
+    ...dataCellStyle.text,
+  });
 };
 
 export const renderMiniChart = (cell: S2CellType, data?: MiniChartData) => {

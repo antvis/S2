@@ -209,8 +209,10 @@ export interface BaseSheetComponentProps<
 // useResize 参数
 export interface ResizeEffectParams {
   s2: SpreadSheet;
-  container: HTMLDivElement; // 只包含了 sheet 容器
-  wrapper: HTMLDivElement; // 包含了 sheet + foot(page) + header
+  // 只包含了 sheet 容器
+  container: HTMLDivElement;
+  // 包含了 sheet + foot(page) + header
+  wrapper: HTMLDivElement;
   adaptive: Adaptive | undefined;
 }
 

@@ -15,6 +15,7 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
+
   /**
    * @description only used in background condition, when the background color is too light, the font color will be white
    * @version 1.34.0
@@ -43,7 +44,8 @@ export interface Condition {
 export type IconPosition = 'left' | 'right';
 
 export interface IconCondition extends Condition {
-  position?: IconPosition; // right by default
+  // right by default
+  position?: IconPosition;
 }
 
 export interface Conditions {
@@ -53,5 +55,5 @@ export interface Conditions {
   icon?: IconCondition[];
 }
 
-export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
+export type IconStyle = Pick<IconTheme, 'size' | 'margin'> &
   Pick<IconCondition, 'position'>;

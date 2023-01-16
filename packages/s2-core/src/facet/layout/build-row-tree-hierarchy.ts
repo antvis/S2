@@ -15,11 +15,15 @@ const addTotals = (
   fieldValues: FieldValue[],
 ) => {
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
-  // tree mode only has grand totals, but if there are subTotals configs,
-  // it will display in cross-area cell
-  // TODO valueInCol = false and one or more values
+
+  /*
+   * tree mode only has grand totals, but if there are subTotals configs,
+   * it will display in cross-area cell
+   * TODO valueInCol = false and one or more values
+   */
   if (totalsConfig?.showGrandTotals) {
     const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
+
     fieldValues[func](new TotalClass(totalsConfig.label!, false, true));
   }
 };
@@ -55,12 +59,15 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     unsortedDimValues,
     sortedDimensionValues,
     (dimVal) => {
-      // 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
-      // unsortedDimValues：['成都', '绵阳']
-      // sortedDimensionValues: ['四川[&]成都']
+      /*
+       * 根据父节点 id，修改 unsortedDimValues 里用于比较的值，使其格式与 sortedDimensionValues 排序值一致
+       * unsortedDimValues：['成都', '绵阳']
+       * sortedDimensionValues: ['四川[&]成都']
+       */
       if (ROOT_NODE_ID === parentId) {
         return dimVal;
       }
+
       return generateId(parentId, dimVal).slice(NODE_ID_PREFIX_LEN);
     },
   );
@@ -74,6 +81,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
   // limit displayed drill down data by drillItemsNum
   const drillItemsNum = spreadsheet.store.get('drillItemsNum');
+
   if (isDrillDownItem && drillItemsNum > 0) {
     fieldValues = fieldValues.slice(0, drillItemsNum);
   }
@@ -91,8 +99,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     let nodeQuery = query;
     let isGrandTotals = false;
     let isSubTotals = false;
+
     if (isTotals) {
       const totalClass = fieldValue as TotalClass;
+
       isGrandTotals = totalClass.isGrandTotals;
       isSubTotals = totalClass.isSubTotals;
       value = i18n((fieldValue as TotalClass).label);
@@ -104,12 +114,15 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         [currentField]: value,
       };
     }
+
     const nodeId = generateId(parentId, value);
 
-    // 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
-    // 优先从读取 collapseFields 中的特定 node 的值
-    // 如果没有特定配置，再查看是否配置了层级展开配置，
-    // 最后再降级到 collapseAll 中
+    /*
+     * 行头收起/展开配置优先级:collapseFields -> expandDepth -> collapseAll
+     * 优先从读取 collapseFields 中的特定 node 的值
+     * 如果没有特定配置，再查看是否配置了层级展开配置，
+     * 最后再降级到 collapseAll 中
+     */
     const isDefaultCollapsed =
       collapseFields?.[nodeId] ?? collapseFields?.[currentField];
     // 如果 level 大于 rowExpandDepth或者没有配置层级展开配置时，返回 null，保证能正确降级到 collapseAll
@@ -136,9 +149,11 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     }
 
     const emptyChildren = !pivotMetaValue?.children?.size;
+
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
+
     if (!emptyChildren) {
       node.isTotals = true;
     }

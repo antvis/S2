@@ -22,6 +22,7 @@ export default defineComponent({
     const onMenuTitleClick = () => {
       props.menu.onClick?.(props.cell);
     };
+
     return {
       onMenuTitleClick,
       isEmpty,

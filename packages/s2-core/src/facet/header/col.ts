@@ -100,6 +100,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);
+
         group.appendChild(cell);
       }
     });
@@ -107,6 +108,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected offset() {
     const { position, scrollX = 0 } = this.headerConfig;
+
     // 暂时不考虑移动y
     translateGroupX(this.scrollGroup, position.x - scrollX);
   }

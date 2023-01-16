@@ -38,12 +38,14 @@ const onMounted =
   ) => {
     s2 = new TableSheet(dom, dataCfg, options as S2Options);
     ref.current = s2;
+
     return s2;
   };
 
 const canConvertToNumber = (sortKey: string) =>
   data.every((item: any) => {
     const v = item[sortKey];
+
     return typeof v === 'string' && !Number.isNaN(Number(v));
   });
 
@@ -100,7 +102,9 @@ function MainLayout({ callback }: Props) {
       columns,
     },
     meta,
-    data: data.map((e) => ({ ...e, express_type: newLineText })),
+    data: data.map((e) => {
+      return { ...e, express_type: newLineText };
+    }),
     sortParams: [
       {
         sortFieldId: 'count',
@@ -175,6 +179,7 @@ function MainLayout({ callback }: Props) {
     });
 
     s2Ref.current!.on(S2Event.GLOBAL_SELECTED, logData);
+
     return () => {
       s2Ref.current!.off(S2Event.GLOBAL_COPIED);
       s2Ref.current!.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
@@ -195,6 +200,7 @@ function MainLayout({ callback }: Props) {
       }),
     },
   };
+
   useEffect(() => {
     callback({
       setShowPagination,
@@ -209,6 +215,7 @@ function MainLayout({ callback }: Props) {
           onSubmit={(result) => {
             console.log('result: ', result);
             const { hideItems } = result.columns;
+
             setHiddenColumnFields(hideItems.map((i) => i.id));
           }}
         />
@@ -241,6 +248,7 @@ function MainLayout({ callback }: Props) {
 
 describe('table sheet normal spec', () => {
   let setShowPagination: React.Dispatch<React.SetStateAction<boolean>>;
+
   act(() => {
     ReactDOM.render(
       <MainLayout

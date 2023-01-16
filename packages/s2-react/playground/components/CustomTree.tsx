@@ -25,14 +25,12 @@ export const customTreeOptions: SheetComponentOptions = {
 type CustomTreeProps = Partial<SheetComponentsProps>;
 
 export const CustomTree = React.forwardRef<SpreadSheet, CustomTreeProps>(
-  (props, ref) => {
-    return (
-      <SheetComponent
-        {...props}
-        dataCfg={customTreeDataCfg}
-        options={customTreeOptions}
-        ref={ref}
-      />
-    );
-  },
+  (props, ref) => (
+    <SheetComponent
+      {...props}
+      dataCfg={customTreeDataCfg}
+      options={customTreeOptions}
+      ref={ref}
+    />
+  ),
 );

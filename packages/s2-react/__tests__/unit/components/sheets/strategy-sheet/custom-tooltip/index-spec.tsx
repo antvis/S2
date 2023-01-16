@@ -34,13 +34,15 @@ describe('StrategySheet Tooltip Tests', () => {
     // [数值, 衍生指标1, 衍生指标2]
     const originalValues = [1.1, 0.02, 0.03];
 
-    jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => ({
-      ...mockCellInfo.mockCellMeta,
-      fieldValue: {
-        values: ['1222', '2%', '3%'],
-        originalValues,
-      },
-    }));
+    jest.spyOn(mockCellInfo.mockCell, 'getMeta').mockImplementation(() => {
+      return {
+        ...mockCellInfo.mockCellMeta,
+        fieldValue: {
+          values: ['1222', '2%', '3%'],
+          originalValues,
+        },
+      };
+    });
 
     const container = getContainer();
 
