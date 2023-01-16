@@ -585,7 +585,6 @@ export class RootInteraction {
       };
     }
 
-    // @ts-ignore
     const {
       rowHeader = false,
       colHeader = false,

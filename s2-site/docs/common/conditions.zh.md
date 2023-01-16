@@ -24,8 +24,8 @@ order: 2
 
 | 参数      | 说明                                | 类型         | 默认值      | 必选  |
 |---------|-----------------------------------|------------|----------|-----|
-| field   | 1. 字段 id <br /> 2. 使用正则表达式匹配字段 id | `string` \| `RegExp` |     | ✓          |
-| mapping | 映射函数                           | [MappingFunction](#mappingfunction) |          | ✓   |
+| field   | 1. 字段 ID <br /> 2. 使用正则表达式匹配字段 ID | `string \| RegExp` |     | ✓          |
+| mapping | 作用映射函数​                           | `function` |          | ✓   |
 
 #### MappingFunction
 
@@ -44,7 +44,7 @@ type MappingFunction = (
   isCompare?: boolean;
   minValue?: number;
   maxValue?: number;
-  
+
   // 仅用于背景字段标记，可选。（当背景颜色较暗，将文本颜色设置为白色。优先级低于 文本字段标记）
   intelligentReverseTextColor?: boolean;
 } | null | undefined // 返回值为空时，表示当前字段不显示字段标记样式
@@ -96,7 +96,7 @@ const options = {
 | 参数     | 说明 | 类型     | 默认值  | 必选    |
 | -------- | ------------ | -------- | ------- | ----  |
 | field    | 字段 ID       | `string`   |                | ✓    |
-| position | icon 相较于文字的位置 | `left` \| `right`   | `right` |         |
+| position | icon 相较于文字的位置 | `left \| right`   | `right` |         |
 | mapping  | 映射函数 | [MappingFunction](#mappingfunction) |                 | ✓    |
 
 **icon condition 用法示例：**

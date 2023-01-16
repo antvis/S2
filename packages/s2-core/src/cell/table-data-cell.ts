@@ -15,7 +15,6 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { checkIsLinkField } from '../utils/interaction/link-field';
-
 import { CustomRect } from '../engine';
 import { BaseCell } from './base-cell';
 

@@ -23,6 +23,7 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import { getAdjustPosition } from '../utils/text-absorption';
 import { CustomRect } from '../engine';
+import { checkIsLinkField } from '../utils';
 import type { SimpleBBox } from './../engine/interface';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
@@ -201,11 +202,8 @@ export class RowCell extends HeaderCell {
   protected drawLinkFieldShape() {
     const { linkFields = [] } = this.spreadsheet.options.interaction!;
     const { linkTextFill } = this.getTextStyle();
-
-    super.drawLinkFieldShape(
-      (linkFields as string[]).includes(this.meta.field),
-      linkTextFill!,
-    );
+    const isLinkField = checkIsLinkField(linkFields, this.meta);
+    super.drawLinkFieldShape(isLinkField, linkTextFill!);
   }
 
   protected drawResizeAreaInLeaf() {

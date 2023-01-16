@@ -134,7 +134,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
       cellData: cellData!,
       field,
-      record: Object.assign({ rowIndex: cellData!.rowIndex }, record),
+      record: Object.assign({ rowIndex: cellData?.rowIndex }, record),
     });
   }
 }

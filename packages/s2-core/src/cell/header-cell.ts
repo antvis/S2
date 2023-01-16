@@ -368,6 +368,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       CellTypes.COL_CELL,
       CellTypes.ROW_CELL,
     ]);
+
     if (!first(cells)) {
       return;
     }

@@ -1,16 +1,16 @@
-import { getContainer, getMockData, sleep } from 'tests/util/helpers';
 import { get, last } from 'lodash';
+import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import type { TableFacet } from '@/facet';
 import {
+  ColCell,
   DeviceType,
+  ResizeType,
+  TableDataCell,
   TableSheet,
   type RawData,
   type S2DataConfig,
   type S2Options,
-  ResizeType,
-  ColCell,
-  TableDataCell,
 } from '@/index';
-import type { TableFacet } from '@/facet';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
