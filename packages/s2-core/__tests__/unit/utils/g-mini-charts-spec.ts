@@ -1,6 +1,7 @@
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { forEach, map } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import type { RangeColors } from '../../../src/common/interface/theme';
 import { PivotSheet } from '@/sheet-type';
 import { CellTypes, MiniChartTypes, type S2CellType } from '@/common';
@@ -11,6 +12,7 @@ import {
   drawInterval,
 } from '@/utils/g-mini-charts';
 import type { DataCell } from '@/cell';
+import { getTheme } from '@/theme';
 
 describe('MiniCharts Utils Tests', () => {
   const padding = {
@@ -317,27 +319,23 @@ describe('drawInterval Test', () => {
       rows: ['province', 'city'],
       values: ['number'],
     },
+    data,
   });
+
+  const horizontalBorderWidth =
+    getTheme({})?.dataCell?.cell?.horizontalBorderWidth || 1;
   const options = assembleOptions({
-    conditions: {
-      interval: [
-        {
-          field: 'number',
-          mapping() {
-            return {
-              isCompare: true,
-              minValue: 0,
-              maxValue: 300,
-              fieldValue: 100,
-              fill: 'pink',
-            };
-          },
-        },
-      ],
+    style: {
+      dataCell: {
+        // 计算条形图的宽度时需要去掉 border width
+        width: 100 + horizontalBorderWidth,
+      },
     },
+    conditions: {},
   });
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
+
   beforeEach(() => {
     s2.render();
   });
