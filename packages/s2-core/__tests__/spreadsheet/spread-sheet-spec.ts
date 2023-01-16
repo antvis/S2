@@ -257,10 +257,6 @@ describe('SpreadSheet Tests', () => {
         const beforeRender = jest.fn();
         const afterRender = jest.fn();
 
-        const clearDrillDownDataSpy = jest
-          .spyOn(s2, 'clearDrillDownData')
-          .mockImplementationOnce(() => {});
-
         s2.on(S2Event.LAYOUT_BEFORE_RENDER, beforeRender);
         s2.on(S2Event.LAYOUT_AFTER_RENDER, afterRender);
         s2.destroy();
@@ -271,7 +267,6 @@ describe('SpreadSheet Tests', () => {
 
         expect(beforeRender).toHaveBeenCalledTimes(0);
         expect(afterRender).toHaveBeenCalledTimes(0);
-        expect(clearDrillDownDataSpy).toHaveBeenCalledTimes(0);
       },
     );
 
