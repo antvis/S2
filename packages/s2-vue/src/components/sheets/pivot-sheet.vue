@@ -33,8 +33,8 @@ export default defineComponent({
         handleDrillDown({
           rows: (dataCfg.value?.fields.rows as string[]) ?? [],
           drillFields: fields,
-          fetchData: partDrillDown.value?.fetchData,
-          drillItemsNum: partDrillDown.value?.drillItemsNum,
+          fetchData: partDrillDown.value?.['fetchData'],
+          drillItemsNum: partDrillDown.value?.['drillItemsNum'],
           spreadsheet: instance as SpreadSheet,
         });
       }
@@ -48,7 +48,7 @@ export default defineComponent({
       if (event) {
         const instance = s2Ref?.value?.instance;
         const drillDownNode = createVNode(DrillDown, {
-          ...partDrillDown.value?.drillConfig,
+          ...partDrillDown.value?.['drillConfig'],
           setDrillFields,
           drillFields: drillFields.value,
           disabledFields,

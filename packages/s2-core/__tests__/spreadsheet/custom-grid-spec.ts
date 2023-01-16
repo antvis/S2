@@ -78,7 +78,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         value: node.value,
         width: node.width,
         height: node.height,
-        description: node.extra.description,
+        description: node.extra?.['description'],
       }));
 
       expect(rowNodes).toMatchSnapshot();
@@ -216,7 +216,7 @@ describe('SpreadSheet Custom Grid Tests', () => {
         value: node.value,
         width: node.width,
         height: node.height,
-        description: node.extra.description,
+        description: node.extra?.['description'],
       }));
 
       expect(colNodes).toMatchSnapshot();

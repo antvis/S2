@@ -79,7 +79,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
     const targetCell = find(
       cells,
-      (cell: CellMeta) => cell?.isTarget,
+      (cell: CellMeta) => cell?.['isTarget'],
     ) as CellMeta;
     if (targetCell.id === this.getMeta().id) {
       this.updateByState(InteractionStateName.HIGHLIGHT);
