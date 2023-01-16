@@ -14,6 +14,8 @@ import {
   getOrCreateResizeAreaGroupById,
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
+import { checkIsLinkField } from '../utils/interaction/link-field';
+
 import { CustomRect } from '../engine';
 import { BaseCell } from './base-cell';
 
@@ -27,10 +29,9 @@ export class TableDataCell extends DataCell {
     const { linkFields = [] } = this.spreadsheet.options.interaction!;
     const linkTextFill = this.theme.rowCell!.text!.linkTextFill!;
 
-    super.drawLinkFieldShape(
-      linkFields.includes(this.meta.valueField),
-      linkTextFill,
-    );
+    const isLinkField = checkIsLinkField(linkFields, this.meta);
+
+    super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
   public override drawBorders() {

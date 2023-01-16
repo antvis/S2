@@ -1,10 +1,18 @@
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
+import { forEach, map } from 'lodash';
+import { data } from 'tests/data/mock-dataset.json';
 import type { RangeColors } from '../../../src/common/interface/theme';
+import { PivotSheet } from '@/sheet-type';
+import { CellTypes, MiniChartTypes, type S2CellType } from '@/common';
 import {
   getBulletRangeColor,
   transformRatioToPercent,
   scale,
+  drawInterval,
 } from '@/utils/g-mini-charts';
-import { MiniChartTypes, type S2CellType } from '@/common';
+import type { DataCell } from '@/cell';
+import { getTheme } from '@/theme';
 
 describe('MiniCharts Utils Tests', () => {
   const padding = {
@@ -254,9 +262,9 @@ describe('MiniCharts Utils Tests', () => {
     expect(getBulletRangeColor(0.09788888, 0.19788888, rangeColors)).toEqual(
       'green',
     );
-    expect(getBulletRangeColor('测试', '牛批', rangeColors)).toEqual('red');
+    expect(getBulletRangeColor('测试', '牛啊', rangeColors)).toEqual('red');
     expect(getBulletRangeColor('测试', 0.2, rangeColors)).toEqual('red');
-    expect(getBulletRangeColor(0.2, '牛批', rangeColors)).toEqual('red');
+    expect(getBulletRangeColor(0.2, '牛啊', rangeColors)).toEqual('red');
 
     // toFixed(2) 四舍五入精度问题
     expect(getBulletRangeColor(0.09775, 0.1978, rangeColors)).toEqual('yellow');
@@ -268,7 +276,7 @@ describe('MiniCharts Utils Tests', () => {
     expect(transformRatioToPercent(0.2)).toEqual('20%');
     expect(transformRatioToPercent('0.2')).toEqual('20%');
     expect(transformRatioToPercent('test')).toEqual('test');
-    expect(transformRatioToPercent('牛批')).toEqual('牛批');
+    expect(transformRatioToPercent('牛啊')).toEqual('牛啊');
     expect(transformRatioToPercent(0.02)).toEqual('2%');
     expect(transformRatioToPercent(0.02, 2)).toEqual('2.00%');
     expect(transformRatioToPercent(-122.2)).toEqual('-12220%');
@@ -300,5 +308,125 @@ describe('MiniCharts Utils Tests', () => {
     expect(transformRatioToPercent(0.09, { min: 0, max: 2 })).toEqual('9%');
     expect(transformRatioToPercent(0.09)).toEqual('9%');
     expect(transformRatioToPercent(0.09, 2)).toEqual('9.00%');
+  });
+});
+
+describe('drawInterval Test', () => {
+  const dataCfg = assembleDataCfg({
+    meta: [],
+    fields: {
+      columns: ['type', 'sub_type'],
+      rows: ['province', 'city'],
+      values: ['number'],
+    },
+    data,
+  });
+
+  const horizontalBorderWidth =
+    getTheme({})?.dataCell?.cell?.horizontalBorderWidth ?? 1;
+  const options = assembleOptions({
+    style: {
+      dataCell: {
+        // 计算条形图的宽度时需要去掉 border width
+        width: 100 + horizontalBorderWidth,
+      },
+    },
+    conditions: {},
+  });
+
+  const s2 = new PivotSheet(getContainer(), dataCfg, options);
+
+  beforeEach(() => {
+    s2.render();
+  });
+
+  test('should get right condition interval when only set fill', () => {
+    s2.setOptions({
+      conditions: {
+        interval: [
+          {
+            field: 'number',
+            mapping() {
+              return {
+                fill: 'pink',
+              };
+            },
+          },
+        ],
+      },
+    });
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    const allIntervalWidth = map(
+      cells,
+      (cell) => drawInterval(cell as DataCell)?.style?.width ?? 0,
+    );
+
+    expect(allIntervalWidth).toMatchSnapshot();
+  });
+
+  test('should get right condition interval when minValue and maxValue is custom', () => {
+    s2.setOptions({
+      conditions: {
+        interval: [
+          {
+            field: 'number',
+            mapping() {
+              return {
+                fill: 'pink',
+                isCompare: true,
+                minValue: 0,
+                maxValue: 400,
+              };
+            },
+          },
+        ],
+      },
+    });
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    const firstIntervalInfo = drawInterval(cells[0] as DataCell);
+    const lastIntervalInfo = drawInterval(cells[cells.length - 1] as DataCell);
+
+    expect(firstIntervalInfo?.style.width).toEqual(undefined);
+    expect(lastIntervalInfo?.style.width).toEqual(88);
+  });
+
+  test('should get right condition interval when filedValue is custom', () => {
+    s2.setOptions({
+      conditions: {
+        interval: [
+          {
+            field: 'number',
+            mapping() {
+              return {
+                isCompare: true,
+                minValue: 0,
+                maxValue: 400,
+                fieldValue: 200,
+                fill: 'pink',
+              };
+            },
+          },
+        ],
+      },
+    });
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+    forEach(cells, (cell) => {
+      const intervalInfo = drawInterval(cell as DataCell);
+      expect(intervalInfo?.style.width).toEqual(50);
+    });
   });
 });

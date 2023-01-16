@@ -1,13 +1,16 @@
 import { getContainer, getMockData, sleep } from 'tests/util/helpers';
+import { get, last } from 'lodash';
 import {
-  ColCell,
   DeviceType,
-  ResizeType,
   TableSheet,
   type RawData,
   type S2DataConfig,
   type S2Options,
+  ResizeType,
+  ColCell,
+  TableDataCell,
 } from '@/index';
+import type { TableFacet } from '@/facet';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -184,6 +187,10 @@ describe('TableSheet normal spec', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, options);
     s2.render();
 
+    const getLastColCell = () =>
+      last(s2.getColumnNodes())!.belongsCell as ColCell;
+    const preColWidth = getLastColCell().getMeta().width;
+
     await sleep(30);
 
     const { x, width, top } = s2.getCanvasElement().getBoundingClientRect();
@@ -198,9 +205,11 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300); // 等待绘制响应
 
+    const resizeLength = 100;
+
     document.dispatchEvent(
       new MouseEvent('mousemove', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -209,7 +218,7 @@ describe('TableSheet normal spec', () => {
 
     document.dispatchEvent(
       new PointerEvent('pointerup', {
-        clientX: x + width + 100,
+        clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,
       }),
@@ -217,10 +226,26 @@ describe('TableSheet normal spec', () => {
 
     await sleep(300);
 
-    const columnNodes = s2.getColumnNodes();
-    const lastColumnCell = columnNodes[columnNodes.length - 1]
-      .belongsCell as ColCell;
+    const currentColWidth = getLastColCell().getMeta().width;
+    expect(currentColWidth).toBeGreaterThanOrEqual(resizeLength + preColWidth);
+  });
 
-    expect(lastColumnCell.getMeta().width).toBe(198);
+  test('should render link shape', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, {
+      ...options,
+      frozenRowCount: 0,
+      frozenColCount: 0,
+      frozenTrailingColCount: 0,
+      frozenTrailingRowCount: 0,
+    } as S2Options);
+    s2.render();
+
+    const orderIdDataCell = (
+      (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
+    ).find((item) => item.getMeta().valueField === 'order_id');
+
+    expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
+
+    s2.destroy();
   });
 });

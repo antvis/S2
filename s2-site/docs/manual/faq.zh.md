@@ -25,7 +25,10 @@ order: 8
 
 ### 官网访问有点慢，或打不开，有国内镜像吗？
 
-有，国内镜像部署在 `gitee` 上面。[点击访问](https://antv-s2.gitee.io/)
+原国内镜像 [https://antv-s2.gitee.io](https://antv-s2.gitee.io/) 不再维护，推荐访问新版官网 [https://s2.antv.antgroup.com](https://s2.antv.antgroup.com/) 速度更快。
+
+[旧版官网](https://s2.antv.vision/)
+[新版官网](https://s2.antv.antgroup.com/)
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 

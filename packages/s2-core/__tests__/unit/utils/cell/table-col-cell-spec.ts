@@ -40,7 +40,7 @@ describe('Table col cell util test', () => {
           },
         },
       }),
-    ).toBe(80);
+    ).toBe(81);
   });
 
   test('should return right occupied width for table col with actionIcons', () => {
@@ -86,6 +86,6 @@ describe('Table col cell util test', () => {
           },
         },
       }),
-    ).toBe(105);
+    ).toBe(106);
   });
 });
