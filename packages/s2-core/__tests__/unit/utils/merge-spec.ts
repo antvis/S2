@@ -4,7 +4,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
-import { HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
+import { DeviceType, HOVER_FOCUS_DURATION, type S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -148,6 +148,7 @@ describe('merge test', () => {
       height: 480,
       debug: false,
       hierarchyType: 'grid',
+      device: DeviceType.PC,
       conditions: {},
       cornerText: '',
       cornerExtraFieldText: '',
