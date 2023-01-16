@@ -76,6 +76,7 @@ describe('Options Tests', () => {
       placeholder: '-',
       supportCSSTransform: false,
       devicePixelRatio: window.devicePixelRatio,
+      device: DeviceType.PC,
     });
   });
 
