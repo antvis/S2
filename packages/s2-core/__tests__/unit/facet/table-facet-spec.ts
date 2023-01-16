@@ -79,6 +79,7 @@ jest.mock('@/data-set/table-data-set', () => {
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
         getDisplayDataSet: jest.fn(() => data),
+        getFieldFormatter: jest.fn(),
         getCellData: () => 1,
       };
     }),
