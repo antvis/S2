@@ -1,3 +1,37 @@
+# [@antv/s2-react-v2.0.0-next.3](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.2...@antv/s2-react-v2.0.0-next.3) (2023-01-16)
+
+
+### Bug Fixes
+
+* **interaction:** 修复自定义列头时无法调整第一列的叶子节点高度 close [#1979](https://github.com/antvis/S2/issues/1979) ([#2038](https://github.com/antvis/S2/issues/2038)) ([a632ab1](https://github.com/antvis/S2/commit/a632ab19193b19ab80f456ab3ce19740dce0e52b))
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+
+
+### Code Refactoring
+
+* 调整 s2Options API 命名 ([#2015](https://github.com/antvis/S2/issues/2015)) ([e39b32f](https://github.com/antvis/S2/commit/e39b32f99befdf53569fab633087bb56edfc8720))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+* 单元格宽高配置增强 close [#1895](https://github.com/antvis/S2/issues/1895) ([#1981](https://github.com/antvis/S2/issues/1981)) ([ec6736f](https://github.com/antvis/S2/commit/ec6736f108801e1129c4d3fd29d13d1fbff2a1d2))
+* 折叠展开重构 & 简化行头 tree 相关配置 ([#2030](https://github.com/antvis/S2/issues/2030)) ([0f3ea3b](https://github.com/antvis/S2/commit/0f3ea3b5c668137bc2fcb53bd186a41b34140e25))
+* 暴露afterRealCellRender，这样能够更灵活的使用datacell ([#1970](https://github.com/antvis/S2/issues/1970)) ([66c5ab9](https://github.com/antvis/S2/commit/66c5ab9992c51b475be8acaf9a198d49f3114a49))
+
+
+### BREAKING CHANGES
+
+* s2Options.tooltip 和 s2Options.style API 命名更改, 移除 trend 操作项
+
+* refactor: tree 相关配置移动到 rowCell 下
+
+* refactor: hideMeasureColumn => hideValue
+
+* refactor: 冻结相关配置收拢到 forzen 命名空间下
+
+* test: 修复测试
+
 # [@antv/s2-react-v2.0.0-next.2](https://github.com/antvis/S2/compare/@antv/s2-react-v2.0.0-next.1...@antv/s2-react-v2.0.0-next.2) (2022-12-07)
 
 ### Bug Fixes
