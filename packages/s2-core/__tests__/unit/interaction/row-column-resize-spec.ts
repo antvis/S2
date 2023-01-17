@@ -4,6 +4,7 @@ import {
   type RectStyleProps,
   type ParsedRectStyleProps,
   Path,
+  FederatedPointerEvent,
 } from '@antv/g';
 import { get, pick } from 'lodash';
 import { createMockCellInfo } from '../../util/helpers';
@@ -57,11 +58,11 @@ describe('Interaction Row Column Resize Tests', () => {
 
   const emitResizeEvent = (
     type: S2Event,
-    event: Partial<MouseEvent>,
+    event: Partial<FederatedPointerEvent | PointerEvent>,
     resizeInfo?: ResizeInfo,
   ) => {
     rowColumnResizeInstance.spreadsheet.emit(type, {
-      originalEvent: event,
+      ...event,
       preventDefault() {},
       target: new CustomRect(
         {},
