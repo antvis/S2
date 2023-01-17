@@ -29,8 +29,8 @@ import type { Node } from '../../facet/layout/node';
 import { getLeafColumnsWithKey } from '../../facet/utils';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
-import { getCsvString } from './method';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
+import { getCsvString } from './method';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> =>
   new Promise((resolve, reject) => {
@@ -576,3 +576,19 @@ export const copyData = (
 
   return result;
 };
+
+// export const copyData = (
+//   sheetInstance: SpreadSheet,
+//   split: string,
+//   formatOptions?: FormatOptions,
+// ): string => {
+//   // const { isFormatData = true, isFormatHeader = true } = formatOptions || {};
+//   console.log(
+//     sheetInstance.options.interaction?.copyWithHeader,
+//     'copyWithHeader',
+//   );
+//   // sheetInstance.options.interaction?.copyWithHeader = true;
+//   const data = processAllSelected(sheetInstance, []);
+//   console.log(data?.[0]?.content, 'data');
+//   return data?.[0]?.content || data?.content;
+// };

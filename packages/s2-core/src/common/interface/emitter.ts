@@ -15,6 +15,7 @@ import type {
 } from '../../common/interface';
 import type { FilterParam, SortParams, S2Style } from '../../common/interface';
 import type { RawData } from '../../common/interface/s2DataConfig';
+import type { CopyableList } from '../../utils/export/interface';
 import type { Node } from '../../facet/layout/node';
 import type { ResizeInfo } from './resize';
 
@@ -35,7 +36,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_ACTION_ICON_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_ACTION_ICON_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_ACTION_ICON_HOVER_OFF]: CanvasEventHandler;
-  [S2Event.GLOBAL_COPIED]: (data: string) => void;
+  [S2Event.GLOBAL_COPIED]: (data: CopyableList | undefined) => void;
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
