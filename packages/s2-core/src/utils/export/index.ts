@@ -29,7 +29,7 @@ import type { Node } from '../../facet/layout/node';
 import { getLeafColumnsWithKey } from '../../facet/utils';
 import type { SpreadSheet } from '../../sheet-type';
 import { safeJsonParse } from '../../utils/text';
-import { getCsvString } from './export-worker';
+import { getCsvString } from './method';
 import { CopyMIMEType, type Copyable, type CopyableItem } from './interface';
 
 export const copyToClipboardByExecCommand = (data: Copyable): Promise<void> =>
