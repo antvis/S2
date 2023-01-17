@@ -1,4 +1,11 @@
-import type { DisplayObject, Line, PointLike, Polygon, Rect } from '@antv/g';
+import type {
+  DisplayObject,
+  Line,
+  PointLike,
+  Polygon,
+  Rect,
+  Text,
+} from '@antv/g';
 import { Group } from '@antv/g';
 import {
   each,
@@ -471,12 +478,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.textShapes || [this.textShape];
   }
 
-  public addTextShape(textShape: CustomText) {
+  public addTextShape(textShape: CustomText | Text) {
     if (!textShape) {
       return;
     }
 
-    this.textShapes.push(textShape);
+    this.textShapes.push(textShape as CustomText);
   }
 
   public getConditionIconShape(): GuiIcon {

@@ -21,7 +21,6 @@ import { PivotDataSet } from '@/data-set';
 import type { PivotFacet } from '@/facet';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { renderText } from '@/utils/g-renders';
-import type { CustomText } from '@/engine/CustomText';
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
@@ -143,7 +142,7 @@ describe('Data Cell Tests', () => {
       const dataCell = new DataCell(meta, s2);
       const textShape = renderText(dataCell, [], { x: 0, y: 0, text: 'test' });
 
-      dataCell.addTextShape(textShape as CustomText);
+      dataCell.addTextShape(textShape);
 
       expect(dataCell.getTextShapes()).toHaveLength(2);
     });

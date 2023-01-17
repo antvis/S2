@@ -22,7 +22,6 @@ import { isIPhoneX } from '../utils/is-mobile';
 import { getEllipsisText, getEmptyPlaceholder } from '../utils/text';
 import type { CornerHeaderConfig } from '../facet/header/interface';
 import { CustomRect } from '../engine';
-import type { CustomText } from '../engine/CustomText';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 
@@ -124,7 +123,7 @@ export class CornerCell extends HeaderCell {
         y: textY,
         text: firstLine,
         ...textStyle,
-      }) as CustomText,
+      }),
     );
 
     // second line
@@ -135,7 +134,7 @@ export class CornerCell extends HeaderCell {
           y: y + height * 0.75,
           text: secondLine,
           ...textStyle,
-        }) as CustomText,
+        }),
       );
     }
 

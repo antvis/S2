@@ -30,7 +30,6 @@ import {
 } from '../common/interface';
 import type { Padding, TextTheme } from '../common/interface/theme';
 import { renderIcon, renderText } from '../utils/g-renders';
-import type { CustomText } from '../engine/CustomText';
 import { renderMiniChart } from './g-mini-charts';
 import { getMaxTextWidth, getTextAndFollowingIconPosition } from './cell/cell';
 
@@ -462,7 +461,7 @@ export const drawObjectText = (
       ...labelStyle,
     });
 
-    cell.addTextShape(textShape as CustomText);
+    cell.addTextShape(textShape);
   }
 
   // 绘制指标
@@ -531,7 +530,7 @@ export const drawObjectText = (
         ...curStyle,
       });
 
-      cell.addTextShape(textShape as CustomText);
+      cell.addTextShape(textShape);
 
       // 绘制条件格式的 icon
       if (iconCondition && useCondition) {
