@@ -199,7 +199,7 @@ describe('List Table Core Data Process', () => {
     });
 
     const data = getCopyPlainContent(ss);
-    expect(data).toBe('2367\t浙江省_formatted\t绍兴市\t家具\t桌子');
+    expect(data).toBe('浙江省_formatted	绍兴市	家具	桌子	2367');
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -257,7 +257,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
-    expect(data).toBe('2330\t四川省\t乐山市\t家具\t桌子');
+    expect(data).toBe('四川省	乐山市	家具	桌子	2330');
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -287,7 +287,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
-    expect(data).toBe('7234\t浙江省\t宁波市\t家具\t沙发');
+    expect(data).toBe('浙江省	宁波市	家具	沙发	7234');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });

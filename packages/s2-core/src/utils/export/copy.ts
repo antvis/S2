@@ -6,6 +6,7 @@ import {
   isEmpty,
   map,
   max,
+  reduce,
   repeat,
   zip,
 } from 'lodash';
@@ -19,6 +20,7 @@ import {
   InteractionStateName,
   NODE_ID_SEPARATOR,
   type S2CellType,
+  SERIES_NUMBER_FIELD,
   VALUE_FIELD,
 } from '../../common';
 import type { Node } from '../../facet/layout/node';
@@ -29,6 +31,7 @@ import {
   convertString,
   getAllLevels,
   getColNodeFieldFromNode,
+  getHeaderList,
   newLine,
   newTab,
 } from './method';
@@ -40,7 +43,7 @@ import {
   CopyMIMEType,
 } from './interface';
 
-const getFiledIdFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
+const getFiledFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
   const colNode = spreadsheet
     .getColumnNodes()
     .find((col) => col.colIndex === colIndex);
@@ -55,16 +58,12 @@ const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   ];
 };
 
-const getFormat = (colIndex: number | undefined, spreadsheet: SpreadSheet) => {
-  const colNode = spreadsheet
-    .getColumnNodes()
-    .find((col) => col.colIndex === colIndex);
-  const fieldValue = getColNodeFieldFromNode(spreadsheet.isPivotMode, colNode);
+function getFormatter(spreadsheet: SpreadSheet, field: string | undefined) {
   if (spreadsheet.options.interaction?.copyWithFormat) {
-    return spreadsheet.dataSet.getFieldFormatter(fieldValue!);
+    return spreadsheet.dataSet.getFieldFormatter(field!);
   }
   return (value: DataItem) => value;
-};
+}
 
 /**
  * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
@@ -107,7 +106,7 @@ const getValueFromMeta = (
     });
     return cell?.[VALUE_FIELD] ?? '';
   }
-  const fieldKey = getFiledIdFromMeta(meta.colIndex, spreadsheet);
+  const fieldKey = getFiledFromMeta(meta.colIndex, spreadsheet);
   return displayData[meta.rowIndex]?.[fieldKey!];
 };
 
@@ -116,25 +115,9 @@ const format = (
   displayData: Data[],
   spreadsheet: SpreadSheet,
 ) => {
-  const formatter = getFormat(meta.colIndex, spreadsheet);
+  const field = getFiledFromMeta(meta.colIndex!, spreadsheet);
+  const formatter = getFormatter(spreadsheet, field);
   return formatter(getValueFromMeta(meta, displayData, spreadsheet)!);
-};
-
-/**
- * 根据 id 计算出行头或者列头展示的文本数组
- * 将 id : root[&]家具[&]桌子[&]price"
- * startLevel 不传, 转换为 List: ['家具', '桌子', 'price']
- * startLevel = 1, 转换为 List: ['家具', '桌子', 'price']
- * @param headerId
- * @param startLevel 层级
- */
-const getHeaderList = (headerId: string, startLevel?: number) => {
-  const headerList = headerId.split(NODE_ID_SEPARATOR);
-  if (startLevel) {
-    return headerList.slice(headerList.length - startLevel);
-  }
-  headerList.shift(); // 去除 root
-  return headerList;
 };
 
 // 把 DataItem[][] 矩阵转换成 CopyableItem
@@ -255,36 +238,22 @@ const processTableColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ): CopyableList => {
-  const { columns = [] } = spreadsheet.dataCfg.fields;
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
+  const columnNodes = spreadsheet.getColumnNodes();
 
-  /**
-   * 获取 id 对应的 colNode field. eg: id: root&age, field: age
-   * @param id
-   */
-  const getColNodeFieldFromId = (id: string | undefined) => {
-    const colNode = spreadsheet.getColumnNodes().find((col) => col.id === id);
-    return colNode?.field;
-  };
-
-  const selectedFields = selectedCols.length
-    ? selectedCols.map((e) => ({
-        field: getColNodeFieldFromId(e.id),
-        formatter: getFormat(e.colIndex, spreadsheet),
-      }))
-    : columns
-        .map((cName) =>
-          spreadsheet.getColumnNodes().find((n) => n.field === cName),
-        )
-        .map((node) => ({
-          field: getColNodeFieldFromNode(spreadsheet.isPivotMode, node),
-          formatter: getFormat(node?.colIndex, spreadsheet),
-        }));
+  const selectedColNodes: Node[] = selectedCols.length
+    ? (filter(columnNodes, (node) => {
+        return selectedCols.find((col) => col.id === node.id);
+      }) as Node[])
+    : columnNodes;
 
   const dataMatrix = displayData.map((row) => {
-    return selectedFields.map(({ field, formatter }) =>
-      convertString(formatter(row[field!]) as string),
-    );
+    return selectedColNodes.map((node) => {
+      const field = node.field;
+      const formatter = getFormatter(spreadsheet, field);
+      const value = row[field];
+      return formatter(value);
+    });
   });
 
   return [
@@ -312,9 +281,10 @@ const getDataMatrixByHeaderNode = (
           colNode.isTotals ||
           colNode.isTotalMeasure,
       });
-      return getFormat(
-        colNode.colIndex,
+
+      return getFormatter(
         spreadsheet,
+        colNode.field,
       )(cellData?.[VALUE_FIELD] ?? '');
     });
   });
@@ -386,7 +356,6 @@ function getPivotCopyData(
       matrixHtmlTransformer(dataMatrix),
     ];
   }
-
   // 带表头复制
   const rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
   const colMatrix = zip(
@@ -417,6 +386,7 @@ function processPivotSelected(
   const selectedColNodes = getSelectedCols(selectedCells);
   const selectedRowNodes = getSelectedRows(selectedCells);
 
+  // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
   if (!isEmpty(selectedColNodes)) {
     colNodes = selectedColNodes.reduce<Node[]>((nodes, cellMeta) => {
       nodes.push(
@@ -425,7 +395,7 @@ function processPivotSelected(
       return nodes;
     }, []);
   }
-
+  // selectedRowNodes 选中了指定的行头，则只展示对应行头对应的数据
   if (!isEmpty(selectedRowNodes)) {
     rowNodes = selectedRowNodes.reduce<Node[]>((nodes, cellMeta) => {
       nodes.push(
@@ -481,25 +451,39 @@ const processColSelected = (
 //   return processTableColSelected(spreadsheet, selectedCols);
 // };
 
+/**
+ * 明细表点击行头进行复制逻辑
+ * @param {SpreadSheet} spreadsheet
+ * @param {CellMeta[]} selectedRows
+ * @return {CopyableList}
+ */
 const processTableRowSelected = (
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ): CopyableList => {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
-  const matrix = displayData
-    .filter((_, i) => selectedRows.map((row) => row.rowIndex).includes(i))
-    .map((entry) => {
-      return Object.keys(entry)
-        .map((cName) =>
-          spreadsheet.getColumnNodes().find((n) => n.field === cName),
-        )
-        .filter(Boolean) // 过滤掉空值，如行头cell
-        .map((node) =>
-          convertString(
-            getFormat(node?.colIndex, spreadsheet)(entry[node?.field!]),
-          ),
-        );
-    });
+  const columnNodes = spreadsheet.getColumnNodes();
+  const matrix = map(selectedRows, (row) => {
+    const rowData = displayData[row.rowIndex];
+    // 对行内的每条数据进行格式化
+    return reduce(
+      columnNodes,
+      (acc: string[], colNode: Node) => {
+        const key = colNode?.field;
+        const value = rowData[key];
+        const noFormatting = !colNode || key === SERIES_NUMBER_FIELD;
+        if (noFormatting) {
+          return acc;
+        }
+        const formatterVal = convertString(
+          getFormatter(spreadsheet, colNode?.field)(value),
+        ) as string;
+        acc.push(formatterVal);
+        return acc;
+      },
+      [],
+    );
+  });
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
@@ -714,6 +698,7 @@ function getDataCellCopyable(
     }
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
+    // console.log('selectedCellsMeta', selectedCellsMeta);
     // const { currentRow } = spreadsheet.interaction.getSelectedCellHighlight();
     // if (currentRow) {
     //   const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>

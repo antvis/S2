@@ -2,6 +2,8 @@ import { forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import type { DataItem } from '../../common';
 import { NODE_ID_SEPARATOR } from '../../common';
+import type { Node } from '../../facet/layout/node';
+// import type { SpreadSheet } from '../../sheet-type';
 
 export const newLine = '\r\n';
 export const newTab = '\t';
@@ -69,4 +71,20 @@ export const getHeaderList = (headerId: string, startLevel?: number) => {
   }
   headerList.shift(); // 去除 root
   return headerList;
+};
+
+/**
+ * 获取 col node 对应的 field。e.g. field: age
+ * @param {() => boolean} isPivotMode
+ * @param {Node} colNode
+ * @return {string | undefined}
+ */
+export const getColNodeFieldFromNode = (
+  isPivotMode: () => boolean,
+  colNode?: Node,
+): string | undefined => {
+  if (isPivotMode()) {
+    return colNode?.value;
+  }
+  return colNode?.field;
 };
