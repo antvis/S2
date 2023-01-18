@@ -1,7 +1,7 @@
 import { forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import type { DataItem } from '../../common';
-import { NODE_ID_SEPARATOR } from '../../common';
+import { type CellMeta, CellTypes, NODE_ID_SEPARATOR } from '../../common';
 import type { Node } from '../../facet/layout/node';
 // import type { SpreadSheet } from '../../sheet-type';
 
@@ -15,6 +15,7 @@ export function getCsvString(v: any): string {
 
   if (typeof v === 'string') {
     const out = v;
+
     // 需要替换", https://en.wikipedia.org/wiki/Comma-separated_values#Example
     return `"${out.replace(/"/g, '""')}"`;
   }
@@ -26,16 +27,16 @@ export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
     return false;
   }
+
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
 export const convertString = (value: DataItem) => {
   if (/\n/.test(value as string)) {
     // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
-    return (
-      '"' + (value as string).replace(/\r\n?/g, '\n').replace(/"/g, "'") + '"'
-    );
+    return `"${(value as string).replace(/\r\n?/g, '\n').replace(/"/g, "'")}"`;
   }
+
   return value;
 };
 
@@ -46,13 +47,17 @@ export const convertString = (value: DataItem) => {
  */
 export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
   const allLevels = new Set<number>();
+
   forEach(interactedCells, (cell: RowCell | ColCell) => {
     const level = cell.getMeta().level;
+
     if (allLevels.has(level)) {
       return;
     }
+
     allLevels.add(level);
   });
+
   return allLevels;
 }
 
@@ -66,10 +71,14 @@ export function getAllLevels(interactedCells: (RowCell | ColCell)[]) {
  */
 export const getHeaderList = (headerId: string, startLevel?: number) => {
   const headerList = headerId.split(NODE_ID_SEPARATOR);
+
   if (startLevel) {
     return headerList.slice(headerList.length - startLevel);
   }
-  headerList.shift(); // 去除 root
+
+  // 去除 root
+  headerList.shift();
+
   return headerList;
 };
 
@@ -86,5 +95,12 @@ export const getColNodeFieldFromNode = (
   if (isPivotMode()) {
     return colNode?.value;
   }
+
   return colNode?.field;
 };
+
+export const getSelectedCols = (cells: CellMeta[]) =>
+  cells.filter(({ type }) => type === CellTypes.COL_CELL);
+
+export const getSelectedRows = (cells: CellMeta[]) =>
+  cells.filter(({ type }) => type === CellTypes.ROW_CELL);
