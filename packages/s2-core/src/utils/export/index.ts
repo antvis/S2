@@ -576,19 +576,3 @@ export const copyData = (
 
   return result;
 };
-
-// export const copyData = (
-//   sheetInstance: SpreadSheet,
-//   split: string,
-//   formatOptions?: FormatOptions,
-// ): string => {
-//   // const { isFormatData = true, isFormatHeader = true } = formatOptions || {};
-//   console.log(
-//     sheetInstance.options.interaction?.copyWithHeader,
-//     'copyWithHeader',
-//   );
-//   // sheetInstance.options.interaction?.copyWithHeader = true;
-//   const data = processAllSelected(sheetInstance, []);
-//   console.log(data?.[0]?.content, 'data');
-//   return data?.[0]?.content || data?.content;
-// };

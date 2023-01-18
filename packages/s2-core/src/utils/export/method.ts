@@ -1,9 +1,11 @@
+/**
+ * 导出和复制的公共方法，这里的方法都比较纯，参数中都不包含 spreadsheet 对象
+ */
 import { forEach } from 'lodash';
 import type { ColCell, RowCell } from '../../cell';
 import type { DataItem } from '../../common';
 import { type CellMeta, CellTypes, NODE_ID_SEPARATOR } from '../../common';
 import type { Node } from '../../facet/layout/node';
-// import type { SpreadSheet } from '../../sheet-type';
 
 export const newLine = '\r\n';
 export const newTab = '\t';
