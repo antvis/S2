@@ -601,13 +601,13 @@ describe('Table Mode Facet With Column Grouping Test', () => {
     columns: [
       {
         field: 'area',
-        children: ['province', 'city'],
+        children: [{ field: 'province' }, { field: 'city' }],
       },
       {
         field: 'all_type',
-        children: ['type', 'sub_type'],
+        children: [{ field: 'type' }, { field: 'sub_type' }],
       },
-      'price',
+      { field: 'price' },
     ],
   });
   const { colCell } = s2.options.style!;
@@ -660,12 +660,12 @@ describe('Table Mode Facet With Column Grouping Frozen Test', () => {
       columns: [
         {
           field: 'area',
-          children: ['province', 'city'],
+          children: [{ field: 'province' }, { field: 'city' }],
         },
-        'price',
+        { field: 'price' },
         {
           field: 'all_type',
-          children: ['type', 'sub_type'],
+          children: [{ field: 'type' }, { field: 'sub_type' }],
         },
       ],
     },

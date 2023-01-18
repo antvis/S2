@@ -149,11 +149,11 @@ module.exports = {
     'new-cap': 2,
     'prefer-template': 2,
     'no-useless-rename': 2,
-    'arrow-body-style': [
-      2,
-      'as-needed',
-      { requireReturnForObjectLiteral: true },
-    ],
+    // 'arrow-body-style': [
+    //   2,
+    //   'as-needed',
+    //   { requireReturnForObjectLiteral: true },
+    // ],
     'no-unneeded-ternary': 2,
     'array-callback-return': 2,
     'dot-notation': 0,
@@ -163,7 +163,7 @@ module.exports = {
       2,
       { max: 120, skipBlankLines: true, skipComments: true },
     ],
-    'multiline-comment-style': [2, 'starred-block'],
+    // 'multiline-comment-style': [2, 'starred-block'],
     'lines-around-comment': [
       2,
       {

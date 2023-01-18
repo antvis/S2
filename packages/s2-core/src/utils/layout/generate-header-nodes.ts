@@ -1,16 +1,8 @@
 import { includes } from 'lodash';
-import {
-  getDefaultSeriesNumberText,
-  type CustomHeaderFields,
-  type CustomTreeNode,
-} from '../../common';
-import { EXTRA_FIELD, SERIES_NUMBER_FIELD } from '../../common/constant';
+import { EXTRA_FIELD } from '../../common/constant';
 import { i18n } from '../../common/i18n';
 import { buildGridHierarchy } from '../../facet/layout/build-gird-hierarchy';
-import type {
-  HeaderNodesParams,
-  TableHeaderParams,
-} from '../../facet/layout/interface';
+import type { HeaderNodesParams } from '../../facet/layout/interface';
 import { layoutHierarchy } from '../../facet/layout/layout-hooks';
 import { Node } from '../../facet/layout/node';
 import { TotalClass } from '../../facet/layout/total-class';
@@ -85,9 +77,9 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isLeaf = level === fields.length - extraSize;
     }
 
-    const uniqueId = generateId(parentNode.id, value);
+    const nodeId = generateId(parentNode.id, value);
 
-    if (!uniqueId) {
+    if (!nodeId) {
       return;
     }
 
@@ -95,7 +87,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     const isCollapsed = false;
     // create new header nodes
     const node = new Node({
-      id: uniqueId,
+      id: nodeId,
       value,
       level,
       field: adjustedField,
@@ -155,52 +147,4 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       });
     }
   }
-};
-
-/**
- * 给定一个树形结构的表头，深度优先创建表头的 node
- * @param columns
- * @param params
- * @param pNode
- * @param level
- */
-export const DFSGenerateHeaderNodes = (
-  columns: CustomHeaderFields,
-  params: TableHeaderParams,
-  level: number,
-  pNode?: Node | null,
-) => {
-  const { hierarchy, parentNode, spreadsheet } = params;
-
-  columns.forEach((column, i) => {
-    if (typeof column === 'string') {
-      column = { field: column } as CustomTreeNode;
-    }
-
-    const { field } = column;
-    const value =
-      field === SERIES_NUMBER_FIELD
-        ? getDefaultSeriesNumberText(spreadsheet.options.seriesNumberText)
-        : spreadsheet.dataSet.getFieldName(field);
-    const currentParent = pNode || parentNode;
-
-    generateHeaderNodes({
-      spreadsheet,
-      currentField: field,
-      fields: [field],
-      fieldValues: [value],
-      hierarchy,
-      parentNode: currentParent,
-      level,
-      query: {},
-      addMeasureInTotalQuery: false,
-      addTotalMeasureInTotal: false,
-    });
-    if (column.children && column.children.length) {
-      const generateNode = currentParent.children[i];
-
-      generateNode.isLeaf = false;
-      DFSGenerateHeaderNodes(column.children, params, level + 1, generateNode);
-    }
-  });
 };

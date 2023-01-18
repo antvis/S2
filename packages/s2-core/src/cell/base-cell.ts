@@ -255,7 +255,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         this.getStyle()?.cell!,
       );
 
-      renderLine(this, position, style);
+      renderLine(this, { ...position, ...style });
     });
   }
 
@@ -361,17 +361,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
       const { bottom: maxY } = this.textShape.getBBox();
 
-      this.linkFieldShape = renderLine(
-        this,
-        {
-          x1: startX,
-          y1: maxY + 1,
-          // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
-          x2: startX + this.actualTextWidth,
-          y2: maxY + 1,
-        },
-        { stroke: linkFillColor, lineWidth: 1 },
-      );
+      this.linkFieldShape = renderLine(this, {
+        x1: startX,
+        y1: maxY + 1,
+        // 不用 bbox 的 maxX，因为 g-base 文字宽度预估偏差较大
+        x2: startX + this.actualTextWidth,
+        y2: maxY + 1,
+        stroke: linkFillColor,
+        lineWidth: 1,
+      });
     }
 
     // TODO: 迁移 appendInfo

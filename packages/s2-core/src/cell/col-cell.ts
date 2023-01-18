@@ -450,20 +450,15 @@ export class ColCell extends HeaderCell {
       this.theme.splitLine!;
     const lineX = this.isLastColumn() ? x + width : x;
 
-    renderLine(
-      this,
-      {
-        x1: lineX,
-        y1: y,
-        x2: lineX,
-        y2: y + height,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: SPLIT_LINE_WIDTH,
-        strokeOpacity: horizontalBorderColorOpacity,
-      },
-    );
+    renderLine(this, {
+      x1: lineX,
+      y1: y,
+      x2: lineX,
+      y2: y + height,
+      stroke: horizontalBorderColor,
+      lineWidth: SPLIT_LINE_WIDTH,
+      strokeOpacity: horizontalBorderColorOpacity,
+    });
   }
 
   protected addExpandColumnIconShapes() {

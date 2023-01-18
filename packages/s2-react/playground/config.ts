@@ -4,6 +4,7 @@ import {
   type S2TableSheetFrozenOptions,
   type CustomHeaderField,
   type S2DataConfig,
+  type CustomTreeNode,
 } from '@antv/s2';
 import { getBaseSheetComponentOptions } from '@antv/s2-shared';
 import type { SliderSingleProps } from 'antd';
@@ -23,15 +24,43 @@ export const tableSheetSingleColumns: CustomHeaderField[] = [
   'number',
 ];
 
-export const tableSheetMultipleColumns: CustomHeaderField[] = [
+export const tableSheetMultipleColumns: CustomTreeNode[] = [
+  // {
+  //   field: 'a-1',
+  //   title: '自定义节点 a-1',
+  //   children: [
+  //     { field: 'a-1-1', title: '自定义节点 a-1-1' },
+  //     {
+  //       field: 'a-1-2',
+  //       title: '自定义节点 a-1-2',
+  //       children: [
+  //         {
+  //           field: 'a-1-2-1',
+  //           title: '自定义节点 a-1-2-1',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
     field: 'area',
-    children: [{ field: 'province' }, { field: 'city' }],
+    title: '地区',
+    children: [
+      { field: 'province', title: '省份' },
+      { field: 'city', title: '城市' },
+    ],
   },
-  'type',
+  {
+    field: 'type',
+    title: '类型',
+  },
   {
     field: 'money',
-    children: [{ field: 'price' }, { field: 'number' }],
+    title: '金额',
+    children: [
+      { field: 'price', title: '价格', description: '价格描述' },
+      { field: 'number', title: '数量' },
+    ],
   },
 ];
 
@@ -75,12 +104,15 @@ export const TableSheetFrozenOptions: S2TableSheetFrozenOptions = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: true,
-  width: 600,
+  debug: false,
+  width: 1000,
   height: 400,
+  hierarchyType: 'grid',
   showSeriesNumber: false,
   frozen: {
     rowHeader: true,
+    // colCount: 1,
+    // trailingColCount: 1,
   },
   cornerText: '测试',
   interaction: {
@@ -93,8 +125,8 @@ export const s2Options: SheetComponentOptions = {
       row: true,
     },
     resize: {
-      rowResizeType: ResizeType.ALL,
-      colResizeType: ResizeType.ALL,
+      rowResizeType: ResizeType.CURRENT,
+      colResizeType: ResizeType.CURRENT,
     },
   },
   tooltip: {
@@ -115,19 +147,16 @@ export const s2Options: SheetComponentOptions = {
     },
   },
   conditions: s2ConditionsOptions,
-  hierarchyType: 'grid',
   style: {
     rowCell: {
       height: 50,
     },
     colCell: {
       hideValue: true,
-      width: 140,
       height: 30,
     },
     dataCell: {
-      width: 100,
-      height: 40,
+      height: 50,
     },
   },
 };

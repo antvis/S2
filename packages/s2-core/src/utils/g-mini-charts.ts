@@ -386,23 +386,16 @@ export const drawBullet = (value: BulletValue, cell: S2CellType) => {
   // 3.测量标记线
   const lineX = positionX + bulletWidth * displayTarget;
 
-  renderLine(
-    cell,
-    {
-      x1: lineX,
-      y1: y + (height - comparativeMeasure.height) / 2,
-      x2: lineX,
-      y2:
-        y +
-        (height - comparativeMeasure.height) / 2 +
-        comparativeMeasure.height,
-    },
-    {
-      stroke: comparativeMeasure?.fill || comparativeMeasure?.color,
-      lineWidth: comparativeMeasure.width,
-      opacity: comparativeMeasure?.opacity,
-    },
-  );
+  renderLine(cell, {
+    x1: lineX,
+    y1: y + (height - comparativeMeasure.height) / 2,
+    x2: lineX,
+    y2:
+      y + (height - comparativeMeasure.height) / 2 + comparativeMeasure.height,
+    stroke: comparativeMeasure?.fill || comparativeMeasure?.color,
+    lineWidth: comparativeMeasure.width,
+    opacity: comparativeMeasure?.opacity,
+  });
 
   // 4.绘制指标
   const text = getEllipsisText({

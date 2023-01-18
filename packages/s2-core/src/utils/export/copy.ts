@@ -748,12 +748,11 @@ export const getDataByRowData = (
     },
   } = spreadsheet;
   const defaultDataValue = getEmptyPlaceholder(spreadsheet, placeholder);
-  const column = spreadsheet.getColumnLeafNodes();
+  const colLeafNodes = spreadsheet.getColumnLeafNodes();
   let datas: string[][] = [];
 
   if (spreadsheet.isTableMode()) {
-    const columnWithoutSeriesNumber = filter(
-      column,
+    const columnWithoutSeriesNumber = colLeafNodes.filter(
       (node) => node.field !== SERIES_NUMBER_FIELD,
     );
 

@@ -13,13 +13,10 @@ import {
   merge,
   reduce,
   size,
-  sumBy,
 } from 'lodash';
-import type { PivotDataSet } from '../data-set/pivot-data-set';
 import {
   DEFAULT_TREE_ROW_WIDTH,
   LAYOUT_SAMPLE_COUNT,
-  type AdjustLeafNodesParams,
   type GetCellMeta,
   type IconTheme,
   type MultiData,
@@ -28,6 +25,7 @@ import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '../common/constant';
 import { CellTypes } from '../common/constant/interaction';
 import { DebuggerUtil } from '../common/debug';
 import type { LayoutResult } from '../common/interface';
+import type { PivotDataSet } from '../data-set/pivot-data-set';
 import { getDataCellId } from '../utils/cell/data-cell';
 import { getActionIconConfig } from '../utils/cell/header-cell';
 import {
@@ -36,11 +34,11 @@ import {
 } from '../utils/facet';
 import { getCellWidth, safeJsonParse } from '../utils/text';
 import { BaseFacet } from './base-facet';
+import { Frame } from './header';
 import { buildHeaderHierarchy } from './layout/build-header-hierarchy';
 import type { Hierarchy } from './layout/hierarchy';
 import { layoutCoordinate, layoutDataPosition } from './layout/layout-hooks';
 import { Node } from './layout/node';
-import { Frame } from './header';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {
@@ -490,60 +488,6 @@ export class PivotFacet extends BaseFacet {
   }
 
   /**
-   * @description 自定义行头时, 叶子节点层级不定, 需要自动对齐其宽度, 填充空白
-   * -------------------------------------------------
-   * |  自定义节点 a-1  |  自定义节点 a-1-1              |
-   * |-------------   |-------------|----------------|
-   * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
-   * -------------------------------------------------
-   */
-  private adjustRowLeafNodesWidth(params: AdjustLeafNodesParams) {
-    if (!this.spreadsheet.isCustomRowFields()) {
-      return;
-    }
-
-    this.adjustLeafNodesSize('width')(params);
-  }
-
-  /**
-   * @description 自定义列头时, 叶子节点层级不定, 需要自动对齐其高度, 填充空白
-   * ---------------------------------------------------------------------
-   * |                       自定义节点 a-1                                   |
-   * |----------------------------------------------------------------------|
-   * |                 自定义节点 a-1-1               |                       |
-   * |-------------|-------------|------------------|   自定义节点 a-1-2      |
-   * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
-   * ----------------------------------------------------------------------
-   */
-  private adjustColLeafNodesHeight(params: AdjustLeafNodesParams) {
-    if (!this.spreadsheet.isCustomColumnFields()) {
-      return;
-    }
-
-    this.adjustLeafNodesSize('height')(params);
-  }
-
-  private adjustLeafNodesSize(type: 'width' | 'height') {
-    return ({ leafNodes, hierarchy }: AdjustLeafNodesParams) => {
-      const { sampleNodeForLastLevel, sampleNodesForAllLevels } = hierarchy;
-
-      leafNodes.forEach((node) => {
-        if (node.level < sampleNodeForLastLevel?.level!) {
-          const leafNodeSize = sumBy(sampleNodesForAllLevels, (sampleNode) => {
-            if (sampleNode.level < node.level) {
-              return 0;
-            }
-
-            return sampleNode[type];
-          });
-
-          node[type] = leafNodeSize;
-        }
-      });
-    };
-  }
-
-  /**
    * @description Auto calculate row no-leaf node's height and y coordinate
    * @param rowLeafNodes
    */
@@ -837,8 +781,10 @@ export class PivotFacet extends BaseFacet {
     const treeHeaderLabel = rows
       .map((field) => this.spreadsheet.dataSet.getFieldName(field))
       .join('/');
+
     const { bolderText: cornerCellTextStyle, icon: cornerIconStyle } =
       this.spreadsheet.theme.cornerCell!;
+
     // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
     const maxLabelWidth =
       this.spreadsheet.measureTextWidth(treeHeaderLabel, cornerCellTextStyle) +
@@ -940,12 +886,9 @@ export class PivotFacet extends BaseFacet {
 
     return {
       getTotalHeight: () => last(heights) || 0,
-
       getCellOffsetY: (index: number) => heights[index],
-
-      getTotalLength: () =>
-        // 多了一个数据 [0]
-        heights.length - 1,
+      // 多了一个数据 [0]
+      getTotalLength: () => heights.length - 1,
       getIndexRange: (minHeight: number, maxHeight: number) =>
         getIndexRangeWithOffsets(heights, minHeight, maxHeight),
     };

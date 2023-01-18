@@ -1,8 +1,8 @@
 import {
-  Group,
-  type FederatedPointerEvent as GraphEvent,
-  Rect,
   FederatedWheelEvent,
+  Group,
+  Rect,
+  type FederatedPointerEvent as GraphEvent,
 } from '@antv/g';
 import { interpolateArray } from 'd3-interpolate';
 import { timer, type Timer } from 'd3-timer';
@@ -17,6 +17,7 @@ import {
   isUndefined,
   last,
   reduce,
+  sumBy,
 } from 'lodash';
 import { DataCell } from '../cell';
 import {
@@ -36,12 +37,14 @@ import {
   S2Event,
   ScrollbarPositionType,
 } from '../common/constant';
+import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
 import {
   DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
 } from '../common/debug';
 import type {
+  AdjustLeafNodesParams,
   CellCustomSize,
   FrameConfig,
   GridInfo,
@@ -53,10 +56,12 @@ import type {
   ViewMeta,
 } from '../common/interface';
 import type {
-  ScrollOffset,
-  CellScrollPosition,
   CellScrollOffset,
+  CellScrollPosition,
+  ScrollOffset,
 } from '../common/interface/scroll';
+import type { FrozenGroup } from '../group/frozen-group';
+import { PanelScrollGroup } from '../group/panel-scroll-group';
 import type { SpreadSheet } from '../sheet-type';
 import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { getAdjustedRowScrollX, getAdjustedScrollOffset } from '../utils/facet';
@@ -64,23 +69,18 @@ import { getAllChildCells } from '../utils/get-all-child-cells';
 import { getColsForGrid, getRowsForGrid } from '../utils/grid';
 import { diffPanelIndexes, type PanelIndexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { DEFAULT_PAGE_INDEX } from '../common/constant/pagination';
-import { PanelScrollGroup } from '../group/panel-scroll-group';
-import type { FrozenGroup } from '../group/frozen-group';
-import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
   ColHeader,
-  type ColHeaderConfig,
   CornerHeader,
   Frame,
   RowHeader,
-  type RowHeaderConfig,
   SeriesNumberHeader,
 } from './header';
 import type { ViewCellHeights } from './layout/interface';
 import type { Node } from './layout/node';
+import { WheelEvent as MobileWheel } from './mobile/wheelEvent';
 import {
   calculateInViewIndexes,
   getCellRange,
@@ -1316,9 +1316,9 @@ export abstract class BaseFacet {
         viewportWidth,
         viewportHeight,
         position: { x: seriesNumberWidth, y },
-        data: this.layoutResult.rowNodes,
+        nodes: this.layoutResult.rowNodes,
         spreadsheet: this.spreadsheet,
-      } as unknown as RowHeaderConfig);
+      });
     }
 
     return this.rowHeader;
@@ -1335,10 +1335,10 @@ export abstract class BaseFacet {
         viewportWidth,
         viewportHeight,
         position: { x, y: 0 },
-        data: this.layoutResult.colNodes,
+        nodes: this.layoutResult.colNodes,
         sortParam: this.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
-      } as unknown as ColHeaderConfig);
+      });
     }
 
     return this.columnHeader;
@@ -1486,5 +1486,61 @@ export abstract class BaseFacet {
 
   public getCornerNodes(): Node[] {
     return this.cornerHeader?.getNodes() || [];
+  }
+
+  /**
+   * @description 自定义行头时, 叶子节点层级不定, 需要自动对齐其宽度, 填充空白
+   * -------------------------------------------------
+   * |  自定义节点 a-1  |  自定义节点 a-1-1              |
+   * |-------------   |-------------     |------------|
+   * |  自定义节点 b-1  |  自定义节点 b-1-1 |  指标 1    |
+   * -------------------------------------------------
+   */
+  public adjustRowLeafNodesWidth(params: AdjustLeafNodesParams) {
+    if (!this.spreadsheet.isCustomRowFields()) {
+      return;
+    }
+
+    this.adjustLeafNodesSize('width')(params);
+  }
+
+  /**
+   * @description 自定义列头时, 叶子节点层级不定, 需要自动对齐其高度, 填充空白
+   * ------------------------------------------------------------------------
+   * |                       自定义节点 a-1                                   |
+   * |----------------------------------------------------------------------|
+   * |                 自定义节点 a-1-1               |                       |
+   * |-------------|-------------|------------------|   自定义节点 a-1-2      |
+   * |   指标 1    |  自定义节点 a-1-1-1    | 指标 2  |                        |
+   * ----------------------------------------------------------------------
+   */
+  public adjustColLeafNodesHeight(params: AdjustLeafNodesParams) {
+    if (!this.spreadsheet.isCustomColumnFields()) {
+      return;
+    }
+
+    this.adjustLeafNodesSize('height')(params);
+  }
+
+  public adjustLeafNodesSize(type: 'width' | 'height') {
+    return ({ leafNodes, hierarchy }: AdjustLeafNodesParams) => {
+      const { sampleNodeForLastLevel, sampleNodesForAllLevels } = hierarchy;
+
+      leafNodes.forEach((node) => {
+        if (node.level > sampleNodeForLastLevel?.level!) {
+          return;
+        }
+
+        const leafNodeSize = sumBy(sampleNodesForAllLevels, (sampleNode) => {
+          if (sampleNode.level < node.level) {
+            return 0;
+          }
+
+          return sampleNode[type];
+        });
+
+        node[type] = leafNodeSize;
+      });
+    };
   }
 }

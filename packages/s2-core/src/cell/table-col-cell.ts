@@ -1,27 +1,27 @@
 import { find } from 'lodash';
-import type { Group } from '@antv/g';
 import { ColCell } from '../cell/col-cell';
 import {
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
 } from '../common/constant';
-import type { AreaRange } from '../common/interface/scroll';
 import type { FormatResult } from '../common/interface';
+import type { AreaRange } from '../common/interface/scroll';
+import type { SimpleBBox } from '../engine';
+import type { BaseHeaderConfig } from '../facet/header';
 import {
+  getNodeRoot,
   isFrozenCol,
   isFrozenTrailingCol,
   isTopLevelNode,
-  getNodeRoot,
 } from '../facet/utils';
+import { formattedFieldValue } from '../utils/cell/header-cell';
 import { renderRect } from '../utils/g-renders';
 import {
   getOrCreateResizeAreaGroupById,
   shouldAddResizeArea,
 } from '../utils/interaction/resize';
-import { getSortTypeIcon } from '../utils/sort-action';
-import { formattedFieldValue } from '../utils/cell/header-cell';
 import { getFrozenColWidth } from '../utils/layout/frozen';
-import type { BaseHeaderConfig } from '../facet/header';
+import { getSortTypeIcon } from '../utils/sort-action';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
@@ -41,9 +41,7 @@ export class TableColCell extends ColCell {
   protected isFrozenCell() {
     const { colCount = 0, trailingColCount = 0 } =
       this.spreadsheet.options.frozen!;
-    const colNodes = this.spreadsheet.facet.layoutResult.colNodes.filter(
-      (node) => isTopLevelNode(node),
-    );
+    const colNodes = this.spreadsheet.getColumnNodes().filter(isTopLevelNode);
     const { colIndex } = getNodeRoot(this.meta);
 
     return (
@@ -55,7 +53,7 @@ export class TableColCell extends ColCell {
   protected getFormattedFieldValue(): FormatResult {
     return formattedFieldValue(
       this.meta,
-      this.spreadsheet.dataSet.getFieldName(this.meta.value),
+      this.spreadsheet.dataSet.getFieldName(this.meta.field),
     );
   }
 
@@ -69,7 +67,7 @@ export class TableColCell extends ColCell {
 
     const resizeStyle = this.getResizeAreaStyle();
 
-    const resizeAreaBBox = {
+    const resizeAreaBBox: SimpleBBox = {
       x: x + width - resizeStyle.size!,
       y,
       width: resizeStyle.size!,
@@ -80,7 +78,7 @@ export class TableColCell extends ColCell {
       this.spreadsheet.facet.layoutResult.colLeafNodes,
       this.spreadsheet.options.frozen!,
     );
-    const resizeClipAreaBBox = {
+    const resizeClipAreaBBox: SimpleBBox = {
       x: frozenWidth.frozenColWidth,
       y: 0,
       width:
@@ -123,7 +121,7 @@ export class TableColCell extends ColCell {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    ) as Group;
+    );
   }
 
   protected isSortCell() {
@@ -141,7 +139,7 @@ export class TableColCell extends ColCell {
   }
 
   protected getHorizontalResizeAreaName() {
-    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
+    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.id}`;
   }
 
   protected drawBackgroundShape() {
