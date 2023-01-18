@@ -136,7 +136,6 @@ export const s2Options: SheetComponentOptions = {
     },
     colCell: {
       hideValue: true,
-      height: 30,
     },
     dataCell: {
       height: 50,

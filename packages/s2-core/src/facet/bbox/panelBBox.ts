@@ -14,9 +14,9 @@ export class PanelBBox extends BaseBBox {
 
     // splitLine 也应该占位，panelBBox = canvasBBox - cornerBBox - splitLineBBox
     this.x = cornerPosition.x + Frame.getVerticalBorderWidth(this.spreadsheet);
-
     this.y =
       cornerPosition.y + Frame.getHorizontalBorderWidth(this.spreadsheet);
+
     this.minX = this.x;
     this.minY = this.y;
 

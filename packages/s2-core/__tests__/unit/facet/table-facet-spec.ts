@@ -62,6 +62,7 @@ jest.mock('@/sheet-type', () => {
         },
         isValueInCols: jest.fn(),
         isCustomHeaderFields: jest.fn(),
+        isCustomColumnFields: jest.fn(),
         measureTextWidthRoughly: jest.fn(),
         measureTextWidth: jest.fn(),
       };
