@@ -37,3 +37,31 @@ export const getTestTooltipData = (s2: SpreadSheet, cell: S2CellType) => {
     },
   });
 };
+
+export const mapCellNodeValues = (s2: SpreadSheet) => {
+  const colNodes = s2.getColumnNodes().map((node) => {
+    return {
+      actualText: node.belongsCell?.getActualText(),
+      value: node.value,
+      id: node.field,
+    };
+  });
+
+  const rowNodes = s2.getRowNodes().map((node) => {
+    return {
+      actualText: node.belongsCell?.getActualText(),
+      value: node.value,
+      id: node.field,
+    };
+  });
+
+  const dataCellTexts = s2.interaction
+    .getPanelGroupAllDataCells()
+    .map((cell) => cell.getActualText());
+
+  return {
+    colNodes,
+    rowNodes,
+    dataCellTexts,
+  };
+};

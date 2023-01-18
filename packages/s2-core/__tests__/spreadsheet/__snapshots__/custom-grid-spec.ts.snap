@@ -50,6 +50,54 @@ Array [
 ]
 `;
 
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should format custom columns 1`] = `
+Array [
+  Object {
+    "actualText": "%-自定义节点 a-1",
+    "id": "a-1",
+    "value": "自定义节点 a-1",
+  },
+  Object {
+    "actualText": "自定义节点 a-1-1",
+    "id": "a-1-1",
+    "value": "自定义节点 a-1-1",
+  },
+  Object {
+    "actualText": "#-指标1",
+    "id": "measure-1",
+    "value": "指标1",
+  },
+  Object {
+    "actualText": "666-指标2",
+    "id": "measure-2",
+    "value": "指标2",
+  },
+  Object {
+    "actualText": "自定义节点 a...",
+    "id": "a-1-2",
+    "value": "自定义节点 a-1-2",
+  },
+  Object {
+    "actualText": "自定义节点 a-2",
+    "id": "a-2",
+    "value": "自定义节点 a-2",
+  },
+]
+`;
+
+exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should format custom columns 2`] = `
+Array [
+  "#-13",
+  "#-11",
+  "666-2",
+  "666-8",
+  "-",
+  "-",
+  "-",
+  "-",
+]
+`;
+
 exports[`SpreadSheet Custom Grid Tests Custom Col Grid Tests should render custom format corner text 1`] = `
 Array [
   Object {
