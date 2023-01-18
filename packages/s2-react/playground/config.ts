@@ -25,23 +25,6 @@ export const tableSheetSingleColumns: CustomHeaderField[] = [
 ];
 
 export const tableSheetMultipleColumns: CustomTreeNode[] = [
-  // {
-  //   field: 'a-1',
-  //   title: '自定义节点 a-1',
-  //   children: [
-  //     { field: 'a-1-1', title: '自定义节点 a-1-1' },
-  //     {
-  //       field: 'a-1-2',
-  //       title: '自定义节点 a-1-2',
-  //       children: [
-  //         {
-  //           field: 'a-1-2-1',
-  //           title: '自定义节点 a-1-2-1',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
   {
     field: 'area',
     title: '地区',
