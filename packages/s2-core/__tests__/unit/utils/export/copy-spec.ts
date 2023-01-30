@@ -22,16 +22,19 @@ const testData = originalData.map((item, i) => {
   if (i === 0) {
     return { ...item, sub_type: newLineTest };
   }
+
   return { ...item };
 });
 
 const getCopyPlainContent = (sheet: TableSheet | PivotSheet): string => {
   const data = getSelectedData(sheet);
+
   return data[0].content;
 };
 
 describe('List Table Core Data Process', () => {
   let s2: TableSheet;
+
   beforeEach(() => {
     s2 = new TableSheet(
       getContainer(),
@@ -102,17 +105,19 @@ describe('List Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split(newTab).length).toBe(5);
   });
 
-  // it('should copy all data', () => {
-  //   s2.interaction.changeState({
-  //     stateName: InteractionStateName.ALL_SELECTED,
-  //   });
-  //   // todo: 需要跑之前的单测，看看是不是因为少了 colHeader
-  //   // console.log(getCopyPlainContent(s2), 's2');
-  //   expect(getCopyPlainContent(s2).split(newLine).length).toBe(33);
-  //   expect(getCopyPlainContent(s2).split(newLine)[2].split(newTab).length).toBe(
-  //     5,
-  //   );
-  // });
+  it('should copy all data', () => {
+    s2.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+    /**
+     * todo: 需要跑之前的单测，看看是不是因为少了 colHeader:
+     * console.log(getCopyPlainContent(s2), 's2');
+     */
+    expect(getCopyPlainContent(s2).split(newLine).length).toBe(33);
+    expect(getCopyPlainContent(s2).split(newLine)[2].split(newTab).length).toBe(
+      5,
+    );
+  });
 
   it('should copy normal data with header in table mode', () => {
     s2.setOptions({
@@ -154,6 +159,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     ss.render();
     const cell = s2.interaction
       .getAllCells()
@@ -162,6 +168,7 @@ describe('List Table Core Data Process', () => {
           cell.cellType === CellTypes.DATA_CELL &&
           !(cell instanceof TableSeriesCell),
       )[0];
+
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
@@ -187,6 +194,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     ss.render();
 
     const cell = ss.interaction
@@ -199,6 +207,7 @@ describe('List Table Core Data Process', () => {
     });
 
     const data = getCopyPlainContent(ss);
+
     expect(data).toBe('浙江省_formatted	绍兴市	家具	桌子	2367');
   });
 
@@ -220,6 +229,7 @@ describe('List Table Core Data Process', () => {
         },
       }),
     );
+
     ss.render();
 
     const cell = ss.interaction
@@ -232,6 +242,7 @@ describe('List Table Core Data Process', () => {
     });
 
     const data = getCopyPlainContent(ss);
+
     expect(data.split('_formatted').length).toEqual(33);
   });
 
@@ -257,6 +268,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
+
     expect(data).toBe('四川省	乐山市	家具	桌子	2330');
 
     s2.interaction.changeState({
@@ -287,6 +299,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
+
     expect(data).toBe('浙江省	宁波市	家具	沙发	7234');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -315,6 +328,7 @@ describe('List Table Core Data Process', () => {
         showSeriesNumber: true,
       }),
     );
+
     sss.render();
 
     const cell = sss.interaction
@@ -330,6 +344,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(sss);
+
     expect(data).toBe(convertString(newLineText));
   });
 
@@ -387,6 +402,7 @@ describe('Pivot Table Core Data Process', () => {
   }
 
   const s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
   s2.render();
 
   it('should copy no data in grid mode', () => {
@@ -450,6 +466,7 @@ describe('Pivot Table Core Data Process', () => {
         },
       }),
     );
+
     ss.render();
     const cell = ss.interaction
       .getAllCells()
@@ -492,10 +509,12 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     ss.render();
     const cell = s2.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
@@ -632,6 +651,7 @@ describe('Pivot Table Core Data Process', () => {
       },
     });
     const node = s2.getColumnNodes().find((node) => node.isLeaf)!;
+
     s2.groupSortByMethod('ASC' as SortMethodType, node);
     s2.setDataCfg(s2.dataCfg);
     s2.render();
@@ -646,6 +666,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
+
     expect(data).toBe('2367\t632\t2999\t1304\t1354\t2658\t5657');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -672,6 +693,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     sss.render();
 
     const cell = sss.interaction
@@ -683,6 +705,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(sss);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
@@ -711,6 +734,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2New.render();
     const cell = s2New.interaction
       .getAllCells()
@@ -721,6 +745,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2New);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
@@ -744,6 +769,7 @@ describe('Pivot Table Core Data Process', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2New.render();
     const cell = s2New.interaction
       .getAllCells()
@@ -754,11 +780,13 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2New);
+
     expect(data).toBe(convertString(`7789\n元`));
   });
 
   it('should get correct data with hideMeasureColumn is true', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
     ss.setOptions({
       style: {
         colCell: {
@@ -770,11 +798,13 @@ describe('Pivot Table Core Data Process', () => {
     const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(ss);
+
     expect(data).toMatchInlineSnapshot(`
       "7789	5343	13132	945	1343
       2367	632	2999	1304	1354
@@ -793,6 +823,7 @@ describe('Pivot Table Core Data Process', () => {
   // https://github.com/antvis/S2/issues/1955
   it('should get correct data with hideMeasureColumn、showSeriesNumber and copyWithHeader are all true', () => {
     const ss = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+
     ss.setOptions({
       style: {
         colCell: {
@@ -809,11 +840,13 @@ describe('Pivot Table Core Data Process', () => {
     const cells = ss.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(ss);
+
     expect(data).toMatchInlineSnapshot(`
       "		家具	家具	家具	办公用品
       		桌子	沙发	小计	笔
@@ -874,6 +907,7 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(s2);
+
     expect(data).toBe('');
   });
 
@@ -1039,6 +1073,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
   });
 
   const s2 = new PivotSheet(getContainer(), dataCfg, options);
+
   beforeEach(() => {
     s2.render();
   });
@@ -1098,12 +1133,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
       options,
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllRowHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 2 || meta.level === 3) && meta.y < 180;
     });
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1124,8 +1162,10 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     // 圈选行头前两列 中 y < 180 的区域
     const cells2 = ss.interaction.getAllRowHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 0 || meta.level === 1) && meta.y < 180;
     });
+
     ss.interaction.changeState({
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1153,12 +1193,15 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       }),
       options,
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllColHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 3 || meta.level === 4) && meta.x < 480;
     });
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1174,8 +1217,10 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
 
     const cells2 = ss.interaction.getAllColHeaderCells().filter((c) => {
       const meta = c.getMeta();
+
       return (meta.level === 0 || meta.level === 1) && meta.x < 480;
     });
+
     ss.interaction.changeState({
       cells: map(cells2, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1202,9 +1247,11 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         totals: TOTALS_OPTIONS,
       }),
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllRowHeaderCells();
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1241,9 +1288,11 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
         totals: TOTALS_OPTIONS,
       }),
     );
+
     ss.render();
 
     const cells = ss.interaction.getAllColHeaderCells();
+
     ss.interaction.changeState({
       cells: map(cells, getCellMeta),
       stateName: InteractionStateName.SELECTED,
@@ -1253,6 +1302,7 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
     });
 
     const copyableList = getSelectedData(ss);
+
     expect(copyableList[0].content).toMatchInlineSnapshot(`
       "家具	家具	家具	办公用品	办公用品
       桌子	沙发	小计	笔	纸张

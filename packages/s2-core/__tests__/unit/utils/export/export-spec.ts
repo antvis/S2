@@ -195,15 +195,11 @@ describe('TableSheet Export Test', () => {
         meta: [
           {
             field: 'province',
-            formatter: (value) => {
-              return `${value}-province`;
-            },
+            formatter: (value) => `${value}-province`,
           },
           {
             field: 'type',
-            formatter: (value) => {
-              return `${value}-type`;
-            },
+            formatter: (value) => `${value}-type`,
           },
         ],
         data: slice(originData, 0, 5),
@@ -215,8 +211,10 @@ describe('TableSheet Export Test', () => {
         showSeriesNumber: false,
       }),
     );
+
     s2.render();
     const data = copyData(s2, '\t', true);
+
     expect(data).toMatchInlineSnapshot(`
       "\\"province\\"	\\"type\\"	\\"sub_type\\"	\\"number\\"
       \\"浙江省-province\\"	\\"家具-type\\"	\\"桌子\\"	\\"7789\\"
@@ -481,9 +479,11 @@ describe('PivotSheet Export Test', () => {
       if (d.province === '浙江省' && d.city === '杭州市') {
         return omit(d, 'number');
       }
+
       if (d.type === '办公用品' && d.sub_type === '笔') {
         return omit(d, 'number');
       }
+
       return d;
     });
 
@@ -501,6 +501,7 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({ hierarchyType: 'tree' }),
     );
+
     s2.render();
     const data = copyData(s2, '\t');
 
@@ -531,6 +532,7 @@ describe('PivotSheet Export Test', () => {
       }),
       assembleOptions({ hierarchyType: 'grid', showSeriesNumber: true }),
     );
+
     s2.render();
 
     const data = copyData(s2, '\t');
@@ -545,6 +547,7 @@ describe('PivotSheet Export Test', () => {
       \\"办公用品\\"	\\"纸张\\"	\\"1343\\"	\\"1354\\"	\\"1523\\"	\\"1634\\"	\\"4004\\"	\\"3077\\"	\\"3551\\"	\\"352\\""
     `);
     const rows = data.split('\n');
+
     expect(rows[0].split('\t')[1]).toEqual('"province"');
     expect(rows[1].split('\t')[1]).toEqual('"city"');
   });
