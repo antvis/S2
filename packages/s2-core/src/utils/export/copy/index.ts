@@ -1,39 +1,34 @@
-import { escape, every, isEmpty, map, zip } from 'lodash';
+import { every, isEmpty, map, zip } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
   type Data,
-  type DataItem,
   EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   InteractionStateName,
   type S2CellType,
   VALUE_FIELD,
-} from '../../common';
-import type { SpreadSheet } from '../../sheet-type';
-import { copyToClipboard } from '../../utils/export';
-import type { ColCell, RowCell } from '../../cell';
+} from '../../../common';
+import type { SpreadSheet } from '../../../sheet-type';
+import { copyToClipboard } from '../index';
+import type { ColCell, RowCell } from '../../../cell';
 import {
   convertString,
   getColNodeFieldFromNode,
   getHeaderList,
   getSelectedCols,
   getSelectedRows,
-  newLine,
-  newTab,
-} from './method';
+} from '../method';
+import { type CopyableList, CopyMIMEType } from '../interface';
+import { getBrushHeaderCopyable } from './pivot-header-copy';
+import { processPivotSelected } from './pivot-cell-copy';
+import { processTableColSelected, processTableRowSelected } from './table-copy';
 import {
-  type CopyableHTML,
-  type CopyableList,
-  type CopyablePlain,
-  CopyMIMEType,
-} from './interface';
-import { getBrushHeaderCopyable } from './copy/pivot-header-copy';
-import { processPivotSelected } from './copy/pivot-cell-copy';
-import {
-  processTableColSelected,
-  processTableRowSelected,
-} from './copy/table-copy';
+  assembleMatrix,
+  getFormatter,
+  matrixHtmlTransformer,
+  matrixPlainTextTransformer,
+} from './common';
 
 const getFiledFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
   const colNode = spreadsheet
@@ -51,17 +46,6 @@ const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
     spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
   ];
 };
-
-export function getFormatter(
-  spreadsheet: SpreadSheet,
-  field: string | undefined,
-) {
-  if (spreadsheet.options.interaction?.copyWithFormat) {
-    return spreadsheet.dataSet.getFieldFormatter(field!);
-  }
-
-  return (value: DataItem) => value;
-}
 
 /**
  * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
@@ -121,89 +105,6 @@ const format = (
   const formatter = getFormatter(spreadsheet, field);
 
   return formatter(getValueFromMeta(meta, displayData, spreadsheet)!);
-};
-
-// 把 DataItem[][] 矩阵转换成 CopyableItem
-export const matrixPlainTextTransformer = (
-  dataMatrix: DataItem[][],
-): CopyablePlain => {
-  return {
-    type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
-  };
-};
-
-// 把 string[][] 矩阵转换成 CopyableItem
-export const matrixHtmlTransformer = (
-  dataMatrix: DataItem[][],
-): CopyableHTML => {
-  function createTableData(data: DataItem[], tagName: string) {
-    return data
-      .map((cell) => `<${tagName}>${escape(cell as string)}</${tagName}>`)
-      .join('');
-  }
-
-  function createBody(data: DataItem[][], tagName: string) {
-    return data
-      .map((row) => `<${tagName}>${createTableData(row, 'td')}</${tagName}>`)
-      .join('');
-  }
-
-  const body = createBody(dataMatrix, 'tr');
-
-  return {
-    type: CopyMIMEType.HTML,
-    content: `<meta charset="utf-8"><table><tbody>${body}</tbody></table>`,
-  };
-};
-
-// 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
-export const assembleMatrix = (
-  rowMatrix: string[][],
-  colMatrix: string[][],
-  dataMatrix: string[][],
-  cornerMatrix?: string[][],
-): CopyableList => {
-  const rowWidth = rowMatrix[0]?.length ?? 0;
-  const colHeight = colMatrix?.length ?? 0;
-  const dataWidth = dataMatrix[0]?.length ?? 0;
-  const dataHeight = dataMatrix.length ?? 0;
-  const matrixWidth = rowWidth + dataWidth;
-  const matrixHeight = colHeight + dataHeight;
-
-  let matrix: (string | undefined)[][] = Array.from(
-    Array(matrixHeight),
-    () => new Array(matrixWidth),
-  );
-
-  matrix = map(matrix, (heightArr, y) =>
-    map(heightArr, (_, x) => {
-      if (x >= 0 && x < rowWidth && y >= 0 && y < colHeight) {
-        return cornerMatrix?.[y]?.[x] ?? '';
-      }
-
-      if (x >= rowWidth && x <= matrixWidth && y >= 0 && y < colHeight) {
-        return colMatrix[y][x - rowWidth];
-      }
-
-      if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
-        return rowMatrix[y - colHeight][x];
-      }
-
-      if (
-        x >= rowWidth &&
-        x <= matrixWidth &&
-        y >= colHeight &&
-        y < matrixHeight
-      ) {
-        return dataMatrix[y - colHeight][x - rowWidth];
-      }
-
-      return undefined;
-    }),
-  );
-
-  return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
 /**

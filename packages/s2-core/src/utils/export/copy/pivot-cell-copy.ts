@@ -2,14 +2,14 @@ import { isEmpty, map, zip } from 'lodash';
 import { type CellMeta, VALUE_FIELD } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
-import {
-  assembleMatrix,
-  matrixPlainTextTransformer,
-  matrixHtmlTransformer,
-  getFormatter,
-} from '../copy';
 import type { CopyableList } from '../interface';
 import { getHeaderList, getSelectedCols, getSelectedRows } from '../method';
+import {
+  matrixHtmlTransformer,
+  matrixPlainTextTransformer,
+  getFormatter,
+  assembleMatrix,
+} from './common';
 
 const getDataMatrixByHeaderNode = (
   leafRowNodes: Node[],

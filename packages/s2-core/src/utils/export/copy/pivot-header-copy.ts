@@ -2,8 +2,8 @@ import { filter, isEmpty, map, max, repeat, zip } from 'lodash';
 import type { ColCell, RowCell } from '../../../cell';
 import type { CopyableList } from '../interface';
 import { getAllLevels, getHeaderList } from '../method';
-import { matrixHtmlTransformer, matrixPlainTextTransformer } from '../copy';
 import { CellTypes, NODE_ID_SEPARATOR } from '../../../common';
+import { matrixHtmlTransformer, matrixPlainTextTransformer } from './common';
 
 /**
  * 过滤出 intersection cell 中所有叶子节点的 cellMeta

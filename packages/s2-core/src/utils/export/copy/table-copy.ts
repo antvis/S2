@@ -1,15 +1,14 @@
 import { filter, map, reduce } from 'lodash';
-import {
-  // CellMeta,
-  getFormatter,
-  matrixHtmlTransformer,
-  matrixPlainTextTransformer,
-} from '../copy';
 import type { SpreadSheet } from '../../../sheet-type';
 import { type CellMeta, SERIES_NUMBER_FIELD } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { CopyableList } from '../interface';
 import { convertString } from '../method';
+import {
+  getFormatter,
+  matrixHtmlTransformer,
+  matrixPlainTextTransformer,
+} from './common';
 
 export const processTableColSelected = (
   spreadsheet: SpreadSheet,
