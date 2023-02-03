@@ -897,11 +897,6 @@ export class TableFacet extends BaseFacet {
         );
       }
     }
-
-    /*
-     * TODO: g5.0 没有这个排序方法，好像也没啥用
-     * this.foregroundGroup.sort();
-     */
   };
 
   protected renderFrozenPanelCornerGroup = () => {

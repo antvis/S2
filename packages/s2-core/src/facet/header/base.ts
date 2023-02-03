@@ -11,7 +11,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected headerConfig: T;
 
   protected constructor(cfg: T) {
-    // TODO: 修改为不传递 cfg 到 group
     super();
     this.headerConfig = cfg;
   }

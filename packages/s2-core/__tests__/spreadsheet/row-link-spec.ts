@@ -89,11 +89,9 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attr() {
-          return {
-            isLinkFieldText: true,
-            cellData: rowNode,
-          };
+        appendInfo: {
+          isLinkFieldText: true,
+          cellData: rowNode,
         },
       },
     } as any);
@@ -117,11 +115,9 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attr() {
-          return {
-            isLinkFieldText: true,
-            cellData: rowNode,
-          };
+        appendInfo: {
+          isLinkFieldText: true,
+          cellData: rowNode,
         },
       },
     } as any);
@@ -146,11 +142,9 @@ describe('Row Text Link Tests', () => {
     s2.emit(S2Event.ROW_CELL_CLICK, {
       stopPropagation: noop,
       target: {
-        attr() {
-          return {
-            isLinkFieldText: true,
-            cellData: rowNode,
-          };
+        appendInfo: {
+          isLinkFieldText: true,
+          cellData: rowNode,
         },
       },
     } as any);

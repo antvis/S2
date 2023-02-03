@@ -85,7 +85,6 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    // TODO: 是否正常返回样式
     const treeIcon = (
       this.meta.parent?.belongsCell as HeaderCell
     ).getTreeIcon();

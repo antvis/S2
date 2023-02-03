@@ -30,7 +30,6 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     this.bindDataCellClick();
   }
 
-  // TODO: 抽公共逻辑
   private countClick() {
     window.clearTimeout(this.clickTimer);
     this.clickTimer = window.setTimeout(() => {

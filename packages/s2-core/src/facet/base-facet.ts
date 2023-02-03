@@ -272,10 +272,9 @@ export abstract class BaseFacet {
   }
 
   hideScrollBar = () => {
-    // TODO: 替换为新方法
-    this.hRowScrollBar?.hide();
-    this.hScrollBar?.hide();
-    this.vScrollBar?.hide();
+    this.hRowScrollBar?.setAttribute('visibility', 'hidden');
+    this.hScrollBar?.setAttribute('visibility', 'hidden');
+    this.vScrollBar?.setAttribute('visibility', 'hidden');
   };
 
   delayHideScrollBar = debounce(this.hideScrollBar, 1000);
@@ -287,12 +286,12 @@ export abstract class BaseFacet {
   };
 
   showVerticalScrollBar = () => {
-    this.vScrollBar?.show();
+    this.vScrollBar?.setAttribute('visibility', 'visible');
   };
 
   showHorizontalScrollBar = () => {
-    this.hRowScrollBar?.show();
-    this.hScrollBar?.show();
+    this.hRowScrollBar?.setAttribute('visibility', 'visible');
+    this.hScrollBar?.setAttribute('visibility', 'visible');
   };
 
   onContainerWheel = () => {
