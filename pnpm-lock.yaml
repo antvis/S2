@@ -303,6 +303,7 @@ importers:
       '@antv/s2': next
       '@antv/s2-react': next
       '@google-cloud/translate': ^7.0.3
+      '@stone-lyl/google-translate-script': ^0.1.0
       antd: ^4.24.1
       copy-to-clipboard: ^3.3.1
       dumi: ^2.0.3
@@ -336,6 +337,7 @@ importers:
       react-color: 2.19.3
     devDependencies:
       '@google-cloud/translate': 7.0.5
+      '@stone-lyl/google-translate-script': 0.1.0
       hast-util-to-html: 8.0.4
       micromark-extension-directive: 2.1.2
       rehype-document: 6.1.0
@@ -3606,6 +3608,28 @@ packages:
   /@stackblitz/sdk/1.8.1:
     resolution: {integrity: sha512-hjYfjOLQBNDzqPD5AkGJOD7j+uvFwGocDTmwNqmLCWR5EY7BDtcOtDY2M+91v/twYWWNvI7N8UNIgojCPNgzMA==}
     dev: false
+
+  /@stone-lyl/google-translate-script/0.1.0:
+    resolution: {integrity: sha512-OW6wZkNQbldM5qDqxN6ZZMMXtOh0A3OVaLFV++bT4C6AVRH+j/j6FNmwSj6/rflOBktJMIZcLm2i7O79Krp57g==}
+    dependencies:
+      '@google-cloud/translate': 7.0.5
+      dotenv: 16.0.3
+      hast-util-to-html: 8.0.4
+      rehype-document: 6.1.0
+      rehype-format: 4.0.1
+      rehype-parse: 8.0.4
+      rehype-remark: 9.1.2
+      rehype-stringify: 9.0.3
+      remark-gfm: 3.0.1
+      remark-parse: 10.0.1
+      remark-rehype: 10.1.0
+      remark-stringify: 10.0.2
+      unified: 10.1.2
+      unist-util-visit: 4.1.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
 
   /@stylelint/postcss-css-in-js/0.38.0_64375vj2stjdn6gyt55zwvoboa:
     resolution: {integrity: sha512-XOz5CAe49kS95p5yRd+DAIWDojTjfmyAQ4bbDlXMdbZTQ5t0ThjSLvWI6JI2uiS7MFurVBkZ6zUqcimzcLTBoQ==}
@@ -8307,6 +8331,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-obj: 2.0.0
+    dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /dumi-afx-deps/1.0.0-alpha.8:

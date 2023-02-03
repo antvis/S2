@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@google-cloud/translate": "^7.0.3",
+    "@stone-lyl/google-translate-script": "^0.1.0",
     "hast-util-to-html": "^8.0.3",
     "micromark-extension-directive": "^2.1.2",
     "rehype-document": "^6.1.0",
