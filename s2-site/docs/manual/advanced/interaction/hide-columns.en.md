@@ -5,7 +5,7 @@ order: 2
 
 When you want to reduce the interference of unimportant information, you can hide the column header so that you can view the data more intuitively. There are three ways to hide the column header
 
-<playground path="interaction/advanced/demo/pivot-hide-columns.ts" rid="pivot-hide-columns" height="400"></playground>
+<Playground path="interaction/advanced/demo/pivot-hide-columns.ts" rid="pivot-hide-columns" height="400"></Playground>
 
 ## 1. Manual Hide - by clicking
 

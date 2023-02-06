@@ -81,7 +81,7 @@ ReactDOM.render(
 );
 ```
 
-<playground path="react-component/sheet/demo/strategy.tsx" rid="container"></playground>
+<Playground path="react-component/sheet/demo/strategy.tsx" rid="container"></Playground>
 
 ## configuration explanation
 
@@ -229,7 +229,7 @@ You can use `renderDerivedValue` to customize the value of the same ring ratio, 
 
 In the indicator trend analysis scenario, usually we want to see the global trend of the data. Trend analysis not only needs to include specific ups and downs, but it is also better to show the trend chart within a fixed period of time, or the completion status (progress) of indicators, so we provide the drawing of mini charts in the table. In order to reduce the dependence on external component libraries, we built a very lightweight mini library based on `@antv/g` drawing, which can draw bullet charts, line charts and histograms in cells with minimal performance overhead.
 
-<playground path="react-component/sheet/demo/strategy-mini-chart.tsx" rid="container2"></playground>
+<Playground path="react-component/sheet/demo/strategy-mini-chart.tsx" rid="container2"></Playground>
 
 The configuration is as follows:
 

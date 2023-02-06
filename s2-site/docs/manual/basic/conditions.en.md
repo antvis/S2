@@ -40,7 +40,7 @@ const s2Options = {
 };
 ```
 
-<playground path="analysis/conditions/demo/text.ts" rid="container" height="300"></playground>
+<Playground path="analysis/conditions/demo/text.ts" rid="container" height="300"></Playground>
 
 ## configuration explanation
 
@@ -64,7 +64,28 @@ Focus on explaining the two fields of `field` and `mapping` :
 * For pivot tables, the `field` value range or regular matching range is `values` ​​, and the scope of action is the row header, column header, corner header and data cells
 * For the detailed table, the `field` value range or regular matching range is `columns` , and the range of action is the data cell
 
-<table style="width: 100%; outline: none; border-collapse: collapse;"><tbody><tr style="height: 33px;"><td style="text-align: center;width:74px;">Pivot Table</td><td><playground path="analysis/conditions/demo/text.ts" rid="pivot" height="300"></playground></td></tr><tr><td style="text-align: center;width:74px;">Schedule</td><td><playground path="analysis/conditions/demo/table-text.ts" rid="table" height="300"></playground></td></tr></tbody></table>
+<table
+  style="width: 100%; outline: none; border-collapse: collapse;"
+>
+  <tbody>
+  <tr style="height: 33px;" >
+      <td style="text-align: center;width:74px;">
+      pivot mode
+      </td>
+      <td>
+          <Playground path="analysis/conditions/demo/text.ts" rid='pivot' height='300'></Playground>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;width:74px;">
+        table mode
+      </td>
+        <td >
+          <Playground path="analysis/conditions/demo/table-text.ts" rid='table' height='300'></Playground>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### ​mapping
 
@@ -98,7 +119,7 @@ By setting the `position` attribute in the `icon` field tag, you can set whether
 
 The icon for the `price` field is to the right of the text, and the icon for the `cost` field is to the left of the text:
 
-<playground path="analysis/conditions/demo/icon.ts" rid="icon" height="200"></playground>
+<Playground path="analysis/conditions/demo/icon.ts" rid="icon" height="200"></Playground>
 
 ### Custom histogram range
 
@@ -108,13 +129,13 @@ You can customize the interval range of the histogram by displaying the return v
 
 The `price` field uses a custom schema, and the `cost` field uses the default schema:
 
-<playground path="analysis/conditions/demo/interval.ts" rid="interval"></playground>
+<Playground path="analysis/conditions/demo/interval.ts" rid="interval"></Playground>
 
 ### Two-way histogram
 
 When the interval of the histogram has positive and negative points, and with the `fill` attribute of the return value of the `mapping` function, a positive and negative two-way histogram with different colors can be drawn:
 
-<playground path="analysis/conditions/demo/bidirectional-interval.ts" rid="bidirectional"></playground>
+<Playground path="analysis/conditions/demo/bidirectional-interval.ts" rid="bidirectional"></Playground>
 
 ​📊 See more [field markup examples](/examples/analysis/conditions#bidirectional-interval) .
 
@@ -122,7 +143,7 @@ When the interval of the histogram has positive and negative points, and with th
 
 The underlying graphic drawing of `S2` uses the [AntV/g](https://g.antv.vision/zh/docs/guide/introduce) rendering engine. With its powerful drawing capabilities, the `fill` field is not only a color attribute, but also [gradient colors](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2) , [textures](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86) , etc. can be used.
 
-The `price` field uses a gradient color:<playground path="analysis/conditions/demo/gradient-interval.ts" rid="gradient"></playground>
+The `price` field uses a gradient color:<Playground path="analysis/conditions/demo/gradient-interval.ts" rid="gradient"></Playground>
 
 ​📊 See more [field markup examples](/examples/analysis/conditions#gradient-interval) .
 
@@ -130,6 +151,6 @@ The `price` field uses a gradient color:<playground path="analysis/conditions/de
 
 By displaying the return value of the `mapping` function in the specified `background` field tag the `intelligentReverseTextColor` attribute value is `true` . When the marker background color is darker, the text color will change to white. When the marker background color is bright, the text color defaults to black. Priority: `intelligentReverseTextColor` of `background condition` < `fill` of `text condition`
 
-<playground path="analysis/conditions/demo/intelligent-background.ts" rid="intelligentReverseTextColor"></playground>
+<Playground path="analysis/conditions/demo/intelligent-background.ts" rid="intelligentReverseTextColor"></Playground>
 
 ​📊 See more [field markup examples](/examples/analysis/conditions#intelligent-background) .

@@ -7,11 +7,11 @@ By default, `S2` provides two **row header** layout modes [: tile mode (grid)](h
 
 By default **, the hierarchical structure is generated through the data obtained after crossing** . If you are not satisfied, you can customize your directory structure by customizing the row and column headers. These two layout methods are also supported.
 
-<playground path="custom/custom-tree/demo/custom-header.ts" rid="container" height="400"></playground>
+<Playground path="custom/custom-tree/demo/custom-header.ts" rid="container" height="400"></Playground>
 
 ### data structure
 
-`markdown:docs/common/custom/customTreeNode.zh.md`
+`markdown:docs/common/custom/customTreeNode.en.md`
 
 ```ts
 const customTree: CustomTreeNode[] = [

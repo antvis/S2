@@ -13,7 +13,7 @@ const s2Options = {
 };
 ```
 
-<playground path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></playground>
+<Playground path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></Playground>
 
 ## premise
 

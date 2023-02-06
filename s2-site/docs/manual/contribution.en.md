@@ -56,8 +56,8 @@ npm i -g pnpm
 2. `pnpm site:start` starts the local `S2` website
 3. `pnpm core:start` uses a visual way to debug the single test of the core layer (based on jest-electron)
 4. `pnpm react:start` can debug the unit test of the React version in a visual way (based on jest-electron)
-5. `pnpm react:playground` starts a local interactive React version Demo (based on vite)
-6. `pnpm vue:playground` starts a local interactive Vue3 version Demo (based on vite)
+5. `pnpm react:Playground` starts a local interactive React version Demo (based on vite)
+6. `pnpm vue:Playground` starts a local interactive Vue3 version Demo (based on vite)
 7. `pnpm build` builds `@antv/s2` , `@antv/s2-react` and `@antv/s2-vue` 3 packages, and outputs `umd` , `esm` and `lib` directories respectively
 8. `pnpm test` runs unit tests
 9. `pnpm lint` static code detection

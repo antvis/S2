@@ -172,4 +172,4 @@ ReactDOM.render(
 
 The effect is shown in the figure: <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
-[playground address](/examples/react-component/sheet#editable)
+[Playground address](/examples/react-component/sheet#editable)

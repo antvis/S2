@@ -175,7 +175,7 @@ s2.render();
 
 #### 4. Results
 
-<playground path="basic/pivot/demo/grid.ts" rid="container" height="400"></playground>
+<Playground path="basic/pivot/demo/grid.ts" rid="container" height="400"></Playground>
 
 ### `React` version
 

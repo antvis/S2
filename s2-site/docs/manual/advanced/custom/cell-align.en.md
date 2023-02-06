@@ -176,4 +176,4 @@ dataCell: {
 
 Sometimes we want to achieve an effect similar to[`字段标记`](https://s2.antv.antgroup.com/manual/basic/conditions), and`自定义对齐方式`of specific cells that **meet the conditions** , instead of changing everything. At this time, we can[`自定义单元格`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), `dataCell` , `colCell` , `rowCell` , etc. provided by S2 Hook to do customization.
 
-<playground path="custom/custom-cell/demo/custom-specified-cell.ts" rid="container" height="400"></playground>
+<Playground path="custom/custom-cell/demo/custom-specified-cell.ts" rid="container" height="400"></Playground>

@@ -26,7 +26,7 @@ The table header, located at the top of the table container, functions as a cont
 
 <br>
 
-<playground path="react-component/header/demo/default.tsx" rid="container" height="400"></playground>
+<Playground path="react-component/header/demo/default.tsx" rid="container" height="400"></Playground>
 
 ### APIs
 

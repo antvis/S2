@@ -102,4 +102,4 @@ const s2 = new TableSheet(container, s2DataConfig, s2Options);
 s2.render();
 ```
 
-<playground path="interaction/advanced/demo/double-click-hide-columns.ts" rid="container" height="400"></playground>
+<Playground path="interaction/advanced/demo/double-click-hide-columns.ts" rid="container" height="400"></Playground>

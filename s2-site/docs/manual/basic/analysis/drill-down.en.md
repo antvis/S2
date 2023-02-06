@@ -98,7 +98,7 @@ ReactDOM.render(
 );
 ```
 
-<playground path="react-component/drill-dwon/demo/for-pivot.tsx" rid="container"></playground>
+<Playground path="react-component/drill-dwon/demo/for-pivot.tsx" rid="container"></Playground>
 
 ## scenes to be used
 

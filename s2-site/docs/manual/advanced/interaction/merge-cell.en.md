@@ -337,7 +337,7 @@ s2.render();
 * Merge operation: Cmd/Ctrl + single selection operation, select multiple continuous cells to merge through tooltip
 * Cancel the merge operation: click the merged cell and cancel the merge through the tooltip
 
-<playground path="interaction/advanced/demo/merge-cell.ts" rid="container" height="400"></playground>
+<Playground path="interaction/advanced/demo/merge-cell.ts" rid="container" height="400"></Playground>
 
 ## Configuration and Method Description
 

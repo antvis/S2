@@ -7,7 +7,7 @@ S2 supports configuring collapsed/expanded nodes in the tree structure, and **ex
 
 > Tiling mode, follow-up support
 
-<playground path="layout/custom/demo/custom-tree-collapse-nodes.ts" rid="container" height="400"></playground>
+<Playground path="layout/custom/demo/custom-tree-collapse-nodes.ts" rid="container" height="400"></Playground>
 
 <br>
 

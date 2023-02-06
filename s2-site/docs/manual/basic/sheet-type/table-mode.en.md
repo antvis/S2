@@ -130,4 +130,4 @@ The effect is as shown in the figure:
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
-<playground path="interaction/basic/demo/frozen.ts" rid="container" height="300"></playground>
+<Playground path="interaction/basic/demo/frozen.ts" rid="container" height="300"></Playground>

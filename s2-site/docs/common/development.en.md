@@ -17,10 +17,10 @@ pnpm build
 pnpm core:start
 
 # 调试 s2-react
-pnpm react:playground
+pnpm react:Playground
 
 # 调试 s2-vue
-pnpm vue:playground
+pnpm vue:Playground
 
 # 单元测试
 pnpm test
