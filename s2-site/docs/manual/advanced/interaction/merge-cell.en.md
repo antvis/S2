@@ -259,40 +259,41 @@ Click to view data
       "city": "乐山市",
       "type": "办公用品",
       "sub_type": "纸张"
-    }
+}
   ]
 }
 ```
 
 ```tsx
+import { S2Event } from '@antv/s2';
+
 const s2DataConfig = {
   fields: {
     rows: [ 'province', 'city' ],
     columns: [ 'type', 'sub_type' ],
     values: [ 'number' ],
   },
-  data: res.data,
-  meta: res.meta
+  data,
+  meta
 };
 
 const s2Options = {
-    width: 600,
-    height: 400,
-    showSeriesNumber: true,
-    tooltip: {
-      content: TooltipContent,
-    },
-    // 表格渲染后，会展示一个合并单元格
-    mergedCellsInfo: [
-      { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-      { colIndex: 1, rowIndex: 7 },
-      { colIndex: 2, rowIndex: 6 },
-      { colIndex: 2, rowIndex: 7 },
-      { colIndex: 3, rowIndex: 6 },
-      { colIndex: 3, rowIndex: 7 },
-    ]
-  }
-;
+  width: 600,
+  height: 400,
+  showSeriesNumber: true,
+  tooltip: {
+    content: TooltipContent,
+  },
+  // 表格渲染后，会展示一个合并单元格
+  mergedCellsInfo: [
+    { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
+    { colIndex: 1, rowIndex: 7 },
+    { colIndex: 2, rowIndex: 6 },
+    { colIndex: 2, rowIndex: 7 },
+    { colIndex: 3, rowIndex: 6 },
+    { colIndex: 3, rowIndex: 7 },
+  ]
+};
 const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // 将单元格合并操作集成到未合并单元格的 tooltip 操作中
@@ -336,7 +337,7 @@ s2.render();
 * Merge operation: Cmd/Ctrl + single selection operation, select multiple continuous cells to merge through tooltip
 * Cancel the merge operation: click the merged cell and cancel the merge through the tooltip
 
-<Playground data-mdast="html" path="interaction/advanced/demo/merge-cell.ts" rid="container" height="400"></playground>
+<playground path="interaction/advanced/demo/merge-cell.ts" rid="container" height="400"></playground>
 
 ## Configuration and Method Description
 

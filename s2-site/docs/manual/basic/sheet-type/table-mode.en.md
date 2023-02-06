@@ -7,9 +7,9 @@ order: 2
 
 The schedule is one of the basic forms of `S2` . The detailed table is an ordinary table, and the data of each row is directly displayed under the column header. It is mainly used for the display of detailed data in big data scenarios.
 
-<img data-mdast="html" alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
 
-Schedules and pivot tables share [basic interactions](/manual/advanced/interaction/basic) , [theming](/manual/basic/theme) , [replication](/manual/basic/analysis/export) [, custom cell](/manual/advanced/custom/hook) capabilities, and more. In addition, the schedule also supports special functions such as row and [column freezing](/examples/interaction/basic#froze) . In the scenario of massive detailed data rendering, the detailed table can replace the `DOM` -based table component to improve performance and user experience.
+Schedules and pivot tables share [basic interactions](/manual/advanced/interaction/basic) , [theming](/manual/basic/theme) , [replication](/manual/basic/analysis/export) , [custom cell](/manual/advanced/custom/hook) capabilities, and more. In addition, the schedule also supports special functions such as row and [column freezing](/examples/interaction/basic#froze) . In the scenario of massive detailed data rendering, the detailed table can replace the `DOM` -based table component to improve performance and user experience.
 
 ## use
 
@@ -117,15 +117,17 @@ Row and column freezing is controlled by passing these properties in `s2Options`
 
 ```ts
 const s2Options = {
-  frozenRowCount: number; // 冻结行的数量，从顶部开始计数
-  frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
-  frozenColCount: number; // 冻结列的数量，从左侧开始计数
-  frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
+  frozen: {
+    rowCount: number; // 冻结行的数量，从顶部开始计数
+    trailingRowCount: number; // 冻结行数量，从底部开始计数
+    colCount: number; // 冻结列的数量，从左侧开始计数
+    trailingColCount: number; // 冻结列的数量，从右侧开始计数
+  }
 }
 ```
 
 The effect is as shown in the figure:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
-<Playground data-mdast="html" path="interaction/basic/demo/frozen.ts" rid="container" height="300"></playground>
+<playground path="interaction/basic/demo/frozen.ts" rid="container" height="300"></playground>

@@ -5,7 +5,7 @@ order: 0
 
 ## Interactive type
 
-Form interaction is mainly through keyboard and mouse
+The common interaction of the form is mainly through the keyboard and mouse
 
 * mouse click
 * mouseover (hover)
@@ -18,30 +18,30 @@ Through these events, permutations and combinations, to achieve commonly used in
 
 ## built-in interaction
 
-| name                                                       | event name                                                    | describe                                                                                                                                                                                                                                                                              |
-| :--------------------------------------------------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| radio                                                      | `S2Event.GLOBAL_SELECTED`                                     | Click a cell, a tooltip will pop up to display the information of the corresponding cell, click again to cancel the selection                                                                                                                                                         |
-| multiple choice                                            | `S2Event.GLOBAL_SELECTED`                                     | After single-selecting cells, hold down the `Command / Ctrl` key to continue single-selecting                                                                                                                                                                                         |
-| Row/column header shortcut multiple selection              | `S2Event.GLOBAL_SELECTED`                                     | Click the row/column header, select all the cells of the corresponding row/column header (including those not in the visible range), click again to cancel the selection                                                                                                              |
-| Manually adjust the width and height of row/column headers | `S2Event.LAYOUT_RESIZE`                                       | Hover the mouse over the edge of the row/column header cell, an indicator bar and a cursor will appear, hold down the left mouse button and drag to adjust the width and height                                                                                                       |
-| Swipe                                                      | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | Batch select the numerical cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the information and quantity of the brushed cells.                       |
-| Outfit selection                                           | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only pivot tables are supported)              |
-| Column head brush selection                                | `S2Event.COL_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the column header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
-| Interval shortcut multiple selection                       | `S2Event.GLOBAL_SELECTED`                                     | Select a single cell (start), then hold down `Shift` to select a cell again (end), and select all cells in the two cell intervals                                                                                                                                                     |
+| name                                                       | event name                                                    | describe                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| radio                                                      | `S2Event.GLOBAL_SELECTED`                                     | Click a cell, a tooltip will pop up to display the information of the corresponding cell, click again to cancel the selection                                                                                                                                                      |
+| multiple choice                                            | `S2Event.GLOBAL_SELECTED`                                     | After single-selecting cells, hold down the `Command / Ctrl` key to continue single-selecting                                                                                                                                                                                      |
+| Row/column header shortcut multiple selection              | `S2Event.GLOBAL_SELECTED`                                     | Click the row/column header, select all the cells of the corresponding row/column header (including those not in the visible range), click again to cancel the selection                                                                                                           |
+| Manually adjust the width and height of row/column headers | `S2Event.LAYOUT_RESIZE`                                       | Hover the mouse over the edge of the row/column header cell, an indicator bar and a cursor will appear, hold down the left mouse button and drag to adjust the width and height                                                                                                    |
+| Swipe                                                      | `S2Event.DATA_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | Batch select the numerical cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the information and quantity of the brushed cells.                    |
+| Outfit selection                                           | `S2Event.ROW_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables)            |
+| Column head brush selection                                | `S2Event.COL_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`  | Batch select the column header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only pivot tables are supported)    |
+| Interval shortcut multiple selection                       | `S2Event.GLOBAL_SELECTED`                                     | Select a single cell (start), then hold down `Shift` to select a cell again (end), and select all cells in the two cell intervals                                                                                                                                                  |
 | hover                                                      | `S2Event.GLOBAL_HOVER`                                        | When the mouse hovers, the corresponding cell is highlighted. If it is a numerical cell, the [cross is highlighted](/docs/manual/advanced/interaction/basic#%E8%A1%8C%E5%88%97%E8%81%94%E5%8A%A8%E9%AB%98%E4%BA%AE) by default. You can set `hoverHighlight: false` to turn it off |
-| copy                                                       | `S2Event.GLOBAL_COPIED`                                       | Copy selected cell data                                                                                                                                                                                                                                                               |
-| hide column header                                         | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`   | Hide/expand column headers                                                                                                                                                                                                                                                            |
-| link jump                                                  | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | Row header/column header link jump                                                                                                                                                                                                                                                    |
-| reset                                                      | `S2Event.GLOBAL_RESET`                                        | Click again, click on an empty space, or press `Esc` to deselect a cell                                                                                                                                                                                                               |
-| move highlighted cell                                      | `S2Event.GLOBAL_SELECTED`                                     | After clicking the value cell, use the keyboard arrow keys to move the currently highlighted cell                                                                                                                                                                                     |
+| copy                                                       | `S2Event.GLOBAL_COPIED`                                       | Copy selected cell data                                                                                                                                                                                                                                                            |
+| hide column header                                         | `S2Event.COL_CELL_EXPANDED` `S2Event.COL_CELL_HIDDEN`         | Hide/expand column headers                                                                                                                                                                                                                                                         |
+| link jump                                                  | `S2Event.GLOBAL_LINK_FIELD_JUMP`                              | Row header/column header link jump                                                                                                                                                                                                                                                 |
+| reset                                                      | `S2Event.GLOBAL_RESET`                                        | Click again, click on an empty space, or press `Esc` to deselect a cell                                                                                                                                                                                                            |
+| move highlighted cell                                      | `S2Event.GLOBAL_SELECTED`                                     | After clicking the value cell, use the keyboard arrow keys to move the currently highlighted cell                                                                                                                                                                                  |
 
 ## interaction event
+
+[View full event list](/docs/api/general/S2Event)
 
 * `global:xx` : global chart events
 * `layout:xx` : layout change event
 * `cell:xx` : Cell-level events, the entire table is divided into different cell types, you can monitor specific cells for events to achieve custom requirements
-
-[View full event list](/docs/api/general/S2Event)
 
 ```ts
 import { ColCell, DataCell, PivotSheet, RowCell, S2Event } from '@antv/s2';
@@ -51,31 +51,28 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 s2.on(S2Event.DATA_CELL_BRUSH_SELECTION, (cells: DataCell[]) => {
   // 此事件默认打开，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值单元格刷选
   console.log('刷选的单元格', cells)
-...
 })
 
 s2.on(S2Event.ROW_BRUSH_SELECTION, (cells: RowCell[]) => {
   // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值行头单元格刷选
   console.log('刷选的行头单元格：', cells)
-...
 })
 
 s2.on(S2Event.COL_BRUSH_SELECTION, (cells: ColCell[]) => {
   // 此事件默认关闭，配置 options: { interaction: { brushSelection : { data: true } } } 开启数值列头单元格刷选
   console.log('刷选的列头单元格：', cells)
-...
 })
 
 s2.on(S2Event.COL_CELL_HOVER, (event) => {
-...
+  ...
 })
 
 s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
-...
+  ...
 })
 ```
 
-If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2`
+If you are using `@antv/s2-react` or `@antv/s2-vue` , you can get the [S2 table instance](/docs/manual/advanced/get-instance/) and listen to the required events, **which is exactly the same as** `@antv/s2` .
 
 ```ts
 import { S2Event, SpreadSheet } from '@antv/s2'
@@ -84,19 +81,21 @@ import { SheetComponent } from '@antv/s2-react';
 function App() {
   const s2Ref = React.useRef<SpreadSheet>();
 
-  React.useEffect(() => {
+  const onSheetMounted = () => {
     s2Ref.current?.on(S2Event.DATA_CELL_CLICK, (event) => {
       console.log('onDataCellClick: ', event)
     })
-  }, [s2Ref])
+  }
 
-  return <SheetComponent ref={s2Ref}/>
+  return <SheetComponent ref={s2Ref} onMounted={onSheetMounted}/>
 }
 ```
 
-At the same time, the `React` and `Vue` versions provide the insinuation of events, and you can also use the `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/docs/api/components/sheet-component) )
+At the same time, `React` and `Vue3` versions provide event mapping, and you can also use `onDataCellClick` and `@dataCellClick` methods that are more in line with your habits ( [see all APIs](/docs/api/components/sheet-component) )
 
-```ts
+> React
+
+```tsx
 import { SheetComponent } from '@antv/s2-react';
 
 const onDataCellClick = () => {}
@@ -104,7 +103,9 @@ const onDataCellClick = () => {}
 <SheetComponent onDataCellClick={onDataCellClick} />
 ```
 
-```ts
+> Vue
+
+```tsx
 import { SheetComponent } from '@antv/s2-vue';
 
 const onDataCellClick = () => {}
@@ -133,6 +134,8 @@ window.addEventListener('mouseup', () => {}, true)
 
 ## Interaction related configuration
 
+[View specific API configuration details](/docs/api/basic-class/interaction#interaction)
+
 ```ts
 const s2Options = {
   interaction: {
@@ -141,15 +144,13 @@ const s2Options = {
 }
 ```
 
-[View specific API configuration details](/docs/api/basic-class/interaction#interaction)
-
 ## built-in interaction
 
-> How to modify the interaction default style? Please check the [theme configuration](/docs/manual/basic/theme)
+> How to modify the interaction default style? Please check the [theme configuration](/docs/manual/basic/theme) chapter
 
 ### radio highlight
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif" width="600" alt="preview">
 
 After selecting a cell, if you need to gray out the unselected cells and emphasize the data that needs attention, it is disabled by default, and you can configure `selectedCellsSpotlight` to enable it:
 
@@ -165,7 +166,7 @@ const s2Options = {
 
 When the mouse hovers, highlight the current cell and the corresponding row and column header cells to form a "cross highlight" effect, and view the data more intuitively. It is enabled by default and can be configured to `hoverHighlight` :
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/l23NpRrPmF/hover.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/l23NpRrPmF/hover.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
@@ -179,13 +180,27 @@ const s2Options = {
 
 When the mouse selects a cell or brushes a selected cell, the row and column head cell corresponding to the current cell is highlighted, which is convenient for quickly locating the row and column of the cell. Disabled by default, you can configure `selectedCellHighlight` to enable:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/mdn/rms_28a65c/afts/img/A*bqsoRpdz8mgAAAAAAAAAAAAAARQnAQ" alt="preview" width="600">
 
 ```ts
+// selectedCellHighlight 的类型为  boolean | { rowHeader: boolean, colHeader: boolean, rowCells: boolean, colCells: boolean }
+// 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader (兼容未拓展类型前的设计)
   }
+};
+
+// 同时还可以分别配置 selectedCellHighlight 中 header 和 cells 的高亮
+const S2Options = {
+  interaction: {
+    selectedCellHighlight: {
+      rowHeader: true,  // 选中单元格时，高亮行头
+      colHeader: true,  // 选中单元格时，高亮列头
+      rowCells: false,  // 选中单元格时，高亮当前行 
+      colCells: false,  // 选中单元格时，高亮当前列
+    },
+  },
 };
 ```
 
@@ -195,7 +210,7 @@ After the mouse hovers over the current cell for more than `800ms` , it will kee
 
 > If you implement a custom interaction, such as displaying a tooltip after hover, it is recommended to turn off this function, so as not to accidentally close the tooltip after hovering
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/46WvUNsfP/Kapture%2525202022-05-17%252520at%25252018.18.12.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/46WvUNsfP/Kapture%2525202022-05-17%252520at%25252018.18.12.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
@@ -211,7 +226,7 @@ Circle selection highlighting is also called brush selection. During the brush s
 
 #### Data cell circle selection
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
@@ -223,7 +238,7 @@ const s2Options = {
 
 #### Row header cell circle selection
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/1M9vUtedn/hangtoushuaxuan.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/1M9vUtedn/hangtoushuaxuan.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
@@ -237,7 +252,7 @@ const s2Options = {
 
 #### Column header cell circle selection
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/%24DEZUiWFW/lietoushuaxuan.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/%24DEZUiWFW/lietoushuaxuan.gif" alt="preview" width="600">
 
 ```ts
 const s2Options = {
@@ -253,11 +268,11 @@ const s2Options = {
 
 (Command/Ctrl) + click: Single multi-selection overlay, click the selected cell or row or column again to unselect it, it is enabled by default, and `multiSelection` can be configured to disable:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/XYZaL1w%24M/Kapture%2525202022-04-15%252520at%25252011.45.55.gif" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/XYZaL1w%24M/Kapture%2525202022-04-15%252520at%25252011.45.55.gif" width="600" alt="preview">
 
 Shift + click: range selection (similar to brush selection), enabled by default, and can be configured to `rangeSelection` :
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/RcIcQc7O2/Kapture%2525202022-04-15%252520at%25252011.52.52.gif" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/RcIcQc7O2/Kapture%2525202022-04-15%252520at%25252011.52.52.gif" width="600" alt="preview">
 
 ```ts
 const s2Options = {
@@ -272,7 +287,7 @@ const s2Options = {
 
 After clicking the value cell, use the keyboard arrow keys to move the current highlighted cell, which is enabled by default, and can be configured to disable `selectedCellMove` :
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
 ```ts
 const s2Options = {
@@ -284,12 +299,12 @@ const s2Options = {
 
 ### hide column header
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif" alt="preview" width="600">
 
 Both pivot tables and detailed tables are supported. After clicking the column header of a leaf node, the hide column header button will be displayed. After clicking hide, a display button and a hidden prompt line will be displayed in the adjacent sibling cell, just click the mouse Expand, you can configure `hiddenColumns` to achieve`默认隐藏`and`交互式隐藏`. See [details](/docs/manual/advanced/interaction/hide-columns/) or [specific examples](/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
-const dataCfg = {
+const s2DataConfig = {
   fields: {
     columns: ['fieldA', 'fieldB']
   }
@@ -311,7 +326,7 @@ const s2Options = {
 
 ### Row and column width and height adjustment
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif" alt="preview" width="600">
 
 S2 provides three layout methods ( [preview](/examples/layout/basic#compact) ) by default:`列等宽布局``行列等宽布局`and`紧凑布局`, and you can also drag and drop the row/column header to adjust dynamically
 
@@ -339,7 +354,7 @@ const s2Options = {
 
 You can also configure `resize.visible` and `resize.disable` properties, which are used to control the display of the `resize` hotspot and customize the drag-and-drop verification logic respectively. [View specific examples](/examples/interaction/advanced#resize-disable)
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/64tnK5%263K/Kapture%2525202022-07-19%252520at%25252015.40.15.gif" alt="preview" width="600">
 
 > Example: Cell width is not allowed to be reduced
 
@@ -370,13 +385,13 @@ const s2Options = {
 
 ### Merge Cells
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/ouXuK7MMt/Kapture%2525202022-04-19%252520at%25252019.31.02.gif" alt="preview" width="600">
 
 View [details](/docs/manual/advanced/interaction/merge-cell) or [specific examples](/examples/interaction/advanced#merge-cell)
 
 ### link jump
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif" alt="preview" width="600">
 
 View [details](/docs/manual/advanced/interaction/link-jump) or [specific examples](/examples/interaction/advanced#pivot-link-jump)
 
@@ -386,7 +401,7 @@ view [details](/docs/manual/advanced/interaction/scroll)
 
 ### reset interaction
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/pTs1QZPz4/Kapture%2525202022-04-19%252520at%25252019.24.56.gif" alt="preview" width="600">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/pTs1QZPz4/Kapture%2525202022-04-19%252520at%25252019.24.56.gif" alt="preview" width="600">
 
 Cases where reset interactions are supported:
 

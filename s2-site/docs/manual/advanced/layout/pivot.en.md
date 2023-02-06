@@ -7,7 +7,7 @@ This article will introduce the layout process of the pivot table, so that reade
 
 In the process of parsing the layout, the following pivot table is taken as an example:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600">
 
 ## basic concept
 
@@ -61,7 +61,7 @@ function generateHeaderNodes(...args) {
         if (!node.isLeafNode) {
             // 生成叶子节点
             buildGridHierarchy({
-                parentNode: node, // 递归生成子结构，如果还有 region, 会继续生成杭州市下面的[西湖区, 余杭区]
+                parentNode: node, // 递归生成子结构，如果还有 region, 会继续生成杭州市下面的 [西湖区，余杭区]
                 currentField: fields[level + 1], // 下一个维度作为下个循环的维度，比如第一次是 province，第二次是 city
                 hierarchy,
                 fields,
@@ -115,7 +115,7 @@ const cellWidth = calcCellWidth(); // 行、列 单元格宽度
 function calcCellWidth() {
     const rowHeaderColSize = rows.length; // [province, city]，结果是 2
     const colHeaderColSize = colLeafNodes.length; // 列叶子节点，结果是 2
-    const canvasW = this.getCanvasHW().width; // 画布宽度
+    const { width } = this.getCanvasSize(); // 画布宽度
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize); // 行+列 总数量，结果是 4
     return Math.max(dataCell.width, canvasW / size); // 用户配置的宽度和计算宽度取最大值
 }

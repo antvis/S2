@@ -9,27 +9,27 @@ Type: `object` , **required** , default value: `{}`
 
 Function description: Configure field marking. Divided into text (text), background (background), histogram (interval), icon (icon).
 
-| parameter  | illustrate              | type              | Defaults | required |
-| ---------- | ----------------------- | ----------------- | -------- | -------- |
-| text       | text field tag          | `Condition[]`     | -        |          |
-| background | background field tag    | `Condition[]`     | -        |          |
-| interval   | Histogram Field Markers | `Condition[]`     | -        |          |
-| icon       | Icon Field Marker       | `IconCondition[]` | -        |          |
+| parameter  | illustrate              | type                            | Defaults | required |
+| ---------- | ----------------------- | ------------------------------- | -------- | -------- |
+| text       | text field tag          | [Condition](#condition) \[]     | -        |          |
+| background | background field tag    | [Condition](#condition) \[]     | -        |          |
+| interval   | Histogram Field Markers | [Condition](#condition) \[]     | -        |          |
+| icon       | Icon Field Marker       | [IconCondition](#iconcondition) | -        |          |
 
 ### condition
 
-Type: `object` , **required** , default value: `undefined`
+Type: `object` , **required**
 
 Function description: Configure conditional formatting. Including text (text), background (background), histogram (interval).
 
-| parameter | illustrate                                                | type        | Defaults | required |
-| --------- | --------------------------------------------------------- | ----------- | -------- | -------- |
-| field     | 1. Field ID 2. Use regular expressions to match field IDs | `string` \\ | `RegExp` |          |
-| mapping   | role mapping function​                                    | `function`  |          | ✓        |
+| parameter | illustrate                                                   | type               | Defaults | required |
+| --------- | ------------------------------------------------------------ | ------------------ | -------- | -------- |
+| field     | 1. Field ID<br>2. Use regular expressions to match field IDs | `string \| RegExp` |          | ✓        |
+| mapping   | role mapping function​                                       | `function`         |          | ✓        |
 
-#### mapping
+#### MappingFunction
 
-```typescript
+```ts
 type MappingFunction = (
   fieldValue: number | string | null,
   data: Record<string, any>
@@ -44,7 +44,7 @@ type MappingFunction = (
   isCompare?: boolean;
   minValue?: number;
   maxValue?: number;
-  
+
   // 仅用于背景字段标记，可选。（当背景颜色较暗，将文本颜色设置为白色。优先级低于 文本字段标记）
   intelligentReverseTextColor?: boolean;
 } | null | undefined // 返回值为空时，表示当前字段不显示字段标记样式
@@ -91,11 +91,11 @@ Type: `object` , **required** , default value: `null`
 
 Function description: Configure icon (icon) conditional formatting.
 
-| parameter | illustrate                                    | type              | Defaults | required |
-| --------- | --------------------------------------------- | ----------------- | -------- | -------- |
-| field     | Field ID                                      | `string`          |          | ✓        |
-| position  | The position of the icon relative to the text | `left` \| `right` | `right`  |          |
-| mapping   | role mapping function​                        | `function`        |          | ✓        |
+| parameter | illustrate                                    | type                                | Defaults | required |
+| --------- | --------------------------------------------- | ----------------------------------- | -------- | -------- |
+| field     | Field ID                                      | `string`                            |          | ✓        |
+| position  | The position of the icon relative to the text | `left \| right`                     | `right`  |          |
+| mapping   | mapping function                              | [MappingFunction](#mappingfunction) |          | ✓        |
 
 **Example of icon condition usage:**
 

@@ -11,9 +11,9 @@ S2 provides built-in paging capability. It is essentially front-end pagination, 
 
 First, you need to configure the `pagination` attribute in `s2Options`
 
-<embed src="@/docs/common/pagination.zh.md"></embed>
+<embed src="@/docs/common/pagination.en.md"></embed>
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/LVw2QOvjgW/b1563a7b-4070-4d61-a18b-6558e2c5b27b.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/LVw2QOvjgW/b1563a7b-4070-4d61-a18b-6558e2c5b27b.png" width="600" alt="preview">
 
 If you develop based on `@antv/s2-core` , you need to **introduce** or **implement paging components** yourself. The `core` layer only provides paging capabilities. Refer to the example
 
@@ -28,10 +28,7 @@ If you develop based on `@antv/s2-react` or `@antv/s2-vue` , you only need to co
 <SheetComponent showPagination />
 ```
 
-\| Parameters | Description | Type | Default | Required| | :-- | :-- | :-- | :-- | :-: | --- | --- | --- | | | Whether to display the default pagination (only if the `pagination` attribute is configured in `options` ) | `boolean` | {\
-onShowSizeChange?: (pageSize: number) => void,\
-onChange?: (current: number) => void\
-} | `false` | |
+\| Parameter | Description | Type | Default | Mandatory | | -- | -- | -- | -- | --- | --- | --- | --- | | Pagination (only if the `pagination` attribute is configured in `options` ) | `boolean` | {<br>onShowSizeChange?: (pageSize: number) => void,<br>onChange?: (current: number) => void<br>} | `false` | |
 
 ### React version
 
@@ -46,7 +43,7 @@ const s2Options = {
 <SheetComponent options={s2Options} />
 ```
 
-<Playground data-mdast="html" path="react-component/pagination/demo/pivot.tsx" rid="container"></playground>
+<playground path="react-component/pagination/demo/pivot.tsx" rid="container"></playground>
 
 ### Vue version 3.0
 

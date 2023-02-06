@@ -3,22 +3,22 @@ title: Pivot Mode
 order: 1
 ---
 
-## Introduction to Pivot Tables
+## Introduction
 
 Pivot table is also called cross table or multi-dimensional table. It is a table showing the relationship between multiple variables. It can help users discover the interaction between them and help businesses conduct cross-exploration analysis. It is currently the most frequently used in the field of commercial BI analysis. one of the charts.
 
-<img data-mdast="html" alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*swH5TodvsMwAAAAAAAAAAAAAARQnAQ" width="600">
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*swH5TodvsMwAAAAAAAAAAAAAARQnAQ" width="600">
 
 ## use
 
 ```html
- <div id="container"></div>
+<div id="container" />
 ```
 
 ### The React component approach
 
 ```typescript
- import React from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
@@ -56,43 +56,43 @@ const data = [
 ];
 
 // 2. 配置数据
-const dataCfg = {
- fields: {
- rows: ["province", "city"],
- columns: ["type", "sub_type"],
- values: ["price"]
- },
- data,
+const s2DataConfig = {
+  fields: {
+    rows: ["province", "city"],
+    columns: ["type", "sub_type"],
+    values: ["price"]
+  },
+  data,
 };
 
 // 3. 添加配置
-const options = {
- width: 600,
- height: 600,
+const s2Options = {
+  width: 600,
+  height: 600,
 };
 
 // 4. 渲染
 ReactDOM.render(
- <SheetComponent
- dataCfg={dataCfg}
- options={options}
- />,
- document.getElementById('container')
+  <SheetComponent
+    dataCfg={s2DataConfig}
+    options={s2Options}
+  />,
+  document.getElementById('container')
 );
 ```
 
-​📊 Check out the demo [React version pivot table](/examples/react-component/sheet#pivot) .
+​📊 Check out the [React version perspective example](/examples/react-component/sheet#pivot) and [API docs](/api/components/sheet-component) .
 
 ### class way
 
 If you don't plan to rely on `React` , you can call it directly after the third step above:
 
 ```ts
- import { PivotSheet } from "@antv/s2";
+import { PivotSheet } from "@antv/s2";
 
 const container = document.getElementById('container');
-const pivotSheet = new PivotSheet(container, dataCfg, options);
-pivotSheet.render();
+const s2 = new PivotSheet(container, dataCfg, options);
+s2.render();
 ```
 
-​📊 View [the pivot table of the demo class](/examples/basic/pivot#grid) .
+​📊 Check out [the class-wise perspective example](/examples/basic/pivot#grid) and [API docs](/api/general/s2options) .

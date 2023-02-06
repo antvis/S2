@@ -7,7 +7,7 @@ This article will introduce the data flow processing process of the pivot table,
 
 The data processing process is:`原始数据-> 生成多维数组-> 生成层级结构-> 获取数据`, and we will explain them one by one, the goal is to realize the pivot table in the following figure:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600">
 
 ## Raw data
 

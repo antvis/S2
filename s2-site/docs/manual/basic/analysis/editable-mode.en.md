@@ -7,7 +7,7 @@ order: 3
 
 The edit table is one of the derived forms of the `S2` schedule. In addition to providing the analysis function of a complete schedule, it also supports data modification operations.
 
-<img data-mdast="html" alt="editable-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600">
+<img alt="editable-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600">
 
 ## use
 
@@ -160,7 +160,7 @@ const s2Options = {
 // 4, 渲染
 ReactDOM.render(
   <SheetComponent
-    sheetType="editable" // 此处指定 sheetType 为 editable
+    sheetType="editable" // 此处指定sheetType为editable
     dataCfg={s2DataCfg}
     options={s2Options}
   />,
@@ -170,6 +170,6 @@ ReactDOM.render(
 
 ## characteristic
 
-The effect is shown in the figure: <img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
+The effect is shown in the figure: <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9RoBT5FIJG0AAAAAAAAAAAAAARQnAQ" width="600" alt="preview">
 
 [playground address](/examples/react-component/sheet#editable)

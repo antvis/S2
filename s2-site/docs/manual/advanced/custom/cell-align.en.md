@@ -20,7 +20,7 @@ Therefore, S2 has certain restrictions on the alignment of cells. The alignment 
 
 The `textBaseline` of the corner header is internally specified as `middle` , so only `textAlign` can be customized. The following are the display forms of the three alignment methods:
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
+<table style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
 cornerCell: {
  text: {
  textAlign: 'left',
@@ -59,7 +59,7 @@ cornerCell: {
 
 Due to the feature of sliding and centering, the `textBaseline` of the line header is internally specified as `top` , so only `textAlign` can be customized. The following are the display forms of the three alignment methods:
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
+<table style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
  rowCell: {
  text: {
  textAlign: 'left',
@@ -95,11 +95,11 @@ In order to ensure the maximum visibility under sliding, the `textBaseline` of t
 * The alignment of the indicator cell (red part) is controlled by [bolderText](/docs/api/general/S2Theme#defaultcelltheme)
 * The alignment of other dimension cells (blue part) is controlled by [measureText](/docs/api/general/S2Theme#defaultcelltheme) (by default, it is aligned with the data cell)
 
-<img data-mdast="html" alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400">
+<img alt="col cell align desc" src="https://gw.alipayobjects.com/zos/antfincdn/Jr7Gv9LQ9/1969f010-2bae-4b38-b06f-2935b2c69d1d.png" width="400">
 
 The effects of the three alignment methods of the column header cells are as follows:
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
+<table style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
 colCell: {
  measureText: {
  textAlign: 'left',
@@ -137,7 +137,7 @@ colCell: {
 
 The data cell `textBaseline` and `textAlign` are unlimited and can be customized:
 
-<table data-mdast="html" style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
+<table style="width: 100%; outline: none; border-collapse: collapse;"><colgroup><col width="20%"><col width="80%"></colgroup><tbody><tr><td style="text-align: center;"><pre class="language-js">
 dataCell: {
  text: {
  textAlign: 'left',
@@ -171,3 +171,9 @@ dataCell: {
  }
 }
 </pre></td><td><img height="240" alt="right" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/5XhiGZc%26%24/b1053aa7-b9ff-4688-b8de-d33f62d26c5a.png"></td></tr></tbody></table>
+
+## Customize specific cell alignment
+
+Sometimes we want to achieve an effect similar to[`字段标记`](https://s2.antv.antgroup.com/manual/basic/conditions), and`自定义对齐方式`of specific cells that **meet the conditions** , instead of changing everything. At this time, we can[`自定义单元格`](https://s2.antv.antgroup.com/examples/custom/custom-cell/#custom-specified-cell), `dataCell` , `colCell` , `rowCell` , etc. provided by S2 Hook to do customization.
+
+<playground path="custom/custom-cell/demo/custom-specified-cell.ts" rid="container" height="400"></playground>

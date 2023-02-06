@@ -29,22 +29,22 @@ download(data, 'filename')
 
 ### copyData
 
-| parameter     | illustrate                                                                                                                                                          | type                                                             | Defaults | required |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- | :------- | :------- |
-| spreadsheet   | s2 instance                                                                                                                                                         | [SpreadSheet](/docs/api/basic-class/spreadsheet)              |          | ✓        |
-| split         | delimiter                                                                                                                                                           | `string`                                                         |          | ✓        |
-| formatOptions | Whether to format, you can format the data cell and row header separately, and passing Boolean values will take effect on the cell and row header at the same time. | `boolean \| { isFormatHeader?: boolean, isFormatData?: boolean}` | `false`  |          |
+| parameter     | illustrate                                                                                                                                                          | type                                                                       | Defaults | required |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------- | -------- |
+| spreadsheet   | s2 instance                                                                                                                                                         | [SpreadSheet](/docs/api/basic-class/spreadsheet)                           |          | ✓        |
+| split         | delimiter                                                                                                                                                           | `string`                                                                   |          | ✓        |
+| formatOptions | Whether to format, you can format the data cell and row header separately, and passing Boolean values will take effect on the cell and row header at the same time. | <code>boolean | { isFormatHeader?: boolean, isFormatData?: boolean}</code> | `false`  |          |
 
 ### copyToClipboard
 
 | parameter | illustrate                                                   | type      | Defaults | required |
-| :-------- | :----------------------------------------------------------- | :-------- | :------- | :------- |
+| --------- | ------------------------------------------------------------ | --------- | -------- | -------- |
 | data      | data source                                                  | `string`  |          | ✓        |
 | sync      | Whether to copy data synchronously (default is asynchronous) | `boolean` | `false`  |          |
 
 ### download
 
 | parameter | illustrate  | type     | Defaults | required |
-| :-------- | :---------- | :------- | :------- | :------- |
+| --------- | ----------- | -------- | -------- | -------- |
 | data      | data source | `string` |          | ✓        |
 | filename  | file name   | `string` |          | ✓        |
