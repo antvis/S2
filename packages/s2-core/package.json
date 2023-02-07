@@ -76,6 +76,7 @@
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-timer": "^3.0.0",
     "@types/tinycolor2": "^1.4.3",
+    "@antv/g-lite": "^1.0.0",
     "csstype": "^3.0.11",
     "d3-dsv": "^1.1.1",
     "tinycolor2": "^1.4.2"
