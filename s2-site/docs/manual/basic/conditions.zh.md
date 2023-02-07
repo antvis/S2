@@ -40,8 +40,6 @@ const s2Options = {
 };
 ```
 
-<Playground path='analysis/conditions/demo/text.ts' rid='container' height='300'></playground>
-
 ## 配置解释
 
 [Conditions 属性](/docs/api/general/S2Options#conditions) 可配置四种不同的字段，分别对应四种不同的字段标记。

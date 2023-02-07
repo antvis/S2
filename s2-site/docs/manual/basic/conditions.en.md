@@ -40,8 +40,6 @@ const s2Options = {
 };
 ```
 
-<Playground path="analysis/conditions/demo/text.ts" rid="container" height="300"></Playground>
-
 ## configuration explanation
 
 The [Conditions attribute](/docs/api/general/S2Options#conditions) can configure four different fields, corresponding to four different field tags.
