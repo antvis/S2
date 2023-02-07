@@ -8,7 +8,6 @@ export class Frame extends Group {
   declare cfg: FrameConfig;
 
   constructor(cfg: FrameConfig) {
-    // TODO: cfg 不再挂到 group 上
     super();
     this.cfg = cfg;
     this.render();

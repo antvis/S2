@@ -1,10 +1,4 @@
-import {
-  type FederatedPointerEvent as CanvasEvent,
-  Group,
-  type DisplayObject,
-  type PathStyleProps,
-  Path,
-} from '@antv/g';
+import { Group, type DisplayObject, type PathStyleProps, Path } from '@antv/g';
 import { clone, isEmpty, throttle } from 'lodash';
 import type {
   ResizeInteractionOptions,
@@ -126,14 +120,16 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private setResizeMaskCursor(cursor: string) {
-    // TODO: 是否改成 getById?
     const [, , resizeMask] = this.getResizeShapes();
 
     resizeMask?.attr('cursor', cursor);
   }
 
   private updateResizeGuideLinePosition(
-    event: MouseEvent,
+    offset: {
+      x: number;
+      y: number;
+    },
     resizeInfo: ResizeInfo,
   ) {
     const resizeShapes = this.getResizeShapes();
@@ -166,7 +162,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         ['M', offsetX + width - halfSize, offsetY],
         ['L', offsetX + width - halfSize, guideLineMaxHeight],
       ]);
-      this.resizeStartPosition.offsetX = event.offsetX;
+      this.resizeStartPosition.offsetX = offset.x;
 
       return;
     }
@@ -179,14 +175,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       ['M', offsetX, offsetY + height - halfSize],
       ['L', guideLineMaxWidth, offsetY + height - halfSize],
     ]);
-    this.resizeStartPosition.offsetY = event.offsetY;
+    this.resizeStartPosition.offsetY = offset.y;
   }
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
       const shape = event.target as Group;
-      // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
-      const originalEvent = event.originalEvent as unknown as MouseEvent;
       const resizeInfo = this.getCellAppendInfo<ResizeInfo>(event.target);
 
       this.spreadsheet.store.set('resized', false);
@@ -200,7 +194,13 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeTarget(shape);
       this.showResizeGroup();
-      this.updateResizeGuideLinePosition(originalEvent, resizeInfo);
+      this.updateResizeGuideLinePosition(
+        {
+          x: event.offsetX,
+          y: event.offsetY,
+        },
+        resizeInfo,
+      );
     });
   }
 
@@ -213,13 +213,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   // 将 SVG 的 path 转成更可读的坐标对象
   private getResizeGuideLinePosition(): ResizeGuideLinePosition {
-    // TODO: 是否用 id 来索引图形
     const [startGuideLineShape, endGuideLineShape] = (this.resizeReferenceGroup
       ?.children || []) as [Path, Path];
     const startGuideLinePath = startGuideLineShape?.attr('path') || [];
     const endGuideLinePath = endGuideLineShape?.attr('path') || [];
 
-    // TODO: 查看 path 取值是否正常
     const [, startX = 0, startY = 0] = startGuideLinePath[0] || [];
     const [, endX = 0, endY = 0] = endGuideLinePath[0] || [];
 
@@ -439,15 +437,13 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private resizeMouseMove(event: CanvasEvent) {
+  private resizeMouseMove(event: PointerEvent) {
     if (this.resizeReferenceGroup?.parsedStyle.visibility !== 'visible') {
       return;
     }
 
     event?.preventDefault?.();
 
-    // TODO: 结合 event-controller 里 resizeMouseMoveCapture 一起改
-    const originalEvent = event.originalEvent as unknown as MouseEvent;
     const resizeInfo = this.getResizeInfo();
     const resizeShapes =
       (this.resizeReferenceGroup?.children as DisplayObject[]) || [];
@@ -463,17 +459,15 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     if (resizeInfo.type === ResizeDirectionType.Horizontal) {
       this.updateHorizontalResizingEndGuideLinePosition(
-        originalEvent,
+        event.offsetX,
         resizeInfo,
-        guideLineStart,
-        guideLineEnd,
+        { start: guideLineStart, end: guideLineEnd },
       );
     } else {
       this.updateVerticalResizingEndGuideLinePosition(
-        originalEvent,
+        event.offsetY,
         resizeInfo,
-        guideLineStart,
-        guideLineEnd,
+        { start: guideLineStart, end: guideLineEnd },
       );
     }
 
@@ -493,24 +487,26 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private updateHorizontalResizingEndGuideLinePosition(
-    originalEvent: MouseEvent,
+    offsetX: number,
     resizeInfo: ResizeInfo,
-    guideLineStart: ResizeGuideLinePath,
-    guideLineEnd: ResizeGuideLinePath,
+    guideLine: {
+      start: ResizeGuideLinePath;
+      end: ResizeGuideLinePath;
+    },
   ) {
-    let offsetX = originalEvent.offsetX - this.resizeStartPosition.offsetX!;
+    let nextOffsetX = offsetX - this.resizeStartPosition.offsetX!;
 
-    if (resizeInfo.width + offsetX < MIN_CELL_WIDTH) {
+    if (resizeInfo.width + nextOffsetX < MIN_CELL_WIDTH) {
       // 禁止拖到最小宽度
-      offsetX = -(resizeInfo.width - MIN_CELL_WIDTH);
+      nextOffsetX = -(resizeInfo.width - MIN_CELL_WIDTH);
     }
 
-    const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + offsetX;
+    const resizedOffsetX = resizeInfo.offsetX + resizeInfo.width + nextOffsetX;
 
     const halfSize = resizeInfo.size / 2;
 
-    guideLineStart[1] = resizedOffsetX - halfSize;
-    guideLineEnd[1] = resizedOffsetX - halfSize;
+    guideLine.start[1] = resizedOffsetX - halfSize;
+    guideLine.end[1] = resizedOffsetX - halfSize;
 
     this.resizeTarget?.attr({
       x: resizedOffsetX - resizeInfo.size,
@@ -518,23 +514,25 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private updateVerticalResizingEndGuideLinePosition(
-    originalEvent: MouseEvent,
+    offsetY: number,
     resizeInfo: ResizeInfo,
-    guideLineStart: ResizeGuideLinePath,
-    guideLineEnd: ResizeGuideLinePath,
+    guideLine: {
+      start: ResizeGuideLinePath;
+      end: ResizeGuideLinePath;
+    },
   ) {
-    let offsetY = originalEvent.offsetY - this.resizeStartPosition.offsetY!;
+    let nextOffsetY = offsetY - this.resizeStartPosition.offsetY!;
 
-    if (resizeInfo.height + offsetY < MIN_CELL_HEIGHT) {
-      offsetY = -(resizeInfo.height - MIN_CELL_HEIGHT);
+    if (resizeInfo.height + nextOffsetY < MIN_CELL_HEIGHT) {
+      nextOffsetY = -(resizeInfo.height - MIN_CELL_HEIGHT);
     }
 
-    const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + offsetY;
+    const resizedOffsetY = resizeInfo.offsetY + resizeInfo.height + nextOffsetY;
 
     const halfSize = resizeInfo.size / 2;
 
-    guideLineStart[2] = resizedOffsetY - halfSize;
-    guideLineEnd[2] = resizedOffsetY - halfSize;
+    guideLine.start[2] = resizedOffsetY - halfSize;
+    guideLine.end[2] = resizedOffsetY - halfSize;
 
     this.resizeTarget?.attr({
       y: resizedOffsetY - resizeInfo.size,
