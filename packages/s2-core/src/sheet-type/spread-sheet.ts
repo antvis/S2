@@ -559,7 +559,6 @@ export abstract class SpreadSheet extends EE {
   public getCell<T extends S2CellType = S2CellType>(
     target: CellEventTarget,
   ): T | null {
-    // TODO: 5.0 用 composedPath 来替换本方法
     let parent = target;
 
     // 一直索引到g顶层的canvas来检查是否在指定的cell中

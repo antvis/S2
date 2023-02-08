@@ -21,6 +21,7 @@ import type { ResizeInfo } from './resize';
 type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 type MouseEventHandler = (event: MouseEvent) => void;
+type PointerEventHandler = (event: PointerEvent) => void;
 type EventHandler = (event: Event) => void;
 type ResizeHandler = (data: {
   info: ResizeInfo;
@@ -42,7 +43,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_MOUSE_MOVE]: MouseEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
-  [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: PointerEventHandler;
   [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.GLOBAL_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_DOUBLE_CLICK]: CanvasEventHandler;

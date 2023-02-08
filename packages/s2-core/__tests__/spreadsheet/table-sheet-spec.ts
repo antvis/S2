@@ -215,7 +215,7 @@ describe('TableSheet normal spec', () => {
     const resizeLength = 100;
 
     document.dispatchEvent(
-      new MouseEvent('mousemove', {
+      new PointerEvent('pointermove', {
         clientX: x + width + resizeLength,
         clientY: top + 25,
         bubbles: true,

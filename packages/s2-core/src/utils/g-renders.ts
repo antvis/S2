@@ -21,7 +21,7 @@ import {
 import { forEach, isArray, isEmpty, isFunction } from 'lodash';
 import { GuiIcon, type GuiIconCfg } from '../common/icons/gui-icon';
 
-export function renderRect(group: Group, style: RectStyleProps): DisplayObject {
+export function renderRect(group: Group, style: RectStyleProps): Rect {
   return group?.appendChild(
     new Rect({
       style,
@@ -29,17 +29,14 @@ export function renderRect(group: Group, style: RectStyleProps): DisplayObject {
   );
 }
 
-export function renderPolygon(
-  group: Group,
-  style: PolygonStyleProps,
-): DisplayObject {
+export function renderPolygon(group: Group, style: PolygonStyleProps): Polygon {
   return group?.appendChild(new Polygon({ style }));
 }
 
 export function renderPolyline(
   group: Group,
   style: PolylineStyleProps,
-): DisplayObject {
+): Polyline {
   return group?.appendChild(
     new Polyline({
       style,
@@ -47,10 +44,7 @@ export function renderPolyline(
   );
 }
 
-export function renderCircle(
-  group: Group,
-  style: CircleStyleProps,
-): DisplayObject {
+export function renderCircle(group: Group, style: CircleStyleProps): Circle {
   return group?.appendChild(
     new Circle({
       style,
@@ -62,7 +56,7 @@ export function renderText(
   group: Group,
   shapes: DisplayObject[],
   attrs: TextStyleProps,
-): DisplayObject {
+): Text {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: DisplayObject) => {
       if (group.contains(shape)) {
@@ -88,10 +82,7 @@ export function renderText(
   );
 }
 
-export function renderLine(
-  group: Group,
-  options: LineStyleProps,
-): DisplayObject {
+export function renderLine(group: Group, options: LineStyleProps): Line {
   return group?.appendChild(
     new Line({
       style: {
