@@ -5,12 +5,28 @@
   },
   "demos": [
     {
-      "filename": "custom-header.ts",
+      "filename": "custom-pivot-row-header.ts",
       "title": {
-        "zh": "自定义行列头",
-        "en": "custom header"
+        "zh": "透视表-自定义行头",
+        "en": "custom pivot sheet row header"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png"
+    },
+    {
+      "filename": "custom-pivot-col-header.ts",
+      "title": {
+        "zh": "透视表-自定义列头",
+        "en": "custom pivot sheet col header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*qRXTQLH0nOoAAAAAAAAAAAAADmJ7AQ/original"
+    },
+    {
+      "filename": "custom-table-col-header.ts",
+      "title": {
+        "zh": "明细表-自定义列头",
+        "en": "custom table sheet col header"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*HqD0RKp-7MIAAAAAAAAAAAAADmJ7AQ/original"
     },
     {
       "filename": "custom-tree.ts",

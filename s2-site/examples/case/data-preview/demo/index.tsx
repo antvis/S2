@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
@@ -77,6 +78,7 @@ class CustomCornerCell extends TableCornerCell {
   drawTextShape() {
     const { x, y, width: cellWidth, height: cellHeight, key } = this.meta;
     const padding = 4;
+
     this.textShape = this.addShape('polygon', {
       zIndex: 4,
       attrs: {
@@ -144,6 +146,7 @@ class CustomTableColCell extends TableColCell {
       height,
       fill: isFiltered ? '#873bf4' : 'rgb(67, 72, 91)',
     });
+
     this.add(icon);
 
     icon.on('click', () => {
@@ -171,7 +174,9 @@ const getSearchResult = (searchKey, data, columns) => {
   if (!searchKey) {
     return [];
   }
+
   const results = [];
+
   data.forEach((row, rowId) => {
     columns.forEach((col, colId) => {
       if (
@@ -191,7 +196,7 @@ const getSearchResult = (searchKey, data, columns) => {
 const initColumns = ['province', 'city', 'type', 'price'];
 
 const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
-  const { frozenRowCount } = options;
+  const { rowCount: frozenRowCount } = options.frozen;
   const colsNodes = facet.layoutResult.colLeafNodes;
 
   let offsetX = 0;
@@ -255,6 +260,7 @@ const App = ({ data }) => {
       if (item.colIndex === 0) {
         return new CustomCornerCell(item, spreadsheet, headerConfig);
       }
+
       return new CustomTableColCell(
         item,
         spreadsheet,
@@ -311,11 +317,14 @@ const App = ({ data }) => {
   const focusNext = (results, currentIndex) => {
     const length = results.length;
     let nextIndex = currentIndex + 1;
+
     if (nextIndex >= length) {
       nextIndex = 0;
     }
+
     setSearchResultActiveIndex(nextIndex);
     const current = results[nextIndex];
+
     scrollToCell(
       current.row,
       current.col,
@@ -328,11 +337,14 @@ const App = ({ data }) => {
   const focusPrev = (results) => {
     const length = results.length;
     let nextIndex = searchResultActiveIndex - 1;
+
     if (nextIndex < 0) {
       nextIndex = length - 1;
     }
+
     setSearchResultActiveIndex(nextIndex);
     const current = results[nextIndex];
+
     scrollToCell(
       current.row,
       current.col,
@@ -344,10 +356,13 @@ const App = ({ data }) => {
 
   const search = (key) => {
     let searchData = [];
+
     if (s2Ref.current) {
       searchData = s2Ref.current.dataSet.getDisplayDataSet();
     }
+
     const results = getSearchResult(key, searchData, columns);
+
     setSearchResult(results);
     setSearchResultActiveIndex(-1);
     if (results.length > 0) {
@@ -515,8 +530,10 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
           if (typeof data === 'string') {
             return data.search(searchKeyword) !== -1;
           }
+
           return false;
         }
+
         return true;
       }),
     [searchKeyword, fieldData],
@@ -527,6 +544,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
     setsearchKeyword(keyword);
     setchanged((old) => ({ ...old, filter: true }));
     const newFilter = {};
+
     fieldData
       .filter(
         (data) =>
@@ -536,8 +554,10 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                 if (typeof field === 'string') {
                   return field.search(keyword) !== -1;
                 }
+
                 return false;
               }
+
               return true;
             })
             .includes(data),
@@ -557,17 +577,21 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
         },
       ]);
     }
+
     if (changed.filter) {
       spreadsheet.emit(S2Event.RANGE_FILTER, {
         filterKey: fieldName,
         // 将Object还原成数组
         filteredValues: Object.entries(filtered)
           .map(([fieldValue, isFiltered]) => {
-            if (isFiltered) return fieldValue;
+            if (isFiltered) {
+              return fieldValue;
+            }
           })
           .filter(Boolean),
       });
     }
+
     setchanged({ filter: false, sort: false });
   };
 
@@ -613,20 +637,24 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
                 const {
                   target: { checked },
                 } = e;
+
                 setchanged((val) => ({ ...val, filter: true }));
 
                 if (checked) {
                   setfiltered((old) => {
                     const newValue = {};
+
                     searchedFieldData.forEach((fieldValue) => {
                       newValue[fieldValue] = false;
                     });
+
                     return newValue;
                   });
                 } else {
                   // 将全部过滤
                   setfiltered((old) => {
                     const newValue = {};
+
                     searchedFieldData.forEach((fieldValue) => {
                       newValue[fieldValue] = true;
                     });

@@ -1,6 +1,6 @@
-import { PivotSheet } from '@antv/s2';
+import { CustomTreeNode, PivotSheet, S2DataConfig, S2Options } from '@antv/s2';
 
-const customTree = [
+const customTree: CustomTreeNode[] = [
   {
     field: 'a-1',
     title: '自定义节点 a-1',
@@ -59,49 +59,44 @@ const data = [
 function render() {
   const container = document.getElementById('container');
 
-  const s2DataConfig = {
+  const s2DataConfig: S2DataConfig = {
     fields: {
-      rows: customTree,
-      columns: ['type', 'sub_type'],
+      columns: customTree,
+      rows: ['type', 'sub_type'],
       values: ['measure-1', 'measure-2'],
-      valueInCols: false,
+      valueInCols: true,
     },
     data,
+    // 自定义节点默认使用 `title` 作为展示名, 也可以通过 meta 来统一进行格式化
+    meta: [
+      {
+        field: 'type',
+        name: '商品类别',
+      },
+      {
+        field: 'sub_type',
+        name: '商品子类别',
+      },
+      {
+        field: 'a-1',
+        name: '角头1',
+      },
+      {
+        field: 'a-1-1',
+        name: '角头2',
+      },
+    ],
   };
 
-  const s2Options = {
+  const s2Options: S2Options = {
     width: 600,
     height: 480,
     hierarchyType: 'grid',
   };
 
   const s2 = new PivotSheet(container, s2DataConfig, s2Options);
+
   s2.render();
-
-  createCheckbox(s2);
-}
-
-function createCheckbox(s2) {
-  const canvas = document.querySelector('#container > canvas');
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-
-  const text = document.createElement('span');
-  text.style.marginLeft = '5px';
-  text.className = 'hierarchy-type';
-  text.innerHTML = '树状模式';
-
-  checkbox.addEventListener('change', () => {
-    const type = document.querySelector('.hierarchy-type');
-    const hierarchyType = checkbox.checked ? 'tree' : 'grid';
-    s2.setOptions({
-      hierarchyType,
-    });
-    s2.render(false);
-  });
-
-  canvas?.before(checkbox);
-  canvas?.before(text);
 }
 
 render();

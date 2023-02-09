@@ -7,11 +7,9 @@ order: 2
 
 默认通过**交叉之后得到的数据生成层级结构**, 如果都不满足的话，可以通过自定义行列头，来定制你的目录结构，同样支持这两种布局方式
 
-<playground path='custom/custom-tree/demo/custom-header.ts' rid='container' height='400'></playground>
+## 数据结构
 
-### 数据结构
-
-`markdown:docs/common/custom/customTreeNode.zh.md`
+<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
 
 ```ts
 const customTree: CustomTreeNode[] = [
@@ -71,9 +69,11 @@ const data = [
 ]
 ```
 
+## 透视表
+
 ### 自定义行头
 
-[查看例子](#)
+<Playground path='custom/custom-tree/demo/custom-pivot-row-header.ts' rid='container' height='400'></playground>
 
 1. `rows` 配置为自定义 `tree` 结构
 2. 数值需要置于行头，即 `valueInCols: false` （无论配置与否都会强制置于行头，修改无效）
@@ -90,6 +90,8 @@ const s2DataConfig = {
 };
 ```
 
+<br/>
+
 #### 平铺模式
 
 ```ts
@@ -98,7 +100,11 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/78uZ2l%24JQ/01a484d7-0edd-4ba0-882f-eed59fc209f1.png" width="1000" alt="preview"/>
+
+<br/>
 
 #### 树状模式
 
@@ -108,11 +114,15 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/iJft9ExZs/da1f768c-7689-44df-be54-708442a74d76.png" width="1000" alt="preview"/>
+
+<br/>
 
 ### 自定义列头
 
-[查看例子](#)
+<Playground path='custom/custom-tree/demo/custom-pivot-col-header.ts' rid='container-2' height='400'></playground>
 
 1. `columns` 配置为自定义 `tree` 结构
 2. 数值需要置于列头，即 `valueInCols: true` （无论配置与否都会强制置于列头，修改无效）
@@ -129,6 +139,8 @@ const s2DataConfig = {
 };
 ```
 
+<br/>
+
 #### 平铺模式
 
 ```ts
@@ -137,7 +149,11 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/sn6R4Kmvh/ce49ecf2-e672-47d5-885b-135c39620e18.png" width="1000" alt="preview"/>
+
+<br/>
 
 #### 树状模式
 
@@ -147,7 +163,11 @@ const s2Options = {
 };
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/ORZGnHNfz/5f876c02-e647-4598-a4bf-68d4b803a18a.png" width="1000" alt="preview"/>
+
+<br/>
 
 ### 自定义角头文本
 
@@ -172,7 +192,11 @@ const meta = [
 ]
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/6U%26nLnY3r/e65b9e7c-d9a3-4841-839f-2405d0c45ea2.png" width="600" alt="preview"/>
+
+<br/>
 
 #### 树状模式
 
@@ -191,7 +215,11 @@ const meta = [
 ]
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/TmAPj7Ky2/a2c78816-45c5-450b-ab0c-0e2d7d98d209.png" width="200" alt="preview"/>
+
+<br/>
 
 ```ts
 const s2Options = {
@@ -199,8 +227,53 @@ const s2Options = {
 }
 ```
 
+<br/>
+
 <img src="https://gw.alipayobjects.com/zos/antfincdn/BF7WZ0w2h/e5fc914e-b69e-47e4-9da5-ebee4b070207.png" width="200" alt="preview"/>
 
-### 更多应用
+<br/>
+
+## 明细表
+
+### 自定义列头
+
+<Playground path='custom/custom-tree/demo/custom-table-col-header.ts' rid='container-3' height='400'></playground>
+
+<br/>
+
+`columns` 配置为自定义 `tree` 结构
+
+```ts
+const s2DataConfig = {
+  fields: {
+    columns: customTree,
+  },
+  data,
+};
+```
+
+<br/>
+
+## 行列头文本格式化
+
+自定义节点默认使用 `当前节点展示名`, 即 `CustomTreeNode.title`, 也可以使用通用的 [Meta](/api/general/s-2-data-config#meta) 来进行格式化
+
+```ts
+const s2DataConfig: S2DataConfig = {
+  ...
+  meta: [
+    {
+      field: 'a-1',
+      name: '名称 1',
+    },
+    {
+      field: 'a-1-1',
+      name: '名称 2',
+    },
+  ],
+};
+```
+
+## 更多应用
 
 基于自定义行列头，我们可以衍生出更多的使用场景，比如基于 `自定义行头` + `树状模式`, 我们可以自定义出一个 [趋势分析表分析组件](zh/docs/manual/basic/analysis/strategy/).
