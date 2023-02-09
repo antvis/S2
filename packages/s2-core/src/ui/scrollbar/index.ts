@@ -58,9 +58,6 @@ export class ScrollBar extends Group {
   // 鼠标 drag 过程中的开始位置
   private startPos: number;
 
-  // 通过拖拽开始的事件是 mousedown 还是 touchstart 来决定是移动端还是 pc 端
-  private isMobile = false;
-
   // 清除事件
   private clearEvents: () => void;
 
@@ -69,7 +66,6 @@ export class ScrollBar extends Group {
   private scrollFrameId: ReturnType<typeof requestAnimationFrame> | null = null;
 
   constructor(scrollBarCfg: ScrollBarCfg) {
-    // TODO: 不需要再透传 scrollBarCfg 到 group 基类
     super();
 
     const {
@@ -193,8 +189,6 @@ export class ScrollBar extends Group {
    */
   public onlyUpdateThumbOffset = (offset: number) => {
     this.updateThumbOffset(offset, false);
-    // TODO: 获取 canvas 调用 draw？现在都是自动重绘，是不是不需要调用了
-    this.ownerDocument?.defaultView?.render();
   };
 
   public emitScrollChange = (offset: number, updateThumbOffset = true) => {
@@ -331,30 +325,22 @@ export class ScrollBar extends Group {
   };
 
   private bindEvents = () => {
-    this.addEventListener('mousedown', this.onStartEvent(false));
-
-    /*
-     * 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
-     * 整个拖拽过程没有 cancel 掉。
-     */
-    this.addEventListener(OriginEventType.POINTER_UP, this.onMouseUp);
-    this.addEventListener('touchstart', this.onStartEvent(true));
-    this.addEventListener('touchend', this.onMouseUp);
+    this.addEventListener(OriginEventType.POINTER_DOWN, this.onStartEvent);
+    this.addEventListener(OriginEventType.POINTER_UP, this.onPointerUp);
 
     this.trackShape.addEventListener('click', this.onTrackClick);
-    this.thumbShape.addEventListener('mouseover', this.onTrackMouseOver);
-    this.thumbShape.addEventListener('mouseout', this.onTrackMouseOut);
+    this.thumbShape.addEventListener(
+      OriginEventType.POINTER_OVER,
+      this.onTrackPointerOver,
+    );
+    this.thumbShape.addEventListener(
+      OriginEventType.POINTER_OUT,
+      this.onTrackPointerOut,
+    );
   };
 
-  private onStartEvent = (isMobile: boolean) => (e: FederatedPointerEvent) => {
+  private onStartEvent = (e: FederatedPointerEvent) => {
     e.preventDefault();
-
-    this.isMobile = isMobile;
-
-    /*
-     * TODO: 可以统一PC、移动，都用 pointerdown
-     * const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
-     */
     const { clientX, clientY } = e;
 
     // 将开始的点记录下来
@@ -367,29 +353,26 @@ export class ScrollBar extends Group {
     const canvas = this.ownerDocument!.defaultView!;
     const containerDOM: EventTarget = document.body;
 
-    let events: EventListenerReturn[] = [];
+    const events: EventListenerReturn[] = [
+      this.bindEventListener(
+        containerDOM,
+        OriginEventType.POINTER_MOVE,
+        this.onPointerMove,
+      ),
+      this.bindEventListener(
+        containerDOM,
+        OriginEventType.POINTER_UP,
+        this.onPointerUp,
+      ),
+      // 为了保证划出 canvas containerDom 时还没触发 pointerup
+      this.bindEventListener(
+        containerDOM,
+        OriginEventType.POINTER_LEAVE,
+        this.onPointerUp,
+      ),
+    ];
 
-    if (this.isMobile) {
-      events = [
-        this.bindEventListener(containerDOM, 'touchmove', this.onMouseMove),
-        this.bindEventListener(containerDOM, 'touchend', this.onMouseUp),
-        this.bindEventListener(containerDOM, 'touchcancel', this.onMouseUp),
-      ];
-      this.addEvent(canvas, 'touchend', this.onMouseUp);
-      this.addEvent(canvas, 'touchcancel', this.onMouseUp);
-    } else {
-      events = [
-        this.bindEventListener(
-          containerDOM,
-          OriginEventType.POINTER_MOVE,
-          this.onMouseMove,
-        ),
-        this.bindEventListener(containerDOM, 'mouseup', this.onMouseUp),
-        // 为了保证划出 canvas containerDom 时还没触发 mouseup
-        this.bindEventListener(containerDOM, 'mouseleave', this.onMouseUp),
-      ];
-      this.addEvent(canvas, 'mouseup', this.onMouseUp);
-    }
+    this.addEvent(canvas, OriginEventType.POINTER_UP, this.onPointerUp);
 
     this.clearEvents = () => {
       events.forEach((e) => {
@@ -417,13 +400,8 @@ export class ScrollBar extends Group {
    * 拖拽滑块的事件回调
    * 这里是 dom 原生事件，绑定在 dom 元素上的
    */
-  private onMouseMove = (e: { preventDefault: () => void }) => {
+  private onPointerMove = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
-    /*
-     * TODO: 可以统一PC、移动，都用 pointerdown
-     * const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
-     */
 
     const clientX = (e as FederatedPointerEvent).clientX;
     const clientY = (e as FederatedPointerEvent).clientY;
@@ -438,20 +416,20 @@ export class ScrollBar extends Group {
     this.updateThumbOffset(this.thumbOffset + diff);
   };
 
-  private onMouseUp = (e: { preventDefault: () => void }) => {
+  private onPointerUp = (e: { preventDefault: () => void }) => {
     this.dispatchEvent(new CustomEvent(ScrollType.ScrollEnd, {}));
     e.preventDefault();
     this.clearEvents?.();
   };
 
-  private onTrackMouseOver = () => {
+  private onTrackPointerOver = () => {
     const { thumbHoverColor, hoverSize } = this.theme;
 
     this.thumbShape.attr('stroke', thumbHoverColor);
     this.thumbShape.attr('lineWidth', hoverSize);
   };
 
-  private onTrackMouseOut = () => {
+  private onTrackPointerOut = () => {
     const { thumbColor, size } = this.theme;
 
     this.thumbShape.attr('stroke', thumbColor);

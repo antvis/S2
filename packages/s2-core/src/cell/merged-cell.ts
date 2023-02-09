@@ -51,11 +51,6 @@ export class MergedCell extends DataCell {
       points: allPoints,
       stroke: cellTheme!.horizontalBorderColor,
       fill: cellTheme!.backgroundColor,
-
-      /*
-       * TODO: 这个应该不需要吧，g5.0 没有lineHeight
-       * lineHeight: cellTheme.horizontalBorderWidth,
-       */
     });
   }
 

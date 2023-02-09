@@ -224,7 +224,6 @@ export class RootInteraction {
   public getAllRowHeaderCells(): RowCell[] {
     const children = this.spreadsheet.facet?.foregroundGroup?.children || [];
     const rowHeader = children.find((group) => group instanceof RowHeader);
-    // TODO: 不用从 cfg 取 children 了吧
     const headerChildren = rowHeader?.children || [];
 
     return getAllChildCells(headerChildren as RowCell[], RowCell).filter(

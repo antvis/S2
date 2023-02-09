@@ -288,7 +288,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getIconPosition(): PointLike {
-    const textX = this.textShapes?.[0]?.getAttribute('x');
+    const textX = +this.textShapes[0]?.getAttribute('x')! ?? 0;
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle()!.icon!;
 
@@ -299,7 +299,7 @@ export class CornerCell extends HeaderCell {
         [matches('right'), constant(0)],
         [stubTrue, constant(this.actualTextWidth)],
       ])(textAlign) +
-      margin?.left;
+      margin?.left!;
 
     const iconY = getVerticalPosition(
       this.getBBoxByType(CellClipBox.CONTENT_BOX),

@@ -122,7 +122,6 @@ export const translateGroup = (
   scrollY: number,
 ) => {
   if (group) {
-    // TODO: 可能是本地 getLocalPosition
     const [preX, preY] = group.getPosition();
 
     group.translate(scrollX - preX, scrollY - preY);

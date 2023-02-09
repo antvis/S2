@@ -3,7 +3,6 @@ import {
   type FederatedPointerEvent as CanvasEvent,
   type Group,
   DisplayObject,
-  type FederatedEvent,
 } from '@antv/g';
 import { get, each, isEmpty, isNil } from 'lodash';
 import { CustomImage } from '../engine';
@@ -244,7 +243,6 @@ export class EventController {
   }
 
   private isResizeArea(event: CanvasEvent) {
-    // TODO: resize 是否能取到属性
     const appendInfo = getAppendInfo(event.target as DisplayObject);
 
     return appendInfo?.isResizeArea;
@@ -290,26 +288,27 @@ export class EventController {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
 
       // 仅捕获在 Canvas 之外触发的事件 https://github.com/antvis/S2/issues/1592
-      const resizeMouseMoveCapture = (mouseEvent: MouseEvent) => {
+      const resizeMouseMoveCapture = (pointerEvent: PointerEvent) => {
         if (!this.spreadsheet.getCanvasElement()) {
           return false;
         }
 
-        if (this.spreadsheet.getCanvasElement() !== mouseEvent.target) {
-          // TODO: resize 逻辑，可以不用覆盖 event 的方式传递？后三行都要改
-          event.client.x = mouseEvent.clientX;
-          event.client.y = mouseEvent.clientY;
-          event.originalEvent =
-            mouseEvent as unknown as FederatedEvent<MouseEvent>;
-          this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
+        if (this.spreadsheet.getCanvasElement() !== pointerEvent.target) {
+          this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, pointerEvent);
         }
       };
 
-      window.addEventListener('mousemove', resizeMouseMoveCapture);
       window.addEventListener(
-        'mouseup',
+        OriginEventType.POINTER_MOVE,
+        resizeMouseMoveCapture,
+      );
+      window.addEventListener(
+        OriginEventType.POINTER_UP,
         () => {
-          window.removeEventListener('mousemove', resizeMouseMoveCapture);
+          window.removeEventListener(
+            OriginEventType.POINTER_MOVE,
+            resizeMouseMoveCapture,
+          );
         },
         { once: true },
       );
@@ -343,7 +342,10 @@ export class EventController {
   private onCanvasMousemove = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
-      this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
+      this.spreadsheet.emit(
+        S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+        event.nativeEvent as PointerEvent,
+      );
 
       return;
     }
@@ -534,7 +536,6 @@ export class EventController {
   };
 
   private onCanvasMouseout = (event: CanvasEvent) => {
-    // TODO: if 第二个条件是判断有 event?.shape，g5没有这个属性了
     if (!this.isAutoResetSheetStyle || event?.target instanceof DisplayObject) {
       return;
     }
