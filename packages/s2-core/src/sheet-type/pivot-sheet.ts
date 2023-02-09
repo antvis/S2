@@ -83,7 +83,7 @@ export class PivotSheet extends SpreadSheet {
    * Scroll Freeze Row Header
    */
   public isFrozenRowHeader(): boolean {
-    return this.options?.frozen?.rowHeader!;
+    return !!this.options?.frozen?.rowHeader!;
   }
 
   /**
