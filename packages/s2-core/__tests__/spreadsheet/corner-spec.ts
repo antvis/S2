@@ -108,4 +108,24 @@ describe('PivotSheet Corner Tests', () => {
     expect(colsHierarchy.sampleNodeForLastLevel).toBeNull();
     expect(cornerNodes).toHaveLength(0);
   });
+
+  test('should customize cornerBbox width and max width when freeze row header', () => {
+    // 默认占据一半宽度
+    let cornerBBox = s2.facet.cornerBBox;
+
+    expect(cornerBBox.originalWidth).toEqual(192);
+    expect(cornerBBox.width).toEqual(150);
+
+    // 自定义冻结宽度
+    s2.setOptions({
+      frozen: {
+        rowHeader: 0.4,
+      },
+    });
+    s2.render();
+
+    cornerBBox = s2.facet.cornerBBox;
+    expect(cornerBBox.originalWidth).toEqual(192);
+    expect(cornerBBox.width).toEqual(120);
+  });
 });
