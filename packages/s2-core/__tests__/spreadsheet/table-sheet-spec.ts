@@ -241,17 +241,19 @@ describe('TableSheet normal spec', () => {
   test('should render link shape', () => {
     const s2 = new TableSheet(getContainer(), dataCfg, {
       ...options,
-      frozenRowCount: 0,
-      frozenColCount: 0,
-      frozenTrailingColCount: 0,
-      frozenTrailingRowCount: 0,
-    } as S2Options);
+      frozen: {
+        rowCount: 0,
+        colCount: 0,
+        trailingColCount: 0,
+        trailingRowCount: 0,
+      },
+    });
 
     s2.render();
 
     const orderIdDataCell = (
       (s2.facet as TableFacet).frozenColGroup.children as TableDataCell[]
-    ).find((item) => item.getMeta().valueField === 'order_id');
+    ).find((cell) => cell.getMeta().valueField === 'order_id');
 
     expect(get(orderIdDataCell, 'linkFieldShape')).toBeDefined();
 

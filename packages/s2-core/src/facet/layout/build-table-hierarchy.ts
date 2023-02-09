@@ -6,7 +6,7 @@ import type { HeaderParams } from './interface';
 export const buildTableHierarchy = (params: HeaderParams) => {
   const { spreadsheet, rootNode, fields, hierarchy } = params;
   const { columns = [] } = spreadsheet.dataSet.fields;
-  const { showSeriesNumber } = spreadsheet.options;
+  const { showSeriesNumber, seriesNumberText } = spreadsheet.options;
 
   const fieldValues = columns.map((field) =>
     spreadsheet.dataSet.getFieldName(field),
@@ -14,7 +14,7 @@ export const buildTableHierarchy = (params: HeaderParams) => {
 
   if (showSeriesNumber) {
     fields.unshift(SERIES_NUMBER_FIELD);
-    fieldValues.unshift(getDefaultSeriesNumberText());
+    fieldValues.unshift(getDefaultSeriesNumberText(seriesNumberText));
   }
 
   generateHeaderNodes({

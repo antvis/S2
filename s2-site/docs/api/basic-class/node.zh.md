@@ -30,7 +30,8 @@ node.isTotals // false
 | query | 当前节点对应的数据 | `Record<string, any>` |
 | belongsCell | 对应的单元格 | [S2CellType](/docs/api/basic-class/base-cell)  |
 | isTotalMeasure | 是否是数值小计 | `boolean` |
-| inCollapseNode | 是否展开的节点 | `boolean` |
+| isCollapseNode | 是否展开的节点 | `boolean` |
+| isSeriesNumberNode | 是否是序号列节点 | () => `boolean` |
 | isLeaf | 是否是叶子节点 | `boolean` |
 | x | x 轴坐标 | `number` |
 | y | y 轴坐标 | `number` |

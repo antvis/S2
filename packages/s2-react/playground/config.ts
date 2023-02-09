@@ -91,7 +91,7 @@ export const s2Options: SheetComponentOptions = {
   width: 1000,
   height: 400,
   hierarchyType: 'grid',
-  showSeriesNumber: false,
+  showSeriesNumber: true,
   frozen: {
     rowHeader: true,
     // colCount: 1,

@@ -108,12 +108,12 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
 
 const handleTableHierarchy = (params: HeaderParams) => {
   const { isCustomTreeFields, spreadsheet } = params;
-  const { showSeriesNumber } = spreadsheet.options;
+  const { showSeriesNumber, seriesNumberText } = spreadsheet.options;
 
   if (isCustomTreeFields) {
     const seriesNumberField: CustomTreeNode = {
       field: SERIES_NUMBER_FIELD,
-      title: getDefaultSeriesNumberText(),
+      title: getDefaultSeriesNumberText(seriesNumberText),
     };
 
     const fields = showSeriesNumber

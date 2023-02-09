@@ -50,6 +50,7 @@ jest.mock('@/sheet-type', () => {
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
+        getColumnNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
         getCanvasElement: () =>
           container.getContextService().getDomElement() as HTMLCanvasElement,
@@ -594,56 +595,6 @@ describe('Custom Column Width Tests', () => {
     s2.store.set('hiddenColumnsDetail', [hiddenColumnsInfo]);
 
     expect(facet.getHiddenColumnsInfo(node)).toEqual(hiddenColumnsInfo);
-  });
-});
-
-describe('Table Mode Facet With Column Grouping Test', () => {
-  const { facet, s2 } = createMockTableFacet(null, {
-    columns: [
-      {
-        field: 'area',
-        children: [{ field: 'province' }, { field: 'city' }],
-      },
-      {
-        field: 'all_type',
-        children: [{ field: 'type' }, { field: 'sub_type' }],
-      },
-      { field: 'price' },
-    ],
-  });
-  const { colCell } = s2.options.style!;
-
-  test('should get correct group', () => {
-    const leafNodes = facet.layoutResult.colLeafNodes;
-
-    expect(leafNodes[0].parent!.field).toEqual('area');
-    expect(leafNodes[1].parent!.field).toEqual('area');
-    expect(leafNodes[2].parent!.field).toEqual('all_type');
-    expect(leafNodes[3].parent!.field).toEqual('all_type');
-    expect(leafNodes[4].parent!.id).toEqual('root');
-  });
-
-  test('should has correct col hierarchy', () => {
-    expect(facet.layoutResult.colNodes).toHaveLength(7);
-    expect(facet.layoutResult.colLeafNodes).toHaveLength(5);
-    const nodes = facet.layoutResult.colNodes;
-
-    expect(nodes[0].y).toBe(0);
-    expect(nodes[0].height).toEqual(colCell!.height);
-    expect(nodes[1].y).toBe(colCell!.height);
-    expect(nodes[1].height).toEqual(colCell!.height);
-    expect(nodes[2].y).toBe(colCell!.height);
-    expect(nodes[2].height).toEqual(colCell!.height);
-
-    expect(nodes[3].y).toBe(0);
-    expect(nodes[3].height).toEqual(colCell!.height);
-    expect(nodes[4].y).toBe(colCell!.height);
-    expect(nodes[4].height).toEqual(colCell!.height);
-    expect(nodes[5].y).toBe(colCell!.height);
-    expect(nodes[5].height).toEqual(colCell!.height);
-
-    expect(nodes[6].y).toBe(0);
-    expect(nodes[6].height).toEqual((colCell!.height! as number) * 2);
   });
 });
 

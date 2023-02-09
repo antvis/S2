@@ -36,7 +36,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     // query只与值本身有关，不会涉及到 parent节点
     const valueQuery = { [EXTRA_FIELD]: field };
     // 保持和其他场景头部生成id的格式一致
-    const nodeId = generateId(parentNode.id, title!);
+    const nodeId = generateId(parentNode.id, title || field);
 
     const defaultCollapsed = collapsed ?? false;
     const isDefaultCollapsed =
@@ -63,7 +63,7 @@ export const buildCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       isLeaf,
     });
 
-    if (level > hierarchy.maxLevel) {
+    if (level > hierarchy.maxLevel && !node.isSeriesNumberNode()) {
       hierarchy.maxLevel = level;
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.sampleNodeForLastLevel = node;

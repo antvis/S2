@@ -258,7 +258,6 @@ export class TableFacet extends BaseFacet {
 
       const { showSeriesNumber } = this.spreadsheet.options;
       const cellHeight = this.getCellHeightByRowIndex(rowIndex);
-
       const cellRange = this.getCellRange();
       const { trailingRowCount: frozenTrailingRowCount = 0 } =
         getValidFrozenOptions(

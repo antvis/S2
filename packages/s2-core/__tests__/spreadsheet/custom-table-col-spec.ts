@@ -197,4 +197,47 @@ describe('TableSheet Custom Tests', () => {
       colNodes.every((node) => node.actualText === node.value),
     ).toBeTruthy();
   });
+
+  test('should render custom series number text', () => {
+    const seriesNumberText = '牛';
+
+    s2.setOptions({
+      seriesNumberText,
+      showSeriesNumber: true,
+    });
+    s2.render(false);
+
+    expect(s2.getColumnNodes()[0].value).toEqual(seriesNumberText);
+  });
+
+  test('should render correctly column height if enable series number', () => {
+    s2.setOptions({
+      showSeriesNumber: true,
+    });
+    s2.render(false);
+
+    const nodes = s2
+      .getColumnNodes()
+      .filter((node) => node.level === 0 && node.isLeaf);
+
+    const cellHeight = s2.facet.layoutResult.colsHierarchy.height;
+
+    expect(cellHeight).toEqual(60);
+    expect(nodes.every((node) => node.height === cellHeight)).toBeTruthy();
+  });
+
+  test('should not sample series node', () => {
+    s2.setOptions({
+      showSeriesNumber: true,
+    });
+    s2.render(false);
+
+    const { sampleNodeForLastLevel, sampleNodesForAllLevels } =
+      s2.facet.layoutResult.colsHierarchy;
+
+    expect(sampleNodeForLastLevel?.isSeriesNumberNode()).toBeFalsy();
+    expect(
+      sampleNodesForAllLevels.every((node) => !node.isSeriesNumberNode()),
+    ).toBeTruthy();
+  });
 });

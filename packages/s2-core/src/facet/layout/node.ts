@@ -1,4 +1,5 @@
 import { head, isEmpty, isEqual } from 'lodash';
+import { SERIES_NUMBER_FIELD } from '../../common';
 import { ROOT_NODE_ID } from '../../common/constant/node';
 import type { CornerNodeType, S2CellType } from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
@@ -341,5 +342,9 @@ export class Node {
       (sum, child) => sum + child.getTotalHeightForTreeHierarchy(),
       this.height,
     );
+  }
+
+  public isSeriesNumberNode() {
+    return this.field === SERIES_NUMBER_FIELD;
   }
 }
