@@ -146,8 +146,7 @@ export class ColCell extends HeaderCell {
     const { isLeaf } = this.meta;
     const { width, cornerWidth = 0, scrollX = 0 } = this.headerConfig;
 
-    const scrollContainsRowHeader =
-      this.spreadsheet.isScrollContainsRowHeader();
+    const scrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
     const textStyle = this.getTextStyle();
     const contentBox = this.getBBoxByType(CellClipBox.CONTENT_BOX);
     const iconStyle = this.getIconStyle();
@@ -330,7 +329,7 @@ export class ColCell extends HeaderCell {
       spreadsheet,
     } = this.headerConfig;
 
-    const scrollContainsRowHeader = spreadsheet.isScrollContainsRowHeader();
+    const scrollContainsRowHeader = !spreadsheet.isFrozenRowHeader();
     const resizeStyle = this.getResizeAreaStyle();
 
     const resizeAreaBBox: SimpleBBox = {

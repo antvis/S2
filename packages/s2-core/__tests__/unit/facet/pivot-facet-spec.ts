@@ -64,7 +64,6 @@ jest.mock('@/sheet-type', () => {
         getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
-        isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),

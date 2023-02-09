@@ -17,7 +17,7 @@ describe('Col Cell Tests', () => {
 
   beforeEach(() => {
     s2 = new MockPivotSheet(getContainer());
-    s2.isScrollContainsRowHeader = () => true;
+    s2.isFrozenRowHeader = () => false;
     s2.dataSet = new MockPivotDataSet(s2);
   });
 

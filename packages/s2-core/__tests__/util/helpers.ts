@@ -127,7 +127,6 @@ export const createFakeSpreadSheet = () => {
   s2.isCustomHeaderFields = jest.fn(() => false);
   s2.isCustomRowFields = jest.fn(() => false);
   s2.isCustomColumnFields = jest.fn(() => false);
-  s2.isScrollContainsRowHeader = jest.fn(() => true);
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
 

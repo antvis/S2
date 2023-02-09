@@ -37,8 +37,8 @@ describe('PanelBBox test', () => {
       },
 
       spreadsheet: {
-        isScrollContainsRowHeader() {
-          return false;
+        isFrozenRowHeader() {
+          return true;
         },
         enableFrozenHeaders() {
           return shouldEnableFrozenHeaders;

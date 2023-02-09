@@ -21,8 +21,8 @@ describe('cornerBBox test', () => {
         return 80;
       },
       spreadsheet: {
-        isScrollContainsRowHeader() {
-          return false;
+        isFrozenRowHeader() {
+          return true;
         },
         options: {
           width: 400,
@@ -37,7 +37,7 @@ describe('cornerBBox test', () => {
   });
 
   test('should return original width when scroll contains row header', () => {
-    mockFacet.spreadsheet.isScrollContainsRowHeader = () => true;
+    mockFacet.spreadsheet.isFrozenRowHeader = () => false;
 
     const bbox = new CornerBBox(mockFacet, true);
 

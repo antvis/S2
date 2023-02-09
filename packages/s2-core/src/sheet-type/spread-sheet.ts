@@ -229,12 +229,6 @@ export abstract class SpreadSheet extends EE {
   public abstract isHierarchyTreeType(): boolean;
 
   /**
-   * Check whether scroll contains row header
-   * For now contains row header in ListSheet mode by default
-   */
-  public abstract isScrollContainsRowHeader(): boolean;
-
-  /**
    * Scroll Freeze Row Header
    */
   public abstract isFrozenRowHeader(): boolean;

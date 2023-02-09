@@ -643,7 +643,6 @@ describe('PivotSheet Tests', () => {
 
   test('should default frozen row header', () => {
     expect(s2.isFrozenRowHeader()).toBeTruthy();
-    expect(s2.isScrollContainsRowHeader()).toBeFalsy();
   });
 
   test('should get value is in columns', () => {

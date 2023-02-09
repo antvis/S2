@@ -42,11 +42,11 @@ export class CornerBBox extends BaseBBox {
     );
 
     // 在行头不固定时，无需对角头 BBox 进行裁剪
-    if (this.spreadsheet.isScrollContainsRowHeader()) {
-      return this.originalWidth;
+    if (this.spreadsheet.isFrozenRowHeader()) {
+      return this.adjustCornerBBoxWidth();
     }
 
-    return this.adjustCornerBBoxWidth();
+    return this.originalWidth;
   }
 
   private adjustCornerBBoxWidth() {
