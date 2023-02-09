@@ -263,16 +263,6 @@ function getDataCellCopyable(
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
-    /*
-     * console.log('selectedCellsMeta', selectedCellsMeta);
-     * const { currentRow } = spreadsheet.interaction.getSelectedCellHighlight();
-     * if (currentRow) {
-     *   const rowData = orderBy(cells, 'rowIndex', 'asc').map((cell) =>
-     *     spreadsheet.dataSet.getRowData(cell),
-     *   );
-     *   data = getDataByRowData(spreadsheet, rowData as unknown as RowData);
-     * } else
-     */
     data = getDataMatrixByDataCell(
       selectedCellsMeta,
       displayData as Data[],

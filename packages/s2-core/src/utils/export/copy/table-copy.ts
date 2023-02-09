@@ -15,7 +15,10 @@ export const processTableColSelected = (
   selectedCols: CellMeta[],
 ): CopyableList => {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
-  const columnNodes = spreadsheet.getColumnNodes();
+  const columnNodes = (spreadsheet.getColumnNodes() || []).filter(
+    // 滤过掉序号，序号不需要复制
+    (colNode) => colNode.field !== SERIES_NUMBER_FIELD,
+  );
 
   const selectedColNodes: Node[] = selectedCols.length
     ? (filter(columnNodes, (node) =>

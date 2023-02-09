@@ -15,8 +15,7 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
 import { TableSeriesCell } from '@/cell';
 
-const newLineTest = `"### 问题摘要
-- **会话地址**："`;
+const newLineTest = `### 问题摘要 ${newLine}- **会话地址**：`;
 
 const testData = originalData.map((item, i) => {
   if (i === 0) {
@@ -109,10 +108,7 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    /**
-     * todo: 需要跑之前的单测，看看是不是因为少了 colHeader:
-     * console.log(getCopyPlainContent(s2), 's2');
-     */
+
     expect(getCopyPlainContent(s2).split(newLine).length).toBe(33);
     expect(getCopyPlainContent(s2).split(newLine)[2].split(newTab).length).toBe(
       5,
