@@ -59,6 +59,9 @@ jest.mock('@/sheet-type', () => {
         enableFrozenHeaders() {
           return false;
         },
+        isFrozenRowHeader() {
+          return false;
+        },
         isValueInCols: jest.fn(),
         isCustomHeaderFields: jest.fn(),
         measureTextWidthRoughly: jest.fn(),

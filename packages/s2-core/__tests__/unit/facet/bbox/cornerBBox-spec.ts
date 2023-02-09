@@ -26,6 +26,9 @@ describe('cornerBBox test', () => {
         },
         options: {
           width: 400,
+          frozen: {
+            rowHeader: true,
+          },
           style: {
             colCell: {
               hideMeasureColumn: false,
