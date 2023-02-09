@@ -484,7 +484,7 @@ function MainLayout() {
                   <Switch
                     checkedChildren="冻结行头开"
                     unCheckedChildren="冻结行头关"
-                    defaultChecked={mergedOptions.frozen?.rowHeader}
+                    defaultChecked={!!mergedOptions.frozen?.rowHeader}
                     onChange={(checked) => {
                       updateOptions({
                         frozen: {
