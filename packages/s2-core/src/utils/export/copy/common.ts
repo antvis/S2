@@ -7,14 +7,14 @@ import {
   type CopyablePlain,
   CopyMIMEType,
 } from '../interface';
-import { newLine, newTab } from '../method';
+import { NewLine, NewTab } from '../../../common';
 
 export const matrixPlainTextTransformer = (
   dataMatrix: DataItem[][],
 ): CopyablePlain => {
   return {
     type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(newTab)).join(newLine),
+    content: map(dataMatrix, (line) => line.join(NewTab)).join(NewLine),
   };
 };
 

@@ -10,12 +10,12 @@ import {
   SortMethodType,
 } from '@/common/constant/interaction';
 import { getSelectedData } from '@/utils/export/copy';
-import { convertString, newLine, newTab } from '@/utils/export/method';
+import { convertString } from '@/utils/export/method';
 import { getCellMeta } from '@/utils/interaction/select-event';
-import { S2Event } from '@/common/constant';
+import { S2Event, NewLine, NewTab } from '@/common/constant';
 import { TableSeriesCell } from '@/cell';
 
-const newLineTest = `### 问题摘要 ${newLine}- **会话地址**：`;
+const newLineTest = `### 问题摘要 ${NewLine}- **会话地址**：`;
 
 const testData = originalData.map((item, i) => {
   if (i === 0) {
@@ -89,7 +89,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(s2).split(newLine).length).toBe(32);
+    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(32);
   });
 
   it('should copy row data', () => {
@@ -101,7 +101,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(s2).split(newTab).length).toBe(5);
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
   });
 
   it('should copy all data', () => {
@@ -109,8 +109,8 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
 
-    expect(getCopyPlainContent(s2).split(newLine).length).toBe(33);
-    expect(getCopyPlainContent(s2).split(newLine)[2].split(newTab).length).toBe(
+    expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
+    expect(getCopyPlainContent(s2).split(NewLine)[2].split(NewTab).length).toBe(
       5,
     );
   });
@@ -362,7 +362,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2).split(newTab).length).toBe(5);
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
   });
 });
 
@@ -473,7 +473,7 @@ describe('Pivot Table Core Data Process', () => {
       cells: [getCellMeta(cell!)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(ss).split(newTab).length).toBe(4);
+    expect(getCopyPlainContent(ss).split(NewTab).length).toBe(4);
   });
 
   it('should copy all data in grid mode', () => {
@@ -481,7 +481,7 @@ describe('Pivot Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getCopyPlainContent(s2).split('\n').length).toBe(COL_COUNT);
-    expect(getCopyPlainContent(s2).split('\n')[1].split(newTab).length).toBe(
+    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
       ROW_COUNT,
     );
   });
@@ -576,7 +576,7 @@ describe('Pivot Table Core Data Process', () => {
       COL_COUNT + COL_HEADER_HEIGHT,
     );
     // 复制的数据宽度 = 行头宽度 + 数据宽度
-    expect(getCopyPlainContent(s2).split('\n')[0].split(newTab)).toHaveLength(
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
       5,
     );
   });
@@ -604,7 +604,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2).split('\n')).toHaveLength(4);
-    expect(getCopyPlainContent(s2).split('\n')[0].split(newTab)).toHaveLength(
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
       9,
     );
 
@@ -615,7 +615,7 @@ describe('Pivot Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2).split('\n')).toHaveLength(8);
-    expect(getCopyPlainContent(s2).split('\n')[0].split(newTab)).toHaveLength(
+    expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
       9,
     );
   });
@@ -635,7 +635,7 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n').length).toBe(
       COL_COUNT + COL_HEADER_HEIGHT,
     );
-    expect(getCopyPlainContent(s2).split('\n')[1].split(newTab).length).toBe(
+    expect(getCopyPlainContent(s2).split('\n')[1].split(NewTab).length).toBe(
       ROW_COUNT + ROW_HEADER_WIDTH,
     );
   });

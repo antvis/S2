@@ -7,9 +7,6 @@ import type { DataItem } from '../../common';
 import { type CellMeta, CellTypes, NODE_ID_SEPARATOR } from '../../common';
 import type { Node } from '../../facet/layout/node';
 
-export const newLine = '\r\n';
-export const newTab = '\t';
-
 export function getCsvString(v: any): string {
   if (!v) {
     return v;
