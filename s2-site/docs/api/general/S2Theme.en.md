@@ -30,7 +30,7 @@ s2.setTheme({
 Function description: Table theme configuration items
 
 | parameter | parameter    | type                              | Defaults  | required |
-| :-------- | :----------- | :-------------------------------- | :-------- | :------: |
+| --------- | ------------ | --------------------------------- | --------- | -------- |
 | theme     | theme schema | [S2Theme](#s2theme)               | -         |          |
 | palette   | swatches     | [Palette](#palette)               | -         |          |
 | name      | subject name | `default` \| `colorful` \| `gray` | `default` |          |
@@ -42,7 +42,7 @@ Function description: Table theme configuration items
 Function description: Table theme swatches
 
 | parameter           | parameter                                                                                                     | type                                                             | Defaults | required |
-| :------------------ | :------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------- | :------- | :------: |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | -------- | -------- |
 | brandColor          | Swatch theme color                                                                                            | `string`                                                         | -        | ✓        |
 | basicColors         | base color                                                                                                    | `string[]`                                                       | -        | ✓        |
 | basicColorRelations | The correspondence between basicColors and the subscripts of the standard color palette array                 | `Array<{ basicColorIndex: number; standardColorIndex: number;}>` | -        | ✓        |
@@ -55,18 +55,18 @@ Function description: Table theme swatches
 
 Function description: Table theme `Schema`
 
-| parameter         | parameter                                                                               | type                                            | Defaults | required |
-| :---------------- | :----------------------------------------------------------------------------------- | :---------------------------------------------- | :------- | :------: |
-| cornerCell        | Corner header cell theme                                                                | [DefaultCellTheme](#defaultcelltheme)           |          |          |
-| rowCell           | Row header cell theme                                                                   | [DefaultCellTheme](#defaultcelltheme)           |          |          |
-| colCell           | Column header cell theme                                                                | [DefaultCellTheme](#defaultcelltheme)           |          |          |
-| dataCell          | Numeric Cell Theme                                                                      | [DefaultCellTheme](#defaultcelltheme)           |          |          |
-| resizeArea        | Column Width Row Height Adjustment Hotspot                                              | [ResizeArea](#resizearea)                       |          |          |
-| scrollBar         | scroll bar style                                                                        | [ScrollBarTheme](#scrollbartheme)               |          |          |
-| splitLine         | Cell divider style                                                                      | [SplitLine](#splitline)                         |          |          |
-| prepareSelectMask | Brush mask style                                                                        | [InteractionStateTheme](#interactionstatetheme) |          |          |
-| background        | background style                                                                        | [background](#background)                       |          |          |
-| \[key: string]    | Additional attribute fields, used for passing parameters when users customize the theme | `unknown`                                       |          |          |
+| parameter         | parameter                                                                            | type                                            | Defaults | required |
+| ----------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------- | -------- | -------- |
+| cornerCell        | Corner header cell theme                                                             | [DefaultCellTheme](#defaultcelltheme)           |          |          |
+| rowCell           | Row header cell theme                                                                | [DefaultCellTheme](#defaultcelltheme)           |          |          |
+| colCell           | Column header cell theme                                                             | [DefaultCellTheme](#defaultcelltheme)           |          |          |
+| dataCell          | Numeric Cell Theme                                                                   | [DefaultCellTheme](#defaultcelltheme)           |          |          |
+| resizeArea        | Column Width Row Height Adjustment Hotspot                                           | [ResizeArea](#resizearea)                       |          |          |
+| scrollBar         | scroll bar style                                                                     | [ScrollBarTheme](#scrollbartheme)               |          |          |
+| splitLine         | Cell divider style                                                                   | [SplitLine](#splitline)                         |          |          |
+| prepareSelectMask | Brush mask style                                                                     | [InteractionStateTheme](#interactionstatetheme) |          |          |
+| background        | background style                                                                     | [background](#background)                       |          |          |
+| \[key: string]    | Additional attribute fields, used for passing parameters when users customize themes | `unknown`                                       |          |          |
 
 #### DefaultCellTheme
 
@@ -75,7 +75,7 @@ Function description: Table theme `Schema`
 Function description: Default cell theme
 
 | parameter         | illustrate                 | type                              | Defaults | required |
-| :---------------- | :------------------------- | :----------------------- | :------- | :------: |
+| ----------------- | -------------------------- | --------------------------------- | -------- | -------- |
 | bolderText        | bold text style            | [TextTheme](#texttheme)           | -        |          |
 | text              | text style                 | [TextTheme](#texttheme)           | -        |          |
 | seriesText        | Ordinal text style         | [TextTheme](#texttheme)           | -        |          |
@@ -92,7 +92,7 @@ Function description: Default cell theme
 Function description: Column width row height drag hot zone style
 
 | parameter         | illustrate                                                                                                               | type                                  | Defaults | required |
-| :---------------- | :----------------------------------------------------------------------------------------------------------------------- | :------------------------------------ | :------- | :------: |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | -------- | -------- |
 | size              | Hot zone size                                                                                                            | `number`                              | 3        |          |
 | background        | Hot zone background color                                                                                                | `string`                              | -        |          |
 | backgroundOpacity | Hotspot background color transparency                                                                                    | `number`                              | -        |          |
@@ -106,14 +106,16 @@ Function description: Column width row height drag hot zone style
 
 Function description: scroll bar style
 
-| parameter       | illustrate                                         | type                          | Defaults           | required |
-| :-------------- | :------------------------------------------------- | :---------------------------- | :----------------- | :------: |
-| trackColor      | Scrollbar track color                              | `string`                      | `rgba(0,0,0,0)`    |          |
-| thumbHoverColor | Scrollbar Hover state color                        | `string`                      | `rgba(0,0,0,0.4)`  |          |
-| thumbColor      | scrollbar color                                    | `string`                      | `rgba(0,0,0,0.15)` |          |
-| size            | scroll bar size                                    | `number`                      | Mobile: 3 PC: 6    |          |
-| hoverSize       | Scroll bar Hover state size                        | `number`                      | 16                 |          |
-| lineCap         | Specifies how to draw the end of each line segment | `butt` \| `round` \| `square` | `round`            |          |
+| parameter              | illustrate                                                                                                                                                                            | type                          | Defaults               | required |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ---------------------- | -------- |
+| trackColor             | Scrollbar track color                                                                                                                                                                 | `string`                      | `rgba(0,0,0,0)`        |          |
+| thumbHoverColor        | Scrollbar Hover state color                                                                                                                                                           | `string`                      | `rgba(0,0,0,0.4)`      |          |
+| thumbColor             | scrollbar color                                                                                                                                                                       | `string`                      | `rgba(0,0,0,0.15)`     |          |
+| thumbHorizontalMinSize | The horizontal minimum size of the scroll bar (in the case of a large number, the scroll bar will be very small, and the minimum size of the horizontal scroll bar can be configured) | `string`                      | `32`                   |          |
+| thumbVerticalMinSize   | The vertical minimum size of the scroll bar (in the case of a large number, the scroll bar will be very small, and the minimum size of the vertical scroll bar can be configured)     | `string`                      | `32`                   |          |
+| size                   | scroll bar size                                                                                                                                                                       | `number`                      | Mobile: `3`<br>PC: `6` |          |
+| hoverSize              | The size of the scrollbar when Hover                                                                                                                                                  | `number`                      | `16`                   |          |
+| lineCap                | Specifies how to draw the end of each line segment                                                                                                                                    | `butt` \| `round` \| `square` | `round`                |          |
 
 #### SplitLine
 
@@ -121,17 +123,17 @@ Function description: scroll bar style
 
 Function description: Split line style
 
-| parameter                    | illustrate                                                                                        | type                              | Defaults                                              | required |
-| :--------------------------- | :------------------------------------------------------------------------------------------------ | :-------------------------------- | :---------------------------------------------------- | :------: |
-| horizontalBorderColor        | Horizontal divider color                                                                          | `string`                          | -                                                     |          |
-| horizontalBorderColorOpacity | Horizontal divider color transparency                                                             | `number`                          | 0.2                                                   |          |
-| horizontalBorderWidth        | Horizontal split line width                                                                       | `number`                          | 2                                                     |          |
-| verticalBorderColor          | vertical line color                                                                               | `string`                          | -                                                     |          |
-| verticalBorderColorOpacity   | Vertical split line color transparency                                                            | `number`                          | 0.25                                                  |          |
-| verticalBorderWidth          | Vertical dividing line width                                                                      | `number`                          | 2                                                     |          |
-| showShadow                   | Whether to display the outer shadow of the dividing line (in the case of frozen rows and columns) | `boolean`                         | `true`                                                |          |
-| shadowWidth                  | shadow width                                                                                      | `number`                          | 10                                                    |          |
-| shadowColors                 | `left` : change the left color linearly `right` : change the color of the right side linearly     | `{left: string,` `right: string}` | `{left: 'rgba(0,0,0,0.1)',` `right: 'rgba(0,0,0,0)'}` |          |
+| parameter                    | illustrate                                                                                        | type                                 | Defaults                                                 | required |
+| ---------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------- | -------- |
+| horizontalBorderColor        | Horizontal divider color                                                                          | `string`                             | -                                                        |          |
+| horizontalBorderColorOpacity | Horizontal divider color transparency                                                             | `number`                             | 0.2                                                      |          |
+| horizontalBorderWidth        | Horizontal split line width                                                                       | `number`                             | 2                                                        |          |
+| verticalBorderColor          | vertical line color                                                                               | `string`                             | -                                                        |          |
+| verticalBorderColorOpacity   | Vertical split line color transparency                                                            | `number`                             | 0.25                                                     |          |
+| verticalBorderWidth          | Vertical dividing line width                                                                      | `number`                             | 2                                                        |          |
+| showShadow                   | Whether to display the outer shadow of the dividing line (in the case of frozen rows and columns) | `boolean`                            | `true`                                                   |          |
+| shadowWidth                  | shadow width                                                                                      | `number`                             | 10                                                       |          |
+| shadowColors                 | `left` : change the left color linearly<br>`right` : change the color of the right side linearly  | `{left: string,`<br>`right: string}` | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` |          |
 
 #### TextTheme
 
@@ -139,16 +141,16 @@ Function description: Split line style
 
 Function Description: Text Theme
 
-| parameter    | illustrate                                                    | type                          | Defaults                                                                           | required |
-| :----------- | :------------------------------------------------------------ | :---------------------------- | :--------------------------------------------------------------------------------- | :------: |
-| textAlign    | Alignment of text content                                     | `left` \| `center` \| `right` | -                                                                                  |          |
-| textBaseline | Baseline when drawing text                                    | `top` \| `middle` \| `bottom` | -                                                                                  |          |
-| fontFamily   | font                                                          | `string`                      | `Roboto, PingFangSC,` `BlinkMacSystemFont,` `Microsoft YaHei,` `Arial, sans-serif` |          |
-| fontSize     | font size                                                     | `number`                      | -                                                                                  |          |
-| fontWeight   | number string: `normal` `bold` `bolder` `lighter` font weight | `number` \| `string`          | Bold text: Mobile: `520` PC: `bold` Normal text: `normal`                          |          |
-| fill         | font color                                                    | `string`                      | -                                                                                  |          |
-| linkTextFill | link text color                                               | `string`                      | -                                                                                  |          |
-| opacity      | font transparency                                             | `number`                      | 1                                                                                  |          |
+| parameter    | illustrate                                                                | type                          | Defaults                                                                                    | required |
+| ------------ | ------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------- | -------- |
+| textAlign    | Alignment of text content                                                 | `left` \| `center` \| `right` | -                                                                                           |          |
+| textBaseline | Baseline when drawing text                                                | `top` \| `middle` \| `bottom` | -                                                                                           |          |
+| fontFamily   | font                                                                      | `string`                      | `Roboto, PingFangSC,`<br>`BlinkMacSystemFont,`<br>`Microsoft YaHei,`<br>`Arial, sans-serif` |          |
+| fontSize     | font size                                                                 | `number`                      | -                                                                                           |          |
+| fontWeight   | number<br>string: `normal`<br>`bold`<br>`bolder`<br>`lighter` font weight | `number` \| `string`          | Bold text: Mobile: `520` PC: `bold`<br>Normal text: `normal`                                |          |
+| fill         | font color                                                                | `string`                      | -                                                                                           |          |
+| linkTextFill | link text color                                                           | `string`                      | -                                                                                           |          |
+| opacity      | font transparency                                                         | `number`                      | 1                                                                                           |          |
 
 #### Cell Theme
 
@@ -156,19 +158,19 @@ Function Description: Text Theme
 
 Function description: Cell general theme
 
-| parameter                    | illustrate                                                              | type                                            | Defaults | required |
-| :--------------------------- | :---------------------------------------------------------------------- | :---------------------------------------------- | :------- | :------: |
-| crossBackgroundColor         | Cardinal row cell background color                                      | `string`                                        | -        |          |
-| backgroundColor              | cell background color                                                   | `string`                                        | -        |          |
-| backgroundColorOpacity       | Cell background color transparency                                      | `number`                                        | 1        |          |
-| horizontalBorderColor        | Cell horizontal border color                                            | `string`                                        | -        |          |
-| horizontalBorderColorOpacity | Cell horizontal border color transparency                               | `number`                                        | 1        |          |
-| horizontalBorderWidth        | Cell horizontal border width                                            | `number`                                        | -        |          |
-| verticalBorderColor          | Cell vertical border color                                              | `string`                                        | -        |          |
-| verticalBorderColorOpacity   | Cell vertical border color transparency                                 | `number`                                        | 1        |          |
-| verticalBorderWidth          | cell vertical border width                                              | `number`                                        | -        |          |
-| padding                      | cell padding                                                            | [Padding](#margin--padding)                     | -        |          |
-| interactionState             | cell interaction state                                                  | [InteractionStateTheme](#interactionstatetheme) | -        |          |
+| parameter                    | illustrate                                | type                                            | Defaults | required |
+| ---------------------------- | ----------------------------------------- | ----------------------------------------------- | -------- | -------- |
+| crossBackgroundColor         | Cardinal row cell background color        | `string`                                        | -        |          |
+| backgroundColor              | cell background color                     | `string`                                        | -        |          |
+| backgroundColorOpacity       | Cell background color transparency        | `number`                                        | 1        |          |
+| horizontalBorderColor        | Cell horizontal border color              | `string`                                        | -        |          |
+| horizontalBorderColorOpacity | Cell horizontal border color transparency | `number`                                        | 1        |          |
+| horizontalBorderWidth        | Cell horizontal border width              | `number`                                        | -        |          |
+| verticalBorderColor          | Cell vertical border color                | `string`                                        | -        |          |
+| verticalBorderColorOpacity   | Cell vertical border color transparency   | `number`                                        | 1        |          |
+| verticalBorderWidth          | cell vertical border width                | `number`                                        | -        |          |
+| padding                      | cell padding                              | [Padding](#margin--padding)                     | -        |          |
+| interactionState             | cell interaction state                    | [InteractionStateTheme](#interactionstatetheme) | -        |          |
 
 #### IconTheme
 
@@ -177,7 +179,7 @@ Function description: Cell general theme
 Function description: icon general theme
 
 | parameter     | illustrate             | type                       | Defaults  | required |
-| :------------ | :--------------------- | :------------------------- | :-------- | :------: |
+| ------------- | ---------------------- | -------------------------- | --------- | -------- |
 | fill          | icon fill color        | `string`                   | -         |          |
 | downIconColor | drop icon fill color   | `string`                   | `#FF4D4F` |          |
 | upIconColor   | Rising icon fill color | `string`                   | `#29A294` |          |
@@ -205,11 +207,11 @@ Function description: interactive general theme
 Function description: icon outer margin, cell inner margin
 
 | parameter | illustrate | type     | Defaults | required |
-| :-------- | :--------- | :------- | :------- | :------: |
+| --------- | ---------- | -------- | -------- | -------- |
 | top       | superior   | `number` |          |          |
 | right     | right      | `number` |          |          |
 | bottom    | Down       | `number` |          |          |
-| left      | left       | `number` |          |          |
+| left      | Left       | `number` |          |          |
 
 #### background
 

@@ -17,7 +17,7 @@ We provide the `UMD` compilation file of the `dist` directory, import `dist/inde
 </script>
 ```
 
-Import any from `window.S2`
+All exports are uniformly mounted under the global variable `window.S2`
 
 ```diff
 <script type="module">

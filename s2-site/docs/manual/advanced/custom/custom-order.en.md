@@ -3,7 +3,7 @@ title: Customize Order
 order: 6
 ---
 
-Although, `S2` table has default [sort action](/examples/analysis/sort#group-sort) and [advanced sort](/examples/analysis/sort#advanced) function in `React header` component.
+Although, `S2` tables have default [sort operations](/examples/analysis/sort#group-sort) and [advanced sort](/examples/analysis/sort#advanced) functionality in `React Header` component.
 
 But in some business scenarios, we still need custom sorting, which we divide into three parts: **custom sorting `icon`** , **custom sorting `tooltip`** , and **custom sorting operations** . Next, I will take you to realize the custom sorting function as shown in the 👇 animation.
 
@@ -60,9 +60,9 @@ const s2Options = {
 
 ### Show results
 
-| before                                                                                                                                                                      | after                                                                                                                                                              |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <img data-mdast="html" alt="before" src="https://gw.alipayobjects.com/zos/antfincdn/HsPpQdx%241/0d4a4371-191c-432e-8887-6392e38eb4ff.png" style="width: 500; height: auto"> | <img data-mdast="html" alt="after" src="https://gw.alipayobjects.com/zos/antfincdn/s%26vVrM8Ap/14a3a4fa-6d07-4fb8-8201-012672bd0feb.png" width="400" height="300"> |
+| before                                                                                                                                                    | after                                                                                                                                            |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <img alt="before" src="https://gw.alipayobjects.com/zos/antfincdn/HsPpQdx%241/0d4a4371-191c-432e-8887-6392e38eb4ff.png" style="width: 500; height: auto"> | <img alt="after" src="https://gw.alipayobjects.com/zos/antfincdn/s%26vVrM8Ap/14a3a4fa-6d07-4fb8-8201-012672bd0feb.png" width="400" height="300"> |
 
 ## custom tooltip
 
@@ -179,6 +179,6 @@ const s2Options = {
 
 Click Custom Sort, and the table will be displayed according to the sort we set.
 
-Categories are sorted manually: \[Office Supplies, Furniture], cities 🏙 are sorted in groups in ascending alphabetical order.
+Categories are manually sorted: \[Office Supplies, Furniture], cities 🏙 are arranged in groups in ascending alphabetical order.
 
 ![after](https://gw.alipayobjects.com/zos/antfincdn/g8H01taL6/zidingyipaixucaozuo.gif)
