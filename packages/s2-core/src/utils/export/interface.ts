@@ -12,4 +12,16 @@ export type CopyableItem = {
   content: string;
 };
 
+export type CopyablePlain = {
+  type: CopyMIMEType.PLAIN;
+  content: string;
+};
+
+export type CopyableHTML = {
+  type: CopyMIMEType.HTML;
+  content: string;
+};
+
+export type CopyableList = [CopyablePlain, CopyableHTML];
+
 export type Copyable = CopyableItem | CopyableItem[];
