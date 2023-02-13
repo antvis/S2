@@ -1,13 +1,17 @@
-import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
+import { createPivotSheet, sleep } from 'tests/util/helpers';
+import type { S2Options } from '../../../../src';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { HdAdapter } from '@/ui/hd-adapter';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('HD Adapter Tests', () => {
+describe('HD Adapter Tests', () => {
   const DPR = 2;
+  const s2Options: S2Options = {
+    width: 600,
+    height: 600,
+  };
 
   let s2: SpreadSheet;
   let hdAdapter: HdAdapter;
@@ -25,7 +29,7 @@ describe.skip('HD Adapter Tests', () => {
       configurable: true,
     });
 
-    s2 = createFakeSpreadSheet();
+    s2 = createPivotSheet(s2Options);
     hdAdapter = new HdAdapter(s2);
     hdAdapter.init();
 
@@ -36,7 +40,7 @@ describe.skip('HD Adapter Tests', () => {
         s2.options.height * DPR,
       ],
     ) => {
-      const canvas: HTMLCanvasElement = s2.container.get('el');
+      const canvas = s2.getCanvasElement();
       expect(canvas.style.width).toEqual(`${width}px`);
       expect(canvas.style.height).toEqual(`${height}px`);
       expect(canvas.width).toEqual(updatedWidth);
@@ -46,6 +50,7 @@ describe.skip('HD Adapter Tests', () => {
 
   afterEach(() => {
     hdAdapter.destroy();
+    s2.destroy();
 
     Object.defineProperty(visualViewport, 'scale', {
       value: 1,
@@ -59,11 +64,12 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should not be update container size when zoom scale changed, but scale less than current DPR', async () => {
+    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
     visualViewport.dispatchEvent(new Event('resize'));
     await sleep(500);
 
     expectContainerSize();
-    expect(s2.render).not.toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
   });
 
   // eslint-disable-next-line jest/expect-expect
@@ -85,6 +91,7 @@ describe.skip('HD Adapter Tests', () => {
   });
 
   test('should use DPR for update container size when zoom scale changed, and scale less than current DPR', async () => {
+    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
     Object.defineProperty(visualViewport, 'scale', {
       value: 1,
       configurable: true,
@@ -92,10 +99,12 @@ describe.skip('HD Adapter Tests', () => {
     visualViewport.dispatchEvent(new Event('resize'));
 
     await sleep(500);
-    expect(s2.render).not.toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
   });
 
   test('should not rerender when zoom event destroyed', async () => {
+    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+
     hdAdapter.destroy();
     Object.defineProperty(visualViewport, 'scale', {
       value: 3,
@@ -104,10 +113,12 @@ describe.skip('HD Adapter Tests', () => {
     visualViewport.dispatchEvent(new Event('resize'));
 
     await sleep(500);
-    expect(s2.render).not.toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
   });
 
   test('should not rerender when zoom event destroyed on mobile device', async () => {
+    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+
     hdAdapter.destroy();
     Object.defineProperty(navigator, 'userAgent', {
       value: 'iPhone',
@@ -119,6 +130,6 @@ describe.skip('HD Adapter Tests', () => {
     await sleep(500);
 
     expectContainerSize();
-    expect(s2.render).not.toHaveBeenCalled();
+    expect(render).not.toHaveBeenCalled();
   });
 });
