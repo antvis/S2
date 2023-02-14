@@ -12,6 +12,7 @@ import { PivotSheet } from '@/sheet-type';
 const s2Options: S2Options = {
   width: 800,
   height: 600,
+  hdAdapter: false,
 };
 
 describe('Data Cell Border Tests', () => {

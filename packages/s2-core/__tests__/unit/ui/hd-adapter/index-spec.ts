@@ -4,6 +4,9 @@ import { createPivotSheet, sleep } from 'tests/util/helpers';
 import type { S2Options } from '../../../../src';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 
+jest.mock('@/interaction/event-controller');
+jest.mock('@/interaction/root');
+
 describe('HD Adapter Tests', () => {
   const DPR = 1;
   const s2Options: S2Options = {

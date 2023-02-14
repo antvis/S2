@@ -7,7 +7,7 @@
  */
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import type { S2Options } from '@/common/interface';
+import type { S2DataConfig, S2Options } from '@/common/interface';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 
 const s2options: S2Options = {
@@ -25,9 +25,10 @@ const s2options: S2Options = {
   interaction: {
     linkFields: ['province'],
   },
+  hdAdapter: false,
 };
 
-const dataCfg = {
+const dataCfg: S2DataConfig = {
   ...mockDataConfig,
   fields: {
     rows: ['province', 'city'],
