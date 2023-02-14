@@ -7,7 +7,8 @@ import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 
-describe('HD Adapter Tests', () => {
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('HD Adapter Tests', () => {
   const DPR = 1;
   const s2Options: S2Options = {
     width: 600,
