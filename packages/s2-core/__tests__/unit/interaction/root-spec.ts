@@ -33,6 +33,7 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
+jest.mock('@/ui/hd-adapter');
 jest.mock('@/utils/interaction/merge-cell', () => {
   return {
     mergeCell: jest.fn(),
