@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable jest/expect-expect */
 import { createPivotSheet, sleep } from 'tests/util/helpers';
 import type { S2Options } from '../../../../src';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import { HdAdapter } from '@/ui/hd-adapter';
-
-jest.mock('@/interaction/event-controller');
-jest.mock('@/interaction/root');
+import type { HdAdapter } from '@/ui/hd-adapter';
 
 describe('HD Adapter Tests', () => {
-  const DPR = 2;
+  const DPR = 1;
   const s2Options: S2Options = {
     width: 600,
     height: 600,
+    devicePixelRatio: DPR,
   };
 
   let s2: SpreadSheet;
@@ -30,8 +30,8 @@ describe('HD Adapter Tests', () => {
     });
 
     s2 = createPivotSheet(s2Options);
-    hdAdapter = new HdAdapter(s2);
-    hdAdapter.init();
+    s2.render();
+    hdAdapter = s2.hdAdapter;
 
     expectContainerSize = (
       [width, height] = [s2.options.width, s2.options.height],
@@ -64,17 +64,16 @@ describe('HD Adapter Tests', () => {
   });
 
   test('should not be update container size when zoom scale changed, but scale less than current DPR', async () => {
-    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
     visualViewport.dispatchEvent(new Event('resize'));
     await sleep(500);
 
     expectContainerSize();
-    expect(render).not.toHaveBeenCalled();
+    expect(renderSpy).not.toHaveBeenCalled();
   });
 
-  // eslint-disable-next-line jest/expect-expect
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
-    const scale = 2;
+    const scale = 3;
     Object.defineProperty(visualViewport, 'scale', {
       value: scale,
       configurable: true,
@@ -88,10 +87,23 @@ describe('HD Adapter Tests', () => {
       [s2.options.width, s2.options.height],
       [s2.options.width * scale, s2.options.height * scale],
     );
+
+    // 双指缩放回原始比例, 还原为默认宽高
+    Object.defineProperty(visualViewport, 'scale', {
+      value: 1,
+      configurable: true,
+    });
+    visualViewport.dispatchEvent(new Event('resize'));
+    await sleep(500);
+
+    expectContainerSize(
+      [s2.options.width, s2.options.height],
+      [s2.options.width * DPR, s2.options.height * DPR],
+    );
   });
 
   test('should use DPR for update container size when zoom scale changed, and scale less than current DPR', async () => {
-    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
     Object.defineProperty(visualViewport, 'scale', {
       value: 1,
       configurable: true,
@@ -99,13 +111,14 @@ describe('HD Adapter Tests', () => {
     visualViewport.dispatchEvent(new Event('resize'));
 
     await sleep(500);
-    expect(render).not.toHaveBeenCalled();
+    expect(renderSpy).not.toHaveBeenCalled();
   });
 
   test('should not rerender when zoom event destroyed', async () => {
-    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
 
-    hdAdapter.destroy();
+    s2.destroy();
+
     Object.defineProperty(visualViewport, 'scale', {
       value: 3,
       configurable: true,
@@ -113,11 +126,11 @@ describe('HD Adapter Tests', () => {
     visualViewport.dispatchEvent(new Event('resize'));
 
     await sleep(500);
-    expect(render).not.toHaveBeenCalled();
+    expect(renderSpy).not.toHaveBeenCalled();
   });
 
   test('should not rerender when zoom event destroyed on mobile device', async () => {
-    const render = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
 
     hdAdapter.destroy();
     Object.defineProperty(navigator, 'userAgent', {
@@ -130,6 +143,42 @@ describe('HD Adapter Tests', () => {
     await sleep(500);
 
     expectContainerSize();
-    expect(render).not.toHaveBeenCalled();
+    expect(renderSpy).not.toHaveBeenCalled();
+  });
+
+  test('should update canvas size if DPR changed', () => {
+    const ratio = 3;
+    Object.defineProperty(window, 'devicePixelRatio', {
+      value: ratio,
+    });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore 模拟 matchMedia 触发
+    hdAdapter.renderByDevicePixelRatioChanged();
+
+    expectContainerSize(
+      [s2.options.width, s2.options.height],
+      [s2.options.width * ratio, s2.options.height * ratio],
+    );
+  });
+
+  // https://github.com/antvis/S2/issues/2072
+  test('should ignore visualViewport resize effect', () => {
+    const renderByDevicePixelRatioSpy = jest
+      .spyOn(hdAdapter as any, 'renderByDevicePixelRatio')
+      .mockImplementationOnce(() => {});
+
+    const ratio = 3;
+
+    Object.defineProperty(window, 'devicePixelRatio', {
+      value: ratio,
+    });
+
+    // @ts-ignore
+    hdAdapter.renderByDevicePixelRatioChanged();
+    visualViewport.dispatchEvent(new Event('resize'));
+    // @ts-ignore 模拟 matchMedia 触发后 visualViewport resize 事件触发
+    hdAdapter.isDevicePixelRatioChange = true;
+
+    expect(renderByDevicePixelRatioSpy).toHaveBeenCalledTimes(1);
   });
 });
