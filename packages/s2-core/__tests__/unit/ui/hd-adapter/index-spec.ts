@@ -3,7 +3,6 @@
 import { createPivotSheet, sleep } from 'tests/util/helpers';
 import type { S2Options } from '../../../../src';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
-import type { HdAdapter } from '@/ui/hd-adapter';
 
 describe('HD Adapter Tests', () => {
   const DPR = 1;
@@ -11,10 +10,10 @@ describe('HD Adapter Tests', () => {
     width: 600,
     height: 600,
     devicePixelRatio: DPR,
+    hdAdapter: true,
   };
 
   let s2: SpreadSheet;
-  let hdAdapter: HdAdapter;
   let expectContainerSize: (
     size?: [number, number],
     updatedSize?: [number, number],
@@ -31,7 +30,6 @@ describe('HD Adapter Tests', () => {
 
     s2 = createPivotSheet(s2Options);
     s2.render();
-    hdAdapter = s2.hdAdapter;
 
     expectContainerSize = (
       [width, height] = [s2.options.width, s2.options.height],
@@ -49,7 +47,6 @@ describe('HD Adapter Tests', () => {
   });
 
   afterEach(() => {
-    hdAdapter.destroy();
     s2.destroy();
 
     Object.defineProperty(visualViewport, 'scale', {
@@ -132,12 +129,12 @@ describe('HD Adapter Tests', () => {
   test('should not rerender when zoom event destroyed on mobile device', async () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementationOnce(() => {});
 
-    hdAdapter.destroy();
+    s2.hdAdapter.destroy();
+
     Object.defineProperty(navigator, 'userAgent', {
       value: 'iPhone',
       configurable: true,
     });
-    hdAdapter.init();
     visualViewport.dispatchEvent(new Event('resize'));
 
     await sleep(500);
@@ -153,7 +150,7 @@ describe('HD Adapter Tests', () => {
     });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore 模拟 matchMedia 触发
-    hdAdapter.renderByDevicePixelRatioChanged();
+    s2.hdAdapter.renderByDevicePixelRatioChanged();
 
     expectContainerSize(
       [s2.options.width, s2.options.height],
@@ -164,7 +161,7 @@ describe('HD Adapter Tests', () => {
   // https://github.com/antvis/S2/issues/2072
   test('should ignore visualViewport resize effect', () => {
     const renderByDevicePixelRatioSpy = jest
-      .spyOn(hdAdapter as any, 'renderByDevicePixelRatio')
+      .spyOn(s2.hdAdapter as any, 'renderByDevicePixelRatio')
       .mockImplementationOnce(() => {});
 
     const ratio = 3;
@@ -174,10 +171,10 @@ describe('HD Adapter Tests', () => {
     });
 
     // @ts-ignore
-    hdAdapter.renderByDevicePixelRatioChanged();
+    s2.hdAdapter.renderByDevicePixelRatioChanged();
     visualViewport.dispatchEvent(new Event('resize'));
     // @ts-ignore 模拟 matchMedia 触发后 visualViewport resize 事件触发
-    hdAdapter.isDevicePixelRatioChange = true;
+    s2.hdAdapter.isDevicePixelRatioChange = true;
 
     expect(renderByDevicePixelRatioSpy).toHaveBeenCalledTimes(1);
   });

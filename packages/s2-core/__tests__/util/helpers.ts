@@ -180,7 +180,10 @@ export const createPivotSheet = (
   return new PivotSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
-    s2Options,
+    {
+      hdAdapter: false,
+      ...s2Options,
+    },
   );
 };
 
@@ -191,6 +194,9 @@ export const createTableSheet = (
   return new TableSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
-    s2Options,
+    {
+      hdAdapter: false,
+      ...s2Options,
+    },
   );
 };

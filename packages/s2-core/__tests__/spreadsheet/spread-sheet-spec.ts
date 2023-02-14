@@ -121,8 +121,8 @@ describe('SpreadSheet Tests', () => {
       const render = jest.fn();
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
 
-      s2.on(S2Event.LAYOUT_BEFORE_RENDER, render);
       s2.render();
+      s2.on(S2Event.LAYOUT_BEFORE_RENDER, render);
 
       window.dispatchEvent(new Event('resize'));
       visualViewport.dispatchEvent(new Event('resize'));
