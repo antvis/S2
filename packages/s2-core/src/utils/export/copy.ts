@@ -133,7 +133,7 @@ const format = (
 export const convertString = (v: string) => {
   if (/\n/.test(v)) {
     // 单元格内换行 替换双引号 防止内容存在双引号 导致内容换行出错
-    return '"' + v.replace(/\r\n?/g, '\n').replace(/"/g, "'") + '"';
+    return '"' + v.replace(/\r\n?/g, '\n') + '"';
   }
   return v;
 };
@@ -272,7 +272,12 @@ export const processCopyData = (
   spreadsheet: SpreadSheet,
 ): Copyable => {
   const matrix = cells.map((cols) =>
-    cols.map((item) => convertString(format(item, displayData, spreadsheet))),
+    cols.map((item) => {
+      if (!item) {
+        return '';
+      }
+      return convertString(format(item, displayData, spreadsheet));
+    }),
   );
 
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
