@@ -534,7 +534,7 @@ export abstract class BaseFacet {
   }
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) =>
-    this.spreadsheet.isScrollContainsRowHeader() ? scrollX : hRowScroll;
+    this.spreadsheet.isFrozenRowHeader() ? hRowScroll : scrollX;
 
   protected calculateCornerBBox() {
     this.cornerBBox = new CornerBBox(this, true);
@@ -675,7 +675,7 @@ export abstract class BaseFacet {
 
   renderRowScrollBar = (rowScrollX: number) => {
     if (
-      !this.spreadsheet.isScrollContainsRowHeader() &&
+      this.spreadsheet.isFrozenRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
@@ -749,8 +749,7 @@ export abstract class BaseFacet {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
       const { maxY } = this.getScrollbarPosition();
-      const isScrollContainsRowHeader =
-        this.spreadsheet.isScrollContainsRowHeader();
+      const isScrollContainsRowHeader = !this.spreadsheet.isFrozenRowHeader();
       const finalWidth =
         width + (isScrollContainsRowHeader ? this.cornerBBox.width : 0);
       const finalPosition = {

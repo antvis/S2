@@ -76,10 +76,8 @@ export const MIN_CELL_HEIGHT = 16;
 // data precision
 export const PRECISION = 16;
 
-export const IMAGE = 'image';
-
 // 角头最大占整个容器的比例 (0-1)
-export const CORNER_MAX_WIDTH_RATIO = 0.5;
+export const DEFAULT_CORNER_MAX_WIDTH_RATIO = 0.5;
 
 /** 布局采样数 */
 export const LAYOUT_SAMPLE_COUNT = 50;
