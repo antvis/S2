@@ -27,7 +27,7 @@ $ yarn add @antv/s2 @antv/s2-vue
 
 ### Browser introduction (deprecated)
 
-<embed data-mdast="html" src="@/docs/common/browser.en.md"></embed>
+<embed src="@/docs/common/browser.en.md"></embed>
 
 If you need to be compatible with `IE` , you need to introduce `polyfill` compatibility.
 
@@ -35,121 +35,118 @@ If you need to be compatible with `IE` , you need to introduce `polyfill` compat
 
 There are three ways to create an `S2` table, the basic class version `(s2-core)` and the `React` and `Vue3` version based on the `core` layer package
 
-<embed data-mdast="html" src="@/docs/common/packages.en.md"></embed>
+<embed src="@/docs/common/packages.en.md"></embed>
 
 ### basic class
 
 #### 1. Data preparation
 
-s2DataConfig
-
-```ts
-const s2DataConfig = {
-  fields: {
-    rows: ['province', 'city'],
-    columns: ['type'],
-    values: ['price'],
-  },
-  data: [
-    {
-      province: "浙江",
-      city: "杭州",
-      type: "笔",
-      price: "1",
-    },
-    {
-      province: "浙江",
-      city: "杭州",
-      type: "纸张",
-      price: "2",
-    },
-    {
-      province: "浙江",
-      city: "舟山",
-      type: "笔",
-      price: "17",
-    },
-    {
-      province: "浙江",
-      city: "舟山",
-      type: "纸张",
-      price: "6",
-    },
-    {
-      province: "吉林",
-      city: "长春",
-      type: "笔",
-      price: "8",
-    },
-    {
-      province: "吉林",
-      city: "白山",
-      type: "笔",
-      price: "12",
-    },
-    {
-      province: "吉林",
-      city: "长春",
-      type: "纸张",
-      price: "3",
-    },
-    {
-      province: "吉林",
-      city: "白山",
-      type: "纸张",
-      price: "25",
-    },
-    {
-      province: "浙江",
-      city: "杭州",
-      type: "笔",
-      cost: "0.5",
-    },
-    {
-      province: "浙江",
-      city: "杭州",
-      type: "纸张",
-      cost: "20",
-    },
-    {
-      province: "浙江",
-      city: "舟山",
-      type: "笔",
-      cost: "1.7",
-    },
-    {
-      province: "浙江",
-      city: "舟山",
-      type: "纸张",
-      cost: "0.12",
-    },
-    {
-      province: "吉林",
-      city: "长春",
-      type: "笔",
-      cost: "10",
-    },
-    {
-      province: "吉林",
-      city: "白山",
-      type: "笔",
-      cost: "9",
-    },
-    {
-      province: "吉林",
-      city: "长春",
-      type: "纸张",
-      cost: "3",
-    },
-    {
-      province: "吉林",
-      city: "白山",
-      type: "纸张",
-      cost: "1",
-    }
-  ]
+<details><summary>s2DataConfig</summary><pre> <code class="language-ts">const&#x26;nbsp;s2DataConfig&#x26;nbsp;=&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;fields:&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;rows:&#x26;nbsp;['province',&#x26;nbsp;'city'],
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;columns:&#x26;nbsp;['type'],
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;values:&#x26;nbsp;['price'],
+&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;data:&#x26;nbsp;[
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"1",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"2",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"17",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"6",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"8",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"12",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"3",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;price:&#x26;nbsp;"25",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.5",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"杭州",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"20",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1.7",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"浙江",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"舟山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"0.12",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"10",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"笔",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"9",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"长春",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"3",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;},
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;{
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;province:&#x26;nbsp;"吉林",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;city:&#x26;nbsp;"白山",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;type:&#x26;nbsp;"纸张",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;cost:&#x26;nbsp;"1",
+&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;&#x26;nbsp;}
+&#x26;nbsp;&#x26;nbsp;]
 };
-```
+</code></pre></details>
 
 #### 2. Configuration item preparation
 
@@ -178,11 +175,11 @@ s2.render();
 
 #### 4. Results
 
-<Playground data-mdast="html" path="basic/pivot/demo/grid.ts" rid="container" height="400"></playground>
+<Playground path="basic/pivot/demo/grid.ts" rid="container" height="400"></Playground>
 
 ### `React` version
 
-`S2` provides an out-of-the-box `React` version [Table Component](/examples/react-component/sheet/#pivot), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
+`S2` provides an out-of-the-box `React` version \[table component] (/examples/gallery#category-table component), as well as a wealth of supporting [analysis components](/examples/gallery#category-Tooltip) to help developers quickly meet business analysis needs.
 
 #### Table components use
 
@@ -216,6 +213,30 @@ import 'antd/dist/antd.min.css';
 ```
 
 ​📊 Check out the [React version pivot table demo](/examples/react-component/sheet#pivot) .
+
+#### Table mobile component usage
+
+```ts
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { MobileSheet } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
+
+const container = document.getElementById('container');
+
+ReactDOM.render(
+  <MobileSheet
+    dataCfg={s2DataConfig}
+  />,
+  document.getElementById('container'),
+);
+```
+
+#### Precautions
+
+The mobile-side component `MobileSheet` will have built-in mobile-specific `options` , and there are special components on the mobile side, which are different from those on the PC side.
+
+​📊 Check out the [React version pivot table mobile demo](/zh/examples/react-component/sheet#mobile-pivot) .
 
 ### `Vue3` version
 
@@ -279,4 +300,4 @@ import "@antv/s2-vue/dist/style.min.css";
 
 ## ⌨️ Local development
 
-<embed data-mdast="html" src="@/docs/common/development.en.md"></embed>
+<embed src="@/docs/common/development.en.md"></embed>

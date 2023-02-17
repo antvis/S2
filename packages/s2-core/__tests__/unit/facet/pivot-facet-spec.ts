@@ -5,6 +5,7 @@ import { Canvas, Group, Rect } from '@antv/g';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, find } from 'lodash';
 import { Renderer } from '@antv/g-canvas';
+import type { CanvasConfig } from '@antv/g-lite';
 import { getMockPivotMeta } from './util';
 import { Node } from '@/facet/layout/node';
 import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
@@ -40,7 +41,7 @@ jest.mock('@/sheet-type', () => {
         width: 100,
         height: 100,
         container: document.body,
-        renderer: new Renderer(),
+        renderer: new Renderer() as CanvasConfig['renderer'],
       });
       const panelScrollGroup = new Group({}) as PanelScrollGroup;
 

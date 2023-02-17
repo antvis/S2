@@ -8,6 +8,8 @@ Table event list, you can listen to the required events according to actual need
 If you are using the `s2-react` or `s2-vue` table component, the event has been encapsulated, and no additional monitoring is required, just use its callback function. [details](/docs/api/components/sheet-component)
 
 ```ts
+import { S2Event } from '@antv/s2'
+
 s2.on(S2Event.ROW_CELL_CLICK, (event) => {
   console.log('rowCellClick', event)
 });
@@ -15,23 +17,24 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### Outfit
 
-| name                  | event name                            | describe                                                                                                                                                                                                                                                                |
-| :-------------------- | :------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| expand tree structure | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | Under the tree structure, the row header cell is expanded                                                                                                                                                                                                               |
-| click                 | `S2Event.ROW_CELL_CLICK`              | row header cell click                                                                                                                                                                                                                                                   |
-| double click          | `S2Event.ROW_CELL_DOUBLE_CLICK`       | Row header cell double click                                                                                                                                                                                                                                            |
-| right click           | `S2Event.ROW_CELL_CONTEXT_MENU`       | Row header cell right click                                                                                                                                                                                                                                             |
-| hover                 | `S2Event.ROW_CELL_HOVER`              | row header cell hover                                                                                                                                                                                                                                                   |
-| mouse down            | `S2Event.ROW_CELL_MOUSE_DOWN`         | row header cell mouse down                                                                                                                                                                                                                                              |
-| mouse movement        | `S2Event.ROW_CELL_MOUSE_MOVE`         | Row header cell mouse movement                                                                                                                                                                                                                                          |
-| mouse release         | `S2Event.ROW_CELL_MOUSE_UP`           | Row header cell mouse release                                                                                                                                                                                                                                           |
-| scroll                | `S2Event.ROW_CELL_SCROLL`             | row header cell scrolling                                                                                                                                                                                                                                               |
-| Outfit selection      | `S2Event.ROW_CELL_BRUSH_SELECTION`    | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) |
+| name                | event name                         | describe                                                                                                                                                                                                                                                                |
+| ------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| expand collapse     | `S2Event.ROW_CELL_COLLAPSED`       | Under the tree structure, row header cells expand/collapse                                                                                                                                                                                                              |
+| expand/collapse all | `S2Event.ROW_CELL_ALL_COLLAPSED`   | Under the tree structure, all row header cells are expanded/collapsed                                                                                                                                                                                                   |
+| click               | `S2Event.ROW_CELL_CLICK`           | row header cell click                                                                                                                                                                                                                                                   |
+| double click        | `S2Event.ROW_CELL_DOUBLE_CLICK`    | Row header cell double click                                                                                                                                                                                                                                            |
+| right click         | `S2Event.ROW_CELL_CONTEXT_MENU`    | Row header cell right click                                                                                                                                                                                                                                             |
+| hover               | `S2Event.ROW_CELL_HOVER`           | row header cell hover                                                                                                                                                                                                                                                   |
+| mouse down          | `S2Event.ROW_CELL_MOUSE_DOWN`      | row header cell mouse down                                                                                                                                                                                                                                              |
+| mouse movement      | `S2Event.ROW_CELL_MOUSE_MOVE`      | Row header cell mouse movement                                                                                                                                                                                                                                          |
+| mouse release       | `S2Event.ROW_CELL_MOUSE_UP`        | Row header cell mouse release                                                                                                                                                                                                                                           |
+| scroll              | `S2Event.ROW_CELL_SCROLL`          | row header cell scrolling                                                                                                                                                                                                                                               |
+| Outfit selection    | `S2Event.ROW_CELL_BRUSH_SELECTION` | Batch select the row header cells within the brushing range. During the brushing process, the brushing range prompt mask will be displayed. After the brushing is completed, a tooltip will pop up to display the brushed cell information (only supports pivot tables) |
 
 ### Header
 
 | name                        | event name                         | describe                                                                                                                                                                                                                                                                        |
-| :-------------------------- | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| --------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | click                       | `S2Event.COL_CELL_CLICK`           | Column header cell click                                                                                                                                                                                                                                                        |
 | double click                | `S2Event.COL_CELL_DOUBLE_CLICK`    | Column header cell double click                                                                                                                                                                                                                                                 |
 | right click                 | `S2Event.COL_CELL_CONTEXT_MENU`    | Right click on column header cell                                                                                                                                                                                                                                               |
@@ -43,21 +46,21 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### value cell
 
-| name             | event name                           | describe                                                 |
-| :--------------- | :----------------------------------- | :------------------------------------------------------- |
-| click            | `S2Event.DATA_CELL_CLICK`            | Value cell click                                         |
-| double click     | `S2Event.DATA_CELL_DOUBLE_CLICK`     | Value cell double click                                  |
-| right click      | `S2Event.DATA_CELL_CONTEXT_MENU`     | right click value cell                                   |
-| hover            | `S2Event.DATA_CELL_HOVER`            | Value cell hover                                         |
-| mouse down       | `S2Event.DATA_CELL_MOUSE_DOWN`       | value cell mouse click                                   |
-| mouse movement   | `S2Event.DATA_CELL_MOUSE_MOVE`       | Numeric cell mouse movement                              |
-| mouse release    | `S2Event.DATA_CELL_MOUSE_UP`         | Value cell mouse release                                 |
-| Swipe            | `S2Event.DATA_CELL_BRUSH_SELECTION`  | Value cell selection                                     |
+| name           | event name                          | describe                    |
+| -------------- | ----------------------------------- | --------------------------- |
+| click          | `S2Event.DATA_CELL_CLICK`           | Value cell click            |
+| double click   | `S2Event.DATA_CELL_DOUBLE_CLICK`    | Value cell double click     |
+| right click    | `S2Event.DATA_CELL_CONTEXT_MENU`    | right click value cell      |
+| hover          | `S2Event.DATA_CELL_HOVER`           | Value cell hover            |
+| mouse down     | `S2Event.DATA_CELL_MOUSE_DOWN`      | value cell mouse click      |
+| mouse movement | `S2Event.DATA_CELL_MOUSE_MOVE`      | Numeric cell mouse movement |
+| mouse release  | `S2Event.DATA_CELL_MOUSE_UP`        | Value cell mouse release    |
+| Swipe          | `S2Event.DATA_CELL_BRUSH_SELECTION` | Value cell selection        |
 
 ### Corner head
 
 | name           | event name                         | describe                         |
-| :------------- | :--------------------------------- | :------------------------------- |
+| -------------- | ---------------------------------- | -------------------------------- |
 | click          | `S2Event.CORNER_CELL_CLICK`        | Corner header cell click         |
 | double click   | `S2Event.CORNER_CELL_DOUBLE_CLICK` | Corner cell double click         |
 | right click    | `S2Event.CORNER_CELL_CONTEXT_MENU` | Corner cell right click          |
@@ -69,7 +72,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 ### Width and height drag adjustment
 
 | name                              | event name                           | describe                                                                                  |
-| :-------------------------------- | :----------------------------------- | :---------------------------------------------------------------------------------------- |
+| --------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- |
 | cell adjustment                   | `S2Event.LAYOUT_RESIZE`              | Cell width and height change                                                              |
 | Ordinal column width changed      | `S2Event.LAYOUT_RESIZE_SERIES_WIDTH` | Ordinal column width changed                                                              |
 | Mouse down when resizing a cell   | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN`   | Adjust the cell size by pressing the mouse, currently only the row/column header is valid |
@@ -83,22 +86,21 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 ### layout
 
-| name                    | event name                           | describe                                                         |
-| :---------------------- | :----------------------------------- | :--------------------------------------------------------------- |
-| Header layout complete  | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT` | Triggered after row header and column header layout is completed |
-| paging                  | `S2Event.LAYOUT_PAGINATION`          | pagination event                                                 |
-| Put away your outfit    | `S2Event.LAYOUT_COLLAPSE_ROWS`       | Event callback for collapsing row headers in tree mode           |
-| after packing away      | `S2Event.LAYOUT_AFTER_COLLAPSE_ROWS` | Event callback after the line head is collapsed in tree mode     |
-| column header expansion | `S2Event.COL_CELL_EXPANDED`       | Triggered when the column header is expanded                     |
-| column header hidden    | `S2Event.COL_CELL_HIDDEN`         | Triggered when the column header is hidden                       |
-| start rendering         | `S2Event.LAYOUT_BEFORE_RENDER`       | The event before starting render, that is, `s2.render()`         |
-| rendering complete      | `S2Event.LAYOUT_AFTER_RENDER`        | The event that render is completed, that is, `s2.render()`       |
-| form destruction        | `S2Event.LAYOUT_DESTROY`             | Triggered after the table is destroyed or calling `s2.destroy()` |
+| name                           | event name                                   | describe                                                                                  |
+| ------------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Header layout complete         | `S2Event.LAYOUT_AFTER_HEADER_LAYOUT`         | Triggered after row header and column header layout is completed                          |
+| Numerical cell layout complete | `S2Event.LAYOUT_AFTER_REAL_DATA_CELL_RENDER` | Triggered after the rendering of the value cell in the current visible range is completed |
+| paging                         | `S2Event.LAYOUT_PAGINATION`                  | pagination event                                                                          |
+| column header expansion        | `S2Event.COL_CELL_EXPANDED`                  | Triggered when the column header is expanded                                              |
+| column header hidden           | `S2Event.COL_CELL_HIDDEN`                    | Triggered when the column header is hidden                                                |
+| start rendering                | `S2Event.LAYOUT_BEFORE_RENDER`               | The event before starting render, that is, `s2.render()`                                  |
+| rendering complete             | `S2Event.LAYOUT_AFTER_RENDER`                | The event that render is completed, that is, `s2.render()`                                |
+| form destruction               | `S2Event.LAYOUT_DESTROY`                     | Triggered after the table is destroyed or calling `s2.destroy()`                          |
 
 ### global
 
 | name             | event name                         | describe                                                                                    |
-| :--------------- | :--------------------------------- | :------------------------------------------------------------------------------------------ |
+| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------- |
 | keyboard press   | `S2Event.GLOBAL_KEYBOARD_DOWN`     | keyboard press                                                                              |
 | keyboard release | `S2Event.GLOBAL_KEYBOARD_UP`       | keyboard release                                                                            |
 | copy             | `S2Event.GLOBAL_COPIED`            | Copy selected cells                                                                         |

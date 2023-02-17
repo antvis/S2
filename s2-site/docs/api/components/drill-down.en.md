@@ -54,7 +54,7 @@ Type: `object` , **optional** , default: `{}`
 
 | parameter        | illustrate                                                                                                                                                                                                      | type                                        | Defaults | required | Remark                                        | Version                                                                                     |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | -------- | -------- | --------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| drillConfig      | Drill down menu component configuration items                                                                                                                                                                   | \[DrillDownProps] (#drilldownprops)         | -        | ✓        |                                               |                                                                                             |
+| drillConfig      | Drill down menu component configuration items                                                                                                                                                                   | [DrillDownProps](#drilldownprops)           | -        | ✓        |                                               |                                                                                             |
 | drillItemsNum    | The number of displayed items after the drill-down is completed, and all are displayed by default                                                                                                               | `number`                                    | -1       |          |                                               |                                                                                             |
 | fetchData        | Callback after clicking the drilldown                                                                                                                                                                           | [FetchCallBack](#fetchcallback)             | -        | ✓        |                                               |                                                                                             |
 | clearDrillDown   | Clear the drill-down information. When the specified rowId is passed, clear the drill-down information corresponding to the rowId; if the parameter is an empty object {}, clear all the drill-down information | `{rowId: string;}`                          | -        |          | Only `React` components support this property |                                                                                             |
@@ -76,10 +76,10 @@ Type: `object` , **required** , default value: `{}`
 
 Function description: Drill down data request parameter configuration
 
-| parameter  | illustrate                       | type                                 | required | Defaults |
-| ---------- | -------------------------------- | ------------------------------------ | -------- | -------- |
-| drillData  | drill down data                  | `Record<string, string \| number>[]` | ✓        |          |
-| drillField | Drill down dimension value value | `string`                             | ✓        |          |
+| parameter  | illustrate                       | type                                                                      | required | Defaults |
+| ---------- | -------------------------------- | ------------------------------------------------------------------------- | -------- | -------- |
+| drillData  | drill down data                  | <code class="language-text">Record&#x3C;string, string | number>[]</code> | ✓        |          |
+| drillField | Drill down dimension value value | `string`                                                                  | ✓        |          |
 
 #### DrillDownProps
 
@@ -112,4 +112,4 @@ Function description: drill down data source configuration
 | value     | specific value                                                | `string`                       |          | ✓        |
 | type      | Dimension type, different types correspond to different icons | `text` \| `location` \| `date` |          |          |
 | disabled  | Is it allowed to choose                                       | `boolean`                      |          |          |
-| icon      | The icon of the list item                                     | `React.ReactNode`              |          |          |
+| icon      | The icon of the list item                                     | `ReactNode`                    |          |          |

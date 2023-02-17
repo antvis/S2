@@ -5,10 +5,12 @@ order: 1
 
 ## Frozen
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| -- | --- | --  | -- | --- |
-| rowHeader | `boolean`\|`number` |  |   `true` | 冻结行头<br/>当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头。<br/>当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0。<br/> （透视表有效） |
-| rowCount | `number` |  |  `0`  | 冻结行的数量，从顶部开始计数 （明细表有效） |
-| colCount | `number` |  |  `0`  | 冻结列的数量，从左侧开始计数 （明细表有效） |
-| trailingRowCount | `number` |  `0`  |  | 冻结行数量，从底部开始计数 （明细表有效） |
-| trailingColCount | `number` |  `0`  |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
+Function description: Row and column header freeze configuration
+
+| parameter        | type      | required | Defaults | Functional description                                                     |
+| ---------------- | --------- | -------- | -------- | -------------------------------------------------------------------------- |
+| rowHeader        | `boolean` |          | `true`   | When the value is number, it identifies the maximum area where the line header is frozen, and the range of values ​​is (0, 1). 0 means that the line header is not frozen. <br/>When the value is boolean, true corresponds to freezing the maximum area is 0.5, false corresponds to 0. <br/> (only pivot mode works)                                     |
+| rowCount         | `number`  |          | `0`      | The number of frozen rows, counting from the top (schedules are valid)     |
+| colCount         | `number`  |          | `0`      | The number of frozen columns, counting from the left (schedules are valid) |
+| trailingRowCount | `number`  |          | `0`      | Number of frozen rows, counting from the bottom (valid for schedules)      |
+| trailingColCount | `number`  |          | `0`      | Number of frozen columns, counting from the right (schedules are valid)    |
