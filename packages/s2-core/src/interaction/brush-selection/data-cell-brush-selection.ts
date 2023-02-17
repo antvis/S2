@@ -106,10 +106,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
     interaction.changeState({
-      cells: getInteractionCellsBySelectedCells(
-        selectedCellMetas,
-        this.spreadsheet,
-      ),
+      cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: afterSelectDataCells,
     });

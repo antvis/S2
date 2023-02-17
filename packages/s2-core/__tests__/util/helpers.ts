@@ -53,7 +53,10 @@ export const createFakeSpreadSheet = () => {
   }
 
   const s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
-  s2.options = DEFAULT_OPTIONS;
+  s2.options = {
+    ...DEFAULT_OPTIONS,
+    hdAdapter: false,
+  };
   s2.dataCfg = {
     meta: null,
     data: [],
@@ -180,7 +183,10 @@ export const createPivotSheet = (
   return new PivotSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
-    s2Options,
+    {
+      hdAdapter: false,
+      ...s2Options,
+    },
   );
 };
 
@@ -191,6 +197,9 @@ export const createTableSheet = (
   return new TableSheet(
     getContainer(),
     useSimpleData ? simpleDataConfig : dataConfig,
-    s2Options,
+    {
+      hdAdapter: false,
+      ...s2Options,
+    },
   );
 };
