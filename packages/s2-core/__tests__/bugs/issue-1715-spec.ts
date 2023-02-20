@@ -13,8 +13,8 @@ const s2Options: S2Options = {
   width: 800,
   height: 600,
   style: {
-    colCfg: {
-      hideMeasureColumn: false,
+    colCell: {
+      hideValue: false,
     },
   },
   totals: {
@@ -56,7 +56,7 @@ describe('Multi Values GrandTotal Height Test', () => {
   test('should get correctly grand total node height if value in rows', () => {
     const grandTotalsNode = s2
       .getColumnNodes()
-      .find((node) => node.isGrandTotals);
+      .find((node) => node.isGrandTotals)!;
 
     expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(60);
@@ -72,8 +72,8 @@ describe('Multi Values GrandTotal Height Test', () => {
     });
     s2.setOptions({
       style: {
-        colCfg: {
-          hideMeasureColumn: true,
+        colCell: {
+          hideValue: true,
         },
       },
     });
@@ -81,7 +81,7 @@ describe('Multi Values GrandTotal Height Test', () => {
 
     const grandTotalsNode = s2
       .getColumnNodes()
-      .find((node) => node.isGrandTotals);
+      .find((node) => node.isGrandTotals)!;
 
     expect(s2.facet.layoutResult.colsHierarchy.height).toBe(60);
     expect(grandTotalsNode.height).toEqual(30);

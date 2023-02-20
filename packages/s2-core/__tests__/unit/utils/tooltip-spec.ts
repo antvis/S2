@@ -32,6 +32,7 @@ import {
   TOOLTIP_CONTAINER_HIDE_CLS,
   type TooltipSummaryOptions,
   PivotSheet,
+  type S2DataConfig,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 import type { BBox } from '@/engine';
@@ -479,7 +480,7 @@ describe('Tooltip Utils Tests', () => {
               const meta = cell.getMeta();
 
               return meta.isTotals;
-            }),
+            })!,
           ]
         : dataCells
             .filter((cell) => {
@@ -498,7 +499,7 @@ describe('Tooltip Utils Tests', () => {
         .mockImplementationOnce(() => selectedCellMetas);
 
       const tooltipData = getTooltipData({
-        cellInfos: [selectedCellMetas],
+        cellInfos: [selectedCellMetas as TooltipData],
         options: {
           showSingleTips: false,
         },
@@ -610,7 +611,7 @@ describe('Tooltip Utils Tests', () => {
           getContainer(),
           {
             ...dataConfig,
-            meta: customMeta,
+            meta: customMeta as S2DataConfig['meta'],
           },
           {
             totals: {

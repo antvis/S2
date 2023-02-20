@@ -343,15 +343,15 @@ describe('SpreadSheet Hidden Columns Tests', () => {
 
       const grandTotalsNode = pivotSheet
         .getColumnNodes()
-        .find((node) => node.isGrandTotals);
+        .find((node) => node.isGrandTotals)!;
 
       const rootNode = pivotSheet
         .getColumnNodes()
-        .find((node) => node.id === 'root[&]笔');
+        .find((node) => node.id === 'root[&]笔')!;
 
       const parentNode = pivotSheet
         .getColumnNodes()
-        .find((node) => node.id === 'root[&]笔[&]义乌');
+        .find((node) => node.id === 'root[&]笔[&]义乌')!;
 
       const hiddenColumnsInfo = pivotSheet.store.get('hiddenColumnsDetail')[0];
 
