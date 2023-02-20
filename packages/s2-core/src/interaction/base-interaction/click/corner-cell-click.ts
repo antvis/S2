@@ -20,8 +20,19 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
   private bindCornerCellClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (event) => {
       const { interaction } = this.spreadsheet;
+      const cornerCell = this.spreadsheet.getCell(event.target);
 
-      if (interaction.isSelectedState()) {
+      if (!cornerCell) {
+        return;
+      }
+
+      // 获取当前角头所对应那一列的行头单元格节点
+      const cornerCellMeta = cornerCell.getMeta();
+      const rowNodes = this.getRowNodesByField(cornerCellMeta?.field);
+      const sample = rowNodes[0]?.belongsCell;
+      const cells = this.getRowCells(rowNodes);
+
+      if (sample && interaction.isSelectedCell(sample)) {
         interaction.reset();
         this.spreadsheet.emit(
           S2Event.GLOBAL_SELECTED,
@@ -29,11 +40,6 @@ export class CornerCellClick extends BaseEvent implements BaseEventImplement {
         );
         return;
       }
-
-      // 获取当前角头所对应那一列的行头
-      const cornerCellMeta = this.spreadsheet.getCell(event.target).getMeta();
-      const rowNodes = this.getRowNodesByField(cornerCellMeta?.field);
-      const cells = this.getRowCells(rowNodes);
 
       if (isEmpty(rowNodes) || isEmpty(cells)) {
         return;
