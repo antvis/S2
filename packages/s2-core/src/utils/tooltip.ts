@@ -505,7 +505,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   if (isTableMode && options?.showSingleTips) {
     const selectedCellsData = spreadsheet.dataSet.getMultiData({});
 
-    return [{ selectedData: selectedCellsData, name: '', value: '' }];
+    return [{ selectedData: selectedCellsData as Data[], name: '', value: '' }];
   }
 
   // 拿到选择的所有 dataCell的数据

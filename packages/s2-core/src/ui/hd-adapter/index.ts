@@ -87,9 +87,7 @@ export class HdAdapter {
    * DPR 改变也会触发 visualViewport 的 resize 事件, 预期是只监听双指缩放, 所以这里规避掉
    * @see https://github.com/antvis/S2/issues/2072
    */
-  private renderByZoomScaleWithoutResizeEffect = (
-    event: Event & { target: VisualViewport },
-  ) => {
+  private renderByZoomScaleWithoutResizeEffect = (event: Event) => {
     this.isDevicePixelRatioChange = false;
     this.renderByZoomScale(event);
   };
