@@ -164,7 +164,13 @@ const getDataMatrixByDataCell = (
   const { copyWithHeader } = spreadsheet.options.interaction!;
 
   const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-    map(cellsMeta, (it) => convertString(format(it, displayData, spreadsheet))),
+    map(cellsMeta, (it) => {
+      if (!it) {
+        return '';
+      }
+
+      return convertString(format(it, displayData, spreadsheet));
+    }),
   ) as string[][];
 
   if (!copyWithHeader) {

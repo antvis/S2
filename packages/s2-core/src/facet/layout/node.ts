@@ -1,6 +1,10 @@
 import { head, isEmpty, isEqual } from 'lodash';
 import { ROOT_NODE_ID } from '../../common/constant/node';
-import type { CornerNodeType, S2CellType } from '../../common/interface';
+import type {
+  CornerNodeType,
+  HiddenColumnsInfo,
+  S2CellType,
+} from '../../common/interface';
 import type { SpreadSheet } from '../../sheet-type';
 import type { Hierarchy } from './hierarchy';
 
@@ -38,6 +42,7 @@ export interface BaseNodeConfig {
   height?: number;
   padding?: number;
   children?: Node[];
+  hiddenColumnsInfo?: HiddenColumnsInfo | null;
   // 额外的节点信息
   extra?: Record<string, any>;
 }
@@ -123,32 +128,36 @@ export class Node {
 
   public isSubTotals?: boolean;
 
+  public hiddenChildNodeInfo?: HiddenColumnsInfo | null;
+
   public extra?: Record<string, any>;
 
   [key: string]: any;
 
-  constructor({
-    id,
-    field,
-    value,
-    parent,
-    level,
-    rowIndex,
-    isTotals,
-    isGrandTotals,
-    isSubTotals,
-    isCollapsed,
-    hierarchy,
-    isPivotMode,
-    seriesNumberWidth,
-    spreadsheet,
-    query,
-    belongsCell,
-    inCollapseNode,
-    isTotalMeasure,
-    isLeaf,
-    extra,
-  }: BaseNodeConfig) {
+  constructor(cfg: BaseNodeConfig) {
+    const {
+      id,
+      field,
+      value,
+      parent,
+      level,
+      rowIndex,
+      isTotals,
+      isGrandTotals,
+      isSubTotals,
+      isCollapsed,
+      hierarchy,
+      isPivotMode,
+      seriesNumberWidth,
+      spreadsheet,
+      query,
+      belongsCell,
+      inCollapseNode,
+      isTotalMeasure,
+      isLeaf,
+      extra,
+    } = cfg;
+
     this.id = id;
     this.field = field;
     this.value = value;

@@ -8,6 +8,8 @@ import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
 
+const SVG_CONTENT_TYPE = 'data:image/svg+xml';
+
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
@@ -41,6 +43,12 @@ export class GuiIcon extends Group {
     fill?: string,
   ): Promise<HTMLImageElement> {
     return new Promise<HTMLImageElement>((resolve, reject): void => {
+      let svg = getIcon(name);
+
+      if (!svg) {
+        return;
+      }
+
       const img = new Image();
 
       // 成功
@@ -48,11 +56,7 @@ export class GuiIcon extends Group {
         ImageCache[cacheKey] = img;
         resolve(img);
       };
-      // 失败
-      img.onerror = (e) => {
-        reject(e);
-      };
-      let svg = getIcon(name);
+      img.onerror = reject;
 
       /*
        * 兼容三种情况
@@ -62,14 +66,14 @@ export class GuiIcon extends Group {
        */
       if (
         svg &&
-        (svg.includes('data:image/svg+xml') || this.hasSupportSuffix(svg))
+        (svg.includes('data:image/svg+xml') || this.isOnlineLink(svg))
       ) {
         /*
          * 传入 base64 字符串
          * 或者 online 链接
          */
         img.src = svg;
-      } else if (svg) {
+      } else {
         // 传入 svg 字符串（支持颜色fill）
         if (fill) {
           /*
@@ -93,13 +97,17 @@ export class GuiIcon extends Group {
          * 兼容 Firefox: https://github.com/antvis/S2/issues/1571 https://stackoverflow.com/questions/30733607/svg-data-image-not-working-as-a-background-image-in-a-pseudo-element/30733736#30733736
          * https://www.chromestatus.com/features/5656049583390720
          */
-        img.src = `data:image/svg+xml;utf-8,${encodeURIComponent(svg)}`;
+        img.src = `${SVG_CONTENT_TYPE};utf-8,${encodeURIComponent(svg)}`;
       }
     });
   }
 
-  hasSupportSuffix = (image: string) =>
-    ['.png', '.jpg', '.gif', '.svg'].some((suffix) => image?.endsWith(suffix));
+  /**
+   * 1. https://xxx.svg
+   * 2. http://xxx.svg
+   * 3. //xxx.svg
+   */
+  public isOnlineLink = (src: string) => /^(https?:)?(\/\/)/.test(src);
 
   private render() {
     const { name, fill } = this.cfg;
@@ -126,9 +134,9 @@ export class GuiIcon extends Group {
           image.attr('img', value);
           this.appendChild(image);
         })
-        .catch((err: Event) => {
+        .catch((event: Event) => {
           // eslint-disable-next-line no-console
-          console.warn(`GuiIcon ${name} load error`, err);
+          console.error(`GuiIcon ${name} load failed`, event);
         });
     }
 

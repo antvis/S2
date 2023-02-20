@@ -242,6 +242,23 @@ describe('List Table Core Data Process', () => {
     expect(data.split('_formatted').length).toEqual(33);
   });
 
+  it('should copy correct data when selected diagonal cells', () => {
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cells[0]), getCellMeta(cells[29])],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const data = getSelectedData(s2);
+
+    expect(data.length).toBe(37);
+  });
+
   it('should copy correct data with data filtered', () => {
     s2.setOptions({
       interaction: {
@@ -340,6 +357,43 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getCopyPlainContent(sss);
+
+    expect(data).toBe(convertString(newLineText));
+  });
+
+  it('should not transform double quotes to single quotes when newline char is in data', () => {
+    const newLineText = `"1
+    2"`;
+    const sss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => `${v}元` }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: originalData.map((e) => {
+          return { ...e, city: newLineText };
+        }),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+
+    sss.render();
+
+    const cell = sss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[20];
+
+    sss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(sss);
 
     expect(data).toBe(convertString(newLineText));
   });
