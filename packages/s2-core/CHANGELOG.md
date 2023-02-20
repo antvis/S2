@@ -1,3 +1,11 @@
+# [@antv/s2-v1.41.1](https://github.com/antvis/S2/compare/@antv/s2-v1.41.0...@antv/s2-v1.41.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* 修复 2k 显示器切换到 MacBook 后表格渲染模糊 close [#2072](https://github.com/antvis/S2/issues/2072) ([#2074](https://github.com/antvis/S2/issues/2074)) ([a98d3fd](https://github.com/antvis/S2/commit/a98d3fd20ff5e3f817f1ac269504719ce7967f04))
+* 自定义 svg 支持无后缀的在线链接 ([#2065](https://github.com/antvis/S2/issues/2065)) ([4602b42](https://github.com/antvis/S2/commit/4602b42406689706f91e634d0453335eff8dcada))
+
 # [@antv/s2-v1.41.0](https://github.com/antvis/S2/compare/@antv/s2-v1.40.0...@antv/s2-v1.41.0) (2023-01-16)
 
 
