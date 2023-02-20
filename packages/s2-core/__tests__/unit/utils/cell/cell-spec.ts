@@ -444,7 +444,7 @@ describe('Text and Icon area Test', () => {
 describe('Horizontal Scrolling Text Position Test', () => {
   const content: AreaRange = {
     start: 0,
-    width: 100,
+    size: 100,
   };
   const textWidth = 20;
 
@@ -453,7 +453,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: 20,
-          width: 50,
+          size: 50,
         },
         content,
         textWidth,
@@ -467,7 +467,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: 50,
-          width: 100,
+          size: 100,
         },
         content,
         textWidth,
@@ -479,7 +479,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: 90,
-          width: 100,
+          size: 100,
         },
         content,
         textWidth,
@@ -493,7 +493,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: -50,
-          width: 100,
+          size: 100,
         },
         content,
         textWidth,
@@ -505,7 +505,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: -90,
-          width: 100,
+          size: 100,
         },
         content,
         textWidth,
@@ -518,7 +518,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
       getTextAreaRange(
         {
           start: -50,
-          width: 200,
+          size: 200,
         },
         content,
         textWidth,

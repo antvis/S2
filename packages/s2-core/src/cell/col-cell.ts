@@ -177,7 +177,7 @@ export class ColCell extends HeaderCell {
      */
     const viewport: AreaRange = {
       start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
-      width: width + (scrollContainsRowHeader ? cornerWidth : 0),
+      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
     this.handleViewport(viewport);
@@ -195,7 +195,7 @@ export class ColCell extends HeaderCell {
     // icon position 默认为 right
     const textAreaRange = getTextAreaRange(
       adjustedViewport,
-      { start: contentBox.x, width: contentBox.width },
+      { start: contentBox.x, size: contentBox.width },
       textAndIconSpace,
     );
 

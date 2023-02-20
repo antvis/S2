@@ -264,8 +264,8 @@ export const getTextAreaRange = (
   content: AreaRange,
   textWidth: number,
 ) => {
-  const contentEnd = content.start + content.width;
-  const viewportEnd = viewport.start + viewport.width;
+  const contentEnd = content.start + content.size;
+  const viewportEnd = viewport.start + viewport.size;
 
   let position: number;
   let availableContentWidth: number;
@@ -279,8 +279,8 @@ export const getTextAreaRange = (
      *  +--|----------------------|--+
      *     +----------------------+
      */
-    position = viewport.start + viewport.width / 2;
-    availableContentWidth = viewport.width;
+    position = viewport.start + viewport.size / 2;
+    availableContentWidth = viewport.size;
   } else if (content.start <= viewport.start) {
     /**
      *         +-------------------+
@@ -289,7 +289,7 @@ export const getTextAreaRange = (
      *  +------|------+            |
      *         +-------------------+
      */
-    const restWidth = content.width - (viewport.start - content.start);
+    const restWidth = content.size - (viewport.start - content.start);
 
     position =
       restWidth < textWidth
@@ -304,7 +304,7 @@ export const getTextAreaRange = (
      *   |            +------|------+
      *   +-------------------+
      */
-    const restWidth = content.width - (contentEnd - viewportEnd);
+    const restWidth = content.size - (contentEnd - viewportEnd);
 
     position =
       restWidth < textWidth
@@ -319,11 +319,11 @@ export const getTextAreaRange = (
      *   |  +-------------+           |
      *   +----------------------------+
      */
-    position = content.start + content.width / 2;
-    availableContentWidth = content.width;
+    position = content.start + content.size / 2;
+    availableContentWidth = content.size;
   }
 
-  return { start: position, width: availableContentWidth } as AreaRange;
+  return { start: position, size: availableContentWidth } as AreaRange;
 };
 
 export const getBorderPositionAndStyle = (
@@ -449,9 +449,9 @@ export const adjustColHeaderScrollingViewport = (
 
   if (textAlign === 'left') {
     nextViewport.start += textPadding.left!;
-    nextViewport.width -= textPadding.left!;
+    nextViewport.size -= textPadding.left!;
   } else if (textAlign === 'right') {
-    nextViewport.width -= textPadding.right!;
+    nextViewport.size -= textPadding.right!;
   }
 
   return nextViewport;
@@ -498,10 +498,8 @@ export const adjustColHeaderScrollingTextPosition = (
     return startX - actionIconSpace / 2;
   }
 
-  const hasEnoughWidth = textAreaRange.width - textAndIconSpace > 0;
-  const offset = hasEnoughWidth
-    ? textAreaRange.width / 2
-    : textAndIconSpace / 2;
+  const hasEnoughWidth = textAreaRange.size - textAndIconSpace > 0;
+  const offset = hasEnoughWidth ? textAreaRange.size / 2 : textAndIconSpace / 2;
 
   return textAlign === 'left'
     ? startX - offset
