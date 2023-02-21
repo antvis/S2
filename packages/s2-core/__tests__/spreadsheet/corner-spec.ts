@@ -60,7 +60,15 @@ describe('PivotSheet Corner Tests', () => {
         DEFAULT_STYLE.colCell!.height,
       );
       expect(cornerNodes).toHaveLength(cornerNodeCount);
-      expect(s2.facet.getCornerNodes()).toMatchSnapshot();
+      expect(s2.facet.getCornerNodes()).toMatchSnapshot(
+        Array.from({
+          length: cornerNodeCount,
+        }).map(() => {
+          return {
+            spreadsheet: expect.anything(),
+          };
+        }),
+      );
     },
   );
 
@@ -82,7 +90,7 @@ describe('PivotSheet Corner Tests', () => {
       const { colsHierarchy } = s2.facet.layoutResult;
 
       expect(colsHierarchy.width).not.toBeLessThan(
-        DEFAULT_STYLE.colCell!.width as number,
+        DEFAULT_STYLE.dataCell!.width as number,
       );
       expect(colsHierarchy.height).toEqual(DEFAULT_STYLE.colCell!.height);
       expect(colsHierarchy.sampleNodeForLastLevel!.y).toEqual(0);
@@ -90,7 +98,15 @@ describe('PivotSheet Corner Tests', () => {
         DEFAULT_STYLE.colCell!.height,
       );
       expect(cornerNodes).toHaveLength(cornerNodeCount);
-      expect(s2.facet.getCornerNodes()).toMatchSnapshot();
+      expect(s2.facet.getCornerNodes()).toMatchSnapshot(
+        Array.from({
+          length: cornerNodeCount,
+        }).map(() => {
+          return {
+            spreadsheet: expect.anything(),
+          };
+        }),
+      );
     },
   );
 
@@ -117,8 +133,16 @@ describe('PivotSheet Corner Tests', () => {
       expect(colsHierarchy.width).toEqual(0);
       expect(colsHierarchy.height).toEqual(0);
       expect(colsHierarchy.sampleNodeForLastLevel).toBeNull();
-      expect(cornerNodes).toHaveLength(cornerNodeCount);
-      expect(cornerNodes).toMatchSnapshot();
+      expect(cornerNodes.length).toEqual(cornerNodeCount);
+      expect(cornerNodes).toMatchSnapshot(
+        Array.from({
+          length: cornerNodeCount,
+        }).map(() => {
+          return {
+            spreadsheet: expect.anything(),
+          };
+        }),
+      );
     },
   );
 
