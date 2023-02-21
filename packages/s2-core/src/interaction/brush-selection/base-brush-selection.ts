@@ -639,8 +639,8 @@ export class BaseBrushSelection
   protected renderPrepareSelected = (point: Point) => {
     const { x, y } = point;
     const target = this.spreadsheet.container.getShape(x, y);
-
     const cell = this.spreadsheet.getCell(target);
+
     // 只有行头，列头，单元格可以刷选
     const isBrushCellType =
       cell instanceof DataCell ||
@@ -668,6 +668,20 @@ export class BaseBrushSelection
       this.updatePrepareSelectMask();
     }
   };
+
+  protected autoBrushScroll(point: Point) {
+    this.clearAutoScroll();
+
+    if (!this.isPointInCanvas(point)) {
+      const deltaX = point?.x - this.endBrushPoint?.x;
+      const deltaY = point?.y - this.endBrushPoint?.y;
+      this.handleScroll(deltaX, deltaY);
+
+      return true;
+    }
+
+    return false;
+  }
 
   // 需要查看继承他的父类是如何定义的
   protected isInBrushRange(meta: ViewMeta | Node): boolean {

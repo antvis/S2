@@ -1,4 +1,3 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, map } from 'lodash';
 import type { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -6,10 +5,9 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { ViewMeta } from '../../common/interface';
+import type { OnUpdateCells, ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
-import type { OnUpdateCells } from '../../common/interface';
 import { BaseBrushSelection } from './base-brush-selection';
 
 /**
@@ -21,10 +19,8 @@ export class RowBrushSelection extends BaseBrushSelection {
   public brushRangeCells: RowCell[] = [];
 
   protected bindMouseDown() {
-    [S2Event.ROW_CELL_MOUSE_DOWN].forEach((e: S2Event) => {
-      this.spreadsheet.on(e, (event: CanvasEvent) => {
-        super.mouseDown(event);
-      });
+    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
+      super.mouseDown(event);
     });
   }
 
@@ -39,7 +35,7 @@ export class RowBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseMove() {
-    this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -47,11 +43,9 @@ export class RowBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
-        event.originalEvent,
-      );
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      if (!this.isPointInCanvas(pointInCanvas)) {
+      if (this.autoBrushScroll(pointInCanvas)) {
         return;
       }
 

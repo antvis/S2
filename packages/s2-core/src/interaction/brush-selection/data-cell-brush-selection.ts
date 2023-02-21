@@ -1,5 +1,4 @@
-import type { Event as CanvasEvent } from '@antv/g-canvas';
-import { isBoolean, isEmpty, range } from 'lodash';
+import { isEmpty, range } from 'lodash';
 import { DataCell } from '../../cell/data-cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
@@ -8,7 +7,6 @@ import {
   InteractionStateName,
 } from '../../common/constant/interaction';
 import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
-import { getInteractionCellsBySelectedCells } from '../../utils';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
@@ -21,7 +19,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
   public brushRangeCells: DataCell[] = [];
 
   protected bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event) => {
       super.mouseDown(event);
       this.resetScrollDelta();
     });
@@ -38,14 +36,9 @@ export class DataCellBrushSelection extends BaseBrushSelection {
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
       const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      this.clearAutoScroll();
-      if (!this.isPointInCanvas(pointInCanvas)) {
-        const deltaX = pointInCanvas?.x - this.endBrushPoint?.x;
-        const deltaY = pointInCanvas?.y - this.endBrushPoint?.y;
-        this.handleScroll(deltaX, deltaY);
+      if (this.autoBrushScroll(pointInCanvas)) {
         return;
       }
-
       this.renderPrepareSelected(pointInCanvas);
     });
   }

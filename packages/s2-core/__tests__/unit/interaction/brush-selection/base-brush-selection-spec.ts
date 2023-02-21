@@ -11,6 +11,7 @@ import {
   type ViewMeta,
   InterceptType,
   BaseBrushSelection,
+  type Rect,
 } from '@/index';
 
 jest.mock('@/interaction/event-controller');
@@ -169,13 +170,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   });
 
   test('should return true when two rectangles containment relationship', () => {
-    const rect1 = {
+    const rect1: Rect = {
       minX: 0,
       minY: 0,
       maxX: 20,
       maxY: 20,
     };
-    const rect2 = {
+    const rect2: Rect = {
       minX: 5,
       minY: 5,
       maxX: 15,
@@ -186,13 +187,13 @@ describe('Interaction Base Cell Brush Selection Tests', () => {
   });
 
   test('should return false when two rectangles is not cross relationship', () => {
-    const rect1 = {
+    const rect1: Rect = {
       minX: 0,
       minY: 0,
       maxX: 10,
       maxY: 10,
     };
-    const rect2 = {
+    const rect2: Rect = {
       minX: 10,
       minY: 10,
       maxX: 15,
