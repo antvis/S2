@@ -250,13 +250,23 @@ describe('List Table Core Data Process', () => {
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
 
     s2.interaction.changeState({
-      cells: [getCellMeta(cells[0]), getCellMeta(cells[29])],
+      cells: [getCellMeta(cells[21]), getCellMeta(cells[48])],
       stateName: InteractionStateName.SELECTED,
     });
 
-    const data = getSelectedData(s2);
+    const dataContent = getCopyPlainContent(s2);
 
-    expect(data.length).toBe(37);
+    expect(dataContent).toMatchInlineSnapshot(`
+      "浙江省	
+      	
+      	
+      	
+      	
+      	
+      	
+      	
+      	宁波市"
+    `);
   });
 
   it('should copy correct data with data filtered', () => {
@@ -387,13 +397,13 @@ describe('List Table Core Data Process', () => {
 
     const cell = sss.interaction
       .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[20];
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[40];
 
     sss.interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    const data = getSelectedData(sss);
+    const data = getCopyPlainContent(sss);
 
     expect(data).toBe(convertString(newLineText));
   });
