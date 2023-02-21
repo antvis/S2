@@ -23,7 +23,7 @@ describe('Corner Tests', () => {
         },
       } as unknown as LayoutResult,
       seriesNumberWidth: 50,
-      spreadsheet: createFakeSpreadSheet(),
+      spreadsheet: s2,
     });
 
     return cornerNodes[0];
