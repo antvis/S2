@@ -93,12 +93,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const { interaction, options } = this.spreadsheet;
-
     const brushRange = this.getBrushRange();
     const selectedCellMetas = this.getSelectedCellMetas(brushRange);
 
-    interaction.changeState({
+    this.spreadsheet.interaction.changeState({
       cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
       onUpdateCells: afterSelectDataCells,
@@ -107,16 +105,10 @@ export class DataCellBrushSelection extends BaseBrushSelection {
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedCellMetas);
 
-    this.spreadsheet.emit(
+    this.emitBrushSelectionEvent(
       S2Event.DATA_CELL_BRUSH_SELECTION,
       scrollBrushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
-
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
   }
 
   /**
@@ -126,10 +118,7 @@ export class DataCellBrushSelection extends BaseBrushSelection {
    */
   private getScrollBrushRangeCells(selectedCellMetas: CellMeta[]) {
     return selectedCellMetas.map((meta) => {
-      const visibleCell = this.brushRangeCells.find((cell) => {
-        const visibleCellMeta = cell.getMeta();
-        return visibleCellMeta?.id === meta.id;
-      });
+      const visibleCell = this.getVisibleBrushRangeCells(meta.id);
 
       if (visibleCell) {
         return visibleCell;

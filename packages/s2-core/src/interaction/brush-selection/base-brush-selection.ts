@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isNil, map, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InteractionStateName,
@@ -669,7 +669,7 @@ export class BaseBrushSelection
     }
   };
 
-  protected autoBrushScroll(point: Point) {
+  public autoBrushScroll(point: Point) {
     this.clearAutoScroll();
 
     if (!this.isPointInCanvas(point)) {
@@ -683,6 +683,26 @@ export class BaseBrushSelection
     return false;
   }
 
+  public emitBrushSelectionEvent(
+    event: S2Event,
+    scrollBrushRangeCells: S2CellType[],
+  ) {
+    this.spreadsheet.emit(event, scrollBrushRangeCells);
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, scrollBrushRangeCells);
+
+    // 未刷选到有效单元格, 允许 hover
+    if (isEmpty(scrollBrushRangeCells)) {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
+  }
+
+  public getVisibleBrushRangeCells(nodeId: string) {
+    return this.brushRangeCells.find((cell) => {
+      const visibleCellMeta = cell.getMeta();
+      return visibleCellMeta?.id === nodeId;
+    });
+  }
+
   // 需要查看继承他的父类是如何定义的
   protected isInBrushRange(meta: ViewMeta | Node): boolean {
     return false;
@@ -691,8 +711,6 @@ export class BaseBrushSelection
   protected bindMouseDown() {}
 
   protected bindMouseMove() {}
-
-  public getSelectedCellMetas = (range: BrushRange) => {};
 
   protected updateSelectedCells() {}
 }

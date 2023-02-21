@@ -1,11 +1,15 @@
-import { isEmpty, map } from 'lodash';
-import type { RowCell } from '../../cell';
+import { map } from 'lodash';
+import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type { OnUpdateCells, ViewMeta } from '../../common/interface';
+import type {
+  BrushRange,
+  OnUpdateCells,
+  ViewMeta,
+} from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
@@ -86,25 +90,22 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const { interaction } = this.spreadsheet;
+    const brushRange = this.getBrushRange();
+    const selectedRowNodes = this.getSelectedRowNodes(brushRange);
+    const scrollBrushRangeCells =
+      this.getScrollBrushRangeCells(selectedRowNodes);
+    const selectedCellMetas = map(scrollBrushRangeCells, getCellMeta);
 
-    interaction.changeState({
-      cells: map(this.brushRangeCells, getCellMeta),
+    this.spreadsheet.interaction.changeState({
+      cells: selectedCellMetas,
       stateName: InteractionStateName.SELECTED,
-      onUpdateCells: (root) => {
-        root.updateCells(root.getAllRowHeaderCells());
-      },
+      onUpdateCells: this.onUpdateCells,
     });
 
-    this.spreadsheet.emit(
+    this.emitBrushSelectionEvent(
       S2Event.ROW_CELL_BRUSH_SELECTION,
-      this.brushRangeCells,
+      scrollBrushRangeCells,
     );
-    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeCells);
-    // 未刷选到有效格子, 允许 hover
-    if (isEmpty(this.brushRangeCells)) {
-      interaction.removeIntercepts([InterceptType.HOVER]);
-    }
   }
 
   protected addBrushIntercepts() {
@@ -116,4 +117,29 @@ export class RowBrushSelection extends BaseBrushSelection {
   protected onUpdateCells: OnUpdateCells = (root) => {
     return root.updateCells(root.getAllRowHeaderCells());
   };
+
+  private getSelectedRowNodes = (brushRange: BrushRange): Node[] => {
+    return this.spreadsheet.getRowNodes().filter((node) => {
+      const { start, end } = brushRange;
+
+      return (
+        node.rowIndex >= start.rowIndex &&
+        node.rowIndex <= end.rowIndex &&
+        node.colIndex >= start.colIndex &&
+        node.colIndex <= end.colIndex
+      );
+    });
+  };
+
+  private getScrollBrushRangeCells(nodes: Node[]) {
+    return nodes.map((node) => {
+      const visibleCell = this.getVisibleBrushRangeCells(node.id);
+
+      if (visibleCell) {
+        return visibleCell;
+      }
+
+      return new RowCell(node, this.spreadsheet);
+    });
+  }
 }
