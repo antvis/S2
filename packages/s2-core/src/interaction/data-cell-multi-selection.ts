@@ -11,7 +11,6 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
-  getInteractionCellsBySelectedCells,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
 import { afterSelectDataCells } from '../utils/interaction/select-event';
@@ -94,10 +93,7 @@ export class DataCellMultiSelection
         this.spreadsheet.hideTooltip();
 
         interaction.changeState({
-          cells: getInteractionCellsBySelectedCells(
-            selectedCells,
-            this.spreadsheet,
-          ),
+          cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
           onUpdateCells: afterSelectDataCells,
         });

@@ -47,6 +47,7 @@ import type {
   ViewMeta,
   ViewMetaData,
   Data,
+  TooltipSummaryOptionsValue,
 } from '../common/interface';
 import type { S2CellType } from '../common/interface/interaction';
 import type {
@@ -504,7 +505,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   if (isTableMode && options?.showSingleTips) {
     const selectedCellsData = spreadsheet.dataSet.getMultiData({});
 
-    return [{ selectedData: selectedCellsData, name: '', value: '' }];
+    return [{ selectedData: selectedCellsData as Data[], name: '', value: '' }];
   }
 
   // 拿到选择的所有 dataCell的数据
@@ -528,12 +529,10 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     const name = spreadsheet.isCustomHeaderFields()
       ? spreadsheet?.dataSet.getCustomRowFieldName(targetCell!)
       : getSummaryName(spreadsheet, field, options?.isTotals);
+    let value: TooltipSummaryOptionsValue = '';
+    let originVal: TooltipSummaryOptionsValue = '';
 
-    let value: number | string | undefined;
-
-    if (isTableMode) {
-      value = '';
-    } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
+    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       const { placeholder } = spreadsheet.options;
       const emptyPlaceholder = getEmptyPlaceholder(
         summary as ViewMeta,
@@ -542,10 +541,12 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
       // 如果选中的单元格都无数据，则显示"-" 或 options 里配置的占位符
       value = emptyPlaceholder;
+      originVal = emptyPlaceholder;
     } else {
       const currentFormatter = getFieldFormatter(spreadsheet, field);
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
 
+      originVal = dataSum;
       value =
         currentFormatter?.(dataSum, selected) ??
         parseFloat(dataSum.toPrecision(PRECISION));
@@ -555,6 +556,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       selectedData: selected,
       name: name || '',
       value,
+      originValue: originVal,
     });
   });
 

@@ -1,4 +1,42 @@
-# [@antv/s2-v2.0.0-next.4](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.3...@antv/s2-v2.0.0-next.4) (2023-01-16)
+# [@antv/s2-v1.41.1](https://github.com/antvis/S2/compare/@antv/s2-v1.41.0...@antv/s2-v1.41.1) (2023-02-17)
+
+
+### Bug Fixes
+
+* 修复 2k 显示器切换到 MacBook 后表格渲染模糊 close [#2072](https://github.com/antvis/S2/issues/2072) ([#2074](https://github.com/antvis/S2/issues/2074)) ([a98d3fd](https://github.com/antvis/S2/commit/a98d3fd20ff5e3f817f1ac269504719ce7967f04))
+* 自定义 svg 支持无后缀的在线链接 ([#2065](https://github.com/antvis/S2/issues/2065)) ([4602b42](https://github.com/antvis/S2/commit/4602b42406689706f91e634d0453335eff8dcada))
+
+# [@antv/s2-v1.41.0](https://github.com/antvis/S2/compare/@antv/s2-v1.40.0...@antv/s2-v1.41.0) (2023-01-16)
+
+
+### Bug Fixes
+
+* **layout:** 修复存在列总计但不存在列小计时, 隐藏其兄弟节点后单元格坐标偏移 close [#1993](https://github.com/antvis/S2/issues/1993) ([#2047](https://github.com/antvis/S2/issues/2047)) ([2ae663e](https://github.com/antvis/S2/commit/2ae663e1c46a3c8cb04b79d357fc033314f4cf77))
+* **layout:** 修复存在多列头多数值且数值置于行头时,列总计单元格高度不对 close [#1715](https://github.com/antvis/S2/issues/1715) [#2049](https://github.com/antvis/S2/issues/2049) ([#2051](https://github.com/antvis/S2/issues/2051)) ([a415f46](https://github.com/antvis/S2/commit/a415f465e8fa355a5b68d556f6fa645e3a72b5b7))
+* **layout:** 修复无列头时行头对应的角头不显示 close [#1929](https://github.com/antvis/S2/issues/1929) ([#2026](https://github.com/antvis/S2/issues/2026)) ([c073578](https://github.com/antvis/S2/commit/c073578dc008ef83a2877041830be18f827c7341))
+* **layout:** 修复树状模式下无列头时行头对应的角头不显示 ([#2041](https://github.com/antvis/S2/issues/2041)) ([1b49667](https://github.com/antvis/S2/commit/1b49667378b3f54bc277ab8255db757f844a0107))
+
+
+### Features
+
+* tooltip summaries 返回原始数据 ([#2044](https://github.com/antvis/S2/issues/2044)) ([f8efdd9](https://github.com/antvis/S2/commit/f8efdd997b8e76b4aab7615fb16af644a42d3d8e))
+
+# [@antv/s2-v1.40.0](https://github.com/antvis/S2/compare/@antv/s2-v1.39.1...@antv/s2-v1.40.0) (2023-01-03)
+
+
+### Bug Fixes
+
+* bullet占位符绘制错误 ([#2022](https://github.com/antvis/S2/issues/2022)) ([c95c446](https://github.com/antvis/S2/commit/c95c446219216b190bf6af632104edd125a82ff3))
+* 修复单元格宽高为0时的无意义渲染 ([#2024](https://github.com/antvis/S2/issues/2024)) ([9f952fd](https://github.com/antvis/S2/commit/9f952fd4bfd280b657b589e5912399f89bb1f0ea))
+* 列头label存在数组，复制导出列头层级补齐错误 ([#1990](https://github.com/antvis/S2/issues/1990)) ([ec62409](https://github.com/antvis/S2/commit/ec62409b688c5dd5e39a93f5b292d909496ed830))
+
+
+### Features
+
+* selected cell highlight ([#1878](https://github.com/antvis/S2/issues/1878)) ([3e11a37](https://github.com/antvis/S2/commit/3e11a37bf94f758379ba2819ec5d8b3251708814))
+* 子弹图为空时使用placeholder占位 ([#2010](https://github.com/antvis/S2/issues/2010)) ([8d28254](https://github.com/antvis/S2/commit/8d28254aa9aa29d9b2a9e24efb21f185cb5ffe4c))
+
+# [@antv/s2-v1.39.1](https://github.com/antvis/S2/compare/@antv/s2-v1.39.0...@antv/s2-v1.39.1) (2022-12-20)
 
 
 ### Bug Fixes
@@ -126,19 +164,7 @@
 * 下钻后 meta.childField 不正确 ([#1788](https://github.com/antvis/S2/issues/1788)) ([1c61dd4](https://github.com/antvis/S2/commit/1c61dd4081c9d3fed6f276b0546865914040b07a))
 * 重构绘制盒模型，修复边框偏移问题 ([#1854](https://github.com/antvis/S2/issues/1854)) ([f7e0858](https://github.com/antvis/S2/commit/f7e0858a937ea557532a7fff948e9af3b6a1fdff))
 
-* feat!: 2.0 next 预览版发布 ([de5a406](https://github.com/antvis/S2/commit/de5a406f4fd5e0db23eea46c8e7185589215c195))
-* feat!: 2.0 预览版发布 ([9abb76d](https://github.com/antvis/S2/commit/9abb76dd40c65ed2a6a122b6f2b20a9b963c8a58))
-
-### Features
-
-* 2.0 break ([a4ba788](https://github.com/antvis/S2/commit/a4ba788580788909f4fcfee98f3d7387dd883c4a))
-* 2.0.0 next ([fe0aca3](https://github.com/antvis/S2/commit/fe0aca341f9c37e3a85e622a6eb30c9da5e02a96))
-* **layout:** 自定义行列头 ([#1719](https://github.com/antvis/S2/issues/1719)) ([2e0746d](https://github.com/antvis/S2/commit/2e0746dc9ca4ec45d50b35a9408b8827252c1bfa))
-* **total:** 全量移除所有 totalData 配置 ([#1799](https://github.com/antvis/S2/issues/1799)) ([23cc219](https://github.com/antvis/S2/commit/23cc21933e02d5da6b261afe1fe1bc67008054d8))
-* version break ([064c0de](https://github.com/antvis/S2/commit/064c0de861f2e87814acf394cbdf6305397d476d))
-* 升级的渲染引擎 g5.0 ([#1924](https://github.com/antvis/S2/issues/1924)) ([820a310](https://github.com/antvis/S2/commit/820a310998bae5c0324c2f3144747f7dbe0097d1)), closes [#1852](https://github.com/antvis/S2/issues/1852) [#1862](https://github.com/antvis/S2/issues/1862)
-* 在生成 id 时，对 undefined, null 做区分 ([#1828](https://github.com/antvis/S2/issues/1828)) ([0687779](https://github.com/antvis/S2/commit/06877794be701608e5a68e6cab43e56927d59967))
-* 移动端组件适配 ([#1833](https://github.com/antvis/S2/issues/1833)) ([bd2e71e](https://github.com/antvis/S2/commit/bd2e71e0d1d55057af77d435a10730b7ac929324))
+# [@antv/s2-v1.35.0](https://github.com/antvis/S2/compare/@antv/s2-v1.34.1...@antv/s2-v1.35.0) (2022-11-21)
 
 ### BREAKING CHANGES
 

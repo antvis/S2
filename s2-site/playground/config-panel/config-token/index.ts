@@ -1,6 +1,27 @@
 export default {
   relations: [
     {
+      fromAttributeId: 'dataSource',
+      toAttributeId: 'rows',
+      action: 'disable',
+      value: 'localImport',
+      operator: 'EQUAL',
+    },
+    {
+      fromAttributeId: 'dataSource',
+      toAttributeId: 'columns',
+      action: 'disable',
+      value: 'localImport',
+      operator: 'EQUAL',
+    },
+    {
+      fromAttributeId: 'dataSource',
+      toAttributeId: 'values',
+      action: 'disable',
+      value: 'localImport',
+      operator: 'EQUAL',
+    },
+    {
       fromAttributeId: 'values',
       toAttributeId: 'valueLocation',
       action: 'disable',
@@ -93,6 +114,22 @@ export default {
         displayName: '数据',
         children: [
           {
+            type: 'radio',
+            displayName: '数据源',
+            attributeId: 'dataSource',
+            defaultValue: 'exampleData',
+            options: [
+              {
+                label: '样例数据',
+                value: 'exampleData',
+              },
+              {
+                label: '本地导入',
+                value: 'localImport',
+              },
+            ],
+          },
+          {
             type: 'select',
             displayName: '行头',
             attributeId: 'rows',
@@ -144,7 +181,7 @@ export default {
             type: 'radio',
             displayName: '数值置于',
             attributeId: 'valueLocation',
-            defaultValue: 'column',
+            defaultValue: 'row',
             options: [
               {
                 label: '行头',

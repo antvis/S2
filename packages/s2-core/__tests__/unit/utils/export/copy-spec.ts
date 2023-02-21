@@ -242,6 +242,33 @@ describe('List Table Core Data Process', () => {
     expect(data.split('_formatted').length).toEqual(33);
   });
 
+  it('should copy correct data when selected diagonal cells', () => {
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cells[21]), getCellMeta(cells[48])],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const dataContent = getCopyPlainContent(s2);
+
+    expect(dataContent).toMatchInlineSnapshot(`
+      "浙江省	
+      	
+      	
+      	
+      	
+      	
+      	
+      	
+      	宁波市"
+    `);
+  });
+
   it('should copy correct data with data filtered', () => {
     s2.setOptions({
       interaction: {
@@ -334,6 +361,43 @@ describe('List Table Core Data Process', () => {
           cell.cellType === CellTypes.DATA_CELL &&
           !(cell instanceof TableSeriesCell),
       )[20];
+
+    sss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getCopyPlainContent(sss);
+
+    expect(data).toBe(convertString(newLineText));
+  });
+
+  it('should not transform double quotes to single quotes when newline char is in data', () => {
+    const newLineText = `"1
+    2"`;
+    const sss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => `${v}元` }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: originalData.map((e) => {
+          return { ...e, city: newLineText };
+        }),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+
+    sss.render();
+
+    const cell = sss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[40];
 
     sss.interaction.changeState({
       cells: [getCellMeta(cell)],

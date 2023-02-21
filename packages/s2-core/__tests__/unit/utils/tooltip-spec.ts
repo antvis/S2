@@ -2,9 +2,11 @@ import {
   createFakeSpreadSheet,
   createMockCellInfo,
   createPivotSheet,
+  getContainer,
 } from 'tests/util/helpers';
 
 import { omit } from 'lodash';
+import * as dataConfig from 'tests/data/mock-dataset.json';
 import { CellData } from '@/data-set/cell-data';
 import type { CellMeta } from '@/common/interface/interaction';
 import {
@@ -29,6 +31,8 @@ import {
   TOOLTIP_CONTAINER_SHOW_CLS,
   TOOLTIP_CONTAINER_HIDE_CLS,
   type TooltipSummaryOptions,
+  PivotSheet,
+  type S2DataConfig,
 } from '@/index';
 import type { BaseFacet } from '@/facet/base-facet';
 import type { BBox } from '@/engine';
@@ -468,6 +472,71 @@ describe('Tooltip Utils Tests', () => {
       });
     };
 
+    const getTotalInfo = (isTotalCell: boolean, count: number) => {
+      const dataCells = s2.interaction.getPanelGroupAllDataCells();
+      const selectedCells = isTotalCell
+        ? [
+            dataCells.find((cell) => {
+              const meta = cell.getMeta();
+
+              return meta.isTotals;
+            })!,
+          ]
+        : dataCells
+            .filter((cell) => {
+              const meta = cell.getMeta();
+
+              return !meta.isTotals;
+            })
+            .slice(0, count);
+
+      const selectedCellMetas = selectedCells.map((cell) =>
+        cell.getMeta(),
+      ) as unknown as CellMeta[];
+
+      jest
+        .spyOn(s2.interaction, 'getCells')
+        .mockImplementationOnce(() => selectedCellMetas);
+
+      const tooltipData = getTooltipData({
+        cellInfos: [selectedCellMetas as TooltipData],
+        options: {
+          showSingleTips: false,
+        },
+        targetCell: null,
+        spreadsheet: s2,
+      });
+
+      const baseCellInfo = {
+        province: '浙江省',
+        sub_type: '桌子',
+        type: '家具',
+      };
+      const value = isTotalCell ? 15420 : 18375;
+      const selectedData = isTotalCell
+        ? [getCellData(15420)]
+        : [
+            getCellData(7789, false, {
+              ...baseCellInfo,
+              city: '杭州市',
+            }),
+            getCellData(2367, false, {
+              ...baseCellInfo,
+              city: '绍兴市',
+            }),
+            getCellData(3877, false, {
+              ...baseCellInfo,
+              city: '宁波市',
+            }),
+            getCellData(4342, false, {
+              ...baseCellInfo,
+              city: '舟山市',
+            }),
+          ];
+
+      return { tooltipData, value, selectedData };
+    };
+
     test('should get cell data info keys', () => {
       s2 = createFakeSpreadSheet();
 
@@ -503,77 +572,70 @@ describe('Tooltip Utils Tests', () => {
           col: colTotalOptions,
         });
         s2.render();
-
-        const dataCells = s2.interaction.getPanelGroupAllDataCells();
-        const selectedCells = isTotalCell
-          ? [
-              dataCells.find((cell) => {
-                const meta = cell.getMeta();
-
-                return meta.isTotals;
-              }),
-            ]
-          : dataCells
-              .filter((cell) => {
-                const meta = cell.getMeta();
-
-                return !meta.isTotals;
-              })
-              .slice(0, count);
-
-        const selectedCellMetas = selectedCells.map((cell) =>
-          cell!.getMeta(),
-        ) as unknown as CellMeta[];
-
-        jest
-          .spyOn(s2.interaction, 'getCells')
-          .mockImplementationOnce(() => selectedCellMetas);
-
-        const tooltipData = getTooltipData({
-          cellInfos: [selectedCellMetas as TooltipData],
-          options: {
-            showSingleTips: false,
-          },
-          targetCell: null,
-          spreadsheet: s2,
-        });
-
-        const baseCellInfo = {
-          province: '浙江省',
-          sub_type: '桌子',
-          type: '家具',
-        };
-        const value = isTotalCell ? 15420 : 18375;
-        const selectedData = isTotalCell
-          ? [getCellData(15420)]
-          : [
-              getCellData(7789, false, {
-                ...baseCellInfo,
-                city: '杭州市',
-              }),
-              getCellData(2367, false, {
-                ...baseCellInfo,
-                city: '绍兴市',
-              }),
-              getCellData(3877, false, {
-                ...baseCellInfo,
-                city: '宁波市',
-              }),
-              getCellData(4342, false, {
-                ...baseCellInfo,
-                city: '舟山市',
-              }),
-            ];
+        const { tooltipData, value, selectedData } = getTotalInfo(
+          isTotalCell,
+          count,
+        );
 
         expect(tooltipData.summaries).toStrictEqual([
           {
             name: '数量',
             value,
             selectedData,
+            originValue: value,
           },
         ]);
 
         s2.destroy();
+      },
+    );
+
+    test.each([
+      { count: 1, isTotalCell: true, name: '单选' },
+      { count: 4, isTotalCell: false, name: '多选' },
+    ])(
+      `should get data cell summary data info for %o when the meta set formatted`,
+      ({ count, isTotalCell }) => {
+        const customMeta = dataConfig.meta.map((meta) => {
+          if (meta.name === '数量') {
+            return {
+              ...meta,
+              formatter: (value: number) => `${value}%`,
+            };
+          }
+
+          return meta;
+        });
+
+        s2 = new PivotSheet(
+          getContainer(),
+          {
+            ...dataConfig,
+            data: dataConfig.data.concat(dataConfig.totalData as any),
+            meta: customMeta as S2DataConfig['meta'],
+          },
+          {
+            totals: {
+              row: rowTotalOptions,
+              col: colTotalOptions,
+            },
+          },
+        );
+        s2.render();
+
+        const { tooltipData, value, selectedData } = getTotalInfo(
+          isTotalCell,
+          count,
+        );
+
+        expect(tooltipData.summaries).toStrictEqual([
+          {
+            name: '数量',
+            value: `${value}%`,
+            selectedData,
+            originValue: value,
+          },
+        ]);
       },
     );
 
@@ -618,6 +680,7 @@ describe('Tooltip Utils Tests', () => {
                   type: '办公用品',
                 }),
               ],
+              originValue: isTotalCell ? 43098 : 15420,
             },
           ],
         });
