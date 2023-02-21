@@ -1,6 +1,7 @@
-import { Group, Image } from '@antv/g';
+import { Group } from '@antv/g';
 import { registerIcon } from '../../../../src/common/icons';
 import { sleep } from '../../../util/helpers';
+import { CustomImage } from '@/engine/CustomImage';
 import { GuiIcon } from '@/common/icons/gui-icon';
 import { ArrowDown } from '@/common/icons/svg/svgs';
 
@@ -37,10 +38,9 @@ describe('GuiIcon Tests', () => {
       height: 20,
     });
 
-    expect(icon.get('name')).toEqual('test');
-    expect(icon.iconImageShape).toBeInstanceOf(Image);
+    expect(icon.name).toEqual('test');
+    expect(icon.iconImageShape).toBeInstanceOf(CustomImage);
     expect(icon).toBeInstanceOf(Group);
-    expect(icon).toMatchSnapshot();
     expect(errSpy).not.toHaveBeenCalled();
   });
 

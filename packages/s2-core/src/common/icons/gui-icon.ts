@@ -64,10 +64,7 @@ export class GuiIcon extends Group {
        * 2、svg本地文件（兼容老方式，可以改颜色）
        * 3、线上支持的图片地址
        */
-      if (
-        svg &&
-        (svg.includes('data:image/svg+xml') || this.isOnlineLink(svg))
-      ) {
+      if (svg && (svg.includes(SVG_CONTENT_TYPE) || this.isOnlineLink(svg))) {
         /*
          * 传入 base64 字符串
          * 或者 online 链接
@@ -107,7 +104,7 @@ export class GuiIcon extends Group {
    * 2. http://xxx.svg
    * 3. //xxx.svg
    */
-  public isOnlineLink = (src: string) => /^(https?:)?(\/\/)/.test(src);
+  public isOnlineLink = (src: string) => /^(?:https?:)?(?:\/\/)/.test(src);
 
   private render() {
     const { name, fill } = this.cfg;
