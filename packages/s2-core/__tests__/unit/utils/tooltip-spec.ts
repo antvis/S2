@@ -611,6 +611,7 @@ describe('Tooltip Utils Tests', () => {
           getContainer(),
           {
             ...dataConfig,
+            data: dataConfig.data.concat(dataConfig.totalData as any),
             meta: customMeta as S2DataConfig['meta'],
           },
           {
