@@ -6,11 +6,11 @@ import { Footer } from '@antv/dumi-theme-antv/dist/slots/Footer';
 const Playground: React.FC = () => {
   return (
     <>
-    <Header/>
-    <Page />
-    <Footer />
+      <Header />
+      <Page />
+      <Footer />
     </>
-  )
+  );
 };
 
 export default Playground;

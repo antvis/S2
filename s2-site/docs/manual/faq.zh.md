@@ -177,7 +177,7 @@ s2.render(false)
 
 <embed src="@/docs/common/packages.zh.md"></embed>
 
-配套的 [分析组件](/examples/gallery#category-表格组件)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+配套的 [分析组件](/docs/manual/basic/analysis/editable-mode)，目前还没有 `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
 
 ### 如何贡献代码？
 

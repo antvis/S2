@@ -11,6 +11,7 @@ import {
 } from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
+jest.mock('@/ui/hd-adapter');
 
 describe('Interaction Data Cell Multi Selection Tests', () => {
   let dataCellMultiSelection: DataCellMultiSelection;

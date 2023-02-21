@@ -25,6 +25,7 @@ const s2options: S2Options = {
   interaction: {
     linkFields: ['province'],
   },
+  hdAdapter: false,
 };
 
 const dataCfg: S2DataConfig = {

@@ -31,7 +31,7 @@ describe('cornerBBox test', () => {
           },
           style: {
             colCell: {
-              hideMeasureColumn: false,
+              hideValue: false,
             },
           },
         },
