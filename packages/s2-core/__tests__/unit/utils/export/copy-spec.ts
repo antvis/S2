@@ -15,6 +15,7 @@ import {
   CopyMIMEType,
   getCopyData,
   getSelectedData,
+  registerTransformer,
 } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { CopyType, S2Event } from '@/common/constant';
@@ -1331,5 +1332,24 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       桌子	沙发	小计	笔	纸张
       number	number	小计	number	number"
     `);
+  });
+
+  test('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: false,
+      },
+    });
+    s2.render();
+
+    registerTransformer(CopyMIMEType.PLAIN, () => {
+      return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+    });
+
+    s2.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+
+    expect(getSelectedData(s2)).toEqual('custom data');
   });
 });
