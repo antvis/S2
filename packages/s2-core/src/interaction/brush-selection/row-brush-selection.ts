@@ -11,10 +11,6 @@ import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
 export class RowBrushSelection extends BaseBrushSelection {
-  public displayedCells: RowCell[] = [];
-
-  public brushRangeCells: RowCell[] = [];
-
   protected bindMouseDown() {
     this.spreadsheet.on(S2Event.ROW_CELL_MOUSE_DOWN, (event) => {
       super.mouseDown(event);

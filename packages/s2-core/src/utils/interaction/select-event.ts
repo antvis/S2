@@ -27,7 +27,7 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
 
 export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
-  const { id, colIndex, rowIndex, rowQuery } = meta;
+  const { id, colIndex, rowIndex, rowQuery } = meta || {};
   return {
     id,
     colIndex,

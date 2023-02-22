@@ -426,7 +426,6 @@ export class BaseBrushSelection
     }
 
     this.setMoveDistanceFromCanvas({ x, y }, needScrollForX, needScrollForY);
-
     this.renderPrepareSelected({
       x: newX,
       y: newY,
