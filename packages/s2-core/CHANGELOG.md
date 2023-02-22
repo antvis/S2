@@ -1,3 +1,26 @@
+# [@antv/s2-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-v2.0.0-next.4...@antv/s2-v2.0.0-next.5) (2023-02-22)
+
+
+### Bug Fixes
+
+* cornerheader无列头时不渲染序号列 ([abf5e68](https://github.com/antvis/S2/commit/abf5e6821209665a6c9aea9050e069eaa4fe8b46))
+* **layout:** 修复存在列总计但不存在列小计时, 隐藏其兄弟节点后单元格坐标偏移 close [#1993](https://github.com/antvis/S2/issues/1993) ([#2047](https://github.com/antvis/S2/issues/2047)) ([2ae663e](https://github.com/antvis/S2/commit/2ae663e1c46a3c8cb04b79d357fc033314f4cf77))
+* **layout:** 修复存在多列头多数值且数值置于行头时,列总计单元格高度不对 close [#1715](https://github.com/antvis/S2/issues/1715) [#2049](https://github.com/antvis/S2/issues/2049) ([#2051](https://github.com/antvis/S2/issues/2051)) ([a415f46](https://github.com/antvis/S2/commit/a415f465e8fa355a5b68d556f6fa645e3a72b5b7))
+* **layout:** 修复无列头时行头对应的角头不显示 close [#1929](https://github.com/antvis/S2/issues/1929) ([#2026](https://github.com/antvis/S2/issues/2026)) ([c073578](https://github.com/antvis/S2/commit/c073578dc008ef83a2877041830be18f827c7341))
+* **layout:** 修复树状模式下无列头时行头对应的角头不显示 ([#2041](https://github.com/antvis/S2/issues/2041)) ([1b49667](https://github.com/antvis/S2/commit/1b49667378b3f54bc277ab8255db757f844a0107))
+* 修复 2k 显示器切换到 MacBook 后表格渲染模糊 close [#2072](https://github.com/antvis/S2/issues/2072) ([#2074](https://github.com/antvis/S2/issues/2074)) ([a98d3fd](https://github.com/antvis/S2/commit/a98d3fd20ff5e3f817f1ac269504719ce7967f04))
+* 修复单元格宽高为0时的无意义渲染 ([#2024](https://github.com/antvis/S2/issues/2024)) ([9f952fd](https://github.com/antvis/S2/commit/9f952fd4bfd280b657b589e5912399f89bb1f0ea))
+* 修复合并 master 的 copy 相关单测 ([8587137](https://github.com/antvis/S2/commit/8587137703b89152f67335908e47e04ef6d41997))
+* 自定义 svg 支持无后缀的在线链接 ([#2065](https://github.com/antvis/S2/issues/2065)) ([4602b42](https://github.com/antvis/S2/commit/4602b42406689706f91e634d0453335eff8dcada))
+
+
+### Features
+
+* tooltip summaries 返回原始数据 ([#2044](https://github.com/antvis/S2/issues/2044)) ([f8efdd9](https://github.com/antvis/S2/commit/f8efdd997b8e76b4aab7615fb16af644a42d3d8e))
+* 增加自定义行头最大固定宽度的功能 ([#2069](https://github.com/antvis/S2/issues/2069)) ([4db301d](https://github.com/antvis/S2/commit/4db301db0971fca40e65d43c417ca4a36db66493))
+* 新增链接跳转配置 ([5e08055](https://github.com/antvis/S2/commit/5e08055b52a125e75cbc41bb748d247ef25ba016))
+* 更新英语文档，使用依赖包进行翻译 ([#2067](https://github.com/antvis/S2/issues/2067)) ([f271684](https://github.com/antvis/S2/commit/f2716847ec0d06a0867eabe16a7f5e2e3a9263ee))
+
 # [@antv/s2-v1.41.1](https://github.com/antvis/S2/compare/@antv/s2-v1.41.0...@antv/s2-v1.41.1) (2023-02-17)
 
 
