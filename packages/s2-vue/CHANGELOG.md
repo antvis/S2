@@ -1,3 +1,5 @@
+# [@antv/s2-vue-v2.0.0-next.5](https://github.com/antvis/S2/compare/@antv/s2-vue-v2.0.0-next.4...@antv/s2-vue-v2.0.0-next.5) (2023-02-22)
+
 # [@antv/s2-vue-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-vue-v1.4.0...@antv/s2-vue-v1.5.0) (2022-12-09)
 
 ### Bug Fixes
