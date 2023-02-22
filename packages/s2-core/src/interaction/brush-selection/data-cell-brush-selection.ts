@@ -1,6 +1,6 @@
 import { isEmpty, range } from 'lodash';
 import { DataCell } from '../../cell/data-cell';
-import { InterceptType, S2Event } from '../../common/constant';
+import { S2Event } from '../../common/constant';
 import {
   CellTypes,
   InteractionBrushSelectionStage,
@@ -10,9 +10,6 @@ import type { BrushRange, CellMeta, ViewMeta } from '../../common/interface';
 import { afterSelectDataCells } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush data cell selection interaction
- */
 export class DataCellBrushSelection extends BaseBrushSelection {
   public displayedCells: DataCell[] = [];
 

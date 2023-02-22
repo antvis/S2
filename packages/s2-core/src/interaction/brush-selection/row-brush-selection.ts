@@ -5,18 +5,11 @@ import {
   InteractionBrushSelectionStage,
   InteractionStateName,
 } from '../../common/constant/interaction';
-import type {
-  BrushRange,
-  OnUpdateCells,
-  ViewMeta,
-} from '../../common/interface';
+import type { OnUpdateCells, ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush selection interaction
- */
 export class RowBrushSelection extends BaseBrushSelection {
   public displayedCells: RowCell[] = [];
 
@@ -74,7 +67,7 @@ export class RowBrushSelection extends BaseBrushSelection {
       {
         // 行头过长时，可以单独进行滚动，所以需要加上滚动的距离
         minX: start.x + hRowScrollX,
-        // 由于刷选的时候，是以列头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
+        // 由于刷选的时候，是以行头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
         minY: start.y - cornerBBox.height + scrollY,
         maxX: end.x + hRowScrollX,
         maxY: end.y - cornerBBox.height + scrollY,
@@ -90,8 +83,7 @@ export class RowBrushSelection extends BaseBrushSelection {
 
   // 最终刷选的cell
   protected updateSelectedCells() {
-    const brushRange = this.getBrushRange();
-    const selectedRowNodes = this.getSelectedRowNodes(brushRange);
+    const selectedRowNodes = this.getSelectedRowNodes();
     const scrollBrushRangeCells =
       this.getScrollBrushRangeCells(selectedRowNodes);
     const selectedCellMetas = map(scrollBrushRangeCells, getCellMeta);
@@ -118,17 +110,8 @@ export class RowBrushSelection extends BaseBrushSelection {
     return root.updateCells(root.getAllRowHeaderCells());
   };
 
-  private getSelectedRowNodes = (brushRange: BrushRange): Node[] => {
-    return this.spreadsheet.getRowNodes().filter((node) => {
-      const { start, end } = brushRange;
-
-      return (
-        node.rowIndex >= start.rowIndex &&
-        node.rowIndex <= end.rowIndex &&
-        node.colIndex >= start.colIndex &&
-        node.colIndex <= end.colIndex
-      );
-    });
+  private getSelectedRowNodes = (): Node[] => {
+    return this.spreadsheet.getRowNodes().filter(this.isInBrushRange);
   };
 
   private getScrollBrushRangeCells(nodes: Node[]) {

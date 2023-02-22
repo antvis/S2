@@ -12,9 +12,6 @@ import { getCellMeta } from '../../utils/interaction/select-event';
 import type { OnUpdateCells } from '../../common/interface';
 import { BaseBrushSelection } from './base-brush-selection';
 
-/**
- * Panel area's brush col cell selection interaction
- */
 export class ColBrushSelection extends BaseBrushSelection {
   public displayedCells: ColCell[] = [];
 
