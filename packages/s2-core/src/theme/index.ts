@@ -202,8 +202,8 @@ export const getTheme = (
         padding: {
           top: 4,
           right: 8,
-          bottom: 0,
-          left: 4,
+          bottom: 4,
+          left: 8,
         },
       },
       icon: {
