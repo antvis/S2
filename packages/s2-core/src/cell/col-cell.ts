@@ -155,7 +155,12 @@ export class ColCell extends HeaderCell {
 
     this.iconPosition = {
       x: iconStart,
-      y: getVerticalIconPositionByText(icon?.size, y, fontSize, textBaseline),
+      y: getVerticalIconPositionByText(
+        icon?.size!,
+        y,
+        fontSize!,
+        textBaseline!,
+      ),
     };
 
     return { x: textStart, y };
