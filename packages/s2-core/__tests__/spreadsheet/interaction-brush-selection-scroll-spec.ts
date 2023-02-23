@@ -191,7 +191,7 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     await expectScrollBrush(s2, dataCell);
   });
 
-  test('should scroll when mouse outside row cell', async () => {
+  test('should vertical scroll when mouse outside row cell', async () => {
     const s2 = createPivotSheet(
       {
         width: 400,
