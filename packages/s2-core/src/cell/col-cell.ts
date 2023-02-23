@@ -18,6 +18,7 @@ import { CustomRect, type SimpleBBox } from '../engine';
 import { Frame, type ColHeaderConfig } from '../facet/header';
 import {
   getFixedTextIconPosition,
+  getVerticalIconPositionByText,
   getVerticalPosition,
 } from '../utils/cell/cell';
 import { renderIcon, renderLine } from '../utils/g-renders';
@@ -128,7 +129,7 @@ export class ColCell extends HeaderCell {
     this.handleViewport(viewport);
 
     const { icon, cell } = this.getStyle()!;
-    const { textAlign, textBaseline } = this.getTextStyle();
+    const { textAlign, textBaseline, fontSize } = this.getTextStyle();
 
     const actionIconSpace = this.getActionIconsWidth();
 
@@ -152,7 +153,10 @@ export class ColCell extends HeaderCell {
 
     const y = getVerticalPosition(contentBox, textBaseline!);
 
-    this.iconPosition = { x: iconStart, y };
+    this.iconPosition = {
+      x: iconStart,
+      y: getVerticalIconPositionByText(icon?.size, y, fontSize, textBaseline),
+    };
 
     return { x: textStart, y };
   }

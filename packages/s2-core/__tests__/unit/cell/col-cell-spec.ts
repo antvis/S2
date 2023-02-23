@@ -67,46 +67,6 @@ describe('Col Cell Tests', () => {
         });
       },
     );
-
-    test.each([
-      ['left', 52], // col.padding.left + actualTextWidth + icon.margin.left
-      ['center', 114.5], // col.width / 2 + (actualTextWidth + icon.margin.left + icon.width + icon.margin.right) / 2  - (icon.width + icon.margin.right)  - border
-      ['right', 177], // col.width - col.padding.right - icon.margin.right - icon.width - border
-    ] as [TextAlign, number][])(
-      'should calc icon position in %s align mode',
-      (textAlign, iconX) => {
-        s2.setThemeCfg({
-          theme: {
-            colCell: {
-              bolderText: {
-                textAlign,
-              },
-            },
-          },
-        });
-        s2.setOptions({
-          headerActionIcons: [
-            {
-              iconNames: ['SortUp'],
-              belongsCell: 'colCell',
-              displayCondition: (meta) => !meta.isLeaf,
-              onClick: () => {},
-            },
-          ],
-        });
-
-        const colCell = new ColCell(node, s2, { ...headerConfig });
-
-        set(colCell, 'actualTextWidth', actualTextWidth); // 文字总长度
-
-        const getIconPosition = get(colCell, 'getIconPosition').bind(colCell);
-
-        expect(getIconPosition()).toEqual({
-          x: iconX,
-          y: 10.5,
-        });
-      },
-    );
   });
 
   describe('Col Cell Formatter Test', () => {

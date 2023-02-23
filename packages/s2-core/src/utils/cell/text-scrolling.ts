@@ -1,5 +1,9 @@
 import type { AreaRange } from '../../common/interface';
 import { NormalizedAlign } from '../normalize';
+/*
+ * TODO: 在之前行列头添加了字段标记的能力，icon condition 可以设置位于文字的左边还是右边，而 action icon 都只能在右边
+ *       这部分之前的版本并没有去适配，会出现设置不生效，以及 condition icon 和 action icon 相互重叠的问题，后续需要处理
+ */
 
 /**
  * 动态调整滚动过程中列头的可视区域
