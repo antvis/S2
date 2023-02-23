@@ -455,10 +455,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-        currentNode.height =
-          nodeHeight +
-          this.rowCellTheme?.padding?.top! +
-          this.rowCellTheme?.padding?.bottom!;
+        currentNode.height = nodeHeight;
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;
