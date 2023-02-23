@@ -1,7 +1,7 @@
 export interface ScrollOffset {
   scrollX?: number;
   scrollY?: number;
-  hRowScrollX?: number;
+  rowHeaderScrollX?: number;
 }
 
 export interface AreaRange {

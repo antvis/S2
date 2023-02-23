@@ -602,6 +602,20 @@ function MainLayout() {
                 </Button>
                 <Button
                   size="small"
+                  onClick={() => {
+                    clearInterval(scrollTimer.current);
+                    s2Ref.current.updateScrollOffset({
+                      rowHeaderOffsetX: {
+                        value: 100,
+                        animate: true,
+                      },
+                    });
+                  }}
+                >
+                  滚动行头
+                </Button>
+                <Button
+                  size="small"
                   danger
                   onClick={() => {
                     if (

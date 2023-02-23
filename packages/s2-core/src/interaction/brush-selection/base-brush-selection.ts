@@ -15,6 +15,7 @@ import type {
   BrushAutoScrollConfig,
   BrushPoint,
   BrushRange,
+  OffsetConfig,
   OnUpdateCells,
   S2CellType,
   ViewMeta,
@@ -40,8 +41,7 @@ import { BaseEvent } from '../base-interaction';
 import type { Rect } from '../../common/interface';
 
 /**
- * Panel area's brush selection interaction
- * 只有 data cell 存在滚动刷选
+ * 刷选基类, dataCell, rowCell, colCell 支持滚动刷选
  */
 export class BaseBrushSelection
   extends BaseEvent
@@ -102,7 +102,7 @@ export class BaseBrushSelection
   }
 
   // 默认是 Data cell 的绘制区
-  protected isPointInCanvas(point: { x: number; y: number }): boolean {
+  protected isPointInCanvas(point: Point): boolean {
     const { height, width } = this.spreadsheet.facet.getCanvasHW();
     const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
@@ -353,7 +353,7 @@ export class BaseBrushSelection
     }
   };
 
-  private autoScroll = () => {
+  private autoScroll = (isRowHeader = false) => {
     if (
       this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED ||
       !this.scrollAnimationComplete
@@ -362,7 +362,15 @@ export class BaseBrushSelection
     }
     const config = this.autoScrollConfig;
     const scrollOffset = this.spreadsheet.facet.getScrollOffset();
-    const offsetCfg = {
+    const key: keyof OffsetConfig = isRowHeader
+      ? 'rowHeaderOffsetX'
+      : 'offsetX';
+
+    const offsetCfg: OffsetConfig = {
+      rowHeaderOffsetX: {
+        value: scrollOffset.rowHeaderScrollX,
+        animate: true,
+      },
       offsetX: {
         value: scrollOffset.scrollX,
         animate: true,
@@ -374,6 +382,7 @@ export class BaseBrushSelection
     };
 
     const { x: deltaX, y: deltaY } = this.getNextScrollDelta(config);
+
     if (deltaY === 0 && deltaX === 0) {
       this.clearAutoScroll();
       return;
@@ -382,10 +391,12 @@ export class BaseBrushSelection
     if (config.y.scroll) {
       offsetCfg.offsetY.value += deltaY;
     }
+
     if (config.x.scroll) {
-      offsetCfg.offsetX.value += deltaX;
-      if (offsetCfg.offsetX.value < 0) {
-        offsetCfg.offsetX.value = 0;
+      const offset = offsetCfg[key];
+      offset.value += deltaX;
+      if (offset.value < 0) {
+        offset.value = 0;
       }
     }
 
@@ -403,40 +414,45 @@ export class BaseBrushSelection
     );
   };
 
-  protected handleScroll = throttle((x: number, y: number) => {
-    if (
-      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
-    ) {
-      return;
-    }
+  protected handleScroll = throttle(
+    (x: number, y: number, isRowHeader = false) => {
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
+        return;
+      }
 
-    const {
-      x: { value: newX, needScroll: needScrollForX },
-      y: { value: newY, needScroll: needScrollForY },
-    } = this.formatBrushPointForScroll({ x, y });
+      const {
+        x: { value: newX, needScroll: needScrollForX },
+        y: { value: newY, needScroll: needScrollForY },
+      } = this.formatBrushPointForScroll({ x, y });
 
-    const config = this.autoScrollConfig;
-    if (needScrollForY) {
-      config.y.value = y;
-      config.y.scroll = true;
-    }
-    if (needScrollForX) {
-      config.x.value = x;
-      config.x.scroll = true;
-    }
+      const config = this.autoScrollConfig;
+      if (needScrollForY) {
+        config.y.value = y;
+        config.y.scroll = true;
+      }
+      if (needScrollForX) {
+        config.x.value = x;
+        config.x.scroll = true;
+      }
 
-    this.setMoveDistanceFromCanvas({ x, y }, needScrollForX, needScrollForY);
-    this.renderPrepareSelected({
-      x: newX,
-      y: newY,
-    });
+      this.setMoveDistanceFromCanvas({ x, y }, needScrollForX, needScrollForY);
+      this.renderPrepareSelected({
+        x: newX,
+        y: newY,
+      });
 
-    if (needScrollForY || needScrollForX) {
-      this.clearAutoScroll();
-      this.autoScroll();
-      this.autoScrollIntervalId = setInterval(this.autoScroll, 16);
-    }
-  }, 30);
+      if (needScrollForY || needScrollForX) {
+        this.clearAutoScroll();
+        this.autoScroll(isRowHeader);
+        this.autoScrollIntervalId = setInterval(() => {
+          this.autoScroll(isRowHeader);
+        }, 16);
+      }
+    },
+    30,
+  );
 
   protected clearAutoScroll = () => {
     if (this.autoScrollIntervalId) {
@@ -560,7 +576,7 @@ export class BaseBrushSelection
     });
   }
 
-  protected onUpdateCells: OnUpdateCells = (root, defaultOnUpdateCells) => {
+  protected onUpdateCells: OnUpdateCells = (_, defaultOnUpdateCells) => {
     return defaultOnUpdateCells();
   };
 
@@ -668,13 +684,13 @@ export class BaseBrushSelection
     }
   };
 
-  public autoBrushScroll(point: Point) {
+  public autoBrushScroll(point: Point, isRowHeader = false) {
     this.clearAutoScroll();
 
     if (!this.isPointInCanvas(point)) {
       const deltaX = point?.x - this.endBrushPoint?.x;
       const deltaY = point?.y - this.endBrushPoint?.y;
-      this.handleScroll(deltaX, deltaY);
+      this.handleScroll(deltaX, deltaY, isRowHeader);
 
       return true;
     }

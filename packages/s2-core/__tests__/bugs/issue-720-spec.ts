@@ -33,7 +33,7 @@ describe('Sync Row Scroll Offset Tests', () => {
   });
 
   test('should not reset row scroll bar offset when resize end', () => {
-    s2.store.set('hRowScrollX', 20);
+    s2.store.set('rowHeaderScrollX', 20);
     s2.render(false);
 
     s2.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, {
@@ -55,6 +55,6 @@ describe('Sync Row Scroll Offset Tests', () => {
       },
     } as any);
 
-    expect(s2.store.get('hRowScrollX')).not.toEqual(0);
+    expect(s2.store.get('rowHeaderScrollX')).not.toEqual(0);
   });
 });

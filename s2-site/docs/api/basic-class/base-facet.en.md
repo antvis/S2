@@ -160,6 +160,6 @@ export interface OffsetConfig {
 export interface ScrollOffset {
   scrollX?: number;
   scrollY?: number;
-  hRowScrollX?: number;
+  rowHeaderScrollX?: number;
 }
 ```

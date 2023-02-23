@@ -1,3 +1,4 @@
+import type { Point } from '@antv/g-canvas';
 import { map } from 'lodash';
 import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
@@ -17,7 +18,7 @@ export class RowBrushSelection extends BaseBrushSelection {
     });
   }
 
-  protected isPointInCanvas(point: { x: number; y: number }) {
+  protected isPointInCanvas(point: Point) {
     // 获取行头的区域范围
     const { height: maxY } = this.spreadsheet.facet.getCanvasHW();
     const { minX, height: minY, maxX } = this.spreadsheet.facet.cornerBBox;
@@ -38,7 +39,7 @@ export class RowBrushSelection extends BaseBrushSelection {
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
       const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      if (this.autoBrushScroll(pointInCanvas)) {
+      if (this.autoBrushScroll(pointInCanvas, true)) {
         return;
       }
 
@@ -53,8 +54,8 @@ export class RowBrushSelection extends BaseBrushSelection {
   protected isInBrushRange = (meta: ViewMeta | Node) => {
     // start、end 都是相对位置
     const { start, end } = this.getBrushRange();
-    const { scrollY, hRowScrollX } = this.spreadsheet.facet.getScrollOffset();
-
+    const { scrollY, rowHeaderScrollX } =
+      this.spreadsheet.facet.getScrollOffset();
     const { cornerBBox } = this.spreadsheet.facet;
     // 绝对位置，不随滚动条变化
     const { x = 0, y = 0, width = 0, height = 0 } = meta;
@@ -62,10 +63,10 @@ export class RowBrushSelection extends BaseBrushSelection {
     return this.rectanglesIntersect(
       {
         // 行头过长时，可以单独进行滚动，所以需要加上滚动的距离
-        minX: start.x + hRowScrollX,
+        minX: start.x + rowHeaderScrollX,
         // 由于刷选的时候，是以行头的左上角为起点，所以需要减去角头的宽度，在滚动后需要加上滚动条的偏移量
         minY: start.y - cornerBBox.height + scrollY,
-        maxX: end.x + hRowScrollX,
+        maxX: end.x + rowHeaderScrollX,
         maxY: end.y - cornerBBox.height + scrollY,
       },
       {
@@ -77,7 +78,7 @@ export class RowBrushSelection extends BaseBrushSelection {
     );
   };
 
-  // 最终刷选的cell
+  // 最终刷选的 cells
   protected updateSelectedCells() {
     const selectedRowNodes = this.getSelectedRowNodes();
     const scrollBrushRangeCells =

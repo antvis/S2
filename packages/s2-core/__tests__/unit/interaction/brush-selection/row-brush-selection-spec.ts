@@ -247,7 +247,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     mockRootInteraction.getAllRowHeaderCells = () => currentRow;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.facet.setScrollOffset({
-      hRowScrollX: 100,
+      rowHeaderScrollX: 100,
       scrollY: 0,
     });
     mockSpreadSheetInstance.render();
