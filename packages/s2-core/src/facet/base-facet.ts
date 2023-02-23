@@ -616,9 +616,11 @@ export abstract class BaseFacet {
           this.hRowScrollBar,
         );
 
+        const { scrollX, scrollY } = this.getScrollOffset();
         const position: CellScrollPosition = {
-          scrollX: scrollBarOffsetX,
-          scrollY: 0,
+          scrollX,
+          scrollY,
+          rowHeaderScrollX: scrollBarOffsetX,
         };
 
         this.hRowScrollBar.updateThumbOffset(scrollBarOffsetX, false);
@@ -1326,7 +1328,7 @@ export abstract class BaseFacet {
     this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
     this.clip(scrollX, scrollY);
     if (!skipScrollEvent) {
-      this.emitScrollEvent({ scrollX, scrollY });
+      this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });
     }
     this.onAfterScroll();
   }

@@ -47,7 +47,7 @@ export const pivotSheetDataCfg: S2DataConfig = {
 };
 
 export const s2Options: SheetComponentOptions = {
-  debug: false,
+  debug: true,
   width: 600,
   height: 400,
   showSeriesNumber: false,

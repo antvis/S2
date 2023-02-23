@@ -8,7 +8,7 @@ function addScrollRowHeaderButton(s2: SpreadSheet) {
 
   btn.addEventListener('click', () => {
     s2.updateScrollOffset({
-      rowHeaderScrollX: {
+      rowHeaderOffsetX: {
         value: 50,
         animate: true,
       },
