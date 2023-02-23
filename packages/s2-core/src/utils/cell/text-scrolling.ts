@@ -4,7 +4,7 @@ import { NormalizedAlign } from '../normalize';
 /**
  * 动态调整滚动过程中列头的可视区域
  */
-const adjustTextIconPositionWhileScrolling = (
+export const adjustTextIconPositionWhileScrolling = (
   viewportArea: AreaRange,
   contentArea: AreaRange,
   style: {
@@ -26,7 +26,7 @@ const adjustTextIconPositionWhileScrolling = (
 
   const paddingArea: AreaRange = {
     start: contentArea.start - padding.start,
-    size: contentArea.start + padding.start + padding.end,
+    size: contentArea.size + padding.start + padding.end,
   };
   const paddingAreaEnd = paddingArea.start + paddingArea.size;
   const contentAreaEnd = contentArea.start + contentArea.size;
@@ -86,12 +86,12 @@ const adjustTextIconPositionWhileScrolling = (
      */
     const area: AreaRange = {
       start:
-        viewportArea.start + align !== NormalizedAlign.End ? padding.start : 0,
+        viewportArea.start +
+        (align !== NormalizedAlign.End ? padding.start : 0),
       size:
-        contentArea.size - (viewportArea.start - contentArea.start) - align !==
-        NormalizedAlign.End
-          ? padding.start
-          : 0,
+        contentArea.size -
+        (viewportArea.start - contentArea.start) -
+        (align !== NormalizedAlign.End ? padding.start : 0),
     };
 
     if (area.size < totalSize) {
@@ -114,13 +114,11 @@ const adjustTextIconPositionWhileScrolling = (
      *   +-------------------+
      */
     const area: AreaRange = {
-      start:
-        viewportArea.start + align !== NormalizedAlign.Start ? padding.end : 0,
+      start: contentArea.start,
       size:
-        contentArea.size - (viewportArea.start - contentArea.start) - align !==
-        NormalizedAlign.Start
-          ? padding.end
-          : 0,
+        contentArea.size -
+        (contentAreaEnd - viewportAreaEnd) -
+        (align !== NormalizedAlign.Start ? padding.end : 0),
     };
 
     if (area.size < totalSize) {

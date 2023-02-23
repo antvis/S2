@@ -1,4 +1,4 @@
-import type { PointLike, Text } from '@antv/g';
+import type { PointLike } from '@antv/g';
 import { find, get } from 'lodash';
 import {
   CellTypes,
@@ -11,9 +11,13 @@ import type { RowHeaderConfig } from '../facet/header';
 import {
   CellBorderPosition,
   CellClipBox,
+  type AreaRange,
   type ViewMeta,
 } from '../common/interface';
-import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
+import {
+  getFixedTextIconPosition,
+  getVerticalIconPositionByText,
+} from '../utils/cell/cell';
 import { renderCircle, renderTreeIcon } from '../utils/g-renders';
 import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
 import {
@@ -21,15 +25,19 @@ import {
   getResizeAreaAttrs,
 } from '../utils/interaction/resize';
 import { isMobile } from '../utils/is-mobile';
-import { getAdjustPosition } from '../utils/text-absorption';
 import { CustomRect } from '../engine';
 import { checkIsLinkField } from '../utils';
 import type { SimpleBBox } from './../engine/interface';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
+import { normalizeTextAlign } from './../utils/normalize';
+import { adjustTextIconPositionWhileScrolling } from './../utils/cell/text-scrolling';
 
 export class RowCell extends HeaderCell {
   protected declare headerConfig: RowHeaderConfig;
+
+  /** icon 绘制起始坐标 */
+  protected iconPosition: PointLike;
 
   public get cellType() {
     return CellTypes.ROW_CELL;
@@ -143,7 +151,7 @@ export class RowCell extends HeaderCell {
     const contentIndent = this.getContentIndent();
 
     const iconX = x + contentIndent;
-    const iconY = this.getIconYPosition();
+    const iconY = this.iconPosition.y;
 
     this.treeIcon = renderTreeIcon({
       group: this,
@@ -346,55 +354,7 @@ export class RowCell extends HeaderCell {
   }
 
   protected getIconPosition() {
-    // 不同 textAlign 下，对应的文字绘制点 x 不同
-    const { x = 0, y = 0, textAlign } = (this.textShape as Text).style;
-    const iconMarginLeft = this.getStyle()!.icon!.margin!.left!;
-
-    const textX = +x;
-    const textY = +y;
-
-    if (textAlign === 'left') {
-      /**
-       * attrs.x
-       *   |
-       *   v
-       *   +---------+  +----+
-       *   |  text   |--|icon|
-       *   +---------+  +----+
-       */
-      return {
-        x: textX + this.actualTextWidth + iconMarginLeft,
-        y: textY,
-      };
-    }
-
-    if (textAlign === 'right') {
-      /**
-       *           attrs.x
-       *             |
-       *             v
-       *   +---------+  +----+
-       *   |  text   |--|icon|
-       *   +---------+  +----+
-       */
-      return {
-        x: textX + iconMarginLeft,
-        y: textY,
-      };
-    }
-
-    /**
-     *      attrs.x
-     *        |
-     *        v
-     *   +---------+  +----+
-     *   |  text   |--|icon|
-     *   +---------+  +----+
-     */
-    return {
-      x: textX + this.actualTextWidth / 2 + iconMarginLeft,
-      y: textY,
-    };
+    return this.iconPosition;
   }
 
   protected getMaxTextWidth(): number {
@@ -415,33 +375,54 @@ export class RowCell extends HeaderCell {
   }
 
   protected getTextPosition(): PointLike {
+    const { scrollY, viewportHeight } = this.headerConfig;
     const textArea = this.getTextArea();
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const textStyle = this.getTextStyle();
+    const { cell, icon: iconStyle } = this.getStyle()!;
 
-    const { fontSize } = this.getTextStyle();
-    const textY = getAdjustPosition({
-      rectLeft: textArea.y,
-      rectWidth: textArea.height,
-      viewportLeft: scrollY!,
-      viewportWidth: height,
-      textWidth: fontSize!,
-    });
-    const textX = getTextAndFollowingIconPosition({
+    const viewport: AreaRange = {
+      start: scrollY!,
+      size: viewportHeight,
+    };
+
+    const { textStart } = adjustTextIconPositionWhileScrolling(
+      viewport,
+      {
+        start: textArea.y,
+        size: textArea.height,
+      },
+      {
+        align: normalizeTextAlign(textStyle.textBaseline!),
+        size: {
+          textSize: textStyle.fontSize!,
+          iconSize: 0,
+        },
+        padding: {
+          start: cell?.padding?.top!,
+          end: cell?.padding?.bottom!,
+          betweenTextIcon: 0,
+        },
+      },
+    );
+
+    const { text, icon } = getFixedTextIconPosition({
       bbox: textArea,
-      textStyle: this.getTextStyle(),
-      textWidth: 0,
+      textStyle,
+      textWidth: this.actualTextWidth,
       iconStyle: this.getIconStyle(),
       iconCount: this.getActionIconsCount(),
-    }).text.x;
+    });
 
-    return { x: textX, y: textY };
-  }
+    this.iconPosition = {
+      x: icon.x,
+      y: getVerticalIconPositionByText(
+        iconStyle?.size!,
+        textStart,
+        textStyle.fontSize!,
+        textStyle.textBaseline!,
+      ),
+    };
 
-  protected getIconYPosition() {
-    const textY = this.getTextPosition().y;
-    const { size } = this.getStyle()!.icon!;
-    const { fontSize } = this.getTextStyle();
-
-    return textY + (fontSize! - size!) / 2;
+    return { x: text.x, y: textStart };
   }
 }
