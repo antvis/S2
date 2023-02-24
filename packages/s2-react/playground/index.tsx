@@ -259,12 +259,12 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string, callback?: () => void) =>
-    (...args: unknown[]) => {
+    (name: string, callback?: (...args: any[]) => void) =>
+    (...args: any[]) => {
       if (s2Ref.current?.options?.debug) {
         console.log(name, ...args);
       }
-      callback?.();
+      callback?.(...args);
     };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
@@ -1069,7 +1069,10 @@ function MainLayout() {
               })}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
-              onCornerCellClick={(cellInfo) => {
+              onCornerCellClick={logHandler('onCornerCellClick', (cellInfo) => {
+                if (!showCustomTooltip) {
+                  return;
+                }
                 s2Ref.current.showTooltip({
                   position: {
                     x: cellInfo.event.clientX,
@@ -1077,7 +1080,7 @@ function MainLayout() {
                   },
                   content: 'click',
                 });
-              }}
+              })}
               onDataCellClick={logHandler('onDataCellClick')}
               onLayoutResize={logHandler('onLayoutResize')}
               onCopied={logHandler('onCopied')}

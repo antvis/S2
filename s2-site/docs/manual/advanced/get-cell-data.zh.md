@@ -124,7 +124,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 
 <img src="https://gw.alipayobjects.com/zos/antfincdn/5KTuqpLdy/cf26a185-2a1d-41f3-9caf-aa9343529cd5.png" width="600" alt="preview"/>
 
-### 获取数值单元格数据
+### 点击数值单元格获取数据
 
 ```ts
 s2.on(S2Event.DATA_CELL_CLICK, (event) => {
@@ -174,6 +174,12 @@ const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query}
     }
   ]
   */
+```
+
+### 根据行列索引获取数值单元格信息
+
+```ts
+s2.facet.layoutResult.getCellMeta(rowIndex, colIndex)
 ```
 
 ### 获取隐藏列数据

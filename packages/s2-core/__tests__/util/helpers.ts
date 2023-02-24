@@ -95,6 +95,7 @@ export const createFakeSpreadSheet = () => {
   s2.showTooltipWithInfo = jest.fn();
   s2.isTableMode = jest.fn();
   s2.isPivotMode = jest.fn();
+  s2.getRowNodes = jest.fn().mockReturnValue([]);
   s2.getCanvasElement = () => s2.container.get('el');
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
@@ -131,6 +132,7 @@ export const createMockCellInfo = (
 ) => {
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: cellId,
+    field: cellId,
     colIndex,
     rowIndex,
     colId,
@@ -159,6 +161,7 @@ export const createMockCellInfo = (
     'update',
     'spreadsheet',
     'colId',
+    'field',
   ]);
   const mockCell = {
     ...mockCellViewMeta,
