@@ -231,14 +231,8 @@ export abstract class BaseFacet {
    *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
    */
   protected adjustScrollOffset() {
-    const { scrollX, scrollY, hRowScrollX } = this.getAdjustedScrollOffset(
-      this.getScrollOffset(),
-    );
-    this.setScrollOffset({
-      scrollX,
-      scrollY,
-      hRowScrollX,
-    });
+    const offset = this.getAdjustedScrollOffset(this.getScrollOffset());
+    this.setScrollOffset(offset);
   }
 
   public getSeriesNumberWidth(): number {
@@ -261,6 +255,15 @@ export abstract class BaseFacet {
   }
 
   public updateScrollOffset(offsetConfig: OffsetConfig) {
+    if (offsetConfig.rowHeaderOffsetX?.value !== undefined) {
+      if (offsetConfig.rowHeaderOffsetX?.animate) {
+        this.scrollWithAnimation(offsetConfig);
+      } else {
+        this.scrollImmediately(offsetConfig);
+      }
+      return;
+    }
+
     if (offsetConfig.offsetX?.value !== undefined) {
       if (offsetConfig.offsetX?.animate) {
         this.scrollWithAnimation(offsetConfig);
@@ -311,7 +314,7 @@ export abstract class BaseFacet {
     return {
       scrollX: store.get<keyof ScrollOffset>('scrollX', 0),
       scrollY: store.get<keyof ScrollOffset>('scrollY', 0),
-      hRowScrollX: store.get<keyof ScrollOffset>('hRowScrollX', 0),
+      rowHeaderScrollX: store.get<keyof ScrollOffset>('rowHeaderScrollX', 0),
     };
   };
 
@@ -453,25 +456,40 @@ export abstract class BaseFacet {
     duration = 200,
     cb?: () => void,
   ) => {
-    const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
-      this.getAdjustedScrollOffset({
-        scrollX: offsetConfig.offsetX?.value || 0,
-        scrollY: offsetConfig.offsetY?.value || 0,
-      });
-    if (this.timer) {
-      this.timer.stop();
-    }
-    const oldOffset = Object.values(this.getScrollOffset());
+    const {
+      scrollX: adjustedScrollX,
+      scrollY: adjustedScrollY,
+      rowHeaderScrollX: adjustedRowScrollX,
+    } = this.getAdjustedScrollOffset({
+      scrollX: offsetConfig.offsetX?.value || 0,
+      scrollY: offsetConfig.offsetY?.value || 0,
+      rowHeaderScrollX: offsetConfig.rowHeaderOffsetX?.value || 0,
+    });
+
+    this.timer?.stop();
+
+    const scrollOffset = this.getScrollOffset();
     const newOffset: number[] = [
-      adjustedScrollX === undefined ? oldOffset[0] : adjustedScrollX,
-      adjustedScrollY === undefined ? oldOffset[1] : adjustedScrollY,
+      adjustedScrollX ?? scrollOffset.scrollX,
+      adjustedScrollY ?? scrollOffset.scrollY,
+      adjustedRowScrollX ?? scrollOffset.rowHeaderScrollX,
     ];
-    const interpolate = interpolateArray(oldOffset, newOffset);
+    const interpolate = interpolateArray(
+      Object.values(scrollOffset),
+      newOffset,
+    );
+
     this.timer = timer((elapsed) => {
       const ratio = Math.min(elapsed / duration, 1);
-      const [scrollX, scrollY] = interpolate(ratio);
-      this.setScrollOffset({ scrollX, scrollY });
+      const [scrollX, scrollY, rowHeaderScrollX] = interpolate(ratio);
+
+      this.setScrollOffset({
+        rowHeaderScrollX,
+        scrollX,
+        scrollY,
+      });
       this.startScroll();
+
       if (elapsed > duration) {
         this.timer.stop();
         cb?.();
@@ -480,20 +498,27 @@ export abstract class BaseFacet {
   };
 
   scrollImmediately = (offsetConfig: OffsetConfig = {}) => {
-    const { scrollX, scrollY } = this.getAdjustedScrollOffset({
-      scrollX: offsetConfig.offsetX?.value || 0,
-      scrollY: offsetConfig.offsetY?.value || 0,
-    });
-    this.setScrollOffset({ scrollX, scrollY });
+    const { scrollX, scrollY, rowHeaderScrollX } = this.getAdjustedScrollOffset(
+      {
+        scrollX: offsetConfig.offsetX?.value || 0,
+        scrollY: offsetConfig.offsetY?.value || 0,
+        rowHeaderScrollX: offsetConfig.rowHeaderOffsetX?.value || 0,
+      },
+    );
+    this.setScrollOffset({ scrollX, scrollY, rowHeaderScrollX });
     this.startScroll();
   };
 
   /**
    *
-   * @param skipScrollEvent 如为true则不触发S2Event.GLOBAL_SCROLL
+   * @param skipScrollEvent 不触发 S2Event.GLOBAL_SCROLL
    */
   startScroll = (skipScrollEvent = false) => {
-    const { scrollX, scrollY } = this.getScrollOffset();
+    const { rowHeaderScrollX, scrollX, scrollY } = this.getScrollOffset();
+
+    this.hRowScrollBar?.onlyUpdateThumbOffset(
+      this.getScrollBarOffset(rowHeaderScrollX, this.hRowScrollBar),
+    );
 
     this.hScrollBar?.onlyUpdateThumbOffset(
       this.getScrollBarOffset(scrollX, this.hScrollBar),
@@ -516,7 +541,7 @@ export abstract class BaseFacet {
   private getAdjustedScrollOffset = ({
     scrollX,
     scrollY,
-    hRowScrollX,
+    rowHeaderScrollX,
   }: ScrollOffset): ScrollOffset => {
     return {
       scrollX: getAdjustedScrollOffset(
@@ -529,11 +554,14 @@ export abstract class BaseFacet {
         this.getRendererHeight(),
         this.panelBBox.height,
       ),
-      hRowScrollX: getAdjustedRowScrollX(hRowScrollX, this.cornerBBox),
+      rowHeaderScrollX: getAdjustedRowScrollX(
+        rowHeaderScrollX,
+        this.cornerBBox,
+      ),
     };
   };
 
-  renderRowScrollBar = (rowScrollX: number) => {
+  renderRowScrollBar = (rowHeaderScrollX: number) => {
     if (
       !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
@@ -560,34 +588,39 @@ export abstract class BaseFacet {
           y: maxY,
         },
         thumbOffset:
-          (rowScrollX * (this.cornerBBox.width - thumbSize)) / maxOffset,
+          (rowHeaderScrollX * (this.cornerBBox.width - thumbSize)) / maxOffset,
         theme: this.scrollBarTheme,
         scrollTargetMaxOffset: maxOffset,
       });
 
       this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
-        const hRowScrollX = Math.floor(newOffset);
-        this.setScrollOffset({ hRowScrollX });
+        const rowHeaderScrollX = Math.floor(newOffset);
+        this.setScrollOffset({ rowHeaderScrollX });
 
-        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+        this.rowHeader?.onRowScrollX(
+          rowHeaderScrollX,
+          KEY_GROUP_ROW_RESIZE_AREA,
+        );
         this.rowIndexHeader?.onRowScrollX(
-          hRowScrollX,
+          rowHeaderScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
         );
         this.cornerHeader.onRowScrollX(
-          hRowScrollX,
+          rowHeaderScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
         );
 
         const scrollBarOffsetX = this.getScrollBarOffset(
-          hRowScrollX,
+          rowHeaderScrollX,
           this.hRowScrollBar,
         );
 
+        const { scrollX, scrollY } = this.getScrollOffset();
         const position: CellScrollPosition = {
-          scrollX: scrollBarOffsetX,
-          scrollY: 0,
+          scrollX,
+          scrollY,
+          rowHeaderScrollX: scrollBarOffsetX,
         };
 
         this.hRowScrollBar.updateThumbOffset(scrollBarOffsetX, false);
@@ -942,7 +975,7 @@ export abstract class BaseFacet {
       const {
         scrollX: currentScrollX,
         scrollY: currentScrollY,
-        hRowScrollX,
+        rowHeaderScrollX,
       } = this.getScrollOffset();
 
       if (optimizedDeltaX !== 0) {
@@ -950,7 +983,7 @@ export abstract class BaseFacet {
         this.updateHorizontalRowScrollOffset({
           offsetX,
           offsetY,
-          offset: optimizedDeltaX + hRowScrollX,
+          offset: optimizedDeltaX + rowHeaderScrollX,
         });
         this.updateHorizontalScrollOffset({
           offsetX,
@@ -1116,13 +1149,13 @@ export abstract class BaseFacet {
    * 3. vertical scroll bar
    */
   protected renderScrollBars() {
-    const { scrollX, scrollY, hRowScrollX } = this.getScrollOffset();
+    const { scrollX, scrollY, rowHeaderScrollX } = this.getScrollOffset();
     const { width, height } = this.panelBBox;
     const realWidth = this.layoutResult.colsHierarchy.width;
     const realHeight = this.getRealHeight();
 
     // scroll row header separate from the whole canvas
-    this.renderRowScrollBar(hRowScrollX);
+    this.renderRowScrollBar(rowHeaderScrollX);
 
     // render horizontal scroll bar(default not contains row header)
     this.renderHScrollBar(width, realWidth, scrollX);
@@ -1278,7 +1311,7 @@ export abstract class BaseFacet {
     const {
       scrollX,
       scrollY: originalScrollY,
-      hRowScrollX,
+      rowHeaderScrollX,
     } = this.getScrollOffset();
     const defaultScrollY = originalScrollY + this.getPaginationScrollY();
     const scrollY = getAdjustedScrollOffset(
@@ -1292,10 +1325,10 @@ export abstract class BaseFacet {
 
     this.realCellRender(scrollX, scrollY);
     this.updatePanelScrollGroup();
-    this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
+    this.translateRelatedGroups(scrollX, scrollY, rowHeaderScrollX);
     this.clip(scrollX, scrollY);
     if (!skipScrollEvent) {
-      this.emitScrollEvent({ scrollX, scrollY });
+      this.emitScrollEvent({ scrollX, scrollY, rowHeaderScrollX });
     }
     this.onAfterScroll();
   }

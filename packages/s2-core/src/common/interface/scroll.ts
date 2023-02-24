@@ -1,7 +1,7 @@
 export interface ScrollOffset {
   scrollX?: number;
   scrollY?: number;
-  hRowScrollX?: number;
+  rowHeaderScrollX?: number;
 }
 
 export interface AreaRange {
@@ -9,10 +9,7 @@ export interface AreaRange {
   width: number;
 }
 
-export interface CellScrollPosition {
-  scrollX: number;
-  scrollY: number;
-}
+export type CellScrollPosition = Required<ScrollOffset>;
 
 export interface CellScrollOffset {
   deltaX?: number;

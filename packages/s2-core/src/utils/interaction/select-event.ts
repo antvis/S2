@@ -1,14 +1,19 @@
 import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
-import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
 } from '../../common/constant';
-import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
-import type { SpreadSheet } from '../../sheet-type';
+import type {
+  CellMeta,
+  OnUpdateCells,
+  S2CellType,
+  ViewMeta,
+} from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
+import type { SpreadSheet } from '../../sheet-type';
+import { getDataCellId } from '../cell/data-cell';
 import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
@@ -22,7 +27,7 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
 
 export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
-  const { id, colIndex, rowIndex, rowQuery } = meta;
+  const { id, colIndex, rowIndex, rowQuery } = meta || {};
   return {
     id,
     colIndex,
@@ -162,7 +167,7 @@ export const getInteractionCellsBySelectedCells = (
   return uniqBy([...selectedCells, ...headerSelectedCell], 'id');
 };
 
-export const afterSelectDataCells = (root, updateDataCells) => {
+export const afterSelectDataCells: OnUpdateCells = (root, updateDataCells) => {
   const { colHeader, rowHeader } = root.getSelectedCellHighlight();
   if (colHeader) {
     root.updateCells(root.getAllColHeaderCells());

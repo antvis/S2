@@ -1,7 +1,23 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
 import insertCss from 'insert-css';
 
-function addScrollToCellButton(s2) {
+function addScrollRowHeaderButton(s2: SpreadSheet) {
+  const btn = document.createElement('button');
+  btn.className = 'ant-btn ant-btn-default';
+  btn.innerHTML = '滚动行头';
+
+  btn.addEventListener('click', () => {
+    s2.updateScrollOffset({
+      rowHeaderOffsetX: {
+        value: 50,
+        animate: true,
+      },
+    });
+  });
+  document.querySelector('#container > canvas')?.before(btn);
+}
+
+function addScrollToCellButton(s2: SpreadSheet) {
   const btn = document.createElement('button');
   btn.className = 'ant-btn ant-btn-default';
   btn.innerHTML = '滚动至成都市';
@@ -19,10 +35,10 @@ function addScrollToCellButton(s2) {
       },
     });
   });
-  document.querySelector('#container > canvas').before(btn);
+  document.querySelector('#container > canvas')?.before(btn);
 }
 
-function addScrollToTopButton(s2) {
+function addScrollToTopButton(s2: SpreadSheet) {
   const btn = document.createElement('button');
   btn.className = 'ant-btn ant-btn-default';
   btn.innerHTML = '滚动至顶部';
@@ -35,7 +51,7 @@ function addScrollToTopButton(s2) {
       },
     });
   });
-  document.querySelector('#container > canvas').before(btn);
+  document.querySelector('#container > canvas')?.before(btn);
 }
 
 fetch(
@@ -45,12 +61,17 @@ fetch(
   .then((dataCfg) => {
     const container = document.getElementById('container');
 
-    const s2Options = {
+    const s2Options: S2Options = {
       width: 600,
       height: 480,
+      frozenRowHeader: true,
       style: {
+        // 让行头区域显示滚动条
+        rowCfg: {
+          width: 200,
+        },
+        // 让表格数值区域显示滚动条
         cellCfg: {
-          // 让表格显示滚动条
           height: 100,
         },
       },
@@ -61,6 +82,7 @@ fetch(
 
     addScrollToCellButton(s2);
     addScrollToTopButton(s2);
+    addScrollRowHeaderButton(s2);
   });
 
 insertCss(`

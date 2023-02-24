@@ -63,7 +63,7 @@ export const getIndexRangeWithOffsets = (
 };
 
 export const getAdjustedRowScrollX = (
-  hRowScrollX: number,
+  rowHeaderScrollX: number,
   cornerBBox: {
     width: number;
     originalWidth: number;
@@ -71,7 +71,7 @@ export const getAdjustedRowScrollX = (
 ): number => {
   const { width, originalWidth } = cornerBBox;
 
-  const scrollX = Math.min(originalWidth - width, hRowScrollX);
+  const scrollX = Math.min(originalWidth - width, rowHeaderScrollX);
 
   if (scrollX < 0) {
     return 0;

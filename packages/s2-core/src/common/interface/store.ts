@@ -50,7 +50,7 @@ export interface StoreKey {
   // vertical scroll bar scroll y offset
   scrollY: number;
   // row header scroll bar scroll x offset
-  hRowScrollX: number;
+  rowHeaderScrollX: number;
   // column cell click sort params
   sortParam: SortParam;
   // 下钻节点id和对应生成的 path寻址路径

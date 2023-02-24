@@ -126,7 +126,7 @@ describe('TableSheet normal spec', () => {
     expect(s2.facet.getScrollOffset()).toStrictEqual({
       scrollY: 10,
       scrollX: 10,
-      hRowScrollX: 0,
+      rowHeaderScrollX: 0,
     });
     expect(onScrollFinish).toBeCalled();
 

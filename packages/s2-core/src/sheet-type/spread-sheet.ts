@@ -538,20 +538,23 @@ export abstract class SpreadSheet extends EE {
    * but offsetY(vertical scroll don't need animation)
    */
   public updateScrollOffset(offsetConfig: OffsetConfig) {
+    const config: OffsetConfig = {
+      offsetX: {
+        value: undefined,
+        animate: false,
+      },
+      offsetY: {
+        value: undefined,
+        animate: false,
+      },
+      rowHeaderOffsetX: {
+        value: undefined,
+        animate: false,
+      },
+    };
+
     this.facet.updateScrollOffset(
-      customMerge(
-        {
-          offsetX: {
-            value: undefined,
-            animate: false,
-          },
-          offsetY: {
-            value: undefined,
-            animate: false,
-          },
-        },
-        offsetConfig,
-      ) as OffsetConfig,
+      customMerge(config, offsetConfig) as OffsetConfig,
     );
   }
 

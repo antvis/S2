@@ -138,6 +138,7 @@ describe('Scroll Tests', () => {
 
   test('should scroll if scroll over the row cell', async () => {
     const position: CellScrollPosition = {
+      rowHeaderScrollX: 0,
       scrollX: 20,
       scrollY: 0,
     };
@@ -646,8 +647,9 @@ describe('Scroll Tests', () => {
         },
       });
 
-      const onRowCellScroll = jest.fn((...args) => {
-        expect(args[0].scrollX).toBeGreaterThan(0);
+      const onScroll = jest.fn((...args) => {
+        expect(args[0].rowHeaderScrollX).toBeGreaterThan(0);
+        expect(args[0].scrollX).toBe(0);
         expect(args[0].scrollY).toBe(0);
       });
 
@@ -661,7 +663,7 @@ describe('Scroll Tests', () => {
         .spyOn(s2.facet, 'isScrollOverTheViewport')
         .mockImplementationOnce(() => true);
 
-      s2.on(S2Event.ROW_CELL_SCROLL, onRowCellScroll);
+      s2.on(S2Event.GLOBAL_SCROLL, onScroll);
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: 0,
@@ -673,7 +675,7 @@ describe('Scroll Tests', () => {
 
       await sleep(200);
 
-      expect(onRowCellScroll).toHaveBeenCalled();
+      expect(onScroll).toHaveBeenCalled();
     });
 
     it('should not change init body overscrollBehavior style when render and destroyed', () => {
