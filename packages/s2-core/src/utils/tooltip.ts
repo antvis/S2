@@ -454,7 +454,7 @@ export const getSelectedCellsData = (
 };
 
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
-  const { spreadsheet, getShowValue, targetCell, options = {} } = params;
+  const { spreadsheet, targetCell, options = {} } = params;
   const summaries: TooltipSummaryOptions[] = [];
   const summary: TooltipDataItem = {};
   const isTableMode = spreadsheet.isTableMode();
@@ -530,13 +530,7 @@ export const getDescription = (targetCell: S2CellType): string => {
 };
 
 export const getTooltipData = (params: TooltipDataParam): TooltipData => {
-  const {
-    spreadsheet,
-    cellInfos = [],
-    options = {},
-    getShowValue,
-    targetCell,
-  } = params;
+  const { spreadsheet, cellInfos = [], options = {}, targetCell } = params;
 
   let summaries: TooltipSummaryOptions[] = null;
   let headInfo: TooltipHeadInfo = null;
@@ -551,7 +545,6 @@ export const getTooltipData = (params: TooltipDataParam): TooltipData => {
       spreadsheet,
       options,
       targetCell,
-      getShowValue,
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover

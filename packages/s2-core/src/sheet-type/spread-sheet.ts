@@ -301,7 +301,7 @@ export abstract class SpreadSheet extends EE {
 
   public showTooltipWithInfo(
     event: CanvasEvent | MouseEvent,
-    data: TooltipData[],
+    cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
     const { showTooltip, content } = getTooltipOptions(this, event);
@@ -310,15 +310,17 @@ export abstract class SpreadSheet extends EE {
     }
 
     const targetCell = this.getCell(event?.target);
-    const tooltipData = getTooltipData({
-      spreadsheet: this,
-      cellInfos: data,
-      targetCell,
-      options: {
-        enableFormat: true,
-        ...options,
-      },
-    });
+    const tooltipData =
+      options?.data ??
+      getTooltipData({
+        spreadsheet: this,
+        cellInfos,
+        targetCell,
+        options: {
+          enableFormat: true,
+          ...options,
+        },
+      });
 
     this.showTooltip({
       data: tooltipData,

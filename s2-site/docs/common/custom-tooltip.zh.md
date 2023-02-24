@@ -81,6 +81,7 @@ object **必选**,_default：null_ 功能描述： tooltip 部分配置
 | showSingleTips | `boolean`                                         |       |     `false`    | 是否显示单元格提示信息       |
 | enableFormat | `boolean`                                         |       |     `false`    | 是否开启格式化       |
 | forceRender | `boolean`                                         |       |    `false`    | 是否强制清空 dom       |
+| data | [TooltipData](#tooltipdata)                                         |       |    `-`    | 自定义 tooltip 数据       |
 
 #### TooltipOperatorOptions
 

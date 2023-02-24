@@ -1,5 +1,12 @@
 import * as simpleDataConfig from 'tests/data/simple-data.json';
-import { DEFAULT_STYLE, type S2Options, type SpreadSheet } from '../../src';
+import {
+  DEFAULT_STYLE,
+  GEvent,
+  S2Event,
+  type S2CellType,
+  type S2Options,
+  type SpreadSheet,
+} from '../../src';
 import { createPivotSheet } from '../util/helpers';
 
 describe('PivotSheet Corner Tests', () => {
@@ -20,6 +27,9 @@ describe('PivotSheet Corner Tests', () => {
     s2 = createPivotSheet({
       width: 300,
       height: 300,
+      tooltip: {
+        showTooltip: true,
+      },
     });
     s2.render();
   });
@@ -138,5 +148,94 @@ describe('PivotSheet Corner Tests', () => {
     expect(colsHierarchy.height).toEqual(0);
     expect(colsHierarchy.sampleNodeForLastLevel).toBeNull();
     expect(cornerNodes).toHaveLength(0);
+  });
+
+  // https://github.com/antvis/S2/issues/2073
+  test.each([
+    {
+      field: 'province',
+      selectedIds: ['root[&]浙江'],
+    },
+    {
+      field: 'city',
+      selectedIds: ['root[&]浙江[&]义乌', 'root[&]浙江[&]杭州'],
+    },
+  ])(
+    'should selected/unselected current corner row cell when %s clicked',
+    ({ field, selectedIds }) => {
+      const node = s2.getRowNodes().find((rowNode) => rowNode.field === field);
+
+      const getCellSpy = jest.spyOn(s2, 'getCell').mockImplementation(() => {
+        return {
+          getMeta: () => node,
+        } as unknown as S2CellType;
+      });
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+      // 选中
+      s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+
+      expect(s2.tooltip.visible).toBeTruthy();
+      expect(s2.interaction.getCells().map((meta) => meta.id)).toEqual(
+        selectedIds,
+      );
+      expect(selected).toHaveBeenCalledWith(s2.interaction.getActiveCells());
+
+      // 取消选中
+      s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+
+      expect(s2.tooltip.visible).toBeFalsy();
+      expect(s2.interaction.isSelectedState()).toBeFalsy();
+      expect(s2.interaction.getCells()).toEqual([]);
+      expect(selected).toHaveBeenCalledWith([]);
+
+      getCellSpy.mockClear();
+    },
+  );
+
+  test('should not selected current corner row cell when column corner cell clicked', () => {
+    const node = s2.getRowNodes().find((rowNode) => rowNode.field === 'type');
+
+    jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
+      return {
+        getMeta: () => node,
+      } as unknown as S2CellType;
+    });
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
+    s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+
+    expect(s2.tooltip.visible).toBeFalsy();
+    expect(s2.interaction.getCells()).toBeEmpty();
+    expect(selected).not.toHaveBeenCalled();
+  });
+
+  test('should get corner row cell summaries', () => {
+    const node = s2
+      .getRowNodes()
+      .find((rowNode) => rowNode.field === 'province');
+
+    jest.spyOn(s2, 'showTooltipWithInfo').mockImplementationOnce(() => {});
+    jest.spyOn(s2, 'getCell').mockImplementationOnce(() => {
+      return {
+        getMeta: () => node,
+      } as unknown as S2CellType;
+    });
+
+    s2.emit(S2Event.CORNER_CELL_CLICK, {} as unknown as GEvent);
+
+    expect(s2.showTooltipWithInfo).toHaveBeenCalledWith(expect.anything(), [], {
+      data: {
+        summaries: [
+          {
+            name: '',
+            selectedData: s2.interaction.getActiveCells(),
+            value: null,
+          },
+        ],
+      },
+    });
   });
 });

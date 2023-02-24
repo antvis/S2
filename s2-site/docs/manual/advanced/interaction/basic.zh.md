@@ -19,8 +19,8 @@ order: 0
 
 ## 内置交互
 
-| 名称         | 事件名                                                           | 描述                                                                                                                    |
-|-----------|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| 名称         | 事件名     | 描述   |
+|-------------|-----------|--------|
 | 单选         | `S2Event.GLOBAL_SELECTED`                                     | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                                 |
 | 多选         | `S2Event.GLOBAL_SELECTED`                                     | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                     |
 | 行/列头快捷多选   | `S2Event.GLOBAL_SELECTED`                                     | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                                            |
@@ -189,17 +189,17 @@ const s2Options = {
 // 当 selectedCellHighlight 为 boolean 时
 const s2Options = {
   interaction: {
-    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader (兼容未拓展类型前的设计)
+    selectedCellHighlight: true // 默认 false， 当 selectedCellsSpotlight 为 true 时，会高亮 rowHeader 和 colHeader （兼容未拓展类型前的设计）
   }
 };
 
 // 同时还可以分别配置 selectedCellHighlight 中 header 和 cells 的高亮
-const S2Options = {
+const s2Options = {
   interaction: {
     selectedCellHighlight: {
       rowHeader: true,  // 选中单元格时，高亮行头
       colHeader: true,  // 选中单元格时，高亮列头
-      rowCells: false,  // 选中单元格时，高亮当前行 
+      rowCells: false,  // 选中单元格时，高亮当前行
       colCells: false,  // 选中单元格时，高亮当前列
     },
   },
@@ -265,6 +265,12 @@ const s2Options = {
   }
 };
 ```
+
+### 角头选中 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
+
+单击行头所对应的角头，可以快捷选中当前列
+
+<img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TNjTS7HzcgUAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
 
 ### 快捷键多选
 

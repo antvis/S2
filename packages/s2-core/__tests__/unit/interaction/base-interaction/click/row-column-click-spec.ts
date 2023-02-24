@@ -88,6 +88,9 @@ describe('Interaction Row & Column Cell Click Tests', () => {
   test.each([S2Event.ROW_CELL_CLICK, S2Event.COL_CELL_CLICK])(
     'should selected cell when %s cell clicked',
     (event) => {
+      const selected = jest.fn();
+      s2.on(S2Event.GLOBAL_SELECTED, selected);
+
       const isSelectedCellSpy = jest
         .spyOn(s2.interaction, 'isSelectedCell')
         .mockImplementation(() => false);
@@ -102,6 +105,7 @@ describe('Interaction Row & Column Cell Click Tests', () => {
         stateName: InteractionStateName.SELECTED,
       });
       expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+      expect(selected).toHaveBeenCalled();
 
       isSelectedCellSpy.mockRestore();
     },
