@@ -104,7 +104,7 @@ describe('SpreadSheet Tests', () => {
       s2.destroy();
     });
 
-    test('should update scroll offset immediately', () => {
+    test('should update scroll offset x immediately', () => {
       const s2 = new PivotSheet(container, mockDataConfig, s2Options);
       s2.render();
 
@@ -114,6 +114,102 @@ describe('SpreadSheet Tests', () => {
         offsetX: { value: 30 },
       });
       expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
+        Object {
+          "rowHeaderScrollX": 0,
+          "scrollX": 30,
+          "scrollY": 0,
+        }
+      `);
+    });
+
+    test('should update scroll offset y immediately', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2Options,
+        style: {
+          cellCfg: {
+            height: 200,
+          },
+        },
+      });
+      s2.render();
+
+      s2.updateScrollOffset({
+        offsetY: { value: 20 },
+      });
+      expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
+        Object {
+          "rowHeaderScrollX": 0,
+          "scrollX": 0,
+          "scrollY": 20,
+        }
+      `);
+    });
+
+    test('should update row header scroll offset x immediately', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2Options,
+        frozenRowHeader: true,
+        style: {
+          rowCfg: {
+            width: 400,
+          },
+        },
+      });
+      s2.render();
+
+      expect(s2.facet.hRowScrollBar.current()).toEqual(0);
+      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
+        Object {
+          "rowHeaderScrollX": 0,
+          "scrollX": 0,
+          "scrollY": 0,
+        }
+      `);
+
+      s2.updateScrollOffset({
+        rowHeaderOffsetX: { value: 30 },
+      });
+      expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
+        Object {
+          "rowHeaderScrollX": 30,
+          "scrollX": 0,
+          "scrollY": 0,
+        }
+      `);
+    });
+
+    test('should update scroll offset immediately', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2Options,
+        style: {
+          rowCfg: {
+            width: 400,
+          },
+          cellCfg: {
+            height: 200,
+          },
+        },
+      });
+      s2.render();
+
+      s2.updateScrollOffset({
+        offsetY: { value: 20 },
+        offsetX: { value: 30 },
+        rowHeaderOffsetX: { value: 40 },
+      });
+      expect(s2.facet.vScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.hRowScrollBar.current()).toBeGreaterThan(0);
+      expect(s2.facet.getScrollOffset()).toMatchInlineSnapshot(`
+        Object {
+          "rowHeaderScrollX": 40,
+          "scrollX": 30,
+          "scrollY": 20,
+        }
+      `);
     });
 
     // https://github.com/antvis/S2/issues/1197

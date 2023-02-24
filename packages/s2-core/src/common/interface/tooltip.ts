@@ -48,12 +48,17 @@ export interface TooltipOptions<Icon = Element | string, Text = string> {
   enableFormat?: boolean;
   // 是否强制清空 dom
   forceRender?: boolean;
+  // 自定义数据
+  data?: TooltipData;
 }
 
+export type TooltipSummaryOptionsValue = number | string | undefined | null;
+
 export interface TooltipSummaryOptions {
-  name: string;
-  value: number | string;
+  name: string | null;
   selectedData: TooltipDataItem[];
+  value: TooltipSummaryOptionsValue;
+  originValue?: TooltipSummaryOptionsValue;
 }
 
 export interface TooltipNameTipsOptions {
@@ -124,10 +129,6 @@ export type TooltipDataParams = {
   spreadsheet: SpreadSheet;
   options?: TooltipOptions;
   targetCell: S2CellType;
-  getShowValue?: (
-    selectedData: TooltipDataItem[],
-    valueField: string,
-  ) => string | number; // 自定义value
 };
 
 export interface TooltipSummaryProps {

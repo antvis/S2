@@ -47,6 +47,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
     this.headerConfig = cfg;
   }
 
+  public getConfig(): T {
+    return this.headerConfig;
+  }
+
   /**
    * 清空热区，为重绘做准备，防止热区重复渲染
    * @param type 当前重绘的header类型
@@ -85,11 +89,11 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
 
   /**
    * Only call when hRowScrollBar scrolls
-   * @param rowScrollX  hRowScrollbar horizontal offset
+   * @param rowHeaderScrollX  hRowScrollbar horizontal offset
    * @param type
    */
-  public onRowScrollX(rowScrollX: number, type: string): void {
-    this.headerConfig.scrollX = rowScrollX;
+  public onRowScrollX(rowHeaderScrollX: number, type: string): void {
+    this.headerConfig.scrollX = rowHeaderScrollX;
     this.render(type);
   }
 

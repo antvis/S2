@@ -10,6 +10,8 @@ export class HdAdapter {
 
   private spreadsheet: SpreadSheet;
 
+  private isDevicePixelRatioChange = false;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
@@ -60,7 +62,7 @@ export class HdAdapter {
     // VisualViewport support browser zoom & mac touch tablet
     this.viewport?.visualViewport?.addEventListener(
       'resize',
-      this.renderByZoomScale,
+      this.renderByZoomScaleWithoutResizeEffect,
     );
   };
 
@@ -70,11 +72,23 @@ export class HdAdapter {
     }
     this.viewport?.visualViewport?.removeEventListener(
       'resize',
-      this.renderByZoomScale,
+      this.renderByZoomScaleWithoutResizeEffect,
     );
   };
 
+  /**
+   * DPR 改变也会触发 visualViewport 的 resize 事件, 预期是只监听双指缩放, 所以这里规避掉
+   * @see https://github.com/antvis/S2/issues/2072
+   */
+  private renderByZoomScaleWithoutResizeEffect = (
+    event: Event & { target: VisualViewport },
+  ) => {
+    this.isDevicePixelRatioChange = false;
+    this.renderByZoomScale(event);
+  };
+
   private renderByDevicePixelRatioChanged = () => {
+    this.isDevicePixelRatioChange = true;
     this.renderByDevicePixelRatio();
   };
 
@@ -107,7 +121,7 @@ export class HdAdapter {
   private renderByZoomScale = debounce(
     (event: Event & { target: VisualViewport }) => {
       const ratio = Math.ceil(event.target.scale);
-      if (ratio >= 1) {
+      if (ratio >= 1 && !this.isDevicePixelRatioChange) {
         this.renderByDevicePixelRatio(ratio);
       }
     },

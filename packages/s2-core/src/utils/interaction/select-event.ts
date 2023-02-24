@@ -1,13 +1,19 @@
-import { forEach } from 'lodash';
+import { forEach, reduce, uniqBy } from 'lodash';
 import { ColCell, RowCell, TableSeriesCell } from '../../cell';
-import { getDataCellId } from '../cell/data-cell';
 import {
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
 } from '../../common/constant';
-import type { CellMeta, S2CellType, ViewMeta } from '../../common/interface';
+import type {
+  CellMeta,
+  OnUpdateCells,
+  S2CellType,
+  ViewMeta,
+} from '../../common/interface';
+import type { Node } from '../../facet/layout/node';
 import type { SpreadSheet } from '../../sheet-type';
+import { getDataCellId } from '../cell/data-cell';
 import {
   getActiveHoverRowColCells,
   updateAllColHeaderCellState,
@@ -19,14 +25,15 @@ export const isMultiSelectionKey = (e: KeyboardEvent) => {
   );
 };
 
-export const getCellMeta = (cell: S2CellType) => {
+export const getCellMeta = (cell: S2CellType): CellMeta => {
   const meta = cell.getMeta();
-  const { id, colIndex, rowIndex } = meta;
+  const { id, colIndex, rowIndex, rowQuery } = meta || {};
   return {
     id,
     colIndex,
     rowIndex,
     type: cell.cellType,
+    rowQuery,
   };
 };
 
@@ -103,3 +110,70 @@ export function updateRowColCells(meta: ViewMeta) {
     });
   }
 }
+
+export const getRowHeaderByCellId = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  return s2.getRowNodes().filter((node: Node) => cellId.includes(node.id));
+};
+
+export const getColHeaderByCellId = (
+  cellId: string,
+  s2: SpreadSheet,
+): Node[] => {
+  return s2.getColumnNodes().filter((node: Node) => cellId.includes(node.id));
+};
+
+export const getInteractionCells = (
+  cell: CellMeta,
+  s2: SpreadSheet,
+): Array<CellMeta> => {
+  const { colHeader, rowHeader } = s2.interaction.getSelectedCellHighlight();
+
+  const headerGetters = [
+    {
+      shouldGet: rowHeader,
+      getter: getRowHeaderByCellId,
+    },
+    {
+      shouldGet: colHeader,
+      getter: getColHeaderByCellId,
+    },
+  ];
+
+  const selectedHeaderCells = headerGetters
+    .filter((item) => item.shouldGet)
+    .reduce((nodes, i) => [...nodes, ...i.getter(cell.id, s2)], [])
+    .filter((node) => !!node.belongsCell)
+    .map((node) => getCellMeta(node.belongsCell));
+
+  return [cell, ...selectedHeaderCells];
+};
+
+export const getInteractionCellsBySelectedCells = (
+  selectedCells: CellMeta[],
+  s2: SpreadSheet,
+): Array<CellMeta> => {
+  const headerSelectedCell: CellMeta[] = reduce(
+    selectedCells,
+    (_cells, selectedCell) => {
+      return [..._cells, ...getInteractionCells(selectedCell, s2)];
+    },
+    [],
+  );
+
+  // headerSelectedCell 会有重复的 cell，在这里统一去重
+  return uniqBy([...selectedCells, ...headerSelectedCell], 'id');
+};
+
+export const afterSelectDataCells: OnUpdateCells = (root, updateDataCells) => {
+  const { colHeader, rowHeader } = root.getSelectedCellHighlight();
+  if (colHeader) {
+    root.updateCells(root.getAllColHeaderCells());
+  }
+  if (rowHeader) {
+    root.updateCells(root.getAllRowHeaderCells());
+  }
+  updateDataCells();
+};

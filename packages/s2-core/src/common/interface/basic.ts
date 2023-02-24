@@ -460,6 +460,10 @@ export interface LayoutResult {
 }
 
 export interface OffsetConfig {
+  rowHeaderOffsetX?: {
+    value: number | undefined;
+    animate?: boolean;
+  };
   offsetX?: {
     value: number | undefined;
     animate?: boolean;
@@ -515,3 +519,5 @@ export interface GridInfo {
   cols: number[];
   rows: number[];
 }
+
+export type RowData = Data | DataType;

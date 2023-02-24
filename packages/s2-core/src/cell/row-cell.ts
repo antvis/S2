@@ -301,8 +301,8 @@ export class RowCell extends HeaderCell {
       return;
     }
 
-    const offsetX = position.x + x - scrollX + seriesNumberWidth;
-    const offsetY = position.y + y - scrollY;
+    const offsetX = position?.x + x - scrollX + seriesNumberWidth;
+    const offsetY = position?.y + y - scrollY;
 
     const resizeAreaWidth = this.spreadsheet.isFrozenRowHeader()
       ? headerWidth - seriesNumberWidth - (x - scrollX)

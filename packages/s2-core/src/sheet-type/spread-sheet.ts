@@ -301,7 +301,7 @@ export abstract class SpreadSheet extends EE {
 
   public showTooltipWithInfo(
     event: CanvasEvent | MouseEvent,
-    data: TooltipData[],
+    cellInfos: TooltipData[],
     options?: TooltipOptions,
   ) {
     const { showTooltip, content } = getTooltipOptions(this, event);
@@ -310,15 +310,17 @@ export abstract class SpreadSheet extends EE {
     }
 
     const targetCell = this.getCell(event?.target);
-    const tooltipData = getTooltipData({
-      spreadsheet: this,
-      cellInfos: data,
-      targetCell,
-      options: {
-        enableFormat: true,
-        ...options,
-      },
-    });
+    const tooltipData =
+      options?.data ??
+      getTooltipData({
+        spreadsheet: this,
+        cellInfos,
+        targetCell,
+        options: {
+          enableFormat: true,
+          ...options,
+        },
+      });
 
     this.showTooltip({
       data: tooltipData,
@@ -536,20 +538,23 @@ export abstract class SpreadSheet extends EE {
    * but offsetY(vertical scroll don't need animation)
    */
   public updateScrollOffset(offsetConfig: OffsetConfig) {
+    const config: OffsetConfig = {
+      offsetX: {
+        value: undefined,
+        animate: false,
+      },
+      offsetY: {
+        value: undefined,
+        animate: false,
+      },
+      rowHeaderOffsetX: {
+        value: undefined,
+        animate: false,
+      },
+    };
+
     this.facet.updateScrollOffset(
-      customMerge(
-        {
-          offsetX: {
-            value: undefined,
-            animate: false,
-          },
-          offsetY: {
-            value: undefined,
-            animate: false,
-          },
-        },
-        offsetConfig,
-      ) as OffsetConfig,
+      customMerge(config, offsetConfig) as OffsetConfig,
     );
   }
 

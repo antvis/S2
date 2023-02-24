@@ -25,6 +25,16 @@ copyToClipboard(data)
 
 // 导出数据
 download(data, 'filename')
+
+
+// 自定义导出类型
+registerTransformer(CopyMIMEType.HTML, (matrix) => {
+  return `<td></td>`
+})
+
+const data = copyData(spreadsheet, '\t', false)
+// 复制到word、语雀等场景会成为一个空表格
+
 ```
 
 ### copyData
@@ -41,6 +51,13 @@ download(data, 'filename')
 | --- | --- | ------- | ----- | --- |
 | data | 数据源 | `string` |        | ✓    |
 | sync | 是否同步复制数据 （默认异步） | `boolean` |   `false`     |     |
+
+### registerTransformer
+
+| 参数 | 说明     | 类型     | 默认值 | 必选 |
+| --- | --- | ------- | ----- | --- |
+| type | 复制内容的MIMEType | `CopyMIMEType` |        | ✓    |
+| transformer | 处理函数 | `MatrixTransformer` |      |   ✓   |
 
 ### download
 

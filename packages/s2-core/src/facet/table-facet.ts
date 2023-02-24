@@ -1,5 +1,14 @@
 import type { Group, IElement, IGroup } from '@antv/g-canvas';
-import { get, isBoolean, isNil, last, maxBy, set, values } from 'lodash';
+import {
+  get,
+  isBoolean,
+  isNil,
+  isNumber,
+  last,
+  maxBy,
+  set,
+  values,
+} from 'lodash';
 import { TableDataCell } from '../cell';
 import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
@@ -309,7 +318,7 @@ export class TableFacet extends BaseFacet {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
-    const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
+    const adaptiveColWidth = this.getAdaptiveColWidth(colLeafNodes);
     let currentCollIndex = 0;
 
     for (let i = 0; i < allNodes.length; i++) {
@@ -320,7 +329,7 @@ export class TableFacet extends BaseFacet {
         currentNode.x = preLeafNode.x + preLeafNode.width;
         currentNode.width = this.calculateColLeafNodesWidth(
           currentNode,
-          adaptiveColWitdth,
+          adaptiveColWidth,
         );
         layoutCoordinate(this.cfg, null, currentNode);
         colsHierarchy.width += currentNode.width;
@@ -394,31 +403,28 @@ export class TableFacet extends BaseFacet {
     const cellDraggedWidth = this.getCellDraggedWidth(col);
 
     // 1. 拖拽后的宽度优先级最高
-    if (cellDraggedWidth) {
+    if (isNumber(cellDraggedWidth)) {
       return cellDraggedWidth;
     }
 
     // 2. 其次是自定义, 返回 null 则使用默认宽度
     const cellCustomWidth = this.getCellCustomWidth(col, colCfg?.width);
-    if (!isNil(cellCustomWidth)) {
+    if (isNumber(cellCustomWidth)) {
       return cellCustomWidth;
     }
 
     let colWidth: number;
     if (layoutWidthType === LayoutWidthTypes.Compact) {
       const datas = dataSet.getDisplayDataSet();
-      const colLabel = col.label;
+      const formatter = dataSet.getFieldFormatter(col.field);
 
-      const allLabels =
-        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
-      allLabels.push(colLabel);
-      const maxLabel = maxBy(allLabels, (label) =>
-        spreadsheet.measureTextWidthRoughly(label),
+      // 采样前50，找出表身最长的数据
+      const maxLabel = maxBy(
+        datas
+          ?.slice(0, 50)
+          .map((data) => `${formatter?.(data[col.field]) ?? data[col.field]}`),
+        (label) => spreadsheet.measureTextWidthRoughly(label),
       );
-
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
-      const { text: dataCellTextStyle, cell: cellStyle } =
-        spreadsheet.theme.dataCell;
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
@@ -426,24 +432,28 @@ export class TableFacet extends BaseFacet {
         maxLabel,
       );
 
-      // 最长的 Label 如果是列名，按列名的标准计算宽度
-      if (colLabel === maxLabel) {
-        colWidth =
-          spreadsheet.measureTextWidth(maxLabel, colCellTextStyle) +
-          getOccupiedWidthForTableCol(
-            this.spreadsheet,
-            col,
-            spreadsheet.theme.colCell,
-          );
-      } else {
-        // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
-        const EXTRA_PIXEL = 1;
-        colWidth =
-          spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
-          cellStyle.padding.left +
-          cellStyle.padding.right +
-          EXTRA_PIXEL;
-      }
+      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
+      const { text: dataCellTextStyle, cell: cellStyle } =
+        spreadsheet.theme.dataCell;
+
+      // 额外添加一像素余量，防止 maxLabel 有多个同样长度情况下，一些 label 不能展示完全
+      const EXTRA_PIXEL = 1;
+      const maxLabelWidth =
+        spreadsheet.measureTextWidth(maxLabel, dataCellTextStyle) +
+        cellStyle.padding.left +
+        cellStyle.padding.right +
+        EXTRA_PIXEL;
+
+      // 计算表头 label+icon 占用的空间
+      const colHeaderNodeWidth =
+        spreadsheet.measureTextWidth(col.label, colCellTextStyle) +
+        getOccupiedWidthForTableCol(
+          this.spreadsheet,
+          col,
+          spreadsheet.theme.colCell,
+        );
+
+      colWidth = Math.max(colHeaderNodeWidth, maxLabelWidth);
     } else {
       colWidth = adaptiveColWidth;
     }
@@ -470,7 +480,7 @@ export class TableFacet extends BaseFacet {
       );
 
       const customHeight = heightByField?.[String(index)];
-      if (customHeight) {
+      if (isNumber(customHeight)) {
         return customHeight;
       }
     }

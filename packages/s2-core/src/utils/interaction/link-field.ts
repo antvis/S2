@@ -7,5 +7,8 @@ export const checkIsLinkField = (
 ): boolean => {
   return typeof linkFields === 'function'
     ? linkFields(meta)
-    : linkFields.some((field) => field === meta.key || field === meta.id);
+    : linkFields.some(
+        (field) =>
+          field === meta.key || field === meta.id || field === meta.valueField,
+      );
 };

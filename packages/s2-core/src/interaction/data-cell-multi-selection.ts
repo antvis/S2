@@ -2,6 +2,7 @@ import type { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import type { DataCell } from '../cell';
 import {
+  CellTypes,
   InteractionStateName,
   InterceptType,
   S2Event,
@@ -10,8 +11,10 @@ import type { CellMeta, S2CellType, ViewMeta } from '../common/interface';
 import {
   getCellMeta,
   isMultiSelectionKey,
+  getInteractionCellsBySelectedCells,
 } from '../utils/interaction/select-event';
 import { getCellsTooltipData } from '../utils/tooltip';
+import { afterSelectDataCells } from '../utils/interaction/select-event';
 import { BaseEvent, type BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
@@ -54,7 +57,7 @@ export class DataCellMultiSelection
   private getSelectedCells(cell: S2CellType<ViewMeta>) {
     const id = cell.getMeta().id;
     const { interaction } = this.spreadsheet;
-    let selectedCells = interaction.getCells();
+    let selectedCells = interaction.getCells([CellTypes.DATA_CELL]);
     let cells: CellMeta[] = [];
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {
       selectedCells = [];
@@ -73,7 +76,7 @@ export class DataCellMultiSelection
       event.stopPropagation();
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
-      const { interaction } = this.spreadsheet;
+      const { interaction, options } = this.spreadsheet;
 
       if (this.isMultiSelection && meta) {
         const selectedCells = this.getSelectedCells(cell);
@@ -86,9 +89,11 @@ export class DataCellMultiSelection
 
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
         this.spreadsheet.hideTooltip();
+
         interaction.changeState({
           cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
+          onUpdateCells: afterSelectDataCells,
         });
         this.spreadsheet.emit(
           S2Event.GLOBAL_SELECTED,

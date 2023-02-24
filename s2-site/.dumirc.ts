@@ -1,5 +1,5 @@
 import { defineConfig } from 'dumi';
-import { repository, homepage } from './package.json';
+import { repository } from './package.json';
 
 export default defineConfig({
   locales: [
@@ -20,7 +20,7 @@ export default defineConfig({
     description: '多维交叉分析表格',
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
-    siteUrl: homepage, // 官网地址
+    siteUrl: 'https://antv.antgroup.com', // 官网地址
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
@@ -34,9 +34,9 @@ export default defineConfig({
     docsearchOptions: {
       // 头部搜索框配置
       versionV3: true,
-      apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
-      indexName: 's2-antv-vision',
-      appId: 'D73DOU8RXD',
+      apiKey: '74b99a09199729fd4ac472746ada8456',
+      indexName: 's2-antv-antgroup',
+      appId: 'LWCKDMVZ87',
     },
     internalSite: {
       url: 'https://s2.antv.antgroup.com',

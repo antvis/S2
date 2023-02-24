@@ -15,6 +15,7 @@ import {
   CopyMIMEType,
   getCopyData,
   getSelectedData,
+  registerTransformer,
 } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { CopyType, S2Event } from '@/common/constant';
@@ -217,6 +218,22 @@ describe('List Table Core Data Process', () => {
     expect(data.split('_formatted').length).toEqual(33);
   });
 
+  it('should copy correct data when selected diagonal cells', () => {
+    s2.render();
+
+    const cells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cells[0]), getCellMeta(cells[29])],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const data = getSelectedData(s2);
+    expect(data.length).toBe(37);
+  });
+
   it('should copy correct data with data filtered', () => {
     s2.setOptions({
       interaction: {
@@ -307,6 +324,61 @@ describe('List Table Core Data Process', () => {
     });
     const data = getSelectedData(sss);
     expect(data).toBe(convertString(newLineText));
+  });
+
+  it('should not transform double quotes to single quotes when newline char is in data', () => {
+    const newLineText = `"1
+    2"`;
+    const sss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => v + '元' }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: originalData.map((e) => ({ ...e, city: newLineText })),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+    sss.render();
+
+    const cell = sss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[20];
+
+    sss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(sss);
+
+    expect(data).toBe(convertString(newLineText));
+  });
+
+  it('should copy row data when select data row cell', () => {
+    s2.setOptions({
+      interaction: {
+        selectedCellHighlight: {
+          currentRow: true,
+        },
+      },
+    });
+
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getSelectedData(s2).split('\t').length).toBe(5);
   });
 });
 
@@ -1260,5 +1332,24 @@ describe('Pivot Table getBrushHeaderCopyable', () => {
       桌子	沙发	小计	笔	纸张
       number	number	小计	number	number"
     `);
+  });
+
+  test('should support custom copy matrix transformer', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: false,
+      },
+    });
+    s2.render();
+
+    registerTransformer(CopyMIMEType.PLAIN, () => {
+      return { type: CopyMIMEType.PLAIN, content: 'custom data' };
+    });
+
+    s2.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+
+    expect(getSelectedData(s2)).toEqual('custom data');
   });
 });

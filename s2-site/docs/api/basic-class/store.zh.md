@@ -13,8 +13,8 @@ s2.store.set('key', value) // 存储
 | 参数 | 说明                                   | 类型 |
 | --- | --- | --- |
 | scrollX | 水平滚动偏移 | `number` |
-| scrollX | 垂直滚动偏移 | `number` |
-| hRowScrollX | 垂直行头滚动偏移 | `number` |
+| scrollY | 垂直滚动偏移 | `number` |
+| rowHeaderScrollX | 行头水平滚动偏移 | `number` |
 | sortParam | 列头排序配置 | [SortParam](/docs/api/components/sheet-component/#sortparams) |
 | drillDownIdPathMap | 下钻节点 id 和对应生成的 path 寻址路径 | `Map<string, number[][]>` |
 | drillDownNode | 当前下钻节点 | [Node](/docs/api/basic-class/node) |

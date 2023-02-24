@@ -3,7 +3,7 @@
  * https://github.com/antvis/g
  */
 
-import { get, isEmpty, map, max, min } from 'lodash';
+import { get, isEmpty, isNil, map, max, min } from 'lodash';
 import type {
   BaseChartData,
   BulletValue,
@@ -22,7 +22,7 @@ import { CellTypes, MiniChartTypes } from '../common/constant';
 import { parseNumberWithPrecision } from '../utils/formatter';
 import { getIntervalScale } from '../utils/condition/condition';
 import type { DataCell } from '..';
-import { getEllipsisText } from './text';
+import { getEllipsisText, getEmptyPlaceholder } from './text';
 
 interface FractionDigitsOptions {
   min: number;
@@ -251,9 +251,9 @@ export const drawInterval = (cell: DataCell) => {
     const minValue = parseNumberWithPrecision(valueRange.minValue);
     const maxValue = parseNumberWithPrecision(valueRange.maxValue);
 
-    const fieldValue = parseNumberWithPrecision(
-      cell.getMeta().fieldValue as number,
-    );
+    const fieldValue = isNil(attrs?.fieldValue)
+      ? parseNumberWithPrecision(cell.getMeta().fieldValue as number)
+      : parseNumberWithPrecision(attrs?.fieldValue);
     // 对于超出设定范围的值不予显示
     if (fieldValue < minValue || fieldValue > maxValue) {
       return;
@@ -284,13 +284,22 @@ export const drawInterval = (cell: DataCell) => {
  *  绘制单元格内的 mini子弹图
  */
 export const drawBullet = (value: BulletValue, cell: S2CellType) => {
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const { x, y, height, width, spreadsheet } = cell.getMeta();
+
   if (isEmpty(value)) {
+    renderText(
+      cell,
+      [],
+      x + width - dataCellStyle.cell.padding.right,
+      y + height / 2,
+      getEmptyPlaceholder(cell, spreadsheet.options.placeholder),
+      dataCellStyle.text,
+    );
     return;
   }
 
-  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
   const bulletStyle = dataCellStyle.miniChart.bullet;
-  const { x, y, height, width, spreadsheet } = cell.getMeta();
   const { progressBar, comparativeMeasure, rangeColors, backgroundColor } =
     bulletStyle;
 

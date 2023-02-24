@@ -29,7 +29,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let mockRootInteraction: RootInteraction;
 
-  const allRowHeaderCells = map(new Array(8), (a, i) => {
+  const allRowHeaderCells = map(new Array(8), (_, i) => {
     const customY = 30 * i + 30;
     return {
       cellType: CellTypes.ROW_CELL,
@@ -137,7 +137,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     });
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
 
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, {
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {
       clientY: 330,
       clientX: 160,
     });
@@ -191,7 +191,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, { clientX: 180, clientY: 400 });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
@@ -227,7 +227,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
         },
       },
     });
-    const rowCells = map(new Array(8), (a, i) => {
+    const currentRow = map(new Array(8), (a, i) => {
       const customY = 30 * i + 30;
 
       return {
@@ -244,10 +244,10 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
       } as RowCell;
     });
 
-    mockRootInteraction.getAllRowHeaderCells = () => rowCells;
+    mockRootInteraction.getAllRowHeaderCells = () => currentRow;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
     mockSpreadSheetInstance.facet.setScrollOffset({
-      hRowScrollX: 100,
+      rowHeaderScrollX: 100,
       scrollY: 0,
     });
     mockSpreadSheetInstance.render();
@@ -256,7 +256,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
 
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushRowCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.ROW_CELL_MOUSE_MOVE, { clientX: 150, clientY: 400 });
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, { clientX: 150, clientY: 400 });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
@@ -277,7 +277,7 @@ describe('Interaction Row Cell Brush Selection Tests', () => {
     );
     // get brush range selected cells
     expect(brushSelectionInstance.brushRangeCells).toHaveLength(
-      rowCells.length / 2,
+      currentRow.length / 2,
     );
   });
 });
