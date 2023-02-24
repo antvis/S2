@@ -272,7 +272,6 @@ const s2Options = {
 };
 ```
 
-
 #### 滚动圈选
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pmskQL_WvMIAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
@@ -284,7 +283,6 @@ const s2Options = {
 单击行头所对应的角头，可以快捷选中当前列
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*TNjTS7HzcgUAAAAAAAAAAAAADmJ7AQ/original" width="600" alt="preview" />
-
 
 ### 快捷键多选
 
