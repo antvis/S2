@@ -179,10 +179,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShape();
+    this.drawLinkFieldShapeOwn();
   }
 
-  protected drawLinkFieldShape() {
+  protected drawLinkFieldShapeOwn() {
     const { linkFields = [] } = this.spreadsheet.options.interaction;
     const { linkTextFill } = this.getTextStyle();
     const isLinkField = checkIsLinkField(linkFields, this.meta);
