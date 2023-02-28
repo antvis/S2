@@ -1,3 +1,18 @@
+# [@antv/s2-v1.42.0](https://github.com/antvis/S2/compare/@antv/s2-v1.41.1...@antv/s2-v1.42.0) (2023-02-24)
+
+### Features
+
+* **interaction:** 点击角头后支持选中所对应那一列的行头 close [#2073](https://github.com/antvis/S2/issues/2073) ([#2081](https://github.com/antvis/S2/issues/2081)) ([ad2b5d8](https://github.com/antvis/S2/commit/ad2b5d87edf4c529d7c9a5e1348e893e14547ef3))
+* **interaction:** 行头支持滚动刷选 ([#2087](https://github.com/antvis/S2/issues/2087)) ([65c3f3b](https://github.com/antvis/S2/commit/65c3f3b6a37709c0fa684b0f5717d3b349251e48))
+* 复制支持自定义 transformer ([#2090](https://github.com/antvis/S2/issues/2090)) ([250eecd](https://github.com/antvis/S2/commit/250eecd32ed4f48b95ed7c4e480fa3c75d4bb5d7))
+
+# [@antv/s2-v1.41.1](https://github.com/antvis/S2/compare/@antv/s2-v1.41.0...@antv/s2-v1.41.1) (2023-02-17)
+
+### Bug Fixes
+
+* 修复 2k 显示器切换到 MacBook 后表格渲染模糊 close [#2072](https://github.com/antvis/S2/issues/2072) ([#2074](https://github.com/antvis/S2/issues/2074)) ([a98d3fd](https://github.com/antvis/S2/commit/a98d3fd20ff5e3f817f1ac269504719ce7967f04))
+* 自定义 svg 支持无后缀的在线链接 ([#2065](https://github.com/antvis/S2/issues/2065)) ([4602b42](https://github.com/antvis/S2/commit/4602b42406689706f91e634d0453335eff8dcada))
+
 # [@antv/s2-v1.41.0](https://github.com/antvis/S2/compare/@antv/s2-v1.40.0...@antv/s2-v1.41.0) (2023-01-16)
 
 ### Bug Fixes
@@ -635,6 +650,7 @@
 ### Features
 
 * 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+
 * # 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
 
 # [@antv/s2-v1.13.1](https://github.com/antvis/S2/compare/@antv/s2-v1.13.0...@antv/s2-v1.13.1) (2022-03-25)
@@ -642,9 +658,11 @@
 ### Features
 
 * 固定背景色 ([3c24dad](https://github.com/antvis/S2/commit/3c24dadd93409c648aa417ee0e261c744a016081))
+
 * # 增加根据主题色生成对应主题风格色板功能 ([9928227](https://github.com/antvis/S2/commit/992822784d65611eed2a1aa80d685e1b0a6d48c3))
 
-- **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+* **table-facet:** 修复 row 高度大于 canvas 高度后导致的 index 计算错误 ([#1208](https://github.com/antvis/S2/issues/1208)) ([06983bc](https://github.com/antvis/S2/commit/06983bc847cebb02c416e3c13279cc763a3d2d4a))
+
 * 修复以行列总计依赖度量汇总排序失败问题。 ([#1167](https://github.com/antvis/S2/issues/1167)) ([be3e650](https://github.com/antvis/S2/commit/be3e6503a4ae9d658afea7b1f4f5ce9aed5e75b9))
 * 修复趋势分析表 label 文字对齐问题 ([#1205](https://github.com/antvis/S2/issues/1205)) ([22e954f](https://github.com/antvis/S2/commit/22e954f32644b0658c05edd595c8b4e4f682b132))
 * 单元格内换行存在"字符 ([#1210](https://github.com/antvis/S2/issues/1210)) ([f1e1e5b](https://github.com/antvis/S2/commit/f1e1e5bbe167bc0cdfb8469d33deb94061629b6e))

@@ -7,6 +7,13 @@
 
 # [@antv/s2-react-v1.36.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.35.0...@antv/s2-react-v1.36.0) (2023-01-16)
 
+### Features
+
+* **interaction:** 点击角头后支持选中所对应那一列的行头 close [#2073](https://github.com/antvis/S2/issues/2073) ([#2081](https://github.com/antvis/S2/issues/2081)) ([ad2b5d8](https://github.com/antvis/S2/commit/ad2b5d87edf4c529d7c9a5e1348e893e14547ef3))
+* **interaction:** 行头支持滚动刷选 ([#2087](https://github.com/antvis/S2/issues/2087)) ([65c3f3b](https://github.com/antvis/S2/commit/65c3f3b6a37709c0fa684b0f5717d3b349251e48))
+
+# [@antv/s2-react-v1.36.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.35.0...@antv/s2-react-v1.36.0) (2023-01-16)
+
 ### Bug Fixes
 
 * **layout:** 修复存在列总计但不存在列小计时，隐藏其兄弟节点后单元格坐标偏移 close [#1993](https://github.com/antvis/S2/issues/1993) ([#2047](https://github.com/antvis/S2/issues/2047)) ([2ae663e](https://github.com/antvis/S2/commit/2ae663e1c46a3c8cb04b79d357fc033314f4cf77))
