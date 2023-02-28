@@ -1,5 +1,6 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, last, map, throttle } from 'lodash';
+import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InteractionStateName,
@@ -17,28 +18,27 @@ import type {
   BrushRange,
   OffsetConfig,
   OnUpdateCells,
+  Rect,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
 import type { TableFacet } from '../../facet';
+import type { Node } from '../../facet/layout/node';
 import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from '../../facet/utils';
-import type { Node } from '../../facet/layout/node';
+import { getCellsTooltipData } from '../../utils';
 import {
   getCellMeta,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
-import { getCellsTooltipData } from '../../utils';
-import { ColCell, DataCell, RowCell } from '../../cell';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
-import type { Rect } from '../../common/interface';
 
 /**
  * 刷选基类, dataCell, rowCell, colCell 支持滚动刷选
@@ -135,10 +135,12 @@ export class BaseBrushSelection
     this.mouseMoveDistanceFromCanvas = deltaVal;
   };
 
-  public formatBrushPointForScroll = (delta: { x: number; y: number }) => {
+  public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
-    const { minX, minY, maxX, maxY } = facet.panelBBox;
+    const { minX, maxX } = isRowHeader ? facet.cornerBBox : facet.panelBBox;
+    const { minY, maxY } = facet.panelBBox;
+
     let newX = this.endBrushPoint?.x + x;
     let newY = this.endBrushPoint?.y + y;
     let needScrollForX = true;
@@ -302,6 +304,23 @@ export class BaseBrushSelection
     return rowIndex;
   };
 
+  public getWillScrollRowIndexDiff = (dir: ScrollDirection): number => {
+    return dir === ScrollDirection.TRAILING ? 1 : -1;
+  };
+
+  public getDefaultWillScrollToRowIndex = (dir: ScrollDirection) => {
+    const rowIndex = this.adjustNextRowIndexWithFrozen(
+      this.endBrushPoint.rowIndex,
+      dir,
+    );
+    const nextRowIndex = rowIndex + this.getWillScrollRowIndexDiff(dir);
+    return this.validateYIndex(nextRowIndex);
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
+    return this.getDefaultWillScrollToRowIndex(dir);
+  };
+
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
     const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
 
@@ -311,16 +330,15 @@ export class BaseBrushSelection
     if (config.y.scroll) {
       const dir =
         config.y.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
-      const rowIndex = this.adjustNextRowIndexWithFrozen(
-        this.endBrushPoint.rowIndex,
-        dir,
-      );
-      const nextIndex = this.validateYIndex(
-        rowIndex + (config.y.value > 0 ? 1 : -1),
-      );
-      y = isNil(nextIndex)
-        ? 0
-        : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
+      const willScrollToRowIndex = this.getWillScrollToRowIndex(dir);
+      const scrollOffsetY =
+        getScrollOffsetForRow(willScrollToRowIndex, dir, this.spreadsheet) -
+        scrollY;
+      const isInvalidScrollOffset =
+        isNil(willScrollToRowIndex) ||
+        isNil(scrollOffsetY) ||
+        Number.isNaN(scrollOffsetY);
+      y = isInvalidScrollOffset ? 0 : scrollOffsetY;
     }
 
     if (config.x.scroll) {
@@ -425,7 +443,7 @@ export class BaseBrushSelection
       const {
         x: { value: newX, needScroll: needScrollForX },
         y: { value: newY, needScroll: needScrollForY },
-      } = this.formatBrushPointForScroll({ x, y });
+      } = this.formatBrushPointForScroll({ x, y }, isRowHeader);
 
       const config = this.autoScrollConfig;
       if (needScrollForY) {
