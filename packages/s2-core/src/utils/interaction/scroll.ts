@@ -1,3 +1,4 @@
+import { isNil } from 'lodash';
 import { ScrollDirection } from '../../common/constant/interaction';
 import type { TableFacet } from '../../facet';
 import type { SpreadSheet } from '../../sheet-type';
@@ -29,9 +30,12 @@ export const getScrollOffsetForRow = (
 ) => {
   const { facet } = spreadsheet;
   const { getCellOffsetY } = facet.viewCellHeights;
+  const { height } = facet.panelBBox;
   const rowOffset = getCellOffsetY(rowIndex + 1);
 
-  const { height } = facet.panelBBox;
+  if (isNil(rowOffset)) {
+    return 0;
+  }
 
   const info = (facet as TableFacet)?.frozenGroupInfo;
   const frozenRowHeight = info?.frozenRow.height ?? 0;
