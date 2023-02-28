@@ -36,6 +36,7 @@ import {
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 import { shouldReverseFontColor } from '../utils/color';
+import { checkIsLinkField } from '../utils/interaction/link-field';
 
 /**
  * DataCell for panelGroup area
@@ -173,6 +174,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);
     this.initCell();
+  }
+
+  // draw text
+  protected drawTextShape() {
+    super.drawTextShape();
+    this.drawLinkFieldShape();
+  }
+
+  protected drawLinkFieldShape() {
+    const { linkFields = [] } = this.spreadsheet.options.interaction;
+    const { linkTextFill } = this.getTextStyle();
+    const isLinkField = checkIsLinkField(linkFields, this.meta);
+    super.drawLinkFieldShape(isLinkField, linkTextFill);
   }
 
   protected initCell() {
