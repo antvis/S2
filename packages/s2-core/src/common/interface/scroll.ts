@@ -6,7 +6,7 @@ export interface ScrollOffset {
 
 export interface AreaRange {
   start: number;
-  width: number;
+  size: number;
 }
 
 export interface CellScrollPosition {

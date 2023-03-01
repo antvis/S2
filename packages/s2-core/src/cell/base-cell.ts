@@ -47,7 +47,7 @@ import type { SpreadSheet } from '../sheet-type';
 import {
   getBorderPositionAndStyle,
   getCellBoxByType,
-  getTextAndFollowingIconPosition,
+  getFixedTextIconPosition,
 } from '../utils/cell/cell';
 import {
   renderIcon,
@@ -127,11 +127,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType]?.icon;
   }
 
-  public getTextAndIconPosition(iconCount = 1) {
+  public getTextIconPosition(iconCount = 1) {
     const textTheme = this.getTextStyle();
     const iconTheme = this.getIconStyle();
 
-    return getTextAndFollowingIconPosition({
+    return getFixedTextIconPosition({
       bbox: this.getBBoxByType(CellClipBox.CONTENT_BOX),
       textStyle: textTheme,
       textWidth: this.actualTextWidth,
@@ -309,7 +309,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   protected getIconPosition(iconCount = 1) {
-    return this.getTextAndIconPosition(iconCount).icon;
+    return this.getTextIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {

@@ -1,5 +1,7 @@
 import type { Group, PointLike } from '@antv/g';
-import { isEmpty } from 'lodash';
+import { isEmpty, min } from 'lodash';
+import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
+import { normalizeTextAlign } from '../utils/normalize';
 import {
   CellTypes,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
@@ -15,10 +17,9 @@ import type { AreaRange } from '../common/interface/scroll';
 import { CustomRect, type SimpleBBox } from '../engine';
 import { Frame, type ColHeaderConfig } from '../facet/header';
 import {
-  adjustColHeaderScrollingTextPosition,
-  adjustColHeaderScrollingViewport,
-  getTextAndFollowingIconPosition,
-  getTextAreaRange,
+  getFixedTextIconPosition,
+  getVerticalIconPositionByText,
+  getVerticalPosition,
 } from '../utils/cell/cell';
 import { renderIcon, renderLine } from '../utils/g-renders';
 import { isLastColumnAfterHidden } from '../utils/hide-columns';
@@ -33,8 +34,8 @@ import { HeaderCell } from './header-cell';
 export class ColCell extends HeaderCell {
   protected declare headerConfig: ColHeaderConfig;
 
-  /** 文字绘制起始坐标 */
-  protected textPosition: PointLike;
+  /** icon 绘制起始坐标 */
+  protected iconPosition: PointLike;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -72,65 +73,6 @@ export class ColCell extends HeaderCell {
     return width - this.getActionIconsWidth();
   }
 
-  protected getIconPosition(): PointLike {
-    if (this.meta.isLeaf) {
-      return super.getIconPosition(this.getActionIconsCount());
-    }
-
-    // 非叶子节点，因 value 滚动展示，需要适配不同 align情况
-    const iconStyle = this.getIconStyle();
-    const iconMarginLeft = iconStyle!.margin!.left;
-
-    const textStyle = this.getTextStyle();
-    const position = this.textPosition;
-    const textX = position.x;
-
-    const y = position.y - iconStyle!.size! / 2;
-
-    if (textStyle.textAlign === 'left') {
-      /**
-       * textX          x
-       *   |            |
-       *   v            v
-       *   +---------+  +----+
-       *   |  text   |--|icon|
-       *   +---------+  +----+
-       */
-      return {
-        x: textX + this.actualTextWidth + iconMarginLeft!,
-        y,
-      };
-    }
-
-    if (textStyle.textAlign === 'right') {
-      /**
-       *         textX  x
-       *             |  |
-       *             v  v
-       *   +---------+  +----+
-       *   |  text   |--|icon|
-       *   +---------+  +----+
-       */
-      return {
-        x: textX + iconMarginLeft!,
-        y,
-      };
-    }
-
-    /**
-     *      textX     x
-     *        |       |
-     *        v       v
-     *   +---------+  +----+
-     *   |  text   |--|icon|
-     *   +---------+  +----+
-     */
-    return {
-      x: textX + this.actualTextWidth / 2 + iconMarginLeft!,
-      y,
-    };
-  }
-
   protected isBolderText() {
     // 非叶子节点、小计总计，均为粗体
     const { isLeaf, isTotals } = this.meta;
@@ -152,13 +94,17 @@ export class ColCell extends HeaderCell {
     const iconStyle = this.getIconStyle();
 
     if (isLeaf) {
-      return getTextAndFollowingIconPosition({
+      const { text, icon } = getFixedTextIconPosition({
         bbox: contentBox,
         textStyle,
         textWidth: this.actualTextWidth,
         iconStyle,
         iconCount: this.getActionIconsCount(),
-      }).text;
+      });
+
+      this.iconPosition = icon;
+
+      return text;
     }
 
     /**
@@ -177,43 +123,51 @@ export class ColCell extends HeaderCell {
      */
     const viewport: AreaRange = {
       start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
-      width: width + (scrollContainsRowHeader ? cornerWidth : 0),
+      size: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
     this.handleViewport(viewport);
 
-    const { textAlign } = this.getTextStyle();
-    const adjustedViewport = adjustColHeaderScrollingViewport(
-      viewport,
-      textAlign!,
-      this.getStyle()!.cell?.padding,
-    );
+    const { icon, cell } = this.getStyle()!;
+    const { textAlign, textBaseline, fontSize } = this.getTextStyle();
 
     const actionIconSpace = this.getActionIconsWidth();
-    const textAndIconSpace = this.actualTextWidth + actionIconSpace;
 
-    // icon position 默认为 right
-    const textAreaRange = getTextAreaRange(
-      adjustedViewport,
-      { start: contentBox.x, width: contentBox.width },
-      textAndIconSpace,
+    const paddingBetweenTextIcon = icon?.margin?.left ?? 0;
+    const { textStart, iconStart } = adjustTextIconPositionWhileScrolling(
+      viewport,
+      { start: contentBox.x, size: contentBox.width },
+      {
+        align: normalizeTextAlign(textAlign!),
+        size: {
+          textSize: this.actualTextWidth,
+          iconSize: min([actionIconSpace - paddingBetweenTextIcon, 0])!,
+        },
+        padding: {
+          start: cell?.padding?.left!,
+          end: cell?.padding?.right!,
+          betweenTextIcon: paddingBetweenTextIcon,
+        },
+      },
     );
 
-    /*
-     * textAreaRange.start 是 text&icon 整个区域的 center
-     * 此处按实际样式(left or right)调整计算出的文字绘制点
-     */
-    const textX = adjustColHeaderScrollingTextPosition(
-      textAreaRange,
-      this.actualTextWidth,
-      actionIconSpace,
-      textAlign!,
-    );
-    const textY = contentBox.y + contentBox.height / 2;
+    const y = getVerticalPosition(contentBox, textBaseline!);
 
-    this.textPosition = { x: textX, y: textY };
+    this.iconPosition = {
+      x: iconStart,
+      y: getVerticalIconPositionByText(
+        icon?.size!,
+        y,
+        fontSize!,
+        textBaseline!,
+      ),
+    };
 
-    return this.textPosition;
+    return { x: textStart, y };
+  }
+
+  protected getIconPosition(): PointLike {
+    return this.iconPosition;
   }
 
   protected getActionIconsWidth() {

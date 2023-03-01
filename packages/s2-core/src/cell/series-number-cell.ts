@@ -4,13 +4,15 @@ import type {
   FormatResult,
   Condition,
   MappingResult,
+  AreaRange,
 } from '../common/interface';
 import { CellBorderPosition, CellClipBox } from '../common/interface/basic';
 import { CellTypes } from '../common/constant/interaction';
 import type { Node } from '../facet/layout/node';
 import type { BaseHeaderConfig } from '../facet/header/interface';
-import { getTextAndFollowingIconPosition } from '../utils/cell/cell';
-import { getAdjustPosition } from '../utils/text-absorption';
+import { getFixedTextIconPosition } from '../utils/cell/cell';
+import { adjustTextIconPositionWhileScrolling } from '../utils/cell/text-scrolling';
+import { normalizeTextAlign } from '../utils/normalize';
 import { BaseCell } from './base-cell';
 
 export class SeriesNumberCell extends BaseCell<Node> {
@@ -68,26 +70,45 @@ export class SeriesNumberCell extends BaseCell<Node> {
   }
 
   protected getTextPosition(): PointLike {
-    const { scrollY, viewportHeight: height } = this.headerConfig;
+    const { scrollY, viewportHeight } = this.headerConfig;
+    const textStyle = this.getTextStyle();
+    const { cell } = this.getStyle()!;
+    const viewport: AreaRange = {
+      start: scrollY!,
+      size: viewportHeight,
+    };
 
     const textArea = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-    const { fontSize } = this.getTextStyle();
-    const textY = getAdjustPosition({
-      rectLeft: textArea.y,
-      rectWidth: textArea.height,
-      viewportLeft: scrollY!,
-      viewportWidth: height,
-      textWidth: fontSize!,
-    });
-    const textX = getTextAndFollowingIconPosition({
+
+    const { textStart } = adjustTextIconPositionWhileScrolling(
+      viewport,
+      {
+        start: textArea.y,
+        size: textArea.height,
+      },
+      {
+        align: normalizeTextAlign(textStyle.textBaseline!),
+        size: {
+          textSize: textStyle.fontSize!,
+          iconSize: 0,
+        },
+        padding: {
+          start: cell?.padding?.top!,
+          end: cell?.padding?.bottom!,
+          betweenTextIcon: 0,
+        },
+      },
+    );
+
+    const textX = getFixedTextIconPosition({
       bbox: textArea,
-      textStyle: this.getTextStyle(),
-      textWidth: 0,
+      textStyle,
+      textWidth: this.actualTextWidth,
       iconStyle: this.getIconStyle(),
       iconCount: 0,
     }).text.x;
 
-    return { x: textX, y: textY };
+    return { x: textX, y: textStart };
   }
 
   protected findFieldCondition(): Condition | undefined {
