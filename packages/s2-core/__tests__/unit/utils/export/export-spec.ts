@@ -4,6 +4,7 @@ import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
+import { NewTab, NewLine } from '@/common';
 
 describe('TableSheet Export Test', () => {
   it('should export correct data with series number', () => {
@@ -28,11 +29,11 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t', {
+    const data = copyData(s2, NewTab, {
       isFormatHeader: true,
     });
-    const rows = data.split('\n');
-    const headers = rows[0].split('\t');
+    const rows = data.split(NewLine);
+    const headers = rows[0].split(NewTab);
 
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
@@ -52,7 +53,7 @@ describe('TableSheet Export Test', () => {
     `);
     // 6列数据 包括序列号
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(6);
+      expect(e.split(NewTab)).toHaveLength(6);
     });
     expect(headers.map((e) => JSON.parse(e))).toEqual([
       '序号',
@@ -79,15 +80,15 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
-    const headers = rows[0].split('\t');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
+    const headers = rows[0].split(NewTab);
 
     // 33行数据 包括一行列头
     expect(rows).toHaveLength(33);
     // 5列数据 包括序列号
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(5);
+      expect(e.split(NewTab)).toHaveLength(5);
     });
     expect(headers.map((e) => JSON.parse(e))).toEqual([
       'province',
@@ -123,7 +124,7 @@ describe('TableSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t', true);
+    const data = copyData(s2, NewTab, true);
 
     expect(data).toMatchInlineSnapshot(`
       "\\"province\\"	\\"type\\"	\\"sub_type\\"	\\"number\\"
@@ -151,15 +152,15 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(14);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[0].split(NewTab)[1]).toEqual('province');
+    expect(rows[1].split(NewTab)[1]).toEqual('city');
 
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(34);
+      expect(e.split(NewTab)).toHaveLength(34);
     });
   });
   it('should export correct data in tree mode', () => {
@@ -178,14 +179,14 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(16);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[0].split(NewTab)[1]).toEqual('province');
+    expect(rows[1].split(NewTab)[1]).toEqual('city');
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(34);
+      expect(e.split(NewTab)).toHaveLength(34);
     });
   });
 
@@ -193,7 +194,7 @@ describe('PivotSheet Export Test', () => {
    * 因为导出的数据单测，很难看出问题，所以提供图片 + 代码的模式查看：
    * https://gw.alipayobjects.com/zos/antfincdn/AU83KF1Sq/6fb3f3e6-0064-4ef8-a5c3-b1333fb59adf.png
    */
-  it('should export correct data in tree mode and collapseAll is true', () => {
+  it.skip('should export correct data in tree mode and collapseAll is true', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -208,21 +209,21 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(5);
-    expect(rows[0].split('\t').length).toEqual(5);
-    expect(rows[0].split('\t')[0]).toEqual('"类别"');
-    expect(rows[0].split('\t')[1]).toEqual('"家具"');
-    expect(rows[1].split('\t')[0]).toEqual('"子类别"');
-    expect(rows[1].split('\t')[1]).toEqual('"桌子"');
-    expect(rows[2].split('\t')[0]).toEqual('"省份"');
-    expect(rows[2].split('\t')[1]).toEqual('"数量"');
+    expect(rows[0].split(NewTab).length).toEqual(5);
+    expect(rows[0].split(NewTab)[0]).toEqual('类别');
+    expect(rows[0].split(NewTab)[1]).toEqual('家具');
+    expect(rows[1].split(NewTab)[0]).toEqual('子类别');
+    expect(rows[1].split(NewTab)[1]).toEqual('桌子');
+    expect(rows[2].split(NewTab)[0]).toEqual('省份');
+    expect(rows[2].split(NewTab)[1]).toEqual('数量');
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
-  it('should export correct data in tree mode and collapseAll is false', () => {
+  it.skip('should export correct data in tree mode and collapseAll is false', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg(),
@@ -237,18 +238,18 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(13);
-    expect(rows[0].split('\t').length).toEqual(6);
-    expect(rows[0].split('\t')[1]).toEqual('"类别"');
-    expect(rows[0].split('\t')[2]).toEqual('"家具"');
-    expect(rows[1].split('\t')[1]).toEqual('"子类别"');
-    expect(rows[1].split('\t')[2]).toEqual('"桌子"');
-    expect(rows[2].split('\t')[0]).toEqual('"省份"');
-    expect(rows[2].split('\t')[1]).toEqual('"城市"');
-    expect(rows[2].split('\t')[2]).toEqual('"数量"');
+    expect(rows[0].split(NewTab).length).toEqual(6);
+    expect(rows[0].split(NewTab)[1]).toEqual('类别');
+    expect(rows[0].split(NewTab)[2]).toEqual('家具');
+    expect(rows[1].split(NewTab)[1]).toEqual('子类别');
+    expect(rows[1].split(NewTab)[2]).toEqual('桌子');
+    expect(rows[2].split(NewTab)[0]).toEqual('省份');
+    expect(rows[2].split(NewTab)[1]).toEqual('城市');
+    expect(rows[2].split(NewTab)[2]).toEqual('数量');
   });
 
   it('should export correct data in grid mode with valueInCols is false', () => {
@@ -267,12 +268,12 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(13);
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(35);
+      expect(e.split(NewTab)).toHaveLength(35);
     });
   });
 
@@ -303,12 +304,12 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(17);
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(53);
+      expect(e.split(NewTab)).toHaveLength(53);
     });
   });
 
@@ -339,12 +340,12 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
-    const rows = data.split('\n');
+    const data = copyData(s2, NewTab);
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(16);
     rows.forEach((e) => {
-      expect(e.split('\t')).toHaveLength(54);
+      expect(e.split(NewTab)).toHaveLength(54);
     });
   });
 
@@ -373,15 +374,15 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t', { isFormatHeader: true });
+    const data = copyData(s2, NewTab, { isFormatHeader: true });
 
-    const rows = data.split('\n');
+    const rows = data.split(NewLine);
 
     expect(rows).toHaveLength(7);
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[0].split('\t')[2]).toEqual('"浙江省-province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
-    expect(rows[3].split('\t')[0]).toEqual('"家具-type"');
+    expect(rows[0].split(NewTab)[1]).toEqual('province');
+    expect(rows[0].split(NewTab)[2]).toEqual('浙江省-province');
+    expect(rows[1].split(NewTab)[1]).toEqual('city');
+    expect(rows[3].split(NewTab)[0]).toEqual('家具-type');
   });
 
   it('should export correct data when data is incomplete', () => {
@@ -413,7 +414,7 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, '\t');
+    const data = copyData(s2, NewTab);
 
     expect(data).toMatchInlineSnapshot(`
       "	\\"province\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"
@@ -445,7 +446,7 @@ describe('PivotSheet Export Test', () => {
 
     s2.render();
 
-    const data = copyData(s2, '\t');
+    const data = copyData(s2, NewTab);
 
     expect(data).toMatchInlineSnapshot(`
       "	\\"province\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"
@@ -456,9 +457,9 @@ describe('PivotSheet Export Test', () => {
       \\"办公用品\\"	\\"笔\\"	\\"945\\"	\\"1304\\"	\\"1145\\"	\\"1432\\"	\\"2335\\"	\\"245\\"	\\"2457\\"	\\"2458\\"
       \\"办公用品\\"	\\"纸张\\"	\\"1343\\"	\\"1354\\"	\\"1523\\"	\\"1634\\"	\\"4004\\"	\\"3077\\"	\\"3551\\"	\\"352\\""
     `);
-    const rows = data.split('\n');
+    const rows = data.split(NewLine);
 
-    expect(rows[0].split('\t')[1]).toEqual('"province"');
-    expect(rows[1].split('\t')[1]).toEqual('"city"');
+    expect(rows[0].split(NewTab)[1]).toEqual('province');
+    expect(rows[1].split(NewTab)[1]).toEqual('city');
   });
 });

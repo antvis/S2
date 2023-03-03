@@ -7,10 +7,11 @@ import {
   EXTRA_FIELD,
   InteractionStateName,
   type S2CellType,
+  SERIES_NUMBER_FIELD,
   VALUE_FIELD,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
-import { copyToClipboard } from '../index';
+import { copyToClipboard, type FormatOptions } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
 import {
   convertString,
@@ -21,10 +22,14 @@ import {
 } from '../method';
 import { type CopyableList, CopyMIMEType } from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
-import { processPivotSelected } from './pivot-data-cell-copy';
+import {
+  processPivotAllSelected,
+  processPivotSelected,
+} from './pivot-data-cell-copy';
 import { processTableColSelected, processTableRowSelected } from './table-copy';
 import {
   assembleMatrix,
+  completeMatrix,
   getFormatter,
   matrixHtmlTransformer,
   matrixPlainTextTransformer,
@@ -184,11 +189,14 @@ const getDataMatrixByDataCell = (
   ) as string[][];
 
   // 通过第一列来获取行头信息
-  const rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
+  let rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
     const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
 
     return getHeaderList(rowId);
   });
+
+  // 当 rowMatrix 中的元素个数不一致时，需要补全
+  rowMatrix = completeMatrix(rowMatrix);
 
   return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
 };
@@ -263,6 +271,7 @@ function getDataCellCopyable(
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
+    // todo-zc：可以使用 getPivotCopyData 替代此方法？
     data = getDataMatrixByDataCell(
       selectedCellsMeta,
       displayData as Data[],
@@ -294,4 +303,25 @@ export const getSelectedData = (spreadsheet: SpreadSheet): CopyableList => {
   }
 
   return data!;
+};
+
+// 全量导出使用
+export const processAllSelected = (
+  spreadsheet: SpreadSheet,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  selectedCols?: CellMeta[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  formatOptions?: FormatOptions,
+): CopyableList => {
+  if (spreadsheet.isPivotMode()) {
+    return processPivotAllSelected(spreadsheet);
+  }
+
+  const columnNodes = (spreadsheet.getColumnNodes() || []).filter(
+    // 滤过掉序号，序号不需要复制
+    (colNode) => colNode.field !== SERIES_NUMBER_FIELD,
+  );
+
+  // @ts-ignore
+  return processTableColSelected(spreadsheet, columnNodes);
 };
