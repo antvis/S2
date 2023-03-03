@@ -124,13 +124,7 @@ export class RowBrushSelection extends BaseBrushSelection {
     });
   }
 
-  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
-    // 行头叶子节点, 按默认逻辑处理即可
-    if (!isNil(this.endBrushPoint.rowIndex)) {
-      return this.getDefaultWillScrollToRowIndex(dir);
-    }
-
-    /**
+  /**
      * 行头的非叶子节点滚动刷选, 以当前节点所对应 [可视范围] 内叶子节点为基准
      * 例: 当前刷选 [浙江省] 行头的这一列, 向 🔽 滚动以 [纸张] 为准, 向 🔼滚动以 [桌子] 为准
        ---------------------------------------
@@ -145,14 +139,26 @@ export class RowBrushSelection extends BaseBrushSelection {
      * |       |       |         | 🔽 [纸张] |
      * -------------------------------------
      */
+  private getVisibleRowLeafCellByScrollDirection = (dir: ScrollDirection) => {
     const rowCell = this.spreadsheet.interaction.getAllRowHeaderCells();
-    const firstLeafCell = rowCell.find((cell) => {
+
+    if (dir === ScrollDirection.SCROLL_DOWN) {
+      return last(rowCell);
+    }
+
+    return rowCell.find((cell) => {
       const meta = cell.getMeta();
       return meta.isLeaf;
     });
-    const lastLeafCell = last(rowCell);
-    const visibleCell =
-      dir === ScrollDirection.TRAILING ? lastLeafCell : firstLeafCell;
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
+    // 行头叶子节点, 按默认逻辑处理即可
+    if (!isNil(this.endBrushPoint.rowIndex)) {
+      return this.getDefaultWillScrollToRowIndex(dir);
+    }
+
+    const visibleCell = this.getVisibleRowLeafCellByScrollDirection(dir);
     const lastRowIndex = visibleCell?.getMeta()?.rowIndex ?? 0;
     const nextRowIndex = lastRowIndex + this.getWillScrollRowIndexDiff(dir);
     return this.validateYIndex(nextRowIndex);
