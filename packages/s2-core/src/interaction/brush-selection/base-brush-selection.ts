@@ -1,5 +1,6 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, last, map, throttle } from 'lodash';
+import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
   InteractionStateName,
@@ -10,6 +11,7 @@ import {
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
+  ScrollDirectionRowIndexDiff,
 } from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
@@ -17,28 +19,27 @@ import type {
   BrushRange,
   OffsetConfig,
   OnUpdateCells,
+  Rect,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
 import type { TableFacet } from '../../facet';
+import type { Node } from '../../facet/layout/node';
 import {
   isFrozenCol,
   isFrozenRow,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from '../../facet/utils';
-import type { Node } from '../../facet/layout/node';
+import { getCellsTooltipData } from '../../utils';
 import {
   getCellMeta,
   getScrollOffsetForCol,
   getScrollOffsetForRow,
 } from '../../utils/interaction';
 import { getValidFrozenOptions } from '../../utils/layout/frozen';
-import { getCellsTooltipData } from '../../utils';
-import { ColCell, DataCell, RowCell } from '../../cell';
 import type { BaseEventImplement } from '../base-event';
 import { BaseEvent } from '../base-interaction';
-import type { Rect } from '../../common/interface';
 
 /**
  * 刷选基类, dataCell, rowCell, colCell 支持滚动刷选
@@ -135,10 +136,12 @@ export class BaseBrushSelection
     this.mouseMoveDistanceFromCanvas = deltaVal;
   };
 
-  public formatBrushPointForScroll = (delta: { x: number; y: number }) => {
+  public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
-    const { minX, minY, maxX, maxY } = facet.panelBBox;
+    const { minX, maxX } = isRowHeader ? facet.cornerBBox : facet.panelBBox;
+    const { minY, maxY } = facet.panelBBox;
+
     let newX = this.endBrushPoint?.x + x;
     let newY = this.endBrushPoint?.y + y;
     let needScrollForX = true;
@@ -254,7 +257,7 @@ export class BaseBrushSelection
     const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingColCount > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)
     ) {
       return panelIndexes[1];
@@ -262,7 +265,7 @@ export class BaseBrushSelection
 
     if (
       frozenColCount > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenCol(colIndex, frozenColCount)
     ) {
       return panelIndexes[0];
@@ -286,7 +289,7 @@ export class BaseBrushSelection
     const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingRowCount > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
     ) {
       return panelIndexes[3];
@@ -294,12 +297,31 @@ export class BaseBrushSelection
 
     if (
       frozenRowCount > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenRow(rowIndex, cellRange.start, frozenRowCount)
     ) {
       return panelIndexes[2];
     }
     return rowIndex;
+  };
+
+  public getWillScrollRowIndexDiff = (dir: ScrollDirection): number => {
+    return dir === ScrollDirection.SCROLL_DOWN
+      ? ScrollDirectionRowIndexDiff.SCROLL_DOWN
+      : ScrollDirectionRowIndexDiff.SCROLL_UP;
+  };
+
+  public getDefaultWillScrollToRowIndex = (dir: ScrollDirection) => {
+    const rowIndex = this.adjustNextRowIndexWithFrozen(
+      this.endBrushPoint.rowIndex,
+      dir,
+    );
+    const nextRowIndex = rowIndex + this.getWillScrollRowIndexDiff(dir);
+    return this.validateYIndex(nextRowIndex);
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
+    return this.getDefaultWillScrollToRowIndex(dir);
   };
 
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
@@ -310,22 +332,25 @@ export class BaseBrushSelection
 
     if (config.y.scroll) {
       const dir =
-        config.y.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
-      const rowIndex = this.adjustNextRowIndexWithFrozen(
-        this.endBrushPoint.rowIndex,
-        dir,
-      );
-      const nextIndex = this.validateYIndex(
-        rowIndex + (config.y.value > 0 ? 1 : -1),
-      );
-      y = isNil(nextIndex)
-        ? 0
-        : getScrollOffsetForRow(nextIndex, dir, this.spreadsheet) - scrollY;
+        config.y.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
+      const willScrollToRowIndex = this.getWillScrollToRowIndex(dir);
+      const scrollOffsetY =
+        getScrollOffsetForRow(willScrollToRowIndex, dir, this.spreadsheet) -
+        scrollY;
+      const isInvalidScroll =
+        isNil(willScrollToRowIndex) ||
+        isNil(scrollOffsetY) ||
+        Number.isNaN(scrollOffsetY);
+      y = isInvalidScroll ? 0 : scrollOffsetY;
     }
 
     if (config.x.scroll) {
       const dir =
-        config.x.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
+        config.x.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
       const colIndex = this.adjustNextColIndexWithFrozen(
         this.endBrushPoint.colIndex,
         dir,
@@ -425,7 +450,7 @@ export class BaseBrushSelection
       const {
         x: { value: newX, needScroll: needScrollForX },
         y: { value: newY, needScroll: needScrollForY },
-      } = this.formatBrushPointForScroll({ x, y });
+      } = this.formatBrushPointForScroll({ x, y }, isRowHeader);
 
       const config = this.autoScrollConfig;
       if (needScrollForY) {

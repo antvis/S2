@@ -1,10 +1,11 @@
 import type { Point } from '@antv/g-canvas';
-import { map } from 'lodash';
+import { isNil, last, map } from 'lodash';
 import { RowCell } from '../../cell';
 import { InterceptType, S2Event } from '../../common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
+  ScrollDirection,
 } from '../../common/constant/interaction';
 import type { OnUpdateCells, ViewMeta } from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
@@ -122,4 +123,44 @@ export class RowBrushSelection extends BaseBrushSelection {
       return new RowCell(node, this.spreadsheet);
     });
   }
+
+  /**
+     * 行头的非叶子节点滚动刷选, 以当前节点所对应 [可视范围] 内叶子节点为基准
+     * 例: 当前刷选 [浙江省] 行头的这一列, 向 🔽 滚动以 [纸张] 为准, 向 🔼滚动以 [桌子] 为准
+       ---------------------------------------
+     * |       | 杭州市 | 家具    | 🔼 [桌子]   |
+     * |       |       |        | 沙发   |
+     * |       |       | 办公用品 | 笔    |
+     * |       |       |         | 纸张  |
+     * | 浙江省 |       |         |      |
+     * |       | 绍兴市 | 家具     | 桌子  |
+     * |       |       |         | 沙发  |
+     * |       |       | 办公用品 | 笔    |
+     * |       |       |         | 🔽 [纸张] |
+     * -------------------------------------
+     */
+  private getVisibleRowLeafCellByScrollDirection = (dir: ScrollDirection) => {
+    const rowCell = this.spreadsheet.interaction.getAllRowHeaderCells();
+
+    if (dir === ScrollDirection.SCROLL_DOWN) {
+      return last(rowCell);
+    }
+
+    return rowCell.find((cell) => {
+      const meta = cell.getMeta();
+      return meta.isLeaf;
+    });
+  };
+
+  protected getWillScrollToRowIndex = (dir: ScrollDirection): number => {
+    // 行头叶子节点, 按默认逻辑处理即可
+    if (!isNil(this.endBrushPoint.rowIndex)) {
+      return this.getDefaultWillScrollToRowIndex(dir);
+    }
+
+    const visibleCell = this.getVisibleRowLeafCellByScrollDirection(dir);
+    const lastRowIndex = visibleCell?.getMeta()?.rowIndex ?? 0;
+    const nextRowIndex = lastRowIndex + this.getWillScrollRowIndexDiff(dir);
+    return this.validateYIndex(nextRowIndex);
+  };
 }

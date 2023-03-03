@@ -13,18 +13,34 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/l23NpRrPmF/hover.gif"
     },
     {
-      "filename": "click-highlight.ts",
+      "filename": "data-cell-click-selection.ts",
       "title": {
-        "zh": "单选高亮",
-        "en": "Click Highlighting"
+        "zh": "数值单元格单选/多选",
+        "en": "Data Cell Click Highlighting"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif"
     },
     {
-      "filename": "select-highlight.ts",
+      "filename": "header-cell-click-selection.ts",
       "title": {
-        "zh": "圈选高亮",
-        "en": "Multiple Select Highlighting"
+        "zh": "行列头单选/多选",
+        "en": "Header Cell Highlighting"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/XYZaL1w%24M/Kapture%2525202022-04-15%252520at%25252011.45.55.gif"
+    },
+    {
+      "filename": "data-cell-range-selection.ts",
+      "title": {
+        "zh": "区间多选",
+        "en": "Range Highlighting"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/RcIcQc7O2/Kapture%2525202022-04-15%252520at%25252011.52.52.gif"
+    },
+    {
+      "filename": "brush-selection.ts",
+      "title": {
+        "zh": "圈选",
+        "en": "Brush Selection"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif"
     },
@@ -36,7 +52,6 @@
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2wKjHcOGD/quanxuanbiaotougongneng.gif"
     },
-
     {
       "filename": "resize.ts",
       "title": {
