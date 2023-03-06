@@ -102,13 +102,17 @@ export const assembleMatrix = (
   return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
 };
 
+export function getMaxRowLen(matrix: string[][]): number {
+  return max(map(matrix, (row) => row.length)) ?? 0;
+}
+
 /**
  * 补全 matrix 中的元素个数, 使得每一行的元素个数一致，以最大的行元素个数为准
  * @param {string[][]} matrix
  * @return {string[][]}
  */
 export function completeMatrix(matrix: string[][]): string[][] {
-  const maxRowLen = max(map(matrix, (row) => row.length)) ?? 0;
+  const maxRowLen = getMaxRowLen(matrix);
 
   return map(matrix, (row) => {
     const diff = maxRowLen - row.length;

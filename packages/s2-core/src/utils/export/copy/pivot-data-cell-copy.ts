@@ -1,4 +1,4 @@
-import { find, isEmpty, map, zip } from 'lodash';
+import { find, isEmpty, map, slice, zip } from 'lodash';
 import { type CellMeta, VALUE_FIELD } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
@@ -11,6 +11,7 @@ import {
   getFormatter,
   assembleMatrix,
   completeMatrix,
+  getMaxRowLen,
 } from './common';
 
 const getDataMatrixByHeaderNode = (
@@ -40,10 +41,16 @@ const getDataMatrixByHeaderNode = (
     }),
   );
 
-const getCornerMatrix = (spreadsheet: SpreadSheet): string[][] => {
+const getCornerMatrix = (
+  spreadsheet: SpreadSheet,
+  rowMatrix?: string[][],
+): string[][] => {
   const { fields, meta } = spreadsheet.dataCfg;
   const { columns = [], rows = [] } = fields;
   const realRows = rows;
+  const maxRowLen = spreadsheet.isHierarchyTreeType()
+    ? getMaxRowLen(rowMatrix ?? [])
+    : realRows.length;
 
   /*
    * const { showSeriesNumber, seriesNumberText } = spreadsheet.options;
@@ -54,27 +61,28 @@ const getCornerMatrix = (spreadsheet: SpreadSheet): string[][] => {
    */
   // 为了对齐数值
   columns.push('');
+  // console.log(slice(realRows, 0, maxRowLen), 'slice(realRows, 0, maxRowLen)');
   /*
    * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
-   * @ts-ignore
    */
-  const cornerMatrix: string[][] = map(columns, (col, colIndex) =>
-    map(realRows, (row, rowIndex) => {
+  const cornerMatrix = map(columns, (col, colIndex) =>
+    map(slice(realRows, 0, maxRowLen), (row, rowIndex) => {
       // 角头的最后一行，为行头
       if (colIndex === columns.length - 1) {
         return find(meta, ['field', row])?.name ?? row;
       }
 
       // 角头的最后一列，为列头
-      if (rowIndex === rows.length - 1) {
+      if (rowIndex === maxRowLen - 1) {
         return find(meta, ['field', col])?.name ?? col;
       }
 
       return '';
     }),
-  );
+  ) as unknown as string[][];
 
   // console.log(cornerMatrix, 'cornerMatrix');
+
   return cornerMatrix;
 };
 
@@ -156,16 +164,17 @@ export const getPivotAllCopyData = (
   leafRowNodes: Node[],
   leafColNodes: Node[],
 ): CopyableList => {
-  const cornerMatrix = getCornerMatrix(spreadsheet);
   // todo-zc 的序号处理还有点麻烦，先不处理
   let rowMatrix = map(leafRowNodes, (n) => getHeaderList(n.id));
 
   // 当 rowMatrix 中的元素个数不一致时，需要补全
   rowMatrix = completeMatrix(rowMatrix);
+
   const colMatrix = zip(
     ...map(leafColNodes, (n) => getHeaderList(n.id)),
   ) as string[][];
 
+  const cornerMatrix = getCornerMatrix(spreadsheet, rowMatrix);
   const dataMatrix = getDataMatrixByHeaderNode(
     leafRowNodes,
     leafColNodes,
@@ -184,8 +193,6 @@ export const processPivotAllSelected = (
 ): CopyableList => {
   const allRowLeafNodes = spreadsheet.getRowLeafNodes();
   const allColLeafNodes = spreadsheet.getColumnLeafNodes();
-  const colNodes = allColLeafNodes;
-
   /*
    * const colNodes = selectedCols.length
    *   ? selectedCols.reduce<Node[]>((nodes, cellMeta) => {
@@ -197,5 +204,5 @@ export const processPivotAllSelected = (
    *   : allColLeafNodes;
    */
 
-  return getPivotAllCopyData(spreadsheet, allRowLeafNodes, colNodes);
+  return getPivotAllCopyData(spreadsheet, allRowLeafNodes, allColLeafNodes);
 };
