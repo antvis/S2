@@ -614,7 +614,7 @@ export abstract class SpreadSheet extends EE {
       height,
       devicePixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
       renderer: new Renderer(),
-      supportCSSTransform,
+      supportsCSSTransform: supportCSSTransform,
     });
 
     this.updateContainerStyle();
