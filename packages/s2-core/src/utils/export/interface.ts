@@ -25,3 +25,10 @@ export type CopyableHTML = {
 export type CopyableList = [CopyablePlain, CopyableHTML];
 
 export type Copyable = CopyableItem | CopyableItem[];
+
+export type FormatOptions =
+  | boolean
+  | {
+      isFormatHeader?: boolean;
+      isFormatData?: boolean;
+    };

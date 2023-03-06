@@ -5,16 +5,19 @@ import {
   type CopyableHTML,
   type CopyableList,
   type CopyablePlain,
+  type FormatOptions,
   CopyMIMEType,
 } from '../interface';
 import { NewLine, NewTab } from '../../../common';
 
+// 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
   dataMatrix: DataItem[][],
+  separator = NewTab,
 ): CopyablePlain => {
   return {
     type: CopyMIMEType.PLAIN,
-    content: map(dataMatrix, (line) => line.join(NewTab)).join(NewLine),
+    content: map(dataMatrix, (line) => line.join(separator)).join(NewLine),
   };
 };
 
@@ -120,3 +123,17 @@ export function completeMatrix(matrix: string[][]): string[][] {
     return diff ? [...row, ...new Array(diff).fill('')] : row;
   });
 }
+
+export const getFormatOptions = (isFormat: FormatOptions) => {
+  if (typeof isFormat === 'object') {
+    return {
+      isFormatHeader: isFormat.isFormatHeader ?? false,
+      isFormatData: isFormat.isFormatData ?? false,
+    };
+  }
+
+  return {
+    isFormatHeader: isFormat ?? false,
+    isFormatData: isFormat ?? false,
+  };
+};
