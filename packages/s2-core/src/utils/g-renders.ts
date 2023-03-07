@@ -52,7 +52,7 @@ export function renderText(
   textStyle: TextTheme,
   extraStyle?: ShapeAttrs,
   // 因为 text 为 ellipsisText
-  originText?: string,
+  originalText?: string,
 ): IShape {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: IShape) => {
@@ -66,7 +66,7 @@ export function renderText(
       x,
       y,
       text,
-      originText,
+      originalText,
       ...textStyle,
       ...extraStyle,
     },
