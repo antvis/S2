@@ -40,7 +40,7 @@ jobs:
                 "title": "🚑 开始自动发布 🚑",
                 "text": "🔗 请点击链接查看详情",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
 
@@ -72,6 +72,6 @@ jobs:
                 "title": "🚨 自动发布失败",
                 "text": "🔗 请点击链接查看具体原因, 及时修复, 尝试点击右上角 [Re-run all jobs] 重试, 或手动发布 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PRSkSqsE_vYAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
