@@ -1,5 +1,5 @@
 import type { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { cloneDeep, isEmpty, isNil, last, map, throttle } from 'lodash';
+import { cloneDeep, isEmpty, isNil, map, throttle } from 'lodash';
 import { ColCell, DataCell, RowCell } from '../../cell';
 import {
   FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
