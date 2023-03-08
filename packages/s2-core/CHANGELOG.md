@@ -1,3 +1,10 @@
+# [@antv/s2-v1.43.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.42.1-alpha.2...@antv/s2-v1.43.0-alpha.1) (2023-03-08)
+
+
+### Features
+
+* 在 shape 中添加文本的原始值 ([#2109](https://github.com/antvis/S2/issues/2109)) ([4d81e72](https://github.com/antvis/S2/commit/4d81e72440d797fd7a06179794c342f009fc39c3))
+
 # [@antv/s2-v1.42.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.42.1-alpha.1...@antv/s2-v1.42.1-alpha.2) (2023-03-08)
 
 
