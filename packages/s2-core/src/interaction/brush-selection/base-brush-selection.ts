@@ -11,6 +11,7 @@ import {
 import {
   BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   InteractionBrushSelectionStage,
+  ScrollDirectionRowIndexDiff,
 } from '../../common/constant/interaction';
 import type {
   BrushAutoScrollConfig,
@@ -18,7 +19,6 @@ import type {
   BrushRange,
   OffsetConfig,
   OnUpdateCells,
-  Rect,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
@@ -256,7 +256,7 @@ export class BaseBrushSelection
     const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingColCount > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)
     ) {
       return panelIndexes[1];
@@ -264,7 +264,7 @@ export class BaseBrushSelection
 
     if (
       frozenColCount > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenCol(colIndex, frozenColCount)
     ) {
       return panelIndexes[0];
@@ -288,7 +288,7 @@ export class BaseBrushSelection
     const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingRowCount > 0 &&
-      dir === ScrollDirection.TRAILING &&
+      dir === ScrollDirection.SCROLL_DOWN &&
       isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
     ) {
       return panelIndexes[3];
@@ -296,7 +296,7 @@ export class BaseBrushSelection
 
     if (
       frozenRowCount > 0 &&
-      dir === ScrollDirection.LEADING &&
+      dir === ScrollDirection.SCROLL_UP &&
       isFrozenRow(rowIndex, cellRange.start, frozenRowCount)
     ) {
       return panelIndexes[2];
@@ -305,7 +305,9 @@ export class BaseBrushSelection
   };
 
   public getWillScrollRowIndexDiff = (dir: ScrollDirection): number => {
-    return dir === ScrollDirection.TRAILING ? 1 : -1;
+    return dir === ScrollDirection.SCROLL_DOWN
+      ? ScrollDirectionRowIndexDiff.SCROLL_DOWN
+      : ScrollDirectionRowIndexDiff.SCROLL_UP;
   };
 
   public getDefaultWillScrollToRowIndex = (dir: ScrollDirection) => {
@@ -329,21 +331,25 @@ export class BaseBrushSelection
 
     if (config.y.scroll) {
       const dir =
-        config.y.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
+        config.y.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
       const willScrollToRowIndex = this.getWillScrollToRowIndex(dir);
       const scrollOffsetY =
         getScrollOffsetForRow(willScrollToRowIndex, dir, this.spreadsheet) -
         scrollY;
-      const isInvalidScrollOffset =
+      const isInvalidScroll =
         isNil(willScrollToRowIndex) ||
         isNil(scrollOffsetY) ||
         Number.isNaN(scrollOffsetY);
-      y = isInvalidScrollOffset ? 0 : scrollOffsetY;
+      y = isInvalidScroll ? 0 : scrollOffsetY;
     }
 
     if (config.x.scroll) {
       const dir =
-        config.x.value > 0 ? ScrollDirection.TRAILING : ScrollDirection.LEADING;
+        config.x.value > 0
+          ? ScrollDirection.SCROLL_DOWN
+          : ScrollDirection.SCROLL_UP;
       const colIndex = this.adjustNextColIndexWithFrozen(
         this.endBrushPoint.colIndex,
         dir,
