@@ -19,6 +19,7 @@ import type {
   BrushRange,
   OffsetConfig,
   OnUpdateCells,
+  Rect,
   S2CellType,
   ViewMeta,
 } from '../../common/interface';
