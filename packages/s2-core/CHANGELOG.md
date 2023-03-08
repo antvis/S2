@@ -3,6 +3,14 @@
 
 ### Bug Fixes
 
+* delete last method from lodash ([251b845](https://github.com/antvis/S2/commit/251b8457548b2c06358b422464c9f90fab2a3b78))
+* **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
+
+# [@antv/s2-v1.42.1-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.42.1-alpha.1...@antv/s2-v1.42.1-alpha.2) (2023-03-08)
+
+
+### Bug Fixes
+
 * **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
 
 # [@antv/s2-v1.42.1-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.42.0...@antv/s2-v1.42.1-alpha.1) (2023-02-28)
