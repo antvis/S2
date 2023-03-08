@@ -227,4 +227,60 @@ describe('PivotSheet Brush Selection Scroll Tests', () => {
     expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
     expect(s2.interaction.getCells()).not.toBeEmpty();
   });
+
+  // https://github.com/antvis/S2/pull/2101
+  test('should vertical scroll and only brush current column cells when mouse outside row cell', async () => {
+    const s2 = createPivotSheet(
+      {
+        width: 400,
+        height: 400,
+        style: {
+          cellCfg: {
+            width: 100,
+            height: 100,
+          },
+        },
+        interaction: {
+          brushSelection: {
+            row: true,
+          },
+        },
+      },
+      { useSimpleData: false },
+    );
+    s2.render();
+
+    const rowCell = s2.interaction.getAllRowHeaderCells()[0];
+
+    s2.emit(S2Event.ROW_CELL_MOUSE_DOWN, {
+      target: rowCell,
+      x: 1,
+      y: 1,
+      preventDefault() {},
+    } as any);
+
+    // 只刷选 [省份]
+    await emitBrushEvent(s2, 100, 200);
+
+    // 只选中 [浙江省, 四川省]
+    expect(s2.facet.getScrollOffset().scrollY).toBeGreaterThan(0);
+    expect(s2.interaction.getCells()).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "colIndex": -1,
+          "id": "root[&]浙江省",
+          "rowIndex": undefined,
+          "rowQuery": undefined,
+          "type": "rowCell",
+        },
+        Object {
+          "colIndex": -1,
+          "id": "root[&]四川省",
+          "rowIndex": undefined,
+          "rowQuery": undefined,
+          "type": "rowCell",
+        },
+      ]
+    `);
+  });
 });
