@@ -567,6 +567,8 @@ export const drawObjectText = (
         position.text.y,
         ellipsisText,
         curStyle,
+        {},
+        curText?.toString(),
       );
       cell.addTextShape(textShape);
 
