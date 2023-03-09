@@ -179,14 +179,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShapeOwn();
-  }
-
-  protected drawLinkFieldShapeOwn() {
-    const { linkFields = [] } = this.spreadsheet.options.interaction;
-    const { linkTextFill } = this.getTextStyle();
-    const isLinkField = checkIsLinkField(linkFields, this.meta);
-    super.drawLinkFieldShape(isLinkField, linkTextFill);
+    this.drawLinkFieldShapLogic(this.meta);
   }
 
   protected initCell() {
