@@ -3,6 +3,7 @@ import { find, get } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell';
+import type { TextAlign } from '@/common';
 import {
   GuiIcon,
   type Formatter,
@@ -68,9 +69,10 @@ describe('Data Cell Tests', () => {
         });
         s2.render();
 
-        const dataCell = s2.facet.panelGroup
-          .getChildByIndex(0)
-          .getChildByIndex(0) as DateCell;
+        const panelBBoxInstance = s2.facet.panelGroup.getChildByIndex(0);
+        const dataCell = (panelBBoxInstance as any).getChildByIndex(
+          0,
+        ) as DataCell;
         const { minX, maxX } = (dataCell as any).linkFieldShape.getBBox();
 
         // 宽度相当

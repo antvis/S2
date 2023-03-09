@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { PivotSheet } from '@antv/s2';
 import { get } from 'lodash';
-
 const data = {
   fields: {
     rows: ['province', 'city'],
@@ -47,9 +46,10 @@ const s2Instance = new PivotSheet(getContainer(), data, {
 
 const info = (textAlign) => {
   console.log(`theme.dataCell.text.textAlign:${textAlign}`);
-  const dataCell = s2Instance.facet.panelGroup
-    .getChildByIndex(0)
-    .getChildByIndex(0) as DateCell;
+  const panelBBoxInstance = s2Instance.facet.panelGroup.getChildByIndex(0);
+
+  const dataCell = (panelBBoxInstance as any).getChildByIndex(0);
+
   const { minX, maxX } = (dataCell as any).linkFieldShape.getBBox();
 
   const linkLength = maxX - minX;
