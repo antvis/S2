@@ -222,9 +222,9 @@ const s2Options = {
 };
 ```
 
-### 圈选高亮
+### 圈选
 
-圈选高亮又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，支持对 `数据单元格 (dataCell)`, `行头单元格 (rowCell)`, `列头单元格 (colCell)` 进行圈选，同时支持 `滚动圈选`, 可以用来做 `统计数据总和`, `单元格个数`, `复制选定数据` 等操作，默认开启 `数据单元格`，可配置 `brushSelection` 关闭：
+圈选又叫刷选，刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，支持对 `数据单元格 (dataCell)`, `行头单元格 (rowCell)`, `列头单元格 (colCell)` 进行圈选，同时支持 `滚动圈选`, 可以用来做 `统计数据总和`, `单元格个数`, `复制选定数据` 等操作，默认开启 `数据单元格`，可配置 `brushSelection` 关闭：
 
 #### 数据单元格圈选
 
@@ -274,7 +274,11 @@ const s2Options = {
 
 #### 滚动圈选
 
+##### 数值滚动圈选
+
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*pmskQL_WvMIAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
+
+##### 行头滚动圈选 <Badge type="success">@antv/s2@^1.42.0 新增</Badge>
 
 <img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*r8fFQ6ySwScAAAAAAAAAAAAADmJ7AQ/original" alt="preview" width="600" />
 

@@ -43,6 +43,7 @@ const s2Options = {
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |
 | colCell | [CellCallback](#cellcallback) |  |  |   自定义列头 cell |
+| mergedCell | [MergedCellCallback](#mergedcellcallback) |  |  |   自定义合并单元格 |
 | cornerHeader | [CornerHeaderCallback](#cornerheadercallback) |    |  | 自定义角头 |
 | layoutHierarchy | [LayoutHierarchy](#layouthierarchy) |  |    | 自定义层级结构 |
 | layoutArrange | [LayoutArrange](#layoutarrange) |  |  |   自定义排列顺序 |
@@ -91,6 +92,16 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 | node | 当前渲染的 node 节点 | [Node](/docs/api/basic-class/node) | - | ✓ |
 | spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](/docs/api/basic-class/spreadsheet) | - | ✓ |
 | restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
+
+## MergedCellCallback
+
+```js
+DataCellCallback = (s2: Spreadsheet, cells: S2CellType[],viewMeta: ViewMeta) => MergedCell;
+```
+
+功能描述：自定义合并单元格，[ViewMeta](#viewmeta)
+
+<embed src="@/docs/common/view-meta.zh.md"></embed>
 
 ## CornerHeaderCallback
 
