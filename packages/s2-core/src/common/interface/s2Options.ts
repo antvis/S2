@@ -4,6 +4,7 @@ import type {
   DataCellCallback,
   FrameCallback,
   MappingDataItemCallback,
+  MergedCellCallback,
   MergedCellInfo,
   Pagination,
   Style,
@@ -87,6 +88,8 @@ export interface S2BasicOptions<
   rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
   colCell?: CellCallback<ColHeaderConfig>;
+  // custom merged cell
+  mergedCell?: MergedCellCallback;
   // custom frame
   frame?: FrameCallback;
   // custom corner header

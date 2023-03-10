@@ -45,7 +45,7 @@ jobs:
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
         run: |
-          gh pr create --title "chore: 🤖 更新 changelog 文件" --body "🤖 由 [[🚀 After the release is successful](https://github.com/antvis/S2/blob/master/.github/workflows/release-success.yml)] action 自动创建."
+          gh pr create --title "chore: 🤖 更新 changelog 文件" --body "![preview](https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*Eel8Rp5jlAkAAAAAAAAAAAAADmJ7AQ/original) <br/> 🤖 由 [[🚀 After the release is successful](https://github.com/antvis/S2/blob/master/.github/workflows/release-success.yml)] action 自动创建."
         env:
           GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
 
@@ -59,10 +59,10 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "📢 开始自动部署官网 📢 ",
+                "title": "📢 开始自动部署旧版官网(https://s2.antv.vision) 📢 ",
                 "text": "🔗 请点击链接查看详情",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*gt5-RZDjt3IAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
 
@@ -85,9 +85,9 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                "title": "🚨 官网部署失败",
+                "title": "🚨 旧版官网部署失败",
                 "text": "🔗 请点击链接查看具体原因, 尝试点击右上角 [Re-run all jobs] 重试, 或者手动部署 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/release-success.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/JxgObjrPo/dde3c2cf-ce2f-45ab-90a7-9f5cce889227.png"
+                "picUrl": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*PRSkSqsE_vYAAAAAAAAAAAAADmJ7AQ/original"
               }
             }
