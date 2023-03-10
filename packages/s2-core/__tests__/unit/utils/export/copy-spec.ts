@@ -397,9 +397,12 @@ describe('Pivot Table Core Data Process', () => {
     });
   }
 
-  const s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+  let s2: PivotSheet;
 
-  s2.render();
+  beforeEach(() => {
+    s2 = new PivotSheet(getContainer(), getDataCfg(), getOptions());
+    s2.render();
+  });
 
   it('should copy no data in grid mode', () => {
     s2.interaction.changeState({
@@ -618,6 +621,56 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2).split('\n')[0].split(NewTab)).toHaveLength(
       9,
     );
+  });
+
+  it('should copy row data with format header in grid mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: true,
+        copyWithFormat: true,
+      },
+    });
+    s2.setDataCfg({
+      meta: [
+        {
+          field: 'province',
+          formatter: (value) => `${value}-province`,
+        },
+        {
+          field: 'sub_type',
+          formatter: (value) => `${value}-sub_type`,
+        },
+      ],
+      fields: {
+        valueInCols: true,
+        columns: ['province', 'city'],
+        rows: ['type', 'sub_type'],
+        values: ['number'],
+      },
+    } as S2DataConfig);
+    s2.render();
+
+    const allColCells = s2.interaction.getAllColHeaderCells();
+
+    const zhejiangColCell = allColCells[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(zhejiangColCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const copyContent = getCopyPlainContent(s2);
+
+    expect(copyContent).toMatchInlineSnapshot(`
+      "		浙江省-province	浙江省-province	浙江省-province	浙江省-province
+      		杭州市	绍兴市	宁波市	舟山市
+      		number	number	number	number
+      家具	桌子-sub_type	7789	2367	3877	4342
+      家具	沙发-sub_type	5343	632	7234	834
+      办公用品	笔-sub_type	945	1304	1145	1432
+      办公用品	纸张-sub_type	1343	1354	1523	1634
+      总计		15420	5657	13779	8242"
+    `);
   });
 
   it('should copy all data with header in grid mode', () => {

@@ -221,7 +221,7 @@ describe('PivotSheet Export Test', () => {
       Array [
         "类别	家具	家具	办公用品	办公用品",
         "子类别	桌子	沙发	笔	纸张",
-        "省份	number	number	number	number",
+        "省份	数量	数量	数量	数量",
         "浙江省	18375	14043	4826	5854",
         "四川省	7818	9473	7495	10984",
       ]
@@ -231,11 +231,7 @@ describe('PivotSheet Export Test', () => {
     expect(rows[1].split(NewTab)[0]).toEqual('子类别');
     expect(rows[1].split(NewTab)[1]).toEqual('桌子');
     expect(rows[2].split(NewTab)[0]).toEqual('省份');
-    expect(rows[2].split(NewTab)[1]).toEqual('number');
-    /*
-     * todo-zc: 还未进行格式化处理
-     * expect(rows[2].split(NewTab)[1]).toEqual('数量');
-     */
+    expect(rows[2].split(NewTab)[1]).toEqual('数量');
   });
 
   // https://gw.alipayobjects.com/zos/antfincdn/PyrWwocNf/56d0914b-159a-4293-8615-6c1308bf4b3a.png
@@ -261,7 +257,7 @@ describe('PivotSheet Export Test', () => {
       Array [
         "	类别	家具	家具	办公用品	办公用品",
         "	子类别	桌子	沙发	笔	纸张",
-        "省份	城市	number	number	number	number",
+        "省份	城市	数量	数量	数量	数量",
         "浙江省		18375	14043	4826	5854",
         "浙江省	杭州市	7789	5343	945	1343",
         "浙江省	绍兴市	2367	632	1304	1354",
@@ -277,10 +273,8 @@ describe('PivotSheet Export Test', () => {
     expect(rows).toHaveLength(13);
     expect(rows[0].split(NewTab).length).toEqual(6);
     expect(rows[1].split(NewTab)[1]).toEqual('子类别');
-    expect(rows[1].split(NewTab)[2]).toEqual('桌子');
     expect(rows[2].split(NewTab)[1]).toEqual('城市');
-    // expect(rows[2].split(NewTab)[2]).toEqual('数量');
-    expect(rows[2].split(NewTab)[2]).toEqual('number');
+    expect(rows[2].split(NewTab)[2]).toEqual('数量');
   });
 
   it('should export correct data in grid mode with valueInCols is false - get', () => {
@@ -380,8 +374,7 @@ describe('PivotSheet Export Test', () => {
     });
   });
 
-  // todo: 解决格式化问题
-  it.skip('should export correct data when isFormat: {isFormatHeader: true}', () => {
+  it('should export correct data when isFormat: {isFormatHeader: true}', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
