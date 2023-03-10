@@ -3,7 +3,12 @@ import { type CellMeta, NewTab, VALUE_FIELD } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import type { CopyableList, FormatOptions } from '../interface';
-import { getHeaderList, getSelectedCols, getSelectedRows } from '../method';
+import {
+  getColNodeFieldFromNode,
+  getHeaderList,
+  getSelectedCols,
+  getSelectedRows,
+} from '../method';
 import {
   assembleMatrix,
   completeMatrix,
@@ -15,41 +20,85 @@ import {
 } from './common';
 
 // 使用 类 替代 函数，重构下面的代码
+
+interface PivotDataCellCopyConfig {
+  selectedCells?: CellMeta[];
+  formatOptions?: FormatOptions;
+  separator?: string;
+}
+
+interface PivotDataCellCopyUnifyConfig {
+  separator: string;
+  isFormatHeader: boolean;
+  isFormatData: boolean;
+  selectedCells: CellMeta[];
+}
+
 class PivotDataCellCopy {
   private spreadsheet: SpreadSheet;
-
-  private selectedCells: CellMeta[];
-
-  // @ts-ignore
-  private formatOptions: FormatOptions;
-
-  private separator: string;
 
   private leafRowNodes: Node[] = [];
 
   private leafColNodes: Node[] = [];
 
+  private isExport: boolean;
+
+  private config: PivotDataCellCopyUnifyConfig;
+
+  /**
+   *
+   * @param {{
+   * spreadsheet: SpreadSheet,
+   * selectedCells?: CellMeta[],
+   * formatOptions?: FormatOptions,
+   * separator?: string}} params
+   */
   constructor(params: {
     spreadsheet: SpreadSheet;
-    // 未传这是全部选中的
-    selectedCells?: CellMeta[];
-    formatOptions?: FormatOptions;
-    separator?: string;
+    config: PivotDataCellCopyConfig;
+    isExport?: boolean;
   }) {
-    const { spreadsheet, selectedCells, formatOptions, separator } = params;
+    const { spreadsheet, isExport = false, config } = params;
 
     this.spreadsheet = spreadsheet;
-    this.selectedCells = selectedCells ?? [];
-    this.formatOptions = getFormatOptions(formatOptions ?? false);
-    this.separator = separator ?? NewTab;
+    this.isExport = isExport;
+    this.config = this.unifyConfig(config);
+    // selectedCells 选中了指定的单元格，则只展示对应单元格的数据, 否则展示所有数据
     this.leafRowNodes = this.getLeafRowNodes();
     this.leafColNodes = this.getLeafColNodes();
+  }
+
+  // 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
+  unifyConfig(config: PivotDataCellCopyConfig): PivotDataCellCopyUnifyConfig {
+    let result = {
+      isFormatData:
+        this.spreadsheet.options.interaction?.copyWithFormat ?? false,
+      isFormatHeader:
+        this.spreadsheet.options.interaction?.copyWithFormat ?? false,
+    };
+
+    if (this.isExport) {
+      const { isFormatData, isFormatHeader } = getFormatOptions(
+        config?.formatOptions ?? false,
+      );
+
+      result = {
+        isFormatData,
+        isFormatHeader,
+      };
+    }
+
+    return {
+      separator: config.separator ?? NewTab,
+      selectedCells: config.selectedCells ?? [],
+      ...result,
+    };
   }
 
   getLeafRowNodes() {
     const allRowLeafNodes = this.spreadsheet.getRowLeafNodes();
     let result: Node[] = allRowLeafNodes;
-    const selectedRowNodes = getSelectedRows(this.selectedCells);
+    const selectedRowNodes = getSelectedRows(this.config.selectedCells);
 
     // selectedRowNodes 选中了指定的行头，则只展示对应行头对应的数据
     if (!isEmpty(selectedRowNodes)) {
@@ -68,7 +117,7 @@ class PivotDataCellCopy {
   getLeafColNodes() {
     const allColLeafNodes = this.spreadsheet.getColumnLeafNodes();
     let result: Node[] = allColLeafNodes;
-    const selectedColNodes = getSelectedCols(this.selectedCells);
+    const selectedColNodes = getSelectedCols(this.config.selectedCells);
 
     // selectedColNodes 选中了指定的列头，则只展示对应列头对应的数据
     if (!isEmpty(selectedColNodes)) {
@@ -100,9 +149,15 @@ class PivotDataCellCopy {
             colNode.isTotalMeasure,
         });
 
+        const field = getColNodeFieldFromNode(
+          this.spreadsheet.isPivotMode,
+          colNode,
+        );
+
         return getFormatter(
           this.spreadsheet,
-          colNode.field,
+          field ?? colNode.field,
+          this.config.isFormatData,
         )(cellData?.[VALUE_FIELD] ?? '');
       }),
     );
@@ -157,7 +212,7 @@ class PivotDataCellCopy {
     // 不带表头复制
     if (!copyWithHeader) {
       return [
-        matrixPlainTextTransformer(dataMatrix, this.separator),
+        matrixPlainTextTransformer(dataMatrix, this.config.separator),
         matrixHtmlTransformer(dataMatrix),
       ];
     }
@@ -206,7 +261,9 @@ export function processPivotSelected(
 ): CopyableList {
   const pivotDataCellCopy = new PivotDataCellCopy({
     spreadsheet,
-    selectedCells,
+    config: {
+      selectedCells,
+    },
   });
 
   return pivotDataCellCopy.processPivotSelected();
@@ -214,15 +271,16 @@ export function processPivotSelected(
 
 export const processPivotAllSelected = (
   spreadsheet: SpreadSheet,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   split: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   formatOptions?: FormatOptions,
 ): CopyableList => {
   const pivotDataCellCopy = new PivotDataCellCopy({
     spreadsheet,
-    separator: split,
-    formatOptions,
+    isExport: true,
+    config: {
+      separator: split,
+      formatOptions,
+    },
   });
 
   return pivotDataCellCopy.processPivotAllSelected();

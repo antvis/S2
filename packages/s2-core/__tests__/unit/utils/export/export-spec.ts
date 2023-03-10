@@ -402,7 +402,13 @@ describe('PivotSheet Export Test', () => {
           values: ['number'],
         },
       }),
-      assembleOptions({}),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithHeader: true,
+          copyWithFormat: true,
+        },
+      }),
     );
 
     s2.render();
@@ -415,6 +421,44 @@ describe('PivotSheet Export Test', () => {
     expect(rows[0].split(NewTab)[2]).toEqual('浙江省-province');
     expect(rows[1].split(NewTab)[1]).toEqual('city');
     expect(rows[3].split(NewTab)[0]).toEqual('家具-type');
+  });
+
+  it('should export correct data when isFormat: {isFormatData: true}', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [
+          {
+            field: 'number',
+            formatter: (value) => `${value}%`,
+          },
+        ],
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+      }),
+    );
+
+    s2.render();
+
+    const data = copyData(s2, NewTab, { isFormatData: true });
+
+    expect(data).toMatchInlineSnapshot(`
+      "	type	家具	家具	办公用品	办公用品
+      	sub_type	桌子	沙发	笔	纸张
+      province	city	number	number	number	number
+      浙江省	杭州市	7789%	5343%	945%	1343%
+      浙江省	绍兴市	2367%	632%	1304%	1354%
+      浙江省	宁波市	3877%	7234%	1145%	1523%
+      浙江省	舟山市	4342%	834%	1432%	1634%
+      四川省	成都市	1723%	2451%	2335%	4004%
+      四川省	绵阳市	1822%	2244%	245%	3077%
+      四川省	南充市	1943%	2333%	2457%	3551%
+      四川省	乐山市	2330%	2445%	2458%	352%"
+    `);
   });
 
   it.skip('should export correct data when data is incomplete', () => {
