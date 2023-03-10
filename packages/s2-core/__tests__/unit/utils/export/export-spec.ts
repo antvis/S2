@@ -454,7 +454,7 @@ describe('PivotSheet Export Test', () => {
     `);
   });
 
-  it.skip('should export correct data when data is incomplete', () => {
+  it('should export correct data when data is incomplete', () => {
     const incompleteData = map(originData, (d) => {
       if (d.province === '浙江省' && d.city === '杭州市') {
         return omit(d, 'number');
@@ -486,15 +486,15 @@ describe('PivotSheet Export Test', () => {
     const data = copyData(s2, NewTab);
 
     expect(data).toMatchInlineSnapshot(`
-      "	\\"province\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"
-      	\\"city\\"	\\"杭州市\\"	\\"绍兴市\\"	\\"宁波市\\"	\\"舟山市\\"	\\"成都市\\"	\\"绵阳市\\"	\\"南充市\\"	\\"乐山市\\"
-      \\"type\\"	\\"sub_type\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"
-      \\"家具\\"		\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"
-      \\"家具\\"	\\"桌子\\"	\\"null\\"	\\"2367\\"	\\"3877\\"	\\"4342\\"	\\"1723\\"	\\"1822\\"	\\"1943\\"	\\"2330\\"
-      \\"家具\\"	\\"沙发\\"	\\"null\\"	\\"632\\"	\\"7234\\"	\\"834\\"	\\"2451\\"	\\"2244\\"	\\"2333\\"	\\"2445\\"
-      \\"办公用品\\"		\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"
-      \\"办公用品\\"	\\"笔\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"	\\"null\\"
-      \\"办公用品\\"	\\"纸张\\"	\\"null\\"	\\"1354\\"	\\"1523\\"	\\"1634\\"	\\"4004\\"	\\"3077\\"	\\"3551\\"	\\"352\\""
+      "	province	浙江省	浙江省	浙江省	浙江省	四川省	四川省	四川省	四川省
+      	city	杭州市	绍兴市	宁波市	舟山市	成都市	绵阳市	南充市	乐山市
+      type	sub_type	number	number	number	number	number	number	number	number
+      家具									
+      家具	桌子		2367	3877	4342	1723	1822	1943	2330
+      家具	沙发		632	7234	834	2451	2244	2333	2445
+      办公用品									
+      办公用品	笔								
+      办公用品	纸张		1354	1523	1634	4004	3077	3551	352"
     `);
   });
 

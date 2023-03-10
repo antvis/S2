@@ -1,4 +1,4 @@
-import type { S2DataConfig } from '@antv/s2';
+import type { Meta, S2DataConfig } from '@antv/s2';
 import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
@@ -376,9 +376,9 @@ describe('Pivot Table Core Data Process', () => {
   // 2 = ['province', 'city'].length 列头宽度
   const ROW_HEADER_WIDTH = 2;
 
-  function getDataCfg() {
+  function getDataCfg(meta: Meta[] = []) {
     return assembleDataCfg({
-      meta: [],
+      meta,
       fields: {
         columns: ['type', 'sub_type'],
         rows: ['province', 'city'],
@@ -554,6 +554,62 @@ describe('Pivot Table Core Data Process', () => {
     expect(getCopyPlainContent(s2)).toEqual(
       `\t\t家具\r\n\t\t桌子\r\n\t\tnumber\r\n浙江省\t小计\t18375`,
     );
+  });
+
+  it('should copy normal data with format header in grid mode', () => {
+    s2.setOptions({
+      interaction: {
+        copyWithHeader: true,
+        copyWithFormat: true,
+        enableCopy: true,
+      },
+    });
+
+    const meta = [
+      { field: 'number', formatter: (v: string) => `${v}元` },
+      { field: 'province', formatter: (v: string) => `${v}-省` },
+      { field: 'city', formatter: (v: string) => `${v}-市` },
+      { field: 'type', formatter: (v: string) => `${v}-类` },
+      { field: 'sub_type', formatter: (v: string) => `${v}-子类` },
+    ] as Meta[];
+
+    s2.setDataCfg(getDataCfg(meta));
+
+    s2.render();
+
+    const allDataCells = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL);
+
+    const hangzhouDeskCell = allDataCells[0];
+    const zhejiangCityDeskSubTotalCell = allDataCells[4];
+
+    // 普通数据节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(hangzhouDeskCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
+      "		家具-类
+      		桌子-子类
+      		number
+      浙江省-省	杭州市-市	7789元"
+    `);
+
+    // 小计节点
+    s2.interaction.changeState({
+      cells: [getCellMeta(zhejiangCityDeskSubTotalCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    // 这里的小计格式化有误，但与复制无关，后续格式化修复后，这里的单测可能会错误，是正常的
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
+      "		家具-类
+      		桌子-子类
+      		number
+      浙江省-省	小计-市	18375元"
+    `);
   });
 
   // 看图更清晰 https://gw.alipayobjects.com/zos/antfincdn/zK68PhcnX/d852ffb8-603a-43e5-b841-dbf3c7577638.png
