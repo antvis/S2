@@ -39,7 +39,7 @@ export class ColBrushSelection extends BaseBrushSelection {
   }
 
   protected bindMouseMove() {
-    this.spreadsheet.on(S2Event.COL_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -47,11 +47,9 @@ export class ColBrushSelection extends BaseBrushSelection {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      const pointInCanvas = this.spreadsheet.container.getPointByEvent(
-        event.originalEvent,
-      );
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      if (!this.isPointInCanvas(pointInCanvas)) {
+      if (this.autoBrushScroll(pointInCanvas)) {
         return;
       }
 

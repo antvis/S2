@@ -133,7 +133,7 @@ export class BaseBrushSelection
       }
     }
 
-    this.mouseMoveDistanceFromCanvas = deltaVal;
+    this.mouseMoveDistanceFromCanvas = Math.abs(deltaVal);
   };
 
   public formatBrushPointForScroll = (delta: Point, isRowHeader = false) => {
@@ -426,15 +426,15 @@ export class BaseBrushSelection
     }
 
     this.scrollAnimationComplete = false;
-    let ratio = 3;
     // x 轴滚动速度慢
-    if (config.x.scroll) {
-      ratio = 1;
-    }
-
+    const ratio = config.x.scroll ? 1 : 3;
+    const duration = Math.max(
+      16,
+      300 - this.mouseMoveDistanceFromCanvas * ratio,
+    );
     this.spreadsheet.facet.scrollWithAnimation(
       offsetCfg,
-      Math.max(16, 300 - this.mouseMoveDistanceFromCanvas * ratio),
+      duration,
       this.onScrollAnimationComplete,
     );
   };
