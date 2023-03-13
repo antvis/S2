@@ -1135,6 +1135,7 @@ describe('Tree Table Core Data Process', () => {
     s2.setOptions({
       interaction: {
         copyWithHeader: true,
+        enableCopy: true,
       },
     });
     s2.render();

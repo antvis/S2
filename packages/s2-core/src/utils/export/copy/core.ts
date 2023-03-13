@@ -1,4 +1,5 @@
 import { every, isEmpty, map, zip } from 'lodash';
+import { Node, ROOT_NODE_ID } from '@antv/s2';
 import {
   type CellMeta,
   CellTypes,
@@ -11,16 +12,19 @@ import {
   VALUE_FIELD,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
-import { copyToClipboard, type FormatOptions } from '../index';
+import { copyToClipboard } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
 import {
   convertString,
   getColNodeFieldFromNode,
-  getHeaderList,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
-import { type CopyableList, CopyMIMEType } from '../interface';
+import {
+  type CopyableList,
+  type FormatOptions,
+  CopyMIMEType,
+} from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processPivotAllSelected,
@@ -35,7 +39,11 @@ import {
   matrixPlainTextTransformer,
 } from './common';
 
-const getFiledFromMeta = (colIndex: number, spreadsheet: SpreadSheet) => {
+// todo-zc: 逻辑合并
+export const getFiledFromMeta = (
+  colIndex: number,
+  spreadsheet: SpreadSheet,
+) => {
   const colNode = spreadsheet
     .getColumnNodes()
     .find((col) => col.colIndex === colIndex);
@@ -107,9 +115,42 @@ const format = (
   spreadsheet: SpreadSheet,
 ) => {
   const field = getFiledFromMeta(meta.colIndex!, spreadsheet);
-  const formatter = getFormatter(spreadsheet, field);
+  const formatter = getFormatter(spreadsheet, field!);
+  const value = getValueFromMeta(meta, displayData, spreadsheet);
 
-  return formatter(getValueFromMeta(meta, displayData, spreadsheet)!);
+  return formatter(value);
+};
+
+const getNodeFormatLabel = (node: Node) => {
+  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+
+  return formatter?.(node.value) ?? node.value;
+};
+
+/**
+ * todo: 统一逻辑
+ * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
+ * @param rowLeafNode
+ */
+export const getNodeFormatData = (rowLeafNode: Node) => {
+  const line: string[] = [];
+  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
+    // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_NODE_ID) {
+      return;
+    }
+
+    const formatterLabel = getNodeFormatLabel(node);
+
+    line.unshift(formatterLabel);
+    if (node?.parent) {
+      return getRowNodeFormatterLabel(node.parent);
+    }
+  };
+
+  getRowNodeFormatterLabel(rowLeafNode);
+
+  return line;
 };
 
 /**
@@ -117,7 +158,7 @@ const format = (
  * @param { CellMeta[] } cells
  * @return { CellMeta[][] }
  */
-const getSelectedCellsMeta = (cells: CellMeta[]) => {
+export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   if (!cells?.length) {
     return [];
   }
@@ -154,6 +195,21 @@ const getSelectedCellsMeta = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
+function getSelectedNode(
+  selectedMeta: CellMeta[],
+  allRowOrColLeafNodes: Node[],
+): Node[] {
+  return selectedMeta.reduce<Node[]>((nodes, cellMeta) => {
+    const filterNodes = allRowOrColLeafNodes.filter(
+      (node) => node.id === cellMeta.id,
+    );
+
+    nodes.push(...filterNodes);
+
+    return nodes;
+  }, []);
+}
+
 /**
  * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
  * https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
@@ -179,21 +235,56 @@ const getDataMatrixByDataCell = (
     ];
   }
 
-  // 通过第一行来获取列头信息
-  const colMatrix = zip(
-    ...map(cellMetaMatrix[0], (cellMeta) => {
-      const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+  /**
+   * todo-zc:
+   * 1. 可以使用 getPivotCopyData 替代此方法？
+   *  不行，因为 getPivotCopyData 都是 整行或者整列的处理
+   *  getPivotCopyData 通过行列信息获取单元格信息，而此处是通过单元格信息获取行列信息。
+   *  等 table 模式优化后再考虑。
+   * 2. 对下面的代码进行优化
+   *  colMatrix 和 rowMatrix 有很多重复的代码，可以进行优化
+   *  保留使用 getHeaderList vs Node 方式， getHeaderList 简单性能好（用于不格式化的场景）
+   */
 
-      return getHeaderList(colId);
-    }),
+  // 通过第一行来获取列头信息
+  const allColLeafNodes = spreadsheet.getColumnLeafNodes();
+  const selectedColMetas = cellMetaMatrix[0].map((cellMeta) => {
+    return {
+      ...cellMeta,
+      id: cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
+    };
+  });
+  const selectedColNode = getSelectedNode(selectedColMetas, allColLeafNodes);
+  const colMatrix = zip(
+    ...map(selectedColNode, (n) => getNodeFormatData(n)),
   ) as string[][];
+  /*
+   * const colMatrix = zip(
+   *   ...map(cellMetaMatrix[0], (cellMeta) => {
+   *     const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
+   *
+   *     return getHeaderList(colId);
+   *   }),
+   * ) as string[][];
+   */
 
   // 通过第一列来获取行头信息
-  let rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
-    const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
-
-    return getHeaderList(rowId);
+  const allRowLeafNodes = spreadsheet.getRowLeafNodes();
+  const selectedRowMetas = cellMetaMatrix.map((it) => {
+    return {
+      ...it[0],
+      id: it[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
+    };
   });
+  const selectedRowNode = getSelectedNode(selectedRowMetas, allRowLeafNodes);
+  let rowMatrix = map(selectedRowNode, (n) => getNodeFormatData(n));
+  /*
+   * let rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
+   *   const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
+   *
+   *   return getHeaderList(rowId);
+   * });
+   */
 
   // 当 rowMatrix 中的元素个数不一致时，需要补全
   rowMatrix = completeMatrix(rowMatrix);
@@ -271,12 +362,17 @@ function getDataCellCopyable(
     // normal selected
     const selectedCellsMeta = getSelectedCellsMeta(cells);
 
-    // todo-zc：可以使用 getPivotCopyData 替代此方法？
+    /*
+     * todo-zc：可以使用 getPivotCopyData 替代此方法？ 不行，因为 getPivotCopyData 都是 整行或者整列的处理
+     * 圈选时，格式化错误
+     */
     data = getDataMatrixByDataCell(
       selectedCellsMeta,
       displayData as Data[],
       spreadsheet,
     );
+
+    // data = processPivotSelected(spreadsheet, cells);
   }
 
   return data;
@@ -308,13 +404,11 @@ export const getSelectedData = (spreadsheet: SpreadSheet): CopyableList => {
 // 全量导出使用
 export const processAllSelected = (
   spreadsheet: SpreadSheet,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  selectedCols?: CellMeta[],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  split: string,
   formatOptions?: FormatOptions,
 ): CopyableList => {
   if (spreadsheet.isPivotMode()) {
-    return processPivotAllSelected(spreadsheet);
+    return processPivotAllSelected(spreadsheet, split, formatOptions);
   }
 
   const columnNodes = (spreadsheet.getColumnNodes() || []).filter(
