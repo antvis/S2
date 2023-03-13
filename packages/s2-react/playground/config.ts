@@ -92,8 +92,7 @@ export const s2Options: SheetComponentOptions = {
       width: 100,
     },
     cellCfg: {
-      width: 100,
-      height: 100,
+      height: 50,
     },
   },
 };
