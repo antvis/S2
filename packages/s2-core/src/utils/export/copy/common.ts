@@ -133,7 +133,7 @@ export function completeMatrix(matrix: string[][]): string[][] {
   });
 }
 
-export const getFormatOptions = (isFormat: FormatOptions) => {
+export const getFormatOptions = (isFormat?: FormatOptions) => {
   if (typeof isFormat === 'object') {
     return {
       isFormatHeader: isFormat.isFormatHeader ?? false,

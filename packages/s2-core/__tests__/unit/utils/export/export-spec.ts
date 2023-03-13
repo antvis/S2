@@ -35,27 +35,22 @@ describe('TableSheet Export Test', () => {
     const rows = data.split(NewLine);
     const headers = rows[0].split(NewTab);
 
-    // 33行数据 包括一行列头
-    expect(rows).toHaveLength(33);
     expect(slice(rows, 0, 5)).toMatchInlineSnapshot(`
       Array [
-        "\\"序号\\"	\\"province\\"	\\"city\\"	\\"产品类型\\"	\\"sub_type\\"	\\"number\\"
-      ",
-        "\\"1\\"	\\"浙江省\\"	\\"杭州市\\"	\\"家具\\"	\\"桌子\\"	\\"7789\\"
-      ",
-        "\\"2\\"	\\"浙江省\\"	\\"绍兴市\\"	\\"家具\\"	\\"桌子\\"	\\"2367\\"
-      ",
-        "\\"3\\"	\\"浙江省\\"	\\"宁波市\\"	\\"家具\\"	\\"桌子\\"	\\"3877\\"
-      ",
-        "\\"4\\"	\\"浙江省\\"	\\"舟山市\\"	\\"家具\\"	\\"桌子\\"	\\"4342\\"
-      ",
+        "序号	province	city	产品类型	sub_type	number",
+        "1	浙江省	杭州市	家具	桌子	7789",
+        "2	浙江省	绍兴市	家具	桌子	2367",
+        "3	浙江省	宁波市	家具	桌子	3877",
+        "4	浙江省	舟山市	家具	桌子	4342",
       ]
     `);
+    // 33行数据 包括一行列头
+    expect(rows).toHaveLength(33);
     // 6列数据 包括序列号
     rows.forEach((e) => {
       expect(e.split(NewTab)).toHaveLength(6);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
+    expect(headers).toEqual([
       '序号',
       'province',
       'city',

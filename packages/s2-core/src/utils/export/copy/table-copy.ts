@@ -1,6 +1,10 @@
 import { filter, map, reduce } from 'lodash';
 import type { SpreadSheet } from '../../../sheet-type';
-import { type CellMeta, SERIES_NUMBER_FIELD } from '../../../common';
+import {
+  type CellMeta,
+  getDefaultSeriesNumberText,
+  SERIES_NUMBER_FIELD,
+} from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { CopyableList } from '../interface';
 import { convertString } from '../method';
@@ -120,18 +124,34 @@ export const processTableRowSelected = (
 export const processTableAllSelected = (
   spreadsheet: SpreadSheet,
   split: string,
-  formatOptions: FormatOptions,
+  formatOptions?: FormatOptions,
 ): CopyableList => {
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
   const columnNodes = spreadsheet.getColumnNodes();
-  const { isFormatData } = getFormatOptions(formatOptions);
+  const { isFormatData, isFormatHeader } = getFormatOptions(formatOptions);
+  const { showSeriesNumber } = spreadsheet.options;
 
   // 明细表的表头，没有格式化
-  const colMatrix = columnNodes.map((node) => node.field) as string[];
+  const colMatrix = columnNodes.map((node) => {
+    const field: string = node.field;
 
-  const dataMatrix = displayData.map((row) =>
+    if (!isFormatHeader) {
+      return field;
+    }
+
+    return SERIES_NUMBER_FIELD === field && showSeriesNumber
+      ? getDefaultSeriesNumberText()
+      : spreadsheet.dataSet.getFieldName(field);
+  }) as string[];
+
+  const dataMatrix = displayData.map((row, i) =>
     columnNodes.map((node) => {
       const field = node.field;
+
+      if (SERIES_NUMBER_FIELD === field && showSeriesNumber) {
+        return (i + 1).toString();
+      }
+
       const formatter = getFormatter(spreadsheet, field, isFormatData);
       const value = row[field];
 
