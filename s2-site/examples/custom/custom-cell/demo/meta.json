@@ -59,6 +59,14 @@
         "en": "custom specified cell"
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*KJqYQKjxIwIAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "custom-merged-cell.ts",
+      "title": {
+        "zh": "自定义合并单元格",
+        "en": "custom merged cell"
+      },
+      "screenshot": "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*B7mTTZYFjv8AAAAAAAAAAAAADmJ7AQ/original"
     }
   ]
 }
