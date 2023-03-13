@@ -18,7 +18,7 @@ order: 4
     description: '表头描述',
     exportCfg: { open: true }, // 开启导出功能
     advancedSortCfg: { open: true }, // 开启高级排序功能
-    switcherCfg: { open: true }, // 开启指标切换功能
+    switcherCfg: { open: true }, // 开启维度切换功能
     extra: <button> 插入内容 </button>, //自定义 ReactNode
   }}
 />
