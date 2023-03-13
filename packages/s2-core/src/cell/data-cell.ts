@@ -36,7 +36,6 @@ import {
   REVERSE_FONT_COLOR,
 } from '../common/constant/condition';
 import { shouldReverseFontColor } from '../utils/color';
-import { checkIsLinkField } from '../utils/interaction/link-field';
 
 /**
  * DataCell for panelGroup area
