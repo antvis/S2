@@ -310,7 +310,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getTextStyle().linkTextFill;
   }
 
-  protected drawLinkFieldShapLogic(meta: Node | ViewMeta) {
+  protected drawLinkField(meta: Node | ViewMeta) {
     const { linkFields = [] } = this.spreadsheet.options.interaction;
     const linkTextFill = this.getLinkFieldStyle();
     const isLinkField = checkIsLinkField(linkFields, meta);

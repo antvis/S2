@@ -179,7 +179,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShapLogic(this.meta);
+    this.drawLinkField(this.meta);
   }
 
   protected initCell() {

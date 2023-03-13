@@ -40,7 +40,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ## 透视表
 
-支持将行头 `rows` 标记为链接样式，`columns` 和 `values` 无效
+支持将行头 `rows`、`values` 标记为链接样式，`columns` 无效
 
 ```ts
 import { S2Event } from '@antv/s2'
@@ -57,7 +57,7 @@ const s2Options = {
   width: 600,
   height: 600,
   interaction: {
-    linkFields: ['province', 'city'],
+    linkFields: ['province', 'city','price'],
   }
 };
 

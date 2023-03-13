@@ -224,7 +224,7 @@ export class RowCell extends HeaderCell {
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
-    this.drawLinkFieldShapLogic(this.meta);
+    this.drawLinkField(this.meta);
   }
 
   protected drawRectBorder() {
