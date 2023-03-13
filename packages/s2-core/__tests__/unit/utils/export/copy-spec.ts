@@ -3,6 +3,7 @@ import { assembleDataCfg, assembleOptions, TOTALS_OPTIONS } from 'tests/util';
 import { getContainer } from 'tests/util/helpers';
 import { data as originalData, totalData } from 'tests/data/mock-dataset.json';
 import { map } from 'lodash';
+import { TableDataCell } from '@antv/s2';
 import { TableSheet, PivotSheet } from '@/sheet-type';
 import {
   CellTypes,
@@ -101,7 +102,10 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
+      `"1	浙江省	舟山市	家具	桌子	4342"`,
+    );
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
   });
 
   it('should copy all data', () => {
@@ -110,8 +114,8 @@ describe('List Table Core Data Process', () => {
     });
 
     expect(getCopyPlainContent(s2).split(NewLine).length).toBe(33);
-    expect(getCopyPlainContent(s2).split(NewLine)[2].split(NewTab).length).toBe(
-      5,
+    expect(getCopyPlainContent(s2).split(NewLine)[2]).toMatchInlineSnapshot(
+      `"2	浙江省	绍兴市	家具	桌子	2367"`,
     );
   });
 
@@ -187,7 +191,7 @@ describe('List Table Core Data Process', () => {
           enableCopy: true,
           copyWithFormat: true,
         },
-        showSeriesNumber: true,
+        showSeriesNumber: false,
       }),
     );
 
@@ -195,7 +199,7 @@ describe('List Table Core Data Process', () => {
 
     const cell = ss.interaction
       .getAllCells()
-      .filter((cell) => cell instanceof TableSeriesCell)[1];
+      .filter((cell) => cell instanceof TableDataCell)[0];
 
     ss.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -204,7 +208,7 @@ describe('List Table Core Data Process', () => {
 
     const data = getCopyPlainContent(ss);
 
-    expect(data).toBe('浙江省_formatted	绍兴市	家具	桌子	2367');
+    expect(data).toBe('浙江省_formatted');
   });
 
   // https://github.com/antvis/S2/issues/1770
@@ -265,7 +269,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2);
 
-    expect(data).toBe('四川省	乐山市	家具	桌子	2330');
+    expect(data).toMatchInlineSnapshot(`"1	四川省	乐山市	家具	桌子	2330"`);
 
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
@@ -296,7 +300,7 @@ describe('List Table Core Data Process', () => {
     });
     const data = getCopyPlainContent(s2);
 
-    expect(data).toBe('浙江省	宁波市	家具	沙发	7234');
+    expect(data).toBe('1	浙江省	宁波市	家具	沙发	7234');
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
@@ -353,6 +357,8 @@ describe('List Table Core Data Process', () => {
       },
     });
 
+    s2.render();
+
     const cell = s2.interaction
       .getAllCells()
       .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
@@ -362,7 +368,11 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(5);
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
+      "1	浙江省	杭州市	家具	### 问题摘要 
+      - **会话地址**：	7789"
+    `);
+    expect(getCopyPlainContent(s2).split(NewTab).length).toBe(6);
   });
 });
 

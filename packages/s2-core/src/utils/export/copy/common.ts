@@ -6,6 +6,8 @@ import {
   type CopyableList,
   type CopyablePlain,
   type FormatOptions,
+  type CopyOrExportConfig,
+  type CopyAndExportUnifyConfig,
   CopyMIMEType,
 } from '../interface';
 import { NewLine, NewTab } from '../../../common';
@@ -146,3 +148,32 @@ export const getFormatOptions = (isFormat?: FormatOptions) => {
     isFormatData: isFormat ?? false,
   };
 };
+
+// 因为 copy 和 export 在配置上有一定差异，此方法用于抹平差异
+export function unifyConfig(
+  config: CopyOrExportConfig,
+  spreadsheet: SpreadSheet,
+  isExport: boolean,
+): CopyAndExportUnifyConfig {
+  let result = {
+    isFormatData: spreadsheet.options.interaction?.copyWithFormat ?? false,
+    isFormatHeader: spreadsheet.options.interaction?.copyWithFormat ?? false,
+  };
+
+  if (isExport) {
+    const { isFormatData, isFormatHeader } = getFormatOptions(
+      config?.formatOptions ?? false,
+    );
+
+    result = {
+      isFormatData,
+      isFormatHeader,
+    };
+  }
+
+  return {
+    separator: config.separator ?? NewTab,
+    selectedCells: config.selectedCells ?? [],
+    ...result,
+  };
+}

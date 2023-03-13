@@ -8,7 +8,6 @@ import {
   EXTRA_FIELD,
   InteractionStateName,
   type S2CellType,
-  SERIES_NUMBER_FIELD,
   VALUE_FIELD,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
@@ -30,7 +29,11 @@ import {
   processPivotAllSelected,
   processPivotSelected,
 } from './pivot-data-cell-copy';
-import { processTableColSelected, processTableRowSelected } from './table-copy';
+import {
+  processTableAllSelected,
+  processTableColSelected,
+  processTableRowSelected,
+} from './table-copy';
 import {
   assembleMatrix,
   completeMatrix,
@@ -289,7 +292,7 @@ const getDataMatrixByDataCell = (
   // 当 rowMatrix 中的元素个数不一致时，需要补全
   rowMatrix = completeMatrix(rowMatrix);
 
-  return assembleMatrix(rowMatrix, colMatrix, dataMatrix);
+  return assembleMatrix({ rowMatrix, colMatrix, dataMatrix });
 };
 
 const processColSelected = (
@@ -411,11 +414,5 @@ export const processAllSelected = (
     return processPivotAllSelected(spreadsheet, split, formatOptions);
   }
 
-  const columnNodes = (spreadsheet.getColumnNodes() || []).filter(
-    // 滤过掉序号，序号不需要复制
-    (colNode) => colNode.field !== SERIES_NUMBER_FIELD,
-  );
-
-  // @ts-ignore
-  return processTableColSelected(spreadsheet, columnNodes);
+  return processTableAllSelected(spreadsheet, split, formatOptions);
 };

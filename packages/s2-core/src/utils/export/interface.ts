@@ -1,4 +1,4 @@
-import type { DataItem } from '../../common';
+import type { DataItem, CellMeta } from '../../common';
 
 export type MatrixTransformer = (data: DataItem[][]) => CopyableItem;
 
@@ -32,3 +32,18 @@ export type FormatOptions =
       isFormatHeader?: boolean;
       isFormatData?: boolean;
     };
+
+// 使用 类 替代 函数，重构下面的代码
+
+export interface CopyOrExportConfig {
+  selectedCells?: CellMeta[];
+  formatOptions?: FormatOptions;
+  separator?: string;
+}
+
+export interface CopyAndExportUnifyConfig {
+  separator: string;
+  isFormatHeader: boolean;
+  isFormatData: boolean;
+  selectedCells: CellMeta[];
+}
