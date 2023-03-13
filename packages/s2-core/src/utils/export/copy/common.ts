@@ -47,9 +47,13 @@ export const matrixHtmlTransformer = (
 
 export function getFormatter(
   spreadsheet: SpreadSheet,
-  field: string | undefined,
+  field: string,
+  isFormatData?: boolean,
 ) {
-  if (spreadsheet.options.interaction?.copyWithFormat) {
+  const isFormatDataTemp = spreadsheet.options.interaction?.copyWithFormat;
+
+  // spreadsheet.options.interaction?.copyWithFormat
+  if (isFormatData ?? isFormatDataTemp) {
     return spreadsheet.dataSet.getFieldFormatter(field!);
   }
 
@@ -57,13 +61,18 @@ export function getFormatter(
 }
 
 // 生成矩阵：https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
-export const assembleMatrix = (
-  rowMatrix: string[][],
-  colMatrix: string[][],
-  dataMatrix: string[][],
-  cornerMatrix?: string[][],
-): CopyableList => {
-  const rowWidth = rowMatrix[0]?.length ?? 0;
+export const assembleMatrix = ({
+  rowMatrix,
+  colMatrix,
+  dataMatrix,
+  cornerMatrix,
+}: {
+  colMatrix: string[][];
+  dataMatrix: string[][];
+  rowMatrix?: string[][];
+  cornerMatrix?: string[][];
+}): CopyableList => {
+  const rowWidth = rowMatrix?.[0]?.length ?? 0;
   const colHeight = colMatrix?.length ?? 0;
   const dataWidth = dataMatrix[0]?.length ?? 0;
   const dataHeight = dataMatrix.length ?? 0;
@@ -86,7 +95,7 @@ export const assembleMatrix = (
       }
 
       if (x >= 0 && x < rowWidth && y >= colHeight && y < matrixHeight) {
-        return rowMatrix[y - colHeight][x];
+        return rowMatrix?.[y - colHeight][x];
       }
 
       if (

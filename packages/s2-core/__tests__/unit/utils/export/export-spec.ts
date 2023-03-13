@@ -6,7 +6,7 @@ import { PivotSheet, TableSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 import { NewTab, NewLine } from '@/common';
 
-describe.skip('TableSheet Export Test', () => {
+describe('TableSheet Export Test', () => {
   it('should export correct data with series number', () => {
     const s2 = new TableSheet(
       getContainer(),
@@ -90,13 +90,7 @@ describe.skip('TableSheet Export Test', () => {
     rows.forEach((e) => {
       expect(e.split(NewTab)).toHaveLength(5);
     });
-    expect(headers.map((e) => JSON.parse(e))).toEqual([
-      'province',
-      'city',
-      'type',
-      'sub_type',
-      'number',
-    ]);
+    expect(headers).toEqual(['province', 'city', 'type', 'sub_type', 'number']);
   });
 
   it('should export correct data with totals', () => {
@@ -127,12 +121,12 @@ describe.skip('TableSheet Export Test', () => {
     const data = copyData(s2, NewTab, true);
 
     expect(data).toMatchInlineSnapshot(`
-      "\\"province\\"	\\"type\\"	\\"sub_type\\"	\\"number\\"
-      \\"浙江省-province\\"	\\"家具-type\\"	\\"桌子\\"	\\"7789\\"
-      \\"浙江省-province\\"	\\"家具-type\\"	\\"桌子\\"	\\"2367\\"
-      \\"浙江省-province\\"	\\"家具-type\\"	\\"桌子\\"	\\"3877\\"
-      \\"浙江省-province\\"	\\"家具-type\\"	\\"桌子\\"	\\"4342\\"
-      \\"浙江省-province\\"	\\"家具-type\\"	\\"沙发\\"	\\"5343\\""
+      "province	type	sub_type	number
+      浙江省-province	家具-type	桌子	7789
+      浙江省-province	家具-type	桌子	2367
+      浙江省-province	家具-type	桌子	3877
+      浙江省-province	家具-type	桌子	4342
+      浙江省-province	家具-type	沙发	5343"
     `);
   });
 });
