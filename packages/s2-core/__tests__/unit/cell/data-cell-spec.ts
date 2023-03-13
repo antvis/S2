@@ -195,7 +195,7 @@ describe('Data Cell Tests', () => {
   });
 
   describe('Condition Tests', () => {
-    s2 = createPivotSheet({
+    const s2 = createPivotSheet({
       conditions: {
         text: [
           {
