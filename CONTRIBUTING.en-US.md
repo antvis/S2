@@ -60,5 +60,5 @@ npm i -g yarn
 6. `yarn vue:start` Debug and test local `@antv/s2-vue` (Based on jest-electron).
 7. `yarn react:playground` Starts the local `@antv/s2-react` playground (基于 vite).
 8. `yarn vue:playground` Starts the local `@antv/s2-vue` playground (基于 vite).
-5. `yarn build`: Builds `@antv/s2` and `@antv/s2-react` and `@antv/s2-vue` , outputs are `umd`, `esm` and `lib` directories.
-6. `yarn test`:  Run unit tests.
+9. `yarn build`: Builds `@antv/s2` and `@antv/s2-react` and `@antv/s2-vue` , outputs are `umd`, `esm` and `lib` directories.
+10. `yarn test`:  Run unit tests.
