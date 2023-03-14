@@ -108,7 +108,7 @@ jobs:
             Hello, @${{ github.vent.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
 
       - name: Rejected
-        if: github.event.label.name == '❌ won't support'
+        if: github.event.label.name == "❌ won't support"
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,close-issue'
