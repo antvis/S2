@@ -54,8 +54,10 @@ npm i -g yarn
 1. `yarn bootstrap` 安装依赖
 2. `yarn site:bootstrap` 安装网站相关依赖
 3. `yarn site:start` 启动本地的 `S2` 网站
-4. `yarn core:start` 可视化的方式调试核心层测试 (基于 jest-electron)
-5. `yarn react:start` 可视化的方式调试组件层测试 (基于 jest-electron)
-6. `yarn react:playground` 启动本地的组件层demo (基于 vite)
-7. `yarn build` 构建 `@antv/s2` 和 `@antv/s2-react` 两个包, 分别输出 `umd`, `esm` 和 `lib` 目录
-8. `yarn test` 运行单元格测试
+4. `yarn core:start` 可视化的方式调试核心层 `@antv/s2` (基于 jest-electron)
+5. `yarn react:start` 可视化的方式调试组件层 `@antv/s2-react` (基于 jest-electron)
+6. `yarn vue:start` 可视化的方式调试组件层 `@antv/s2-vue` (基于 jest-electron)
+7. `yarn react:playground` 启动本地的组件层 `@antv/s2-react` demo (基于 vite)
+8. `yarn vue:playground` 启动本地的组件层 `@antv/s2-vue` demo (基于 vite)
+9. `yarn build` 构建 `@antv/s2` 和 `@antv/s2-react` 和 `@antv/s2-vue` 三个包, 分别输出 `umd`, `esm` 和 `lib` 目录
+10. `yarn test` 运行单元格测试
