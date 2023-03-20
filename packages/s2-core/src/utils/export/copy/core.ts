@@ -1,5 +1,4 @@
 import { every, isEmpty, map, zip } from 'lodash';
-import { Node, ROOT_NODE_ID } from '@antv/s2';
 import {
   type CellMeta,
   CellTypes,
@@ -9,10 +8,12 @@ import {
   InteractionStateName,
   type S2CellType,
   VALUE_FIELD,
+  ROOT_NODE_ID,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import { copyToClipboard } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
+import type { Node } from '../../../facet/layout/node';
 import {
   convertString,
   getColNodeFieldFromNode,
