@@ -6,9 +6,9 @@ import {
   EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   InteractionStateName,
+  ROOT_NODE_ID,
   type S2CellType,
   VALUE_FIELD,
-  ROOT_NODE_ID,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import { copyToClipboard } from '../index';
@@ -22,8 +22,8 @@ import {
 } from '../method';
 import {
   type CopyableList,
-  type FormatOptions,
   CopyMIMEType,
+  type FormatOptions,
 } from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
@@ -42,18 +42,6 @@ import {
   matrixHtmlTransformer,
   matrixPlainTextTransformer,
 } from './common';
-
-// todo-zc: 逻辑合并
-export const getFiledFromMeta = (
-  colIndex: number,
-  spreadsheet: SpreadSheet,
-) => {
-  const colNode = spreadsheet
-    .getColumnNodes()
-    .find((col) => col.colIndex === colIndex);
-
-  return getColNodeFieldFromNode(spreadsheet.isPivotMode, colNode);
-};
 
 const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   const { rowIndex, colIndex } = meta;
@@ -87,8 +75,12 @@ const getValueFromMeta = (
   displayData: Data[],
   spreadsheet: SpreadSheet,
 ) => {
+  const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+
+  const fieldKey = getColNodeFieldFromNode(spreadsheet.isPivotMode, colNode);
+  let value = displayData[meta.rowIndex]?.[fieldKey!];
+
   if (spreadsheet.isPivotMode()) {
-    const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
     const measureQuery = compatibleHideMeasureColumn(spreadsheet);
 
     const cell = spreadsheet.dataSet.getCellData({
@@ -105,22 +97,10 @@ const getValueFromMeta = (
         colNode?.isTotalMeasure,
     });
 
-    return cell?.[VALUE_FIELD] ?? '';
+    value = cell?.[VALUE_FIELD] ?? '';
   }
 
-  const fieldKey = getFiledFromMeta(meta.colIndex, spreadsheet);
-
-  return displayData[meta.rowIndex]?.[fieldKey!];
-};
-
-const format = (
-  meta: CellMeta,
-  displayData: Data[],
-  spreadsheet: SpreadSheet,
-) => {
-  const field = getFiledFromMeta(meta.colIndex!, spreadsheet);
-  const formatter = getFormatter(spreadsheet, field!);
-  const value = getValueFromMeta(meta, displayData, spreadsheet);
+  const formatter = getFormatter(spreadsheet, fieldKey!);
 
   return formatter(value);
 };
@@ -229,7 +209,9 @@ const getDataMatrixByDataCell = (
   const { copyWithHeader } = spreadsheet.options.interaction!;
 
   const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-    map(cellsMeta, (it) => convertString(format(it, displayData, spreadsheet))),
+    map(cellsMeta, (it) =>
+      convertString(getValueFromMeta(it, displayData, spreadsheet)),
+    ),
   ) as string[][];
 
   if (!copyWithHeader) {
