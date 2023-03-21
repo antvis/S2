@@ -1,3 +1,16 @@
+# [@antv/s2-v1.43.0](https://github.com/antvis/S2/compare/@antv/s2-v1.42.0...@antv/s2-v1.43.0) (2023-03-10)
+
+
+### Bug Fixes
+
+* **interaction:** 修复行头滚动刷选范围判断错误 ([#2101](https://github.com/antvis/S2/issues/2101)) ([8e38fb0](https://github.com/antvis/S2/commit/8e38fb0df6123360d2bd835cf80bcf72898a80b9))
+
+
+### Features
+
+* 在 shape 中添加文本的原始值 ([#2109](https://github.com/antvis/S2/issues/2109)) ([4d81e72](https://github.com/antvis/S2/commit/4d81e72440d797fd7a06179794c342f009fc39c3))
+* 增加自定义merged-cell ([534cc15](https://github.com/antvis/S2/commit/534cc15da9f766f95be3c622e65e45d8796ff020))
+
 # [@antv/s2-v1.42.0](https://github.com/antvis/S2/compare/@antv/s2-v1.41.1...@antv/s2-v1.42.0) (2023-02-24)
 
 
