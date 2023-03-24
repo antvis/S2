@@ -3,19 +3,12 @@
 
 ### Bug Fixes
 
-* fix lint error ([f3eba69](https://github.com/antvis/S2/commit/f3eba69a17f2febd7e3adc1ae0c2069295ba0ae6))
 * **interaction:** 修复从下往上滚动刷选速度缓慢 & 优化滚动刷选蒙层显示 ([#2119](https://github.com/antvis/S2/issues/2119)) ([8131d80](https://github.com/antvis/S2/commit/8131d8034ce255e05273c1792ecb11cd3e5aece2))
-* 修改DataCell类 drawLinkFieldShape 方法名为 drawLinkFieldShapeOwn ([d5e14b2](https://github.com/antvis/S2/commit/d5e14b25abba5bfaf74dddb17d9f5b44c74bc29b))
-* 统一风格、删除冗余代码 ([7b4ef0e](https://github.com/antvis/S2/commit/7b4ef0edf72e059b427c54e6ea881c4c8e347aed))
-* 避免s2实例被污染 ([8c44a85](https://github.com/antvis/S2/commit/8c44a85a678eadaab3fb2a66b5b02a123f74c9bb))
 
 
 ### Features
 
-* 修改文档、添加用例演示、修改方法名drawLinkFieldShapLogic -> drawLinkField ([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
-* 增加dataCell 下划线测试用例及demo ([a5efe17](https://github.com/antvis/S2/commit/a5efe17bda06cc8eba633cbea9c56ceb8b8c703e))
-* 提取跳转链接下划线 公共逻辑 到 BaseCell 类 ([34dbbb3](https://github.com/antvis/S2/commit/34dbbb3bdf028cb96508dcead724d9ac9bcc1ab9))
-* 数据单元格DataCell类中增加链接跳转渲染 ([bb5a964](https://github.com/antvis/S2/commit/bb5a964787a80843515b4d552adb3fdb59393e3d))
+* implement data cell link([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
 
 # [@antv/s2-v1.43.0](https://github.com/antvis/S2/compare/@antv/s2-v1.42.0...@antv/s2-v1.43.0) (2023-03-10)
 
