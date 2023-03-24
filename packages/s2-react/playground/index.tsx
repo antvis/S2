@@ -836,7 +836,9 @@ function MainLayout() {
                   onChange={(checked) => {
                     updateOptions({
                       interaction: {
-                        linkFields: checked ? ['province', 'city'] : [],
+                        linkFields: checked
+                          ? ['province', 'city', 'number']
+                          : [],
                       },
                     });
                   }}

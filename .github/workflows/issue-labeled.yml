@@ -108,13 +108,13 @@ jobs:
             Hello, @${{ github.vent.issue.user.login }}, your feature request has been accepted after our repeated discussion. We will schedule the development. However, it could not be supported in the short term since limited time, please pay attention to the follow-up release logs. Of course, looking forward for your PR!
 
       - name: Rejected
-        if: github.event.label.name == '❌ rejected'
+        if: github.event.label.name == '❌ won''t support'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,close-issue'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, 你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
+            你好 @${{ github.event.issue.user.login }}，经过我们的反复讨论, 你的需求过于定制化，不适合直接添加到 S2 中, S2 作为开源框架，只会进行通用能力的增强和自定义接口的开放。你可以通过 S2 提供的自定义能力自行实现，感谢你的理解。
 
-            Hello, @${{ github.event.issue.user.login }}, your feature request is too customized to be directly implemented in S2 after our repeated discussion, you could implement it by yourself through the customization capabilities provided by S2. Thanks so much for your understanding.
+            Hello, @${{ github.event.issue.user.login }}, After our repeated discussions, your needs are too customized and not suitable for implementing directly to S2. As an open source framework, S2 will only enhance general capabilities and open custom interfaces. You can implement it yourself through the customization capabilities provided by S2, thank you for your understanding.

@@ -11,7 +11,7 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        linkFields: ['city'],
+        linkFields: ['city', 'number'],
       },
     };
     const s2 = new PivotSheet(container, dataCfg, s2Options);

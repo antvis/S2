@@ -3,6 +3,7 @@ import { find, get } from 'lodash';
 import { createPivotSheet, createTableSheet } from 'tests/util/helpers';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell';
+import type { TextAlign } from '@/common';
 import {
   GuiIcon,
   type Formatter,
@@ -40,6 +41,52 @@ describe('Data Cell Tests', () => {
   } as unknown as ViewMeta;
 
   let s2: SpreadSheet;
+
+  describe('Link Shape Tests', () => {
+    beforeEach(() => {
+      s2 = createPivotSheet({});
+      s2.render();
+    });
+
+    test.each([
+      ['left', 10.783203125],
+      ['center', 75],
+      ['right', 139.216796875],
+    ])(
+      'should align link shape with text',
+      (textAlign: TextAlign, textCenterX: number) => {
+        s2.setOptions({
+          interaction: {
+            linkFields: ['price'],
+          },
+        });
+        s2.setTheme({
+          dataCell: {
+            text: {
+              textAlign,
+            },
+          },
+        });
+        s2.render();
+
+        const panelBBoxInstance = s2.facet.panelGroup.getChildByIndex(0);
+        const dataCell = (panelBBoxInstance as any).getChildByIndex(
+          0,
+        ) as DataCell;
+        const { minX, maxX } = (dataCell as any).linkFieldShape.getBBox();
+
+        // 宽度相当
+        const linkLength = maxX - minX;
+        expect(
+          Math.abs(linkLength - get(dataCell, 'actualTextWidth')),
+        ).toBeLessThanOrEqual(2);
+
+        // link shape 的中点坐标与 text 中点对齐
+        const linkCenterX = minX + linkLength / 2;
+        expect(linkCenterX).toEqual(textCenterX);
+      },
+    );
+  });
 
   describe('Data Cell Formatter Tests', () => {
     beforeEach(() => {
@@ -378,7 +425,7 @@ describe('Data Cell Tests', () => {
   });
 
   describe('Data Cell Interaction', () => {
-    let s2: SpreadSheet;
+    // let s2: SpreadSheet;
 
     beforeEach(() => {
       s2 = createPivotSheet({
