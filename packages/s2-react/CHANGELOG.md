@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.1...@antv/s2-react-v1.38.0) (2023-03-24)
+
+
+### Features
+
+* implement data cell link([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
+
+
 # [@antv/s2-react-v1.37.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.0...@antv/s2-react-v1.37.1) (2023-03-10)
 
 

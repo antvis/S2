@@ -1,3 +1,15 @@
+# [@antv/s2-v1.44.0](https://github.com/antvis/S2/compare/@antv/s2-v1.43.0...@antv/s2-v1.44.0) (2023-03-24)
+
+
+### Bug Fixes
+
+* **interaction:** 修复从下往上滚动刷选速度缓慢 & 优化滚动刷选蒙层显示 ([#2119](https://github.com/antvis/S2/issues/2119)) ([8131d80](https://github.com/antvis/S2/commit/8131d8034ce255e05273c1792ecb11cd3e5aece2))
+
+
+### Features
+
+* implement data cell link([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
+
 # [@antv/s2-v1.43.0](https://github.com/antvis/S2/compare/@antv/s2-v1.42.0...@antv/s2-v1.43.0) (2023-03-10)
 
 
