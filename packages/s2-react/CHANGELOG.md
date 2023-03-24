@@ -1,16 +1,10 @@
 # [@antv/s2-react-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.1...@antv/s2-react-v1.38.0) (2023-03-24)
 
 
-### Bug Fixes
-
-* fix lint error ([f3eba69](https://github.com/antvis/S2/commit/f3eba69a17f2febd7e3adc1ae0c2069295ba0ae6))
-
-
 ### Features
 
-* 修改文档、添加用例演示、修改方法名drawLinkFieldShapLogic -> drawLinkField ([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
-* 增加dataCell 下划线测试用例及demo ([a5efe17](https://github.com/antvis/S2/commit/a5efe17bda06cc8eba633cbea9c56ceb8b8c703e))
-* 提取跳转链接下划线 公共逻辑 到 BaseCell 类 ([34dbbb3](https://github.com/antvis/S2/commit/34dbbb3bdf028cb96508dcead724d9ac9bcc1ab9))
+* implement data cell link([7f2bd69](https://github.com/antvis/S2/commit/7f2bd690bd703b8e4d678c03b9fc79db30848ca3))
+
 
 # [@antv/s2-react-v1.37.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.0...@antv/s2-react-v1.37.1) (2023-03-10)
 
