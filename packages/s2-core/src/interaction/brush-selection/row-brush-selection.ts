@@ -7,7 +7,11 @@ import {
   InteractionStateName,
   ScrollDirection,
 } from '../../common/constant/interaction';
-import type { OnUpdateCells, ViewMeta } from '../../common/interface';
+import type {
+  BrushRange,
+  OnUpdateCells,
+  ViewMeta,
+} from '../../common/interface';
 import type { Node } from '../../facet/layout/node';
 import { getCellMeta } from '../../utils/interaction/select-event';
 import { BaseBrushSelection } from './base-brush-selection';
@@ -120,6 +124,7 @@ export class RowBrushSelection extends BaseBrushSelection {
         return visibleCell;
       }
 
+      // TODO: 先暂时不考虑自定义单元格的情况, next 分支把这些单元格 (包括自定义单元格) 都放在了 s2.options.rowCell 里
       return new RowCell(node, this.spreadsheet);
     });
   }
@@ -163,4 +168,15 @@ export class RowBrushSelection extends BaseBrushSelection {
     const nextRowIndex = lastRowIndex + this.getWillScrollRowIndexDiff(dir);
     return this.validateYIndex(nextRowIndex);
   };
+
+  protected getPrepareSelectMaskPosition(brushRange: BrushRange): Point {
+    const { minY } = this.spreadsheet.facet.panelBBox;
+    const x = brushRange.start.x;
+    const y = Math.max(brushRange.start.y, minY);
+
+    return {
+      x,
+      y,
+    };
+  }
 }
