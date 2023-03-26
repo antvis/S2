@@ -1,5 +1,11 @@
 import { find, isEmpty, map, slice, zip } from 'lodash';
-import { type CellMeta, VALUE_FIELD } from '../../../common';
+import {
+  type CellMeta,
+  type Data,
+  type DataItem,
+  EXTRA_FIELD,
+  VALUE_FIELD,
+} from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type { SpreadSheet } from '../../../sheet-type';
 import type {
@@ -9,6 +15,7 @@ import type {
   FormatOptions,
 } from '../interface';
 import {
+  convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
@@ -22,7 +29,7 @@ import {
   matrixPlainTextTransformer,
   unifyConfig,
 } from './common';
-import { getNodeFormatData } from './core';
+import { getHeaderNodeFromMeta, getNodeFormatData } from './core';
 
 class PivotDataCellCopy {
   private spreadsheet: SpreadSheet;
@@ -34,7 +41,6 @@ class PivotDataCellCopy {
   private config: CopyAndExportUnifyConfig;
 
   /**
-   *
    * @param {{
    * spreadsheet: SpreadSheet,
    * selectedCells?: CellMeta[],
@@ -55,35 +61,25 @@ class PivotDataCellCopy {
     this.leafColNodes = this.getLeafColNodes();
   }
 
-  getLeafRowNodes() {
+  private getLeafRowNodes() {
     const allRowLeafNodes = this.spreadsheet.getRowLeafNodes();
     let result: Node[] = allRowLeafNodes;
     const selectedRowMeta = getSelectedRows(this.config.selectedCells);
+    const isTreeData = this.spreadsheet.isHierarchyTreeType();
 
     // selectedRowMeta 选中了指定的行头，则只展示对应行头对应的数据
     if (!isEmpty(selectedRowMeta)) {
-      result = this.getSelectedNode(selectedRowMeta, allRowLeafNodes);
+      result = this.getSelectedNode(
+        selectedRowMeta,
+        allRowLeafNodes,
+        isTreeData,
+      );
     }
 
     return result;
   }
 
-  private getSelectedNode(
-    selectedMeta: CellMeta[],
-    allRowOrColLeafNodes: Node[],
-  ): Node[] {
-    return selectedMeta.reduce<Node[]>((nodes, cellMeta) => {
-      const filterNodes = allRowOrColLeafNodes.filter((node) =>
-        node.id.startsWith(cellMeta.id),
-      );
-
-      nodes.push(...filterNodes);
-
-      return nodes;
-    }, []);
-  }
-
-  getLeafColNodes() {
+  private getLeafColNodes() {
     const allColLeafNodes = this.spreadsheet.getColumnLeafNodes();
     let result: Node[] = allColLeafNodes;
     const selectedColMetas = getSelectedCols(this.config.selectedCells);
@@ -96,34 +92,77 @@ class PivotDataCellCopy {
     return result;
   }
 
-  getDataMatrixByHeaderNode = () =>
+  private getSelectedNode(
+    selectedMeta: CellMeta[],
+    allRowOrColLeafNodes: Node[],
+    isTreeData = false,
+  ): Node[] {
+    return selectedMeta.reduce<Node[]>((nodes, cellMeta) => {
+      const filterNodes = allRowOrColLeafNodes.filter((node) =>
+        isTreeData ? node.id === cellMeta.id : node.id.startsWith(cellMeta.id),
+      );
+
+      nodes.push(...filterNodes);
+
+      return nodes;
+    }, []);
+  }
+
+  /**
+   * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
+   * https://github.com/antvis/S2/issues/1955
+   * @param spreadsheet
+   */
+  private compatibleHideMeasureColumn = () => {
+    const isHideValue =
+      this.spreadsheet.options?.style?.colCell?.hideValue &&
+      this.spreadsheet.isValueInCols();
+
+    // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
+    return isHideValue
+      ? {
+          [EXTRA_FIELD]: this.spreadsheet.dataCfg.fields.values?.[0],
+        }
+      : {};
+  };
+
+  private getDataMatrixByHeaderNode = () =>
     map(this.leafRowNodes, (rowNode) =>
-      this.leafColNodes.map((colNode) => {
-        const cellData = this.spreadsheet.dataSet.getCellData({
-          query: {
-            ...rowNode.query,
-            ...colNode.query,
-          },
-          rowNode,
-          isTotals:
-            rowNode.isTotals ||
-            rowNode.isTotalMeasure ||
-            colNode.isTotals ||
-            colNode.isTotalMeasure,
-        });
-
-        const field = getColNodeFieldFromNode(
-          this.spreadsheet.isPivotMode,
-          colNode,
-        );
-
-        return getFormatter(
-          this.spreadsheet,
-          field ?? colNode.field,
-          this.config.isFormatData,
-        )(cellData?.[VALUE_FIELD] ?? '');
-      }),
+      this.leafColNodes.map((colNode) =>
+        this.getDataCellValue(rowNode, colNode),
+      ),
     );
+
+  private getDataCellValue(rowNode: Node, colNode: Node): DataItem {
+    const measureQuery = this.compatibleHideMeasureColumn();
+
+    const cellData = this.spreadsheet.dataSet.getCellData({
+      query: {
+        ...rowNode.query,
+        ...colNode.query,
+        ...measureQuery,
+      },
+      rowNode,
+      isTotals:
+        rowNode.isTotals ||
+        rowNode.isTotalMeasure ||
+        colNode.isTotals ||
+        colNode.isTotalMeasure,
+    });
+
+    const field = getColNodeFieldFromNode(
+      this.spreadsheet.isPivotMode,
+      colNode,
+    );
+
+    const formatter = getFormatter(
+      this.spreadsheet,
+      field ?? colNode.field,
+      this.config.isFormatData,
+    );
+
+    return formatter(cellData?.[VALUE_FIELD] ?? '');
+  }
 
   private getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
     const { fields, meta } = this.spreadsheet.dataCfg;
@@ -142,10 +181,11 @@ class PivotDataCellCopy {
      */
     // 为了对齐数值
     columns.push('');
+
     /*
      * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
      */
-    const cornerMatrix = map(columns, (col, colIndex) =>
+    return map(columns, (col, colIndex) =>
       map(slice(realRows, 0, maxRowLen), (row, rowIndex) => {
         // 角头的最后一行，为行头
         if (colIndex === columns.length - 1) {
@@ -160,8 +200,6 @@ class PivotDataCellCopy {
         return '';
       }),
     ) as unknown as string[][];
-
-    return cornerMatrix;
   };
 
   private getColMatrix(): string[][] {
@@ -175,6 +213,38 @@ class PivotDataCellCopy {
 
     return completeMatrix(rowMatrix);
   }
+
+  getDataMatrixByDataCell = (
+    cellMetaMatrix: CellMeta[][],
+    displayData: Data[],
+    spreadsheet: SpreadSheet,
+  ): CopyableList => {
+    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+
+    const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
+      map(cellsMeta, (it) => {
+        const [rowNode, colNode] = getHeaderNodeFromMeta(it, spreadsheet);
+        const dataItem = this.getDataCellValue(rowNode!, colNode!);
+
+        return convertString(dataItem);
+      }),
+    ) as string[][];
+
+    // 不带表头复制
+    if (!copyWithHeader) {
+      return [
+        matrixPlainTextTransformer(dataMatrix, this.config.separator),
+        matrixHtmlTransformer(dataMatrix),
+      ];
+    }
+
+    // 带表头复制
+    const rowMatrix = this.getRowMatrix();
+
+    const colMatrix = this.getColMatrix();
+
+    return assembleMatrix({ rowMatrix, colMatrix, dataMatrix });
+  };
 
   getPivotCopyData(): CopyableList {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
@@ -207,12 +277,6 @@ class PivotDataCellCopy {
 
     return assembleMatrix({ rowMatrix, colMatrix, dataMatrix, cornerMatrix });
   };
-
-  processPivotSelected(): CopyableList {
-    return this.getPivotCopyData();
-  }
-
-  processPivotAllSelected = (): CopyableList => this.getPivotAllCopyData();
 }
 
 // -------------------
@@ -228,7 +292,7 @@ export function processPivotSelected(
     },
   });
 
-  return pivotDataCellCopy.processPivotSelected();
+  return pivotDataCellCopy.getPivotCopyData();
 }
 
 export const processPivotAllSelected = (
@@ -245,5 +309,30 @@ export const processPivotAllSelected = (
     },
   });
 
-  return pivotDataCellCopy.processPivotAllSelected();
+  return pivotDataCellCopy.getPivotAllCopyData();
+};
+
+export const processPivotSelectedByDataCell = ({
+  spreadsheet,
+  selectedCells,
+  displayData,
+  headerSelectedCells,
+}: {
+  spreadsheet: SpreadSheet;
+  selectedCells: CellMeta[][];
+  displayData: Data[];
+  headerSelectedCells: CellMeta[];
+}): CopyableList => {
+  const pivotDataCellCopy = new PivotDataCellCopy({
+    spreadsheet,
+    config: {
+      selectedCells: headerSelectedCells,
+    },
+  });
+
+  return pivotDataCellCopy.getDataMatrixByDataCell(
+    selectedCells,
+    displayData,
+    spreadsheet,
+  );
 };

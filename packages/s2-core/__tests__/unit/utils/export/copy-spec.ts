@@ -1079,13 +1079,9 @@ describe('Tree Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(`
-      "18375	14043	32418	4826	5854	10680	43098
-      7789	5343	13132	945	1343	2288	15420
-      2367	632	2999	1304	1354	2658	5657
-      3877	7234	11111	1145	1523	2668	13779
-      4342	834	5176	1432	1634	3066	8242"
-    `);
+    expect(getCopyPlainContent(s2)).toMatchInlineSnapshot(
+      `"18375	14043	32418	4826	5854	10680	43098"`,
+    );
   });
 
   it('should copy all data in tree mode', () => {

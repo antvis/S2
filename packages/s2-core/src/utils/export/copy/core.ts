@@ -1,4 +1,4 @@
-import { every, isEmpty, map, zip } from 'lodash';
+import { concat, every, isEmpty } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
@@ -15,7 +15,6 @@ import { copyToClipboard } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
 import type { Node } from '../../../facet/layout/node';
 import {
-  convertString,
   getColNodeFieldFromNode,
   getSelectedCols,
   getSelectedRows,
@@ -29,21 +28,20 @@ import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processPivotAllSelected,
   processPivotSelected,
+  processPivotSelectedByDataCell,
 } from './pivot-data-cell-copy';
 import {
   processTableAllSelected,
   processTableColSelected,
   processTableRowSelected,
+  processTableSelectedByDataCell,
 } from './table-copy';
-import {
-  assembleMatrix,
-  completeMatrix,
-  getFormatter,
-  matrixHtmlTransformer,
-  matrixPlainTextTransformer,
-} from './common';
+import { getFormatter } from './common';
 
-const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+export const getHeaderNodeFromMeta = (
+  meta: CellMeta,
+  spreadsheet: SpreadSheet,
+) => {
   const { rowIndex, colIndex } = meta;
 
   return [
@@ -57,7 +55,7 @@ const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
  * https://github.com/antvis/S2/issues/1955
  * @param spreadsheet
  */
-const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
+export const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
   const isHideValue =
     spreadsheet.options?.style?.colCell?.hideValue &&
     spreadsheet.isValueInCols();
@@ -70,7 +68,8 @@ const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
     : {};
 };
 
-const getValueFromMeta = (
+// todo: getDataMatrixByHeaderNode 的逻辑同
+export const getValueFromMeta = (
   meta: CellMeta,
   displayData: Data[],
   spreadsheet: SpreadSheet,
@@ -112,7 +111,6 @@ const getNodeFormatLabel = (node: Node) => {
 };
 
 /**
- * todo: 统一逻辑
  * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
  * @param rowLeafNode
  */
@@ -142,7 +140,7 @@ export const getNodeFormatData = (rowLeafNode: Node) => {
  * @param { CellMeta[] } cells
  * @return { CellMeta[][] }
  */
-export const getSelectedCellsMeta = (cells: CellMeta[]) => {
+const getSelectedCellsMeta = (cells: CellMeta[]) => {
   if (!cells?.length) {
     return [];
   }
@@ -177,105 +175,6 @@ export const getSelectedCellsMeta = (cells: CellMeta[]) => {
   });
 
   return twoDimDataArray;
-};
-
-function getSelectedNode(
-  selectedMeta: CellMeta[],
-  allRowOrColLeafNodes: Node[],
-): Node[] {
-  return selectedMeta.reduce<Node[]>((nodes, cellMeta) => {
-    const filterNodes = allRowOrColLeafNodes.filter(
-      (node) => node.id === cellMeta.id,
-    );
-
-    nodes.push(...filterNodes);
-
-    return nodes;
-  }, []);
-}
-
-/**
- * 生成包含行列头的导出数据。查看👇🏻图效果展示，更容易理解代码：
- * https://gw.alipayobjects.com/zos/antfincdn/bxBVt0nXx/a182c1d4-81bf-469f-b868-8b2e29acfc5f.png
- * @param cellMetaMatrix
- * @param displayData
- * @param spreadsheet
- */
-const getDataMatrixByDataCell = (
-  cellMetaMatrix: CellMeta[][],
-  displayData: Data[],
-  spreadsheet: SpreadSheet,
-): CopyableList => {
-  const { copyWithHeader } = spreadsheet.options.interaction!;
-
-  const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-    map(cellsMeta, (it) =>
-      convertString(getValueFromMeta(it, displayData, spreadsheet)),
-    ),
-  ) as string[][];
-
-  if (!copyWithHeader) {
-    return [
-      matrixPlainTextTransformer(dataMatrix),
-      matrixHtmlTransformer(dataMatrix),
-    ];
-  }
-
-  /**
-   * todo-zc:
-   * 1. 可以使用 getPivotCopyData 替代此方法？
-   *  不行，因为 getPivotCopyData 都是 整行或者整列的处理
-   *  getPivotCopyData 通过行列信息获取单元格信息，而此处是通过单元格信息获取行列信息。
-   *  等 table 模式优化后再考虑。
-   * 2. 对下面的代码进行优化
-   *  colMatrix 和 rowMatrix 有很多重复的代码，可以进行优化
-   *  保留使用 getHeaderList vs Node 方式， getHeaderList 简单性能好（用于不格式化的场景）
-   */
-
-  // 通过第一行来获取列头信息
-  const allColLeafNodes = spreadsheet.getColumnLeafNodes();
-  const selectedColMetas = cellMetaMatrix[0].map((cellMeta) => {
-    return {
-      ...cellMeta,
-      id: cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
-    };
-  });
-  const selectedColNode = getSelectedNode(selectedColMetas, allColLeafNodes);
-  const colMatrix = zip(
-    ...map(selectedColNode, (n) => getNodeFormatData(n)),
-  ) as string[][];
-  /*
-   * const colMatrix = zip(
-   *   ...map(cellMetaMatrix[0], (cellMeta) => {
-   *     const colId = cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '';
-   *
-   *     return getHeaderList(colId);
-   *   }),
-   * ) as string[][];
-   */
-
-  // 通过第一列来获取行头信息
-  const allRowLeafNodes = spreadsheet.getRowLeafNodes();
-  const selectedRowMetas = cellMetaMatrix.map((it) => {
-    return {
-      ...it[0],
-      id: it[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
-    };
-  });
-  const selectedRowNode = getSelectedNode(selectedRowMetas, allRowLeafNodes);
-  let rowMatrix = map(selectedRowNode, (n) => getNodeFormatData(n));
-  /*
-   * let rowMatrix = map(cellMetaMatrix, (cellsMeta) => {
-   *   const rowId = cellsMeta[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '';
-   *
-   *   return getHeaderList(rowId);
-   * });
-   */
-
-  // 当 rowMatrix 中的元素个数不一致时，需要补全
-  rowMatrix = completeMatrix(rowMatrix);
-
-  return assembleMatrix({ rowMatrix, colMatrix, dataMatrix });
 };
 
 const processColSelected = (
@@ -346,19 +245,38 @@ function getDataCellCopyable(
     }
 
     // normal selected
-    const selectedCellsMeta = getSelectedCellsMeta(cells);
+    const selectedCellsMeta = getSelectedCellsMeta(cells) as CellMeta[][];
 
-    /*
-     * todo-zc：可以使用 getPivotCopyData 替代此方法？ 不行，因为 getPivotCopyData 都是 整行或者整列的处理
-     * 圈选时，格式化错误
-     */
-    data = getDataMatrixByDataCell(
-      selectedCellsMeta,
-      displayData as Data[],
-      spreadsheet,
-    );
+    const selectedColMetas = selectedCellsMeta[0].map((cellMeta) => {
+      return {
+        ...cellMeta,
+        id: cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
+        type: CellTypes.COL_CELL,
+      };
+    });
+    const selectedRowMetas = selectedCellsMeta.map((it) => {
+      return {
+        ...it[0],
+        id: it[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
+        type: CellTypes.ROW_CELL,
+      };
+    });
 
-    // data = processPivotSelected(spreadsheet, cells);
+    if (spreadsheet.isPivotMode()) {
+      data = processPivotSelectedByDataCell({
+        spreadsheet,
+        selectedCells: selectedCellsMeta,
+        displayData: displayData as Data[],
+        headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
+      });
+    } else {
+      data = processTableSelectedByDataCell({
+        spreadsheet,
+        selectedCells: selectedCellsMeta,
+        displayData: displayData as Data[],
+        headerSelectedCells: selectedColMetas,
+      });
+    }
   }
 
   return data;
