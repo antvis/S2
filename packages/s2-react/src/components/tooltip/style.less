@@ -14,12 +14,17 @@
     padding: 16px;
   }
 
+  .ant-drawer-content {
+    background: var(~'@{css-var-prefix}-container-background', #fff);
+  }
+
   .antv-s2-tooltip-operator {
     > .ant-menu {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
       justify-content: space-between;
+      background: var(~'@{css-var-prefix}-container-background', #fff);
 
       &::before,
       &::after {
@@ -29,7 +34,7 @@
       .ant-menu-item {
         display: flex;
         align-items: center;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(~'@{css-var-prefix}-border', #f0f0f0);
         border-radius: 2px;
       }
     }
