@@ -5,6 +5,12 @@
     "font-family-no-missing-generic-family-keyword": true,
     "alpha-value-notation": null,
     "color-function-notation": null,
-    "import-notation": null
+    "import-notation": null,
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["fade", "fadeout"]
+      }
+    ]
   }
 }

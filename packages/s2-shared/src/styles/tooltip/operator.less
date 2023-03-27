@@ -2,15 +2,14 @@
 
 .with-menu-item-color() {
   &:not(.ant-menu-item-active) {
-    color: @tooltip-menu-item-text-color;
+    color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
   }
 }
 
 .@{tooltip-operator-cls-prefix} {
-  color: @tooltip-menu-item-text-color;
+  color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
   font-size: @tooltip-menu-font-size;
   line-height: 32px;
-  background: #f9f9f9;
   padding: 0 12px;
   border: 0;
   cursor: pointer;
@@ -23,7 +22,7 @@
   &-menus.ant-menu-vertical.ant-menu {
     font-size: @tooltip-menu-font-size;
     line-height: 32px;
-    color: @tooltip-menu-item-text-color;
+    color: var(~'@{css-var-prefix}-font', ~'@{tooltip-menu-item-text-color}');
     border: 0;
     margin: 0 -12px;
 
@@ -39,7 +38,10 @@
       height: 30px;
 
       .ant-menu-submenu-arrow {
-        color: @tooltip-menu-item-text-color;
+        color: var(
+          ~'@{css-var-prefix}-font',
+          ~'@{tooltip-menu-item-text-color}'
+        );
       }
     }
   }
@@ -105,6 +107,7 @@
     svg {
       width: @tooltip-menu-font-size;
       height: @tooltip-menu-font-size;
+      fill: var(~'@{css-var-prefix}-font');
     }
   }
 }
