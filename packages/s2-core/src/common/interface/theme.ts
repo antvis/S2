@@ -1,6 +1,7 @@
 import type { LineStyleProps } from '@antv/g';
 import type { InteractionStateName } from '../constant';
 import type { CellTypes } from '../../common/constant/interaction';
+import type { PALETTE_MAP } from '../constant/theme';
 
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
@@ -320,7 +321,7 @@ export interface S2Theme extends CellThemes {
   background?: Background;
 }
 
-export type ThemeName = 'default' | 'colorful' | 'gray';
+export type ThemeName = keyof typeof PALETTE_MAP;
 
 export interface ThemeCfg {
   /* 主题 */

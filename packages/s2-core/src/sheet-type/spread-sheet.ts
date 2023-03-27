@@ -17,6 +17,7 @@ import {
   memoize,
   values,
 } from 'lodash';
+import { injectThemeVars } from '..';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -414,6 +415,7 @@ export abstract class SpreadSheet extends EE {
     const newTheme = getTheme({ ...themeCfg, spreadsheet: this });
 
     this.theme = customMerge(newTheme, theme);
+    injectThemeVars(themeCfg?.name);
   }
 
   public setTheme(theme: S2Theme) {
