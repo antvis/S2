@@ -122,7 +122,11 @@ class TableDataCellCopy {
     );
     const value = this.displayData[meta.rowIndex]?.[fieldKey!];
 
-    const formatter = getFormatter(this.spreadsheet, fieldKey!);
+    const formatter = getFormatter(
+      this.spreadsheet,
+      fieldKey!,
+      this.config.isFormatData,
+    );
 
     return formatter(value);
   };

@@ -51,12 +51,9 @@ export const matrixHtmlTransformer = (
 export function getFormatter(
   spreadsheet: SpreadSheet,
   field: string,
-  isFormatData?: boolean,
+  isFormatData = false,
 ) {
-  const isFormatDataTemp = spreadsheet.options.interaction?.copyWithFormat;
-
-  // spreadsheet.options.interaction?.copyWithFormat
-  if (isFormatData ?? isFormatDataTemp) {
+  if (isFormatData) {
     return spreadsheet.dataSet.getFieldFormatter(field!);
   }
 
