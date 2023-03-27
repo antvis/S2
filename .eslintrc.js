@@ -52,6 +52,7 @@ module.exports = {
     'no-restricted-syntax': 0,
     semi: 0,
     'no-console': 2,
+    'no-case-declarations': 0,
     'consistent-return': 0,
     'import/no-extraneous-dependencies': 2,
     'import/prefer-default-export': 0,

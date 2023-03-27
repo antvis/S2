@@ -20,11 +20,11 @@ First look at the comparison chart before and after opening
 
 Turn off HD adaptation
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png" width="600" alt="preview">
 
 Turn on HD adaptation
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png" width="600" alt="preview">
 
 ## Switch between different DPR devices
 
@@ -100,7 +100,7 @@ Turn on HD adaptation
 
 ## Custom Device Pixel Ratio
 
-By default, the table is rendered using the current pixel ratio of the device, which is `window.devicePixelRatio` . If you think the initial rendering is blurry, you can manually specify the table to render at 2 times the device pixel ratio
+By default, the table is rendered using the current pixel ratio of the device, that is, `window.devicePixelRatio` . If you think the initial rendering is blurry, you can manually specify the table to render at 2 times the device pixel ratio
 
 ```ts
 const s2Options = {

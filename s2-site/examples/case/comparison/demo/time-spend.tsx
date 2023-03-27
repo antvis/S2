@@ -105,7 +105,7 @@ class CustomFrame extends Frame {
       scrollX = 0,
       spreadsheet,
     } = cfg;
-    const scrollContainsRowHeader = spreadsheet.isScrollContainsRowHeader();
+    const scrollContainsRowHeader = !spreadsheet.isFrozenRowHeader();
     const splitLine = spreadsheet.theme?.splitLine;
     const { rowsHierarchy } = spreadsheet.facet.layoutResult;
     const rootNodes = rowsHierarchy.getNodesLessThanLevel(0);

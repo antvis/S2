@@ -195,7 +195,11 @@ export class PivotFacet extends BaseFacet {
         currentNode.y = preLevelSample?.y! + preLevelSample?.height! ?? 0;
       }
 
-      currentNode.height = this.getColNodeHeight(currentNode);
+      // 数值置于行头时, 列头的总计即叶子节点, 此时应该用列高: https://github.com/antvis/S2/issues/1715
+      currentNode.height =
+        currentNode.isGrandTotals && currentNode.isLeaf
+          ? colsHierarchy.height
+          : this.getColNodeHeight(currentNode);
       layoutCoordinate(this.spreadsheet, null, currentNode);
     }
 
@@ -204,7 +208,6 @@ export class PivotFacet extends BaseFacet {
       hierarchy: colsHierarchy,
     });
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
-
     if (!isEmpty(this.spreadsheet.options.totals?.col)) {
       this.adjustTotalNodesCoordinate(colsHierarchy);
       this.adjustSubTotalNodesCoordinate(colsHierarchy);
@@ -216,22 +219,28 @@ export class PivotFacet extends BaseFacet {
    * @param colLeafNodes
    */
   private autoCalculateColNodeWidthAndX(colLeafNodes: Node[]) {
-    let prevColParent = null;
+    let prevColParent: Node | null = null;
     const leafNodes = colLeafNodes.slice(0);
 
     while (leafNodes.length) {
       const node = leafNodes.shift();
-      const parent = node?.parent;
+      const parentNode = node?.parent;
 
-      if (prevColParent !== parent && parent) {
-        leafNodes.push(parent);
-        // parent's x = first child's x
-        parent.x = parent.children[0].x;
-        // parent's width = all children's width
-        parent.width = parent.children
-          .map((value: Node) => value.width)
-          .reduce((sum, current) => sum + current, 0);
-        prevColParent = parent;
+      if (prevColParent !== parentNode && parentNode) {
+        leafNodes.push(parentNode);
+
+        const firstVisibleChildNode = parentNode.children?.find(
+          (childNode) => !childNode.hiddenChildNodeInfo,
+        );
+        // 父节点 x 坐标 = 第一个未隐藏的子节点的 x 坐标
+        const parentNodeX = firstVisibleChildNode?.x ?? 0;
+        // 父节点宽度 = 所有子节点宽度之和
+        const parentNodeWidth = sumBy(parentNode.children, 'width');
+
+        parentNode.x = parentNodeX;
+        parentNode.width = parentNodeWidth;
+
+        prevColParent = parentNode;
       }
     }
   }
@@ -446,10 +455,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.rowIndex ??= rowIndex;
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-        currentNode.height =
-          nodeHeight +
-          this.rowCellTheme?.padding?.top! +
-          this.rowCellTheme?.padding?.bottom!;
+        currentNode.height = nodeHeight;
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;

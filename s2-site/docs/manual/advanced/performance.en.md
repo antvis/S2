@@ -23,37 +23,73 @@ After clarifying the core rendering link, we can find that the time-consuming li
 
 ## performance optimization
 
+Take the following pivot table as an example: ![pivot sheet](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*8FDiR45m_tsAAAAAAAAAAAAAARQnAQ)
+
+```ts
+const dataCfg={
+  fields:{
+    rows: ["province", "city"],
+    columns: ["type","sub_type"],
+    values: ["number"]
+  },
+  data:[
+    {
+      number: 7789,
+      province: "浙江省",
+      city: "杭州市",
+      type: "家具",
+      sub_type: "桌子"
+    },{
+      number: 2367,
+      province: "浙江省",
+      city: "绍兴市",
+      type: "家具",
+      sub_type: "桌子"
+    },
+  //...
+  ]
+}
+```
+
 ### data structure
 
 The first step in the `S2` rendering process is to convert the user's detailed data into a two-dimensional array and a hierarchical data structure, which will be frequently queried and sorted in the table layout, so the design of the data structure is particularly important.
 
-We know that there are generally three types of `Meta` structures for storing detailed data: flat arrays, graphs, and trees. The query frequency for table scenarios is very high, and the presentation form of the pivot table itself also expresses a tree structure, so we chose to build a tree. Structure to implement `Meta` .
+We know that there are generally three types of `Meta` structures for storing detailed data: flat arrays, graphs, and trees. For table scenarios, the query frequency is very high, and the presentation form of the pivot table itself also expresses a tree structure, so we chose to build a tree structure to realize `Meta` .
 
-In addition, we choose `Map` instead of `Object` to implement tree structure, which is more efficient for reading order and sorting, and is more friendly to the performance of deleting Key. The data structure is as follows:
+In addition, we choose `Map` instead of `Object` to implement the tree structure, which is more efficient for reading order and sorting, and more friendly for the performance of deleting Key. For the specific type definition of `Map` , please refer [to PivotMeta](https://github.com/antvis/S2/blob/c76203072a78dbf6656a70bc1c5487e6b1d9f009/packages/s2-core/src/data-set/interface.ts#L7-L15) . The data structure is as follows:
 
 ```ts
 // Meta
 const rowsMeta: PivotMeta = {
-  东北：{
-    id: 0,
+  浙江省：{
+    level: 1,
+    childField:"city",
     children: {
-      黑龙江：{
-        id: 0,
+      浙江市：{
+        level: 1,
         children: {},
       },
-      辽宁：{
-        id: 1,
+      绍兴市：{
+        level: 2,
         children: {},
       },
+      //...
     },
   },
-  华北：{
-    id: 1,
+  四川省：{
+    level: 2,
+    childField:"city",
     children: {
-      山西：{
-        id: 0,
+      成都市：{
+        level: 1,
         children: {},
       },
+      绵阳市：{
+        level: 2,
+        children: {},
+      },
+      //...
     },
   },
 };
@@ -61,33 +97,57 @@ const rowsMeta: PivotMeta = {
 
 Through such a data structure, we have realized the front-end expression of the table row column tree structure. After we have the "shape", we need the "soul", which is the data.
 
-In `S2` , `Pivot` exists i as the underlying perspective of data training and query, the purpose is to convert the original data (one-dimensional) into a multi-dimensional array. This multi-dimensional array is assembled by the `path` of row dimension and column dimension (the bottom layer is realized by `loadash.set` ), for example:
+In `S2` , we need to convert the one-dimensional data `data` passed in by the user into a multidimensional array `indexesData` through internal data training. This multi-dimensional array is assembled by the `path` of row dimension and column dimension (the bottom layer is realized by `lodash.set` ), for example:
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_fRFSYS-Vi8AAAAAAAAAAAAAARQnAQ" width="700" alt="preview">
+![path](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*GyJCTq-gw-sAAAAAAAAAAAAAARQnAQ)
 
-In the figure above, the row coordinates of the cell are: Zhejiang Province \[0] - Ningbo City \[0], and the column coordinates are: Furniture \[0] - Sofa \[1]. Therefore, the coordinates of the cell in the multidimensional array are \[0, 0, 0, 1]. When querying data, obtain the corresponding query path from the `Hierarchy` structure of the row and column, and then get the corresponding data. Therefore, querying data in `S2` is not to loop through the underlying data, but to generate a query array path and compare it with the hierarchical structure to obtain data.
+In the figure above, the coordinates corresponding to the purple cells are:
+
+* Row coordinates: Zhejiang Province\[1] - Hangzhou City\[1]
+* Column coordinates: Furniture\[1] - Sofa\[2].
+
+Therefore, the coordinates of the cell in the multidimensional array are `[1, 1, 1, 2]` (bit 0 of each level of the multidimensional array is dedicated for totals and subtotals, and the serial numbers of detailed data start from 1). `indexesData` like:
 
 ```ts
-// 原始数据通过转换
-const data = [
-  [ // 东北
-    [ // 黑龙江
-      [{ order_amt: 299.11, type: '办公用品', sub_type: '纸张' }],
-      [{ order_amt: 2962.96, type: '家具产品', sub_type: '书架' }],
-    ],
-    [ // 辽宁
-      [undefined, { order_amt: 177.67, type: '办公用品', sub_type: '夹子及其配件' }],
-    ],
+// 转换后的数据结构，
+[
+  null,
+  // 浙江省
+  [
+    null,
+    // 杭州市
+    [
+      null,
+      // 家具
+      [
+        null,
+        {
+          "number": 7789,
+          "province": "浙江省",
+          "city": "杭州市",
+          "type": "家具",
+          "sub_type": "桌子"
+        },
+        {
+          "number": 5343,
+          "province": "浙江省",
+          "city": "杭州市",
+          "type": "家具",
+          "sub_type": "沙发"
+        }
+      ],
+      // 办公用户
+    ]
+    // 其他城市
   ],
-  [ // 华北
-    [ // 山西
-      [undefined, undefined, { order_amt: 651.45, type: '办公用品', sub_type: '容器，箱子' }],
-    ],
-  ],
-];
+  // 四川省
+  [/*...*/]
+]
 ```
 
-In this way, by traversing the original data once to generate `Meta` and converted array data, the time complexity of querying data is O(n). The advantage of this scheme is that it has excellent performance and is the fastest scheme in theory. The time complexity O(n *m) is linear and depends on the number of rows and columns of detailed data* .
+When querying data, first obtain the corresponding query path from the `Meta` hierarchy of rows and columns, and then get the corresponding data in the multidimensional array `indexesData` according to the query path.
+
+Therefore, querying data in `S2` is not traversing the underlying data, and obtaining data based on the hierarchical structure and query array path. After traversing the original data for the first time and generating the necessary `Meta` and multidimensional array information, the time complexity of querying data is **O(n)** . The advantage of this scheme is its excellent performance.
 
 ### Render on demand
 
@@ -142,7 +202,7 @@ View the actual performance of `100w` pieces of data:
 * [pivot table](/examples/case/performance-compare#pivot)
 * [list](/examples/case/performance-compare#table)
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview">
+The detailed performance comparison data is as follows: ![performance](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*G1ITQJTTa4YAAAAAAAAAAAAAARQnAQ)
 
 > Remark:
 >

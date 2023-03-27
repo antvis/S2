@@ -5,6 +5,7 @@ import { Canvas, Group, Rect } from '@antv/g';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, find } from 'lodash';
 import { Renderer } from '@antv/g-canvas';
+import type { CanvasConfig } from '@antv/g-lite';
 import { getMockPivotMeta } from './util';
 import { Node } from '@/facet/layout/node';
 import { DEFAULT_TREE_ROW_WIDTH } from '@/common/constant/options';
@@ -40,7 +41,7 @@ jest.mock('@/sheet-type', () => {
         width: 100,
         height: 100,
         container: document.body,
-        renderer: new Renderer(),
+        renderer: new Renderer() as CanvasConfig['renderer'],
       });
       const panelScrollGroup = new Group({}) as PanelScrollGroup;
 
@@ -64,7 +65,6 @@ jest.mock('@/sheet-type', () => {
         getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
         getColumnLeafNodes: jest.fn().mockReturnValue([]),
-        isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
         facet: {
           getFreezeCornerDiffWidth: jest.fn(),
@@ -137,7 +137,7 @@ describe('Pivot Mode Facet Test', () => {
   describe('should get correct hierarchy', () => {
     const { dataCell, colCell } = s2.options.style!;
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
-    const rowCellStyle = s2.theme.rowCell!.cell;
+
     const width = Math.max(
       DEFAULT_STYLE.dataCell!.width!,
       DEFAULT_OPTIONS.width! /
@@ -152,11 +152,7 @@ describe('Pivot Mode Facet Test', () => {
 
       rowsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(99);
-        expect(node.height).toBe(
-          dataCell!.height! +
-            rowCellStyle!.padding?.top! +
-            rowCellStyle!.padding?.bottom!,
-        );
+        expect(node.height).toBe(dataCell!.height!);
         expect(node.x).toBe(99 * node.level);
         expect(node.y).toBe(node.height * index);
       });
@@ -236,7 +232,6 @@ describe('Pivot Mode Facet Test', () => {
 
     test('row hierarchy when tree mode', () => {
       const { dataCell, rowCell } = s2.options.style!;
-      const rowCellStyle = s2.theme.rowCell!.cell;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
@@ -245,11 +240,7 @@ describe('Pivot Mode Facet Test', () => {
 
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(DEFAULT_TREE_ROW_WIDTH);
-        expect(node.height).toBe(
-          dataCell!.height! +
-            rowCellStyle!.padding?.top! +
-            rowCellStyle!.padding?.bottom!,
-        );
+        expect(node.height).toBe(dataCell!.height!);
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);
       });

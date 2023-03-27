@@ -168,7 +168,7 @@ export class Frame extends Group {
       cornerWidth +
       Frame.getVerticalBorderWidth(spreadsheet)! +
       viewportWidth +
-      (spreadsheet.isScrollContainsRowHeader() ? scrollX : 0);
+      (spreadsheet.isFrozenRowHeader() ? 0 : scrollX);
     const y = position.y + cornerHeight + horizontalBorderWidth! / 2;
 
     renderLine(

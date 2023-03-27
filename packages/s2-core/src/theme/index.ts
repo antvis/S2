@@ -200,9 +200,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 0,
+          top: 4,
           right: 8,
-          bottom: 0,
+          bottom: 4,
           left: 8,
         },
       },
@@ -223,7 +223,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: 'top',
+        textBaseline: 'middle',
         textAlign: 'center',
       },
       measureText: {
@@ -234,7 +234,7 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
-        textBaseline: 'top',
+        textBaseline: 'middle',
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
@@ -244,7 +244,7 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textAlign: isTable ? 'center' : 'left',
-        textBaseline: 'top',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -253,7 +253,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[6],
         opacity: 1,
-        textBaseline: 'top',
+        textBaseline: 'middle',
         // default align center for row cell in table mode
         textAlign: isTable ? 'center' : 'left',
       },
@@ -271,9 +271,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 0,
+          top: 4,
           right: 8,
-          bottom: 0,
+          bottom: 4,
           left: 8,
         },
 
@@ -366,9 +366,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 0,
+          top: 4,
           right: 8,
-          bottom: 0,
+          bottom: 4,
           left: 8,
         },
 

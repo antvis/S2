@@ -114,9 +114,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
     /*
      * check if show series number node
-     * spreadsheet must have at least one node in last level
      */
-    if (seriesNumberWidth && leafNode) {
+    if (seriesNumberWidth) {
       const sNode: Node = new Node({
         id: '',
         field: '',
@@ -125,10 +124,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
       sNode.x = position?.x;
       // different type different y
-      sNode.y = leafNode?.y;
+      sNode.y = leafNode?.y ?? 0;
       sNode.width = seriesNumberWidth;
       // different type different height
-      sNode.height = leafNode?.height;
+      sNode.height = leafNode?.height! ?? (colCell?.height as number);
       sNode.isPivotMode = true;
       sNode.spreadsheet = spreadsheet;
       sNode.cornerType = CornerNodeType.Series;

@@ -77,14 +77,6 @@ export class TableSheet extends SpreadSheet {
   }
 
   /**
-   * Check whether scroll contains row header
-   * For now contains row header in ListSheet mode by default
-   */
-  public isScrollContainsRowHeader(): boolean {
-    return false;
-  }
-
-  /**
    * Scroll Freeze Row Header
    */
   public isFrozenRowHeader(): boolean {

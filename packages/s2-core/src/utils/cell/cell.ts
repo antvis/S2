@@ -2,90 +2,12 @@ import { merge } from 'lodash';
 import type { SimpleBBox } from '../../engine';
 import {
   CellClipBox,
-  type AreaRange,
   type CellTheme,
   type IconStyle,
-  type Padding,
-  type TextAlign,
   type TextAlignStyle,
   type TextBaseline,
 } from '../../common/interface';
 import { CellBorderPosition } from '../../common/interface';
-
-/**
- * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
- * 分为三种类型：
- * borderBox: 整个 cell 的范围
- * paddingBox: cell 去除 border 的范围
- * contentBox: cell 去除 (border + padding) 的范围
- * -------------------------------
- * |b|           padding         |
- * |o|  |---------------------|  |
- * |r|  |                     |  |
- * |d|  |                     |  |
- * |e|  |---------------------|  |
- * |r|           padding         |
- * -------------------------------
- * -------border-bottom-----------
- * -------------------------------
- */
-export const getCellBoxByType = (
-  bbox: SimpleBBox,
-  borderPositions: CellBorderPosition[],
-  cellStyle: CellTheme,
-  boxType: CellClipBox,
-) => {
-  if (boxType === CellClipBox.BORDER_BOX) {
-    return bbox;
-  }
-
-  let { x, y, width, height } = bbox;
-  const {
-    padding,
-    horizontalBorderWidth = 0,
-    verticalBorderWidth = 0,
-  } = cellStyle;
-
-  borderPositions.forEach((position) => {
-    const borderWidth = [
-      CellBorderPosition.BOTTOM,
-      CellBorderPosition.TOP,
-    ].includes(position)
-      ? horizontalBorderWidth
-      : verticalBorderWidth;
-
-    switch (position) {
-      case CellBorderPosition.TOP:
-        y += borderWidth;
-        height -= borderWidth;
-        break;
-      case CellBorderPosition.BOTTOM:
-        height -= borderWidth;
-        break;
-      case CellBorderPosition.LEFT:
-        x += borderWidth;
-        width -= borderWidth;
-        break;
-      default:
-        width -= borderWidth;
-        break;
-    }
-  });
-
-  if (boxType === CellClipBox.CONTENT_BOX) {
-    x += padding?.left!;
-    y += padding?.top!;
-    width -= padding?.left! + padding?.right!;
-    height -= padding?.top! + padding?.bottom!;
-  }
-
-  return {
-    x,
-    y,
-    width,
-    height,
-  };
-};
 
 /**
  * text 和 icon 之间布局关系：
@@ -125,25 +47,37 @@ export const getVerticalPosition = (
   size = 0,
 ) => {
   const { y, height } = bbox;
-  let p = 0;
 
   switch (textBaseline) {
     case 'top':
-      p = y;
-      break;
+      return y;
     case 'middle':
-      p = y + height / 2 - size / 2;
-      break;
+      return y + height / 2 - size / 2;
     default:
-      p = y + height - size;
-      break;
+      return y + height - size;
   }
+};
 
-  return p;
+export const getVerticalIconPositionByText = (
+  iconSize: number,
+  textY: number,
+  textFontSize: number,
+  textBaseline: TextBaseline,
+) => {
+  const offset = (textFontSize - iconSize) / 2;
+
+  switch (textBaseline) {
+    case 'top':
+      return textY + offset;
+    case 'middle':
+      return textY - iconSize / 2;
+    default:
+      return textY - offset - iconSize;
+  }
 };
 
 // 获取text及其跟随icon的位置坐标
-export const getTextAndFollowingIconPosition = (options: {
+export const getFixedTextIconPosition = (options: {
   bbox: SimpleBBox;
   textStyle: TextAlignStyle | undefined;
   textWidth?: number;
@@ -244,86 +178,84 @@ export const getTextPosition = (
   contentBox: SimpleBBox,
   textCfg: TextAlignStyle,
 ) =>
-  getTextAndFollowingIconPosition({
+  getFixedTextIconPosition({
     bbox: contentBox,
     textStyle: textCfg,
   }).text;
 
 /**
- * 在给定视窗和单元格的情况下，计算单元格文字区域的坐标信息
- * 计算遵循原则：
- * 1. 若可视范围小，尽可能多展示文字
- * 2. 若可视范围大，居中展示文字
- * @param viewport 视窗坐标信息
- * @param content content 列头单元格 content 区域坐标信息
- * @param textWidth 文字实际绘制区域宽度（含icon）
- * @returns 文字绘制位置（start 为文字区域的中点坐标值）
+ * 类似 background-clip 属性: https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip
+ * 分为三种类型：
+ * borderBox: 整个 cell 的范围
+ * paddingBox: cell 去除 border 的范围
+ * contentBox: cell 去除 (border + padding) 的范围
+ * -------------------------------
+ * |b|           padding         |
+ * |o|  |---------------------|  |
+ * |r|  |                     |  |
+ * |d|  |                     |  |
+ * |e|  |---------------------|  |
+ * |r|           padding         |
+ * -------------------------------
+ * -------border-bottom-----------
+ * -------------------------------
  */
-export const getTextAreaRange = (
-  viewport: AreaRange,
-  content: AreaRange,
-  textWidth: number,
+export const getCellBoxByType = (
+  bbox: SimpleBBox,
+  borderPositions: CellBorderPosition[],
+  cellStyle: CellTheme,
+  boxType: CellClipBox,
 ) => {
-  const contentEnd = content.start + content.width;
-  const viewportEnd = viewport.start + viewport.width;
-
-  let position: number;
-  let availableContentWidth: number;
-
-  if (content.start <= viewport.start && contentEnd >= viewportEnd) {
-    /**
-     *     +----------------------+
-     *     |      viewport        |
-     *  +--|----------------------|--+
-     *  |  |    cellContent       |  |
-     *  +--|----------------------|--+
-     *     +----------------------+
-     */
-    position = viewport.start + viewport.width / 2;
-    availableContentWidth = viewport.width;
-  } else if (content.start <= viewport.start) {
-    /**
-     *         +-------------------+
-     *  +------|------+            |
-     *  | cellContent |   viewport |
-     *  +------|------+            |
-     *         +-------------------+
-     */
-    const restWidth = content.width - (viewport.start - content.start);
-
-    position =
-      restWidth < textWidth
-        ? contentEnd - textWidth / 2
-        : contentEnd - restWidth / 2;
-    availableContentWidth = restWidth;
-  } else if (contentEnd >= viewportEnd) {
-    /**
-     *   +-------------------+
-     *   |            +------|------+
-     *   | viewport   | cellContent |
-     *   |            +------|------+
-     *   +-------------------+
-     */
-    const restWidth = content.width - (contentEnd - viewportEnd);
-
-    position =
-      restWidth < textWidth
-        ? content.start + textWidth / 2
-        : content.start + restWidth / 2;
-    availableContentWidth = restWidth;
-  } else {
-    /**
-     *   +----------------------------+
-     *   |  +-------------+           |
-     *   |  | cellContent |  viewport |
-     *   |  +-------------+           |
-     *   +----------------------------+
-     */
-    position = content.start + content.width / 2;
-    availableContentWidth = content.width;
+  if (boxType === CellClipBox.BORDER_BOX) {
+    return bbox;
   }
 
-  return { start: position, width: availableContentWidth } as AreaRange;
+  let { x, y, width, height } = bbox;
+  const {
+    padding,
+    horizontalBorderWidth = 0,
+    verticalBorderWidth = 0,
+  } = cellStyle;
+
+  borderPositions.forEach((position) => {
+    const borderWidth = [
+      CellBorderPosition.BOTTOM,
+      CellBorderPosition.TOP,
+    ].includes(position)
+      ? horizontalBorderWidth
+      : verticalBorderWidth;
+
+    switch (position) {
+      case CellBorderPosition.TOP:
+        y += borderWidth;
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.BOTTOM:
+        height -= borderWidth;
+        break;
+      case CellBorderPosition.LEFT:
+        x += borderWidth;
+        width -= borderWidth;
+        break;
+      default:
+        width -= borderWidth;
+        break;
+    }
+  });
+
+  if (boxType === CellClipBox.CONTENT_BOX) {
+    x += padding?.left!;
+    y += padding?.top!;
+    width -= padding?.left! + padding?.right!;
+    height -= padding?.top! + padding?.bottom!;
+  }
+
+  return {
+    x,
+    y,
+    width,
+    height,
+  };
 };
 
 export const getBorderPositionAndStyle = (
@@ -409,101 +341,4 @@ export const getBorderPositionAndStyle = (
     },
     style: borderStyle,
   };
-};
-
-/**
- * 根据单元格文字样式调整 viewport range，使文字在滚动时不会贴边展示
- *
- * 以 textAlign=left 情况为例，由大到小的矩形分别是 viewport、cellContent、cellText
- * 左图是未调整前，滚动相交判定在 viewport 最左侧，即 colCell 滚动到 viewport 左侧后，文字会贴左边绘制
- * 右图是调整后，range.start 提前了 padding.left 个像素，文字与 viewport 有一定间隙更加美观
- *
- *    range.start                                   range.start
- *         |                                             |
- *         |      range.width                            |  range.width
- *         v<---------------------->                     v<------------------>
- *
- *         +-----------------------+                 +-----------------------+
- *         |       viewport        |                 |       viewport        |
- *     +-------------------+       |             +-------------------+       |
- *     |   +---------+     |       |             |   |   +---------+ |       |
- *     |   |  text   |     |       |             |   |   |  text   | |       |
- *     |   +---------+     |       |             |   |   +---------+ |       |
- *     +-------------------+       |             +-------------------+       |
- *         +-----------------------+                 +-----------------------+
- *
- *                                                   <-->
- *                                                padding.left
- *
- * @param viewport 原始 viewport
- * @param textAlign 文字样式
- * @param textPadding 单元格 padding 样式
- * @returns viewport range
- */
-export const adjustColHeaderScrollingViewport = (
-  viewport: AreaRange,
-  textAlign: TextAlign,
-  textPadding: Padding = { left: 0, right: 0 },
-) => {
-  const nextViewport = { ...viewport };
-
-  if (textAlign === 'left') {
-    nextViewport.start += textPadding.left!;
-    nextViewport.width -= textPadding.left!;
-  } else if (textAlign === 'right') {
-    nextViewport.width -= textPadding.right!;
-  }
-
-  return nextViewport;
-};
-
-/**
- * 根据文字样式计算文字实际绘制起始
- *
- * 以 textAlign=left 为例，g 绘制时取 text 最左侧的坐标值作为基准坐标
- *
- * 计算前：                                        计算后：
- * startX = textAreaRange.start = 中心点           startX = 最左侧坐标
- *
- *        textAreaRange.start                     startX
- *                |                                |
- *                v                                v
- *  +----------------------------+                +----------------------------+
- *  |    +------------------+    |                |+------------------+        |
- *  |    |   text    | icon |    |                ||   text    | icon |        |
- *  |    +------------------+    |                |+------------------+        |
- *  +----------------------------+                +----------------------------+
- *       <------------------>
- *         textAndIconSpace
- *  <---------------------------->
- *        textAreaRange.width
- *
- * @param textAreaRange 文本&icon 绘制坐标
- * @param actualTextWidth 文本实际宽度
- * @param actionIconSpace icon 区域实际宽度
- * @param textAlign 对齐样式
- * @returns 文字绘制起点坐标
- */
-export const adjustColHeaderScrollingTextPosition = (
-  textAreaRange: AreaRange,
-  actualTextWidth: number,
-  actionIconSpace: number,
-  textAlign: TextAlign,
-) => {
-  const textAndIconSpace = actualTextWidth + actionIconSpace;
-  // 文本 & icon 区域中心点坐标 x
-  const startX = textAreaRange.start;
-
-  if (textAlign === 'center') {
-    return startX - actionIconSpace / 2;
-  }
-
-  const hasEnoughWidth = textAreaRange.width - textAndIconSpace > 0;
-  const offset = hasEnoughWidth
-    ? textAreaRange.width / 2
-    : textAndIconSpace / 2;
-
-  return textAlign === 'left'
-    ? startX - offset
-    : startX + offset - actionIconSpace;
 };

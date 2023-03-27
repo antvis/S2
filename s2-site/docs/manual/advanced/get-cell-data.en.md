@@ -26,7 +26,7 @@ s2.render()
 console.log(s2.facet.layoutResult)
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/sdbdaWuLk/c93a05a9-b849-4f3b-96b3-73f6c33aac88.png" width="600" alt="preview">
 
 * `colLeafNodes` column header leaf nodes
 * `colNodes` column head node
@@ -61,7 +61,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 })
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/%24a%24HyJBIV/79abf381-a58a-460d-ad75-096c5484c780.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/%24a%24HyJBIV/79abf381-a58a-460d-ad75-096c5484c780.png" width="600" alt="preview">
 
 Of course, you can get the data in this way anywhere you can get the `event`
 
@@ -75,7 +75,7 @@ s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
 })
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/GO7xii%26LQ/13b44f81-271c-4771-b7b3-45789761eab2.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/GO7xii%26LQ/13b44f81-271c-4771-b7b3-45789761eab2.png" width="600" alt="preview">
 
 You can also call the [interactive method](/docs/manual/advanced/interaction/basic#%E8%B0%83%E7%94%A8%E4%BA%A4%E4%BA%92%E6%96%B9%E6%B3%95) to get it manually
 
@@ -121,7 +121,7 @@ s2.on(S2Event.ROW_CELL_CLICK, (event) => {
 })
 ```
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/5KTuqpLdy/cf26a185-2a1d-41f3-9caf-aa9343529cd5.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/5KTuqpLdy/cf26a185-2a1d-41f3-9caf-aa9343529cd5.png" width="600" alt="preview">
 
 ### Get numeric cell data
 
@@ -150,13 +150,13 @@ s2.on(S2Event.DATA_CELL_CLICK, (event) => {
 
 As shown in the figure, for example, we want to obtain the number of office supplies and paper in Zhoushan City
 
-<img data-mdast="html" src="https://gw.alipayobjects.com/zos/antfincdn/jHILwaZ50/d9af2488-add9-46ec-b0da-81fc4da2b7a1.png" width="600" alt="preview">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/jHILwaZ50/d9af2488-add9-46ec-b0da-81fc4da2b7a1.png" width="600" alt="preview">
 
 ```ts
 // 找到 "舟山市" 对应的行头单元格节点
-const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&] 浙江省 [&] 舟山市')
+const rowCellNode = s2.getRowNodes().find((node) => node.id === 'root[&]浙江省[&]舟山市')
 // 找到 "办公用品" 下 "纸张" 对应的 "数量"列头单元格节点
-const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&] 办公用品 [&] 纸张 [&]number')
+const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办公用品[&]纸张[&]number')
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query,...colCellNode.query})
 

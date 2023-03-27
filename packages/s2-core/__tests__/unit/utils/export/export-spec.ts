@@ -394,9 +394,8 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab, { isFormatHeader: true });
-
-    const rows = data.split(NewLine);
+    const data = copyData(s2, '\t', { isFormatHeader: true });
+    const rows = data.split('\n');
 
     expect(rows).toHaveLength(7);
     expect(rows[0].split(NewTab)[1]).toEqual('province');

@@ -1,16 +1,9 @@
-import {
-  CellBorderPosition,
-  CellClipBox,
-  type CellTheme,
-} from '@/common/interface';
-import type { AreaRange } from '@/common/interface/scroll';
+import { CellBorderPosition, CellClipBox } from '@/common/interface';
 import type { SimpleBBox } from '@/engine';
 import {
   getCellBoxByType,
   getMaxTextWidth,
-  getTextAndFollowingIconPosition,
-  getTextAreaRange,
-  getBorderPositionAndStyle,
+  getFixedTextIconPosition,
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
@@ -103,7 +96,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when there is no icon cfg', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -125,7 +118,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -150,7 +143,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -178,7 +171,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is right and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -203,7 +196,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'right',
@@ -231,7 +224,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -256,7 +249,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -284,7 +277,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is center and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -309,7 +302,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'center',
@@ -337,7 +330,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is left', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -362,7 +355,7 @@ describe('Text and Icon area Test', () => {
     });
 
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -390,7 +383,7 @@ describe('Text and Icon area Test', () => {
 
   test('should return text when text is left and icon is right', () => {
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -414,7 +407,7 @@ describe('Text and Icon area Test', () => {
       },
     });
     expect(
-      getTextAndFollowingIconPosition({
+      getFixedTextIconPosition({
         bbox: contentBBox,
         textStyle: {
           textAlign: 'left',
@@ -437,161 +430,6 @@ describe('Text and Icon area Test', () => {
         x: 60,
         y: 0,
       },
-    });
-  });
-});
-
-describe('Horizontal Scrolling Text Position Test', () => {
-  const content: AreaRange = {
-    start: 0,
-    width: 100,
-  };
-  const textWidth = 20;
-
-  test('should get center position when content is larger than viewport', () => {
-    expect(
-      getTextAreaRange(
-        {
-          start: 20,
-          width: 50,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(45);
-  });
-
-  test('should get center position when content is on the left of viewport', () => {
-    // reset width is enough
-    expect(
-      getTextAreaRange(
-        {
-          start: 50,
-          width: 100,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(75);
-
-    // reset width isn't enough
-    expect(
-      getTextAreaRange(
-        {
-          start: 90,
-          width: 100,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(90);
-  });
-
-  test('should get center position when content is on the right of viewport', () => {
-    // reset width is enough
-    expect(
-      getTextAreaRange(
-        {
-          start: -50,
-          width: 100,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(25);
-
-    // reset width isn't enough
-    expect(
-      getTextAreaRange(
-        {
-          start: -90,
-          width: 100,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(10);
-  });
-
-  test('should get center position when content is inside of viewport', () => {
-    expect(
-      getTextAreaRange(
-        {
-          start: -50,
-          width: 200,
-        },
-        content,
-        textWidth,
-      ).start,
-    ).toEqual(50);
-  });
-
-  test('should get border position', () => {
-    const contentBox = {
-      x: 0,
-      y: 0,
-      width: 200,
-      height: 50,
-    };
-    const style = {
-      verticalBorderColorOpacity: 1,
-      verticalBorderColor: '#000',
-      verticalBorderWidth: 2,
-      horizontalBorderColor: '#000',
-      horizontalBorderColorOpacity: 1,
-      horizontalBorderWidth: 2,
-    };
-
-    expect(
-      getBorderPositionAndStyle(
-        CellBorderPosition.LEFT,
-        contentBox,
-        style as CellTheme,
-      ).position,
-    ).toEqual({
-      x1: 1,
-      y1: 0,
-      x2: 1,
-      y2: 50,
-    });
-
-    expect(
-      getBorderPositionAndStyle(
-        CellBorderPosition.RIGHT,
-        contentBox,
-        style as CellTheme,
-      ).position,
-    ).toEqual({
-      x1: 199,
-      y1: 0,
-      x2: 199,
-      y2: 50,
-    });
-
-    expect(
-      getBorderPositionAndStyle(
-        CellBorderPosition.TOP,
-        contentBox,
-        style as CellTheme,
-      ).position,
-    ).toEqual({
-      x1: 0,
-      y1: 1,
-      x2: 200,
-      y2: 1,
-    });
-
-    expect(
-      getBorderPositionAndStyle(
-        CellBorderPosition.BOTTOM,
-        contentBox,
-        style as CellTheme,
-      ).position,
-    ).toEqual({
-      x1: 0,
-      y1: 49,
-      x2: 200,
-      y2: 49,
     });
   });
 });

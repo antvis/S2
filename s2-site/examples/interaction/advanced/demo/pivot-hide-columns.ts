@@ -18,7 +18,7 @@ fetch(
       tooltip: {
         showTooltip: true,
         operation: {
-          // 开启手动隐藏, 透视表只有叶子节点才生效
+          // 开启手动隐藏, 叶子节点有效
           hiddenColumns: true,
         },
       },

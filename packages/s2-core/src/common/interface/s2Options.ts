@@ -201,9 +201,11 @@ export enum DeviceType {
 
 export interface S2PivotSheetFrozenOptions {
   /**
-   * 是否冻结行头 (含角头区域, 透视表有效)
+   * 是否冻结行头 (含角头区域, 透视表有效),
+   * 当值为 number 时，标识行头冻结的最大区域，取值范围： (0, 1)，0 表示不固定行头
+   * 当值为 boolean 时，true 对应冻结最大区域为 0.5, false 对应 0
    */
-  rowHeader?: boolean;
+  rowHeader?: boolean | number;
 }
 
 export interface S2TableSheetFrozenOptions {

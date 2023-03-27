@@ -5,7 +5,7 @@ order: 8
 
 ## React version
 
-For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `onMounted`
+For scenarios such as using the `React` component `SheetComponent` , if you need to get the [table instance](/docs/api/basic-class/spreadsheet) and perform some advanced operations, you can use `React.useRef` and `onMounted` two ways
 
 ### ref method (recommended)
 
@@ -48,7 +48,7 @@ pivot => table
 - new PivotSheet()
 ```
 
-The registration event will be canceled before the change. `S2` optimizes this scenario. Whether it is `ref` or `onMounted` , the latest instance is obtained, and developers do not need to care
+The registration event will be canceled before the change. `S2` optimizes this scenario. Regardless of the `ref` or `onMounted` method, the latest instance is obtained, and developers do not need to care
 
 ```tsx
 import { SpreadSheet, S2Event } from '@antv/s2'

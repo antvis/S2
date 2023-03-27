@@ -9,7 +9,7 @@ const { Option } = AntdSelect;
 
 export class Select extends BaseComponent {
   renderContent() {
-    const { config, onChange } = this.props;
+    const { config, onChange, disable } = this.props;
     const { attributeId, options, placeholder } = config;
     const defaultValue = map(options, (option) => {
       return option.value;
@@ -24,6 +24,7 @@ export class Select extends BaseComponent {
         allowClear
         showArrow={true}
         defaultValue={defaultValue}
+        disabled={disable}
         onChange={(value) => {
           onChange({ [attributeId]: value });
         }}

@@ -29,7 +29,6 @@ s2.isPivotMode()
 | getDataSet | 获取数据集                                                                                                                  | (options: [S2Options](/docs/api/general/S2Options)) => [BaseDataSet](/docs/api/basic-class/base-data-set) |    |
 | isPivotMode | 是否是透视表                                                                                                                 | `() => boolean` |    |
 | isHierarchyTreeType | 是否是树状结构                                                                                                                | `() => boolean` |    |
-| isScrollContainsRowHeader | 是否是包含行头的滚动                                                                                                             | `() => boolean` |    |
 | isFrozenRowHeader | 是否是冻结行头状态                                                                                                              | `() => boolean` |    |
 | isTableMode | 是否是明细表                                                                                                                 | `() => boolean` |    |
 | isValueInCols | 是否是数值置于行头                                                                                                              | `() => boolean` |    |

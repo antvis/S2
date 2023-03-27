@@ -312,7 +312,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getTextPosition(): PointLike {
-    return this.getTextAndIconPosition().text;
+    return this.getTextIconPosition().text;
   }
 
   public getBackgroundColor() {

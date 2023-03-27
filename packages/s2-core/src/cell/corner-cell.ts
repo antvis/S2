@@ -60,8 +60,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected drawTextShape() {
-    const { x } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
-    const { y, height } = this.getBBoxByType(CellClipBox.PADDING_BOX);
+    const { x, y, height } = this.getBBoxByType(CellClipBox.CONTENT_BOX);
 
     const textStyle = this.getTextStyle();
     const cornerText = this.getCornerText();

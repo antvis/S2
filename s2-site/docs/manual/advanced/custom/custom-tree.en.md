@@ -9,15 +9,15 @@ If you are not satisfied, you can use a custom directory tree to customize your 
 
 ```ts
 const s2Options = {
-  hierarchyType: 'customTree', // grid 平铺模式，tree 树状模式
+  hierarchyType: 'tree', // grid 平铺模式，tree 树状模式
 };
 ```
 
-<Playground data-mdast="html" path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></playground>
+<Playground path="custom/custom-tree/demo/custom-tree.ts" rid="container" height="400"></Playground>
 
 ## premise
 
-1\. The value needs to be placed at the head of the line, that is, `valueInCols: false` (regardless of whether it is configured or not, it will be placed at the head of the line forcibly, and the modification is invalid)
+1\. The value needs to be **placed at the head of the line** , that is, `valueInCols: false` (regardless of whether it is configured or not, it will be placed at the head of the line forcibly, and the modification is invalid)
 
 ```ts
 const s2DataConfig = {
@@ -27,15 +27,7 @@ const s2DataConfig = {
 }
 ```
 
-2\. The row header needs to be empty, that is, `rows: []` (regardless of configuration or not, the row header will be forcibly cleared, and the modification is invalid)
-
-```ts
-const s2DataConfig = {
-  fields: {
-    rows: [],
-  }
-}
-```
+2\. The line header needs to be a **standard tree structure** , see the [data structure description](#customtreenode) below
 
 ## configuration
 
@@ -43,33 +35,33 @@ The configuration to generate the directory tree structure is as follows:
 
 ```ts
 const s2Options = {
-  hierarchyType: 'customTree',
+  hierarchyType: 'tree',
 };
 
-const customTreeItems = [
+const customTreeNodes = [
   {
     title: '自定义节点 A',
-    key: 'custom-node-1',
+    field: 'custom-node-1',
     children: [
       {
         title: '指标 A',
-        key: 'measure-a',
+        field: 'measure-a',
       },
       {
         title: '指标 B',
-        key: 'measure-b',
+        field: 'measure-b',
       },
     ],
   },
   {
     title: '自定义节点 B',
-    key: 'custom-node-2',
+    field: 'custom-node-2',
     children: [
       {
         title: '自定义节点 D',
-        key: 'custom-node-2-1',
+        field: 'custom-node-2-1',
         collapsed: true,
-        children: [{ title: '指标 F', key: 'measure-f' }],
+        children: [{ title: '指标 F', field: 'measure-f' }],
       },
     ],
   },
@@ -77,16 +69,48 @@ const customTreeItems = [
 
 const s2DataConfig = {
   fields: {
-    rows: [],
+    rows: customTreeNodes,
     valueInCols: false,
     columns: ['type', 'sub_type'],
     values: [
       'measure-a',
     ],
-    customTreeItems
   },
   data,
 };
+```
+
+## Node name formatting
+
+By default, `customTreeNode.title` is used as the node name, and general formatting functions can also be used to process specific nodes
+
+```ts
+const s2DataConfig = {
+  ...,
+  meta: [
+    {
+      field: 'custom-node-1',
+      name: '名称 1'
+    }
+  ]
+};
+```
+
+## Node expand/collapse
+
+By default, `customTreeNode.collapsed` is used as the expanded/collapsed state, and general configurations can also be used. For details, please refer to the chapter on [custom collapsed/expanded nodes](/manual/advanced/custom/custom-collapse-nodes)
+
+```ts
+const s2Options = {
+  style: {
+    rowCell: {
+      collapseFields: {
+        'custom-node-1': true,
+        'custom-node-2': false,
+      },
+    },
+  },
+}
 ```
 
 ## Custom header text
@@ -103,4 +127,4 @@ const s2Options = {
 
 ## Description of custom tree structure
 
-<embed src="@/docs/common/custom/customTreeNode.zh.md"></embed>
+<embed src="@/docs/common/custom/customTreeNode.en.md"></embed>
