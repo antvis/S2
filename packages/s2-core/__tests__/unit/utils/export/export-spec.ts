@@ -203,7 +203,7 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData(s2, NewTab, true);
     const rows = data.split(NewLine);
 
     expect(rows).toMatchInlineSnapshot(`
@@ -239,7 +239,7 @@ describe('PivotSheet Export Test', () => {
     );
 
     s2.render();
-    const data = copyData(s2, NewTab);
+    const data = copyData(s2, NewTab, true);
     const rows = data.split(NewLine);
 
     expect(rows).toMatchInlineSnapshot(`
@@ -487,7 +487,7 @@ describe('PivotSheet Export Test', () => {
     `);
   });
 
-  it.skip('should export correct data when series number', () => {
+  it('should export correct data when series number', () => {
     const s2 = new PivotSheet(
       getContainer(),
       assembleDataCfg({
@@ -520,17 +520,6 @@ describe('PivotSheet Export Test', () => {
       办公用品	纸张	1343	1354	1523	1634	4004	3077	3551	352"
     `);
 
-    /*
-     * expect(data).toMatchInlineSnapshot(`
-     *   "	\\"province\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"浙江省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"	\\"四川省\\"
-     *   	\\"city\\"	\\"杭州市\\"	\\"绍兴市\\"	\\"宁波市\\"	\\"舟山市\\"	\\"成都市\\"	\\"绵阳市\\"	\\"南充市\\"	\\"乐山市\\"
-     *   \\"type\\"	\\"sub_type\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"	\\"number\\"
-     *   \\"家具\\"	\\"桌子\\"	\\"7789\\"	\\"2367\\"	\\"3877\\"	\\"4342\\"	\\"1723\\"	\\"1822\\"	\\"1943\\"	\\"2330\\"
-     *   \\"家具\\"	\\"沙发\\"	\\"5343\\"	\\"632\\"	\\"7234\\"	\\"834\\"	\\"2451\\"	\\"2244\\"	\\"2333\\"	\\"2445\\"
-     *   \\"办公用品\\"	\\"笔\\"	\\"945\\"	\\"1304\\"	\\"1145\\"	\\"1432\\"	\\"2335\\"	\\"245\\"	\\"2457\\"	\\"2458\\"
-     *   \\"办公用品\\"	\\"纸张\\"	\\"1343\\"	\\"1354\\"	\\"1523\\"	\\"1634\\"	\\"4004\\"	\\"3077\\"	\\"3551\\"	\\"352\\""
-     * `);
-     */
     const rows = data.split(NewLine);
 
     expect(rows[0].split(NewTab)[1]).toEqual('province');

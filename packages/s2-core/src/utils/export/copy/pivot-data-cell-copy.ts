@@ -16,6 +16,7 @@ import type {
 import {
   convertString,
   getColNodeFieldFromNode,
+  getHeaderList,
   getSelectedCols,
   getSelectedRows,
 } from '../method';
@@ -204,12 +205,16 @@ class PivotDataCellCopy {
 
   private getColMatrix(): string[][] {
     return zip(
-      ...map(this.leafColNodes, (n) => getNodeFormatData(n)),
+      ...map(this.leafColNodes, (n) =>
+        this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+      ),
     ) as string[][];
   }
 
   private getRowMatrix(): string[][] {
-    const rowMatrix = map(this.leafRowNodes, (n) => getNodeFormatData(n));
+    const rowMatrix: string[][] = map(this.leafRowNodes, (n) =>
+      this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
+    );
 
     return completeMatrix(rowMatrix);
   }
