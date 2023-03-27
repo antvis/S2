@@ -281,7 +281,7 @@ class PivotDataCellCopy {
 
 // -------------------
 
-export function processPivotSelected(
+export function processSelectedPivotByHeader(
   spreadsheet: SpreadSheet,
   selectedCells: CellMeta[],
 ): CopyableList {
@@ -295,7 +295,7 @@ export function processPivotSelected(
   return pivotDataCellCopy.getPivotCopyData();
 }
 
-export const processPivotAllSelected = (
+export const processSelectedAllPivot = (
   spreadsheet: SpreadSheet,
   split: string,
   formatOptions?: FormatOptions,
@@ -312,7 +312,7 @@ export const processPivotAllSelected = (
   return pivotDataCellCopy.getPivotAllCopyData();
 };
 
-export const processPivotSelectedByDataCell = ({
+export const processSelectedPivotByDataCell = ({
   spreadsheet,
   selectedCells,
   displayData,

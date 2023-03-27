@@ -2,10 +2,10 @@ import { map } from 'lodash';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CellMeta,
+  type Data,
   type RawData,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
-  type Data,
 } from '../../../common';
 import type { Node } from '../../../facet/layout/node';
 import type {
@@ -17,7 +17,6 @@ import type {
 import { convertString, getSelectedCols, getSelectedRows } from '../method';
 import {
   assembleMatrix,
-  getFormatOptions,
   getFormatter,
   matrixHtmlTransformer,
   matrixPlainTextTransformer,
@@ -92,16 +91,33 @@ class TableDataCellCopy {
     ) as string[][];
   }
 
-  getDataMatrixByDataCell(
-    cellMetaMatrix: CellMeta[][],
-    displayData: Data[],
-    spreadsheet: SpreadSheet,
-  ): CopyableList {
-    const { copyWithHeader } = spreadsheet.options.interaction!;
+  private getColMatrix(): string[] {
+    const { isFormatHeader } = this.config;
+    const { showSeriesNumber } = this.spreadsheet.options;
 
+    // 明细表的表头，没有格式化
+    return this.columnNodes.map((node) => {
+      const field: string = node.field;
+
+      if (!isFormatHeader) {
+        return field;
+      }
+
+      return SERIES_NUMBER_FIELD === field && showSeriesNumber
+        ? getDefaultSeriesNumberText()
+        : this.spreadsheet.dataSet.getFieldName(field);
+    }) as string[];
+  }
+
+  getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
+    const { copyWithHeader } = this.spreadsheet.options.interaction!;
+
+    // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
       map(cellsMeta, (it) =>
-        convertString(getValueFromMeta(it, displayData, spreadsheet)),
+        convertString(
+          getValueFromMeta(it, this.displayData as Data[], this.spreadsheet),
+        ),
       ),
     ) as string[][];
 
@@ -112,86 +128,55 @@ class TableDataCellCopy {
       ];
     }
 
-    // 明细表的表头，没有格式化
-    const colMatrix = this.columnNodes.map((node) => {
-      const field: string = node.field;
-
-      return spreadsheet.dataSet.getFieldName(field);
-    }) as string[];
+    const colMatrix = this.getColMatrix();
 
     return assembleMatrix({ colMatrix: [colMatrix], dataMatrix });
   }
 
   /**
-   * 明细表点击 行头/列头 进行复制逻辑
+   * allSelected: false 时，明细表点击 行头/列头 进行复制逻辑
+   * allSelected: true 时，明细表点击 全选 进行复制逻辑
+   * @param {boolean} allSelected
    * @return {CopyableList}
    */
-  processTableSelected = (): CopyableList => {
+  processSelectedTable(allSelected = false): CopyableList {
     const matrix = this.getDataMatrix();
 
-    return [matrixPlainTextTransformer(matrix), matrixHtmlTransformer(matrix)];
-  };
+    if (!allSelected) {
+      return [
+        matrixPlainTextTransformer(matrix),
+        matrixHtmlTransformer(matrix),
+      ];
+    }
 
-  processTableAllSelected = (
-    spreadsheet: SpreadSheet,
-    split: string,
-    formatOptions?: FormatOptions,
-  ): CopyableList => {
-    const { isFormatHeader } = getFormatOptions(formatOptions);
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const colMatrix = this.getColMatrix();
 
-    // 明细表的表头，没有格式化
-    const colMatrix = this.columnNodes.map((node) => {
-      const field: string = node.field;
-
-      if (!isFormatHeader) {
-        return field;
-      }
-
-      return SERIES_NUMBER_FIELD === field && showSeriesNumber
-        ? getDefaultSeriesNumberText()
-        : spreadsheet.dataSet.getFieldName(field);
-    }) as string[];
-
-    const dataMatrix = this.getDataMatrix();
-
-    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix });
-  };
+    return assembleMatrix({ colMatrix: [colMatrix], dataMatrix: matrix });
+  }
 }
-
-export const processTableColSelected = (
-  spreadsheet: SpreadSheet,
-  selectedCols: CellMeta[],
-): CopyableList => {
-  const tableDataCellCopy = new TableDataCellCopy({
-    spreadsheet,
-    config: { selectedCells: selectedCols },
-  });
-
-  return tableDataCellCopy.processTableSelected();
-};
 
 /**
  * 明细表点击行头进行复制逻辑
  * @param {SpreadSheet} spreadsheet
- * @param {CellMeta[]} selectedRows
+ * @param {CellMeta[]} selectedRowsOrCols
  * @return {CopyableList}
  */
-export const processTableRowSelected = (
+export const processSelectedTableByHeader = (
   spreadsheet: SpreadSheet,
-  selectedRows: CellMeta[],
+  selectedRowsOrCols: CellMeta[],
 ): CopyableList => {
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet,
     config: {
-      selectedCells: selectedRows,
+      selectedCells: selectedRowsOrCols,
     },
   });
 
-  return tableDataCellCopy.processTableSelected();
+  return tableDataCellCopy.processSelectedTable();
 };
 
-export const processTableAllSelected = (
+// 导出全部数据
+export const processSelectedAllTable = (
   spreadsheet: SpreadSheet,
   split: string,
   formatOptions?: FormatOptions,
@@ -206,34 +191,26 @@ export const processTableAllSelected = (
     isExport: true,
   });
 
-  return tableDataCellCopy.processTableAllSelected(
-    spreadsheet,
-    split,
-    formatOptions,
-  );
+  return tableDataCellCopy.processSelectedTable(true);
 };
 
-export const processTableSelectedByDataCell = ({
+// 通过选中数据单元格进行复制
+export const processSelectedTableByDataCell = ({
   spreadsheet,
   selectedCells,
-  displayData,
   headerSelectedCells,
 }: {
   spreadsheet: SpreadSheet;
   selectedCells: CellMeta[][];
-  displayData: Data[];
   headerSelectedCells: CellMeta[];
 }): CopyableList => {
   const tableDataCellCopy = new TableDataCellCopy({
     spreadsheet,
     config: {
       selectedCells: headerSelectedCells,
+      formatOptions: true,
     },
   });
 
-  return tableDataCellCopy.getDataMatrixByDataCell(
-    selectedCells,
-    displayData,
-    spreadsheet,
-  );
+  return tableDataCellCopy.getDataMatrixByDataCell(selectedCells);
 };

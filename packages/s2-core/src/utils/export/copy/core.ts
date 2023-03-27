@@ -26,15 +26,14 @@ import {
 } from '../interface';
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
-  processPivotAllSelected,
-  processPivotSelected,
-  processPivotSelectedByDataCell,
+  processSelectedAllPivot,
+  processSelectedPivotByHeader,
+  processSelectedPivotByDataCell,
 } from './pivot-data-cell-copy';
 import {
-  processTableAllSelected,
-  processTableColSelected,
-  processTableRowSelected,
-  processTableSelectedByDataCell,
+  processSelectedAllTable,
+  processSelectedTableByHeader,
+  processSelectedTableByDataCell,
 } from './table-copy';
 import { getFormatter } from './common';
 
@@ -177,26 +176,15 @@ const getSelectedCellsMeta = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
-const processColSelected = (
-  spreadsheet: SpreadSheet,
-  selectedCols: CellMeta[],
-): CopyableList => {
-  if (spreadsheet.isPivotMode()) {
-    return processPivotSelected(spreadsheet, selectedCols);
-  }
-
-  return processTableColSelected(spreadsheet, selectedCols);
-};
-
-const processRowSelected = (
+const processSelectedByHeader = (
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ): CopyableList => {
   if (spreadsheet.isPivotMode()) {
-    return processPivotSelected(spreadsheet, selectedRows);
+    return processSelectedPivotByHeader(spreadsheet, selectedRows);
   }
 
-  return processTableRowSelected(spreadsheet, selectedRows);
+  return processSelectedTableByHeader(spreadsheet, selectedRows);
 };
 
 function getIsBrushHeader(interactedCells: S2CellType[]) {
@@ -225,11 +213,13 @@ function getDataCellCopyable(
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
   ) {
-    data = processColSelected(spreadsheet, []);
+    data = processSelectedByHeader(spreadsheet, []);
   } else if (selectedCols.length) {
-    data = processColSelected(spreadsheet, selectedCols);
+    // 选中某列
+    data = processSelectedByHeader(spreadsheet, selectedCols);
   } else if (selectedRows.length) {
-    data = processRowSelected(spreadsheet, selectedRows);
+    // 选中某行
+    data = processSelectedByHeader(spreadsheet, selectedRows);
   } else {
     if (!cells.length) {
       return [
@@ -263,17 +253,16 @@ function getDataCellCopyable(
     });
 
     if (spreadsheet.isPivotMode()) {
-      data = processPivotSelectedByDataCell({
+      data = processSelectedPivotByDataCell({
         spreadsheet,
         selectedCells: selectedCellsMeta,
         displayData: displayData as Data[],
         headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
       });
     } else {
-      data = processTableSelectedByDataCell({
+      data = processSelectedTableByDataCell({
         spreadsheet,
         selectedCells: selectedCellsMeta,
-        displayData: displayData as Data[],
         headerSelectedCells: selectedColMetas,
       });
     }
@@ -312,8 +301,8 @@ export const processAllSelected = (
   formatOptions?: FormatOptions,
 ): CopyableList => {
   if (spreadsheet.isPivotMode()) {
-    return processPivotAllSelected(spreadsheet, split, formatOptions);
+    return processSelectedAllPivot(spreadsheet, split, formatOptions);
   }
 
-  return processTableAllSelected(spreadsheet, split, formatOptions);
+  return processSelectedAllTable(spreadsheet, split, formatOptions);
 };
