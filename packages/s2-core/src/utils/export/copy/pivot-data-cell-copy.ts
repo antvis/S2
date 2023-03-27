@@ -1,7 +1,6 @@
 import { find, isEmpty, map, slice, zip } from 'lodash';
 import {
   type CellMeta,
-  type Data,
   type DataItem,
   EXTRA_FIELD,
   VALUE_FIELD,
@@ -25,11 +24,12 @@ import {
   completeMatrix,
   getFormatter,
   getMaxRowLen,
+  getNodeFormatData,
   matrixHtmlTransformer,
   matrixPlainTextTransformer,
   unifyConfig,
 } from './common';
-import { getHeaderNodeFromMeta, getNodeFormatData } from './core';
+import { getHeaderNodeFromMeta } from './core';
 
 class PivotDataCellCopy {
   private spreadsheet: SpreadSheet;
@@ -174,7 +174,7 @@ class PivotDataCellCopy {
 
     /*
      * const { showSeriesNumber, seriesNumberText } = this.spreadsheet.options;
-     * 需要考虑 serisesNumber
+     * todo-zc: 需要考虑 serisesNumber, 之前的没有考虑到
      * if (showSeriesNumber) {
      *   realRows.unshift(getDefaultSeriesNumberText(seriesNumberText));
      * }
@@ -214,16 +214,12 @@ class PivotDataCellCopy {
     return completeMatrix(rowMatrix);
   }
 
-  getDataMatrixByDataCell = (
-    cellMetaMatrix: CellMeta[][],
-    displayData: Data[],
-    spreadsheet: SpreadSheet,
-  ): CopyableList => {
+  getDataMatrixByDataCell = (cellMetaMatrix: CellMeta[][]): CopyableList => {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
 
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
       map(cellsMeta, (it) => {
-        const [rowNode, colNode] = getHeaderNodeFromMeta(it, spreadsheet);
+        const [rowNode, colNode] = getHeaderNodeFromMeta(it, this.spreadsheet);
         const dataItem = this.getDataCellValue(rowNode!, colNode!);
 
         return convertString(dataItem);
@@ -279,8 +275,6 @@ class PivotDataCellCopy {
   };
 }
 
-// -------------------
-
 export function processSelectedPivotByHeader(
   spreadsheet: SpreadSheet,
   selectedCells: CellMeta[],
@@ -315,24 +309,19 @@ export const processSelectedAllPivot = (
 export const processSelectedPivotByDataCell = ({
   spreadsheet,
   selectedCells,
-  displayData,
   headerSelectedCells,
 }: {
   spreadsheet: SpreadSheet;
   selectedCells: CellMeta[][];
-  displayData: Data[];
   headerSelectedCells: CellMeta[];
 }): CopyableList => {
   const pivotDataCellCopy = new PivotDataCellCopy({
     spreadsheet,
     config: {
       selectedCells: headerSelectedCells,
+      formatOptions: true,
     },
   });
 
-  return pivotDataCellCopy.getDataMatrixByDataCell(
-    selectedCells,
-    displayData,
-    spreadsheet,
-  );
+  return pivotDataCellCopy.getDataMatrixByDataCell(selectedCells);
 };

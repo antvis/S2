@@ -2,23 +2,14 @@ import { concat, every, isEmpty } from 'lodash';
 import {
   type CellMeta,
   CellTypes,
-  type Data,
   EMPTY_PLACEHOLDER,
-  EXTRA_FIELD,
   InteractionStateName,
-  ROOT_NODE_ID,
   type S2CellType,
-  VALUE_FIELD,
 } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import { copyToClipboard } from '../index';
 import type { ColCell, RowCell } from '../../../cell';
-import type { Node } from '../../../facet/layout/node';
-import {
-  getColNodeFieldFromNode,
-  getSelectedCols,
-  getSelectedRows,
-} from '../method';
+import { getSelectedCols, getSelectedRows } from '../method';
 import {
   type CopyableList,
   CopyMIMEType,
@@ -27,15 +18,14 @@ import {
 import { getBrushHeaderCopyable } from './pivot-header-copy';
 import {
   processSelectedAllPivot,
-  processSelectedPivotByHeader,
   processSelectedPivotByDataCell,
+  processSelectedPivotByHeader,
 } from './pivot-data-cell-copy';
 import {
   processSelectedAllTable,
-  processSelectedTableByHeader,
   processSelectedTableByDataCell,
+  processSelectedTableByHeader,
 } from './table-copy';
-import { getFormatter } from './common';
 
 export const getHeaderNodeFromMeta = (
   meta: CellMeta,
@@ -47,91 +37,6 @@ export const getHeaderNodeFromMeta = (
     spreadsheet.getRowNodes().find((row) => row.rowIndex === rowIndex),
     spreadsheet.getColumnNodes().find((col) => col.colIndex === colIndex),
   ];
-};
-
-/**
- * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
- * https://github.com/antvis/S2/issues/1955
- * @param spreadsheet
- */
-export const compatibleHideMeasureColumn = (spreadsheet: SpreadSheet) => {
-  const isHideValue =
-    spreadsheet.options?.style?.colCell?.hideValue &&
-    spreadsheet.isValueInCols();
-
-  // 被 hideMeasureColumn 隐藏的 度量(measure) 值，手动添加上。
-  return isHideValue
-    ? {
-        [EXTRA_FIELD]: spreadsheet.dataCfg.fields.values?.[0],
-      }
-    : {};
-};
-
-// todo: getDataMatrixByHeaderNode 的逻辑同
-export const getValueFromMeta = (
-  meta: CellMeta,
-  displayData: Data[],
-  spreadsheet: SpreadSheet,
-) => {
-  const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
-
-  const fieldKey = getColNodeFieldFromNode(spreadsheet.isPivotMode, colNode);
-  let value = displayData[meta.rowIndex]?.[fieldKey!];
-
-  if (spreadsheet.isPivotMode()) {
-    const measureQuery = compatibleHideMeasureColumn(spreadsheet);
-
-    const cell = spreadsheet.dataSet.getCellData({
-      query: {
-        ...rowNode?.query,
-        ...colNode?.query,
-        ...measureQuery,
-      },
-      rowNode,
-      isTotals:
-        rowNode?.isTotals ||
-        rowNode?.isTotalMeasure ||
-        colNode?.isTotals ||
-        colNode?.isTotalMeasure,
-    });
-
-    value = cell?.[VALUE_FIELD] ?? '';
-  }
-
-  const formatter = getFormatter(spreadsheet, fieldKey!);
-
-  return formatter(value);
-};
-
-const getNodeFormatLabel = (node: Node) => {
-  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
-
-  return formatter?.(node.value) ?? node.value;
-};
-
-/**
- * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
- * @param rowLeafNode
- */
-export const getNodeFormatData = (rowLeafNode: Node) => {
-  const line: string[] = [];
-  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
-    // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
-    if (node.id === ROOT_NODE_ID) {
-      return;
-    }
-
-    const formatterLabel = getNodeFormatLabel(node);
-
-    line.unshift(formatterLabel);
-    if (node?.parent) {
-      return getRowNodeFormatterLabel(node.parent);
-    }
-  };
-
-  getRowNodeFormatterLabel(rowLeafNode);
-
-  return line;
 };
 
 /**
@@ -207,8 +112,6 @@ function getDataCellCopyable(
   const selectedCols = getSelectedCols(cells);
   const selectedRows = getSelectedRows(cells);
 
-  const displayData = spreadsheet.dataSet.getDisplayDataSet();
-
   if (
     spreadsheet.interaction.getCurrentStateName() ===
     InteractionStateName.ALL_SELECTED
@@ -256,7 +159,6 @@ function getDataCellCopyable(
       data = processSelectedPivotByDataCell({
         spreadsheet,
         selectedCells: selectedCellsMeta,
-        displayData: displayData as Data[],
         headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
       });
     } else {

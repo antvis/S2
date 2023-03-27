@@ -2,7 +2,6 @@ import { map } from 'lodash';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CellMeta,
-  type Data,
   type RawData,
   getDefaultSeriesNumberText,
   SERIES_NUMBER_FIELD,
@@ -14,7 +13,12 @@ import type {
   CopyOrExportConfig,
   FormatOptions,
 } from '../interface';
-import { convertString, getSelectedCols, getSelectedRows } from '../method';
+import {
+  convertString,
+  getColNodeFieldFromNode,
+  getSelectedCols,
+  getSelectedRows,
+} from '../method';
 import {
   assembleMatrix,
   getFormatter,
@@ -22,7 +26,7 @@ import {
   matrixPlainTextTransformer,
   unifyConfig,
 } from './common';
-import { getValueFromMeta } from '@/utils/export/copy/core';
+import { getHeaderNodeFromMeta } from './core';
 
 class TableDataCellCopy {
   private readonly spreadsheet: SpreadSheet;
@@ -109,16 +113,26 @@ class TableDataCellCopy {
     }) as string[];
   }
 
+  private getValueFromMeta = (meta: CellMeta) => {
+    const [, colNode] = getHeaderNodeFromMeta(meta, this.spreadsheet);
+
+    const fieldKey = getColNodeFieldFromNode(
+      this.spreadsheet.isPivotMode,
+      colNode,
+    );
+    const value = this.displayData[meta.rowIndex]?.[fieldKey!];
+
+    const formatter = getFormatter(this.spreadsheet, fieldKey!);
+
+    return formatter(value);
+  };
+
   getDataMatrixByDataCell(cellMetaMatrix: CellMeta[][]): CopyableList {
     const { copyWithHeader } = this.spreadsheet.options.interaction!;
 
     // 因为通过复制数据单元格的方式和通过行列头复制的方式不同，所以不能复用 getDataMatrix 方法
     const dataMatrix = map(cellMetaMatrix, (cellsMeta) =>
-      map(cellsMeta, (it) =>
-        convertString(
-          getValueFromMeta(it, this.displayData as Data[], this.spreadsheet),
-        ),
-      ),
+      map(cellsMeta, (it) => convertString(this.getValueFromMeta(it))),
     ) as string[][];
 
     if (!copyWithHeader) {

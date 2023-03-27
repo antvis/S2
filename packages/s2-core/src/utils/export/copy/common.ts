@@ -1,16 +1,17 @@
 import { escape, map, max } from 'lodash';
+import type { Node } from '../../../facet/layout/node';
 import type { DataItem } from '../../../common';
+import { NewLine, NewTab, ROOT_NODE_ID } from '../../../common';
 import type { SpreadSheet } from '../../../sheet-type';
 import {
   type CopyableHTML,
   type CopyableList,
   type CopyablePlain,
-  type FormatOptions,
-  type CopyOrExportConfig,
   type CopyAndExportUnifyConfig,
   CopyMIMEType,
+  type CopyOrExportConfig,
+  type FormatOptions,
 } from '../interface';
-import { NewLine, NewTab } from '../../../common';
 
 // 把 string[][] 矩阵转换成 CopyablePlain
 export const matrixPlainTextTransformer = (
@@ -177,3 +178,34 @@ export function unifyConfig(
     ...result,
   };
 }
+
+const getNodeFormatLabel = (node: Node) => {
+  const formatter = node.spreadsheet?.dataSet?.getFieldFormatter?.(node.field);
+
+  return formatter?.(node.value) ?? node.value;
+};
+
+/**
+ * 通过 rowLeafNode 获取到当前行所有 rowNode 的数据
+ * @param rowLeafNode
+ */
+export const getNodeFormatData = (rowLeafNode: Node) => {
+  const line: string[] = [];
+  const getRowNodeFormatterLabel = (node: Node): string | undefined => {
+    // node.id === KEY_ROOT_NODE 时，为 S2 内的虚拟根节点，导出的内容不需要考虑此节点
+    if (node.id === ROOT_NODE_ID) {
+      return;
+    }
+
+    const formatterLabel = getNodeFormatLabel(node);
+
+    line.unshift(formatterLabel);
+    if (node?.parent) {
+      return getRowNodeFormatterLabel(node.parent);
+    }
+  };
+
+  getRowNodeFormatterLabel(rowLeafNode);
+
+  return line;
+};
