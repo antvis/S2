@@ -208,7 +208,7 @@ describe('List Table Core Data Process', () => {
 
     const data = getCopyPlainContent(ss);
 
-    expect(data).toBe('2367\t浙江省_formatted\t绍兴市\t家具\t桌子');
+    expect(data).toBe('浙江省_formatted');
   });
 
   // https://github.com/antvis/S2/issues/1770

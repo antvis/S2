@@ -143,14 +143,14 @@ function getDataCellCopyable(
     const selectedColMetas = selectedCellsMeta[0].map((cellMeta) => {
       return {
         ...cellMeta,
-        id: cellMeta.id.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
+        id: cellMeta?.id?.split(EMPTY_PLACEHOLDER)?.[1] ?? '',
         type: CellTypes.COL_CELL,
       };
     });
-    const selectedRowMetas = selectedCellsMeta.map((it) => {
+    const selectedRowMetas = selectedCellsMeta.map((cellMeta) => {
       return {
-        ...it[0],
-        id: it[0].id.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
+        ...cellMeta[0],
+        id: cellMeta[0]?.id?.split(EMPTY_PLACEHOLDER)?.[0] ?? '',
         type: CellTypes.ROW_CELL,
       };
     });

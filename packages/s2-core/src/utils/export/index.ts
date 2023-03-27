@@ -1,5 +1,6 @@
 import { concat, get } from 'lodash';
 import type { SpreadSheet } from '../../sheet-type';
+import { NewTab } from '../../common/constant/copy';
 import {
   CopyMIMEType,
   type Copyable,
@@ -106,6 +107,6 @@ export const download = (str: string, fileName: string) => {
  */
 export const copyData = (
   sheetInstance: SpreadSheet,
-  split: string,
+  split = NewTab,
   formatOptions?: FormatOptions,
 ) => processAllSelected(sheetInstance, split, formatOptions)[0].content;
