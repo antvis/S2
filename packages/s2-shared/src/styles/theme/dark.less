@@ -9,11 +9,10 @@
 
   // text
   @{css-var-prefix}-font: @white;
-  @{css-var-prefix}-font-90: fade(@white, 90);
-  @{css-var-prefix}-font-85: fade(@white, 85);
-  @{css-var-prefix}-font-65: fade(@white, 65);
-  @{css-var-prefix}-font-45: fade(@white, 45);
-  @{css-var-prefix}-font-25: fade(@white, 25);
+  each(range(19), {
+    @fadePercent: 100 - @value * 5;
+    @{css-var-prefix}-font-@{fadePercent}: fade(@white, @fadePercent);
+  });
 
   // border
   @{css-var-prefix}-border: fade(@white, 15);
