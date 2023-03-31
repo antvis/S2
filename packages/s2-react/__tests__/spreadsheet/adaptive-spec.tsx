@@ -32,24 +32,27 @@ function MainLayout({
   options,
 }: Props) {
   return (
-    <div
-      id={containerId}
-      style={{
-        width: containerWidth,
-        height: containerHeight,
-      }}
-    >
-      <SheetComponent
-        adaptive={adaptive}
-        sheetType="pivot"
-        dataCfg={mockDataConfig}
-        options={options || s2Options}
-        themeCfg={{ name: 'default' }}
-        onMounted={(instance) => {
-          s2 = instance;
+    <>
+      <div
+        id={containerId}
+        style={{
+          width: containerWidth,
+          height: containerHeight,
         }}
-      />
-    </div>
+      >
+        <SheetComponent
+          adaptive={adaptive}
+          sheetType="pivot"
+          dataCfg={mockDataConfig}
+          options={options || s2Options}
+          themeCfg={{ name: 'default' }}
+          onMounted={(instance) => {
+            s2 = instance;
+          }}
+        />
+      </div>
+      <pre id="debug"></pre>
+    </>
   );
 }
 
@@ -144,8 +147,8 @@ describe('SheetComponent adaptive Tests', () => {
     act(() => {
       const container = document.getElementById(containerId)!;
 
-      container.style.width = `${newContainerWidth}px`;
       container.style.height = `${newContainerHeight}px`;
+      container.style.width = `${newContainerWidth}px`;
     });
 
     act(() => {
@@ -154,6 +157,7 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1500);
 
+    expect(document.getElementById('debug')?.innerHTML).toEqual('');
     expect(document.getElementById(containerId)!.clientWidth).toEqual(
       newContainerWidth,
     );

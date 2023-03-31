@@ -454,6 +454,12 @@ export abstract class SpreadSheet extends EE {
     const canvas = this.getCanvasElement();
     const { width: containerWidth, height: containerHeight } =
       this.container.getConfig();
+    const dd = document.getElementById('debug');
+
+    if (dd) {
+      dd.innerHTML += `changeSheetSize-${width}-${height}\n`;
+      dd.innerHTML += `changeSheetSize-${containerWidth}-${containerHeight}\n`;
+    }
 
     const isSizeChanged =
       width !== containerWidth || height !== containerHeight;
@@ -465,6 +471,13 @@ export abstract class SpreadSheet extends EE {
     this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.resize(width, height);
+
+    if (dd) {
+      dd.innerHTML += `after-changeSheetSize-${this.options.width}-${this.options.height}\n`;
+      dd.innerHTML += `after-changeSheetSize-${
+        this.container.getConfig().width
+      }-${this.container.getConfig().height}\n`;
+    }
   }
 
   /**
