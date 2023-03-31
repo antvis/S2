@@ -17,8 +17,8 @@ interface Props {
 }
 
 const s2Options: SheetComponentsProps['options'] = {
-  width: 200,
-  height: 200,
+  width: 202,
+  height: 201,
   hdAdapter: false,
 };
 
@@ -123,8 +123,8 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   test.only('should update table width and height when container resize', async () => {
-    const newContainerWidth = 1000;
-    const newContainerHeight = 500;
+    const newContainerWidth = 1001;
+    const newContainerHeight = 501;
     const containerId = 'testContainer';
 
     act(() => {
@@ -162,8 +162,8 @@ describe('SheetComponent adaptive Tests', () => {
 
   // https://github.com/antvis/S2/issues/792
   test.only('should update canvas size when container resize', async () => {
-    const newContainerWidth = 800;
-    const newContainerHeight = 300;
+    const newContainerWidth = 801;
+    const newContainerHeight = 301;
     const containerId = 'resizeContainer';
 
     // render by option
