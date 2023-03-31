@@ -145,6 +145,7 @@ describe('SheetComponent adaptive Tests', () => {
     });
 
     const dd = document.getElementById('debug')!;
+    const cc = document.querySelector('#testContainer .antv-s2-container')!;
 
     act(() => {
       const container = document.getElementById(containerId)!;
@@ -154,6 +155,7 @@ describe('SheetComponent adaptive Tests', () => {
 
       dd.innerHTML += `act-${container.getAttribute('style')}\n`;
       dd.innerHTML += `act-${container.clientHeight}-${container.clientWidth}\n`;
+      dd.innerHTML += `act-${cc.clientHeight}-${cc.clientWidth}\n`;
     });
 
     act(() => {
@@ -163,6 +165,7 @@ describe('SheetComponent adaptive Tests', () => {
 
       dd.innerHTML += `act1-${container.getAttribute('style')}\n`;
       dd.innerHTML += `act1-${container.clientHeight}-${container.clientWidth}\n`;
+      dd.innerHTML += `act1-${cc.clientHeight}-${cc.clientWidth}\n`;
     });
 
     await sleep(1500);
@@ -171,6 +174,8 @@ describe('SheetComponent adaptive Tests', () => {
 
     dd.innerHTML += `run-${container.getAttribute('style')}\n`;
     dd.innerHTML += `run-${container.clientHeight}-${container.clientWidth}\n`;
+    dd.innerHTML += `run-${cc.clientHeight}-${cc.clientWidth}\n`;
+    dd.innerText += `run-${container.innerHTML}\n`;
 
     expect(document.getElementById('debug')?.innerHTML).toEqual('');
     expect(s2!.options.width).toEqual(newContainerWidth);
