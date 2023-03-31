@@ -154,6 +154,12 @@ describe('SheetComponent adaptive Tests', () => {
 
     await sleep(1500);
 
+    expect(document.getElementById(containerId)!.clientWidth).toEqual(
+      newContainerWidth,
+    );
+    expect(document.getElementById(containerId)!.clientHeight).toEqual(
+      newContainerHeight,
+    );
     expect(s2!.options.width).toEqual(newContainerWidth);
     expect(s2!.options.height).toEqual(newContainerHeight);
     expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
@@ -161,7 +167,7 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/792
-  test.only('should update canvas size when container resize', async () => {
+  test('should update canvas size when container resize', async () => {
     const newContainerWidth = 801;
     const newContainerHeight = 301;
     const containerId = 'resizeContainer';
