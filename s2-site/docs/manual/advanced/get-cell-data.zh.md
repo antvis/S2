@@ -3,7 +3,6 @@ title: 获取单元格数据
 order: 9
 ---
 
-
 :::warning{title='提示'}
 阅读本章前，请确保已经阅读过 [基础教程](/manual/basic/base-concept)，[数据流处理](/manual/advanced/data-process/pivot)，[布局](/manual/advanced/layout/pivot)等章节
 :::
@@ -25,7 +24,6 @@ order: 9
 
 ```ts
 s2.render()
-
 
 // 确保在 s2.render() 之后获取
 console.log(s2.facet.layoutResult)
@@ -202,8 +200,7 @@ const colCellNode = s2.getColumnNodes().find((node) => node.id === 'root[&]办�
 
 const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query})
 
-
-  /**
+/**
   [
     {
       "number": 1634,
@@ -215,7 +212,7 @@ const data = s2.dataSet.getMultiData({...rowCellNode.query, ...colCellNode.query
       "$$value$$": 1634
     }
   ]
-  */
+*/
 ```
 
 ### 根据行列索引获取数值单元格信息
