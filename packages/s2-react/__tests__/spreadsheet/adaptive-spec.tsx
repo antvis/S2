@@ -142,10 +142,20 @@ describe('SheetComponent adaptive Tests', () => {
         />,
         getContainer(),
       );
+      const dd = document.getElementById('debug')!;
+      const c1 = document.getElementById(containerId)!;
+      const cc = document.querySelector('#testContainer .antv-s2-container')!;
+
+      dd.innerHTML += `after-rdom-${c1.clientHeight}-${c1.clientWidth}\n`;
+      dd.innerHTML += `after-rdom-${cc.clientHeight}-${cc.clientWidth}\n`;
     });
+    const c1 = document.getElementById(containerId)!;
 
     const dd = document.getElementById('debug')!;
     const cc = document.querySelector('#testContainer .antv-s2-container')!;
+
+    dd.innerHTML += `before-act-${c1.clientHeight}-${c1.clientWidth}\n`;
+    dd.innerHTML += `before-act-${cc.clientHeight}-${cc.clientWidth}\n`;
 
     act(() => {
       const container = document.getElementById(containerId)!;
@@ -175,7 +185,6 @@ describe('SheetComponent adaptive Tests', () => {
     dd.innerHTML += `run-${container.getAttribute('style')}\n`;
     dd.innerHTML += `run-${container.clientHeight}-${container.clientWidth}\n`;
     dd.innerHTML += `run-${cc.clientHeight}-${cc.clientWidth}\n`;
-    dd.innerText += `run-${container.innerHTML}\n`;
 
     expect(document.getElementById('debug')?.innerHTML).toEqual('');
     expect(s2!.options.width).toEqual(newContainerWidth);
