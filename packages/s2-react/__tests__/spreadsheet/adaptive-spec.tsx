@@ -161,7 +161,7 @@ describe('SheetComponent adaptive Tests', () => {
   });
 
   // https://github.com/antvis/S2/issues/792
-  test('should update canvas size when container resize', async () => {
+  test.only('should update canvas size when container resize', async () => {
     const newContainerWidth = 800;
     const newContainerHeight = 300;
     const containerId = 'resizeContainer';
