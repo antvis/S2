@@ -42,9 +42,15 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
   const debounceRender = debounce(render, RESIZE_RENDER_DELAY);
 
   const onResize = () => {
+    const dd = document.getElementById('debug');
     // 解决父容器有缩放, 获取宽高不对的问题: https://github.com/antvis/S2/pull/1425
     const { clientWidth: containerWidth, clientHeight: containerHeight } =
       container;
+
+    if (dd) {
+      dd.innerHTML += `onResize-${adaptiveWidth}-${adaptiveHeight}\n`;
+      dd.innerHTML += `onResize-${containerWidth}-${containerHeight}\n`;
+    }
 
     const width = adaptiveWidth
       ? Math.floor(containerWidth ?? s2.options.width)
@@ -56,6 +62,10 @@ export const createResizeObserver = (params: ResizeEffectParams) => {
 
     if (!adaptiveWidth && !adaptiveHeight) {
       return;
+    }
+
+    if (dd) {
+      dd.innerHTML += `onResize-${width}-${height}\n`;
     }
 
     if (isFirstRender) {
