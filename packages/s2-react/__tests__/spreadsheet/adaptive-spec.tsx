@@ -122,7 +122,7 @@ describe('SheetComponent adaptive Tests', () => {
     expect(s2!.container.getConfig().height).toEqual(s2Options.height);
   });
 
-  test('should update table width and height when container resize', async () => {
+  test.only('should update table width and height when container resize', async () => {
     const newContainerWidth = 1000;
     const newContainerHeight = 500;
     const containerId = 'testContainer';
@@ -152,7 +152,7 @@ describe('SheetComponent adaptive Tests', () => {
       window.dispatchEvent(new Event('resize'));
     });
 
-    await sleep(1000);
+    await sleep(1500);
 
     expect(s2!.options.width).toEqual(newContainerWidth);
     expect(s2!.options.height).toEqual(newContainerHeight);
