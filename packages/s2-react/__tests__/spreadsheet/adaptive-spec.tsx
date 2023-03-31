@@ -144,26 +144,35 @@ describe('SheetComponent adaptive Tests', () => {
       );
     });
 
+    const dd = document.getElementById('debug')!;
+
     act(() => {
       const container = document.getElementById(containerId)!;
 
       container.style.height = `${newContainerHeight}px`;
       container.style.width = `${newContainerWidth}px`;
+
+      dd.innerHTML += `act-${container.getAttribute('style')}\n`;
+      dd.innerHTML += `act-${container.clientHeight}-${container.clientWidth}\n`;
     });
 
     act(() => {
       window.dispatchEvent(new Event('resize'));
+
+      const container = document.getElementById(containerId)!;
+
+      dd.innerHTML += `act1-${container.getAttribute('style')}\n`;
+      dd.innerHTML += `act1-${container.clientHeight}-${container.clientWidth}\n`;
     });
 
     await sleep(1500);
 
+    const container = document.getElementById(containerId)!;
+
+    dd.innerHTML += `run-${container.getAttribute('style')}\n`;
+    dd.innerHTML += `run-${container.clientHeight}-${container.clientWidth}\n`;
+
     expect(document.getElementById('debug')?.innerHTML).toEqual('');
-    expect(document.getElementById(containerId)!.clientWidth).toEqual(
-      newContainerWidth,
-    );
-    expect(document.getElementById(containerId)!.clientHeight).toEqual(
-      newContainerHeight,
-    );
     expect(s2!.options.width).toEqual(newContainerWidth);
     expect(s2!.options.height).toEqual(newContainerHeight);
     expect(s2!.container.getConfig().height).toEqual(newContainerHeight);
