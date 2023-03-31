@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.39.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.38.0...@antv/s2-react-v1.39.0) (2023-03-31)
+
+
+### Features
+
+* 移除switcher按钮important样式 ([#2139](https://github.com/antvis/S2/issues/2139)) ([d4f9197](https://github.com/antvis/S2/commit/d4f9197f1c3d1b3cfc2bdfb8d375413a2daa79c3))
+
 # [@antv/s2-react-v1.38.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.37.1...@antv/s2-react-v1.38.0) (2023-03-24)
 
 
