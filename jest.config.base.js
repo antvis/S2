@@ -27,8 +27,6 @@ module.exports = {
     '^@antv/s2$': path.join(__dirname, 'packages/s2-core/src'),
     '^@antv/s2-shared$': path.join(__dirname, 'packages/s2-shared/src'),
     '\\.svg$': '<rootDir>/__tests__/__mocks__/svg.ts',
-    /* ignore module query: foo.less?a=1 -> foo.less */
-    '(.+)\\.(.+)\\?(.*)$': '$1.$2',
   },
   testTimeout: 30000,
 };

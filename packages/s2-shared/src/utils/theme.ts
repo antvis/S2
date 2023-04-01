@@ -1,6 +1,7 @@
 import { injectCssText, type ThemeName } from '@antv/s2';
 import { STYLE_ELEMENT_ID } from '../constant/theme';
-import DarkVars from '../styles/theme/dark.less?inline';
+
+const DarkVars = `div {}`;
 
 /**
  * 根据主题注入组件的 css 变量
