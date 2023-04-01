@@ -178,6 +178,15 @@ describe('SheetComponent adaptive Tests', () => {
       dd.innerHTML += `act1-${cc.clientHeight}-${cc.clientWidth}\n`;
     });
 
+    dd.innerHTML += `before-before-sleep-${getComputedStyle(cc).flex}-${
+      getComputedStyle(cc).overflow
+    }\n`;
+    dd.innerHTML += `before-before-sleep-${
+      c1.querySelector('.antv-s2-spin')?.clientHeight
+    }-${c1.querySelector('.ant-spin-container')?.clientHeight}-${
+      c1.querySelector('.antv-s2-wrapper')?.clientHeight
+    }\n`;
+
     await sleep(1500);
 
     const container = document.getElementById(containerId)!;
