@@ -17,6 +17,7 @@ import {
   memoize,
   values,
 } from 'lodash';
+import { runtime } from '@antv/g-lite';
 import { BaseCell } from '../cell';
 import { MIN_DEVICE_PIXEL_RATIO, S2Event } from '../common/constant';
 import { DebuggerUtil } from '../common/debug';
@@ -64,6 +65,13 @@ import {
   getSafetyOptions,
 } from '../utils/merge';
 import { getTooltipData, getTooltipOptions } from '../utils/tooltip';
+
+/**
+ * 关闭 CSS 解析的开关，可以提升首屏性能,
+ * 关闭属性就不支持带单位了，比如 circle.style.r = '20px';
+ * 而是要用 circle.style.r = 20;
+ */
+runtime.enableCSSParsing = false;
 
 export abstract class SpreadSheet extends EE {
   // theme config
