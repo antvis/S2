@@ -28,6 +28,7 @@ import {
   map,
   max,
   size,
+  sortBy,
 } from 'lodash';
 import {
   assembleMatrix,
@@ -171,7 +172,14 @@ class StrategyCopyData extends PivotDataCellCopy {
     const { data: cornerNodes } =
       sheetInstance.facet.cornerHeader.getHeaderConfig();
 
-    return map(cornerNodes, (node) => {
+    // 对 cornerNodes 进行排序， cornerType === CornerNodeType.Col 的放在前面
+    const sortedCornerNodes = sortBy(cornerNodes, (node) => {
+      const { cornerType } = node;
+
+      return cornerType === CornerNodeType.Col ? 0 : 1;
+    });
+
+    return map(sortedCornerNodes, (node) => {
       const { value } = node;
       const result: string[] = new Array(maxRowLen).fill('');
 
