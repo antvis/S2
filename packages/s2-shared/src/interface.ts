@@ -64,9 +64,9 @@ export interface BaseSheetComponentProps<
   showPagination?:
     | boolean
     | {
-        onShowSizeChange?: (pageSize: number) => void;
-        onChange?: (current: number) => void;
-      };
+      onShowSizeChange?: (page :number, pageSize: number) => void;
+      onChange?: (current: number, size: number) => void;
+    };
   themeCfg?: ThemeCfg;
   header?: Header;
   /** @deprecated 1.29.0 已废弃, 请使用 onMounted 代替 */
