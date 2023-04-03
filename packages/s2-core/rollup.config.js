@@ -9,7 +9,6 @@ import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import less from 'rollup-plugin-less';
-import copy from 'rollup-plugin-copy';
 
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
@@ -64,9 +63,6 @@ const plugins = [
     include: ['**/theme/*.less'],
     output: false,
     inject: false,
-  }),
-  copy({
-    targets: [{ src: 'src/styles/', dest: outDir }],
   }),
 ];
 
