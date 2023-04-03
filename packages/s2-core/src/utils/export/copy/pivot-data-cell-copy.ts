@@ -32,27 +32,29 @@ import {
 } from './common';
 import { getHeaderNodeFromMeta } from './core';
 
-class PivotDataCellCopy {
-  private spreadsheet: SpreadSheet;
+export interface CopyConstructorParams {
+  spreadsheet: SpreadSheet;
+  config: CopyOrExportConfig;
+  isExport?: boolean;
+}
 
-  private leafRowNodes: Node[] = [];
+export class PivotDataCellCopy {
+  protected spreadsheet: SpreadSheet;
 
-  private leafColNodes: Node[] = [];
+  protected leafRowNodes: Node[] = [];
 
-  private config: CopyAndExportUnifyConfig;
+  protected leafColNodes: Node[] = [];
+
+  protected config: CopyAndExportUnifyConfig;
 
   /**
    * @param {{
    * spreadsheet: SpreadSheet,
    * selectedCells?: CellMeta[],
    * formatOptions?: FormatOptions,
-   * separator?: string}} params
+   * }} params
    */
-  constructor(params: {
-    spreadsheet: SpreadSheet;
-    config: CopyOrExportConfig;
-    isExport?: boolean;
-  }) {
+  constructor(params: CopyConstructorParams) {
     const { spreadsheet, isExport = false, config } = params;
 
     this.spreadsheet = spreadsheet;
@@ -112,7 +114,6 @@ class PivotDataCellCopy {
   /**
    * 兼容 hideMeasureColumn 方案：hideMeasureColumn 的隐藏实现是通过截取掉度量(measure)数据，但是又只截取了 Node 中的，像 pivotMeta 中的又是完整的。导致复制时，无法通过 Node 找出正确路径。
    * https://github.com/antvis/S2/issues/1955
-   * @param spreadsheet
    */
   private compatibleHideMeasureColumn = () => {
     const isHideValue =
@@ -127,7 +128,7 @@ class PivotDataCellCopy {
       : {};
   };
 
-  private getDataMatrixByHeaderNode = () =>
+  protected getDataMatrixByHeaderNode = () =>
     map(this.leafRowNodes, (rowNode) =>
       this.leafColNodes.map((colNode) =>
         this.getDataCellValue(rowNode, colNode),
@@ -165,31 +166,23 @@ class PivotDataCellCopy {
     return formatter(cellData?.[VALUE_FIELD] ?? '');
   }
 
-  private getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
+  protected getCornerMatrix = (rowMatrix?: string[][]): string[][] => {
     const { fields, meta } = this.spreadsheet.dataCfg;
     const { columns = [], rows = [] } = fields;
-    const realRows = rows;
+    // 为了对齐数值
+    const customColumns = [...columns, ''];
     const maxRowLen = this.spreadsheet.isHierarchyTreeType()
       ? getMaxRowLen(rowMatrix ?? [])
-      : realRows.length;
-
-    /*
-     * const { showSeriesNumber, seriesNumberText } = this.spreadsheet.options;
-     * todo-zc: 需要考虑 serisesNumber, 之前的没有考虑到
-     * if (showSeriesNumber) {
-     *   realRows.unshift(getDefaultSeriesNumberText(seriesNumberText));
-     * }
-     */
-    // 为了对齐数值
-    columns.push('');
+      : rows.length;
+    const customRows = slice(rows, 0, maxRowLen);
 
     /*
      * cornerMatrix 形成的矩阵为  rows.length(宽) * columns.length(高)
      */
-    return map(columns, (col, colIndex) =>
-      map(slice(realRows, 0, maxRowLen), (row, rowIndex) => {
+    return map(customColumns, (col, colIndex) =>
+      map(customRows, (row, rowIndex) => {
         // 角头的最后一行，为行头
-        if (colIndex === columns.length - 1) {
+        if (colIndex === customColumns.length - 1) {
           return find(meta, ['field', row])?.name ?? row;
         }
 
@@ -203,7 +196,7 @@ class PivotDataCellCopy {
     ) as unknown as string[][];
   };
 
-  private getColMatrix(): string[][] {
+  protected getColMatrix(): string[][] {
     return zip(
       ...map(this.leafColNodes, (n) =>
         this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
@@ -211,7 +204,7 @@ class PivotDataCellCopy {
     ) as string[][];
   }
 
-  private getRowMatrix(): string[][] {
+  protected getRowMatrix(): string[][] {
     const rowMatrix: string[][] = map(this.leafRowNodes, (n) =>
       this.config.isFormatHeader ? getNodeFormatData(n) : getHeaderList(n.id),
     );
@@ -241,6 +234,8 @@ class PivotDataCellCopy {
 
     // 带表头复制
     const rowMatrix = this.getRowMatrix();
+
+    // 判断是否为趋势分析表
 
     const colMatrix = this.getColMatrix();
 
