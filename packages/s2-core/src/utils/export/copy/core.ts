@@ -103,6 +103,27 @@ function getIsBrushHeader(interactedCells: S2CellType[]) {
       );
 }
 
+function processSelectedByData(
+  selectedCellsMeta: CellMeta[][],
+  selectedColMetas: CellMeta[],
+  selectedRowMetas: CellMeta[],
+  spreadsheet: SpreadSheet,
+): CopyableList {
+  if (spreadsheet.isPivotMode()) {
+    return processSelectedPivotByDataCell({
+      spreadsheet,
+      selectedCells: selectedCellsMeta,
+      headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
+    });
+  }
+
+  return processSelectedTableByDataCell({
+    spreadsheet,
+    selectedCells: selectedCellsMeta,
+    headerSelectedCells: selectedColMetas,
+  });
+}
+
 function getDataCellCopyable(
   spreadsheet: SpreadSheet,
   cells: CellMeta[],
@@ -155,19 +176,12 @@ function getDataCellCopyable(
       };
     });
 
-    if (spreadsheet.isPivotMode()) {
-      data = processSelectedPivotByDataCell({
-        spreadsheet,
-        selectedCells: selectedCellsMeta,
-        headerSelectedCells: concat(selectedColMetas, selectedRowMetas),
-      });
-    } else {
-      data = processSelectedTableByDataCell({
-        spreadsheet,
-        selectedCells: selectedCellsMeta,
-        headerSelectedCells: selectedColMetas,
-      });
-    }
+    data = processSelectedByData(
+      selectedCellsMeta,
+      selectedColMetas,
+      selectedRowMetas,
+      spreadsheet,
+    );
   }
 
   return data;

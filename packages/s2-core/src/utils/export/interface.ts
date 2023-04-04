@@ -33,8 +33,6 @@ export type FormatOptions =
       isFormatData?: boolean;
     };
 
-// 使用 类 替代 函数，重构下面的代码
-
 export interface CopyOrExportConfig {
   selectedCells?: CellMeta[];
   formatOptions?: FormatOptions;
